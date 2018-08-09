@@ -315,6 +315,7 @@ admin.common.csv_upload_complete: CSVファイルをアップロードしまし�
 admin.common.csv_upload_error: CSVファイルのアップロードに失敗しました
 admin.common.send_complete: メールを送信しました
 admin.common.send_error: メールの送信に失敗しました
+admin.common.create_complete: 作成しました
 admin.common.system_error: システムエラーが発生しました
 
 # action系のラベル
@@ -337,6 +338,8 @@ admin.common.create: 作成
 admin.common.create__new: 新規作成
 admin.common.up: 上へ
 admin.common.down: 下へ
+admin.common.upload: アップロード
+admin.common.download: ダウンロード
 
 # 汎用ラベル, メッセージ
 admin.common.required: 必須
@@ -780,6 +783,7 @@ admin.customer.resend_confirm_message: 仮登録メールを再送してもよ�
 #------------------------------------------------------------------------------------
 
 # 機能名称
+admin.content.contents_management: コンテンツ管理
 admin.content.news_management: 新着情報管理
 admin.content.file_management: ファイル管理
 admin.content.layout_management: レイアウト管理
@@ -788,16 +792,22 @@ admin.content.block_management: ブロック管理
 admin.content.cache_management: キャッシュ管理
 
 # ラベル/メッセージ
-admin.content.file.add_file: ファイルを追加
 admin.content.file.add_file__card_title: ファイル・フォルダを追加
+admin.content.file.add_file: ファイルを追加
 admin.content.file.add_directory: フォルダを追加
-admin.content.file.directory_tree: フォルダ構成
-admin.content.file.file_list: このフォルダ内のファイル
+admin.content.file.directory_name: フォルダ名
+admin.content.file.file_list__card_title: このフォルダ内のファイル
 admin.content.file.updated: 更新
 admin.content.file.delete_confirm_title: '%name%を削除します'
 admin.content.file.delete_confirm_message: 削除してよろしいですか？
-admin.content.layout_name: レイアウト名
+admin.content.file.directory_tree: フォルダ構成
+admin.content.layout_add: レイアウトを新規追加
+admin.content.layout_delete: レイアウトを削除
+admin.content.layout_delete_confirm_title: レイアウトを削除します
+admin.content.layout_delete_confirm_message: レイアウトを削除してよろしいですか？
+admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
+admin.content.layout_name: レイアウト名
 admin.content.layout_edit__card_title: レイアウト編集
 admin.content.layout_drag_and_drop_message: ブロックをドラッグ＆ドロップ
 admin.content.layout_up: 上に移動
@@ -810,11 +820,19 @@ admin.content.layout_preview_code__confirm_move_to_block: コードを編集
 admin.content.layout_move_to__confirm_title: 'ブロックを移動'
 admin.content.layout_move_to__confirm_message: ブロックの移動先を選択してください
 admin.content.layout_move_to__execute: 移動
-admin.content.layout_section__unused_block: 未使用ブロック
+admin.content.layout_section__unused: '未使用ブロック'
 admin.content.layout_section__head: '<head></head>タグ内'
-admin.content.layout_section__after_body_start_section: '<body>タグ直後'
-admin.content.layout_section__#header: '#header'
-admin.content.layout_section__#contents_top: '#contents_top'
+admin.content.layout_section__body_after: '<body>タグ直後'
+admin.content.layout_section__header: '#header'
+admin.content.layout_section__contents_top: '#contents_top'
+admin.content.layout_section__side_left: '#side_left'
+admin.content.layout_section__main_top: '#main_top'
+admin.content.layout_section__main_bottom: '#main_bottom'
+admin.content.layout_section__side_right: '#side_right'
+admin.content.layout_section__contents_bottom: '#contents_bottom'
+admin.content.layout_section__footer: '#footer'
+admin.content.layout_section__drawer: '#drawer'
+admin.content.layout_section__close_body_before: '</body>タグ直前'
 admin.content.page_name: ページ名
 admin.content.page__card_title: ページ設定
 admin.content.page_layout__card_title: レイアウト設定

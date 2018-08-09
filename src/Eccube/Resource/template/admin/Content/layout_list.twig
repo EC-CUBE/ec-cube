@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'layout'] %}
 
-{% block title %}{{ 'admin.content.layout_list.46'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.content.layout_list.45'|trans }}{% endblock %}
+{% block title %}{{ 'admin.content.layout_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% block javascript %}
     <script>
@@ -31,7 +31,7 @@ file that was distributed with this source code.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="d-block mb-3">
-                    <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new') }}">{{ 'admin.content.layout_list.add_layout'|trans }}</a>
+                    <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new') }}">{{ 'admin.content.layout_add'|trans }}</a>
                 </div>
                 {# layouts #}
                 {% for Layout in Layouts %}
@@ -53,7 +53,7 @@ file that was distributed with this source code.
                                                 data-target="#layoutDelete"
                                                 data-url="{{ url('admin_content_layout_delete', { id: Layout.id }) }}"
                                                 {{ Layout.isDeletable() ? '' : 'disabled' }}>
-                                            {{ 'admin.content.layout_list.delete_layout'|trans }}
+                                            {{ 'admin.content.layout_delete'|trans }}
                                         </button>
                                     {% endif %}
                                 </div>
@@ -82,7 +82,7 @@ file that was distributed with this source code.
                             <div class="collapse ec-cardCollapse" id="layout-{{ Layout.id }}">
                                 <div class="p-0 empty-item">
                                     <div class="d-block p-3">
-                                        <span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span>
+                                        <span class="text-muted">{{ 'admin.content.layout_no_page'|trans }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -95,16 +95,16 @@ file that was distributed with this source code.
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">{{ 'admin.content.layout_list.delete_layout.title'|trans }}</h5>
+                                <h5 class="modal-title">{{ 'admin.content.layout_delete_confirm_title'|trans }}</h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body">
-                                <p>{{ 'admin.content.layout_list.delete_layout.confirm_message'|trans }}</p>
+                                <p>{{ 'admin.content.layout_delete_confirm_message'|trans }}</p>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                 <a href="#" class="btn btn-ec-delete" {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
-                                    {{ 'admin.content.layout_list.delete_layout.delete'|trans }}
+                                    {{ 'admin.common.delete'|trans }}
                                 </a>
                             </div>
                         </div>

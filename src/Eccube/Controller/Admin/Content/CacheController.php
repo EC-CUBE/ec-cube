@@ -37,7 +37,7 @@ class CacheController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $result = $cacheUtil->clearCache();
 
-            $this->addSuccess('admin.content.cache.save.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
         }
 
         return [

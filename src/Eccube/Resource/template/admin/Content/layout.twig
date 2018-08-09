@@ -12,27 +12,27 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'layout'] %}
 
-{% block title %}{{'admin.content.layout.40'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.layout.39'|trans}}{% endblock %}
+{% block title %}{{'admin.content.layout_management'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.contents_management'|trans}}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script>
         var sections = {
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_UNUSED') }} : '{{ 'admin.content.layout.block.unuse'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_HEAD') }} : '{{ 'admin.content.layout.section.head'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_BODY_AFTER') }} : '{{ 'admin.content.layout.section.body_after'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_HEADER') }} : '{{ 'admin.content.layout.section.header'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_TOP') }} : '{{ 'admin.content.layout.section.contents_top'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_LEFT') }} : '{{ 'admin.content.layout.section.side_left'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_TOP') }} : '{{ 'admin.content.layout.section.main_top'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_BOTTOM') }} : '{{ 'admin.content.layout.section.main_bottom'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_RIGHT') }} : '{{ 'admin.content.layout.section.side_right'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_BOTTOM') }} : '{{ 'admin.content.layout.section.contents_bottom'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_FOOTER') }} : '{{ 'admin.content.layout.section.footer'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_DRAWER') }} : '{{ 'admin.content.layout.section.drawer'|trans }}',
-            {{ constant('Eccube\\Entity\\Page::TARGET_ID_CLOSE_BODY_BEFORE') }} : '{{ 'admin.content.layout.section.close_body_before'|trans }}'
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_UNUSED') }} : '{{ 'admin.content.layout_section__unused'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_HEAD') }} : '{{ 'admin.content.layout_section__head'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_BODY_AFTER') }} : '{{ 'admin.content.layout_section__body_after'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_HEADER') }} : '{{ 'admin.content.layout_section__header'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_TOP') }} : '{{ 'admin.content.layout_section__contents_top'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_LEFT') }} : '{{ 'admin.content.layout_section__side_left'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_TOP') }} : '{{ 'admin.content.layout_section__main_top'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_BOTTOM') }} : '{{ 'admin.content.layout_section__main_bottom'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_RIGHT') }} : '{{ 'admin.content.layout_section__side_right'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_BOTTOM') }} : '{{ 'admin.content.layout_section__contents_bottom'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_FOOTER') }} : '{{ 'admin.content.layout_section__footer'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_DRAWER') }} : '{{ 'admin.content.layout_section__drawer'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_CLOSE_BODY_BEFORE') }} : '{{ 'admin.content.layout_section__close_body_before'|trans }}'
         };
 
         // use for layout_design.js
@@ -199,21 +199,21 @@ file that was distributed with this source code.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8"><span class="card-title">{{ 'admin.content.layout.overview'|trans }}</span></div>
+                                <div class="col-8"><span class="card-title">{{ 'admin.content.layout__card_title'|trans }}</span></div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#layoutOverview" aria-expanded="false" aria-controls="layoutOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
                         </div>
                         <div class="collapse show ec-cardCollapse" id="layoutOverview">
                             <div class="card-body">
                                 <div class="row mb-2">
-                                    <div class="col-3 pr-0"><span>{{ 'admin.content.layout.name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                    <div class="col-3 pr-0"><span>{{ 'admin.content.layout_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                     <div class="col">
                                         {{ form_widget(form.name) }}
                                         {{ form_errors(form.name) }}
                                     </div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-3 pr-0"><span>{{ 'admin.content.layout.device_type'|trans }}</span></div>
+                                    <div class="col-3 pr-0"><span>{{ 'admin.common.device_type'|trans }}</span></div>
                                     <div class="col">
                                         <span>
                                             {% if Layout.id %}
@@ -248,7 +248,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout.block_edit'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout_edit__card_title'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#layoutBlockEdit" aria-expanded="false" aria-controls="layoutBlockEdit"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -261,45 +261,45 @@ file that was distributed with this source code.
                                             {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_HEAD') %}
                                             <div id="position_{{ target_id }}"
                                                  class="d-block p-3 border border-ec-gray border-top-0 border-right-0 border-left-0 ui-sortable">
-                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.head'|trans }}</p>
+                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__head'|trans }}</p>
                                                 {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                     {% set loop_index = loop_index + 1 %}
                                                 {% else %}
-                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                 {% endfor %}
                                             </div>
                                             {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_BODY_AFTER') %}
                                             <div id="position_{{ target_id }}"
                                                  class="d-block p-3 border border-ec-gray border-top-0 border-right-0 border-left-0 ui-sortable">
-                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.body_after'|trans }}</p>
+                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__body_after'|trans }}</p>
                                                 {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                     {% set loop_index = loop_index + 1 %}
                                                 {% else %}
-                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                 {% endfor %}
                                             </div>
                                             {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_HEADER') %}
                                             <div id="position_{{ target_id }}"
                                                  class="d-block p-3 border border-ec-gray border-top-0 border-right-0 border-left-0 ui-sortable">
-                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.header'|trans }}</p>
+                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__header'|trans }}</p>
                                                 {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                     {% set loop_index = loop_index + 1 %}
                                                 {% else %}
-                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                 {% endfor %}
                                             </div>
                                             {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_TOP') %}
                                             <div id="position_{{ target_id }}"
                                                  class="d-block p-3 border border-ec-gray border-top-0 border-right-0 border-left-0 ui-sortable">
-                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.contents_top'|trans }}</p>
+                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__contents_top'|trans }}</p>
                                                 {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                     {% set loop_index = loop_index + 1 %}
                                                 {% else %}
-                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                 {% endfor %}
                                             </div>
                                             <div class="d-block pl-3 pr-3">
@@ -308,12 +308,12 @@ file that was distributed with this source code.
                                                         {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_LEFT') %}
                                                         <div id="position_{{ target_id }}"
                                                              class="d-block ui-sortable">
-                                                            <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.side_left'|trans }}</p>
+                                                            <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__side_left'|trans }}</p>
                                                             {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                                 {{ include('@admin/Content/layout_block.twig') }}
                                                                 {% set loop_index = loop_index + 1 %}
                                                             {% else %}
-                                                                <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                                <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                             {% endfor %}
                                                         </div>
                                                     </div>
@@ -322,27 +322,27 @@ file that was distributed with this source code.
                                                             {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_TOP') %}
                                                             <div id="position_{{ target_id }}"
                                                                  class="d-block p-3 border border-ec-gray border-top-0 border-left-0 border-right-0 ui-sortable">
-                                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.main_top'|trans }}</p>
+                                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__main_top'|trans }}</p>
                                                                 {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                                     {% set loop_index = loop_index + 1 %}
                                                                 {% else %}
-                                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                                 {% endfor %}
                                                             </div>
                                                             <div class="d-block p-3 border border-ec-gray border-top-0 border-left-0 border-right-0 bg-ec-lightGray">
-                                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.main'|trans }}</p>
+                                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__main'|trans }}</p>
                                                                 <div class="d-block text-center p-3"></div>
                                                             </div>
                                                             {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_BOTTOM') %}
                                                             <div id="position_{{ target_id }}"
                                                                  class="d-block p-3 border border-ec-gray border-top-0 border-left-0 border-right-0 ui-sortable">
-                                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.main_bottom'|trans }}</p>
+                                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__main_bottom'|trans }}</p>
                                                                 {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                                     {% set loop_index = loop_index + 1 %}
                                                                 {% else %}
-                                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                                 {% endfor %}
                                                             </div>
                                                         </div>
@@ -351,12 +351,12 @@ file that was distributed with this source code.
                                                         {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_RIGHT') %}
                                                         <div id="position_{{ target_id }}"
                                                              class="d-block p-3 h-100 ui-sortable">
-                                                            <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.side_right'|trans }}</p>
+                                                            <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__side_right'|trans }}</p>
                                                             {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                                 {{ include('@admin/Content/layout_block.twig') }}
                                                                 {% set loop_index = loop_index + 1 %}
                                                             {% else %}
-                                                                <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                                <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                             {% endfor %}
                                                         </div>
                                                     </div>
@@ -366,12 +366,12 @@ file that was distributed with this source code.
                                                 {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_BOTTOM') %}
                                                 <div id="position_{{ target_id }}"
                                                      class="d-block p-3 ui-sortable">
-                                                    <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.contents_bottom'|trans }}</p>
+                                                    <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__contents_bottom'|trans }}</p>
                                                     {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
                                                         {% set loop_index = loop_index + 1 %}
                                                     {% else %}
-                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
@@ -379,12 +379,12 @@ file that was distributed with this source code.
                                                 {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_FOOTER') %}
                                                 <div id="position_{{ target_id }}"
                                                      class="d-block p-3 ui-sortable">
-                                                    <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.footer'|trans }}</p>
+                                                    <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__footer'|trans }}</p>
                                                     {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
                                                         {% set loop_index = loop_index + 1 %}
                                                     {% else %}
-                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
@@ -392,12 +392,12 @@ file that was distributed with this source code.
                                                 {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_DRAWER') %}
                                                 <div id="position_{{ target_id }}"
                                                      class="d-block p-3 ui-sortable">
-                                                    <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.drawer'|trans }}</p>
+                                                    <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__drawer'|trans }}</p>
                                                     {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
                                                         {% set loop_index = loop_index + 1 %}
                                                     {% else %}
-                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
@@ -405,12 +405,12 @@ file that was distributed with this source code.
                                                 {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_CLOSE_BODY_BEFORE') %}
                                                 <div id="position_{{ target_id }}"
                                                      class="d-block p-3 border-top-0 border-right-0 border-left-0 ui-sortable">
-                                                    <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.close_body_before'|trans }}</p>
+                                                    <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__close_body_before'|trans }}</p>
                                                     {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
                                                         {% set loop_index = loop_index + 1 %}
                                                     {% else %}
-                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
@@ -420,7 +420,7 @@ file that was distributed with this source code.
                                         <div id="unused-block" class="d-block border border-ec-gray">
                                             {% set unused_target_id = constant('Eccube\\Entity\\Page::TARGET_ID_UNUSED') %}
                                             <div id="position_{{ unused_target_id }}" class="d-block p-3 ui-sortable">
-                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout.block.unuse'|trans }}</p>
+                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__unused'|trans }}</p>
                                                 <div class="mb-3">
                                                     <div class="form-row">
                                                         <div class="col">
@@ -473,11 +473,11 @@ file that was distributed with this source code.
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">{{ 'admin.content.layout.block.modal.move.title'|trans }}</h5>
+                                                <h5 class="modal-title">{{ 'admin.content.layout_move_to__confirm_title'|trans }}</h5>
                                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>{{ 'admin.content.layout.block.modal.move.body'|trans }}</p>
+                                                <p>{{ 'admin.content.layout_move_to__confirm_message'|trans }}</p>
                                                 <div>
                                                     <select id="move-section" class="form-control">
                                                     </select>
@@ -485,8 +485,8 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-ec-regular w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.move.close'|trans }}</button>
-                                                <button id="move-to-section" class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.move.execute'|trans }}</button>
+                                                <button class="btn btn-ec-regular w-25" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                <button id="move-to-section" class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_move_to__execute'|trans }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -495,16 +495,16 @@ file that was distributed with this source code.
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">{{ 'admin.content.layout.block.modal.code.title'|trans }}</h5>
+                                                <h5 class="modal-title">{{ 'admin.content.layout_preview_code__confirm_title'|trans }}</h5>
                                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>{{ 'admin.content.layout.block.modal.code.body'|trans }}</p>
-                                                <div id="block-source-code" class="d-block border bg-ec-lightGray p-2">{{ 'admin.content.layout.block.modal.code.progress'|trans }}</div>
+                                                <p>{{ 'admin.content.layout_preview_code__confirm_message'|trans }}</p>
+                                                <div id="block-source-code" class="d-block border bg-ec-lightGray p-2"></div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.code.back'|trans }}</button>
-                                                <button id="block-edit" onclick="location.href='{{ url('admin_content_block_edit', {id: constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID')}) }}'" class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.code.edit'|trans }}</button>
+                                                <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                <button id="block-edit" onclick="location.href='{{ url('admin_content_block_edit', {id: constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID')}) }}'" class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_preview_code__confirm_move_to_block'|trans }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -512,16 +512,16 @@ file that was distributed with this source code.
                                 <div id="context-menu" style="display: none">
                                     <div class='list-group'>
                                         <a href='javascript:;' class='context-moveup list-group-item list-group-item-action border-0'>
-                                            <i class='fa fa-long-arrow-up mr-1'></i>{{ 'admin.content.layout.block.context.moveup'|trans }}
+                                            <i class='fa fa-long-arrow-up mr-1'></i>{{ 'admin.content.layout_up'|trans }}
                                         </a>
                                         <a href='javascript:;' class='context-movedown list-group-item list-group-item-action border-0'>
-                                            <i class='fa fa-long-arrow-down mr-1'></i>{{ 'admin.content.layout.block.context.movedown'|trans }}
+                                            <i class='fa fa-long-arrow-down mr-1'></i>{{ 'admin.content.layout_down'|trans }}
                                         </a>
                                         <a href='javascript:;' class='context-movesection list-group-item list-group-item-action border-0'>
-                                            <i class='fa fa-arrows mr-1'></i>{{ 'admin.content.layout.block.context.movesection'|trans }}
+                                            <i class='fa fa-arrows mr-1'></i>{{ 'admin.content.layout_move_to'|trans }}
                                         </a>
                                         <a href='javascript:;' class='context-preview list-group-item list-group-item-action border-0'>
-                                            <i class='fa fa-code mr-1'></i>{{ 'admin.content.layout.block.context.preview'|trans }}
+                                            <i class='fa fa-code mr-1'></i>{{ 'admin.content.layout_preview_code'|trans }}
                                         </a>
                                     </div>
                                 </div>
@@ -530,19 +530,19 @@ file that was distributed with this source code.
                     </div>
                 </div>
             </div>
-            <div id="target-placeholder" style="display: none"><div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div></div>
+            <div id="target-placeholder" style="display: none"><div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout_drag_and_drop_message'|trans }}</span></div></div>
             <div class="c-conversionArea">
                 <div class="c-conversionArea__container">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-6">
                             <div class="c-conversionArea__leftBlockItem">
-                                <a class="c-beseLink" href="{{ url('admin_content_layout') }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.content.layout.list'|trans }}</span></a>
+                                <a class="c-beseLink" href="{{ url('admin_content_layout') }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.content.layout_management'|trans }}</span></a>
                             </div>
                         </div>
                         <div class="col-6">
                             <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                                 <div class="col-auto">
-                                    <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.content.layout.42'|trans }}</button>
+                                    <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
                                 </div>
                             </div>
                         </div>

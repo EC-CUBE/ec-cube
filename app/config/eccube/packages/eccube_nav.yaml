@@ -49,26 +49,26 @@ parameters:
                     name: admin.customer.customer_registration
                     url: admin_customer_new
         content:
-            name: admin.nav.content
+            name: admin.content.contents_management
             icon: fa-file-text-o
             children:
                 news:
-                    name: admin.nav.content.news
+                    name: admin.content.news_management
                     url : admin_content_news
                 file:
-                    name: admin.nav.content.file
+                    name: admin.content.file_management
                     url: admin_content_file
                 layout:
-                    name: admin.nav.content.layout
+                    name: admin.content.layout_management
                     url: admin_content_layout
                 page:
-                    name: admin.nav.content.page
+                    name: admin.content.page_management
                     url: admin_content_page
                 block:
-                    name: admin.nav.content.block
+                    name: admin.content.block_management
                     url: admin_content_block
                 cache:
-                    name: admin.nav.content.cache
+                    name: admin.content.cache_management
                     url: admin_content_cache
         setting:
             name: admin.setting
