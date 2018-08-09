@@ -192,7 +192,7 @@ class EA08SysteminfoCest
         $I->click('.c-primaryCol .card-body table tbody tr:nth-child(2) .modal .btn-ec-delete');
 
         $I->see('メンバーを削除しました。', '.c-contentsArea .alert-success');
-        $I->see('管理者', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
+        $I->see('管理者', '.c-primaryCol .card-body table tbody tr:last-child td:nth-child(1)');
 
     }
 
