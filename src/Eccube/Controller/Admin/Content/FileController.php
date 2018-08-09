@@ -185,8 +185,13 @@ class FileController extends AbstractController
     {
         $this->isTokenValid();
 
+        $selectFile = $request->get('select_file');
+        if (is_null($selectFile) || $selectFile == '/') {
+            return $this->redirectToRoute('admin_content_file');
+        }
+
         $topDir = $this->getUserDataDir();
-        $file = $this->convertStrToServer($this->getUserDataDir($request->get('select_file')));
+        $file = $this->convertStrToServer($this->getUserDataDir($selectFile));
         if ($this->checkDir($file, $topDir)) {
             $fs = new Filesystem();
             if ($fs->exists($file)) {

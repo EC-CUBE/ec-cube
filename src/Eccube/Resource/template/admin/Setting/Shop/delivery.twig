@@ -40,9 +40,6 @@ file that was distributed with this source code.
                 $.ajax({
                     url: '{{ url('admin_setting_shop_delivery_sort_no_move') }}',
                     type: 'POST',
-                    headers: {
-                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
-                    },
                     data: newSortNos
                 }).always(function() {
                     $(".modal-backdrop").remove();

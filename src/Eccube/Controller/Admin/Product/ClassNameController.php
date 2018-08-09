@@ -24,6 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ClassNameController extends AbstractController
@@ -169,7 +170,11 @@ class ClassNameController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        if ($this->isTokenValid()) {
             $sortNos = $request->request->all();
             foreach ($sortNos as $classNameId => $sortNo) {
                 $ClassName = $this->classNameRepository
@@ -178,8 +183,8 @@ class ClassNameController extends AbstractController
                 $this->entityManager->persist($ClassName);
             }
             $this->entityManager->flush();
-        }
 
-        return new Response();
+            return new Response();
+        }
     }
 }

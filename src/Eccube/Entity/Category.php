@@ -138,7 +138,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
             ->setFirstResult(0)
             ->setMaxResults(1);
 
-            return $this->ProductCategories->matching($criteria)->count() === 1;
+            return $this->ProductCategories->matching($criteria)->count() > 0;
         }
 
         /**

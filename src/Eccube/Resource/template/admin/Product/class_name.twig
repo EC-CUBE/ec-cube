@@ -62,9 +62,6 @@ file that was distributed with this source code.
                 $.ajax({
                     url: '{{ url('admin_product_class_name_sort_no_move') }}',
                     type: 'POST',
-                    headers: {
-                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
-                    },
                     data: newSortNos
                 }).done(function() {
                     // remove class disable

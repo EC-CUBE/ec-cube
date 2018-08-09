@@ -25,6 +25,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ClassCategoryController extends AbstractController
@@ -247,7 +248,11 @@ class ClassCategoryController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        if ($this->isTokenValid()) {
             $sortNos = $request->request->all();
             foreach ($sortNos as $categoryId => $sortNo) {
                 $ClassCategory = $this->classCategoryRepository
@@ -256,8 +261,8 @@ class ClassCategoryController extends AbstractController
                 $this->entityManager->persist($ClassCategory);
             }
             $this->entityManager->flush();
-        }
 
-        return new Response('Successful');
+            return new Response('Successful');
+        }
     }
 }
