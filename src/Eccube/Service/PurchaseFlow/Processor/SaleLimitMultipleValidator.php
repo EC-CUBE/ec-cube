@@ -61,7 +61,7 @@ class SaleLimitMultipleValidator extends ItemHolderValidator
             foreach ($Items as $Item) {
                 $total += $Item->getQuantity();
                 if ($limit < $total) {
-                    $this->throwInvalidItemException('cart.over.sale_limit', $ProductClass);
+                    $this->throwInvalidItemException('cart.over.sale_limit', $ProductClass, true);
                 }
             }
         }

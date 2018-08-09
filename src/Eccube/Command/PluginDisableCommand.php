@@ -21,12 +21,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginDisableCommand extends Command
 {
+    protected static $defaultName = 'eccube:plugin:disable';
+
     use PluginCommandTrait;
 
     protected function configure()
     {
         $this
-            ->setName('eccube:plugin:disable')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code');
     }
 
