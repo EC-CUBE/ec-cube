@@ -21,11 +21,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginUninstallCommand extends Command
 {
+    protected static $defaultName = 'eccube:plugin:uninstall';
+
     use PluginCommandTrait;
 
     protected function configure()
     {
-        $this->setName('eccube:plugin:uninstall')
+        $this
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
             ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory')
             ->setDescription('Uninstall plugin.');
