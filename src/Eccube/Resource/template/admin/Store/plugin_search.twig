@@ -21,10 +21,6 @@ file that was distributed with this source code.
         .border-bt {
             border-bottom: 1px solid rgba(0, 0, 0, .125);
         }
-        .plugin-search select,
-        .plugin-search input{
-            height: calc(2.5rem + 2px);;
-        }
         #plugin-list a img{
             max-height: 180px;
         }
@@ -67,7 +63,7 @@ file that was distributed with this source code.
 
                 <div class="c-outsideBlock">
                     <form method="post" action="" class="plugin-search">
-                        <div class="c-outsideBlock__contents mb-4">
+                        <div class="c-outsideBlock__contents mb-3">
                             <div class="row justify-content-start">
                                 <div class="col-3 pl-0">
                                     <label class="col-form-label">カテゴリ</label>
@@ -92,7 +88,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                         <div class="c-outsideBlock__contents mb-2 pl-0">
-                            <button class="btn btn-ec-conversion px-5 py-2 btn-lg" type="submit">検索</button>
+                            <button class="btn btn-ec-conversion px-5 py-2" type="submit">検索</button>
                         </div>
                     </form>
                 </div>
@@ -151,8 +147,8 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-md-3 text-right">
-                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular btn-lg">詳細</a>
-                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn btn-primary btn-lg">入手する</a>
+                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular">詳細</a>
+                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn-primary">入手する</a>
                                 </div>
                             </div>
                             <div class="row m-0 p-3 border-bt">
@@ -181,8 +177,8 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-md-3 text-right">
-                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular btn-lg">詳細</a>
-                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn btn-primary btn-lg">購入する</a>
+                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular">詳細</a>
+                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn-primary">購入する</a>
                                 </div>
                             </div>
                         {% endfor %}
@@ -243,8 +239,8 @@ file that was distributed with this source code.
                             </ul>
                         </div>
                         <div class="col-5 text-right">
-                            <button type="button" class="btn btn-ec-regular btn-lg mb-3"><i class="fa fa-image fa-lg text-secondary"></i> 資料請求・お問い合わせ</button>
-                            <button type="button" class="btn btn-ec-regular btn-lg"><i class="fa fa-image fa-lg text-secondary"></i> マニュアルダウンロード</button>
+                            <button type="button" class="btn btn-ec-regular mb-2"><i class="fa fa-image fa-lg text-secondary"></i> 資料請求・お問い合わせ</button>
+                            <button type="button" class="btn btn-ec-regular"><i class="fa fa-image fa-lg text-secondary"></i> マニュアルダウンロード</button>
                         </div>
                     </div>
                     <div class="row">
@@ -279,8 +275,8 @@ file that was distributed with this source code.
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-ec-sub btn-lg" data-dismiss="modal">一覧に戻る</button>
-                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn btn-primary btn-lg">インストール確認へ</a>
+                    <button type="button" class="btn btn-ec-sub" data-dismiss="modal">一覧に戻る</button>
+                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn-primary">インストール確認へ</a>
                 </div>
             </div>
         </div>
