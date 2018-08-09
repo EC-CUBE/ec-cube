@@ -13,8 +13,6 @@
 
 namespace Eccube\Service;
 
-use Eccube\Entity\Cart;
-use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 
 /**

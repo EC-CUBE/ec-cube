@@ -31,9 +31,9 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -423,7 +423,9 @@ class AdminController extends AbstractController
 
     /**
      * @param $dateTime
+     *
      * @return array|mixed
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     private function getSalesByDay($dateTime)
@@ -459,7 +461,9 @@ class AdminController extends AbstractController
 
     /**
      * @param $dateTime
+     *
      * @return array|mixed
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     private function getSalesByMonth($dateTime)

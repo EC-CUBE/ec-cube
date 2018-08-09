@@ -16,8 +16,8 @@ namespace Eccube\Controller\Block;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Cart;
 use Eccube\Service\CartService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
