@@ -168,7 +168,7 @@ file that was distributed with this source code.
 {% block main %}
     {# 決済処理中/購入処理中ステータスは登録・更新等の操作を無効にする #}
     {% set action_disabled = false %}
-    {% if Order.OrderStatus is defined and Order.OrderStatus.id in [
+    {% if Order.OrderStatus is not empty and Order.OrderStatus.id in [
         constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING'), constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')] -%}
         {% set action_disabled = true %}
     {%- endif %}
@@ -206,7 +206,7 @@ file that was distributed with this source code.
                                             </div>
                                         </div>
                                         <div class="row mb-3 form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.order.payment_method'|trans }}</label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.payment_method'|trans }}</label>
                                             <div class="col">
                                                 {{ form_widget(form.Payment) }}
                                                 {{ form_errors(form.Payment) }}
@@ -236,7 +236,7 @@ file that was distributed with this source code.
                                             <div class="col">{{ Order.update_date ? Order.update_date|date_sec : '' }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-mobile fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.device_type'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-mobile fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.common.device_type'|trans }}</div>
                                             <div class="col">{{ Order.device_type }}</div>
                                         </div>
                                         <div class="row mb-3">
@@ -793,7 +793,7 @@ file that was distributed with this source code.
                                 </div>
                                 <!-- 内手数料 -->
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.charge'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.charge'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.charge|price }}</span></div>
                                 </div>
                                 <!-- 加算ポイント -->
@@ -819,7 +819,7 @@ file that was distributed with this source code.
                                 <hr>
                                 <!-- 小計 -->
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.subtotal'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.total'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.total|price }}</span></div>
                                 </div>
                                 <!-- 合計 -->

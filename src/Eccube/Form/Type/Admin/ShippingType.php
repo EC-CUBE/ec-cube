@@ -303,7 +303,7 @@ class ShippingType extends AbstractType
                 if ($count < 1) {
                     // 画面下部にエラーメッセージを表示させる
                     $form = $event->getForm();
-                    $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.edit.product.error')));
+                    $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.product_item_not_found')));
                 }
             });
     }
