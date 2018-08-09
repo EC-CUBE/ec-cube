@@ -416,7 +416,25 @@ admin.common.charge: 手数料
 
 # 機能名称
 admin.home: ホーム
-admin.home.: 注文状況
+
+# ラベル
+admin.home.order_status_title: 注文状況
+admin.home.shop_status_title: ショップ状況
+admin.home.shop_status_out_of_stock: 在庫切れ商品数
+admin.home.shop_status_products: 取扱商品数
+admin.home.shop_status_customers: 会員数
+admin.home.sales_summany_title: 売上状況
+admin.home.sales_summany_value: '%amount% / %count% 件'
+admin.home.sales_summany_this_month: 今月の売上金額 / 売上件数
+admin.home.sales_summany_today: 今日の売上金額 / 売上件数
+admin.home.sales_summany_yesterday: 昨日の売上金額 / 売上件数
+admin.home.sales_summany_weekly: 週間
+admin.home.sales_summany_monthly: 月間
+admin.home.sales_summany_yearly: 年間
+admin.home.sales_summany_amount: 売上金額
+admin.home.sales_summany_count: 売上件数
+admin.home.recommend_plugins_title: おすすめのプラグイン
+admin.home.news_title: お知らせ
 
 #------------------------------------------------------------------------------------
 # 商品管理
@@ -803,7 +821,7 @@ admin.content.cache_delete: キャッシュ削除
 # 機能名称
 admin.setting: 設定
 admin.setting.shop: 基本情報設定
-admin.setting.shop.shop_setting: 設定
+admin.setting.shop.shop_setting: ショップ設定
 admin.setting.shop.payment_list: 支払方法一覧
 admin.setting.shop.payment_setting: 支払方法設定
 admin.setting.shop.delivery_list: 配送方法設定

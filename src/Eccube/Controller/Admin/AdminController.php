@@ -364,7 +364,7 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('admin_product_page', [
             'page_no' => 1,
-            'status' => $this->eccubeConfig['eccube_admin_product_stock_status'], ]);
+        ]);
     }
 
     /**
