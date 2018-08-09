@@ -906,8 +906,9 @@ class CsvImportController extends AbstractCsvImportController
             $ProductClass->setCode(null);
         }
 
-        if ($row[$headerByKey['stock_unlimited']] == (string) Constant::DISABLED
+        if (!isset($row[$headerByKey['stock_unlimited']])
             || StringUtil::isBlank($row[$headerByKey['stock_unlimited']])
+            || $row[$headerByKey['stock_unlimited']] == (string) Constant::DISABLED
         ) {
             $ProductClass->setStockUnlimited(false);
             // 在庫数が設定されていなければエラー
@@ -1077,8 +1078,9 @@ class CsvImportController extends AbstractCsvImportController
             $ProductClass->setCode(null);
         }
 
-        if ($row[$headerByKey['stock_unlimited']] == (string) Constant::DISABLED
+        if (!isset($row[$headerByKey['stock_unlimited']])
             || StringUtil::isBlank($row[$headerByKey['stock_unlimited']])
+            || $row[$headerByKey['stock_unlimited']] == (string) Constant::DISABLED
         ) {
             $ProductClass->setStockUnlimited(false);
             // 在庫数が設定されていなければエラー
