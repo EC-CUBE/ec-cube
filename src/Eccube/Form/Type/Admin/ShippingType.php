@@ -134,7 +134,10 @@ class ShippingType extends AbstractType
                             'max' => $this->eccubeConfig['eccube_mtext_len'],
                         ]),
                     ],
-                    'attr' => ['class' => 'p-locality p-street-address'],
+                    'attr' => [
+                        'class' => 'p-locality p-street-address',
+                        'placeholder' => 'admin.common.address_sample_01',
+                    ],
                 ],
                 'addr02_options' => [
                     'required' => false,
@@ -144,7 +147,10 @@ class ShippingType extends AbstractType
                             'max' => $this->eccubeConfig['eccube_mtext_len'],
                         ]),
                     ],
-                    'attr' => ['class' => 'p-extended-address'],
+                    'attr' => [
+                        'class' => 'p-locality p-street-address',
+                        'placeholder' => 'admin.common.address_sample_01',
+                    ],
                 ],
             ])
             ->add('phone_number', PhoneNumberType::class, [

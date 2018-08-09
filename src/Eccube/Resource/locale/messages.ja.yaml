@@ -134,7 +134,7 @@ front.contact.complete_message__body: 万一、ご確認メールが届かない
 
 front.entry.title: 新規会員登録
 front.entry.terms: 利用規約
-front.entry.agree_with_terms: に同意してお進みください # TODO 「%name%」に同意してお進みくださいにすべき
+front.entry.agree_with_terms: に同意してお進みください # TODO 「%name%」に同意してお進みください、にしたい
 front.entry.agree: 同意する
 front.entry.disagree: 同意しない
 front.entry.confirm_title: 新規会員登録(確認)
@@ -315,11 +315,11 @@ admin.common.csv_upload_complete: CSVファイルをアップロードしまし�
 admin.common.csv_upload_error: CSVファイルのアップロードに失敗しました
 admin.common.send_complete: メールを送信しました
 admin.common.send_error: メールの送信に失敗しました
+admin.common.system_error: システムエラーが発生しました
 
 # action系のラベル
 admin.common.save: 保存
 admin.common.registration: 登録
-admin.common.registeration: 登録 # FIXME typo
 admin.common.edit: 編集
 admin.common.copy: 複製
 admin.common.display: 表示
@@ -329,6 +329,8 @@ admin.common.search: 検索
 admin.common.search_clear: 検索条件をクリア
 admin.common.send: 送信
 admin.common.confirm: 確認
+admin.common.execute: 実行
+admin.common.close: 閉じる
 admin.common.bulk_registration: 一括登録を実行
 admin.common.decision: 決定
 admin.common.create: 作成
@@ -657,6 +659,11 @@ admin.order.copy_orderer: 注文者情報をコピー
 admin.order.output_delivery_note: 納品書を出力
 admin.order.output_delivery_note_short: 納品書出力
 admin.order.add_shipping: お届け先の追加
+admin.order.delete_shipping: お届け先を削除
+admin.order.delete_shipping_error__confirm_title: 出荷情報を削除できません
+admin.order.delete_shipping_error__confirm_message: まずお届け先に設定されている明細を削除してから、出荷情報を削除してください
+admin.order.delete_shipping__confirm_title: 出荷情報を削除します
+admin.order.delete_shipping__confirm_message: 出荷情報は注文から削除されます。この出荷情報を削除しますか？
 admin.order.order_item_info: 注文商品情報
 admin.order.order_item_type: 明細種別
 admin.order.add_product_item: 商品を追加
@@ -699,11 +706,25 @@ admin.order.delivery_provider: 配送業者 # TODO admin.delivery
 admin.order.to_shipped: 出荷済にする
 admin.order.send_mail: メールする
 admin.order.shop_memo_for_shipped: 出荷用メモ欄
-admin.order.add_shipping: 出荷情報を追加
+admin.order.shipping__card_title: 出荷情報
 admin.order.shipping_id: 出荷ID
 admin.order.shipping_mail: 出荷メール
+admin.order.shipping_mail__completed: '%date%に出荷メールを送信済です。'
 admin.order.shipping_mail__sent: 送信済
 admin.order.shipping_mail__unsent: 未送信
+admin.order.bulk_action__confirm_view_mail_body: メールの文面を確認
+admin.order.bulk_action__confirm_message: この操作は保存済みのデータに対して処理を行います。また、編集中で登録が完了していない情報は失われます。登録が完了していない情報がある場合は先に登録を完了してください。
+admin.order.bulk_action__in_progress_message: 処理中...
+admin.order.bulk_action__complete_message: 完了しました。
+admin.order.shipping_mail_send: 出荷メール送信
+admin.order.shipping_mail_send__confirm_title: 出荷お知らせメールを送信します
+admin.order.shipping_mail_send__confirm_message: 出荷お知らせメールを送信します。メールの文面を確認してから［送信］ボタンを押してください。この操作は取り消すことができません。ご注意ください。
+admin.order.shipping_mail_send__complete_message: '%count%件のメールを送信しました。'
+admin.order.to_shipped__confirm_title: 出荷済に更新します
+admin.order.to_shipped__confirm_message: 出荷情報を出荷済みにします。同時におこなう操作を選択してから［実行］ボタンを押してください。この操作は取り消すことができません。ご注意ください。
+admin.order.to_shipped__confirm_send_mail: メールの送信
+admin.order.to_shipped__confirm_send_mail_in_same_time: 出荷お知らせメールを同時に送る
+admin.order.change_status: 対応状況の変更
 admin.order.csv_shipping_date_description: 出荷日を「YYYY-MM-DD」の形式で設定
 admin.order.order_csv: 受注CSV
 admin.order.shipping_csv: 出荷CSV
