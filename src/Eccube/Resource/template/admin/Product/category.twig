@@ -248,7 +248,6 @@ file that was distributed with this source code.
                                                                 <i class="fa fa-close fa-lg text-secondary"></i>
                                                             </a>
                                                         {% else %}
-                                                          {# TODO `data-target`の設定 #}
                                                           <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.category.410'|trans }}">
                                                               <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#categoryDeleteConfirm_{{ Category.id }}">
                                                                   <i class="fa fa-close fa-lg"></i>
@@ -272,7 +271,6 @@ file that was distributed with this source code.
                                                 </form>
                                             {% endif %}
                                         </li>
-                                      {# TODO `id`, `aria-labelledby`の設定 #}
                                         <div class="modal fade" id="categoryDeleteConfirm_{{ Category.id }}" tabindex="-1"
                                              role="dialog"
                                              aria-labelledby="categoryDeleteConfirmModal_{{ Category.id }}" aria-hidden="true">
