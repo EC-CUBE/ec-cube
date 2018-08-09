@@ -227,7 +227,7 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "\d+[_]\d+"})
+     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "[a-zA-Z0-9]+[_]\d+"})
      */
     public function buystep(Request $request, $cart_key)
     {
