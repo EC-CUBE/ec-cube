@@ -64,7 +64,7 @@ parameters:
     eccube_url_len: 1024
     eccube_default_page_count: 10
     eccube_admin_product_stock_status: 3
-    eccube_info_url: 'https://www.ec-cube.net/info/3/'
+    eccube_info_url: 'https://www.ec-cube.net/info/4/'
     eccube_customer_reset_expire: 10
     # CSVの区切り文字(タブ区切りにしたい場合は'\t'ではなく'    'で設定する
     eccube_csv_export_separator: ,
