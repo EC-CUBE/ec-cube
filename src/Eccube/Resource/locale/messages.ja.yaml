@@ -32,9 +32,9 @@ common.company_name: 会社名
 common.address: 住所
 common.pref: 都道府県
 common.postal_symbol: 〒
-common.postal_code_sample: 例：1234567
-common.address_sample_01: 市区町村名(例：大阪市北区梅田)
-common.address_sample_02: 番地・ビル名(例：ブリーゼタワー13F)
+common.postal_code_sample: 例：5530003
+common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
+common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
 common.phone_number: 電話番号
 common.phone_number_sample: 例：11122223333
 common.mail_address: メールアドレス
@@ -134,7 +134,7 @@ front.contact.complete_message__body: 万一、ご確認メールが届かない
 
 front.entry.title: 新規会員登録
 front.entry.terms: 利用規約
-front.entry.agree_with_terms: に同意してお進みください # TODO 「%name%」に同意してお進みくださいにすべき
+front.entry.agree_with_terms: に同意してお進みください # TODO 「%name%」に同意してお進みください、にしたい
 front.entry.agree: 同意する
 front.entry.disagree: 同意しない
 front.entry.confirm_title: 新規会員登録(確認)
@@ -306,6 +306,7 @@ admin.common.save_error: 保存に失敗しました
 admin.common.delete_complete: 削除しました
 admin.common.delete_error: 削除に失敗しました
 admin.common.delete_error_foreign_key: 関連するデータがあるため「%name%」を削除できませんでした
+admin.common.delete_error_already_deleted: すでに削除されています
 admin.common.move_complete: 並び順を更新しました
 admin.common.move_error: 並び順の更新に失敗しました
 admin.common.upload_complete: アップロードしました
@@ -315,11 +316,11 @@ admin.common.csv_upload_error: CSVファイルのアップロードに失敗し�
 admin.common.send_complete: メールを送信しました
 admin.common.send_error: メールの送信に失敗しました
 admin.common.create_complete: 作成しました
+admin.common.system_error: システムエラーが発生しました
 
 # action系のラベル
 admin.common.save: 保存
 admin.common.registration: 登録
-admin.common.registeration: 登録 # FIXME typo
 admin.common.edit: 編集
 admin.common.copy: 複製
 admin.common.display: 表示
@@ -329,6 +330,8 @@ admin.common.search: 検索
 admin.common.search_clear: 検索条件をクリア
 admin.common.send: 送信
 admin.common.confirm: 確認
+admin.common.execute: 実行
+admin.common.close: 閉じる
 admin.common.bulk_registration: 一括登録を実行
 admin.common.decision: 決定
 admin.common.create: 作成
@@ -372,6 +375,7 @@ admin.common.csv_invalid_not_same: '%line%行目の%name1%と%name2%には同じ
 admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません'
 admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
+admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 
 # エンティティに関連するラベル
 admin.common.id: ID
@@ -383,8 +387,9 @@ admin.common.company_name: 会社名
 admin.common.address: 住所
 admin.common.pref: 都道府県
 admin.common.postal_symbol: 〒
-admin.common.address_sample_01: 大阪市北区梅田
-admin.common.address_sample_02: ブリーゼタワー13F
+admin.common.postal_code_sample: 例：5530003
+admin.common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
+admin.common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
 admin.common.phone_number: 電話番号
 admin.common.mail_address: メールアドレス
 admin.common.password: パスワード
@@ -417,6 +422,25 @@ admin.common.charge: 手数料
 # 機能名称
 admin.home: ホーム
 
+# ラベル
+admin.home.order_status_title: 注文状況
+admin.home.shop_status_title: ショップ状況
+admin.home.shop_status_out_of_stock: 在庫切れ商品数
+admin.home.shop_status_products: 取扱商品数
+admin.home.shop_status_customers: 会員数
+admin.home.sales_summany_title: 売上状況
+admin.home.sales_summany_value: '%amount% / %count% 件'
+admin.home.sales_summany_this_month: 今月の売上金額 / 売上件数
+admin.home.sales_summany_today: 今日の売上金額 / 売上件数
+admin.home.sales_summany_yesterday: 昨日の売上金額 / 売上件数
+admin.home.sales_summany_weekly: 週間
+admin.home.sales_summany_monthly: 月間
+admin.home.sales_summany_yearly: 年間
+admin.home.sales_summany_amount: 売上金額
+admin.home.sales_summany_count: 売上件数
+admin.home.recommend_plugins_title: おすすめのプラグイン
+admin.home.news_title: お知らせ
+
 #------------------------------------------------------------------------------------
 # 商品管理
 #------------------------------------------------------------------------------------
@@ -434,10 +458,15 @@ admin.product.product_csv_upload: 商品CSV登録
 admin.product.category_csv_upload: カテゴリCSV登録
 
 # flashメッセージ
+admin.product.bulk_change_status_complete: '%status%: %count%件が正常に適用されました。'
+admin.product.copy_complete: 商品を複製しました。
+admin.product.copy_error: 商品の複製に失敗しました。
+admin.product.reset_complete: 商品規格を初期化しました。
 
 # ラベル/メッセージ
 admin.product.product: 商品
 admin.product.product__card_title: 商品情報
+admin.product.preview: 商品を確認
 admin.product.product_id: 商品ID
 admin.product.product_id__short: ID
 admin.product.display_status: 公開ステータス
@@ -445,6 +474,15 @@ admin.product.display_status__short: 公開状態
 admin.product.display_status__show: 公開
 admin.product.display_status__hide: 非公開
 admin.product.display_status__abolished: 廃止
+admin.product.permanently_delete: 削除
+admin.product.permanently_delete__confirm_title: 商品を削除します
+admin.product.permanently_delete__confirm_message: 商品を削除してよろしいですか？
+admin.product.permanently_delete__in_prograss: 削除中...
+admin.product.permanently_delete__complete_message: 商品の削除処理が完了しました
+admin.product.permanently_delete__complete: 完了
+admin.product.permanently_delete__system_error: システムエラーが発生しました
+admin.product.copy__confirm_title: 商品を複製します
+admin.product.copy__confirm_message: 商品を複製してよろしいですか？
 admin.product.name: 商品名
 amdin.product.image: 商品画像
 amdin.product.image__short: 画像
@@ -453,8 +491,8 @@ admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
 admin.product.description_list__add: 商品説明(一覧)を追加
 admin.product.price: 価格
-admin.product.sale_price: 販売価格(一覧) # price02
-admin.product.nomal_price: 通常価格(一覧) # price01
+admin.product.sale_price: 販売価格 # price02
+admin.product.normal_price: 通常価格 # price01
 admin.product.stock: 在庫数
 admin.product.stock__short: 在庫
 admin.product.stock__in_stock: あり
@@ -462,8 +500,9 @@ admin.product.stock__out_of_stock: なし
 admin.product.search_word: 検索ワード
 admin.product.product_code: 商品コード
 admin.product.product_code__short: コード
+admin.product.product_name_and_code: 商品名・商品コード
 admin.product.sale_limit: 販売制限数
-admin.product.delivery_duration: お届け可能日
+admin.product.delivery_duration: 発送日目安
 admin.product.delivery_fee: 商品送料
 admin.product.free_area: フリーエリア
 admin.product.free_area__card_title: フリーエリア
@@ -474,6 +513,7 @@ admin.product.create_date__card_title: 登録日・更新日
 admin.product.move_to_category: カテゴリの追加・編集
 admin.product.move_to_tag: タグの追加・編集
 admin.product.move_to_product_class: 商品規格の編集
+admin.product.move_to_product_class__confirm_title: '「%name%」の商品規格'
 admin.product.move_to_confirm_title: ページを移動します
 admin.product.move_to_confirm_message: '%name%に移動します。商品情報を保存してから移動しますか？'
 admin.product.move_to_confirm_move_only: 保存せずに移動
@@ -482,7 +522,10 @@ admin.product.multi_search_label: 商品名・商品ID・商品コード
 admin.product.delete_confirm_title: 商品を削除します
 admin.product.delete_confirm_message: 商品を削除しますか？
 admin.product.product_class: 商品規格
+admin.product.product_class__short: 規格
+admin.product.product_class__create: 商品規格の設定
 admin.product.product_class__confirm: 規格確認
+admin.product.product_class__confirm_of_product: この商品の規格を確認
 admin.product.product_class__card_title: 商品規格情報
 admin.product.product_class__reset: 商品規格の初期化
 admin.product.product_class__reset_confirm_title: この商品の規格を初期化します
@@ -517,15 +560,15 @@ admin.product.category_id: カテゴリID
   既存カテゴリの更新はカテゴリIDを設定
 admin.product.category_name: カテゴリ名
 admin.product.parent_category_id: 親カテゴリID
-admin.product.category_delete_flag: カテゴリ削除フラグ
-admin.product.category_delete_flag_description: 0:登録 1:削除。未設定時は0として扱います。
 admin.product.category_all: すべてのカテゴリ
 admin.product.tag: タグ
+admin.product.tag__product_card_title: タグ
 admin.product.delete_tag_confirm_title: タグを削除します
 admin.product.delete_tag_confirm_message: タグを削除してよろしいですか？
 admin.product.select__class1: 規格1を選択してください
 admin.product.select__class2: 規格2を選択してください
 
+# 商品CSV雛形
 admin.product.product_csv.product_id_col: 商品ID
 admin.product.product_csv.product_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
 admin.product.product_csv.display_status_col: 公開ステータス(ID)
@@ -573,6 +616,7 @@ admin.product.product_csv.sale_price_description: 0以上の数値を設定
 admin.product.product_csv.delivery_fee_col: 送料
 admin.product.product_csv.delivery_fee_description: 商品ごとの送料設定が有効の場合、0以上の数値を設定
 
+# カテゴリCSV雛形
 admin.product.category_csv.category_id_col: カテゴリID
 admin.product.category_csv.category_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
 admin.product.category_csv.category_name_col: カテゴリ名
@@ -610,16 +654,24 @@ admin.order.purchase_price: 購入金額
 admin.order.purchase_price__start: 購入金額(開始)
 admin.order.purchase_price__end: 購入金額(終了)
 admin.order.orderer: 注文者
+admin.order.orderer_name: 注文者名
+admin.order.orderer_kana: 注文者名(カナ)
+admin.order.orderer_company_name: 注文者会社名
 admin.order.shipping_info: お届先情報
 admin.order.copy_orderer: 注文者情報をコピー
 admin.order.output_delivery_note: 納品書を出力
 admin.order.output_delivery_note_short: 納品書出力
 admin.order.add_shipping: お届け先の追加
+admin.order.delete_shipping: お届け先を削除
+admin.order.delete_shipping_error__confirm_title: 出荷情報を削除できません
+admin.order.delete_shipping_error__confirm_message: まずお届け先に設定されている明細を削除してから、出荷情報を削除してください
+admin.order.delete_shipping__confirm_title: 出荷情報を削除します
+admin.order.delete_shipping__confirm_message: 出荷情報は注文から削除されます。この出荷情報を削除しますか？
 admin.order.order_item_info: 注文商品情報
+admin.order.order_item_type: 明細種別
 admin.order.add_product_item: 商品を追加
 admin.order.add_other_item: その他の明細を追加
 admin.order.update_calculation_results: 計算結果を更新
-admin.order.product_name_and_code: 商品名・商品コード
 admin.order.amount: 金額
 admin.order.quantity: 数量
 admin.order.tax_rate: 税率  # TODO admin.tax
@@ -657,9 +709,25 @@ admin.order.delivery_provider: 配送業者 # TODO admin.delivery
 admin.order.to_shipped: 出荷済にする
 admin.order.send_mail: メールする
 admin.order.shop_memo_for_shipped: 出荷用メモ欄
-admin.order.add_shipping: 出荷情報を追加
+admin.order.shipping__card_title: 出荷情報
 admin.order.shipping_id: 出荷ID
-admin.order.shipping_mail_send_status: 出荷メール
+admin.order.shipping_mail: 出荷メール
+admin.order.shipping_mail__completed: '%date%に出荷メールを送信済です。'
+admin.order.shipping_mail__sent: 送信済
+admin.order.shipping_mail__unsent: 未送信
+admin.order.bulk_action__confirm_view_mail_body: メールの文面を確認
+admin.order.bulk_action__confirm_message: この操作は保存済みのデータに対して処理を行います。また、編集中で登録が完了していない情報は失われます。登録が完了していない情報がある場合は先に登録を完了してください。
+admin.order.bulk_action__in_progress_message: 処理中...
+admin.order.bulk_action__complete_message: 完了しました。
+admin.order.shipping_mail_send: 出荷メール送信
+admin.order.shipping_mail_send__confirm_title: 出荷お知らせメールを送信します
+admin.order.shipping_mail_send__confirm_message: 出荷お知らせメールを送信します。メールの文面を確認してから［送信］ボタンを押してください。この操作は取り消すことができません。ご注意ください。
+admin.order.shipping_mail_send__complete_message: '%count%件のメールを送信しました。'
+admin.order.to_shipped__confirm_title: 出荷済に更新します
+admin.order.to_shipped__confirm_message: 出荷情報を出荷済みにします。同時におこなう操作を選択してから［実行］ボタンを押してください。この操作は取り消すことができません。ご注意ください。
+admin.order.to_shipped__confirm_send_mail: メールの送信
+admin.order.to_shipped__confirm_send_mail_in_same_time: 出荷お知らせメールを同時に送る
+admin.order.change_status: 対応状況の変更
 admin.order.csv_shipping_date_description: 出荷日を「YYYY-MM-DD」の形式で設定
 admin.order.order_csv: 受注CSV
 admin.order.shipping_csv: 出荷CSV
@@ -670,7 +738,7 @@ admin.order.unshipped: 未出荷
 admin.order.delete__confirm_title: 注文情報を削除します
 admin.order.delete__confirm_message: 注文情報を削除してよろしいですか？
 admin.order.delete_item__confirm_title: 明細を削除します
-admin.order.delete_item__confirm_message: 明細を削除してよろしいですか？
+admin.order.delete_item__confirm_message: 明細は注文から削除されます。この明細を削除しますか？
 admin.order.change_payment_method_message: お支払方法の変更に伴う手数料の変更は手動にてお願いします
 admin.order.non_member: 非会員
 admin.order.search_from_customer: 会員から検索・入力
@@ -678,6 +746,7 @@ admin.order.search_customer_title: 会員を検索
 admin.order.product_info: 商品情報
 admin.order.edit_multiple_shipping: お届け先を編集
 admin.order.edit_multiple_shipping_description: 複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます
+admin.order.product_item_not_found: 商品が追加されていません
 
 #------------------------------------------------------------------------------------
 # 会員
@@ -789,7 +858,8 @@ admin.content.cache_delete: キャッシュ削除
 #------------------------------------------------------------------------------------
 
 # 機能名称
-admin.setting.shop: ショップ設定
+admin.setting: 設定
+admin.setting.shop: 基本情報設定
 admin.setting.shop.shop_setting: ショップ設定
 admin.setting.shop.payment_list: 支払方法一覧
 admin.setting.shop.payment_setting: 支払方法設定

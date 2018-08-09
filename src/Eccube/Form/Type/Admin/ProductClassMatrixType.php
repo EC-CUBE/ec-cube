@@ -41,7 +41,7 @@ class ProductClassMatrixType extends AbstractType
             ])
             ->add('class_name2', EntityType::class, [
                 'class' => ClassName::class,
-                'placeholder' => 'admin.product.select__class1',
+                'placeholder' => 'admin.product.select__class2',
                 'constraints' => new Callback(function (
                     ClassName $ClassName2 = null,
                     ExecutionContextInterface $context

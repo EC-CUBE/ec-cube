@@ -52,7 +52,7 @@ file that was distributed with this source code.
 
                 // 削除中のUI変更処理
                 modal.find('button').attr('disabled', 'disabled');
-                $('.modal-body p', modal).text("{{ 'admin.product.index.496'|trans }}");
+                $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__in_prograss'|trans }}");
                 $('.progress', modal).show();
 
                 var checkedList = $('input[type=checkbox][data-delete-url]:checked');
@@ -89,11 +89,11 @@ file that was distributed with this source code.
                     })
                     .fail(function() {
                         // システムエラー
-                        addError("{{ 'application.text.error.system'|trans }}");
+                        addError("{{ 'admin.product.permanently_delete__system_error'|trans }}");
                     })
                     .always(function() {
                         $('.progress', modal).hide();
-                        $('.modal-body p', modal).text("{{ 'admin.product.index.498'|trans }}");
+                        $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__complete_message'|trans }}");
                         modal.find('button').removeAttr('disabled').toggle();
                     })
             });
@@ -294,19 +294,19 @@ file that was distributed with this source code.
                         <div class="row justify-content-between mb-2">
                             <div class="col-6">
                                 <div id="btn_bulk" class="d-none">
-                                    <label class="mr-2">{{ 'admin.product.index.bulk_actions'|trans }}</label>
+                                    <label class="mr-2">{{ 'admin.common.bulk_actions'|trans }}</label>
                                     <div class="btn-group mr-2" role="group">
                                         <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_SHOW')}) }}" class="btn btn-ec-regular action-submit" type="button">
-                                            <span>{{ 'admin.product.index.public'|trans }}</span>
+                                            <span>{{ 'admin.product.display_status__show'|trans }}</span>
                                         </button>
                                         <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_HIDE')}) }}" class="btn btn-ec-regular action-submit" type="button">
-                                            <span>{{ 'admin.product.index.private'|trans }}</span>
+                                            <span>{{ 'admin.product.display_status__hide'|trans }}</span>
                                         </button>
                                     </div>
                                     <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_ABOLISHED')}) }}" class="btn btn-ec-regular mr-2 action-submit">
-                                        {{ 'admin.product.index.abolition'|trans }}
+                                        {{ 'admin.product.display_status__abolished'|trans }}
                                     </button>
-                                    <button type="button" data-toggle="modal" data-target="#bulkDeleteModal" class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
+                                    <button type="button" data-toggle="modal" data-target="#bulkDeleteModal" class="btn btn-ec-delete">{{ 'admin.product.permanently_delete'|trans }}</button>
                                 </div>
                             </div>
                             <div class="col-5 text-right">
@@ -387,7 +387,7 @@ file that was distributed with this source code.
                                                 {% if Product.hasProductClass %}
                                                     <button type="button" class="btn page-link text-dark d-inline-block"
                                                             data-product-id="{{ Product.id }}"
-                                                            data-message="{{ 'admin.product.index.standard.modal.header'|trans({'%name%': Product.name}) }}"
+                                                            data-message="{{ 'admin.product.move_to_product_class__confirm_title'|trans({'%name%': Product.name}) }}"
                                                             data-class-load="{{ url('admin_product_classes_load', { 'id' : Product.id }) }}"
                                                             data-class-url="{{ url('admin_product_product_class', { 'id' : Product.id }) }}">
                                                         {{ 'admin.product.product_class__confirm'|trans }}
@@ -434,7 +434,7 @@ file that was distributed with this source code.
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title font-weight-bold">
-                                                                            {{ 'admin.product.index.duplicate.confirm.title'|trans }}</h5>
+                                                                            {{ 'admin.product.copy__confirm_title'|trans }}</h5>
                                                                         <button class="close" type="button"
                                                                                 data-dismiss="modal"
                                                                                 aria-label="Close"><span
@@ -443,7 +443,7 @@ file that was distributed with this source code.
                                                                     </div>
                                                                     <div class="modal-body text-left">
                                                                         <p class="text-left">
-                                                                            {{ 'admin.product.index.text01'|trans }}</p>
+                                                                            {{ 'admin.product.copy__confirm_message'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-ec-sub" type="button"
@@ -451,49 +451,12 @@ file that was distributed with this source code.
                                                                         </button>
                                                                         <a
                                                                                 href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}"
-                                                                                class="btn btn-ec-delete"
+                                                                                class="btn btn-ec-conversion"
                                                                                 data-confirm="false"
                                                                                 {{ csrf_token_for_anchor() }}
                                                                                 data-method="post">
-                                                                            {{ 'common.label.execute'|trans }}
+                                                                            {{ 'admin.common.copy'|trans }}
                                                                         </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col text-center" data-toggle="tooltip"
-                                                         data-placement="top"
-                                                         title="{{ 'admin.product.display_status__abolished'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                                                                                data-target="#discontinuance_{{ Product.id }}"><i
-                                                                    class="fa fa-close fa-lg text-secondary"
-                                                                    aria-hidden="true"></i></a>
-                                                        <div class="modal fade" id="discontinuance_{{ Product.id }}" tabindex="-1"
-                                                             role="dialog"
-                                                             aria-labelledby="discontinuance" aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">
-                                                                            {{ 'admin.product.index.text02'|trans }}</h5>
-                                                                        <button class="close" type="button"
-                                                                                data-dismiss="modal"
-                                                                                aria-label="Close"><span
-                                                                                    aria-hidden="true">×</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body text-left">
-                                                                        <p class="text-left">
-                                                                            {{ 'admin.product.index.text03'|trans }}</p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button class="btn btn-ec-sub" type="button"
-                                                                                data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
-                                                                        </button>
-                                                                        {# TODO: CSSの変更は別タスクでやります #}
-                                                                        <a class="btn btn-ec-delete" href="{{ url('admin_product_product_delete', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                           data-method="delete" data-confirm="false"
-                                                                           data-message="{{ 'admin.product.index.text04'|trans }}">{{ 'admin.product.index.stop_handling'|trans }}</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -532,15 +495,16 @@ file that was distributed with this source code.
                 {% endif %}
             </div>
 
+            <!-- 完全に削除の確認モーダル-->
             <div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title font-weight-bold">{{ 'admin.product.index.495'|trans }}</h5>
+                            <h5 class="modal-title font-weight-bold">{{ 'admin.product.permanently_delete__confirm_title'|trans }}</h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                         </div>
                         <div class="modal-body text-left">
-                            <p class="text-left">{{ 'admin.product.index.491'|trans }}</p>
+                            <p class="text-left">{{ 'admin.product.permanently_delete__confirm_message'|trans }}</p>
                             <ul id="bulkErrors"></ul>
                             <div class="progress" style="display: none">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -548,8 +512,8 @@ file that was distributed with this source code.
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                            <button class="btn btn-ec-delete" type="button" id="bulkDelete">{{ 'admin.product.index.permanently_delete' | trans }}</button>
-                            <button class="btn btn-ec-regular" id="bulkDeleteDone" style="display: none" type="button" data-dismiss="modal">{{ 'admin.product.index.497'|trans }}</button>
+                            <button class="btn btn-ec-delete" type="button" id="bulkDelete">{{ 'admin.product.permanently_delete' | trans }}</button>
+                            <button class="btn btn-ec-regular" id="bulkDeleteDone" style="display: none" type="button" data-dismiss="modal">{{ 'admin.product.permanently_delete__complete'|trans }}</button>
                         </div>
                     </div>
                 </div>
@@ -571,11 +535,11 @@ file that was distributed with this source code.
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-v-sub" type="button" data-dismiss="modal">
-                        {{ 'admin.product.index.back'|trans }}
+                        {{ 'admin.common.cancel'|trans }}
                     </button>
                     <a class="btn btn-ec-conversion"
                        href="#">
-                        {{ 'admin.product.index.standard_edit'|trans }}
+                        {{ 'admin.product.move_to_product_class'|trans }}
                     </a>
                 </div>
             </div><!-- /.modal-content -->

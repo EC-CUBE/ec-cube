@@ -134,7 +134,10 @@ class ShippingType extends AbstractType
                             'max' => $this->eccubeConfig['eccube_mtext_len'],
                         ]),
                     ],
-                    'attr' => ['class' => 'p-locality p-street-address'],
+                    'attr' => [
+                        'class' => 'p-locality p-street-address',
+                        'placeholder' => 'admin.common.address_sample_01',
+                    ],
                 ],
                 'addr02_options' => [
                     'required' => false,
@@ -144,7 +147,10 @@ class ShippingType extends AbstractType
                             'max' => $this->eccubeConfig['eccube_mtext_len'],
                         ]),
                     ],
-                    'attr' => ['class' => 'p-extended-address'],
+                    'attr' => [
+                        'class' => 'p-locality p-street-address',
+                        'placeholder' => 'admin.common.address_sample_01',
+                    ],
                 ],
             ])
             ->add('phone_number', PhoneNumberType::class, [
@@ -303,7 +309,7 @@ class ShippingType extends AbstractType
                 if ($count < 1) {
                     // 画面下部にエラーメッセージを表示させる
                     $form = $event->getForm();
-                    $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.edit.product.error')));
+                    $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.product_item_not_found')));
                 }
             });
     }

@@ -19,6 +19,7 @@ use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -432,10 +433,21 @@ class OrderRepository extends AbstractRepository
                 ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
         }
 
-        // 発送メール送信済かどうか.
-        if (isset($searchData['shipping_mail_send']) && $searchData['shipping_mail_send']) {
-            $qb
-                ->andWhere('s.mail_send_date IS NOT NULL');
+        // 発送メール送信/未送信.
+        if (isset($searchData['shipping_mail']) && $count = count($searchData['shipping_mail'])) {
+            // 送信済/未送信両方にチェックされている場合は検索条件に追加しない
+            if ($count < 2) {
+                $checked = current($searchData['shipping_mail']);
+                if ($checked == Shipping::SHIPPING_MAIL_UNSENT) {
+                    // 未送信
+                    $qb
+                        ->andWhere('s.mail_send_date IS NULL');
+                } elseif ($checked == Shipping::SHIPPING_MAIL_SENT) {
+                    // 送信
+                    $qb
+                        ->andWhere('s.mail_send_date IS NOT NULL');
+                }
+            }
         }
 
         // 送り状番号.
