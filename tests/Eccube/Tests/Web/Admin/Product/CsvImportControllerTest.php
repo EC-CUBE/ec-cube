@@ -617,6 +617,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 2 case no stock_unlimited
         $this->expected = count($Products) + 1;
         // 1 product case stock_unlimited = true
+        $csv = [];
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数', '販売価格'];
         $csv[] = [1,  '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5)];
         $this->filepath = $this->createCsvFromArray($csv);
