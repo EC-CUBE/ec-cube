@@ -683,7 +683,7 @@ class ShoppingService
     public function getProductDeliveryFee(Shipping $Shipping)
     {
         $productDeliveryFeeTotal = 0;
-        $OrderItems = $Shipping->getOrderItems();
+        $OrderItems = $Shipping->getProductOrderItems();
         foreach ($OrderItems as $OrderItem) {
             $productDeliveryFeeTotal += $OrderItem->getProductClass()
                     ->getDeliveryFee() * $OrderItem->getQuantity();
