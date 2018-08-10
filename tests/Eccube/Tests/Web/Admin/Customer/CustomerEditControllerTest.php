@@ -198,4 +198,22 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $orderListing = $crawler->filter('#orderHistory')->text();
         $this->assertContains('この会員の購入履歴がありません', $orderListing);
     }
+
+    /**
+     * testCustomerWithdraw
+     */
+    public function testCustomerWithdraw()
+    {
+        $form = $this->createFormData();
+        $form['status'] = 3;
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()]),
+            ['admin_customer' => $form]
+        );
+
+        $EditedCustomer = $this->container->get(CustomerRepository::class)->find($this->Customer->getId());
+
+        $this->assertRegExp('/@dummy.dummy/', $EditedCustomer->getEmail());
+    }
 }

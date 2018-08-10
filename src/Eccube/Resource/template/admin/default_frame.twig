@@ -13,7 +13,7 @@ file that was distributed with this source code.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="x-csrf-token" content="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+    <meta name="eccube-csrf-token" content="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
     <title>{{ BaseInfo.shop_name }} - {{ 'admin.page.title.suffix'|trans }}</title>
     <link rel="icon" href="{{ asset('assets/img/favicon.ico', 'admin') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css', 'admin') }}">
@@ -26,7 +26,7 @@ file that was distributed with this source code.
         $(function() {
             $.ajaxSetup({
                 'headers': {
-                    'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
+                    'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content')
                 }
             });
         });
