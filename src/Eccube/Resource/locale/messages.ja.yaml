@@ -1057,12 +1057,14 @@ admin.setting.system.log.read: 読み込む
 #------------------------------------------------------------------------------------
 
 admin.setting.system.master_data.select: 選択
-admin.setting.system.master_data.description: マスターデータの値を設定できます。
+admin.setting.system.master_data.description: |
+  マスターデータの値を設定できます。
   重複したIDを登録することはできません。
   空のIDを登録すると、値は削除されます。
   設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
 admin.setting.system.master_data.id: ID
 admin.setting.system.master_data.name: Name
+admin.setting.system.master_data.duplicate_id: 重複したIDを登録することはできません。
 
 #------------------------------------------------------------------------------------
 # 設定：システム情報設定：システム情報
