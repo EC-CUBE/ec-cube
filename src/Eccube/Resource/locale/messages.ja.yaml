@@ -58,6 +58,8 @@ common.delivery_fee: 送料
 common.charge: 手数料
 common.discount: 値引き
 common.point: ポイント
+common.enabled: 有効
+common.disabled: 無効
 
 #====================================================================================
 # フロント画面
@@ -292,9 +294,10 @@ front.shopping.checkout: 注文する
 front.shopping.back_to_order: ご注文手続きに戻る
 front.shopping.complete_title: ご注文完了
 front.shopping.complete_message__title: ご注文ありがとうございました
-front.shopping.complete_message__body: ただいま、ご注文の確認メールをお送りさせていただきました。
-   万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
-   今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.shopping.complete_message__body: |
+  ただいま、ご注文の確認メールをお送りさせていただきました。
+  万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
+  今後ともご愛顧賜りますようよろしくお願い申し上げます。
 
 #====================================================================================
 # 管理画面
@@ -384,6 +387,7 @@ admin.common.kana: お名前(カナ)
 admin.common.first_name: 名
 admin.common.last_name: 姓
 admin.common.company_name: 会社名
+admin.common.company_name_kana: 会社名(カナ)
 admin.common.address: 住所
 admin.common.pref: 都道府県
 admin.common.postal_symbol: 〒
@@ -413,7 +417,6 @@ admin.common.device_type: 端末種別
 admin.common.authority: 権限
 admin.common.payment_method: 支払方法
 admin.common.charge: 手数料
-
 
 #------------------------------------------------------------------------------------
 # ホーム
@@ -541,15 +544,13 @@ admin.product.class_name: 規格名
 admin.product.class_name__backend_name: 管理名
 admin.product.class_name__card_title: 規格情報
 admin.product.class_name__delete_confirm_title: 規格名を削除します
-# FIXME 外部キー制約で削除できないため、説明文として適切でない
-admin.product.class_name__delete_confirm_message: 規格は一覧（マスター）から削除されますが、これまでの取引等のデータから消えることはありません。この操作はあとから取り消すことができません。この規格を削除しますか？
+admin.product.class_name__delete_confirm_message: この操作はあとから取り消すことができません。この規格を削除しますか？
 admin.product.class_category: 規格分類
 admin.product.class_category__card_title: 規格分類情報
 admin.product.class_category_name: 規格分類名
 admin.product.class_category_name__short: 分類名
 admin.product.class_category__delete_confirm_title: 規格分類を削除します
-# FIXME 外部キー制約で削除できないため、説明文として適切でない
-admin.product.class_category__delete_confirm_message: 規格分類は一覧（マスター）から削除されますが、これまでの取引等のデータから消えることはありません。この操作はあとから取り消すことができません。この規格分類を削除しますか？
+admin.product.class_category__delete_confirm_message: この操作はあとから取り消すことができません。この規格分類を削除しますか？
 admin.product.class_category1: 規格分類1
 admin.product.class_category1__short: 規格1
 admin.product.class_category2: 規格分類2
@@ -678,8 +679,8 @@ admin.order.add_other_item: その他の明細を追加
 admin.order.update_calculation_results: 計算結果を更新
 admin.order.amount: 金額
 admin.order.quantity: 数量
-admin.order.tax_rate: 税率  # TODO admin.tax
-admin.order.tax_type: 課税区分  # TODO admin.tax
+admin.order.tax_rate: 税率
+admin.order.tax_type: 課税区分
 admin.order.subtotal: 小計
 admin.order.discount: 値引き
 admin.order.delivery_fee: 送料
@@ -711,7 +712,7 @@ admin.order.mail_failed: 取得に失敗しました。
 admin.order.shipping_info: 出荷情報
 admin.order.delivery_date: お届け希望日
 admin.order.delivery_time: 指定時間帯
-admin.order.delivery_provider: 配送業者 # TODO admin.delivery
+admin.order.delivery_provider: 配送業者
 admin.order.to_shipped: 出荷済にする
 admin.order.send_mail: メールする
 admin.order.shop_memo_for_shipped: 出荷用メモ欄
@@ -913,33 +914,34 @@ admin.setting.system.system_info: システム情報
 #------------------------------------------------------------------------------------
 
 admin.setting.shop.shop.base_info: 基本情報
+admin.setting.shop.company_name_kana: 会社名(カナ)
 admin.setting.shop.shop.shop_name: 店名
-admin.setting.shop.shop.shop_kana: 店名(カナ)
-admin.setting.shop.shop.shop_en: 店名(英語表記)
-admin.setting.shop.shop.xxx: 店舗営業時間
-admin.setting.shop.shop.xxx: 送信元メールアドレス(From)
-admin.setting.shop.shop.xxx: 問い合わせ受付メールアドレス(From, ReplyTo)
-admin.setting.shop.shop.xxx: 返信受付メールアドレス(ReplyTo)
-admin.setting.shop.shop.xxx: 送信エラー受付メールアドレス(ReturnPath)
-admin.setting.shop.shop.xxx: 取り扱い商品説明文
-admin.setting.shop.shop.xxx: 店舗からのメッセージ
-admin.setting.shop.shop.xxx: 送料設定
-admin.setting.shop.shop.xxx: 送料無料条件（金額）
-admin.setting.shop.shop.xxx: 送料無料条件（数量）
-admin.setting.shop.shop.xxx: 商品ごとの送料設定
-admin.setting.shop.shop.xxx: 会員設定
-admin.setting.shop.shop.xxx: 仮会員機能
-admin.setting.shop.shop.xxx: マイページに注文状況を表示
-admin.setting.shop.shop.xxx: お気に入り商品機能
-admin.setting.shop.shop.xxx: 自動ログイン機能
-admin.setting.shop.shop.xxx: 商品設定
-admin.setting.shop.shop.xxx: 在庫切れ商品の非表示
-admin.setting.shop.shop.xxx: 個別税率設定
-admin.setting.shop.shop.xxx: 商品別税率機能
-admin.setting.shop.shop.xxx: ポイント設定
-admin.setting.shop.shop.xxx: ポイント機能
-admin.setting.shop.shop.xxx: ポイント付与率
-admin.setting.shop.shop.xxx: ポイント換算レート
+admin.setting.shop.shop.shop_name_kana: 店名(カナ)
+admin.setting.shop.shop.shop_name_en: 店名(英語表記)
+admin.setting.shop.shop.business_hour: 店舗営業時間
+admin.setting.shop.shop.email_from: 送信元メールアドレス(From)
+admin.setting.shop.shop.email_for_inquiries: 問い合わせ受付メールアドレス(From, ReplyTo)
+admin.setting.shop.shop.email_reply_to: 返信受付メールアドレス(ReplyTo)
+admin.setting.shop.shop.email_return_path: 送信エラー受付メールアドレス(ReturnPath)
+admin.setting.shop.shop.good_traded: 取り扱い商品説明文
+admin.setting.shop.shop.message: 店舗からのメッセージ
+admin.setting.shop.shop.option_delivery_fee: 送料設定
+admin.setting.shop.shop.option_delivery_fee_free_amount: 送料無料条件（金額）
+admin.setting.shop.shop.option_delivery_fee_free_quantity: 送料無料条件（数量）
+admin.setting.shop.shop.option_delivery_fee_by_product: 商品ごとの送料設定
+admin.setting.shop.shop.option_customer: 会員設定
+admin.setting.shop.shop.option_customer_activate: 仮会員機能
+admin.setting.shop.shop.option_mypage_order_status_display: マイページに注文状況を表示
+admin.setting.shop.shop.option_favorite_product: お気に入り商品機能
+admin.setting.shop.shop.option_remember_me: 自動ログイン機能
+admin.setting.shop.shop.option_product: 商品設定
+admin.setting.shop.shop.nostock_hidden: 在庫切れ商品の非表示
+admin.setting.shop.shop.option_tax: 税設定
+admin.setting.shop.shop.option_product_tax: 商品別税率機能
+admin.setting.shop.shop.option_point: ポイント設定
+admin.setting.shop.shop.option_point_enabled: ポイント機能
+admin.setting.shop.shop.option_point_rate: ポイント付与率
+admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レート
 
 #------------------------------------------------------------------------------------
 # 設定：ショップ設定：支払方法設定
@@ -999,7 +1001,8 @@ admin.setting.shop.csv.order__up: ひとつ上へ
 admin.setting.shop.csv.order__down: ひとつ下へ
 admin.setting.shop.csv.order__top: 一番上へ
 admin.setting.shop.csv.order__bottom: 一番下へ
-admin.setting.shop.csv.how_to_use: 任意の項目を押して選択してから［項目操作］ボタンで移動し、CSV出力する項目を設定してください。
+admin.setting.shop.csv.how_to_use: |
+  任意の項目を押して選択してから［項目操作］ボタンで移動し、CSV出力する項目を設定してください。
   出力する項目の順序は［項目順序］ボタンで変更することができます。
   複数の項目を選択する場合はctrlキー（Macの場合はcommandキー）を押しながら項目を押します。shiftキーを押しながら選択すると範囲選択ができます。
 

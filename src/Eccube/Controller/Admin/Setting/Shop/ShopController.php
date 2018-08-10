@@ -38,7 +38,7 @@ class ShopController extends AbstractController
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected $baseInfoRepository;
 
     /**
      * ShopController constructor.
@@ -48,7 +48,7 @@ class ShopController extends AbstractController
      */
     public function __construct(Twig_Environment $twig, BaseInfoRepository $baseInfoRepository)
     {
-        $this->BaseInfo = $baseInfoRepository->get();
+        $this->baseInfoRepository = $baseInfoRepository;
         $this->twig = $twig;
     }
 
@@ -62,16 +62,17 @@ class ShopController extends AbstractController
      */
     public function index(Request $request, CacheUtil $cacheUtil)
     {
+        $BaseInfo = $this->baseInfoRepository->get();
         $builder = $this->formFactory
-            ->createBuilder(ShopMasterType::class, $this->BaseInfo);
+            ->createBuilder(ShopMasterType::class, $BaseInfo);
 
-        $CloneInfo = clone $this->BaseInfo;
+        $CloneInfo = clone $BaseInfo;
         $this->entityManager->detach($CloneInfo);
 
         $event = new EventArgs(
             [
                 'builder' => $builder,
-                'BaseInfo' => $this->BaseInfo,
+                'BaseInfo' => $BaseInfo,
             ],
             $request
         );
@@ -80,31 +81,27 @@ class ShopController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $this->entityManager->persist($this->BaseInfo);
-                $this->entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($BaseInfo);
+            $this->entityManager->flush();
 
-                $event = new EventArgs(
-                    [
-                        'form' => $form,
-                        'BaseInfo' => $this->BaseInfo,
-                    ],
-                    $request
-                );
-                $this->eventDispatcher->dispatch(
-                    EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
-                    $event
-                );
+            $event = new EventArgs(
+                [
+                    'form' => $form,
+                    'BaseInfo' => $BaseInfo,
+                ],
+                $request
+            );
+            $this->eventDispatcher->dispatch(
+                EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
+                $event
+            );
 
-                $cacheUtil->clearCache();
+            $cacheUtil->clearCache();
 
-                $this->addSuccess('admin.flash.register_completed', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
 
-                return $this->redirectToRoute('admin_setting_shop');
-            } else {
-                $this->addError('admin.flash.register_failed', 'admin');
-            }
+            return $this->redirectToRoute('admin_setting_shop');
         }
 
         $this->twig->addGlobal('BaseInfo', $CloneInfo);
