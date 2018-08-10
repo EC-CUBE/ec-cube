@@ -1043,10 +1043,15 @@ admin.setting.system.member.logout: ログアウト
 #------------------------------------------------------------------------------------
 
 admin.setting.system.authority__card_title: 権限設定
-admin.setting.system.authority.description: '/admin以降からのURLを拒否URLに入力してください。
+admin.setting.system.authority.description: '%url%以降からのURLを拒否URLに入力してください。
   拒否URL以降がアクセス拒否されます。(URLは前方一致)'
-admin.setting.system.authority.example: '例) /setting <span class="text-danger">※「/」を必ず記入してください</span>'
+admin.setting.system.authority.example: '例) /setting <span class="text-danger">「/」を必ず記入してください</span>'
+admin.setting.system.authority.authority: 権限
 admin.setting.system.authority.deny_url: 拒否URL
+admin.setting.system.authority.add_row: 行を追加
+admin.setting.system.authority.authority_not_selected: 権限が選択されていません。
+admin.setting.system.authority.deny_url_is_empty: 拒否URLが入力されていません。
+admin.setting.system.authority.deny_url_is_invalid: 「/」を必ず記入してください。
 
 #------------------------------------------------------------------------------------
 # 設定：システム情報設定：セキュリティ管理
