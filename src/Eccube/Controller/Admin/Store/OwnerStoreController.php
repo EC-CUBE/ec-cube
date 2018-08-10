@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\PageMax;
 use Eccube\Entity\Plugin;
 use Eccube\Form\Type\Admin\SearchPluginApiType;
 use Eccube\Repository\Master\PageMaxRepository;
@@ -114,7 +115,6 @@ class OwnerStoreController extends AbstractController
     {
         // Acquire downloadable plug-in information from owners store
         $items = [];
-        $promotionItems = [];
         $message = '';
         $total = 0;
 
@@ -125,66 +125,36 @@ class OwnerStoreController extends AbstractController
         $category = array_column($data['category'], 'name', 'id');
         $priceType = array_column($data['price_type'], 'name', 'id');
 
-        // buil form with master data
+        // build form with master data
         $builder = $this->formFactory
             ->createBuilder(SearchPluginApiType::class, null, ['category' => $category, 'priceType' => $priceType]);
         $searchForm = $builder->getForm();
 
-        $page_count = $this->session->get('eccube.admin.plugin_api.search.page_count',
-            $this->eccubeConfig->get('eccube_default_page_count'));
-
-        $page_count_param = (int) $request->get('page_count');
-//        dump($page_count_param);
-//        dump($page_count);
-        $pageMaxis = $this->pageMaxRepository->findAll();
-        if ($page_count_param) {
-            foreach ($pageMaxis as $pageMax) {
-                if ($page_count_param == $pageMax->getName()) {
-                    $page_count = $pageMax->getName();
-                    $this->session->set('eccube.admin.plugin_api.search.page_count', $page_count);
-                    break;
-                }
-            }
-        }
-//        dump($page_count);
-
-//        dump($searchForm->getData());
+        $searchForm->handleRequest($request);
+        $searchData = $searchForm->getData();
         if ('POST' === $request->getMethod()) {
-            $searchForm->handleRequest($request);
             if ($searchForm->isValid()) {
-                /**
-                 * 検索が実行された場合は, セッションに検索条件を保存する.
-                 * ページ番号は最初のページ番号に初期化する.
-                 */
                 $page_no = 1;
                 $searchData = $searchForm->getData();
-
-                // 検索条件, ページ番号をセッションに保持.
                 $this->session->set('eccube.admin.plugin_api.search', FormUtil::getViewData($searchForm));
                 $this->session->set('eccube.admin.plugin_api.search.page_no', $page_no);
             }
         } else {
-            if (is_numeric($categoryId = $request->get('category_id')) && key_exists($category, $categoryId)) {
+            // quick search
+            if (is_numeric($categoryId = $request->get('category_id')) && array_key_exists($categoryId, $category)) {
                 $searchForm['category_id']->setData($categoryId);
             }
-
+            // reset page count
+            $this->session->set('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
             if (null !== $page_no || $request->get('resume')) {
-                /*
-                 * ページ送りの場合または、他画面から戻ってきた場合は, セッションから検索条件を復旧する.
-                 */
                 if ($page_no) {
-                    // ページ送りで遷移した場合.
                     $this->session->set('eccube.admin.plugin_api.search.page_no', (int) $page_no);
                 } else {
-                    // 他画面から遷移した場合.
                     $page_no = $this->session->get('eccube.admin.plugin_api.search.page_no', 1);
                 }
                 $viewData = $this->session->get('eccube.admin.plugin_api.search', []);
                 $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
             } else {
-                /**
-                 * 初期表示の場合.
-                 */
                 $page_no = 1;
                 // submit default value
                 $viewData = FormUtil::getViewData($searchForm);
@@ -194,6 +164,13 @@ class OwnerStoreController extends AbstractController
                 $this->session->set('eccube.admin.plugin_api.search', $searchData);
                 $this->session->set('eccube.admin.plugin_api.search.page_no', $page_no);
             }
+        }
+
+        // set page count
+        $page_count = $this->session->get('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
+        if (($pageCount = $searchForm['page_count']->getData()) instanceof PageMax) {
+            $page_count = $pageCount->getId();
+            $this->session->set('eccube.admin.plugin_api.search.page_count', $page_count);
         }
 
         // Owner's store communication
@@ -257,16 +234,15 @@ class OwnerStoreController extends AbstractController
             }
         }
 
+
         $pagination = $paginator->paginate($items, $page_no, $page_count);
+        $pagination->setTotalItemCount($total);
 
         return [
             'pagination' => $pagination,
             'total' => $total,
             'searchForm' => $searchForm->createView(),
-            'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
-            'page_count' => $page_count,
-            'promotionItems' => $promotionItems,
             'message' => $message,
             'Categories' => $category
         ];
@@ -534,6 +510,7 @@ class OwnerStoreController extends AbstractController
      * API request processing
      *
      * @param string  $url
+     * @param array $data
      *
      * @return array
      */
@@ -545,11 +522,11 @@ class OwnerStoreController extends AbstractController
             $params['price_type_id'] = $data['price_type_id'];
             $params['keyword'] = $data['keyword'];
             $params['sort'] = $data['sort'];
-            $params['page'] = $this->session->get('eccube.admin.plugin_api.search.page_no', 1);
-            $params['per_page'] = $this->session->get('eccube.admin.plugin_api.search.page_count', 1);
-            $url .=  '?' . http_build_query($params);
         }
-        dump($url);
+
+        $params['page'] = $this->session->get('eccube.admin.plugin_api.search.page_no', 1);
+        $params['per_page'] = $this->session->get('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
+        $url .=  '?' . http_build_query($params);
         $curl = curl_init($url);
 
         // Option array

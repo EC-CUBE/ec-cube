@@ -37,8 +37,6 @@ file that was distributed with this source code.
     </style>
 {% endblock %}
 {% block javascript %}
-    <script>
-    </script>
 {% endblock %}
 {% block main %}
     <div class="c-contentsArea__cols">
@@ -55,7 +53,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                 </div>
-                <form method="post" action="" class="plugin-search" name="search">
+                <form method="post" action="{{ url('admin_store_plugin_owners_search') }}" class="plugin-search" name="search">
                     <div class="c-outsideBlock">
                         {{ form_widget(searchForm._token) }}
                         <div class="c-outsideBlock__contents mb-4">
@@ -84,11 +82,7 @@ file that was distributed with this source code.
                                 {{ form_widget(searchForm.sort, {attr: {onchange: 'document.forms.search.submit();'}}) }}
                             </div>
                             <div class="d-inline-block">
-                                <select class="custom-select mb-1" onchange="location = this.value;">
-                                    {% for pageMax in pageMaxis %}
-                                        <option {% if pageMax.name == page_count %}selected=""{% endif %} value="{{ path('admin_store_plugin_owners_search_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}{{ 'admin.product.index.num'|trans }}</option>
-                                    {% endfor %}
-                                </select>
+                                {{ form_widget(searchForm.page_count, {attr: {onchange: 'document.forms.search.submit();'}}) }}
                             </div>
                         </div>
                     </div>
@@ -96,21 +90,23 @@ file that was distributed with this source code.
 
                 <div id="plugin-list" class="card rounded border-0 my-4">
                     <div class="card-header">
-                        <h5>{{ 'admin.store.plugin_owners_search.search_results'|trans({'%number%': page_count, '%total%' : total}) }}</h5>
+                        <h5>{{ 'admin.store.plugin_owners_search.search_results'|trans({'%number%': pagination|length, '%total%' : total}) }}</h5>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="card-body">
                         {% if pagination|length > 0%}
                             {% for item in pagination %}
-                                <div class="row m-0 p-3 border-bt">
+                                <div class="row border-bt pb-2">
                                     {{ include('@admin/Store/plugin_search_panel.twig') }}
                                 </div>
                             {% endfor %}
                         {% endif %}
-
-                        {% if pagination.totalItemCount > 0 %}
-                            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_store_plugin_owners_search_page' } %}
-                        {% endif %}
                     </div>
+
+                    {% if pagination.totalItemCount > 0 %}
+                        <div class="row justify-content-md-center mb-4">
+                            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_store_plugin_owners_search_page' } %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
