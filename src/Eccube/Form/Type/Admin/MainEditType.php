@@ -213,6 +213,7 @@ class MainEditType extends AbstractType
                 /** @var Page $Page */
                 $Page = $event->getData();
 
+                // urlの重複チェック
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(p)')
                     ->from('Eccube\\Entity\\Page', 'p')
@@ -233,6 +234,31 @@ class MainEditType extends AbstractType
                 $count = $qb->getQuery()->getSingleScalarResult();
                 if ($count > 0) {
                     $form['url']->addError(new FormError('mainedit.text.error.url_exists'));
+                }
+
+                // ファイルの重複チェック
+                $qb = $this->entityManager->createQueryBuilder();
+                $qb->select('count(p)')
+                    ->from('Eccube\\Entity\\Page', 'p')
+                    ->where('p.file_name = :file_name')
+                    ->andWhere('p.DeviceType = :DeviceType')
+                    ->andWhere('p.edit_type = :edit_type')
+                    ->setParameter('file_name', $Page->getFileName())
+                    ->setParameter('DeviceType', $Page->getDeviceType())
+                    ->setParameter('edit_type', $Page->getEditType());
+
+                if (null === $Page->getId()) {
+                    $qb
+                        ->andWhere('p.id IS NOT NULL');
+                } else {
+                    $qb
+                        ->andWhere('p.id <> :page_id')
+                        ->setParameter('page_id', $Page->getId());
+                }
+
+                $count = $qb->getQuery()->getSingleScalarResult();
+                if ($count > 0) {
+                    $form['file_name']->addError(new FormError('※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。'));
                 }
             });
     }
