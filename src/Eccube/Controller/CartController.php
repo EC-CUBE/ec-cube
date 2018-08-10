@@ -159,7 +159,8 @@ class CartController extends AbstractController
 
         foreach ($flowResults as $index => $result) {
             foreach ($result->getWarning() as $warning) {
-                $this->addRequestError($warning->getMessage(), "front.cart.${index}");
+                $cart_key = $Carts[$index]->getCartKey();
+                $this->addRequestError($warning->getMessage(), "front.cart.${cart_key}");
             }
         }
     }
