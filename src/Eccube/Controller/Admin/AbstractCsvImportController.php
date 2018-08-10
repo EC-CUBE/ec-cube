@@ -13,8 +13,8 @@
 
 namespace Eccube\Controller\Admin;
 
+use Ddeboer\DataImport\Reader\CsvReader;
 use Eccube\Controller\AbstractController;
-use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -35,7 +35,7 @@ class AbstractCsvImportController extends AbstractController
      *
      * @param UploadedFile $formFile
      *
-     * @return CsvImportService|bool
+     * @return CsvReader|bool
      */
     protected function getImportData(UploadedFile $formFile)
     {
@@ -54,7 +54,7 @@ class AbstractCsvImportController extends AbstractController
             }
         } else {
             // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = StringUtil::characterEncoding(substr($file, 0, 6));
+            $encode = StringUtil::characterEncoding($file);
             if ($encode != 'UTF-8') {
                 $file = mb_convert_encoding($file, 'UTF-8', $encode);
             }
@@ -71,9 +71,10 @@ class AbstractCsvImportController extends AbstractController
         set_time_limit(0);
 
         // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
+        $data = new CsvReader($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
+        $data->setHeaderRowNumber(0);
 
-        return $data->setHeaderRowNumber(0) ? $data : false;
+        return $data;
     }
 
     protected function sendTemplateResponse(Request $request, $columns, $filename)

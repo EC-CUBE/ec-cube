@@ -13,9 +13,9 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Ddeboer\DataImport\Reader\CsvReader;
 use Eccube\Controller\Admin\Order\CsvImportController;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Service\CsvImportService;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -123,7 +123,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         }
         file_put_contents($tempFile, $csvContent);
 
-        $csv = new CsvImportService(new \SplFileObject($tempFile));
+        $csv = new CsvReader(new \SplFileObject($tempFile));
         $csv->setHeaderRowNumber(0);
 
         $controller = $this->container->get(CsvImportController::class);

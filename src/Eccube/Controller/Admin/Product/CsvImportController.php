@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Ddeboer\DataImport\Reader\CsvReader;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\Constant;
 use Eccube\Controller\Admin\AbstractCsvImportController;
@@ -34,7 +35,6 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
-use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
@@ -682,7 +682,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param CsvImportService $data
+     * @param CsvReader $data
      */
     protected function createProductImage($row, Product $Product, $data, $headerByKey)
     {
@@ -729,7 +729,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param CsvImportService $data
+     * @param CsvReader $data
      * @param $headerByKey
      */
     protected function createProductCategory($row, Product $Product, $data, $headerByKey)
@@ -802,7 +802,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param array $row
      * @param Product $Product
-     * @param CsvImportService $data
+     * @param CsvReader $data
      */
     protected function createProductTag($row, Product $Product, $data, $headerByKey)
     {
@@ -849,7 +849,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param CsvImportService $data
+     * @param CsvReader $data
      * @param $headerByKey
      * @param null $ClassCategory1
      * @param null $ClassCategory2
@@ -1001,7 +1001,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param $row
      * @param Product $Product
      * @param ProductClass $ProductClass
-     * @param CsvImportService $data
+     * @param CsvReader $data
      *
      * @return ProductClass
      */
@@ -1186,117 +1186,117 @@ class CsvImportController extends AbstractCsvImportController
     private function getProductCsvHeader()
     {
         return [
-            trans('csvimport.label.product_id') => [
+            'id' => [
                 'id' => 'id',
                 'description' => 'admin.product.csv_product.id',
                 'required' => false,
             ],
-            trans('csvimport.label.public_status_id') => [
+            'status' => [
                 'id' => 'status',
                 'description' => 'admin.product.csv_product.status',
                 'required' => true,
             ],
-            trans('csvimport.label.product_name') => [
+            'name' => [
                 'id' => 'name',
                 'description' => 'admin.product.csv_product.name',
                 'required' => true,
             ],
-            trans('csvimport.label.note') => [
+            'note' => [
                 'id' => 'note',
                 'description' => 'admin.product.csv_product.note',
                 'required' => false,
             ],
-            trans('csvimport.label.description_list') => [
+            'description_list' => [
                 'id' => 'description_list',
                 'description' => 'admin.product.csv_product.description_list',
                 'required' => false,
             ],
-            trans('csvimport.label.description_detail') => [
+            'description_detail' => [
                 'id' => 'description_detail',
                 'description' => 'admin.product.csv_product.description_detail',
                 'required' => false,
             ],
-            trans('csvimport.label.search_word') => [
+            'search_word' => [
                 'id' => 'search_word',
                 'description' => 'admin.product.csv_product.search_word',
                 'required' => false,
             ],
-            trans('csvimport.label.free_area') => [
+            'free_area' => [
                 'id' => 'free_area',
                 'description' => 'admin.product.csv_product.free_area',
                 'required' => false,
             ],
-            trans('csvimport.label.product_del_flg') => [
+            'product_del_flg' => [
                 'id' => 'product_del_flg',
                 'description' => 'admin.product.csv_product.product_del_flg',
                 'required' => false,
             ],
-            trans('csvimport.label.product_image') => [
+            'product_image' => [
                 'id' => 'product_image',
                 'description' => 'admin.product.csv_product.product_image',
                 'required' => false,
             ],
-            trans('csvimport.label.product_category') => [
+            'product_category' => [
                 'id' => 'product_category',
                 'description' => 'admin.product.csv_product.product_category',
                 'required' => false,
             ],
-            trans('csvimport.label.product_tag') => [
+            'product_tag' => [
                 'id' => 'product_tag',
                 'description' => 'admin.product.csv_product.product_tag',
                 'required' => false,
             ],
-            trans('csvimport.label.product_type') => [
+            'sale_type' => [
                 'id' => 'sale_type',
                 'description' => 'admin.product.csv_product.sale_type',
                 'required' => true,
             ],
-            trans('csvimport.label.class_category1') => [
+            'class_category1' => [
                 'id' => 'class_category1',
                 'description' => 'admin.product.csv_product.class_category1',
                 'required' => false,
             ],
-            trans('csvimport.label.class_category2') => [
+            'class_category2' => [
                 'id' => 'class_category2',
                 'description' => 'admin.product.csv_product.class_category2',
                 'required' => false,
             ],
-            trans('csvimport.label.delivery_date') => [
+            'delivery_date' => [
                 'id' => 'delivery_date',
                 'description' => 'admin.product.csv_product.delivery_date',
                 'required' => false,
             ],
-            trans('csvimport.label.product_code') => [
+            'product_code' => [
                 'id' => 'product_code',
                 'description' => 'admin.product.csv_product.product_code',
                 'required' => false,
             ],
-            trans('csvimport.label.stock') => [
+            'stock' => [
                 'id' => 'stock',
                 'description' => 'admin.product.csv_product.stock',
                 'required' => false,
             ],
-            trans('csvimport.label.stock_unlimited') => [
+            'stock_unlimited' => [
                 'id' => 'stock_unlimited',
                 'description' => 'admin.product.csv_product.stock_unlimited',
                 'required' => true,
             ],
-            trans('csvimport.label.sale_limit') => [
+            'sale_limit' => [
                 'id' => 'sale_limit',
                 'description' => 'admin.product.csv_product.sale_limit',
                 'required' => false,
             ],
-            trans('csvimport.label.price01') => [
+            'price01' => [
                 'id' => 'price01',
                 'description' => 'admin.product.csv_product.price01',
                 'required' => false,
             ],
-            trans('csvimport.label.price02') => [
+            'price02' => [
                 'id' => 'price02',
                 'description' => 'admin.product.csv_product.price02',
                 'required' => true,
             ],
-            trans('csvimport.label.delivery_fee') => [
+            'delivery_fee' => [
                 'id' => 'delivery_fee',
                 'description' => 'admin.product.csv_product.delivery_fee',
                 'required' => false,
@@ -1310,22 +1310,22 @@ class CsvImportController extends AbstractCsvImportController
     private function getCategoryCsvHeader()
     {
         return [
-            trans('admin.product.csv_category.category_id') => [
+            'id' => [
                 'id' => 'id',
                 'description' => 'admin.product.csv_category.category_id_description',
                 'required' => false,
             ],
-            trans('admin.product.csv_category.category_name') => [
+            'category_name' => [
                 'id' => 'category_name',
                 'description' => '',
                 'required' => true,
             ],
-            trans('admin.product.csv_category.parent_category_id') => [
+            'parent_category_id' => [
                 'id' => 'parent_category_id',
                 'description' => '',
                 'required' => false,
             ],
-            trans('admin.product.csv_category.category_delete_flag') => [
+            'category_del_flg' => [
                 'id' => 'category_del_flg',
                 'description' => 'admin.product.csv_category.category_del_flg',
                 'required' => false,

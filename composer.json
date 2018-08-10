@@ -16,6 +16,7 @@
         "ext-mbstring": "*",
         "composer/ca-bundle": "^1.1",
         "composer/composer": "^1.6",
+        "ddeboer/data-import": "^0.20.0",
         "doctrine/annotations": "^1.6",
         "doctrine/cache": "^1.7",
         "doctrine/collections": "^1.5",

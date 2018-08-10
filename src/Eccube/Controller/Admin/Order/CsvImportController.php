@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Order;
 
+use Ddeboer\DataImport\Reader\CsvReader;
 use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Shipping;
@@ -94,7 +95,7 @@ class CsvImportController extends AbstractCsvImportController
         ];
     }
 
-    protected function loadCsv(CsvImportService $csv, &$errors)
+    protected function loadCsv(CsvReader $csv, &$errors)
     {
         $columnConfig = $this->getColumnConfig();
 
