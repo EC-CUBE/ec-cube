@@ -27,8 +27,6 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
@@ -38,6 +36,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -173,11 +172,10 @@ class PluginController extends AbstractController
     /**
      * インストール済プラグインからのアップデート
      *
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
+     * @Route("/%eccube_admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update", methods={"POST"})
      *
-     * @param Request     $request
-     * @param Plugin      $Plugin
+     * @param Request $request
+     * @param Plugin $Plugin
      *
      * @return RedirectResponse
      */
@@ -239,10 +237,9 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを有効にします。
      *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
+     * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable", methods={"PUT"})
      *
-     * @param Plugin      $Plugin
+     * @param Plugin $Plugin
      *
      * @return RedirectResponse
      */
@@ -280,10 +277,9 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを無効にします。
      *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
+     * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable", methods={"PUT"})
      *
-     * @param Plugin      $Plugin
+     * @param Plugin $Plugin
      *
      * @return RedirectResponse
      */
@@ -324,10 +320,9 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを削除します。
      *
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
+     * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall", methods={"DELETE"})
      *
-     * @param Plugin      $Plugin
+     * @param Plugin $Plugin
      *
      * @return RedirectResponse
      */
@@ -409,7 +404,7 @@ class PluginController extends AbstractController
      * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install")
      * @Template("@admin/Store/plugin_install.twig")
      *
-     * @param Request     $request
+     * @param Request $request
      *
      * @return array|RedirectResponse
      */

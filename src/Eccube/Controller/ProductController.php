@@ -29,12 +29,11 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Component\Pager\Paginator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ProductController extends AbstractController
@@ -245,8 +244,7 @@ class ProductController extends AbstractController
     /**
      * 商品詳細画面.
      *
-     * @Method("GET")
-     * @Route("/products/detail/{id}", name="product_detail", requirements={"id" = "\d+"})
+     * @Route("/products/detail/{id}", name="product_detail", methods={"GET"}, requirements={"id" = "\d+"})
      * @Template("Product/detail.twig")
      * @ParamConverter("Product", options={"repository_method" = "findWithSortedClassCategories"})
      *
@@ -347,8 +345,7 @@ class ProductController extends AbstractController
     /**
      * カートに追加.
      *
-     * @Method("POST")
-     * @Route("/products/add_cart/{id}", name="product_add_cart", requirements={"id" = "\d+"})
+     * @Route("/products/add_cart/{id}", name="product_add_cart", methods={"POST"}, requirements={"id" = "\d+"})
      */
     public function addCart(Request $request, Product $Product)
     {

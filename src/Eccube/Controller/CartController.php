@@ -14,7 +14,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Entity\Cart;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -24,10 +23,9 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
@@ -177,10 +175,10 @@ class CartController extends AbstractController
      * - 削除
      *      - 明細を削除する
      *
-     * @Method("PUT")
      * @Route(
      *     path="/cart/{operation}/{productClassId}",
      *     name="cart_handle_item",
+     *     methods={"PUT"},
      *     requirements={
      *          "operation": "up|down|remove",
      *          "productClassId": "\d+"
