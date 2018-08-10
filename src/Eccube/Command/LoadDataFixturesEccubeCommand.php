@@ -20,10 +20,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
+    protected static $defaultName = 'eccube:fixtures:load';
+
     protected function configure()
     {
         $this
-            ->setName('eccube:fixtures:load')
             ->setDescription('Load data fixtures to your database.')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command loads data fixtures from EC-CUBE.

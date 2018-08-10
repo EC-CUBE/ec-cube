@@ -24,9 +24,9 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\ShoppingService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -247,6 +247,7 @@ class NonMemberShoppingController extends AbstractShoppingController
         if (!$request->isXmlHttpRequest()) {
             return $this->json(['status' => 'NG'], 400);
         }
+        $this->isTokenValid();
         try {
             log_info('非会員お客様情報変更処理開始');
             $data = $request->request->all();
@@ -360,7 +361,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
                 new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
-        ]);
+            ]);
 
         $errors[] = $this->validator->validate(
             $data['customer_company_name'],

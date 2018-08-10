@@ -20,6 +20,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateProxyCommand extends ContainerAwareCommand
 {
+    protected static $defaultName = 'eccube:generate:proxies';
+
     /**
      * @var EntityProxyService
      */
@@ -34,7 +36,6 @@ class GenerateProxyCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('eccube:generate:proxies')
             ->setDescription('Generate entity proxies');
     }
 
