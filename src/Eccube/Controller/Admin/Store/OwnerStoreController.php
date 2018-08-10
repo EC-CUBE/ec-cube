@@ -16,12 +16,16 @@ namespace Eccube\Controller\Admin\Store;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
+use Eccube\Form\Type\Admin\SearchPluginApiType;
+use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerProcessService;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
+use Eccube\Util\FormUtil;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -58,6 +62,11 @@ class OwnerStoreController extends AbstractController
     private static $vendorName = 'ec-cube';
 
     /**
+     * @var PageMaxRepository
+     */
+    private $pageMaxRepository;
+
+    /**
      * OwnerStoreController constructor.
      *
      * @param PluginRepository $pluginRepository
@@ -71,11 +80,13 @@ class OwnerStoreController extends AbstractController
         PluginService $pluginService,
         ComposerProcessService $composerProcessService,
         ComposerApiService $composerApiService,
-        SystemService $systemService
+        SystemService $systemService,
+        PageMaxRepository $pageMaxRepository
     ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->systemService = $systemService;
+        $this->pageMaxRepository = $pageMaxRepository;
 
         // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
@@ -90,35 +101,119 @@ class OwnerStoreController extends AbstractController
      * Owner's Store Plugin Installation Screen - Search function
      *
      * @Route("/search", name="admin_store_plugin_owners_search")
+     * @Route("/search/page/{page_no}", name="admin_store_plugin_owners_search_page", requirements={"page_no" = "\d+"})
      * @Template("@admin/Store/plugin_search.twig")
      *
      * @param Request     $request
+     * @param int $page_no
+     * @param Paginator $paginator
      *
      * @return array
      */
-    public function search(Request $request)
+    public function search(Request $request, $page_no = null, Paginator $paginator)
     {
         // Acquire downloadable plug-in information from owners store
         $items = [];
         $promotionItems = [];
         $message = '';
+        $total = 0;
+
+        // Get master data
+        $masterData = $this->eccubeConfig['eccube_package_repo_url'].'/master_data';
+        list($json, $info) = $this->getRequestApi($masterData);
+        $data = json_decode($json, true);
+        $category = array_column($data['category'], 'name', 'id');
+        $priceType = array_column($data['price_type'], 'name', 'id');
+
+        // buil form with master data
+        $builder = $this->formFactory
+            ->createBuilder(SearchPluginApiType::class, null, ['category' => $category, 'priceType' => $priceType]);
+        $searchForm = $builder->getForm();
+
+        $page_count = $this->session->get('eccube.admin.plugin_api.search.page_count',
+            $this->eccubeConfig->get('eccube_default_page_count'));
+
+        $page_count_param = (int) $request->get('page_count');
+//        dump($page_count_param);
+//        dump($page_count);
+        $pageMaxis = $this->pageMaxRepository->findAll();
+        if ($page_count_param) {
+            foreach ($pageMaxis as $pageMax) {
+                if ($page_count_param == $pageMax->getName()) {
+                    $page_count = $pageMax->getName();
+                    $this->session->set('eccube.admin.plugin_api.search.page_count', $page_count);
+                    break;
+                }
+            }
+        }
+//        dump($page_count);
+
+//        dump($searchForm->getData());
+        if ('POST' === $request->getMethod()) {
+            $searchForm->handleRequest($request);
+            if ($searchForm->isValid()) {
+                /**
+                 * 検索が実行された場合は, セッションに検索条件を保存する.
+                 * ページ番号は最初のページ番号に初期化する.
+                 */
+                $page_no = 1;
+                $searchData = $searchForm->getData();
+
+                // 検索条件, ページ番号をセッションに保持.
+                $this->session->set('eccube.admin.plugin_api.search', FormUtil::getViewData($searchForm));
+                $this->session->set('eccube.admin.plugin_api.search.page_no', $page_no);
+            }
+        } else {
+            if (is_numeric($categoryId = $request->get('category_id')) && key_exists($category, $categoryId)) {
+                $searchForm['category_id']->setData($categoryId);
+            }
+
+            if (null !== $page_no || $request->get('resume')) {
+                /*
+                 * ページ送りの場合または、他画面から戻ってきた場合は, セッションから検索条件を復旧する.
+                 */
+                if ($page_no) {
+                    // ページ送りで遷移した場合.
+                    $this->session->set('eccube.admin.plugin_api.search.page_no', (int) $page_no);
+                } else {
+                    // 他画面から遷移した場合.
+                    $page_no = $this->session->get('eccube.admin.plugin_api.search.page_no', 1);
+                }
+                $viewData = $this->session->get('eccube.admin.plugin_api.search', []);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+            } else {
+                /**
+                 * 初期表示の場合.
+                 */
+                $page_no = 1;
+                // submit default value
+                $viewData = FormUtil::getViewData($searchForm);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+
+                // セッション中の検索条件, ページ番号を初期化.
+                $this->session->set('eccube.admin.plugin_api.search', $searchData);
+                $this->session->set('eccube.admin.plugin_api.search.page_no', $page_no);
+            }
+        }
+
         // Owner's store communication
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
-        list($json, $info) = $this->getRequestApi($url);
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/plugins';
+        list($json, $info) = $this->getRequestApi($url, $searchData);
         if ($json === false) {
             $message = $this->getResponseErrorMessage($info);
         } else {
             $data = json_decode($json, true);
-            if (isset($data['success']) && $data['success']) {
+            $total = $data['total'];
+            if (isset($data['plugins']) && count($data['plugins']) > 0) {
                 // Check plugin installed
                 $pluginInstalled = $this->pluginRepository->findAll();
                 // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : paid purchase
-                foreach ($data['item'] as $item) {
+                foreach ($data['plugins'] as $item) {
                     // Not install/purchased
                     $item['update_status'] = 1;
                     /** @var Plugin $plugin */
                     foreach ($pluginInstalled as $plugin) {
-                        if ($plugin->getSource() == $item['product_id']) {
+                        if ($plugin->getSource() == $item['id']) {
                             // Installed
                             $item['update_status'] = 2;
                             if ($this->pluginService->isUpdate($plugin->getVersion(), $item['version'])) {
@@ -134,11 +229,11 @@ class OwnerStoreController extends AbstractController
                 foreach ($items as &$item) {
                     // Not applicable version
                     $item['version_check'] = 0;
-                    if (in_array(Constant::VERSION, $item['eccube_version'])) {
+                    if (in_array(Constant::VERSION, $item['supported_versions'])) {
                         // Match version
                         $item['version_check'] = 1;
                     }
-                    if ($item['price'] != '0' && $item['purchased'] == '0') {
+                    if ($item['price'] != '0' && $item['purchased'] == 0) {
                         // Not purchased with paid items
                         $item['update_status'] = 4;
                     }
@@ -147,24 +242,33 @@ class OwnerStoreController extends AbstractController
                 }
                 unset($item);
 
+                // Todo: news api will remove this?
                 // Promotion item
-                $i = 0;
-                foreach ($items as $item) {
-                    if ($item['promotion'] == 1) {
-                        $promotionItems[] = $item;
-                        unset($items[$i]);
-                    }
-                    $i++;
-                }
+//                $i = 0;
+//                foreach ($items as $item) {
+//                    if ($item['promotion'] == 1) {
+//                        $promotionItems[] = $item;
+//                        unset($items[$i]);
+//                    }
+//                    $i++;
+//                }
             } else {
                 $message = trans('ownerstore.text.error.ec_cube_error');
             }
         }
 
+        $pagination = $paginator->paginate($items, $page_no, $page_count);
+
         return [
-            'items' => $items,
+            'pagination' => $pagination,
+            'total' => $total,
+            'searchForm' => $searchForm->createView(),
+            'pageMaxis' => $pageMaxis,
+            'page_no' => $page_no,
+            'page_count' => $page_count,
             'promotionItems' => $promotionItems,
             'message' => $message,
+            'Categories' => $category
         ];
     }
 
@@ -433,8 +537,19 @@ class OwnerStoreController extends AbstractController
      *
      * @return array
      */
-    private function getRequestApi($url)
+    private function getRequestApi($url, $data = array())
     {
+        if (count($data) > 0) {
+            dump($data);
+            $params['category_id'] = $data['category_id'];
+            $params['price_type_id'] = $data['price_type_id'];
+            $params['keyword'] = $data['keyword'];
+            $params['sort'] = $data['sort'];
+            $params['page'] = $this->session->get('eccube.admin.plugin_api.search.page_no', 1);
+            $params['per_page'] = $this->session->get('eccube.admin.plugin_api.search.page_count', 1);
+            $url .=  '?' . http_build_query($params);
+        }
+        dump($url);
         $curl = curl_init($url);
 
         // Option array
