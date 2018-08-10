@@ -75,6 +75,7 @@ class OwnerStoreController extends AbstractController
      * @param ComposerProcessService $composerProcessService
      * @param ComposerApiService $composerApiService
      * @param SystemService $systemService
+     * @param PageMaxRepository $pageMaxRepository
      */
     public function __construct(
         PluginRepository $pluginRepository,
@@ -119,15 +120,14 @@ class OwnerStoreController extends AbstractController
         $total = 0;
 
         // Get master data
-        $masterData = $this->eccubeConfig['eccube_package_repo_url'].'/master_data';
+        $masterData = $this->eccubeConfig['eccube_package_repo_url'].'/category';
         list($json, $info) = $this->getRequestApi($masterData);
         $data = json_decode($json, true);
-        $category = array_column($data['category'], 'name', 'id');
-        $priceType = array_column($data['price_type'], 'name', 'id');
+        $category = array_column($data, 'name', 'id');
 
         // build form with master data
         $builder = $this->formFactory
-            ->createBuilder(SearchPluginApiType::class, null, ['category' => $category, 'priceType' => $priceType]);
+            ->createBuilder(SearchPluginApiType::class, null, ['category' => $category]);
         $searchForm = $builder->getForm();
 
         $searchForm->handleRequest($request);
@@ -159,8 +159,6 @@ class OwnerStoreController extends AbstractController
                 // submit default value
                 $viewData = FormUtil::getViewData($searchForm);
                 $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
-
-                // セッション中の検索条件, ページ番号を初期化.
                 $this->session->set('eccube.admin.plugin_api.search', $searchData);
                 $this->session->set('eccube.admin.plugin_api.search.page_no', $page_no);
             }
@@ -168,8 +166,8 @@ class OwnerStoreController extends AbstractController
 
         // set page count
         $page_count = $this->session->get('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
-        if (($pageCount = $searchForm['page_count']->getData()) instanceof PageMax) {
-            $page_count = $pageCount->getId();
+        if (($PageMax = $searchForm['page_count']->getData()) instanceof PageMax) {
+            $page_count = $PageMax->getId();
             $this->session->set('eccube.admin.plugin_api.search.page_count', $page_count);
         }
 
@@ -184,7 +182,7 @@ class OwnerStoreController extends AbstractController
             if (isset($data['plugins']) && count($data['plugins']) > 0) {
                 // Check plugin installed
                 $pluginInstalled = $this->pluginRepository->findAll();
-                // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : paid purchase
+                // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : not purchased
                 foreach ($data['plugins'] as $item) {
                     // Not install/purchased
                     $item['update_status'] = 1;
@@ -199,6 +197,12 @@ class OwnerStoreController extends AbstractController
                             }
                         }
                     }
+
+                    if ($item['purchased'] == false && (isset($item['purchase_required']) && $item['purchase_required'] == true)) {
+                        // Not purchased with paid items
+                        $item['update_status'] = 4;
+                    }
+
                     $items[] = $item;
                 }
 
@@ -209,10 +213,6 @@ class OwnerStoreController extends AbstractController
                     if (in_array(Constant::VERSION, $item['supported_versions'])) {
                         // Match version
                         $item['version_check'] = 1;
-                    }
-                    if ($item['price'] != '0' && $item['purchased'] == 0) {
-                        // Not purchased with paid items
-                        $item['update_status'] = 4;
                     }
                     // Add plugin dependency
                     $item['depend'] = $this->pluginService->getRequirePluginName($items, $item);
@@ -234,9 +234,12 @@ class OwnerStoreController extends AbstractController
             }
         }
 
-
-        $pagination = $paginator->paginate($items, $page_no, $page_count);
+        // The usage is set because `$items` are already paged.
+        // virtual paging
+        $pagination = $paginator->paginate($items);
         $pagination->setTotalItemCount($total);
+        $pagination->setCurrentPageNumber($page_no);
+        $pagination->setItemNumberPerPage($page_count);
 
         return [
             'pagination' => $pagination,
@@ -517,16 +520,15 @@ class OwnerStoreController extends AbstractController
     private function getRequestApi($url, $data = array())
     {
         if (count($data) > 0) {
-            dump($data);
             $params['category_id'] = $data['category_id'];
-            $params['price_type_id'] = $data['price_type_id'];
+            $params['price_type'] = empty($data['price_type']) ? 'all' : $data['price_type'];
             $params['keyword'] = $data['keyword'];
             $params['sort'] = $data['sort'];
+            $params['page'] = $this->session->get('eccube.admin.plugin_api.search.page_no', 1);
+            $params['per_page'] = $this->session->get('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
+            $url .=  '?' . http_build_query($params);
         }
 
-        $params['page'] = $this->session->get('eccube.admin.plugin_api.search.page_no', 1);
-        $params['per_page'] = $this->session->get('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
-        $url .=  '?' . http_build_query($params);
         $curl = curl_init($url);
 
         // Option array

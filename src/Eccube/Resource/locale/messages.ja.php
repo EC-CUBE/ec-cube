@@ -2177,6 +2177,8 @@ return [
     'admin.store.plugin_owners_search.form.placeholder' => 'すべて',
     'admin.store.plugin_owners_search.form.category' => 'カテゴリ',
     'admin.store.plugin_owners_search.form.price_type' => '有料／無料',
+    'admin.store.plugin_owners_search.form.price_type.fee' => '有料',
+    'admin.store.plugin_owners_search.form.price_type.free' => '無料',
     'admin.store.plugin_owners_search.form.keyword' => 'キーワード',
     'admin.store.plugin_owners_search.form.sort.new' => '新着順',
     'admin.store.plugin_owners_search.form.sort.price' => '価格が低い順',

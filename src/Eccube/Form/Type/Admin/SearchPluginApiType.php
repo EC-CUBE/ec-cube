@@ -29,7 +29,12 @@ class SearchPluginApiType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $category = $options['category'];
-        $priceType = $options['priceType'];
+        // Todo: constant for the API key
+        $priceType = [
+            'charge' => trans('admin.store.plugin_owners_search.form.price_type.fee'),
+            'free' => trans('admin.store.plugin_owners_search.form.price_type.free'),
+        ];
+        // Todo: constant for the API key
         $orderBy = [
             'date' => trans('admin.store.plugin_owners_search.form.sort.new'),
             'price' => trans('admin.store.plugin_owners_search.form.sort.price'),
@@ -42,14 +47,12 @@ class SearchPluginApiType extends AbstractType
             'required' => false,
             'label' => 'admin.store.plugin_owners_search.form.category',
         ]);
-
-        $builder->add('price_type_id', ChoiceType::class, [
+        $builder->add('price_type', ChoiceType::class, [
             'choices' => array_flip($priceType),
             'placeholder' => 'admin.store.plugin_owners_search.form.placeholder',
             'required' => false,
             'label' => 'admin.store.plugin_owners_search.form.price_type',
         ]);
-
         $builder->add('keyword', SearchType::class, [
             'required' => false,
             'label' => 'admin.store.plugin_owners_search.form.keyword',
@@ -57,14 +60,12 @@ class SearchPluginApiType extends AbstractType
                 'maxlength' => 50,
             ],
         ]);
-
         $builder->add('sort', ChoiceType::class, [
             'label' => 'searchproduct.label.sort_by',
             'required' => false,
             'placeholder' => null,
             'choices' => array_flip($orderBy),
         ]);
-
         $builder->add('page_count', EntityType::class, [
             'required' => false,
             'placeholder' => null,
@@ -82,7 +83,6 @@ class SearchPluginApiType extends AbstractType
     {
         $resolver->setDefaults([
             'category' => [],
-            'priceType' => []
         ]);
     }
 
