@@ -21,14 +21,13 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\PaymentRegisterType;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\Payment\Method\Cash;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class PaymentController
@@ -193,8 +192,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete", methods={"DELETE"})
      *
      * @param Request $request
      * @param Payment $TargetPayment
@@ -235,8 +233,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_up")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_up", methods={"PUT"})
      */
     public function up(Payment $current)
     {
@@ -261,8 +258,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_down")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_down", methods={"PUT"})
      */
     public function down(Payment $current)
     {
@@ -287,8 +283,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/visible", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_visible")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/visible", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_visible", methods={"PUT"})
      */
     public function visible(Payment $Payment)
     {
@@ -308,8 +303,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/setting/shop/payment/sort_no/move", name="admin_setting_shop_payment_sort_no_move")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/sort_no/move", name="admin_setting_shop_payment_sort_no_move", methods={"POST"})
      *
      * @param Request $request
      *
@@ -317,8 +311,11 @@ class PaymentController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
-            $this->isTokenValid();
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        if ($this->isTokenValid()) {
             $sortNos = $request->request->all();
             foreach ($sortNos as $paymentId => $sortNo) {
                 /** @var Payment $Payment */
@@ -328,8 +325,8 @@ class PaymentController extends AbstractController
                 $this->entityManager->persist($Payment);
             }
             $this->entityManager->flush();
-        }
 
-        return new Response();
+            return new Response();
+        }
     }
 }

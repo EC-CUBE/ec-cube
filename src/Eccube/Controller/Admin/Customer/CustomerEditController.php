@@ -14,14 +14,16 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CustomerType;
 use Eccube\Repository\CustomerRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class CustomerEditController extends AbstractController
@@ -60,6 +62,8 @@ class CustomerEditController extends AbstractController
             if (is_null($Customer)) {
                 throw new NotFoundHttpException();
             }
+
+            $oldStatusId = $Customer->getStatus()->getId();
             // 編集用にデフォルトパスワードをセット
             $previous_password = $Customer->getPassword();
             $Customer->setPassword($this->eccubeConfig['eccube_default_password']);
@@ -68,6 +72,7 @@ class CustomerEditController extends AbstractController
             $Customer = $this->customerRepository->newCustomer();
             $Customer->setBuyTimes(0);
             $Customer->setBuyTotal(0);
+            $oldStatusId = null;
         }
 
         // 会員登録フォーム
@@ -101,6 +106,12 @@ class CustomerEditController extends AbstractController
                         $Customer->setSecretKey($this->customerRepository->getUniqueSecretKey());
                     }
                     $Customer->setPassword($encoder->encodePassword($Customer->getPassword(), $Customer->getSalt()));
+                }
+
+                // 退会ステータスに更新の場合、ダミーのアドレスに更新
+                $newStatusId = $Customer->getStatus()->getId();
+                if ($oldStatusId != $newStatusId && $newStatusId == CustomerStatus::WITHDRAWING) {
+                    $Customer->setEmail(StringUtil::random(60).'@dummy.dummy');
                 }
 
                 $this->entityManager->persist($Customer);

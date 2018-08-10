@@ -27,8 +27,6 @@ use Eccube\Repository\ShippingRepository;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Service\TaxRuleService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -37,6 +35,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ShippingController extends AbstractController
@@ -269,8 +268,7 @@ class ShippingController extends AbstractController
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail")
+     * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail", methods={"PUT"})
      *
      * @param Shipping $Shipping
      *

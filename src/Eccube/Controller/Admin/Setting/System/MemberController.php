@@ -20,8 +20,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -214,8 +213,7 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up", methods={"PUT"})
      */
     public function up(Request $request, Member $Member)
     {
@@ -235,8 +233,7 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down", methods={"PUT"})
      */
     public function down(Request $request, Member $Member)
     {
@@ -256,8 +253,7 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Member $Member)
     {

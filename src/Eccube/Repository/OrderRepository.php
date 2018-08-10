@@ -433,9 +433,18 @@ class OrderRepository extends AbstractRepository
         }
 
         // 発送メール送信済かどうか.
-        if (isset($searchData['shipping_mail_send']) && $searchData['shipping_mail_send']) {
-            $qb
-                ->andWhere('s.mail_send_date IS NOT NULL');
+        if (isset($searchData['shipping_mail_send']) && count($searchData['shipping_mail_send']) > 0) {
+            $orExpr = [];
+            foreach ($searchData['shipping_mail_send'] as $shippingMailSend) {
+                if ($shippingMailSend) {
+                    $orExpr[] = $qb->expr()->isNotNull('s.mail_send_date');
+                } else {
+                    $orExpr[] = $qb->expr()->isNull('s.mail_send_date');
+                }
+            }
+            if ($orExpr) {
+                $qb->andWhere($qb->expr()->orX(...$orExpr));
+            }
         }
 
         // 送り状番号.
