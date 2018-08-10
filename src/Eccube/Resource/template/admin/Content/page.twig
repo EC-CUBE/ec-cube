@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'page'] %}
 
-{% block title %}{{ 'admin.content.page.title'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.content.page.sub_title'|trans }}{% endblock %}
+{% block title %}{{ 'admin.content.page_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% block javascript %}
 <script>
@@ -56,7 +56,7 @@ file that was distributed with this source code.
                 <div class="row justify-content-between mb-2">
                     <div class="col-9">
                         <a class="btn btn-ec-regular py-2" href="{{ url('admin_content_page_new') }}">
-                            {{ 'admin.content.page.create'|trans }}
+                            {{ 'admin.common.create__new'|trans }}
                         </a>
                     </div>
                     <div class="col-3">
@@ -78,8 +78,8 @@ file that was distributed with this source code.
                     <div class="card-body p-0">
                         <table class="table table-sm">
                             <thead>
-                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page.page_name'|trans }}</th>
-                            <th class="border-0 pt-2 pb-2">{{ 'admin.content.page.layout_name'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page_name'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2">{{ 'admin.content.layout_name'|trans }}</th>
                             <th class="border-0 pt-2 pb-2 pr-3"></th>
                             </thead>
                             {% for Page in Pages %}
@@ -102,7 +102,7 @@ file that was distributed with this source code.
                                     </td>
                                     <td class="align-middle pr-3">
                                         <div class="row justify-content-end">
-                                            <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.page.delete'|trans }}">
+                                            <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                 {% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
                                                     <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ Page.id }}">
                                                         <i class="fa fa-close fa-lg text-secondary"
@@ -115,7 +115,7 @@ file that was distributed with this source code.
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title font-weight-bold">
-                                                                        {{ 'admin.content.page.delete_message'|trans }}</h5>
+                                                                        {{ 'admin.content.page_delete_confirm_title'|trans }}</h5>
                                                                     <button class="close" type="button"
                                                                             data-dismiss="modal"
                                                                             aria-label="Close"><span
@@ -124,7 +124,7 @@ file that was distributed with this source code.
                                                                 </div>
                                                                 <div class="modal-body text-left">
                                                                     <p class="text-left">
-                                                                        {{ 'admin.content.page.delete_message'|trans }}</p>
+                                                                        {{ 'admin.content.page_delete_confirm_message'|trans }}</p>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button class="btn btn-ec-sub" type="button"

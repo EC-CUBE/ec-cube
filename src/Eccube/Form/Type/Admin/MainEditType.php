@@ -222,7 +222,7 @@ class MainEditType extends AbstractType
 
                 $count = $qb->getQuery()->getSingleScalarResult();
                 if ($count > 0) {
-                    $form['url']->addError(new FormError('mainedit.text.error.url_exists'));
+                    $form['url']->addError(new FormError(trans('admin.content.page_url_exists')));
                 }
             });
     }
