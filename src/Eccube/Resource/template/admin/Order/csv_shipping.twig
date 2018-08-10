@@ -13,7 +13,7 @@ file that was distributed with this source code.
 {% set menus = ['shipping', 'shipping_csv_import'] %}
 
 {% block title %}{{'admin.order.shipping_csv_upload'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.order_list'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.order.order_list'|trans}}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 {% block javascript %}
@@ -86,7 +86,7 @@ file that was distributed with this source code.
                                         {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'd-none'}}) }}
                                         {{ form_errors(form.import_file) }}
                                     </div>
-                                    <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.common.bulk_registeration'|trans }}</button>
+                                    <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.common.bulk_registration'|trans }}</button>
                                     {% for error in errors %}
                                         <div id="upload_file_box__upload_error--{{ loop.index }}" class="text-danger">{{ error }}</div>
                                     {% endfor %}

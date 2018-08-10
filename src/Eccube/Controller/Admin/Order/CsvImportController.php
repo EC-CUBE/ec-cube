@@ -191,18 +191,18 @@ class CsvImportController extends AbstractCsvImportController
     {
         return [
             'id' => [
-                'name' => trans('admin.shipping.csv_shipping.id'),
-                'description' => trans('admin.shipping.csv_shipping.id.description'),
+                'name' => trans('admin.order.shipping_csv.shipping_id_col'),
+                'description' => trans('admin.order.shipping_csv.shipping_id_description'),
                 'required' => true,
             ],
             'tracking_number' => [
-                'name' => trans('admin.shipping.csv_shipping.tracking_number'),
-                'description' => trans('admin.shipping.csv_shipping.tracking_number.description'),
+                'name' => trans('admin.order.shipping_csv.tracking_number_col'),
+                'description' => trans('admin.order.shipping_csv.tracking_number_description'),
                 'required' => false,
             ],
             'shipping_date' => [
-                'name' => trans('admin.shipping.csv_shipping.shipping_date'),
-                'description' => trans('admin.shipping.csv_shipping.shipping_date.description'),
+                'name' => trans('admin.order.shipping_csv.shipping_date_col'),
+                'description' => trans('admin.order.shipping_csv.shipping_date_description'),
                 'required' => false,
             ],
         ];

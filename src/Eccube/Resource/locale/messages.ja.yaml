@@ -748,6 +748,14 @@ admin.order.edit_multiple_shipping: お届け先を編集
 admin.order.edit_multiple_shipping_description: 複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます
 admin.order.product_item_not_found: 商品が追加されていません
 
+# 出荷CSV雛形
+admin.order.shipping_csv.shipping_id_col: 出荷ID
+admin.order.shipping_csv.shipping_id_description: ''
+admin.order.shipping_csv.tracking_number_col: 送り状番号
+admin.order.shipping_csv.tracking_number_description: ''
+admin.order.shipping_csv.shipping_date_col: 出荷日
+admin.order.shipping_csv.shipping_date_description: '出荷日を「YYYY-MM-DD」の形式で設定'
+
 #------------------------------------------------------------------------------------
 # 会員
 #------------------------------------------------------------------------------------
