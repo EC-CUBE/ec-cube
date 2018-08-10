@@ -166,13 +166,13 @@ file that was distributed with this source code.
                                             <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                             <div class="col d-flex align-items-center">{{ ClassCategory.name }}</div>
                                             <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_category.430'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" href="" data-tooltip="true" data-placement="top" title="{{ 'admin.product.class_category.430'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_category.431'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" href="" data-tooltip="true" data-placement="top" title="{{ 'admin.product.class_category.431'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_category.432'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" href="" data-tooltip="true" data-placement="top" title="{{ 'admin.product.class_category.432'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
                                                 <a class="btn btn-ec-actionIcon mr-3" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}" data-toggle="modal" data-target="#delete_{{ ClassCategory.id }}">
