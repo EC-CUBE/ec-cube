@@ -1,0 +1,11 @@
+id,name,sort_no,discriminator_type
+"1","#fff","1","orderstatuscolor"
+"2","rgba(255, 222, 155, 0.5)","2","orderstatuscolor"
+"3","rgba(201, 201, 201, 0.5)","4","orderstatuscolor"
+"4","rgba(246, 255, 232, 0.5)","5","orderstatuscolor"
+"5","rgba(132, 228, 255, 0.2)","6","orderstatuscolor"
+"6","rgba(255, 255, 171, 0.5)","3","orderstatuscolor"
+"7","rgba(255, 204, 204, 0.7)","0","orderstatuscolor"
+"8","#fff","7","orderstatuscolor"
+"9","rgba(255, 204, 204, 0.3)","8","orderstatuscolor"
+"10","rgba(201, 201, 201, 0.5)","9","orderstatuscolor"
