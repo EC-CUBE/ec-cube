@@ -2224,7 +2224,6 @@ return [
     'admin.store.plugin_table_official.919' => '更新日：%update_date%',
     'admin.store.plugin_table_official.920' => 'アップデート対象プラグインはありません',
     'admin.store.plugin_table_official.921' => '詳細情報',
-    'admin.store.plugin_table_official.922' => '設定',
     'admin.store.plugin_table_official.924' => '有効化',
     'admin.store.plugin_table_official.925' => '無効化',
     'admin.store.plugin_table_official.923' => 'インストールされているプラグインはありません。',
