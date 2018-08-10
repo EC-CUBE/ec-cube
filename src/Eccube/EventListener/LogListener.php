@@ -14,6 +14,7 @@
 namespace Eccube\EventListener;
 
 use Eccube\Log\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -33,9 +34,9 @@ class LogListener implements EventSubscriberInterface
      */
     protected $logger;
 
-    public function __construct(Logger $logger)
+    public function __construct(LoggerInterface $eccubeLogger)
     {
-        $this->logger = $logger;
+        $this->logger = $eccubeLogger;
     }
 
     /**

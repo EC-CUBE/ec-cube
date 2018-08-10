@@ -29,6 +29,7 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -141,7 +142,7 @@ class MypageController extends AbstractController
      * @Route("/mypage/", name="mypage")
      * @Template("Mypage/index.twig")
      */
-    public function index(Request $request, Paginator $paginator)
+    public function index(Request $request, PaginatorInterface $paginator)
     {
         $Customer = $this->getUser();
 

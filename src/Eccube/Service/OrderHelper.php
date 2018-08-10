@@ -35,6 +35,7 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Util\StringUtil;
+use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 
 /**
  * OrderやOrderに関連するエンティティを構築するクラス
@@ -122,7 +123,7 @@ class OrderHelper
         OrderRepository $orderRepository,
         EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig,
-        \Mobile_Detect $mobileDetect,
+        MobileDetector $mobileDetect,
         DeviceTypeRepository $deviceTypeRepository
     ) {
         $this->orderItemTypeRepository = $orderItemTypeRepository;

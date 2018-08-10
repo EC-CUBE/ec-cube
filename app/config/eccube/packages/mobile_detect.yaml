@@ -10,3 +10,5 @@ mobile_detect:
 #            host: http://m.site.com
 #            action: redirect
 #        detect_tablet_as_mobile: true
+services:
+    SunCat\MobileDetectBundle\DeviceDetector\MobileDetector:

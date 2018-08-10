@@ -3,6 +3,7 @@
 parameters:
     # container parameters
     container.dumper.inline_class_loader: true
+    container.autowiring.strict_mode: false
 
     # ec-cube parameters
     env(ECCUBE_LOCALE): 'ja'
@@ -28,7 +29,7 @@ services:
           $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
           $_orderStateMachine: '@state_machine.order'
-
+          $eccubeLogger: '@eccube.logger'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
