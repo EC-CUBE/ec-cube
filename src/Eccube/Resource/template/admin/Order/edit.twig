@@ -433,7 +433,7 @@ file that was distributed with this source code.
                                     </div>
                                     {% for shipping in Order.Shippings %}
                                         <div class="col">
-                                            <span class="mr-5">お届け先{{ loop.index }}</span>
+                                            <span class="mr-5">{{ 'admin.order.delivery'|trans }}({{ loop.index }})</span>
                                             {% set shipping_name = shipping.full_name ~ '(' ~ shipping.full_name_kana ~ ')' ~ shipping.company_name is not null ? shipping.company_name : '' %}
                                             {% set shipping_addr = 'admin.common.postal_symbol'|trans ~ shipping.postal_code ~ ' ' ~ shipping.pref ~ shipping.addr01 ~ shipping.addr02 %}
                                             {% set shipping_date = shipping.shipping_date is not null ? shipping.shipping_date|date_day : '' %}
@@ -865,7 +865,7 @@ file that was distributed with this source code.
                                         <thead class="table-active">
                                         <tr>
                                             <th class="pt-2 pb-2 pl-3">{{ 'admin.order.mail_send_date'|trans }}</th>
-                                            <th class="pt-2 pb-2 pr-3">{{ 'admin.order.mail_body'|trans }}</th>
+                                            <th class="pt-2 pb-2 pr-3">{{ 'admin.order.mail_subject'|trans }}</th>
                                         </tr>
                                         </thead>
                                         <tbody>

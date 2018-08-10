@@ -636,7 +636,7 @@ admin.order.order_list: 受注一覧
 admin.order.order_registration: 受注登録
 admin.order.shipping_registration: 出荷登録
 admin.order.shipping_csv_upload: 出荷CSV登録
-admin.order.mail: メール送信
+admin.order.mail: メール通知
 
 # flashメッセージ
 admin.order.shipping_save_message: 出荷に関わる情報が変更されました。送料の変更が必要な場合は、受注管理より手動で変更してください。
@@ -692,6 +692,7 @@ admin.order.purchase_count: 購入件数
 admin.order.purchase_count__start: 購入件数(開始)
 admin.order.purchase_count__end: 購入件数(終了)
 admin.order.tracking_number: 送り状番号
+admin.order.mail_purchase_product_count: '他%count%点'
 admin.order.mail_history: メール送信履歴
 admin.order.mail_send_date: メール送信日時
 admin.order.mail_subject: 件名
@@ -702,6 +703,7 @@ admin.order.mail_mail_info: メール内容
 admin.order.mail_confirm: 送信内容を確認
 admin.order.mail_template: テンプレート
 admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
+admin.order.mail_failed: 取得に失敗しました。
 admin.order.shipping_info: 出荷情報
 admin.order.delivery_date: お届け希望日
 admin.order.delivery_time: 指定時間帯
