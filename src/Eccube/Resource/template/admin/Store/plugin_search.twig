@@ -42,17 +42,20 @@ file that was distributed with this source code.
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                <div class="card rounded border-0 mb-4">
-                    <div class="card-body p-0">
-                        <div class="row">
-                            <div class="col-12 p-4">
-                                {% for key,category in Categories %}
-                                    <a href="{{ url('admin_store_plugin_owners_search', {'category_id' : key}) }}" class="px-3 text-dark">{{ category }}</a>
-                                {% endfor %}
+                {% if Categories|length > 0 %}
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col-12 p-4">
+                                    {% for key,category in Categories %}
+                                        <a href="{{ url('admin_store_plugin_owners_search', {'category_id' : key}) }}" class="px-3 text-dark">{{ category }}</a>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
+
                 <form method="post" action="{{ url('admin_store_plugin_owners_search') }}" class="plugin-search" name="search">
                     <div class="c-outsideBlock">
                         {{ form_widget(searchForm._token) }}
@@ -99,6 +102,8 @@ file that was distributed with this source code.
                                     {{ include('@admin/Store/plugin_search_panel.twig') }}
                                 </div>
                             {% endfor %}
+                        {% else %}
+                            {{ message }}
                         {% endif %}
                     </div>
 

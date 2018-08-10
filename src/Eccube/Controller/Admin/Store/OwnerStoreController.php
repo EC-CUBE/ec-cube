@@ -18,7 +18,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\PageMax;
 use Eccube\Entity\Plugin;
 use Eccube\Form\Type\Admin\SearchPluginApiType;
-use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerProcessService;
@@ -63,11 +62,6 @@ class OwnerStoreController extends AbstractController
     private static $vendorName = 'ec-cube';
 
     /**
-     * @var PageMaxRepository
-     */
-    private $pageMaxRepository;
-
-    /**
      * OwnerStoreController constructor.
      *
      * @param PluginRepository $pluginRepository
@@ -75,20 +69,17 @@ class OwnerStoreController extends AbstractController
      * @param ComposerProcessService $composerProcessService
      * @param ComposerApiService $composerApiService
      * @param SystemService $systemService
-     * @param PageMaxRepository $pageMaxRepository
      */
     public function __construct(
         PluginRepository $pluginRepository,
         PluginService $pluginService,
         ComposerProcessService $composerProcessService,
         ComposerApiService $composerApiService,
-        SystemService $systemService,
-        PageMaxRepository $pageMaxRepository
+        SystemService $systemService
     ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->systemService = $systemService;
-        $this->pageMaxRepository = $pageMaxRepository;
 
         // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
@@ -118,12 +109,15 @@ class OwnerStoreController extends AbstractController
         $items = [];
         $message = '';
         $total = 0;
+        $category = [];
 
         // Get master data
         $masterData = $this->eccubeConfig['eccube_package_repo_url'].'/category';
         list($json, $info) = $this->getRequestApi($masterData);
-        $data = json_decode($json, true);
-        $category = array_column($data, 'name', 'id');
+        if (!empty($data)) {
+            $data = json_decode($json, true);
+            $category = array_column($data, 'name', 'id');
+        }
 
         // build form with master data
         $builder = $this->formFactory
