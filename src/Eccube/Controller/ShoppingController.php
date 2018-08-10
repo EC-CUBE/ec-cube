@@ -35,15 +35,13 @@ use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\ShoppingService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ShoppingController extends AbstractShoppingController
@@ -193,8 +191,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入処理
      *
-     * @Route("/shopping/confirm", name="shopping_confirm")
-     * @Method("POST")
+     * @Route("/shopping/confirm", name="shopping_confirm", methods={"POST"})
      * @Template("Shopping/confirm.twig")
      */
     public function confirm(Request $request)
@@ -260,8 +257,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入処理
      *
-     * @Route("/shopping/order", name="shopping_order")
-     * @Method("POST")
+     * @Route("/shopping/order", name="shopping_order", methods={"POST"})
      * @Template("Shopping/index.twig")
      */
     public function order(Request $request)
@@ -688,12 +684,12 @@ class ShoppingController extends AbstractShoppingController
         $builder = $this->formFactory->createBuilder(OrderType::class, $Order);
 
         $event = new EventArgs(
-                [
-                    'builder' => $builder,
-                    'Order' => $Order,
-                ],
-                $request
-            );
+            [
+                'builder' => $builder,
+                'Order' => $Order,
+            ],
+            $request
+        );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
