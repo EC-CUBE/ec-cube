@@ -37,7 +37,11 @@ class DeliveryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_削除($rowNum)
     {
-        $this->tester->click("#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.c-primaryCol > div > div > div > ul > li:nth-child($rowNum) > div > div.col-auto.text-right > a:nth-child(3)");
+        $this->tester->click("#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.c-primaryCol > div > div > div > ul > li:nth-child($rowNum) > div > div.col-auto.text-right > div > a");
+
+        // accept modal
+        $this->tester->waitForElementVisible("#delete_modal");
+        $this->tester->click("#delete_modal > div > div > div.modal-footer > a");
         return $this;
     }
 
