@@ -615,10 +615,10 @@ class OrderController extends AbstractController
         if (!$OrderPdf) {
             $OrderPdf = new OrderPdf();
             $OrderPdf
-                ->setTitle(trans('admin.order.export.pdf.title.default'))
-                ->setMessage1(trans('admin.order.export.pdf.message1.default'))
-                ->setMessage2(trans('admin.order.export.pdf.message2.default'))
-                ->setMessage3(trans('admin.order.export.pdf.message3.default'));
+                ->setTitle(trans('admin.order.delivery_note_title__default'))
+                ->setMessage1(trans('admin.order.delivery_note_message__default1'))
+                ->setMessage2(trans('admin.order.delivery_note_message__default2'))
+                ->setMessage3(trans('admin.order.delivery_note_message__default3'));
         }
 
         /**

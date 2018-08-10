@@ -747,6 +747,23 @@ admin.order.product_info: 商品情報
 admin.order.edit_multiple_shipping: お届け先を編集
 admin.order.edit_multiple_shipping_description: 複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます
 admin.order.product_item_not_found: 商品が追加されていません
+admin.order.delivery_note_create_date: 発行日
+admin.order.delivery_note_title: タイトル
+admin.order.delivery_note_title__default: お買上げ明細書(納品書)
+admin.order.delivery_note_output_format: 出力形式
+admin.order.delivery_note_output_format__browser: ブラウザで開く
+admin.order.delivery_note_output_format__file: ファイルに保存
+admin.order.delivery_note_message: メッセージ
+admin.order.delivery_note_message__default1: このたびはお買上げいただきありがとうございます。
+admin.order.delivery_note_message__default2: 下記の内容にて納品させていただきます。
+admin.order.delivery_note_message__default3: ご確認くださいますよう、お願いいたします。
+admin.order.delivery_note_memo: 備考
+admin.order.delivery_note_line1: 1行目
+admin.order.delivery_note_line2: 2行目
+admin.order.delivery_note_line3: 3行目
+admin.order.delivery_note_save_input: 入力内容を保存する
+admin.order.delivery_note_download_error: 'ダウンロードに失敗しました'
+admin.order.delivery_note_parameter_error: '出荷IDが指定されていません'
 
 # 出荷CSV雛形
 admin.order.shipping_csv.shipping_id_col: 出荷ID

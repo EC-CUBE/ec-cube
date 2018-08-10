@@ -84,8 +84,8 @@ class OrderPdfType extends AbstractType
             ])
             ->add('download_kind', ChoiceType::class, [
                 'choices' => [
-                    'admin.order.export.pdf.label.file' => 1,
-                    'admin.order.export.pdf.label.browser' => 2,
+                    'admin.order.delivery_note_output_format__file' => 1,
+                    'admin.order.delivery_note_output_format__browser' => 2,
                 ],
                 'expanded' => false,
                 'multiple' => false,
@@ -141,6 +141,7 @@ class OrderPdfType extends AbstractType
                 ],
             ])
             ->add('default', CheckboxType::class, [
+                'label' => 'admin.order.delivery_note_save_input',
                 'required' => false,
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
