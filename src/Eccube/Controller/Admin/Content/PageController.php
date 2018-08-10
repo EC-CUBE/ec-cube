@@ -227,7 +227,7 @@ class PageController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE, $event);
 
-            $this->addSuccess('admin.register.complete', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
 
             // twig キャッシュの削除.
             $cacheDir = $this->getParameter('kernel.cache_dir').'/twig';
@@ -298,7 +298,7 @@ class PageController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.delete.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
         }
 
         return $this->redirectToRoute('admin_content_page');

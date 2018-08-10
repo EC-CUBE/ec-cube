@@ -28,6 +28,9 @@ file that was distributed with this source code.
     {% if Page.meta_robots is not empty %}
         <meta name="robots" content="{{ Page.meta_robots }}">
     {% endif %}
+    {% if Page.meta_tags is not empty %}
+        {{ Page.meta_tags|raw }}
+    {% endif %}
     <link rel="icon" href="{{ asset('img/common/favicon.ico') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">

@@ -865,17 +865,25 @@ admin.content.layout_section__footer: '#footer'
 admin.content.layout_section__drawer: '#drawer'
 admin.content.layout_section__close_body_before: '</body>タグ直前'
 admin.content.page_name: ページ名
+admin.content.page_delete_confirm_title: ページを削除します
+admin.content.page_delete_confirm_message: ページを削除してよろしいですか？
 admin.content.page__card_title: ページ設定
+admin.content.page_url: URL
+admin.content.page_url_exists: 既にURLが存在しています。
+admin.content.page_file_name: ファイル名
+admin.content.page_source_code: コード
 admin.content.page_layout__card_title: レイアウト設定
+admin.content.page_pc: PC
+admin.content.page_mobile: モバイル
 admin.content.page_meta__card_title: メタ設定
 admin.content.page_meta_author: author
 admin.content.page_meta_description: description
 admin.content.page_meta_keyword: keyword
 admin.content.page_meta_robot: robot
 admin.content.page_meta_metatag: metatag
-admin.content.page_file_name: ファイル名
-admin.content.page_url: URL
-admin.content.page_source_code: コード
+admin.content.page_meta_metatag_placeholder: |
+  <meta property="og:title" content="ページのタイトル" />
+  <meta property="og:image" content="画像のURL" />
 admin.content.block_name: ブロック名
 admin.content.block__card_title: ブロック設定
 admin.content.block_file_name: ファイル名
