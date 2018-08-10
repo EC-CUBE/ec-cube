@@ -52,7 +52,7 @@ class SearchOrderType extends AbstractType
                 ],
             ])
             ->add('status', OrderStatusType::class, [
-                'label' => 'admin.order.status',
+                'label' => 'admin.order.order_status',
                 'expanded' => true,
                 'multiple' => true,
             ])
@@ -116,7 +116,7 @@ class SearchOrderType extends AbstractType
                 'multiple' => true,
             ])
             ->add('order_date_start', DateType::class, [
-                'label' => 'admin.order.order_date_start',
+                'label' => 'admin.order.order_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -124,7 +124,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('order_date_end', DateType::class, [
-                'label' => 'admin.order.order_date_end',
+                'label' => 'admin.order.order_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -132,7 +132,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('payment_date_start', DateType::class, [
-                'label' => 'admin.order.payment_date_start',
+                'label' => 'admin.order.payment_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -140,7 +140,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('payment_date_end', DateType::class, [
-                'label' => 'admin.order.payment_date_start',
+                'label' => 'admin.order.payment_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -148,7 +148,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('update_date_start', DateType::class, [
-                'label' => 'admin.common.update_date_start',
+                'label' => 'admin.common.update_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -156,7 +156,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('update_date_end', DateType::class, [
-                'label' => 'admin.order.update_date_start',
+                'label' => 'admin.common.update_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -164,7 +164,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('shipping_delivery_date_start', DateType::class, [
-                'label' => 'admin.order.delivery_date_start',
+                'label' => 'admin.order.delivery_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -172,7 +172,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('shipping_delivery_date_end', DateType::class, [
-                'label' => 'admin.order.delivery_date_start',
+                'label' => 'admin.order.delivery_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -180,11 +180,11 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('payment_total_start', PriceType::class, [
-                'label' => 'admin.order.purchase_price_start',
+                'label' => 'admin.order.purchase_price__start',
                 'required' => false,
             ])
             ->add('payment_total_end', PriceType::class, [
-                'label' => 'admin.order.purchase_price_end',
+                'label' => 'admin.order.purchase_price__end',
                 'required' => false,
             ])
             ->add('buy_product_name', TextType::class, [

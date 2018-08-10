@@ -645,7 +645,11 @@ admin.order.shipping_save_message: 出荷に関わる情報が変更されまし
 admin.order.multi_search_label: 注文番号・お名前・会社名・メールアドレス・電話番号
 admin.order.order_info: 注文情報
 admin.order.order_date: 注文日
+admin.order.order_date__start: 注文日(開始)
+admin.order.order_date__end: 注文日(終了)
 admin.order.payment_date: 入金日
+admin.order.payment_date__start: 入金日(開始)
+admin.order.payment_date__end: 入金日(終了)
 admin.order.order_no: 注文番号
 admin.order.shipping_date: 出荷日
 admin.order.message: お問い合わせ
