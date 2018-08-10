@@ -20,16 +20,9 @@ file that was distributed with this source code.
         .border-bt {
             border-bottom: 1px solid rgba(0, 0, 0, .125);
         }
-
         #plugin-list .info {
             min-height: 65%;
         }
-
-        .plg-prices,
-        #plugin-list dl dd {
-            font-size: 1.25rem;
-        }
-
         .plugin-ver li span {
             display: inline-block;
         }
@@ -41,7 +34,7 @@ file that was distributed with this source code.
             <div class="c-primaryCol">
                 <div id="plugin-list" class="card rounded border-0 mb-4">
                     <div class="card-header">
-                        <h5>以下のプラグインをインストールします</h5>
+                        <span class="card-title">以下のプラグインをインストールします</span>
                     </div>
                     <div class="card-body p-0">
                         <div class="row m-0 p-3 {% if not is_update %}border-bt{% endif %}">
@@ -55,9 +48,9 @@ file that was distributed with this source code.
                                     <h5 class="font-weight-bold mb-4">
                                         最高級プラチナフォークは、贈り物としても人気です。
                                     </h5>
-                                    <h6 class="mb-4">
-                                        セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</h6>
-                                    <p class="plg-prices text-danger"><span
+                                    <span>
+                                        セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</span>
+                                    <p class="text-danger pt-3"><span
                                                 class="font-weight-bold text-dark">販売価格 </span> 25.000円
                                         <small> (税込)</small>
                                     </p>
@@ -122,7 +115,7 @@ file that was distributed with this source code.
                             <div class="col-6">
                                 {% if not is_update %}
                                     <div class="row">
-                                        <div class="col-6 col-sm-5 col-md-4 pt-2 font-weight-bold">オプション：バージョンを指定</div>
+                                        <div class="col-6 col-sm-5 col-md-4 pt-2">オプション：バージョンを指定</div>
                                         <div class="col-auto">
                                             <select class="custom-select">
                                                 <option>最新版</option>
