@@ -902,8 +902,10 @@ admin.content.cache_delete: キャッシュ削除
 
 # 機能名称
 admin.setting: 設定
-admin.setting.shop: 基本情報設定
-admin.setting.shop.shop_setting: ショップ設定
+admin.setting.shop: 店舗設定
+admin.setting.shop.shop_setting: 基本設定
+admin.setting.shop.tradelaw_setting: 特定商取引法設定
+admin.setting.shop.agreement_setting: 利用規約設定
 admin.setting.shop.payment_list: 支払方法一覧
 admin.setting.shop.payment_setting: 支払方法設定
 admin.setting.shop.delivery_list: 配送方法設定
@@ -921,10 +923,10 @@ admin.setting.system.master_data_management: マスタデータ管理
 admin.setting.system.system_info: システム情報
 
 #------------------------------------------------------------------------------------
-# 設定：ショップ設定：ショップ設定
+# 設定：ショップ設定：基本設定
 #------------------------------------------------------------------------------------
 
-admin.setting.shop.shop.base_info: 基本情報
+admin.setting.shop.shop.base_info: 店舗情報
 admin.setting.shop.company_name_kana: 会社名(カナ)
 admin.setting.shop.shop.shop_name: 店名
 admin.setting.shop.shop.shop_name_kana: 店名(カナ)
@@ -955,7 +957,7 @@ admin.setting.shop.shop.option_point_rate: ポイント付与率
 admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レート
 
 #------------------------------------------------------------------------------------
-# 設定：ショップ設定：支払方法設定
+# 設定：店舗設定：支払方法設定
 #------------------------------------------------------------------------------------
 
 admin.setting.shop.payment.terms_of_use: 利用条件
