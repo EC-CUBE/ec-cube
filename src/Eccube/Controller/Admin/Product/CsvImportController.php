@@ -36,11 +36,11 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CsvImportController extends AbstractCsvImportController
 {

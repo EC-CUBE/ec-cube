@@ -21,12 +21,11 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DeliveryController extends AbstractController
 {
@@ -147,8 +146,7 @@ class DeliveryController extends AbstractController
     /**
      * お届け先を削除する.
      *
-     * @Method("DELETE")
-     * @Route("/mypage/delivery/{id}/delete", name="mypage_delivery_delete")
+     * @Route("/mypage/delivery/{id}/delete", name="mypage_delivery_delete", methods={"DELETE"})
      */
     public function delete(Request $request, CustomerAddress $CustomerAddress)
     {

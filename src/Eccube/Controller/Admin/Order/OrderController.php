@@ -18,7 +18,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -40,14 +39,13 @@ use Eccube\Service\OrderStateMachine;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -315,8 +313,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/order/bulk_delete", name="admin_order_bulk_delete")
+     * @Route("/%eccube_admin_route%/order/bulk_delete", name="admin_order_bulk_delete", methods={"POST"})
      */
     public function bulkDelete(Request $request)
     {
@@ -457,8 +454,7 @@ class OrderController extends AbstractController
     /**
      * Update to order status
      *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status")
+     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status", methods={"PUT"})
      *
      * @param Request $request
      * @param Shipping $Shipping
@@ -538,8 +534,7 @@ class OrderController extends AbstractController
     /**
      * Update to Tracking number.
      *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number")
+     * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number", methods={"PUT"})
      *
      * @param Request $request
      * @param Shipping $shipping

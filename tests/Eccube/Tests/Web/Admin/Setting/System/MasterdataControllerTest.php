@@ -321,7 +321,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
 
         $id = $this->entityManager->getRepository($entityName)->findOneBy([], ['sort_no' => 'DESC'])->getSortNo() + 1;
         $sex = new \Eccube\Entity\Master\Sex();
-        $sex->setName("0削除テスト");
+        $sex->setName('0削除テスト');
         $sex->setSortNo($id);
         $sex->setId(0);
 

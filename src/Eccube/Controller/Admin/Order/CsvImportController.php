@@ -20,9 +20,9 @@ use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Service\OrderStateMachine;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CsvImportController extends AbstractCsvImportController
 {
