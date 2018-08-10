@@ -152,13 +152,13 @@ file that was distributed with this source code.
                                             <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a>
                                             </div>
                                             <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon mr-3 action-up{% if loop.first %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.up'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-up{% if loop.first %} disabled{% endif %}" href="#" data-tooltip="true" data-placement="top" title="{{ 'admin.product.tag.up'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-down{% if loop.last %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.down'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-down{% if loop.last %} disabled{% endif %}" href="#" data-tooltip="true" data-placement="top" title="{{ 'admin.product.tag.down'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.edit'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" data-tooltip="true" data-placement="top" title="{{ 'admin.product.tag.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
                                                 <a class="btn btn-ec-actionIcon mr-3" data-toggle="modal" data-target="#confirmModal-{{ Tag.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.product.tag.delete'|trans }}">

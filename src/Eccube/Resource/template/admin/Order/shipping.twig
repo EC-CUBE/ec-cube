@@ -275,7 +275,7 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
                                              title="Tooltip">
                                             <span class="card-title">{{ 'admin.shipping.edit.description_title'|trans }}{{ loop.index }}</span>
                                             <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
@@ -506,7 +506,7 @@ file that was distributed with this source code.
                                                            data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
                                                            data-update-status-url="{{ url('admin_shipping_update_order_status', { id: shippingForm.vars.value.id}) }}"
                                                            data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: shippingForm.vars.value.id}) }}"
-                                                           data-toggle="tooltip" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
+                                                           data-tooltip="true" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
                                                             <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                             出荷完了にする
                                                         </button>

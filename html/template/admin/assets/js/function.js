@@ -27,7 +27,7 @@ mainNavArea();
 //Bootstrap ツールチップ
 var toolTip = function() {
     $(function() {
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-tooltip="true"]').tooltip()
     })
 };
 
