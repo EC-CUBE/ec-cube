@@ -126,7 +126,11 @@
             "Eccube\\": "src/Eccube",
             "Plugin\\": "app/Plugin"
         },
-        "exclude-from-classmap": ["**/Test/**", "**/Tests/**", "**/test/**", "**/tests/**"]
+        "exclude-from-classmap": [
+            "src/Eccube/Entity/**",
+            "app/proxy/entity/**",
+            "**/Test/**", "**/Tests/**", "**/test/**", "**/tests/**"
+        ]
     },
     "autoload-dev" : {
         "psr-4": {
