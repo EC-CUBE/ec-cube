@@ -43,6 +43,9 @@ file that was distributed with this source code.
                                     {% endif %}
                                 </label>
                             </div>
+                            {% for reset_complete in app.session.flashbag.get('password_reset_complete') %}
+                                <p>{{ reset_complete|trans }}</p>
+                            {% endfor %}
                             {% if error %}
                                 <p class="ec-errorMessage">{{ error.messageKey|trans(error.messageData)|raw }}</p>
                             {% endif %}

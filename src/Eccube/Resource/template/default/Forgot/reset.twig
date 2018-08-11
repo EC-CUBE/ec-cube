@@ -10,24 +10,63 @@ file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
-{% block main %}
+{% form_theme form 'Form/form_div_layout.twig' %}
 
-    <div class="ec-role">
+{% block main %}
+    <div class="ec-registerRole">
         <div class="ec-pageHeader">
-            <h1>パスワード変更(完了ページ)</h1>
+            <h1>パスワード再発行(再設定ページ)</h1>
         </div>
-    </div>
-    <div class="ec-forgetCompleteRole">
-        <div class="ec-off3Grid ec-text-ac">
-            <div class="ec-off3Grid__cell">
-                <div class="ec-reportHeading">
-                    <h2>新しいパスワードが送信されました。</h2>
-                </div>
-                <p class="ec-reportDescription">新しいパスワード送り致しましたので、メールをご確認ください。</p>
-                <p class="ec-reportDescription">今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+        <div class="ec-off1Grid">
+            <div class="ec-off1Grid__cell">
+                <form id="form1" method="post" novalidate class="h-adr">
+                    {{ form_widget(form._token) }}
+                    <div class="ec-borderedDefs">
+                        <dl>
+                            <dt>
+                                {{ form_label(form.login_email) }}</dt>
+                            <dd>
+                                <div class="ec-input">
+                                    {{ form_widget(form.login_email) }}
+                                    {{ form_errors(form.login_email) }}
+                                    {% if error %}
+                                        <p class="ec-errorMessage">{{ error }}</p>
+                                    {% endif %}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>
+                                {{ form_label(form.password, 'signup.label.pass', {'label_attr': {'class': 'ec-label'}}) }}
+                            </dt>
+                            <dd>
+                                <div class="ec-input{{ has_errors(form.password.first) ? ' error' }}">
+                                    {{ form_widget(form.password.first, {
+                                        'attr': {'placeholder': 'signup.text.note.half_width_alphanumeric'},
+                                        'type': 'password'
+                                    }) }}
+                                    {{ form_errors(form.password.first) }}
+                                </div>
+                                <div class="ec-input{{ has_errors(form.password.second) ? ' error' }}">
+                                    {{ form_widget(form.password.second, {
+                                        'attr': {'placeholder': 'signup.label.pass_check'},
+                                        'type': 'password'
+                                    }) }}
+                                    {{ form_errors(form.password.second) }}
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="ec-registerRole__actions">
+                        <div class="ec-off4Grid">
+                            <div class="ec-off4Grid__cell">
+                                <button class="ec-blockBtn--action" type="submit">{{ 'forgotcontroller.label.edit'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 {% endblock %}
-
 
