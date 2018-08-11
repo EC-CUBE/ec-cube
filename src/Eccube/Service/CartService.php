@@ -448,15 +448,18 @@ class CartService
     public function setPrimary($cartKey)
     {
         $Carts = $this->getCarts();
+        $primary = $Carts[0];
+        $index_key = 0;
         foreach ($Carts as $index => $Cart) {
             if ($Cart->getCartKey() === $cartKey) {
+                $index_key = $index;
                 $primary = $Carts[$index];
                 break;
             }
         }
         $prev = $Carts[0];
         array_splice($Carts, 0, 1, [$primary]);
-        array_splice($Carts, $index, 1, [$prev]);
+        array_splice($Carts, $index_key, 1, [$prev]);
         $this->carts = $Carts;
         $this->save();
     }
