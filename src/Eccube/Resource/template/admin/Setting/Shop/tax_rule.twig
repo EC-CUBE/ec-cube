@@ -181,8 +181,40 @@ file that was distributed with this source code.
 
                                                     <div class="col-6 text-center">
                                                         {% if not TaxRule.default_tax_rule %}
-                                                            <a class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}" href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                                <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                            <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top"
+                                                                 title="{{ 'admin.common.delete'|trans }}">
+                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#layoutDelete">
+                                                                    <i class="fa fa-close fa-lg text-secondary"></i>
+                                                                </a>
+                                                            </div>
+                                                            <!-- 削除モーダル -->
+                                                            <div class="modal fade" id="layoutDelete" tabindex="-1" role="dialog"
+                                                                 aria-labelledby="layoutDelete" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title font-weight-bold">
+                                                                                {{ 'admin.common.delete_modal__title'|trans }}
+                                                                            </h5>
+                                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">×</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body text-left">
+                                                                            <p class="text-left modal-message">{{ 'admin.common.delete_modal__message'|trans({ "%name%" : TaxRule.id }) }}</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                                                {{ 'admin.common.cancel'|trans }}
+                                                                            </button>
+                                                                            <a class="btn btn-ec-delete" href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}"
+                                                                                {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
+                                                                                {{ 'admin.common.delete'|trans }}
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         {% endif %}
                                                     </div>
                                                 </div>
