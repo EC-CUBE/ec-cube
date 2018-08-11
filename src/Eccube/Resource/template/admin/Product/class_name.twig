@@ -125,10 +125,14 @@ file that was distributed with this source code.
                 current.find('.mode-edit').removeClass('d-none');
             });
 
-            // 削除モーダルのhref変更
+            // 削除モーダルのhrefとmessageの変更
             $('#delete_modal').on('shown.bs.modal', function(event) {
                 var target = $(event.relatedTarget);
+                // hrefの変更
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
+
+                // messageの変更
+                $(this).find('p.modal-message').text(target.data('message'));
             });
         });
     </script>
@@ -178,16 +182,18 @@ file that was distributed with this source code.
                                                 <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
+                                                <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                     data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                     {% set classCategories = ClassName.ClassCategories|length %}
                                                     <a class="btn btn-ec-actionIcon{% if classCategories > 0 %} disabled{% endif %}"
-                                                       {% if classCategories == 0 %}data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_product_class_name_delete', {'id' : ClassName.id}) }}" {% endif %}>
+                                                       {% if classCategories == 0 %}data-toggle="modal" data-target="#delete_modal"
+                                                       data-url="{{ url('admin_product_class_name_delete', {'id' : ClassName.id}) }}"
+                                                       data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : ClassName.name }) }}"{% endif %}>
                                                         <i class="fa fa-close fa-lg text-secondary"></i>
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_class_name') }}">
                                             {{ form_widget(forms[ClassName.id]._token) }}
                                             <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name'|trans }}</span></div>
@@ -207,33 +213,33 @@ file that was distributed with this source code.
                                                 <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.common.cancel'|trans }}</button>
                                             </div>
                                         </form>
-
                                     </li>
                                 {% endfor %}
                             </ul>
-                            <div class="modal fade" id="delete_modal" tabindex="-1"
-                                 role="dialog"
+                            <!-- 削除モーダル -->
+                            <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog"
                                  aria-labelledby="delete_modal" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title font-weight-bold">
-                                                {{ 'admin.class_name.modal.header'|trans }}</h5>
-                                            <button class="close" type="button"
-                                                    data-dismiss="modal"
-                                                    aria-label="Close"><span
-                                                        aria-hidden="true">×</span>
+                                                {{ 'admin.common.delete_modal__title'|trans }}
+                                            </h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
                                             </button>
                                         </div>
                                         <div class="modal-body text-left">
-                                            <p class="text-left">
-                                                {{ 'admin.class_name.modal.body'|trans }}</p>
+                                            <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                {{ 'admin.common.cancel'|trans }}
                                             </button>
                                             <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}
-                                               data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                               data-method="delete" data-confirm="false">
+                                                {{ 'admin.common.delete'|trans }}
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

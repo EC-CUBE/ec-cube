@@ -379,6 +379,8 @@ admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません
 admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
+admin.common.delete_modal__title: 削除します
+admin.common.delete_modal__message: 'この操作はあとから取り消すことができません。「%name%」を削除してよろしいですか？'
 
 # エンティティに関連するラベル
 admin.common.id: ID
@@ -543,14 +545,10 @@ admin.product.stock_unlimited__short: 無制限
 admin.product.class_name: 規格名
 admin.product.class_name__backend_name: 管理名
 admin.product.class_name__card_title: 規格情報
-admin.product.class_name__delete_confirm_title: 規格名を削除します
-admin.product.class_name__delete_confirm_message: この操作はあとから取り消すことができません。この規格を削除しますか？
 admin.product.class_category: 規格分類
 admin.product.class_category__card_title: 規格分類情報
 admin.product.class_category_name: 規格分類名
 admin.product.class_category_name__short: 分類名
-admin.product.class_category__delete_confirm_title: 規格分類を削除します
-admin.product.class_category__delete_confirm_message: この操作はあとから取り消すことができません。この規格分類を削除しますか？
 admin.product.class_category1: 規格分類1
 admin.product.class_category1__short: 規格1
 admin.product.class_category2: 規格分類2
@@ -564,8 +562,6 @@ admin.product.parent_category_id: 親カテゴリID
 admin.product.category_all: すべてのカテゴリ
 admin.product.tag: タグ
 admin.product.tag__product_card_title: タグ
-admin.product.delete_tag_confirm_title: タグを削除します
-admin.product.delete_tag_confirm_message: タグを削除してよろしいですか？
 admin.product.select__class1: 規格1を選択してください
 admin.product.select__class2: 規格2を選択してください
 
@@ -830,8 +826,6 @@ admin.content.file.add_directory: フォルダを追加
 admin.content.file.directory_name: フォルダ名
 admin.content.file.file_list__card_title: このフォルダ内のファイル
 admin.content.file.updated: 更新
-admin.content.file.delete_confirm_title: '%name%を削除します'
-admin.content.file.delete_confirm_message: 削除してよろしいですか？
 admin.content.file.directory_tree: フォルダ構成
 admin.content.layout_add: レイアウトを新規追加
 admin.content.layout_delete: レイアウトを削除
