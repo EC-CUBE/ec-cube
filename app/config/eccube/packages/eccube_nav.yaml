@@ -98,7 +98,7 @@ parameters:
                             name: admin.nav.setting.shop.shop_tax
                             url: admin_setting_shop_tax
                         shop_mail:
-                            name: admin.nav.setting.shop.shop_mail
+                            name: admin.setting.shop.mail_setting
                             url: admin_setting_shop_mail
                         shop_csv:
                             name: admin.setting.shop.csv_setting

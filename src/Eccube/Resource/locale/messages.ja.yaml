@@ -1010,6 +1010,7 @@ admin.setting.shop.tax.apply_date: 適用日時
 # 設定：ショップ設定：メール設定
 #------------------------------------------------------------------------------------
 
+admin.setting.shop.mail.mail_template_edit: テンプレート編集
 admin.setting.shop.mail.mail_template: テンプレート
 admin.setting.shop.mail.mail_subject: 件名
 admin.setting.shop.mail.mail_body: 本文
