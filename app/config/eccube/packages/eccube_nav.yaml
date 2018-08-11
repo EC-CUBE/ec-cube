@@ -95,7 +95,7 @@ parameters:
                             name: admin.setting.shop.delivery_setting
                             url: admin_setting_shop_delivery
                         shop_tax:
-                            name: admin.nav.setting.shop.shop_tax
+                            name: admin.setting.shop.tax_setting
                             url: admin_setting_shop_tax
                         shop_mail:
                             name: admin.setting.shop.mail_setting

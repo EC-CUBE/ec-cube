@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'shop', 'shop_tax'] %}
 
-{% block title %}{{ 'admin.setting.shop.tax_rule.title'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.shop.tax_rule.subtitle'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.tax_setting'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -73,7 +73,7 @@ file that was distributed with this source code.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
-                    <div class="card-header"><span>{{ 'admin.setting.shop.tax_rule.header'|trans }}</span></div>
+                    <div class="card-header"><span>{{ 'admin.setting.shop.tax_setting'|trans }}</span></div>
                     <div class="card-body p-0">
                         <table class="table tabel-sm">
                             <colgroup>
@@ -86,12 +86,12 @@ file that was distributed with this source code.
                             </colgroup>
                             <thead>
                             <tr>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax_rule.table_col_1'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax_rule.table_col_2'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax_rule.table_col_3'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax_rule.table_col_4'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax_rule.table_col_5'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3 pr-5">{{ 'admin.setting.shop.tax_rule.table_col_6'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.common.id'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax.tax_rate'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax.rounding_type'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax.apply_date'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3"></th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3 pr-5"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -124,7 +124,7 @@ file that was distributed with this source code.
                                     <td class="align-middle"></td>
                                     <td class="align-middle pr-5">
                                         <div class="row justify-content-end">
-                                            <button class="btn btn-ec-regular px-4" type="submit">{{ 'common.label.add'|trans }}</button>
+                                            <button class="btn btn-ec-regular px-4" type="submit">{{ 'admin.common.create__new'|trans }}</button>
                                         </div>
                                     </td>
                                 </form>
@@ -157,7 +157,7 @@ file that was distributed with this source code.
                                         <td class="align-middle">
                                             <div class="edit">
                                                 {% if TaxRule.default_tax_rule %}
-                                                    {{ 'admin.setting.shop.tax_rule.tax_rule_default'|trans }}
+                                                    {{ 'admin.setting.shop.tax.base_rate_setting'|trans }}
                                                 {% else %}
                                                     {{ form_widget(forms[TaxRule.id].apply_date.date) }}
                                                     {{ form_widget(forms[TaxRule.id].apply_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
@@ -165,12 +165,12 @@ file that was distributed with this source code.
                                                 {% endif %}
                                             </div>
                                             <div class="list">
-                                                <span>{{ TaxRule.default_tax_rule  ? 'admin.setting.shop.tax_rule.tax_rule_default'|trans : TaxRule.apply_date|date('Y/m/d  H:i ~') }}</span>
+                                                <span>{{ TaxRule.default_tax_rule  ? 'admin.setting.shop.tax.base_rate_setting'|trans : TaxRule.apply_date|date_min }}</span>
                                             </div>
                                         </td>
                                         <td class="align-middle">
                                             <div class="edit">
-                                                <button type="submit" class="btn btn-ec-conversion">{{ 'admin.setting.shop.tax_rule.decision'|trans }}</button>
+                                                <button type="submit" class="btn btn-ec-conversion">{{ 'admin.common.decision'|trans }}</button>
                                                 <button type="button" class="btn btn-ec-sub cancel" data-id="{{ TaxRule.id }}">{{ 'admin.common.cancel'|trans }}</button>
                                             </div>
                                         </td>
