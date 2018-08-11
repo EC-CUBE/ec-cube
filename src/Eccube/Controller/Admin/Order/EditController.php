@@ -630,7 +630,8 @@ class EditController extends AbstractController
             $criteria
                 ->where($criteria->expr()->andX(
                     $criteria->expr()->neq('id', OrderItemType::PRODUCT),
-                    $criteria->expr()->neq('id', OrderItemType::TAX)
+                    $criteria->expr()->neq('id', OrderItemType::TAX),
+                    $criteria->expr()->neq('id', OrderItemType::POINT)
                 ))
                 ->orderBy(['sort_no' => 'ASC']);
 

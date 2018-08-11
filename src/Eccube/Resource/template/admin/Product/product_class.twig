@@ -151,7 +151,7 @@ file that was distributed with this source code.
                                                         {{ 'admin.product.product_class.clear_product_class_cancel'|trans }}
                                                     </button>
                                                     <form method="post"
-                                                          action="{{ url('admin_product_product_class_clear', { id: Product.id }) }}">
+                                                          action="{{ url('admin_product_product_class_clear', { id: Product.id, return: return_product }) }}">
                                                         {{ form_widget(clearForm._token) }}
                                                         <button class="btn btn-ec-delete" type="submit">
                                                             {{ 'admin.product.product_class.clear_product_class_execute'|trans }}
@@ -190,7 +190,7 @@ file that was distributed with this source code.
                         </div>
                     {% else %}
                         {# 規格なし商品 #}
-                        <form method="post" action="{{ url('admin_product_product_class', { id: Product.id }) }}">
+                        <form method="post" action="{{ url('admin_product_product_class', { id: Product.id, return: return_product }) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token('_token') }}">
                             <div class="card-header">
                                 <div class="row">
@@ -220,7 +220,7 @@ file that was distributed with this source code.
                 </div>
 
                 {% if form.product_classes|length > 0 %}
-                    <form method="post" action="{{ url('admin_product_product_class', {'id': Product.id}) }}">
+                    <form method="post" action="{{ url('admin_product_product_class', {'id': Product.id, return: return_product }) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('_token') }}">
                         <input type="hidden" name="{{ form.class_name1.vars.full_name }}"
                                value="{{ form.class_name1.vars.value }}">
@@ -364,9 +364,15 @@ file that was distributed with this source code.
                                 <div class="row justify-content-between align-items-center">
                                     <div class="col-6">
                                         <div class="c-conversionArea__leftBlockItem">
-                                            <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}"><i
-                                                        class="fa fa-backward"
-                                                        aria-hidden="true"></i><span>{{ 'admin.product.product_class.product_list'|trans }}</span></a>
+                                            {% if return_product %}
+                                                <a class="c-beseLink" href="{{ url(return_product, {'id': Product.id}) }}"><i
+                                                            class="fa fa-backward"
+                                                            aria-hidden="true"></i><span>{{ 'admin.product.index.back'|trans }}</span></a>
+                                            {% else %}
+                                                <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}"><i
+                                                            class="fa fa-backward"
+                                                            aria-hidden="true"></i><span>{{ 'admin.product.product_class.product_list'|trans }}</span></a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -391,9 +397,15 @@ file that was distributed with this source code.
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-6">
                                     <div class="c-conversionArea__leftBlockItem">
-                                        <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}"><i
-                                                    class="fa fa-backward"
-                                                    aria-hidden="true"></i><span>{{ 'admin.product.product_class.product_list'|trans }}</span></a>
+                                        {% if return_product %}
+                                            <a class="c-beseLink" href="{{ url(return_product, {'id': Product.id}) }}"><i
+                                                        class="fa fa-backward"
+                                                        aria-hidden="true"></i><span>{{ 'admin.product.index.back'|trans }}</span></a>
+                                        {% else %}
+                                            <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}"><i
+                                                        class="fa fa-backward"
+                                                        aria-hidden="true"></i><span>{{ 'admin.product.product_class.product_list'|trans }}</span></a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

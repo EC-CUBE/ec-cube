@@ -821,7 +821,6 @@ class ShoppingController extends AbstractShoppingController
 
                 $this->entityManager->getConnection()->rollback();
 
-                $this->log($e);
                 $this->addError($e->getMessage());
 
                 return $this->redirectToRoute('shopping_error');
