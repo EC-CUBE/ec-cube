@@ -83,11 +83,11 @@ parameters:
                         shop_tradelaw:
                             name: admin.setting.shop.tradelaw_setting
                             url: admin_content_page_edit
-                            param: { id: !php/const Eccube\Entity\Page::TRADELAW_PAGE_ID }
+                            param: { id: !php/const Eccube\Entity\Page::TRADELAW_PAGE_ID, return: tradelaw }
                         shop_agreement:
                             name: admin.setting.shop.agreement_setting
                             url: admin_content_page_edit
-                            param: { id: !php/const Eccube\Entity\Page::AGREEMENT_PAGE_ID }
+                            param: { id: !php/const Eccube\Entity\Page::AGREEMENT_PAGE_ID, return: agreement }
                         shop_payment:
                             name: admin.setting.shop.payment_setting
                             url: admin_setting_shop_payment
