@@ -37,6 +37,34 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      */
     public function prepend(ContainerBuilder $container)
     {
+        // FrameworkBundleの設定を動的に変更する.
+        $this->configureFramework($container);
+
+        // プラグインの有効無効判定および初期化を行う.
+        $this->configurePlugins($container);
+    }
+
+    protected function configureFramework(ContainerBuilder $container)
+    {
+        // SSL強制時は, cookie_secureをtrueにする
+        $forceSSL = $container->resolveEnvPlaceholders('%env(ECCUBE_FORCE_SSL)%', true);
+        // envから取得した内容が文字列のため, booleanに変換
+        if ('true' === $forceSSL) {
+            $forceSSL = true;
+        } elseif ('false' === $forceSSL) {
+            $forceSSL = false;
+        }
+
+        // framework.yamlでは制御できないため, ここで定義する.
+        $container->prependExtensionConfig('framework', [
+            'session' => [
+                'cookie_secure' => $forceSSL,
+            ],
+        ]);
+    }
+
+    protected function configurePlugins(ContainerBuilder $container)
+    {
         $pluginDir = $container->getParameter('kernel.project_dir').'/app/Plugin';
         $pluginDirs = $this->getPluginDirectories($pluginDir);
 
