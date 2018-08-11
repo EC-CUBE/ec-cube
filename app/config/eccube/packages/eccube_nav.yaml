@@ -107,7 +107,7 @@ parameters:
                     name: admin.setting.system
                     children:
                         member:
-                            name: admin.nav.setting.system.member
+                            name: admin.setting.system.member_management
                             url: admin_setting_system_member
                         authority:
                             name: admin.setting.system.authority_management

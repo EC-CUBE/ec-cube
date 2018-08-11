@@ -90,10 +90,10 @@ class MemberType extends AbstractType
             ->add('password', RepeatedPasswordType::class, [
                 // 'type' => 'password',
                 'first_options' => [
-                    'label' => 'member.label.pass',
+                    'label' => 'admin.setting.system.member.password',
                 ],
                 'second_options' => [
-                    'label' => 'member.label.varify_pass',
+                    'label' => 'admin.setting.system.member.password',
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -108,7 +108,7 @@ class MemberType extends AbstractType
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
-                'placeholder' => 'common.select',
+                'placeholder' => 'admin.common.select',
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
@@ -141,7 +141,7 @@ class MemberType extends AbstractType
 
                 if ($count < 1) {
                     $form = $event->getForm();
-                    $form['Work']->addError(new FormError(trans('admin.setting.system.member.work.error')));
+                    $form['Work']->addError(new FormError(trans('admin.setting.system.member.work_can_not_change')));
                 }
             }
         });

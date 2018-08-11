@@ -324,6 +324,7 @@ admin.common.system_error: システムエラーが発生しました
 # action系のラベル
 admin.common.save: 保存
 admin.common.registration: 登録
+admin.common.registration__new: 新規登録
 admin.common.edit: 編集
 admin.common.copy: 複製
 admin.common.display: 表示
@@ -1039,23 +1040,16 @@ admin.setting.shop.csv.how_to_use: |
 # 設定：システム設定：メンバー管理 / パスワード変更
 #------------------------------------------------------------------------------------
 
-admin.setting.system.member.member_list: メンバー一覧
 admin.setting.system.member.member_registration: メンバー登録
 admin.setting.system.member.name: 名前
 admin.setting.system.member.department: 所属
 admin.setting.system.member.login_id: ログインID
 admin.setting.system.member.password: パスワード
+admin.setting.system.member.password: パスワード(確認)
 admin.setting.system.member.work: 稼働
-admin.setting.system.member.delete_confirm_title: メンバーを削除します。
-admin.setting.system.member.delete_confirm_message: メンバーを削除してよろしいですか？
-admin.setting.system.member.last_login: 最終ログイン
-admin.setting.system.member.honorific_member_name: '%name%さん'
-admin.setting.system.member.current_password: 現在のパスワード
-admin.setting.system.member.new_password: 新しいパスワード
-admin.setting.system.member.new_password_for_confirmation: 新しいパスワード(確認)
-admin.setting.system.member.login: ログイン
-admin.setting.system.member.logout: ログアウト
-
+admin.setting.system.member.delete__confirm_title: メンバーを削除します。
+admin.setting.system.member.delete__confirm_message: メンバーを削除してよろしいですか？
+admin.setting.system.member.work_can_not_change: 非稼働に変更することはできません。
 #------------------------------------------------------------------------------------
 # 設定：システム設定：権限管理
 #------------------------------------------------------------------------------------
