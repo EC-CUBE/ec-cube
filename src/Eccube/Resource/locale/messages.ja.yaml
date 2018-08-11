@@ -6,6 +6,7 @@ common.select: 選択してください
 common.select__pref: 都道府県を選択
 common.select__unspecified: 指定なし
 common.select__all_products: 全ての商品
+common.required: 必須
 
 common.back: 戻る
 common.close: 閉じる
@@ -15,13 +16,14 @@ common.delete: 削除
 common.ok: OK
 common.cancel: キャンセル
 common.go_to_top: トップページへ
+common.go_to_cart: カートへ進む
 common.go_to_confirm: 確認ページへ
 common.go_to_next: 次のページへ
 common.move_to_page_top: ページトップへ
-common.pager.prev: 前へ
-common.pager.next: 次へ
-common.pager.first: 最初へ
-common.pager.last: 最後へ
+common.prev: 前へ
+common.next: 次へ
+common.first: 最初へ
+common.last: 最後へ
 common.name: お名前
 common.kana: お名前(カナ)
 common.first_name: 名
@@ -33,6 +35,7 @@ common.address: 住所
 common.pref: 都道府県
 common.postal_symbol: 〒
 common.postal_code_sample: 例：5530003
+common.search_postal_code: 郵便番号検索
 common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
 common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
 common.phone_number: 電話番号
@@ -140,7 +143,8 @@ front.entry.agree_with_terms: に同意してお進みください # TODO 「%na
 front.entry.agree: 同意する
 front.entry.disagree: 同意しない
 front.entry.confirm_title: 新規会員登録(確認)
-front.entry.confirm_message: 下記の内容で登録してもよろしいでしょうか？
+front.entry.confirm_message: |
+  下記の内容で登録してもよろしいでしょうか？
   よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。
 front.entry.do_register: 会員登録をする
 front.entry.complete_title: 新規会員登録(完了)

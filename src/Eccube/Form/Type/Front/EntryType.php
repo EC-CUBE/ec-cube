@@ -92,22 +92,7 @@ class EntryType extends AbstractType
             ])
             ->add('job', JobType::class, [
                 'required' => false,
-            ])
-            ->add(
-                'point',
-                NumberType::class,
-                [
-                    'required' => false,
-                    'label' => 'ポイント', // TODO 未翻訳
-                    'constraints' => [
-                        new Assert\Regex([
-                            'pattern' => "/^\d+$/u",
-                            'message' => 'form.type.numeric.invalid',
-                        ]),
-                    ],
-                    'mapped' => false,
-                ]
-            );
+            ]);
     }
 
     /**
