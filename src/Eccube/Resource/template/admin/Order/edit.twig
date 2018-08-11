@@ -636,10 +636,10 @@ file that was distributed with this source code.
                                         <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate"{{ action_disabled ? ' disabled="disabled"' }}>{{ 'admin.order.update_calculation_results'|trans }}</button>
                                     </div>
                                 </div>
-                                <table id="table-form-field" class="table table-striped table-sm mb-0  text-nowrap"
+                                <table id="table-form-field" class="table table-striped table-sm mb-0"
                                        data-prototype="{% filter escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': form.OrderItems.vars.prototype}) }}{% endfilter %}">
                                     <thead class="table-active">
-                                    <tr>
+                                    <tr class="text-nowrap">
                                         <th class="pt-2 pb-2 pl-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
                                         <th class="pt-2 pb-2">
                                             <div class="col-8">{{ 'admin.order.amount'|trans }}</div>
@@ -746,24 +746,34 @@ file that was distributed with this source code.
                                                     {# 複数配送の場合は商品を削除できない #}
                                                     {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
                                                         <div class="col-auto text-center">
-                                                            <a class="btn btn-ec-actionIcon disabled">
-                                                                <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
-                                                            </a>
+                                                            <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                                 data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                                <a class="btn btn-ec-actionIcon disabled">
+                                                                    <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     {% else %}
                                                         <div class="col-auto text-center">
-                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                                <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
-                                                            </a>
+                                                            <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                                 data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}">
+                                                                    <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
                                                             <!-- 明細の削除確認モーダル -->
                                                             <div class="modal fade" id="delete_{{ orderItemForm.vars.id }}" tabindex="-1" role="dialog" aria-labelledby="delete_{{ orderItemForm.vars.id }}" aria-hidden="true">
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title font-weight-bold">{{ 'admin.order.delete_item__confirm_title'|trans }}</h5>
-                                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                            <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">×</span>
+                                                                            </button>
                                                                         </div>
-                                                                        <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.delete_item__confirm_message'|trans }}</p></div>
+                                                                        <div class="modal-body text-left">
+                                                                            <p class="text-left">{{ 'admin.order.delete_item__confirm_message'|trans({ '%name%' : OrderItem.product_name }) }}</p>
+                                                                        </div>
                                                                         <div class="modal-footer">
                                                                             <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                             <a href="#order-product" class="btn delete btn-ec-delete">{{ 'admin.common.delete'|trans }}</a>

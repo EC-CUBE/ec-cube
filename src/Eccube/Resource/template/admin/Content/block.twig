@@ -93,45 +93,35 @@ file that was distributed with this source code.
                                                     <div class="col-6 text-right">
                                                         <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}"
                                                            class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
-                                                           data-placement="top"
-                                                           title="{{ 'admin.common.edit'|trans }}">
+                                                           data-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
                                                     </div>
                                                     {% if Block.deletable %}
                                                         <div class="col-6">
-                                                            <a href="#"
-                                                               data-toggle="modal"
-                                                               data-target="#confirmModal-{{ Block.id }}"
-                                                               class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
-                                                               data-placement="top"
-                                                               title="{{ 'admin.common.delete'|trans }}">
-                                                                <i class="fa fa-close fa-lg text-secondary"></i>
-                                                            </a>
+                                                            <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                                <a href="#" data-toggle="modal" data-target="#confirmModal-{{ Block.id }}" class="btn btn-ec-actionIcon">
+                                                                    <i class="fa fa-close fa-lg text-secondary"></i>
+                                                                </a>
+                                                            </div>
                                                         </div>
-
-                                                        <div class="modal fade" id="confirmModal-{{ Block.id }}"
-                                                             tabindex="-1"
-                                                             role="dialog"
-                                                             aria-labelledby="confirmModal-{{ Block.id }}"
-                                                             aria-hidden="true">
+                                                        <div class="modal fade" id="confirmModal-{{ Block.id }}" tabindex="-1" role="dialog"
+                                                             aria-labelledby="confirmModal-{{ Block.id }}" aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.content.block_delete_confirm_title'|trans }}</h5>
-                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
                                                                     </div>
                                                                     <div class="modal-body text-left">
-                                                                        <p class="text-left">{{ 'admin.content.block_delete_confirm_message'|trans }}</p>
+                                                                        <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%' : Block.name }) }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                                        <a
-                                                                                href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}"
-                                                                                class="btn btn-ec-delete"
-                                                                                data-confirm="false"
-                                                                                {{ csrf_token_for_anchor() }}
-                                                                                data-method="delete">
+                                                                        <a href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}"
+                                                                           class="btn btn-ec-delete" data-confirm="false" {{ csrf_token_for_anchor() }} data-method="delete">
                                                                             {{ 'admin.common.delete'|trans }}
                                                                         </a>
                                                                     </div>

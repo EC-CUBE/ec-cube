@@ -546,8 +546,6 @@ admin.product.move_to_confirm_message: '%name%に移動します。商品情報�
 admin.product.move_to_confirm_move_only: 保存せずに移動
 admin.product.move_to_confirm_save_and_move: 保存して移動
 admin.product.multi_search_label: 商品名・商品ID・商品コード
-admin.product.delete_confirm_title: 商品を削除します
-admin.product.delete_confirm_message: 商品を削除しますか？
 admin.product.product_class: 商品規格
 admin.product.product_class__short: 規格
 admin.product.product_class__create: 商品規格の設定
@@ -684,12 +682,11 @@ admin.order.shipping_info: お届先情報
 admin.order.copy_orderer: 注文者情報をコピー
 admin.order.output_delivery_note: 納品書を出力
 admin.order.output_delivery_note_short: 納品書出力
-admin.order.add_shipping: お届け先の追加
-admin.order.delete_shipping: お届け先を削除
+admin.order.add_shipping: 出荷情報の追加
+admin.order.delete_shipping: 出荷情報を削除
 admin.order.delete_shipping_error__confirm_title: 出荷情報を削除できません
-admin.order.delete_shipping_error__confirm_message: まずお届け先に設定されている明細を削除してから、出荷情報を削除してください
-admin.order.delete_shipping__confirm_title: 出荷情報を削除します
-admin.order.delete_shipping__confirm_message: 出荷情報は注文から削除されます。この出荷情報を削除しますか？
+admin.order.delete_shipping_error__confirm_message: まず出荷情報に設定されている明細を削除してから、出荷情報を削除してください
+admin.order.delete_shipping__confirm_message: '出荷情報は注文から削除されます。出荷情報(%num%)を削除しますか？'
 admin.order.order_item_info: 注文商品情報
 admin.order.order_item_type: 明細種別
 admin.order.add_product_item: 商品を追加
@@ -762,8 +759,7 @@ admin.order.not_payment: 未入金
 admin.order.unshipped: 未出荷
 admin.order.delete__confirm_title: 注文情報を削除します
 admin.order.delete__confirm_message: 注文情報を削除してよろしいですか？
-admin.order.delete_item__confirm_title: 明細を削除します
-admin.order.delete_item__confirm_message: 明細は注文から削除されます。この明細を削除しますか？
+admin.order.delete_item__confirm_message: '明細は注文から削除されます。「%name%」を削除してよろしいですか？'
 admin.order.change_payment_method_message: お支払方法の変更に伴う手数料の変更は手動にてお願いします
 admin.order.non_member: 非会員
 admin.order.search_from_customer: 会員から検索・入力
@@ -822,11 +818,11 @@ admin.customer.customer_address_info: お届け先情報
 admin.customer.multi_search_label: 会員ID・メールアドレス・お名前
 admin.customer.customer_status: 会員種別
 admin.customer.birth_month: 誕生月
-admin.customer.delete_confirm_title: 会員情報を削除します。
-admin.customer.delete_confirm_message: 会員情報を削除してもよろしいですか？
 admin.customer.resend: 仮会員メール再送
 admin.customer.resend_confirm_title: 仮会員メールを再送します。
 admin.customer.resend_confirm_message: 仮登録メールを再送してもよろしいですか？
+admin.customer.no_customer_address: この会員のお届け先がありません
+admin.customer.no_purchase_history: この会員の購入履歴がありません
 
 #------------------------------------------------------------------------------------
 # コンテンツ管理
@@ -851,8 +847,6 @@ admin.content.file.updated: 更新
 admin.content.file.directory_tree: フォルダ構成
 admin.content.layout_add: レイアウトを新規追加
 admin.content.layout_delete: レイアウトを削除
-admin.content.layout_delete_confirm_title: レイアウトを削除します
-admin.content.layout_delete_confirm_message: レイアウトを削除してよろしいですか？
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
 admin.content.layout_name: レイアウト名
@@ -882,8 +876,6 @@ admin.content.layout_section__footer: '#footer'
 admin.content.layout_section__drawer: '#drawer'
 admin.content.layout_section__close_body_before: '</body>タグ直前'
 admin.content.page_name: ページ名
-admin.content.page_delete_confirm_title: ページを削除します
-admin.content.page_delete_confirm_message: ページを削除してよろしいですか？
 admin.content.page__card_title: ページ設定
 admin.content.page_url: URL
 admin.content.page_url_exists: 既にURLが存在しています。
@@ -901,8 +893,6 @@ admin.content.page_meta_metatag: metatag
 admin.content.page_meta_metatag_placeholder: |
   <meta property="og:title" content="ページのタイトル" />
   <meta property="og:image" content="画像のURL" />
-admin.content.block_delete_confirm_title: ブロックを削除します
-admin.content.block_delete_confirm_message: ブロックを削除してよろしいですか？
 admin.content.block_name: ブロック名
 admin.content.block__card_title: ブロック設定
 admin.content.block_file_name: ファイル名

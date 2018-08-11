@@ -348,63 +348,56 @@ file that was distributed with this source code.
                                                             <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
                                                                 <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
-                                                            <div class="modal fade" id="discontinuance_cus_{{ Customer.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
-                                                                <div class="modal-dialog" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title font-weight-bold">{{ 'admin.customer.resend_confirm_title'|trans }}</h5>
-                                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">×</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body text-left">
-                                                                            <p class="text-left">{{ 'admin.customer.resend_confirm_message'|trans }}</p>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                                            {# TODO: CSSの変更は別タスクでやります #}
-                                                                            <a class="btn btn-ec-delete" href="{{ url('admin_customer_resend', {'id' : Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="get" data-confirm="false">
-                                                                                {{ 'admin.common.send'|trans }}
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         </div>
-                                                    {% endif %}
-                                                    <div class="col-auto text-center" data-toggle="tooltip"
-                                                         data-placement="top"
-                                                         title="{{ 'admin.common.delete'|trans }}">
-                                                        <a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance-{{ Customer.id }}"><i
-                                                                    class="fa fa-close fa-lg text-secondary"
-                                                                    aria-hidden="true"></i></a>
-                                                        <div class="modal fade"
-                                                             id="discontinuance-{{ Customer.id }}" tabindex="-1"
-                                                             role="dialog"
-                                                             aria-labelledby="discontinuance"
-                                                             aria-hidden="true">
+                                                        <div class="modal fade" id="discontinuance_cus_{{ Customer.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">
-                                                                            {{ 'admin.customer.delete_confirm_title'|trans }}</h5>
+                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.customer.resend_confirm_title'|trans }}</h5>
                                                                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">×</span>
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body text-left">
-                                                                        <p class="text-left">
-                                                                            {{ 'admin.customer.delete_confirm_message'|trans }}</p>
+                                                                        <p class="text-left">{{ 'admin.customer.resend_confirm_message'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
-                                                                            {{ 'admin.common.cancel'|trans }}
-                                                                        </button>
-                                                                        <a href="{{ url('admin_customer_delete', {'id' : Customer.id}) }}" class="btn btn-ec-delete"{{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
-                                                                            {{ 'admin.common.delete'|trans }}
+                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                        {# TODO: CSSの変更は別タスクでやります #}
+                                                                        <a class="btn btn-ec-delete" href="{{ url('admin_customer_resend', {'id' : Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="get" data-confirm="false">
+                                                                            {{ 'admin.common.send'|trans }}
                                                                         </a>
                                                                     </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                    <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                        <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance-{{ Customer.id }}">
+                                                            <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="modal fade" id="discontinuance-{{ Customer.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title font-weight-bold">
+                                                                        {{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body text-left">
+                                                                    <p class="text-left">
+                                                                        {{ 'admin.common.delete_modal__message'|trans({ '%name%' : Customer.email }) }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                                        {{ 'admin.common.cancel'|trans }}
+                                                                    </button>
+                                                                    <a href="{{ url('admin_customer_delete', {'id' : Customer.id}) }}" class="btn btn-ec-delete"{{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
+                                                                        {{ 'admin.common.delete'|trans }}
+                                                                    </a>
                                                                 </div>
                                                             </div>
                                                         </div>
