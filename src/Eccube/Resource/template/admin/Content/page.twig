@@ -82,8 +82,8 @@ file that was distributed with this source code.
                             </thead>
                             {% for Page in Pages %}
                                 <tr id="ex-page-{{ Page.id }}">
-                                    <td class="align-middle pl-3"><a
-                                                href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">{{ Page.name }}</a>
+                                    <td class="align-middle pl-3">
+                                        <a href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">{{ Page.name }}</a>
                                     </td>
                                     {# TODO レイアウトの数にかかわらず高さを揃えたい #}
                                     <td class="align-middle{{ Page.layouts|length < 2 ? ' pb-4' }}">
@@ -93,51 +93,42 @@ file that was distributed with this source code.
                                             {% else %}
                                                 {% set icon = 'fa-mobile fa-2x' %}
                                             {% endif %}
-                                            <div class="d-block"><i
-                                                        class="fa {{ icon }} mr-2"></i><span>{{ Layout.name }}</span>
+                                            <div class="d-block">
+                                                <i class="fa {{ icon }} mr-2"></i>
+                                                <span>{{ Layout.name }}</span>
                                             </div>
                                         {% endfor %}
                                     </td>
                                     <td class="align-middle pr-3">
                                         <div class="row justify-content-end">
-                                            <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                {% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
+                                            {% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
+                                                <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                     <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ Page.id }}">
-                                                        <i class="fa fa-close fa-lg text-secondary"
-                                                           aria-hidden="true"></i>
+                                                        <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
-                                                    <div class="modal fade" id="delete_{{ Page.id }}" tabindex="-1"
-                                                         role="dialog"
-                                                         aria-labelledby="delete_{{ Page.id }}" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title font-weight-bold">
-                                                                        {{ 'admin.content.page_delete_confirm_title'|trans }}</h5>
-                                                                    <button class="close" type="button"
-                                                                            data-dismiss="modal"
-                                                                            aria-label="Close"><span
-                                                                                aria-hidden="true">×</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body text-left">
-                                                                    <p class="text-left">
-                                                                        {{ 'admin.content.page_delete_confirm_message'|trans }}</p>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button class="btn btn-ec-sub" type="button"
-                                                                            data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
-                                                                    </button>
-                                                                    <a class="btn btn-ec-delete"
-                                                                       href="{{ url('admin_content_page_delete', {'id' : Page.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                       data-method="delete"
-                                                                       data-confirm="false">{{ 'admin.common.delete'|trans }}</a>
-                                                                </div>
+                                                </div>
+                                                <div class="modal fade" id="delete_{{ Page.id }}" tabindex="-1" role="dialog"
+                                                    aria-labelledby="delete_{{ Page.id }}" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-left">
+                                                                <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%' : Page.name }) }}</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                <a class="btn btn-ec-delete" href="{{ url('admin_content_page_delete', {'id' : Page.id}) }}"
+                                                                    {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">{{ 'admin.common.delete'|trans }}</a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                {% endif %}
-                                            </div>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </td>
                                 </tr>
