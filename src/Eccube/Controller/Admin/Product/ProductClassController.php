@@ -26,11 +26,11 @@ use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ProductClassController extends AbstractController
 {
@@ -126,6 +126,10 @@ class ProductClassController extends AbstractController
 
                 $this->addSuccess('admin.product.product_class.update.complete', 'admin');
 
+                if ($request->get('return')) {
+                    return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return' => $request->get('return')]);
+                }
+
                 return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
             }
         } else {
@@ -159,6 +163,10 @@ class ProductClassController extends AbstractController
 
                         $this->addSuccess('admin.product.product_class.save.complete', 'admin');
 
+                        if ($request->get('return')) {
+                            return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return' => $request->get('return')]);
+                        }
+
                         return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
                     }
                 }
@@ -171,6 +179,7 @@ class ProductClassController extends AbstractController
             'clearForm' => $this->createForm(FormType::class)->createView(),
             'ClassName1' => $ClassName1,
             'ClassName2' => $ClassName2,
+            'return_product' => $request->get('return'),
         ];
     }
 
@@ -207,6 +216,10 @@ class ProductClassController extends AbstractController
             $this->entityManager->flush();
 
             $this->addSuccess('admin.product.product_class.clear.complete', 'admin');
+        }
+
+        if ($request->get('return')) {
+            return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return' => $request->get('return')]);
         }
 
         return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);

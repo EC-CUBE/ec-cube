@@ -8,59 +8,54 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% extends 'old_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
-{% block title %}{{'admin.store.plugin_confirm_uninstall.823'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.store.plugin_confirm_uninstall.824'|trans}}{% endblock %}
+{% block title %}削除確認{% endblock %}
+{% block sub_title %}オーナーズストア{% endblock %}
 
-{% block javascript %}
-    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/masonry.pkgd.min.js"></script>
-    <script>
-        $(function() {
-            $('.grid').masonry({
-                itemSelector: '.grid-item',
-                columnWidth: '.grid-item'
-            });
-        });
-    </script>
-{% endblock javascript %}
+{% block stylesheet %}
+    <style type="text/css">
+        .btn-remove {
+            background: #C04949;
+            border-color: #C04949;
+        }
+    </style>
+{% endblock %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">{{'admin.store.plugin_confirm_uninstall.825'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="plugin-block">
-                                <div class="row grid">
-                                    <div class="col-xs-12 grid-item">
-                                        {{ include('Store/plugin_confirm_uninstall_panel.twig') }}
-                                    </div>
-                                </div><!-- .row -->
-                            </div><!-- .plugin-block -->
-                        </div><!-- .col-xs-12 -->
-                    </div><!-- .row -->
-                </div><!-- /.box-body 1 -->
-
-                <div class="box-footer">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <span class="pull-right">
-                                <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_api_uninstall', {'id': item.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">{{'common.label.delete'|trans}}</a>
-                                <button class="btn btn-cancel btn-xs" type="button" onclick="return window.history.back()">{{'admin.store.plugin_confirm_uninstall.827'|trans}}</button>
-                            </span>
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <span class="card-title">以下のプラグインを削除します。よろしいですか？（取り消しできません)</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row m-0 p-3 border-bt">
+                            <div class="col-sm-2 pr-2 pr-sm-3">
+                                <img class="w-100 img-responsive"
+                                     src="{{ asset('noimage_plugin_list.png', 'save_image') }}" alt="">
+                            </div>
+                            <div class="col-sm-10 col-md-9">
+                                <div class="info">
+                                    <h5>
+                                        <a href="#" class="font-weight-bold">EC-CUBEペイメント決済プラグイン</a> （最新バージョン：1.0.2）
+                                    </h5>
+                                    <span>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-right my-4 mx-0">
+                            <div class="col-12">
+                                <a href="#" class="btn btn-ec-sub">キャンセル</a>
+                                <a href="#" class="btn btn-primary btn-remove">削除</a>
+                            </div>
                         </div>
                     </div>
-                </div><!-- /.box-footer -->
-
-            </div><!-- /.box 1-->
-
-        </div><!-- /.col -->
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

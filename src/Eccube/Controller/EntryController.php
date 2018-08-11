@@ -22,15 +22,16 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Eccube\Service\CartService;
 
 class EntryController extends AbstractController
 {
@@ -70,8 +71,14 @@ class EntryController extends AbstractController
     protected $tokenStorage;
 
     /**
+     * @var \Eccube\Service\CartService
+     */
+    protected $cartService;
+
+    /**
      * EntryController constructor.
      *
+     * @param CartService $cartService
      * @param CustomerStatusRepository $customerStatusRepository
      * @param MailService $mailService
      * @param BaseInfoRepository $baseInfoRepository
@@ -81,6 +88,7 @@ class EntryController extends AbstractController
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
+        CartService $cartService,
         CustomerStatusRepository $customerStatusRepository,
         MailService $mailService,
         BaseInfoRepository $baseInfoRepository,
@@ -96,6 +104,7 @@ class EntryController extends AbstractController
         $this->encoderFactory = $encoderFactory;
         $this->recursiveValidator = $validatorInterface;
         $this->tokenStorage = $tokenStorage;
+        $this->cartService = $cartService;
     }
 
     /**
@@ -259,13 +268,27 @@ class EntryController extends AbstractController
             // メール送信
             $this->mailService->sendCustomerCompleteMail($Customer);
 
+            // Assign session carts into customer carts
+            $Carts = $this->cartService->getCarts();
+            $qtyInCart = array_reduce($Carts, function($qty, $Cart) {
+                return $qty + $Cart->getTotalQuantity();
+            });
+
             // 本会員登録してログイン状態にする
             $token = new UsernamePasswordToken($Customer, null, 'customer', ['ROLE_USER']);
             $this->tokenStorage->setToken($token);
+            $request->getSession()->migrate(true);
+
+            if ($qtyInCart) {
+                $this->cartService->save();
+            }
 
             log_info('ログイン済に変更', [$this->getUser()->getId()]);
 
-            return [];
+
+            return [
+                'qtyInCart' => $qtyInCart
+            ];
         } else {
             throw new HttpException\AccessDeniedHttpException(trans('entrycontroller.text.error.authorization'));
         }

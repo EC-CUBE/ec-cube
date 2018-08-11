@@ -21,11 +21,9 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TaxRuleType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class TaxRuleController
@@ -121,7 +119,7 @@ class TaxRuleController extends AbstractController
             if ($mode == 'edit_inline'
                 && $request->getMethod() === 'POST'
                 && (string) $TaxRule->getId() === $request->get('tax_rule_id')
-                ) {
+            ) {
                 $editTaxRuleForm->handleRequest($request);
                 if ($editTaxRuleForm->isValid()) {
                     $taxRuleData = $editTaxRuleForm->getData();
@@ -152,8 +150,7 @@ class TaxRuleController extends AbstractController
     /**
      * 税率設定の削除
      *
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/setting/shop/tax/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_tax_delete")
+     * @Route("/%eccube_admin_route%/setting/shop/tax/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_tax_delete", methods={"DELETE"})
      */
     public function delete(Request $request, TaxRule $TaxRule)
     {

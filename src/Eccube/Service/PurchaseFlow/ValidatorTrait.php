@@ -23,7 +23,7 @@ trait ValidatorTrait
      *
      * @throws InvalidItemException
      */
-    protected function throwInvalidItemException($errorCode, ProductClass $ProductClass = null)
+    protected function throwInvalidItemException($errorCode, ProductClass $ProductClass = null, $warning = false)
     {
         if ($ProductClass) {
             $productName = $ProductClass->getProduct()->getName();
@@ -34,8 +34,8 @@ trait ValidatorTrait
                 $productName .= ' - '.$ProductClass->getClassCategory2()->getName();
             }
 
-            throw new InvalidItemException(trans($errorCode, ['%product%' => $productName]));
+            throw new InvalidItemException(trans($errorCode, ['%product%' => $productName]), null, $warning);
         }
-        throw new InvalidItemException(trans($errorCode));
+        throw new InvalidItemException(trans($errorCode), null, $warning);
     }
 }
