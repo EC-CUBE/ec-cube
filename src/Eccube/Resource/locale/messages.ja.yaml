@@ -444,6 +444,11 @@ admin.home.sales_summany_count: 売上件数
 admin.home.recommend_plugins_title: おすすめのプラグイン
 admin.home.news_title: お知らせ
 
+admin.header.user_name: '%name% 様'
+admin.header.logout: ログアウト
+admin.header.last_login: 最終ログイン
+admin.header.change_password: パスワード変更
+
 #------------------------------------------------------------------------------------
 # 商品管理
 #------------------------------------------------------------------------------------
