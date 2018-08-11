@@ -343,6 +343,10 @@ admin.common.up: 上へ
 admin.common.down: 下へ
 admin.common.upload: アップロード
 admin.common.download: ダウンロード
+admin.common.prev: 前へ
+admin.common.next: 次へ
+admin.common.first: 最初へ
+admin.common.last: 最後へ
 
 # 汎用ラベル, メッセージ
 admin.common.required: 必須
@@ -381,6 +385,7 @@ admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロ�
 admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 admin.common.delete_modal__title: 削除します
 admin.common.delete_modal__message: 'この操作はあとから取り消すことができません。「%name%」を削除してよろしいですか？'
+
 
 # エンティティに関連するラベル
 admin.common.id: ID
@@ -426,6 +431,7 @@ admin.common.charge: 手数料
 
 # 機能名称
 admin.home: ホーム
+admin.login: ログイン
 
 # ラベル
 admin.home.order_status_title: 注文状況
@@ -450,6 +456,11 @@ admin.header.user_name: '%name% 様'
 admin.header.logout: ログアウト
 admin.header.last_login: 最終ログイン
 admin.header.change_password: パスワード変更
+
+admin.login.enable_javascript: JavaScript を有効にしてご利用ください
+admin.login.login: ログイン
+admin.login.login_id: ログインID
+admin.login.password: パスワード
 
 #------------------------------------------------------------------------------------
 # 商品管理
