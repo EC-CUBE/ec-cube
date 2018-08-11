@@ -101,7 +101,7 @@ parameters:
                             name: admin.nav.setting.shop.shop_mail
                             url: admin_setting_shop_mail
                         shop_csv:
-                            name: admin.nav.setting.shop.shop_csv
+                            name: admin.setting.shop.csv_setting
                             url: admin_setting_shop_csv
                 system:
                     name: admin.setting.system

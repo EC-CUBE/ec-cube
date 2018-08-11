@@ -1018,7 +1018,7 @@ admin.setting.shop.mail.mail_body: 本文
 #------------------------------------------------------------------------------------
 
 admin.setting.shop.csv.csv_colmuns: CSV出力項目
-admin.setting.shop.csv.csv_types: CSV種別
+admin.setting.shop.csv.csv_type: CSV種別
 admin.setting.shop.csv.non_output_colmuns: 出力しない項目
 admin.setting.shop.csv.output_colmuns: 出力する項目
 admin.setting.shop.csv.operation: 操作項目
