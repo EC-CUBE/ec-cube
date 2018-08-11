@@ -354,6 +354,12 @@ class ShippingMultipleController extends AbstractShoppingController
                 }
             }
             $Cart = $this->cartService->getCart();
+            if (!$Cart) {
+                log_info('カート内に商品がないため購入エラー');
+                $this->addError('front.shopping.order.error');
+
+                return $this->redirectToRoute('shopping_error');
+            }
             foreach ($Cart->getCartItems() as $CartItem) {
                 $id = $CartItem->getProductClass()->getId();
                 if (isset($quantityByProductClass[$id])) {
