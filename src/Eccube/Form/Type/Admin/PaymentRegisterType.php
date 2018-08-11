@@ -85,7 +85,7 @@ class PaymentRegisterType extends AbstractType
             ])
             ->add('visible', ChoiceType::class, [
                 'label' => false,
-                'choices' => ['common.label.display' => true, 'common.label.hide' => false],
+                'choices' => ['admin.common.show' => true, 'admin.common.hide' => false],
                 'required' => true,
                 'expanded' => false,
             ])

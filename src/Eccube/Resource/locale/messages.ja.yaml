@@ -350,6 +350,8 @@ admin.common.first: 最初へ
 admin.common.last: 最後へ
 
 # 汎用ラベル, メッセージ
+admin.common.show: 表示
+admin.common.hide: 非表示
 admin.common.required: 必須
 admin.common.bulk_actions: 一括操作
 admin.common.select: 選択してください
@@ -425,7 +427,6 @@ admin.common.device_type: 端末種別
 admin.common.authority: 権限
 admin.common.payment_method: 支払方法
 admin.common.charge: 手数料
-
 #------------------------------------------------------------------------------------
 # ホーム
 #------------------------------------------------------------------------------------
@@ -924,7 +925,7 @@ admin.setting.shop.tradelaw_setting: 特定商取引法設定
 admin.setting.shop.agreement_setting: 利用規約設定
 admin.setting.shop.payment_list: 支払方法一覧
 admin.setting.shop.payment_setting: 支払方法設定
-admin.setting.shop.delivery_list: 配送方法設定
+admin.setting.shop.delivery_list: 配送方法一覧
 admin.setting.shop.delivery_setting: 配送方法設定
 admin.setting.shop.tax_setting: 税率設定
 admin.setting.shop.mail_setting: メール設定
@@ -978,6 +979,7 @@ admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レー�
 
 admin.setting.shop.payment.terms_of_use: 利用条件
 admin.setting.shop.payment.unlimited: 無制限
+admin.setting.shop.payment.payment_name: 支払方法名
 admin.setting.shop.payment.logo_image: ロゴ画像
 
 #------------------------------------------------------------------------------------

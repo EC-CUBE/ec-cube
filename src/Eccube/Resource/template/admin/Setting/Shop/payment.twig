@@ -12,7 +12,7 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'shop', 'shop_payment'] %}
 
-{% block title %}{{ 'admin.setting.shop.payment_setting'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.payment_list'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
 
 {% block stylesheet %}
@@ -135,15 +135,18 @@ file that was distributed with this source code.
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
+                <div class="d-block mb-3">
+                    <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_payment_new') }}">{{ 'admin.common.create__new'|trans }}</a>
+                </div>
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <ul class="list-group list-group-flush mb-4 sortable-container">
                             <li class="list-group-item">
                                 <div class="row justify-content-around">
                                     <div class="col-auto"><strong>&nbsp;</strong></div>
-                                    <div class="col-1"><strong>{{ 'admin.setting.shop.payment.597'|trans }}</strong></div>
-                                    <div class="col-1"><strong>{{ 'admin.setting.shop.payment.599'|trans }}</strong></div>
-                                    <div class="col"><strong>{{ 'admin.setting.shop.payment.600'|trans }}</strong></div>
+                                    <div class="col-1"><strong>{{ 'admin.common.payment_method'|trans }}</strong></div>
+                                    <div class="col-1"><strong>{{ 'admin.common.charge'|trans }}</strong></div>
+                                    <div class="col"><strong>{{ 'admin.setting.shop.payment.terms_of_use'|trans }}</strong></div>
                                 </div>
                             </li>
                             {% for Payment in Payments %}
@@ -161,9 +164,9 @@ file that was distributed with this source code.
                                             {% endif %}
 
                                             {% if Payment.rule_max > 0 %}
-                                                ～{{ Payment.rule_max|price }}
+                                                {{ 'admin.common.separator__range'|trans }} {{ Payment.rule_max|price }}
                                             {% elseif Payment.rule_max is null %}
-                                                ～{{ 'admin.setting.shop.payment.603'|trans }}
+                                                {{ 'admin.common.separator__range'|trans }} {{ 'admin.setting.shop.payment.unlimited'|trans }}
                                             {% endif %}
                                         </span>
                                         </div>
@@ -221,15 +224,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                 </div>
-                <p>{{ 'admin.setting.shop.payment.notice'|trans }}</p>
-            </div>
-            <div class="card rounded border-0">
-                <div class="card-body p-4">
-                    <div class="text-center">
-                        {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
-                        <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.setting.shop.payment.610'|trans }}</a>
-                    </div>
-                </div>
+                <p>{{ 'admin.common.drag_and_drop_description'|trans }}</p>
             </div>
         </div>
     </div>

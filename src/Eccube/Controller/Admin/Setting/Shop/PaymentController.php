@@ -108,42 +108,38 @@ class PaymentController extends AbstractController
         $oldPaymentImage = $Payment->getPaymentImage();
 
         // 登録ボタン押下
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $Payment = $form->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $Payment = $form->getData();
 
-                // ファイルアップロード
-                $file = $form['payment_image']->getData();
-                $fs = new Filesystem();
-                if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
-                    $fs->rename(
-                        $this->getParameter('eccube_temp_image_dir').'/'.$file,
-                        $this->getParameter('eccube_save_image_dir').'/'.$file
-                    );
-                }
-
-                // Payment method class of Cash to default.
-                if (!$Payment->getMethodClass()) {
-                    $Payment->setMethodClass(Cash::class);
-                }
-                $this->entityManager->persist($Payment);
-                $this->entityManager->flush();
-
-                $event = new EventArgs(
-                    [
-                        'form' => $form,
-                        'Payment' => $Payment,
-                    ],
-                    $request
+            // ファイルアップロード
+            $file = $form['payment_image']->getData();
+            $fs = new Filesystem();
+            if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
+                $fs->rename(
+                    $this->getParameter('eccube_temp_image_dir').'/'.$file,
+                    $this->getParameter('eccube_save_image_dir').'/'.$file
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
-
-                $this->addSuccess('admin.register.complete', 'admin');
-
-                return $this->redirectToRoute('admin_setting_shop_payment');
-            } else {
-                $this->addError('admin.register.failed', 'admin');
             }
+
+            // Payment method class of Cash to default.
+            if (!$Payment->getMethodClass()) {
+                $Payment->setMethodClass(Cash::class);
+            }
+            $this->entityManager->persist($Payment);
+            $this->entityManager->flush();
+
+            $event = new EventArgs(
+                [
+                    'form' => $form,
+                    'Payment' => $Payment,
+                ],
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
+
+            $this->addSuccess('admin.common.save_complete', 'admin');
+
+            return $this->redirectToRoute('admin_setting_shop_payment');
         }
 
         return [
@@ -221,62 +217,12 @@ class PaymentController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.delete.complete', 'admin');
+            $this->addSuccess('admin.delete_complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->entityManager->rollback();
 
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => $TargetPayment->getMethod()]);
+            $message = trans('admin.delete_error_foreign_key', ['%name%' => $TargetPayment->getMethod()]);
             $this->addError($message, 'admin');
-        }
-
-        return $this->redirectToRoute('admin_setting_shop_payment');
-    }
-
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_up", methods={"PUT"})
-     */
-    public function up(Payment $current)
-    {
-        $this->isTokenValid();
-
-        $currentSortNo = $current->getSortNo();
-        $targetSortNo = $currentSortNo + 1;
-
-        $target = $this->paymentRepository->findOneBy(['sort_no' => $targetSortNo]);
-
-        if ($target) {
-            $this->entityManager->persist($target->setSortNo($currentSortNo));
-            $this->entityManager->persist($current->setSortNo($targetSortNo));
-            $this->entityManager->flush();
-
-            $this->addSuccess('admin.sort_no.move.complete', 'admin');
-        } else {
-            $this->addError('admin.sort_no.up.error', 'admin');
-        }
-
-        return $this->redirectToRoute('admin_setting_shop_payment');
-    }
-
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_down", methods={"PUT"})
-     */
-    public function down(Payment $current)
-    {
-        $this->isTokenValid();
-
-        $currentSortNo = $current->getSortNo();
-        $targetSortNo = $currentSortNo - 1;
-
-        $target = $this->paymentRepository->findOneBy(['sort_no' => $targetSortNo]);
-
-        if ($target) {
-            $this->entityManager->persist($target->setSortNo($currentSortNo));
-            $this->entityManager->persist($current->setSortNo($targetSortNo));
-            $this->entityManager->flush();
-
-            $this->addSuccess('admin.sort_no.move.complete', 'admin');
-        } else {
-            $this->addError('admin.sort_no.down.error', 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_shop_payment');
