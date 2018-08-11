@@ -462,6 +462,12 @@ admin.login.login: ログイン
 admin.login.login_id: ログインID
 admin.login.password: パスワード
 
+admin.change_password: パスワード変更
+admin.change_password.current_password: 現在のパスワード
+admin.change_password.new_password: 新しいパスワード
+admin.change_password.new_password_confirm: 新しいパスワード(確認)
+admin.change_password.password_changed: パスワードを更新しました
+
 #------------------------------------------------------------------------------------
 # 商品管理
 #------------------------------------------------------------------------------------

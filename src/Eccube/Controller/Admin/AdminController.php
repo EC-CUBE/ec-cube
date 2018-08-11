@@ -335,7 +335,7 @@ class AdminController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE, $event);
 
-            $this->addSuccess('admin.change_password.save.complete', 'admin');
+            $this->addSuccess('admin.change_password.password_changed', 'admin');
 
             return $this->redirectToRoute('admin_change_password');
         }
