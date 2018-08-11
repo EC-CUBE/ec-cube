@@ -180,16 +180,20 @@ class TwigInitializeListener implements EventSubscriberInterface
         }
 
         if ($request->get('preview')) {
-            $Page->getPageLayouts()->clear();
-            $PageLayouts = $this->pageLayoutRepository->findBy(['layout_id' => 0]);
-            foreach ($PageLayouts as $PageLayout) {
-                $Page->addPageLayout($PageLayout);
-            }
+            // 管理者ログインしている場合にページレイアウトのプレビューが可能
+            $is_admin = $request->getSession()->has('_security_admin');
+            if ($is_admin) {
+                $Page->getPageLayouts()->clear();
+                $PageLayouts = $this->pageLayoutRepository->findBy(['layout_id' => 0]);
+                foreach ($PageLayouts as $PageLayout) {
+                    $Page->addPageLayout($PageLayout);
+                }
 
-            $Page->getBlockPositions()->clear();
-            $BlockPositions = $this->blockPositionRepository->findBy(['layout_id' => 0]);
-            foreach ($BlockPositions as $BlockPosition) {
-                $Page->addBlockPosition($BlockPosition);
+                $Page->getBlockPositions()->clear();
+                $BlockPositions = $this->blockPositionRepository->findBy(['layout_id' => 0]);
+                foreach ($BlockPositions as $BlockPosition) {
+                    $Page->addBlockPosition($BlockPosition);
+                }
             }
         }
 
