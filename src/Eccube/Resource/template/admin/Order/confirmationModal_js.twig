@@ -61,7 +61,7 @@
                     }
             }
             $('.modal-title', modal).text(updater.modalTitle);
-            $('.modal-body > p', modal).text("{{ 'admin.order.bulk_action__in_progress_message'|trans }}");
+            $('.modal-body > p.modal-message', modal).text("{{ 'admin.order.bulk_action__in_progress_message'|trans }}");
             $('button', modal).hide();
             $('#bulk-options').hide();
             $('.progress', modal).show();
@@ -116,7 +116,7 @@
         },
         always: function (result) {
             $('.progress', this.modal).hide();
-            $('.modal-body > p', this.modal).text("{{ 'admin.order.bulk_action__complete_message'|trans }}");
+            $('.modal-body > p.modal-message', this.modal).text("{{ 'admin.order.bulk_action__complete_message'|trans }}");
             $('#bulkChangeComplete').show();
         },
         getPromises: function (progress, url, data) {
@@ -197,7 +197,7 @@
         always: {
             value: function (result) {
                 ConfirmationModal.prototype.always.call(this, result);
-                $('.modal-body > p', this.modal).text("{{ 'admin.order.bulk_action__complete_message'|trans }}" + this.notifierCompleteMessage);
+                $('.modal-body > p.modal-message', this.modal).text("{{ 'admin.order.bulk_action__complete_message'|trans }}" + this.notifierCompleteMessage);
             }
         },
         getPromises: {
