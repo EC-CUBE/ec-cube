@@ -62,7 +62,9 @@ file that was distributed with this source code.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="row justify-content-between mb-2">
-                    <div class="col-9"></div>
+                    <div class="col-9">
+                        <a class="btn btn-ec-regular" href="{{ url('admin_content_block_new') }}">{{ 'admin.common.create__new'|trans }}</a>
+                    </div>
                     <div class="col-3">
                         <div class="form-row">
                             <div class="col">
@@ -146,13 +148,6 @@ file that was distributed with this source code.
                                 {% endfor %}
                             </ul>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card rounded border-0">
-                <div id="ex-block-new" class="card-body p-4">
-                    <div class="text-center">
-                        <a href="{{ url('admin_content_block_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.common.create__new'|trans }}</a>
                     </div>
                 </div>
             </div>

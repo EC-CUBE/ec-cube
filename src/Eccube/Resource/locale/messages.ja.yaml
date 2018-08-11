@@ -850,7 +850,6 @@ admin.content.file.directory_name: フォルダ名
 admin.content.file.file_list__card_title: このフォルダ内のファイル
 admin.content.file.updated: 更新
 admin.content.file.directory_tree: フォルダ構成
-admin.content.layout_add: レイアウトを新規追加
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_delete_confirm_title: レイアウトを削除します
 admin.content.layout_delete_confirm_message: レイアウトを削除してよろしいですか？
