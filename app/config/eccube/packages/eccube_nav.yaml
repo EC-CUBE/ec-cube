@@ -27,7 +27,7 @@ parameters:
                     url: admin_product_category_csv_import
         order:
             name: admin.order.order_management
-            icon: fa-inbox
+            icon: fa-shopping-cart
             children:
                 order_master:
                     name: admin.order.order_list
@@ -125,8 +125,8 @@ parameters:
                             name: admin.setting.system.system_info
                             url: admin_setting_system_system
         store:
-            name: admin.nav.store
-            icon: fa-info-circle
+            name: admin.store
+            icon: fa-plug
             children:
                 plugin:
                     name: admin.nav.store.plugin
