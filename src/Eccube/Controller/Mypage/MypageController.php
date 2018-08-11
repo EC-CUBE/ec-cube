@@ -17,6 +17,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerFavoriteProduct;
+use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -198,14 +199,24 @@ class MypageController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE, $event);
 
+        /** @var Order $Order */
         $Order = $event->getArgument('Order');
 
         if (!$Order) {
             throw new NotFoundHttpException();
         }
 
+        $stockFind = true;
+        foreach ($Order->getOrderItems() as $orderItem) {
+            if ($orderItem->isProduct() && $orderItem->getProductClass()->getStockFind() == false) {
+                $stockFind = false;
+                break;
+            }
+        }
+
         return [
             'Order' => $Order,
+            'stockFind' => $stockFind
         ];
     }
 
