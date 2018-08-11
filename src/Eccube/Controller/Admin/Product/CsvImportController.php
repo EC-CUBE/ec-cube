@@ -542,8 +542,8 @@ class CsvImportController extends AbstractCsvImportController
                             }
                         }
 
-                        if (isset($row['カテゴリ削除フラグ']) && StringUtil::isNotBlank($row['カテゴリ削除フラグ'])) {
-                            if (StringUtil::trimAll($row['カテゴリ削除フラグ']) == 1) {
+                        if (isset($row['表示/非表示']) && StringUtil::isNotBlank($row['表示/非表示'])) {
+                            if (StringUtil::trimAll($row['表示/非表示']) == 1) {
                                 if ($Category->getId()) {
                                     log_info('カテゴリ削除開始', [$Category->getId()]);
                                     try {
