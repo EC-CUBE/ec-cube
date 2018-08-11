@@ -68,8 +68,6 @@ file that was distributed with this source code.
             </li>
         {% endfor %}
 
-        {# TODO スタイルガイド機能の実装 #}
-        {# 可能ならばconfigで設定して下記を削除する #}
         <li class="c-mainNavArea__navItem">
             <a class="c-mainNavArea__navItemTitle collapsed" data-toggle="collapse" href="#others" aria-expanded="false"
                aria-controls="others">
@@ -78,7 +76,8 @@ file that was distributed with this source code.
             </a>
             <ul class="collapse" id="others">
                 <li>
-                    <a href="/styleguide/">{{ 'admin.nav.styleguide'|trans }}</a>
+                    <a href="https://www.ec-cube.net/" target="_blank">{{ 'admin.nav.other.official_site'|trans }}</a>
+                    <a href="https://xoops.ec-cube.net/" target="_blank">{{ 'admin.nav.other.community'|trans }}</a>
                 </li>
             </ul>
         </li>
