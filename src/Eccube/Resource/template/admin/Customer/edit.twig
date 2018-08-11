@@ -384,7 +384,7 @@ file that was distributed with this source code.
                                             <tbody>
                                             {% for Order in Customer.Orders %}
                                                 <tr>
-                                                    <td class="align-middle pl-3">{{ Order.order_date|date_format }}</td>
+                                                    <td class="align-middle pl-3">{{ Order.order_date|date_min }}</td>
                                                     <td class="align-middle">
                                                         <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">
                                                             {{ Order.order_no }}
