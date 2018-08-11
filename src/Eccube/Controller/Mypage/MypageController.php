@@ -353,8 +353,7 @@ class MypageController extends AbstractController
 
         log_info('お気に入り商品削除開始', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
 
-        if ($Customer->getId() !== $CustomerFavoriteProduct->getCustomer()
-                ->getId()) {
+        if ($Customer->getId() !== $CustomerFavoriteProduct->getCustomer()->getId()) {
             throw new BadRequestHttpException();
         }
 
