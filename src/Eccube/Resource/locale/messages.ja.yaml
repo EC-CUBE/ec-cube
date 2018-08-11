@@ -986,16 +986,16 @@ admin.setting.shop.payment.logo_image: ロゴ画像
 # 設定：ショップ設定：配送方法設定
 #------------------------------------------------------------------------------------
 
-admin.setting.shop.delivery.xxx: 基本情報
-admin.setting.shop.delivery.xxx: 配送業者名
-admin.setting.shop.delivery.xxx: 配送方法名称
-admin.setting.shop.delivery.xxx: 送り状番号URL
-admin.setting.shop.delivery.xxx: 販売種別 # productのを使う
-admin.setting.shop.delivery.xxx: 取り扱う支払方法
-admin.setting.shop.delivery.xxx: お届け時間設定
-admin.setting.shop.delivery.xxx: 都道府県別送料設定
-admin.setting.shop.delivery.xxx: 全国一律に設定
-admin.setting.shop.delivery.xxx: 各都道府県に適用
+admin.setting.shop.delivery.base_info: 基本情報
+admin.setting.shop.delivery.delivery_name: 配送業者名
+admin.setting.shop.delivery.delivery_sevice_name: 配送方法名称
+admin.setting.shop.delivery.tracking_number_url: 送り状番号URL
+admin.setting.shop.delivery.sale_type: 販売種別
+admin.setting.shop.delivery.payment_method: 取り扱う支払方法
+admin.setting.shop.delivery.delivery_time_setting: お届け時間設定
+admin.setting.shop.delivery.delivery_fee_by_pref: 都道府県別送料設定
+admin.setting.shop.delivery.apply_to_pref__title: 全国一律に設定
+admin.setting.shop.delivery.apply_to_pref__button: 各都道府県に適用
 
 #------------------------------------------------------------------------------------
 # 設定：ショップ設定：税率設定
@@ -1046,11 +1046,12 @@ admin.setting.system.member.name: 名前
 admin.setting.system.member.department: 所属
 admin.setting.system.member.login_id: ログインID
 admin.setting.system.member.password: パスワード
-admin.setting.system.member.password: パスワード(確認)
+admin.setting.system.member.password_confirm: パスワード(確認)
 admin.setting.system.member.work: 稼働
 admin.setting.system.member.delete__confirm_title: メンバーを削除します。
 admin.setting.system.member.delete__confirm_message: メンバーを削除してよろしいですか？
 admin.setting.system.member.work_can_not_change: 非稼働に変更することはできません。
+
 #------------------------------------------------------------------------------------
 # 設定：システム設定：権限管理
 #------------------------------------------------------------------------------------

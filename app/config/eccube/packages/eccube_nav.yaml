@@ -89,10 +89,10 @@ parameters:
                             url: admin_content_page_edit
                             param: { id: !php/const Eccube\Entity\Page::AGREEMENT_PAGE_ID }
                         shop_payment:
-                            name: admin.nav.setting.shop.shop_payment
+                            name: admin.setting.shop.payment_setting
                             url: admin_setting_shop_payment
                         shop_delivery:
-                            name: admin.nav.setting.shop.shop_delivery
+                            name: admin.setting.shop.delivery_setting
                             url: admin_setting_shop_delivery
                         shop_tax:
                             name: admin.nav.setting.shop.shop_tax

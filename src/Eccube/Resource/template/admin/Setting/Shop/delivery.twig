@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
-{% block title %}{{ 'admin.setting.shop.delivery.570'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.shop.delivery.569'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.delivery_list'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
 
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
@@ -103,6 +103,9 @@ file that was distributed with this source code.
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
+                    <div class="d-block mb-3">
+                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_delivery_new') }}">{{ 'admin.common.create__new'|trans }}</a>
+                    </div>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-body p-0">
                             <div class="card rounded border-0 mb-2">
@@ -169,15 +172,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
-                    <p>{{ 'admin.common.label.move.message'|trans }}</p>
-                </div>
-                <div class="card rounded border-0">
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
-                            <a href="{{ url('admin_setting_shop_delivery_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.setting.shop.delivery.577'|trans }}</a>
-                        </div>
-                    </div>
+                    <p>{{ 'admin.common.drag_and_drop_description'|trans }}</p>
                 </div>
             </div>
         </div>

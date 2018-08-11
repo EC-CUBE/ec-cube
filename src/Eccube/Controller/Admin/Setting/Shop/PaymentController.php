@@ -139,7 +139,7 @@ class PaymentController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            return $this->redirectToRoute('admin_setting_shop_payment');
+            return $this->redirectToRoute('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]);
         }
 
         return [
