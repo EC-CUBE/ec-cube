@@ -450,10 +450,10 @@ class CartService
         $Carts = $this->getCarts();
         foreach ($Carts as $index => $Cart) {
             if ($Cart->getCartKey() === $cartKey) {
+                $primary = $Carts[$index];
                 break;
             }
         }
-        $primary = $Carts[$index];
         $prev = $Carts[0];
         array_splice($Carts, 0, 1, [$primary]);
         array_splice($Carts, $index, 1, [$prev]);
