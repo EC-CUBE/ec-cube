@@ -113,7 +113,7 @@ parameters:
                             name: admin.setting.system.authority_management
                             url: admin_setting_system_authority
                         security:
-                            name: admin.nav.setting.system.security
+                            name: admin.setting.system.security_management
                             url: admin_setting_system_security
                         log:
                             name: admin.setting.system.log_display

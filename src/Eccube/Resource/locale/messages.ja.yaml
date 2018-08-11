@@ -1065,11 +1065,20 @@ admin.setting.system.authority.deny_url_is_invalid: 「/」を必ず記入して
 #------------------------------------------------------------------------------------
 
 admin.setting.system.security__card_title: セキュリティ設定
-admin.setting.system.security.directory_name: ディレクトリ名
+admin.setting.system.security.admin_url: 管理画面URL
+admin.setting.system.security.admin_url_description: 推測されにくいURLを設定することを推奨します。
+admin.setting.system.security.admin_url_changed: 管理画面のURLを変更しました。再度ログインを行ってください。
 admin.setting.system.security.ip_limit: IP制限
-admin.setting.system.security.ip_limit_description: 管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。 アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。
+admin.setting.system.security.ip_limit_description: |
+  管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
+  アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。
+admin.setting.system.security.ip_limit_sample: |
+  127.0.0.1
+  192.0.2.1
 admin.setting.system.security.force_ssl: SSLを強制
 admin.setting.system.security.force_ssl_description: httpsからの接続でなければSSL制限を設定できません。
+admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
+admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
 
 #------------------------------------------------------------------------------------
 # 設定：システム情報設定：ログ表示

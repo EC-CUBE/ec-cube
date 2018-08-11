@@ -81,6 +81,7 @@ class SecurityType extends AbstractType
                 'data' => $allowHosts,
             ])
             ->add('force_ssl', CheckboxType::class, [
+                'label' => 'admin.setting.system.security.force_ssl',
                 'required' => false,
                 'data' => $this->eccubeConfig->get('eccube_force_ssl'),
             ])
@@ -96,13 +97,13 @@ class SecurityType extends AbstractType
                         ]
                     );
                     if ($errors->count() != 0) {
-                        $form['admin_allow_hosts']->addError(new FormError(trans('security.text.error.not_ipv4', ['%ip%' => $ip])));
+                        $form['admin_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
                     }
                 }
 
                 $request = $this->requestStack->getCurrentRequest();
                 if ($data['force_ssl'] && !$request->isSecure()) {
-                    $form['force_ssl']->addError(new FormError(trans('security.text.error.not_https')));
+                    $form['force_ssl']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_https')));
                 }
             })
         ;
