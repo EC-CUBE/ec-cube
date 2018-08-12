@@ -267,24 +267,18 @@ class LayoutController extends AbstractController
 
             // プレビューモード
             if ($this->isPreview) {
-                // プレビュー用の
-                $Page = $this->pageRepository->createQueryBuilder('p')
-                    ->select('p')
-                    ->andWhere('p.id = :page_id')
-                    ->setParameter('page_id', $origId)
-                    ->getQuery()
-                    ->getOneOrNullResult();
+                // プレビューする画面を取得
+                try {
+                    $Page = $this->pageRepository->find($origId);
+                } catch (NoResultException $e) {
+                    throw new NotFoundHttpException();
+                }
 
                 if ($Page->getEditType() == \Eccube\Entity\Page::EDIT_TYPE_DEFAULT) {
                     if ($Page->getUrl() === 'product_detail') {
-                        $products = $this->productRepository->findBy(['Status' => ProductStatus::DISPLAY_SHOW]);
-                        $product = null;
-                        foreach ($products as $p) {
-                            $product = $p;
-                            break;
-                        }
+                        $product = $this->productRepository->findOneBy(['Status' => ProductStatus::DISPLAY_SHOW]);
                         if (is_null($product)) {
-                            return '';
+                            throw new NotFoundHttpException();
                         }
 
                         return $this->redirectToRoute($Page->getUrl(), ['preview' => 1, 'id' => $product->getId()]);
