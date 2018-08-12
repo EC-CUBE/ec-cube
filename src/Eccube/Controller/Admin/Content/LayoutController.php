@@ -19,7 +19,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
 use Eccube\Entity\PageLayout;
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Entity\Master\ProductStatus;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -29,7 +28,6 @@ use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -172,13 +170,6 @@ class LayoutController extends AbstractController
             }
         }
 
-        $Page = $this->pageRepository->createQueryBuilder('p')
-            ->select('p')
-            ->andWhere('p.id = :page_id')
-            ->setParameter('page_id', $origId)
-            ->getQuery()
-            ->getOneOrNullResult();
-
         // todo レポジトリへ移動
         // 未使用ブロックの取得
         $Blocks = $Layout->getBlocks();
@@ -236,11 +227,6 @@ class LayoutController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Layoutの更新
             $Layout = $form->getData();
-            if ($this->isPreview) {
-                $Layout->setName('プレビュー用');
-                $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_ADMIN);
-                $Layout->setDeviceType($DeviceType);
-            }
             $this->entityManager->persist($Layout);
             $this->entityManager->flush($Layout);
 
@@ -281,6 +267,14 @@ class LayoutController extends AbstractController
 
             // プレビューモード
             if ($this->isPreview) {
+                // プレビュー用の
+                $Page = $this->pageRepository->createQueryBuilder('p')
+                    ->select('p')
+                    ->andWhere('p.id = :page_id')
+                    ->setParameter('page_id', $origId)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+
                 if ($Page->getEditType() == \Eccube\Entity\Page::EDIT_TYPE_DEFAULT) {
                     if ($Page->getUrl() === 'product_detail') {
                         $products = $this->productRepository->findBy(['Status' => ProductStatus::DISPLAY_SHOW]);
