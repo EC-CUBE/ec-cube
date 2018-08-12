@@ -198,11 +198,15 @@ class CartService
 
         $cartKeys = $this->session->get('cart_keys', []);
         $Cart = null;
-        foreach ($Carts as $cart) {
-            if ($cart->getCartKey() === current($cartKeys)) {
-                $Cart = $cart;
-                break;
-            }
+        if (count($cartKeys) > 0) {
+            foreach ($Carts as $cart) {
+                if ($cart->getCartKey() === current($cartKeys)) {
+                    $Cart = $cart;
+                    break;
+                }
+            } 
+        } else {
+            $Cart = current($Carts);
         }
 
         return $Cart;
