@@ -190,16 +190,22 @@ class CartService
      */
     public function getCart()
     {
-        $cartKeys = $this->session->get('cart_keys', []);
-        foreach ($cartKeys as $cartKey) {
-            $this->carts[] = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
-        }
+        $Carts = $this->getCarts();
 
-        if (empty($this->carts)) {
+        if (empty($Carts)) {
             return null;
         }
 
-        return current($this->carts);
+        $cartKeys = $this->session->get('cart_keys', []);
+        $Cart = null;
+        foreach ($Carts as $cart) {
+            if ($cart->getCartKey() === current($cartKeys)) {
+                $Cart = $cart;
+                break;
+            }
+        }
+
+        return $Cart;
     }
 
     /**
@@ -449,17 +455,17 @@ class CartService
     {
         $Carts = $this->getCarts();
         $primary = $Carts[0];
-        $index_key = 0;
-        foreach ($Carts as $index => $Cart) {
+        $index = 0;
+        foreach ($Carts as $key => $Cart) {
             if ($Cart->getCartKey() === $cartKey) {
-                $index_key = $index;
+                $index = $key;
                 $primary = $Carts[$index];
                 break;
             }
         }
         $prev = $Carts[0];
         array_splice($Carts, 0, 1, [$primary]);
-        array_splice($Carts, $index_key, 1, [$prev]);
+        array_splice($Carts, $index, 1, [$prev]);
         $this->carts = $Carts;
         $this->save();
     }
