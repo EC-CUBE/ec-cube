@@ -301,6 +301,10 @@ class EditController extends AbstractController
 
                         log_info('受注登録完了', [$TargetOrder->getId()]);
 
+                        if ($returnLink = $form->get('return_link')->getData()) {
+                            return $this->redirect($returnLink);
+                        }
+
                         return $this->redirectToRoute('admin_order_edit', ['id' => $TargetOrder->getId()]);
                     }
 

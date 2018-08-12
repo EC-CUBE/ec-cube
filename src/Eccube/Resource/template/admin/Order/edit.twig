@@ -143,6 +143,30 @@ file that was distributed with this source code.
                 window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
                 return false;
             });
+
+            {# TODO: Should move logic of js into .js file instead of .html file #}
+            var confirmFormChange = function(form, target, modal) {
+                {# TODO: Should detect form change before show confirm modal #}
+                var returnLink = form.find('input[type="hidden"][name*="return_link"]'),
+                    saveBtn = modal.find('a[data-action="save"]'),
+                    cancelBtn = modal.find('a[data-action="cancel"]');
+                modal.on('hidden.bs.modal', function() {
+                    returnLink.val('');
+                });
+                saveBtn.on('click', function() {
+                    returnLink.val($(this).data('return-link'));
+                    $('#form1').append('<input type="hidden" name="mode" value="register">');
+                    form.submit();
+                });
+                target.on('click', function() {
+                    modal.find('.modal-body .screen-name').text($(this).attr('title'));
+                    modal.modal('show');
+                    saveBtn.data('return-link', $(this).attr('href'));
+                    cancelBtn.attr('href', $(this).attr('href'));
+                    return false;
+                });
+            };
+            confirmFormChange($('#form1'), $('a[data-action="confirm"]'), $('#confirmFormChangeModal'))
         });
 
         // 配送業者選択時にお届け時間を設定
@@ -166,10 +190,35 @@ file that was distributed with this source code.
 {% endblock javascript %}
 
 {% block main %}
+    <div class="modal fade" id="confirmFormChangeModal" tabindex="-1" role="dialog"
+         aria-labelledby="confirmFormChangeModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ 'admin.order.edit.text1'|trans }}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="screen-name"></p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-ec-conversion" data-action="save" href="javascript:void(0)">
+                        {{ 'admin.order.edit.save'|trans }}
+                    </a>
+                    <a class="btn btn-ec-sub" data-action="cancel" href="javascript:void(0)">
+                        {{ 'admin.order.edit.cancel'|trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="mode" value="">
         <input type="hidden" name="modal" value="">
         {{ form_widget(form._token) }}
+        {{ form_widget(form.return_link) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
@@ -422,7 +471,8 @@ file that was distributed with this source code.
                                 {% if Order.isMultiple %}
                                     {# 複数配送の場合は配送先の表示のみ #}
                                     <div class="mb-3">
-                                        <a id="shipping-add" class="btn btn-ec-regular" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.edit'|trans }}</a>
+                                        <a id="shipping-add" class="btn btn-ec-regular" data-action="confirm" title="{{ 'admin.order.edit.text2'|trans({'%name%' : 'admin.order.edit.title_delivery_screen'|trans
+                                           }) }}" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.edit'|trans }}</a>
                                         複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます。
                                     </div>
                                     {% for shipping in Order.Shippings %}
@@ -440,7 +490,8 @@ file that was distributed with this source code.
                                         </div>
                                         {% if Order.id is not empty %}
                                             <div class="col-6 text-right">
-                                                <a id="shipping-add" class="btn btn-ec-regular w-25" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.add'|trans }}</a>
+                                                <a id="shipping-add" class="btn btn-ec-regular w-25" data-action="confirm" title="{{ 'admin.order.edit.text2'|trans({'%name%' : 'admin.order.edit.title_delivery_screen'|trans
+                                           }) }}" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.add'|trans }}</a>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -880,7 +931,9 @@ file that was distributed with this source code.
                                         </tbody>
                                     </table>
                                     <div class="text-center">
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_order_mail', { id : Order.id }) }}">{{ 'admin.order.edit.label.mail'|trans }}</a>
+                                        <a class="btn btn-ec-regular" data-action="confirm" title="{{ 'admin.order.edit.text2'|trans({
+                                               '%name%' : 'admin.order.edit.title_mail_screen'|trans
+                                           }) }}" href="{{ url('admin_order_mail', { id : Order.id }) }}">{{ 'admin.order.edit.label.mail'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
