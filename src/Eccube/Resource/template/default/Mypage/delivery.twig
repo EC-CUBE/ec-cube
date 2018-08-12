@@ -41,7 +41,11 @@ file that was distributed with this source code.
                         <div class="ec-addressList">
                             {% for CustomerAddress in Customer.CustomerAddresses %}
                                 <div class="ec-addressList__item">
-                                    <a class="ec-addressList__remove" href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete"></a>
+                                    <a class="ec-addressList__remove ec-icon" href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                        <div class="ec-icon">
+                                            <img src="{{ asset('assets/icon/cross-dark.svg') }}" alt="close">
+                                        </div>
+                                    </a>
                                     <div class="ec-addressList__address">
                                         <div>{{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}</div>
                                         <div>〒{{ CustomerAddress.postal_code }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
