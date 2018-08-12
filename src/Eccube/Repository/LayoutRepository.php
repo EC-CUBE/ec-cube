@@ -29,9 +29,9 @@ class LayoutRepository extends AbstractRepository
         parent::__construct($registry, Layout::class);
     }
 
-    public function findById($id) 
+    public function findById($id)
     {
-         return $this->createQueryBuilder('l')
+        return $this->createQueryBuilder('l')
             ->select('l, bp, b')
             ->leftJoin('l.BlockPositions', 'bp')
             ->leftJoin('bp.Block', 'b')
@@ -41,5 +41,4 @@ class LayoutRepository extends AbstractRepository
             ->getQuery()
             ->getSingleResult();
     }
-
 }

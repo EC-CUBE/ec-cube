@@ -106,9 +106,10 @@ if (!class_exists('\Eccube\Entity\Layout')) {
          */
         public function removeBlockPositionByBlockId($targetId)
         {
-            foreach($this->BlockPositions as $BlockPosition) {
+            foreach ($this->BlockPositions as $BlockPosition) {
                 if ($BlockPosition->getBlock()->getId() == $targetId) {
                     $this->removeBlockPosition($BlockPosition);
+
                     return $BlockPosition;
                 }
             }

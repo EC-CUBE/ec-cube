@@ -13,7 +13,6 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
@@ -160,9 +159,11 @@ class LayoutController extends AbstractController
             $Layout = $form->getData();
             // ブロックの個数分登録を行う.
             $data = $request->request->all();
+            $max = count($data);
             // 削除対象ブロックポジション
             $RemovedBlockPositions = [];
-            for ($i = 0; $i <count($data); $i++) {
+
+            for ($i = 0; $i < $max; $i++) {
                 // ブロックidが取得できない場合はinsertしない
                 if (!isset($data['block_id_'.$i])) {
                     continue;
@@ -175,7 +176,7 @@ class LayoutController extends AbstractController
                 if ($data['section_'.$i] == \Eccube\Entity\Page::TARGET_ID_UNUSED) {
                     // 配置済み → 未使用ブロックとされた場合、未使用ブロック配列に追加
                     $is_exist_unused_block = false;
-                    foreach($UnusedBlocks as $UnusedBlock) {
+                    foreach ($UnusedBlocks as $UnusedBlock) {
                         if ($UnusedBlock->getId() == $Block->getId()) {
                             $is_exist_unused_block = true;
                             break;
@@ -197,7 +198,7 @@ class LayoutController extends AbstractController
 
                     continue;
                 }
-                
+
                 // 未使用 → 配置済みブロックとされた場合、未使用ブロックリストより削除
                 foreach ($UnusedBlocks as $unUsedBlockKey => $UnusedBlock) {
                     if ($Block->getId() == $UnusedBlock->getId()) {
@@ -212,7 +213,7 @@ class LayoutController extends AbstractController
                         return $BlockPosition->getBlock()->getId() == $Block->getId();
                     }
                 );
-    
+
                 if ($BlockPositions && $BlockPositions->count() > 0) {
                     // 配置済みブロックの場合は、レイアウト内のブロックポジションをリクエストで更新
                     $BlockPosition = current($BlockPositions->toArray());
@@ -232,7 +233,7 @@ class LayoutController extends AbstractController
                         ->setSection($data['section_'.$i])
                         ->setBlock($Block)
                         ->setLayout($Layout);
-    
+
                     $Layout->addBlockPosition($BlockPosition);
                 }
             }
@@ -244,7 +245,7 @@ class LayoutController extends AbstractController
                 $this->entityManager->flush($Layout);
 
                 // 未使用化されたブロックポジションを削除
-                foreach($RemovedBlockPositions as $BlockPosition) {
+                foreach ($RemovedBlockPositions as $BlockPosition) {
                     $this->entityManager->remove($BlockPosition);
                     $this->entityManager->flush($BlockPosition);
                 }
@@ -252,7 +253,7 @@ class LayoutController extends AbstractController
                 // 配置されているブロックポジションを更新
                 $BlockPositions = $Layout->getBlockPositions();
 
-                foreach($BlockPositions as $BlockPosition) {
+                foreach ($BlockPositions as $BlockPosition) {
                     $this->entityManager->persist($BlockPosition);
                     $this->entityManager->flush($BlockPosition);
                 }
