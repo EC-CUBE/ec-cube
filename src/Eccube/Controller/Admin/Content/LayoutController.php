@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Content;
 
+use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
@@ -117,7 +118,11 @@ class LayoutController extends AbstractController
         if (is_null($id)) {
             $Layout = new Layout();
         } else {
-            $Layout = $this->layoutRepository->findById($id);
+            try {
+                $Layout = $this->layoutRepository->findById($id);
+            } catch (NoResultException $e) {
+                throw new NotFoundException();
+            }
         }
 
         // 未使用ブロックの取得
