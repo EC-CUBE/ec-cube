@@ -193,7 +193,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         return [
             KernelEvents::REQUEST => [
                 // SecurityServiceProviderで、認証処理が完了した後に実行.
-                ['onKernelRequest', 9],
+                ['onKernelRequest', 6],
             ],
         ];
     }
