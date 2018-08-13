@@ -31,6 +31,7 @@ common.last_name: 姓
 common.first_name_kana: メイ
 common.last_name_kana: セイ
 common.company_name: 会社名
+common.shop_name: 店名
 common.address: 住所
 common.pref: 都道府県
 common.postal_symbol: 〒
@@ -176,6 +177,9 @@ front.forgot.complete_message__body: ご登録メールアドレスにパスワ�
 #------------------------------------------------------------------------------------
 
 front.about.title: 当サイトについて
+front.about.business_hour: 店舗営業時間
+front.about.good_traded: 取り扱い商品
+front.about.message: メッセージ
 front.agreement.title: 利用規約
 front.tradelaw.title: 特定商取引法に基づく表記
 front.privacy.title: プライバシーポリシー
