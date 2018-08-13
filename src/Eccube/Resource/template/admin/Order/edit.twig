@@ -622,7 +622,10 @@ file that was distributed with this source code.
                                         {{ form_errors(form.OrderItemsErrors) }}
                                     </div>
                                     <div class="col-5 text-right">
-                                        <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate">{{ 'admin.order.edit.267'|trans }}</button>
+                                        <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate"
+                                        {% if Order.OrderStatus is not null and Order.OrderStatus.id == constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING') %}disabled="disabled"{% endif %}>
+                                            {{ 'admin.order.edit.267'|trans }}
+                                        </button>
                                     </div>
                                 </div>
                                 <table id="table-form-field" class="table table-striped table-sm mb-0  text-nowrap"
@@ -897,7 +900,10 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button type="submit" class="btn btn-ec-conversion px-5" name="mode" value="register">{{ 'admin.order.edit.287'|trans }}</button>
+                                <button type="submit" class="btn btn-ec-conversion px-5" name="mode" value="register"
+                                    {% if Order.OrderStatus is not null and Order.OrderStatus.id == constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING') %}disabled="disabled"{% endif %}>
+                                    {{ 'admin.order.edit.287'|trans }}
+                                </button>
                             </div>
                         </div>
                     </div>

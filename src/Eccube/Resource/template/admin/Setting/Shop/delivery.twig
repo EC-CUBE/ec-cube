@@ -40,9 +40,6 @@ file that was distributed with this source code.
                 $.ajax({
                     url: '{{ url('admin_setting_shop_delivery_sort_no_move') }}',
                     type: 'POST',
-                    headers: {
-                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
-                    },
                     data: newSortNos
                 }).always(function() {
                     $(".modal-backdrop").remove();
@@ -87,6 +84,12 @@ file that was distributed with this source code.
                     moveSortNo();
                 }
             });
+
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
+                var target = $(event.relatedTarget);
+                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
+            });
         });
     </script>
 {% endblock %}
@@ -117,15 +120,51 @@ file that was distributed with this source code.
                                                         <a href="#" class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                            <i class="fa fa-close fa-lg text-secondary"></i>
-                                                        </a>
+                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}">
+                                                                <i class="fa fa-close fa-lg"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </li>
                                         {% endfor %}
                                     {% endif %}
                                 </ul>
+                                <div class="modal fade" id="delete_modal" tabindex="-1"
+                                     role="dialog"
+                                     aria-labelledby="delete_modal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                {# TODO モーダルのタイトルの設定 #}
+                                                <h5 class="modal-title font-weight-bold">
+                                                    配送方法を削除します</h5>
+                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            </div>
+                                            <div class="modal-body text-left">
+                                                {# TODO モーダルの文章の設定 #}
+                                                <p class="text-left">
+                                                    この配送方法を削除しますか？</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-ec-sub" type="button"
+                                                        data-dismiss="modal">
+                                                    {{ 'admin.common.label.cancel'|trans }}
+                                                </button>
+                                                <a
+                                                        href="#"
+                                                        class="btn btn-ec-delete"
+                                                        data-confirm="false"
+                                                        {{ csrf_token_for_anchor() }}
+                                                        data-method="delete">
+                                                    {{ 'admin.common.label.delete'|trans }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

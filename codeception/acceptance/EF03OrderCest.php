@@ -901,6 +901,33 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-news__title');
     }
 
+    public function order_複数配送設定画面での販売制限エラー(\AcceptanceTester $I)
+    {
+        /* @var Customer $Customer */
+        $Customer = (Fixtures::get('createCustomer'))();
+
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        CartPage::at($I)
+            ->レジに進む();
+
+        ShoppingLoginPage::at($I)
+            ->ログイン($Customer->getEmail());
+
+        ShoppingPage::at($I)
+            ->お届け先追加();
+
+        MultipleShippingPage::at($I)
+            ->入力_数量('0', '0', 100)
+            ->選択したお届け先に送る();
+
+        MultipleShippingPage::at($I);
+
+        $I->see('選択された商品(パーコレーター)は販売制限しております。', 'p.errormsg');
+    }
+
     public function order_複数ブラウザでログインしてカートに追加する(\AcceptanceTester $I)
     {
         $I->logoutAsMember();

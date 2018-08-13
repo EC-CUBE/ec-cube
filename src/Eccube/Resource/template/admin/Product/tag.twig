@@ -48,9 +48,6 @@ file that was distributed with this source code.
                 $.ajax({
                     url: '{{ url('admin_product_tag_sort_no_move') }}',
                     type: 'POST',
-                    headers: {
-                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
-                    },
                     data: newSortNos
                 }).always(function() {
                     $(".modal-backdrop").remove();
@@ -120,6 +117,12 @@ file that was distributed with this source code.
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');
             });
+
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
+                var target = $(event.relatedTarget);
+                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
+            });
         });
     </script>
 {% endblock %}
@@ -164,47 +167,13 @@ file that was distributed with this source code.
                                                 <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3" data-toggle="modal" data-target="#confirmModal-{{ Tag.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.product.tag.delete'|trans }}">
-                                                    <i class="fa fa-close fa-lg text-secondary"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="modal fade" id="confirmModal-{{ Tag.id }}" tabindex="-1"
-                                             role="dialog"
-                                             aria-labelledby="confirmModal-{{ Tag.id }}" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title font-weight-bold">
-                                                            {{ 'admin.product.tag.delete.confirm.title'|trans }}</h5>
-                                                        <button class="close" type="button"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"><span
-                                                                    aria-hidden="true">×</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body text-left">
-                                                        <p class="text-left">
-                                                            {{ 'admin.product.tag.delete.confirm.message'|trans }}</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-ec-sub" type="button"
-                                                                data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
-                                                        </button>
-                                                        <a
-                                                                href="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"
-                                                                class="btn btn-ec-delete"
-                                                                data-confirm="false"
-                                                                {{ csrf_token_for_anchor() }}
-                                                                data-method="delete">
-                                                            {{ 'admin.product.index.delete'|trans }}
-                                                        </a>
-                                                    </div>
+                                                <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.delete'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}">
+                                                        <i class="fa fa-close fa-lg text-secondary"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_tag') }}">
                                             {{ form_widget(forms[Tag.id]._token) }}
                                             <div class="col-auto align-items-center">
@@ -221,6 +190,40 @@ file that was distributed with this source code.
                                     </li>
                                 {% endfor %}
                             </ul>
+                            <div class="modal fade" id="delete_modal" tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="delete_modal" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bold">
+                                                {{ 'admin.product.tag.delete.confirm.title'|trans }}</h5>
+                                            <button class="close" type="button"
+                                                    data-dismiss="modal"
+                                                    aria-label="Close"><span
+                                                        aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                            <p class="text-left">
+                                                {{ 'admin.product.tag.delete.confirm.message'|trans }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-ec-sub" type="button"
+                                                    data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                            </button>
+                                            <a
+                                                    href="#"
+                                                    class="btn btn-ec-delete"
+                                                    data-confirm="false"
+                                                    {{ csrf_token_for_anchor() }}
+                                                    data-method="delete">
+                                                {{ 'admin.product.index.delete'|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

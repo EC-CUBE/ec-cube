@@ -29,12 +29,11 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Component\Pager\Paginator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MypageController extends AbstractController
@@ -213,8 +212,7 @@ class MypageController extends AbstractController
     /**
      * 再購入を行う.
      *
-     * @Route("/mypage/order/{order_no}", name="mypage_order")
-     * @Method("PUT")
+     * @Route("/mypage/order/{order_no}", name="mypage_order", methods={"PUT"})
      */
     public function order(Request $request, $order_no)
     {
@@ -345,8 +343,7 @@ class MypageController extends AbstractController
     /**
      * お気に入り商品を削除する.
      *
-     * @Method("DELETE")
-     * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", requirements={"id" = "\d+"})
+     * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", methods={"DELETE"}, requirements={"id" = "\d+"})
      */
     public function delete(Request $request, CustomerFavoriteProduct $CustomerFavoriteProduct)
     {

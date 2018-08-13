@@ -80,6 +80,8 @@ class WithdrawControllerTest extends AbstractWebTestCase
             ]
         );
 
+        $this->assertRegExp('/@dummy.dummy/', $this->Customer->getEmail());
+
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_withdraw_complete')));
 
         $Messages = $this->getMailCollector(false)->getMessages();

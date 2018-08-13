@@ -31,11 +31,11 @@ use Eccube\Form\Type\Install\Step5Type;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class InstallController extends AbstractController
 {
