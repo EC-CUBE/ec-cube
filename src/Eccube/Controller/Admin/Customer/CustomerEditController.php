@@ -14,16 +14,16 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Form\Type\Admin\CustomerType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class CustomerEditController extends AbstractController

@@ -20,9 +20,9 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\MailService;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

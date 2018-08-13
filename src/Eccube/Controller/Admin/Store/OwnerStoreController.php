@@ -27,13 +27,12 @@ use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/%eccube_admin_route%/store/plugin/api")
@@ -69,6 +68,7 @@ class OwnerStoreController extends AbstractController
 
     /**
      * OwnerStoreController constructor.
+     *
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
      * @param ComposerProcessService $composerProcessService
@@ -256,8 +256,8 @@ class OwnerStoreController extends AbstractController
      * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     * @param Request     $request
-     * @param string      $id
+     * @param Request $request
+     * @param string $id
      *
      * @return array
      */
@@ -297,10 +297,10 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/install/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
      *
-     * @param Request     $request
-     * @param string      $pluginCode
-     * @param string      $eccubeVersion
-     * @param string      $version
+     * @param Request $request
+     * @param string $pluginCode
+     * @param string $eccubeVersion
+     * @param string $version
      *
      * @return RedirectResponse
      */
@@ -383,7 +383,7 @@ class OwnerStoreController extends AbstractController
      * @Route("/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
      * @Template("@admin/Store/plugin_confirm_uninstall.twig")
      *
-     * @param Plugin      $Plugin
+     * @param Plugin $Plugin
      *
      * @return array|RedirectResponse
      */
@@ -431,10 +431,9 @@ class OwnerStoreController extends AbstractController
     /**
      * New ways to remove plugin: using composer command
      *
-     * @Method("DELETE")
-     * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
+     * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall", methods={"DELETE"})
      *
-     * @param Plugin      $Plugin
+     * @param Plugin $Plugin
      *
      * @return RedirectResponse
      */
@@ -464,11 +463,10 @@ class OwnerStoreController extends AbstractController
     /**
      * オーナーズブラグインインストール、アップデート
      *
-     * @Method("PUT")
-     * @Route("/upgrade/{pluginCode}/{version}", name="admin_store_plugin_api_upgrade")
+     * @Route("/upgrade/{pluginCode}/{version}", name="admin_store_plugin_api_upgrade", methods={"PUT"})
      *
-     * @param string      $pluginCode
-     * @param string      $version
+     * @param string $pluginCode
+     * @param string $version
      *
      * @return RedirectResponse
      */
@@ -496,7 +494,7 @@ class OwnerStoreController extends AbstractController
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     * @param Plugin      $plugin
+     * @param Plugin $plugin
      *
      * @return Response
      */
@@ -511,24 +509,13 @@ class OwnerStoreController extends AbstractController
     /**
      * API request processing
      *
-     * @param string  $url
-     * @param array $data
+     * @param string $url
      *
      * @return array
      * @deprecated since release, please preference PluginApiService
      */
-    private function getRequestApi($url, $data = array())
+    private function getRequestApi($url)
     {
-        if (count($data) > 0) {
-            $params['category_id'] = $data['category_id'];
-            $params['price_type'] = empty($data['price_type']) ? 'all' : $data['price_type'];
-            $params['keyword'] = $data['keyword'];
-            $params['sort'] = $data['sort'];
-            $params['page'] = $this->session->get('eccube.admin.plugin_api.search.page_no', 1);
-            $params['per_page'] = $this->session->get('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
-            $url .=  '?' . http_build_query($params);
-        }
-
         $curl = curl_init($url);
 
         // Option array
@@ -557,7 +544,7 @@ class OwnerStoreController extends AbstractController
     /**
      * API post request processing
      *
-     * @param string  $url
+     * @param string $url
      * @param array $data
      *
      * @return array

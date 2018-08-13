@@ -686,7 +686,7 @@ file that was distributed with this source code.
                                     {% endif %}
 
                                     <div class="d-block text-center text-center">
-                                        <a href="{{ url('admin_product_product_class', { 'id' : id }) }}" class="btn btn-ec-regular" data-action="confirm"
+                                        <a href="{{ url('admin_product_product_class', { 'id' : id, 'return' : 'admin_product_product_edit' }) }}" class="btn btn-ec-regular" data-action="confirm"
                                            title="{{ 'admin.product.product.text11'|trans({
                                                '%name%' : 'admin.product.product.title_product_class_screen'|trans
                                            }) }}">{{ 'admin.product.product.text09'|trans }}</a>

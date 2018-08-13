@@ -20,9 +20,9 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Util\CacheUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Twig_Environment;
 
 /**
@@ -87,8 +87,8 @@ class ShopController extends AbstractController
 
                 $event = new EventArgs(
                     [
-                    'form' => $form,
-                    'BaseInfo' => $this->BaseInfo,
+                        'form' => $form,
+                        'BaseInfo' => $this->BaseInfo,
                     ],
                     $request
                 );

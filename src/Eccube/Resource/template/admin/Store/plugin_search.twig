@@ -21,10 +21,6 @@ file that was distributed with this source code.
         .border-bt {
             border-bottom: 1px solid rgba(0, 0, 0, .125);
         }
-        .plugin-search select,
-        .plugin-search input{
-            height: calc(2.5rem + 2px);;
-        }
         #plugin-list a img{
             max-height: 180px;
         }
@@ -35,8 +31,6 @@ file that was distributed with this source code.
             display: inline-block;
         }
     </style>
-{% endblock %}
-{% block javascript %}
 {% endblock %}
 {% block main %}
     <div class="c-contentsArea__cols">
@@ -76,7 +70,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                         <div class="c-outsideBlock__contents mb-2 pl-0">
-                            <button class="btn btn-ec-conversion px-5 py-2 btn-lg" type="submit">{{ 'admin.store.plugin_owners_search.search_button'|trans }}</button>
+                            <button class="btn btn-ec-conversion px-5 py-2" type="submit">{{ 'admin.store.plugin_owners_search.search_button'|trans }}</button>
                         </div>
                     </div>
                     <div class="row justify-content-between mb-2">

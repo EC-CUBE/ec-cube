@@ -24,12 +24,11 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 class PageController extends AbstractController
@@ -256,8 +255,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete")
+     * @Route("/%eccube_admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete", methods={"DELETE"})
      */
     public function delete(Request $request, $id = null)
     {

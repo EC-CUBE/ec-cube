@@ -88,32 +88,24 @@ class ForgotControllerTest extends AbstractWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = 'パスワード変更(完了ページ)';
+        $this->expected = 'パスワード再発行(再設定ページ)';
         $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
         $this->verify();
 
-        // 再発行メール受信確認
-        $Messages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $Messages[0];
-        $this->expected = '['.$BaseInfo->getShopName().'] パスワード変更のお知らせ';
-        $this->actual = $Message->getSubject();
-        $cleanContent = quoted_printable_decode($Message->getBody());
-        $this->verify();
+        // パスワード再設定リクエスト
+        $password = 'password_Changed';
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('forgot_reset'),
+            [
+                'login_email' => $Customer->getEmail(),
+                'password[first]' => $password,
+                'password[second]' => $password,
+                Constant::TOKEN_NAME => 'dummy',
+            ]
+        );
 
-        $this->assertRegexp('/新しいパスワード：[a-zA-Z0-9]/u', $cleanContent);
-    }
-
-    public function testComplete()
-    {
-        $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('forgot_complete'));
-
-        $this->expected = 'パスワード発行メールの送信 完了';
-        $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
-        $this->verify();
-
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testResetWithDenied()
