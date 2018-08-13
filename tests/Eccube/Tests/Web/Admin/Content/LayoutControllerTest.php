@@ -105,18 +105,18 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
 
     public function testIndexWithPostPreview()
     {
-        // FIXME プレビュー機能が実装されたら有効にする
-        $this->markTestIncomplete('Layout Preview is not implemented.');
-
         $crawler = $this->client->request(
             'POST',
-            $this->app->url(
+            $this->generateUrl(
                 'admin_content_layout_preview',
                 ['id' => 1]
             ),
             [
                 'form' => [
                     '_token' => 'dummy',
+                    'name' => 'テストレイアウト',
+                    'DeviceType' => DeviceType::DEVICE_TYPE_PC,
+                    'Page' => 1,
                 ],
                 'name_1' => 'カゴの中',
                 'id_1' => 2,
@@ -129,7 +129,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect(
-            $this->app->url('homepage').'?preview=1'
+            $this->generateUrl('homepage', ['preview' => 1])
         ));
     }
 
