@@ -492,7 +492,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($arrCategory);
         $this->verify();
 
-        $this->assertRegexp('/CSVのフォーマットが一致しません。/u', $crawler->filter('div#upload_box__error--1')->text());
+        $this->assertRegexp('/CSVのフォーマットが一致しません/u', $crawler->filter('div#upload_box__error--1')->text());
     }
 
     /**
@@ -681,8 +681,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function dataProductIdProvider()
     {
         return [
-            [99999, '2行目の商品IDが存在しません。'],
-            ['abc', '2行目の商品IDが存在しません。'],
+            [99999, '2行目の商品IDが存在しません'],
+            ['abc', '2行目の商品IDが存在しません'],
         ];
     }
 
