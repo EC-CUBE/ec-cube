@@ -42,7 +42,7 @@ class ProductClassEditPage extends AbstractAdminPageStyleGuide
     public static function at($I)
     {
         $page = new ProductClassEditPage($I);
-        $page->atPage('商品登録（規格設定）商品管理');
+        $page->atPage('商品規格登録商品管理');
         return $page;
     }
 

@@ -361,7 +361,7 @@ class EA08SysteminfoCest
 
         $I->click(['css' => '#form2 .c-conversionArea .ladda-button']);
 
-        $I->see('登録が完了しました。', '.c-contentsArea .alert-success');
+        $I->see('保存しました', '.c-contentsArea .alert-success');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/customer/new');
         $I->see('無回答', '#customer_form #admin_customer_sex');
     }

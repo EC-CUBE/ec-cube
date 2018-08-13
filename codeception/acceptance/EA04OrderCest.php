@@ -40,7 +40,7 @@ class EA04OrderCest
         $I->see('検索結果：0件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         OrderManagePage::go($I)->詳細検索_電話番号('あああ');
-        $I->see('検索条件に誤りがあります。', OrderManagePage::$検索結果_エラーメッセージ);
+        $I->see('検索条件に誤りがあります', OrderManagePage::$検索結果_エラーメッセージ);
     }
 
     public function order_受注CSVダウンロード(\AcceptanceTester $I)

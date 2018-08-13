@@ -16,7 +16,7 @@ class MailSettingsPage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
-        return $page->goPage('/setting/shop/mail', 'メール設定基本情報設定');
+        return $page->goPage('/setting/shop/mail', 'メール設定店舗設定');
     }
 
     public function 入力_テンプレート($value) {

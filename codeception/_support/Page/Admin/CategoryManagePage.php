@@ -25,7 +25,7 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
-        return $page->goPage('/product/category', '商品管理カテゴリ編集');
+        return $page->goPage('/product/category', 'カテゴリ管理商品管理');
     }
 
     public function 入力_カテゴリ名($value)
@@ -72,8 +72,8 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function acceptModal()
     {
-        $this->tester->waitForElementVisible("#delete_modal");
-        $this->tester->click("#delete_modal > div > div > div.modal-footer > a");
+        $this->tester->waitForElementVisible("#DeleteModal");
+        $this->tester->click("#DeleteModal > div > div > div.modal-footer > a");
         return $this;
     }
 

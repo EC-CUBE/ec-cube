@@ -16,7 +16,7 @@ class TaxManagePage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
-        return $page->goPage('/setting/shop/tax', '税率設定基本情報設定');
+        return $page->goPage('/setting/shop/tax', '税率設定店舗設定');
     }
 
     public function 入力_消費税率($row, $value) {

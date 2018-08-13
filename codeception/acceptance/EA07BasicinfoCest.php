@@ -34,7 +34,7 @@ class EA07BasicinfoCest
             ->入力_会社名('会社名')
             ->登録();
 
-        $I->see('登録が完了しました。', ShopSettingPage::$登録完了メッセージ);
+        $I->see('保存しました', ShopSettingPage::$登録完了メッセージ);
     }
 
     public function basicinfo_支払方法一覧(\AcceptanceTester $I)
@@ -85,7 +85,7 @@ class EA07BasicinfoCest
             ->登録();
 
         $PaymentManagePage = PaymentManagePage::at($I);
-        $I->see('登録が完了しました。', PaymentManagePage::$登録完了メッセージ);
+        $I->see('保存しました', PaymentManagePage::$登録完了メッセージ);
         $I->see('payment method1', $PaymentManagePage->一覧_支払方法(1));
     }
 
@@ -105,7 +105,7 @@ class EA07BasicinfoCest
             ->登録();
 
         $PaymentManagePage = PaymentManagePage::at($I);
-        $I->see('登録が完了しました。', PaymentManagePage::$登録完了メッセージ);
+        $I->see('保存しました', PaymentManagePage::$登録完了メッセージ);
         $I->see('payment method2', $PaymentManagePage->一覧_支払方法(1));
     }
 
@@ -146,7 +146,7 @@ class EA07BasicinfoCest
             ->登録();
 
         $DeliveryManagePage = DeliveryManagePage::at($I);
-        $I->see('登録が完了しました。', DeliveryManagePage::$登録完了メッセージ);
+        $I->see('保存しました', DeliveryManagePage::$登録完了メッセージ);
         $I->see('配送業者名', $DeliveryManagePage->一覧_名称(1));
     }
 
@@ -164,7 +164,7 @@ class EA07BasicinfoCest
             ->登録();
 
         $DeliveryManagePage = DeliveryManagePage::at($I);
-        $I->see('登録が完了しました。', DeliveryManagePage::$登録完了メッセージ);
+        $I->see('保存しました', DeliveryManagePage::$登録完了メッセージ);
         $I->see('配送業者名1', $DeliveryManagePage->一覧_名称(1));
     }
 

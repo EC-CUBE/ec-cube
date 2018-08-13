@@ -17,13 +17,13 @@ class PaymentManagePage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
-        return $page->goPage('/setting/shop/payment', '支払方法設定基本情報設定');
+        return $page->goPage('/setting/shop/payment', '支払方法設定店舗設定');
     }
 
     public static function at($I)
     {
         $page = new self($I);
-        return $page->atPage('支払方法設定基本情報設定');
+        return $page->atPage('支払方法設定店舗設定');
     }
 
     public function 一覧_支払方法($rowNum)
@@ -52,8 +52,8 @@ class PaymentManagePage extends AbstractAdminPageStyleGuide
         $this->tester->click(".c-contentsArea__primaryCol .list-group-flush .list-group-item:nth-child(${rowNum}) > div > div.col-3.text-right > div > a");
 
         // accept modal
-        $this->tester->waitForElementVisible("#delete_modal");
-        $this->tester->click("#delete_modal > div > div > div.modal-footer > a");
+        $this->tester->waitForElementVisible("#DeleteModal");
+        $this->tester->click("#DeleteModal > div > div > div.modal-footer > a");
     }
 
     public function 新規入力()

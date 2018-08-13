@@ -57,7 +57,7 @@ class EA05CustomerCest
         CustomerManagePage::go($I)
             ->詳細検索_電話番号('あああ');
 
-        $I->see('検索条件に誤りがあります。', CustomerManagePage::$検索結果_エラーメッセージ);
+        $I->see('検索条件に誤りがあります', CustomerManagePage::$検索結果_エラーメッセージ);
     }
 
     public function customer_会員登録(\AcceptanceTester $I)

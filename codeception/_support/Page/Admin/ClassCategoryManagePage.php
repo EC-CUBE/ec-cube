@@ -23,7 +23,7 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
     public static function at($I)
     {
         $page = new ClassCategoryManagePage($I);
-        return $page->atPage('規格管理商品管理');
+        return $page->atPage('規格分類管理商品管理');
     }
 
     public function 入力_分類名($value)
@@ -68,8 +68,8 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function acceptModal()
     {
-        $this->tester->waitForElementVisible("#delete_modal");
-        $this->tester->click("#delete_modal > div > div > div.modal-footer > a");
+        $this->tester->waitForElementVisible("#DeleteModal");
+        $this->tester->click("#DeleteModal > div > div > div.modal-footer > a");
         return $this;
     }
 

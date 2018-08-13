@@ -16,7 +16,7 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
-        return $page->goPage('/setting/shop', 'ショップマスター基本情報設定');
+        return $page->goPage('/setting/shop', 'ショップマスター店舗設定');
     }
 
     public function 入力_会社名($value)
