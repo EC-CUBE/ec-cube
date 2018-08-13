@@ -117,10 +117,10 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
 
         /** @var Order $Order */
         $Order = $itemHolder;
-        $deliveryFeeProduct = 0;
         /* @var Shipping $Shipping */
         foreach ($Order->getShippings() as $Shipping) {
             // 送料の計算
+            $deliveryFeeProduct = 0;
             if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                 /** @var OrderItem $orderItem */
                 foreach ($Shipping->getOrderItems() as $orderItem) {
