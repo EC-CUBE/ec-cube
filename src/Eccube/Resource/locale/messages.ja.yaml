@@ -66,6 +66,10 @@ common.point: ポイント
 common.enabled: 有効
 common.disabled: 無効
 common.user_name: '%last_name% %first_name% 様'
+common.login: ログイン
+common.remember_me: 次回から自動的にログインする
+common.signup: 新規会員登録
+common.forgot_login: ログイン情報をお忘れですか？
 
 #====================================================================================
 # フロント画面
@@ -315,6 +319,8 @@ front.shopping.complete_message__body: |
   万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
   今後ともご愛顧賜りますようよろしくお願い申し上げます。
 front.shopping.continue: 購入を続ける
+front.shopping.guest_purchase_message: 会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
+front.shopping.guest_purchase: ゲスト購入
 
 #====================================================================================
 # 管理画面
