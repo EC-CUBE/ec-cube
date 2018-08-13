@@ -335,13 +335,30 @@ file that was distributed with this source code.
                     </div>
                     <div class="col mb-4">
                         <div id="ec-cube-plugin" class="card rounded border-0 h-100">
-                            <div class="card-header">
+                            <div class="card-header border-bottom-0">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
                                     <span class="card-title">{{ 'admin.index.recommended.plugin'|trans }}</span>
                                 </div>
                             </div>
-                            <div class="card-body p-0">
-                                {# todo おすすめプラグインを設定 #}
+                            <div class="card-body py-0">
+                                {% for plugin in recommendedPlugins %}
+                                <div class="row py-3 border border-bottom-0 border-left-0 border-right-0">
+                                    <div class="col-5 col-md-4">
+                                        <a href="{{ plugin.store_url }}" target="_blank">
+                                            <img src="{{ plugin.image }}" class="w-100" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="col-7 col-md-8 pl-0">
+                                        <a href="{{ plugin.store_url }}" target="_blank">{{ plugin.name }}</a>
+                                        <p class="m-0 pt-2">
+                                            {{ plugin.short_description }}
+                                        </p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="card-footer">
+                                > <a href="https://www.ec-cube.net/owners/" target="_blank">済プラグイン。</a>
                             </div>
                         </div><!-- /#ec-cube-plugin -->
                     </div>

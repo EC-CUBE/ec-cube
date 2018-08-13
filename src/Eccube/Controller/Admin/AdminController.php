@@ -235,6 +235,10 @@ class AdminController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
 
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/plugins/recommended';
+        list($json, $info) = $this->getRequestApi($url);
+        $recommendedPlugins = json_decode($json, true);
+
         return [
             'Orders' => $Orders,
             'OrderStatuses' => $OrderStatuses,
@@ -244,7 +248,36 @@ class AdminController extends AbstractController
             'countNonStockProducts' => $countNonStockProducts,
             'countProducts' => $countProducts,
             'countCustomers' => $countCustomers,
+            'recommendedPlugins' => $recommendedPlugins,
         ];
+    }
+
+    // Need move to common code
+    private function getRequestApi($url)
+    {
+        $curl = curl_init($url);
+
+        // Option array
+        $options = [
+            // HEADER
+            CURLOPT_HTTPGET => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FAILONERROR => true,
+            CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
+        ];
+
+        // Set option value
+        curl_setopt_array($curl, $options);
+        $result = curl_exec($curl);
+        $info = curl_getinfo($curl);
+        $message = curl_error($curl);
+        $info['message'] = $message;
+        curl_close($curl);
+
+        log_info('http get_info', $info);
+
+        return [$result, $info];
     }
 
     /**
