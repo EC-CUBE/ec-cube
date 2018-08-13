@@ -74,7 +74,7 @@ class PluginApiService
         $params['page'] = (isset($data['page_no']) && !empty($data['page_no'])) ? $data['page_no'] : 1;
         $params['per_page'] = (isset($data['page_count']) && !empty($data['page_count'])) ? $data['page_count'] : $this->eccubeConfig->get('eccube_default_page_count');
 
-        return $this->getRequestApi($url);
+        return $this->getRequestApi($url, $params);
     }
 
     /**
