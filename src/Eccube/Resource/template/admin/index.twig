@@ -192,10 +192,7 @@ file that was distributed with this source code.
                                     <div class="d-block border border-top-0 border-left-0 border-right-0">
                                         <a href="{{ url('admin_order', { 'order_status_id': OrderStatus.id }) }}" class="p-3 d-block">
                                             <div class="row align-items-center">
-                                                <div class="col-2 align-middle text-center">
-                                                    <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
-                                                </div>
-                                                <div class="col p-0">
+                                                <div class="col align-middle">
                                                     <span class="align-middle">{{ OrderStatus.name }}</span>
                                                 </div>
                                                 <div class="col-auto text-right align-middle">
@@ -220,19 +217,19 @@ file that was distributed with this source code.
                                 <div class="row text-center border-top border-bottom mb-3">
                                     <div class="col-4 py-2 border-right">
                                         <div class="h3">
-                                            {{ salesThisMonth is empty ? '¥ 0' : salesThisMonth.order_amount|price }} / {{ salesThisMonth is empty ? 0 : salesThisMonth.order_count|number_format }} <span>件</span>
+                                            {{ salesThisMonth is empty ? '0'|price : salesThisMonth.order_amount|price }} / {{ salesThisMonth is empty ? 0 : salesThisMonth.order_count|number_format }} <span>件</span>
                                         </div>
                                         <small>{{ 'admin.index.label.monthly'|trans }}</small>
                                     </div>
                                     <div class="col-4 py-2 border-right">
                                         <div class="h3">
-                                            {{ salesToday is empty ? '¥ 0' : salesToday.order_amount|price }} / {{ salesToday is empty ? 0 : salesToday.order_count|number_format }} <span>件</span>
+                                            {{ salesToday is empty ? '0'|price : salesToday.order_amount|price }} / {{ salesToday is empty ? 0 : salesToday.order_count|number_format }} <span>件</span>
                                         </div>
                                         <small>{{ 'admin.index.label.daily'|trans }}</small>
                                     </div>
                                     <div class="col-4 py-2">
                                         <div class="h3">
-                                            {{ salesYesterday is empty ? '¥ 0' : salesYesterday.order_amount|price }} / {{ salesYesterday is empty ? 0 : salesYesterday.order_count|number_format }} <span>件</span>
+                                            {{ salesYesterday is empty ? '0'|price : salesYesterday.order_amount|price }} / {{ salesYesterday is empty ? 0 : salesYesterday.order_count|number_format }} <span>件</span>
                                         </div>
                                         <small>{{ 'admin.index.label.yesterday'|trans }}</small>
                                     </div>

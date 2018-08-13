@@ -15,6 +15,7 @@ namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
+use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

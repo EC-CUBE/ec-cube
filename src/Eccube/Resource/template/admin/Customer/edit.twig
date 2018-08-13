@@ -363,8 +363,6 @@ file that was distributed with this source code.
                                     {# TODO IN_PROGRESS と RETURNED の色を決める #}
                                     {% set cssClassStatus = {
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::BACK_ORDER')): "badge-ec-red",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::CANCEL')): "badge-ec-glay",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",

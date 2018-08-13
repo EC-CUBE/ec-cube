@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Repository\Master;
 
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\EccubeTestCase;
 
@@ -63,7 +64,18 @@ class OrderStatusRepositoryTest extends EccubeTestCase
 
     public function testFindNotContainsBy3()
     {
-        $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(['id' => [1, 2, 3, 4, 5, 6, 7]]);
+        $orderStatuses = [
+            OrderStatus::NEW,
+            OrderStatus::CANCEL,
+            OrderStatus::IN_PROGRESS,
+            OrderStatus::DELIVERED,
+            OrderStatus::PAID,
+            OrderStatus::PENDING,
+            OrderStatus::PROCESSING,
+            OrderStatus::RETURNED,
+        ];
+
+        $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(['id' => $orderStatuses]);
         $this->actual = count($OrderStatuses);
         $this->expected = 3;
         $this->verify();
@@ -76,7 +88,19 @@ class OrderStatusRepositoryTest extends EccubeTestCase
             function ($OrderStatus) {
                 return $OrderStatus->getId();
             }, $OrderStatuses));
-        $this->expected = '10, 9, 8, 7, 6, 5, 4, 3, 2, 1';
+
+        $orderStatuses = [
+            OrderStatus::RETURNED,
+            OrderStatus::PROCESSING,
+            OrderStatus::PENDING,
+            OrderStatus::PAID,
+            OrderStatus::DELIVERED,
+            OrderStatus::IN_PROGRESS,
+            OrderStatus::CANCEL,
+            OrderStatus::NEW,
+        ];
+
+        $this->expected = implode(', ', $orderStatuses);
         $this->verify();
     }
 
@@ -87,7 +111,19 @@ class OrderStatusRepositoryTest extends EccubeTestCase
             function ($OrderStatus) {
                 return $OrderStatus->getId();
             }, $OrderStatuses));
-        $this->expected = '1, 2, 3, 4, 5, 6, 7, 8, 9, 10';
+
+        $orderStatuses = [
+            OrderStatus::NEW,
+            OrderStatus::CANCEL,
+            OrderStatus::IN_PROGRESS,
+            OrderStatus::DELIVERED,
+            OrderStatus::PAID,
+            OrderStatus::PENDING,
+            OrderStatus::PROCESSING,
+            OrderStatus::RETURNED,
+        ];
+
+        $this->expected = implode(', ', $orderStatuses);
         $this->verify();
     }
 
@@ -98,7 +134,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
             function ($OrderStatus) {
                 return $OrderStatus->getId();
             }, $OrderStatuses));
-        $this->expected = '1';
+        $this->expected = OrderStatus::NEW;
         $this->verify();
     }
 
@@ -109,7 +145,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
             function ($OrderStatus) {
                 return $OrderStatus->getId();
             }, $OrderStatuses));
-        $this->expected = '3, 4';
+        $this->expected = OrderStatus::IN_PROGRESS.','.OrderStatus::DELIVERED;
         $this->verify();
     }
 }
