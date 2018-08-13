@@ -201,7 +201,7 @@ class MemberController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            return $this->redirectToRoute('admin_setting_system_member', ['id' => $Member->getId()]);
+            return $this->redirectToRoute('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         }
 
         $this->tokenStorage->getToken()->setUser($LoginMember);
