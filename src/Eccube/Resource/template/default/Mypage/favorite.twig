@@ -34,7 +34,7 @@ file that was distributed with this source code.
                             {% for FavoriteProduct in pagination %}
                                 {% set Product = FavoriteProduct.Product %}
                                 <li class="ec-favoriteRole__item">
-                                    <a class="ec-closeBtn--circle" href="{{ url('mypage_favorite_delete', { id : FavoriteProduct.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                    <a class="ec-closeBtn--circle" href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                         <div class="ec-icon">
                                             <img src="{{ asset('assets/icon/cross-white.svg') }}" alt="close">
                                         </div>
