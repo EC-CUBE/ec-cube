@@ -22,6 +22,7 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerProcessService;
 use Eccube\Service\Composer\ComposerServiceInterface;
+use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Eccube\Util\FormUtil;
@@ -59,27 +60,34 @@ class OwnerStoreController extends AbstractController
      */
     protected $systemService;
 
+    /**
+     * @var PluginApiService
+     */
+    protected $pluginApiService;
+
     private static $vendorName = 'ec-cube';
 
     /**
      * OwnerStoreController constructor.
-     *
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
      * @param ComposerProcessService $composerProcessService
      * @param ComposerApiService $composerApiService
      * @param SystemService $systemService
+     * @param PluginApiService $pluginApiService
      */
     public function __construct(
         PluginRepository $pluginRepository,
         PluginService $pluginService,
         ComposerProcessService $composerProcessService,
         ComposerApiService $composerApiService,
-        SystemService $systemService
+        SystemService $systemService,
+        PluginApiService $pluginApiService
     ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->systemService = $systemService;
+        $this->pluginApiService = $pluginApiService;
 
         // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
@@ -111,10 +119,8 @@ class OwnerStoreController extends AbstractController
         $total = 0;
         $category = [];
 
-        // Get master data
-        $masterData = $this->eccubeConfig['eccube_package_repo_url'].'/category';
-        list($json, $info) = $this->getRequestApi($masterData);
-        if (!empty($data)) {
+        list($json, $info) = $this->pluginApiService->getCategory();
+        if (!empty($json)) {
             $data = json_decode($json, true);
             $category = array_column($data, 'name', 'id');
         }
@@ -126,7 +132,7 @@ class OwnerStoreController extends AbstractController
 
         $searchForm->handleRequest($request);
         $searchData = $searchForm->getData();
-        if ('POST' === $request->getMethod()) {
+        if ($searchForm->isSubmitted()) {
             if ($searchForm->isValid()) {
                 $page_no = 1;
                 $searchData = $searchForm->getData();
@@ -159,17 +165,18 @@ class OwnerStoreController extends AbstractController
         }
 
         // set page count
-        $page_count = $this->session->get('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
+        $pageCount = $this->session->get('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
         if (($PageMax = $searchForm['page_count']->getData()) instanceof PageMax) {
-            $page_count = $PageMax->getId();
-            $this->session->set('eccube.admin.plugin_api.search.page_count', $page_count);
+            $pageCount = $PageMax->getId();
+            $this->session->set('eccube.admin.plugin_api.search.page_count', $pageCount);
         }
 
         // Owner's store communication
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/plugins';
-        list($json, $info) = $this->getRequestApi($url, $searchData);
-        if ($json === false) {
-            $message = $this->getResponseErrorMessage($info);
+        $searchData['page_no'] = $page_no;
+        $searchData['page_count'] = $pageCount;
+        list($json, $info) = $this->pluginApiService->getPlugins($searchData);
+        if (empty($json)) {
+            $message = $this->pluginApiService->getResponseErrorMessage($info);
         } else {
             $data = json_decode($json, true);
             $total = $data['total'];
@@ -191,12 +198,10 @@ class OwnerStoreController extends AbstractController
                             }
                         }
                     }
-
                     if ($item['purchased'] == false && (isset($item['purchase_required']) && $item['purchase_required'] == true)) {
                         // Not purchased with paid items
                         $item['update_status'] = 4;
                     }
-
                     $items[] = $item;
                 }
 
@@ -233,7 +238,7 @@ class OwnerStoreController extends AbstractController
         $pagination = $paginator->paginate($items);
         $pagination->setTotalItemCount($total);
         $pagination->setCurrentPageNumber($page_no);
-        $pagination->setItemNumberPerPage($page_count);
+        $pagination->setItemNumberPerPage($pageCount);
 
         return [
             'pagination' => $pagination,
@@ -510,6 +515,7 @@ class OwnerStoreController extends AbstractController
      * @param array $data
      *
      * @return array
+     * @deprecated since release, please preference PluginApiService
      */
     private function getRequestApi($url, $data = array())
     {
@@ -555,6 +561,7 @@ class OwnerStoreController extends AbstractController
      * @param array $data
      *
      * @return array
+     * @deprecated since release, please preference PluginApiService
      */
     private function postRequestApi($url, $data)
     {
@@ -571,26 +578,5 @@ class OwnerStoreController extends AbstractController
         log_info('http post_info', $info);
 
         return [$result, $info];
-    }
-
-    /**
-     * Get message
-     *
-     * @param $info
-     *
-     * @return string
-     */
-    private function getResponseErrorMessage($info)
-    {
-        if (!empty($info)) {
-            $statusCode = $info['http_code'];
-            $message = $info['message'];
-
-            $message = $statusCode.' : '.$message;
-        } else {
-            $message = trans('ownerstore.text.error.timeout');
-        }
-
-        return $message;
     }
 }
