@@ -116,14 +116,14 @@ class TwigInitializeListener implements EventSubscriberInterface
             $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
         }
 
-        if (!$event->isMasterRequest()) {
-            return;
-        }
-
         if ($this->requestContext->isAdmin()) {
             $this->setAdminGlobals($event);
         } else {
             $this->setFrontVaribales($event);
+        }
+        
+        if (!$event->isMasterRequest()) {
+            return;
         }
     }
 
