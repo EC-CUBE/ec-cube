@@ -198,14 +198,14 @@ file that was distributed with this source code.
 
                     <div class="item_visual">
                         {% for ProductImage in Product.ProductImage %}
-                            <div class="item"><img src="{{ asset(ProductImage, 'save_image') }}"></div>
+                            <div class="slide-item"><img src="{{ asset(ProductImage, 'save_image') }}"></div>
                         {% else %}
-                            <div class="item"><img src="{{ asset(''|no_image_product, 'save_image') }}"/></div>
+                            <div class="slide-item"><img src="{{ asset(''|no_image_product, 'save_image') }}"/></div>
                         {% endfor %}
                     </div>
                     <div class="item_nav">
                         {% for ProductImage in Product.ProductImage %}
-                            <div class="slideThumb"><img src="{{ asset(ProductImage, 'save_image') }}"></div>
+                            <div class="slideThumb" data-index="{{ loop.index0 }}"><img src="{{ asset(ProductImage, 'save_image') }}"></div>
                         {% endfor %}
                     </div>
                 </div>
