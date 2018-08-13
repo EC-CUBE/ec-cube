@@ -138,11 +138,19 @@ Styleguide 9.1.4
     position: relative;
     box-sizing: border-box;
     padding: 10px;
-    @include media_desktop(){
-      width: 25%;
+    &-image {
+      height: 150px;
+      margin-bottom: 10px;
+      @include media_desktop() {
+        height: 250px;
+      }
     }
     img{
       width: 100%;
+      max-height: 100%;
+    }
+    @include media_desktop(){
+      width: 25%;
     }
     .ec-closeBtn--circle {
       position: absolute;
