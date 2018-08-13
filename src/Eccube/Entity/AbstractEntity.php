@@ -205,6 +205,7 @@ abstract class AbstractEntity implements \ArrayAccess
             // The m modifier of the preg functions converts the end-of-line to '\n'
             $xml = StringUtil::convertLineFeed($xml, "\r\n");
         }
+
         return $xml;
     }
 

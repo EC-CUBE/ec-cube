@@ -42,9 +42,7 @@ use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -54,6 +52,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
@@ -271,8 +270,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Method("GET")
-     * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", requirements={"id" = "\d+"})
+     * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", methods={"GET"}, requirements={"id" = "\d+"})
      * @Template("@admin/Product/product_class_popup.twig")
      * @ParamConverter("Product")
      */
@@ -303,8 +301,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/product/product/image/add", name="admin_product_image_add")
+     * @Route("/%eccube_admin_route%/product/product/image/add", name="admin_product_image_add", methods={"POST"})
      */
     public function addImage(Request $request)
     {
@@ -648,8 +645,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
+     * @Route("/%eccube_admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete", methods={"DELETE"})
      */
     public function delete(Request $request, $id = null)
     {
@@ -740,8 +736,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
+     * @Route("/%eccube_admin_route%/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy", methods={"POST"})
      */
     public function copy(Request $request, $id = null)
     {
@@ -993,8 +988,7 @@ class ProductController extends AbstractController
     /**
      * Bulk public action
      *
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/product/bulk/product-status/{id}", requirements={"id" = "\d+"}, name="admin_product_bulk_product_status")
+     * @Route("/%eccube_admin_route%/product/bulk/product-status/{id}", requirements={"id" = "\d+"}, name="admin_product_bulk_product_status", methods={"POST"})
      *
      * @param Request $request
      * @param ProductStatus $ProductStatus

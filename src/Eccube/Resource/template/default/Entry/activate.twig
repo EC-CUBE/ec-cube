@@ -26,7 +26,12 @@ file that was distributed with this source code.
                 </div>
                 <p class="ec-reportDescription">{{'shopping.text.message.enjoy'|trans}}<br>{{'signup.text.message.look_forward'|trans}}</p>
                 <div class="ec-off4Grid">
-                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.label.back_to_top'|trans}}</a></div>
+                    <div class="ec-off4Grid__cell">
+                        {% if qtyInCart %}
+                            <a class="ec-blockBtn--action" style="margin-bottom: 3px" href="{{ url('cart') }}">{{'shopping.label.btn.goto_cart'|trans}}</a>
+                        {% endif %}
+                        <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.label.back_to_top'|trans}}</a>
+                    </div>
                 </div>
             </div>
         </div>

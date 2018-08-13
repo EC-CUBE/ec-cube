@@ -102,6 +102,27 @@ file that was distributed with this source code.
                     moveSortNo();
                 }
             });
+
+            {# TODO: 表示・非表示を登録できるようにする #}
+            // 表示・非表示
+            $('.check-display').click(function(){
+                var id = $(this).attr('id');
+                if($('.display-show-toggle-' + id).hasClass('fa-eye')){
+                    $('.display-show-toggle-' + id).addClass('fa-eye-slash');
+                    $('.display-show-toggle-' + id).removeClass('fa-eye');
+                    $('#' + id).css('background-color','#FAF1F1');
+                }else{
+                    $('.display-show-toggle-' + id).addClass('fa-eye');
+                    $('.display-show-toggle-' + id).removeClass('fa-eye-slash');
+                    $('#' + id).css('background-color','');
+                }
+            });
+
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
+                var target = $(event.relatedTarget);
+                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
+            });
         });
     </script>
 {% endblock %}
@@ -143,56 +164,54 @@ file that was distributed with this source code.
                                         </span>
                                         </div>
                                         <div class="col-3 text-right">
-                                            <div class="row">
-                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.608'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.608'|trans }}">
-                                                        <i class="fa fa-arrow-up fa-lg text-secondary"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.609'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.609'|trans }}">
-                                                        <i class="fa fa-arrow-down fa-lg text-secondary"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.607'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ Payment.id }}">
-                                                        <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
-                                                    </a>
-                                                    <div class="modal fade" id="delete_{{ Payment.id }}" tabindex="-1"
-                                                         role="dialog"
-                                                         aria-labelledby="delete_{{ Payment.id }}" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title font-weight-bold">
-                                                                        {{ 'admin.setting.shop.payment.modal.header'|trans }}</h5>
-                                                                    <button class="close" type="button"
-                                                                            data-dismiss="modal"
-                                                                            aria-label="Close"><span
-                                                                                aria-hidden="true">×</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body text-left">
-                                                                    <p class="text-left">
-                                                                        {{ 'admin.setting.shop.payment.modal.body'|trans }}</p>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
-                                                                    </button>
-                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_setting_shop_payment_delete', {'id' : Payment.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                       data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.608'|trans }}">
+                                                <i class="fa fa-arrow-up fa-lg text-secondary"></i>
+                                            </a>
+                                            <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.609'|trans }}">
+                                                <i class="fa fa-arrow-down fa-lg text-secondary"></i>
+                                            </a>
+                                            {# TODO クラス名、id名の設定、メッセージID化、登録機能 #}
+                                            <a class="btn btn-ec-actionIcon mr-3 check-display" id="{{ Payment.id }}" data-toggle="tooltip" data-placement="top" title="表示">
+                                                <i class="fa fa-eye display-show-toggle-{{ Payment.id }} fa-lg text-secondary"></i>
+                                            </a>
+                                            <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.607'|trans }}">
+                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_setting_shop_payment_delete', {'id' : Payment.id}) }}">
+                                                    <i class="fa fa-close fa-lg text-secondary"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
                             {% endfor %}
-
                         </ul>
+                        <div class="modal fade" id="delete_modal" tabindex="-1"
+                             role="dialog"
+                             aria-labelledby="delete_modal" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title font-weight-bold">
+                                            {{ 'admin.setting.shop.payment.modal.header'|trans }}</h5>
+                                        <button class="close" type="button"
+                                                data-dismiss="modal"
+                                                aria-label="Close"><span
+                                                    aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body text-left">
+                                        <p class="text-left">
+                                            {{ 'admin.setting.shop.payment.modal.body'|trans }}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                        </button>
+                                        <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}
+                                           data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <p>{{ 'admin.setting.shop.payment.notice'|trans }}</p>
