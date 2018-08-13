@@ -5,7 +5,6 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
@@ -153,12 +152,9 @@ function createOrder($container, Customer $Customer, array $ProductClasses, $Del
     $entityManager = $container->get('doctrine')->getManager();
     $generator = $container->get('Eccube\Tests\Fixture\Generator');
 
-    $OrderNoProcessor = $container->get(OrderNoProcessor::class);
-
     $Order = $generator->createOrder($Customer, $ProductClasses, $Delivery, $charge, $discount);
     $Order->setOrderStatus($Status);
     $Order->setOrderDate($OrderDate);
-    $OrderNoProcessor->process($Order, null);
     $entityManager->flush($Order);
     return $Order;
 }
@@ -290,7 +286,6 @@ $createOrders = function($Customer, $numberOfOrders = 5, $ProductClasses = array
         OrderStatus::PROCESSING,
         OrderStatus::RETURNED,
     ];
-    $OrderNoProcessor = $container->get(OrderNoProcessor::class);
     for ($i = 0; $i < $numberOfOrders; $i++) {
         $Order = $generator->createOrder($Customer, $ProductClasses);
         $Status = $Status
@@ -299,7 +294,6 @@ $createOrders = function($Customer, $numberOfOrders = 5, $ProductClasses = array
         $OrderDate = $faker->dateTimeThisYear();
         $Order->setOrderStatus($Status);
         $Order->setOrderDate($OrderDate);
-        $OrderNoProcessor->process($Order, null);
         $entityManager->flush($Order);
         $Orders[] = $Order;
     }
