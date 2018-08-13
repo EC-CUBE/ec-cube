@@ -16,7 +16,6 @@ namespace Eccube\Controller\Admin\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
@@ -43,11 +42,10 @@ use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
 use Knp\Component\Pager\Paginator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -463,8 +461,7 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id")
+     * @Route("/%eccube_admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id", methods={"POST"})
      *
      * @param Request $request
      *
@@ -633,7 +630,8 @@ class EditController extends AbstractController
             $criteria
                 ->where($criteria->expr()->andX(
                     $criteria->expr()->neq('id', OrderItemType::PRODUCT),
-                    $criteria->expr()->neq('id', OrderItemType::TAX)
+                    $criteria->expr()->neq('id', OrderItemType::TAX),
+                    $criteria->expr()->neq('id', OrderItemType::POINT)
                 ))
                 ->orderBy(['sort_no' => 'ASC']);
 

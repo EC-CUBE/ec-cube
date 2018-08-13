@@ -116,6 +116,12 @@ file that was distributed with this source code.
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');
             });
+
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
+                var target = $(event.relatedTarget);
+                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
+            });
         });
     </script>
 {% endblock %}
@@ -175,34 +181,14 @@ file that was distributed with this source code.
                                                 <a class="btn btn-ec-actionIcon mr-3 action-edit" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_category.432'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}" data-toggle="modal" data-target="#delete_{{ ClassCategory.id }}">
-                                                    <i class="fa fa-close fa-lg text-secondary"></i>
-                                                </a>
-                                                <div class="modal fade" id="delete_{{ ClassCategory.id }}" tabindex="-1"
-                                                     role="dialog"
-                                                     aria-labelledby="delete_{{ ClassCategory.id }}" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-bold">
-                                                                    {{ 'admin.class_category.modal.header'|trans }}</h5>
-                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                            </div>
-                                                            <div class="modal-body text-left">
-                                                                <p class="text-left">
-                                                                    {{ 'admin.class_category.modal.body'|trans }}</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
-                                                                <a class="btn btn-ec-delete" href="{{ url('admin_product_class_category_delete', {'class_name_id' : ClassName.id, 'id': ClassCategory.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                   data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
+                                                    {# TODO: 削除不可の時はdisabledクラスを付与する #}
+                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_product_class_category_delete', {'class_name_id' : ClassName.id, 'id': ClassCategory.id}) }}">
+                                                        <i class="fa fa-close fa-lg text-secondary"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_class_category_edit', {'class_name_id': ClassName.id, 'id': ClassCategory.id}) }}">
                                             {{ form_widget(forms[ClassCategory.id]._token) }}
                                             <div class="col-3 mr-2">
@@ -216,10 +202,32 @@ file that was distributed with this source code.
                                                 <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.common.label.cancel'|trans }}</button>
                                             </div>
                                         </form>
-
                                     </li>
                                 {% endfor %}
                             </ul>
+                            <div class="modal fade" id="delete_modal" tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="delete_modal" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bold">
+                                                {{ 'admin.class_category.modal.header'|trans }}</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                            <p class="text-left">
+                                                {{ 'admin.class_category.modal.body'|trans }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
+                                            <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}
+                                               data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
