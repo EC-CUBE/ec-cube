@@ -58,6 +58,7 @@ common.quantity__with_separator: 数量：
 common.subtotal: 小計
 common.subtotal__with_separator: 小計：
 common.total: 合計
+common.total__with_separator: 合計：
 common.delivery_fee: 送料
 common.charge: 手数料
 common.discount: 値引き

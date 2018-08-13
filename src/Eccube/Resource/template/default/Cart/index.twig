@@ -16,7 +16,7 @@ file that was distributed with this source code.
 
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>{{ 'shopping.label.cart'|trans }}</h1>
+            <h1>{{ 'front.cart.title'|trans }}</h1>
         </div>
     </div>
 
@@ -27,33 +27,33 @@ file that was distributed with this source code.
                 <li class="ec-progress__item is-complete">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
-                    <div class="ec-progress__label">{{ 'shopping.label.your_cart'|trans }}
+                    <div class="ec-progress__label">{{ 'front.cart.nav__cart_items'|trans }}
                     </div>
                 </li>
                 {% if is_granted('ROLE_USER') == false %}
                     <li class="ec-progress__item">
                         <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                         </div>
-                        <div class="ec-progress__label">{{ 'shopping.label.customer_info'|trans }}
+                        <div class="ec-progress__label">{{ 'front.cart.nav__customer_info'|trans }}
                         </div>
                     </li>
                 {% endif %}
                 <li class="ec-progress__item">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
-                    <div class="ec-progress__label">ご注文手続き {# TODO 未翻訳 #}
+                    <div class="ec-progress__label">{{ 'front.cart.nav__order'|trans }}
                     </div>
                 </li>
                 <li class="ec-progress__item">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
-                    <div class="ec-progress__label">{{ 'shopping.label.confirm_order'|trans }}
+                    <div class="ec-progress__label">{{ 'front.cart.nav__confirm'|trans }}
                     </div>
                 </li>
                 <li class="ec-progress__item">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
-                    <div class="ec-progress__label">{{ 'shopping.label.order_completed'|trans }}
+                    <div class="ec-progress__label">{{ 'front.cart.nav__complete'|trans }}
                     </div>
                 </li>
             </ul>
@@ -87,14 +87,14 @@ file that was distributed with this source code.
         {% if totalQuantity > 0 %}
             <div class="ec-cartRole__totalText">
                 <p>
-                    商品の合計金額は「<strong>{{ totalPrice|price }}</strong>」です。
+                    {{ 'front.cart.total_price'|trans({ '%price%': totalPrice|price })|raw }}
                 </p>
             </div>
             {% if Carts|length > 1 %}
                 <div class="ec-cartRole__error">
                     <div class="ec-alert-warning">
                         <div class="ec-alert-warning__text">
-                            {{ 'cart.product.divide'|trans|nl2br }}
+                            {{ 'front.cart.divide_cart'|trans|nl2br }}
                         </div>
                     </div>
                 </div>
@@ -118,10 +118,10 @@ file that was distributed with this source code.
                     <div class="ec-cartRole__cart">
                         <div class="ec-cartTable">
                             <ol class="ec-cartHeader">
-                                <li class="ec-cartHeader__label">{{ 'shopping.label.del'|trans }}</li>
-                                <li class="ec-cartHeader__label">{{ 'shopping.label.products'|trans }}</li>
-                                <li class="ec-cartHeader__label">{{ 'shopping.label.qty'|trans }}</li>
-                                <li class="ec-cartHeader__label">{{ 'shopping.label.subtotal'|trans }}</li>
+                                <li class="ec-cartHeader__label">{{ 'front.cart.delete'|trans }}</li>
+                                <li class="ec-cartHeader__label">{{ 'front.cart.product'|trans }}</li>
+                                <li class="ec-cartHeader__label">{{ 'common.quantity'|trans }}</li>
+                                <li class="ec-cartHeader__label">{{ 'common.subtotal'|trans }}</li>
                             </ol>
                             {% for CartItem in Cart.CartItems %}
                                 {% set ProductClass = CartItem.ProductClass %}
@@ -154,7 +154,7 @@ file that was distributed with this source code.
                                     </li>
                                     <li class="ec-cartRow__amountColumn">
                                         <div class="ec-cartRow__amount">{{ CartItem.quantity|number_format }}</div>
-                                        <div class="ec-cartRow__amountSP">数量：{{ CartItem.quantity|number_format }}</div>
+                                        <div class="ec-cartRow__amountSP">{{ 'common.quantity__with_separator'|trans }}{{ CartItem.quantity|number_format }}</div>
                                         <div class="ec-cartRow__amountUpDown">
                                             {% if CartItem.quantity > 1 %}
                                                 <a href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountDownButton load-overlay" data-method="put" data-confirm="false">
@@ -181,32 +181,32 @@ file that was distributed with this source code.
                         {% if BaseInfo.delivery_free_amount and BaseInfo.delivery_free_quantity %}
                             <br/>
                             {% if is_delivery_free[cartKey] %}
-                                現在送料無料です。
+                                {{ 'front.cart.delivery_fee_free__now'|trans }}
                             {% else %}
-                                あと「<strong>{{ least[cartKey]|price }}</strong>」または「<strong>{{ quantity[cartKey]|number_format }}個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
+                                {{ 'front.cart.delivery_fee_free__price_and_quantity'|trans({ '%price%': least[cartKey]|price, '%quantity%': quantity[cartKey]|number_format }) }}
                             {% endif %}
                         {% elseif BaseInfo.delivery_free_amount %}
                             <br/>
                             {% if is_delivery_free[cartKey] %}
-                                現在送料無料です。
+                                {{ 'front.cart.delivery_fee_free__now'|trans }}
                             {% else %}
-                                あと「<strong>{{ least[cartKey]|price }}</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
+                                {{ 'front.cart.delivery_fee_free__price'|trans({ '%price%': least[cartKey]|price }) }}
                             {% endif %}
                         {% elseif BaseInfo.delivery_free_quantity %}
                             <br/>
                             {% if is_delivery_free[cartKey] %}
-                                現在送料無料です。
+                                {{ 'front.cart.delivery_fee_free__price'|trans() }}
                             {% else %}
-                                あと「<strong>{{ quantity[cartKey]|number_format }}個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
+                                {{ 'front.cart.delivery_fee_free__quantity'|trans({ '%quantity%': quantity[cartKey]|price }) }}
                             {% endif %}
                         {% endif %}
                     </div>
                     <div class="ec-cartRole__actions">
-                        <div class="ec-cartRole__total">{{ 'shopping.label.total'|trans }}：<span class="ec-cartRole__totalAmount">{{ Cart.totalPrice|price }}</span>
+                        <div class="ec-cartRole__total">{{ 'common.total__with_separator'|trans }}<span class="ec-cartRole__totalAmount">{{ Cart.totalPrice|price }}</span>
                         </div>
-                        <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'index':loop.index0}) }}">{{ 'shopping.label.btn.checkout'|trans }}</a>
+                        <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'index':loop.index0}) }}">{{ 'front.cart.checkout'|trans }}</a>
                         {% if loop.last %}
-                            <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">{{ 'shopping.label.btn.continue'|trans }}</a>
+                            <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">{{ 'front.cart.continue'|trans }}</a>
                         {% endif %}
                     </div>
                 {% endfor %}
