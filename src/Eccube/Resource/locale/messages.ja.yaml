@@ -11,6 +11,7 @@ common.required: 必須
 common.back: 戻る
 common.close: 閉じる
 common.send: 送信する
+common.registration: 登録する
 common.change: 変更
 common.delete: 削除
 common.ok: OK
@@ -324,6 +325,9 @@ front.shopping.continue: 購入を続ける
 front.shopping.guest_purchase_message: 会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
 front.shopping.guest_purchase: ゲスト購入
 front.shopping.nonmember: お客様情報の入力
+front.shopping.shipping_edit_title_nomember: 商品購入/お届け先の変更
+front.shopping.shipping_edit_header_customer: お届け先の追加
+front.shopping.shipping_edit_header_nonmember: お届け先の変更
 
 #====================================================================================
 # 管理画面
