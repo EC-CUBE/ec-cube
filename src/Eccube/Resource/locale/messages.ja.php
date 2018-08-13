@@ -320,6 +320,9 @@ return [
     'shopping.label.enter_customer_info' => 'お客様情報の入力',
     'shopping.label.btn.back_to_cart' => 'カートに戻る',
     'shopping.text.message.enjoy' => 'それではショッピングをお楽しみください。',
+    'shopping.use_point.error.exceed' => '利用ポイントが所有ポイントを上回っています。',
+    'shopping.use_point.error.exceed.payment' => '利用ポイントがお支払い金額を上回っています。',
+    'shopping.use_point.error.max' => '最大%max%ポイントしか使用できません。',
 
     //mypage
     'mypage.label.my_account' => 'マイページ',

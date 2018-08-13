@@ -1047,4 +1047,16 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
             return $this->basic_point_rate;
         }
     }
+
+    /**
+     * ポイントを金額に変換する.
+     *
+     * @param $point int ポイント
+     *
+     * @return int 金額
+     */
+    public function pointToPrice($point)
+    {
+        return intval($point * $this->getPointConversionRate()) * -1;
+    }
 }
