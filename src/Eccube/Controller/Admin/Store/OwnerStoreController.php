@@ -235,7 +235,7 @@ class OwnerStoreController extends AbstractController
 
         // The usage is set because `$items` are already paged.
         // virtual paging
-        $pagination = $paginator->paginate($items);
+        $pagination = $paginator->paginate($items, 1, $pageCount);
         $pagination->setTotalItemCount($total);
         $pagination->setCurrentPageNumber($page_no);
         $pagination->setItemNumberPerPage($pageCount);
