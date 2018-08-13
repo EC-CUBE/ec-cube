@@ -65,7 +65,6 @@ class EF06OtherCest
     {
         $I->wantTo('EF0602-UC01-T01 パスワード再発行');
         $I->logoutAsMember();
-        $BaseInfo = Fixtures::get('baseinfo');
 
         // TOPページ→ログイン（「ログイン情報をお忘れですか？」リンクを押下する）→パスワード再発行
         $I->amOnPage('/mypage/login');
@@ -85,21 +84,26 @@ class EF06OtherCest
         ]);
         $I->see('パスワード発行メールの送信 完了', 'div.ec-pageHeader h1');
 
-        $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
-            $I->seeInLastEmailSubjectTo($email, 'パスワード変更のご確認');
-        }
+        $I->seeEmailCount(1);
+        $I->seeInLastEmailSubjectTo($customer->getEmail(), 'パスワード変更のご確認');
+
         $url = $I->grabFromLastEmailTo($customer->getEmail(), '@/forgot/reset/(.*)@');
 
         $I->resetEmails();
         $I->amOnPage($url);
-        $I->see('パスワード変更(完了ページ)', 'div.ec-pageHeader h1');
-        $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
-            $I->seeInLastEmailSubjectTo($email, 'パスワード変更のお知らせ');
-        }
-        $new_password = $I->grabFromLastEmailTo($customer->getEmail(), '@新しいパスワード：(.*)@');
-        $I->loginAsMember($customer->getEmail(), trim(str_replace('新しいパスワード：', '', $new_password)));
+        $I->see('パスワード再発行(再設定ページ)', 'div.ec-pageHeader h1');
+
+        $password = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 20);
+
+        // メルアド・新パスワード設定
+        $I->submitForm('#form1',[
+            'login_email' => $customer->getEmail(),
+            'password[first]' => $password,
+            'password[second]' => $password
+        ]);
+
+        $I->see('ログイン', 'div.ec-pageHeader h1');
+        $I->loginAsMember($customer->getEmail(), $password);
     }
 
     public function other_ログアウト(\AcceptanceTester $I)

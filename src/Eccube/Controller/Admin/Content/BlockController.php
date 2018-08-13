@@ -22,12 +22,11 @@ use Eccube\Form\Type\Admin\BlockType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 class BlockController extends AbstractController
@@ -172,8 +171,7 @@ class BlockController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete")
+     * @Route("/%eccube_admin_route%/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Block $Block, Filesystem $fs)
     {
