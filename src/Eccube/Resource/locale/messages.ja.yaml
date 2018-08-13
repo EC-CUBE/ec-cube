@@ -65,6 +65,7 @@ common.discount: 値引き
 common.point: ポイント
 common.enabled: 有効
 common.disabled: 無効
+common.user_name: '%last_name% %first_name% 様'
 
 #====================================================================================
 # フロント画面
@@ -279,22 +280,23 @@ front.cart.delivery_fee_free__quantity: '<strong>%quantity%個</strong>」のお
 #------------------------------------------------------------------------------------
 
 front.shopping.title: ご注文手続き
-front.shopping.nav__cart_items: カートの商品
-front.shopping.nav__customer_info: お客様情報
-front.shopping.nav__order: ご注文手続き
-front.shopping.nav__confirm: ご注文内容確認
-front.shopping.nav__complete: 完了
 front.shopping.customer_info: お客様情報
 front.shopping.delivery_info: 配送情報
 front.shopping.delivery_to: お届け先
 front.shopping.delivery_provider: 配送方法
 front.shopping.delivery_date: お届け日
 front.shopping.delivery_time: お届け時間
-front.shopping.add_delivery_fee: お届け先を追加する
+front.shopping.to_multiple: お届け先を追加する
 front.shopping.payment_info: お支払方法
 front.shopping.point_info: 利用ポイント
-front.shopping.available_point: '%point%が利用可能です。'
+front.shopping.available_point: '%point% pt が利用可能です。'
+front.shopping.point_prev: 利用ポイント
+front.shopping.prev_point: ご注文前のポイント
+front.shopping.next_point: ご注文後のポイント
+front.shopping.add_point: 加算ポイント
+front.shopping.use_point: ご利用ポイント
 front.shopping.message_info: お問い合わせ
+front.shopping.message_placeholder: お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)
 front.shopping.go_to_confirm: 確認する
 front.shopping.back_to_cart: カートに戻る
 front.shopping.shipping_title: お届け先の指定
@@ -312,6 +314,7 @@ front.shopping.complete_message__body: |
   ただいま、ご注文の確認メールをお送りさせていただきました。
   万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
   今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.shopping.continue: 購入を続ける
 
 #====================================================================================
 # 管理画面
