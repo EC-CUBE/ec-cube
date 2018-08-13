@@ -42,7 +42,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy([]);
         $this->actual = count($OrderStatuses);
-        $this->expected = 10;
+        $this->expected = 8;
         $this->verify();
     }
 
@@ -50,7 +50,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(['name' => '決済処理中']);
         $this->actual = count($OrderStatuses);
-        $this->expected = 9;
+        $this->expected = 7;
         $this->verify();
     }
 
@@ -58,7 +58,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(['name' => ['決済処理中', '新規受付']]);
         $this->actual = count($OrderStatuses);
-        $this->expected = 8;
+        $this->expected = 6;
         $this->verify();
     }
 
@@ -71,13 +71,12 @@ class OrderStatusRepositoryTest extends EccubeTestCase
             OrderStatus::DELIVERED,
             OrderStatus::PAID,
             OrderStatus::PENDING,
-            OrderStatus::PROCESSING,
             OrderStatus::RETURNED,
         ];
 
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(['id' => $orderStatuses]);
         $this->actual = count($OrderStatuses);
-        $this->expected = 3;
+        $this->expected = 1;
         $this->verify();
     }
 
@@ -145,7 +144,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
             function ($OrderStatus) {
                 return $OrderStatus->getId();
             }, $OrderStatuses));
-        $this->expected = OrderStatus::IN_PROGRESS.','.OrderStatus::DELIVERED;
+        $this->expected = OrderStatus::IN_PROGRESS.', '.OrderStatus::DELIVERED;
         $this->verify();
     }
 }
