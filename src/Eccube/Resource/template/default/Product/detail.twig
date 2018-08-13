@@ -107,8 +107,10 @@ file that was distributed with this source code.
 
         {% if form.classcategory_id2 is defined %}
         fnSetClassCategories(
-            document.form1, {{ form.classcategory_id2.vars.value|json_encode|raw }}
+            $('#form1'), {{ form.classcategory_id2.vars.value|json_encode|raw }}
         );
+        {% elseif form.classcategory_id1 is defined %}
+        eccube.checkStock($('#form1'), {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode|raw }}, null);
         {% endif %}
     </script>
     <script>
@@ -122,7 +124,7 @@ file that was distributed with this source code.
         });
     </script>
     <script>
-        $('#add-cart').on('click', function(event) {
+        $('.add-cart').on('click', function(event) {
             {% if form.classcategory_id1 is defined %}
             // 規格1フォームの必須チェック
             if ($('#classcategory_id1').val() == '__unselected' || $('#classcategory_id1').val() == '') {
@@ -160,7 +162,7 @@ file that was distributed with this source code.
                 dataType: 'json',
                 beforeSend: function(xhr, settings) {
                     // Buttonを無効にする
-                    $('#add-cart').prop('disabled', true);
+                    $('.add-cart').prop('disabled', true);
                 }
             }).done(function(data) {
                 // レスポンス内のメッセージをalertで表示
@@ -182,7 +184,7 @@ file that was distributed with this source code.
                 alert('カートの追加に失敗しました。');
             }).always(function(data) {
                 // Buttonを有効にする
-                $('#add-cart').prop('disabled', false);
+                $('.add-cart').prop('disabled', false);
             });
         });
     </script>
@@ -196,19 +198,14 @@ file that was distributed with this source code.
 
                     <div class="item_visual">
                         {% for ProductImage in Product.ProductImage %}
-                            <div class="item"><img
-                                        src="{{ asset(ProductImage, 'save_image') }}">
-                            </div>
+                            <div class="item"><img src="{{ asset(ProductImage, 'save_image') }}"></div>
                         {% else %}
-                            <div class="item"><img src="{{ asset(''|no_image_product, 'save_image') }}"/>
-                            </div>
+                            <div class="item"><img src="{{ asset(''|no_image_product, 'save_image') }}"/></div>
                         {% endfor %}
                     </div>
                     <div class="item_nav">
                         {% for ProductImage in Product.ProductImage %}
-                            <div class="slideThumb"><img
-                                        src="{{ asset(ProductImage, 'save_image') }}">
-                            </div>
+                            <div class="slideThumb"><img src="{{ asset(ProductImage, 'save_image') }}"></div>
                         {% endfor %}
                     </div>
                 </div>
@@ -222,19 +219,17 @@ file that was distributed with this source code.
                     {# タグ #}
                     <ul class="ec-productRole__tags">
                         {% for Tag in Product.Tags %}
-                            <li class="ec-productRole__tag tag_{{ Tag.id }}">{{ Tag }}
-                            </li>
+                            <li class="ec-productRole__tag tag_{{ Tag.id }}">{{ Tag }}</li>
                         {% endfor %}
                     </ul>
                     {# 通常価格 #}
                     {% if Product.hasProductClass -%}
                         <div class="ec-productRole__priceRegular">
                             {% if Product.getPrice01Min is not null and Product.getPrice01IncTaxMin == Product.getPrice01IncTaxMax %}
-                                <span class="ec-productRole__priceRegularPrice">{{ 'normal_price_title'|trans }}：{{ Product.getPrice01IncTaxMin|price }}</span>
+                                <span class="ec-productRole__priceRegularPrice">{{ 'normal_price_title'|trans }}：<span class="price01-default">{{ Product.getPrice01IncTaxMin|price }}</span></span>
                                 <span class="ec-productRole__priceRegularTax">{{ 'shopping.label.tax_incl'|trans }}</span>
                             {% elseif Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
-                                <span class="ec-productRole__priceRegularPrice">{{ 'normal_price_title'|trans }}：{{ Product.getPrice01IncTaxMin|price }}
-                                    ～ {{ Product.getPrice01IncTaxMax|price }}</span>
+                                <span class="ec-productRole__priceRegularPrice">{{ 'normal_price_title'|trans }}：<span class="price01-default">{{ Product.getPrice01IncTaxMin|price }}～ {{ Product.getPrice01IncTaxMax|price }}</span></span>
                                 <span class="ec-productRole__priceRegularTax">{{ 'shopping.label.tax_incl'|trans }}</span>
                             {% endif %}
                         </div>
@@ -248,28 +243,27 @@ file that was distributed with this source code.
                     <div class="ec-productRole__price">
                         {% if Product.hasProductClass -%}
                             {% if Product.getPrice02IncTaxMin == Product.getPrice02IncTaxMax %}
-                                <div class="ec-price"><span
-                                            class="ec-price__price">{{ Product.getPrice02IncTaxMin|price }}</span><span
-                                            class="ec-price__tax">{{ 'shopping.label.tax_incl'|trans }}</span>
+                                <div class="ec-price">
+                                    <span class="ec-price__price price02-default">{{ Product.getPrice02IncTaxMin|price }}</span>
+                                    <span class="ec-price__tax">{{ 'shopping.label.tax_incl'|trans }}</span>
                                 </div>
                             {% else %}
-                                <div class="ec-price"><span
-                                            class="ec-price__price">{{ Product.getPrice02IncTaxMin|price }}</span>
-                                    ～ <span class="ec-price__price">{{ Product.getPrice02IncTaxMax|price }}</span><span
-                                            class="ec-price__tax">{{ 'shopping.label.tax_incl'|trans }}</span>
+                                <div class="ec-price">
+                                    <span class="ec-price__price price02-default">{{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}</span>
+                                    <span class="ec-price__tax">{{ 'shopping.label.tax_incl'|trans }}</span>
                                 </div>
                             {% endif %}
                         {% else %}
-                            <div class="ec-price"><span
-                                        class="ec-price__price">{{ Product.getPrice02IncTaxMin|price }}</span><span
-                                        class="ec-price__tax">{{ 'shopping.label.tax_incl'|trans }}</span>
+                            <div class="ec-price">
+                                <span class="ec-price__price">{{ Product.getPrice02IncTaxMin|price }}</span>
+                                <span class="ec-price__tax">{{ 'shopping.label.tax_incl'|trans }}</span>
                             </div>
                         {% endif %}
                     </div>
                     {# 商品コード #}
                     {% if Product.code_min is not empty %}
                         <div class="ec-productRole__code">
-                            {{ 'product_description.label.product_code'|trans }}： {{ Product.code_min }}{% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}{% endif %}
+                            {{ 'product_description.label.product_code'|trans }}： <span class="product-code-default">{{ Product.code_min }}{% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}{% endif %}</span>
                         </div>
                     {% endif %}
                     {# 関連カテゴリ #}
@@ -309,7 +303,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="ec-productRole__btn">
-                                <button type="submit" id="add-cart" class="ec-blockBtn--action">
+                                <button type="submit" class="ec-blockBtn--action add-cart">
                                     {{ 'common.label.add_cart'|trans }}
                                 </button>
                             </div>
