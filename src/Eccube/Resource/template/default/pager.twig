@@ -24,7 +24,7 @@ file that was distributed with this source code.
             <li class="ec-pager__item">
                 <a href="{{ path(
                 app.request.attributes.get('_route'),
-                app.request.query.all|merge({'pageno': pages.previous})) }}">{{ 'common.first'|prev }}</a></li>
+                app.request.query.all|merge({'pageno': pages.previous})) }}">{{ 'common.prev'|trans }}</a></li>
         {% endif %}
 
         {# 1ページリンクが表示されない場合、「...」を表示 #}

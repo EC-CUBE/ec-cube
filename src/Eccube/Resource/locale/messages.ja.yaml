@@ -236,7 +236,10 @@ front.product.search__product_not_found: お探しの商品は見つかりませ
 front.product.search_result__keyword: 「%name%」の検索結果
 front.product.search_result__detail: '<span class="ec-font-bold">%count%件</span><span>の商品が見つかりました</span>'
 front.product.add_cart: カートに入れる
-front.product.add_favarite: お気に入りに追加
+front.product.add_cart_complete: カートに追加しました。
+front.product.add_cart_error: カートへの追加に失敗しました。
+front.product.add_favorite: お気に入りに追加
+front.product.add_favorite_alrady: お気に入りに追加済です。
 front.product.out_of_stock: ただいま品切れ中です。
 front.product.added_to_favorite: お気に入りに追加済です。
 front.product.nomal_price: 通常価格
@@ -244,7 +247,8 @@ front.product.sale_price: 販売価格
 front.product.code: 商品コード
 front.product.related_category: 関連カテゴリ
 front.product.continue: お買い物を続ける
-front.product.go_to_cart: カートへ進む
+front.product.invalid_quantity: 1以上で入力してください。
+front.product.product_class_unselected: 項目が選択されていません
 
 #------------------------------------------------------------------------------------
 # カート
