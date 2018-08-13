@@ -321,6 +321,7 @@ front.shopping.complete_message__body: |
 front.shopping.continue: 購入を続ける
 front.shopping.guest_purchase_message: 会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
 front.shopping.guest_purchase: ゲスト購入
+front.shopping.nonmember: お客様情報の入力
 
 #====================================================================================
 # 管理画面
