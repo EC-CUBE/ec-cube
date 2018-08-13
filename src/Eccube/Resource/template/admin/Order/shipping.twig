@@ -613,7 +613,7 @@ file that was distributed with this source code.
                                                     <td class="align-middle">
                                                         <div class="col-12">
                                                             {{ OrderItem.price|price }}
-                                                            {{ form_widget(orderItemForm.price, { 'type': 'hidden' }) }}
+                                                            {{ form_widget(orderItemForm.price, { 'type': 'hidden', 'money_pattern': '{{}}' }) }}
                                                             {{ form_errors(orderItemForm.price) }}
                                                         </div>
                                                     </td>
