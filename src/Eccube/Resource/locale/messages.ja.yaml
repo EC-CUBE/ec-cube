@@ -126,7 +126,8 @@ front.block.new_product.item_4_price: 1785 # priceフィルタで表示する
 # 問い合わせ
 #------------------------------------------------------------------------------------
 front.contact.title: お問い合わせ
-front.contact.inquiry_notice: 内容によっては回答をさしあげるのにお時間をいただくこともございます。
+front.contact.inquiry_notice: |
+  内容によっては回答をさしあげるのにお時間をいただくこともございます。
   また、休業日は翌営業日以降の対応となりますのでご了承ください。
 front.contact.order_notice: ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
 front.contact.inquiry_contents: お問い合わせ内容
