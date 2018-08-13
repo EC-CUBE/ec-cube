@@ -328,6 +328,7 @@ front.shopping.nonmember: お客様情報の入力
 front.shopping.shipping_edit_title_nomember: 商品購入/お届け先の変更
 front.shopping.shipping_edit_header_customer: お届け先の追加
 front.shopping.shipping_edit_header_nonmember: お届け先の変更
+front.shopping.error: 購入エラー
 
 #====================================================================================
 # 管理画面
