@@ -102,7 +102,7 @@ class MailController extends AbstractController
 
             // テンプレート変更の場合は. バリデーション前に内容差し替え.
             switch ($mode) {
-                case 'change': 
+                case 'change':
                     if ($form->get('template')->isValid()) {
                         /** @var $data \Eccube\Entity\MailTemplate */
                         $MailTemplate = $form->get('template')->getData();
@@ -118,7 +118,7 @@ class MailController extends AbstractController
                         $htmlBody = null;
                         $targetTwig = explode('.', $twig);
                         $suffix = '.html';
-                        $htmlTwig = $targetTwig[0]. $suffix. '.'. $targetTwig[1];
+                        $htmlTwig = $targetTwig[0].$suffix.'.'.$targetTwig[1];
                         if ($this->twig->getLoader()->exists($htmlTwig)) {
                             $htmlBody = $this->createBody($Order, $htmlTwig);
                         }
@@ -245,6 +245,7 @@ class MailController extends AbstractController
         return [
             'mail_subject' => $MailHistory->getMailSubject(),
             'body' => $MailHistory->getMailBody(),
+            'html_body' => $MailHistory->getMailHtmlBody(),
         ];
     }
 
@@ -313,6 +314,7 @@ class MailController extends AbstractController
                         $MailHistory
                             ->setMailSubject($data['mail_subject'])
                             ->setMailBody($body)
+                            ->setMailHtmlBody($body)
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
                         $this->entityManager->persist($MailHistory);
