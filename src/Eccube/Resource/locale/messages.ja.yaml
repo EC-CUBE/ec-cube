@@ -216,6 +216,7 @@ front.mypage.nav__favorite: お気に入り一覧
 front.mypage.nav__customer: 会員情報編集
 front.mypage.nav__customer_complete: 会員情報編集(完了)
 front.mypage.nav__customer_address: お届け先一覧
+
 front.mypage.nav__withdrow: 退会手続き
 front.mypage.history_count: '%count%件の履歴があります'
 front.mypage.history_not_found: ご注文履歴はありません。
@@ -241,9 +242,10 @@ front.mypage.mail_list: メール配信履歴一覧
 front.mypage.customer_complete_message__title: 会員登録内容の変更が完了いたしました
 front.mypage.customer_complete_message__body: 今後ともご愛顧賜りますようよろしくお願い申し上げます。
 front.mypage.favorite_count: '%count%件のお気に入りがあります'
-front.mypage.favorite_not_found: お気に入りはありません。
-
+front.mypage.favorite_not_found: お気に入りは登録されていません。
 front.mypage.customer_address_count: '%count%件のお届け先があります'
+front.mypage.customer_address_not_found: お届け先は登録されていません。
+
 front.mypage.add_customer_address: '新規お届け先を追加する'
 front.mypage.withdraw_message__title: 退会手続きの前にご確認ください
 front.mypage.withdraw_message__body: 退会手続きが完了した時点で、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますのでご注意ください。
