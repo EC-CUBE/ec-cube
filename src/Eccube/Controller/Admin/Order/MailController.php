@@ -304,7 +304,6 @@ class MailController extends AbstractController
                         $MailHistory
                             ->setMailSubject($data['mail_subject'])
                             ->setMailBody($body)
-                            ->setMailHtmlBody($body)
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
                         $this->entityManager->persist($MailHistory);

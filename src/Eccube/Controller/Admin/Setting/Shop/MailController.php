@@ -114,9 +114,9 @@ class MailController extends AbstractController
 
                 // HTMLファイル用
                 $htmlMailData = $form->get('html_tpl_data')->getData();
-                if ($htmlMailData) {
+                if (!is_null($htmlMailData)) {
                     $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
-                    $fs->dumpFile($htmlFileName, $htmlMailData);
+                    $fs->dumpFile($templatePath.'/'.$htmlFileName, $htmlMailData);
                 }
 
                 $event = new EventArgs(
