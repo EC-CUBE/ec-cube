@@ -24,7 +24,7 @@ file that was distributed with this source code.
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.customer_info'|trans}}</h1>
+                <h1>{{ 'mypage.label.my_account'|trans }}/{{ 'mypage.label.customer_info'|trans }}</h1>
             </div>
             {% include 'Mypage/navi.twig' %}
         </div>
@@ -41,7 +41,7 @@ file that was distributed with this source code.
                                         {{ form_label(form.name, 'signup.label.name', {'label_attr': {'class': 'ec-label'}}) }}
                                     </dt>
                                     <dd>
-                                        <div class="ec-halfInput{{ has_errors(form.name.name01, form.name.name02) ? ' error'}}">
+                                        <div class="ec-halfInput{{ has_errors(form.name.name01, form.name.name02) ? ' error' }}">
                                             {{ form_widget(form.name.name01, {'attr': {'placeholder': 'signup.label.family_name'}}) }}
                                             {{ form_widget(form.name.name02, {'attr': {'placeholder': 'signup.label.last_name'}}) }}
                                             {{ form_errors(form.name.name01) }}
@@ -54,7 +54,7 @@ file that was distributed with this source code.
                                         {{ form_label(form.kana, 'signup.label.name_kana', {'label_attr': {'class': 'ec-label'}}) }}
                                     </dt>
                                     <dd>
-                                        <div class="ec-halfInput{{ has_errors(form.kana.kana01, form.kana.kana02) ? ' error'}}">
+                                        <div class="ec-halfInput{{ has_errors(form.kana.kana01, form.kana.kana02) ? ' error' }}">
                                             {{ form_widget(form.kana.kana01, {'attr': {'placeholder': 'signup.label.family_name_kana'}}) }}
                                             {{ form_widget(form.kana.kana02, {'attr': {'placeholder': 'signup.label.last_name_kana'}}) }}
                                             {{ form_errors(form.kana.kana01) }}
@@ -78,16 +78,19 @@ file that was distributed with this source code.
                                         {{ form_label(form.address, 'signup.label.address', {'label_attr': {'class': 'ec-label'}}) }}
                                     </dt>
                                     <dd>
-                                        <div class="ec-zipInput{{ has_errors(form.postal_code) ? ' error' }}"><span>〒</span>
+                                        <div class="ec-zipInput{{ has_errors(form.postal_code) ? ' error' }}">
+                                            <span>〒</span>
                                             {{ form_widget(form.postal_code) }}
                                             {{ form_errors(form.postal_code) }}
                                         </div>
                                         <div class="ec-zipInputHelp"><a href="http://www.post.japanpost.jp/zipcode/"
                                                                         target="_blank">
-                                            <div class="ec-zipInputHelp__icon">
-                                                <div class="ec-icon"><img src="{{ asset('assets/icon/question-white.svg') }}" alt=""></div>
-                                            </div>
-                                            <span>{{'signup.label.search_postal_code'|trans}}</span></a></div>
+                                                <div class="ec-zipInputHelp__icon">
+                                                    <div class="ec-icon"><img
+                                                                src="{{ asset('assets/icon/question-white.svg') }}"
+                                                                alt=""></div>
+                                                </div>
+                                                <span>{{ 'signup.label.search_postal_code'|trans }}</span></a></div>
                                         <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
                                             {{ form_widget(form.address.pref) }}
                                             {{ form_errors(form.address.pref) }}
@@ -137,14 +140,14 @@ file that was distributed with this source code.
                                             {{ form_widget(form.password.first, {
                                                 'attr': {'placeholder': 'signup.text.note.half_width_alphanumeric'},
                                                 'type': 'password'
-                                                }) }}
+                                            }) }}
                                             {{ form_errors(form.password.first) }}
                                         </div>
                                         <div class="ec-input{{ has_errors(form.password.second) ? ' error' }}">
                                             {{ form_widget(form.password.second, {
                                                 'attr': {'placeholder': 'signup.label.pass_check'},
                                                 'type': 'password'
-                                                }) }}
+                                            }) }}
                                             {{ form_errors(form.password.second) }}
                                         </div>
                                     </dd>
@@ -154,7 +157,7 @@ file that was distributed with this source code.
                                         {{ form_label(form.birth, 'signup.label.dob', {'label_attr': {'class': 'ec-label'}}) }}
                                     </dt>
                                     <dd>
-                                        <div class="ec-birth{{ has_errors(form.birth) ? ' error'}}">
+                                        <div class="ec-birth{{ has_errors(form.birth) ? ' error' }}">
                                             {{ form_widget(form.birth.year) }}<span>/</span>
                                             {{ form_widget(form.birth.month) }}<span>/</span>
                                             {{ form_widget(form.birth.day) }}
@@ -192,7 +195,7 @@ file that was distributed with this source code.
                                         <dd>
                                             {% if form.vars.value.point > 0 %}
                                                 {{ form.vars.value.point|number_format }} pt
-                                            {% else  %}
+                                            {% else %}
                                                 0 pt
                                             {% endif %}
                                         </dd>
@@ -222,7 +225,8 @@ file that was distributed with this source code.
                             <div class="ec-RegisterRole__actions">
                                 <div class="ec-off4Grid">
                                     <div class="ec-off4Grid__cell">
-                                        <button type="submit" class="ec-blockBtn--cancel">{{'mypage.label.btn.edit'|trans}}</button>
+                                        <button type="submit"
+                                                class="ec-blockBtn--cancel">{{ 'mypage.label.btn.edit'|trans }}</button>
                                     </div>
                                 </div>
                             </div>
