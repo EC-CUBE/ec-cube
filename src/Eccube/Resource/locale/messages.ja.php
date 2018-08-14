@@ -702,6 +702,7 @@ return [
     'admin.plugin.not.found' => 'プラグインが見つかりません。',
     'admin.plugin.install.fail' => 'プラグインのインストールに失敗しました。',
     'admin.plugin.authentication.setting.complete' => '認証キーを設定しました。',
+    'admin.plugin.authentication.setting.fail' => '確認に失敗しました。',
     'admin.plugin.install.complete' => 'プラグインをインストールしました。',
     'admin.plugin.download.pem.complete' => '証明書ファイルを設定しました。',
     'admin.plugin.download.pem.error' => '証明書ファイルの設定ができませんでした。',
@@ -2112,6 +2113,12 @@ return [
     'admin.store.authentication_setting.806' => '認証キー',
     'admin.store.authentication_setting.807' => '※認証キーは<a target="_blank" href="owners_store_url">EC-CUBEオーナーズストア</a>で取得できます。',
     'admin.store.authentication_setting.808' => '設定',
+
+    'admin.store.authentication_setting.captcha.open' => '認証キーを取得',
+    'admin.store.authentication_setting.captcha.header' => 'セキュリティチェック',
+    'admin.store.authentication_setting.captcha.message' => '下記のテキストを入力してください。',
+    'admin.store.authentication_setting.captcha.submit' => '取得',
+
     'admin.store.plugin.809' => 'プラグイン一覧',
     'admin.store.plugin.810' => 'オーナーズストア',
     'admin.store.plugin.811' => 'プラグインの新規追加はこちら',
