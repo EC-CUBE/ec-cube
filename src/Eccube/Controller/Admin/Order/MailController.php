@@ -159,9 +159,6 @@ class MailController extends AbstractController
                         $data['tpl_data'] = $form->get('tpl_data')->getData();
                         $data['html_tpl_data'] = $form->get('html_tpl_data')->getData();
 
-                        $MailTemplate = $form->get('template')->getData();
-                        $twig = $MailTemplate ? $MailTemplate->getFileName() : 'Mail/order.twig';
-
                         // メール送信
                         $message = $this->mailService->sendAdminOrderMail($Order, $data);
 

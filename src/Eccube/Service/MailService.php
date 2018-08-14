@@ -754,7 +754,7 @@ class MailService
             return $OrderItem->getOrderId() === $Order->getId();
         });
 
-        if (!$templateName) {
+        if (is_null($templateName)) {
             /** @var MailTemplate $MailTemplate */
             $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
             $fileName = $MailTemplate->getFileName();
