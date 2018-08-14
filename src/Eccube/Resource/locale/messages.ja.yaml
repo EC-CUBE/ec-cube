@@ -170,8 +170,6 @@ front.entry.complete_message__activated: それではショッピングをお楽
 # パスワード再発行
 #------------------------------------------------------------------------------------
 
-# TODO
-
 front.forgot.title: パスワードの再発行
 front.forgot.message1: ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。
 front.forgot.message2: ※パスワード再発行メールを送信します。メールの内容をご確認の上、新しいパスワードを登録してください。
@@ -209,7 +207,8 @@ front.guide.title: ご利用ガイド
 # マイページ
 #------------------------------------------------------------------------------------
 
-front.mypage.welcome: ようこそ%name%さん
+front.mypage.welcome: ようこそ%last_name% %first_name%さん
+front.mypage.title: マイページ
 front.mypage.welcome__point: 現在の所持ポイントは %point%pt です。
 front.mypage.nav__history: ご注文履歴
 front.mypage.nav__history_detail: ご注文履歴詳細
@@ -219,13 +218,25 @@ front.mypage.nav__customer_complete: 会員情報編集(完了)
 front.mypage.nav__customer_address: お届け先一覧
 front.mypage.nav__withdrow: 退会手続き
 front.mypage.history_count: '%count%件の履歴があります'
-front.mypage.read_detail: 詳細を見る
+front.mypage.history_not_found: ご注文履歴はありません。
+front.mypage.view_detail: 詳細を見る
 front.mypage.order_no: ご注文番号
 front.mypage.order_status: ご注文状況
 front.mypage.order_date: ご注文日時
 front.mypage.use_point: ご利用ポイント
 front.mypage.add_point: 加算ポイント
+front.mypage.delivery_info: 配送情報
+front.mypage.delivery: お届け先
+front.mypage.delivery_provider: 配送方法
+front.mypage.delivery_date: お届け希望日
+front.mypage.delivery_time: お届け時間
+front.mypage.current_price: 【現在価格】
 front.mypage.reorder: 再注文する
+front.mypage.payment_info: お支払い情報
+front.mypage.payment: お支払い方法
+front.mypage.message: お問い合わせ
+front.mypage.reorder_message: ※金額が変更されている商品があるため、再注文時はご注意ください。
+front.mypage.mail_not_found: メール履歴はありません。
 front.mypage.mail_list: メール配信履歴一覧
 front.mypage.customer_complete_message__title: 会員登録内容の変更が完了いたしました
 front.mypage.customer_complete_message__body: 今後ともご愛顧賜りますようよろしくお願い申し上げます。
