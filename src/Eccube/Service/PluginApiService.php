@@ -67,6 +67,8 @@ class PluginApiService
     }
 
     /**
+     * Get master data: category
+     *
      * @return array($result, $info)
      */
     public function getCategory()
@@ -77,6 +79,8 @@ class PluginApiService
     }
 
     /**
+     * Get plugins list
+     *
      * @param array $data
      * @return array($result, $info)
      */
@@ -94,6 +98,8 @@ class PluginApiService
     }
 
     /**
+     * Get captcha image
+     *
      * @return array($result, $info)
      */
     public function getCaptcha()
@@ -106,6 +112,8 @@ class PluginApiService
     }
 
     /**
+     * Get api key from captcha image
+     *
      * @param array $data
      * @return array($result, $info)
      */
@@ -123,7 +131,7 @@ class PluginApiService
     }
 
     /**
-     * API request processing
+     * API post
      *
      * @param string  $url
      * @param array $data

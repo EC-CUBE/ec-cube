@@ -1,18 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lqdung
- * Date: 8/14/2018
- * Time: 2:07 PM
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CaptchaType extends AbstractType
@@ -26,10 +28,6 @@ class CaptchaType extends AbstractType
                 new Assert\NotBlank(),
             ],
         ]);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
     }
 
     public function getBlockPrefix()
