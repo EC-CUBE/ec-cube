@@ -23,13 +23,12 @@ file that was distributed with this source code.
             </thead>
             <tbody>
             {% for key,Plugin in Plugins %}
-                {% set form = plugin_forms[Plugin.id] %}
                 {% set pluginDetail = officialPluginsDetail[key] %}
                 <tr class="{% if Plugin.enabled == false %}active{% endif %}">
                     <td class="align-middle pl-3">
                         <a href="#" target="_blank">
                             <img class="pr-3" height="60"
-                                 src="{{ pluginDetail.product_image_url }}" alt="">
+                                 src="{{ pluginDetail.image }}" alt="">
                         </a>
                         <span>{{ Plugin.name }}</span>
                     </td>
@@ -43,81 +42,89 @@ file that was distributed with this source code.
                         {% endif %}#}
                     </td>
                     <td class="align-middle">
-                        {% if Plugin.enabled %}
-                            <span class="text-success">{{ 'common.label.enabled'|trans }}</span>
-                        {% else %}
-                            <span class="text-secondary">{{ 'common.label.disabled'|trans }}</span>
+                        {% if Plugin.id %}
+                            {% if Plugin.enabled %}
+                                <span class="text-success">{{ 'common.label.enabled'|trans }}</span>
+                            {% else %}
+                                <span class="text-secondary">{{ 'common.label.disabled'|trans }}</span>
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td class="align-middle">
-                        {% if pluginDetail.update_status == 1 %}
-                            <a href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}"
-                               class="btn btn-ec-regular">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
-                        {% else %}
-                            <p class="mb-0">{{ 'admin.store.plugin_table_official.920'|trans }}。</p>
+                        {% if Plugin.id %}
+                            {% if pluginDetail.update_status == 1 %}
+                                <a href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}"
+                                   class="btn btn-ec-regular">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
+                            {% else %}
+                                <p class="mb-0">{{ 'admin.store.plugin_table_official.920'|trans }}。</p>
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td class="align-middle">
                         <div class="col-12 col-xs-11 col-md-10 col-lg-8 pull-right text-center">
                             <div class="row">
                                 <div class="col-4 px-0">
-                                    {% if Plugin.enabled == false %}
-                                        <a href="#"
-                                           data-toggle="modal"
-                                           data-target="#confirmModal-{{ Plugin.id }}"
-                                           class="btn btn-ec-actionIcon">
-                                            <i class="fa fa-close fa-lg text-secondary" data-toggle="tooltip" data-placement="top" title="削除"></i>
-                                        </a>
+                                    {% if Plugin.id %}
+                                        {% if Plugin.enabled == false %}
+                                            <a href="#"
+                                               data-toggle="modal"
+                                               data-target="#confirmModal-{{ Plugin.id }}"
+                                               class="btn btn-ec-actionIcon">
+                                                <i class="fa fa-close fa-lg text-secondary" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"></i>
+                                            </a>
 
-                                        <div class="modal fade" id="confirmModal-{{ Plugin.id }}" tabindex="-1"
-                                             role="dialog"
-                                             aria-labelledby="confirmModal-{{ Plugin.id }}" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title font-weight-bold">
-                                                            {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
-                                                        <button class="close" type="button"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"><span aria-hidden="true">×</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body text-left">
-                                                        <p class="text-left">
-                                                            {{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-ec-sub" type="button"
-                                                                data-dismiss="modal">{{ 'common.label.cancel'|trans }}
-                                                        </button>
-                                                        <a href="{{ url('admin_store_plugin_delete_confirm', { id : Plugin.id }) }}"
-                                                                {{ csrf_token_for_anchor() }}
-                                                           class="btn btn-ec-delete"
-                                                           data-confirm="false"
-                                                           data-method="delete">
-                                                            {{ 'common.label.delete'|trans }}
-                                                        </a>
+                                            <div class="modal fade" id="confirmModal-{{ Plugin.id }}" tabindex="-1"
+                                                 role="dialog"
+                                                 aria-labelledby="confirmModal-{{ Plugin.id }}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title font-weight-bold">
+                                                                {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
+                                                            <button class="close" type="button"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close"><span aria-hidden="true">×</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body text-left">
+                                                            <p class="text-left">
+                                                                {{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-ec-sub" type="button"
+                                                                    data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                            </button>
+                                                            <a href="{{ url('admin_store_plugin_delete_confirm', { id : Plugin.id }) }}"
+                                                                    {{ csrf_token_for_anchor() }}
+                                                               class="btn btn-ec-delete"
+                                                               data-confirm="false"
+                                                               data-method="delete">
+                                                                {{ 'common.label.delete'|trans }}
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                                 <div class="col-4 px-0">
-                                    {% if Plugin.enabled %}
-                                        <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
-                                           class="btn btn-ec-actionIcon"
-                                           data-method="put" data-confirm="false">
-                                            <i class="fa fa-pause fa-lg text-secondary" data-toggle="tooltip"
-                                               data-placement="top" title="{{ 'admin.store.plugin_table_official.925'|trans }}"></i>
-                                        </a>
-                                    {% else %}
-                                        <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
-                                           class="btn btn-ec-actionIcon"
-                                           data-method="put" data-confirm="false">
-                                            <i class="fa fa-play fa-lg text-secondary" data-toggle="tooltip"
-                                               data-placement="top" title="{{ 'admin.store.plugin_table_official.924'|trans }}"></i>
-                                        </a>
+                                    {% if Plugin.id %}
+                                        {% if Plugin.enabled %}
+                                            <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
+                                               class="btn btn-ec-actionIcon"
+                                               data-method="put" data-confirm="false">
+                                                <i class="fa fa-pause fa-lg text-secondary" data-toggle="tooltip"
+                                                   data-placement="top" title="{{ 'admin.store.plugin_table_official.925'|trans }}"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
+                                               class="btn btn-ec-actionIcon"
+                                               data-method="put" data-confirm="false">
+                                                <i class="fa fa-play fa-lg text-secondary" data-toggle="tooltip"
+                                                   data-placement="top" title="{{ 'admin.store.plugin_table_official.924'|trans }}"></i>
+                                            </a>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                                 <div class="col-4 pl-0">
