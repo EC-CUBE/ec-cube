@@ -66,7 +66,7 @@ class EA08SysteminfoCest
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#member_form .c-conversionArea__container button');
-        $I->see('メンバーを保存しました。', '.c-contentsArea .alert-success');
+        $I->see('保存しました', '.c-contentsArea .alert-success');
 
         $I->see('メンバー管理', 'div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div.card-header > div > div > span');
         $I->see('admintest', '.card-body tbody tr:nth-child(1) td:nth-child(1)');
@@ -135,7 +135,7 @@ class EA08SysteminfoCest
         if ($Plugin) {
             $I->amGoingTo('EccubeApi プラグインを発見したため、不具合を回避しました。 詳細: https://github.com/EC-CUBE/eccube-api/pull/60');
         } else {
-            $I->see('メンバーを保存しました。', '.c-contentsArea .alert-success');
+            $I->see('保存しました', '.c-contentsArea .alert-success');
             $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
             $I->see('administrator', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
         }
@@ -307,7 +307,7 @@ class EA08SysteminfoCest
             ->入力(2, ['0' => 'システム管理者'], '/store')
             ->登録();
 
-        $I->see('権限設定を保存しました。', AuthorityManagePage::$完了メッセージ);
+        $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
         $I->dontSee('コンテンツ管理', 'nav .c-mainNavArea__nav');
         $I->dontSee('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
@@ -321,7 +321,7 @@ class EA08SysteminfoCest
             ->行削除(1)
             ->登録();
 
-        $I->see('権限設定を保存しました。', AuthorityManagePage::$完了メッセージ);
+        $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
         $I->see('コンテンツ管理', 'nav .c-mainNavArea__nav');
         $I->see('オーナーズストア', 'nav .c-mainNavArea__nav');
     }

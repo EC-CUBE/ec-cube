@@ -26,9 +26,9 @@ class EA07BasicinfoCest
     {
     }
 
-    public function basicinfo_ショップマスター(\AcceptanceTester $I)
+    public function basicinfo_基本設定(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0701-UC01-T01 ショップマスター');
+        $I->wantTo('EA0701-UC01-T01 基本設定');
 
         ShopSettingPage::go($I)
             ->入力_会社名('会社名')
@@ -201,7 +201,7 @@ class EA07BasicinfoCest
         $TaxManagePage = TaxManagePage::go($I);
 
         // 一覧
-        $I->see('共通税率設定', '#page_admin_setting_shop_tax > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div.card-header');
+        $I->see('税率設定', '#page_admin_setting_shop_tax > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div.card-header');
         $I->see('8%', '#ex-tax_rule-1 > td.align-middle.text-right');
 
         // 登録
@@ -218,12 +218,12 @@ class EA07BasicinfoCest
             ->入力_消費税率(2, 12)
             ->決定(2);
 
-        $I->see('税率設定情報を保存しました。', TaxManagePage::$登録完了メッセージ);
+        $I->see('保存しました', TaxManagePage::$登録完了メッセージ);
         $I->see('12%', $TaxManagePage->一覧_税率(2));
 
         // 削除
         $TaxManagePage->一覧_削除(2);
-        $I->see('税率設定情報を削除しました。', TaxManagePage::$登録完了メッセージ);
+        $I->see('削除しました', TaxManagePage::$登録完了メッセージ);
     }
 
     public function basicinfo_メール設定(\AcceptanceTester $I)
@@ -236,7 +236,7 @@ class EA07BasicinfoCest
             ->入力_件名('ご注文有難うございました')
             ->登録();
 
-        $I->see('メールテンプレート情報を保存しました。', MailSettingsPage::$登録完了メッセージ);
+        $I->see('保存しました', MailSettingsPage::$登録完了メッセージ);
     }
 
     public function basicinfo_CSV出力項目(\AcceptanceTester $I)
@@ -250,6 +250,6 @@ class EA07BasicinfoCest
             ->削除()
             ->設定();
 
-        $I->see('CSV出力を設定しました。', CsvSettingsPage::$登録完了メッセージ);
+        $I->see('保存しました', CsvSettingsPage::$登録完了メッセージ);
     }
 }

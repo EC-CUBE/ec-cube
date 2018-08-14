@@ -17,14 +17,14 @@ class DeliveryManagePage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
-        $page->goPage('/setting/shop/delivery', '配送方法管理店舗設定');
+        $page->goPage('/setting/shop/delivery', '配送方法一覧店舗設定');
         return $page;
     }
 
     public static function at($I)
     {
         $page = new self($I);
-        $page->atPage('配送方法管理店舗設定');
+        $page->atPage('配送方法一覧店舗設定');
         return $page;
     }
 
@@ -47,7 +47,7 @@ class DeliveryManagePage extends AbstractAdminPageStyleGuide
 
     public function 新規登録()
     {
-        $this->tester->click('#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.card.rounded.border-0 > div > div > a');
+        $this->tester->click('#page_admin_setting_shop_delivery > div.c-container > div.c-contentsArea > form > div > div > div > div.d-block.mb-3 > a');
     }
 
     public function 一覧_名称($rowNum)
