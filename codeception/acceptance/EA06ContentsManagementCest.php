@@ -182,6 +182,10 @@ class EA06ContentsManagementCest
                 ['xpath' => "//*[@id='block-source-code']//div[contains(text(), 'file that was distributed with this source code.')]"]
             );
 
+        /* 削除 */
+        PageManagePage::go($I)->削除($page);
+        $I->see('削除が完了しました。', PageEditPage::$登録完了メッセージ);
+
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
         LayoutEditPage::at($I)
             ->ブロックを移動('カゴの中', '#position_0')
@@ -189,10 +193,6 @@ class EA06ContentsManagementCest
             ->プレビュー();
 
         $I->switchToNewWindow();
-
-        /* 削除 */
-        PageManagePage::go($I)->削除($page);
-        $I->see('削除が完了しました。', PageEditPage::$登録完了メッセージ);
     }
 
     public function contentsmanagement_検索未使用ブロック(\AcceptanceTester $I)
