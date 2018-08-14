@@ -21,19 +21,11 @@ file that was distributed with this source code.
         .border-bt {
             border-bottom: 1px solid rgba(0, 0, 0, .125);
         }
-        .plugin-search select,
-        .plugin-search input{
-            height: calc(2.5rem + 2px);;
-        }
         #plugin-list a img{
             max-height: 180px;
         }
         #plugin-list .info{
             min-height: 65%;
-        }
-        .plg-prices,
-        #plugin-list dl dd{
-            font-size: 1.25rem;
         }
         .plugin-ver li span{
             display: inline-block;
@@ -50,7 +42,7 @@ file that was distributed with this source code.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <div class="row">
-                            <div class="col-12 p-4">
+                            <div class="col-12 p-3">
                                 <a href="#" class="px-3 text-dark">決剤</a>
                                 <a href="#" class="px-3 text-dark">デザインテンプレート</a>
                                 <a href="#" class="px-3 text-dark">機能カスタマイズ</a>
@@ -67,7 +59,7 @@ file that was distributed with this source code.
 
                 <div class="c-outsideBlock">
                     <form method="post" action="" class="plugin-search">
-                        <div class="c-outsideBlock__contents mb-4">
+                        <div class="c-outsideBlock__contents mb-3">
                             <div class="row justify-content-start">
                                 <div class="col-3 pl-0">
                                     <label class="col-form-label">カテゴリ</label>
@@ -92,7 +84,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                         <div class="c-outsideBlock__contents mb-2 pl-0">
-                            <button class="btn btn-ec-conversion px-5 py-2 btn-lg" type="submit">検索</button>
+                            <button class="btn btn-ec-conversion px-5 py-2" type="submit">検索</button>
                         </div>
                     </form>
                 </div>
@@ -121,7 +113,7 @@ file that was distributed with this source code.
                 </div>
                 <div id="plugin-list" class="card rounded border-0 my-4">
                     <div class="card-header">
-                        <h5>検索結果（10／35ページ）</h5>
+                        <span class="card-title">検索結果（10／35ページ）</span>
                     </div>
                     <div class="card-body p-0">
                         {% for i in 1..5 %}
@@ -134,13 +126,13 @@ file that was distributed with this source code.
                                 <div class="col-sm-6 col-md-7">
                                     <div class="info">
                                         <h5>
-                                            <a href="#" class="font-weight-bold">EC-CUBEペイメント決済プラグイン</a>(3.0系)
+                                            <a href="#">EC-CUBEペイメント決済プラグイン</a>(3.0系)
                                         </h5>
-                                        <h6>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</h6>
+                                        <p>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</p>
                                     </div>
                                     <div class="row">
                                         <div class="col-auto col-md-5 col-lg-6">
-                                            <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">販売価格: </span> 0円<small> (税込)</small></p>
+                                            <p class="text-danger"><span class="font-weight-bold text-dark">販売価格: </span> 0円<small> (税込)</small></p>
                                         </div>
                                         <div class="col-auto col-md-7 col-lg-6">
                                             <dl class="text-dark">
@@ -151,8 +143,8 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-md-3 text-right">
-                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular btn-lg">詳細</a>
-                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn btn-primary btn-lg">入手する</a>
+                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular">詳細</a>
+                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn-primary">入手する</a>
                                 </div>
                             </div>
                             <div class="row m-0 p-3 border-bt">
@@ -170,7 +162,7 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="row">
                                         <div class="col-auto col-md-5 col-lg-6">
-                                            <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">販売価格: </span> {{ random(100) }},200円<small> (税込)</small></p>
+                                            <p class="text-danger"><span class="font-weight-bold text-dark">販売価格: </span> {{ random(100) }},200円<small> (税込)</small></p>
                                         </div>
                                         <div class="col-auto col-md-7 col-lg-6">
                                             <dl class="text-dark">
@@ -181,8 +173,8 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-md-3 text-right">
-                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular btn-lg">詳細</a>
-                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn btn-primary btn-lg">購入する</a>
+                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular">詳細</a>
+                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn-primary">購入する</a>
                                 </div>
                             </div>
                         {% endfor %}
@@ -226,7 +218,7 @@ file that was distributed with this source code.
                         <div class="col-6">
                             <h5 class="font-weight-bold mb-3">EC-CUBEペイメント決済プラグイン(3.0系)</h5>
                             <p>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</p>
-                            <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">販売価格 </span> 25.000円<small> (税込)</small></p>
+                            <p class="text-danger"><span class="font-weight-bold text-dark">販売価格 </span> 25.000円<small> (税込)</small></p>
                         </div>
                     </div>
                     <div class="row mb-4">
@@ -243,8 +235,8 @@ file that was distributed with this source code.
                             </ul>
                         </div>
                         <div class="col-5 text-right">
-                            <button type="button" class="btn btn-ec-regular btn-lg mb-3"><i class="fa fa-image fa-lg text-secondary"></i> 資料請求・お問い合わせ</button>
-                            <button type="button" class="btn btn-ec-regular btn-lg"><i class="fa fa-image fa-lg text-secondary"></i> マニュアルダウンロード</button>
+                            <button type="button" class="btn btn-ec-regular mb-2"><i class="fa fa-image fa-lg text-secondary"></i> 資料請求・お問い合わせ</button>
+                            <button type="button" class="btn btn-ec-regular"><i class="fa fa-image fa-lg text-secondary"></i> マニュアルダウンロード</button>
                         </div>
                     </div>
                     <div class="row">
@@ -258,20 +250,20 @@ file that was distributed with this source code.
                     <div class="row mt-4">
                         <div class="col-12">
                             <div class="alert alert-warning border border-warning">
-                                <h6 class="news font-weight-bold">[2018ー用のカトラリ]ECCUBE 3.nトで揃えたいディナー用のカトラリー。</h6>
-                                <a href="#" class="text-dark font-weight-bold">=>ー用のカトラリー。定番の銀製は(3.0)セットで</a>
+                                <h6 class="news">[2018ー用のカトラリ]ECCUBE 3.nトで揃えたいディナー用のカトラリー。</h6>
+                                <a href="#" class="text-dark">=>ー用のカトラリー。定番の銀製は(3.0)セットで</a>
                             </div>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-12">
                             <div class="alert alert-secondary">
-                                <h6 class="font-weight-bold">[2018ー用のカトラリ]ECCUBE 3.nトで揃えたいディナー用のカトラリー。</h6>
+                                <h6 class="text-dark">[2018ー用のカトラリ]ECCUBE 3.nトで揃えたいディナー用のカトラリー。</h6>
                                 <ul>
-                                    <li><a href="#" class="text-dark font-weight-bold">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
-                                    <li><a href="#" class="text-dark font-weight-bold">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
-                                    <li><a href="#" class="text-dark font-weight-bold">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
-                                    <li><a href="#" class="text-dark font-weight-bold">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
+                                    <li><a href="#" class="text-dark">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
+                                    <li><a href="#" class="text-dark">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
+                                    <li><a href="#" class="text-dark">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
+                                    <li><a href="#" class="text-dark">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
                                 </ul>
 
                             </div>
@@ -279,8 +271,8 @@ file that was distributed with this source code.
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-ec-sub btn-lg" data-dismiss="modal">一覧に戻る</button>
-                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn btn-primary btn-lg">インストール確認へ</a>
+                    <button type="button" class="btn btn-ec-sub" data-dismiss="modal">一覧に戻る</button>
+                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn-primary">インストール確認へ</a>
                 </div>
             </div>
         </div>

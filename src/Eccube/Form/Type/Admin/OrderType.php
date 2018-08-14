@@ -420,11 +420,15 @@ class OrderType extends AbstractType
         $newStatus = $form['OrderStatus']->getData();
 
         // ステータスに変更があった場合のみチェックする.
-        if ($oldStatus->getId() != $newStatus->getId()) {
-            if (!$this->orderStateMachine->can($Order, $newStatus)) {
-                $form['OrderStatus']->addError(
-                    new FormError(sprintf('%sから%sには変更できません', $oldStatus->getName(), $newStatus->getName())));
+        if (!is_null($oldStatus) && !is_null($newStatus)) {
+            if ($oldStatus->getId() != $newStatus->getId()) {
+                if (!$this->orderStateMachine->can($Order, $newStatus)) {
+                    $form['OrderStatus']->addError(
+                        new FormError(sprintf('%sから%sには変更できません', $oldStatus->getName(), $newStatus->getName())));
+                }
             }
+        } else {
+            $form['OrderStatus']->addError(new FormError('ステータス変更できません。'));
         }
     }
 
