@@ -702,7 +702,6 @@ return [
     'admin.plugin.not.found' => 'プラグインが見つかりません。',
     'admin.plugin.install.fail' => 'プラグインのインストールに失敗しました。',
     'admin.plugin.authentication.setting.complete' => '認証キーを設定しました。',
-    'admin.plugin.authentication.setting.fail' => '確認に失敗しました。',
     'admin.plugin.install.complete' => 'プラグインをインストールしました。',
     'admin.plugin.download.pem.complete' => '証明書ファイルを設定しました。',
     'admin.plugin.download.pem.error' => '証明書ファイルの設定ができませんでした。',

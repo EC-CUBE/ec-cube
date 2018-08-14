@@ -503,7 +503,7 @@ class PluginController extends AbstractController
             $this->entityManager->persist($this->BaseInfo);
             $this->entityManager->flush();
 
-            $this->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
+            $this->addSuccess('admin.flash.register_completed', 'admin');
         }
 
         $builderCaptcha = $this->formFactory->createBuilder(CaptchaType::class);
@@ -541,13 +541,13 @@ class PluginController extends AbstractController
                     $this->BaseInfo->setAuthenticationKey($data['api_key']);
                     $this->entityManager->persist($this->BaseInfo);
                     $this->entityManager->flush($this->BaseInfo);
-                    $this->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
+                    $this->addSuccess('admin.flash.register_completed', 'admin');
 
                     return $this->redirectToRoute('admin_store_authentication_setting');
                 }
             }
         }
-        $this->addError('admin.plugin.authentication.setting.fail', 'admin');
+        $this->addError('admin.flash.register_failed', 'admin');
 
         return $this->redirectToRoute('admin_store_authentication_setting');
     }
