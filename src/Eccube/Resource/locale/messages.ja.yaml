@@ -229,7 +229,7 @@ front.mypage.add_point: 加算ポイント
 front.mypage.delivery_info: 配送情報
 front.mypage.delivery: お届け先
 front.mypage.delivery_provider: 配送方法
-front.mypage.delivery_date: お届け希望日
+front.mypage.delivery_date: お届け日
 front.mypage.delivery_time: お届け時間
 front.mypage.current_price: 【現在価格】
 front.mypage.reorder: 再注文する
@@ -778,9 +778,9 @@ admin.order.mail_template: テンプレート
 admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
 admin.order.mail_failed: 取得に失敗しました。
 admin.order.shipping_info: 出荷情報
-admin.order.delivery_date: お届け希望日
-admin.order.delivery_time: 指定時間帯
-admin.order.delivery_provider: 配送業者
+admin.order.delivery_date: お届け日
+admin.order.delivery_time: お届け時間
+admin.order.delivery_provider: 配送方法
 admin.order.to_shipped: 出荷済にする
 admin.order.send_mail: メールする
 admin.order.shop_memo_for_shipped: 出荷用メモ欄
