@@ -476,6 +476,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         private $DeviceType;
 
         /**
+         * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
          * @var \Eccube\Entity\Master\CustomerOrderStatus
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
@@ -486,16 +487,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         private $CustomerOrderStatus;
 
         /**
-         * @var \Eccube\Entity\Master\OrderStatus
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatus")
-         * @ORM\JoinColumns({
-         *   @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
-         * })
-         */
-        private $OrderStatus;
-
-        /**
+         * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
          * @var \Eccube\Entity\Master\OrderStatusColor
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
@@ -504,6 +496,16 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * })
          */
         private $OrderStatusColor;
+
+        /**
+         * @var \Eccube\Entity\Master\OrderStatus
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatus")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
+         * })
+         */
+        private $OrderStatus;
 
         /**
          * Constructor
@@ -1609,30 +1611,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * Set orderStatus.
-         *
-         * @param \Eccube\Entity\Master\OrderStatus|null $orderStatus
-         *
-         * @return Order
-         */
-        public function setOrderStatus(\Eccube\Entity\Master\OrderStatus $orderStatus = null)
-        {
-            $this->OrderStatus = $orderStatus;
-
-            return $this;
-        }
-
-        /**
-         * Get orderStatus.
-         *
-         * @return \Eccube\Entity\Master\OrderStatus|null
-         */
-        public function getOrderStatus()
-        {
-            return $this->OrderStatus;
-        }
-
-        /**
          * Set orderStatusColor.
          *
          * @param \Eccube\Entity\Master\OrderStatusColor|null $orderStatusColor
@@ -1654,6 +1632,30 @@ if (!class_exists('\Eccube\Entity\Order')) {
         public function getOrderStatusColor()
         {
             return $this->OrderStatusColor;
+        }
+
+        /**
+         * Set orderStatus.
+         *
+         * @param \Eccube\Entity\Master\OrderStatus|null $orderStatus
+         *
+         * @return Order
+         */
+        public function setOrderStatus(\Eccube\Entity\Master\OrderStatus $orderStatus = null)
+        {
+            $this->OrderStatus = $orderStatus;
+
+            return $this;
+        }
+
+        /**
+         * Get orderStatus.
+         *
+         * @return \Eccube\Entity\Master\OrderStatus|null
+         */
+        public function getOrderStatus()
+        {
+            return $this->OrderStatus;
         }
 
         /**
