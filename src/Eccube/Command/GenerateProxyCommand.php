@@ -46,13 +46,13 @@ class GenerateProxyCommand extends ContainerAwareCommand
         AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__.'/../../../src');
 
         $container = $this->getContainer();
-        $projectDIr = $container->getParameter('kernel.project_dir');
+        $projectDir = $container->getParameter('kernel.project_dir');
         $includeDirs = [$projectDIr.'/app/Customize/Entity'];
 
         $enabledPlugins = $container->getParameter('eccube.plugins.enabled');
         foreach ($enabledPlugins as $code) {
-            if (file_exists($projectDIr.'/app/Plugin/'.$code.'/Entity')) {
-                $includeDirs[] = $projectDIr.'/app/Plugin/'.$code.'/Entity';
+            if (file_exists($projectDir.'/app/Plugin/'.$code.'/Entity')) {
+                $includeDirs[] = $projectDir.'/app/Plugin/'.$code.'/Entity';
             }
         }
 
