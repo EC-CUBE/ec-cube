@@ -67,8 +67,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = [
             'template' => 1,
             'mail_subject' => $faker->word,
-            'tpl_data' => $faker->text,
-            'html_tpl_data' => $faker->text,
             '_token' => 'dummy',
         ];
 

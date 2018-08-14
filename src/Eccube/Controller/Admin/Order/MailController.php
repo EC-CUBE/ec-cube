@@ -292,9 +292,12 @@ class MailController extends AbstractController
                     $ids = explode(',', $ids);
 
                     foreach ($ids as $value) {
+                        $MailTemplate = $form->get('template')->getData();
                         $Order = $this->orderRepository->find($value);
-
-                        $body = $this->createBody($Order);
+                        // 本文確認用
+                        $body = $this->createBody($Order, $MailTemplate->getFileName());
+                        $data['tpl_data'] = $body;
+                        $data['html_tpl_data'] = null;
 
                         // メール送信
                         $this->mailService->sendAdminOrderMail($Order, $data);
