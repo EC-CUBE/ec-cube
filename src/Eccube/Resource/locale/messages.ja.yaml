@@ -234,8 +234,10 @@ front.mypage.withdraw_execute_message__title: 退会手続きを実行しても�
 front.mypage.withdraw_confirm: 退会手続きへ
 front.mypage.withdraw_cancel: いいえ、退会しません
 front.mypage.withdraw_execute: はい、退会します
-front.mypage.login.mail_address: メールアドレス
-
+front.mypage.withdraw_complete_message__title: 退会が完了いたしました
+front.mypage.withdraw_complete_message__body: |
+  ご利用いただき誠にありがとうございました。
+  またのご来店をお待ちしております。
 
 #------------------------------------------------------------------------------------
 # 商品
