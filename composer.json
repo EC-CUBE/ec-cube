@@ -31,6 +31,7 @@
         "doctrine/lexer": "^1.0",
         "doctrine/migrations": "^1.8",
         "doctrine/orm": "^2.6",
+        "ec-cube/plugin-installer": "0.0.3",
         "egulias/email-validator": "^2.1",
         "friendsofphp/php-cs-fixer": "^2.10",
         "guzzlehttp/guzzle": "^6.3",
