@@ -12,6 +12,11 @@
                     updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
                     $('#notificationMail').attr('type', 'hidden');
                     $('.notificationMail').hide();
+                    var viewEmail = $('#bulk-options #viewEmail');
+                    if (viewEmail.hasClass('show')) {
+                        viewEmail.removeClass('show');
+                        $('[href="#viewEmail"]').find('i').removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
+                    }
                     break;
                 default:
                 case 'status':
