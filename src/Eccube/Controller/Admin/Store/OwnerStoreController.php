@@ -105,7 +105,7 @@ class OwnerStoreController extends AbstractController
      * @Route("/search/page/{page_no}", name="admin_store_plugin_owners_search_page", requirements={"page_no" = "\d+"})
      * @Template("@admin/Store/plugin_search.twig")
      *
-     * @param Request $request
+     * @param Request     $request
      * @param int $page_no
      * @param Paginator $paginator
      *
