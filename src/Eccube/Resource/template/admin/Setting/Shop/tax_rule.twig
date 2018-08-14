@@ -183,13 +183,13 @@ file that was distributed with this source code.
                                                         {% if not TaxRule.default_tax_rule %}
                                                             <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top"
                                                                  title="{{ 'admin.common.delete'|trans }}">
-                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal">
+                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal_{{ TaxRule.id }}">
                                                                     <i class="fa fa-close fa-lg text-secondary"></i>
                                                                 </a>
                                                             </div>
                                                             <!-- 削除モーダル -->
-                                                            <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog"
-                                                                 aria-labelledby="DeleteModal" aria-hidden="true">
+                                                            <div class="modal fade" id="DeleteModal_{{ TaxRule.id }}" tabindex="-1" role="dialog"
+                                                                 aria-labelledby="DeleteModal_{{ TaxRule.id }}" aria-hidden="true">
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
