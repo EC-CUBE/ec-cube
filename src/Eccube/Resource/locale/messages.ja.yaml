@@ -1166,3 +1166,13 @@ admin.info.community: 開発コミュニティ
 #------------------------------------------------------------------------------------
 
 # tooltip.xxx.yyy: 〇〇を有効にします。フロント画面には表示されません。
+
+# Symfony error message
+This value should not be blank.: 入力されていません。
+This value should be the user\'s current password.: 現在のパスワードが正しくありません。
+Invalid credentials.: |
+  ログインできませんでした。
+  入力内容に誤りがないかご確認ください。
+Invalid CSRF token.: |
+  ログインできませんでした。
+  入力内容に誤りがないかご確認ください。

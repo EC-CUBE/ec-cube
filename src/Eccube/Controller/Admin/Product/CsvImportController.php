@@ -466,7 +466,7 @@ class CsvImportController extends AbstractCsvImportController
                     $this->entityManager->flush();
                     $this->entityManager->getConnection()->commit();
                     log_info('商品CSV登録完了');
-                    $message = 'admin.product.csv_import.save.complete';
+                    $message = 'admin.common.csv_upload_complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
                 }
             }
@@ -620,7 +620,7 @@ class CsvImportController extends AbstractCsvImportController
 
                     $this->entityManager->getConnection()->commit();
                     log_info('カテゴリCSV登録完了');
-                    $message = 'admin.category.csv_import.save.complete';
+                    $message = 'admin.common.csv_upload_complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
                 }
             }
