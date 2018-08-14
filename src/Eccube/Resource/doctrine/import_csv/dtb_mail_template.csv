@@ -1,4 +1,4 @@
-id,creator_id,name,file_name,mail_subject,mail_header,mail_footer,create_date,update_date,discriminator_type
+id,creator_id,name,file_name,mail_subject,create_date,update_date,discriminator_type
 "1",,"注文受付メール","Mail/order.twig","ご注文ありがとうございます","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
 "2",,"会員仮登録メール","Mail/entry_confirm.twig","会員登録のご確認","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
 "3",,"会員本登録メール","Mail/entry_complete.twig","会員登録が完了しました。","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
