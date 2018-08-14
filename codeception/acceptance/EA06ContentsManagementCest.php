@@ -184,7 +184,7 @@ class EA06ContentsManagementCest
 
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
         LayoutEditPage::at($I)
-            ->ブロックを移動('新着情報', '#position_0')
+            ->ブロックを移動('カゴの中', '#position_0')
             ->選択_プレビューページ('商品一覧')
             ->プレビュー();
 
