@@ -235,6 +235,7 @@ class AdminController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
 
+        // 推奨プラグイン
         $url = $this->eccubeConfig['eccube_package_repo_url'].'/plugins/recommended';
         list($json, $info) = $this->getRequestApi($url);
         $recommendedPlugins = json_decode($json, true);
@@ -252,7 +253,12 @@ class AdminController extends AbstractController
         ];
     }
 
-    // Need move to common code
+    /**
+     * Need move to common code
+     *
+     * @param $url
+     * @return array
+     */
     private function getRequestApi($url)
     {
         $curl = curl_init($url);

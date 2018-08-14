@@ -1052,6 +1052,7 @@ return [
     'admin.index.summary.shop.situation' => 'ショップ状況',
     'admin.index.summary.shop.items.stock' => '在庫切れ商品数',
     'admin.index.summary.shop.handled.product' => '取扱商品数',
+    'admin.index.owner.store' => 'オーナーズストア',
 
     'admin.login.172' => 'ログインID',
     'admin.login.173' => 'パスワード',
