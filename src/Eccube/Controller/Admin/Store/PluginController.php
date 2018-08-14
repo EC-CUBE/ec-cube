@@ -482,7 +482,7 @@ class PluginController extends AbstractController
             $this->entityManager->persist($this->BaseInfo);
             $this->entityManager->flush();
 
-            $this->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
+            $this->addSuccess('admin.flash.register_completed', 'admin');
         }
 
         return [
