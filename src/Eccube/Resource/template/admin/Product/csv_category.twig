@@ -48,11 +48,15 @@ file that was distributed with this source code.
                 $('#download-button').attr('disabled', 'disabled');
                 ImageSpinner.spin(document.getElementById('spinner'));
             });
-            $('#admin_csv_import_import_file').on('change', function() {
-                var files = $(this).prop('files');
-                if (files.length) {
-                    $('#admin_csv_import_import_file_name').text(files[0].name);
-                }
+
+            $('#file-select').click(function() {
+                $('#admin_csv_import_import_file').click();
+                $('#admin_csv_import_import_file').on('change', function() {
+                    var files = $(this).prop('files');
+                    if (files.length) {
+                        $('#admin_csv_import_import_file_name').text(files[0].name);
+                    }
+                });
             });
         });
     </script>
@@ -69,18 +73,18 @@ file that was distributed with this source code.
                         <div class="row">
                             <div class="col-2"><span>{{ 'admin.product.csv_category.csv_file_selection'|trans }}</span></div>
                             <div class="col">
-                                <form id="upload-form" class="mb-2" method="post" action="{{ url('admin_product_category_csv_import') }}" enctype="multipart/form-data">
+                                <form id="upload-form" method="post" action="{{ url('admin_product_category_csv_import') }}" enctype="multipart/form-data">
                                     {{ form_widget(form._token) }}
                                     <div class="mb-2">
-                                        {#<a class="btn btn-ec-regular mr-2" id="btn_select"  onclick="$('#admin_csv_import_import_file').click()">{{ 'admin.product.csv_category.choose_file'|trans}}</a><span id="admin_csv_import_import_file_name">{{ 'admin.product.csv_category.not_selected'|trans}}</span>#}
-                                        {# TODO: Required validation is not implemented yet, style sheet of input file#}
-                                        {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
+                                        <span id="file-select" class="btn btn-ec-regular mr-2">{{ 'admin.common.button.file_select'|trans }}</span>
+                                        <span id="admin_csv_import_import_file_name">{{ 'admin.common.label.file_select'|trans }}</span>
+                                        {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'd-none'}}) }}
                                         {{ form_errors(form.import_file) }}
                                     </div>
+                                    <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.common.button.file_upload'|trans }}</button>
                                     {% for error in errors %}
-                                        <div id="upload_box__error--{{ loop.index }}" class="text-danger">{{ error.message }}</div>
+                                        <div class="text-danger">{{ error }}</div>
                                     {% endfor %}
-                                    <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.product.csv_category.execute'|trans }}</button>
                                 </form>
                             </div>
                         </div>

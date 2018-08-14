@@ -47,6 +47,16 @@ file that was distributed with this source code.
                 $('#download-button').attr('disabled', 'disabled');
                 ImageSpinner.spin(document.getElementById('spinner'));
             });
+
+            $('#file-select').click(function() {
+                $('#admin_csv_import_import_file').click();
+                $('#admin_csv_import_import_file').on('change', function() {
+                    var files = $(this).prop('files');
+                    if (files.length) {
+                        $('#admin_csv_import_import_file_name').text(files[0].name);
+                    }
+                });
+            });
         });
     </script>
 {% endblock javascript %}
@@ -63,16 +73,18 @@ file that was distributed with this source code.
                         <div class="row">
                             <div class="col-2"><span>{{ 'admin.product.csv_product.upload_label'|trans }}</span></div>
                             <div class="col">
-                                <form enctype="multipart/form-data" id="upload-form" method="post" action="{{ url('admin_product_csv_import') }}">
+                                <form id="upload-form" method="post" action="{{ url('admin_product_csv_import') }}" enctype="multipart/form-data">
                                     {{ form_widget(form._token) }}
-                                    {#Todo: do js script#}
-                                    {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'mb-2'}}) }}
-                                    {{ form_errors(form.import_file) }}
+                                    <div class="mb-2">
+                                        <span id="file-select" class="btn btn-ec-regular mr-2">{{ 'admin.common.button.file_select'|trans }}</span>
+                                        <span id="admin_csv_import_import_file_name">{{ 'admin.common.label.file_select'|trans }}</span>
+                                        {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'd-none'}}) }}
+                                        {{ form_errors(form.import_file) }}
+                                    </div>
+                                    <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.common.button.file_upload'|trans }}</button>
                                     {% for error in errors %}
-                                        <div id="upload_file_box__upload_error--{{ loop.index }}" class="text-danger">{{ error.message }}</div>
+                                        <div class="text-danger">{{ error }}</div>
                                     {% endfor %}
-                                    <br/>
-                                    <button class="btn btn-ec-conversion" type="submit" id="upload-button">{{ 'admin.product.csv_product.upload_button'|trans }}</button>
                                 </form>
                             </div>
                         </div>

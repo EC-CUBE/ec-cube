@@ -555,6 +555,9 @@ return [
     'admin.common.label.cancel' => 'キャンセル',
     'admin.common.label.class_name' => '管理名',
     'admin.common.label.tracking_number' => '送り状番号',
+    'admin.common.label.file_select' => 'ファイルを選択してください',
+    'admin.common.button.file_select' => 'ファイルを選択',
+    'admin.common.button.file_upload' => '一括登録を実行',
 
     'admin.install.warning' => 'installphpPath は、インストール完了後にファイルを削除してください',
     'admin.register.complete' => '登録が完了しました。',

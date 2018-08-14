@@ -203,7 +203,7 @@ class CsvImportController extends AbstractCsvImportController
             'shipping_date' => [
                 'name' => trans('admin.shipping.csv_shipping.shipping_date'),
                 'description' => trans('admin.shipping.csv_shipping.shipping_date.description'),
-                'required' => false,
+                'required' => true,
             ],
         ];
     }
