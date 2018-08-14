@@ -50,13 +50,28 @@ Styleguide 13.2.1
   & &__item{
     margin-bottom: 36px;
     width: 50%;
-    img{
+    display: flex;
+    flex-direction: column;
+    &-image {
+      height: 150px;
       margin-bottom: 10px;
-      width: 100%;
+      text-align: center;
+      @include media_desktop() {
+        height: 250px;
+      }
+    }
+    img{
+      width: auto;
+      max-height: 100%;
     }
     @include media_desktop(){
       padding: 0 16px;
       width: 25%;
+    }
+
+    .ec-productRole__btn {
+      margin-top: auto;
+      padding-top: 1em;
     }
   }
   & &__item:nth-child(odd){
@@ -112,13 +127,26 @@ Styleguide 13.2.2
   & &__item{
     margin-bottom: 36px;
     width: 50%;
-    img{
+    &-image {
+      height: 150px;
       margin-bottom: 10px;
-      width: 100%;
+      text-align: center;
+      @include media_desktop() {
+        height: 250px;
+      }
+    }
+    img{
+      width: auto;
+      max-height: 100%;
     }
     @include media_desktop(){
       padding: 0 16px;
       width: 25%;
+    }
+
+    .ec-productRole__btn {
+      margin-top: auto;
+      padding-top: 1em;
     }
   }
   & &__item:nth-child(odd){

@@ -19,6 +19,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Proxy\Proxy;
+use Eccube\Util\StringUtil;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -199,7 +200,13 @@ abstract class AbstractEntity implements \ArrayAccess
         $ReflectionClass = new \ReflectionClass($this);
         $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder($ReflectionClass->getShortName())]);
 
-        return $serializer->serialize($this->toNormalizedArray($excludeAttribute), 'xml');
+        $xml = $serializer->serialize($this->toNormalizedArray($excludeAttribute), 'xml');
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            // The m modifier of the preg functions converts the end-of-line to '\n'
+            $xml = StringUtil::convertLineFeed($xml, "\r\n");
+        }
+
+        return $xml;
     }
 
     /**

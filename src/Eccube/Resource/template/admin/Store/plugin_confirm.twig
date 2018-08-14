@@ -12,120 +12,98 @@ file that was distributed with this source code.
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
-{% block title %}{{'admin.store.plugin_confirm.817'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.store.plugin_confirm.818'|trans}}{% endblock %}
-
-{% block javascript %}
-    <script src="{{ asset('assets/js/vendor/masonry.pkgd.min.js', 'admin') }}"></script>
-    <script>
-        $(function() {
-            $('.grid').masonry({
-                itemSelector: '.grid-item',
-                columnWidth: '.grid-item'
-            });
-        });
-    </script>
-{% endblock javascript %}
+{% block title %}インストール確認{% endblock %}
+{% block sub_title %}オーナーズストア{% endblock %}
 
 {% block stylesheet %}
     <style type="text/css">
-        .plugin-panel {
-            border: 1px solid #dedede;
-            padding: 10px;
-            margin: 5px 0;
+        .border-bt {
+            border-bottom: 1px solid rgba(0, 0, 0, .125);
         }
-        .plugin-meta {
-            padding: 0;
-            list-style: none;
-            margin: 0 0 15px;
+        #plugin-list .info {
+            min-height: 65%;
         }
-        .plugin-meta.dl-horizontal dt {
-            text-align: right;
-            padding-bottom: 0;
-            width: 180px;
-        }
-        .dl-horizontal dt {
-            text-align: left;
-            white-space: normal;
-            padding-bottom: 8px;
-            float: left;
-        }
-        .plugin-logo img {
-            width: 168px;
-            height: 126px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            float: left;
-        }
-        .plugin-meta.dl-horizontal dd {
-            padding-bottom: 0;
-            margin-left: 200px;
-        }
-        .plugin-block .grid{
-            padding: 10px 0;
-        }
-        #search_plugin_modal_box__body{
-            padding: 0 5px;
+        .plugin-ver li span {
+            display: inline-block;
         }
     </style>
-{% endblock stylesheet %}
-
+{% endblock %}
 {% block main %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                <div class="card rounded border-0 mb-4">
+                <div id="plugin-list" class="card rounded border-0 mb-4">
                     <div class="card-header">
-                        <h4 class="box-title font-weight-bold">{{'admin.store.plugin_confirm.819'|trans}}</h4>
+                        <span class="card-title">以下のプラグインをインストールします</span>
                     </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="plugin-block">
+                    <div class="card-body p-0">
+                        <div class="row m-0 p-3 border-bt">
+                            <div class="col-5 col-sm-4 px-2 pr-sm-3">
+                                <a href="#" data-toggle="modal" data-target="#searchPluginModal">
+                                    <img class="w-100 img-responsive"
+                                         src="{{ asset('noimage_plugin_list.png', 'save_image') }}" alt=""></a>
+                            </div>
+                            <div class="col-auto col-sm-8">
+                                <div class="info">
+                                    <h5 class="font-weight-bold mb-4">
+                                        最高級プラチナフォークは、贈り物としても人気です。
+                                    </h5>
+                                    <h6 class="mb-4">
+                                        セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</h6>
+                                    <p class="text-danger"><span
+                                                class="font-weight-bold text-dark">販売価格 </span> 25.000円
+                                        <small> (税込)</small>
+                                    </p>
+                                    <ul class="plugin-ver">
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-lg-3 pl-0">ダウンロード数</span>256
+                                        </li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-lg-3 pl-0">プラグインバージョン</span>2.1.5
+                                        </li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-lg-3 pl-0">EC-CUBE対応バージョン</span>バージョン3.0/3.1
+                                        </li>
+                                        <li class="pb-2"><span
+                                                    class="font-weight-bold col-6 col-sm-4 col-lg-3 pl-0">公開日</span>2013.05.24
+                                        </li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-lg-3 pl-0">最終更新日</span>2018.07.12
+                                        </li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-lg-3 pl-0">ファイルサイズ</span>125KB
+                                        </li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-lg-3 pl-0">ライセンス</span>LGBL
+                                        </li>
+                                        <li class="pb-2"><span
+                                                    class="font-weight-bold col-6 col-sm-4 col-lg-3 pl-0">制作者</span> <a
+                                                    href="ec-cube.net">EC-CUBE team</a></li>
+                                    </ul>
+                                </div>
+                                <div class="row mt-3">
                                     <div class="col-12">
-                                        {{ include('@admin/Store/plugin_confirm_panel.twig') }}
+                                        <div class="alert alert-danger border border-danger">
+                                            <p class="text-danger mb-0">このプラグインはEC-CUBE
+                                                3.nをサポートしていないため、正常に動作しない可能性があります。</p>
+                                        </div>
                                     </div>
-                                </div><!-- .plugin-block -->
-                            </div><!-- .col-xs-12 -->
-                        </div><!-- .row -->
-                    </div><!-- /.box-body 1 -->
-                    {% if dependents is not empty %}
-
-                    <div class="box-header">
-                        <h4 class="col-12 box-title">
-                            {% if is_update %}
-                                {{ item.name }}をアップデートするために、以下のプラグインもアップデートします。 {# TODO 未翻訳 #}
-                            {% else %}
-                                {{ item.name }}をインストールするために、以下のプラグインもインストールします。 {# TODO 未翻訳 #}
-                            {% endif %}
-                        </h4>
-                    </div><!-- /.box-header -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="plugin-block">
-                                {% for plugin in dependents %}
-                                    <div class="col-12 grid-item">
-                                        {% include '@admin/Store/plugin_confirm_panel.twig' with {'item': plugin, 'is_update': is_update} only %}
-                                    </div>
-                                {% endfor %}
-                            </div><!-- .plugin-block -->
-                        </div><!-- .col-xs-12 -->
-                    </div><!-- .row -->
-                    {% endif %}
-                    <div class="box-footer">
-                        <div class="col-12">
-                            <p class="pull-right">
-                                {% if is_update %}
-                                    <a class="btn btn-warning btn-xs prevention-mask" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false" href="{{ url('admin_store_plugin_api_upgrade', {'pluginCode': item.product_code, 'version': item.version}) }}">アップデート</a> {# TODO 未翻訳 #}
-                                {% else %}
-                                    <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_api_install', {'pluginCode': item.product_code, 'eccubeVersion': constant('Eccube\\Common\\Constant::VERSION'), 'version': item.version}) }}">インストール</a> {# TODO 未翻訳 #}
-                                {% endif %}
-                                <button class="btn btn-cancel btn-xs" type="button" onclick="return window.history.back()">戻る</button>
-                            </p>
+                                </div>
+                            </div>
                         </div>
-                    </div><!-- /.box-footer -->
+                        <div class="row m-0 my-3">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-6 col-sm-5 col-md-4 pt-2">オプション：バージョンを指定</div>
+                                    <div class="col-auto">
+                                        <select class="custom-select">
+                                            <option>最新版</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 text-right">
+                                <a href="#" class="btn btn-ec-sub">キャンセル</a>
+                                <a href="#" class="btn btn-primary">インストール</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

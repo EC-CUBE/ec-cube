@@ -20,12 +20,16 @@ file that was distributed with this source code.
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload.css', 'admin') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload-ui.css', 'admin') }}">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <style>
         .ui-state-highlight {
             height: 148px;
             border: dashed 1px #ccc;
             background: #fff;
+        }
+        .c-form__fileUploadThumbnail {
+            width: 400px;
+            height: 100px;
         }
     </style>
 {% endblock stylesheet %}
@@ -36,8 +40,11 @@ file that was distributed with this source code.
     <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-process.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-validate.js', 'admin') }}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script>var bootstrapTooltip = $.fn.tooltip.noConflict();</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
+        $.fn.tooltip = bootstrapTooltip;
+
         var hideSvg = function() {
             if ($("#thumb li").length > 0) {
                 $("#icon_no_image").css("display", "none");
@@ -46,15 +53,9 @@ file that was distributed with this source code.
             }
         };
 
-        var proto_img = ''
-            + '<li class="ui-state-default">'
-            + '<img src="__path__" />'
-            + '<a class="delete-image">'
-            + '<svg class="cb cb-close">'
-            + '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
-            + '</svg>'
-            + '</a>'
-            + '</li>';
+        var proto_img = '<div class="c-form__fileUploadThumbnail" id="payment_image" style="background-image:url(\'__path__\');">' +
+            '<span class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></span>' +
+            '</div>';
         var payment_image = $("#{{ form.payment_image.vars.id }}").val();
         if (payment_image != "") {
             var filename = $("#{{ form.payment_image.vars.id }}").val();
@@ -92,6 +93,11 @@ file that was distributed with this source code.
                 $('#progress .progress-bar').width('0%');
             },
             start: function(e, data) {
+                if ($(".c-form__fileUploadThumbnail").length >= 1) {
+                    $.each($(".delete-image"), function (index, delete_image) {
+                        delete_image.click();
+                    });
+                }
                 $('#progress').show();
                 $("#thumb").find("li").remove();
                 $("#{{ form.payment_image.vars.id }}").val('');
@@ -115,7 +121,8 @@ file that was distributed with this source code.
 
         $("#thumb").on("click", ".delete-image", function() {
             $("#{{ form.payment_image.vars.id }}").val('');
-            $(this).parent("li").remove();
+            var thumbnail = $(this).parents('div.c-form__fileUploadThumbnail');
+            $(thumbnail).remove();
             hideSvg();
         });
 

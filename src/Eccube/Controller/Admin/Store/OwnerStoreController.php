@@ -15,20 +15,24 @@ namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\PageMax;
 use Eccube\Entity\Plugin;
+use Eccube\Form\Type\Admin\SearchPluginApiType;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerProcessService;
 use Eccube\Service\Composer\ComposerServiceInterface;
+use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Eccube\Util\FormUtil;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/%eccube_admin_route%/store/plugin/api")
@@ -55,6 +59,11 @@ class OwnerStoreController extends AbstractController
      */
     protected $systemService;
 
+    /**
+     * @var PluginApiService
+     */
+    protected $pluginApiService;
+
     private static $vendorName = 'ec-cube';
 
     /**
@@ -65,17 +74,20 @@ class OwnerStoreController extends AbstractController
      * @param ComposerProcessService $composerProcessService
      * @param ComposerApiService $composerApiService
      * @param SystemService $systemService
+     * @param PluginApiService $pluginApiService
      */
     public function __construct(
         PluginRepository $pluginRepository,
         PluginService $pluginService,
         ComposerProcessService $composerProcessService,
         ComposerApiService $composerApiService,
-        SystemService $systemService
+        SystemService $systemService,
+        PluginApiService $pluginApiService
     ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->systemService = $systemService;
+        $this->pluginApiService = $pluginApiService;
 
         // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
@@ -90,35 +102,94 @@ class OwnerStoreController extends AbstractController
      * Owner's Store Plugin Installation Screen - Search function
      *
      * @Route("/search", name="admin_store_plugin_owners_search")
+     * @Route("/search/page/{page_no}", name="admin_store_plugin_owners_search_page", requirements={"page_no" = "\d+"})
      * @Template("@admin/Store/plugin_search.twig")
      *
      * @param Request     $request
+     * @param int $page_no
+     * @param Paginator $paginator
      *
      * @return array
      */
-    public function search(Request $request)
+    public function search(Request $request, $page_no = null, Paginator $paginator)
     {
         // Acquire downloadable plug-in information from owners store
         $items = [];
-        $promotionItems = [];
         $message = '';
+        $total = 0;
+        $category = [];
+
+        list($json, $info) = $this->pluginApiService->getCategory();
+        if (!empty($json)) {
+            $data = json_decode($json, true);
+            $category = array_column($data, 'name', 'id');
+        }
+
+        // build form with master data
+        $builder = $this->formFactory
+            ->createBuilder(SearchPluginApiType::class, null, ['category' => $category]);
+        $searchForm = $builder->getForm();
+
+        $searchForm->handleRequest($request);
+        $searchData = $searchForm->getData();
+        if ($searchForm->isSubmitted()) {
+            if ($searchForm->isValid()) {
+                $page_no = 1;
+                $searchData = $searchForm->getData();
+                $this->session->set('eccube.admin.plugin_api.search', FormUtil::getViewData($searchForm));
+                $this->session->set('eccube.admin.plugin_api.search.page_no', $page_no);
+            }
+        } else {
+            // quick search
+            if (is_numeric($categoryId = $request->get('category_id')) && array_key_exists($categoryId, $category)) {
+                $searchForm['category_id']->setData($categoryId);
+            }
+            // reset page count
+            $this->session->set('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
+            if (null !== $page_no || $request->get('resume')) {
+                if ($page_no) {
+                    $this->session->set('eccube.admin.plugin_api.search.page_no', (int) $page_no);
+                } else {
+                    $page_no = $this->session->get('eccube.admin.plugin_api.search.page_no', 1);
+                }
+                $viewData = $this->session->get('eccube.admin.plugin_api.search', []);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+            } else {
+                $page_no = 1;
+                // submit default value
+                $viewData = FormUtil::getViewData($searchForm);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+                $this->session->set('eccube.admin.plugin_api.search', $searchData);
+                $this->session->set('eccube.admin.plugin_api.search.page_no', $page_no);
+            }
+        }
+
+        // set page count
+        $pageCount = $this->session->get('eccube.admin.plugin_api.search.page_count', $this->eccubeConfig->get('eccube_default_page_count'));
+        if (($PageMax = $searchForm['page_count']->getData()) instanceof PageMax) {
+            $pageCount = $PageMax->getId();
+            $this->session->set('eccube.admin.plugin_api.search.page_count', $pageCount);
+        }
+
         // Owner's store communication
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
-        list($json, $info) = $this->getRequestApi($url);
-        if ($json === false) {
-            $message = $this->getResponseErrorMessage($info);
+        $searchData['page_no'] = $page_no;
+        $searchData['page_count'] = $pageCount;
+        list($json, $info) = $this->pluginApiService->getPlugins($searchData);
+        if (empty($json)) {
+            $message = $this->pluginApiService->getResponseErrorMessage($info);
         } else {
             $data = json_decode($json, true);
-            if (isset($data['success']) && $data['success']) {
+            $total = $data['total'];
+            if (isset($data['plugins']) && count($data['plugins']) > 0) {
                 // Check plugin installed
                 $pluginInstalled = $this->pluginRepository->findAll();
-                // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : paid purchase
-                foreach ($data['item'] as $item) {
+                // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : not purchased
+                foreach ($data['plugins'] as $item) {
                     // Not install/purchased
                     $item['update_status'] = 1;
                     /** @var Plugin $plugin */
                     foreach ($pluginInstalled as $plugin) {
-                        if ($plugin->getSource() == $item['product_id']) {
+                        if ($plugin->getSource() == $item['id']) {
                             // Installed
                             $item['update_status'] = 2;
                             if ($this->pluginService->isUpdate($plugin->getVersion(), $item['version'])) {
@@ -127,6 +198,10 @@ class OwnerStoreController extends AbstractController
                             }
                         }
                     }
+                    if ($item['purchased'] == false && (isset($item['purchase_required']) && $item['purchase_required'] == true)) {
+                        // Not purchased with paid items
+                        $item['update_status'] = 4;
+                    }
                     $items[] = $item;
                 }
 
@@ -134,37 +209,44 @@ class OwnerStoreController extends AbstractController
                 foreach ($items as &$item) {
                     // Not applicable version
                     $item['version_check'] = 0;
-                    if (in_array(Constant::VERSION, $item['eccube_version'])) {
+                    if (in_array(Constant::VERSION, $item['supported_versions'])) {
                         // Match version
                         $item['version_check'] = 1;
-                    }
-                    if ($item['price'] != '0' && $item['purchased'] == '0') {
-                        // Not purchased with paid items
-                        $item['update_status'] = 4;
                     }
                     // Add plugin dependency
                     $item['depend'] = $this->pluginService->getRequirePluginName($items, $item);
                 }
                 unset($item);
 
+                // Todo: news api will remove this?
                 // Promotion item
-                $i = 0;
-                foreach ($items as $item) {
-                    if ($item['promotion'] == 1) {
-                        $promotionItems[] = $item;
-                        unset($items[$i]);
-                    }
-                    $i++;
-                }
+//                $i = 0;
+//                foreach ($items as $item) {
+//                    if ($item['promotion'] == 1) {
+//                        $promotionItems[] = $item;
+//                        unset($items[$i]);
+//                    }
+//                    $i++;
+//                }
             } else {
                 $message = trans('ownerstore.text.error.ec_cube_error');
             }
         }
 
+        // The usage is set because `$items` are already paged.
+        // virtual paging
+        $pagination = $paginator->paginate($items, 1, $pageCount);
+        $pagination->setTotalItemCount($total);
+        $pagination->setCurrentPageNumber($page_no);
+        $pagination->setItemNumberPerPage($pageCount);
+
         return [
-            'items' => $items,
-            'promotionItems' => $promotionItems,
+            'pagination' => $pagination,
+            'total' => $total,
+            'searchForm' => $searchForm->createView(),
+            'page_no' => $page_no,
             'message' => $message,
+            'Categories' => $category
         ];
     }
 
@@ -174,8 +256,8 @@ class OwnerStoreController extends AbstractController
      * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     * @param Request     $request
-     * @param string      $id
+     * @param Request $request
+     * @param string $id
      *
      * @return array
      */
@@ -213,17 +295,18 @@ class OwnerStoreController extends AbstractController
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/install/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
+     * @Route("/install", name="admin_store_plugin_api_install")
      *
-     * @param Request     $request
-     * @param string      $pluginCode
-     * @param string      $eccubeVersion
-     * @param string      $version
+     * @param Request $request
      *
      * @return RedirectResponse
      */
-    public function apiInstall(Request $request, $pluginCode, $eccubeVersion, $version)
+    public function apiInstall(Request $request)
     {
+        $pluginCode = $request->get('pluginCode');
+        $eccubeVersion = $request->get('eccubeVersion');
+        $version = $request->get('version');
+
         // Check plugin code
         $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url);
@@ -299,9 +382,9 @@ class OwnerStoreController extends AbstractController
      * Do confirm page
      *
      * @Route("/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
-     * @Template("Store/plugin_confirm_uninstall.twig")
+     * @Template("@admin/Store/plugin_confirm_uninstall.twig")
      *
-     * @param Plugin      $Plugin
+     * @param Plugin $Plugin
      *
      * @return array|RedirectResponse
      */
@@ -349,10 +432,9 @@ class OwnerStoreController extends AbstractController
     /**
      * New ways to remove plugin: using composer command
      *
-     * @Method("DELETE")
-     * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
+     * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall", methods={"DELETE"})
      *
-     * @param Plugin      $Plugin
+     * @param Plugin $Plugin
      *
      * @return RedirectResponse
      */
@@ -382,11 +464,10 @@ class OwnerStoreController extends AbstractController
     /**
      * オーナーズブラグインインストール、アップデート
      *
-     * @Method("PUT")
-     * @Route("/upgrade/{pluginCode}/{version}", name="admin_store_plugin_api_upgrade")
+     * @Route("/upgrade/{pluginCode}/{version}", name="admin_store_plugin_api_upgrade", methods={"PUT"})
      *
-     * @param string      $pluginCode
-     * @param string      $version
+     * @param string $pluginCode
+     * @param string $version
      *
      * @return RedirectResponse
      */
@@ -414,7 +495,7 @@ class OwnerStoreController extends AbstractController
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     * @param Plugin      $plugin
+     * @param Plugin $plugin
      *
      * @return Response
      */
@@ -429,9 +510,10 @@ class OwnerStoreController extends AbstractController
     /**
      * API request processing
      *
-     * @param string  $url
+     * @param string $url
      *
      * @return array
+     * @deprecated since release, please preference PluginApiService
      */
     private function getRequestApi($url)
     {
@@ -463,10 +545,11 @@ class OwnerStoreController extends AbstractController
     /**
      * API post request processing
      *
-     * @param string  $url
+     * @param string $url
      * @param array $data
      *
      * @return array
+     * @deprecated since release, please preference PluginApiService
      */
     private function postRequestApi($url, $data)
     {
@@ -483,26 +566,5 @@ class OwnerStoreController extends AbstractController
         log_info('http post_info', $info);
 
         return [$result, $info];
-    }
-
-    /**
-     * Get message
-     *
-     * @param $info
-     *
-     * @return string
-     */
-    private function getResponseErrorMessage($info)
-    {
-        if (!empty($info)) {
-            $statusCode = $info['http_code'];
-            $message = $info['message'];
-
-            $message = $statusCode.' : '.$message;
-        } else {
-            $message = trans('ownerstore.text.error.timeout');
-        }
-
-        return $message;
     }
 }

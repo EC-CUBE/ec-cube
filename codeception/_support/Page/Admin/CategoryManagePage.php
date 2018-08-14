@@ -66,19 +66,26 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_削除($rowNum)
     {
-        $this->tester->click("body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col-auto.text-right > a:nth-child(4)");
+        $this->tester->click("body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col-auto.text-right > div > a");
+        return $this;
+    }
+
+    public function acceptModal()
+    {
+        $this->tester->waitForElementVisible("#delete_modal");
+        $this->tester->click("#delete_modal > div > div > div.modal-footer > a");
         return $this;
     }
 
     public function CSVダウンロード実行()
     {
-        $this->tester->click('body > div > div.c-contentsArea > div.c-outsideBlock > div > div > div.col-6.text-right > div > button:nth-child(1)');
+        $this->tester->click('body > div > div.c-contentsArea > div.c-outsideBlock > div > div > div.col-6.text-right > div > a:nth-child(1)');
         return $this;
     }
 
     public function CSV出力項目設定()
     {
-        $this->tester->click('body > div > div.c-contentsArea > div.c-outsideBlock > div > div > div.col-6.text-right > div > button:nth-child(2)');
+        $this->tester->click('body > div > div.c-contentsArea > div.c-outsideBlock > div > div > div.col-6.text-right > div > a:nth-child(2)');
     }
 
     public function 一覧_上に($rowNum)

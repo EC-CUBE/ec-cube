@@ -62,9 +62,6 @@ file that was distributed with this source code.
                 $.ajax({
                     url: '{{ url('admin_product_class_name_sort_no_move') }}',
                     type: 'POST',
-                    headers: {
-                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
-                    },
                     data: newSortNos
                 }).done(function() {
                     // remove class disable
@@ -81,7 +78,8 @@ file that was distributed with this source code.
             // 最初と最後の↑↓を再描画
             var redrawDisableAllows = function() {
                 var items = $('.sortable-item');
-                items.find('a').removeClass('disabled');
+                items.find('a.up').removeClass('disabled');
+                items.find('a.down').removeClass('disabled');
                 items.first().find('a.up').addClass('disabled');
                 items.last().find('a.down').addClass('disabled');
             };
@@ -126,8 +124,15 @@ file that was distributed with this source code.
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');
             });
+
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
+                var target = $(event.relatedTarget);
+                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
+            });
         });
     </script>
+
 {% endblock %}
 
 {% block main %}
@@ -173,42 +178,13 @@ file that was distributed with this source code.
                                                 <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.441'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                {% set classCategories = ClassName.ClassCategories|length %}
-                                                <a class="btn btn-ec-actionIcon mr-3 {% if classCategories > 0 %}disabled{% endif %}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"
-                                                   {% if classCategories == 0 %}data-toggle="modal" data-target="#delete_{{ ClassName.id }}"{% endif %}>
-                                                    <i class="fa fa-close fa-lg text-secondary"></i>
-                                                </a>
-
-                                                {% if classCategories == 0 %}
-                                                    <div class="modal fade" id="delete_{{ ClassName.id }}" tabindex="-1"
-                                                         role="dialog"
-                                                         aria-labelledby="delete_{{ ClassName.id }}" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title font-weight-bold">
-                                                                        {{ 'admin.class_name.modal.header'|trans }}</h5>
-                                                                    <button class="close" type="button"
-                                                                            data-dismiss="modal"
-                                                                            aria-label="Close"><span
-                                                                                aria-hidden="true">×</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body text-left">
-                                                                    <p class="text-left">
-                                                                        {{ 'admin.class_name.modal.body'|trans }}</p>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
-                                                                    </button>
-                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_product_class_name_delete', {'id' : ClassName.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                       data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                {% endif %}
-
+                                                <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
+                                                    {% set classCategories = ClassName.ClassCategories|length %}
+                                                    <a class="btn btn-ec-actionIcon{% if classCategories > 0 %} disabled{% endif %}"
+                                                       {% if classCategories == 0 %}data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_product_class_name_delete', {'id' : ClassName.id}) }}" {% endif %}>
+                                                        <i class="fa fa-close fa-lg text-secondary"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -235,6 +211,33 @@ file that was distributed with this source code.
                                     </li>
                                 {% endfor %}
                             </ul>
+                            <div class="modal fade" id="delete_modal" tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="delete_modal" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bold">
+                                                {{ 'admin.class_name.modal.header'|trans }}</h5>
+                                            <button class="close" type="button"
+                                                    data-dismiss="modal"
+                                                    aria-label="Close"><span
+                                                        aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                            <p class="text-left">
+                                                {{ 'admin.class_name.modal.body'|trans }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                            </button>
+                                            <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}
+                                               data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

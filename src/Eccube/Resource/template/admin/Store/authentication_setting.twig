@@ -25,16 +25,19 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h4 class="box-title font-weight-bold">{{'admin.store.authentication_setting.805'|trans}}</h4>
+                            <h5 class="box-title">{{'admin.store.authentication_setting.805'|trans}}</h5>
                         </div>
 
                         <div class="card-body">
                             <div class="row">
-                                {{ form_label(form.authentication_key) }}
-                                <div class="col-sm-9">
-                                    {{ form_widget(form.authentication_key) }}
-                                    {{ form_errors(form.authentication_key) }}
-                                    <p>{{'admin.store.authentication_setting.807'|trans({'owners_store_url' : eccube_config.eccube_owners_store_url})|raw}}</p>
+                                <div class="col-sm-2">
+                                    <div class="d-inline-block">
+                                        <span>認証キー</span>
+                                        <i class="fa fa-question-circle fa-lg" data-toggle="tooltip" data-placement="top" title="Tooltip"></i>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text"  name="" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -48,7 +51,9 @@ file that was distributed with this source code.
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            &nbsp;
+                            <a class="c-beseLink" href="{{ url('admin_store_plugin') }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i>
+                                <span>プラグイン一覧へ</span></a>
                         </div>
                     </div>
                     <div class="col-6">

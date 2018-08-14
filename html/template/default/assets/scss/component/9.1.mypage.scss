@@ -129,7 +129,6 @@ Styleguide 9.1.4
     @include reset_link;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     padding: 0;
     list-style: none;
   }
@@ -137,12 +136,22 @@ Styleguide 9.1.4
     margin-bottom: 8px;
     width: 47.5%;
     position: relative;
-    @include media_desktop(){
-      width: 22.8142%;
-      margin-bottom: 24px;
+    box-sizing: border-box;
+    padding: 10px;
+    &-image {
+      height: 150px;
+      margin-bottom: 10px;
+      text-align: center;
+      @include media_desktop() {
+        height: 250px;
+      }
     }
     img{
-      width: 100%;
+      width: auto;
+      max-height: 100%;
+    }
+    @include media_desktop(){
+      width: 25%;
     }
     .ec-closeBtn--circle {
       position: absolute;
