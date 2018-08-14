@@ -16,7 +16,6 @@ namespace Eccube\Controller\Mypage;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
-use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -345,11 +344,13 @@ class MypageController extends AbstractController
      *
      * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", methods={"DELETE"}, requirements={"id" = "\d+"})
      */
-    public function delete(Request $request, CustomerFavoriteProduct $CustomerFavoriteProduct)
+    public function delete(Request $request, $id)
     {
         $this->isTokenValid();
 
         $Customer = $this->getUser();
+
+        $CustomerFavoriteProduct = $this->customerFavoriteProductRepository->findOneBy(['Customer' => $Customer, 'Product' => $id]);
 
         log_info('お気に入り商品削除開始', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
 
