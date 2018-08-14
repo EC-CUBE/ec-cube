@@ -67,14 +67,10 @@ class MailController extends AbstractController
 
         $form = $builder->getForm();
         $form['template']->setData($Mail);
+        $htmlFileName = $Mail ? $this->getHtmlFileName($Mail->getFileName()) : null;
 
         // 更新時
         if (!is_null($Mail)) {
-            // HTMLテンプレートファイルの取得
-            $targetTemplate = explode('.', $Mail->getFileName());
-            $suffix = '.html';
-            $htmlFileName = $targetTemplate[0].$suffix.'.'.$targetTemplate[1];
-
             // テンプレートファイルの取得
             $source = $twig->getLoader()
                 ->getSourceContext($Mail->getFileName())
@@ -140,5 +136,21 @@ class MailController extends AbstractController
             'form' => $form->createView(),
             'id' => is_null($Mail) ? null : $Mail->getId(),
         ];
+    }
+
+    /**
+     * HTML用テンプレート名を取得する
+     *
+     * @param  string $fileName
+     *
+     * @return string
+     */
+    public function getHtmlFileName($fileName)
+    {
+        // HTMLテンプレートファイルの取得
+        $targetTemplate = explode('.', $fileName);
+        $suffix = '.html';
+
+        return $targetTemplate[0].$suffix.'.'.$targetTemplate[1];
     }
 }
