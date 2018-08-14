@@ -44,7 +44,6 @@ use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\MemberRepository;
-use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -53,7 +52,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
 use Faker\Factory as Faker;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -135,16 +133,6 @@ class Generator
      */
     protected $orderPurchaseFlow;
 
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
     public function __construct(
         EntityManagerInterface $entityManager,
         PasswordEncoder $passwordEncoder,
@@ -159,10 +147,8 @@ class Generator
         PageRepository $pageRepository,
         PrefRepository $prefRepository,
         TaxRuleRepository $taxRuleRepository,
-        OrderRepository $orderRepository,
         PurchaseFlow $orderPurchaseFlow,
         SessionInterface $session,
-        ContainerInterface $container,
         $locale = 'ja_JP'
     ) {
         $this->locale = $locale;
@@ -179,10 +165,8 @@ class Generator
         $this->pageRepository = $pageRepository;
         $this->prefRepository = $prefRepository;
         $this->taxRuleRepository = $taxRuleRepository;
-        $this->orderRepository = $orderRepository;
         $this->orderPurchaseFlow = $orderPurchaseFlow;
         $this->session = $session;
-        $this->container = $container;
     }
 
     /**
