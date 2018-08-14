@@ -49,7 +49,6 @@ use Eccube\Repository\PageRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
-use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
@@ -565,12 +564,8 @@ class Generator
             ->setNote($faker->realText())
             ->setAddPoint(0)    // TODO
             ->setUsePoint(0)    // TODO
-            // ->setOrderNo(sha1(StringUtil::random()))
+            ->setOrderNo(sha1(StringUtil::random()))
         ;
-
-        // 注文番号
-        $OrderNoProcessor = $this->container->get(OrderNoProcessor::class);
-        $OrderNoProcessor->process($Order, new PurchaseContext($Order));
 
         $this->entityManager->persist($Order);
         $this->entityManager->flush($Order);

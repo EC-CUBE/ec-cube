@@ -14,10 +14,8 @@ services:
       - '@Eccube\Repository\PageRepository'
       - '@Eccube\Repository\Master\PrefRepository'
       - '@Eccube\Repository\TaxRuleRepository'
-      - '@Eccube\Repository\OrderRepository'
       - '@eccube.purchase.flow.order'
       - '@session'
-      - '@service_container'
       - 'ja_JP'
     lazy: true
     public: true # Codeception対応
