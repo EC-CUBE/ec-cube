@@ -27,7 +27,7 @@ file that was distributed with this source code.
                                 {{ form_label(form.login_email, 'common.mail_address', { 'label_attr': { 'class': 'ec-label' }}) }}
                             </dt>
                             <dd>
-                                <div class="ec-input{{ has_errors(form.email) ? ' error' }}">
+                                <div class="ec-input{{ has_errors(form.login_email) ? ' error' }}">
                                     {{ form_widget(form.login_email) }}
                                     {{ form_errors(form.login_email) }}
                                     {% if error %}

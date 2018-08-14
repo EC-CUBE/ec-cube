@@ -69,7 +69,7 @@ class EF04CustomerCest
 
         // アクティベートURLからトップページへ
         $I->amOnPage($activateUrl);
-        $I->see('新規会員登録（完了）', 'div.ec-pageHeader h1');
+        $I->see('新規会員登録(完了)', 'div.ec-pageHeader h1');
 
         $I->seeEmailCount(2);
         foreach (array($new_email, $BaseInfo->getEmail01()) as $email) {

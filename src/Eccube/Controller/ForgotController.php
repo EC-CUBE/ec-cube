@@ -182,7 +182,7 @@ class ForgotController extends AbstractController
         );
 
         if (count($errors) > 0 ) {
-            // リセットキーに以上がある場合
+            // リセットキーに異常がある場合
             throw new HttpException\NotFoundHttpException();
         }
 
