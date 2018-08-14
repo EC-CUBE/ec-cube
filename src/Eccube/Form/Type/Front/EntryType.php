@@ -113,16 +113,14 @@ class EntryType extends AbstractType
                 ]
             );
 
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $Customer = $event->getData();
                 if ($Customer instanceof Customer && !$Customer->getId()) {
                     $form = $event->getForm();
 
                     $form->add('user_policy_check', CheckboxType::class, [
                         'required' => true,
-                        'label' => 'signup.label.btn.user_policy',
+                        'label' => null,
                         'mapped' => false,
                         'constraints' => [
                             new Assert\NotBlank(),
