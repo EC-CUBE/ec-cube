@@ -92,9 +92,6 @@ class MailController extends AbstractController
 
         $form = $builder->getForm();
 
-        // 本文確認用
-        $body = $this->createBody($Order);
-
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
@@ -113,6 +110,7 @@ class MailController extends AbstractController
                             $twig = 'Mail/order.twig';
                         }
 
+                        // 本文確認用
                         $body = $this->createBody($Order, $twig);
                         // HTMLテンプレート
                         $htmlBody = null;
@@ -162,11 +160,7 @@ class MailController extends AbstractController
                         $data['html_tpl_data'] = $form->get('html_tpl_data')->getData();
 
                         $MailTemplate = $form->get('template')->getData();
-
-                        $twig = $MailTemplate->getFileName();
-                        if (!$twig) {
-                            $twig = 'Mail/order.twig';
-                        }
+                        $twig = $MailTemplate ? $MailTemplate->getFileName() : 'Mail/order.twig';
 
                         // メール送信
                         $message = $this->mailService->sendAdminOrderMail($Order, $data);
@@ -293,7 +287,6 @@ class MailController extends AbstractController
 
                     $form->get('template')->setData($MailTemplate);
                     $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
-                    $form->get('body')->setData();
                 }
             } else {
                 if ($form->isValid()) {

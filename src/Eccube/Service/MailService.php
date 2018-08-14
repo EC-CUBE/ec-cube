@@ -696,7 +696,7 @@ class MailService
 
         /** @var Order $Order */
         $Order = $Shipping->getOrder();
-        $body = $this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate);
+        $body = $this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate->getFileName());
 
         $message = (new \Swift_Message())
             ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
@@ -709,7 +709,7 @@ class MailService
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
         if (!is_null($htmlFileName)) {
-            $htmlBody = $this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate, true);
+            $htmlBody = $this->getShippingNotifyMailBody($Shipping, $Order, $htmlFileName, true);
 
             $message
                 ->setContentType('text/plain; charset=UTF-8')
@@ -741,22 +741,27 @@ class MailService
     /**
      * @param Shipping $Shipping
      * @param Order $Order
-     * @param MailTemplate|null $MailTemplate
+     * @param string|null $templateName
      * @param boolean $is_html
      *
      * @return string
      *
      * @throws \Twig_Error
      */
-    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, MailTemplate $MailTemplate = null, $is_html = false)
+    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, $templateName = null, $is_html = false)
     {
         $ShippingItems = array_filter($Shipping->getOrderItems()->toArray(), function (OrderItem $OrderItem) use ($Order) {
             return $OrderItem->getOrderId() === $Order->getId();
         });
 
-        /** @var MailTemplate $MailTemplate */
-        $MailTemplate = $MailTemplate ?? $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
-        $fileName = $MailTemplate->getFileName();
+        if (!$templateName) {
+            /** @var MailTemplate $MailTemplate */
+            $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
+            $fileName = $MailTemplate->getFileName();
+        } else {
+            $fileName = $templateName;
+        }
+
         if ($is_html) {
             $htmlFileName = $this->getHtmlTemplate($fileName);
             $fileName = !is_null($htmlFileName) ? $htmlFileName : $fileName;

@@ -113,9 +113,8 @@ class MailController extends AbstractController
                 $fs->dumpFile($filePath, $mailData);
 
                 // HTMLファイル用
-                if ($twig->getLoader()->exists($htmlFileName)) {
-                    $htmlFilePath = $templatePath.'/'.$htmlFileName;
-                    $htmlMailData = $form->get('html_tpl_data')->getData();
+                $htmlMailData = $form->get('html_tpl_data')->getData();
+                if ($htmlMailData) {
                     $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
                     $fs->dumpFile($htmlFilePath, $htmlMailData);
                 }
