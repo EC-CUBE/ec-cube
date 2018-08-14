@@ -288,11 +288,11 @@ class EA09ShippingCest
                 ->CSVアップロード();
 
             $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[0]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
-                    '#upload_file_box__upload_error--1');
+                    '#upload-form > div:nth-child(4)');
             $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[1]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
-                    '#upload_file_box__upload_error--2');
+                    '#upload-form > div:nth-child(5)');
             $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[2]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
-                    '#upload_file_box__upload_error--3');
+                    '#upload-form > div:nth-child(6)');
         } finally {
             if (file_exists($csvFileName)) {
                 unlink($csvFileName);
