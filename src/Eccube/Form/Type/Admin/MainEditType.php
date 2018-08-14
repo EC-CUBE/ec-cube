@@ -222,10 +222,8 @@ class MainEditType extends AbstractType
                     ->setParameter('url', $Page->getUrl())
                     ->setParameter('DeviceType', $Page->getDeviceType());
 
-                if (null === $Page->getId()) {
-                    $qb
-                        ->andWhere('p.id IS NOT NULL');
-                } else {
+                // 更新の場合は自身のデータを重複チェックから除外する
+                if (!is_null($Page->getId())) {
                     $qb
                         ->andWhere('p.id <> :page_id')
                         ->setParameter('page_id', $Page->getId());
@@ -247,10 +245,8 @@ class MainEditType extends AbstractType
                     ->setParameter('DeviceType', $Page->getDeviceType())
                     ->setParameter('edit_type', $Page->getEditType());
 
-                if (null === $Page->getId()) {
-                    $qb
-                        ->andWhere('p.id IS NOT NULL');
-                } else {
+                // 更新の場合は自身のデータを重複チェックから除外する
+                if (!is_null($Page->getId())) {
                     $qb
                         ->andWhere('p.id <> :page_id')
                         ->setParameter('page_id', $Page->getId());
