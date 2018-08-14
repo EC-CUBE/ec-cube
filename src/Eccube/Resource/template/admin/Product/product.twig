@@ -791,7 +791,7 @@ file that was distributed with this source code.
                                     <li class="c-directoryTree--registerItem category-li">
                                         <input type="checkbox" id="admin_product_category_{{ Category.id }}" name="admin_product[Category][]" value="{{ Category.id }}" {% if Category.id in ChoicedIds %}checked{% endif %}>
                                         <label for="admin_product_category_{{ Category.id }}">{{ Category.name }}</label>
-                                        <ul class="pl-0">
+                                        <ul class="list-unstyled">
                                             {% for child,ChildCategory in Category.children %}
                                                 {{ selfMacro.tree(ChoicedIds, ChildCategory, form) }}
                                             {% endfor %}
@@ -802,7 +802,7 @@ file that was distributed with this source code.
                                 <div class="c-directoryTree--register rounded border mb-3 p-3">
                                     {% import _self as renderMacro %}
                                     {% for TopCategory in TopCategories %}
-                                        <ul class="pl-0">
+                                        <ul class="list-unstyled">
                                             {{ renderMacro.tree(ChoicedCategoryIds, TopCategory, form.Category) }}
                                         </ul>
                                     {% endfor %}
