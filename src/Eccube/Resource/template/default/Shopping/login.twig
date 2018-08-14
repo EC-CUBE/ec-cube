@@ -49,11 +49,8 @@ file that was distributed with this source code.
                             </div>
                             {% endif %}
                         </div>
-
                         {% if error %}
-                            <p class="ec-errorMessage">
-                                {{ error.messageKey|trans(error.messageData)|raw }}
-                            </p>
+                            <p class="ec-errorMessage">{{ error.messageKey|trans(error.messageData, 'validators')|nl2br }}</p>
                         {% endif %}
                         <div class="ec-grid2">
                             <div class="ec-grid2__cell">

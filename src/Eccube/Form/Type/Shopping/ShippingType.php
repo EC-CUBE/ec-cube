@@ -27,9 +27,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-/**
- * @FormType
- */
 class ShippingType extends AbstractType
 {
     /**

@@ -46,11 +46,10 @@ class SearchProductBlockType extends AbstractType
             'choices' => $Categories,
             'placeholder' => 'common.select__all_products',
             'required' => false,
-            'label' => 'searchproductblock.label.select_categories',
         ]);
         $builder->add('name', SearchType::class, [
             'required' => false,
-            'label' => 'searchproductblock.label.product_name',
+            'label' => 'common.search_keyword',
             'attr' => [
                 'maxlength' => 50,
             ],
