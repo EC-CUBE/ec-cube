@@ -105,9 +105,11 @@ if (!class_exists('\Eccube\Entity\Product')) {
                     if ($ProductClass->getClassCategory1()) {
                         $classCategoryId1 = $ProductClass->getClassCategory1()->getId();
                         if (!empty($classCategoryId1)) {
-                            $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
                             if ($ProductClass->getClassCategory2()) {
+                                $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
                                 $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
+                            } else {
+                                $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName().($ProductClass->getStockFind() ? '' : trans('product.text.out_of_stock'));
                             }
                         }
                     }
