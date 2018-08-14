@@ -13,10 +13,12 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
 use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\ProductStatusType;
+use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,13 +34,20 @@ class SearchProductType extends AbstractType
     protected $productStatusRepository;
 
     /**
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
      * SearchProductType constructor.
      *
      * @param ProductStatusRepository $productStatusRepository
+     * @param CategoryRepository $categoryRepository
      */
-    public function __construct(ProductStatusRepository $productStatusRepository)
+    public function __construct(ProductStatusRepository $productStatusRepository, CategoryRepository $categoryRepository)
     {
         $this->productStatusRepository = $productStatusRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -51,10 +60,17 @@ class SearchProductType extends AbstractType
                 'label' => 'searchproduct.label.multi',
                 'required' => false,
             ])
-            ->add('category_id', MasterCategoryType::class, [
+            ->add('category_id', ChoiceType::class, [
+                'choice_label' => 'NameWithLevel',
                 'label' => 'searchproduct.label.category',
                 'placeholder' => 'searchproduct.placeholder.select',
                 'required' => false,
+                'multiple' => false,
+                'expanded' => false,
+                'choices' => $this->categoryRepository->getList(null, true),
+                'choice_value' => function (Category $Category = null) {
+                    return $Category ? $Category->getId() : null;
+                },
             ])
             ->add('status', ProductStatusType::class, [
                 'label' => 'searchproduct.label.type',
