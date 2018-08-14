@@ -18,6 +18,7 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Service\MailService;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * MailService test cases.
@@ -53,6 +54,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->Customer = $this->createCustomer();
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->mailService = $this->container->get(MailService::class);
+
+        $request = Request::createFromGlobals();
+        $this->container->get('request_stack')->push($request);
     }
 
     public function testSendCustomerConfirmMail()
@@ -85,6 +89,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testSendCustomerCompleteMail()
@@ -113,6 +120,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendCustomerWithdrawMail()
@@ -142,6 +152,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testSendContactMail()
@@ -197,6 +210,9 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $this->expected = 'お問い合わせ内容';
         $this->verifyRegExp($Message, 'お問い合わせ内容');
+
+        // HTMLメールテスト
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendOrderMail()
@@ -225,6 +241,9 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
+
+        // HTMLメールテスト
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendAdminCustomerConfirmMail()
@@ -257,6 +276,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testSendAdminOrderMail()
@@ -293,6 +315,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendPasswordResetNotificationMail()
@@ -321,6 +346,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail03();
         $this->actual = key($Message->getReplyTo());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testSendPasswordResetCompleteMail()
@@ -347,6 +375,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testConvertMessageISO()
@@ -439,6 +470,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $mailHistoryRepository = $this->container->get(MailHistoryRepository::class);
         $histories = $mailHistoryRepository->findBy(['Order' => $Order]);
         self::assertEquals(1, count($histories), 'メール履歴が作成されているはず');
+
+        // HTMLメールテスト
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     protected function verifyRegExp($Message, $errorMessage = null)

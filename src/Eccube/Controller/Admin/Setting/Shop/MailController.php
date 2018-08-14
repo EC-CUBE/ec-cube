@@ -70,17 +70,17 @@ class MailController extends AbstractController
 
         // 更新時
         if (!is_null($Mail)) {
+            // HTMLテンプレートファイルの取得
+            $targetTemplate = explode('.', $Mail->getFileName());
+            $suffix = '.html';
+            $htmlFileName = $targetTemplate[0].$suffix.'.'.$targetTemplate[1];
+
             // テンプレートファイルの取得
             $source = $twig->getLoader()
                 ->getSourceContext($Mail->getFileName())
                 ->getCode();
 
             $form->get('tpl_data')->setData($source);
-
-            // HTMLテンプレートファイルの取得
-            $targetTemplate = explode('.', $Mail->getFileName());
-            $suffix = '.html';
-            $htmlFileName = $targetTemplate[0].$suffix.'.'.$targetTemplate[1];
             if ($twig->getLoader()->exists($htmlFileName)) {
                 $source = $twig->getLoader()
                     ->getSourceContext($htmlFileName)
@@ -115,9 +115,8 @@ class MailController extends AbstractController
                 // HTMLファイル用
                 $htmlMailData = $form->get('html_tpl_data')->getData();
                 if ($htmlMailData) {
-                    $htmlFilePath = $templatePath.'/'.$htmlFileName;
                     $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
-                    $fs->dumpFile($htmlFilePath, $htmlMailData);
+                    $fs->dumpFile($htmlFileName, $htmlMailData);
                 }
 
                 $event = new EventArgs(
