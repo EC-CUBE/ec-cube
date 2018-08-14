@@ -412,6 +412,7 @@ return [
     'form.type.customer.password.too_long' => 'This password is too long. It should have {{ limit }} character or more.|This password is too long. It should have {{ limit }} characters or more.',
     'form.type.admin.nottelstyle' => 'Please enter only a half-width number or a hyphen for the telephone number. . ',
     'form.type.admin.notkanastyle' => 'Please enter your name (phonetic) in katakana. ',
+    'form.type.notkanastyle' => 'Please enter in katakana. ',
     'form.type.select.notselect' => 'Not entered. ',
     'form.type.select.selectis_future_or_now_date' => 'You can not select future or now dates. ',
     'cart.over.stock' => 'Inventory of the selected product (%product%) is insufficient.

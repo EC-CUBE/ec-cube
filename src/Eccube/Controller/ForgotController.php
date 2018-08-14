@@ -33,7 +33,7 @@ class ForgotController extends AbstractController
     /**
      * @var ValidatorInterface
      */
-    protected $recursiveValidator;
+    protected $validator;
 
     /**
      * @var MailService
@@ -53,18 +53,18 @@ class ForgotController extends AbstractController
     /**
      * ForgotController constructor.
      *
-     * @param ValidatorInterface $recursiveValidator
+     * @param ValidatorInterface $validator
      * @param MailService $mailService
      * @param CustomerRepository $customerRepository
      * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(
-        ValidatorInterface $recursiveValidator,
+        ValidatorInterface $validator,
         MailService $mailService,
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory
     ) {
-        $this->recursiveValidator = $recursiveValidator;
+        $this->validator = $validator;
         $this->mailService = $mailService;
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
@@ -169,7 +169,7 @@ class ForgotController extends AbstractController
             throw new HttpException\NotFoundHttpException();
         }
 
-        $errors = $this->recursiveValidator->validate(
+        $errors = $this->validator->validate(
             $reset_key,
             [
                 new Assert\NotBlank(),
@@ -181,31 +181,31 @@ class ForgotController extends AbstractController
             ]
         );
 
+        if (count($errors) > 0 ) {
+            // リセットキーに以上がある場合
+            throw new HttpException\NotFoundHttpException();
+        }
+
+        $Customer = $this->customerRepository
+            ->getRegularCustomerByResetKey($reset_key);
+
+        if (null === $Customer) {
+            // リセットキーから会員データが取得できない場合
+            throw new HttpException\NotFoundHttpException();
+        }
+
         $builder = $this->formFactory
             ->createNamedBuilder('', PassowrdResetType::class);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
-        $credential_error = null;
+        $error = null;
 
-        if ('GET' === $request->getMethod()) {
-            if (count($errors) > 0) {
-                // リセットキーに異常がある場合
-                throw new HttpException\AccessDeniedHttpException(trans('forgotcontroller.text.error.authorization'));
-            }
-
-            $Customer = $this->customerRepository
-                ->getRegularCustomerByResetKey($reset_key);
-
-            if (is_null($Customer)) {
-                // リセットキーから会員データが取得できない場合
-                throw new HttpException\NotFoundHttpException();
-            }
-        } elseif ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // リセットキー・入力メールアドレスで会員情報検索
             $Customer = $this->customerRepository
                 ->getRegularCustomerByResetKey($reset_key, $form->get('login_email')->getData());
-            if (!is_null($Customer)) {
+            if ($Customer) {
                 // パスワードの発行・更新
                 $encoder = $this->encoderFactory->getEncoder($Customer);
                 $pass = $form->get('password')->getData();
@@ -235,18 +235,18 @@ class ForgotController extends AbstractController
                 $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_RESET_COMPLETE, $event);
 
                 // 完了メッセージを設定
-                $this->addFlash('password_reset_complete', trans('forgotcontroller.text.complete'));
+                $this->addFlash('password_reset_complete', trans('front.forgot.reset_complete'));
 
                 // ログインページへリダイレクト
                 return $this->redirectToRoute('mypage_login');
             } else {
                 // リセットキー・メールアドレスから会員データが取得できない場合
-                $credential_error = trans('forgotcontroller.text.error.credentials');
+                $error = trans('front.forgot.reset_not_found');
             }
         }
 
         return [
-            'error' => $credential_error,
+            'error' => $error,
             'form' => $form->createView(),
         ];
     }

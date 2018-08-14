@@ -65,7 +65,7 @@ file that was distributed with this source code.
                 {# FIXME: Need check pass routes before use default _route from request #}
                 <a class="page-link" href="{{ path(
                     routes ? routes : app.request.attributes.get('_route'),
-                    app.request.query.all|merge({'page_no': pages.last})) }}">{{ 'common.common.last'|trans }}</a></li>
+                    app.request.query.all|merge({'page_no': pages.last})) }}">{{ 'admin.common.last'|trans }}</a></li>
         {% endif %}
 
     </ul>

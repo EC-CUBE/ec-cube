@@ -238,18 +238,6 @@ class ShippingType extends AbstractType
         // TODO Calculatorで行うのが適切.
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $Shipping = $event->getData();
-            $Delivery = $Shipping->getDelivery();
-
-            if ($Delivery) {
-                $DeliveryFee = $this->deliveryFeeRepository->findOneBy([
-                    'Delivery' => $Delivery,
-                    'Pref' => $Shipping->getPref(),
-                ]);
-
-                $Shipping->setFeeId($DeliveryFee ? $DeliveryFee->getId() : null);
-                $Shipping->setShippingDeliveryFee($DeliveryFee->getFee());
-                $Shipping->setShippingDeliveryName($Delivery->getName());
-            }
             $form = $event->getForm();
             $DeliveryDate = $form['shipping_delivery_date']->getData();
             if ($DeliveryDate) {

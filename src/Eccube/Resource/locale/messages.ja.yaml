@@ -6,22 +6,25 @@ common.select: 選択してください
 common.select__pref: 都道府県を選択
 common.select__unspecified: 指定なし
 common.select__all_products: 全ての商品
+common.required: 必須
 
 common.back: 戻る
 common.close: 閉じる
 common.send: 送信する
+common.registration: 登録する
 common.change: 変更
 common.delete: 削除
 common.ok: OK
 common.cancel: キャンセル
 common.go_to_top: トップページへ
+common.go_to_cart: カートへ進む
 common.go_to_confirm: 確認ページへ
 common.go_to_next: 次のページへ
 common.move_to_page_top: ページトップへ
-common.pager.prev: 前へ
-common.pager.next: 次へ
-common.pager.first: 最初へ
-common.pager.last: 最後へ
+common.prev: 前へ
+common.next: 次へ
+common.first: 最初へ
+common.last: 最後へ
 common.name: お名前
 common.kana: お名前(カナ)
 common.first_name: 名
@@ -29,10 +32,12 @@ common.last_name: 姓
 common.first_name_kana: メイ
 common.last_name_kana: セイ
 common.company_name: 会社名
+common.shop_name: 店名
 common.address: 住所
 common.pref: 都道府県
 common.postal_symbol: 〒
 common.postal_code_sample: 例：5530003
+common.search_postal_code: 郵便番号検索
 common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
 common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
 common.phone_number: 電話番号
@@ -54,12 +59,19 @@ common.quantity__with_separator: 数量：
 common.subtotal: 小計
 common.subtotal__with_separator: 小計：
 common.total: 合計
+common.total__with_separator: 合計：
 common.delivery_fee: 送料
 common.charge: 手数料
 common.discount: 値引き
 common.point: ポイント
 common.enabled: 有効
 common.disabled: 無効
+common.user_name: '%last_name% %first_name% 様'
+common.login: ログイン
+common.remember_me: 次回から自動的にログインする
+common.signup: 新規会員登録
+common.forgot_login: ログイン情報をお忘れですか？
+common.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
 
 #====================================================================================
 # フロント画面
@@ -122,7 +134,8 @@ front.block.new_product.item_4_price: 1785 # priceフィルタで表示する
 # 問い合わせ
 #------------------------------------------------------------------------------------
 front.contact.title: お問い合わせ
-front.contact.inquiry_notice: 内容によっては回答をさしあげるのにお時間をいただくこともございます。
+front.contact.inquiry_notice: |
+  内容によっては回答をさしあげるのにお時間をいただくこともございます。
   また、休業日は翌営業日以降の対応となりますのでご了承ください。
 front.contact.order_notice: ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
 front.contact.inquiry_contents: お問い合わせ内容
@@ -140,7 +153,8 @@ front.entry.agree_with_terms: に同意してお進みください # TODO 「%na
 front.entry.agree: 同意する
 front.entry.disagree: 同意しない
 front.entry.confirm_title: 新規会員登録(確認)
-front.entry.confirm_message: 下記の内容で登録してもよろしいでしょうか？
+front.entry.confirm_message: |
+  下記の内容で登録してもよろしいでしょうか？
   よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。
 front.entry.do_register: 会員登録をする
 front.entry.complete_title: 新規会員登録(完了)
@@ -156,22 +170,28 @@ front.entry.complete_message__activated: それではショッピングをお楽
 # パスワード再発行
 #------------------------------------------------------------------------------------
 
-# TODO
-
 front.forgot.title: パスワードの再発行
 front.forgot.message1: ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。
-front.forgot.message2: ※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。
-front.forgot.complete_title: パスワードの再発行(完了)
+front.forgot.message2: ※パスワード再発行メールを送信します。メールの内容をご確認の上、新しいパスワードを登録してください。
+front.forgot.complete_title: パスワードの再発行(メール送信)
 front.forgot.complete_message__title: パスワード再発行メールの送信が完了しました。
-front.forgot.complete_message__body: ご登録メールアドレスにパスワードを再発行するためのメールを送信いたしました。
+front.forgot.complete_message__body: |
+  ご登録メールアドレスにパスワードを再発行するためのメールを送信いたしました。
   メールの内容をご確認いただきますよう、お願いいたします。
   ※メールが届かない場合はメールアドレスをご確認の上、再度お試しください。
+front.forgot.reset_title: パスワード再発行(再設定)
+front.forgot.reset_complete: パスワードを更新しました。
+front.forgot.reset_error: 有効期限が切れているか、無効なURLです。
+front.forgot.reset_not_found: 入力内容を確認してください。
 
 #------------------------------------------------------------------------------------
 # 当サイトについて/特定商取引法/...
 #------------------------------------------------------------------------------------
 
 front.about.title: 当サイトについて
+front.about.business_hour: 店舗営業時間
+front.about.good_traded: 取り扱い商品
+front.about.message: メッセージ
 front.agreement.title: 利用規約
 front.tradelaw.title: 特定商取引法に基づく表記
 front.privacy.title: プライバシーポリシー
@@ -187,7 +207,8 @@ front.guide.title: ご利用ガイド
 # マイページ
 #------------------------------------------------------------------------------------
 
-front.mypage.welcome: ようこそ%name%さん
+front.mypage.welcome: ようこそ%last_name% %first_name%さん
+front.mypage.title: マイページ
 front.mypage.welcome__point: 現在の所持ポイントは %point%pt です。
 front.mypage.nav__history: ご注文履歴
 front.mypage.nav__history_detail: ご注文履歴詳細
@@ -195,20 +216,36 @@ front.mypage.nav__favorite: お気に入り一覧
 front.mypage.nav__customer: 会員情報編集
 front.mypage.nav__customer_complete: 会員情報編集(完了)
 front.mypage.nav__customer_address: お届け先一覧
+
 front.mypage.nav__withdrow: 退会手続き
 front.mypage.history_count: '%count%件の履歴があります'
-front.mypage.read_detail: 詳細を見る
+front.mypage.history_not_found: ご注文履歴はありません。
+front.mypage.view_detail: 詳細を見る
 front.mypage.order_no: ご注文番号
 front.mypage.order_status: ご注文状況
 front.mypage.order_date: ご注文日時
 front.mypage.use_point: ご利用ポイント
 front.mypage.add_point: 加算ポイント
+front.mypage.delivery_info: 配送情報
+front.mypage.delivery: お届け先
+front.mypage.delivery_provider: 配送方法
+front.mypage.delivery_date: お届け日
+front.mypage.delivery_time: お届け時間
+front.mypage.current_price: 【現在価格】
 front.mypage.reorder: 再注文する
+front.mypage.payment_info: お支払い情報
+front.mypage.payment: お支払い方法
+front.mypage.message: お問い合わせ
+front.mypage.reorder_message: ※金額が変更されている商品があるため、再注文時はご注意ください。
+front.mypage.mail_not_found: メール履歴はありません。
 front.mypage.mail_list: メール配信履歴一覧
 front.mypage.customer_complete_message__title: 会員登録内容の変更が完了いたしました
 front.mypage.customer_complete_message__body: 今後ともご愛顧賜りますようよろしくお願い申し上げます。
 front.mypage.favorite_count: '%count%件のお気に入りがあります'
+front.mypage.favorite_not_found: お気に入りは登録されていません。
 front.mypage.customer_address_count: '%count%件のお届け先があります'
+front.mypage.customer_address_not_found: お届け先は登録されていません。
+
 front.mypage.add_customer_address: '新規お届け先を追加する'
 front.mypage.withdraw_message__title: 退会手続きの前にご確認ください
 front.mypage.withdraw_message__body: 退会手続きが完了した時点で、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますのでご注意ください。
@@ -227,7 +264,10 @@ front.product.search__product_not_found: お探しの商品は見つかりませ
 front.product.search_result__keyword: 「%name%」の検索結果
 front.product.search_result__detail: '<span class="ec-font-bold">%count%件</span><span>の商品が見つかりました</span>'
 front.product.add_cart: カートに入れる
-front.product.add_favarite: お気に入りに追加
+front.product.add_cart_complete: カートに追加しました。
+front.product.add_cart_error: カートへの追加に失敗しました。
+front.product.add_favorite: お気に入りに追加
+front.product.add_favorite_alrady: お気に入りに追加済です。
 front.product.out_of_stock: ただいま品切れ中です。
 front.product.added_to_favorite: お気に入りに追加済です。
 front.product.nomal_price: 通常価格
@@ -235,7 +275,8 @@ front.product.sale_price: 販売価格
 front.product.code: 商品コード
 front.product.related_category: 関連カテゴリ
 front.product.continue: お買い物を続ける
-front.product.go_to_cart: カートへ進む
+front.product.invalid_quantity: 1以上で入力してください。
+front.product.product_class_unselected: 項目が選択されていません
 
 #------------------------------------------------------------------------------------
 # カート
@@ -265,26 +306,28 @@ front.cart.delivery_fee_free__quantity: '<strong>%quantity%個</strong>」のお
 #------------------------------------------------------------------------------------
 
 front.shopping.title: ご注文手続き
-front.shopping.nav__cart_items: カートの商品
-front.shopping.nav__customer_info: お客様情報
-front.shopping.nav__order: ご注文手続き
-front.shopping.nav__confirm: ご注文内容確認
-front.shopping.nav__complete: 完了
 front.shopping.customer_info: お客様情報
 front.shopping.delivery_info: 配送情報
 front.shopping.delivery_to: お届け先
 front.shopping.delivery_provider: 配送方法
 front.shopping.delivery_date: お届け日
 front.shopping.delivery_time: お届け時間
-front.shopping.add_delivery_fee: お届け先を追加する
+front.shopping.to_multiple: お届け先を追加する
 front.shopping.payment_info: お支払方法
 front.shopping.point_info: 利用ポイント
-front.shopping.available_point: '%point%が利用可能です。'
+front.shopping.available_point: '%point% pt が利用可能です。'
+front.shopping.point_prev: 利用ポイント
+front.shopping.prev_point: ご注文前のポイント
+front.shopping.next_point: ご注文後のポイント
+front.shopping.add_point: 加算ポイント
+front.shopping.use_point: ご利用ポイント
 front.shopping.message_info: お問い合わせ
+front.shopping.message_placeholder: お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)
 front.shopping.go_to_confirm: 確認する
 front.shopping.back_to_cart: カートに戻る
 front.shopping.shipping_title: お届け先の指定
 front.shopping.shipping_add_new_shipping: 新規お届け先を追加する
+front.shopping.shipping_unselected: お届け先を指定してください
 front.shopping.shipping_send_selected_shipping: 選択したお届け先に送る
 front.shopping.shipping_multiple_title: お届け先の複数指定
 front.shopping.shipping_multiple_message: 各商品のお届け先を選択してください。
@@ -298,6 +341,14 @@ front.shopping.complete_message__body: |
   ただいま、ご注文の確認メールをお送りさせていただきました。
   万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
   今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.shopping.continue: 購入を続ける
+front.shopping.guest_purchase_message: 会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
+front.shopping.guest_purchase: ゲスト購入
+front.shopping.nonmember: お客様情報の入力
+front.shopping.shipping_edit_title_nomember: 商品購入/お届け先の変更
+front.shopping.shipping_edit_header_customer: お届け先の追加
+front.shopping.shipping_edit_header_nonmember: お届け先の変更
+front.shopping.error: 購入エラー
 
 #====================================================================================
 # 管理画面
@@ -727,9 +778,9 @@ admin.order.mail_template: テンプレート
 admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
 admin.order.mail_failed: 取得に失敗しました。
 admin.order.shipping_info: 出荷情報
-admin.order.delivery_date: お届け希望日
-admin.order.delivery_time: 指定時間帯
-admin.order.delivery_provider: 配送業者
+admin.order.delivery_date: お届け日
+admin.order.delivery_time: お届け時間
+admin.order.delivery_provider: 配送方法
 admin.order.to_shipped: 出荷済にする
 admin.order.send_mail: メールする
 admin.order.shop_memo_for_shipped: 出荷用メモ欄

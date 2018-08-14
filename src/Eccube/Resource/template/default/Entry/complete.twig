@@ -15,18 +15,18 @@ file that was distributed with this source code.
 {% block main %}
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>{{'signup.text.message.completed'|trans}}</h1>
+            <h1>{{ 'front.entry.complete_title'|trans }}</h1>
         </div>
     </div>
     <div class="ec-registerCompleteRole">
         <div class="ec-off3Grid ec-text-ac">
             <div class="ec-off3Grid__cell">
                 <div class="ec-reportHeading">
-                    <h2>{{'signup.text.message.thanks'|trans}}</h2>
+                    <h2>{{ 'front.entry.complete_message__title'|trans }}</h2>
                 </div>
-                <p class="ec-reportDescription">現在仮会員の状態です。<br>ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、<br>本会員登録になった上でお買い物をお楽しみください。<br>{{'signup.text.message.look_forward'|trans}}</p>
+                <p class="ec-reportDescription">{{ 'front.entry.complete_message__temporary'|trans|nl2br }}</p>
                 <div class="ec-off4Grid">
-                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">トップページへ</a></div>
+                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a></div>
                 </div>
             </div>
         </div>

@@ -13,18 +13,18 @@ file that was distributed with this source code.
 {% block main %}
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>お問い合わせ完了</h1>
+            <h1>{{ 'front.contact.complete_title'|trans }}</h1>
         </div>
     </div>
     <div class="ec-contactCompleteRole">
         <div class="ec-off3Grid ec-text-ac">
             <div class="ec-off3Grid__cell">
                 <div class="ec-reportHeading">
-                    <h2>お問い合わせ内容の送信が完了いたしました</h2>
+                    <h2>{{ 'front.contact.complete_message__title'|trans }}</h2>
                 </div>
-                <p class="ec-reportDescription">{{'shopping.text.message.in_case'|trans}}</p>
+                <p class="ec-reportDescription">{{ 'front.contact.complete_message__body'|trans }}</p>
                 <div class="ec-off4Grid">
-                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.label.back_to_top'|trans}}</a></div>
+                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.go_to_top'|trans}}</a></div>
                 </div>
             </div>
         </div>

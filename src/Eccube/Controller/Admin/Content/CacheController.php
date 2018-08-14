@@ -28,21 +28,18 @@ class CacheController extends AbstractController
      */
     public function index(Request $request, CacheUtil $cacheUtil)
     {
-        $result = '';
-
         $builder = $this->formFactory->createBuilder(FormType::class);
         $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $result = $cacheUtil->clearCache();
+            $cacheUtil->clearCache();
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
         }
 
         return [
             'form' => $form->createView(),
-            'result' => $result,
         ];
     }
 }

@@ -123,7 +123,7 @@ file that was distributed with this source code.
                 var form = $(this).closest('form');
                 if (!form.find('input:checkbox[name^="ids"]:checked').length) {
                     {# TODO: should use modal instead of alert #}
-                    alert('{{ 'common.grid.checkbox_required'|trans }}');
+                    alert('please check');
                     return false;
                 }
 

@@ -14,6 +14,8 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -21,6 +23,7 @@ use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
@@ -31,6 +34,9 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class DeliveryFeePreprocessor implements ItemHolderPreprocessor
 {
+    /** @var BaseInfo */
+    protected $BaseInfo;
+
     /**
      * @var EntityManagerInterface
      */
@@ -47,17 +53,20 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
     protected $deliveryFeeRepository;
 
     /**
-     * DeliveryFeeProcessor constructor.
+     * DeliveryFeePreprocessor constructor.
      *
+     * @param BaseInfoRepository $baseInfoRepository
      * @param EntityManagerInterface $entityManager
      * @param TaxRuleRepository $taxRuleRepository
      * @param DeliveryFeeRepository $deliveryFeeRepository
      */
     public function __construct(
+        BaseInfoRepository $baseInfoRepository,
         EntityManagerInterface $entityManager,
         TaxRuleRepository $taxRuleRepository,
         DeliveryFeeRepository $deliveryFeeRepository
     ) {
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->entityManager = $entityManager;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->deliveryFeeRepository = $deliveryFeeRepository;
@@ -111,11 +120,24 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
         /* @var Shipping $Shipping */
         foreach ($Order->getShippings() as $Shipping) {
             // 送料の計算
+            $deliveryFeeProduct = 0;
+            if ($this->BaseInfo->isOptionProductDeliveryFee()) {
+                /** @var OrderItem $orderItem */
+                foreach ($Shipping->getOrderItems() as $orderItem) {
+                    if (!$orderItem->isProduct()) {
+                        continue;
+                    }
+                    $deliveryFeeProduct += $orderItem->getProductClass()->getDeliveryFee() * $orderItem->getQuantity();
+                }
+            }
+
+            /** @var DeliveryFee $DeliveryFee */
             $DeliveryFee = $this->deliveryFeeRepository->findOneBy([
                 'Delivery' => $Shipping->getDelivery(),
                 'Pref' => $Shipping->getPref(),
             ]);
-            $Shipping->setShippingDeliveryFee($DeliveryFee->getFee());
+
+            $Shipping->setShippingDeliveryFee($DeliveryFee->getFee() + $deliveryFeeProduct);
             $Shipping->setFeeId($DeliveryFee->getId());
 
             $OrderItem = new OrderItem();

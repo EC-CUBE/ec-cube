@@ -10,7 +10,14 @@ file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
-{% set menus = ['content', 'page'] %}
+{# 設定メニューからも遷移するため、遷移元に応じてナビを変更 #}
+{% if app.request.query.get('return') == 'tradelaw' %}
+    {% set menus = ['setting', 'shop', 'shop_tradelaw'] %}
+{% elseif app.request.query.get('return') == 'agreement' %}
+    {% set menus = ['setting', 'shop', 'shop_agreement'] %}
+{% else %}
+    {% set menus = ['content', 'page'] %}
+{% endif %}
 
 {% block title %}{{ 'admin.content.page_management'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
