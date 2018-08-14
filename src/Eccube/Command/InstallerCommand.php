@@ -14,7 +14,6 @@
 namespace Eccube\Command;
 
 use Dotenv\Dotenv;
-use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
