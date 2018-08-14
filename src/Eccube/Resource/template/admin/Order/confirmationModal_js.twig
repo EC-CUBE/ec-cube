@@ -12,8 +12,6 @@
                     updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
                     $('#notificationMail').attr('type', 'hidden');
                     $('.notificationMail').hide();
-                    $('#viewEmail').removeClass('collapse').addClass('collapsed');
-                    ;
                     break;
                 default:
                 case 'status':
