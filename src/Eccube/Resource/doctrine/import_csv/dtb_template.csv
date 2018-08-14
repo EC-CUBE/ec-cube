@@ -1,4 +1,2 @@
 id,device_type_id,template_code,template_name,create_date,update_date,discriminator_type
 "1","10","default","デフォルト","2017-03-07 10:14:52","2017-03-07 10:14:52","template"
-"2","1","mobile","モバイル","2017-03-07 10:14:52","2017-03-07 10:14:52","template"
-"4","2","sphone","スマートフォン","2017-03-07 10:14:52","2017-03-07 10:14:52","template"

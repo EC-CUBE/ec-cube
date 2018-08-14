@@ -42,7 +42,7 @@ file that was distributed with this source code.
 
         $('.add-cart').on('click', function(e) {
             e.preventDefault();
-            var $form = $(this).parents('form');
+            var $form = $(this).parents('li').find('form');
 
             // 個数フォームのチェック
             var $quantity = $form.parent().find('.quantity');
@@ -143,7 +143,9 @@ file that was distributed with this source code.
                     {% for Product in pagination %}
                         <li class="ec-shelfGrid__item">
                             <a href="{{ url('product_detail', {'id': Product.id}) }}">
-                                <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
+                                <p class="ec-shelfGrid__item-image">
+                                    <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
+                                </p>
                                 <p>{{ Product.name }}</p>
                                 {% if Product.Tags %}
                                     <ul class="ec-productRole ec-productRole__tags">
@@ -155,7 +157,7 @@ file that was distributed with this source code.
                                 {% if Product.description_list %}
                                     <p>{{ Product.description_list|raw|nl2br }}</p>
                                 {% endif %}
-                                <p class="price02_default">
+                                <p class="price02-default">
                                     {% if Product.hasProductClass %}
                                         {% if Product.getPrice02Min == Product.getPrice02Max %}
                                             {{ Product.getPrice02IncTaxMin|price }}
@@ -189,13 +191,13 @@ file that was distributed with this source code.
                                             {{ form_errors(form.quantity) }}
                                         </div>
                                     </div>
-                                    <div class="ec-productRole__btn">
-                                        <button type="submit" class="ec-blockBtn--action add-cart" data-cartid="{{ Product.id }}">
-                                            {{ 'common.label.add_cart'|trans }}
-                                        </button>
-                                    </div>
                                     {{ form_rest(form) }}
                                 </form>
+                                <div class="ec-productRole__btn">
+                                    <button type="submit" class="ec-blockBtn--action add-cart" data-cartid="{{ Product.id }}" form="productForm{{ Product.id }}">
+                                        {{ 'common.label.add_cart'|trans }}
+                                    </button>
+                                </div>
                             {% else %}
                                 <div class="ec-productRole__btn">
                                     <button type="button" class="ec-blockBtn--action" disabled="disabled">
