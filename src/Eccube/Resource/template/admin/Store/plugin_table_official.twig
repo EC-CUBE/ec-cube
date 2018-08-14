@@ -14,91 +14,139 @@ file that was distributed with this source code.
             <thead>
             <tr>
                 <th class="border-top-0 pl-3 pt-2 pb-2">{{ 'admin.store.plugin_table_official.901'|trans }}</th>
-                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table_official.902'|trans }}</th>
-                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table_official.903'|trans }}</th>
-                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table_official.904'|trans }}</th>
+                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.942'|trans }}</th>
+                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.943'|trans }}</th>
+                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.901'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table_official.905'|trans }}</th>
-                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table_official.906'|trans }}</th>
-                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table_official.907'|trans }}</th>
+                <th class="border-top-0 pt-2 pb-2">&nbsp;</th>
             </tr>
             </thead>
             <tbody>
-            {% for key,Plugin in Plugins %}
-                {% set form = plugin_forms[Plugin.id] %}
+            {% for key,Plugin in Plugins if officialPluginsDetail[key] is defined %}
                 {% set pluginDetail = officialPluginsDetail[key] %}
                 <tr class="{% if Plugin.enabled == false %}active{% endif %}">
                     <td class="align-middle pl-3">
-                        <strong>{{ Plugin.name }}</strong>{% if Plugin.enabled == 0 %}<span
-                                class="text-danger"> {{ 'admin.store.plugin_table_official.908'|trans }}</span>{% endif %}
-                        <br>
-                        {% if Plugin.enabled %}
-                            <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
-                               data-method="put" data-confirm="false">
-                                {{ 'admin.store.plugin_table_official.909'|trans }}
-                            </a>
-                        {% else %}
-                            <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
-                               data-method="put" data-confirm="false">
-                                {{ 'admin.store.plugin_table_official.910'|trans }}
-                            </a>
-                        {% endif %}
-                        /
-                        {% if Plugin.enabled %}
-                            <span class="disabled">{{ 'admin.store.plugin_table_official.911'|trans }}</span>
-                        {% else %}
-                            <a href="{{ url('admin_store_plugin_delete_confirm', { id : Plugin.id }) }}">
-                                {{ 'admin.store.plugin_table_official.911'|trans }}
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td class="align-middle">
-                        <div class="plugin-logo">
-                            <a href="{{ pluginDetail.product_url }}" target="_blank"><img class="img-rounded"
-                                                                                          src="{{ pluginDetail.product_image_url }}"></a>
-                        </div>
+                        <a href="#" target="_blank">
+                            <img class="pr-3" height="60"
+                                 src="{{ pluginDetail.image }}" alt="">
+                        </a>
+                        <span>{{ Plugin.name }}</span>
                     </td>
                     <td class="align-middle" style="width: 136px">{{ Plugin.version }}</td>
-                    <td class="align-middle"><p>{{ Plugin.code }}</p>
-                        {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
+                    <td class="align-middle"><p class="mb-0">{{ Plugin.code }}</p>
+                        {# TODO: readme of plugin #}
+                        {#{% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
                             <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal"
                                data-name="{{ Plugin.name }}"
                                data-readme="{{ attribute(app.config[Plugin.code].const, 'readme') }}">{{ 'admin.store.unregisterd_plugin_table.948'|trans }}</a>
+                        {% endif %}#}
+                    </td>
+                    <td class="align-middle">
+                        {% if Plugin.id %}
+                            {% if Plugin.enabled %}
+                                <span class="text-success">{{ 'common.label.enabled'|trans }}</span>
+                            {% else %}
+                                <span class="text-secondary">{{ 'common.label.disabled'|trans }}</span>
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td class="align-middle">
-                        {% if pluginDetail.update_status == 1 %}
-                            {{ 'admin.store.plugin_table_official.913'|trans }}
-                            <a class="btn btn-default btn-xs"
-                               href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
-                            <ul class="plugin-meta dl-horizontal">
-                                <li class="plugin-version">{{ 'admin.store.plugin_owners_confirm.845'|trans }} : {{ pluginDetail.version }}</li>
-                                <li class="plugin-version">{{ 'admin.store.plugin_owners_confirm.847'|trans }}
-                                    : {% for version in pluginDetail.eccube_version %}{{ version }} {%- if loop.last == false %}, {% endif -%}{% endfor %}</li>
-                                <li class="plugin-update">{{ 'admin.store.plugin_owners_panel.864'|trans }} : {{ pluginDetail.last_update_date|time_ago }}</li>
-                            </ul>
+                        {% if Plugin.id %}
+                            {% if pluginDetail.update_status == 1 %}
+                                <a href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}"
+                                   class="btn btn-ec-regular">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
+                            {% else %}
+                                <p class="mb-0">{{ 'admin.store.plugin_table_official.920'|trans }}。</p>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td class="align-middle">
+                        {% if Plugin.id %}
+                            <div class="col-12 col-xs-11 col-md-10 col-lg-8 pull-right text-center">
+                                <div class="row">
+                                    <div class="col-4 px-0">
+                                        {% if Plugin.enabled == false %}
+                                            <a href="#"
+                                               data-toggle="modal"
+                                               data-target="#confirmModal-{{ Plugin.id }}"
+                                               class="btn btn-ec-actionIcon">
+                                                <i class="fa fa-close fa-lg text-secondary" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"></i>
+                                            </a>
+
+                                            <div class="modal fade" id="confirmModal-{{ Plugin.id }}" tabindex="-1"
+                                                 role="dialog"
+                                                 aria-labelledby="confirmModal-{{ Plugin.id }}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title font-weight-bold">
+                                                                {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
+                                                            <button class="close" type="button"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close"><span aria-hidden="true">×</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body text-left">
+                                                            <p class="text-left">
+                                                                {{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-ec-sub" type="button"
+                                                                    data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                            </button>
+                                                            <a href="{{ url('admin_store_plugin_delete_confirm', { id : Plugin.id }) }}"
+                                                                    {{ csrf_token_for_anchor() }}
+                                                               class="btn btn-ec-delete"
+                                                               data-confirm="false"
+                                                               data-method="delete">
+                                                                {{ 'common.label.delete'|trans }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-4 px-0">
+                                        {% if Plugin.enabled %}
+                                            <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
+                                               class="btn btn-ec-actionIcon"
+                                               data-method="put" data-confirm="false">
+                                                <i class="fa fa-pause fa-lg text-secondary" data-toggle="tooltip"
+                                                   data-placement="top" title="{{ 'admin.store.plugin_table_official.925'|trans }}"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
+                                               class="btn btn-ec-actionIcon"
+                                               data-method="put" data-confirm="false">
+                                                <i class="fa fa-play fa-lg text-secondary" data-toggle="tooltip"
+                                                   data-placement="top" title="{{ 'admin.store.plugin_table_official.924'|trans }}"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-4 pl-0">
+                                        {% if configPages[Plugin.code] is defined %}
+                                            <a class="btn btn-ec-actionIcon" href="{{ configPages[Plugin.code] }}">
+                                                <i class="fa fa-cog fa-lg text-secondary" data-toggle="tooltip"
+                                                   data-placement="top" title="{{ 'admin.store.plugin_table_official.906'|trans }}"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
                         {% else %}
-                            <p>{{ 'admin.store.plugin_table_official.920'|trans }}。</p>
+                            <a href="#" class="btn btn-ec-regular">{{ 'admin.store.plugin_confirm.821'|trans }}</a>
                         {% endif %}
-                        <p><a href="{{ pluginDetail.product_url }}"
-                              target="_blank">{{ 'admin.store.plugin_table_official.921'|trans }}</a></p>
-                    </td>
-                    <td class="align-middle">
-                        {% if configPages[Plugin.code] is defined %}
-                            <a href='{{ configPages[Plugin.code] }}'>{{ 'admin.store.plugin_table_official.922'|trans }}</a>
-                        {% endif %}
-                    </td>
-                    <td class="align-middle">
-                        <a href="{{ pluginDetail.developer_url }}" target="_blank">{{ pluginDetail.developer }}</a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-    </div><!-- /.col -->
+    </div>
 {% else %}
     <div class="card-body">
         <div class="text-danger">
             {{ 'admin.store.plugin_table_official.923'|trans }}
         </div>
-    </div><!-- /.col -->
+    </div>
 {% endif %}
