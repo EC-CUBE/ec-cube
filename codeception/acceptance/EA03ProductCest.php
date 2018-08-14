@@ -171,7 +171,7 @@ class EA03ProductCest
             ->入力_規格1('材質')
             ->規格設定();
 
-        $I->see('3 件の規格の組み合わせがあります', 'div.c-contentsArea__cols > div > div > form div.card-header > div > div.col-6 > span');
+        $I->see('3件の組み合わせがあります', 'div.c-contentsArea__cols > div > div > form div.card-header > div > div.col-6 > span');
 
         $ProductClassEditPage
             ->選択(1)
@@ -186,7 +186,7 @@ class EA03ProductCest
             ->登録();
 
         $I->waitForElement(ProductClassEditPage::$登録完了メッセージ);
-        $I->see('商品規格を登録しました。', ProductClassEditPage::$登録完了メッセージ);
+        $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
         $I->seeElement(ProductClassEditPage::$初期化ボタン);
     }
 
@@ -209,7 +209,7 @@ class EA03ProductCest
         ProductClassEditPage::at($I)
             ->登録();
 
-        $I->see('商品規格を更新しました。', ProductClassEditPage::$登録完了メッセージ);
+        $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
     }
 
     public function product_一覧からの商品複製(\AcceptanceTester $I)
@@ -224,9 +224,9 @@ class EA03ProductCest
         ProductManagePage::go($I)
             ->検索($Product->getName())
             ->検索結果_複製(1)
-            ->Accept_重複する(1);
+            ->Accept_複製する(1);
 
-        $I->see('商品を複製しました。', ProductEditPage::$登録結果メッセージ);
+        $I->see('商品を複製しました', ProductEditPage::$登録結果メッセージ);
     }
 
     /**
@@ -253,7 +253,7 @@ class EA03ProductCest
         ProductClassEditPage::at($I)
             ->規格初期化();
 
-        $I->see('商品規格を削除しました', ProductClassEditPage::$登録完了メッセージ);
+        $I->see('商品規格を初期化しました', ProductClassEditPage::$登録完了メッセージ);
         $I->dontSeeElement(ProductClassEditPage::$規格一覧);
     }
 
@@ -473,7 +473,7 @@ class EA03ProductCest
         ClassNameManagePage::go($I)->一覧_削除(1)
             ->acceptModal();
 
-        $I->see('規格を削除しました。', ClassNameManagePage::$登録完了メッセージ);
+        $I->see('削除しました', ClassNameManagePage::$登録完了メッセージ);
     }
 
     public function product_規格表示順の変更(\AcceptanceTester $I)
@@ -560,7 +560,7 @@ class EA03ProductCest
         $ProductClassCategoryPage->一覧_削除(1)
             ->acceptModal();
 
-        $I->see('分類を削除しました。', ClassCategoryManagePage::$登録完了メッセージ);
+        $I->see('削除しました', ClassCategoryManagePage::$登録完了メッセージ);
     }
 
     public function product_カテゴリ登録(\AcceptanceTester $I)

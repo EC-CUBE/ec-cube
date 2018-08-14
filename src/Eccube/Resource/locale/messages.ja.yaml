@@ -487,10 +487,10 @@ admin.product.product_csv_upload: 商品CSV登録
 admin.product.category_csv_upload: カテゴリCSV登録
 
 # flashメッセージ
-admin.product.bulk_change_status_complete: '%status%: %count%件が正常に適用されました。'
-admin.product.copy_complete: 商品を複製しました。
-admin.product.copy_error: 商品の複製に失敗しました。
-admin.product.reset_complete: 商品規格を初期化しました。
+admin.product.bulk_change_status_complete: '%status%: %count%件が正常に適用されました'
+admin.product.copy_complete: 商品を複製しました
+admin.product.copy_error: 商品の複製に失敗しました
+admin.product.reset_complete: 商品規格を初期化しました
 
 # ラベル/メッセージ
 admin.product.product: 商品
