@@ -47,7 +47,7 @@ class GenerateProxyCommand extends ContainerAwareCommand
 
         $container = $this->getContainer();
         $projectDir = $container->getParameter('kernel.project_dir');
-        $includeDirs = [$projectDIr.'/app/Customize/Entity'];
+        $includeDirs = [$projectDir.'/app/Customize/Entity'];
 
         $enabledPlugins = $container->getParameter('eccube.plugins.enabled');
         foreach ($enabledPlugins as $code) {
@@ -59,7 +59,7 @@ class GenerateProxyCommand extends ContainerAwareCommand
         $this->entityProxyService->generate(
             $includeDirs,
             [],
-            $projectDIr.'/app/proxy/entity',
+            $projectDir.'/app/proxy/entity',
             $output
         );
     }
