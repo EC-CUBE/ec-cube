@@ -76,6 +76,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--prefer-dist' => true,
             '--ignore-platform-reqs' => true,
             '--update-with-dependencies' => true,
+            '--no-scripts' => true,
         ]);
     }
 
@@ -95,6 +96,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--ignore-platform-reqs' => true,
             '--no-interaction' => true,
             '--profile' => true,
+            '--no-scripts' => true,
         ]);
     }
 
@@ -201,14 +203,14 @@ class ComposerApiService implements ComposerServiceInterface
     private function init()
     {
         set_time_limit(0);
-        @ini_set('memory_limit', '1536M');
+        @ini_set('memory_limit', '-1');
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
         $consoleApplication = new Application();
         $consoleApplication->resetComposer();
         $consoleApplication->setAutoExit(false);
         $this->consoleApplication = $consoleApplication;
-        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['root_dir'];
+        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
     }
 
     /**
