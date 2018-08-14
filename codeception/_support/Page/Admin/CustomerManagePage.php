@@ -92,13 +92,13 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
 
     public function CSVダウンロード()
     {
-        $this->tester->click('#search_form > div.c-contentsArea__cols > div > div > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(2) > div > button:nth-child(1)');
+        $this->tester->click('#search_form > div.c-contentsArea__cols > div > div > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(2) > div > a:nth-child(1)');
         return $this;
     }
 
     public function CSV出力項目設定()
     {
-        $this->tester->click('#search_form > div.c-contentsArea__cols > div > div > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(2) > div > button:nth-child(2)');
+        $this->tester->click('#search_form > div.c-contentsArea__cols > div > div > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(2) > div > a:nth-child(2)');
     }
 
     /**
