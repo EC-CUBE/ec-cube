@@ -45,7 +45,7 @@ class EA06ContentsManagementCest
             ->登録();
 
         $NewsListPage = NewsManagePage::at($I);
-        $I->see('新着情報を保存しました。', NewsManagePage::$登録完了メッセージ);
+        $I->see('保存しました', NewsManagePage::$登録完了メッセージ);
 
         $NewsListPage->一覧_編集(1);
 
@@ -193,7 +193,7 @@ class EA06ContentsManagementCest
 
         /* 削除 */
         PageManagePage::go($I)->削除($page);
-        $I->see('削除が完了しました。', PageEditPage::$登録完了メッセージ);
+        $I->see('削除しました', PageEditPage::$登録完了メッセージ);
     }
 
     public function contentsmanagement_検索未使用ブロック(\AcceptanceTester $I)
