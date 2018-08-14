@@ -6,6 +6,9 @@ namespace Page\Admin;
 
 class DeliveryEditPage extends AbstractAdminPageStyleGuide
 {
+
+    public static $登録完了メッセージ = '.c-container div.c-contentsArea > div.alert-success';
+
     public function __construct(\AcceptanceTester $I)
     {
         parent::__construct($I);

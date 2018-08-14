@@ -84,8 +84,10 @@ class EA07BasicinfoCest
             ->入力_利用条件下限('1')
             ->登録();
 
-        $PaymentManagePage = PaymentManagePage::at($I);
-        $I->see('保存しました', PaymentManagePage::$登録完了メッセージ);
+        PaymentEditPage::at($I);
+        $I->see('保存しました', PaymentEditPage::$登録完了メッセージ);
+
+        $PaymentManagePage = PaymentManagePage::go($I);
         $I->see('payment method1', $PaymentManagePage->一覧_支払方法(1));
     }
 
@@ -104,8 +106,10 @@ class EA07BasicinfoCest
             ->入力_手数料('1000')
             ->登録();
 
-        $PaymentManagePage = PaymentManagePage::at($I);
-        $I->see('保存しました', PaymentManagePage::$登録完了メッセージ);
+        PaymentEditPage::at($I);
+        $I->see('保存しました', PaymentEditPage::$登録完了メッセージ);
+
+        $PaymentManagePage = PaymentManagePage::go($I);
         $I->see('payment method2', $PaymentManagePage->一覧_支払方法(1));
     }
 
@@ -145,8 +149,10 @@ class EA07BasicinfoCest
             ->入力_全国一律送料('100')
             ->登録();
 
-        $DeliveryManagePage = DeliveryManagePage::at($I);
-        $I->see('保存しました', DeliveryManagePage::$登録完了メッセージ);
+        DeliveryEditPage::at($I);
+        $I->see('保存しました', DeliveryEditPage::$登録完了メッセージ);
+
+        $DeliveryManagePage = DeliveryManagePage::go($I);
         $I->see('配送業者名', $DeliveryManagePage->一覧_名称(1));
     }
 
@@ -163,8 +169,10 @@ class EA07BasicinfoCest
             ->入力_配送業者名('配送業者名1')
             ->登録();
 
-        $DeliveryManagePage = DeliveryManagePage::at($I);
-        $I->see('保存しました', DeliveryManagePage::$登録完了メッセージ);
+        DeliveryEditPage::at($I);
+        $I->see('保存しました', DeliveryEditPage::$登録完了メッセージ);
+
+        $DeliveryManagePage = DeliveryManagePage::go($I);
         $I->see('配送業者名1', $DeliveryManagePage->一覧_名称(1));
     }
 
