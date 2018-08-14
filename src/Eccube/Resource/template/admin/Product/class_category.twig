@@ -123,26 +123,6 @@ file that was distributed with this source code.
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
             });
 
-            // 表示、非表示
-            {#$('a.action-visible').click(function(event) {#}
-            {#event.preventDefault();#}
-            {#var $this = $(this);#}
-
-            {#$.ajax({#}
-            {#url: $(this).attr('href'),#}
-            {#type: 'PUT',#}
-            {#dataType: 'json'#}
-            {#}).done(function(data) {#}
-            {#if (data.visible) {#}
-            {#$this.find('i').removeClass('fa-toggle-off').addClass('fa-toggle-on');#}
-            {#$this.attr('title', '{{ 'admin.product.class_category.show'|trans }}').attr('data-original-title', '{{ 'admin.product.class_category.show'|trans }}');#}
-            {#} else {#}
-            {#$this.find('i').removeClass('fa-toggle-on').addClass('fa-toggle-off');#}
-            {#$this.attr('title', '{{ 'admin.product.class_category.hide'|trans }}').attr('data-original-title', '{{ 'admin.product.class_category.hide'|trans }}');#}
-            {#}#}
-            {#}).fail(function(data) {#}
-            {#});#}
-            {#});#}
         });
     </script>
 {% endblock %}
