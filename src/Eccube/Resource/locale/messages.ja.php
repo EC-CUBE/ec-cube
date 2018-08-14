@@ -1439,6 +1439,8 @@ return [
     'admin.product.class_category.432' => '名前を編集',
     'admin.product.class_category.433' => '項目の順番はドラッグ＆ドロップでも変更可能です。',
     'admin.product.class_category.434' => '規格一覧に戻る',
+    'admin.product.class_category.show' => '表示中',
+    'admin.product.class_category.hide' => '非表示中',
     'admin.product.class_name.428' => '商品管理',
     'admin.product.class_name.429' => '規格管理',
     'admin.product.class_name.430' => '規格名を入力',

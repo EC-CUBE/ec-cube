@@ -80,7 +80,7 @@ file that was distributed with this source code.
             // Up
             sortable.on('click', 'a.action-up', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
                 if (current.prev().hasClass('sortable-item')) {
                     current.prev().before(current);
                     moveSortNo();
@@ -89,7 +89,7 @@ file that was distributed with this source code.
             // Down
             sortable.on('click', 'a.action-down', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
                 if (current.next().hasClass('sortable-item')) {
                     current.next().after(current);
                     moveSortNo();
@@ -122,6 +122,27 @@ file that was distributed with this source code.
                 var target = $(event.relatedTarget);
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
             });
+
+            // 表示、非表示
+            {#$('a.action-visible').click(function(event) {#}
+            {#event.preventDefault();#}
+            {#var $this = $(this);#}
+
+            {#$.ajax({#}
+            {#url: $(this).attr('href'),#}
+            {#type: 'PUT',#}
+            {#dataType: 'json'#}
+            {#}).done(function(data) {#}
+            {#if (data.visible) {#}
+            {#$this.find('i').removeClass('fa-toggle-off').addClass('fa-toggle-on');#}
+            {#$this.attr('title', '{{ 'admin.product.class_category.show'|trans }}').attr('data-original-title', '{{ 'admin.product.class_category.show'|trans }}');#}
+            {#} else {#}
+            {#$this.find('i').removeClass('fa-toggle-on').addClass('fa-toggle-off');#}
+            {#$this.attr('title', '{{ 'admin.product.class_category.hide'|trans }}').attr('data-original-title', '{{ 'admin.product.class_category.hide'|trans }}');#}
+            {#}#}
+            {#}).fail(function(data) {#}
+            {#});#}
+            {#});#}
         });
     </script>
 {% endblock %}
@@ -161,16 +182,21 @@ file that was distributed with this source code.
                                             {{ form_widget(form.name) }}
                                             {{ form_errors(form.name) }}
                                         </div>
+                                        <div class="col-auto align-self-center"><span>{{ 'admin.common.label.class_name'|trans }}</span></div>
+                                        <div class="col-3">
+                                            {{ form_widget(form.backend_name) }}
+                                            {{ form_errors(form.backend_name) }}
+                                        </div>
                                         <div class="col-auto">
                                             <button class="btn btn-ec-regular" type="submit">{{ 'admin.product.class_category.429'|trans }}</button>
                                         </div>
                                     </form>
                                 </li>
                                 {% for ClassCategory in ClassCategories %}
-                                    <li id="ex-class_category-{{ ClassCategory.id }}" class="list-group-item sortable-item" data-id="{{ ClassCategory.id }}" data-sort-no="{{ ClassCategory.sortNo }}">
+                                    <li id="ex-class_category-{{ ClassCategory.id }}" class="list-group-item sortable-item" data-classname-id="{{ ClassCategory.ClassName.id }}" data-id="{{ ClassCategory.id }}" data-sort-no="{{ ClassCategory.sortNo }}">
                                         <div class="row justify-content-around mode-view">
                                             <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
-                                            <div class="col d-flex align-items-center">{{ ClassCategory.name }}</div>
+                                            <div class="col d-flex align-items-center">{{ ClassCategory.name }} ［{{ 'admin.product.class_name.444'|trans }}{{ ClassCategory.backend_name }}］</div>
                                             <div class="col-auto text-right">
                                                 <a class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_category.430'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
@@ -180,6 +206,11 @@ file that was distributed with this source code.
                                                 </a>
                                                 <a class="btn btn-ec-actionIcon mr-3 action-edit" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_category.432'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                </a>
+                                                <a class="btn btn-ec-actionIcon mr-3 action-visible" href="{{ url('admin_product_class_category_visibility', {'class_name_id': ClassCategory.ClassName.id, 'id': ClassCategory.id}) }}"
+                                                   data-toggle="tooltip" data-placement="top" title="{{ ClassCategory.visible ? 'admin.product.class_category.show'|trans : 'admin.product.class_category.hide'|trans }}"
+                                                   data-confirm="false" data-method="put" {{ csrf_token_for_anchor() }} >
+                                                    <i class="fa fa-toggle-{{ ClassCategory.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
                                                 <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
                                                     {# TODO: 削除不可の時はdisabledクラスを付与する #}
@@ -195,6 +226,12 @@ file that was distributed with this source code.
                                                 {{ form_widget(forms[ClassCategory.id].name, {'attr': {'data-origin-value': forms[ClassCategory.id].name.vars.value}}) }}
                                                 {{ form_errors(forms[ClassCategory.id].name) }}
                                             </div>
+                                            <div class="col-auto align-self-center"><span>{{ 'admin.common.label.class_name'|trans }}</span></div>
+                                            <div class="col-auto align-items-center">
+                                                {{ form_widget(forms[ClassCategory.id].backend_name, {'attr': {'data-origin-value': forms[ClassCategory.id].backend_name.vars.value}}) }}
+                                                {{ form_errors(forms[ClassCategory.id].backend_name) }}
+                                            </div>
+                                            {{ form_widget(forms[ClassCategory.id].visible, {'attr': {'class': 'd-none'}}) }}
                                             <div class="col-auto align-items-center">
                                                 <button class="btn btn-ec-conversion" type="submit">{{ 'admin.common.label.ok'|trans }}</button>
                                             </div>
