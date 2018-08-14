@@ -7,7 +7,6 @@ common.select__pref: 都道府県を選択
 common.select__unspecified: 指定なし
 common.select__all_products: 全ての商品
 common.required: 必須
-
 common.back: 戻る
 common.close: 閉じる
 common.send: 送信する
@@ -112,23 +111,12 @@ front.block.new_product.category_3_title: フランス製のデッドストッ�
 front.block.new_product.category_3_body: 60～70年代のフランス製のデッドストックの器を集めました。絶妙な色合いと、独特の優しい風合いをお楽しみいただけ・・・
 front.block.new_product.item_1_title: 木彫りのぬくもりがあたたかいアニマルオブジェ
 front.block.new_product.item_1_name: オブジェ（ふくろう）
-front.block.new_product.item_1_price: 1785 # priceフィルタで表示する
 front.block.new_product.item_2_title: 青色が美しい職人が仕上げた吹きガラス
 front.block.new_product.item_2_name: ガラス瓶
-front.block.new_product.item_2_price: 1785 # priceフィルタで表示する
 front.block.new_product.item_3_title: いつかは持ちたい。一生モノの銀製カトラリー
 front.block.new_product.item_3_name: シルバーカトラリー
-front.block.new_product.item_3_price: 1785 # priceフィルタで表示する
 front.block.new_product.item_4_title: こだわりのシルクスクリーンプリントがポイント
 front.block.new_product.item_4_name: フォトクッションカバー
-front.block.new_product.item_4_price: 1785 # priceフィルタで表示する
-
-#------------------------------------------------------------------------------------
-# ログイン
-#------------------------------------------------------------------------------------
-
-# TODO
-
 
 #------------------------------------------------------------------------------------
 # 問い合わせ
@@ -198,12 +186,6 @@ front.privacy.title: プライバシーポリシー
 front.guide.title: ご利用ガイド
 
 #------------------------------------------------------------------------------------
-# メールテンプレート
-#------------------------------------------------------------------------------------
-
-# TODO
-
-#------------------------------------------------------------------------------------
 # マイページ
 #------------------------------------------------------------------------------------
 
@@ -216,7 +198,6 @@ front.mypage.nav__favorite: お気に入り一覧
 front.mypage.nav__customer: 会員情報編集
 front.mypage.nav__customer_complete: 会員情報編集(完了)
 front.mypage.nav__customer_address: お届け先一覧
-
 front.mypage.nav__withdrow: 退会手続き
 front.mypage.history_count: '%count%件の履歴があります'
 front.mypage.history_not_found: ご注文履歴はありません。
@@ -245,7 +226,6 @@ front.mypage.favorite_count: '%count%件のお気に入りがあります'
 front.mypage.favorite_not_found: お気に入りは登録されていません。
 front.mypage.customer_address_count: '%count%件のお届け先があります'
 front.mypage.customer_address_not_found: お届け先は登録されていません。
-
 front.mypage.add_customer_address: '新規お届け先を追加する'
 front.mypage.withdraw_message__title: 退会手続きの前にご確認ください
 front.mypage.withdraw_message__body: 退会手続きが完了した時点で、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますのでご注意ください。
@@ -253,6 +233,8 @@ front.mypage.withdraw_execute_message__title: 退会手続きを実行しても�
 front.mypage.withdraw_confirm: 退会手続きへ
 front.mypage.withdraw_cancel: いいえ、退会しません
 front.mypage.withdraw_execute: はい、退会します
+front.mypage.login.mail_address: メールアドレス
+
 
 #------------------------------------------------------------------------------------
 # 商品
