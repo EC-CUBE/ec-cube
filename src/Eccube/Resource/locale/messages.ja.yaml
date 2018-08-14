@@ -71,6 +71,7 @@ common.remember_me: 次回から自動的にログインする
 common.signup: 新規会員登録
 common.forgot_login: ログイン情報をお忘れですか？
 common.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
+common.search_keyword: キーワードを入力
 
 #====================================================================================
 # フロント画面

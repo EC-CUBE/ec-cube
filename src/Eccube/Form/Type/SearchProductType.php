@@ -57,21 +57,19 @@ class SearchProductType extends AbstractType
             'choices' => $Categories,
             'placeholder' => 'common.select__all_products',
             'required' => false,
-            'label' => 'searchproduct.label.select_categories',
         ]);
         $builder->add('name', SearchType::class, [
             'required' => false,
-            'label' => 'searchproduct.label.product_name',
             'attr' => [
                 'maxlength' => 50,
             ],
         ]);
         $builder->add('pageno', HiddenType::class, []);
         $builder->add('disp_number', ProductListMaxType::class, [
-            'label' => 'searchproduct.label.number_results',
+            'label' => false,
         ]);
         $builder->add('orderby', ProductListOrderByType::class, [
-            'label' => 'searchproduct.label.sort_by',
+            'label' => false,
         ]);
     }
 
