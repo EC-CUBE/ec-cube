@@ -7,7 +7,11 @@ SP フォーストで記述する。
 Twitter Bootstrap デフォルト準拠
  */
 
-
+@mixin media_phone() {
+  @media only screen and (max-width: 410px) {
+    @content
+  }
+}
 
 //@mixin media_tablet(){
 //  @media only screen and (min-width: 768px) {
