@@ -295,17 +295,18 @@ class OwnerStoreController extends AbstractController
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/install/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
+     * @Route("/install", name="admin_store_plugin_api_install")
      *
      * @param Request $request
-     * @param string $pluginCode
-     * @param string $eccubeVersion
-     * @param string $version
      *
      * @return RedirectResponse
      */
-    public function apiInstall(Request $request, $pluginCode, $eccubeVersion, $version)
+    public function apiInstall(Request $request)
     {
+        $pluginCode = $request->get('pluginCode');
+        $eccubeVersion = $request->get('eccubeVersion');
+        $version = $request->get('version');
+
         // Check plugin code
         $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url);

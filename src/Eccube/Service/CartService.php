@@ -244,17 +244,15 @@ class CartService
 
     protected function restoreCarts($cartItems)
     {
-        if (empty($cartItems)) {
-            foreach ($this->getCarts() as $Cart) {
-                foreach ($Cart->getCartItems() as $i) {
-                    $this->entityManager->remove($i);
-                    $this->entityManager->flush($i);
-                }
-                $this->entityManager->remove($Cart);
-                $this->entityManager->flush($Cart);
+        foreach ($this->getCarts() as $Cart) {
+            foreach ($Cart->getCartItems() as $i) {
+                $this->entityManager->remove($i);
+                $this->entityManager->flush($i);
             }
-            $this->carts = [];
+            $this->entityManager->remove($Cart);
+            $this->entityManager->flush($Cart);
         }
+        $this->carts = [];
 
         /** @var Cart[] $Carts */
         $Carts = [];
