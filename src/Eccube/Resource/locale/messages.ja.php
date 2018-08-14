@@ -367,6 +367,7 @@ return [
     'mypage.label.btn.yes_cancel' => 'はい、退会します',
     'mypage.history.label.order_no' => 'ご注文番号',
     'mypage.history.label.order_status' => 'ご注文状況',
+    'mypage.message.change.complete' => '会員登録内容の変更が完了いたしました',
 
     //Admin Panel Theme
     'admin.page.title.suffix' => '管理画面',
