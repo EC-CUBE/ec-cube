@@ -183,7 +183,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run composer command
      *
      * @param array $commands
-     * @param null $output
+     * @param null|OutputInterface $output
      *
      * @return string
      *
@@ -219,7 +219,7 @@ class ComposerApiService implements ComposerServiceInterface
     private function init()
     {
         set_time_limit(0);
-        @ini_set('memory_limit', '-1');
+        ini_set('memory_limit', '-1');
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
         $consoleApplication = new Application();
