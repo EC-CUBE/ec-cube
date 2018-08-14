@@ -174,12 +174,17 @@ front.entry.complete_message__activated: それではショッピングをお楽
 
 front.forgot.title: パスワードの再発行
 front.forgot.message1: ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。
-front.forgot.message2: ※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。
-front.forgot.complete_title: パスワードの再発行(完了)
+front.forgot.message2: ※パスワード再発行メールを送信します。メールの内容をご確認の上、新しいパスワードを登録してください。
+front.forgot.complete_title: パスワードの再発行(メール送信)
 front.forgot.complete_message__title: パスワード再発行メールの送信が完了しました。
-front.forgot.complete_message__body: ご登録メールアドレスにパスワードを再発行するためのメールを送信いたしました。
+front.forgot.complete_message__body: |
+  ご登録メールアドレスにパスワードを再発行するためのメールを送信いたしました。
   メールの内容をご確認いただきますよう、お願いいたします。
   ※メールが届かない場合はメールアドレスをご確認の上、再度お試しください。
+front.forgot.reset_title: パスワード再発行(再設定)
+front.forgot.reset_complete: パスワードを更新しました。
+front.forgot.reset_error: 有効期限が切れているか、無効なURLです。
+front.forgot.reset_not_found: 入力内容を確認してください。
 
 #------------------------------------------------------------------------------------
 # 当サイトについて/特定商取引法/...
