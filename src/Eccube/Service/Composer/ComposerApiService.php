@@ -18,6 +18,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Exception\PluginException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class ComposerApiService
@@ -47,6 +48,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $pluginName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
      *
      * @return array
+     *
+     * @throws PluginException
      */
     public function execInfo($pluginName)
     {
@@ -62,10 +65,11 @@ class ComposerApiService implements ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
+     * @param null|OutputInterface $output
      *
      * @throws PluginException
      */
-    public function execRequire($packageName)
+    public function execRequire($packageName, $output = null)
     {
         $packageName = explode(' ', trim($packageName));
         $this->runCommand([
@@ -77,17 +81,18 @@ class ComposerApiService implements ComposerServiceInterface
             '--ignore-platform-reqs' => true,
             '--update-with-dependencies' => true,
             '--no-scripts' => true,
-        ]);
+        ], $output);
     }
 
     /**
      * Run remove command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
+     * @param null|OutputInterface $output
      *
      * @throws PluginException
      */
-    public function execRemove($packageName)
+    public function execRemove($packageName, $output = null)
     {
         $packageName = explode(' ', trim($packageName));
         $this->runCommand([
@@ -97,7 +102,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--no-interaction' => true,
             '--profile' => true,
             '--no-scripts' => true,
-        ]);
+        ], $output);
     }
 
     /**
@@ -105,7 +110,9 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @param string $packageName
      * @param string $callback
-     * @param null   $typeFilter
+     * @param null $typeFilter
+     *
+     * @throws PluginException
      */
     public function foreachRequires($packageName, $callback, $typeFilter = null)
     {
@@ -124,9 +131,11 @@ class ComposerApiService implements ComposerServiceInterface
      * Run get config information
      *
      * @param string $key
-     * @param null   $value
+     * @param null $value
      *
      * @return array|mixed
+     *
+     * @throws PluginException
      */
     public function execConfig($key, $value = null)
     {
@@ -147,6 +156,8 @@ class ComposerApiService implements ComposerServiceInterface
      * Get config list
      *
      * @return array
+     *
+     * @throws PluginException
      */
     public function getConfig()
     {
@@ -171,30 +182,35 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Run composer command
      *
-     * @throws PluginException
-     *
      * @param array $commands
+     * @param null $output
      *
      * @return string
+     *
+     * @throws PluginException
      */
-    public function runCommand($commands)
+    public function runCommand($commands, $output = null)
     {
         $this->init();
         $commands['--working-dir'] = $this->workingDir;
         $commands['--no-ansi'] = 1;
         $input = new ArrayInput($commands);
-        $output = new BufferedOutput();
+        $output = $output ?: new BufferedOutput();
 
         $exitCode = $this->consoleApplication->run($input, $output);
 
-        $log = $output->fetch();
-        if ($exitCode) {
-            log_error($log);
-            throw new PluginException($log);
-        }
-        log_info($log, $commands);
+        if ($output instanceof BufferedOutput) {
+            $log = $output->fetch();
+            if ($exitCode) {
+                log_error($log);
+                throw new PluginException($log);
+            }
+            log_info($log, $commands);
 
-        return $log;
+            return $log;
+        } elseif ($exitCode) {
+            throw new PluginException();
+        }
     }
 
     /**
@@ -217,6 +233,8 @@ class ComposerApiService implements ComposerServiceInterface
      * Get version of composer
      *
      * @return null|string
+     *
+     * @throws PluginException
      */
     public function composerVersion()
     {
