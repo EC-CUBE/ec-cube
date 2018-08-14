@@ -241,6 +241,8 @@ front.mypage.mail_list: メール配信履歴一覧
 front.mypage.customer_complete_message__title: 会員登録内容の変更が完了いたしました
 front.mypage.customer_complete_message__body: 今後ともご愛顧賜りますようよろしくお願い申し上げます。
 front.mypage.favorite_count: '%count%件のお気に入りがあります'
+front.mypage.favorite_not_found: お気に入りはありません。
+
 front.mypage.customer_address_count: '%count%件のお届け先があります'
 front.mypage.add_customer_address: '新規お届け先を追加する'
 front.mypage.withdraw_message__title: 退会手続きの前にご確認ください

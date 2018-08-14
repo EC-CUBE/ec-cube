@@ -18,7 +18,7 @@ file that was distributed with this source code.
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.favorites'|trans}}</h1>
+                <h1>{{ 'front.mypage'|trans }}/{{ 'front.mypage.nav__favorite'|trans }}</h1>
             </div>
             {% include 'Mypage/navi.twig' %}
         </div>
@@ -27,20 +27,24 @@ file that was distributed with this source code.
             <div class="ec-favoriteRole">
                 {% if pagination.totalItemCount > 0 %}
                     <div class="ec-favoriteRole__header">
-                        <p>{{'mypage.message.favorite_results'|trans({'%count%':pagination.totalItemCount})|raw}}</p>
+                        <p>{{ 'front.mypage.favorite_count'|trans({'%count%':pagination.totalItemCount})|raw }}</p>
                     </div>
                     <div class="ec-favoriteRole__detail">
                         <ul class="ec-favoriteRole__itemList">
                             {% for FavoriteProduct in pagination %}
                                 {% set Product = FavoriteProduct.Product %}
                                 <li class="ec-favoriteRole__item">
-                                    <a class="ec-closeBtn--circle" href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                    <a class="ec-closeBtn--circle"
+                                       href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }}
+                                       data-method="delete">
                                         <div class="ec-icon">
                                             <img src="{{ asset('assets/icon/cross-white.svg') }}" alt="close">
                                         </div>
                                     </a>
-                                    <a class="ec-favoriteRole__itemThumb" href="{{ url('product_detail', {'id': Product.id}) }}">
-                                        <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" alt="{{ Product.name }}"/>
+                                    <a class="ec-favoriteRole__itemThumb"
+                                       href="{{ url('product_detail', {'id': Product.id}) }}">
+                                        <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}"
+                                             alt="{{ Product.name }}"/>
                                     </a>
                                     <p class="ec-favoriteRole__itemTitle">{{ Product.name }}</p>
                                     <p class="ec-favoriteRole__itemPrice">
@@ -58,7 +62,7 @@ file that was distributed with this source code.
                         {% include "pager.twig" with {'pages': pagination.paginationData} %}
                     </div>
                 {% else %}
-                    <div class="ec-favoriteRole__header">{{'mypage.message.no_favorite'|trans}}</div>
+                    <div class="ec-favoriteRole__header">{{ 'front.mypage.favorite_not_found'|trans }}</div>
                 {% endif %}
             </div>
         </div>
