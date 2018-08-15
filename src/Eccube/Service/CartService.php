@@ -204,7 +204,7 @@ class CartService
                     $Cart = $cart;
                     break;
                 }
-            } 
+            }
         } else {
             $Cart = current($Carts);
         }
@@ -310,14 +310,10 @@ class CartService
      */
     public function addProduct($ProductClass, $quantity = 1)
     {
-        if (!$ProductClass instanceof ProductClass) {
-            $ProductClassId = $ProductClass;
-            $ProductClass = $this->entityManager
-                ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
-            if (is_null($ProductClass)) {
-                return false;
-            }
+        // IDの場合に商品情報を取得する
+        $ProductClass = $this->getProductClassById($ProductClass);
+        if (is_null($ProductClass)) {
+            return false;
         }
 
         $ClassCategory1 = $ProductClass->getClassCategory1();
@@ -342,14 +338,10 @@ class CartService
 
     public function removeProduct($ProductClass)
     {
-        if (!$ProductClass instanceof ProductClass) {
-            $ProductClassId = $ProductClass;
-            $ProductClass = $this->entityManager
-                ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
-            if (is_null($ProductClass)) {
-                return false;
-            }
+        // IDの場合に商品情報を取得する
+        $ProductClass = $this->getProductClassById($ProductClass);
+        if (is_null($ProductClass)) {
+            return false;
         }
 
         $removeItem = new CartItem();
@@ -470,6 +462,25 @@ class CartService
         array_splice($Carts, $index, 1, [$prev]);
         $this->carts = $Carts;
         $this->save();
+    }
+
+    /**
+     * IDの場合に商品情報を取得する
+     *
+     * @param  ProductClass|string $ProductClass
+     *
+     * @return ProductClass|null
+     */
+    protected function getProductClassById($ProductClass)
+    {
+        if (!$ProductClass instanceof ProductClass) {
+            $ProductClassId = $ProductClass;
+            $ProductClass = $this->entityManager
+                ->getRepository(ProductClass::class)
+                ->find($ProductClassId);
+        }
+
+        return $ProductClass;
     }
 
     protected function getUser()
