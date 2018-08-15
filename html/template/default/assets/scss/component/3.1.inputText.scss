@@ -65,6 +65,21 @@ Styleguide 3.1.1
   }
 }
 
+.ec-checkbox{
+  .ec-errorMessage {
+    margin-bottom: 25px;
+    font-size: 12px;
+    font-weight: bold;
+    color: $clrRed;
+  }
+}
+.error.ec-checkbox {
+  input, label{
+    border-color: #CF3F34;
+    background: #FDF1F0;
+  }
+}
+
 /*
 フォーム（text２つ）
 
