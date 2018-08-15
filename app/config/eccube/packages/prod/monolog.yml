@@ -16,7 +16,7 @@ monolog:
             action_level: error
             passthru_level: info
             handler: front_rotating_file
-            channels: ['front']
+            channels: ['front', 'app', 'php']
         front_rotating_file:
             type: rotating_file
             max_files: 60
@@ -28,7 +28,7 @@ monolog:
             action_level: error
             passthru_level: info
             handler: admin_rotating_file
-            channels: ['admin']
+            channels: ['admin', 'app', 'php']
         admin_rotating_file:
             type: rotating_file
             max_files: 60

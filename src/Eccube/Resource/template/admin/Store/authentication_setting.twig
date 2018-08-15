@@ -39,14 +39,14 @@ file that was distributed with this source code.
 
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-3">
                                     <div class="d-inline-block">
-                                        <span>認証キー</span>
+                                        <span>{{ form.authentication_key.vars.label|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg" data-toggle="tooltip" data-placement="top" title="Tooltip"></i>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <input type="text"  name="" class="form-control">
+                                <div class="col-6">
+                                    {{ form_widget(form.authentication_key) }}
                                 </div>
 
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#captcha" type="button">
@@ -55,6 +55,26 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
+
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <h5 class="box-title">{{'admin.store.authentication_setting.php_path.header'|trans}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block">
+                                        <span>{{ form.php_path.vars.label|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg" data-toggle="tooltip" data-placement="top" title="Tooltip"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    {{ form_widget(form.php_path) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->

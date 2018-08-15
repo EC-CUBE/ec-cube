@@ -20,6 +20,7 @@ use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\CaptchaType;
+use Eccube\Form\Type\Admin\AuthenticationType;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\BaseInfoRepository;
@@ -492,23 +493,13 @@ class PluginController extends AbstractController
     public function authenticationSetting(Request $request)
     {
         $builder = $this->formFactory
-            ->createBuilder(FormType::class, $this->BaseInfo);
-        $builder->add(
-            'authentication_key',
-            TextType::class,
-            [
-                'label' => trans('plugin.label.auth_key'),
-                'constraints' => [
-                    new Assert\Regex(['pattern' => '/^[0-9a-zA-Z]+$/']),
-                ],
-            ]
-        );
+            ->createBuilder(AuthenticationType::class, $this->BaseInfo);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // 認証キーの登録
+            // 認証キーの登録 and PHP path
             $this->BaseInfo = $form->getData();
             $this->entityManager->persist($this->BaseInfo);
             $this->entityManager->flush();
