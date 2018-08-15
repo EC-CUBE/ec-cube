@@ -94,7 +94,7 @@ class TaxRuleController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.shop.tax.save.complete', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
 
                 return $this->redirectToRoute('admin_setting_shop_tax');
             }

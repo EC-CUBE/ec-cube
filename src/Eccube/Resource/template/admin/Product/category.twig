@@ -115,7 +115,7 @@ file that was distributed with this source code.
             });
 
             // 削除モーダルのhrefとmessageの変更
-            $('#layoutDelete').on('shown.bs.modal', function(event) {
+            $('#DeleteModal').on('shown.bs.modal', function(event) {
                 var target = $(event.relatedTarget);
                 // hrefの変更
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
@@ -253,7 +253,7 @@ file that was distributed with this source code.
                                                         <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">
                                                             <a class="btn btn-ec-actionIcon{% if Category.Children|length > 0 or Category.hasProductCategories %} disabled{% endif %}"
-                                                               data-toggle="modal" data-target="#layoutDelete"
+                                                               data-toggle="modal" data-target="#DeleteModal"
                                                                data-url="{{ url('admin_product_category_delete', {id: Category.id}) }}"
                                                                data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Category.name }) }}">
                                                                 <i class="fa fa-close fa-lg text-secondary"></i>
@@ -280,8 +280,8 @@ file that was distributed with this source code.
                                 {% endif %}
                             </ul>
                             <!-- 削除モーダル -->
-                            <div class="modal fade" id="layoutDelete" tabindex="-1" role="dialog"
-                                 aria-labelledby="layoutDelete" aria-hidden="true">
+                            <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="DeleteModal" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">

@@ -40,10 +40,9 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
-        $I->see('新規登録', '.c-contentsArea__primaryCol .btn-area-bottom .btn-ec-regular');
+        $I->see('新規登録', '#ex-member-new > a');
     }
 
     public function systeminfo_メンバー管理登録実施(\AcceptanceTester $I)
@@ -53,10 +52,10 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
-        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
+        $I->click('#ex-member-new > a');
+        $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'admintest');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
@@ -66,9 +65,11 @@ class EA08SysteminfoCest
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#member_form .c-conversionArea__container button');
-        $I->see('メンバーを保存しました。', '.c-contentsArea .alert-success');
+        $I->see('保存しました', '.c-contentsArea .alert-success');
 
-        $I->see('メンバー管理', 'div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div.card-header > div > div > span');
+        $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
         $I->see('admintest', '.card-body tbody tr:nth-child(1) td:nth-child(1)');
     }
 
@@ -79,10 +80,10 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
-        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
+        $I->click('#ex-member-new > a');
+        $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'admintest2');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
@@ -93,7 +94,7 @@ class EA08SysteminfoCest
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
 
-        $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
         $I->dontSee('admintest2', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
     }
 
@@ -104,10 +105,10 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
-        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
+        $I->click('#ex-member-new > a');
+        $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->click('#member_form .c-conversionArea__container button');
         $I->see('入力されていません。', '#member_form div:nth-child(1) div');
@@ -120,25 +121,20 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
         $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-edit');
-        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
+        $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator');
         $I->click('#member_form .c-conversionArea__container button');
 
-        // FIXME 以下の不具合のためシステムエラーが発生する
-        // https://github.com/EC-CUBE/eccube-api/pull/60
-        $findPluginByCode = Fixtures::get('findPluginByCode');
-        $Plugin = $findPluginByCode('EccubeApi');
-        if ($Plugin) {
-            $I->amGoingTo('EccubeApi プラグインを発見したため、不具合を回避しました。 詳細: https://github.com/EC-CUBE/eccube-api/pull/60');
-        } else {
-            $I->see('メンバーを保存しました。', '.c-contentsArea .alert-success');
-            $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
-            $I->see('administrator', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
-        }
+        $I->see('保存しました', '.c-contentsArea .alert-success');
+        $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
+        $I->see('administrator', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
     }
 
     public function systeminfo_メンバー管理編集未実施(\AcceptanceTester $I)
@@ -148,15 +144,15 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
         $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-edit');
-        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
+        $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator2');
         $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
 
-        $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
         $I->dontSee('administrator2', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
     }
 
@@ -167,10 +163,10 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
         $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-edit');
-        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
+        $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], '');
         $I->click('#member_form .c-conversionArea__container button');
@@ -185,7 +181,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
         $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-down');
 
@@ -201,7 +197,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
         $I->click('.c-primaryCol .card-body table tbody tr:nth-child(2) td:nth-child(5) .action-up');
 
@@ -217,13 +213,13 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
         $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-delete');
         $I->waitForElementVisible(['css' => '.c-primaryCol .card-body table tbody tr:nth-child(1) .modal']);
         $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) .modal .btn-ec-delete');
 
-        $I->see('メンバーを削除しました。', '.c-contentsArea .alert-success');
+        $I->see('削除しました', '.c-contentsArea .alert-success');
         $I->see('管理者', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
 
     }
@@ -235,7 +231,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '.c-pageTitle');
+        $I->see('メンバー管理システム設定', '.c-pageTitle');
 
         $href = $I->grabAttributeFrom('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-delete', 'href');
         $I->assertEquals('', $href, $href.' が一致しません');
@@ -249,7 +245,7 @@ class EA08SysteminfoCest
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
         $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
-        $I->see('セキュリティ機能設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea div.c-contentsArea__primaryCol > div.c-primaryCol > div:nth-child(1) > div.card-header > div > div.col-8 > div');
+        $I->see('セキュリティ設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea div.c-contentsArea__primaryCol > div.c-primaryCol > div:nth-child(1) > div.card-header > div > div.col-8 > div');
     }
 
     public function systeminfo_セキュリティ管理ディレクトリ名(\AcceptanceTester $I)
@@ -307,7 +303,7 @@ class EA08SysteminfoCest
             ->入力(2, ['0' => 'システム管理者'], '/store')
             ->登録();
 
-        $I->see('権限設定を保存しました。', AuthorityManagePage::$完了メッセージ);
+        $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
         $I->dontSee('コンテンツ管理', 'nav .c-mainNavArea__nav');
         $I->dontSee('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
@@ -321,7 +317,7 @@ class EA08SysteminfoCest
             ->行削除(1)
             ->登録();
 
-        $I->see('権限設定を保存しました。', AuthorityManagePage::$完了メッセージ);
+        $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
         $I->see('コンテンツ管理', 'nav .c-mainNavArea__nav');
         $I->see('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
@@ -338,10 +334,10 @@ class EA08SysteminfoCest
         $option = $I->grabTextFrom('#admin_system_log_files option:nth-child(1)');
         $I->selectOption("#admin_system_log_files", $option);
 
-        $I->fillField(['id' => 'line-max'], '1');
+        $I->fillField(['id' => 'admin_system_log_line_max'], '1');
         $I->click(['css' => '#form1 button']);
 
-        $I->seeInField(['id' => 'line-max'], '1');
+        $I->seeInField(['id' => 'admin_system_log_line_max'], '1');
     }
 
     public function systeminfo_マスターデータ管理(\AcceptanceTester $I)
@@ -351,7 +347,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/masterdata');
-        $I->see('マスターデータ管理システム設定', '.c-pageTitle');
+        $I->see('マスタデータ管理システム設定', '.c-pageTitle');
 
         $I->selectOption(['id' => 'admin_system_masterdata_masterdata'], ['Eccube-Entity-Master-Sex' => 'mtb_sex']);
         $I->click('#form1 button');
@@ -361,7 +357,7 @@ class EA08SysteminfoCest
 
         $I->click(['css' => '#form2 .c-conversionArea .ladda-button']);
 
-        $I->see('登録が完了しました。', '.c-contentsArea .alert-success');
+        $I->see('保存しました', '.c-contentsArea .alert-success');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/customer/new');
         $I->see('無回答', '#customer_form #admin_customer_sex');
     }

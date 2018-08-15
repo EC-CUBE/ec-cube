@@ -20,7 +20,7 @@ file that was distributed with this source code.
         <div class="ec-off1Grid__cell">
             <div class="ec-borderedDefs">
                 {% if BaseInfo.shop_name|default is not empty %}
-                    <dl>
+                    <dl id="help_about_box__shop_name">
                         <dt>
                             <label class="ec-label">{{ 'common.shop_name'|trans }}</label>
                         </dt>
@@ -28,7 +28,7 @@ file that was distributed with this source code.
                     </dl>
                 {% endif %}
                 {% if BaseInfo.company_name|default is not empty %}
-                    <dl>
+                    <dl id="help_about_box__company_name">
                         <dt>
                             <label class="ec-label">{{ 'common.company_name'|trans }}</label>
                         </dt>
@@ -37,7 +37,7 @@ file that was distributed with this source code.
                 {% endif %}
 
                 {% if BaseInfo.postal_code|default is not empty %}
-                    <dl>
+                    <dl id="help_about_box__address">
                         <dt>
                             <label class="ec-label">{{ 'common.address'|trans }}</label>
                         </dt>
@@ -48,7 +48,7 @@ file that was distributed with this source code.
                 {% endif %}
 
                 {% if BaseInfo.phone_number|default is not empty %}
-                    <dl>
+                    <dl id="help_about_box__phone_number">
                         <dt>
                             <label class="ec-label">{{ 'common.phone_number'|trans }}</label>
                         </dt>
@@ -66,7 +66,7 @@ file that was distributed with this source code.
                 {% endif %}
 
                 {% if BaseInfo.good_traded|default is not empty %}
-                    <dl>
+                    <dl id="help_about_box__good_traded">
                         <dt>
                             <label class="ec-label">{{ 'front.about.good_traded'|trans }}</label>
                         </dt>
@@ -75,7 +75,7 @@ file that was distributed with this source code.
                 {% endif %}
 
                 {% if BaseInfo.message|default is not empty %}
-                    <dl>
+                    <dl id="help_about_box__message">
                         <dt>
                             <label class="ec-label">{{ 'front.about.message'|trans }}</label>
                         </dt>

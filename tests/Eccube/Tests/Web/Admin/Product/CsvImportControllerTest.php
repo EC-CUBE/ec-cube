@@ -178,7 +178,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             }
         }
 
-        $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u',
+        $this->assertRegexp('/CSVファイルをアップロードしました/u',
             $crawler->filter('div.alert-success')->text());
 
         // 規格1のみ商品の確認
@@ -260,7 +260,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = $newCount;
         $this->verify('fork-0[0-9]-new に商品コードを変更したのは '.$this->expected.'商品規格');
 
-        $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u',
+        $this->assertRegexp('/CSVファイルをアップロードしました/u',
             $crawler->filter('div.alert-success')->text());
     }
 
@@ -284,7 +284,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($Products);
         $this->verify();
 
-        $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u',
+        $this->assertRegexp('/CSVファイルをアップロードしました/u',
             $crawler->filter('div.alert-success')->text());
 
         // 規格1のみ商品の確認
@@ -391,7 +391,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($Categories);
         $this->verify();
 
-        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
+        $this->assertRegexp('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
     }
 
     /**
@@ -415,7 +415,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($Categories);
         $this->verify();
 
-        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
+        $this->assertRegexp('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
     }
 
     /**
@@ -440,7 +440,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($Categories);
         $this->verify();
 
-        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
+        $this->assertRegexp('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
     }
 
     /**
@@ -519,7 +519,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->expected = 1;
         $this->verify();
 
-        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
+        $this->assertRegexp('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
     }
 
     //======================================================================
@@ -591,7 +591,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
                 $this->verify();
             }
         }
-        $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
+        $this->assertRegexp('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
     }
 
     /**
@@ -612,7 +612,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $Products = $this->productRepo->findAll();
         $this->actual = count($Products);
         $this->verify();
-        $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
+        $this->assertRegexp('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
 
         // 2 case no stock_unlimited
         $this->expected = count($Products) + 1;
@@ -627,7 +627,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($Products);
         $this->verify();
 
-        $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
+        $this->assertRegexp('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
     }
 
     /**
