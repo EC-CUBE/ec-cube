@@ -165,7 +165,7 @@ class ShippingType extends AbstractType
                 'choice_label' => function (Delivery $Delivery) {
                     return $Delivery->isVisible()
                         ? $Delivery->getServiceName()
-                        : $Delivery->getServiceName().trans('delivery.text.hidden');
+                        : $Delivery->getServiceName().trans('common.hidden_label');
                 },
                 'placeholder' => false,
                 'constraints' => [

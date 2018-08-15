@@ -554,7 +554,7 @@ class OrderController extends AbstractController
             [
                 new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 new Assert\Regex(
-                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('form.type.admin.nottrackingnumberstyle')]
+                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('admin.order.tracking_number_error')]
                 ),
             ]
         );

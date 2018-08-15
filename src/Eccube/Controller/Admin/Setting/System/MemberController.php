@@ -283,7 +283,7 @@ class MemberController extends AbstractController
         } catch (\Exception $e) {
             log_info('メンバー削除エラー', [$Member->getId(), $e]);
 
-            $message = trans('admin.delete.failed');
+            $message = trans('admin.common.delete_error');
             $this->addError($message, 'admin');
         }
 

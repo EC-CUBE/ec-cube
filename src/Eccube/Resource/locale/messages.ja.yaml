@@ -72,6 +72,9 @@ common.signup: 新規会員登録
 common.forgot_login: ログイン情報をお忘れですか？
 common.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
 common.search_keyword: キーワードを入力
+common.customer_already_exists: 既に利用されているメールアドレスです
+common.member_already_exists: 既に利用されているログインIDです
+common.hidden_label: (非表示)
 
 #====================================================================================
 # フロント画面
@@ -257,6 +260,7 @@ front.product.add_cart_error: カートへの追加に失敗しました。
 front.product.add_favorite: お気に入りに追加
 front.product.add_favorite_alrady: お気に入りに追加済です。
 front.product.out_of_stock: ただいま品切れ中です。
+front.product.out_of_stock_label: (品切れ中)
 front.product.added_to_favorite: お気に入りに追加済です。
 front.product.nomal_price: 通常価格
 front.product.sale_price: 販売価格
@@ -618,6 +622,7 @@ admin.product.product_class__reset_confirm_message: この商品に登録され�
   これまでの販売データには影響はありませんが、この操作は取り消すことができません。
   初期化しますか？
 admin.product.product_class__reset_confirm_excecute: 規格を初期化
+admin.product.product_class_set_stock_quantitiy: 在庫数を入力、もしくは在庫無制限を設定してください。
 admin.product.copy_first_line: 1行目をすべての行に複製
 admin.product.procuct_class_count: '%count%件の組み合わせがあります'
 admin.product.stock_unlimited: 在庫数無制限
@@ -772,6 +777,7 @@ admin.order.purchase_count: 購入件数
 admin.order.purchase_count__start: 購入件数(開始)
 admin.order.purchase_count__end: 購入件数(終了)
 admin.order.tracking_number: 送り状番号
+admin.order.tracking_number_error: 送り状番号は半角英数字かハイフンのみを入力してください。
 admin.order.mail_purchase_product_count: '他%count%点'
 admin.order.mail_history: メール送信履歴
 admin.order.mail_send_date: メール送信日時

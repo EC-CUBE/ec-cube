@@ -416,7 +416,9 @@ class ShippingMultipleController extends AbstractShoppingController
                 $count = count($CustomerAddresses);
                 if ($count >= $this->eccubeConfig['eccube_deliv_addr_max']) {
                     return [
-                        'error' => trans('delivery.text.error.max_delivery_address'),
+                        'error' => trans('common.customer_address_count_is_over', [
+                            '%eccube_deliv_addr_max%' => $this->eccubeConfig->get('eccube_deliv_addr_max'),
+                        ]),
                         'form' => $form->createView(),
                     ];
                 }

@@ -203,7 +203,7 @@ class EntryControllerTest extends AbstractWebTestCase
     public function testActivateWithAbort()
     {
         $this->client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => '+++++++']));
-        $this->expected = 403;
+        $this->expected = 404;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
     }

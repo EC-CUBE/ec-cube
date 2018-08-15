@@ -150,7 +150,7 @@ class CsvImportController extends AbstractCsvImportController
                     $size = count($data);
 
                     if ($size < 1) {
-                        $this->addErrors(trans('csvimport.text.error.data_not_found'));
+                        $this->addErrors(trans('admin.common.csv_invalid_no_data'));
 
                         return $this->renderWithError($form, $headers, false);
                     }
@@ -513,7 +513,7 @@ class CsvImportController extends AbstractCsvImportController
 
                     $size = count($data);
                     if ($size < 1) {
-                        $this->addErrors(trans('csvimport.text.error.data_not_found'));
+                        $this->addErrors(trans('admin.common.csv_invalid_no_data'));
 
                         return $this->renderWithError($form, $headers, false);
                     }
@@ -551,7 +551,7 @@ class CsvImportController extends AbstractCsvImportController
                                         log_info('カテゴリ削除完了', [$Category->getId()]);
                                     } catch (ForeignKeyConstraintViolationException $e) {
                                         log_info('カテゴリ削除エラー', [$Category->getId(), $e]);
-                                        $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Category->getName()]);
+                                        $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Category->getName()]);
                                         $this->addError($message, 'admin');
 
                                         return $this->renderWithError($form, $headers);
@@ -928,7 +928,7 @@ class CsvImportController extends AbstractCsvImportController
             $ProductClass->setStockUnlimited(true);
             $ProductClass->setStock(null);
         } else {
-            $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
+            $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
             $this->addErrors($message);
         }
 
@@ -1100,7 +1100,7 @@ class CsvImportController extends AbstractCsvImportController
             $ProductClass->setStockUnlimited(true);
             $ProductClass->setStock(null);
         } else {
-            $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
+            $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
             $this->addErrors($message);
         }
 
