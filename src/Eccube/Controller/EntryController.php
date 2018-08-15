@@ -289,8 +289,8 @@ class EntryController extends AbstractController
             return [
                 'qtyInCart' => $qtyInCart
             ];
-        } else {
-            throw new HttpException\AccessDeniedHttpException(trans('entrycontroller.text.error.authorization'));
         }
+
+        throw new HttpException\NotFoundHttpException();
     }
 }

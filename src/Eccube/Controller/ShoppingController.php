@@ -750,7 +750,7 @@ class ShoppingController extends AbstractShoppingController
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
-            $this->addError('front.shopping.order.error');
+            $this->addError('front.shopping.order_error');
 
             return $this->redirectToRoute('shopping_error');
         }
@@ -829,7 +829,7 @@ class ShoppingController extends AbstractShoppingController
 
                 $this->entityManager->getConnection()->rollback();
 
-                $this->addError('front.shopping.system.error');
+                $this->addError('front.shopping.system_error');
 
                 return $this->redirectToRoute('shopping_error');
             }
