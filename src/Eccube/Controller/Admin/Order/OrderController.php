@@ -506,8 +506,7 @@ class OrderController extends AbstractController
                     } else {
                         $result['mail'] = false;
                     }
-                    $this->entityManager->flush($Shipping);
-                    $this->entityManager->flush($Order);
+                    $this->entityManager->flush();
 
                     // 会員の場合、購入回数、購入金額などを更新
                     if ($Customer = $Order->getCustomer()) {
