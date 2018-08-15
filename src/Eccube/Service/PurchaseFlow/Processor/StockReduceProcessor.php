@@ -14,6 +14,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\DBAL\LockMode;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductStock;
@@ -31,13 +32,20 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     protected $productStockRepository;
 
     /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
+    /**
      * StockReduceProcessor constructor.
      *
      * @param ProductStockRepository $productStockRepository
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(ProductStockRepository $productStockRepository)
+    public function __construct(ProductStockRepository $productStockRepository, EntityManagerInterface $entityManager)
     {
         $this->productStockRepository = $productStockRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -62,6 +70,12 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
         });
     }
 
+    /**
+     * Update product class stock
+     *
+     * @param ItemHolderInterface $itemHolder
+     * @param callable $callback
+     */
     private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback)
     {
         // Order以外の場合は何もしない
@@ -69,6 +83,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
             return;
         }
 
+        $isUpdate = false;
         foreach ($itemHolder->getProductOrderItems() as $item) {
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
             if (!$item->getProductClass()->isStockUnlimited()) {
@@ -82,7 +97,13 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
                 $stock = $callback($productStock->getStock(), $item->getQuantity());
                 $productStock->setStock($stock);
                 $item->getProductClass()->setStock($stock);
+                $this->entityManager->persist($productStock);
+                $this->entityManager->persist($item);
+                $isUpdate = true;
             }
+        }
+        if ($isUpdate) {
+            $this->entityManager->flush();
         }
     }
 }
