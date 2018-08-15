@@ -12,6 +12,13 @@ file that was distributed with this source code.
 
 {{ header }}
 
+{% if Shipping.tracking_number %}
+お問合せ伝票番号：{{ Shipping.tracking_number }}
+{% if Shipping.Delivery.confirm_url %}
+お問合せURL：{{ Shipping.Delivery.confirm_url }}
+{% endif %}
+{% endif %}
+
 ************************************************
 　ご注文商品明細
 ************************************************
