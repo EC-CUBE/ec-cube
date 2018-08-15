@@ -17,7 +17,18 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .ui-resizable-se {
+            right: -3px;
+            bottom: -3px;
+        }
+    </style>
+{% endblock %}
+
 {% block javascript %}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
     <script>
@@ -31,6 +42,12 @@ file that was distributed with this source code.
             enableSnippets: true,
             enableLiveAutocompletion: true,
             showInvisibles: true
+        });
+
+        $("#editor").resizable({
+            resize: function (event, ui) {
+                editor.resize();
+            }
         });
 
         $('#content_block_form').on('submit', function(elem) {
