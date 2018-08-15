@@ -196,20 +196,7 @@ class CartService
             return null;
         }
 
-        $cartKeys = $this->session->get('cart_keys', []);
-        $Cart = null;
-        if (count($cartKeys) > 0) {
-            foreach ($Carts as $cart) {
-                if ($cart->getCartKey() === current($cartKeys)) {
-                    $Cart = $cart;
-                    break;
-                }
-            }
-        } else {
-            $Cart = current($Carts);
-        }
-
-        return $Cart;
+        return current($Carts);
     }
 
     /**
@@ -257,15 +244,17 @@ class CartService
 
     protected function restoreCarts($cartItems)
     {
-        foreach ($this->getCarts() as $Cart) {
-            foreach ($Cart->getCartItems() as $i) {
-                $this->entityManager->remove($i);
-                $this->entityManager->flush();
+        if (empty($cartItems)) {
+            foreach ($this->getCarts() as $Cart) {
+                foreach ($Cart->getCartItems() as $i) {
+                    $this->entityManager->remove($i);
+                    $this->entityManager->flush($i);
+                }
+                $this->entityManager->remove($Cart);
+                $this->entityManager->flush($Cart);
             }
-            $this->entityManager->remove($Cart);
-            $this->entityManager->flush();
+            $this->carts = [];
         }
-        $this->carts = [];
 
         /** @var Cart[] $Carts */
         $Carts = [];
@@ -284,10 +273,10 @@ class CartService
                 if ($Cart) {
                     foreach ($Cart->getCartItems() as $i) {
                         $this->entityManager->remove($i);
-                        $this->entityManager->flush();
+                        $this->entityManager->flush($i);
                     }
                     $this->entityManager->remove($Cart);
-                    $this->entityManager->flush();
+                    $this->entityManager->flush($Cart);
                 }
                 $Cart = new Cart();
                 $Cart->setCartKey($cartKey);
@@ -379,9 +368,9 @@ class CartService
             $this->entityManager->persist($Cart);
             foreach ($Cart->getCartItems() as $item) {
                 $this->entityManager->persist($item);
-                $this->entityManager->flush();
+                $this->entityManager->flush($item);
             }
-            $this->entityManager->flush();
+            $this->entityManager->flush($Cart);
             $cartKeys[] = $Cart->getCartKey();
         }
 
@@ -417,22 +406,16 @@ class CartService
     {
         $Carts = $this->getCarts();
         if (!empty($Carts)) {
-            $removed = $this->getCart();
+            $removed = array_shift($Carts);
             if ($removed && UnitOfWork::STATE_MANAGED === $this->entityManager->getUnitOfWork()->getEntityState($removed)) {
                 $this->entityManager->remove($removed);
-                $this->entityManager->flush();
+                $this->entityManager->flush($removed);
 
                 $cartKeys = [];
-                foreach ($Carts as $key => $Cart) {
-                    // テーブルから削除されたカートを除外する
-                    if ($Cart == $removed) {
-                        unset($Carts[$key]);
-                    }
+                foreach ($Carts as $Cart) {
                     $cartKeys[] = $Cart->getCartKey();
                 }
                 $this->session->set('cart_keys', $cartKeys);
-                // 注文完了のカートキーをセッションから削除する
-                $this->session->remove('cart_key');
                 $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
             }
         }
@@ -449,22 +432,14 @@ class CartService
     }
 
     /**
-     * カートキーで指定したインデックスにあるカートを優先にする
+     * 指定したインデックスにあるカートを優先にする
      *
-     * @param string $cartKey カートキー
+     * @param int $index カートのインデックス
      */
-    public function setPrimary($cartKey)
+    public function setPrimary($index = 0)
     {
         $Carts = $this->getCarts();
-        $primary = $Carts[0];
-        $index = 0;
-        foreach ($Carts as $key => $Cart) {
-            if ($Cart->getCartKey() === $cartKey) {
-                $index = $key;
-                $primary = $Carts[$index];
-                break;
-            }
-        }
+        $primary = $Carts[$index];
         $prev = $Carts[0];
         array_splice($Carts, 0, 1, [$primary]);
         array_splice($Carts, $index, 1, [$prev]);
