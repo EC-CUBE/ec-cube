@@ -245,7 +245,7 @@ file that was distributed with this source code.
                                         <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                              title="Tooltip">
                                         <span class="card-title">
-                                            {{ 'admin.customer.edit.sipping'|trans }}
+                                            {{ 'admin.customer.edit.shipping'|trans }}
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </span>
                                         </div>
@@ -263,10 +263,10 @@ file that was distributed with this source code.
                                     <div class="card-body">
                                         <table class="table table-striped table-sm">
                                             <thead class="table-active">
-                                            <th class="align-middle pt-2 pb-2 pl-3">{{ 'admin.customer.edit.sipping_id'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.sipping_name'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.sipping_addresses'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.customer.edit.sipping_tel'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pl-3">{{ 'admin.customer.edit.shipping_id'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.shipping_name'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.shipping_addresses'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.customer.edit.shipping_tel'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2 pr-3"></th>
                                             </thead>
                                             <tbody>
@@ -283,24 +283,34 @@ file that was distributed with this source code.
                                                     <td class="align-middle">
                                                         {{ CustomerAddress.phone_number }}
                                                     </td>
-                                                    {# TODO: メニューのデザインを整える #}
-                                                    <td class="align-middle pr-3">
-                                                        <div id="address_box__menu_box_toggle--{{ CustomerAddress.id }}"
-                                                             class="dropdown">
-                                                            <a class="dropdown-toggle" data-toggle="dropdown">
-                                                                {#<svg class="cb cb-ellipsis-h">#}
-                                                                {#<use xlink:href="#cb-ellipsis-h"/>#}
-                                                                {#</svg>#}
+                                                    <td class="col-auto text-right">
+                                                        <a href="{{ url('admin_customer_delivery_edit', { 'id': Customer.id, 'did': CustomerAddress.id}) }}" class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.customer.edit.shipping_edit'|trans }}">
+                                                            <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                        </a>
+                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
+                                                            <a href="#" class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_modal">
+                                                                <i class="fa fa-close fa-lg text-secondary"></i>
                                                             </a>
-                                                            <ul id="address_box__menu--{{ CustomerAddress.id }}"
-                                                                class="dropdown-menu dropdown-menu-right">
-                                                                <li>
-                                                                    <a href="{{ url('admin_customer_delivery_edit', { 'id': Customer.id, 'did': CustomerAddress.id}) }}">{{ 'admin.customer.edit.sipping_edit'|trans }}</a>
-                                                                </li>
-                                                                <!--
-                                                                {#<li><a href="{{ url('admin_customer_delivery_delete', { 'id': Customer.id, 'did': CustomerAddress.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このお届け先情報を削除してもよろしいですか？">削除</a></li>#}
-                                                                -->
-                                                            </ul>
+                                                        </div>
+                                                        <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="delete_modal" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.customer.edit.shipping.delete.header'|trans }}</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                    </div>
+                                                                    <div class="modal-body text-left">
+                                                                        <p class="text-left">
+                                                                            {{ 'admin.customer.edit.shipping.delete.confirm'|trans }}</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
+                                                                        <a href="{{ url('admin_customer_delivery_delete', { 'id': Customer.id, 'did': CustomerAddress.id}) }}" class="btn btn-ec-delete" data-confirm="false" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                                            {{ 'common.label.delete'|trans }}
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -312,11 +322,11 @@ file that was distributed with this source code.
                                         {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
                                             <div class="d-block text-center">
                                                 <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
-                                                   class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                                   class="btn btn-ec-regular">{{ 'admin.customer.edit.shipping_add'|trans }}</a>
                                             </div>
                                         {% else %}
                                             <span class="ec-errorMessage">
-                                                {{ 'admin.customer.edit.sipping_text01'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max}) }}
+                                                {{ 'admin.customer.edit.shipping_text01'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max}) }}
                                             </span>
                                         {% endif %}
                                     </div>
@@ -328,7 +338,7 @@ file that was distributed with this source code.
 
                                         <div class="d-block text-center">
                                             <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
-                                               class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                               class="btn btn-ec-regular">{{ 'admin.customer.edit.shipping_add'|trans }}</a>
                                         </div>
 
                                     </div>
