@@ -159,7 +159,7 @@ class OrderHelper
         // 顧客情報の設定
         $this->setCustomer($Order, $Customer);
 
-        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_MB : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         // 明細情報の設定

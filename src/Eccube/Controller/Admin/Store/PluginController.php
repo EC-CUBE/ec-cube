@@ -129,7 +129,7 @@ class PluginController extends AbstractController
                 // 商品IDが設定されていない場合、非公式プラグイン
                 $unofficialPlugins[] = $Plugin;
             } else {
-                $officialPlugins[] = $Plugin;
+                $officialPlugins[$Plugin->getSource()] = $Plugin;
             }
         }
 
@@ -137,23 +137,33 @@ class PluginController extends AbstractController
         // オーナーズストアからダウンロード可能プラグイン情報を取得
         $authKey = $this->BaseInfo->getAuthenticationKey();
         // オーナーズストア通信
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
+        // TODO: get url from api service instead of direct from controller
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/plugins/purchased';
         list($json, $info) = $this->getRequestApi($request, $authKey, $url);
-
         $officialPluginsDetail = [];
         if ($json) {
             // 接続成功時
             $data = json_decode($json, true);
-            if (isset($data['success']) && $data['success']) {
-                foreach ($data['item'] as $item) {
-                    foreach ($officialPlugins as $key => $plugin) {
-                        if ($plugin->getSource() == $item['product_id']) {
-                            $officialPluginsDetail[$key] = $item;
-                            $officialPluginsDetail[$key]['update_status'] = 0;
-                            if ($this->pluginService->isUpdate($plugin->getVersion(), $item['version'])) {
-                                $officialPluginsDetail[$key]['update_status'] = 1;
-                            }
-                        }
+            foreach ($data as $item) {
+                if (isset($officialPlugins[$item['id']])) {
+                    $Plugin = $officialPlugins[$item['id']];
+                    $officialPluginsDetail[$item['id']] = $item;
+                    $officialPluginsDetail[$item['id']]['update_status'] = 0;
+                    if ($this->pluginService->isUpdate($Plugin->getVersion(), $item['version'])) {
+                        $officialPluginsDetail[$item['id']]['update_status'] = 1;
+                    }
+                } else {
+                    $Plugin = new Plugin();
+                    $Plugin->setName($item['name']);
+                    $Plugin->setCode($item['code']);
+                    $Plugin->setVersion($item['version']);
+                    $Plugin->setSource($item['id']);
+                    $Plugin->setEnabled(false);
+                    $officialPlugins[$item['id']] = $Plugin;
+                    $officialPluginsDetail[$item['id']] = $item;
+                    $officialPluginsDetail[$item['id']]['update_status'] = 0;
+                    if ($this->pluginService->isUpdate($Plugin->getVersion(), $item['version'])) {
+                        $officialPluginsDetail[$item['id']]['update_status'] = 1;
                     }
                 }
             }

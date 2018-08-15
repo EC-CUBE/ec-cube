@@ -55,12 +55,13 @@ Styleguide 13.2.1
     &-image {
       height: 150px;
       margin-bottom: 10px;
+      text-align: center;
       @include media_desktop() {
         height: 250px;
       }
     }
     img{
-      width: 100%;
+      width: auto;
       max-height: 100%;
     }
     @include media_desktop(){
@@ -129,12 +130,13 @@ Styleguide 13.2.2
     &-image {
       height: 150px;
       margin-bottom: 10px;
+      text-align: center;
       @include media_desktop() {
         height: 250px;
       }
     }
     img{
-      width: 100%;
+      width: auto;
       max-height: 100%;
     }
     @include media_desktop(){
