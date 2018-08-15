@@ -204,7 +204,7 @@ class CartService
                     $Cart = $cart;
                     break;
                 }
-            }
+            } 
         } else {
             $Cart = current($Carts);
         }
@@ -502,13 +502,6 @@ class CartService
         return $cartKey;
     }
 
-    /**
-     * 商品情報を取得する
-     *
-     * @param  ProductClass|integer $ProductClass
-     *
-     * @return ProductClass|null
-     */
     protected function getProductClassById($ProductClass)
     {
         if (!$ProductClass instanceof ProductClass) {
