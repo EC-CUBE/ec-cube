@@ -2062,7 +2062,7 @@ Styleguide 3.1.1
 .ec-input p, .ec-halfInput p, .ec-numberInput p, .ec-zipInput p, .ec-telInput p, .ec-select p, .ec-birth p {
   line-height: 1.4; }
 
-.ec-input .ec-errorMessage, .ec-halfInput .ec-errorMessage, .ec-numberInput .ec-errorMessage, .ec-zipInput .ec-errorMessage, .ec-telInput .ec-errorMessage, .ec-select .ec-errorMessage, .ec-birth .ec-errorMessage {
+.ec-input .ec-errorMessage, .ec-halfInput .ec-errorMessage, .ec-numberInput .ec-errorMessage, .ec-zipInput .ec-errorMessage, .ec-telInput .ec-errorMessage, .ec-select .ec-errorMessage, .ec-birth .ec-errorMessage, .ec-checkbox .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
@@ -2468,13 +2468,13 @@ Styleguide 3.1.1
 .ec-input p, .ec-halfInput p, .ec-numberInput p, .ec-zipInput p, .ec-telInput p, .ec-select p, .ec-birth p {
   line-height: 1.4; }
 
-.ec-input .ec-errorMessage, .ec-halfInput .ec-errorMessage, .ec-numberInput .ec-errorMessage, .ec-zipInput .ec-errorMessage, .ec-telInput .ec-errorMessage, .ec-select .ec-errorMessage, .ec-birth .ec-errorMessage {
+.ec-input .ec-errorMessage, .ec-halfInput .ec-errorMessage, .ec-numberInput .ec-errorMessage, .ec-zipInput .ec-errorMessage, .ec-telInput .ec-errorMessage, .ec-select .ec-errorMessage, .ec-birth .ec-errorMessage, .ec-checkbox .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
   color: #DE5D50; }
 
-.error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select {
+.error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select, .error.ec-checkbox input {
   margin-bottom: 5px;
   border-color: #CF3F34;
   background: #FDF1F0; }
