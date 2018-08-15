@@ -204,7 +204,7 @@ class CartService
                     $Cart = $cart;
                     break;
                 }
-            }
+            } 
         } else {
             $Cart = current($Carts);
         }
@@ -260,10 +260,10 @@ class CartService
         foreach ($this->getCarts() as $Cart) {
             foreach ($Cart->getCartItems() as $i) {
                 $this->entityManager->remove($i);
-                $this->entityManager->flush();
+                $this->entityManager->flush($i);
             }
             $this->entityManager->remove($Cart);
-            $this->entityManager->flush();
+            $this->entityManager->flush($Cart);
         }
         $this->carts = [];
 
@@ -284,10 +284,10 @@ class CartService
                 if ($Cart) {
                     foreach ($Cart->getCartItems() as $i) {
                         $this->entityManager->remove($i);
-                        $this->entityManager->flush();
+                        $this->entityManager->flush($i);
                     }
                     $this->entityManager->remove($Cart);
-                    $this->entityManager->flush();
+                    $this->entityManager->flush($Cart);
                 }
                 $Cart = new Cart();
                 $Cart->setCartKey($cartKey);
@@ -310,14 +310,10 @@ class CartService
      */
     public function addProduct($ProductClass, $quantity = 1)
     {
-        if (!$ProductClass instanceof ProductClass) {
-            $ProductClassId = $ProductClass;
-            $ProductClass = $this->entityManager
-                ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
-            if (is_null($ProductClass)) {
-                return false;
-            }
+        // IDの場合は商品情報を取得する
+        $ProductClass = $this->getProductClassById($ProductClass);
+        if (is_null($ProductClass)) {
+            return false;
         }
 
         $ClassCategory1 = $ProductClass->getClassCategory1();
@@ -342,14 +338,10 @@ class CartService
 
     public function removeProduct($ProductClass)
     {
-        if (!$ProductClass instanceof ProductClass) {
-            $ProductClassId = $ProductClass;
-            $ProductClass = $this->entityManager
-                ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
-            if (is_null($ProductClass)) {
-                return false;
-            }
+        // IDの場合は商品情報を取得する
+        $ProductClass = $this->getProductClassById($ProductClass);
+        if (is_null($ProductClass)) {
+            return false;
         }
 
         $removeItem = new CartItem();
@@ -379,9 +371,9 @@ class CartService
             $this->entityManager->persist($Cart);
             foreach ($Cart->getCartItems() as $item) {
                 $this->entityManager->persist($item);
-                $this->entityManager->flush();
+                $this->entityManager->flush($item);
             }
-            $this->entityManager->flush();
+            $this->entityManager->flush($Cart);
             $cartKeys[] = $Cart->getCartKey();
         }
 
@@ -420,7 +412,7 @@ class CartService
             $removed = $this->getCart();
             if ($removed && UnitOfWork::STATE_MANAGED === $this->entityManager->getUnitOfWork()->getEntityState($removed)) {
                 $this->entityManager->remove($removed);
-                $this->entityManager->flush();
+                $this->entityManager->flush($removed);
 
                 $cartKeys = [];
                 foreach ($Carts as $key => $Cart) {
@@ -508,5 +500,17 @@ class CartService
         $this->session->set('cart_key_prefix', $random);
 
         return $cartKey;
+    }
+
+    protected function getProductClassById($ProductClass)
+    {
+        if (!$ProductClass instanceof ProductClass) {
+            $ProductClassId = $ProductClass;
+            $ProductClass = $this->entityManager
+                ->getRepository(ProductClass::class)
+                ->find($ProductClassId);
+        }
+
+        return $ProductClass;
     }
 }
