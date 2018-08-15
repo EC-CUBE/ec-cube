@@ -2111,6 +2111,10 @@ return [
     'admin.store.authentication_setting.806' => '認証キー',
     'admin.store.authentication_setting.807' => '※認証キーは<a target="_blank" href="owners_store_url">EC-CUBEオーナーズストア</a>で取得できます。',
     'admin.store.authentication_setting.808' => '設定',
+    'admin.store.authentication_setting.captcha.open' => '認証キーを取得',
+    'admin.store.authentication_setting.captcha.header' => 'セキュリティチェック',
+    'admin.store.authentication_setting.captcha.message' => '下記のテキストを入力してください。',
+    'admin.store.authentication_setting.captcha.submit' => '取得',
     'admin.store.authentication_setting.php_path.header' => 'PHPパスの設定',
     'admin.store.authentication_setting.php_path.label' => 'PHPパス',
 
