@@ -177,7 +177,11 @@ class ProductRepository extends AbstractRepository
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            ->innerJoin('p.ProductClasses', 'pc');
+            ->addSelect('pc', 'pi', 'tr', 'ps')
+            ->innerJoin('p.ProductClasses', 'pc')
+            ->leftJoin('p.ProductImage', 'pi')
+            ->leftJoin('pc.TaxRule', 'tr')
+            ->leftJoin('pc.ProductStock', 'ps');
 
         // id
         if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
