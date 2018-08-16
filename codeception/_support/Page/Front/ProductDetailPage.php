@@ -91,7 +91,7 @@ class ProductDetailPage extends AbstractFrontPage
             }
         }
         $this->tester->click(['class' => 'add-cart']);
-        $this->tester->wait(1);
+        $this->tester->waitForElementVisible(['css' => 'div.ec-modal-box']);
         return $this;
     }
 

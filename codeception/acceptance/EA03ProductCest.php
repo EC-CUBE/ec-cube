@@ -69,7 +69,7 @@ class EA03ProductCest
 
         // 存在しないステータスで検索するため, `有効な値ではありません`のバリデーションエラーが発生するはず
         $page->詳細検索_ステータス(999);
-        $I->see('検索条件に誤りがあります。', ProductManagePage::$検索結果_エラーメッセージ);
+        $I->see('検索条件に誤りがあります', ProductManagePage::$検索結果_エラーメッセージ);
     }
 
     public function product_規格確認のポップアップ表示(\AcceptanceTester $I)
@@ -93,7 +93,7 @@ class EA03ProductCest
             ->規格確認ボタンをクリック(1)
             ->規格編集画面に遷移();
 
-        $I->see('商品登録（規格設定）商品管理', self::ページタイトルStyleGuide);
+        $I->see('商品規格登録商品管理', self::ページタイトルStyleGuide);
     }
 
     public function product_商品検索結果無(\AcceptanceTester $I)
@@ -133,7 +133,7 @@ class EA03ProductCest
             ->検索()
             ->CSV出力項目設定();
 
-        $I->see('CSV出力項目設定基本情報設定', self::ページタイトルStyleGuide);
+        $I->see('CSV出力項目設定店舗設定', self::ページタイトルStyleGuide);
         $value = $I->grabValueFrom(CsvSettingsPage::$CSVタイプ);
         $I->assertEquals('1', $value);
     }
@@ -171,7 +171,7 @@ class EA03ProductCest
             ->入力_規格1('材質')
             ->規格設定();
 
-        $I->see('3 件の規格の組み合わせがあります', 'div.c-contentsArea__cols > div > div > form div.card-header > div > div.col-6 > span');
+        $I->see('3件の組み合わせがあります', 'div.c-contentsArea__cols > div > div > form div.card-header > div > div.col-6 > span');
 
         $ProductClassEditPage
             ->選択(1)
@@ -186,7 +186,7 @@ class EA03ProductCest
             ->登録();
 
         $I->waitForElement(ProductClassEditPage::$登録完了メッセージ);
-        $I->see('商品規格を登録しました。', ProductClassEditPage::$登録完了メッセージ);
+        $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
         $I->seeElement(ProductClassEditPage::$初期化ボタン);
     }
 
@@ -209,7 +209,7 @@ class EA03ProductCest
         ProductClassEditPage::at($I)
             ->登録();
 
-        $I->see('商品規格を更新しました。', ProductClassEditPage::$登録完了メッセージ);
+        $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
     }
 
     public function product_一覧からの商品複製(\AcceptanceTester $I)
@@ -224,9 +224,9 @@ class EA03ProductCest
         ProductManagePage::go($I)
             ->検索($Product->getName())
             ->検索結果_複製(1)
-            ->Accept_重複する(1);
+            ->Accept_複製する(1);
 
-        $I->see('商品を複製しました。', ProductEditPage::$登録結果メッセージ);
+        $I->see('商品を複製しました', ProductEditPage::$登録結果メッセージ);
     }
 
     /**
@@ -253,7 +253,7 @@ class EA03ProductCest
         ProductClassEditPage::at($I)
             ->規格初期化();
 
-        $I->see('商品規格を削除しました', ProductClassEditPage::$登録完了メッセージ);
+        $I->see('商品規格を初期化しました', ProductClassEditPage::$登録完了メッセージ);
         $I->dontSeeElement(ProductClassEditPage::$規格一覧);
     }
 
@@ -267,7 +267,7 @@ class EA03ProductCest
             ->入力_カテゴリ(1)
             ->登録();
 
-        $I->see('登録が完了しました。', ProductEditPage::$登録結果メッセージ);
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
     }
 
     public function product_商品登録公開(\AcceptanceTester $I)
@@ -281,7 +281,7 @@ class EA03ProductCest
             ->入力_公開()
             ->登録();
 
-        $I->see('登録が完了しました。', ProductEditPage::$登録結果メッセージ);
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
     }
 
     public function product_商品編集規格なし(\AcceptanceTester $I)
@@ -298,7 +298,7 @@ class EA03ProductCest
             ->入力_カテゴリ(2)
             ->登録();
 
-        $I->see('登録が完了しました。', ProductEditPage::$登録結果メッセージ);
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
     }
 
     public function product_商品編集規格あり(\AcceptanceTester $I)
@@ -336,7 +336,7 @@ class EA03ProductCest
         ]);
 
         $ProductEditPage->登録();
-        $I->see('登録が完了しました。', ProductEditPage::$登録結果メッセージ);
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
     }
 
     public function product_新製品はタグを持っています(\AcceptanceTester $I)
@@ -351,22 +351,11 @@ class EA03ProductCest
             ->クリックして選択タグ(3)
             ->クリックして選択タグ(4)
             ->登録();
-        $I->see('登録が完了しました。', 'div.c-container > div.c-contentsArea > div.alert');
+        $I->see('保存しました', 'div.c-container > div.c-contentsArea > div.alert');
 
         $I->seeElement(['xpath' => '//*[@id="tag"]/div/div[1]/button']);
         $I->seeElement(['xpath' => '//*[@id="tag"]/div/div[2]/button']);
         $I->seeElement(['xpath' => '//*[@id="tag"]/div/div[3]/button']);
-    }
-
-    public function product_一覧からの商品削除(\AcceptanceTester $I)
-    {
-        $I->wantTo('EA0310-UC05-T03 一覧からの商品削除');
-
-        ProductManagePage::go($I)
-            ->検索('')
-            ->検索結果_削除(1)
-            ->wait()
-            ->Accept_削除(1);
     }
 
     public function product_商品の一括削除_正常(\AcceptanceTester $I)
@@ -442,7 +431,7 @@ class EA03ProductCest
             ->入力_表示名('display test class1')
             ->規格作成();
 
-        $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
+        $I->see('保存しました', ClassNameManagePage::$登録完了メッセージ);
     }
 
     public function product_規格登録未登録時(\AcceptanceTester $I)
@@ -465,7 +454,7 @@ class EA03ProductCest
 
         $ProductClassPage->規格編集(2);
 
-        $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
+        $I->see('保存しました', ClassNameManagePage::$登録完了メッセージ);
         // remove added class
         ClassNameManagePage::go($I)->一覧_削除(1)
             ->acceptModal();
@@ -484,7 +473,7 @@ class EA03ProductCest
         ClassNameManagePage::go($I)->一覧_削除(1)
             ->acceptModal();
 
-        $I->see('規格を削除しました。', ClassNameManagePage::$登録完了メッセージ);
+        $I->see('削除しました', ClassNameManagePage::$登録完了メッセージ);
     }
 
     public function product_規格表示順の変更(\AcceptanceTester $I)
@@ -546,7 +535,7 @@ class EA03ProductCest
             ->入力_表示名('test class2')
             ->規格作成();
 
-        $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
+        $I->see('保存しました', ClassNameManagePage::$登録完了メッセージ);
 
         $ProductClassPage->一覧_分類登録(1);
         $I->see('test class2', '#page_admin_product_class_category > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(1) > div.card-body > div:nth-child(2) > div:nth-child(2) > span');
@@ -556,7 +545,7 @@ class EA03ProductCest
             ->入力_分類名('test class2 category1')
             ->分類作成();
 
-        $I->see('分類を保存しました。', ClassCategoryManagePage::$登録完了メッセージ);
+        $I->see('保存しました', ClassCategoryManagePage::$登録完了メッセージ);
         $I->see('test class2 category1', $ProductClassCategoryPage->一覧_名称(1));
 
         // Edit class category 1
@@ -564,14 +553,14 @@ class EA03ProductCest
             ->一覧_入力_分類名(1, 'edit class category')
             ->一覧_分類作成(1);
 
-        $I->see('分類を保存しました。', ClassCategoryManagePage::$登録完了メッセージ);
+        $I->see('保存しました', ClassCategoryManagePage::$登録完了メッセージ);
         $I->see('edit class category', $ProductClassCategoryPage->一覧_名称(1));
 
         // delete test
         $ProductClassCategoryPage->一覧_削除(1)
             ->acceptModal();
 
-        $I->see('分類を削除しました。', ClassCategoryManagePage::$登録完了メッセージ);
+        $I->see('削除しました', ClassCategoryManagePage::$登録完了メッセージ);
     }
 
     public function product_カテゴリ登録(\AcceptanceTester $I)
@@ -582,7 +571,7 @@ class EA03ProductCest
             ->入力_カテゴリ名('test category1')
             ->カテゴリ作成();
 
-        $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
+        $I->see('保存しました', CategoryManagePage::$登録完了メッセージ);
 
         $CategoryPage->一覧_編集(2);
 
@@ -591,7 +580,7 @@ class EA03ProductCest
         $CategoryPage->一覧_インライン編集_カテゴリ名(2, 'test category11')
             ->一覧_インライン編集_決定(2);
 
-        $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
+        $I->see('保存しました', CategoryManagePage::$登録完了メッセージ);
 
         // csv EA0305-UC04-T01
         $CategoryPage
@@ -614,7 +603,7 @@ class EA03ProductCest
         $CategoryPage
             ->入力_カテゴリ名('test category11-1')
             ->カテゴリ作成();
-        $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
+        $I->see('保存しました', CategoryManagePage::$登録完了メッセージ);
 
         // カテゴリ削除 (children)
         $CategoryPage->一覧_削除(2)
@@ -665,7 +654,7 @@ class EA03ProductCest
         ProductCsvUploadPage::go($I)
             ->入力_CSVファイル('product.csv')
             ->CSVアップロード();
-        $I->see('商品登録CSVファイルをアップロードしました', ProductCsvUploadPage::$完了メッセージ);
+        $I->see('CSVファイルをアップロードしました', ProductCsvUploadPage::$完了メッセージ);
 
         ProductManagePage::go($I)->検索('アップロード商品');
         $I->see("検索結果：3件が該当しました", ProductManagePage::$検索結果_メッセージ);
@@ -695,7 +684,7 @@ class EA03ProductCest
             ->入力_CSVファイル('category.csv')
             ->CSVアップロード();
 
-        $I->see('カテゴリ登録CSVファイルをアップロードしました', CategoryCsvUploadPage::$完了メッセージ);
+        $I->see('CSVファイルをアップロードしました', CategoryCsvUploadPage::$完了メッセージ);
 
         CategoryManagePage::go($I);
 
