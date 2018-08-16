@@ -27,9 +27,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-/**
- * @FormType
- */
 class ShippingType extends AbstractType
 {
     /**
@@ -108,7 +105,7 @@ class ShippingType extends AbstractType
                         'class' => 'Eccube\Entity\Delivery',
                         'choice_label' => 'name',
                         'choices' => $Deliveries,
-                        'placeholder' => null,
+                        'placeholder' => false,
                         'constraints' => [
                             new NotBlank(),
                         ],
@@ -187,7 +184,7 @@ class ShippingType extends AbstractType
                         [
                             'choices' => array_flip($deliveryDurations),
                             'required' => false,
-                            'placeholder' => '指定なし',
+                            'placeholder' => 'common.select__unspecified',
                             'mapped' => false,
                             'data' => $Shipping->getShippingDeliveryDate() ? $Shipping->getShippingDeliveryDate()->format('Y/m/d') : null,
                         ]
@@ -226,7 +223,7 @@ class ShippingType extends AbstractType
                         'choice_label' => 'deliveryTime',
                         'choices' => $DeliveryTimes,
                         'required' => false,
-                        'placeholder' => '指定なし',
+                        'placeholder' => 'common.select__unspecified',
                         'mapped' => false,
                         'data' => $ShippingDeliveryTime,
                     ]

@@ -9,7 +9,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-<html lang="ja">
+<html lang="{{ eccube_config.locale }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,6 +27,9 @@ file that was distributed with this source code.
     {% endif %}
     {% if Page.meta_robots is not empty %}
         <meta name="robots" content="{{ Page.meta_robots }}">
+    {% endif %}
+    {% if Page.meta_tags is not empty %}
+        {{ Page.meta_tags|raw }}
     {% endif %}
     <link rel="icon" href="{{ asset('img/common/favicon.ico') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
