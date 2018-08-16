@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['product', 'class_category'] %}
 
-{% block title %}{{ 'admin.product.category.399'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.product.category.400'|trans }}{% endblock %}
+{% block title %}{{ 'admin.product.category_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.product.product_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -114,10 +114,14 @@ file that was distributed with this source code.
                 current.find('.mode-edit').removeClass('d-none');
             });
 
-            // 削除モーダルのhref変更
-            $('#delete_modal').on('shown.bs.modal', function(event) {
+            // 削除モーダルのhrefとmessageの変更
+            $('#DeleteModal').on('shown.bs.modal', function(event) {
                 var target = $(event.relatedTarget);
+                // hrefの変更
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
+
+                // messageの変更
+                $(this).find('p.modal-message').text(target.data('message'));
             });
         });
     </script>
@@ -142,7 +146,7 @@ file that was distributed with this source code.
                         <ol class="breadcrumb mb-2 p-0">
                             <li class="breadcrumb-item">
                                 <a href="{{ url('admin_product_category') }}">
-                                    {{ 'admin.product.category.401'|trans }}
+                                    {{ 'admin.product.category_all'|trans }}
                                 </a>
                             </li>
                             {% for ParentCategory in TargetCategory.path %}
@@ -161,11 +165,11 @@ file that was distributed with this source code.
                     <div class="btn-group" role="group">
                         <a class="btn btn-ec-regular" href="{{ url('admin_product_category_export') }}">
                             <i class="fa fa-cloud-download mr-1 text-secondary"></i>
-                            <span>{{ 'admin.product.category.405'|trans }}</span>
+                            <span>{{ 'admin.common.csv_download'|trans }}</span>
                         </a>
                         <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CATEGORY') }) }}">
                             <i class="fa fa-cog mr-1 text-secondary"></i>
-                            <span>{{ 'admin.product.index.486'|trans }}</span>
+                            <span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
                         </a>
                     </div>
                 </div>
@@ -192,7 +196,7 @@ file that was distributed with this source code.
                                                 </div>
                                                 <div class="col-auto">
                                                     <button class="btn btn-ec-regular" type="submit">
-                                                        {{ 'admin.product.category.403'|trans }}
+                                                        {{ 'admin.common.create__new'|trans }}
                                                     </button>
                                                 </div>
                                             </div>
@@ -230,22 +234,26 @@ file that was distributed with this source code.
                                                     <div class="col-auto text-right">
                                                         <a class="btn btn-ec-actionIcon action-up mr-3 {% if loop.first %} disabled {% endif %}" href=""
                                                            data-toggle="tooltip" data-placement="top"
-                                                           title="{{ 'admin.product.category.up'|trans }}">
+                                                           title="{{ 'admin.common.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
                                                         <a class="btn btn-ec-actionIcon action-down mr-3 {% if loop.last %} disabled {% endif %}" href=""
                                                            data-toggle="tooltip" data-placement="top"
-                                                           title="{{ 'admin.product.category.down'|trans }}">
+                                                           title="{{ 'admin.common.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
                                                         <a class="btn btn-ec-actionIcon mr-3 action-edit"
                                                            href="{{ url('admin_product_category_edit', {id: Category.id}) }}"
                                                            data-toggle="tooltip" data-placement="top"
-                                                           title="{{ 'admin.product.category.rename'|trans }}">
+                                                           title="{{ 'admin.common.edit'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
-                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.category.410'|trans }}">
-                                                            <a class="btn btn-ec-actionIcon{% if Category.Children|length > 0 or Category.hasProductCategories %} disabled{% endif %}" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_product_category_delete', {id: Category.id}) }}">
+                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top"
+                                                             title="{{ 'admin.common.delete'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon{% if Category.Children|length > 0 or Category.hasProductCategories %} disabled{% endif %}"
+                                                               data-toggle="modal" data-target="#DeleteModal"
+                                                               data-url="{{ url('admin_product_category_delete', {id: Category.id}) }}"
+                                                               data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Category.name }) }}">
                                                                 <i class="fa fa-close fa-lg text-secondary"></i>
                                                             </a>
                                                         </div>
@@ -258,10 +266,10 @@ file that was distributed with this source code.
                                                         {{ form_errors(forms[Category.id].name) }}
                                                     </div>
                                                     <div class="col-auto align-items-center">
-                                                        <button class="btn btn-ec-conversion" type="submit">{{ 'admin.common.label.ok'|trans }}</button>
+                                                        <button class="btn btn-ec-conversion" type="submit">{{ 'admin.common.decision'|trans }}</button>
                                                     </div>
                                                     <div class="col-auto align-items-center">
-                                                        <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.common.label.cancel'|trans }}</button>
+                                                        <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.common.cancel'|trans }}</button>
                                                     </div>
                                                 </form>
                                             {% endif %}
@@ -269,32 +277,29 @@ file that was distributed with this source code.
                                     {% endfor %}
                                 {% endif %}
                             </ul>
-                            <div class="modal fade" id="delete_modal" tabindex="-1"
-                                 role="dialog"
-                                 aria-labelledby="delete_modal" aria-hidden="true">
+                            <!-- 削除モーダル -->
+                            <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="DeleteModal" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title font-weight-bold">
-                                                {{ 'admin.class_category.modal.header'|trans }}</h5>
-                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                {{ 'admin.common.delete_modal__title'|trans }}
+                                            </h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
                                         </div>
                                         <div class="modal-body text-left">
-                                            <p class="text-left">
-                                                {{ 'admin.class_category.modal.body'|trans }}</p>
+                                            <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="btn btn-ec-sub" type="button"
-                                                    data-dismiss="modal">
-                                                {{ 'admin.product.category.cancel'|trans }}
+                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                {{ 'admin.common.cancel'|trans }}
                                             </button>
-                                            <a
-                                                    href="#"
-                                                    class="btn btn-ec-delete"
-                                                    data-confirm="false"
-                                                    {{ csrf_token_for_anchor() }}
-                                                    data-method="delete">
-                                                {{ 'admin.product.category.410'|trans }}
+                                            <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}
+                                               data-method="delete" data-confirm="false">
+                                                {{ 'admin.common.delete'|trans }}
                                             </a>
                                         </div>
                                     </div>
@@ -303,7 +308,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                 </div>
-                <p>{{ 'admin.product.category.text02'|trans }}</p>
+                <p>{{ 'admin.common.drag_and_drop_description'|trans }}</p>
             </div>
         </div>
 
@@ -320,7 +325,7 @@ file that was distributed with this source code.
                     <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}"{%if (Category.id == TargetId) %} class="font-weight-bold"{% endif %}>{{ Category.name }}
                         ({{ Category.children|length }})</a></span>
                 {% if Category.children|length > 0 %}
-                    <ul class="collapse {% if Category.id in Ids %}show{% endif %}"
+                    <ul class="collapse list-unstyled {% if Category.id in Ids %}show{% endif %}"
                         id="directory_category{{ Category.id }}">
                         {% for ChildCategory in Category.children %}
                             {{ selfMacro.tree(ChildCategory, TargetId, level, Ids) }}
@@ -335,13 +340,13 @@ file that was distributed with this source code.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
                         <span class="card-title"><a
-                                    href="{{ url('admin_product_category') }}">{{ 'admin.product.category.401'|trans }}</a></span>
+                                    href="{{ url('admin_product_category') }}">{{ 'admin.product.category_all'|trans }}</a></span>
                     </div>
                     <div class="card-body">
                         <div class="c-directoryTree mb-3">
                             {% import _self as renderMacro %}
                             {% for TopCategory in TopCategories %}
-                                <ul>
+                                <ul class="list-unstyled">
                                     {{ renderMacro.tree(TopCategory, TargetCategory.Parent.id | default(null), 0, Ids) }}
                                 </ul>
                             {% endfor %}

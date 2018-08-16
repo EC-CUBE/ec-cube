@@ -70,12 +70,12 @@ class ClassCategoryController extends AbstractController
     {
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
-            throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
+            throw new NotFoundHttpException();
         }
         if ($id) {
             $TargetClassCategory = $this->classCategoryRepository->find($id);
             if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-                throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
+                throw new NotFoundHttpException();
             }
         } else {
             $TargetClassCategory = new \Eccube\Entity\ClassCategory();
@@ -124,7 +124,7 @@ class ClassCategoryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.class_category.save.complete', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
             }
@@ -133,7 +133,7 @@ class ClassCategoryController extends AbstractController
                 $editForm->handleRequest($request);
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->classCategoryRepository->save($editForm->getData());
-                    $this->addSuccess('admin.class_category.save.complete', 'admin');
+                    $this->addSuccess('admin.common.save_complete', 'admin');
 
                     return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
                 }
@@ -163,7 +163,7 @@ class ClassCategoryController extends AbstractController
 
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
-            throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
+            throw new NotFoundHttpException();
         }
 
         log_info('規格分類削除開始', [$id]);
@@ -175,36 +175,26 @@ class ClassCategoryController extends AbstractController
             return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
         }
 
-        $num = $this->productClassRepository->createQueryBuilder('pc')
-            ->select('count(pc.id)')
-            ->where('pc.ClassCategory1 = :id OR pc.ClassCategory2 = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getSingleScalarResult();
-        if ($num > 0) {
-            $this->addError('admin.class_category.delete.hasproduct', 'admin');
-        } else {
-            try {
-                $this->classCategoryRepository->delete($TargetClassCategory);
+        try {
+            $this->classCategoryRepository->delete($TargetClassCategory);
 
-                $event = new EventArgs(
-                    [
-                        'ClassName' => $ClassName,
-                        'TargetClassCategory' => $TargetClassCategory,
-                    ],
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
+            $event = new EventArgs(
+                [
+                    'ClassName' => $ClassName,
+                    'TargetClassCategory' => $TargetClassCategory,
+                ],
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
 
-                $this->addSuccess('admin.class_category.delete.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
 
-                log_info('規格分類削除完了', [$id]);
-            } catch (\Exception $e) {
-                log_error('規格分類削除エラー', [$id, $e]);
+            log_info('規格分類削除完了', [$id]);
+        } catch (\Exception $e) {
+            log_error('規格分類削除エラー', [$id, $e]);
 
-                $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('classcategory.text.name')]);
-                $this->addError($message, 'admin');
-            }
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $TargetClassCategory->getName()]);
+            $this->addError($message, 'admin');
         }
 
         return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
@@ -219,7 +209,7 @@ class ClassCategoryController extends AbstractController
 
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
-            throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
+            throw new NotFoundHttpException();
         }
 
         log_info('規格分類表示変更開始', [$id]);
@@ -244,7 +234,7 @@ class ClassCategoryController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
 
-        $this->addSuccess('admin.class_category.save.complete', 'admin');
+        $this->addSuccess('admin.common.save_complete', 'admin');
 
         return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
     }

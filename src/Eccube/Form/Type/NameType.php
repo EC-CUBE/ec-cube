@@ -98,29 +98,29 @@ class NameType extends AbstractType
             'options' => [],
             'lastname_options' => [
                 'attr' => [
-                    'placeholder' => 'Name01',
+                    'placeholder' => 'common.last_name',
                 ],
                 'constraints' => [
                     new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_name_len'],
+                        'max' => $this->eccubeConfig['eccube_name_len'],
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'form.type.name.firstname.nothasspace',
+                        'message' => 'errors.not_contain_spaces',
                     ]),
                 ],
             ],
             'firstname_options' => [
                 'attr' => [
-                    'placeholder' => 'Name02',
+                    'placeholder' => 'common.first_name',
                 ],
                 'constraints' => [
                     new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_name_len'],
+                        'max' => $this->eccubeConfig['eccube_name_len'],
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'form.type.name.lastname.nothasspace',
+                        'message' => 'errors.not_contain_spaces',
                     ]),
                 ],
             ],

@@ -20,7 +20,7 @@ class BlockEditPage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
         $page->atPage('ブロック管理コンテンツ管理');
-        $page->tester->see('ブロック編集', '#content_block_form > div.c-contentsArea__cols > div > div > div > div.card-header > div > div.col-8 > span');
+        $page->tester->see('ブロック設定', '#content_block_form > div.c-contentsArea__cols > div > div > div > div.card-header > div > div.col-8 > span');
         return $page;
     }
 

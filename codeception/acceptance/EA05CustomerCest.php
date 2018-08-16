@@ -57,7 +57,7 @@ class EA05CustomerCest
         CustomerManagePage::go($I)
             ->詳細検索_電話番号('あああ');
 
-        $I->see('検索条件に誤りがあります。', CustomerManagePage::$検索結果_エラーメッセージ);
+        $I->see('検索条件に誤りがあります', CustomerManagePage::$検索結果_エラーメッセージ);
     }
 
     public function customer_会員登録(\AcceptanceTester $I)
@@ -89,7 +89,7 @@ class EA05CustomerCest
 
         $CustomerRegisterPage->登録();
         /* ブラウザによるhtml5のエラーなのでハンドリング不可 */
-        $I->see('会員情報を保存しました。', CustomerEditPage::$登録完了メッセージ);
+        $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
     }
 
     public function customer_会員登録_必須項目未入力(\AcceptanceTester $I)
@@ -127,7 +127,7 @@ class EA05CustomerCest
         }
 
         $CustomerRegisterPage->登録();
-        $I->see('会員情報を保存しました。', CustomerEditPage::$登録完了メッセージ);
+        $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
 
         $CustomerRegisterPage
             ->入力_姓('')

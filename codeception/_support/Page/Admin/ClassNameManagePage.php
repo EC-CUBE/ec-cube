@@ -84,8 +84,8 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
 
     public function acceptModal()
     {
-        $this->tester->waitForElementVisible("#delete_modal");
-        $this->tester->click("#delete_modal > div > div > div.modal-footer > a");
+        $this->tester->waitForElementVisible("#DeleteModal");
+        $this->tester->click("#DeleteModal > div > div > div.modal-footer > a");
         return $this;
     }
 
