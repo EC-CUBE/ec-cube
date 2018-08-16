@@ -30,249 +30,82 @@ file that was distributed with this source code.
         .plugin-ver li span{
             display: inline-block;
         }
-        h6.news{
-            color: #FD9271;
-        }
     </style>
 {% endblock %}
 {% block main %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                <div class="card rounded border-0 mb-4">
-                    <div class="card-body p-0">
-                        <div class="row">
-                            <div class="col-12 p-3">
-                                <a href="#" class="px-3 text-dark">決剤</a>
-                                <a href="#" class="px-3 text-dark">デザインテンプレート</a>
-                                <a href="#" class="px-3 text-dark">機能カスタマイズ</a>
-                                <a href="#" class="px-3 text-dark">集客</a>
-                                <a href="#" class="px-3 text-dark">顧客管理・販促</a>
-                                <a href="#" class="px-3 text-dark">物流・在庫管理</a>
-                                <a href="#" class="px-3 text-dark">SNS</a>
-                                <a href="#" class="px-3 text-dark">商用ライセンス</a>
-                                <a href="#" class="px-3 text-dark">その他</a>
+                {% if Categories|length > 0 %}
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col-12 p-4">
+                                    {% for key,category in Categories %}
+                                        <a href="{{ url('admin_store_plugin_owners_search', {'category_id' : key}) }}" class="px-3 text-dark">{{ category }}</a>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
 
-                <div class="c-outsideBlock">
-                    <form method="post" action="" class="plugin-search">
-                        <div class="c-outsideBlock__contents mb-3">
+                <form method="post" action="{{ url('admin_store_plugin_owners_search') }}" class="plugin-search" name="search">
+                    <div class="c-outsideBlock">
+                        {{ form_widget(searchForm._token) }}
+                        <div class="c-outsideBlock__contents mb-4">
                             <div class="row justify-content-start">
                                 <div class="col-3 pl-0">
-                                    <label class="col-form-label">カテゴリ</label>
-                                    <select class="custom-select">
-                                        <option>すべて</option>
-                                        <option>すべて</option>
-                                        <option>すべて</option>
-                                    </select>
+                                    <label class="col-form-label">{{ searchForm.category_id.vars.label|trans }}</label>
+                                    {{ form_widget(searchForm.category_id) }}
                                 </div>
                                 <div class="col-3">
-                                    <label class="col-form-label">有料／無料</label>
-                                    <select class="custom-select">
-                                        <option>すべて</option>
-                                        <option>すべて</option>
-                                        <option>すべて</option>
-                                    </select>
+                                    <label class="col-form-label">{{ searchForm.price_type.vars.label|trans }}</label>
+                                    {{ form_widget(searchForm.price_type) }}
                                 </div>
                                 <div class="col-3">
-                                    <label class="col-form-label">キーワード</label>
-                                    <input type="text" name="name" class="form-control">
+                                    <label class="col-form-label">{{ searchForm.keyword.vars.label|trans }}</label>
+                                    {{ form_widget(searchForm.keyword) }}
                                 </div>
                             </div>
                         </div>
                         <div class="c-outsideBlock__contents mb-2 pl-0">
-                            <button class="btn btn-ec-conversion px-5 py-2" type="submit">検索</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="row justify-content-between mb-2">
-                    <div class="col-12 text-right">
-                        <div class="d-inline-block mr-2">
-                            <select class="custom-select">
-                                <option value="">新着順</option>
-                            </select>
-                        </div>
-                        <div class="d-inline-block">
-                            <select class="custom-select">
-                                <option value="">10件</option>
-                                <option value="">20件</option>
-                                <option value="">30件</option>
-                                <option value="">40件</option>
-                                <option value="">50件</option>
-                                <option value="">60件</option>
-                                <option value="">70件</option>
-                                <option value="">80件</option>
-                                <option value="">90件</option>
-                                <option value="">100件</option>
-                            </select>
+                            <button class="btn btn-ec-conversion px-5 py-2" type="submit">{{ 'admin.store.plugin_owners_search.search_button'|trans }}</button>
                         </div>
                     </div>
-                </div>
+                    <div class="row justify-content-between mb-2">
+                        <div class="col-12 text-right">
+                            <div class="d-inline-block mr-2">
+                                {{ form_widget(searchForm.sort, {attr: {onchange: 'document.forms.search.submit();'}}) }}
+                            </div>
+                            <div class="d-inline-block">
+                                {{ form_widget(searchForm.page_count, {attr: {onchange: 'document.forms.search.submit();'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
                 <div id="plugin-list" class="card rounded border-0 my-4">
                     <div class="card-header">
-                        <span class="card-title">検索結果（10／35ページ）</span>
+                        <h5>{{ 'admin.store.plugin_owners_search.search_results'|trans({'%number%': pagination|length, '%total%' : total}) }}</h5>
                     </div>
-                    <div class="card-body p-0">
-                        {% for i in 1..5 %}
-                            <div class="row m-0 p-3 border-bt">
-                                <div class="col-sm-2 pr-2 pr-sm-3">
-                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal">
-                                        <img class="w-100 img-responsive"
-                                             src="{{ asset('noimage_plugin_list.png', 'save_image') }}" alt=""></a>
+                    <div class="card-body">
+                        {% if pagination|length > 0%}
+                            {% for item in pagination %}
+                                <div class="row border-bt pb-2 mb-3">
+                                    {{ include('@admin/Store/plugin_search_panel.twig') }}
                                 </div>
-                                <div class="col-sm-6 col-md-7">
-                                    <div class="info">
-                                        <h5>
-                                            <a href="#">EC-CUBEペイメント決済プラグイン</a>(3.0系)
-                                        </h5>
-                                        <p>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</p>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-auto col-md-5 col-lg-6">
-                                            <p class="text-danger"><span class="font-weight-bold text-dark">販売価格: </span> 0円<small> (税込)</small></p>
-                                        </div>
-                                        <div class="col-auto col-md-7 col-lg-6">
-                                            <dl class="text-dark">
-                                                <dd class="d-inline-block"><span class="pr-1 font-weight-bold">DL数</span> 256</dd>
-                                                <dd class="d-inline-block ml-5"><span class="pr-1 font-weight-bold">対応バージョン</span> 3.0系</dd>
-                                            </dl>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-md-3 text-right">
-                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular">詳細</a>
-                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn-primary">入手する</a>
-                                </div>
-                            </div>
-                            <div class="row m-0 p-3 border-bt">
-                                <div class="col-sm-2 pr-2 pr-sm-3">
-                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal">
-                                        <img class="w-100 img-responsive"
-                                             src="{{ asset('noimage_plugin_list.png', 'save_image') }}" alt=""></a>
-                                </div>
-                                <div class="col-sm-6 col-md-7">
-                                    <div class="info">
-                                        <h5>
-                                            <a href="#" class="font-weight-bold">EC-CUBEペイメント決済プラグイン</a>(3.0系)
-                                        </h5>
-                                        <h6>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</h6>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-auto col-md-5 col-lg-6">
-                                            <p class="text-danger"><span class="font-weight-bold text-dark">販売価格: </span> {{ random(100) }},200円<small> (税込)</small></p>
-                                        </div>
-                                        <div class="col-auto col-md-7 col-lg-6">
-                                            <dl class="text-dark">
-                                                <dd class="d-inline-block"><span class="pr-1 font-weight-bold">DL数</span> 256</dd>
-                                                <dd class="d-inline-block ml-5"><span class="pr-1 font-weight-bold">対応バージョン</span> 3.0系</dd>
-                                            </dl>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-md-3 text-right">
-                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular">詳細</a>
-                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn-primary">購入する</a>
-                                </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            {{ message }}
+                        {% endif %}
+                    </div>
 
-                        <div class="row justify-content-md-center my-4">
-                            <ul class="pagination">
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">次へ</a>
-                                </li>
-                            </ul>
+                    {% if pagination.totalItemCount > 0 %}
+                        <div class="row justify-content-md-center mb-4">
+                            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_store_plugin_owners_search_page' } %}
                         </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog" aria-labelledby="searchPluginModal" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">商品詳細</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row mb-5">
-                        <div class="col-6">
-                            <img class="w-100 img-responsive"
-                                 src="{{ asset('noimage_plugin_list.png', 'save_image') }}" alt="">
-                        </div>
-                        <div class="col-6">
-                            <h5 class="font-weight-bold mb-3">EC-CUBEペイメント決済プラグイン(3.0系)</h5>
-                            <p>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</p>
-                            <p class="text-danger"><span class="font-weight-bold text-dark">販売価格 </span> 25.000円<small> (税込)</small></p>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-7">
-                            <ul class="plugin-ver">
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">ダウンロード数</span>256</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">プラグインバージョン</span>2.1.5</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">EC-CUBE知王バージョン</span>バージョン3.0/3.1</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">公開日</span>2013.05.24</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">最終更新日</span>2018.07.12</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">ファイルサイズ</span>125KB</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">ライセンス</span>LGBL</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">制作者</span><a href="ec-cube.net">EC-CUBE team</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-5 text-right">
-                            <button type="button" class="btn btn-ec-regular mb-2"><i class="fa fa-image fa-lg text-secondary"></i> 資料請求・お問い合わせ</button>
-                            <button type="button" class="btn btn-ec-regular"><i class="fa fa-image fa-lg text-secondary"></i> マニュアルダウンロード</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="alert alert-danger border border-danger">
-                                <p class="text-danger">このプラグインはEC-CUBE 3.nをサポートしていないため、正常に動作しない可能性があります。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="alert alert-warning border border-warning">
-                                <h6 class="news">[2018ー用のカトラリ]ECCUBE 3.nトで揃えたいディナー用のカトラリー。</h6>
-                                <a href="#" class="text-dark">=>ー用のカトラリー。定番の銀製は(3.0)セットで</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-12">
-                            <div class="alert alert-secondary">
-                                <h6 class="text-dark">[2018ー用のカトラリ]ECCUBE 3.nトで揃えたいディナー用のカトラリー。</h6>
-                                <ul>
-                                    <li><a href="#" class="text-dark">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
-                                    <li><a href="#" class="text-dark">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
-                                    <li><a href="#" class="text-dark">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
-                                    <li><a href="#" class="text-dark">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
-                                </ul>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-ec-sub" data-dismiss="modal">一覧に戻る</button>
-                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn-primary">インストール確認へ</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

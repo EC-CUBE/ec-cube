@@ -20,7 +20,7 @@ file that was distributed with this source code.
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload.css', 'admin') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload-ui.css', 'admin') }}">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <style>
         #thumb div {
             float:left;
@@ -41,8 +41,10 @@ file that was distributed with this source code.
     <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-process.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-validate.js', 'admin') }}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script>var bootstrapTooltip = $.fn.tooltip.noConflict();</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
+        $.fn.tooltip = bootstrapTooltip;
         $(function() {
             // Todo: fix drag&drop style
             $("#thumb").sortable({
@@ -789,7 +791,7 @@ file that was distributed with this source code.
                                     <li class="c-directoryTree--registerItem category-li">
                                         <input type="checkbox" id="admin_product_category_{{ Category.id }}" name="admin_product[Category][]" value="{{ Category.id }}" {% if Category.id in ChoicedIds %}checked{% endif %}>
                                         <label for="admin_product_category_{{ Category.id }}">{{ Category.name }}</label>
-                                        <ul class="pl-0">
+                                        <ul class="list-unstyled">
                                             {% for child,ChildCategory in Category.children %}
                                                 {{ selfMacro.tree(ChoicedIds, ChildCategory, form) }}
                                             {% endfor %}
@@ -800,7 +802,7 @@ file that was distributed with this source code.
                                 <div class="c-directoryTree--register rounded border mb-3 p-3">
                                     {% import _self as renderMacro %}
                                     {% for TopCategory in TopCategories %}
-                                        <ul class="pl-0">
+                                        <ul class="list-unstyled">
                                             {{ renderMacro.tree(ChoicedCategoryIds, TopCategory, form.Category) }}
                                         </ul>
                                     {% endfor %}

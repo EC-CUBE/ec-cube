@@ -90,7 +90,7 @@ class ProductDetailPage extends AbstractFrontPage
                 $this->tester->selectOption(['id' => 'classcategory_id2'], $category2);
             }
         }
-        $this->tester->click(['id' => 'add-cart']);
+        $this->tester->click(['class' => 'add-cart']);
         $this->tester->wait(1);
         return $this;
     }

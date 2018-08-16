@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Front;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\Master\JobType;
@@ -25,9 +26,12 @@ use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -108,6 +112,23 @@ class EntryType extends AbstractType
                     'mapped' => false,
                 ]
             );
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                $Customer = $event->getData();
+                if ($Customer instanceof Customer && !$Customer->getId()) {
+                    $form = $event->getForm();
+
+                    $form->add('user_policy_check', CheckboxType::class, [
+                        'required' => true,
+                        'label' => null,
+                        'mapped' => false,
+                        'constraints' => [
+                            new Assert\NotBlank(),
+                        ],
+                    ]);
+                }
+            }
+        );
     }
 
     /**

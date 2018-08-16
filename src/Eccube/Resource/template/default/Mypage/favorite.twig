@@ -40,7 +40,9 @@ file that was distributed with this source code.
                                         </div>
                                     </a>
                                     <a class="ec-favoriteRole__itemThumb" href="{{ url('product_detail', {'id': Product.id}) }}">
-                                        <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" alt="{{ Product.name }}"/>
+                                        <p class="ec-favoriteRole__item-image">
+                                            <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
+                                        </p>
                                     </a>
                                     <p class="ec-favoriteRole__itemTitle">{{ Product.name }}</p>
                                     <p class="ec-favoriteRole__itemPrice">

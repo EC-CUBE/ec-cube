@@ -104,7 +104,7 @@ file that was distributed with this source code.
 
                 {% for CartIndex,Cart in Carts %}
                     {% set cartKey = Cart.cart_key %}
-                    {% for error in app.session.flashbag.get('eccube.front.cart.' ~ loop.index0 ~ '.request.error') %}
+                    {% for error in app.session.flashbag.get('eccube.front.cart.' ~ cartKey ~ '.request.error') %}
                         <div class="ec-cartRole__error">
                             <div class="ec-alert-warning">
                                 <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
@@ -204,7 +204,7 @@ file that was distributed with this source code.
                     <div class="ec-cartRole__actions">
                         <div class="ec-cartRole__total">{{ 'shopping.label.total'|trans }}：<span class="ec-cartRole__totalAmount">{{ Cart.totalPrice|price }}</span>
                         </div>
-                        <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'index':loop.index0}) }}">{{ 'shopping.label.btn.checkout'|trans }}</a>
+                        <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'cart_key':cartKey}) }}">{{ 'shopping.label.btn.checkout'|trans }}</a>
                         {% if loop.last %}
                             <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">{{ 'shopping.label.btn.continue'|trans }}</a>
                         {% endif %}
@@ -212,15 +212,18 @@ file that was distributed with this source code.
                 {% endfor %}
             </form>
         {% else %}
-            {% for error in app.session.flashbag.get('eccube.front.cart.0.request.error') %}
-                <div class="ec-cartRole__error">
-                    <div class="ec-alert-warning">
-                        <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
-                        <div class="ec-alert-warning__text">
-                            {{ error|trans|nl2br }}
+            {% for CartIndex,Cart in Carts %}
+                {% set cartKey = Cart.cart_key %}
+                {% for error in app.session.flashbag.get('eccube.front.cart.' ~ cartKey ~ '.request.error') %}
+                    <div class="ec-cartRole__error">
+                        <div class="ec-alert-warning">
+                            <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                            <div class="ec-alert-warning__text">
+                                {{ error|trans|nl2br }}
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endfor %}
             {% endfor %}
             <div class="ec-role">
                 <div class="ec-off3Grid">

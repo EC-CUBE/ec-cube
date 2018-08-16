@@ -45,7 +45,7 @@ class EF02ProductCest
         $topPage->カテゴリ選択(['キッチンツール']);
 
         // 各商品のサムネイルが表示される デフォルトは価格順
-        $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[1]"]);
+        $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[2]"]);
         $pPos = 0;
         $fPos = 0;
         foreach ($products as $key => $product) {

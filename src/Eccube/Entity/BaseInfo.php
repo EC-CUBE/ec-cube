@@ -227,6 +227,13 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $authentication_key;
 
         /**
+         * @var string|null
+         *
+         * @ORM\Column(name="php_path", type="string", length=255, nullable=true)
+         */
+        private $php_path;
+
+        /**
          * @var boolean
          *
          * @ORM\Column(name="option_point", type="boolean", options={"default":true})
@@ -1045,6 +1052,25 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         public function getBasicPointRate()
         {
             return $this->basic_point_rate;
+        }
+
+        /**
+         * @return null|string
+         */
+        public function getPhpPath()
+        {
+            return $this->php_path;
+        }
+
+        /**
+         * @param null|string $php_path
+         * @return $this
+         */
+        public function setPhpPath($php_path)
+        {
+            $this->php_path = $php_path;
+
+            return $this;
         }
     }
 }
