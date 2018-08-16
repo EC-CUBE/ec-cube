@@ -14,7 +14,6 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
@@ -36,7 +35,7 @@ class ShopController extends AbstractController
     protected $twig;
 
     /**
-     * @var BaseInfo
+     * @var BaseInfoRepository
      */
     protected $baseInfoRepository;
 
