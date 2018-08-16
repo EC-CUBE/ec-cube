@@ -64,6 +64,7 @@ class ShippingMultipleItemType extends AbstractType
 
     /**
      * ShippingMultipleItemType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      * @param SessionInterface $session
      * @param AuthorizationCheckerInterface $authorizationChecker

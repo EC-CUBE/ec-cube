@@ -13,13 +13,9 @@
 
 namespace Eccube\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
-use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
-use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TopController extends AbstractController

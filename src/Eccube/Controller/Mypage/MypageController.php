@@ -28,7 +28,6 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Knp\Component\Pager\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -305,7 +304,7 @@ class MypageController extends AbstractController
      * @Route("/mypage/favorite", name="mypage_favorite")
      * @Template("Mypage/favorite.twig")
      */
-    public function favorite(Request $request, Paginator $paginator)
+    public function favorite(Request $request, PaginatorInterface $paginator)
     {
         if (!$this->BaseInfo->isOptionFavoriteProduct()) {
             throw new NotFoundHttpException();
