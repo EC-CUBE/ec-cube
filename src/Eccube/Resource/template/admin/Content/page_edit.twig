@@ -10,10 +10,17 @@ file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
-{% set menus = ['content', 'page'] %}
+{# 設定メニューからも遷移するため、遷移元に応じてナビを変更 #}
+{% if app.request.query.get('return') == 'tradelaw' %}
+    {% set menus = ['setting', 'shop', 'shop_tradelaw'] %}
+{% elseif app.request.query.get('return') == 'agreement' %}
+    {% set menus = ['setting', 'shop', 'shop_agreement'] %}
+{% else %}
+    {% set menus = ['content', 'page'] %}
+{% endif %}
 
-{% block title %}{{ 'admin.content.page_edit.title'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.content.page_edit.sub_title'|trans }}{% endblock %}
+{% block title %}{{ 'admin.content.page_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -47,10 +54,11 @@ file that was distributed with this source code.
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
+                    <!-- ページ設定 -->
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8"><span class="card-title">{{ 'admin.content.page_edit.page_detail'|trans }}</span></div>
+                                <div class="col-8"><span class="card-title">{{ 'admin.content.page__card_title'|trans }}</span></div>
                                 <div class="col-4 text-right">
                                     <a data-toggle="collapse" href="#pageDetail" aria-expanded="false" aria-controls="pageDetail">
                                         <i class="fa fa-angle-up fa-lg"></i>
@@ -60,22 +68,24 @@ file that was distributed with this source code.
                         </div>
                         <div class="collapse show ec-cardCollapse" id="pageDetail">
                             <div class="card-body">
+                                <!-- ページ名 -->
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <span>{{ 'admin.content.page_edit.page_name'|trans }}</span>
+                                        <span>{{ 'admin.content.page_name'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.content.page_edit.required'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         {{ form_widget(form.name) }}
                                         {{ form_errors(form.name) }}
                                     </div>
                                 </div>
+                                <!-- URL -->
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <span>{{ 'admin.content.page_edit.page_url'|trans }}</span>
+                                        <span>{{ 'admin.content.page_url'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.content.page_edit.required'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         <div class="form-row">
@@ -90,10 +100,11 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                 </div>
+                                <!-- ファイル名 -->
                                 <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_edit.page_file'|trans }}</span>
+                                    <div class="col-2"><span>{{ 'admin.content.page_file_name'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.content.page_edit.required'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         <div class="form-row">
@@ -113,10 +124,11 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                 </div>
+                                <!-- コード -->
                                 <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_edit.page_code_edit'|trans }}</span>
+                                    <div class="col-2"><span>{{ 'admin.content.page_source_code'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.content.page_edit.required'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid' }}"></div>
@@ -142,12 +154,13 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
+                    <!-- レイアウト設定 -->
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                        <span class="card-title">{{ 'admin.content.page_edit.layout_setting'|trans }}</span>
+                                        <span class="card-title">{{ 'admin.content.page_layout__card_title'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
@@ -160,15 +173,17 @@ file that was distributed with this source code.
                         </div>
                         <div class="collapse show ec-cardCollapse" id="pageLayout">
                             <div class="card-body">
+                                <!-- PC -->
                                 <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_edit.layout_pc'|trans }}</span></div>
+                                    <div class="col-2"><span>{{ 'admin.content.page_pc'|trans }}</span></div>
                                     <div class="col-10">
                                         {{ form_widget(form.PcLayout) }}
                                         {{ form_errors(form.PcLayout) }}
                                     </div>
                                 </div>
+                                <!-- モバイル -->
                                 <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_edit.layout_mobile'|trans }}</span></div>
+                                    <div class="col-2"><span>{{ 'admin.content.page_mobile'|trans }}</span></div>
                                     <div class="col-10">
                                         {{ form_widget(form.SpLayout) }}
                                         {{ form_errors(form.SpLayout) }}
@@ -177,12 +192,13 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
+                    <!-- メタ設定 -->
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                        <span class="card-title">{{ 'admin.content.page_edit.meta_setting'|trans }}</span>
+                                        <span class="card-title">{{ 'admin.content.page_meta__card_title'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
@@ -195,38 +211,43 @@ file that was distributed with this source code.
                         </div>
                         <div class="collapse show ec-cardCollapse" id="pageMeta">
                             <div class="card-body">
+                                <!-- author -->
                                 <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_edit.meta_author'|trans }}</span></div>
+                                    <div class="col-2"><span>{{ 'admin.content.page_meta_author'|trans }}</span></div>
                                     <div class="col-10">
                                         {{ form_widget(form.author) }}
                                         {{ form_errors(form.author) }}
                                     </div>
                                 </div>
+                                <!-- description -->
                                 <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_edit.meta_description'|trans }}</span></div>
+                                    <div class="col-2"><span>{{ 'admin.content.page_meta_description'|trans }}</span></div>
                                     <div class="col-10">
                                         {{ form_widget(form.description) }}
                                         {{ form_errors(form.description) }}
                                     </div>
                                 </div>
+                                <!-- keyword -->
                                 <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_edit.meta_keyword'|trans }}</span></div>
+                                    <div class="col-2"><span>{{ 'admin.content.page_meta_keyword'|trans }}</span></div>
                                     <div class="col-10">
                                         {{ form_widget(form.keyword) }}
                                         {{ form_errors(form.keyword) }}
                                     </div>
                                 </div>
+                                <!-- robot -->
                                 <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_edit.meta_robot'|trans }}</span></div>
+                                    <div class="col-2"><span>{{ 'admin.content.page_meta_robot'|trans }}</span></div>
                                     <div class="col-10">
                                         {{ form_widget(form.meta_robots) }}
                                         {{ form_errors(form.meta_robots) }}
                                     </div>
                                 </div>
+                                <!-- metatag -->
                                 <div class="row">
-                                    <div class="col-2"><span>{{ 'admin.content.page_edit.meta_tags'|trans }}</span></div>
+                                    <div class="col-2"><span>{{ 'admin.content.page_meta_metatag'|trans }}</span></div>
                                     <div class="col-10">
-                                        {{ form_widget(form.meta_tags, { attr : { placeholder : 'admin.content.page_edit.meta_tags_description'|trans}}) }}
+                                        {{ form_widget(form.meta_tags, { attr : { placeholder : 'admin.content.page_meta_metatag_placeholder'|trans }}) }}
                                         {{ form_errors(form.meta_tags) }}
                                     </div>
                                 </div>
@@ -243,14 +264,14 @@ file that was distributed with this source code.
                         <div class="c-conversionArea__leftBlockItem">
                             <a class="c-beseLink" href="{{ url('admin_content_page') }}">
                                 <i class="fa fa-backward" aria-hidden="true"></i>
-                                <span>{{ 'admin.content.page_edit.page_list'|trans }}</span>
+                                <span>{{ 'admin.content.page_management'|trans }}</span>
                             </a>
                         </div>
                     </div>
                     <div class="col-6">
                         <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.content.page_edit.register'|trans }}</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
                             </div>
                         </div>
                     </div>

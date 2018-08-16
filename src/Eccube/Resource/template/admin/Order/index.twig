@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['order', 'order_master'] %}
 
-{% block title %}{{ 'admin.order.index.296'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.order.index.295'|trans }}{% endblock %}
+{% block title %}{{ 'admin.order.order_list'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
 
 {% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
 
@@ -177,15 +177,16 @@ file that was distributed with this source code.
                     <div class="col-12">
                         {{ form_widget(searchForm._token) }}
                         <div>
-                            <label class="col-form-label">{{ 'searchorder.label.multi'|trans }}</label>
+                            <label class="col-form-label">{{ 'admin.order.multi_search_label'|trans }}</label>
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
-                                <p class="col-form-label">{{ 'admin.order.index.298'|trans }}</p>
+                                <p class="col-form-label">{{ 'admin.order.order_status'|trans }}</p>
                                 <div id="admin_search_order_status">
                                     {% set statusForm = searchForm.status %}
+                                    <!-- 各対応状況の件数を表示する -->
                                     {% for status_id, child in statusForm.children %}
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox"
@@ -206,7 +207,7 @@ file that was distributed with this source code.
                         <div class="d-inline-block mb-3 collapsed" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail">
                             <a>
                                 <i class="fa font-weight-bold mr-1 fa-plus-square-o">
-                                    <span class="font-weight-bold">{{ 'admin.order.index.detailed_search'|trans }}</span>
+                                    <span class="font-weight-bold">{{ 'admin.common.search_detail'|trans }}</span>
                                 </i>
                             </a>
                         </div>
@@ -216,14 +217,14 @@ file that was distributed with this source code.
             <div class="c-subContents ec-collapse collapse{{ has_errors ? ' show' }}" id="searchDetail">
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.index.299'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.orderer_name'|trans }}</label>
                         {{ form_widget(searchForm.name) }}
                         {{ form_errors(searchForm.name) }}
                     </div>
                     <div class="col">
                         <div class="form-row">
                             <div class="col-12">
-                                <p class="col-form-label">{{ 'admin.order.index.304'|trans }}</p>
+                                <p class="col-form-label">{{ 'admin.common.payment_method'|trans }}</p>
                                 {{ form_widget(searchForm.payment, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
                                 {{ form_errors(searchForm.payment) }}
                             </div>
@@ -232,18 +233,18 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.index.300'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.orderer_kana'|trans }}</label>
                         {{ form_widget(searchForm.kana) }}
                         {{ form_errors(searchForm.kana) }}
                     </div>
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.index.305'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.order_date'|trans }}</label>
                         <div class="form-row align-items-center">
                             <div class="col">
                                 {{ form_widget(searchForm.order_date_start) }}
                                 {{ form_errors(searchForm.order_date_start) }}
                             </div>
-                            <div class="col-auto text-center">{{ 'admin.order.index.306'|trans }}</div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 {{ form_widget(searchForm.order_date_end) }}
                                 {{ form_errors(searchForm.order_date_end) }}
@@ -253,18 +254,18 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.index.label_order_company_name'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.orderer_company_name'|trans }}</label>
                         {{ form_widget(searchForm.company_name) }}
                         {{ form_errors(searchForm.company_name) }}
                     </div>
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.index.307'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.payment_date'|trans }}</label>
                         <div class="form-row align-items-center">
                             <div class="col">
                                 {{ form_widget(searchForm.payment_date_start) }}
                                 {{ form_errors(searchForm.payment_date_start) }}
                             </div>
-                            <div class="col-auto text-center">{{ 'admin.order.index.308'|trans }}</div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 {{ form_widget(searchForm.payment_date_end) }}
                                 {{ form_errors(searchForm.payment_date_end) }}
@@ -274,18 +275,18 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.index.302'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.common.mail_address'|trans }}</label>
                         {{ form_widget(searchForm.email) }}
                         {{ form_errors(searchForm.email) }}
                     </div>
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.index.311'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.common.update_date'|trans }}</label>
                         <div class="form-row align-items-center">
                             <div class="col">
                                 {{ form_widget(searchForm.update_date_start) }}
                                 {{ form_errors(searchForm.update_date_start) }}
                             </div>
-                            <div class="col-auto text-center">{{ 'admin.order.index.312'|trans }}</div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 {{ form_widget(searchForm.update_date_end) }}
                                 {{ form_errors(searchForm.update_date_end) }}
@@ -295,12 +296,12 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.index.301'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.common.phone_number'|trans }}</label>
                         {{ form_widget(searchForm.phone_number) }}
                         {{ form_errors(searchForm.phone_number) }}
                     </div>
                     <div class="col">
-                        <label class="col-form-label">{{ 'searchorder.label.shipping_delivery_date'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.delivery_date'|trans }}</label>
                         <div class="form-row align-items-center">
                             <div class="col">
                                 <div class="input-group">
@@ -308,7 +309,7 @@ file that was distributed with this source code.
                                     {{ form_errors(searchForm.shipping_delivery_date_start) }}
                                 </div>
                             </div>
-                            <div class="col-auto text-center">{{ 'admin.order.index.314'|trans }}</div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 <div class="input-group">
                                     {{ form_widget(searchForm.shipping_delivery_date_end) }}
@@ -320,12 +321,12 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'searchorder.label.order_no'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.order_no'|trans }}</label>
                         {{ form_widget(searchForm.order_no) }}
                         {{ form_errors(searchForm.order_no) }}
                     </div>
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.index.313'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.purchase_price'|trans }}</label>
                         <div class="form-row align-items-center">
                             <div class="col">
                                 <div class="input-group">
@@ -333,7 +334,7 @@ file that was distributed with this source code.
                                     {{ form_errors(searchForm.payment_total_start) }}
                                 </div>
                             </div>
-                            <div class="col-auto text-center">{{ 'admin.order.index.314'|trans }}</div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 <div class="input-group">
                                     {{ form_widget(searchForm.payment_total_end) }}
@@ -347,14 +348,14 @@ file that was distributed with this source code.
                     <div class="col">
                         <div class="form-row">
                             <div class="col-12">
-                                <p class="col-form-label">{{ 'searchorder.label.tracking_number'|trans }}</p>
+                                <p class="col-form-label">{{ 'admin.order.tracking_number'|trans }}</p>
                                 {{ form_widget(searchForm.tracking_number) }}
                                 {{ form_errors(searchForm.tracking_number) }}
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.index.315'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.purchase_product'|trans }}</label>
                         {{ form_widget(searchForm.buy_product_name) }}
                         {{ form_errors(searchForm.buy_product_name) }}
                     </div>
@@ -364,9 +365,9 @@ file that was distributed with this source code.
                     <div class="col">
                         <div class="form-row">
                             <div class="col-12">
-                                <p class="col-form-label">{{ 'searchorder.label.shipping_mail_send'|trans }}</p>
-                                {{ form_widget(searchForm.shipping_mail_send, {'label_attr': { 'class': 'checkbox-inline'}}) }}
-                                {{ form_errors(searchForm.shipping_mail_send) }}
+                                <p class="col-form-label">{{ 'admin.order.shipping_mail'|trans }}</p>
+                                {{ form_widget(searchForm.shipping_mail,  { 'label_attr': { 'class': 'checkbox-inline' }}) }}
+                                {{ form_errors(searchForm.shipping_mail) }}
                             </div>
                         </div>
                     </div>
@@ -393,16 +394,16 @@ file that was distributed with this source code.
                 {% endfor %}
 
                 <div class="d-block text-center">
-                    <button class="btn btn-ec-regular" type="reset">{{ 'admin.order.index.btn_clear_criteria'|trans }}</button>
+                    <button class="btn btn-ec-regular" type="reset">{{ 'admin.common.search_clear'|trans }}</button>
                 </div>
             </div>
             <div class="c-outsideBlock__contents">
                 <div class="row">
                     <div class="mb-4">
                         <div class="col-12">
-                            <button class="btn btn-ec-conversion px-5" type="submit" id="search_submit">{{ 'admin.order.index.317'|trans }}</button>
+                            <button class="btn btn-ec-conversion px-5" type="submit" id="search_submit">{{ 'admin.common.search'|trans }}</button>
                             {% if pagination %}
-                                <span class="font-weight-bold ml-2" id="search_total_count">{{ 'admin.order.index.paginator_total_count'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
+                                <span class="font-weight-bold ml-2" id="search_total_count">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
                             {% endif %}
                         </div>
                     </div>
@@ -419,58 +420,31 @@ file that was distributed with this source code.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 {% if pagination and pagination.totalItemCount %}
-                    <div class="modal fade" id="confirmBulkModal" tabindex="-1" role="dialog"
-                         aria-labelledby="confirmModal" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">{{ 'admin.order.index.bulk_modal_title'|trans }}</h5>
-                                    <button class="close" type="button" data-dismiss="modal"
-                                            aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>{{ 'admin.order.index.bulk_modal_body'|trans }}</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-ec-conversion" data-action="execute" type="button"
-                                            data-dismiss="modal">
-                                        {{ 'common.label.execute'|trans }}
-                                    </button>
-                                    <button class="btn btn-ec-sub" data-action="cancel" type="button"
-                                            data-dismiss="modal">
-                                        {{ 'common.label.cancel'|trans }}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                     <form id="form_bulk" method="POST" action="">
                         <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
                         <div class="row justify-content-between mb-2">
                             <div class="col-7">
                                 <div class="row justify-content-between">
                                     <div class="col-auto d-none btn-bulk-wrapper">
-                                        <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
+                                        <label class="mr-2">{{ 'admin.common.bulk_actions'|trans }}</label>
                                         <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-type="mail" data-bulk-update="true">
-                                            {{ 'admin.order.index.btn_bulk_mail'|trans }}
+                                            {{ 'admin.order.send_mail'|trans }}
                                         </button>
-                                        <button type="button" id="bulkExportPdf" class="btn btn-ec-regular mr-2">{{ 'admin.order.export.pdf.button.export'|trans }}</button>
-                                        {# TODO: This button is not implemented yet #}
-                                        <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
+                                        <button type="button" id="bulkExportPdf" class="btn btn-ec-regular mr-2">{{ 'admin.order.output_delivery_note_short'|trans }}</button>
+                                        <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.common.delete'|trans }}</button>
                                     </div>
                                     <div class="col d-none btn-bulk-wrapper">
                                         <div class="d-inline-block mr-2">
                                             <select class="custom-select" id="option_bulk_status">
-                                                <option value="" selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
+                                                <option value="" selected>{{ 'admin.order.change_status'|trans }}</option>
                                                 {% for status in OrderStatuses %}
                                                     <option value="{{ status.id }}">{{ status.name }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
                                         <button type="button" id="btn_bulk_status" class="btn btn-ec-regular mr-2 progressModal" data-type="status" data-bulk-update="true" data-submit="bulk">
-                                            {{ 'admin.order.index.btn_bulk_submit'|trans }}
+                                            {{ 'admin.common.decision'|trans }}
                                         </button>
                                     </div>
                                 </div>
@@ -481,7 +455,7 @@ file that was distributed with this source code.
                                         {% for pageMax in pageMaxis %}
                                             <option {% if pageMax.name == page_count %} selected {% endif %}
                                                     value="{{ path('admin_order_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
-                                                {{ pageMax.name|e }}{{ 'admin.order.index.num'|trans }}</option>
+                                                {{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -490,14 +464,14 @@ file that was distributed with this source code.
                                         <div class="btn-group" role="group">
                                             <button type="button" class="btn btn-ec-regular" data-toggle="dropdown" id="csvDownloadDropDown">
                                                 <i class="fa fa-cloud-download mr-1 text-secondary"></i>
-                                                <span>{{ 'admin.order.index.321'|trans }}</span>
+                                                <span>{{ 'admin.common.csv_download'|trans }}</span>
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="{{ url('admin_order_export_order') }}" id="orderCsvDownload">
-                                                    {{ 'admin.order.index.322'|trans }}
+                                                    {{ 'admin.order.order_csv'|trans }}
                                                 </a>
                                                 <a class="dropdown-item" href="{{ url('admin_order_export_shipping') }}" id="shippingCsvDownload">
-                                                    {{ 'admin.order.index.323'|trans }}
+                                                    {{ 'admin.order.shipping_csv'|trans }}
                                                 </a>
                                             </div>
                                         </div>
@@ -505,14 +479,14 @@ file that was distributed with this source code.
                                         <div class="btn-group" role="group">
                                             <button type="button" class="btn btn-ec-regular" data-toggle="dropdown" id="csvSettingDropDown">
                                                 <i class="fa fa-cog mr-1 text-secondary"></i>
-                                                <span>{{ 'admin.order.index.btn_csv_setting'|trans }}</span>
+                                                <span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}" id="orderCsvSetting">
-                                                    {{ 'admin.order.index.322'|trans }}
+                                                    {{ 'admin.order.order_csv'|trans }}
                                                 </a>
                                                 <a class="dropdown-item" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}" id="shippingCsvSetting">
-                                                    {{ 'admin.order.index.323'|trans }}
+                                                    {{ 'admin.order.shipping_csv'|trans }}
                                                 </a>
                                             </div>
                                         </div>
@@ -528,14 +502,14 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center pl-3">
                                             <input type="checkbox" id="toggle_check_all" name="filter" value="open">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_order_description'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_payment'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_order_status'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_payment_total'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_message'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_shipping_status'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_tracking_number'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_delivery_address'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.orderer'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.payment_method'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.message_short'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.shipping_status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.delivery'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>
                                     </tr>
                                     </thead>
@@ -572,7 +546,7 @@ file that was distributed with this source code.
                                                 </td>
                                                 <td class="align-middle text-right">
                                                     {{ Order.payment_total|price }}<br>
-                                                    {{ Order.payment_date ? Order.payment_date|date_day : 'admin.order.index.not_payment'|trans }}
+                                                    {{ Order.payment_date ? Order.payment_date|date_day : 'admin.order.not_payment'|trans }}
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     {% if Order.message is not empty %}
@@ -591,20 +565,20 @@ file that was distributed with this source code.
                                                             {% if Shipping.shipping_date %}
                                                                 {{ Shipping.shipping_date|date_day }}
                                                             {% else %}
-                                                                {{ 'admin.order.index.not_shipping'|trans }}
+                                                                {{ 'admin.order.unshipped'|trans }}
                                                             {% endif %}
                                                         </a>
                                                     {% else %}
-                                                        {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.index.not_shipping'|trans }}
+                                                        {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.unshipped'|trans }}
                                                     {% endif %}
                                                     {% if Shipping.mail_send_date %}
                                                         {% set send_mail_date = Shipping.mail_send_date|date_min %}
-                                                        <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{ 'admin.order.index.send_mail_date'|trans({'%date%': send_mail_date}) }}"></i>
+                                                        <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{ 'admin.order.shipping_mail__completed'|trans({'%date%': send_mail_date}) }}"></i>
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" id="tracking_number_{{ Shipping.id }}" class="form-control update_tracking_number" placeholder="{{ 'admin.order.index.th_tracking_number'|trans }}" value="{{ Shipping.trackingNumber }}" data-shipping_id="{{ Shipping.id }}" data-url="{{ url('admin_shipping_update_tracking_number', { id : Shipping.id }) }}" tabindex="{{ loop.index }}"/>
+                                                        <input type="text" id="tracking_number_{{ Shipping.id }}" class="form-control update_tracking_number" placeholder="{{ 'admin.order.tracking_number'|trans }}" value="{{ Shipping.trackingNumber }}" data-shipping_id="{{ Shipping.id }}" data-url="{{ url('admin_shipping_update_tracking_number', { id : Shipping.id }) }}" tabindex="{{ loop.index }}"/>
                                                         <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default update_tracking_number" data-target="#tracking_number_{{ Shipping.id }}">
                                                         <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
@@ -627,7 +601,7 @@ file that was distributed with this source code.
                                                             </a>
                                                         </div>
                                                         <div class="col-auto text-center">
-                                                            <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.index.btn_form'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.output_delivery_note_short'|trans }}">
                                                                 <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
@@ -637,7 +611,7 @@ file that was distributed with this source code.
                                                                data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
                                                                data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
                                                                data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
-                                                               data-toggle="tooltip" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
+                                                               data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
                                                                 <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
@@ -661,41 +635,42 @@ file that was distributed with this source code.
                 {% elseif has_errors %}
                     <div class="card rounded border-0">
                         <div class="card-body p-4">
-                            <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.invalid_search_data'|trans }}</div>
-                            <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_invalid_condition'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.common.search_try_change_condition'|trans }}</div>
                         </div>
                     </div>
                     {# 検索結果なし #}
                 {% else %}
                     <div class="card rounded border-0">
                         <div class="card-body p-4">
-                            <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.no_matching_search_data'|trans }}</div>
-                            <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
-                            <div class="text-center text-muted">{{ 'admin.order.index.pls_try_advanced_search'|trans }}</div>
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_no_result'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.common.search_try_change_condition'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.common.search_try_advanced_search'|trans }}</div>
                         </div>
                     </div>
                 {% endif %}
 
+                <!-- 出荷済にする確認モーダル -->
                 <div class="modal fade" id="sentUpdateModal" tabindex="-1" role="dialog" aria-labelledby="sentUpdateModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title font-weight-bold"></h5>
+                                <h5 class="modal-title font-weight-bold"><!--confirmationModal_js.twig--></h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body">
                                 <p class="mb-4"></p>
                                 <ul id="bulkErrors"></ul>
                                 <div id="bulk-options">
-                                    <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.shipping.index.812'|trans }}</div>
+                                    <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.order.to_shipped__confirm_send_mail'|trans }}</div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" id="notificationMail">
                                         <label class="form-check-label notificationMail">
-                                            {{ 'admin.shipping.index.813'|trans }}
+                                            {{ 'admin.order.to_shipped__confirm_send_mail_in_same_time'|trans }}
                                         </label>
                                     </div>
                                     <div>
-                                        <div class="d-inline-block" data-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o font-weight-bold mr-1"></i><span class="font-weight-bold">{{ 'admin.shipping.index.814'|trans }}</span></a></div>
+                                        <div class="d-inline-block" data-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o font-weight-bold mr-1"></i><span class="font-weight-bold">{{ 'admin.order.bulk_action__confirm_view_mail_body'|trans }}</span></a></div>
                                         <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
                                             <pre></pre>
                                         </div>
@@ -706,31 +681,32 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.shipping.index.815'|trans }}</button>
-                                <button id="bulkChange" class="btn btn-ec-conversion" type="button">{{ 'admin.shipping.index.816'|trans }}</button>
-                                <button id="bulkChangeComplete" class="btn btn-ec-regular" style="display: none" type="button">{{ 'admin.shipping.index.826'|trans }}</button>
+                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                <button id="bulkChange" class="btn btn-ec-conversion" type="button"><!--confirmationModal_js.twig--></button>
+                                <button id="bulkChangeComplete" class="btn btn-ec-regular" style="display: none" type="button">{{ 'admin.common.close'|trans }}</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- 一括削除の確認モーダル -->
                 <div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title font-weight-bold">{{ 'admin.product.index.495'|trans }}</h5>
+                                <h5 class="modal-title font-weight-bold">{{ 'admin.order.delete__confirm_title'|trans }}</h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body text-left">
-                                <p class="text-left">{{ 'admin.order.index.339'|trans }}</p>
+                                <p class="text-left">{{ 'admin.order.delete__confirm_message'|trans }}</p>
                                 <ul id="bulkErrors"></ul>
                                 <div class="progress" style="display: none">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}</button>
-                                <button class="btn btn-ec-delete" type="button" id="btn_bulk_delete">{{ 'admin.product.index.permanently_delete' | trans }}</button>
+                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                <button class="btn btn-ec-delete" type="button" id="btn_bulk_delete">{{ 'admin.common.delete' | trans }}</button>
                             </div>
                         </div>
                     </div>

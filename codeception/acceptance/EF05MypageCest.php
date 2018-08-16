@@ -70,7 +70,7 @@ class EF05MypageCest
         // $I->see('注文受付', '#main_middle .order_detail'); TODO 受注ステータスが可変するためテストが通らない場合がある
         $I->see('配送情報', 'div.ec-orderRole div.ec-orderDelivery div.ec-rectHeading h2');
         $I->see('お届け先', 'div.ec-orderRole div.ec-orderDelivery div.ec-orderDelivery__title');
-        $I->see('お支払方法', 'div.ec-orderRole div.ec-orderPayment div.ec-rectHeading h2');
+        $I->see('お支払い情報', 'div.ec-orderRole div.ec-orderPayment div.ec-rectHeading h2');
         $I->see('お問い合わせ', 'div.ec-orderRole div.ec-orderConfirm div.ec-rectHeading h2');
         $I->see('メール配信履歴一覧', 'div.ec-orderRole div.ec-orderMails div.ec-rectHeading h2');
         $I->see('小計', 'div.ec-orderRole__summary div.ec-totalBox dl:nth-child(1)');
@@ -91,7 +91,7 @@ class EF05MypageCest
 
         // 最初はなにも登録されていない
         $I->see('お気に入り一覧', 'div.ec-pageHeader h1');
-        $I->see('お気に入りが登録されていません。', 'div.ec-favoriteRole');
+        $I->see('お気に入りは登録されていません。', 'div.ec-favoriteRole');
 
         // お気に入り登録
         ProductDetailPage::go($I, 2)->お気に入りに追加();
@@ -253,7 +253,7 @@ class EF05MypageCest
             ->削除(1);
 
         // 確認
-        $I->see('0 件', 'div.ec-layoutRole div.ec-layoutRole__contents p.ec-para-nomal strong');
+        $I->see('お届け先は登録されていません。', '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > div > div > div:nth-child(2) > p');
     }
 
     public function mypage_退会手続き未実施(\AcceptanceTester $I)

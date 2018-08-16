@@ -431,7 +431,7 @@ class ShoppingController extends AbstractShoppingController
             $addressCurrNum = count($this->getUser()->getCustomerAddresses());
             $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException(trans('shoppingcontroller.text.error.number_of_address'));
+                throw new NotFoundHttpException();
             }
         }
 
@@ -452,7 +452,7 @@ class ShoppingController extends AbstractShoppingController
 
         $Shipping = $Order->findShipping($id);
         if (!$Shipping) {
-            throw new NotFoundHttpException(trans('shoppingcontroller.text.error.set_address'));
+            throw new NotFoundHttpException();
         }
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $Shipping->clearCustomerAddress();
@@ -750,7 +750,7 @@ class ShoppingController extends AbstractShoppingController
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
-            $this->addError('front.shopping.order.error');
+            $this->addError('front.shopping.order_error');
 
             return $this->redirectToRoute('shopping_error');
         }
@@ -829,7 +829,7 @@ class ShoppingController extends AbstractShoppingController
 
                 $this->entityManager->getConnection()->rollback();
 
-                $this->addError('front.shopping.system.error');
+                $this->addError('front.shopping.system_error');
 
                 return $this->redirectToRoute('shopping_error');
             }

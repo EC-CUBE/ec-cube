@@ -8,57 +8,118 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% set version_check = item.version_check  %}
-<div class="plugin-panel {% if version_check == 0 %}plugin-panel-not{% endif %} {% if item.promotion == 1 %}plugin-panel-pr{% endif %}">
-    <div class="plugin-logo">
-        <a href="{{ item.product_url }}" target="_blank"><img class="img-rounded" src="{{ item.product_image_url }}"></a>
+
+<div class="col-sm-2 pr-2 pr-sm-3">
+    <a href="#" data-toggle="modal" data-target="#searchPluginModal">
+        <img class="w-100 img-responsive" src="{{ item.image|default(asset('noimage_plugin_list.png', 'save_image')) }}" alt="{{ item.name }}">
+    </a>
+</div>
+<div class="col-sm-6 col-md-7">
+    <div class="info">
+        <h5>
+            <a href="{{ item.store_url }}" class="font-weight-bold" target="_blank">{{ item.name }}</a>（{{ 'admin.store.plugin_owners_search.latest'|trans }}{{ item.version }}）
+        </h5>
+        <h6>{{ item.short_description }}</h6>
     </div>
-    <div class="plugin-content-top">
-        <div class="plugin-title">
-            <span class="pull-right">
-                <a class="btn btn-xs searchPluginModal" href="#" data-id="{{ item.product_id }}">{{'admin.store.plugin_owners_search.869'|trans}}</a>
-                {% if item.update_status == 2 or item.update_status == 3 %}
-                    <h4 id="plugin-id-{{ item.product_id }}" class="display-in-bl"><span class="label label-success">{{'admin.store.plugin_owners_search.870'|trans}}</span></h4>
-                {% elseif item.update_status == 4 %}
-                    <a id="plugin-id-{{ item.product_id }}" class="btn btn-success btn-xs" href="{{ item.product_url }}" target="_blank">{{'admin.store.plugin_owners_search.872'|trans}}</a>
-                {% else %}
-                    <a id="plugin-id-{{ item.product_id }}" class="btn btn-warning btn-xs" href="{{ url('admin_store_plugin_install_confirm', {'id': item.product_id}) }}">{{'admin.store.plugin_owners_search.873'|trans}}</a>
+    <div class="row">
+        <div class="col-auto col-md-5 col-lg-6">
+            <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">{{ 'admin.store.plugin_owners_search.price'|trans }} </span> {{ item.price|price }}<small> ({{ 'admin.common.label.taxinc'|trans }})</small></p>
+        </div>
+        <div class="col-auto col-md-7 col-lg-6">
+            <dl class="text-dark">
+                <dd class="d-inline-block"><span class="pr-1 font-weight-bold">{{'admin.store.plugin_owners_search.dl'|trans}}</span> {{ item.downloads|number_format }}</dd>
+                <dd class="d-inline-block ml-5"><span class="pr-1 font-weight-bold">{{ 'admin.store.plugin_owners_search.support'|trans }}</span> {% for version in item.supported_versions %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div class="col-sm-4 col-md-3 text-right">
+    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular">{{'admin.store.plugin_owners_search.detail'|trans}}</a>
+    <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">
+        {% if item.update_status == 1 %}
+            {{ 'admin.store.plugin_owners_search.install.free'|trans }}
+        {% elseif item.update_status == 4 %}
+            {{ 'admin.store.plugin_owners_search.install.fee'|trans }}
+        {% else %}
+            {{ 'admin.store.plugin_owners_search.install'|trans }}
+        {% endif %}
+    </a>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog" aria-labelledby="searchPluginModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="exampleModalLabel">{{ 'admin.store.plugin_owners_search.modal.header'|trans }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-5">
+                    <div class="col-6">
+                        <img class="w-100 img-responsive"
+                             src="{{ item.image|default(asset('noimage_plugin_list.png', 'save_image')) }}" alt="{{ item.name }}">
+                    </div>
+                    <div class="col-6">
+                        <h5 class="font-weight-bold mb-3">{{ item.name }}</h5>
+                        <p>{{ item.short_description }}</p>
+                        <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">{{ 'admin.store.plugin_owners_search.price'|trans }} </span> {{ item.price|price }}<small> ({{ 'admin.common.label.taxinc'|trans }})</small></p>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-7">
+                        <ul class="plugin-ver">
+                            <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin_owners_search.modal.download'|trans }}</span>{{ item.downloads|number_format }}</li>
+                            <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin_owners_search.modal.version'|trans }}</span>{{ item.version }}</li>
+                            <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin_owners_search.modal.support'|trans }}</span>{% for version in item.supported_versions %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</li>
+                            <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin_owners_search.modal.public_date'|trans }}</span>{{ item.publish_date|date_day }}</li>
+                            <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin_owners_search.modal.update_date'|trans }}</span>{{ item.update_date|date_day }}</li>
+                            {% set size = (item.size / 1024)|round(0, 'ceil')|number_format %}
+                            <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin_owners_search.modal.size'|trans }}</span>{{ 'admin.store.plugin_owners_search.modal.size.format'|trans({'%size%' : size}) }}</li>
+                            <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin_owners_search.modal.license'|trans }}</span>{{ item.license }}</li>
+                            <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin_owners_search.modal.develop'|trans }}</span>
+                                {% if item.author.url is not empty %}<a href="{{ item.author.url }}" target="_blank">{{ item.author.name }}</a>{% else %}{{ item.author.name }}{% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-5 text-right">
+                        <a class="btn btn-ec-regular btn-lg mb-3" href="{{ item.contact_url }}" target="_blank"><i class="fa fa-image fa-lg text-secondary"></i> {{ 'admin.store.plugin_owners_search.modal.contact'|trans }}</a>
+                        <a class="btn btn-ec-regular btn-lg" href="{{ item.manual_url }}" target="_blank"><i class="fa fa-image fa-lg text-secondary"></i> {{ 'admin.store.plugin_owners_search.modal.manual'|trans }}</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-danger border border-danger">
+                            {% set version_check = item.version_check  %}
+                            {% if version_check == 0 %}
+                                <p class="text-danger mb-1">{{ 'admin.store.plugin_owners_search.modal.note'|trans({"%version%": constant('Eccube\\Common\\Constant::VERSION') }) }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        {{ item.long_description|raw }}
+                    </div>
+                </div>
+
+                {% if item.depend is not empty %}
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            {% for depend in item.depend %}
+                                <p class="text-danger">{{ 'admin.store.plugin_owners_search.modal.dependency'|trans({"%dependency%" : depend.name})  }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
                 {% endif %}
-            </span>
-            <a class="plugin-name" href="{{ item.product_url }}" target="_blank">{{ item.name }}</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ec-sub" data-dismiss="modal">{{ 'admin.store.plugin_owners_search.modal.cancel'|trans }}</button>
+                <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">{{ 'admin.store.plugin_owners_search.modal.submit'|trans }}</a>
+            </div>
         </div>
-        <div class="plugin-description">
-            {{ item.summary }}
-        </div>
-        <div class="plugin-description">
-            {% if item.promotion == 1 %}
-                {{ item.description|ellipsis(500) }}
-            {% else %}
-                {{ item.description|ellipsis(400) }}
-            {% endif %}
-        </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="plugin-content-bottom">
-        <dl class="plugin-meta dl-horizontal">
-            <dt class="plugin-price">{{'admin.store.plugin_owners_search.874'|trans}}</dt><dd>{{ item.price|price }}</dd>
-            <dt class="plugin-dowload">{{'admin.store.plugin_owners_search.875'|trans}}</dt><dd>{{ item.download_number }}</dd>
-            <dt class="plugin-version">{{'admin.store.plugin_owners_search.876'|trans}}</dt><dd>{{ item.version }}</dd>
-            <dt class="plugin-update">{{'admin.store.plugin_owners_search.877'|trans}}</dt><dd>{{ item.last_update_date|time_ago }}</dd>
-            <dt class="plugin-eccubeversion">{{'admin.store.plugin_owners_search.878'|trans}}</dt><dd>{% for version in item.eccube_version %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>
-            <dt class="plugin-size">{{ 'admin.store.plugin_owners_confirm.848.1'|trans }}</dt><dd>{{ 'admin.store.plugin_owners_confirm.848.2'|trans }} {{ (item.file_size / 1024)|round(0, 'ceil')|number_format }} KB</dd>
-            <dt class="plugin-licence">{{'admin.store.plugin_owners_search.880'|trans}}</dt><dd>{{ item.licence }}</dd>
-        </dl>
-        {% if version_check == 0 %}
-            <p class="text-danger">{{ 'admin.store.plugin_owners_confirm.850'|trans({"%version%": constant('Eccube\\Common\\Constant::VERSION') }) }}</p>
-        {% endif %}
-        {% if item.depend is not empty %}
-            {% for depend in item.depend %}
-                <p class="text-danger">{{ 'admin.store.plugin_owners_search.882'|trans({"%dependency%" : depend.name})  }}</p>
-            {% endfor %}
-        {% endif %}
-        <p class="plugin-developer">
-            <strong>{{'admin.store.plugin_owners_search.883'|trans}}</strong> : {% if item.developer_url is not null %}<a href="{{ item.developer_url }}" target="_blank">{{ item.developer }}</a>{% else %}{{ item.developer }}{% endif %}
-        </p>
     </div>
 </div>

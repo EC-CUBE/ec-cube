@@ -27,13 +27,13 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new ProductEditPage($I);
-        return $page->goPage('/product/product/new', '商品管理商品登録');
+        return $page->goPage('/product/product/new', '商品登録商品管理');
     }
 
     public static function at($I)
     {
         $page = new ProductEditPage($I);
-        $page->tester->see('商品管理商品登録', '#page_admin_product_product_edit > div.c-container > div.c-contentsArea > div > div');
+        $page->tester->see('商品登録商品管理', '#page_admin_product_product_edit > div.c-container > div.c-contentsArea > div > div');
         return $page;
     }
 
@@ -97,7 +97,7 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
 
     public function プレビュー()
     {
-        $this->tester->click(['xpath' => "//*[@id='preview']/div/div/a[text()='プレビュー']"]);
+        $this->tester->click(['xpath' => "//*[@id='preview']/div/div/a[text()='商品を確認']"]);
     }
 
 }
