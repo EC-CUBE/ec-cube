@@ -161,7 +161,7 @@ class OrderPdfType extends AbstractType
                 $expected = count($ids);
                 if ($actual != $expected) {
                     $form['ids']->addError(
-                        new FormError(trans('admin.order.export.pdf.parameter.not.found'))
+                        new FormError(trans('admin.order.delivery_note_parameter_error'))
                     );
                 }
             });

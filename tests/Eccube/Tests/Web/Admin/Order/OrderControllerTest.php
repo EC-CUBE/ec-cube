@@ -542,7 +542,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->actual = $Result['status'];
         $this->verify();
 
-        $this->expected = trans('form.type.admin.nottrackingnumberstyle');
+        $this->expected = '送り状番号は半角英数字かハイフンのみを入力してください。';
         $this->actual = $Result['messages'][0];
         $this->verify();
     }

@@ -371,7 +371,7 @@ admin.common.save_error: 保存に失敗しました
 admin.common.delete_complete: 削除しました
 admin.common.delete_error: 削除に失敗しました
 admin.common.delete_error_foreign_key: 関連するデータがあるため「%name%」を削除できませんでした
-admin.common.delete_error_already_deleted: すでに削除されています
+admin.common.delete_error_already_deleted: 既に削除されています
 admin.common.move_complete: 並び順を更新しました
 admin.common.move_error: 並び順の更新に失敗しました
 admin.common.upload_complete: アップロードしました

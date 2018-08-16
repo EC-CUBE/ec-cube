@@ -598,7 +598,7 @@ class OrderController extends AbstractController
         $ids = $request->get('ids', []);
 
         if (count($ids) == 0) {
-            $this->addError('admin.order.export.pdf.parameter.not.found', 'admin');
+            $this->addError('admin.order.delivery_note_parameter_error', 'admin');
             log_info('The Order cannot found!');
 
             return $this->redirectToRoute('admin_order');

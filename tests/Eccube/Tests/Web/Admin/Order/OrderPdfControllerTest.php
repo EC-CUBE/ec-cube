@@ -179,7 +179,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->followRedirect();
 
         $html = $crawler->filter('.alert')->html();
-        $this->assertContains('注文番号がありません。', $html);
+        $this->assertContains('出荷IDが指定されていません', $html);
     }
 
     /**
