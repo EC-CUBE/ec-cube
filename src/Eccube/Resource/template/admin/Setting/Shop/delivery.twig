@@ -23,69 +23,72 @@ file that was distributed with this source code.
     <script>
         $(function() {
             var oldSortNos = [];
-            $('.sortable-item').each(function () {
+            $('.sortable-item').each(function() {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            oldSortNos.sort(function (a, b) {
+            oldSortNos.sort(function(a, b) {
                 return a - b;
             }).reverse();
             // 並び替え後にsort noを更新
-            var updateSortNo = function () {
+            var updateSortNo = function() {
                 var newSortNos = {};
                 var i = 0;
-                $('.sortable-item').each(function () {
+                $('.sortable-item').each(function() {
                     newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
                 $.ajax({
                     url: '{{ url('admin_setting_shop_delivery_sort_no_move') }}',
                     type: 'POST',
-                    headers: {
-                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
-                    },
                     data: newSortNos
-                }).always(function () {
+                }).always(function() {
                     $(".modal-backdrop").remove();
                 });
             };
             // 最初と最後の↑↓を再描画
-            var redrawDisableAllows = function () {
+            var redrawDisableAllows = function() {
                 var items = $('.sortable-item');
                 items.find('a').removeClass('disabled');
                 items.first().find('a.action-up').addClass('disabled');
                 items.last().find('a.action-down').addClass('disabled');
             };
             // オーバレイ後, 表示順の更新を行う
-            var moveSortNo = function () {
+            var moveSortNo = function() {
                 $('body').append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
                 redrawDisableAllows();
-            }
+            };
             // Drag and Drop
             $(".sortable-container").sortable({
                 items: '> .sortable-item',
                 cursor: 'move',
-                update: function (e, ui) {
+                update: function(e, ui) {
                     moveSortNo();
                 }
             });
             // Up
-            $(".sortable-item").on('click', 'a.action-up', function (e) {
+            $('.sortable-item').on('click', 'a.action-up', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
                 if (current.prev().hasClass('sortable-item')) {
                     current.prev().before(current);
                     moveSortNo();
                 }
             });
             // Down
-            $(".sortable-item").on('click', 'a.action-down', function (e) {
+            $('.sortable-item').on('click', 'a.action-down', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
                 if (current.next().hasClass('sortable-item')) {
                     current.next().after(current);
                     moveSortNo();
                 }
+            });
+
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
+                var target = $(event.relatedTarget);
+                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
             });
         });
     </script>
@@ -102,7 +105,7 @@ file that was distributed with this source code.
                                 <ul class="list-group list-group-flush sortable-container">
                                     {% if Deliveries|length > 0 %}
                                         {% for Delivery in Deliveries %}
-                                            <li class="list-group-item sortable-item" data-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
+                                            <li id="ex-delivery-{{ Delivery.id }}" class="list-group-item sortable-item" data-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
                                                 <div class="row justify-content-around">
                                                     <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                                     <div class="col d-flex align-items-center">
@@ -117,15 +120,51 @@ file that was distributed with this source code.
                                                         <a href="#" class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                            <i class="fa fa-close fa-lg text-secondary"></i>
-                                                        </a>
+                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}">
+                                                                <i class="fa fa-close fa-lg"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </li>
                                         {% endfor %}
                                     {% endif %}
                                 </ul>
+                                <div class="modal fade" id="delete_modal" tabindex="-1"
+                                     role="dialog"
+                                     aria-labelledby="delete_modal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                {# TODO モーダルのタイトルの設定 #}
+                                                <h5 class="modal-title font-weight-bold">
+                                                    配送方法を削除します</h5>
+                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            </div>
+                                            <div class="modal-body text-left">
+                                                {# TODO モーダルの文章の設定 #}
+                                                <p class="text-left">
+                                                    この配送方法を削除しますか？</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-ec-sub" type="button"
+                                                        data-dismiss="modal">
+                                                    {{ 'admin.common.label.cancel'|trans }}
+                                                </button>
+                                                <a
+                                                        href="#"
+                                                        class="btn btn-ec-delete"
+                                                        data-confirm="false"
+                                                        {{ csrf_token_for_anchor() }}
+                                                        data-method="delete">
+                                                    {{ 'admin.common.label.delete'|trans }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

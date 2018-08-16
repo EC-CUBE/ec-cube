@@ -145,7 +145,7 @@ class PluginService
      * @param string $path   path to tar.gz/zip plugin file
      * @param int    $source
      *
-     * @return mixed
+     * @return boolean
      *
      * @throws PluginException
      * @throws \Exception
@@ -269,8 +269,8 @@ class PluginService
     }
 
     /**
-     * @param $archive
-     * @param $dir
+     * @param string $archive
+     * @param string $dir
      *
      * @throws PluginException
      */
@@ -339,6 +339,9 @@ class PluginService
         }
     }
 
+    /**
+     * @param string $yml
+     */
     public function readYml($yml)
     {
         if (file_exists($yml)) {
@@ -356,6 +359,9 @@ class PluginService
         // ディレクトリ名などに使われれるので厳しめ
     }
 
+    /**
+     * @param string $path
+     */
     public function deleteFile($path)
     {
         $f = new Filesystem();
@@ -376,7 +382,7 @@ class PluginService
     }
 
     /**
-     * @param $d
+     * @param string $d
      *
      * @throws PluginException
      */
@@ -443,7 +449,7 @@ class PluginService
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
-            throw new PluginException($e->getMessage());
+            throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $p;
@@ -451,7 +457,7 @@ class PluginService
 
     /**
      * @param $meta
-     * @param $method
+     * @param string $method
      */
     public function callPluginManagerMethod($meta, $method)
     {
@@ -985,7 +991,7 @@ class PluginService
      * [プラグインコード]/Resource/assets
      * 配下に置かれているファイルが所定の位置へコピーされる
      *
-     * @param $pluginBaseDir
+     * @param string $pluginBaseDir
      * @param $pluginCode
      */
     public function copyAssets($pluginBaseDir, $pluginCode)
@@ -1002,7 +1008,7 @@ class PluginService
     /**
      * コピーしたリソースファイル等を削除
      *
-     * @param $pluginCode
+     * @param string $pluginCode
      */
     public function removeAssets($pluginCode)
     {
@@ -1021,7 +1027,7 @@ class PluginService
      * @param string $pluginVersion
      * @param string $remoteVersion
      *
-     * @return mixed
+     * @return boolean
      */
     public function isUpdate($pluginVersion, $remoteVersion)
     {

@@ -19,12 +19,11 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductTag;
 use Eccube\Repository\TagRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class TagController extends AbstractController
 {
@@ -43,7 +42,6 @@ class TagController extends AbstractController
      * @Template("@admin/Product/tag.twig")
      *
      * @param Request $request
-     * @param Tag|null $Tag
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -126,8 +124,7 @@ class TagController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/product/tag/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_tag_delete")
+     * @Route("/%eccube_admin_route%/product/tag/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_tag_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Tag $Tag)
     {
@@ -159,8 +156,7 @@ class TagController extends AbstractController
     }
 
     /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/product/tag/sort_no/move", name="admin_product_tag_sort_no_move")
+     * @Route("/%eccube_admin_route%/product/tag/sort_no/move", name="admin_product_tag_sort_no_move", methods={"POST"})
      */
     public function moveSortNo(Request $request)
     {

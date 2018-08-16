@@ -16,9 +16,9 @@ namespace Eccube\Controller\Admin\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -42,11 +42,10 @@ use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
 use Knp\Component\Pager\Paginator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -248,11 +247,19 @@ class EditController extends AbstractController
                             break;
                         }
 
-                        // ステータスが変更されている場合はステートマシンを実行.
                         $OldStatus = $OriginOrder->getOrderStatus();
                         $NewStatus = $TargetOrder->getOrderStatus();
 
+                        // ステータスが変更されている場合はステートマシンを実行.
                         if ($TargetOrder->getId() && $OldStatus->getId() != $NewStatus->getId()) {
+                            // 発送済に変更された場合は, 発送日をセットする.
+                            if ($NewStatus->getId() == OrderStatus::DELIVERED) {
+                                $TargetOrder->getShippings()->map(function (Shipping $Shipping) {
+                                    if (!$Shipping->isShipped()) {
+                                        $Shipping->setShippingDate(new \DateTime());
+                                    }
+                                });
+                            }
                             // ステートマシンでステータスは更新されるので, 古いステータスに戻す.
                             $TargetOrder->setOrderStatus($OldStatus);
                             // FormTypeでステータスの遷移チェックは行っているのでapplyのみ実行.
@@ -454,8 +461,7 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id")
+     * @Route("/%eccube_admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id", methods={"POST"})
      *
      * @param Request $request
      *
@@ -581,7 +587,7 @@ class EditController extends AbstractController
             foreach ($Products as $Product) {
                 /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
                 $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, [
-                    'product' => $Product,
+                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId()),
                 ]);
                 $addCartForm = $builder->getForm();
                 $forms[$Product->getId()] = $addCartForm->createView();
@@ -624,7 +630,8 @@ class EditController extends AbstractController
             $criteria
                 ->where($criteria->expr()->andX(
                     $criteria->expr()->neq('id', OrderItemType::PRODUCT),
-                    $criteria->expr()->neq('id', OrderItemType::TAX)
+                    $criteria->expr()->neq('id', OrderItemType::TAX),
+                    $criteria->expr()->neq('id', OrderItemType::POINT)
                 ))
                 ->orderBy(['sort_no' => 'ASC']);
 

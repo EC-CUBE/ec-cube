@@ -104,7 +104,7 @@ file that was distributed with this source code.
                     url: "{{ url('shopping_customer') }}",
                     type: 'POST',
                     data: postData,
-                    dataType: 'json',
+                    dataType: 'json'
                 }).done(function(data) {
                     if (data.status == 'OK') {
                         // kana field
@@ -333,6 +333,7 @@ file that was distributed with this source code.
                         <button type="button" class="ec-inlineBtn btn-shipping-multiple">{{'shopping.label.btn.delivery_address'|trans}}</button>
                     </div>
                 </div>
+                {{ eccube_block_sample_payment_credit_form({ Order: Order, form: form }) }}
                 <div class="ec-orderPayment">
                     <div class="ec-rectHeading">
                         <h2>{{ 'shopping.label.payment_method'|trans }}</h2>

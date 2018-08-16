@@ -14,22 +14,21 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Eccube\Util\FilesystemUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Util\FilesystemUtil;
-use Symfony\Component\Filesystem\Exception\IOException;
 
 class FileController extends AbstractController
 {
@@ -63,7 +62,7 @@ class FileController extends AbstractController
         // user_data_dir
         $userDataDir = $this->getUserDataDir();
         $topDir = $this->normalizePath($userDataDir);
-//        $topDir = '/';
+        //        $topDir = '/';
         // user_data_dirの親ディレクトリ
         $htmlDir = $this->normalizePath($this->getUserDataDir().'/../');
 
@@ -180,15 +179,19 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/content/file_delete", name="admin_content_file_delete")
+     * @Route("/%eccube_admin_route%/content/file_delete", name="admin_content_file_delete", methods={"DELETE"})
      */
     public function delete(Request $request)
     {
         $this->isTokenValid();
 
+        $selectFile = $request->get('select_file');
+        if (is_null($selectFile) || $selectFile == '/') {
+            return $this->redirectToRoute('admin_content_file');
+        }
+
         $topDir = $this->getUserDataDir();
-        $file = $this->convertStrToServer($this->getUserDataDir($request->get('select_file')));
+        $file = $this->convertStrToServer($this->getUserDataDir($selectFile));
         if ($this->checkDir($file, $topDir)) {
             $fs = new Filesystem();
             if ($fs->exists($file)) {
@@ -301,6 +304,10 @@ class FileController extends AbstractController
         return $paths;
     }
 
+    /**
+     * @param string $topDir
+     * @param Request $request
+     */
     private function getTree($topDir, $request)
     {
         $finder = Finder::create()->in($topDir)
@@ -337,6 +344,9 @@ class FileController extends AbstractController
         return $tree;
     }
 
+    /**
+     * @param string $nowDir
+     */
     private function getFileList($nowDir)
     {
         $topDir = $this->getuserDataDir();
@@ -350,6 +360,7 @@ class FileController extends AbstractController
         $finder = Finder::create()
             ->filter($filter)
             ->in($nowDir)
+            ->ignoreDotFiles(false)
             ->sortByName()
             ->depth(0);
         $dirFinder = $finder->directories();
@@ -371,10 +382,12 @@ class FileController extends AbstractController
             $dirPath = $this->normalizePath($dir->getRealPath());
             $childDir = Finder::create()
                 ->in($dirPath)
+                ->ignoreDotFiles(false)
                 ->directories()
                 ->depth(0);
             $childFile = Finder::create()
                 ->in($dirPath)
+                ->ignoreDotFiles(false)
                 ->files()
                 ->depth(0);
             $countNumber = $childDir->count() + $childFile->count();
@@ -407,6 +420,9 @@ class FileController extends AbstractController
         return str_replace('\\', '/', realpath($path));
     }
 
+    /**
+     * @param string $topDir
+     */
     protected function checkDir($targetDir, $topDir)
     {
         $targetDir = realpath($targetDir);
@@ -415,6 +431,9 @@ class FileController extends AbstractController
         return strpos($targetDir, $topDir) === 0;
     }
 
+    /**
+     * @return string
+     */
     private function convertStrFromServer($target)
     {
         if ($this->encode == self::SJIS) {

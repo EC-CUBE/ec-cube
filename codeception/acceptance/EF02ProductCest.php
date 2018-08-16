@@ -45,7 +45,7 @@ class EF02ProductCest
         $topPage->カテゴリ選択(['キッチンツール']);
 
         // 各商品のサムネイルが表示される デフォルトは価格順
-        $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[1]"]);
+        $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[2]"]);
         $pPos = 0;
         $fPos = 0;
         foreach ($products as $key => $product) {
@@ -140,7 +140,7 @@ class EF02ProductCest
         ProductDetailPage::go($I, 2);
 
         // 「カートに入れる」ボタンが、非活性となり「ただいま品切れ中です」と表示される。
-        $I->see('ただいま品切れ中です','#form1 button');
+        $I->see('ただいま品切れ中です', '#form1 button');
     }
 
     public function product_商品詳細カテゴリリンク(\AcceptanceTester $I)

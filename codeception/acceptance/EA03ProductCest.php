@@ -3,13 +3,13 @@
 use Codeception\Util\Fixtures;
 use Page\Admin\CategoryCsvUploadPage;
 use Page\Admin\CategoryManagePage;
-use Page\Admin\CsvSettingsPage;
 use Page\Admin\ClassCategoryManagePage;
 use Page\Admin\ClassNameManagePage;
+use Page\Admin\CsvSettingsPage;
 use Page\Admin\ProductClassEditPage;
 use Page\Admin\ProductCsvUploadPage;
-use Page\Admin\ProductManagePage;
 use Page\Admin\ProductEditPage;
+use Page\Admin\ProductManagePage;
 
 /**
  * @group admin
@@ -77,8 +77,8 @@ class EA03ProductCest
         $I->wantTo('EA0301-UC01-T03 規格確認のポップアップを表示');
 
         ProductManagePage::go($I)
-            ->検索()
-            ->規格確認ボタンをクリック()
+            ->検索(1)
+            ->規格確認ボタンをクリック(1)
             ->規格確認をキャンセル();
 
         $I->dontSeeElement(['css' => 'div.modal.show']);
@@ -89,8 +89,8 @@ class EA03ProductCest
         $I->wantTo('EA0301-UC01-T04 ポップアップから規格編集画面に遷移');
 
         ProductManagePage::go($I)
-            ->検索()
-            ->規格確認ボタンをクリック()
+            ->検索(1)
+            ->規格確認ボタンをクリック(1)
             ->規格編集画面に遷移();
 
         $I->see('商品登録（規格設定）商品管理', self::ページタイトルStyleGuide);
@@ -468,7 +468,7 @@ class EA03ProductCest
         $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
         // remove added class
         ClassNameManagePage::go($I)->一覧_削除(1)
-            ->acceptModal(1);
+            ->acceptModal();
     }
 
     public function product_規格削除(\AcceptanceTester $I)
@@ -482,7 +482,7 @@ class EA03ProductCest
             ->規格作成();
 
         ClassNameManagePage::go($I)->一覧_削除(1)
-            ->acceptModal(1);
+            ->acceptModal();
 
         $I->see('規格を削除しました。', ClassNameManagePage::$登録完了メッセージ);
     }
@@ -569,7 +569,7 @@ class EA03ProductCest
 
         // delete test
         $ProductClassCategoryPage->一覧_削除(1)
-            ->acceptModal(1);
+            ->acceptModal();
 
         $I->see('分類を削除しました。', ClassCategoryManagePage::$登録完了メッセージ);
     }
@@ -617,12 +617,12 @@ class EA03ProductCest
         $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
 
         // カテゴリ削除 (children)
-        $CategoryPage->一覧_削除(2);
-        $I->acceptPopup();
+        $CategoryPage->一覧_削除(2)
+            ->acceptModal();
 
         // Delete category root
-        CategoryManagePage::go($I)->一覧_削除(2);
-        $I->acceptPopup();
+        CategoryManagePage::go($I)->一覧_削除(2)
+            ->acceptModal();
     }
 
     public function product_カテゴリ表示順の変更(\AcceptanceTester $I)
@@ -729,4 +729,39 @@ class EA03ProductCest
         $I->switchToNewWindow();
         $I->seeInCurrentUrl('/products/detail/');
     }
+
+    public function product_商品編集からの商品確認_公開(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0310-UC05-T02 編集からの商品確認 公開');
+
+        ProductManagePage::go($I)
+            ->検索('パーコレーター')
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->入力_公開()
+            ->登録()
+            ->プレビュー();
+
+        $I->switchToNewWindow();
+        $I->seeInCurrentUrl('/products/detail/');
+    }
+
+    public function product_商品編集からの商品確認_非公開(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0310-UC05-T03 編集からの商品確認 非公開');
+
+        ProductManagePage::go($I)
+            ->検索('パーコレーター')
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->入力_非公開()
+            ->登録()
+            ->プレビュー();
+
+        $I->switchToNewWindow();
+        $I->seeInCurrentUrl('/products/detail/');
+    }
+
 }

@@ -129,6 +129,9 @@ file that was distributed with this source code.
                                 {{ form_widget(form.job, { type: 'hidden'}) }}
                             </dd>
                         </dl>
+
+                        {{ form_widget(form.user_policy_check, { type: 'hidden'}) }}
+
                         {# エンティティ拡張の自動出力 #}
                         {% for f in form if f.vars.eccube_form_options.auto_render %}
                             {% if f.vars.eccube_form_options.form_theme %}

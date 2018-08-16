@@ -18,10 +18,11 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Util\CacheUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Twig_Environment;
 
 /**
@@ -42,11 +43,12 @@ class ShopController extends AbstractController
     /**
      * ShopController constructor.
      *
-     * @param BaseInfo $BaseInfo
+     * @param Twig_Environment $twig
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(Twig_Environment $twig, BaseInfo $BaseInfo)
+    public function __construct(Twig_Environment $twig, BaseInfoRepository $baseInfoRepository)
     {
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->twig = $twig;
     }
 
@@ -84,15 +86,15 @@ class ShopController extends AbstractController
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
-                  [
-                    'form' => $form,
-                    'BaseInfo' => $this->BaseInfo,
-                  ],
-                  $request
+                    [
+                        'form' => $form,
+                        'BaseInfo' => $this->BaseInfo,
+                    ],
+                    $request
                 );
                 $this->eventDispatcher->dispatch(
-                  EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
-                  $event
+                    EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
+                    $event
                 );
 
                 $cacheUtil->clearCache();

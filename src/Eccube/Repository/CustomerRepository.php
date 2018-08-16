@@ -308,20 +308,28 @@ class CustomerRepository extends AbstractRepository
     }
 
     /**
-     * 本会員をリセットキーで検索する.
+     * 本会員をリセットキー、またはリセットキーとメールアドレスで検索する.
      *
      * @param $resetKey
+     * @param $email
      *
      * @return null|Customer 見つからない場合はnullを返す.
      */
-    public function getRegularCustomerByResetKey($resetKey)
+    public function getRegularCustomerByResetKey($resetKey, $email = null)
     {
-        return $this->createQueryBuilder('c')
+        $qb = $this->createQueryBuilder('c')
             ->where('c.reset_key = :reset_key AND c.Status = :status AND c.reset_expire >= :reset_expire')
             ->setParameter('reset_key', $resetKey)
             ->setParameter('status', CustomerStatus::REGULAR)
-            ->setParameter('reset_expire', new \DateTime())
-            ->setMaxResults(1)
+            ->setParameter('reset_expire', new \DateTime());
+
+        if ($email) {
+            $qb
+                ->andWhere('c.email = :email')
+                ->setParameter('email', $email);
+        }
+
+        return $qb->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
     }

@@ -278,8 +278,8 @@ class OrderRepository extends AbstractRepository
             $multi = preg_match('/^\d{0,10}$/', $searchData['multi']) ? $searchData['multi'] : null;
             $qb
                 ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR '.
-                           'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti OR '.
-                           'o.order_no LIKE :likemulti')
+                            'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti OR '.
+                            'o.order_no LIKE :likemulti')
                 ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%'.$searchData['multi'].'%');
         }
@@ -433,9 +433,18 @@ class OrderRepository extends AbstractRepository
         }
 
         // 発送メール送信済かどうか.
-        if (isset($searchData['shipping_mail_send']) && $searchData['shipping_mail_send']) {
-            $qb
-                ->andWhere('s.mail_send_date IS NOT NULL');
+        if (isset($searchData['shipping_mail_send']) && count($searchData['shipping_mail_send']) > 0) {
+            $orExpr = [];
+            foreach ($searchData['shipping_mail_send'] as $shippingMailSend) {
+                if ($shippingMailSend) {
+                    $orExpr[] = $qb->expr()->isNotNull('s.mail_send_date');
+                } else {
+                    $orExpr[] = $qb->expr()->isNull('s.mail_send_date');
+                }
+            }
+            if ($orExpr) {
+                $qb->andWhere($qb->expr()->orX(...$orExpr));
+            }
         }
 
         // 送り状番号.
@@ -537,7 +546,7 @@ class OrderRepository extends AbstractRepository
     /**
      * ステータスごとの受注件数を取得する.
      *
-     * @param $OrderStatusOrId
+     * @param integer $OrderStatusOrId
      *
      * @return int
      *

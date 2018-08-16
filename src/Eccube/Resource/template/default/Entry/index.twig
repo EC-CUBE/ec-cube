@@ -21,7 +21,7 @@ file that was distributed with this source code.
 {% block main %}
     <div class="ec-registerRole">
         <div class="ec-pageHeader">
-            <h1>{{'signup.label.new_registration'|trans}}</h1>
+            <h1>{{ 'signup.label.new_registration'|trans }}</h1>
         </div>
         <div class="ec-off1Grid">
             <div class="ec-off1Grid__cell">
@@ -34,13 +34,13 @@ file that was distributed with this source code.
                                 {{ form_label(form.name, 'Name', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
-                                <div class="ec-halfInput{{ has_errors(form.name.name01, form.name.name02) ? ' error'}}">
+                                <div class="ec-halfInput{{ has_errors(form.name.name01, form.name.name02) ? ' error' }}">
                                     {% if eccube_config.locale == "ja" %}
-                                        {{ form_widget(form.name.name01, {'attr': {'placeholder': 'signup.label.family_name'}}) }}                                    
+                                        {{ form_widget(form.name.name01, {'attr': {'placeholder': 'signup.label.family_name'}}) }}
                                     {% endif %}
                                     {{ form_widget(form.name.name02, {'attr': {'placeholder': 'signup.label.first_name'}}) }}
                                     {% if eccube_config.locale != "ja" %}
-                                        {{ form_widget(form.name.name01, {'attr': {'placeholder': 'signup.label.family_name'}}) }}                                    
+                                        {{ form_widget(form.name.name01, {'attr': {'placeholder': 'signup.label.family_name'}}) }}
                                     {% endif %}
                                     {{ form_errors(form.name.name01) }}
                                     {{ form_errors(form.name.name02) }}
@@ -48,21 +48,21 @@ file that was distributed with this source code.
                             </dd>
                         </dl>
                         {% if eccube_config.locale == "ja" %}
-                        <dl>
-                            <dt>
+                            <dl>
+                                <dt>
 
-                                {{ form_label(form.kana, 'signup.label.name_kana', {'label_attr': {'class': 'ec-label'}}) }}
-                            </dt>
-                            <dd>
-                                <div class="ec-halfInput{{ has_errors(form.kana.kana01, form.kana.kana02) ? ' error'}}">
-                                    {{ form_widget(form.kana.kana01, {'attr': {'placeholder': 'signup.label.family_name_kana'}}) }}
-                                    {{ form_widget(form.kana.kana02, {'attr': {'placeholder': 'signup.label.last_name_kana'}}) }}
-                                    {{ form_errors(form.kana.kana01) }}
-                                    {{ form_errors(form.kana.kana02) }}
-                                </div>
-                            </dd>
-                        </dl>
-                        {%  endif %}
+                                    {{ form_label(form.kana, 'signup.label.name_kana', {'label_attr': {'class': 'ec-label'}}) }}
+                                </dt>
+                                <dd>
+                                    <div class="ec-halfInput{{ has_errors(form.kana.kana01, form.kana.kana02) ? ' error' }}">
+                                        {{ form_widget(form.kana.kana01, {'attr': {'placeholder': 'signup.label.family_name_kana'}}) }}
+                                        {{ form_widget(form.kana.kana02, {'attr': {'placeholder': 'signup.label.last_name_kana'}}) }}
+                                        {{ form_errors(form.kana.kana01) }}
+                                        {{ form_errors(form.kana.kana02) }}
+                                    </div>
+                                </dd>
+                            </dl>
+                        {% endif %}
                         <dl>
                             <dt>
                                 {{ form_label(form.company_name, 'signup.label.company_name', {'label_attr': {'class': 'ec-label'}}) }}
@@ -84,40 +84,40 @@ file that was distributed with this source code.
                                     {{ form_errors(form.postal_code) }}
                                 </div>
                                 {% if eccube_config.locale == "ja" %}
-                                <div class="ec-zipInputHelp">
-                                    <a href="http://www.post.japanpost.jp/zipcode/"
-                                                                target="_blank">
-                                        <div class="ec-zipInputHelp__icon">
-                                            <div class="ec-icon"><img src="{{ asset('assets/icon/question-white.svg') }}" alt=""></div>
-                                        </div>
-                                        <span>郵便番号検索</span>
-                                    </a>
-                                </div>
-                                <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
-                                    {{ form_widget(form.address.pref) }}
-                                    {{ form_errors(form.address.pref) }}
-                                </div>
-                                <div class="ec-input{{ has_errors(form.address.addr01) ? ' error' }}">
-                                    {{ form_widget(form.address.addr01, {'attr': {'placeholder': 'signup.label.city_town_village' }}) }}
-                                    {{ form_errors(form.address.addr01) }}
-                                </div>
-                                <div class="ec-input{{ has_errors(form.address.addr02) ? ' error' }}">
-                                    {{ form_widget(form.address.addr02, {'attr': {'placeholder': 'signup.label.house_number' }}) }}
-                                    {{ form_errors(form.address.addr02) }}
-                                </div>
+                                    <div class="ec-zipInputHelp">
+                                        <a href="http://www.post.japanpost.jp/zipcode/"
+                                           target="_blank">
+                                            <div class="ec-zipInputHelp__icon">
+                                                <div class="ec-icon"><img src="{{ asset('assets/icon/question-white.svg') }}" alt=""></div>
+                                            </div>
+                                            <span>郵便番号検索</span>
+                                        </a>
+                                    </div>
+                                    <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
+                                        {{ form_widget(form.address.pref) }}
+                                        {{ form_errors(form.address.pref) }}
+                                    </div>
+                                    <div class="ec-input{{ has_errors(form.address.addr01) ? ' error' }}">
+                                        {{ form_widget(form.address.addr01, {'attr': {'placeholder': 'signup.label.city_town_village' }}) }}
+                                        {{ form_errors(form.address.addr01) }}
+                                    </div>
+                                    <div class="ec-input{{ has_errors(form.address.addr02) ? ' error' }}">
+                                        {{ form_widget(form.address.addr02, {'attr': {'placeholder': 'signup.label.house_number' }}) }}
+                                        {{ form_errors(form.address.addr02) }}
+                                    </div>
                                 {% else %}
-                                <div class="ec-input{{ has_errors(form.address.addr01) ? ' error' }}">
-                                    {{ form_widget(form.address.addr01, {'attr': {'placeholder': 'signup.label.city_town_village' }}) }}
-                                    {{ form_errors(form.address.addr01) }}
-                                </div>
-                                <div class="ec-input{{ has_errors(form.address.addr02) ? ' error' }}">
-                                    {{ form_widget(form.address.addr02, {'attr': {'placeholder': 'signup.label.house_number' }}) }}
-                                    {{ form_errors(form.address.addr02) }}
-                                </div>
-                                <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
-                                    {{ form_widget(form.address.pref) }}
-                                    {{ form_errors(form.address.pref) }}
-                                </div>
+                                    <div class="ec-input{{ has_errors(form.address.addr01) ? ' error' }}">
+                                        {{ form_widget(form.address.addr01, {'attr': {'placeholder': 'signup.label.city_town_village' }}) }}
+                                        {{ form_errors(form.address.addr01) }}
+                                    </div>
+                                    <div class="ec-input{{ has_errors(form.address.addr02) ? ' error' }}">
+                                        {{ form_widget(form.address.addr02, {'attr': {'placeholder': 'signup.label.house_number' }}) }}
+                                        {{ form_errors(form.address.addr02) }}
+                                    </div>
+                                    <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
+                                        {{ form_widget(form.address.pref) }}
+                                        {{ form_errors(form.address.pref) }}
+                                    </div>
                                 {% endif %}
                             </dd>
                         </dl>
@@ -173,7 +173,7 @@ file that was distributed with this source code.
                                 {{ form_label(form.birth, 'signup.label.dob', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
-                                <div class="ec-birth{{ has_errors(form.birth) ? ' error'}}">
+                                <div class="ec-birth{{ has_errors(form.birth) ? ' error' }}">
                                     {{ form_widget(form.birth.year) }}<span>/</span>
                                     {{ form_widget(form.birth.month) }}<span>/</span>
                                     {{ form_widget(form.birth.day) }}
@@ -226,12 +226,15 @@ file that was distributed with this source code.
                     <div class="ec-registerRole__actions">
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
-                                <p><span></span>
-                                    <a class="ec-link" href="{{ url('help_agreement') }}" target="_blank">{{'signup.label.btn.user_policy'|trans}}</a>
-                                    {{'signup.text.message.accept_terms_conditions'|trans}}<span></span>
-                                </p>
-                                <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">{{'signup.label.radio.accept'|trans}}</button>
-                                <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'signup.label.radio.decline'|trans}}</a>
+                                <div class="ec-checkbox{{ has_errors(form.user_policy_check) ? ' error' }}">
+                                    <label>
+                                        {{ form_widget(form.user_policy_check) }}
+                                        <a class="ec-link" href="{{ url('help_agreement') }}" target="_blank">{{ 'signup.label.btn.user_policy'|trans }}</a>{{ 'signup.text.message.accept_terms_conditions'|trans }}
+                                    </label>
+                                    {{ form_errors(form.user_policy_check) }}
+                                </div>
+                                <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">{{ 'signup.label.radio.accept'|trans }}</button>
+                                <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'signup.label.radio.decline'|trans }}</a>
                             </div>
                         </div>
                     </div>

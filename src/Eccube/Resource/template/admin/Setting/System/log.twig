@@ -13,36 +13,34 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'system', 'log'] %}
 
-{% block title %}{{'admin.setting.system.log.671'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.system.log.670'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.system.log.671'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system.log.670'|trans }}{% endblock %}
 
 {% block main %}
     <div class="c-outsideBlock">
         <div class="c-outsideBlock__contents">
             <div class="card rounded border-0 mb-4">
-                <div class="card-header"><span class="card-title">{{'admin.setting.system.log.672'|trans}}</span></div>
+                <div class="card-header"><span class="card-title">{{ 'admin.setting.system.log.672'|trans }}</span></div>
                 <div class="card-body">
-                    <div id="log_conditions_box">
-                        <form name="form1" id="form1" method="post">
-                            {{ form_widget(form._token) }}
-                            <div id="log_conditions_box__body" class="form-inline form-group">
-                                <div  id="log_conditions_box__files" class="form-group pr-3">
-                                    {{ form_widget(form.files) }}
-                                </div>
-                                <div id="log_conditions_box__line_max" class="form-group pr-3">
-                                    {{ form_widget(form.line_max, {'id': 'line-max'}) }}{{'admin.setting.system.log.673'|trans}}
-                                </div>
-                                <div id="log_conditions_box__confirm_button" class="form-group pr-3">
-                                    <button type="submit" class="btn btn-ec-conversion">{{'admin.setting.system.log.674'|trans}}</button>
-                                </div>
-                                {{ form_errors(form.line_max) }}
+                    <form name="form1" id="form1" method="post">
+                        {{ form_widget(form._token) }}
+                        <div class="form-inline form-group">
+                            <div class="form-group pr-3">
+                                {{ form_widget(form.files) }}
                             </div>
-                        </form>
-                    </div>
-                    <div id="log_view">
-<textarea id="log" class="form-control" rows="20"  wrap="off" readonly>
+                            <div class="form-group pr-3">
+                                {{ form_widget(form.line_max, {'id': 'line-max'}) }}{{ 'admin.setting.system.log.673'|trans }}
+                            </div>
+                            <div class="form-group pr-3">
+                                <button type="submit" class="btn btn-ec-conversion">{{ 'admin.setting.system.log.674'|trans }}</button>
+                            </div>
+                            {{ form_errors(form.line_max) }}
+                        </div>
+                    </form>
+                    <div>
+<textarea class="form-control" rows="20" wrap="off" readonly>
 {% for line in log %}
-{{ line }}
+    {{ line }}
 {% endfor %}
 </textarea>
                     </div>

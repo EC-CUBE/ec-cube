@@ -16,11 +16,8 @@ namespace Eccube\Controller\Block;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Cart;
 use Eccube\Service\CartService;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
@@ -29,17 +26,10 @@ class CartController extends AbstractController
      */
     protected $cartService;
 
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
-
     public function __construct(
-        CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow
+        CartService $cartService
     ) {
         $this->cartService = $cartService;
-        $this->purchaseFlow = $cartPurchaseFlow;
     }
 
     /**
@@ -81,15 +71,5 @@ class CartController extends AbstractController
                 'Carts' => $Carts,
             ]);
         }
-    }
-
-    protected function execPurchaseFlow($Carts)
-    {
-        /** @var PurchaseFlowResult[] $flowResults */
-        $flowResults = array_map(function ($Cart) {
-            $purchaseContext = new PurchaseContext($Cart, $this->getUser());
-
-            return $this->purchaseFlow->validate($Cart, $purchaseContext);
-        }, $Carts);
     }
 }

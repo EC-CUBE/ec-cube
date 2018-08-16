@@ -17,10 +17,12 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerFavoriteProduct;
+use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Form\Type\Front\CustomerLoginType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
@@ -28,12 +30,11 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Component\Pager\Paginator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MypageController extends AbstractController
@@ -74,19 +75,19 @@ class MypageController extends AbstractController
      * @param OrderRepository $orderRepository
      * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
      * @param CartService $cartService
-     * @param BaseInfo $baseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param PurchaseFlow $purchaseFlow
      */
     public function __construct(
         OrderRepository $orderRepository,
         CustomerFavoriteProductRepository $customerFavoriteProductRepository,
         CartService $cartService,
-        BaseInfo $baseInfo,
+        BaseInfoRepository $baseInfoRepository,
         PurchaseFlow $purchaseFlow
     ) {
         $this->orderRepository = $orderRepository;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
-        $this->BaseInfo = $baseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->cartService = $cartService;
         $this->purchaseFlow = $purchaseFlow;
     }
@@ -212,8 +213,7 @@ class MypageController extends AbstractController
     /**
      * 再購入を行う.
      *
-     * @Route("/mypage/order/{order_no}", name="mypage_order")
-     * @Method("PUT")
+     * @Route("/mypage/order/{order_no}", name="mypage_order", methods={"PUT"})
      */
     public function order(Request $request, $order_no)
     {
@@ -344,23 +344,23 @@ class MypageController extends AbstractController
     /**
      * お気に入り商品を削除する.
      *
-     * @Method("DELETE")
-     * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", requirements={"id" = "\d+"})
+     * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", methods={"DELETE"}, requirements={"id" = "\d+"})
      */
-    public function delete(Request $request, CustomerFavoriteProduct $CustomerFavoriteProduct)
+    public function delete(Request $request, Product $Product)
     {
         $this->isTokenValid();
 
         $Customer = $this->getUser();
 
-        log_info('お気に入り商品削除開始', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
+        log_info('お気に入り商品削除開始', [$Customer->getId(), $Product->getId()]);
 
-        if ($Customer->getId() !== $CustomerFavoriteProduct->getCustomer()
-                ->getId()) {
+        $CustomerFavoriteProduct = $this->customerFavoriteProductRepository->findOneBy(['Customer' => $Customer, 'Product'=> $Product]);
+
+        if ($CustomerFavoriteProduct) {
+            $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);
+        } else {
             throw new BadRequestHttpException();
         }
-
-        $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);
 
         $event = new EventArgs(
             [

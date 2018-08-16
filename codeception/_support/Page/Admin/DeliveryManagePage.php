@@ -37,7 +37,11 @@ class DeliveryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_削除($rowNum)
     {
-        $this->tester->click("#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.c-primaryCol > div > div > div > ul > li:nth-child($rowNum) > div > div.col-auto.text-right > a:nth-child(3)");
+        $this->tester->click("#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.c-primaryCol > div > div > div > ul > li:nth-child($rowNum) > div > div.col-auto.text-right > div > a");
+
+        // accept modal
+        $this->tester->waitForElementVisible("#delete_modal");
+        $this->tester->click("#delete_modal > div > div > div.modal-footer > a");
         return $this;
     }
 
@@ -48,18 +52,18 @@ class DeliveryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_名称($rowNum)
     {
-        return ['css' => "#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.c-primaryCol > div > div > div > ul > li:nth-child($rowNum) > div > div.col.d-flex.align-items-center > a"];
+        return ['css' => "div.c-primaryCol ul > li:nth-child($rowNum) > div > div.col.d-flex.align-items-center > a"];
     }
 
     public function 一覧_上に($rowNum)
     {
-        $this->tester->dragAndDropBy("#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.c-primaryCol > div > div > div > ul > li:nth-child($rowNum) > div", 0, -60);
+        $this->tester->dragAndDropBy("div.c-primaryCol ul > li:nth-child($rowNum) > div", 0, -60);
         return $this;
     }
 
     public function 一覧_下に($rowNum)
     {
-        $this->tester->dragAndDropBy("#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.c-primaryCol > div > div > div > ul > li:nth-child($rowNum) > div", 0, 60);
+        $this->tester->dragAndDropBy("div.c-primaryCol ul > li:nth-child($rowNum) > div", 0, 60);
         return $this;
     }
 }

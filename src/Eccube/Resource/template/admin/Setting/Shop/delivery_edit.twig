@@ -31,22 +31,22 @@ file that was distributed with this source code.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
-        $(function () {
-            $("#set_fee_all").on("click", function () {
-                var fee = $("#{{ form.free_all.vars.id }}").val();
-                $("input[name$='[fee]']").val(fee);
+        $(function() {
+            $('#set_fee_all').on('click', function() {
+                var fee = $('#{{ form.free_all.vars.id }}').val();
+                $('input[name$="[fee]"]').val(fee);
             });
         });
     </script>
     <script>
         // 降順にソートする
-        $(function(){
+        $(function() {
             var $items_wrapper = $('.sortable-container');
             var $items = $('.sortable-item');
-            $items.sort(function(a, b){
+            $items.sort(function(a, b) {
                 return parseInt($(a).find('.sort-no').val()) > parseInt($(b).find('.sort-no').val());
             });
-            $items.each(function(){
+            $items.each(function() {
                 $items_wrapper.append($(this).remove());
             })
         });
@@ -54,7 +54,7 @@ file that was distributed with this source code.
         // 並び替え後にsort noを更新
         function updateSortNo() {
             var $items = $('.sortable-container').find('.sortable-item');
-            $items.each(function(){
+            $items.each(function() {
                 $(this).find('.sort-no').val($items.index(this) + 1);
             });
         }
@@ -81,7 +81,7 @@ file that was distributed with this source code.
             redrawDisableAllows();
 
             // お届け時間設定の新規作成ボタンでお届け時間項目を追加する
-            $('#add-delivery-time-button').on('click', function (event) {
+            $('#add-delivery-time-button').on('click', function(event) {
 
                 // 追加するお届け時間名を取得
                 var deliveryTimeName = $('#add-delivery-time-value').val();
@@ -114,7 +114,7 @@ file that was distributed with this source code.
             });
 
             // 明細行の削除
-            $('#delivery-time-group').on('click', '.remove-delivery-time-item', function (event) {
+            $('#delivery-time-group').on('click', '.remove-delivery-time-item', function(event) {
                 event.preventDefault();
 
                 $(this).tooltip('hide');
@@ -126,26 +126,26 @@ file that was distributed with this source code.
             });
 
             // Drag and Drop
-            $(".sortable-container").sortable({
+            $('.sortable-container').sortable({
                 items: '> .sortable-item',
                 cursor: 'move',
-                update: function (e, ui) {
+                update: function(e, ui) {
                     moveSortNo();
                 }
             });
             // Up
-            $('#delivery-time-group').on('click', 'a.action-up', function (e) {
+            $('#delivery-time-group').on('click', 'a.action-up', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
                 if (current.prev().hasClass('sortable-item')) {
                     current.prev().before(current);
                     moveSortNo();
                 }
             });
             // Down
-            $('#delivery-time-group').on('click', 'a.action-down', function (e) {
+            $('#delivery-time-group').on('click', 'a.action-down', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
                 if (current.next().hasClass('sortable-item')) {
                     current.next().after(current);
                     moveSortNo();
@@ -153,9 +153,9 @@ file that was distributed with this source code.
             });
 
             // 編集
-            $('#delivery-time-group').on('click', 'a.action-edit', function (e) {
+            $('#delivery-time-group').on('click', 'a.action-edit', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');
                 current.find('.action-edit-submit').attr('disabled', false);
@@ -163,10 +163,10 @@ file that was distributed with this source code.
             });
 
             // 編集決定
-            $('#delivery-time-group').on('click', 'button.action-edit-submit', function (e) {
+            $('#delivery-time-group').on('click', 'button.action-edit-submit', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
-                var value = current.find('.form-control').val()
+                var current = $(this).parents('li');
+                var value = current.find('.form-control').val();
                 current.find('.display-label').text(value);
                 current.find('.mode-view').removeClass('d-none');
                 current.find('.mode-edit').addClass('d-none');
@@ -175,9 +175,9 @@ file that was distributed with this source code.
                 });
             });
             // 編集キャンセル
-            $('#delivery-time-group').on('click', 'button.action-edit-cancel', function (e) {
+            $('#delivery-time-group').on('click', 'button.action-edit-cancel', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
                 current.find('[data-origin-value]').each(function(e) {
                     $(this).val($(this).attr('data-origin-value'));
                 });
@@ -187,8 +187,8 @@ file that was distributed with this source code.
                 current.find('.mode-edit').addClass('d-none');
             });
             // 編集時, エラーがあれば入力欄を表示.
-            $('#delivery-time-group').find('.is-invalid').each(function (e) {
-                var current = $(this).parents("li");
+            $('#delivery-time-group').find('.is-invalid').each(function(e) {
+                var current = $(this).parents('li');
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');
             });
@@ -197,26 +197,25 @@ file that was distributed with this source code.
 {% endblock javascript %}
 
 {% block main %}
-    <form method="post"
-          action="{{ delivery_id ? url('admin_setting_shop_delivery_edit', {'id': delivery_id}) : url('admin_setting_shop_delivery_new') }}">
+    <form method="post" action="{{ delivery_id ? url('admin_setting_shop_delivery_edit', {'id': delivery_id}) : url('admin_setting_shop_delivery_new') }}">
         {{ form_widget(form._token) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.basic'|trans }}</span></div>
-                        <div class="card-body">
+                        <div id="ex-delivery-basic" class="card-body">
                             <div class="row">
                                 <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.delivery_name'|trans }}</span></div>
                                 <div class="col mb-2">
-                                    {{ form_widget(form.name)}}
+                                    {{ form_widget(form.name) }}
                                     {{ form_errors(form.name) }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.delivery_service_name'|trans }}</span></div>
                                 <div class="col mb-2">
-                                    {{ form_widget(form.service_name)}}
+                                    {{ form_widget(form.service_name) }}
                                     {{ form_errors(form.service_name) }}
                                 </div>
                             </div>
@@ -257,7 +256,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.payments'|trans }}</span></div>
-                        <div class="card-body">
+                        <div id="ex-delivery-payment" class="card-body">
                             <div>
                                 {{ form_widget(form.payments, {'label_attr': {'class': 'checkbox-inline'}}) }}
                                 {{ form_errors(form.payments) }}
@@ -266,7 +265,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="card rounded border-0 mb-2">
                         <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.delivery_times'|trans }}</span></div>
-                        <div class="card-body p-0">
+                        <div id="ex-delivery-time" class="card-body p-0">
                             <div class="card rounded border-0 mb-2">
                                 <ul id="delivery-time-group" class="list-group list-group-flush sortable-container"
                                     data-prototype="{% filter escape %}{{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': form.delivery_times.vars.prototype}) }}{% endfilter %}">
@@ -290,7 +289,7 @@ file that was distributed with this source code.
                     <p class="mb-4">{{ 'admin.setting.shop.delivery_edit.delivery_times_drag&drop'|trans }}</p>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.delivery_fees_by_pref'|trans }}</span></div>
-                        <div class="card-body p-0">
+                        <div id="ex-delivery-fee" class="card-body p-0">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
                                     <div class="row justify-content-start">
@@ -328,7 +327,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header">
+                        <div id="ex-delivery-shop" class="card-header">
                             <div class="row">
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
@@ -357,13 +356,14 @@ file that was distributed with this source code.
             <div class="c-conversionArea__container">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
-                        <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink"
-                                                                        href="{{ url('admin_setting_shop_delivery') }}"><i
-                                        class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.setting.shop.delivery_edit.delivery_list'|trans }}</span></a>
+                        <div class="c-conversionArea__leftBlockItem">
+                            <a class="c-beseLink" href="{{ url('admin_setting_shop_delivery') }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.setting.shop.delivery_edit.delivery_list'|trans }}</span>
+                            </a>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="row align-items-center justify-content-end">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.shop.delivery_edit.register'|trans }}</button>
                             </div>

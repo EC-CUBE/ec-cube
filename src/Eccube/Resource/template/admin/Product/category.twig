@@ -23,20 +23,20 @@ file that was distributed with this source code.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
-        $(function () {
+        $(function() {
             // 初期表示時のsort noを保持.
             var oldSortNos = [];
-            $('.sortable-item').each(function () {
+            $('.sortable-item').each(function() {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            oldSortNos.sort(function (a, b) {
+            oldSortNos.sort(function(a, b) {
                 return a - b;
             }).reverse();
             // 並び替え後にsort noを更新
-            var updateSortNo = function () {
+            var updateSortNo = function() {
                 var newSortNos = {};
                 var i = 0;
-                $('.sortable-item').each(function () {
+                $('.sortable-item').each(function() {
                     newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
@@ -44,12 +44,12 @@ file that was distributed with this source code.
                     url: '{{ url('admin_product_category_sort_no_move') }}',
                     type: 'POST',
                     data: newSortNos
-                }).always(function () {
+                }).always(function() {
                     $(".modal-backdrop").remove();
                 });
             };
             // 最初と最後の↑↓を再描画
-            var redrawDisableAllows = function () {
+            var redrawDisableAllows = function() {
                 var items = $('.sortable-item');
                 items.find('a.action-up').removeClass('disabled');
                 items.find('a.action-down').removeClass('disabled');
@@ -57,21 +57,21 @@ file that was distributed with this source code.
                 items.last().find('a.action-down').addClass('disabled');
             };
             // オーバレイ後, 表示順の更新を行う
-            var moveSortNo = function () {
+            var moveSortNo = function() {
                 $('body').append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
                 redrawDisableAllows();
-            }
+            };
             // Drag and Drop
-            $(".sortable-container").sortable({
+            $('.sortable-container').sortable({
                 items: '> .sortable-item',
                 cursor: 'move',
-                update: function (e, ui) {
+                update: function(e, ui) {
                     moveSortNo();
                 }
             });
             // Up
-            $(".sortable-item").on('click', 'a.action-up', function (e) {
+            $('.sortable-item').on('click', 'a.action-up', function(e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 if (current.prev().hasClass('sortable-item')) {
@@ -80,7 +80,7 @@ file that was distributed with this source code.
                 }
             });
             // Down
-            $(".sortable-item").on('click', 'a.action-down', function (e) {
+            $('.sortable-item').on('click', 'a.action-down', function(e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 if (current.next().hasClass('sortable-item')) {
@@ -107,11 +107,17 @@ file that was distributed with this source code.
                 current.find('.mode-edit').addClass('d-none');
             });
 
-            groupItem.find('.is-invalid').each(function (e) {
+            groupItem.find('.is-invalid').each(function(e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');
+            });
+
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
+                var target = $(event.relatedTarget);
+                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
             });
         });
     </script>
@@ -120,8 +126,10 @@ file that was distributed with this source code.
 {% block stylesheet %}
     {#TODO: Move to css file#}
     <style>
-        .c-directoryTree ul>li>ul li:not(:last-of-type)>label:before,
-        .c-directoryTree ul>li>ul li:last-of-type>label:before{ margin-right: 1.6em;}
+        .c-directoryTree ul > li > ul li:not(:last-of-type) > label:before,
+        .c-directoryTree ul > li > ul li:last-of-type > label:before {
+            margin-right: 1.6em;
+        }
     </style>
 {% endblock %}
 
@@ -151,16 +159,14 @@ file that was distributed with this source code.
                 </div>
                 <div class="col-6 text-right">
                     <div class="btn-group" role="group">
-                        <button class="btn btn-ec-regular" type="button"
-                                onclick="location.href='{{ url('admin_product_category_export') }}'">
+                        <a class="btn btn-ec-regular" href="{{ url('admin_product_category_export') }}">
                             <i class="fa fa-cloud-download mr-1 text-secondary"></i>
                             <span>{{ 'admin.product.category.405'|trans }}</span>
-                        </button>
-                        <button class="btn btn-ec-regular" type="button"
-                                onclick="location.href='{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CATEGORY') }) }}'">
+                        </a>
+                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CATEGORY') }) }}">
                             <i class="fa fa-cog mr-1 text-secondary"></i>
                             <span>{{ 'admin.product.index.486'|trans }}</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -168,7 +174,7 @@ file that was distributed with this source code.
     </div>
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
-            <div class="c-primaryCol">
+            <div id="ex-primaryCol" class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <div class="card rounded border-0 mb-2">
@@ -212,7 +218,7 @@ file that was distributed with this source code.
                                 </li>
                                 {% if Categories|length > 0 %}
                                     {% for Category in Categories %}
-                                        <li class="list-group-item sortable-item" data-id="{{ Category.id }}" data-sort-no="{{ Category.sort_no }}" >
+                                        <li id="ex-category-{{ Category.id }}" class="list-group-item sortable-item" data-id="{{ Category.id }}" data-sort-no="{{ Category.sort_no }}">
                                             {% if Category.id != TargetCategory.id %}
                                                 <div class="row justify-content-around mode-view">
                                                     <div class="col-auto d-flex align-items-center">
@@ -238,22 +244,11 @@ file that was distributed with this source code.
                                                            title="{{ 'admin.product.category.rename'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
-                                                        {% if Category.Children|length > 0 or Category.hasProductCategories %}
-                                                            {# TODO: Need fix css for tooltip to work (currently using `disabled` class) #}
-                                                            <a class="btn btn-ec-actionIcon mr-3 disabled"
-                                                               data-toggle="tooltip" data-placement="top"
-                                                               title="{{ 'admin.product.category.text01'|trans }}">
+                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.category.410'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon{% if Category.Children|length > 0 or Category.hasProductCategories %} disabled{% endif %}" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_product_category_delete', {id: Category.id}) }}">
                                                                 <i class="fa fa-close fa-lg text-secondary"></i>
                                                             </a>
-                                                        {% else %}
-                                                            <a class="btn btn-ec-actionIcon mr-3"
-                                                               href="{{ url('admin_product_category_delete', {id: Category.id}) }}"
-                                                               data-toggle="tooltip" data-placement="top"
-                                                               title="{{ 'admin.product.category.410'|trans }}" {{ csrf_token_for_anchor() }}
-                                                               data-method="delete">
-                                                                <i class="fa fa-close fa-lg text-secondary"></i>
-                                                            </a>
-                                                        {% endif %}
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <form class="form-row d-none mode-edit" method="POST" action="{{ (Parent and Parent.id) ? url('admin_product_category_show', {'parent_id': Parent.id}) : url('admin_product_category') }}">
@@ -274,6 +269,37 @@ file that was distributed with this source code.
                                     {% endfor %}
                                 {% endif %}
                             </ul>
+                            <div class="modal fade" id="delete_modal" tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="delete_modal" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bold">
+                                                {{ 'admin.class_category.modal.header'|trans }}</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                            <p class="text-left">
+                                                {{ 'admin.class_category.modal.body'|trans }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-ec-sub" type="button"
+                                                    data-dismiss="modal">
+                                                {{ 'admin.product.category.cancel'|trans }}
+                                            </button>
+                                            <a
+                                                    href="#"
+                                                    class="btn btn-ec-delete"
+                                                    data-confirm="false"
+                                                    {{ csrf_token_for_anchor() }}
+                                                    data-method="delete">
+                                                {{ 'admin.product.category.410'|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -291,10 +317,10 @@ file that was distributed with this source code.
                        aria-expanded="{% if Category.id in Ids %}true{% endif %}"
                        aria-controls="directory_category{{ Category.id }}"></label>
                 <span>
-                    <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">{{ Category.name }}
+                    <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}"{%if (Category.id == TargetId) %} class="font-weight-bold"{% endif %}>{{ Category.name }}
                         ({{ Category.children|length }})</a></span>
                 {% if Category.children|length > 0 %}
-                    <ul class="collapse {% if Category.id in Ids %}show{% endif %}"
+                    <ul class="collapse list-unstyled {% if Category.id in Ids %}show{% endif %}"
                         id="directory_category{{ Category.id }}">
                         {% for ChildCategory in Category.children %}
                             {{ selfMacro.tree(ChildCategory, TargetId, level, Ids) }}
@@ -305,7 +331,7 @@ file that was distributed with this source code.
         {% endmacro %}
 
         <div class="c-contentsArea__secondaryCol">
-            <div class="c-secondaryCol">
+            <div id="ex-secondaryCol" class="c-secondaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
                         <span class="card-title"><a
@@ -315,7 +341,7 @@ file that was distributed with this source code.
                         <div class="c-directoryTree mb-3">
                             {% import _self as renderMacro %}
                             {% for TopCategory in TopCategories %}
-                                <ul>
+                                <ul class="list-unstyled">
                                     {{ renderMacro.tree(TopCategory, TargetCategory.Parent.id | default(null), 0, Ids) }}
                                 </ul>
                             {% endfor %}

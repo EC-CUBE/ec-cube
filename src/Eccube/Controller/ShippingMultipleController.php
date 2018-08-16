@@ -26,15 +26,15 @@ use Eccube\Form\Type\ShippingMultipleType;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\ShoppingService;
-use Eccube\Service\CartService;
-use Eccube\Service\OrderHelper;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ShippingMultipleController extends AbstractShoppingController
 {
@@ -79,7 +79,7 @@ class ShippingMultipleController extends AbstractShoppingController
      * @param PrefRepository $prefRepository
      * @param OrderItemTypeRepository $orderItemTypeRepository
      * @param ShoppingService $shoppingService
-     * @param CartService $cartService,
+     * @param CartService $cartService ,
      * @param OrderHelper $orderHelper
      */
     public function __construct(

@@ -11,82 +11,82 @@
  * file that was distributed with this source code.
  */
 
-if (!function_exists('log_emergency')) {
-    function log_emergency($message, array $context = [])
-    {
-        $app = \Eccube\Application::getInstance();
-        if (isset($app['eccube.logger'])) {
-            $app['eccube.logger']->emergency($message, $context);
-        }
+function log_emergency($message, array $context = [])
+{
+    $app = \Eccube\Application::getInstance();
+    if (isset($app['eccube.logger'])) {
+        $app['eccube.logger']->emergency($message, $context);
     }
 }
 
-if (!function_exists('log_alert')) {
-    function log_alert($message, array $context = [])
-    {
-        $app = \Eccube\Application::getInstance();
-        if (isset($app['eccube.logger'])) {
-            $app['eccube.logger']->alert($message, $context);
-        }
+function log_alert($message, array $context = [])
+{
+    $app = \Eccube\Application::getInstance();
+    if (isset($app['eccube.logger'])) {
+        $app['eccube.logger']->alert($message, $context);
     }
 }
 
-if (!function_exists('log_critical')) {
-    function log_critical($message, array $context = [])
-    {
-        $app = \Eccube\Application::getInstance();
-        if (isset($app['eccube.logger'])) {
-            $app['eccube.logger']->critical($message, $context);
-        }
+function log_critical($message, array $context = [])
+{
+    $app = \Eccube\Application::getInstance();
+    if (isset($app['eccube.logger'])) {
+        $app['eccube.logger']->critical($message, $context);
     }
 }
 
-if (!function_exists('log_error')) {
-    function log_error($message, array $context = [])
-    {
-        $app = \Eccube\Application::getInstance();
-        if (isset($app['eccube.logger'])) {
-            $app['eccube.logger']->error($message, $context);
-        }
+function log_error($message, array $context = [])
+{
+    $app = \Eccube\Application::getInstance();
+    if (isset($app['eccube.logger'])) {
+        $app['eccube.logger']->error($message, $context);
     }
 }
 
-if (!function_exists('log_warning')) {
-    function log_warning($message, array $context = [])
-    {
-        $app = \Eccube\Application::getInstance();
-        if (isset($app['eccube.logger'])) {
-            $app['eccube.logger']->warning($message, $context);
-        }
+function log_warning($message, array $context = [])
+{
+    $app = \Eccube\Application::getInstance();
+    if (isset($app['eccube.logger'])) {
+        $app['eccube.logger']->warning($message, $context);
     }
 }
 
-if (!function_exists('log_notice')) {
-    function log_notice($message, array $context = [])
-    {
-        $app = \Eccube\Application::getInstance();
-        if (isset($app['eccube.logger'])) {
-            $app['eccube.logger']->notice($message, $context);
-        }
+function log_notice($message, array $context = [])
+{
+    $app = \Eccube\Application::getInstance();
+    if (isset($app['eccube.logger'])) {
+        $app['eccube.logger']->notice($message, $context);
     }
 }
 
-if (!function_exists('log_info')) {
-    function log_info($message, array $context = [])
-    {
-        $app = \Eccube\Application::getInstance();
-        if (isset($app['eccube.logger'])) {
-            $app['eccube.logger']->info($message, $context);
-        }
+function log_info($message, array $context = [])
+{
+    $app = \Eccube\Application::getInstance();
+    if (isset($app['eccube.logger'])) {
+        $app['eccube.logger']->info($message, $context);
     }
 }
 
-if (!function_exists('log_debug')) {
-    function log_debug($message, array $context = [])
-    {
-        $app = \Eccube\Application::getInstance();
-        if (isset($app['eccube.logger'])) {
-            $app['eccube.logger']->debug($message, $context);
-        }
+function log_debug($message, array $context = [])
+{
+    $app = \Eccube\Application::getInstance();
+    if (isset($app['eccube.logger'])) {
+        $app['eccube.logger']->debug($message, $context);
     }
+}
+
+/**
+ * プラグイン用ログ出力関数
+ *
+ * @param $channel 設定されたchannel名
+ *
+ * @return \Symfony\Bridge\Monolog\Logger
+ */
+function logs($channel)
+{
+    $app = \Eccube\Application::getInstance();
+
+    $container = $app->getParentContainer();
+
+    return $container->get('monolog.logger.'.$channel);
 }

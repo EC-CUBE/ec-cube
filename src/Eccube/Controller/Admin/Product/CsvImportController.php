@@ -26,6 +26,7 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Exception\CsvImportException;
 use Eccube\Form\Type\Admin\CsvImportType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDurationRepository;
@@ -35,11 +36,11 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CsvImportController extends AbstractCsvImportController
 {
@@ -95,9 +96,9 @@ class CsvImportController extends AbstractCsvImportController
      * @param ClassCategoryRepository $classCategoryRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param ProductRepository $productRepository
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(DeliveryDurationRepository $deliveryDurationRepository, SaleTypeRepository $saleTypeRepository, TagRepository $tagRepository, CategoryRepository $categoryRepository, ClassCategoryRepository $classCategoryRepository, ProductStatusRepository $productStatusRepository, ProductRepository $productRepository, BaseInfo $BaseInfo)
+    public function __construct(DeliveryDurationRepository $deliveryDurationRepository, SaleTypeRepository $saleTypeRepository, TagRepository $tagRepository, CategoryRepository $categoryRepository, ClassCategoryRepository $classCategoryRepository, ProductStatusRepository $productStatusRepository, ProductRepository $productRepository, BaseInfoRepository $baseInfoRepository)
     {
         $this->deliveryDurationRepository = $deliveryDurationRepository;
         $this->saleTypeRepository = $saleTypeRepository;
@@ -106,7 +107,7 @@ class CsvImportController extends AbstractCsvImportController
         $this->classCategoryRepository = $classCategoryRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->productRepository = $productRepository;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -681,6 +682,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param $row
      * @param Product $Product
+     * @param CsvImportService $data
      */
     protected function createProductImage($row, Product $Product, $data, $headerByKey)
     {
@@ -727,7 +729,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param $data
+     * @param CsvImportService $data
      * @param $headerByKey
      */
     protected function createProductCategory($row, Product $Product, $data, $headerByKey)
@@ -847,7 +849,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param $data
+     * @param CsvImportService $data
      * @param $headerByKey
      * @param null $ClassCategory1
      * @param null $ClassCategory2
@@ -904,32 +906,30 @@ class CsvImportController extends AbstractCsvImportController
             $ProductClass->setCode(null);
         }
 
-        if (StringUtil::isBlank($row[$headerByKey['stock_unlimited']])) {
-            $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
-            $this->addErrors($message);
-        } else {
-            if ($row[$headerByKey['stock_unlimited']] == (string) Constant::DISABLED) {
-                $ProductClass->setStockUnlimited(false);
-                // 在庫数が設定されていなければエラー
-                if (isset($row[$headerByKey['stock']]) && StringUtil::isNotBlank($row[$headerByKey['stock']])) {
-                    $stock = str_replace(',', '', $row[$headerByKey['stock']]);
-                    if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
-                        $ProductClass->setStock($stock);
-                    } else {
-                        $message = trans('csvimportcontroller.great_than_zero', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
-                        $this->addErrors($message);
-                    }
+        if (!isset($row[$headerByKey['stock_unlimited']])
+            || StringUtil::isBlank($row[$headerByKey['stock_unlimited']])
+            || $row[$headerByKey['stock_unlimited']] == (string) Constant::DISABLED
+        ) {
+            $ProductClass->setStockUnlimited(false);
+            // 在庫数が設定されていなければエラー
+            if (isset($row[$headerByKey['stock']]) && StringUtil::isNotBlank($row[$headerByKey['stock']])) {
+                $stock = str_replace(',', '', $row[$headerByKey['stock']]);
+                if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
+                    $ProductClass->setStock($stock);
                 } else {
-                    $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
+                    $message = trans('csvimportcontroller.great_than_zero', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
                     $this->addErrors($message);
                 }
-            } elseif ($row[$headerByKey['stock_unlimited']] == (string) Constant::ENABLED) {
-                $ProductClass->setStockUnlimited(true);
-                $ProductClass->setStock(null);
             } else {
-                $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
+                $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
                 $this->addErrors($message);
             }
+        } elseif ($row[$headerByKey['stock_unlimited']] == (string) Constant::ENABLED) {
+            $ProductClass->setStockUnlimited(true);
+            $ProductClass->setStock(null);
+        } else {
+            $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
+            $this->addErrors($message);
         }
 
         if (isset($row[$headerByKey['sale_limit']]) && StringUtil::isNotBlank($row[$headerByKey['sale_limit']])) {
@@ -999,7 +999,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param $row
      * @param Product $Product
      * @param ProductClass $ProductClass
-     * @param $data
+     * @param CsvImportService $data
      *
      * @return ProductClass
      */
@@ -1078,32 +1078,30 @@ class CsvImportController extends AbstractCsvImportController
             $ProductClass->setCode(null);
         }
 
-        if ($row[$headerByKey['stock_unlimited']] == '') {
+        if (!isset($row[$headerByKey['stock_unlimited']])
+            || StringUtil::isBlank($row[$headerByKey['stock_unlimited']])
+            || $row[$headerByKey['stock_unlimited']] == (string) Constant::DISABLED
+        ) {
+            $ProductClass->setStockUnlimited(false);
+            // 在庫数が設定されていなければエラー
+            if ($row[$headerByKey['stock']] == '') {
+                $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
+                $this->addErrors($message);
+            } else {
+                $stock = str_replace(',', '', $row[$headerByKey['stock']]);
+                if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
+                    $ProductClass->setStock($row[$headerByKey['stock']]);
+                } else {
+                    $message = trans('csvimportcontroller.great_than_zero', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
+                    $this->addErrors($message);
+                }
+            }
+        } elseif ($row[$headerByKey['stock_unlimited']] == (string) Constant::ENABLED) {
+            $ProductClass->setStockUnlimited(true);
+            $ProductClass->setStock(null);
+        } else {
             $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
             $this->addErrors($message);
-        } else {
-            if ($row[$headerByKey['stock_unlimited']] == (string) Constant::DISABLED) {
-                $ProductClass->setStockUnlimited(false);
-                // 在庫数が設定されていなければエラー
-                if ($row[$headerByKey['stock']] == '') {
-                    $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
-                    $this->addErrors($message);
-                } else {
-                    $stock = str_replace(',', '', $row[$headerByKey['stock']]);
-                    if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
-                        $ProductClass->setStock($row[$headerByKey['stock']]);
-                    } else {
-                        $message = trans('csvimportcontroller.great_than_zero', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
-                        $this->addErrors($message);
-                    }
-                }
-            } elseif ($row[$headerByKey['stock_unlimited']] == (string) Constant::ENABLED) {
-                $ProductClass->setStockUnlimited(true);
-                $ProductClass->setStock(null);
-            } else {
-                $message = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
-                $this->addErrors($message);
-            }
         }
 
         if ($row[$headerByKey['sale_limit']] != '') {
@@ -1277,7 +1275,7 @@ class CsvImportController extends AbstractCsvImportController
             trans('csvimport.label.stock_unlimited') => [
                 'id' => 'stock_unlimited',
                 'description' => 'admin.product.csv_product.stock_unlimited',
-                'required' => true,
+                'required' => false,
             ],
             trans('csvimport.label.sale_limit') => [
                 'id' => 'sale_limit',

@@ -15,38 +15,73 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.content.page.title'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.content.page.sub_title'|trans }}{% endblock %}
 
+{% block javascript %}
+<script>
+    var searchWord = function(){
+        var searchText = $(this).val(), // 検索ボックスに入力された値
+            targetText;
+
+        // 検索ボックスに値が入っていない場合
+        if (searchText == '') {
+            // 全て表示する
+            $('table.table tbody tr').show();
+            return;
+        }
+
+        // 検索ボックスに値が入ってる場合
+        // 表示を全て空にする
+        $('table.table tbody tr').hide();
+
+        // 検索ワードが（子を含めて）含まれる要素のみ表示
+        $('table.table tbody tr').each(function() {
+            targetText = $(this).find('td a').text();
+
+            // 検索対象となるリストに入力された文字列が存在するかどうかを判断
+            if (targetText.indexOf(searchText) != -1) {
+                // 存在する場合はそのリストのテキストを用意した配列に格納
+                $(this).show();
+            }
+        });
+    };
+
+    // searchWordの実行
+    $('#search-page').on('input', searchWord);
+</script>
+{% endblock javascript %}
+
 {% block main %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="row justify-content-between mb-2">
-                    <div class="col-9"><a class="btn btn-ec-regular py-2"
-                                          href="{{ url('admin_content_page_new') }}">{{ 'admin.content.page.create'|trans }}</a></div>
+                    <div class="col-9">
+                        <a class="btn btn-ec-regular py-2" href="{{ url('admin_content_page_new') }}">
+                            {{ 'admin.content.page.create'|trans }}
+                        </a>
+                    </div>
                     <div class="col-3">
-                        <form class="mb-2">
-                            <div class="form-row">
-                                <div class="col">
-                                    <input class="form-control" type="search" placeholder="" aria-label="Search">
-                                </div>
-                                {# TODO 検索の実装 #}
-                                <div class="col-auto">
-                                    <button class="btn btn-ec-sub" type="submit"><i
-                                                class="fa fa-search fa-lg text-secondary"></i></button>
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                    </div>
+                                    <input id="search-page" class="form-control" type="search" aria-label="Search">
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
-                        <table id="list_page_tbl" class="table table-sm">
+                        <table class="table table-sm">
                             <thead>
                             <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page.page_name'|trans }}</th>
                             <th class="border-0 pt-2 pb-2">{{ 'admin.content.page.layout_name'|trans }}</th>
                             <th class="border-0 pt-2 pb-2 pr-3"></th>
                             </thead>
                             {% for Page in Pages %}
-                                <tr>
+                                <tr id="ex-page-{{ Page.id }}">
                                     <td class="align-middle pl-3"><a
                                                 href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">{{ Page.name }}</a>
                                     </td>

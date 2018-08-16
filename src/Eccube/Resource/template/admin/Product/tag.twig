@@ -28,57 +28,54 @@ file that was distributed with this source code.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
-        $(function () {
+        $(function() {
             // 初期表示時のsort noを保持.
             var oldSortNos = [];
-            $('.sortable-item').each(function () {
+            $('.sortable-item').each(function() {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            oldSortNos.sort(function (a, b) {
+            oldSortNos.sort(function(a, b) {
                 return a - b;
             }).reverse();
             // 並び替え後にsort noを更新
-            var updateSortNo = function () {
+            var updateSortNo = function() {
                 var newSortNos = {};
                 var i = 0;
-                $('.sortable-item').each(function () {
+                $('.sortable-item').each(function() {
                     newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
                 $.ajax({
                     url: '{{ url('admin_product_tag_sort_no_move') }}',
                     type: 'POST',
-                    headers: {
-                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
-                    },
                     data: newSortNos
-                }).always(function () {
+                }).always(function() {
                     $(".modal-backdrop").remove();
                 });
             };
             // 最初と最後の↑↓を再描画
-            var redrawDisableAllows = function () {
+            var redrawDisableAllows = function() {
                 var items = $('.sortable-item');
                 items.find('a').removeClass('disabled');
                 items.first().find('a.action-up').addClass('disabled');
                 items.last().find('a.action-down').addClass('disabled');
             };
             // オーバレイ後, 表示順の更新を行う
-            var moveSortNo = function () {
+            var moveSortNo = function() {
                 $('body').append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
                 redrawDisableAllows();
-            }
+            };
             // Drag and Drop
-            $(".sortable-container").sortable({
+            $('.sortable-container').sortable({
                 items: '> .sortable-item',
                 cursor: 'move',
-                update: function (e, ui) {
+                update: function(e, ui) {
                     moveSortNo();
                 }
             });
             // Up
-            $(".sortable-item").on('click', 'a.action-up', function (e) {
+            $('.sortable-item').on('click', 'a.action-up', function(e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 if (current.prev().hasClass('sortable-item')) {
@@ -87,7 +84,7 @@ file that was distributed with this source code.
                 }
             });
             // Down
-            $(".sortable-item").on('click', 'a.action-down', function (e) {
+            $('.sortable-item').on('click', 'a.action-down', function(e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 if (current.next().hasClass('sortable-item')) {
@@ -97,7 +94,7 @@ file that was distributed with this source code.
             });
 
             // 編集
-            $(".sortable-item").on('click', 'a.action-edit', function (e) {
+            $('.sortable-item').on('click', 'a.action-edit', function(e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 current.find('.mode-view').addClass('d-none');
@@ -105,7 +102,7 @@ file that was distributed with this source code.
             });
 
             // 編集キャンセル
-            $('.sortable-item').on('click', 'button.action-edit-cancel', function (e) {
+            $('.sortable-item').on('click', 'button.action-edit-cancel', function(e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 current.find('[data-origin-value]').each(function(e) {
@@ -115,10 +112,16 @@ file that was distributed with this source code.
                 current.find('.mode-edit').addClass('d-none');
             });
             // 編集時, エラーがあれば入力欄を表示.
-            $('.sortable-item').find('.is-invalid').each(function (e) {
+            $('.sortable-item').find('.is-invalid').each(function(e) {
                 var current = $(this).parents("li");
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');
+            });
+
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
+                var target = $(event.relatedTarget);
+                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
             });
         });
     </script>
@@ -147,7 +150,7 @@ file that was distributed with this source code.
                                     </form>
                                 </li>
                                 {% for Tag in Tags %}
-                                    <li class="list-group-item sortable-item" data-id="{{ Tag.id }}"
+                                    <li id="ex-tag-{{ Tag.id }}" class="list-group-item sortable-item" data-id="{{ Tag.id }}"
                                         data-sort-no="{{ Tag.sortNo }}">
                                         <div class="row justify-content-around mode-view">
                                             <div class="col-auto d-flex align-items-center"><i
@@ -155,70 +158,22 @@ file that was distributed with this source code.
                                             <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a>
                                             </div>
                                             <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon mr-3 action-up{% if loop.first %} disabled{% endif %}"
-                                                   href="#"
-                                                   data-toggle="tooltip"
-                                                   data-placement="top" title="{{ 'admin.product.tag.up'|trans }}"><i
-                                                            class="fa fa-arrow-up fa-lg text-secondary"></i></a>
-                                                <a
-                                                        class="btn btn-ec-actionIcon mr-3 action-down{% if loop.last %} disabled{% endif %}"
-                                                        href="#"
-                                                        data-toggle="tooltip"
-                                                        data-placement="top"
-                                                        title="{{ 'admin.product.tag.down'|trans }}"><i
-                                                            class="fa fa-arrow-down fa-lg text-secondary"></i></a>
-                                                <a
-                                                        class="btn btn-ec-actionIcon mr-3 action-edit"
-                                                        data-toggle="tooltip"
-                                                        data-placement="top"
-                                                        title="{{ 'admin.product.tag.edit'|trans }}"><i
-                                                            class="fa fa-pencil fa-lg text-secondary"></i></a>
-                                                <a
-                                                        class="btn btn-ec-actionIcon mr-3"
-                                                        data-toggle="modal"
-                                                        data-target="#confirmModal-{{ Tag.id }}"
-                                                        data-toggle="tooltip"
-                                                        data-placement="top"
-                                                        title="{{ 'admin.product.tag.delete'|trans }}"><i
-                                                            class="fa fa-close fa-lg text-secondary"></i></a>
-                                            </div>
-                                        </div>
-
-                                        <div class="modal fade" id="confirmModal-{{ Tag.id }}" tabindex="-1"
-                                             role="dialog"
-                                             aria-labelledby="confirmModal-{{ Tag.id }}" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title font-weight-bold">
-                                                            {{ 'admin.product.tag.delete.confirm.title'|trans }}</h5>
-                                                        <button class="close" type="button"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"><span
-                                                                    aria-hidden="true">×</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body text-left">
-                                                        <p class="text-left">
-                                                            {{ 'admin.product.tag.delete.confirm.message'|trans }}</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-ec-sub" type="button"
-                                                                data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
-                                                        </button>
-                                                        <a
-                                                                href="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"
-                                                                class="btn btn-ec-delete"
-                                                                data-confirm="false"
-                                                                {{ csrf_token_for_anchor() }}
-                                                                data-method="delete">
-                                                            {{ 'admin.product.index.delete'|trans }}
-                                                        </a>
-                                                    </div>
+                                                <a class="btn btn-ec-actionIcon mr-3 action-up{% if loop.first %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.up'|trans }}">
+                                                    <i class="fa fa-arrow-up fa-lg text-secondary"></i>
+                                                </a>
+                                                <a class="btn btn-ec-actionIcon mr-3 action-down{% if loop.last %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.down'|trans }}">
+                                                    <i class="fa fa-arrow-down fa-lg text-secondary"></i>
+                                                </a>
+                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.edit'|trans }}">
+                                                    <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                </a>
+                                                <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.delete'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}">
+                                                        <i class="fa fa-close fa-lg text-secondary"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_tag') }}">
                                             {{ form_widget(forms[Tag.id]._token) }}
                                             <div class="col-auto align-items-center">
@@ -235,6 +190,40 @@ file that was distributed with this source code.
                                     </li>
                                 {% endfor %}
                             </ul>
+                            <div class="modal fade" id="delete_modal" tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="delete_modal" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bold">
+                                                {{ 'admin.product.tag.delete.confirm.title'|trans }}</h5>
+                                            <button class="close" type="button"
+                                                    data-dismiss="modal"
+                                                    aria-label="Close"><span
+                                                        aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                            <p class="text-left">
+                                                {{ 'admin.product.tag.delete.confirm.message'|trans }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-ec-sub" type="button"
+                                                    data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                            </button>
+                                            <a
+                                                    href="#"
+                                                    class="btn btn-ec-delete"
+                                                    data-confirm="false"
+                                                    {{ csrf_token_for_anchor() }}
+                                                    data-method="delete">
+                                                {{ 'admin.product.index.delete'|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
