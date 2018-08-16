@@ -18,66 +18,95 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block main %}
-    <div id="news_wrap" class="row">
+    <div id="news_wrap" class="row m-0">
         <div id="news_list_box" class="col-md-12">
             <div id="news_list_box__body" class="box">
-                <div id="news_list_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.content.news.55'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div id="news_list_box__body_inner" class="box-body">
-                    <form name="form1" id="form1" method="post" action="">
-                        <div id="news_list_box__list_box" class="table_list">
-                            <div id="news_list_box__list" class="table-responsive with-border">
-                                <table class="table table-striped">
-                                    <thead>
-                                       <tr id="news_list_box__list_header">
-                                            <th id="news_list_box__header_sort_no">{{'admin.content.news.56'|trans}}</th>
-                                            <th id="news_list_box__header_date">{{'admin.content.news.57'|trans}}</th>
-                                            <th id="news_list_box__header_title">{{'admin.content.news.58'|trans}}</th>
-                                            <th id="news_list_box__header_menu_box">&nbsp;</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for News in NewsList %}
-                                        <tr id="news_list_box__item--{{ News.id }}">
-                                            <td id="news_list_box__sort_no--{{ News.id }}">{{ loop.index }}</td>
-                                            <td id="news_list_box__date--{{ News.id }}">{{ News.publishDate|date("Y/m/d") }}</td>
-                                            <td id="news_list_box__title--{{ News.id }}">{{ News.title }}</td>
-                                            <td id="news_list_box__menu_box--{{ News.id }}" class="icon_edit">
-                                                <div id="news_list_box__menu_box_toggle--{{ News.id }}" class="dropdown">
-                                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                    <ul id="news_list_box__menu--{{ News.id }}" class="dropdown-menu dropdown-menu-right">
-                                                        <li><a href="{{ url('admin_content_news_edit', {id: News.id}) }}" >{{'admin.content.news.59'|trans}}</a></li>
-                                                        <li><a href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.news.60'|trans}}">{{'common.label.delete'|trans}}</a></li>
-                                                        {% if loop.first == false %}
-                                                            <li>
-                                                                <a href="{{ url('admin_content_news_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.content.news.61'|trans}}</a>
-                                                            </li>
-                                                        {% endif %}
-                                                        {% if loop.last == false %}
-                                                            <li>
-                                                                <a href="{{ url('admin_content_news_down', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.content.news.62'|trans}}</a>
-                                                            </li>
-                                                        {% endif %}
-
-                                                    </ul>
+                <a href="{{ url('admin_content_news_new') }}" class="btn btn-ec-conversion mb-3">{{'admin.content.news.63'|trans}}</a>
+                <div id="news_list_box__body" class="card rounded border-0 mb-4">
+                    <div id="news_list_box__body_inner" class="card-body p-0">
+                        <form name="form1" id="form1" method="post" action="">
+                            <table class="table table-sm">
+                                <thead>
+                                <tr id="news_list_box__list_header">
+                                    <th id="news_list_box__header_sort_no" class="border-top-0 pt-2 pb-2 pl-3">{{'admin.content.news.56'|trans}}</th>
+                                    <th id="news_list_box__header_date" class="border-top-0 pt-2 pb-2">{{'admin.content.news.57'|trans}}</th>
+                                    <th id="news_list_box__header_title" class="border-top-0 pt-2 pb-2">{{'admin.content.news.58'|trans}}</th>
+                                    <th id="news_list_box__header_menu_box" class="border-top-0 pt-2 pb-2 pr-3">&nbsp;</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for News in NewsList %}
+                                    <tr id="news_list_box__item--{{ News.id }}">
+                                        <td id="news_list_box__sort_no--{{ News.id }}" class="align-middle pl-4">{{ loop.index }}</td>
+                                        <td id="news_list_box__date--{{ News.id }}" class="align-middle">{{ News.publishDate|date("Y/m/d") }}</td>
+                                        <td id="news_list_box__title--{{ News.id }}" class="align-middle"><a href="">{{ News.title }}</a></td>
+                                        <td id="news_list_box__menu_box--{{ News.id }}" class="align-middle pr-3">
+                                            <div class="text-right">
+                                                <div class="px-1 d-inline-block">
+                                                  {% if loop.first == false %}
+                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }}data-toggle='tooltip' data-placement="top" title="上へ移動" data-method="put" data-confirm="false">
+                                                        <i class="fa fa-arrow-up fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                  {% else %}
+                                                      <a class="btn btn-ec-actionIcon disabled" href="">
+                                                          <i class="fa fa-arrow-up fa-lg text-secondary" aria-hidden="true"></i>
+                                                      </a>
+                                                  {% endif %}
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div><!-- /.box -->
-            <div id="news_list_box__footer" class="row">
-                <div id="news_list_box__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <a href="{{ url('admin_content_news_new') }}" class="btn btn-primary btn-block btn-lg">{{'admin.content.news.63'|trans}}</a>
+                                                <div class="px-1 d-inline-block">
+                                                  {% if loop.last == false %}
+                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_down', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-toggle='tooltip' data-placement="top" title="下へ移動" data-method="put" data-confirm="false">
+                                                        <i class="fa fa-arrow-down fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                  {% else %}
+                                                      <a class="btn btn-ec-actionIcon disabled" href="">
+                                                          <i class="fa fa-arrow-down fa-lg text-secondary" aria-hidden="true"></i>
+                                                      </a>
+                                                  {% endif %}
+                                                </div>
+                                                <div class="px-1 d-inline-block">
+                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_edit', {id: News.id}) }}" data-toggle='tooltip' data-placement="top" title="{{'admin.content.news.59'|trans}}">
+                                                        <i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="px-1 d-inline-block">
+                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-toggle='tooltip' data-placement="top" title="{{'common.label.delete'|trans}}" data-method="delete" data-message="{{'admin.content.news.60'|trans}}">
+                                                        <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                  {# TODO ページネーション実装 #}
+                    <div class="row justify-content-md-center pb-4">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a href="" class="page-link">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a href="" class="page-link">1</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="" class="page-link">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="" class="page-link">3</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="" class="page-link">4</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="" class="page-link">Next</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 
