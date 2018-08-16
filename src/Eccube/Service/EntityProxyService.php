@@ -66,10 +66,12 @@ class EntityProxyService
         foreach ($targetEntities as $targetEntity) {
             $traits = isset($addTraits[$targetEntity]) ? $addTraits[$targetEntity] : [];
             $rc = new ClassReflection($targetEntity);
+            $fileName = $rc->getFileName();
+            $entityTokens = Tokens::fromCode(file_get_contents($fileName));
 
-            $entityTokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
-
-            $this->removeClassExistsBlock($entityTokens); // remove class_exists block
+            if (strpos(str_replace('\\', '/', $fileName), 'app/proxy/entity') === false) {
+                $this->removeClassExistsBlock($entityTokens); // remove class_exists block
+            }
 
             if (isset($removeTrails[$targetEntity])) {
                 foreach ($removeTrails[$targetEntity] as $trait) {
@@ -262,14 +264,15 @@ class EntityProxyService
     }
 
     /**
-     * remove block to 'if (class_exists(<class name>)) { }'
+     * remove block to 'if (!class_exists(<class name>)) { }'
      *
      * @param Tokens $entityTokens
      */
     private function removeClassExistsBlock(Tokens $entityTokens)
     {
         $startIndex = $entityTokens->getNextTokenOfKind(0, [[T_IF]]);
-        if ($startIndex > 0) {
+        $classIndex = $entityTokens->getNextTokenOfKind(0, [[T_CLASS]]);
+        if ($startIndex > 0 && $startIndex < $classIndex) { // if statement before class
             $blockStartIndex = $entityTokens->getNextTokenOfKind($startIndex, ['{']);
             $blockEndIndex = $entityTokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $blockStartIndex);
 

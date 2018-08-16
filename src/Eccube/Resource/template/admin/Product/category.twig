@@ -159,16 +159,14 @@ file that was distributed with this source code.
                 </div>
                 <div class="col-6 text-right">
                     <div class="btn-group" role="group">
-                        <button class="btn btn-ec-regular" type="button"
-                                onclick="location.href='{{ url('admin_product_category_export') }}'">
+                        <a class="btn btn-ec-regular" href="{{ url('admin_product_category_export') }}">
                             <i class="fa fa-cloud-download mr-1 text-secondary"></i>
                             <span>{{ 'admin.product.category.405'|trans }}</span>
-                        </button>
-                        <button class="btn btn-ec-regular" type="button"
-                                onclick="location.href='{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CATEGORY') }) }}'">
+                        </a>
+                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CATEGORY') }) }}">
                             <i class="fa fa-cog mr-1 text-secondary"></i>
                             <span>{{ 'admin.product.index.486'|trans }}</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -322,7 +320,7 @@ file that was distributed with this source code.
                     <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}"{%if (Category.id == TargetId) %} class="font-weight-bold"{% endif %}>{{ Category.name }}
                         ({{ Category.children|length }})</a></span>
                 {% if Category.children|length > 0 %}
-                    <ul class="collapse {% if Category.id in Ids %}show{% endif %}"
+                    <ul class="collapse list-unstyled {% if Category.id in Ids %}show{% endif %}"
                         id="directory_category{{ Category.id }}">
                         {% for ChildCategory in Category.children %}
                             {{ selfMacro.tree(ChildCategory, TargetId, level, Ids) }}
@@ -343,7 +341,7 @@ file that was distributed with this source code.
                         <div class="c-directoryTree mb-3">
                             {% import _self as renderMacro %}
                             {% for TopCategory in TopCategories %}
-                                <ul>
+                                <ul class="list-unstyled">
                                     {{ renderMacro.tree(TopCategory, TargetCategory.Parent.id | default(null), 0, Ids) }}
                                 </ul>
                             {% endfor %}

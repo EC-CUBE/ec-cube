@@ -25,7 +25,7 @@ file that was distributed with this source code.
 {%- block form_label -%}
     {{ parent() }}
     {%- if required -%}
-        <span class="ec-required">{{'common.text.message.required'|trans}}</span>
+        <span class="ec-required">{{ 'common.text.message.required'|trans }}</span>
     {%- endif -%}
 {%- endblock form_label -%}
 
@@ -46,9 +46,26 @@ file that was distributed with this source code.
 {%- endblock textarea_widget -%}
 
 {%- block radio_widget -%}
-    <label for="{{ id }}">{{ parent() }}
-        <span>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</span>
-    </label>
+    {% if type is defined and type == 'hidden' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {{ parent() }}
+        <label for="{{ id }}">
+            <span>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</span>
+        </label>
+    {% endif %}
 {%- endblock radio_widget -%}
 
 
+{%- block checkbox_widget -%}
+    {% if type is defined and type == 'hidden' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {{ parent() }}
+        {% if label is not null %}
+            <label for="{{ id }}">
+                <span>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</span>
+            </label>
+        {% endif %}
+    {% endif %}
+{%- endblock checkbox_widget -%}

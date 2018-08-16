@@ -183,7 +183,7 @@ class MainEditType extends AbstractType
                 'label' => 'mainedit.label.smartphone',
                 'class' => Layout::class,
                 'query_builder' => function (EntityRepository $er) {
-                    $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_SP);
+                    $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_MB);
 
                     return $er->createQueryBuilder('l')
                         ->where('l.DeviceType = :DeviceType')
@@ -202,7 +202,7 @@ class MainEditType extends AbstractType
                     if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_PC) {
                         $form['PcLayout']->setData($Layout);
                     }
-                    if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_SP) {
+                    if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_MB) {
                         $form['SpLayout']->setData($Layout);
                     }
                 }

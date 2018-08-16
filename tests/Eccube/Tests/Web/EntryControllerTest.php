@@ -65,6 +65,7 @@ class EntryControllerTest extends AbstractWebTestCase
             'sex' => 1,
             'job' => 1,
             'point' => 1,
+            'user_policy_check' => 1,
             Constant::TOKEN_NAME => 'dummy',
         ];
 
