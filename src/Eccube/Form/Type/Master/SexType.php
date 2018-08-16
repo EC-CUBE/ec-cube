@@ -33,7 +33,7 @@ class SexType extends AbstractType
         $resolver->setDefaults([
             'class' => 'Eccube\Entity\Master\Sex',
             'expanded' => true,
-            'placeholder' => null,
+            'placeholder' => false,
         ]);
     }
 

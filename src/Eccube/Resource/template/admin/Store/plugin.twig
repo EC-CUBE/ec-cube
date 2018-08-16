@@ -23,14 +23,6 @@ file that was distributed with this source code.
             document.forms[form_name].submit();
             return false;
         }
-        $(function(){
-            $('#readmeModal').on('show.bs.modal', function(event) {
-                var target = $(event.relatedTarget);
-                var modal = $(this);
-                modal.find('#readmeModalLabel').text(target.data('name'));
-                modal.find('#readmeContent').html(target.data('readme'));
-            });
-        });
     </script>
 {% endblock javascript %}
 
@@ -41,48 +33,20 @@ file that was distributed with this source code.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
                         <a href="{{ url('admin_store_plugin_owners_search') }}"
-                           class="btn btn-info btn-xs pull-right">{{ 'admin.store.plugin.811'|trans }}</a>
-                        <h4 class="box-title font-weight-bold">{{ 'admin.store.plugin.812'|trans }}</h4>
+                           class="btn btn-ec-regular mr-2 pull-right">{{ 'admin.store.plugin.811'|trans }}</a>
+                        <h5 class="box-title mb-3">{{ 'admin.store.plugin.812'|trans }}</h5>
                     </div>
-
                     {{ include('@admin/Store/plugin_table_official.twig', {'Plugins': officialPlugins}) }}
+
                 </div>
 
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
                         <a href="{{ url('admin_store_plugin_install') }}"
-                           class="btn btn-info btn-xs pull-right">{{ 'admin.store.plugin.813'|trans }}</a>
-                        <h4 class="box-title font-weight-bold">{{ 'admin.store.plugin.814'|trans }}</h4>
-                    </div><!-- /.box-header -->
-
-                    {{ include('@admin/Store/plugin_table.twig', {'Plugins': unofficialPlugins}) }}
-                </div>
-
-                {% if unregisterdPlugins is not empty %}
-
-                <div class="card rounded border-0 mb-4">
-                    <div class="card-header">
-                        <h4 class="box-title font-weight-bold">{{ 'admin.store.plugin.815'|trans }}</h4>
-                    </div><!-- /.col -->
-
-                    {{ include('@admin/Store/unregisterd_plugin_table.twig', {'Plugins': unregisterdPlugins}) }}
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="readmeModal" tabindex="-1" role="dialog" aria-labelledby="readmeModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="readmeModalLabel">{# {{'admin.store.plugin.816'|trans}} #}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group" id="readmeContent">
-                        {# README #}
+                           class="btn btn-ec-regular mr-2 pull-right">{{ 'admin.store.plugin.813'|trans }}</a>
+                        <h5 class="box-title mb-3">{{ 'admin.store.plugin.814'|trans }}</h5>
                     </div>
+                    {{ include('@admin/Store/plugin_table.twig', {'Plugins': unofficialPlugins}) }}
                 </div>
             </div>
         </div>

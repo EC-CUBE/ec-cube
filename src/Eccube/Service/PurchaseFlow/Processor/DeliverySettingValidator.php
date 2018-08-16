@@ -64,7 +64,7 @@ class DeliverySettingValidator extends ItemValidator
         $Deliveries = $this->deliveryRepository->findBy(['SaleType' => $SaleType, 'visible' => true]);
 
         if (empty($Deliveries)) {
-            $this->throwInvalidItemException('cart.product.not.saletype', $item->getProductClass());
+            $this->throwInvalidItemException('front.shopping.in_preparation', $item->getProductClass());
         }
     }
 

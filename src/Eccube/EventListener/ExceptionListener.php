@@ -13,6 +13,7 @@
 
 namespace Eccube\EventListener;
 
+use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -27,11 +28,17 @@ class ExceptionListener implements EventSubscriberInterface
     private $twig;
 
     /**
+     * @var Context
+     */
+    protected $requestContext;
+
+    /**
      * ExceptionListener constructor.
      */
-    public function __construct(\Twig_Environment $twig)
+    public function __construct(\Twig_Environment $twig, Context $requestContext)
     {
         $this->twig = $twig;
+        $this->requestContext = $requestContext;
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event)
@@ -67,7 +74,8 @@ class ExceptionListener implements EventSubscriberInterface
         }
 
         try {
-            $content = $this->twig->render('error.twig', [
+            $file = $this->requestContext->isAdmin() ? '@admin/error.twig' : 'error.twig';
+            $content = $this->twig->render($file, [
                 'error_title' => $title,
                 'error_message' => $message,
             ]);

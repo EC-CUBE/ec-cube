@@ -15,6 +15,8 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
+use Eccube\Repository\ProductClassRepository;
+use Eccube\Util\StringUtil;
 
 /**
  * ShoppingController 用 WebTest の抽象クラス.
@@ -80,13 +82,17 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             [Constant::TOKEN_NAME => '_dummy']
         );
 
+        $ProductClass = $this->container->get(ProductClassRepository::class)->find($product_class_id);
         if ($Customer) {
             $this->loginTo($Customer);
+            $cart_key = $Customer->getId().'_'.$ProductClass->getSaleType()->getId();
+        } else {
+            $cart_key = StringUtil::random(32).'_'.$ProductClass->getSaleType()->getId();
         }
 
         return $this->client->request(
             'GET',
-            $this->generateUrl('cart_buystep')
+            $this->generateUrl('cart_buystep', ['cart_key' => $cart_key])
         );
     }
 
