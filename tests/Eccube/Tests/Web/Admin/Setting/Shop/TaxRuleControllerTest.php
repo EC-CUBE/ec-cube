@@ -67,10 +67,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'tax_rate' => 10,
             'rounding_type' => rand(1, 3),
-            'apply_date' => [
-                'date' => $now->format('Y-m-d'),
-                'time' => $now->format('H:i'),
-            ],
+            'apply_date' => $now->format('Y-m-d H:i'),
         ];
 
         $this->client->request(
