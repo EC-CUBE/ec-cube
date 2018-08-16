@@ -204,3 +204,57 @@ Styleguide 3.2.5
     margin-left:5px;
   }
 }
+
+/*
+チェックボックス （水平）
+
+水平に並ぶチェックボックス フィールドです。
+
+各要素をlabelでくくって、コーディングします。
+
+ex [新規会員登録画面　利用規約](http://demo3.ec-cube.net/entry)
+
+Markup:
+.ec-checkbox
+  label
+    input(type="checkbox")
+    span 利用規約に同意する
+
+Styleguide 3.2.6
+*/
+.ec-checkbox{
+  label{
+    display: inline-block;
+  }
+  input{
+    margin-bottom: 10px;
+  }
+  span{
+    font-weight: normal;
+  }
+
+}
+
+/*
+チェックボックス (垂直)
+
+垂直に並ぶチェックボックス フィールドです。
+
+各要素をlabelでくくって、コーディングします。
+
+Markup:
+.ec-blockCheckbox
+  label
+    input(type="checkbox")
+    span 利用規約に同意する
+
+Styleguide 3.2.7
+*/
+.ec-blockCheckbox{
+  label{
+    display: block;
+  }
+  span {
+    font-weight: normal;
+  }
+}

@@ -149,7 +149,7 @@ file that was distributed with this source code.
                                 {{ form_label(form.birth, 'common.birth_day', { 'label_attr': {'class': 'ec-label' }}) }}
                             </dt>
                             <dd>
-                                <div class="ec-birth{{ has_errors(form.birth) ? ' error'}}">
+                                <div class="ec-birth{{ has_errors(form.birth) ? ' error' }}">
                                     {{ form_widget(form.birth.year) }}<span>/</span>
                                     {{ form_widget(form.birth.month) }}<span>/</span>
                                     {{ form_widget(form.birth.day) }}
@@ -202,10 +202,13 @@ file that was distributed with this source code.
                     <div class="ec-registerRole__actions">
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
-                                <p><span></span>
-                                    <a class="ec-link" href="{{ url('help_agreement') }}" target="_blank">{{ 'front.entry.terms'|trans }}</a>
-                                    {{ 'front.entry.agree_with_terms'|trans }}<span></span>
-                                </p>
+                                <div class="ec-checkbox{{ has_errors(form.user_policy_check) ? ' error' }}">
+                                    <label>
+                                        {{ form_widget(form.user_policy_check) }}
+                                        <a class="ec-link" href="{{ url('help_agreement') }}" target="_blank">{{ 'front.entry.terms'|trans }}</a>{{ 'front.entry.agree_with_terms'|trans }}
+                                    </label>
+                                    {{ form_errors(form.user_policy_check) }}
+                                </div>
                                 <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">{{ 'front.entry.agree'|trans }}</button>
                                 <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'front.entry.disagree'|trans }}</a>
                             </div>
