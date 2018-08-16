@@ -81,7 +81,6 @@ class AuthorityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $data = $form->getData();
 
             foreach ($AuthorityRoles as $AuthorityRole) {

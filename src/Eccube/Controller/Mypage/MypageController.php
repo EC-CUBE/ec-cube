@@ -16,7 +16,6 @@ namespace Eccube\Controller\Mypage;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
-use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -349,7 +348,7 @@ class MypageController extends AbstractController
 
         log_info('お気に入り商品削除開始', [$Customer->getId(), $Product->getId()]);
 
-        $CustomerFavoriteProduct = $this->customerFavoriteProductRepository->findOneBy(['Customer' => $Customer, 'Product'=> $Product]);
+        $CustomerFavoriteProduct = $this->customerFavoriteProductRepository->findOneBy(['Customer' => $Customer, 'Product' => $Product]);
 
         if ($CustomerFavoriteProduct) {
             $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);

@@ -189,7 +189,7 @@ class EA09ShippingCest
          */
 
         $csv = implode(PHP_EOL, [
-            '出荷ID,送り状番号,出荷日',
+            '出荷ID,お問い合わせ番号,出荷日',
             $Orders[0]->getShippings()[0]->getId().',00001,2018-01-01',
             $Orders[1]->getShippings()[0]->getId().',00002,2018-02-02',
             $Orders[2]->getShippings()[0]->getId().',00003,2018-03-03',
@@ -306,6 +306,6 @@ class EA09ShippingCest
 
         ShippingCsvUploadPage::go($I)->雛形ダウンロード();
         $csv = $I->getLastDownloadFile('/^shipping\.csv$/');
-        $I->assertEquals(mb_convert_encoding(file_get_contents($csv), 'UTF-8', 'Shift_JIS'), '出荷ID,送り状番号,出荷日'.PHP_EOL);
+        $I->assertEquals(mb_convert_encoding(file_get_contents($csv), 'UTF-8', 'Shift_JIS'), '出荷ID,お問い合わせ番号,出荷日'.PHP_EOL);
     }
 }

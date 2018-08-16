@@ -9,7 +9,7 @@ Invalid CSRF token.: |
   入力内容に誤りがないかご確認ください。
 
 # EC-CUBE error message
-errors.twig_format {{ error }}: Twigのフォーマットが正しくありません。{{ error }}
+Invalid twig format. {{ error }}: Twigのフォーマットが正しくありません。{{ error }}
 errors.numeric_only: 数字で入力してください。
 errors.float_only: 数字と小数点のみ入力できます。
 errors.graph_only: 半角英数字で入力してください。

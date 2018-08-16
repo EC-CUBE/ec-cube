@@ -30,7 +30,7 @@ file that was distributed with this source code.
                         </div>
                         {% if error %}
                             <div class="form-group">
-                                <span class="text-danger">{{ error.messageKey|trans(error.messageData)|raw }}</span>
+                                <span class="text-danger">{{ error.messageKey|trans(error.messageData, 'validators')|nl2br }}</span>
                             </div>
                         {% endif %}
                         <button type="submit" class="btn btn-primary btn-lg btn-block">{{ 'admin.login.login'|trans }}</button>

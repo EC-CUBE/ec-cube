@@ -523,7 +523,7 @@ class InstallController extends AbstractController
      *
      * @return string
      */
-    protected function createDatabaseUrl(array $params)
+    public function createDatabaseUrl(array $params)
     {
         if (!isset($params['database'])) {
             return null;
@@ -565,7 +565,7 @@ class InstallController extends AbstractController
      *
      * @return array
      */
-    protected function extractDatabaseUrl($url)
+    public function extractDatabaseUrl($url)
     {
         if (preg_match('|^sqlite://(.*)$|', $url, $matches)) {
             return [
@@ -597,7 +597,7 @@ class InstallController extends AbstractController
      *
      * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
      */
-    protected function createMailerUrl(array $params)
+    public function createMailerUrl(array $params)
     {
         $url = '';
         if (isset($params['transport'])) {
@@ -656,7 +656,7 @@ class InstallController extends AbstractController
      *
      * @return array
      */
-    protected function extractMailerUrl($url)
+    public function extractMailerUrl($url)
     {
         $options = [
             'transport' => null,
@@ -912,7 +912,7 @@ class InstallController extends AbstractController
      *
      * @return string
      */
-    protected function getDatabaseVersion(EntityManager $em)
+    public function getDatabaseVersion(EntityManager $em)
     {
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('server_version', 'server_version');
@@ -943,7 +943,7 @@ class InstallController extends AbstractController
      *
      * @return string
      */
-    protected function convertAdminAllowHosts($adminAllowHosts)
+    public function convertAdminAllowHosts($adminAllowHosts)
     {
         if (empty($adminAllowHosts)) {
             return '[]';

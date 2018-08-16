@@ -384,6 +384,6 @@ class EA08SysteminfoCest
         $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
 
         $I->amOnPage('/'.$config['eccube_admin_route']);
-        $I->see('アクセスできません。', '.ec-layoutRole .ec-reportHeading');
+        $I->see('アクセスできません。', '//*[@id="error-page"]//h3');
     }
 }
