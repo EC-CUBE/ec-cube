@@ -20,6 +20,9 @@ use Eccube\Tests\EccubeTestCase;
 
 class StockReduceProcessorTest extends EccubeTestCase
 {
+    /**
+     * @var StockReduceProcessor
+     */
     private $processor;
 
     public function setUp()
@@ -36,14 +39,15 @@ class StockReduceProcessorTest extends EccubeTestCase
         $ProductClass->setStockUnlimited(false);
         $ProductClass->setStock(10);
         $ProductClass->getProductStock()->setStock(10);
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->flush();
 
         // 数量3の受注
         $Customer = $this->createCustomer();
         $Order = $this->createOrderWithProductClasses($Customer, [$ProductClass]);
         $OrderItem = $Order->getProductOrderItems()[0];
         $OrderItem->setQuantity(3);
-
-        $this->entityManager->persist($ProductClass);
+        $this->entityManager->persist($OrderItem);
         $this->entityManager->flush();
 
         $this->processor->prepare($Order, new PurchaseContext());
@@ -61,14 +65,14 @@ class StockReduceProcessorTest extends EccubeTestCase
         $ProductClass->setStockUnlimited(false);
         $ProductClass->setStock(7);
         $ProductClass->getProductStock()->setStock(7);
+        $this->entityManager->persist($ProductClass);
 
         // 数量3の受注
         $Customer = $this->createCustomer();
         $Order = $this->createOrderWithProductClasses($Customer, [$ProductClass]);
         $OrderItem = $Order->getProductOrderItems()[0];
         $OrderItem->setQuantity(3);
-
-        $this->entityManager->persist($ProductClass);
+        $this->entityManager->persist($OrderItem);
         $this->entityManager->flush();
 
         $this->processor->rollback($Order, new PurchaseContext());
