@@ -16,7 +16,7 @@ class TaxManagePage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
-        return $page->goPage('/setting/shop/tax', '税率設定基本情報設定');
+        return $page->goPage('/setting/shop/tax', '税率設定店舗設定');
     }
 
     public function 入力_消費税率($row, $value) {
@@ -56,8 +56,11 @@ class TaxManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_削除($rowNum)
     {
-        $this->tester->click("table tbody tr:nth-child(${rowNum}) > td.align-middle.action > div > div div:nth-child(2) > a");
-        $this->tester->acceptPopup();
+        $this->tester->click("table tbody tr:nth-child(${rowNum}) > td.align-middle.action > div > div > div:nth-child(2) > div.d-inline-block.mr-3 > a");
+
+        // accept modal
+        $this->tester->waitForElementVisible("table tbody tr:nth-child(${rowNum}) > td.align-middle.action > div > div > div:nth-child(2) > div.modal");
+        $this->tester->click("table tbody tr:nth-child(${rowNum}) > td.align-middle.action > div > div > div:nth-child(2) > div.modal.fade.show > div > div > div.modal-footer > a");
         return $this;
     }
 

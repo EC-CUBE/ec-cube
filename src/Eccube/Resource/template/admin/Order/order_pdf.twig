@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['order', 'order_master'] %}
 
-{% block title %}{{ 'admin.order.export.pdf.title'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.order.export.pdf.title.sub'|trans }}{% endblock %}
+{% block title %}{{ 'admin.order.output_delivery_note_short'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -89,69 +89,69 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h4 class="box-title font-weight-bold">{{ 'admin.order.export.pdf.title.003'|trans }}</h4>
+                            <h4 class="box-title font-weight-bold">{{ 'admin.order.output_delivery_note'|trans }}</h4>
                         </div>
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label>{{ 'admin.order.export.pdf.label.002'|trans }}</label>
+                                <label>{{ 'admin.order.delivery_note_create_date'|trans }}</label>
                                 {{ form_widget(form.issue_date) }}
                                 {{ form_errors(form.issue_date) }}
                             </div>
 
                             <div class="form-group">
-                                <label>{{ 'admin.order.export.pdf.label.001'|trans }}</label>
+                                <label>{{ 'admin.order.shipping_id'|trans }}</label>
                                 {{ form_widget(form.ids) }}
                                 {{ form_errors(form.ids) }}
                             </div>
 
                             <div class="form-group">
-                                <label>{{ 'admin.order.export.pdf.label.003'|trans }}</label>
+                                <label>{{ 'admin.order.delivery_note_title'|trans }}</label>
                                 {{ form_widget(form.title) }}
                                 {{ form_errors(form.title) }}
                             </div>
 
                             <div class="form-group">
-                                <label>{{ 'admin.order.export.pdf.label.download_kind'|trans }}</label>
+                                <label>{{ 'admin.order.delivery_note_output_format'|trans }}</label>
                                 {{ form_widget(form.download_kind) }}
                                 {{ form_errors(form.download_kind) }}
                             </div>
 
-                            <div class="font-weight-bold">{{ 'admin.order.export.pdf.label.message'|trans }}</div>
+                            <div class="font-weight-bold">{{ 'admin.order.delivery_note_message'|trans }}</div>
 
                             <div class="form-group">
-                                <label>{{ 'admin.order.export.pdf.label.004'|trans }}</label>
+                                <label>{{ 'admin.order.delivery_note_line1'|trans }}</label>
                                 {{ form_widget(form.message1) }}
                                 {{ form_errors(form.message1) }}
                             </div>
 
                             <div class="form-group">
-                                <label>{{ 'admin.order.export.pdf.label.005'|trans }}</label>
+                                <label>{{ 'admin.order.delivery_note_line2'|trans }}</label>
                                 {{ form_widget(form.message2) }}
                                 {{ form_errors(form.message2) }}
                             </div>
 
                             <div class="form-group">
-                                <label>{{ 'admin.order.export.pdf.label.006'|trans }}</label>
+                                <label>{{ 'admin.order.delivery_note_line3'|trans }}</label>
                                 {{ form_widget(form.message3) }}
                                 {{ form_errors(form.message3) }}
                             </div>
 
-                            <div class="font-weight-bold">{{ 'admin.order.export.pdf.label.note'|trans }}</div>
+                            <div class="font-weight-bold">{{ 'admin.order.delivery_note_memo'|trans }}</div>
                             <div class="form-group">
-                                <label>{{ 'admin.order.export.pdf.label.007'|trans }}</label>
+                                <label>{{ 'admin.order.delivery_note_line1'|trans }}</label>
                                 {{ form_widget(form.note1) }}
                                 {{ form_errors(form.note1) }}
                             </div>
 
                             <div class="form-group">
-                                <label>{{ 'admin.order.export.pdf.label.008'|trans }}</label>
+                                <label>{{ 'admin.order.delivery_note_line2'|trans }}</label>
                                 {{ form_widget(form.note2) }}
                                 {{ form_errors(form.note2) }}
                             </div>
 
                             <div class="form-group">
-                                <label>{{ 'admin.order.export.pdf.label.009'|trans }}</label>
+                                <label>{{ 'admin.order.delivery_note_line3'|trans }}</label>
                                 {{ form_widget(form.note3) }}
                                 {{ form_errors(form.note3) }}
                             </div>
@@ -172,13 +172,13 @@ file that was distributed with this source code.
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            <button class="btn btn-ec-regular px-5" type="button">{{ 'admin.common.label.close'|trans }}</button>
+                            <button class="btn btn-ec-regular px-5" type="button">{{ 'admin.common.close'|trans }}</button>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.order.export.pdf.label.013'|trans }}</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.create'|trans }}</button>
                             </div>
                         </div>
                     </div>

@@ -64,14 +64,14 @@ class SearchCustomerType extends AbstractType
         $builder
             // 会員ID・メールアドレス・名前・名前(フリガナ)
             ->add('multi', TextType::class, [
-                'label' => 'searchcustomer.label.multi',
+                'label' => 'admin.customer.multi_search_label',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('customer_status', CustomerStatusType::class, [
-                'label' => 'searchcustomer.label.status',
+                'label' => 'admin.customer.customer_status',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
@@ -84,18 +84,19 @@ class SearchCustomerType extends AbstractType
                 ]),
             ])
             ->add('sex', SexType::class, [
-                'label' => 'searchcustomer.label.sex',
+                'label' => 'admin.common.gender',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
             ])
             ->add('birth_month', ChoiceType::class, [
-                'label' => 'searchcustomer.label.birth_month',
+                'label' => 'admin.common.birth_month',
+                'placeholder' => 'admin.common.select',
                 'required' => false,
                 'choices' => array_combine($months, $months),
             ])
             ->add('birth_start', BirthdayType::class, [
-                'label' => 'searchcustomer.label.birth_date_start',
+                'label' => 'admin.common.birth_day__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -108,7 +109,7 @@ class SearchCustomerType extends AbstractType
                 ],
             ])
             ->add('birth_end', BirthdayType::class, [
-                'label' => 'searchcustomer.label.birth_date_end',
+                'label' => 'admin.common.birth_day__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -121,11 +122,11 @@ class SearchCustomerType extends AbstractType
                 ],
             ])
             ->add('pref', PrefType::class, [
-                'label' => 'searchcustomer.label.prefecture',
+                'label' => 'admin.common.pref',
                 'required' => false,
             ])
             ->add('phone_number', TextType::class, [
-                'label' => 'searchcustomer.label.tel',
+                'label' => 'admin.common.phone_number',
                 'required' => false,
                 'constraints' => [
                     new Assert\Regex([
@@ -135,42 +136,42 @@ class SearchCustomerType extends AbstractType
                 ],
             ])
             ->add('buy_product_name', TextType::class, [
-                'label' => 'searchcustomer.label.purchased_product_name',
+                'label' => 'admin.order.purchase_product',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('buy_total_start', PriceType::class, [
-                'label' => 'searchcustomer.label.purchese_price_start',
+                'label' => 'admin.order.purchase_price__start',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
                 ],
             ])
             ->add('buy_total_end', PriceType::class, [
-                'label' => 'searchcustomer.label.purchese_price_end',
+                'label' => 'admin.order.purchase_price__end',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
                 ],
             ])
             ->add('buy_times_start', IntegerType::class, [
-                'label' => 'searchcustomer.label.number_of_purchases_start',
+                'label' => 'admin.order.purchase_count__start',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_int_len']]),
                 ],
             ])
             ->add('buy_times_end', IntegerType::class, [
-                'label' => 'searchcustomer.label.number_of_purchases_end',
+                'label' => 'admin.order.purchase_count__end',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_int_len']]),
                 ],
             ])
             ->add('create_date_start', DateType::class, [
-                'label' => 'searchcustomer.label.create_date_start',
+                'label' => 'admin.common.create_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -183,7 +184,7 @@ class SearchCustomerType extends AbstractType
                 ],
             ])
             ->add('create_date_end', DateType::class, [
-                'label' => 'searchcustomer.label.create_date_end',
+                'label' => 'admin.common.create_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -196,7 +197,7 @@ class SearchCustomerType extends AbstractType
                 ],
             ])
             ->add('update_date_start', DateType::class, [
-                'label' => 'searchcustomer.label.update_date_start',
+                'label' => 'admin.common.update_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -209,7 +210,7 @@ class SearchCustomerType extends AbstractType
                 ],
             ])
             ->add('update_date_end', DateType::class, [
-                'label' => 'searchcustomer.label.update_date_end',
+                'label' => 'admin.common.update_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -222,7 +223,7 @@ class SearchCustomerType extends AbstractType
                 ],
             ])
             ->add('last_buy_start', DateType::class, [
-                'label' => 'searchcustomer.label.last_purchase_start',
+                'label' => 'admin.order.last_buy_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -235,7 +236,7 @@ class SearchCustomerType extends AbstractType
                 ],
             ])
             ->add('last_buy_end', DateType::class, [
-                'label' => 'searchcustomer.label.last_purchase_end',
+                'label' => 'admin.order.last_buy_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -245,22 +246,6 @@ class SearchCustomerType extends AbstractType
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_last_buy_end',
                     'data-toggle' => 'datetimepicker',
-                ],
-            ])
-
-            // FIXME 未使用
-            ->add('company_name', TextType::class, [
-                'label' => 'searchcustomer.label.company_name',
-                'required' => false,
-                'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
-                ],
-            ])
-            ->add('buy_product_code', TextType::class, [
-                'label' => 'searchcustomer.label.purchased_product_code',
-                'required' => false,
-                'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
         ;

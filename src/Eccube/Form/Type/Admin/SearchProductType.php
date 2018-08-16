@@ -57,13 +57,13 @@ class SearchProductType extends AbstractType
     {
         $builder
             ->add('id', TextType::class, [
-                'label' => 'searchproduct.label.multi',
+                'label' => 'admin.product.multi_search_label',
                 'required' => false,
             ])
-            ->add('category_id', ChoiceType::class, [
+            ->add('category_id', MasterCategoryType::class, [
                 'choice_label' => 'NameWithLevel',
-                'label' => 'searchproduct.label.category',
-                'placeholder' => 'searchproduct.placeholder.select',
+                'label' => 'admin.product.category',
+                'placeholder' => 'common.select__all_products',
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
@@ -73,7 +73,7 @@ class SearchProductType extends AbstractType
                 },
             ])
             ->add('status', ProductStatusType::class, [
-                'label' => 'searchproduct.label.type',
+                'label' => 'admin.product.display_status',
                 'multiple' => true,
                 'required' => false,
                 'expanded' => true,
@@ -83,16 +83,16 @@ class SearchProductType extends AbstractType
                 ]]),
             ])
             ->add('stock', ChoiceType::class, [
-                'label' => 'searchproduct.label.stock',
+                'label' => 'admin.product.stock',
                 'choices' => [
-                    'admin.product.index.filter_in_stock' => ProductStock::IN_STOCK,
-                    'admin.product.index.filter_out_of_stock' => ProductStock::OUT_OF_STOCK,
+                    'admin.product.stock__in_stock' => ProductStock::IN_STOCK,
+                    'admin.product.stock__out_of_stock' => ProductStock::OUT_OF_STOCK,
                 ],
                 'expanded' => true,
                 'multiple' => true,
             ])
             ->add('create_date_start', DateType::class, [
-                'label' => 'searchproduct.label.registration_date_from',
+                'label' => 'admin.common.create_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -105,7 +105,7 @@ class SearchProductType extends AbstractType
                 ],
             ])
             ->add('create_date_end', DateType::class, [
-                'label' => 'searchproduct.label.registration_date_to',
+                'label' => 'admin.common.create_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -118,7 +118,7 @@ class SearchProductType extends AbstractType
                 ],
             ])
             ->add('update_date_start', DateType::class, [
-                'label' => 'searchproduct.label.updated_date_from',
+                'label' => 'admin.common.update_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -131,7 +131,7 @@ class SearchProductType extends AbstractType
                 ],
             ])
             ->add('update_date_end', DateType::class, [
-                'label' => 'searchproduct.label.updated_date_from',
+                'label' => 'admin.common.update_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',

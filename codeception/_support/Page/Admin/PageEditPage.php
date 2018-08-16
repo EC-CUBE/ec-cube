@@ -21,7 +21,7 @@ class PageEditPage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
         $page->atPage('ページ管理コンテンツ管理');
-        $page->tester->see('ページ詳細編集', '#content_page_form > div.c-contentsArea__cols > div > div > div:nth-child(1) > div.card-header > div > div.col-8 > span');
+        $page->tester->see('ページ設定', '#content_page_form > div.c-contentsArea__cols > div > div > div:nth-child(1) > div.card-header > div > div.col-8 > span');
         return $page;
     }
 
