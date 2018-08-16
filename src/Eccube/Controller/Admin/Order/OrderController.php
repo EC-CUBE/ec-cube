@@ -31,6 +31,7 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Repository\ShippingRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\ProductStockRepository;
 use Eccube\Service\CsvExportService;
@@ -101,6 +102,11 @@ class OrderController extends AbstractController
     protected $orderPdfRepository;
 
     /**
+     * @var ShippingRepository
+     */
+    protected $shippingRepository;
+
+    /**
      * @var ProductStockRepository
      */
     protected $productStockRepository;
@@ -137,6 +143,7 @@ class OrderController extends AbstractController
      * @param ProductStockRepository $productStockRepository
      * @param OrderRepository $orderRepository
      * @param OrderPdfRepository $orderPdfRepository
+     * @param ShippingRepository $shippingRepository
      * @param OrderPdfService $orderPdfService
      * @param ValidatorInterface $validator
      * @param OrderStateMachine $orderStateMachine ;
@@ -153,6 +160,7 @@ class OrderController extends AbstractController
         ProductStockRepository $productStockRepository,
         OrderRepository $orderRepository,
         OrderPdfRepository $orderPdfRepository,
+        ShippingRepository $shippingRepository,
         OrderPdfService $orderPdfService,
         ValidatorInterface $validator,
         OrderStateMachine $orderStateMachine,
@@ -169,6 +177,7 @@ class OrderController extends AbstractController
         $this->productStockRepository = $productStockRepository;
         $this->orderRepository = $orderRepository;
         $this->orderPdfRepository = $orderPdfRepository;
+        $this->shippingRepository = $shippingRepository;
         $this->orderPdfService = $orderPdfService;
         $this->validator = $validator;
         $this->orderStateMachine = $orderStateMachine;
@@ -328,16 +337,26 @@ class OrderController extends AbstractController
     {
         $this->isTokenValid();
         $ids = $request->get('ids');
-        foreach ($ids as $order_id) {
-            $Order = $this->orderRepository
-                ->find($order_id);
-            if ($Order) {
-                $this->entityManager->remove($Order);
-                log_info('受注削除', [$Order->getId()]);
+        foreach ($ids as $shipping_id) {
+            $Shipping = $this->shippingRepository
+                ->find($shipping_id);
+            if ($Shipping) {
+                foreach ($Shipping->getOrderItems() as $OrderItem) {
+                    $this->entityManager->remove($OrderItem);
+                    $this->entityManager->flush($OrderItem);
+                }
+                $Order = $Shipping->getOrder();
+                $this->entityManager->remove($Shipping);
+                $this->entityManager->flush($Shipping);
+                log_info('出荷情報削除', [$Shipping->getId()]);
+
+                if (count($Order->getShippings()) == 0) {
+                    $this->entityManager->remove($Order);
+                    $this->entityManager->flush($Order);
+                    log_info('受注削除', [$Order->getId()]);
+                }
             }
         }
-
-        $this->entityManager->flush();
 
         $this->addSuccess('admin.order.delete.complete', 'admin');
 
