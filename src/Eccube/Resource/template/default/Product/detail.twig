@@ -226,20 +226,11 @@ file that was distributed with this source code.
                     {% if Product.hasProductClass -%}
                         <div class="ec-productRole__priceRegular">
                             {% if Product.getPrice01Min is not null and Product.getPrice01IncTaxMin == Product.getPrice01IncTaxMax %}
-<<<<<<< HEAD
-                                <span class="ec-productRole__priceRegularPrice">{{ 'front.product.nomal_price'|trans }}：{{ Product.getPrice01IncTaxMin|price }}</span>
+                                <span class="ec-productRole__priceRegularPrice">{{ 'front.product.nomal_price'|trans }}：<span class="price01-default">{{ Product.getPrice01IncTaxMin|price }}</span></span>
                                 <span class="ec-productRole__priceRegularTax">{{ 'common.tax_include'|trans }}</span>
                             {% elseif Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
-                                <span class="ec-productRole__priceRegularPrice">{{ 'front.product.normal_price'|trans }}：{{ Product.getPrice01IncTaxMin|price }}
-                                    ～ {{ Product.getPrice01IncTaxMax|price }}</span>
-                                <span class="ec-productRole__priceRegularTax">{{ 'scommon.tax_include'|trans }}</span>
-=======
-                                <span class="ec-productRole__priceRegularPrice">{{ 'normal_price_title'|trans }}：<span class="price01-default">{{ Product.getPrice01IncTaxMin|price }}</span></span>
-                                <span class="ec-productRole__priceRegularTax">{{ 'shopping.label.tax_incl'|trans }}</span>
-                            {% elseif Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
-                                <span class="ec-productRole__priceRegularPrice">{{ 'normal_price_title'|trans }}：<span class="price01-default">{{ Product.getPrice01IncTaxMin|price }}～ {{ Product.getPrice01IncTaxMax|price }}</span></span>
-                                <span class="ec-productRole__priceRegularTax">{{ 'shopping.label.tax_incl'|trans }}</span>
->>>>>>> upstream/4.0
+                                <span class="ec-productRole__priceRegularPrice">{{ 'front.product.normal_price'|trans }}：<span class="price01-default">{{ Product.getPrice01IncTaxMin|price }}～ {{ Product.getPrice01IncTaxMax|price }}</span></span>
+                                <span class="ec-productRole__priceRegularTax">{{ 'common.tax_include'|trans }}</span>
                             {% endif %}
                         </div>
                     {% else %}
