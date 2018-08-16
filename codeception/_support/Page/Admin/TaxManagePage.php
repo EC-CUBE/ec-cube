@@ -24,13 +24,16 @@ class TaxManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 入力_適用日($value) {
-        $this->tester->executeJS("document.getElementById('tax_rule_apply_date_date').value = '{$value}'");
+    public function 入力_適用日($year, $month, $day) {
+        $this->tester->executeJS("document.getElementById('tax_rule_apply_date_date_year').value = '{$year}'");
+        $this->tester->executeJS("document.getElementById('tax_rule_apply_date_date_month').value = '{$month}'");
+        $this->tester->executeJS("document.getElementById('tax_rule_apply_date_date_day').value = '{$day}'");
         return $this;
     }
 
-    public function 入力_適用時($value) {
-        $this->tester->executeJS("document.getElementById('tax_rule_apply_date_time').value = '{$value}'");
+    public function 入力_適用時($hour, $minute) {
+        $this->tester->executeJS("document.getElementById('tax_rule_apply_date_time_hour').value = '{$hour}'");
+        $this->tester->executeJS("document.getElementById('tax_rule_apply_date_time_minute').value = '{$minute}'");
         return $this;
     }
 
