@@ -24,6 +24,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -84,12 +85,12 @@ class ProductClassEditType extends AbstractType
             ->add('code', TextType::class, [
                 'required' => false,
             ])
-            ->add('stock', NumberType::class, [
+            ->add('stock', IntegerType::class, [
                 'required' => false,
             ])
             ->add('stock_unlimited', CheckboxType::class, [
+                'label' => 'admin.product.stock_unlimited__short',
                 'required' => false,
-                'label' => 'productclass.label.unlimited',
             ])
             ->add('sale_limit', NumberType::class, [
                 'required' => false,
@@ -112,7 +113,7 @@ class ProductClassEditType extends AbstractType
             ])
             ->add('delivery_duration', DeliveryDurationType::class, [
                 'required' => false,
-                'placeholder' => 'productclass.placeholder.not_specified',
+                'placeholder' => 'common.select__unspecified',
             ]);
 
         $transformer = new DataTransformer\EntityToIdTransformer($this->entityManager, ClassCategory::class);

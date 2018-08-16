@@ -181,7 +181,6 @@ class ProductController extends AbstractController
             null,
             [
                 'required' => false,
-                'label' => trans('productcontroller.label.result'),
                 'allow_extra_fields' => true,
             ]
         );
@@ -208,7 +207,6 @@ class ProductController extends AbstractController
             null,
             [
                 'required' => false,
-                'label' => trans('productcontroller.label.sort'),
                 'allow_extra_fields' => true,
             ]
         );
@@ -474,11 +472,11 @@ class ProductController extends AbstractController
     private function getPageTitle($searchData)
     {
         if (isset($searchData['name']) && !empty($searchData['name'])) {
-            return trans('productcontroller.text.return.search');
+            return trans('front.product.search_result');
         } elseif (isset($searchData['category_id']) && $searchData['category_id']) {
             return $searchData['category_id']->getName();
         } else {
-            return trans('productcontroller.text.return.all_products');
+            return trans('front.product.all_products');
         }
     }
 

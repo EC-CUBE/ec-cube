@@ -386,8 +386,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()])
         );
 
-        $expected = 'この商品の規格';
-        $actual = $crawler->filter('#standardConfig > div > div.d-inline-block')->text();
+        $expected = '規格1';
+        $actual = $crawler->filter('#standardConfig > div > table')->text();
         $this->assertContains($expected, $actual);
 
         $this->expected = $productClassNum;

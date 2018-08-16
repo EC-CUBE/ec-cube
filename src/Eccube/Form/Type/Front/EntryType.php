@@ -28,7 +28,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -96,29 +95,14 @@ class EntryType extends AbstractType
             ])
             ->add('job', JobType::class, [
                 'required' => false,
-            ])
-            ->add(
-                'point',
-                NumberType::class,
-                [
-                    'required' => false,
-                    'label' => 'ポイント', // TODO 未翻訳
-                    'constraints' => [
-                        new Assert\Regex([
-                            'pattern' => "/^\d+$/u",
-                            'message' => 'form.type.numeric.invalid',
-                        ]),
-                    ],
-                    'mapped' => false,
-                ]
-            );
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-                $Customer = $event->getData();
-                if ($Customer instanceof Customer && !$Customer->getId()) {
-                    $form = $event->getForm();
+            $Customer = $event->getData();
+            if ($Customer instanceof Customer && !$Customer->getId()) {
+                $form = $event->getForm();
 
-                    $form->add('user_policy_check', CheckboxType::class, [
+                $form->add('user_policy_check', CheckboxType::class, [
                         'required' => true,
                         'label' => null,
                         'mapped' => false,
@@ -126,8 +110,8 @@ class EntryType extends AbstractType
                             new Assert\NotBlank(),
                         ],
                     ]);
-                }
             }
+        }
         );
     }
 

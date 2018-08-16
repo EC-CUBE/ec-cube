@@ -18,12 +18,16 @@ file that was distributed with this source code.
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.edit_address'|trans}}</h1>
+                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__customer_address'|trans }}</h1>
             </div>
             {{ include('Mypage/navi.twig') }}
         </div>
         <div class="ec-mypageRole">
-            <p class="ec-para-nomal">{{'mypage.delivery.text.results'|trans({'%num%':Customer.CustomerAddresses|length})|raw}}</p>
+            {% if Customer.CustomerAddresses|length > 0 %}
+                <p class="ec-para-nomal">{{ 'front.mypage.customer_address_count'|trans({'%count%':Customer.CustomerAddresses|length}) }}</p>
+            {% else %}
+                <p class="ec-para-nomal">{{ 'front.mypage.customer_address_not_found'|trans }}</p>
+            {% endif %}
         </div>
         <div class="ec-mypageRole">
             <div class="ec-off1Grid">
@@ -31,9 +35,9 @@ file that was distributed with this source code.
                     <div class="ec-addressRole">
                         <div class="ec-addressRole__actions">
                             {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
-                                <a class="ec-inlineBtn" href="{{ url('mypage_delivery_new') }}">{{'mypage.label.add_address'|trans}}</a>
+                                <a class="ec-inlineBtn" href="{{ url('mypage_delivery_new') }}">{{ 'front.mypage.add_customer_address'|trans }}</a>
                             {% else %}
-                                <span class="ec-errorMessage">お届け先登録の上限の{{ eccube_config.eccube_deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>
+                                <span class="ec-errorMessage">{{ 'common.customer_address_count_is_over'|trans({ '%count%': eccube_config.eccube_deliv_addr_max }) }}</span>
                             {% endif %}
                         </div>
                     </div>
@@ -48,10 +52,12 @@ file that was distributed with this source code.
                                     </a>
                                     <div class="ec-addressList__address">
                                         <div>{{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}</div>
-                                        <div>〒{{ CustomerAddress.postal_code }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
+                                        <div>{{ 'common.postal_symbol'|trans }}{{ CustomerAddress.postal_code }} {{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
                                         <div>{{ CustomerAddress.phone_number }}</div>
                                     </div>
-                                    <div class="ec-addressList__action"><a class="ec-inlineBtn" href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">{{'mypage.label.btn.edit'|trans}}</a></div>
+                                    <div class="ec-addressList__action">
+                                        <a class="ec-inlineBtn" href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">{{ 'common.change'|trans }}</a>
+                                    </div>
                                 </div>
                             {% endfor %}
                         </div>

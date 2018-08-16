@@ -12,15 +12,20 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'layout'] %}
 
-{% block title %}{{ 'admin.content.layout_list.46'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.content.layout_list.45'|trans }}{% endblock %}
+{% block title %}{{ 'admin.content.layout_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% block javascript %}
     <script>
         $(function() {
-            $('#layoutDelete').on('shown.bs.modal', function(event) {
+            // 削除モーダルのhrefとmessageの変更
+            $('#DeleteModal').on('shown.bs.modal', function(event) {
                 var target = $(event.relatedTarget);
+                // hrefの変更
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
+
+                // messageの変更
+                $(this).find('p.modal-message').text(target.data('message'));
             });
         });
     </script>
@@ -31,7 +36,7 @@ file that was distributed with this source code.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="d-block mb-3">
-                    <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new') }}">{{ 'admin.content.layout_list.add_layout'|trans }}</a>
+                    <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new') }}">{{ 'admin.common.create__new'|trans }}</a>
                 </div>
                 {# layouts #}
                 {% for Layout in Layouts %}
@@ -44,20 +49,19 @@ file that was distributed with this source code.
                                     {% else %}
                                         {% set icon = 'fa-mobile' %}
                                     {% endif %}
-                                    <i class="fa {{ icon }} fa-lg mr-2"></i>
+                                    <i class="fa fa-fw {{ icon }} fa-lg mr-2"></i>
                                     <a class="card-title align-middle"
                                        href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
-                                    {% if Layout.isDefault() == false %}
-                                        <button class="btn btn-ec-sub" type="button"
-                                                data-toggle="modal"
-                                                data-target="#layoutDelete"
-                                                data-url="{{ url('admin_content_layout_delete', { id: Layout.id }) }}"
-                                                {{ Layout.isDeletable() ? '' : 'disabled' }}>
-                                            {{ 'admin.content.layout_list.delete_layout'|trans }}
-                                        </button>
-                                    {% endif %}
                                 </div>
                                 <div class="col-4 text-right">
+                                    {% if Layout.isDefault() == false %}
+                                        <button class="btn btn-ec-sub mr-3" type="button" data-toggle="modal" data-target="#DeleteModal"
+                                                data-url="{{ url('admin_content_layout_delete', { id: Layout.id }) }}"
+                                                data-message="{{ 'admin.common.delete_modal__message'|trans({ '%name%' : Layout.name }) }}">
+                                            <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                            {{ 'admin.content.layout_delete'|trans }}
+                                        </button>
+                                    {% endif %}
                                     <a href="#layout-{{ Layout.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="layout-{{ Layout.id }}">
                                         <i class="fa fa-angle-down fa-lg"></i>
                                     </a>
@@ -82,7 +86,7 @@ file that was distributed with this source code.
                             <div class="collapse ec-cardCollapse" id="layout-{{ Layout.id }}">
                                 <div class="p-0 empty-item">
                                     <div class="d-block p-3">
-                                        <span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span>
+                                        <span class="text-muted">{{ 'admin.content.layout_no_page'|trans }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -90,21 +94,20 @@ file that was distributed with this source code.
                     </div>
                 {% endfor %}
 
-                <div class="modal fade" id="layoutDelete" tabindex="-1" role="dialog" aria-labelledby="layoutDelete"
-                     aria-hidden="true">
+                <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="DeleteModal" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">{{ 'admin.content.layout_list.delete_layout.title'|trans }}</h5>
+                                <h5 class="modal-title">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body">
-                                <p>{{ 'admin.content.layout_list.delete_layout.confirm_message'|trans }}</p>
+                                <p class="modal-message"><!-- jsでメッセージを挿入 --></p>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.delete_layout.cancel'|trans }}</button>
+                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                 <a href="#" class="btn btn-ec-delete" {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
-                                    {{ 'admin.content.layout_list.delete_layout.delete'|trans }}
+                                    {{ 'admin.common.delete'|trans }}
                                 </a>
                             </div>
                         </div>

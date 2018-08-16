@@ -23,7 +23,7 @@ class BlockManagePage extends AbstractAdminPageStyleGuide
 
     public function 新規入力()
     {
-        $this->tester->click('#page_admin_content_block > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.card.rounded.border-0 > div > div > a');
+        $this->tester->click('#page_admin_content_block > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div.row.justify-content-between.mb-2 > div.col-9 > a');
     }
 
     public function 編集($rowNum)
