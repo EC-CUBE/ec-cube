@@ -234,6 +234,7 @@ class EA04OrderCest
         $I->resetEmails();
 
         OrderManagePage::go($I)
+            ->件数変更(10)
             ->一覧_全選択()
             ->一括メール送信();
 
