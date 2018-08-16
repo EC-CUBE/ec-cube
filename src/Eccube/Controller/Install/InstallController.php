@@ -969,6 +969,12 @@ class InstallController extends AbstractController
      */
     protected function isInstallEnv()
     {
-        return $this->getParameter('kernel.environment') === 'install';
+        $env = $this->getParameter('kernel.environment');
+
+        if ($env === 'install' || $env === 'test') {
+            return true;
+        }
+
+        return false;
     }
 }
