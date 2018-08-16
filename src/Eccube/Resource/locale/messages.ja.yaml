@@ -532,6 +532,8 @@ admin.change_password.new_password: 新しいパスワード
 admin.change_password.new_password_confirm: 新しいパスワード(確認)
 admin.change_password.password_changed: パスワードを更新しました
 
+admin.error.go_to_login: ログイン画面へ
+
 #------------------------------------------------------------------------------------
 # 商品管理
 #------------------------------------------------------------------------------------
