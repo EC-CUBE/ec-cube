@@ -775,8 +775,8 @@ admin.order.purchase_product: 購入商品名
 admin.order.purchase_count: 購入件数
 admin.order.purchase_count__start: 購入件数(開始)
 admin.order.purchase_count__end: 購入件数(終了)
-admin.order.tracking_number: 送り状番号
-admin.order.tracking_number_error: 送り状番号は半角英数字かハイフンのみを入力してください。
+admin.order.tracking_number: お問い合わせ番号
+admin.order.tracking_number_error: お問い合わせ番号は半角英数字かハイフンのみを入力してください。
 admin.order.mail_purchase_product_count: '他%count%点'
 admin.order.mail_history: メール送信履歴
 admin.order.mail_send_date: メール送信日時
@@ -854,7 +854,7 @@ admin.order.delivery_note_parameter_error: '出荷IDが指定されていませ�
 # 出荷CSV雛形
 admin.order.shipping_csv.shipping_id_col: 出荷ID
 admin.order.shipping_csv.shipping_id_description: ''
-admin.order.shipping_csv.tracking_number_col: 送り状番号
+admin.order.shipping_csv.tracking_number_col: お問い合わせ番号
 admin.order.shipping_csv.tracking_number_description: ''
 admin.order.shipping_csv.shipping_date_col: 出荷日
 admin.order.shipping_csv.shipping_date_description: '出荷日を「YYYY-MM-DD」の形式で設定'
@@ -1042,7 +1042,7 @@ admin.setting.shop.payment.logo_image: ロゴ画像
 admin.setting.shop.delivery.base_info: 基本情報
 admin.setting.shop.delivery.delivery_name: 配送業者名
 admin.setting.shop.delivery.delivery_sevice_name: 配送方法名称
-admin.setting.shop.delivery.tracking_number_url: 送り状番号URL
+admin.setting.shop.delivery.tracking_number_url: お問い合わせ番号URL
 admin.setting.shop.delivery.sale_type: 販売種別
 admin.setting.shop.delivery.payment_method: 取り扱う支払方法
 admin.setting.shop.delivery.delivery_time_setting: お届け時間設定
