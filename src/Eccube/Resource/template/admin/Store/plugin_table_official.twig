@@ -8,7 +8,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% if officialPluginsDetail|length > 0 %}
+{% if Plugins|length > 0 %}
     <div class="card-body p-0">
         <table class="table table-sm">
             <thead>
@@ -22,13 +22,12 @@ file that was distributed with this source code.
             </tr>
             </thead>
             <tbody>
-            {% for key,Plugin in Plugins if officialPluginsDetail[key] is defined %}
-                {% set pluginDetail = officialPluginsDetail[key] %}
+            {% for key,Plugin in Plugins %}
+                {% set pluginDetail = officialPluginsDetail[key]|default(NULL) %}
                 <tr class="{% if Plugin.enabled == false %}active{% endif %}">
                     <td class="align-middle pl-3">
-                        <a href="#" target="_blank">
-                            <img class="pr-3" height="60"
-                                 src="{{ pluginDetail.image }}" alt="">
+                        <a href="#" target="_blank" class="plugin-image pr-3">
+                            <img height="60" src="{{ pluginDetail ? pluginDetail.image : asset('noimage_plugin_list.png', 'save_image') }}" alt="">
                         </a>
                         <span>{{ Plugin.name }}</span>
                     </td>
@@ -51,7 +50,7 @@ file that was distributed with this source code.
                         {% endif %}
                     </td>
                     <td class="align-middle">
-                        {% if Plugin.id %}
+                        {% if Plugin.id and pluginDetail %}
                             {% if pluginDetail.update_status == 1 %}
                                 <a href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}"
                                    class="btn btn-ec-regular">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
@@ -143,6 +142,9 @@ file that was distributed with this source code.
             </tbody>
         </table>
     </div>
+    {% if officialPluginsDetail|length == 0 %}
+    <p class="ml-3">{{ 'admin.store.plugin.help'|trans }}</p>
+    {% endif %}
 {% else %}
     <div class="card-body">
         <div class="text-danger">

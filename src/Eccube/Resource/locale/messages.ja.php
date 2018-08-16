@@ -2126,6 +2126,7 @@ return [
     'admin.store.plugin.814' => 'ユーザー独自プラグイン',
     'admin.store.plugin.815' => '未登録プラグイン',
     'admin.store.plugin.816' => 'プラグイン名',
+    'admin.store.plugin.help' => '接続に問題があるため、データを更新することはできません（イメージ、アップグレード情報など）。',
     'admin.store.plugin_confirm.817' => 'オーナーズストア',
     'admin.store.plugin_confirm.818' => 'プラグインインストール',
     'admin.store.plugin_confirm.819' => '以下のプラグインをインストールします。',
