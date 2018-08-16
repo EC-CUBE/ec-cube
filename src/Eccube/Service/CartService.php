@@ -196,7 +196,20 @@ class CartService
             return null;
         }
 
-        return current($Carts);
+        $cartKeys = $this->session->get('cart_keys', []);
+        $Cart = null;
+        if (count($cartKeys) > 0) {
+            foreach ($Carts as $cart) {
+                if ($cart->getCartKey() === current($cartKeys)) {
+                    $Cart = $cart;
+                    break;
+                }
+            } 
+        } else {
+            $Cart = current($Carts);
+        }
+
+        return $Cart;
     }
 
     /**
@@ -404,16 +417,22 @@ class CartService
     {
         $Carts = $this->getCarts();
         if (!empty($Carts)) {
-            $removed = array_shift($Carts);
+            $removed = $this->getCart();
             if ($removed && UnitOfWork::STATE_MANAGED === $this->entityManager->getUnitOfWork()->getEntityState($removed)) {
                 $this->entityManager->remove($removed);
                 $this->entityManager->flush($removed);
 
                 $cartKeys = [];
-                foreach ($Carts as $Cart) {
+                foreach ($Carts as $key => $Cart) {
+                    // テーブルから削除されたカートを除外する
+                    if ($Cart == $removed) {
+                        unset($Carts[$key]);
+                    }
                     $cartKeys[] = $Cart->getCartKey();
                 }
                 $this->session->set('cart_keys', $cartKeys);
+                // 注文完了のカートキーをセッションから削除する
+                $this->session->remove('cart_key');
                 $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
             }
         }
@@ -430,14 +449,22 @@ class CartService
     }
 
     /**
-     * 指定したインデックスにあるカートを優先にする
+     * カートキーで指定したインデックスにあるカートを優先にする
      *
-     * @param int $index カートのインデックス
+     * @param string $cartKey カートキー
      */
-    public function setPrimary($index = 0)
+    public function setPrimary($cartKey)
     {
         $Carts = $this->getCarts();
-        $primary = $Carts[$index];
+        $primary = $Carts[0];
+        $index = 0;
+        foreach ($Carts as $key => $Cart) {
+            if ($Cart->getCartKey() === $cartKey) {
+                $index = $key;
+                $primary = $Carts[$index];
+                break;
+            }
+        }
         $prev = $Carts[0];
         array_splice($Carts, 0, 1, [$primary]);
         array_splice($Carts, $index, 1, [$prev]);
