@@ -37,7 +37,7 @@ file that was distributed with this source code.
                         <span class="card-title">以下のプラグインをインストールします</span>
                     </div>
                     <div class="card-body p-0">
-                        <div class="row m-0 p-3 border-bt">
+                        <div class="row m-0 p-3 {% if not is_update %}border-bt{% endif %}">
                             <div class="col-5 col-sm-4 px-2 pr-sm-3">
                                 <a href="#" data-toggle="modal" data-target="#searchPluginModal">
                                     <img class="w-100 img-responsive"
@@ -85,10 +85,36 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                         </div>
+
+                        {% if is_update %}
+                            <div class="row m-0 border-bt">
+                                <div class="col-12 mx-2">
+                                    <hr>
+                                </div>
+                                <div class="col-8 mx-auto m-0">
+                                    <h4 class="font-weight-bold">リリースノート</h4>
+                                    <dl>
+                                        <dt class="py-2">2.1.5(ィナー用のカトラリー。)</dt>
+                                        <dd class="pl-3">.ィナー用のカトラリは、シルバー特有の美しい輝きと柔らかな曲線が特徴です。</dd>
+                                        <dd class="pl-3">
+                                            .ィナー用のカトラリは、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt class="py-2">2.1.4(2.18.04.17ィナー用)</dt>
+                                        <dd class="pl-3">.セットで揃えたいディナー用のカトラリー。</dd>
+                                        <dd class="pl-3">
+                                            .セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        {% endif %}
+
                         <div class="row m-0 my-3">
                             <div class="col-6">
                                 <div class="row">
-                                    <div class="col-6 col-sm-5 col-md-4 pt-2">オプション：バージョンを指定</div>
+                                    <div class="col-6 col-sm-5 col-md-4 pt-2 font-weight-bold">オプション：バージョンを指定</div>
                                     <div class="col-auto">
                                         <select class="custom-select">
                                             <option>最新版</option>
@@ -97,8 +123,8 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="col-6 text-right">
-                                <a href="#" class="btn btn-ec-sub">キャンセル</a>
-                                <a href="#" class="btn btn-primary">インストール</a>
+                                <a href="#" class="btn btn-ec-sub btn-lg">キャンセル</a>
+                                <a href="#" class="btn btn btn-primary btn-lg">インストール</a>
                             </div>
                         </div>
                     </div>
