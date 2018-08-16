@@ -2062,7 +2062,7 @@ Styleguide 3.1.1
 .ec-input p, .ec-halfInput p, .ec-numberInput p, .ec-zipInput p, .ec-telInput p, .ec-select p, .ec-birth p {
   line-height: 1.4; }
 
-.ec-input .ec-errorMessage, .ec-halfInput .ec-errorMessage, .ec-numberInput .ec-errorMessage, .ec-zipInput .ec-errorMessage, .ec-telInput .ec-errorMessage, .ec-select .ec-errorMessage, .ec-birth .ec-errorMessage, .ec-checkbox .ec-errorMessage {
+.ec-input .ec-errorMessage, .ec-halfInput .ec-errorMessage, .ec-numberInput .ec-errorMessage, .ec-zipInput .ec-errorMessage, .ec-telInput .ec-errorMessage, .ec-select .ec-errorMessage, .ec-birth .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
@@ -2070,6 +2070,16 @@ Styleguide 3.1.1
 
 .error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select {
   margin-bottom: 5px;
+  border-color: #CF3F34;
+  background: #FDF1F0; }
+
+.ec-checkbox .ec-errorMessage {
+  margin-bottom: 25px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #DE5D50; }
+
+.error.ec-checkbox input, .error.ec-checkbox label {
   border-color: #CF3F34;
   background: #FDF1F0; }
 
@@ -2468,14 +2478,24 @@ Styleguide 3.1.1
 .ec-input p, .ec-halfInput p, .ec-numberInput p, .ec-zipInput p, .ec-telInput p, .ec-select p, .ec-birth p {
   line-height: 1.4; }
 
-.ec-input .ec-errorMessage, .ec-halfInput .ec-errorMessage, .ec-numberInput .ec-errorMessage, .ec-zipInput .ec-errorMessage, .ec-telInput .ec-errorMessage, .ec-select .ec-errorMessage, .ec-birth .ec-errorMessage, .ec-checkbox .ec-errorMessage {
+.ec-input .ec-errorMessage, .ec-halfInput .ec-errorMessage, .ec-numberInput .ec-errorMessage, .ec-zipInput .ec-errorMessage, .ec-telInput .ec-errorMessage, .ec-select .ec-errorMessage, .ec-birth .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
   color: #DE5D50; }
 
-.error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select, .error.ec-checkbox input {
+.error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select {
   margin-bottom: 5px;
+  border-color: #CF3F34;
+  background: #FDF1F0; }
+
+.ec-checkbox .ec-errorMessage {
+  margin-bottom: 25px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #DE5D50; }
+
+.error.ec-checkbox input, .error.ec-checkbox label {
   border-color: #CF3F34;
   background: #FDF1F0; }
 
@@ -2792,6 +2812,53 @@ Styleguide 3.2.5
 
 .ec-birth span {
   margin-left: 5px; }
+
+/*
+チェックボックス （水平）
+
+水平に並ぶチェックボックス フィールドです。
+
+各要素をlabelでくくって、コーディングします。
+
+ex [新規会員登録画面　利用規約](http://demo3.ec-cube.net/entry)
+
+Markup:
+.ec-checkbox
+  label
+    input(type="checkbox")
+    span 利用規約に同意する
+
+Styleguide 3.2.6
+*/
+.ec-checkbox label {
+  display: inline-block; }
+
+.ec-checkbox input {
+  margin-bottom: 10px; }
+
+.ec-checkbox span {
+  font-weight: normal; }
+
+/*
+チェックボックス (垂直)
+
+垂直に並ぶチェックボックス フィールドです。
+
+各要素をlabelでくくって、コーディングします。
+
+Markup:
+.ec-blockCheckbox
+  label
+    input(type="checkbox")
+    span 利用規約に同意する
+
+Styleguide 3.2.7
+*/
+.ec-blockCheckbox label {
+  display: block; }
+
+.ec-blockCheckbox span {
+  font-weight: normal; }
 
 /**
 メディアクエリ
@@ -6799,7 +6866,6 @@ Styleguide 17.1
   border-bottom: 1px dotted #ccc; }
 
 .ec-addressList .ec-addressList__remove {
-  display: table-cell;
   vertical-align: middle;
   padding: 16px;
   text-align: center; }
@@ -6811,13 +6877,15 @@ Styleguide 17.1
   display: table-cell;
   vertical-align: middle;
   padding: 16px;
-  margin-right: 4em; }
+  margin-right: 4em;
+  width: 80%; }
 
 .ec-addressList .ec-addressList__action {
   position: relative;
   vertical-align: middle;
+  text-align: right;
   top: 27px;
-  right: 0; }
+  padding-right: 10px; }
 
 /**
 メディアクエリ
