@@ -135,8 +135,7 @@ class NewsController extends AbstractController
     }
 
     /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/content/news/sort_no/move", name="admin_content_news_sort_no_move")
+     * @Route("/%eccube_admin_route%/content/news/sort_no/move", name="admin_content_news_sort_no_move", methods={"POST"})
      *
      * @param Request $request
      *
