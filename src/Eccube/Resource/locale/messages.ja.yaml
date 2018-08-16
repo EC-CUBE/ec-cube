@@ -743,7 +743,6 @@ admin.order.orderer: 注文者
 admin.order.orderer_name: 注文者名
 admin.order.orderer_kana: 注文者名(カナ)
 admin.order.orderer_company_name: 注文者会社名
-admin.order.shipping_info: お届先情報
 admin.order.copy_orderer: 注文者情報をコピー
 admin.order.output_delivery_note: 納品書を出力
 admin.order.output_delivery_note_short: 納品書出力
@@ -1193,14 +1192,67 @@ admin.info.community: 開発コミュニティ
 # ツールチップ
 #------------------------------------------------------------------------------------
 
+# TODO
+
 # tooltip.xxx.yyy: 〇〇を有効にします。フロント画面には表示されません。
 
-# Symfony error message
-This value should not be blank.: 入力されていません。
-This value should be the user\'s current password.: 現在のパスワードが正しくありません。
-Invalid credentials.: |
-  ログインできませんでした。
-  入力内容に誤りがないかご確認ください。
-Invalid CSRF token.: |
-  ログインできませんでした。
-  入力内容に誤りがないかご確認ください。
+#====================================================================================
+# インストール画面
+#====================================================================================
+
+install.next: 次へ進む
+install.back: 前へ戻る
+install.update: 更新する
+install.title: ようこそ | EC-CUBEインストール
+install.welcom: ようこそ
+install.check_permission: 権限チェック
+install.site_configration: サイトの設定
+install.database_configration: データベースの設定
+install.database_initalization: データベースの初期化
+install.install_completed: インストール完了
+install.start_eccube_installation: '<p>EC-CUBEのインストールを開始します。</p><p>あらかじめ、使用するデータベースの情報（DB名など）をご準備ください。</p>'
+install.cooperation_of_providing_information: 'EC-CUBEのシステム向上・デバッグのため、サイト情報の提供にご協力おねがいいたします。<br>目的以外で利用することはございません。<br><span class="small">（サイト情報：お店のURL、PHPバージョン、DBバージョン）</span>'
+install.accept_infomation_provision: 送信を承諾する
+install.permission_is_valid: アクセス権限は正常です
+install.permission_is_invalid: 以下のディレクトリのアクセス制限を変更してください。
+install.system_requirement: システム要件をご確認ください
+install.required_extension_disabled: '[必須] %module%拡張モジュールが有効になっていません。'
+install.required_database_extension_disabled: '[必須] pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。'
+install.recommend_extension_disabled: '[推奨] %module%拡張モジュールが有効になっていません。'
+install.mod_rewite_unknown: mod_rewrite が有効になっているか不明です。
+install.mod_rewite_disabled: '[必須] mod_rewrite が有効になっていません。'
+install.member_name: 管理者
+install.member_department:
+install.shop_name: あなたの店名
+install.mail_address: メールアドレス（受注メールなどの宛先になります）
+install.login_id: 管理画面ログインID（半角英数字%min%～%max%文字）
+install.login_password: 管理画面パスワード（半角英数字%min%～%max%文字）
+install.security_configuration: セキュリティの設定
+install.directry_name: 管理画面のディレクトリ名（半角英数字%min%～%max%文字）
+install.directry_name_notice: セキュリティのため推測されにくいディレクトリ名を入力して下さい
+install.https_only: サイトへのアクセスを、SSL（https）経由に制限します
+install.https_only_notice: httpsからの接続でなければSSL制限を設定できません。
+install.ip_restriction: 管理画面へのアクセスを、以下のIPに制限します
+install.ip_is_invalid: '%ip%はIPv4アドレスではありません。'
+install.mail_configuration: メールの設定
+install.smtp_host: SMTPホスト
+install.smtp_port: SMTPポート
+install.smtp_user: SMTPユーザー
+install.smtp_password: SMTPパスワード
+install.database_type: データベースの種類
+install.database_pgsql: PostgreSQL
+install.database_mysql: MySQL
+install.database_sqlite: SQLite(開発者用)
+install.database_host: データベースのホスト名
+install.database_port: データベースのポート番号
+install.database_name: データベース名
+install.database_user: ユーザ名
+install.database_password: パスワード
+install.database_connection_error: データベースに接続できませんでした。
+install.database_do_initialize: データベースの初期化を行います。初期化には少し時間がかかる場合があります。<br>すでにテーブル等が作成されている場合は中断されます。
+install.database_skip_notice: 旧バージョンをインストールしていて、既存の情報を削除したくない場合はチェックをいれてください
+install.database_skip: データベースの初期化を行わない
+install.completed: インストールが完了しました！
+install.access_admin_page: 管理画面にアクセスしてみましょう
+install.perform_initial_setting: 先ほど登録したログインID・パスワードで、管理画面にログインすることができます。デザインの編集や商品を登録してみましょう！
+install.go_to_admin_page: 管理画面を表示
