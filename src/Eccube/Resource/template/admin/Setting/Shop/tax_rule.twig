@@ -31,26 +31,11 @@ file that was distributed with this source code.
             display: block;
         }
     </style>
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
     <script type="text/javascript">
         $(function() {
-            var inputDate = document.createElement('input');
-            inputDate.setAttribute('type', 'date');
-            if (inputDate.type !== 'date') {
-                $('input[name$="tax_rule[apply_date][date]"]').datetimepicker({
-                    locale: 'ja',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
-            }
-
             $('.tax_rule_list_item td.action a.edit-button').click(function() {
                 var id = $(this).data('id');
                 var tr = $('#ex-tax_rule-' + id);
@@ -60,7 +45,7 @@ file that was distributed with this source code.
 
             $('.tax_rule_list_item .cancel').click(function() {
                 var id = $(this).data('id');
-                var tr = $('#tax_rule_list__item--' + id);
+                var tr = $('#ex-tax_rule-' + id);
                 $(tr).find('.edit').hide();
                 $(tr).find('.list').show();
             });
@@ -101,8 +86,11 @@ file that was distributed with this source code.
                                     {{ form_widget(form._token) }}
                                     <td class="align-middle pl-3"></td>
                                     <td class="align-middle" style="width:230px;">
-                                        <div class="form-inline justify-content-end">
-                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-right'}}) }}<span class="pl-1 col-auto">%</span>
+                                        <div class="input-group">
+                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-right'}}) }}
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">%</span>
+                                            </div>
                                             {{ form_errors(form.tax_rate) }}
                                         </div>
                                     </td>
@@ -111,14 +99,7 @@ file that was distributed with this source code.
                                         {{ form_errors(form.rounding_type) }}
                                     </td>
                                     <td class="align-middle">
-                                        <div class="row no-gutters">
-                                            <div class="col mr-2">
-                                                {{ form_widget(form.apply_date.date) }}
-                                            </div>
-                                            <div class="col mr-2">
-                                                {{ form_widget(form.apply_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
-                                            </div>
-                                        </div>
+                                        {{ form_widget(form.apply_date) }}
                                         {{ form_errors(form.apply_date) }}
                                     </td>
                                     <td class="align-middle"></td>
@@ -138,9 +119,14 @@ file that was distributed with this source code.
                                         <input type="hidden" value="edit_inline" name="mode"/>
                                         <td class="align-middle pl-3"><span>{{ TaxRule.id }}</span></td>
                                         <td class="align-middle text-right" style="width:230px;">
-                                            <div class="edit form-inline justify-content-end">
-                                                {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-right'}}) }}<span class="pl-1 col-auto">%</span>
-                                                {{ form_errors(forms[TaxRule.id].tax_rate) }}
+                                            <div class="edit justify-content-end">
+                                                <div class="input-group">
+                                                    {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-right'}}) }}
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                    {{ form_errors(forms[TaxRule.id].tax_rate) }}
+                                                </div>
                                             </div>
                                             <div class="list">
                                                 <span class="col-6 text-right pr-0">{{ TaxRule.tax_rate }}</span><span class="col-6 pl-1">%</span>
@@ -159,8 +145,7 @@ file that was distributed with this source code.
                                                 {% if TaxRule.default_tax_rule %}
                                                     {{ 'admin.setting.shop.tax_rule.tax_rule_default'|trans }}
                                                 {% else %}
-                                                    {{ form_widget(forms[TaxRule.id].apply_date.date) }}
-                                                    {{ form_widget(forms[TaxRule.id].apply_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
+                                                    {{ form_widget(forms[TaxRule.id].apply_date) }}
                                                     {{ form_errors(forms[TaxRule.id].apply_date) }}
                                                 {% endif %}
                                             </div>
