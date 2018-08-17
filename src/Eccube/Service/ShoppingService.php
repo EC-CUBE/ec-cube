@@ -44,6 +44,7 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
+use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -215,7 +216,7 @@ class ShoppingService
         OrderService $orderService,
         BaseInfoRepository $baseInfoRepository,
         AuthorizationCheckerInterface $authorizationChecker,
-        \Mobile_Detect $mobileDetect
+        MobileDetector $mobileDietect
     ) {
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->mailService = $mailService;

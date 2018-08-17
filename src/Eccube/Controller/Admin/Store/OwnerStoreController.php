@@ -26,7 +26,7 @@ use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Eccube\Util\FormUtil;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -107,11 +107,11 @@ class OwnerStoreController extends AbstractController
      *
      * @param Request     $request
      * @param int $page_no
-     * @param Paginator $paginator
+     * @param PaginatorInterface $paginator
      *
      * @return array
      */
-    public function search(Request $request, $page_no = null, Paginator $paginator)
+    public function search(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
         // Acquire downloadable plug-in information from owners store
         $items = [];

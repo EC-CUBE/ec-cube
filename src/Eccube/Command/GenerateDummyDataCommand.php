@@ -14,6 +14,7 @@
 namespace Eccube\Command;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Tests\Fixture\Generator;
@@ -42,7 +43,7 @@ class GenerateDummyDataCommand extends Command
      */
     protected $deliveryRepository;
 
-    public function __construct(Generator $generator = null, EntityManager $entityManager = null, DeliveryRepository $deliveryRepository = null)
+    public function __construct(Generator $generator = null, EntityManagerInterface $entityManager = null, DeliveryRepository $deliveryRepository = null)
     {
         parent::__construct();
         $this->generator = $generator;
