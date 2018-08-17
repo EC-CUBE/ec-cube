@@ -15,6 +15,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemValidator;
 
@@ -32,7 +33,7 @@ class DisplayStatusValidator extends ItemValidator
             return;
         }
         $ProductClass = $item->getProductClass();
-        if (!$ProductClass->isEnable()) {
+        if ($ProductClass->getProduct()->getStatus()->getId() != ProductStatus::DISPLAY_SHOW) {
             $this->throwInvalidItemException('front.shopping.not_purchase');
         }
     }

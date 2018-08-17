@@ -50,16 +50,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         }
 
         /**
-         * Is Enable
-         *
-         * @return bool
-         */
-        public function isEnable()
-        {
-            return $this->getProduct()->isEnable();
-        }
-
-        /**
          * Set price01 IncTax
          *
          * @param  string       $price01_inc_tax

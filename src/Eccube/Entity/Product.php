@@ -120,16 +120,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         }
 
         /**
-         * Is Enable
-         *
-         * @return bool
-         */
-        public function isEnable()
-        {
-            return $this->getStatus()->getId() === \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW ? true : false;
-        }
-
-        /**
          * Get ClassName1
          *
          * @return string
