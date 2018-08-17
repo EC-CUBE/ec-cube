@@ -236,7 +236,7 @@ class EccubeExtension extends AbstractExtension
         $class_categories = [
             '__unselected' => [
                 '__unselected' => [
-                    'name' => trans('product.text.please_select'),
+                    'name' => trans('common.select'),
                     'product_class_id' => '',
                 ],
             ],
@@ -250,11 +250,11 @@ class EccubeExtension extends AbstractExtension
             }
             $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
             $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
-            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName().($ProductClass->getStockFind() ? '' : trans('product.text.out_of_stock')) : '';
+            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName().($ProductClass->getStockFind() ? '' : trans('front.product.out_of_stock_label')) : '';
 
             $class_categories[$class_category_id1]['#'] = [
                 'classcategory_id2' => '',
-                'name' => trans('product.text.please_select'),
+                'name' => trans('common.select'),
                 'product_class_id' => '',
             ];
             $class_categories[$class_category_id1]['#'.$class_category_id2] = [

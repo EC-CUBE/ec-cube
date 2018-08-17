@@ -34,14 +34,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
 {
@@ -78,6 +75,7 @@ class PluginController extends AbstractController
      * @param PluginEventHandlerRepository $eventHandlerRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginApiService $pluginApiService
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -525,6 +523,7 @@ class PluginController extends AbstractController
      * Todo: check fail (implement after the api defined)
      *
      * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @Route("/%eccube_admin_route%/store/plugin/auth/captcha", name="admin_store_auth_captcha")
@@ -559,7 +558,9 @@ class PluginController extends AbstractController
      * @param Request $request
      * @param string|null $authKey
      * @param string $url
+     *
      * @deprecated since release, please refer PluginApiService
+     *
      * @return array
      */
     private function getRequestApi(Request $request, $authKey, $url)
@@ -599,6 +600,7 @@ class PluginController extends AbstractController
      * @param $info
      *
      * @return string
+     *
      * @deprecated since release, please refer PluginApiService
      */
     private function getResponseErrorMessage($info)

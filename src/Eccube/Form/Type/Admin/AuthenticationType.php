@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -11,7 +12,6 @@
  */
 
 namespace Eccube\Form\Type\Admin;
-
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
@@ -30,6 +30,7 @@ class AuthenticationType extends AbstractType
 
     /**
      * AuthenticationType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -58,7 +59,7 @@ class AuthenticationType extends AbstractType
                     'constraints' => [
                         new Assert\Length([
                             'max' => $this->eccubeConfig->get('eccube_smtext_len'),
-                        ])
+                        ]),
                     ],
                 ]);
     }
@@ -69,7 +70,7 @@ class AuthenticationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => BaseInfo::class
+            'data_class' => BaseInfo::class,
         ]);
     }
 

@@ -5456,8 +5456,10 @@ Styleguide 12.1
     display: none; }
   .ec-sliderItemRole .slideThumb {
     margin-bottom: 25px;
+    width: 33%;
     opacity: .8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"; }
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    cursor: pointer; }
     .ec-sliderItemRole .slideThumb:focus {
       outline: none; }
     .ec-sliderItemRole .slideThumb:hover {
@@ -8022,8 +8024,10 @@ Styleguide 22.1
   .ec-sliderItemRole .item_nav{
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-pack: justify;
-        justify-content: space-between;
+    -ms-flex-pack: start;
+        justify-content: flex-start;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
     margin-bottom: 0;
   }
 

@@ -339,7 +339,7 @@ class OrderController extends AbstractController
 
         $this->entityManager->flush();
 
-        $this->addSuccess('admin.order.delete.complete', 'admin');
+        $this->addSuccess('admin.common.delete_complete', 'admin');
 
         return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
     }
@@ -574,7 +574,7 @@ class OrderController extends AbstractController
             [
                 new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 new Assert\Regex(
-                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('form.type.admin.nottrackingnumberstyle')]
+                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('admin.order.tracking_number_error')]
                 ),
             ]
         );
@@ -618,7 +618,7 @@ class OrderController extends AbstractController
         $ids = $request->get('ids', []);
 
         if (count($ids) == 0) {
-            $this->addError('admin.order.export.pdf.parameter.not.found', 'admin');
+            $this->addError('admin.order.delivery_note_parameter_error', 'admin');
             log_info('The Order cannot found!');
 
             return $this->redirectToRoute('admin_order');
@@ -630,10 +630,10 @@ class OrderController extends AbstractController
         if (!$OrderPdf) {
             $OrderPdf = new OrderPdf();
             $OrderPdf
-                ->setTitle(trans('admin.order.export.pdf.title.default'))
-                ->setMessage1(trans('admin.order.export.pdf.message1.default'))
-                ->setMessage2(trans('admin.order.export.pdf.message2.default'))
-                ->setMessage3(trans('admin.order.export.pdf.message3.default'));
+                ->setTitle(trans('admin.order.delivery_note_title__default'))
+                ->setMessage1(trans('admin.order.delivery_note_message__default1'))
+                ->setMessage2(trans('admin.order.delivery_note_message__default2'))
+                ->setMessage3(trans('admin.order.delivery_note_message__default3'));
         }
 
         /**

@@ -82,7 +82,7 @@ class EF06OtherCest
         $I->submitForm('#form1', [
             'login_email' => $customer->getEmail()
         ]);
-        $I->see('パスワード発行メールの送信 完了', 'div.ec-pageHeader h1');
+        $I->see('パスワードの再発行(メール送信)', 'div.ec-pageHeader h1');
 
         $I->seeEmailCount(1);
         $I->seeInLastEmailSubjectTo($customer->getEmail(), 'パスワード変更のご確認');
@@ -177,7 +177,7 @@ class EF06OtherCest
         $I->click('div.ec-contactConfirmRole div.ec-RegisterRole__actions button.ec-blockBtn--action');
 
         // 完了ページ
-        $I->see('お問い合わせ完了', 'div.ec-pageHeader h1');
+        $I->see('お問い合わせ(完了)', 'div.ec-pageHeader h1');
 
         // メールチェック
         $I->seeEmailCount(2);

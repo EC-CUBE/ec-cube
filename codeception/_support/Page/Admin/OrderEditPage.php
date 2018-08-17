@@ -159,7 +159,7 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     public function 明細を削除($row)
     {
         $this->tester->scrollTo(['css' => '#order-product']);
-        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 > div > div > a");
+        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 > div > div > div.d-inline-block.mr-3 > a");
         $this->tester->waitForElementVisible("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 > div > div > div.modal");
         return $this;
     }

@@ -39,7 +39,6 @@ class ClassCategoryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'classcategory.label.category_name',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([
