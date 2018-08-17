@@ -492,7 +492,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($arrCategory);
         $this->verify();
 
-        $this->assertRegexp('/CSVのフォーマットが一致しません。/u', $crawler->filter('#upload-form > div:nth-child(4)')->text());
+        $this->assertRegexp('/CSVのフォーマットが一致しません/u', $crawler->filter('#upload-form > div:nth-child(4)')->text());
     }
 
     /**
