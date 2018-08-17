@@ -2126,12 +2126,19 @@ return [
     'admin.store.plugin.814' => 'ユーザー独自プラグイン',
     'admin.store.plugin.815' => '未登録プラグイン',
     'admin.store.plugin.816' => 'プラグイン名',
-    'admin.store.plugin_confirm.817' => 'オーナーズストア',
-    'admin.store.plugin_confirm.818' => 'プラグインインストール',
-    'admin.store.plugin_confirm.819' => '以下のプラグインをインストールします。',
+
+    'admin.store.plugin.install' => 'インストール',
+    'admin.store.plugin.upgrade' => 'アップデート',
+
+    'admin.store.plugin_confirm.title.upgrade' => 'アップデート',
+    'admin.store.plugin_confirm.title' => 'インストール確認',
+    'admin.store.plugin_confirm.subtitle' => 'オーナーズストア',
+    'admin.store.plugin_confirm.header' => '以下のプラグインをインストールします',
+    'admin.store.plugin_confirm.header.upgrade' => '以下のプラグインを最新版にアップデートします',
     'admin.store.plugin_confirm.820' => '%plugin%をインストールするために、以下のプラグインもインストールします。',
-    'admin.store.plugin_confirm.821' => 'インストール',
-    'admin.store.plugin_confirm.822' => '戻る',
+
+    'admin.store.plugin_confirm.require.header' => '「%name%」には以下のプラグインが必須です。同時にインストールされます',
+
     'admin.store.plugin_confirm_uninstall.823' => 'オーナーズストア',
     'admin.store.plugin_confirm_uninstall.824' => 'プラグイン削除',
     'admin.store.plugin_confirm_uninstall.825' => '以下のプラグインを削除します。',
@@ -2203,6 +2210,7 @@ return [
     'admin.store.plugin_owners_search.install' => 'インストール済み',
 
     'admin.store.plugin_owners_search.modal.header' => '商品詳細',
+
     'admin.store.plugin_owners_search.modal.download' => 'ダウンロード数',
     'admin.store.plugin_owners_search.modal.version' => 'プラグインバージョン',
     'admin.store.plugin_owners_search.modal.support' => 'EC-CUBE知王バージョン',
@@ -2212,6 +2220,7 @@ return [
     'admin.store.plugin_owners_search.modal.size.format' => '約 %size% KB',
     'admin.store.plugin_owners_search.modal.license' => 'ライセンス',
     'admin.store.plugin_owners_search.modal.develop' => '制作者',
+
     'admin.store.plugin_owners_search.modal.contact' => '資料請求・お問い合わせ',
     'admin.store.plugin_owners_search.modal.manual' => 'マニュアルダウンロード',
     'admin.store.plugin_owners_search.modal.note' => 'このプラグインはEC-CUBE %version%をサポートしていないため、正常に動作しない可能性があります。',
