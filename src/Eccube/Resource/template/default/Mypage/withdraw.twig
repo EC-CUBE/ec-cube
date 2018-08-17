@@ -18,7 +18,7 @@ file that was distributed with this source code.
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.cancel_membership'|trans}}</h1>
+                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__withdrow'|trans }}</h1>
             </div>
             {{ include('Mypage/navi.twig') }}
         </div>
@@ -30,14 +30,17 @@ file that was distributed with this source code.
                         <div style="font-size:100px;text-align:center;">
                             <div class="ec-icon"><img src="{{ asset('assets/icon/exclamation.svg') }}" alt=""></div>
                         </div>
-                        <p class="ec-withdrawRole__title">{{'mypage.text.message.make_sure'|trans}}
+                        <p class="ec-withdrawRole__title">{{ 'front.mypage.withdraw_message__title'|trans }}
                         </p>
-                        <p class="ec-withdrawRole__description">{{'mypage.text.message.if_canceled'|trans}}
+                        <p class="ec-withdrawRole__description">{{ 'front.mypage.withdraw_message__body'|trans }}
                         </p>
                     </div>
                 </div>
                 <div class="ec-off4Grid">
-                    <div class="ec-off4Grid__cell"><button type="submit" class="ec-blockBtn--cancel" name="mode" value="confirm">{{'mypage.label.btn.to_cancel_membership'|trans}}</button></div>
+                    <div class="ec-off4Grid__cell">
+                        <button type="submit" class="ec-blockBtn--cancel" name="mode"
+                                value="confirm">{{ 'front.mypage.withdraw_confirm'|trans }}</button>
+                    </div>
                 </div>
             </form>
         </div>

@@ -204,7 +204,7 @@ class CartService
                     $Cart = $cart;
                     break;
                 }
-            } 
+            }
         } else {
             $Cart = current($Carts);
         }
