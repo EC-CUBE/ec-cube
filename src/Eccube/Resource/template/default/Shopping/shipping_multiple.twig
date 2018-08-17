@@ -108,8 +108,8 @@ $(function() {
               {% for error in errors %}
                   <div class="text-danger">{{ error.message }}</div>
               {% endfor %}
-
-                <div><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn btn-default btn-sm">{{'mypage.label.add_address'|trans}}</a></div>
+                {# TODO 新規お届け先追加ボタン #}
+                {#<div><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn btn-default btn-sm">{{'mypage.label.add_address'|trans}}</a></div>#}
             </div>
         {% for orderItem in OrderItems %}
             {% set idx = loop.index0 %}
@@ -142,33 +142,37 @@ $(function() {
                       {% endfor %}
                     </dl>
                 </div>
-                <div>
-              {% for shipping in form.shipping_multiple[idx].shipping %}
-                <div id="item{{ idx }}-{{ loop.index0 }}" data-itemidx="{{ loop.index0 }}" class="ec-AddAddress__select" style="margin-bottom: 5px;">
-                    <div id="multiple_list__shipping_address--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectAddress">
-                       <label>お届け先</label>
-                        {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
-                        {{ form_errors(shipping.customer_address) }}
-                    </div>
-                    <div id="multiple_list__shipping_quantity--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectNumber">
-                        <label>数量</label>
-                      {% for key, value in compItemQuantities %}
-                        {% if orderItem.productClass.id == key %}
-                          {% set quantity = shipping.quantity.vars.value ?: value %}
-                          {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}, 'value': quantity}) }}
-                          {{ form_errors(shipping.quantity) }}
-                        {% endif %}
-                      {% endfor %}
-                    </div>
-                    <button id="button__delete--{{ idx }}_{{ loop.index0 }}" type="button" class="btn btn-default btn-sm delete" data-itemidx="{{ idx }}-{{ loop.index0 }}" style="{% if loop.index0 == 0 %}display: none;{% endif %}">{{'common.label.delete'|trans}}</button>
+                <div id="item{{ idx }}" style="margin-bottom: 10px">
+                  {% for shipping in form.shipping_multiple[idx].shipping %}
+                      <div id="item{{ idx }}-{{ loop.index0 }}" data-itemidx="{{ loop.index0 }}" class="ec-AddAddress__select">
+                          <div id="multiple_list__shipping_address--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectAddress">
+                              <div class="ec-AddAddress__ec-select">
+                                  <label style="margin-right: 10px">お届け先</label>
+                                {{ form_widget(shipping.customer_address, {'attr': {'style': 'width: auto; display: inline-block'}}) }}
+                                {{ form_errors(shipping.customer_address) }}
+                              </div>
+                          </div>
+                          <div id="multiple_list__shipping_quantity--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectNumber">
+                              <div class="ec-AddAddress__ec-input">
+                                  <label>数量</label>
+                                {% for key, value in compItemQuantities %}
+                                  {% if orderItem.productClass.id == key %}
+                                    {% set quantity = shipping.quantity.vars.value ?: value %}
+                                    {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}, 'value': quantity}) }}
+                                    {{ form_errors(shipping.quantity) }}
+                                  {% endif %}
+                                {% endfor %}
+                              </div>
+                          </div>
+                          <button id="button__delete--{{ idx }}_{{ loop.index0 }}" type="button" class="btn btn-default btn-sm delete" data-itemidx="{{ idx }}-{{ loop.index0 }}" style="{% if loop.index0 == 0 %}display: none;{% endif %}">{{'common.label.delete'|trans}}</button>
+                      </div>
                 </div>
               {% endfor %}
-                <p id="multiple_list__add_button{{ idx }}">
+                <div id="multiple_list__add_button{{ idx }}">
                     <button id="button__add{{ idx }}" type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
-                </p>
+                </div>
             </div>
-        {% endfor %}
-            </div>
+          {% endfor %}
             <div id="multiple_list__footer" class="row no-padding">
                 <div id="multiple_list__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
                     <button id="button__confirm" type="submit" class="ec-blockBtn--action" style="margin-bottom: 8px;">選択したお届け先に送る</button>
