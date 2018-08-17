@@ -174,12 +174,12 @@ class EF02ProductCest
         $productPage = ProductDetailPage::go($I, 2);
 
         // デフォルトサムネイル表示確認
-        $img = $productPage->サムネイル画像URL();
+        $img = $productPage->サムネイル画像URL(1);
         $I->assertRegExp('/\/upload\/save_image\/cafe-1\.jpg$/', $img, $img.' が見つかりません');
 
         // 2個目のサムネイルクリック
         $productPage->サムネイル切替(2);
-        $img = $productPage->サムネイル画像URL();
+        $img = $productPage->サムネイル画像URL(2);
         $I->assertRegExp('/\/upload\/save_image\/cafe-2\.jpg$/', $img, $img.' が見つかりません');
     }
 

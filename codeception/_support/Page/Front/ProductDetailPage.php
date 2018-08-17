@@ -48,14 +48,13 @@ class ProductDetailPage extends AbstractFrontPage
 
     public function サムネイル切替($num)
     {
-        $this->tester->click("div.item_nav div.slick-list div.slick-track div.slideThumb:nth-child(${num})");
-
+        $this->tester->click("div:nth-child(1) > div > div.item_nav > div:nth-child(${num})");
         return $this;
     }
 
-    public function サムネイル画像URL()
+    public function サムネイル画像URL($num)
     {
-        return $this->tester->grabAttributeFrom('div.item.slick-slide.slick-current.slick-active img', 'src');
+        return $this->tester->grabAttributeFrom("div:nth-child(1) > div > div.item_nav > div:nth-child(${num}) > img", 'src');
     }
 
     public function 規格選択($array)
