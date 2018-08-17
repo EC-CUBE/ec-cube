@@ -65,9 +65,12 @@ class TopPage extends AbstractFrontPage
         return $this;
     }
 
-    public function 検索()
+    public function 検索($keyword = null)
     {
+        if ($keyword) {
+            $this->tester->fillField(['id' => 'name'], $keyword);
+        }
         $this->tester->click('button.ec-headerSearch__keywordBtn');
-        return $this;
+        return ProductListPage::at($this->tester);
     }
 }

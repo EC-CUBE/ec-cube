@@ -26,6 +26,14 @@ namespace Page\Front;
 
 class ProductListPage extends AbstractFrontPage
 {
+
+    public static function at($I)
+    {
+        $page = new self($I);
+        $page->tester->seeInCurrentUrl('/products/list');
+        return $page;
+    }
+
     public function __construct(\AcceptanceTester $I)
     {
         parent::__construct($I);
@@ -47,5 +55,28 @@ class ProductListPage extends AbstractFrontPage
     {
         $products = $this->tester->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[1]"]);
         return count($products);
+    }
+
+    public function カートに入れる($index, $num = 1, $category1 = null, $category2 = null)
+    {
+        $this->tester->fillField(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child(${index}) form input[name='quantity']"], $num);
+        if (!is_null($category1)) {
+            $this->tester->selectOption(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child(${index}) form select[name='classcategory_id1']"], $category1);
+            if (!is_null($category2)) {
+                $category2_id = current(array_keys($category2));
+                $this->tester->waitForElement(['xpath' => "//ul[@class='ec-shelfGrid']/li[@class='ec-shelfGrid__item'][${index}]//select[@name='classcategory_id2']/option[@value='${category2_id}']"]);
+                $this->tester->selectOption(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child(${index}) form select[name='classcategory_id2']"], $category2);
+            }
+        }
+        $this->tester->click(['class' => 'add-cart']);
+        $this->tester->waitForElementVisible(['css' => 'div.ec-modal-box']);
+
+        return $this;
+    }
+
+    public function カートへ進む()
+    {
+        $this->tester->click("div.ec-modal-box > div > a");
+        return CartPage::at($this->tester);
     }
 }
