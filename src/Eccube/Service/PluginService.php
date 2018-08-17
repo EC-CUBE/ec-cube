@@ -27,6 +27,7 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -734,36 +735,35 @@ class PluginService
      */
     public function getPluginRequired($plugin)
     {
-        /*
         // Check require
         if (!isset($plugin['require']) || empty($plugin['require'])) {
             return [];
         }
-
         $require = $plugin['require'];
 
         $requirePlugins = [];
         // Check require
         foreach ($require as $pluginName => $version) {
-            $dependPlugin = $this->buildInfo($plugins, $pluginName);
-            // Prevent call self
-            if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
-                continue;
-            }
-
-            // Check duplicate in dependency
-            $index = array_search($dependPlugin['product_code'], array_column($dependents, 'product_code'));
-            if ($index === false) {
-                // Update require version
-                $dependPlugin['version'] = $version;
-                $dependents[] = $dependPlugin;
-                // Check child dependency
-                $dependents = $this->getPluginRequired($plugins, $dependPlugin, $dependents);
-            }
+            $pluginCode = str_replace(self::VENDOR_NAME . '/', '', $pluginName);
+            $pluginCode = Container::camelize($pluginCode);
+//            $dependPlugin = $this->buildInfo($plugins, $pluginName);
+//            // Prevent call self
+//            if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
+//                continue;
+//            }
+//
+//            // Check duplicate in dependency
+//            $index = array_search($dependPlugin['product_code'], array_column($dependents, 'product_code'));
+//            if ($index === false) {
+//                // Update require version
+//                $dependPlugin['version'] = $version;
+//                $dependents[] = $dependPlugin;
+//                // Check child dependency
+//                $dependents = $this->getPluginRequired($plugins, $dependPlugin, $dependents);
+//            }
         }
-        */
 
-        return [];
+        return $requirePlugins;
     }
 
     /**
@@ -806,6 +806,8 @@ class PluginService
     public function getRequireOfPlugin($plugin)
     {
         $pluginCode = $plugin['code'];
+        // Need dependency Mechanism
+        /**
         $pluginDir = $this->calcPluginDir($pluginCode);
         $composerPath = $pluginDir.'/composer.json';
         // read composer.json
@@ -824,8 +826,9 @@ class PluginService
                 ];
             }
         }
+         */
 
-        return $require;
+        return [];
     }
 
     /**

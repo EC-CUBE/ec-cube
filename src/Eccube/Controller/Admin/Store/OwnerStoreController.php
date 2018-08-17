@@ -264,11 +264,11 @@ class OwnerStoreController extends AbstractController
         }
 
         // Todo: need define plugin's dependency mechanism
-//        $dependents = $this->pluginService->getPluginRequired($plugin);
-        dump($request->get('is_update'));
+        $requires = $this->pluginService->getPluginRequired($plugin);
+
         return [
             'item' => $plugin,
-            'requires' => [],
+            'requires' => $requires,
             'is_update' => $request->get('is_update', false),
         ];
     }
