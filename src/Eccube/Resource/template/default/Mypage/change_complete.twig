@@ -18,7 +18,7 @@ file that was distributed with this source code.
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.customer_info_complete'|trans}}</h1>
+                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__customer_complete'|trans }}</h1>
             </div>
             {% include 'Mypage/navi.twig' %}
         </div>
@@ -26,11 +26,13 @@ file that was distributed with this source code.
             <div class="ec-off2Grid ec-text-ac">
                 <div class="ec-off2Grid__cell">
                     <div class="ec-reportHeading">
-                        <h2>{{ 'mypage.message.change.complete'|trans }}</h2>
+                        <h2>{{ 'front.mypage.customer_complete_message__title'|trans }}</h2>
                     </div>
-                    <p class="ec-reportDescription">{{'shopping.text.message.thank_you_with_us'|trans}}</p>
+                    <p class="ec-reportDescription">{{ 'front.mypage.customer_complete_message__body'|trans }}</p>
                     <div class="ec-off4Grid">
-                        <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.label.back_to_top'|trans}}</a></div>
+                        <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel"
+                                                          href="{{ url('homepage') }}">{{ 'common.back'|trans }}</a>
+                        </div>
                     </div>
                 </div>
             </div>

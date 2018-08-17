@@ -33,6 +33,7 @@ class EF04CustomerCest
             'entry[password][first]' => 'password',
             'entry[password][second]' => 'password',
             'entry[job]' => ['value' => '1'],
+            'entry[user_policy_check]' => '1',
         ];
         $findPluginByCode = Fixtures::get('findPluginByCode');
         $Plugin = $findPluginByCode('MailMagazine');
@@ -69,7 +70,7 @@ class EF04CustomerCest
 
         // アクティベートURLからトップページへ
         $I->amOnPage($activateUrl);
-        $I->see('新規会員登録（完了）', 'div.ec-pageHeader h1');
+        $I->see('新規会員登録(完了)', 'div.ec-pageHeader h1');
 
         $I->seeEmailCount(2);
         foreach (array($new_email, $BaseInfo->getEmail01()) as $email) {
@@ -178,6 +179,7 @@ class EF04CustomerCest
             'entry[password][first]' => 'password',
             'entry[password][second]' => 'password',
             'entry[job]' => ['value' => '1'],
+            'entry[user_policy_check]' => '1',
         ];
 
         $findPluginByCode = Fixtures::get('findPluginByCode');

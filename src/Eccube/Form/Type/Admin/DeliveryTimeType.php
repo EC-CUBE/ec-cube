@@ -32,7 +32,7 @@ class DeliveryTimeType extends AbstractType
             ->add('delivery_time', TextType::class, [
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'admin.setting.shop.delivery_edit.delivery_times_placeholder',
+                    'placeholder' => 'common.select',
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),

@@ -55,7 +55,6 @@ class ProductClassType extends AbstractType
     {
         $builder
             ->add('code', TextType::class, [
-                'label' => 'productclass.label.product_code',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -64,7 +63,6 @@ class ProductClassType extends AbstractType
                 ],
             ])
             ->add('stock', NumberType::class, [
-                'label' => 'productclass.label.stock',
                 'required' => false,
                 'constraints' => [
                     new Assert\Regex([
@@ -74,12 +72,11 @@ class ProductClassType extends AbstractType
                 ],
             ])
             ->add('stock_unlimited', CheckboxType::class, [
-                'label' => 'productclass.label.unlimited',
+                'label' => 'admin.product.stock_unlimited__short',
                 'value' => '1',
                 'required' => false,
             ])
             ->add('sale_limit', NumberType::class, [
-                'label' => 'productclass.label.max_order',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -95,14 +92,11 @@ class ProductClassType extends AbstractType
                 ],
             ])
             ->add('price01', PriceType::class, [
-                'label' => 'productclass.label.regular_price',
                 'required' => false,
             ])
             ->add('price02', PriceType::class, [
-                'label' => 'productclass.label.sales_price',
             ])
             ->add('tax_rate', TextType::class, [
-                'label' => 'productclass.label.tax',
                 'required' => false,
                 'constraints' => [
                     new Assert\Range(['min' => 0, 'max' => 100]),
@@ -113,11 +107,9 @@ class ProductClassType extends AbstractType
                 ],
             ])
             ->add('delivery_fee', PriceType::class, [
-                'label' => 'productclass.label.shipping_charge',
                 'required' => false,
             ])
             ->add('sale_type', SaleTypeType::class, [
-                'label' => 'productclass.label.sales_type',
                 'multiple' => false,
                 'expanded' => false,
                 'constraints' => [
@@ -125,16 +117,15 @@ class ProductClassType extends AbstractType
                 ],
             ])
             ->add('delivery_duration', DeliveryDurationType::class, [
-                'label' => 'productclass.label.delivery_date',
                 'required' => false,
-                'placeholder' => 'productclass.placeholder.not_specified',
+                'placeholder' => 'common.select__unspecified',
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
 
                 if (empty($data['stock_unlimited']) && is_null($data['stock'])) {
-                    $form['stock_unlimited']->addError(new FormError(trans('productclass.text.error.set_stock_quantitiy')));
+                    $form['stock_unlimited']->addError(new FormError(trans('admin.product.product_class_set_stock_quantitiy')));
                 }
             });
 

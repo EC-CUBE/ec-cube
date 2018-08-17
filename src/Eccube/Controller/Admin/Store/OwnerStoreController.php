@@ -218,7 +218,7 @@ class OwnerStoreController extends AbstractController
                 }
                 unset($item);
 
-                // Todo: news api will remove this?
+            // Todo: news api will remove this?
                 // Promotion item
 //                $i = 0;
 //                foreach ($items as $item) {
@@ -246,7 +246,7 @@ class OwnerStoreController extends AbstractController
             'searchForm' => $searchForm->createView(),
             'page_no' => $page_no,
             'message' => $message,
-            'Categories' => $category
+            'Categories' => $category,
         ];
     }
 
@@ -295,17 +295,18 @@ class OwnerStoreController extends AbstractController
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/install/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
+     * @Route("/install", name="admin_store_plugin_api_install")
      *
      * @param Request $request
-     * @param string $pluginCode
-     * @param string $eccubeVersion
-     * @param string $version
      *
      * @return RedirectResponse
      */
-    public function apiInstall(Request $request, $pluginCode, $eccubeVersion, $version)
+    public function apiInstall(Request $request)
     {
+        $pluginCode = $request->get('pluginCode');
+        $eccubeVersion = $request->get('eccubeVersion');
+        $version = $request->get('version');
+
         // Check plugin code
         $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url);
@@ -512,6 +513,7 @@ class OwnerStoreController extends AbstractController
      * @param string $url
      *
      * @return array
+     *
      * @deprecated since release, please preference PluginApiService
      */
     private function getRequestApi($url)
@@ -548,6 +550,7 @@ class OwnerStoreController extends AbstractController
      * @param array $data
      *
      * @return array
+     *
      * @deprecated since release, please preference PluginApiService
      */
     private function postRequestApi($url, $data)
