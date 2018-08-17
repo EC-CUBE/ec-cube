@@ -48,14 +48,12 @@ class ContactType extends AbstractType
                 'required' => false,
             ])
             ->add('email', EmailType::class, [
-                'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Email(['strict' => true]),
                 ],
             ])
             ->add('contents', TextareaType::class, [
-                // 'help' => 'form.contact.contents.help',
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],

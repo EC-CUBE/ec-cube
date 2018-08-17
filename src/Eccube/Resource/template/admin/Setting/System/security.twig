@@ -12,10 +12,10 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'system', 'security'] %}
 
-{% block title %}{{ 'admin.setting.system.security.703'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.system.security.702'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.system.security_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_layout.html.twig' %}
 
 {% block stylesheet %}
     <style type="text/css">
@@ -40,7 +40,7 @@ file that was distributed with this source code.
                             <div class="row">
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                        <span class="card-title">{{ 'admin.setting.system.security.704'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <span class="card-title">{{ 'admin.setting.system.security__card_title'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
                                 <div class="col-4 text-right">
@@ -50,10 +50,11 @@ file that was distributed with this source code.
                         </div>
                         <div class="collapse show ec-cardCollapse" id="basicConfig">
                             <div class="card-body">
+                                <!-- ディレクトリ名 -->
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                            <span>{{ form_label(form.admin_route_dir) }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <span>{{ 'admin.setting.system.security.admin_url'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -61,42 +62,24 @@ file that was distributed with this source code.
                                         {{ form_errors(form.admin_route_dir) }}
                                     </div>
                                 </div>
+                                <!-- IP制限 -->
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                            <span>{{ form_label(form.admin_allow_hosts) }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <span>{{ 'admin.setting.system.security.ip_limit'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        {{ form_widget(form.admin_allow_hosts, {'attr': {'rows': '7', 'aria-describedby': 'helpBlock'}}) }}
+                                        {{ form_widget(form.admin_allow_hosts, { 'attr': { 'rows': '8', 'placeholder': 'admin.setting.system.security.ip_limit_sample'|trans }}) }}
                                         {{ form_errors(form.admin_allow_hosts) }}
-                                        <span id="helpBlock" class="help-block">{{ 'admin.setting.system.security.707'|trans }}
-                                            {{ 'admin.setting.system.security.708'|trans }}</span>
+                                        <p>{{ 'admin.setting.system.security.ip_limit_description'|trans|nl2br }}</p>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div><!-- /.card -->
-
-                    <div class="card rounded border-0 mb-4">
-                        <div class="card-header">
-                            <div class="row mb-2">
-                                <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                        <span class="card-title">{{ 'admin.setting.system.security.709'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
-                                    </div>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#sslConfig" aria-expanded="false" aria-controls="sslConfig"><i class="fa fa-angle-up fa-lg"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="collapse show ec-cardCollapse" id="sslConfig">
-                            <div class="card-body">
-                                <div class="row">
+                                <!-- 強制SSL -->
+                                <div class="row mb-2">
                                     <div class="col-3">
                                         <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                            <span><label class="col-form-label col-sm-2 form-control-label">{{ form.force_ssl.vars.label|trans }}</label></span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <span>{{ 'admin.setting.system.security.force_ssl'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -104,15 +87,15 @@ file that was distributed with this source code.
                                             {{ form_widget(form.force_ssl) }}
                                             {{ form_errors(form.force_ssl) }}
                                         {% else %}
-                                            {{ form_widget(form.force_ssl, {'attr': {'disabled': 'disabled'}}) }}
-                                            <p class="text-danger">{{ 'admin.setting.system.security.711'|trans }}</p>
+                                            {{ form_widget(form.force_ssl, { 'attr': { 'disabled': 'disabled' }}) }}
+                                            {{ form_errors(form.force_ssl) }}
+                                            <p class="text-danger">{{ 'admin.setting.system.security.force_ssl_description'|trans }}</p>
                                         {% endif %}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                    </div><!-- /.card -->
                 </div>
             </div>
 
@@ -125,7 +108,7 @@ file that was distributed with this source code.
                         <div class="col-6">
                             <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                                 <div class="col-auto">
-                                    <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.setting.system.security.712'|trans }}</button>
+                                    <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.common.registration'|trans }}</button>
                                 </div>
                             </div>
                         </div>

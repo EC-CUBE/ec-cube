@@ -207,7 +207,7 @@ class OwnerStoreController extends AbstractController
                     $items[] = $item;
                 }
 
-                // Todo: news api will remove this?
+            // Todo: news api will remove this?
                 // Promotion item
 //                $i = 0;
 //                foreach ($items as $item) {
@@ -235,7 +235,7 @@ class OwnerStoreController extends AbstractController
             'searchForm' => $searchForm->createView(),
             'page_no' => $page_no,
             'message' => $message,
-            'Categories' => $category
+            'Categories' => $category,
         ];
     }
 
@@ -493,6 +493,7 @@ class OwnerStoreController extends AbstractController
      * @param string $url
      *
      * @return array
+     *
      * @deprecated since release, please preference PluginApiService
      */
     private function getRequestApi($url)
@@ -529,6 +530,7 @@ class OwnerStoreController extends AbstractController
      * @param array $data
      *
      * @return array
+     *
      * @deprecated since release, please preference PluginApiService
      */
     private function postRequestApi($url, $data)

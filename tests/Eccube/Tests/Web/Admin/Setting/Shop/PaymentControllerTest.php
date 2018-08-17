@@ -137,39 +137,6 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testUp()
-    {
-        $pid = 4;
-        $Payment = $this->paymentRepository->find($pid);
-        $before = $Payment->getSortNo();
-        $this->client->request('PUT',
-            $this->generateUrl('admin_setting_shop_payment_up', ['id' => $pid])
-        );
-        $this->assertTrue($this->client->getResponse()->isRedirection());
-
-        $after = $Payment->getSortNo();
-        $this->actual = $after;
-        $this->expected = $before + 1;
-        $this->verify();
-    }
-
-    public function testDown()
-    {
-        $pid = 1;
-        $Payment = $this->paymentRepository->find($pid);
-        $before = $Payment->getSortNo();
-        $this->client->request('PUT',
-            $this->generateUrl('admin_setting_shop_payment_down', ['id' => $pid])
-        );
-
-        $this->assertTrue($this->client->getResponse()->isRedirection());
-
-        $after = $Payment->getSortNo();
-        $this->actual = $after;
-        $this->expected = $before - 1;
-        $this->verify();
-    }
-
     public function testAddImage()
     {
         $formData = $this->createFormData();

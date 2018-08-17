@@ -19,14 +19,15 @@ file that was distributed with this source code.
         </div>
         <div class="ec-off1Grid">
             <div class="ec-off1Grid__cell">
-                <form id="form1" method="post" novalidate class="h-adr">
+                <form id="form1" method="post" novalidate>
                     {{ form_widget(form._token) }}
                     <div class="ec-borderedDefs">
                         <dl>
                             <dt>
-                                {{ form_label(form.login_email) }}</dt>
+                                {{ form_label(form.login_email, 'common.mail_address', { 'label_attr': { 'class': 'ec-label' }}) }}
+                            </dt>
                             <dd>
-                                <div class="ec-input">
+                                <div class="ec-input{{ has_errors(form.login_email) ? ' error' }}">
                                     {{ form_widget(form.login_email) }}
                                     {{ form_errors(form.login_email) }}
                                     {% if error %}
@@ -37,30 +38,31 @@ file that was distributed with this source code.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.password, 'signup.label.pass', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.password, 'common.password', { 'label_attr': {'class': 'ec-label' }}) }}
                             </dt>
                             <dd>
                                 <div class="ec-input{{ has_errors(form.password.first) ? ' error' }}">
                                     {{ form_widget(form.password.first, {
-                                        'attr': {'placeholder': 'signup.text.note.half_width_alphanumeric'},
+                                        'attr': { 'placeholder': 'common.password_sample'|trans({ '%min%': eccube_config.eccube_password_min_len, '%max%': eccube_config.eccube_password_max_len }) },
                                         'type': 'password'
                                     }) }}
                                     {{ form_errors(form.password.first) }}
                                 </div>
                                 <div class="ec-input{{ has_errors(form.password.second) ? ' error' }}">
                                     {{ form_widget(form.password.second, {
-                                        'attr': {'placeholder': 'signup.label.pass_check'},
+                                        'attr': { 'placeholder': 'common.repeated_confirm'|trans },
                                         'type': 'password'
                                     }) }}
                                     {{ form_errors(form.password.second) }}
                                 </div>
                             </dd>
                         </dl>
+                        </dl>
                     </div>
                     <div class="ec-registerRole__actions">
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
-                                <button class="ec-blockBtn--action" type="submit">{{ 'forgotcontroller.label.edit'|trans }}</button>
+                                <button class="ec-blockBtn--action" type="submit">{{ 'common.registration'|trans }}</button>
                             </div>
                         </div>
                     </div>
