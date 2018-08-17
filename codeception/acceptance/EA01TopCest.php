@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Page\Admin\OrderManagePage;
 use Page\Admin\TopPage;
@@ -69,7 +80,7 @@ class EA01TopCest
         // $I->goToAdminPage();
 
         // お知らせの記事をクリックすると設定されたURLに遷移することを確認
-        $I->switchToIFrame("information");
+        $I->switchToIFrame('information');
         $I->click(['css' => '.news_area .link_list .tableish a:nth-child(3)']);
         $I->switchToNewWindow();
         $I->assertRegExp('/^https?:\/\/www.ec-cube.net\/.*$/', $I->executeJS('return location.href'), '公式サイトが開く');

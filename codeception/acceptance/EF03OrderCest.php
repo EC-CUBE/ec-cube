@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
 use Page\Front\CartPage;
@@ -99,7 +110,6 @@ class EF03OrderCest
 
         // 確認
         $I->assertEquals('2', $cartPage->商品数量(1));
-
     }
 
     public function order_カート数量減らす(\AcceptanceTester $I)
@@ -149,7 +159,7 @@ class EF03OrderCest
 
         // メール確認
         $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
+        foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -947,7 +957,6 @@ class EF03OrderCest
         $I->assertEquals(1, $CartPage->明細数());
         $I->assertEquals('パーコレーター', $CartPage->商品名(1));
     }
-
 
     public function order_複数ブラウザ_片方でログインしてカートに追加しもう一方にログインして別の商品を追加する(\AcceptanceTester $I)
     {
