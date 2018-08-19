@@ -14,7 +14,9 @@
 namespace Eccube\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
+use Eccube\Repository\ProductRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\FormView;
 use Twig\Extension\AbstractExtension;
@@ -28,9 +30,20 @@ class EccubeExtension extends AbstractExtension
      */
     protected $eccubeConfig;
 
-    public function __construct(EccubeConfig $eccubeConfig)
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    /**
+     * EccubeExtension constructor.
+     * @param EccubeConfig $eccubeConfig
+     * @param ProductRepository $productRepository
+     */
+    public function __construct(EccubeConfig $eccubeConfig, ProductRepository $productRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -44,6 +57,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFunction('has_errors', [$this, 'hasErrors']),
             new TwigFunction('active_menus', [$this, 'getActiveMenus']),
             new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
+            new TwigFunction('product', [$this, 'getProduct']),
             new TwigFunction('php_*', [$this, 'getPhpFunctions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
         ];
     }
@@ -171,6 +185,30 @@ class EccubeExtension extends AbstractExtension
         }
 
         return $hasErrors;
+    }
+
+    /**
+     * product_idで指定したProductを取得
+     * Productが取得できない場合、または非公開の場合、商品情報は表示させない。
+     * デバッグ環境以外ではProductが取得できなくでもエラー画面は表示させず無視される。
+     *
+     * @param $id
+     *
+     * @return Product|null
+     */
+    public function getProduct($id)
+    {
+        try {
+            $Product = $this->productRepository->find($id);
+
+            if ($Product && $Product->getStatus()->getId() == ProductStatus::DISPLAY_SHOW) {
+                return $Product;
+            }
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        return null;
     }
 
     /**
