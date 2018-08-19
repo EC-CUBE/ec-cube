@@ -44,14 +44,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFunction('has_errors', [$this, 'hasErrors']),
             new TwigFunction('active_menus', [$this, 'getActiveMenus']),
             new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
-            new TwigFunction('php_*', function () {
-                $arg_list = func_get_args();
-                $function = array_shift($arg_list);
-                if (is_callable($function)) {
-                    return call_user_func_array($function, $arg_list);
-                }
-                trigger_error('Called to an undefined function : php_'.$function, E_USER_WARNING);
-            }, ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new TwigFunction('php_*', [$this, 'getPhpFunctions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
         ];
     }
 
