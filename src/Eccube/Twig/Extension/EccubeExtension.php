@@ -174,30 +174,6 @@ class EccubeExtension extends AbstractExtension
     }
 
     /**
-     * product_idで指定したProductを取得
-     * Productが取得できない場合、または非公開の場合、商品情報は表示させない。
-     * デバッグ環境以外ではProductが取得できなくでもエラー画面は表示させず無視される。
-     *
-     * @param $id
-     *
-     * @return Product|null
-     */
-    public function getProduct($id)
-    {
-        try {
-            $Product = $this->app['eccube.repository.product']->get($id);
-
-            if ($Product->getStatus()->getId() == Disp::DISPLAY_SHOW) {
-                return $Product;
-            }
-        } catch (\Exception $e) {
-            return null;
-        }
-
-        return null;
-    }
-
-    /**
      * Twigでphp関数を使用できるようにする。
      *
      * @return mixed|null
