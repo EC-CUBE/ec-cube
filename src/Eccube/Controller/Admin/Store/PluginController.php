@@ -600,7 +600,7 @@ class PluginController extends AbstractController
                 log_warning($e->getMessage());
                 continue;
             }
-            $config = $this->pluginService->readYml($dir->getRealPath().'/config.yml');
+            $config = $this->pluginService->readConfig($dir->getRealPath());
             $unregisteredPlugins[$pluginCode]['name'] = isset($config['name']) ? $config['name'] : null;
             $unregisteredPlugins[$pluginCode]['event'] = isset($config['event']) ? $config['event'] : null;
             $unregisteredPlugins[$pluginCode]['version'] = isset($config['version']) ? $config['version'] : null;

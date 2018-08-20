@@ -125,16 +125,19 @@ class PluginServiceTest extends AbstractServiceTestCase
     {
         // インストールするプラグインを作成する
         $tmpname = 'dummy'.sha1(mt_rand());
-        $config = [];
-        $config['name'] = $tmpname.'_name';
-        $config['code'] = $tmpname;
-        $config['version'] = $tmpname.'_version';
+        $config = [
+            "version" => $tmpname.'_version',
+            "description" => $tmpname.'_name',
+            "extra" => [
+                "code" => $tmpname
+            ]
+        ];
 
         $tmpdir = $this->createTempDir();
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', json_encode($config));
 
         // インストールできるか
         $this->assertTrue($this->service->install($tmpfile));
@@ -286,16 +289,19 @@ class PluginServiceTest extends AbstractServiceTestCase
     {
         // インストールするプラグインを作成する
         $tmpname = 'dummy'.sha1(mt_rand());
-        $config = [];
-        $config['name'] = $tmpname;
-        $config['code'] = $tmpname;
-        $config['version'] = $tmpname;
+        $config = [
+            "version" => $tmpname,
+            "description" => $tmpname,
+            "extra" => [
+                "code" => $tmpname
+            ]
+        ];
 
         $tmpdir = $this->createTempDir();
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', json_encode($config));
         $dummyManager = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
@@ -348,16 +354,19 @@ EOD;
     {
         // インストールするプラグインを作成する
         $tmpname = 'dummy'.sha1(mt_rand());
-        $config = [];
-        $config['name'] = $tmpname;
-        $config['code'] = $tmpname;
-        $config['version'] = $tmpname;
+        $config = [
+            "version" => $tmpname,
+            "description" => $tmpname,
+            "extra" => [
+                "code" => $tmpname
+            ]
+        ];
 
         $tmpdir = $this->createTempDir();
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', json_encode($config));
         $dummyManager = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
@@ -419,112 +428,6 @@ EOD;
         $this->assertTrue($this->service->uninstall($plugin));
         $this->assertRegexp('/DisabledUninstalled/', ob_get_contents());
         ob_end_clean();
-    }
-
-    // const定義を含むpluginのインストール
-    public function testInstallPluginWithConst()
-    {
-        // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
-        $config = [];
-        $config['name'] = $tmpname.'_name';
-        $config['code'] = $tmpname;
-        $config['version'] = $tmpname.'_version';
-        $config['const']['A'] = 'A';
-        $config['const']['C'] = 1;
-
-        $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
-
-        $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
-
-        // インストールできるか
-        $this->assertTrue($this->service->install($tmpfile));
-
-        $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['code' => $tmpname]));
-
-        // インストール後disable状態でもconstがロードされているか
-        // FIXME プラグインのローディングはEccubePluginServiceProviderに移植。再ロードは別途検討。
-//        $config = $this->app['config'];
-//        $config[$tmpname]['const']['A'] = null;
-//        $config[$tmpname]['const']['C'] = null;
-//        // const が存在しないのを確認後, 再ロード
-//        $this->assertFalse(isset($this->app['config'][$tmpname]['const']['A']));
-//        $this->assertFalse(isset($this->app['config'][$tmpname]['const']['C']));
-//
-//        $this->app->initPluginEventDispatcher();
-//        $this->app->loadPlugin();
-//        $this->app->boot();
-//
-//        $this->assertEquals('A',$this->app['config'][$tmpname]['const']['A']);
-//        $this->assertEquals('1',$this->app['config'][$tmpname]['const']['C']);
-
-        // アンインストールできるか
-        $this->assertTrue($this->service->uninstall($plugin));
-    }
-
-    /**
-     * プラグイン設定ファイルキャッシュの検証
-     */
-    public function testPluginConfigCache()
-    {
-        $this->app['debug'] = false;
-        $pluginConfigCache = $this->container->getParameter('kernel.project_dir').'/app/cache/plugin/config_cache.php';
-
-        // 事前にキャッシュを削除しておく
-        if (file_exists($pluginConfigCache)) {
-            unlink($pluginConfigCache);
-        }
-
-        // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
-        $config = [];
-        $config['name'] = $tmpname.'_name';
-        $config['code'] = $tmpname;
-        $config['version'] = $tmpname.'_version';
-        $config['const']['A'] = 'A';
-        $config['const']['C'] = 1;
-
-        $event = [
-            'eccube.event.app.request' => [
-                0 => [
-                    0 => 'onAppRequest',
-                    1 => 'NORMAL',
-                ],
-            ],
-        ];
-
-        $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
-
-        $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
-        $tar->addFromString('event.yml', Yaml::dump($event));
-
-        // インストールできるか
-        $this->assertTrue($this->service->install($tmpfile));
-
-        $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['code' => $tmpname]));
-        $this->entityManager->refresh($plugin);
-
-        // インストール後disable状態でもconstがロードされているか
-        // FIXME プラグインのローディングはEccubePluginServiceProviderに移植。再ロードは別途検討。
-//        $config = $this->app['config'];
-//        $config[$tmpname]['const']['A'] = null;
-//        $config[$tmpname]['const']['C'] = null;
-//        // const が存在しないのを確認後, 再ロード
-//        $this->assertFalse(isset($this->app['config'][$tmpname]['const']['A']));
-//        $this->assertFalse(isset($this->app['config'][$tmpname]['const']['C']));
-//
-//        $this->app->initPluginEventDispatcher();
-//        $this->app->loadPlugin();
-//        $this->app->boot();
-//        $this->assertEquals('A',$this->app['config'][$tmpname]['const']['A']);
-//        $this->assertEquals('1',$this->app['config'][$tmpname]['const']['C']);
-
-        // アンインストールできるか
-        $this->assertTrue($this->service->uninstall($plugin));
     }
 
     /**
@@ -654,6 +557,9 @@ EOD;
                 'composer/installers' => '*',
                 'composer/semver' => '*',
             ],
+            'extra' => [
+                'code' => $config['code']
+            ]
         ];
 
         return $jsonPHP;

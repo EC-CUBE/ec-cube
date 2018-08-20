@@ -66,7 +66,6 @@ class PluginService
      */
     protected $composerService;
 
-    const CONFIG_YML = 'config.yml';
     const VENDOR_NAME = 'ec-cube';
 
     /**
@@ -152,7 +151,7 @@ class PluginService
             $this->unpackPluginArchive($path, $tmp);
             $this->checkPluginArchiveContent($tmp);
 
-            $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
+            $config = $this->readConfig($tmp);
             // テンポラリのファイルを削除
             $this->deleteFile($tmp);
 
@@ -292,7 +291,7 @@ class PluginService
             if (!empty($config_cache)) {
                 $meta = $config_cache;
             } else {
-                $meta = $this->readYml($dir.'/config.yml');
+                $meta = $this->readConfig($dir);
             }
         } catch (\Symfony\Component\Yaml\Exception\ParseException $e) {
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
@@ -325,16 +324,35 @@ class PluginService
     }
 
     /**
-     * @param string $yml
-     * @return bool|mixed
+     * @param $pluginDir
+     * @return array
+     * @throws PluginException
      */
-    public function readYml($yml)
-    {
-        if (file_exists($yml)) {
-            return Yaml::parse(file_get_contents($yml));
+    public function readConfig($pluginDir) {
+
+        $composerJsonPath = $pluginDir.DIRECTORY_SEPARATOR.'composer.json';
+        if (file_exists($composerJsonPath) === false) {
+            throw new PluginException("${composerJsonPath} not found.");
         }
 
-        return false;
+        $json = json_decode(file_get_contents($composerJsonPath), true);
+        if ($json === null) {
+            throw new PluginException("Invalid json format. [${composerJsonPath}]");
+        }
+
+        if (!isset($json['version'])) {
+            throw new PluginException("`version` is not defined in ${composerJsonPath}");
+        }
+
+        if (!isset($json['extra']['code'])) {
+            throw new PluginException("`extra.code` is not defined in ${composerJsonPath}");
+        }
+
+        return [
+            "code" => $json['extra']['code'],
+            "name" => isset($json['description']) ? $json['description'] : $json['extra']['code'],
+            "version" => $json['version'],
+        ];
     }
 
     public function checkSymbolName($string)
@@ -447,8 +465,9 @@ class PluginService
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
         $this->cacheUtil->clearCache();
-        $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
-        $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
+        $config = $this->readConfig($pluginDir);
+        $this->callPluginManagerMethod($config, 'disable');
+        $this->callPluginManagerMethod($config, 'uninstall');
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
 
@@ -532,11 +551,12 @@ class PluginService
         $em = $this->entityManager;
         try {
             $pluginDir = $this->calcPluginDir($plugin->getCode());
+            $config = $this->readConfig($pluginDir);
             $em->getConnection()->beginTransaction();
             $plugin->setEnabled($enable ? true : false);
             $em->persist($plugin);
 
-            $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
+            $this->callPluginManagerMethod($config, $enable ? 'enable' : 'disable');
 
             // Proxyだけ再生成してスキーマは更新しない
             $this->regenerateProxy($plugin, false);
@@ -573,7 +593,7 @@ class PluginService
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
             $this->checkPluginArchiveContent($tmp);
 
-            $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
+            $config = $this->readConfig($tmp);
 
             if ($plugin->getCode() != $config['code']) {
                 throw new PluginException('new/old plugin code is different.');
