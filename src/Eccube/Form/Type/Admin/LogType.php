@@ -65,7 +65,6 @@ class LogType extends AbstractType
 
         $builder
             ->add('files', ChoiceType::class, [
-                'label' => 'logtype.label.log_file',
                 'choices' => array_flip($files),
                 'data' => 'site_'.date('Y-m-d').'.log',
                 'expanded' => false,
@@ -75,7 +74,6 @@ class LogType extends AbstractType
                 ],
             ])
             ->add('line_max', TextType::class, [
-                'label' => 'logtype.label.number_of_rows',
                 'data' => '50',
                 'attr' => [
                     'maxlength' => 5,

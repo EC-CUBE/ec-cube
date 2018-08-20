@@ -16,7 +16,7 @@ namespace Eccube\Controller\Mypage;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
-use Eccube\Entity\CustomerFavoriteProduct;
+use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -249,9 +249,7 @@ class MypageController extends AbstractController
 
         foreach ($Order->getOrderItems() as $OrderItem) {
             try {
-                if ($OrderItem->getProduct() &&
-                    $OrderItem->getProductClass()
-                ) {
+                if ($OrderItem->getProduct() && $OrderItem->getProductClass()) {
                     $this->cartService->addProduct($OrderItem->getProductClass(), $OrderItem->getQuantity());
 
                     // 明細の正規化
@@ -271,9 +269,6 @@ class MypageController extends AbstractController
                     }
 
                     $this->cartService->save();
-                } else {
-                    log_info(trans('cart.product.delete'), [$order_no]);
-                    $this->addRequestError('cart.product.delete');
                 }
             } catch (CartException $e) {
                 log_info($e->getMessage(), [$order_no]);
@@ -345,20 +340,21 @@ class MypageController extends AbstractController
      *
      * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", methods={"DELETE"}, requirements={"id" = "\d+"})
      */
-    public function delete(Request $request, CustomerFavoriteProduct $CustomerFavoriteProduct)
+    public function delete(Request $request, Product $Product)
     {
         $this->isTokenValid();
 
         $Customer = $this->getUser();
 
-        log_info('お気に入り商品削除開始', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
+        log_info('お気に入り商品削除開始', [$Customer->getId(), $Product->getId()]);
 
-        if ($Customer->getId() !== $CustomerFavoriteProduct->getCustomer()
-                ->getId()) {
+        $CustomerFavoriteProduct = $this->customerFavoriteProductRepository->findOneBy(['Customer' => $Customer, 'Product' => $Product]);
+
+        if ($CustomerFavoriteProduct) {
+            $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);
+        } else {
             throw new BadRequestHttpException();
         }
-
-        $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);
 
         $event = new EventArgs(
             [
