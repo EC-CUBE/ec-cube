@@ -303,21 +303,17 @@ class EditController extends AbstractController
                         log_info('受注登録完了', [$TargetOrder->getId()]);
 
                         if ($returnLink = $form->get('return_link')->getData()) {
-                            dump($returnLink);
                             try {
                                 // $returnLinkはpathの形式で渡される. pathが存在するかをルータでチェックする.
                                 $result = $router->match($returnLink);
-                                dump($result);
                                 // パラメータのみ抽出
                                 $params = array_filter($result, function ($key) {
                                     return 0 !== \strpos($key, '_');
                                 }, ARRAY_FILTER_USE_KEY);
 
-                                dump($params);
                                 // pathからurlを再構築してリダイレクト.
                                 return $this->redirectToRoute($result['_route'], $params);
                             } catch (\Exception $e) {
-                                dump($e);
                                 // マッチしない場合はログ出力してスキップ.
                                 log_warning('URLの形式が不正です。');
                             }

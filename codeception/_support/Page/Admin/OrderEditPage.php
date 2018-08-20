@@ -202,7 +202,7 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->scrollTo(['css' => '#form1'], 0, 200);
         $this->tester->click('#shipping-add');
-        $this->tester->waitForElementVisible("#confirmFormChangeModal");
+        $this->tester->waitForElementVisible('#confirmFormChangeModal');
         $this->tester->click(['css' => '#confirmFormChangeModal > div > div > div.modal-footer > a.btn.btn-ec-conversion']);
 
         return $this;
