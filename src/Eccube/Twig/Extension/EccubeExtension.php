@@ -14,7 +14,9 @@
 namespace Eccube\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
+use Eccube\Repository\ProductRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\FormView;
 use Twig\Extension\AbstractExtension;
@@ -28,9 +30,20 @@ class EccubeExtension extends AbstractExtension
      */
     protected $eccubeConfig;
 
-    public function __construct(EccubeConfig $eccubeConfig)
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    /**
+     * EccubeExtension constructor.
+     * @param EccubeConfig $eccubeConfig
+     * @param ProductRepository $productRepository
+     */
+    public function __construct(EccubeConfig $eccubeConfig, ProductRepository $productRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -44,14 +57,8 @@ class EccubeExtension extends AbstractExtension
             new TwigFunction('has_errors', [$this, 'hasErrors']),
             new TwigFunction('active_menus', [$this, 'getActiveMenus']),
             new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
-            new TwigFunction('php_*', function () {
-                $arg_list = func_get_args();
-                $function = array_shift($arg_list);
-                if (is_callable($function)) {
-                    return call_user_func_array($function, $arg_list);
-                }
-                trigger_error('Called to an undefined function : php_'.$function, E_USER_WARNING);
-            }, ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new TwigFunction('product', [$this, 'getProduct']),
+            new TwigFunction('php_*', [$this, 'getPhpFunctions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
         ];
     }
 
@@ -192,9 +199,9 @@ class EccubeExtension extends AbstractExtension
     public function getProduct($id)
     {
         try {
-            $Product = $this->app['eccube.repository.product']->get($id);
+            $Product = $this->productRepository->findWithSortedClassCategories($id);
 
-            if ($Product->getStatus()->getId() == Disp::DISPLAY_SHOW) {
+            if ($Product->getStatus()->getId() == ProductStatus::DISPLAY_SHOW) {
                 return $Product;
             }
         } catch (\Exception $e) {
