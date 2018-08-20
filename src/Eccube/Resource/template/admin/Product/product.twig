@@ -263,7 +263,7 @@ file that was distributed with this source code.
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ 'admin.product.move_to_confirm_title'|trans }}</h5>
+                    <h5 class="modal-title">{{ 'admin.common.move_to_confirm_title'|trans }}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -273,10 +273,10 @@ file that was distributed with this source code.
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-ec-conversion" data-action="save" href="javascript:void(0)">
-                        {{ 'admin.product.move_to_confirm_save_and_move'|trans }}
+                        {{ 'admin.common.move_to_confirm_save_and_move'|trans }}
                     </a>
                     <a class="btn btn-ec-sub" data-action="cancel" href="javascript:void(0)">
-                        {{ 'admin.product.move_to_confirm_move_only'|trans }}
+                        {{ 'admin.common.move_to_confirm_move_only'|trans }}
                     </a>
                 </div>
             </div>
@@ -682,7 +682,7 @@ file that was distributed with this source code.
 
                                     <div class="d-block text-center text-center">
                                         <a href="{{ path('admin_product_product_class', { 'id' : id }) }}" class="btn btn-ec-regular" data-action="confirm"
-                                           title="{{ 'admin.product.move_to_confirm_message'|trans({
+                                           title="{{ 'admin.common.move_to_confirm_message'|trans({
                                                '%name%' : 'admin.product.product_class_registration'|trans
                                            }) }}">{{ 'admin.product.product_class__confirm_of_product'|trans }}</a>
                                     </div>
@@ -805,7 +805,7 @@ file that was distributed with this source code.
                                     <a class="btn btn-block btn-ec-regular"
                                        data-action="confirm"
                                        href="{{ path('admin_product_category') }}"
-                                       title="{{ 'admin.product.move_to_confirm_message'|trans({
+                                       title="{{ 'admin.common.move_to_confirm_message'|trans({
                                            '%name%' : 'admin.product.category_management'|trans}) }}">{{ 'admin.product.move_to_category'|trans }}</a>
                                 </div>
                             </div>
@@ -869,7 +869,7 @@ file that was distributed with this source code.
                                     <a href="{{ path('admin_product_tag') }}"
                                        class="btn btn-block btn-ec-regular"
                                        data-action="confirm"
-                                       title="{{ 'admin.product.move_to_confirm_message'|trans({
+                                       title="{{ 'admin.common.move_to_confirm_message'|trans({
                                            '%name%' : 'admin.product.tag_management'|trans }) }}">{{ 'admin.product.move_to_tag'|trans }}</a>
                                 </div>
                             </div>
@@ -957,7 +957,7 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
                             <a class="c-beseLink" href="{{ path('admin_product_page', { page_no : app.session.get('eccube.admin.product.search.page_no')|default('1') } ) }}"
-                               data-action="confirm" title="{{ 'admin.product.move_to_confirm_message'|trans({'%name%' : 'admin.product.product_list'|trans }) }}">
+                               data-action="confirm" title="{{ 'admin.common.move_to_confirm_message'|trans({'%name%' : 'admin.product.product_list'|trans }) }}">
                                 <i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.product.product_list'|trans }}</span>
                             </a>
                         </div>

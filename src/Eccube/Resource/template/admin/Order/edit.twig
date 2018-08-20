@@ -199,12 +199,13 @@ file that was distributed with this source code.
         constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING'), constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')] -%}
         {% set action_disabled = true %}
     {%- endif %}
+    <!-- 移動確認モーダル-->
     <div class="modal fade" id="confirmFormChangeModal" tabindex="-1" role="dialog"
          aria-labelledby="confirmFormChangeModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ 'admin.order.edit.text1'|trans }}</h5>
+                    <h5 class="modal-title">{{ 'admin.common.move_to_confirm_title'|trans }}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -214,10 +215,10 @@ file that was distributed with this source code.
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-ec-conversion" data-action="save" href="javascript:void(0)">
-                        {{ 'admin.order.edit.save'|trans }}
+                        {{ 'admin.common.move_to_confirm_save_and_move'|trans }}
                     </a>
                     <a class="btn btn-ec-sub" data-action="cancel" href="javascript:void(0)">
-                        {{ 'admin.order.edit.cancel'|trans }}
+                        {{ 'admin.common.move_to_confirm_move_only'|trans }}
                     </a>
                 </div>
             </div>
@@ -480,8 +481,8 @@ file that was distributed with this source code.
                                 {% if Order.isMultiple %}
                                     {# 複数配送の場合は配送先の表示のみ #}
                                     <div class="mb-3">
-                                        <a id="shipping-add" class="btn btn-ec-regular" data-action="confirm" title="{{ 'admin.order.edit.text2'|trans({'%name%' : 'admin.order.edit.title_delivery_screen'|trans
-                                           }) }}" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit_multiple_shipping'|trans }}</a>
+                                        <a id="shipping-add" class="btn btn-ec-regular" data-action="confirm" title="{{ 'admin.common.move_to_confirm_message'|trans({'%name%' : 'admin.order.shipping_registration'|trans
+                                           }) }}" href="{{ path("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit_multiple_shipping'|trans }}</a>
                                         <span class="ml-3">{{ 'admin.order.edit_multiple_shipping_description'|trans }}</span>
                                     </div>
                                     {% for shipping in Order.Shippings %}
@@ -504,8 +505,8 @@ file that was distributed with this source code.
                                         </div>
                                         {% if Order.id is not empty %}
                                             <div class="col-6 text-right">
-                                                <a id="shipping-add" class="btn btn-ec-regular w-25" data-action="confirm" title="{{ 'admin.order.edit.text2'|trans({'%name%' : 'admin.order.edit.title_delivery_screen'|trans
-                                           }) }}" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.add_shipping'|trans }}</a>
+                                                <a id="shipping-add" class="btn btn-ec-regular w-25" data-action="confirm" title="{{ 'admin.common.move_to_confirm_message'|trans({'%name%' : 'admin.order.shipping_registration'|trans
+                                           }) }}" href="{{ path("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.add_shipping'|trans }}</a>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -961,9 +962,9 @@ file that was distributed with this source code.
                                         </tbody>
                                     </table>
                                     <div class="text-center">
-                                        <a class="btn btn-ec-regular" data-action="confirm" title="{{ 'admin.order.edit.text2'|trans({
-                                               '%name%' : 'admin.order.edit.title_mail_screen'|trans
-                                           }) }}" href="{{ url('admin_order_mail', { id : Order.id }) }}">{{ 'admin.order.mail_create'|trans }}</a>
+                                        <a class="btn btn-ec-regular" data-action="confirm" title="{{ 'admin.common.move_to_confirm_message'|trans({
+                                               '%name%' : 'admin.order.mail'|trans
+                                           }) }}" href="{{ path('admin_order_mail', { id : Order.id }) }}">{{ 'admin.order.mail_create'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
