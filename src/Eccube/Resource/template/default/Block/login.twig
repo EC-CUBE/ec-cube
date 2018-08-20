@@ -12,36 +12,36 @@ file that was distributed with this source code.
     <div class="ec-headerNav">
         <div class="ec-headerNav__item">
             <a class="ec-icon" href="{{ url('mypage') }}"><img src="{{ asset('assets/icon/user.svg') }}"
-                                                              alt=""><span>{{'login.label.mypage'|trans}}</span></a>
+                                                              alt=""><span>{{ 'front.block.login.mypage'|trans }}</span></a>
         </div>
         {% if BaseInfo.option_favorite_product %}
             <div class="ec-headerNav__item">
                 <a class="ec-icon" href="{{ url('mypage_favorite') }}"><img
                             src="{{ asset('assets/icon/favorite.svg') }}"
-                            alt=""><span>{{'common.label.favorites'|trans}}</span></a>
+                            alt=""><span>{{ 'front.block.login.favorite'|trans }}</span></a>
             </div>
         {% endif %}
         <div class="ec-headerNav__item">
             <a class="ec-icon" href="{{ url('logout') }}"><img src="{{ asset('assets/icon/login.svg') }}"
-                                                                     alt=""><span>{{'login.label.logout'|trans}}</span></a>
+                                                                     alt=""><span>{{ 'front.block.login.logout'|trans }}</span></a>
         </div>
     </div>
 {% else %}
     <div class="ec-headerNav">
         <div class="ec-headerNav__item">
             <a class="ec-icon" href="{{ url('entry') }}"><img src="{{ asset('assets/icon/user.svg') }}"
-                                                              alt=""><span>{{'signup.label.new_registration'|trans}}</span></a>
+                                                              alt=""><span>{{ 'front.block.login.customer_registration'|trans }}</span></a>
         </div>
         {% if BaseInfo.option_favorite_product %}
             <div class="ec-headerNav__item">
                 <a class="ec-icon" href="{{ url('mypage_favorite') }}"><img
                             src="{{ asset('assets/icon/favorite.svg') }}"
-                            alt=""><span>{{'common.label.favorites'|trans}}</span></a>
+                            alt=""><span>{{ 'front.block.login.favorite'|trans }}</span></a>
             </div>
         {% endif %}
         <div class="ec-headerNav__item">
             <a class="ec-icon" href="{{ url('mypage_login') }}"><img src="{{ asset('assets/icon/login.svg') }}"
-                                                                     alt=""><span>{{'login.label.login'|trans}}</span></a>
+                                                                     alt=""><span>{{ 'front.block.login.login'|trans }}</span></a>
         </div>
     </div>
 {% endif %}

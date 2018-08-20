@@ -8,7 +8,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% extends '@admin/old_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['store', 'template', 'template_list'] %}
 
@@ -62,7 +62,7 @@ file that was distributed with this source code.
                                                         <a>{{'admin.store.template.931'|trans}}</a>
                                                     </li>
                                                 {% else %}
-                                                        <li><a href="{{ url('admin_store_template_delete', { 'id': Template.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.store.template.932'|trans}}">{{'common.label.delete'|trans}}</a></li>
+                                                        <li><a href="{{ url('admin_store_template_delete', { 'id': Template.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.store.template.932'|trans}}">{{'admin.common.delete'|trans}}</a></li>
                                                 {% endif %}
                                             </ul>
                                         </div>
