@@ -129,7 +129,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc}
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
@@ -137,7 +137,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc}
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
@@ -148,6 +148,22 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
 
         $Customer = $itemHolder->getCustomer();
         $Customer->setPoint($Customer->getPoint() + $itemHolder->getUsePoint());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoute()
+    {
+        return 'shopping';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRouteParameters()
+    {
+        return [];
     }
 
     /*

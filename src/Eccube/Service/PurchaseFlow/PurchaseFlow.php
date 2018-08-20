@@ -103,7 +103,11 @@ class PurchaseFlow
         foreach ($itemHolder->getItems() as $item) {
             foreach ($this->itemValidators as $itemValidator) {
                 $result = $itemValidator->execute($item, $context);
-                $flowResult->addProcessResult($result);
+                if ($itemValidator instanceof ValidateErrorHandlerInterface) {
+                    $flowResult->addProcessResult($result, $itemValidator);
+                } else {
+                    $flowResult->addProcessResult($result);
+                }
             }
         }
 
@@ -111,7 +115,11 @@ class PurchaseFlow
 
         foreach ($this->itemHolderValidators as $itemHolderValidator) {
             $result = $itemHolderValidator->execute($itemHolder, $context);
-            $flowResult->addProcessResult($result);
+            if ($itemHolderValidator instanceof ValidateErrorHandlerInterface) {
+                $flowResult->addProcessResult($result, $itemHolderValidator);
+            } else {
+                $flowResult->addProcessResult($result);
+            }
         }
 
         $this->calculateAll($itemHolder);

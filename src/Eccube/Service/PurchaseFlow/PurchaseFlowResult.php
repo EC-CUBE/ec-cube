@@ -23,6 +23,10 @@ class PurchaseFlowResult
     /** @var ProcessResult[] */
     private $processResults = [];
 
+    /** @var ValidateErrorHandlerInterface[] */
+    private $validateErrorHandlers = [];
+
+
     /**
      * PurcahseFlowResult constructor.
      *
@@ -33,9 +37,12 @@ class PurchaseFlowResult
         $this->itemHolder = $itemHolder;
     }
 
-    public function addProcessResult(ProcessResult $processResult)
+    public function addProcessResult(ProcessResult $processResult, ValidateErrorHandlerInterface $validateErrorHandler = null)
     {
         $this->processResults[] = $processResult;
+        if ($validateErrorHandler) {
+            $this->validateErrorHandlers[] = $validateErrorHandler;
+        }
     }
 
     /**
@@ -66,5 +73,13 @@ class PurchaseFlowResult
     public function hasWarning()
     {
         return !empty($this->getWarning());
+    }
+
+    /**
+     * @return ValidateErrorHandlerInterface[]
+     */
+    public function getValidateErrorHandlers()
+    {
+        return $this->validateErrorHandlers;
     }
 }
