@@ -101,11 +101,11 @@ class PaymentController extends AbstractController
 
         $form = $builder->getForm();
 
-        $form->setData($Payment);
-        $form->handleRequest($request);
-
         // 既に画像保存されてる場合は取得する
         $oldPaymentImage = $Payment->getPaymentImage();
+
+        $form->setData($Payment);
+        $form->handleRequest($request);
 
         // 登録ボタン押下
         if ($form->isSubmitted() && $form->isValid()) {
