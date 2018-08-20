@@ -271,8 +271,10 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
         return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(4) > span");
     }
 
-    public function 件数変更($num) {
-        $this->tester->selectOption("#form_bulk > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(1) > select", '/admin/order/page/1?page_count=' . $num);
+    public function 件数変更($num)
+    {
+        $this->tester->selectOption('#form_bulk > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(1) > select', '/admin/order/page/1?page_count='.$num);
+
         return $this;
     }
 }

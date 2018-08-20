@@ -126,11 +126,11 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールするプラグインを作成する
         $tmpname = 'dummy'.sha1(mt_rand());
         $config = [
-            "version" => $tmpname.'_version',
-            "description" => $tmpname.'_name',
-            "extra" => [
-                "code" => $tmpname
-            ]
+            'version' => $tmpname.'_version',
+            'description' => $tmpname.'_name',
+            'extra' => [
+                'code' => $tmpname,
+            ],
         ];
 
         $tmpdir = $this->createTempDir();
@@ -290,11 +290,11 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールするプラグインを作成する
         $tmpname = 'dummy'.sha1(mt_rand());
         $config = [
-            "version" => $tmpname,
-            "description" => $tmpname,
-            "extra" => [
-                "code" => $tmpname
-            ]
+            'version' => $tmpname,
+            'description' => $tmpname,
+            'extra' => [
+                'code' => $tmpname,
+            ],
         ];
 
         $tmpdir = $this->createTempDir();
@@ -355,11 +355,11 @@ EOD;
         // インストールするプラグインを作成する
         $tmpname = 'dummy'.sha1(mt_rand());
         $config = [
-            "version" => $tmpname,
-            "description" => $tmpname,
-            "extra" => [
-                "code" => $tmpname
-            ]
+            'version' => $tmpname,
+            'description' => $tmpname,
+            'extra' => [
+                'code' => $tmpname,
+            ],
         ];
 
         $tmpdir = $this->createTempDir();
@@ -558,8 +558,8 @@ EOD;
                 'composer/semver' => '*',
             ],
             'extra' => [
-                'code' => $config['code']
-            ]
+                'code' => $config['code'],
+            ],
         ];
 
         return $jsonPHP;

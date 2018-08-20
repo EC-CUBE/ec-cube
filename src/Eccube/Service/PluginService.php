@@ -27,7 +27,6 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 
 class PluginService
 {
@@ -325,11 +324,13 @@ class PluginService
 
     /**
      * @param $pluginDir
+     *
      * @return array
+     *
      * @throws PluginException
      */
-    public function readConfig($pluginDir) {
-
+    public function readConfig($pluginDir)
+    {
         $composerJsonPath = $pluginDir.DIRECTORY_SEPARATOR.'composer.json';
         if (file_exists($composerJsonPath) === false) {
             throw new PluginException("${composerJsonPath} not found.");
@@ -349,9 +350,9 @@ class PluginService
         }
 
         return [
-            "code" => $json['extra']['code'],
-            "name" => isset($json['description']) ? $json['description'] : $json['extra']['code'],
-            "version" => $json['version'],
+            'code' => $json['extra']['code'],
+            'name' => isset($json['description']) ? $json['description'] : $json['extra']['code'],
+            'version' => $json['version'],
         ];
     }
 
@@ -459,6 +460,7 @@ class PluginService
      * @param bool $force
      *
      * @return bool
+     *
      * @throws \Exception
      */
     public function uninstall(Plugin $plugin, $force = true)
