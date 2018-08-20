@@ -498,55 +498,6 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * 会員の合計購入金額を取得、回数を取得
-     *
-     * @param  \Eccube\Entity\Customer $Customer
-     * @param  array $OrderStatuses
-     *
-     * @return array
-     */
-    public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
-    {
-        $result = $this->createQueryBuilder('o')
-            ->select('COUNT(o.id) AS buy_times, SUM(o.total) AS buy_total, MAX(o.id) AS order_id')
-            ->where('o.Customer = :Customer')
-            ->andWhere('o.OrderStatus in (:OrderStatuses)')
-            ->setParameter('Customer', $Customer)
-            ->setParameter('OrderStatuses', $OrderStatuses)
-            ->groupBy('o.Customer')
-            ->getQuery()
-            ->getResult();
-
-        return $result;
-    }
-
-    /**
-     * 会員が保持する最新の購入処理中の Order を取得する.
-     *
-     * @param Customer
-     *
-     * @return Order
-     */
-    public function getExistsOrdersByCustomer(\Eccube\Entity\Customer $Customer)
-    {
-        $qb = $this->createQueryBuilder('o');
-        $Order = $qb
-            ->select('o')
-            ->where('o.Customer = :Customer')
-            ->setParameter('Customer', $Customer)
-            ->orderBy('o.id', 'DESC')
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
-
-        if ($Order && $Order->getOrderStatus()->getId() == OrderStatus::PROCESSING) {
-            return $Order;
-        }
-
-        return null;
-    }
-
-    /**
      * ステータスごとの受注件数を取得する.
      *
      * @param integer $OrderStatusOrId

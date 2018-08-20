@@ -127,33 +127,6 @@ class CustomerRepositoryTest extends EccubeTestCase
         $Customer = $this->customerRepo->getRegularCustomerByResetKey($reset_key);
         $this->assertNull($Customer);
     }
-
-    public function testUpdateBuyData()
-    {
-        $Order = $this->createOrder($this->Customer);
-
-        $OrderStatus = $this->masterOrderStatusRepo->find(OrderStatus::NEW);
-
-        $Order->setOrderStatus($OrderStatus);
-        $this->entityManager->persist($Order);
-        $this->entityManager->flush();
-
-        $this->actual = 1;
-        $this->customerRepo->updateBuyData($this->Customer, OrderStatus::NEW);
-        $this->expected = $this->Customer->getBuyTimes();
-        $this->verify();
-
-        $OrderStatus = $this->masterOrderStatusRepo->find(OrderStatus::CANCEL);
-
-        $Order->setOrderStatus($OrderStatus);
-        $this->entityManager->persist($Order);
-        $this->entityManager->flush();
-
-        $this->actual = 0;
-        $this->customerRepo->updateBuyData($this->Customer, OrderStatus::CANCEL);
-        $this->expected = $this->Customer->getBuyTimes();
-        $this->verify();
-    }
 }
 
 class DummyCustomer implements UserInterface
