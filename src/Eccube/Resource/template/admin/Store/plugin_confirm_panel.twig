@@ -19,7 +19,7 @@ file that was distributed with this source code.
         </h5>
         <div>{{ item.short_description }}</div>
         {% if is_update == false %}
-            <p class="text-danger mb-4 mt-3"><span class="font-weight-bold text-body">{{ 'admin.common.label.price02'|trans }} </span> {{ item.price|price }}<small> ({{ 'admin.common.label.taxinc'|trans }})</small></p>
+            <p class="text-danger mb-4 mt-3"><span class="font-weight-bold text-body">{{ 'admin.store.plugin.price'|trans }} </span> {{ item.price|price }}<small> ({{ 'common.tax_include'|trans }})</small></p>
         {% endif %}
         <div class="row">
             <div class="col-7">

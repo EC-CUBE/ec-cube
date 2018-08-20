@@ -82,7 +82,7 @@ file that was distributed with this source code.
                                                data-toggle="modal"
                                                data-target="#confirmModal-{{ Plugin.id }}"
                                                class="btn btn-ec-actionIcon">
-                                                <i class="fa fa-close fa-lg text-secondary" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"></i>
+                                                <i class="fa fa-close fa-lg text-secondary" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}"></i>
                                             </a>
 
                                             <div class="modal fade" id="confirmModal-{{ Plugin.id }}" tabindex="-1"
@@ -104,14 +104,14 @@ file that was distributed with this source code.
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-ec-sub" type="button"
-                                                                    data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                                    data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
                                                             </button>
                                                             <a href="{{ url('admin_store_plugin_delete_confirm', { id : Plugin.id }) }}"
                                                                     {{ csrf_token_for_anchor() }}
                                                                class="btn btn-ec-delete"
                                                                data-confirm="false"
                                                                data-method="delete">
-                                                                {{ 'common.label.delete'|trans }}
+                                                                {{ 'admin.common.delete'|trans }}
                                                             </a>
                                                         </div>
                                                     </div>
