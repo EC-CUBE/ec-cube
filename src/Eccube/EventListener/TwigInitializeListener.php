@@ -130,10 +130,6 @@ class TwigInitializeListener implements EventSubscriberInterface
         } else {
             $this->setFrontVaribales($event);
         }
-        
-        if (!$event->isMasterRequest()) {
-            return;
-        }
     }
 
     /**
