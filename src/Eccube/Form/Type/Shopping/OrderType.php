@@ -156,7 +156,7 @@ class OrderType extends AbstractType
                         },
                         'expanded' => true,
                         'multiple' => false,
-                        'placeholder' => null,
+                        'placeholder' => false,
                         'constraints' => [
                             new NotBlank(),
                         ],

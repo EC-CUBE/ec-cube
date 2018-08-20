@@ -12,7 +12,7 @@ file that was distributed with this source code.
     <div class="ec-cartNavi__icon"><img src="{{ asset('assets/icon/cart-dark.svg') }}" alt="cart"></div>
     <div class="ec-cartNavi__iconClose"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt="close"></div>
     <div class="ec-cartNavi__badge">{{ totalQuantity|number_format }}</div>
-    <div class="ec-cartNavi__label">{{'common.label.cart_total'|trans}}
+    <div class="ec-cartNavi__label">{{'common.total'|trans}}
         <div class="ec-cartNavi__price">{{ totalPrice|price }}</div>
     </div>
 </div>
@@ -40,22 +40,22 @@ file that was distributed with this source code.
                         </div>
                         <div class="ec-cartNaviIsset__cartContentPrice">
                             {{ CartItem.price|price }}
-                            <div class="ec-cartNaviIsset__cartContentTax">{{'shopping.label.tax_incl'|trans}}</div>
+                            <div class="ec-cartNaviIsset__cartContentTax">{{ 'common.tax_include'|trans }}</div>
                         </div>
-                        <div class="ec-cartNaviIsset__cartContentNumber">{{'shopping.label.qty'|trans}} {{ CartItem.quantity|number_format }}</div>
+                        <div class="ec-cartNaviIsset__cartContentNumber">{{ 'common.quantity'|trans }} {{ CartItem.quantity|number_format }}</div>
                     </div>
                 </div>
             {% endfor %}
         {% endfor %}
         <div class="ec-cartNaviIsset__action">
-            <a class="ec-blockBtn--action" href="{{ url('cart') }}">{{'shopping.label.btn.goto_cart'|trans}}</a>
-            <a class="ec-blockBtn ec-cartNavi--cancel">{{'shopping.label.btn.cancel'|trans}}</a>
+            <a class="ec-blockBtn--action" href="{{ url('cart') }}">{{ 'front.block.cart.go_to_cart'|trans }}</a>
+            <a class="ec-blockBtn ec-cartNavi--cancel">{{ 'common.cancel'|trans }}</a>
         </div>
     </div>
 {% else %}
     <div class="ec-cartNaviNull">
         <div class="ec-cartNaviNull__message">
-            <p>{{'shopping.text.error.no_item_in_cart'|trans}}</p>
+            <p>{{ 'front.block.cart.no_item'|trans }}</p>
         </div>
     </div>
 {% endif %}

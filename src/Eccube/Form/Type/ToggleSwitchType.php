@@ -31,8 +31,8 @@ class ToggleSwitchType extends AbstractType
     {
         $resolver->setDefaults([
             'label' => false,
-            'label_on' => 'common.label.enabled',
-            'label_off' => 'common.label.disabled',
+            'label_on' => 'common.enabled',
+            'label_off' => 'common.disabled',
         ]);
     }
 
