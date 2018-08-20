@@ -258,16 +258,14 @@ class MailController extends AbstractController
                     foreach ($ids as $value) {
                         $Order = $this->orderRepository->find($value);
 
-                        $body = $this->createBody($data['mail_header'], $data['mail_footer'], $Order);
-
                         // メール送信
-                        $this->mailService->sendAdminOrderMail($Order, $data);
+                        $message = $this->mailService->sendAdminOrderMail($Order, $data);
 
                         // 送信履歴を保存.
                         $MailHistory = new MailHistory();
                         $MailHistory
-                            ->setMailSubject($data['mail_subject'])
-                            ->setMailBody($body)
+                            ->setMailSubject($message->getSubject())
+                            ->setMailBody($message->getBody())
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
                         $this->entityManager->persist($MailHistory);
