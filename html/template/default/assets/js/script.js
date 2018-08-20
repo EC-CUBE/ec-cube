@@ -76,11 +76,8 @@ $(function() {
         }]
     });
 
-    $('.item_nav').slick({//サムネイル画像
-        dots: false,
-        arrows: false,
-        slidesToShow: 3,
-        focusOnSelect: true,
-        asNavFor: '.item_visual' //スライダー部分の要素を記述
-    });
+    $('.slideThumb').on("click",function(){
+      var index = $(this).attr("data-index");
+      $(".item_visual").slick("slickGoTo",index,false);
+    })
 });

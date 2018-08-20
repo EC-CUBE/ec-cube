@@ -15,7 +15,8 @@
     "build": "run-s build:moc",
     "dev:moc:dev": "gulp",
     "build:moc": "run-s build:moc:*",
-    "build:moc:sass": "gulp sass"
+    "build:moc:sass": "gulp sass",
+    "build:moc:minify-css": "gulp minify-css"
   },
   "repository": {
     "type": "git",
@@ -29,10 +30,11 @@
   "homepage": "https://www.ec-cube.net/",
   "dependencies": {},
   "devDependencies": {
-    "bootstrap": "^4.0.0",
+    "bootstrap": "^4.1.3",
     "bootstrap-sass": "^3.3.7",
     "event-stream": "^3.3.4",
     "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.10.0",
     "gulp-load-plugins": "^1.5.0",
     "gulp-notify": "^3.0.0",
     "gulp-pleeease": "^2.0.2",

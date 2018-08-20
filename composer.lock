@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "381e29e4bbf38550909d97f35561fa7a",
+    "content-hash": "f39d51f94a4be9ad9eb1ac7db3cce788",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1642,6 +1642,39 @@
                 "productivity"
             ],
             "time": "2017-10-20T08:47:57+00:00"
+        },
+        {
+            "name": "ec-cube/plugin-installer",
+            "version": "0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EC-CUBE/eccube-plugin-installer.git",
+                "reference": "ee1e90abf940c22a93e3aaaa1a5c5f93487f5e82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EC-CUBE/eccube-plugin-installer/zipball/ee1e90abf940c22a93e3aaaa1a5c5f93487f5e82",
+                "reference": "ee1e90abf940c22a93e3aaaa1a5c5f93487f5e82",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Eccube\\Composer\\EccubePluginInstallerPlugin"
+            },
+            "autoload": {
+                "psr-0": {
+                    "Eccube": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "EC-CUBE plugin installer.",
+            "time": "2018-08-14T05:05:32+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -4913,17 +4946,6 @@
         {
             "name": "symfony/lts",
             "version": "v3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/lts.git",
-                "reference": "3a4e88df038e3197e6b66d091d2495fd7d255c0b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/lts/zipball/3a4e88df038e3197e6b66d091d2495fd7d255c0b",
-                "reference": "3a4e88df038e3197e6b66d091d2495fd7d255c0b",
-                "shasum": ""
-            },
             "conflict": {
                 "symfony/asset": ">=4",
                 "symfony/browser-kit": ">=4",
@@ -7330,6 +7352,56 @@
                 "parser"
             ],
             "time": "2017-08-30T11:04:43+00:00"
+        },
+        {
+            "name": "bheller/images-generator",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bruceheller/images-generator.git",
+                "reference": "50b61fe1dcf1b72b6a830debec4db22afd1e8ee1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bruceheller/images-generator/zipball/50b61fe1dcf1b72b6a830debec4db22afd1e8ee1",
+                "reference": "50b61fe1dcf1b72b6a830debec4db22afd1e8ee1",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "~1.4",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "bheller\\ImagesGenerator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bruce Heller",
+                    "email": "bheller@bheller.com",
+                    "homepage": "http://www.bheller.com"
+                }
+            ],
+            "description": "Generator of placeholder images for Faker",
+            "homepage": "https://github.com/bruceheller/images-generator",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures",
+                "images-generator",
+                "imagesgenerator"
+            ],
+            "time": "2016-03-03T08:40:48+00:00"
         },
         {
             "name": "captbaritone/mailcatcher-codeception-module",
