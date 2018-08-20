@@ -345,12 +345,12 @@ class OrderController extends AbstractController
                     $this->entityManager->remove($OrderItem);
                     $this->entityManager->flush($OrderItem);
                 }
-                $Order = $Shipping->getOrder();
                 $this->entityManager->remove($Shipping);
                 $this->entityManager->flush($Shipping);
                 log_info('出荷情報削除', [$Shipping->getId()]);
 
-                if (count($Order->getShippings()) == 0) {
+                $Order = $Shipping->getOrder();
+                if (!$Order->isMultiple()) {
                     $this->entityManager->remove($Order);
                     $this->entityManager->flush($Order);
                     log_info('受注削除', [$Order->getId()]);

@@ -259,6 +259,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $Customer = $this->createCustomer();
         for ($i = 0; $i < 5; $i++) {
             $Order = $this->createOrder($Customer);
+            $orderIds[] = $Order->getId();
             $Shippings = $Order->getShippings();
             foreach ($Shippings as $Shipping) {
                 $shippingIds[] = $Shipping->getId();
@@ -275,6 +276,9 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         $Shippings = $this->container->get(ShippingRepository::class)->findBy(['id' => $shippingIds]);
         $this->assertCount(0, $Shippings);
+
+        $Orders = $this->container->get(OrderRepository::class)->findBy(['id' => $orderIds]);
+        $this->assertCount(0, $Orders);
     }
 
     public function testExportOrder()
