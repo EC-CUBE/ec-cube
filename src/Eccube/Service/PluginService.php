@@ -27,7 +27,6 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -739,13 +738,13 @@ class PluginService
         if (!isset($plugin['require']) || empty($plugin['require'])) {
             return [];
         }
-        $require = $plugin['require'];
+//        $require = $plugin['require'];
 
         $requirePlugins = [];
         // Check require
-        foreach ($require as $pluginName => $version) {
-            $pluginCode = str_replace(self::VENDOR_NAME . '/', '', $pluginName);
-            $pluginCode = Container::camelize($pluginCode);
+//        foreach ($require as $pluginName => $version) {
+//            $pluginCode = str_replace(self::VENDOR_NAME . '/', '', $pluginName);
+//            $pluginCode = Container::camelize($pluginCode);
 //            $dependPlugin = $this->buildInfo($plugins, $pluginName);
 //            // Prevent call self
 //            if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
@@ -761,7 +760,7 @@ class PluginService
 //                // Check child dependency
 //                $dependents = $this->getPluginRequired($plugins, $dependPlugin, $dependents);
 //            }
-        }
+//        }
 
         return $requirePlugins;
     }
