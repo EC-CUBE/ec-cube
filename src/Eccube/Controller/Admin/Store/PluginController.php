@@ -154,7 +154,6 @@ class PluginController extends AbstractController
         if ($json) {
             // 接続成功時
             $data = json_decode($json, true);
-            dump($data);
             foreach ($data as $item) {
                 if (isset($officialPlugins[$item['id']])) {
                     $Plugin = $officialPlugins[$item['id']];
@@ -177,7 +176,6 @@ class PluginController extends AbstractController
                         $officialPluginsDetail[$item['id']]['update_status'] = 1;
                     }
                 }
-                $officialPluginsDetail[$item['id']]['update_status'] = 1;
             }
         }
 
