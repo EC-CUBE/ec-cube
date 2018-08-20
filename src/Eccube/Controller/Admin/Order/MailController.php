@@ -222,7 +222,7 @@ class MailController extends AbstractController
         $MailHistory = $this->mailHistoryRepository->find($id);
 
         if (null === $MailHistory) {
-            throw new NotFoundHttpException('history not found.');
+            throw new NotFoundHttpException();
         }
 
         $event = new EventArgs(

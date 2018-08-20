@@ -12,6 +12,13 @@ file that was distributed with this source code.
 
 お客さまがご注文された以下の商品を発送いたしました。商品の到着まで、今しばらくお待ちください。
 
+{% if Shipping.tracking_number %}
+お問い合わせ番号：{{ Shipping.tracking_number }}
+{% if Shipping.Delivery.confirm_url %}
+お問い合わせURL：{{ Shipping.Delivery.confirm_url }}
+{% endif %}
+{% endif %}
+
 ************************************************
 　ご注文商品明細
 ************************************************

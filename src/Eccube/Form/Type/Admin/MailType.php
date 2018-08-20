@@ -30,7 +30,6 @@ class MailType extends AbstractType
     {
         $builder
             ->add('template', MailTemplateType::class, [
-                'label' => 'mailtype.label.tmpl',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -38,7 +37,6 @@ class MailType extends AbstractType
                 'mapped' => false,
             ])
             ->add('mail_subject', TextType::class, [
-                'label' => 'mailtype.label.titles',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),

@@ -10,10 +10,10 @@ file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
-{% set menus = ['order', 'order_master'] %}
+{% set menus = ['order', 'order_edit'] %}
 
-{% block title %}{{'admin.order.mail.340'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.order.mail.339'|trans}}{% endblock %}
+{% block title %}{{ 'admin.order.mail'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -41,7 +41,7 @@ $(function() {
         }).done(function(data){
             modal.find('.modal-body').html(data);
         }).fail(function(){
-            modal.find('.modal-body').text('{{ 'admin.order.mail.341'|trans }}');
+            modal.find('.modal-body').text('{{ 'admin.order.mail_failed'|trans }}');
         });
     });
 
@@ -97,7 +97,7 @@ $(function() {
                 <div class="card-header">
                     <div class="row">
                         <div class="col-8">
-                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.mail.349'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.mail_destination_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                         </div>
                         <div class="col-4 text-right"><a data-toggle="collapse" href="#mailTo" aria-expanded="false" aria-controls="mailTo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                     </div>
@@ -105,62 +105,32 @@ $(function() {
                 <div class="collapse show ec-cardCollapse" id="mailTo">
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.order.mail.350'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.order.order_no'|trans }}</span></div>
                             <div class="col-4"><span>{{ Order.id }}</span></div>
-                            <div class="col-2"><span>{{ 'admin.order.mail.351'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.order.purchase_price'|trans }}</span></div>
                             <div class="col-4"><span>{{ Order.payment_total|price }}</span></div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.order.mail.352'|trans }}</span></div>
-                            <div class="col-4"><span>{{ Order.name01 }} {{ Order.name02 }}（{{ Order.kana01 }} {{ Order.kana02 }}）</span><br>〒{{ Order.postal_code }}<br>{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</div>
-                            <div class="col-2"><span>{{ 'admin.order.mail.353'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.order.orderer'|trans }}</span></div>
+                            <div class="col-4"><span>{{ Order.name01 }} {{ Order.name02 }}（{{ Order.kana01 }} {{ Order.kana02 }}）</span><br>{{ 'admin.common.postal_symbol'|trans }}{{ Order.postal_code }}<br>{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</div>
+                            <div class="col-2"><span>{{ 'admin.order.purchase_product'|trans }}</span></div>
                             <div class="col-4"><span>
                             {% if Order.productOrderItems %}
                                 {{ Order.productOrderItems[0].productName }}
                                 {% if Order.productOrderItems|length > 2 %}
-                                    {{ 'admin.order.mail.354'|trans({'%count%':Order.productOrderItems|length - 1})|raw }}
+                                    {{ 'admin.order.mail_purchase_product_count'|trans({'%count%':Order.productOrderItems|length - 1})|raw }}
                                 {% endif %}
                             {% endif %}
                             </span></div>
                         </div>
                         <div class="row">
-                            <div class="col-2"><span>{{ 'admin.order.mail.355'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.order.order_status'|trans }}</span></div>
                             {# TODO ステータスごとのCSS #}
                             <div class="col-10"><span class="badge badge-ec-glay">{{ Order.orderStatus }}</span></div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            {% if MailHistories %}
-            <div class="card rounded border-0 mb-4">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-8"><span class="card-title">{{ 'admin.order.mail.356'|trans }}</span></div>
-                        <div class="col-4 text-right"><a data-toggle="collapse" href="#mailHistory" aria-expanded="false" aria-controls="mailHistory"><i class="fa fa-angle-up fa-lg"></i></a></div>
-                    </div>
-                </div>
-                <div class="collapse show ec-cardCollapse" id="mailHistory">
-                    <div class="card-body">
-                        <table class="table table-striped">
-                            <thead class="table-active">
-                            <tr><th class="pt-2 pb-2 pl-3">{{ 'admin.order.mail.357'|trans }}</th>
-                                <th class="pt-2 pb-2 pr-3">{{ 'admin.order.mail.359'|trans }}</th>
-                            </tr></thead>
-                            <tbody>
-                            {% for MailHistory in MailHistories %}
-                                <tr>
-                                    <td class="pl-3">{{ MailHistory.send_date|date('Y/m/d H:i:s') }}</td>
-                                    <td class="pr-3"><a class="text-primary" data-toggle="modal" data-target="#mailModal" data-id="{{ MailHistory.id }}" data-subject="{{ MailHistory.mail_subject }}">{{ MailHistory.mail_subject }}</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
 
             <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
                 {{ form_widget(form._token) }}
@@ -169,7 +139,7 @@ $(function() {
                 <div class="card rounded border-0 mb-4">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-8"><span class="card-title">{{ 'admin.order.mail.360'|trans }}</span></div>
+                        <div class="col-8"><span class="card-title">{{ 'admin.order.mail_mail_info'|trans }}</span></div>
                         <div class="col-4 text-right"><a data-toggle="collapse" href="#mailCreate" aria-expanded="false" aria-controls="mailCreate"><i class="fa fa-angle-up fa-lg"></i></a></div>
                     </div>
                 </div>
@@ -177,7 +147,7 @@ $(function() {
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-3">
-                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.mail.358'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                             </div>
                             <div class="col">
                                 {{ form_widget(form.template, {'id': 'template-change'}) }}
@@ -185,7 +155,7 @@ $(function() {
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-3"><span>{{ 'admin.order.mail.344'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                            <div class="col-3"><span>{{ 'admin.order.mail_subject'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                             <div class="col">
                                 {{ form_widget(form.mail_subject) }}
                                 {{ form_errors(form.mail_subject) }}
@@ -231,12 +201,12 @@ $(function() {
                     <div class="c-conversionArea__container">
                         <div class="row justify-content-between align-items-center">
                             <div class="col-6">
-                                <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.subnavi.395'|trans }}</span></a>
+                                <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.order_list'|trans }}</span></a>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="row align-items-center justify-content-end">
-                                    <div class="col-auto"><button type="button" class="btn btn-ec-conversion px-5" id="mailConfirm">{{ 'admin.order.mail.363'|trans }}</button></div>
+                                    <div class="col-auto"><button type="button" class="btn btn-ec-conversion px-5" id="mailConfirm">{{ 'admin.order.mail_confirm'|trans }}</button></div>
                                 </div>
                             </div>
                         </div>
