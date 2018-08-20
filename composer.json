@@ -102,6 +102,7 @@
         "vlucas/phpdotenv": "v2.4.0"
     },
     "require-dev": {
+        "bheller/images-generator": "^1.0",
         "captbaritone/mailcatcher-codeception-module": "^1.2",
         "codeception/codeception": "^2.4",
         "dama/doctrine-test-bundle": "^4.0",
