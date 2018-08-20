@@ -17,14 +17,12 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Plugin;
-use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
-use Eccube\Form\Type\Admin\CaptchaType;
 use Eccube\Form\Type\Admin\AuthenticationType;
+use Eccube\Form\Type\Admin\CaptchaType;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
@@ -42,11 +40,6 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class PluginController extends AbstractController
 {
-    /**
-     * @var PluginEventHandlerRepository
-     */
-    protected $pluginEventHandlerRepository;
-
     /**
      * @var PluginService
      */
@@ -72,18 +65,16 @@ class PluginController extends AbstractController
      *
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
-     * @param PluginEventHandlerRepository $eventHandlerRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginApiService $pluginApiService
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, PluginEventHandlerRepository $eventHandlerRepository, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService)
+    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService)
     {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
-        $this->pluginEventHandlerRepository = $eventHandlerRepository;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->pluginApiService = $pluginApiService;
     }
@@ -376,47 +367,6 @@ class PluginController extends AbstractController
         $this->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
         return $this->redirectToRoute('admin_store_plugin');
-    }
-
-    /**
-     * @Route("/%eccube_admin_route%/store/plugin/handler", name="admin_store_plugin_handler")
-     * @Template("@admin/Store/plugin_handler.twig")
-     */
-    public function handler()
-    {
-        $handlers = $this->pluginEventHandlerRepository->getHandlers();
-
-        // 一次元配列からイベント毎の二次元配列に変換する
-        $HandlersPerEvent = [];
-        foreach ($handlers as $handler) {
-            $HandlersPerEvent[$handler->getEvent()][$handler->getHandlerType()][] = $handler;
-        }
-
-        return [
-            'handlersPerEvent' => $HandlersPerEvent,
-        ];
-    }
-
-    /**
-     * @Route("/%eccube_admin_route%/store/plugin/handler_up/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_up")
-     */
-    public function handler_up(PluginEventHandler $Handler)
-    {
-        $repo = $this->pluginEventHandlerRepository;
-        $repo->upPriority($repo->find($Handler->getId()));
-
-        return $this->redirectToRoute('admin_store_plugin_handler');
-    }
-
-    /**
-     * @Route("/%eccube_admin_route%/store/plugin/handler_down/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_down")
-     */
-    public function handler_down(PluginEventHandler $Handler)
-    {
-        $repo = $this->pluginEventHandlerRepository;
-        $repo->upPriority($Handler, false);
-
-        return $this->redirectToRoute('admin_store_plugin_handler');
     }
 
     /**
