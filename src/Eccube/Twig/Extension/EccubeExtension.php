@@ -16,6 +16,7 @@ namespace Eccube\Twig\Extension;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\FormView;
@@ -249,6 +250,10 @@ class EccubeExtension extends AbstractExtension
             ],
         ];
         foreach ($Product->getProductClasses() as $ProductClass) {
+            /** @var ProductClass $ProductClass */
+            if (!$ProductClass->isVisible()) {
+                continue;
+            }
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
