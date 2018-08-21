@@ -34,7 +34,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
         {
             $metadata->addConstraint(new UniqueEntity([
             'fields' => 'login_id',
-            'message' => trans('member.text.error.login_id_registered'),
+            'message' => 'common.member_already_exists',
         ]));
         }
 

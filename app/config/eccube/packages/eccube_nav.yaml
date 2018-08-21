@@ -1,124 +1,132 @@
 parameters:
     eccube_nav:
         product:
-            name: admin.nav.product
+            name: admin.product.product_management
             icon: fa-cube
             children:
                 product_master:
-                    name: admin.nav.product.product_master
+                    name: admin.product.product_list
                     url: admin_product
                 product_edit:
-                    name: admin.nav.product.product_edit
+                    name: admin.product.product_registration
                     url: admin_product_product_new
                 class_name:
-                    name: admin.nav.product.class_name
+                    name: admin.product.class_management
                     url: admin_product_class_name
                 class_category:
-                    name: admin.nav.product.class_category
+                    name: admin.product.category_management
                     url: admin_product_category
                 product_tag:
-                    name: admin.nav.product.product_tag
+                    name: admin.product.tag_management
                     url: admin_product_tag
                 product_csv_import:
-                    name: admin.nav.product.product_csv_import
+                    name: admin.product.product_csv_upload
                     url: admin_product_csv_import
                 category_csv_import:
-                    name: admin.nav.product.category_csv_import
+                    name: admin.product.category_csv_upload
                     url: admin_product_category_csv_import
         order:
-            name: admin.nav.order
-            icon: fa-inbox
+            name: admin.order.order_management
+            icon: fa-shopping-cart
             children:
                 order_master:
-                    name: admin.nav.order.order_master
+                    name: admin.order.order_list
                     url: admin_order
                 order_edit:
-                    name: admin.nav.order.order_edit
+                    name: admin.order.order_registration
                     url: admin_order_new
                 shipping_csv_import:
-                    name: admin.nav.order.shipping_csv_import
+                    name: admin.order.shipping_csv_upload
                     url: admin_shipping_csv_import
         customer:
-            name: admin.nav.customer
+            name: admin.customer.customer_management
             icon: fa-users
             children:
                 customer_master:
-                    name: admin.nav.customer.customer_master
+                    name: admin.customer.customer_list
                     url: admin_customer
                 customer_edit:
-                    name: admin.nav.customer.customer_edit
+                    name: admin.customer.customer_registration
                     url: admin_customer_new
         content:
-            name: admin.nav.content
+            name: admin.content.contents_management
             icon: fa-file-text-o
             children:
                 news:
-                    name: admin.nav.content.news
+                    name: admin.content.news_management
                     url : admin_content_news
                 file:
-                    name: admin.nav.content.file
+                    name: admin.content.file_management
                     url: admin_content_file
                 layout:
-                    name: admin.nav.content.layout
+                    name: admin.content.layout_management
                     url: admin_content_layout
                 page:
-                    name: admin.nav.content.page
+                    name: admin.content.page_management
                     url: admin_content_page
                 block:
-                    name: admin.nav.content.block
+                    name: admin.content.block_management
                     url: admin_content_block
                 cache:
-                    name: admin.nav.content.cache
+                    name: admin.content.cache_management
                     url: admin_content_cache
         setting:
-            name: admin.nav.setting
+            name: admin.setting
             icon: fa-cog
             children:
                 shop:
-                    name: admin.nav.setting.shop
+                    name: admin.setting.shop
                     children:
                         shop_index:
-                            name: admin.nav.setting.shop.shop_index
+                            name: admin.setting.shop.shop_setting
                             url: admin_setting_shop
+                        shop_tradelaw:
+                            name: admin.setting.shop.tradelaw_setting
+                            url: admin_content_page_edit
+                            param: { id: !php/const Eccube\Entity\Page::TRADELAW_PAGE_ID, return: tradelaw }
+                        shop_agreement:
+                            name: admin.setting.shop.agreement_setting
+                            url: admin_content_page_edit
+                            param: { id: !php/const Eccube\Entity\Page::AGREEMENT_PAGE_ID, return: agreement }
                         shop_payment:
-                            name: admin.nav.setting.shop.shop_payment
+                            name: admin.setting.shop.payment_setting
                             url: admin_setting_shop_payment
                         shop_delivery:
-                            name: admin.nav.setting.shop.shop_delivery
+                            name: admin.setting.shop.delivery_setting
                             url: admin_setting_shop_delivery
                         shop_tax:
-                            name: admin.nav.setting.shop.shop_tax
+                            name: admin.setting.shop.tax_setting
                             url: admin_setting_shop_tax
                         shop_mail:
-                            name: admin.nav.setting.shop.shop_mail
+                            name: admin.setting.shop.mail_setting
                             url: admin_setting_shop_mail
                         shop_csv:
-                            name: admin.nav.setting.shop.shop_csv
+                            name: admin.setting.shop.csv_setting
                             url: admin_setting_shop_csv
                 system:
-                    name: admin.nav.setting.system
+                    name: admin.setting.system
                     children:
                         member:
-                            name: admin.nav.setting.system.member
+                            name: admin.setting.system.member_management
                             url: admin_setting_system_member
                         authority:
-                            name: admin.nav.setting.system.authority
+                            name: admin.setting.system.authority_management
                             url: admin_setting_system_authority
                         security:
-                            name: admin.nav.setting.system.security
+                            name: admin.setting.system.security_management
                             url: admin_setting_system_security
                         log:
-                            name: admin.nav.setting.system.log
+                            name: admin.setting.system.log_display
                             url: admin_setting_system_log
                         masterdata:
-                            name: admin.nav.setting.system.masterdata
+                            name: admin.setting.system.master_data_management
                             url: admin_setting_system_masterdata
                         system_index:
-                            name: admin.nav.setting.system.system_index
+                            name: admin.setting.system.system_info
                             url: admin_setting_system_system
         store:
-            name: admin.nav.store
-            icon: fa-info-circle
+            name: admin.store
+            icon: fa-plug
             children:
                 plugin:
                     name: admin.nav.store.plugin

@@ -57,7 +57,6 @@ class ShopMasterType extends AbstractType
     {
         $builder
             ->add('company_name', TextType::class, [
-                'label' => 'common.label.company_name',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -66,7 +65,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('shop_name', TextType::class, [
-                'label' => 'common.label.shop_name',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -76,7 +74,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('shop_name_eng', TextType::class, [
-                'label' => 'common.label.shop_name_en',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -91,15 +88,12 @@ class ShopMasterType extends AbstractType
                 'required' => false,
             ])
             ->add('address', AddressType::class, [
-                'label' => 'common.label.address',
                 'required' => false,
             ])
             ->add('phone_number', PhoneNumberType::class, [
-                'label' => 'common.label.phone_number',
                 'required' => false,
             ])
             ->add('business_hour', TextType::class, [
-                'label' => 'common.label.business_hour',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -108,7 +102,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('email01', EmailType::class, [
-                'label' => 'common.label.email_from',
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -116,7 +109,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('email02', EmailType::class, [
-                'label' => 'common.label.email_for_inquiries',
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -124,7 +116,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('email03', EmailType::class, [
-                'label' => 'common.label.email_reply_to',
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -132,7 +123,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('email04', EmailType::class, [
-                'label' => 'common.label.email_return_path',
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -140,7 +130,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('good_traded', TextareaType::class, [
-                'label' => 'common.label.good_traded',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -149,7 +138,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('message', TextareaType::class, [
-                'label' => 'shopmaster.label.message', // 削除予定
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -159,12 +147,10 @@ class ShopMasterType extends AbstractType
             ])
             // 送料設定
             ->add('delivery_free_amount', PriceType::class, [
-                'label' => 'common.label.option_delivery_fee_free_amount',
                 'required' => false,
             ])
 
             ->add('delivery_free_quantity', IntegerType::class, [
-                'label' => 'common.label.option_delivery_free_quantity',
                 'required' => false,
                 'constraints' => [
                     new Assert\Regex([
@@ -190,7 +176,6 @@ class ShopMasterType extends AbstractType
             ->add('option_point', ToggleSwitchType::class)
             ->add('basic_point_rate', NumberType::class, [
                 'required' => false,
-                'label' => 'common.label.basic_point_rate', // TODO 未翻訳
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
@@ -204,7 +189,6 @@ class ShopMasterType extends AbstractType
             ])
             ->add('point_conversion_rate', NumberType::class, [
                 'required' => false,
-                'label' => 'common.label.point_conversion_rate', // TODO 未翻訳
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
@@ -221,7 +205,6 @@ class ShopMasterType extends AbstractType
         $builder->add(
             $builder
                 ->create('company_kana', TextType::class, [
-                    'label' => 'common.label.company_name_kana',
                     'required' => false,
                     'constraints' => [
                         new Assert\Regex([
@@ -238,7 +221,6 @@ class ShopMasterType extends AbstractType
         $builder->add(
             $builder
                 ->create('shop_kana', TextType::class, [
-                    'label' => 'common.label.shop_name_kana',
                     'required' => false,
                     'constraints' => [
                         new Assert\Length([

@@ -48,7 +48,7 @@ class PaymentTotalLimitValidator extends ItemHolderValidator
     {
         $totalPrice = $item->getTotal();
         if ($totalPrice > $this->maxTotalFee) {
-            $this->throwInvalidItemException('cart.over.price_limit');
+            $this->throwInvalidItemException('front.shopping.over_price_limit');
         }
     }
 }

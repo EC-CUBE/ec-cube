@@ -36,20 +36,18 @@ class AuthorityRoleType extends AbstractType
     {
         $builder
             ->add('Authority', EntityType::class, [
-                'label' => 'authorityrole.label.auth',
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
-                'placeholder' => 'form.empty_value',
+                'placeholder' => 'common.select',
             ])
             ->add('deny_url', TextType::class, [
-                'label' => 'authorityrole.label.denied_url',
                 'required' => false,
                 'constraints' => [
                     new Regex([
                         'pattern' => '/^\\/.*/',
-                        'message' => trans('admin.setting.system.authority.663'),
+                        'message' => trans('admin.setting.system.authority.deny_url_is_invalid'),
                     ]),
                 ],
             ])
@@ -60,9 +58,9 @@ class AuthorityRoleType extends AbstractType
                 $denyUrl = $form['deny_url']->getData();
 
                 if (!$Authority && !empty($denyUrl)) {
-                    $form['Authority']->addError(new FormError('権限が選択されていません。'));
+                    $form['Authority']->addError(new FormError(trans('admin.setting.system.authority.authority_not_selected')));
                 } elseif ($Authority && empty($denyUrl)) {
-                    $form['deny_url']->addError(new FormError('拒否URLが入力されていません。'));
+                    $form['deny_url']->addError(new FormError(trans('admin.setting.system.authority.deny_url_is_empty')));
                 }
             })
         ;

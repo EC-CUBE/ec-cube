@@ -170,10 +170,10 @@ class MasterdataController extends AbstractController
                         $event
                     );
 
-                    $this->addSuccess('admin.register.complete', 'admin');
+                    $this->addSuccess('admin.common.save_complete', 'admin');
                 } catch (\Exception $e) {
                     // 外部キー制約などで削除できない場合に例外エラーになる
-                    $this->addError('admin.register.failed', 'admin');
+                    $this->addError('admin.common.save_error', 'admin');
                 }
 
                 return $this->redirectToRoute(
