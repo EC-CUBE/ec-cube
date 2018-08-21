@@ -146,25 +146,25 @@ file that was distributed with this source code.
             
             // お届け時間の初期表示
             $('#order_Shipping_Delivery').change();
-        });
 
-        // 配送業者選択時にお届け時間を設定
-        var times = {{ shippingDeliveryTimes|raw }};
-        $('#order_Shipping_Delivery').change(function(){
-            var deliveryId = $(this).val();
-            var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
-            $shippingDeliveryTime.find('option').remove();
-            $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
-            if (typeof(times[deliveryId]) !== 'undefined') {
-                for (var timeId in times[deliveryId]){
-                    timeValue = times[deliveryId][timeId];
-                    $shippingDeliveryTime.append($('<option></option>')
-                        .val(timeId)
-                        .text(timeValue));
+
+            // 配送業者選択時にお届け時間を設定
+            var times = {{ shippingDeliveryTimes|raw }};
+            $('#order_Shipping_Delivery').change(function(){
+                var deliveryId = $(this).val();
+                var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
+                $shippingDeliveryTime.find('option').remove();
+                $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
+                if (typeof(times[deliveryId]) !== 'undefined') {
+                    for (var timeId in times[deliveryId]){
+                        timeValue = times[deliveryId][timeId];
+                        $shippingDeliveryTime.append($('<option></option>')
+                            .val(timeId)
+                            .text(timeValue));
+                    }
                 }
-            }
+            });
         });
-
     </script>
 {% endblock javascript %}
 
