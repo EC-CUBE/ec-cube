@@ -654,104 +654,109 @@ class PluginService
     }
 
     /**
-     * Do check dependency plugin
+     * Get array require by plugin
+     * Todo: need define dependency plugin mechanism
      *
-     * @param array $plugins    get from api
      * @param array $plugin     format as plugin from api
-     * @param array $dependents template output
      *
      * @return array|mixed
      */
-    public function getDependency($plugins, $plugin, $dependents = [])
+    public function getPluginRequired($plugin)
     {
-        // Prevent infinity loop
-        if (empty($dependents)) {
-            $dependents[] = $plugin;
-        }
-
-        // Check dependency
+        // Check require
         if (!isset($plugin['require']) || empty($plugin['require'])) {
-            return $dependents;
+            return [];
         }
+//        $require = $plugin['require'];
 
-        $require = $plugin['require'];
-        // Check dependency
-        foreach ($require as $pluginName => $version) {
-            $dependPlugin = $this->buildInfo($plugins, $pluginName);
-            // Prevent call self
-            if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
-                continue;
-            }
+        $requirePlugins = [];
+        // Check require
+//        foreach ($require as $pluginName => $version) {
+//            $pluginCode = str_replace(self::VENDOR_NAME . '/', '', $pluginName);
+//            $pluginCode = Container::camelize($pluginCode);
+//            $dependPlugin = $this->buildInfo($plugins, $pluginName);
+//            // Prevent call self
+//            if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
+//                continue;
+//            }
+//
+//            // Check duplicate in dependency
+//            $index = array_search($dependPlugin['product_code'], array_column($dependents, 'product_code'));
+//            if ($index === false) {
+//                // Update require version
+//                $dependPlugin['version'] = $version;
+//                $dependents[] = $dependPlugin;
+//                // Check child dependency
+//                $dependents = $this->getPluginRequired($plugins, $dependPlugin, $dependents);
+//            }
+//        }
 
-            // Check duplicate in dependency
-            $index = array_search($dependPlugin['product_code'], array_column($dependents, 'product_code'));
-            if ($index === false) {
-                // Update require version
-                $dependPlugin['version'] = $version;
-                $dependents[] = $dependPlugin;
-                // Check child dependency
-                $dependents = $this->getDependency($plugins, $dependPlugin, $dependents);
-            }
-        }
-
-        return $dependents;
+        return $requirePlugins;
     }
 
     /**
      * Get plugin information
      *
-     * @param array  $plugins    get from api
-     * @param string $pluginCode
+     * @param array $plugin
      *
      * @return array|null
      */
-    public function buildInfo($plugins, $pluginCode)
+    public function buildInfo($plugin)
     {
-        $plugin = [];
-        $index = $this->checkPluginExist($plugins, $pluginCode);
-        if ($index === false) {
-            return $plugin;
-        }
-        // Get target plugin in return of api
-        $plugin = $plugins[$index];
-
-        // Check the eccube version that the plugin supports.
-        $plugin['is_supported_eccube_version'] = 0;
-        if (in_array(Constant::VERSION, $plugin['eccube_version'])) {
-            // Match version
-            $plugin['is_supported_eccube_version'] = 1;
-        }
-
-        $plugin['depend'] = $this->getRequirePluginName($plugins, $plugin);
+        $this->supportedVersion($plugin);
+        $plugin['require'] = $this->getRequireOfPlugin($plugin);
 
         return $plugin;
     }
 
     /**
-     * Get dependency name and version only
+     * Check support version
      *
-     * @param array $plugins get from api
+     * @param $plugin
+     */
+    public function supportedVersion(&$plugin)
+    {
+        // Check the eccube version that the plugin supports.
+        $plugin['version_check'] = false;
+        if (in_array(Constant::VERSION, $plugin['supported_versions'])) {
+            // Match version
+            $plugin['version_check'] = true;
+        }
+    }
+
+    /**
+     * Get require plugin
+     *
      * @param array $plugin  target plugin from api
      *
      * @return mixed format [0 => ['name' => pluginName1, 'version' => pluginVersion1], 1 => ['name' => pluginName2, 'version' => pluginVersion2]]
      */
-    public function getRequirePluginName($plugins, $plugin)
+    public function getRequireOfPlugin($plugin)
     {
-        $depend = [];
-        if (isset($plugin['require']) && !empty($plugin['require'])) {
-            foreach ($plugin['require'] as $name => $version) {
-                $ret = $this->checkPluginExist($plugins, $name);
-                if ($ret === false) {
-                    continue;
-                }
-                $depend[] = [
-                    'name' => $plugins[$ret]['name'],
+//        $pluginCode = $plugin['code'];
+        // Need dependency Mechanism
+        /**
+        $pluginDir = $this->calcPluginDir($pluginCode);
+        $composerPath = $pluginDir.'/composer.json';
+        // read composer.json
+        if (!file_exists($composerPath)) {
+            return [];
+        }
+        $content = file_get_contents($composerPath);
+        $content = json_decode($content,true);
+
+        $require = [];
+        if (isset($content['require']) && !empty($content['require'])) {
+            foreach ($content['require'] as $name => $version) {
+                $require[] = [
+                    'name' => $name,
                     'version' => $version,
                 ];
             }
         }
+         */
 
-        return $depend;
+        return [];
     }
 
     /**
