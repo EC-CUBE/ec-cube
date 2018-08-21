@@ -542,7 +542,7 @@ file that was distributed with this source code.
                                     <tbody>
                                     {% for Order in pagination %}
                                         {% for Shipping in Order.Shippings %}
-                                            <tr style="background: {{ Order.OrderStatusColor }}">
+                                            <tr>
                                                 <td class="align-middle text-center pl-3">
                                                     <input type="checkbox" id="check_{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids[]" value="{{ Shipping.id }}"
                                                            data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
@@ -557,7 +557,7 @@ file that was distributed with this source code.
                                                     {{ Order.payment_method }}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <span class="badge badge-ec-blue">{{ Order.OrderStatus }}</span>
+                                                    <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
                                                 </td>
                                                 <td class="align-middle text-right">
                                                     {{ Order.payment_total|price }}<br>
