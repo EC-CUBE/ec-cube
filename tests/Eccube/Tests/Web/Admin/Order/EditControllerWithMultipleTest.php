@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderStatus;
 
 /**
  * 複数配送設定用 EditController のテストケース.
@@ -198,7 +199,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
 
         $formData = $this->createFormDataForMultiple($Customer, $Shippings);
-        $formData['OrderStatus'] = 8; // 購入処理中で受注を登録する
+        $formData['OrderStatus'] = OrderStatus::PROCESSING; // 購入処理中で受注を登録する
         // 管理画面から受注登録
         $this->client->request(
             'POST',
