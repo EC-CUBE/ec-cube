@@ -1204,7 +1204,7 @@ admin.store.plugin.upgrade: アップデート
 admin.store.plugin.price: 販売価格
 admin.store.plugin.detail.download: ダウンロード数
 admin.store.plugin.detail.version: プラグインバージョン
-admin.store.plugin.detail.support: EC-CUBE知王バージョン
+admin.store.plugin.detail.support: EC-CUBE対応バージョン
 admin.store.plugin.detail.public_date: 公開日
 admin.store.plugin.detail.update_date: 最終更新日
 admin.store.plugin.detail.size: ファイルサイズ
