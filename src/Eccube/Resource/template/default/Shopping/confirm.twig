@@ -16,7 +16,7 @@ file that was distributed with this source code.
 
 <div class="ec-role">
     <div class="ec-pageHeader">
-        <h1>ご注文内容のご確認</h1>
+        <h1>{{ 'front.shopping.confirm_title'|trans }}</h1>
     </div>
 </div>
 
@@ -27,72 +27,40 @@ file that was distributed with this source code.
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">カートの商品
+                <div class="ec-progress__label">{{ 'front.cart.nav__cart_items'|trans }}
                 </div>
             </li>
             {% if is_granted('ROLE_USER') == false %}
-            <li class="ec-progress__item">
-                <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
-                </div>
-                <div class="ec-progress__label">お客様情報
-                </div>
-            </li>
+                <li class="ec-progress__item">
+                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                    </div>
+                    <div class="ec-progress__label">{{ 'front.cart.nav__customer_info'|trans }}
+                    </div>
+                </li>
             {% endif %}
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">ご注文手続き
+                <div class="ec-progress__label">{{ 'front.cart.nav__order'|trans }}
                 </div>
             </li>
             <li class="ec-progress__item is-complete">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">ご注文内容確認
+                <div class="ec-progress__label">{{ 'front.cart.nav__confirm'|trans }}
                 </div>
             </li>
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">完了
+                <div class="ec-progress__label">{{ 'front.cart.nav__complete'|trans }}
                 </div>
             </li>
         </ul>
     </div>
 </div>
 
-{# TODO エラーメッセージ #}
-<div id="confirm_flow_box" class="row">
-    <div id="confirm_flow_box__body" class="col-md-12">
-        {% for error in app.session.flashbag.get('eccube.front.error')  %}
-            <div id="confirm_flow_box__message" class="message">
-                <p class="errormsg bg-danger">
-                    <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
-                </p>
-            </div>
-        {% endfor %}
-        {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
-        {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
-            {% set idx = loop.index0 %}
-            {% if productStr[idx] is defined %}
-                <div id="cart_box__message--{{ loop.index }}" class="message">
-                    <p class="errormsg bg-danger">
-                        <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>
-                        {{ error|trans({'%product%':productStr[idx]})|nl2br }}
-                    </p>
-                </div>
-            {% else %}
-                <div id="confirm_flow_box__message--{{ loop.index }}" class="message">
-                    <p class="errormsg bg-danger">
-                        <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
-                    </p>
-                </div>
-            {% endif %}
-        {% endfor %}
-    </div><!-- /.col -->
-</div><!-- /.row -->
-
-
-<form id="shopping-form" method="post" action="{{ url('shopping_order') }}">
+    <form id="shopping-form" method="post" action="{{ url('shopping_order') }}">
     {{ form_widget(form._token) }}
     {{ form_widget(form.mode) }}
     {{ form_widget(form.param) }}
@@ -114,7 +82,7 @@ file that was distributed with this source code.
                                 {% if orderDetail.productClass is not null and orderDetail.productClass.classCategory2 %}
                                     <p>{{ orderDetail.productClass.classCategory2.className.name }}：{{ orderDetail.productClass.classCategory2 }}</p>
                                 {% endif %}
-                                <p>{{ orderDetail.priceIncTax|price }} × {{ orderDetail.quantity|number_format }}<span class="ec-imageGrid__contentTotal">小計：{{ orderDetail.totalPrice|price }}</span></p>
+                                <p>{{ orderDetail.priceIncTax|price }} × {{ orderDetail.quantity|number_format }}<span class="ec-imageGrid__contentTotal">{{ 'common.subtotal__with_separator'|trans }}{{ orderDetail.totalPrice|price }}</span></p>
                             </div>
                         </div>
                     </li>
@@ -123,17 +91,21 @@ file that was distributed with this source code.
             </div>
             <div class="ec-orderAccount">
                 <div class="ec-rectHeading">
-                    <h2>お客様情報</h2>
+                    <h2>{{ 'front.shopping.customer_info'|trans }}</h2>
                 </div>
                 <div class="ec-orderAccount__account">
-                    <p><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様</p>
-                    <p>〒<span class="customer-edit customer-zip">{{ Order.postal_code }}</span><span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
-                    <p><span class="customer-edit customer-phone_number">{{ Order.phone_number }}</span></p>
+                    <p class="ec-halfInput">{{ Order.name01 }} {{ Order.name02 }}</span> 様</p>
+                    <p class="ec-halfInput">{{ Order.kana01 }}</span> {{ Order.kana02 }}</p>
+                    <p class="ec-zipInput">{{ 'common.postal_symbol'|trans }}{{ Order.postal_code }}</p>
+                    <p class="ec-input">{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</p>
+                    <p class="ec-telInput">{{ Order.phone_number }}</span></p>
+                    <p class="ec-input">{{ Order.email }}</span></p>
+                    <p class="ec-input">{{ Order.companyName }}</span></p>
                 </div>
             </div>
             <div class="ec-orderDelivery">
                 <div class="ec-rectHeading">
-                    <h2>配送情報</h2>
+                    <h2>{{ 'front.shopping.delivery_info'|trans }}</h2>
                 </div>
                 {% for shipping in Order.shippings %}
                     {% set idx = loop.index0 %}
@@ -151,7 +123,7 @@ file that was distributed with this source code.
                                         {% if orderItem.productClass is not null and orderItem.productClass.classCategory2 %}
                                             <p>{{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}</p>
                                         {% endif %}
-                                        <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>小計：{{ orderItem.totalPrice|price }}</span></p>
+                                        <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>{{ 'common.subtotal__with_separator'|trans }}{{ orderItem.totalPrice|price }}</span></p>
                                     </div>
                                 </div>
                             </li>
@@ -160,24 +132,24 @@ file that was distributed with this source code.
                     </div>
                     <div class="ec-orderDelivery__address">
                         <p>{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}) 様</p>
-                        <p>〒{{ shipping.postal_code }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
+                        <p>{{ 'common.postal_symbol'|trans }}{{ shipping.postal_code }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
                         <p>{{ shipping.phone_number }}</p>
                     </div>
                     <div class="ec-orderDelivery__actions">
                         <div class="ec-selects">
                             <div class="ec-select">
-                                <label>配送方法</label>
+                                <label>{{ 'front.shopping.delivery_provider'|trans }}</label>
                                 {{ Order.Shippings[idx].Delivery }}
                                 {{ form_widget(form.Shippings[idx].Delivery, {'type': 'hidden'}) }}
                             </div>
                             <div class="ec-select ec-select__delivery">
-                                <label>お届け日</label>
-                                {{ Order.Shippings[idx].shipping_delivery_date? Order.Shippings[idx].shipping_delivery_date|date_day_with_weekday :"指定なし" }}
+                                <label>{{ 'front.shopping.delivery_date'|trans }}</label>
+                                {{ Order.Shippings[idx].shipping_delivery_date? Order.Shippings[idx].shipping_delivery_date|date_day_with_weekday : 'common.select__unspecified'|trans }}
                                 {{ form_widget(form.Shippings[idx].shipping_delivery_date, {'type': 'hidden'}) }}
                             </div>
                             <div class="ec-select ec-select__time">
-                                <label>お届け時間</label>
-                                {{ Order.Shippings[idx].shipping_delivery_time?:"指定なし" }}
+                                <label>{{ 'front.shopping.delivery_time'|trans }}</label>
+                                {{ Order.Shippings[idx].shipping_delivery_time?: 'common.select__unspecified'|trans }}
                                 {{ form_widget(form.Shippings[idx].DeliveryTime, {'type': 'hidden'}) }}
                             </div>
                         </div>
@@ -186,7 +158,7 @@ file that was distributed with this source code.
             </div>
             <div class="ec-orderPayment">
                 <div class="ec-rectHeading">
-                    <h2>お支払方法</h2>
+                    <h2>{{ 'front.shopping.payment_info'|trans }}</h2>
                 </div>
                 <div class="ec-blockRadio">
                     {{ Order.Payment }}
@@ -196,7 +168,7 @@ file that was distributed with this source code.
 
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">
-                    <h2>お問い合わせ</h2>
+                    <h2>{{ 'front.shopping.message_info'|trans }}</h2>
                 </div>
                 <div class="ec-input">
                     {{ Order.message|nl2br }}
@@ -207,45 +179,43 @@ file that was distributed with this source code.
         <div class="ec-orderRole__summary">
             <div class="ec-totalBox">
                 <dl class="ec-totalBox__spec">
-                    <dt>小計</dt>
+                    <dt>{{ 'common.subtotal'|trans }}</dt>
                     <dd class="ec-totalBox__specTotal">{{ Order.subtotal|price }}</dd>
                 </dl>
                 <dl class="ec-totalBox__spec">
-                    <dt>手数料</dt>
+                    <dt>{{ 'common.charge'|trans }}</dt>
                     <dd>{{ Order.charge|price }}</dd>
                 </dl>
                 <dl class="ec-totalBox__spec">
-                    <dt>送料</dt>
+                    <dt>{{ 'common.delivery_fee'|trans }}</dt>
                     <dd>{{ Order.deliveryFeeTotal|price }}</dd>
                 </dl>
-                {% if Order.discount > 0 %}
                 <dl class="ec-totalBox__spec">
-                    <dt>内値引き</dt>
+                    <dt>{{ 'common.discount'|trans }}</dt>
                     <dd>{{ (0 - Order.discount)|price}}</dd>
                 </dl>
-                {% endif %}
-                <div class="ec-totalBox__total">合計<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">税込</span></div>
+                <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
                 {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                     <dl class="ec-totalBox__spec">
-                        <dt>ご注文前のポイント</dt>
+                        <dt>{{ 'front.shopping.prev_point'|trans }}</dt>
                         <dd>{{ Order.Customer.Point|number_format }} pt</dd>
                     </dl>
                     <dl class="ec-totalBox__spec">
-                        <dt>ご使用ポイント</dt>
+                        <dt>{{ 'front.shopping.use_point'|trans }}</dt>
                         <dd>{{ Order.UsePoint|number_format }} pt</dd>
                     </dl>
                     <dl class="ec-totalBox__spec">
-                        <dt>加算予定ポイント</dt>
+                        <dt>{{ 'front.shopping.add_point'|trans }}</dt>
                         <dd>{{ Order.AddPoint|number_format }} pt</dd>
                     </dl>
                     <dl class="ec-totalBox__spec">
-                        <dt>加算後のポイント</dt>
+                        <dt>{{ 'front.shopping.next_point'|trans }}</dt>
                         <dd>{{ (Order.Customer.Point - Order.UsePoint + Order.AddPoint)|number_format }} pt</dd>
                     </dl>
                 {% endif %}
                 <div class="ec-totalBox__btn">
-                    <button type="submit" class="ec-blockBtn--action">注文する</button>
-                    <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">ご注文手続きに戻る</a>
+                    <button type="submit" class="ec-blockBtn--action">{{ 'front.shopping.checkout'|trans }}</button>
+                    <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">{{ 'front.shopping.back_to_order'|trans }}</a>
                 </div>
             </div>
         </div>

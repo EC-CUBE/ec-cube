@@ -73,7 +73,6 @@ class MainEditType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'mainedit.label.name',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -83,7 +82,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('url', TextType::class, [
-                'label' => 'URL',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -96,7 +94,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('file_name', TextType::class, [
-                'label' => 'mainedit.label.file_name',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -118,7 +115,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('author', TextType::class, [
-                'label' => 'author',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -127,7 +123,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('description', TextType::class, [
-                'label' => 'description',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -136,7 +131,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('keyword', TextType::class, [
-                'label' => 'keyword',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -145,7 +139,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('meta_robots', TextType::class, [
-                'label' => 'robots',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -153,7 +146,6 @@ class MainEditType extends AbstractType
                     ]),
                 ],
             ])->add('meta_tags', TextAreaType::class, [
-                'label' => '追加metaタグ',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -165,7 +157,6 @@ class MainEditType extends AbstractType
                 'mapped' => false,
                 'placeholder' => '---',
                 'required' => false,
-                'label' => 'PC',
                 'class' => Layout::class,
                 'query_builder' => function (EntityRepository $er) {
                     $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
@@ -180,10 +171,9 @@ class MainEditType extends AbstractType
                 'mapped' => false,
                 'placeholder' => '---',
                 'required' => false,
-                'label' => 'mainedit.label.smartphone',
                 'class' => Layout::class,
                 'query_builder' => function (EntityRepository $er) {
-                    $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_SP);
+                    $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_MB);
 
                     return $er->createQueryBuilder('l')
                         ->where('l.DeviceType = :DeviceType')
@@ -202,7 +192,7 @@ class MainEditType extends AbstractType
                     if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_PC) {
                         $form['PcLayout']->setData($Layout);
                     }
-                    if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_SP) {
+                    if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_MB) {
                         $form['SpLayout']->setData($Layout);
                     }
                 }
@@ -232,7 +222,7 @@ class MainEditType extends AbstractType
 
                 $count = $qb->getQuery()->getSingleScalarResult();
                 if ($count > 0) {
-                    $form['url']->addError(new FormError('mainedit.text.error.url_exists'));
+                    $form['url']->addError(new FormError(trans('admin.content.page_url_exists')));
                 }
             });
     }

@@ -449,7 +449,7 @@ class PluginService
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
-            throw new PluginException($e->getMessage());
+            throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $p;
