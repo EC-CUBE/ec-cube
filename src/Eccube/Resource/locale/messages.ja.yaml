@@ -514,6 +514,7 @@ admin.home.sales_summany_yearly: 年間
 admin.home.sales_summany_amount: 売上金額
 admin.home.sales_summany_count: 売上件数
 admin.home.recommend_plugins_title: おすすめのプラグイン
+admin.home.recommend_plugins.owner_store: オーナーズストア
 admin.home.news_title: お知らせ
 
 admin.header.user_name: '%name% 様'

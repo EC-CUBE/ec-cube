@@ -31,6 +31,7 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Service\PluginApiService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -80,6 +81,9 @@ class AdminController extends AbstractController
      */
     protected $productRepository;
 
+    /** @var PluginApiService */
+    protected $pluginApiService;
+
     /**
      * @var array 売り上げ状況用受注状況
      */
@@ -96,6 +100,7 @@ class AdminController extends AbstractController
      * @param OrderStatusRepository $orderStatusRepository
      * @param CustomerRepository $custmerRepository
      * @param ProductRepository $productRepository
+     * @param PluginApiService $pluginApiService
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -105,7 +110,8 @@ class AdminController extends AbstractController
         OrderRepository $orderRepository,
         OrderStatusRepository $orderStatusRepository,
         CustomerRepository $custmerRepository,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        PluginApiService $pluginApiService
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->helper = $helper;
@@ -115,6 +121,7 @@ class AdminController extends AbstractController
         $this->orderStatusRepository = $orderStatusRepository;
         $this->customerRepository = $custmerRepository;
         $this->productRepository = $productRepository;
+        $this->pluginApiService = $pluginApiService;
     }
 
     /**
@@ -237,7 +244,7 @@ class AdminController extends AbstractController
 
         // 推奨プラグイン
         $url = $this->eccubeConfig['eccube_package_repo_url'].'/plugins/recommended';
-        list($json, $info) = $this->getRequestApi($url);
+        list($json, $info) = $this->pluginApiService->getRequestApi($url);
         $recommendedPlugins = json_decode($json, true);
 
         return [
@@ -251,39 +258,6 @@ class AdminController extends AbstractController
             'countCustomers' => $countCustomers,
             'recommendedPlugins' => $recommendedPlugins,
         ];
-    }
-
-    /**
-     * Need move to common code
-     *
-     * @param $url
-     * @return array
-     */
-    private function getRequestApi($url)
-    {
-        $curl = curl_init($url);
-
-        // Option array
-        $options = [
-            // HEADER
-            CURLOPT_HTTPGET => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FAILONERROR => true,
-            CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
-        ];
-
-        // Set option value
-        curl_setopt_array($curl, $options);
-        $result = curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $message = curl_error($curl);
-        $info['message'] = $message;
-        curl_close($curl);
-
-        log_info('http get_info', $info);
-
-        return [$result, $info];
     }
 
     /**
