@@ -332,6 +332,14 @@ class MailService
 
         $count = $this->mailer->send($message);
 
+        $MailHistory = new MailHistory();
+        $MailHistory->setMailSubject($message->getSubject())
+            ->setMailBody($message->getBody())
+            ->setOrder($Order)
+            ->setSendDate(new \DateTime());
+
+        $this->mailHistoryRepository->save($MailHistory);
+
         log_info('受注メール送信完了', ['count' => $count]);
 
         return $message;

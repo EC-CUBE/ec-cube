@@ -14,7 +14,9 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\ShoppingService;
 
@@ -24,18 +26,18 @@ use Eccube\Service\ShoppingService;
 class OrderUpdateProcessor extends AbstractPurchaseProcessor
 {
     /**
-     * @var ShoppingService
+     * @var OrderStatusRepository
      */
-    private $shoppingService;
+    private $orderStatusRepository;
 
     /**
      * OrderUpdateProcessor constructor.
      *
-     * @param ShoppingService $shoppingService
+     * @param OrderStatusRepository $orderStatusRepository
      */
-    public function __construct(ShoppingService $shoppingService)
+    public function __construct(OrderStatusRepository $orderStatusRepository)
     {
-        $this->shoppingService = $shoppingService;
+        $this->orderStatusRepository = $orderStatusRepository;
     }
 
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
@@ -43,6 +45,8 @@ class OrderUpdateProcessor extends AbstractPurchaseProcessor
         if (!$target instanceof Order) {
             return;
         }
-        $this->shoppingService->setOrderUpdateData($target);
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
+        $target->setOrderStatus($OrderStatus);
+        $target->setOrderDate(new \DateTime());
     }
 }

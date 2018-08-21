@@ -13,12 +13,8 @@
 
 namespace Eccube\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Cart;
-use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
@@ -26,51 +22,61 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
-use Eccube\Repository\DeliveryFeeRepository;
+use Eccube\EventListener\SecurityListener;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
-use Eccube\Repository\TaxRuleRepository;
 use Eccube\Util\StringUtil;
+use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-/**
- * OrderやOrderに関連するエンティティを構築するクラス
- * namespaceやクラス名は要検討
- */
 class OrderHelper
 {
-    /**
-     * @var OrderItemTypeRepository
-     */
-    protected $orderItemTypeRepository;
+    // FIXME 必要なメソッドのみ移植する
+    use ControllerTrait;
 
     /**
-     * @var OrderStatusRepository
+     * @var ContainerInterface
      */
-    protected $orderStatusRepository;
+    protected $container;
 
     /**
-     * @var TaxRuleRepository
+     * @var string 非会員情報を保持するセッションのキー
      */
-    protected $taxRuleRepository;
+    const SESSION_NON_MEMBER = 'eccube.front.shopping.nonmember';
 
     /**
-     * @var DeliveryFeeRepository
+     * @var string 非会員の住所情報を保持するセッションのキー
      */
-    protected $deliveryFeeRepository;
+    const SESSION_NON_MEMBER_ADDRESSES = 'eccube.front.shopping.nonmember.customeraddress';
 
     /**
-     * @var DeliveryRepository
+     * @var string 受注IDを保持するセッションのキー
      */
-    protected $deliveryRepository;
+    const SESSION_ORDER_ID = 'eccube.front.shopping.order.id';
 
     /**
-     * @var PaymentRepository
+     * @var string カートが分割されているかどうかのフラグ. 購入フローからのログイン時にカートが分割された場合にtrueがセットされる.
+     *
+     * @see SecurityListener
      */
-    protected $paymentRepository;
+    const SESSION_CART_DEVIDE_FLAG = 'eccube.front.cart.divide';
+
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    /**
+     * @var PrefRepository
+     */
+    protected $prefRepository;
 
     /**
      * @var OrderRepository
@@ -78,92 +84,59 @@ class OrderHelper
     protected $orderRepository;
 
     /**
-     * @var EntityManager
+     * @var OrderItemTypeRepository
      */
-    protected $entityManager;
+    protected $orderItemTypeRepository;
 
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var \Mobile_Detect
-     */
-    protected $mobileDetect;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
-     * OrderHelper constructor.
-     *
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param DeliveryFeeRepository $deliveryFeeRepository
-     * @param DeliveryRepository $deliveryRepository
-     * @param PaymentRepository $paymentRepository
-     * @param OrderRepository $orderRepository
-     * @param EntityManager $entityManager
-     * @param EccubeConfig $eccubeConfig
-     * @param \Mobile_Detect $mobileDetect
-     * @param DeviceTypeRepository $deviceTypeRepository
-     */
     public function __construct(
+        ContainerInterface $container,
+        EntityManagerInterface $entityManager,
+        OrderRepository $orderRepository,
         OrderItemTypeRepository $orderItemTypeRepository,
         OrderStatusRepository $orderStatusRepository,
-        TaxRuleRepository $taxRuleRepository,
-        DeliveryFeeRepository $deliveryFeeRepository,
         DeliveryRepository $deliveryRepository,
         PaymentRepository $paymentRepository,
-        OrderRepository $orderRepository,
-        EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig,
-        \Mobile_Detect $mobileDetect,
-        DeviceTypeRepository $deviceTypeRepository
+        DeviceTypeRepository $deviceTypeRepository,
+        PrefRepository $prefRepository,
+        MobileDetector $mobileDetector,
+        SessionInterface $session
     ) {
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
+        $this->container = $container;
+        $this->orderRepository = $orderRepository;
         $this->orderStatusRepository = $orderStatusRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->deliveryFeeRepository = $deliveryFeeRepository;
+        $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->deliveryRepository = $deliveryRepository;
         $this->paymentRepository = $paymentRepository;
-        $this->orderRepository = $orderRepository;
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->mobileDetect = $mobileDetect;
         $this->deviceTypeRepository = $deviceTypeRepository;
+        $this->entityManager = $entityManager;
+        $this->prefRepository = $prefRepository;
+        $this->mobileDetector = $mobileDetector;
+        $this->session = $session;
     }
 
     /**
-     * 購入処理中の受注データを生成する.
+     * 購入処理中の受注を生成する.
      *
      * @param Customer $Customer
-     * @param array $CartItems
-     *
+     * @param $CartItems
      * @return Order
      */
-    public function createProcessingOrder(Customer $Customer, $CartItems, $preOrderId = null)
+    public function createPurchaseProcessingOrder(Cart $Cart, Customer $Customer)
     {
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
         $Order = new Order($OrderStatus);
 
-        if (!$preOrderId) {
-            // pre_order_idを生成
-            $Order->setPreOrderId($this->createPreOrderId());
-        }
+        $preOrderId = $this->createPreOrderId();
+        $Order->setPreOrderId($preOrderId);
 
         // 顧客情報の設定
         $this->setCustomer($Order, $Customer);
 
-        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_MB : DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetector->isMobile() ? DeviceType::DEVICE_TYPE_MB : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         // 明細情報の設定
-        $OrderItems = $this->createOrderItemsFromCartItems($CartItems);
+        $OrderItems = $this->createOrderItemsFromCartItems($Cart->getCartItems());
         $OrderItemsGroupBySaleType = array_reduce($OrderItems, function ($result, $item) {
             /* @var OrderItem $item */
             $saleTypeId = $item->getProductClass()->getSaleType()->getId();
@@ -184,34 +157,122 @@ class OrderHelper
         $this->setDefaultPayment($Order);
 
         $this->entityManager->persist($Order);
-        //$this->entityManager->flush();
 
         return $Order;
     }
 
     /**
-     * OrderをCartに変換します.
+     * カーとの整合性チェック.
      *
-     * @param Order $Order
+     * @param Cart $Cart
      *
-     * @return Cart
+     * @return bool カートに商品が入っていない場合, またはログイン時にカートが分割されている場合にtrue
      */
-    public function convertToCart(Order $Order)
+    public function verifyCart(Cart $Cart = null)
     {
-        $Cart = new Cart();
-        $Cart->setPreOrderId($Order->getPreOrderId());
-        /** @var OrderItem $OrderItem */
-        foreach ($Order->getProductOrderItems() as $OrderItem) {
-            $CartItem = new CartItem();
-            $ProductClass = $OrderItem->getProductClass();
-            $this->entityManager->refresh($ProductClass);
-            $CartItem->setProductClass($ProductClass);
-            $CartItem->setPrice($OrderItem->getPriceIncTax());
-            $CartItem->setQuantity($OrderItem->getQuantity());
-            $Cart->addCartItem($CartItem);
+        if ($Cart && count($Cart->getCartItems()) > 0) {
+            $divide = $this->session->get(self::SESSION_CART_DEVIDE_FLAG);
+            if ($divide) {
+                log_info('ログイン時に販売種別が異なる商品がカートと結合されました。');
+
+                return false;
+            }
+
+            return true;
         }
 
-        return $Cart;
+        log_info('カートに商品が入っていません。');
+
+        return false;
+    }
+
+    /**
+     * 注文手続き画面でログインが必要かどうかの判定
+     *
+     * @return bool
+     */
+    public function isLoginRequired()
+    {
+        // フォームログイン済はログイン不要
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return false;
+        }
+
+        // Remember Meログイン済の場合はフォームからのログインが必要
+        if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return true;
+        }
+
+        // 未ログインだがお客様情報を入力している場合はログイン不要
+        if (!$this->getUser() && $this->getNonMember()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 購入処理中の受注を取得する.
+     *
+     * @param null $preOrderId
+     *
+     * @return null|Order
+     */
+    public function getPurchaseProcessingOrder($preOrderId = null)
+    {
+        if (!$preOrderId) {
+            return null;
+        }
+
+        return $this->orderRepository->findOneBy([
+            'pre_order_id' => $preOrderId,
+            'OrderStatus' => OrderStatus::PROCESSING,
+        ]);
+    }
+
+    /**
+     * セッションに保持されている非会員情報を取得する.
+     * 非会員購入時に入力されたお客様情報を返す.
+     *
+     * @return Customer
+     */
+    public function getNonMember()
+    {
+        $NonMember = $this->session->get(self::SESSION_NON_MEMBER);
+        if ($NonMember && $NonMember->getPref()) {
+            $Pref = $this->prefRepository->find($NonMember->getPref()->getId());
+            $NonMember->setPref($Pref);
+        }
+
+        return $NonMember;
+    }
+
+    /**
+     * @param Cart $Cart
+     * @param Customer $Customer
+     *
+     * @return Order|null
+     */
+    public function initializeOrder(Cart $Cart, Customer $Customer)
+    {
+        // 購入処理中の受注情報を取得
+        if ($Order = $this->getPurchaseProcessingOrder($Cart->getPreOrderId())) {
+            return $Order;
+        }
+
+        // 受注情報を作成
+        $Order = $this->createPurchaseProcessingOrder($Cart, $Customer);
+        $Cart->setPreOrderId($Order->getPreOrderId());
+
+        return $Order;
+    }
+
+    public function removeSession()
+    {
+        $this->session->remove(self::SESSION_ORDER_ID);
+        $this->session->remove(self::SESSION_ORDER_ID);
+        $this->session->remove(self::SESSION_NON_MEMBER);
+        $this->session->remove(self::SESSION_NON_MEMBER_ADDRESSES);
     }
 
     private function createPreOrderId()
@@ -289,6 +350,10 @@ class OrderHelper
         }, $CartItems->toArray());
     }
 
+    /**
+     * @param Customer $Customer
+     * @return Shipping
+     */
     private function createShippingFromCustomer(Customer $Customer)
     {
         $Shipping = new Shipping();
@@ -307,6 +372,9 @@ class OrderHelper
         return $Shipping;
     }
 
+    /**
+     * @param Shipping $Shipping
+     */
     private function setDefaultDelivery(Shipping $Shipping)
     {
         // 配送商品に含まれる販売種別を抽出.
@@ -328,6 +396,9 @@ class OrderHelper
         $Shipping->setShippingDeliveryName($Delivery->getName());
     }
 
+    /**
+     * @param Order $Order
+     */
     private function setDefaultPayment(Order $Order)
     {
         $OrderItems = $Order->getOrderItems();
@@ -359,6 +430,11 @@ class OrderHelper
         }
     }
 
+    /**
+     * @param Order $Order
+     * @param Shipping $Shipping
+     * @param array $OrderItems
+     */
     private function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
     {
         foreach ($OrderItems as $OrderItem) {

@@ -1134,6 +1134,8 @@ class ShoppingService
      * @param Order $Order
      *
      * @return MailHistory
+     *
+     * @deprecated MailService::sendOrderMailを使用してください
      */
     public function sendOrderMail(Order $Order)
     {
@@ -1158,6 +1160,8 @@ class ShoppingService
      * 受注処理完了通知
      *
      * @param Order $Order
+     *
+     * @deprecated PurchaseFlow::commitを使用してください
      */
     public function notifyComplete(Order $Order)
     {
