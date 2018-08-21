@@ -104,7 +104,7 @@ class PluginApiService
      * Get a plugin
      *
      * @param int|string $id Id or plugin code
-     * @return array($result, $info)
+     * @return array [$result, $info]
      */
     public function getPlugin($id)
     {

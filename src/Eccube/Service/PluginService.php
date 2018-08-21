@@ -804,7 +804,7 @@ class PluginService
      */
     public function getRequireOfPlugin($plugin)
     {
-        $pluginCode = $plugin['code'];
+//        $pluginCode = $plugin['code'];
         // Need dependency Mechanism
         /**
         $pluginDir = $this->calcPluginDir($pluginCode);

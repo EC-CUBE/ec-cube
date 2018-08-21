@@ -252,7 +252,7 @@ class OwnerStoreController extends AbstractController
      */
     public function doConfirm(Request $request, $id)
     {
-        list($json, $info) = $this->pluginApiService->getPlugin($id);
+        list($json,) = $this->pluginApiService->getPlugin($id);
         $plugin = [];
         if ($json) {
             $data = json_decode($json, true);
@@ -290,7 +290,7 @@ class OwnerStoreController extends AbstractController
 
         // Check plugin code
         $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
-        list($json, $info) = $this->getRequestApi($url);
+        list($json,) = $this->getRequestApi($url);
         $existFlg = false;
         $data = json_decode($json, true);
         if (isset($data['item']) && !empty($data['item'])) {
@@ -304,9 +304,9 @@ class OwnerStoreController extends AbstractController
         }
 
         $items = $data['item'];
-        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
+        $plugin = $this->pluginService->buildInfo($items);
         $dependents[] = $plugin;
-        $dependents = $this->pluginService->getPluginRequired($items, $plugin, $dependents);
+        $dependents = $this->pluginService->getPluginRequired($plugin);
         // Unset first param
         unset($dependents[0]);
         $dependentModifier = [];
