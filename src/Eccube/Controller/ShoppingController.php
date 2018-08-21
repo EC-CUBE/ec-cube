@@ -38,6 +38,7 @@ use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -729,14 +730,39 @@ class ShoppingController extends AbstractShoppingController
                 case 'shipping_multiple_change':
                     // 複数配送設定へリダイレクト
                     return $this->redirectToRoute('shopping_shipping_multiple');
-                case 'payment':
                 case 'delivery':
+                    return $this->forwardToRoute('shopping_delivery');
+                case 'payment':
                 default:
                     return $this->redirectToRoute('shopping');
             }
         }
 
         return new Response();
+    }
+
+    /**
+     * @param Request $request
+     * @ForwardOnly()
+     * @Route("/shopping/delivery", name="shopping_delivery")
+     * @return RedirectResponse|Response
+     */
+    public function changeDelivery(Request $request)
+    {
+        if (!$this->parameterBag->has('Order') || is_null($this->parameterBag->get('Order'))) {
+            return $this->redirectToRoute('shopping');
+        }
+        $Order = $this->parameterBag->get('Order');
+        // Remove all old delivery
+        foreach ($Order->getOrderItems() as $orderItem) {
+            if ($orderItem->isDeliveryFee()) {
+                $Order->removeOrderItem($orderItem);
+                $this->entityManager->remove($orderItem);
+            }
+        }
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('shopping');
     }
 
     /**
