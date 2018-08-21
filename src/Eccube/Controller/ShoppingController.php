@@ -136,7 +136,14 @@ class ShoppingController extends AbstractShoppingController
         // フォームを生成する
         $this->forwardToRoute('shopping_create_form');
 
-        if ($flowResult->hasWarning() || $flowResult->hasError()) {
+        if ($flowResult->hasWarning() || $flowResult->hasError()) { // XXX warning の場合は遷移させない？
+            foreach ($flowResult->getValidateErrorHandlers() as $errorHandler) {
+                return $this->redirectToRoute(
+                    $errorHandler->getRoute(),
+                    $errorHandler->getRouteParameters()
+                );
+            }
+
             return $this->redirectToRoute('cart');
         }
 
