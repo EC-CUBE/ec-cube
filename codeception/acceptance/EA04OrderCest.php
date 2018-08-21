@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Master\OrderStatus;
 use Page\Admin\CsvSettingsPage;
@@ -124,7 +135,7 @@ class EA04OrderCest
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::NEW);
+        $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::NEW);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getCompanyName());
 
@@ -172,11 +183,11 @@ class EA04OrderCest
         $I->wait(2);
 
         // before submit
-        $I->dontSee($itemName, "#table-form-field");
+        $I->dontSee($itemName, '#table-form-field');
 
         // after submit
         $OrderRegisterPage->受注情報登録();
-        $I->dontSee($itemName, "#table-form-field");
+        $I->dontSee($itemName, '#table-form-field');
 
         $I->see('保存しました', OrderEditPage::$登録完了メッセージ);
     }
@@ -234,6 +245,7 @@ class EA04OrderCest
         $I->resetEmails();
 
         OrderManagePage::go($I)
+            ->件数変更(10)
             ->一覧_全選択()
             ->一括メール送信();
 
@@ -345,7 +357,7 @@ class EA04OrderCest
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 2, array());
+        $newOrders = $createOrders($createCustomer(), 2, []);
         $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::NEW);
         foreach ($newOrders as $newOrder) {
             $newOrder->setOrderStatus($Status);
@@ -393,7 +405,7 @@ class EA04OrderCest
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 2, array());
+        $newOrders = $createOrders($createCustomer(), 2, []);
         $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::NEW);
         foreach ($newOrders as $newOrder) {
             $newOrder->setOrderStatus($Status);
@@ -422,11 +434,3 @@ class EA04OrderCest
         $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
     }
 }
-
-
-
-
-
-
-
-

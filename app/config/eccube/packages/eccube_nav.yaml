@@ -137,9 +137,6 @@ parameters:
                         plugin_list:
                             name: admin.nav.store.plugin.plugin_list
                             url: admin_store_plugin
-                        plugin_handler:
-                            name: admin.nav.store.plugin.plugin_handler
-                            url: admin_store_plugin_handler
                 template:
                     name: admin.nav.store.template
                     children:

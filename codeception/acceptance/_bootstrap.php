@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
@@ -8,10 +19,9 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
-
 $config = parse_ini_file(__DIR__.'/config.ini', true);
 
-/**
+/*
  * create fixture
  * このデータは$appを使って直接eccubeのデータベースに作成される
  * よってCodeceptionの設定によってコントロールされず、テスト後もデータベース内にこのデータは残る
@@ -138,12 +148,14 @@ function createCustomer($container, $email = null, $active = true)
     }
     $Customer->setStatus($Status);
     $entityManager->flush($Customer);
+
     return $Customer;
 }
 
 function createProduct($container, $product_name = null, $product_class_num = 3)
 {
     $generator = $container->get('Eccube\Tests\Fixture\Generator');
+
     return $generator->createProduct($product_name, $product_class_num);
 }
 
@@ -156,10 +168,11 @@ function createOrder($container, Customer $Customer, array $ProductClasses, $Del
     $Order->setOrderStatus($Status);
     $Order->setOrderDate($OrderDate);
     $entityManager->flush($Order);
+
     return $Order;
 }
 
-/**
+/*
  * fixtureとして、対象eccubeのconfigおよびデータベースからデータを取得する
  * [codeception path]/tests/acceptance/config.iniに対象eccubeのpathを記述すること
  * つまり、対象eccubeとcodeception作業ディレクトリはファイルシステム上で同一マシンにある（様にみえる）ことが必要
@@ -168,26 +181,26 @@ function createOrder($container, Customer $Customer, array $ProductClasses, $Del
  * [codeception path]/codeception.ymlのDbセクションに対象eccubeで利用しているデータベースへの接続情報を記述して利用する
  */
 
-/** 管理画面アカウント情報. */
-Fixtures::add('admin_account', array(
+/* 管理画面アカウント情報. */
+Fixtures::add('admin_account', [
     'member' => $config['admin_user'],
     'password' => $config['admin_password'],
-));
-/** $app['config'] 情報. */
+]);
+/* $app['config'] 情報. */
 Fixtures::add('config', $container->get(EccubeConfig::class));
 
-/** config.ini 情報. */
+/* config.ini 情報. */
 Fixtures::add('test_config', $config);
 
 $baseinfo = $entityManager->getRepository('Eccube\Entity\BaseInfo')->get();
-/** BaseInfo. */
+/* BaseInfo. */
 Fixtures::add('baseinfo', $baseinfo);
 
 $categories = $entityManager->getRepository('Eccube\Entity\Category')
     ->createQueryBuilder('o')
     ->getQuery()
     ->getResult();
-/** カテゴリ一覧の配列. */
+/* カテゴリ一覧の配列. */
 Fixtures::add('categories', $categories);
 
 $findOrders = function() use ($entityManager) {
@@ -196,7 +209,7 @@ $findOrders = function() use ($entityManager) {
         ->getQuery()
         ->getResult();
 };
-/** 受注を検索するクロージャ. */
+/* 受注を検索するクロージャ. */
 Fixtures::add('findOrders', $findOrders);
 
 $findShippings = function() use ($entityManager) {
@@ -205,7 +218,7 @@ $findShippings = function() use ($entityManager) {
         ->getQuery()
         ->getResult();
 };
-/** 出荷を検索するクロージャ. */
+/* 出荷を検索するクロージャ. */
 Fixtures::add('findShippings', $findShippings);
 
 $resetShippingDate = function() use ($entityManager) {
@@ -215,9 +228,10 @@ $resetShippingDate = function() use ($entityManager) {
         $Shipping->setShippingDate(null);
     }
     $entityManager->flush();
+
     return true;
 };
-/** 出荷準備中に更新するクロージャ. */
+/* 出荷準備中に更新するクロージャ. */
 Fixtures::add('resetShippingDate', $resetShippingDate);
 
 $setShippingDate = function() use ($entityManager) {
@@ -227,9 +241,10 @@ $setShippingDate = function() use ($entityManager) {
         $Shipping->setShippingDate(new \DateTime());
     }
     $entityManager->flush();
+
     return true;
 };
-/** 出荷済みに更新するクロージャ. */
+/* 出荷済みに更新するクロージャ. */
 Fixtures::add('setShippingDate', $setShippingDate);
 
 $deleteShippingNotExistsOfItem = function() use ($entityManager) {
@@ -247,7 +262,7 @@ $deleteShippingNotExistsOfItem = function() use ($entityManager) {
 
     return true;
 };
-/** OrderItemの存在しない出荷を削除するクロージャ. */
+/* OrderItemの存在しない出荷を削除するクロージャ. */
 Fixtures::add('deleteShippingNotExistsOfItem', $deleteShippingNotExistsOfItem);
 
 $findProducts = function() use ($entityManager) {
@@ -256,7 +271,7 @@ $findProducts = function() use ($entityManager) {
         ->getQuery()
         ->getResult();
 };
-/** 商品を検索するクロージャ. */
+/* 商品を検索するクロージャ. */
 Fixtures::add('findProducts', $findProducts);
 
 $createProduct = function($product_name = null, $product_class_num = 3) use ($container) {
@@ -268,12 +283,13 @@ $createCustomer = function($email = null, $active = true) use ($container, $fake
     if (is_null($email)) {
         $email = microtime(true).'.'.$faker->safeEmail;
     }
+
     return createCustomer($container, $email, $active);
 };
-/** 会員を生成するクロージャ. */
+/* 会員を生成するクロージャ. */
 Fixtures::add('createCustomer', $createCustomer);
 
-$createOrders = function($Customer, $numberOfOrders = 5, $ProductClasses = array(), $Status = null) use ($container, $entityManager, $faker) {
+$createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = [], $Status = null) use ($container, $entityManager, $faker) {
     $generator = $container->get('Eccube\Tests\Fixture\Generator');
     $Orders = array();
     $randomOrderStatus = [
@@ -297,21 +313,22 @@ $createOrders = function($Customer, $numberOfOrders = 5, $ProductClasses = array
         $entityManager->flush($Order);
         $Orders[] = $Order;
     }
+
     return $Orders;
 };
-/** 受注を生成するクロージャ. */
+/* 受注を生成するクロージャ. */
 Fixtures::add('createOrders', $createOrders);
 
 $findPlugins = function() use ($entityManager) {
     return $entityManager->getRepository('Eccube\Entity\Plugin')->findAll();
 };
-/** プラグインを検索するクロージャ */
+/* プラグインを検索するクロージャ */
 Fixtures::add('findPlugins', $findPlugins);
 
 $findPluginByCode = function($code = null) use ($entityManager) {
     return $entityManager->getRepository('Eccube\Entity\Plugin')->findOneBy(['code' => $code]);
 };
-/** プラグインを検索するクロージャ */
+/* プラグインを検索するクロージャ */
 Fixtures::add('findPluginByCode', $findPluginByCode);
 
 $findCustomers = function() use ($entityManager) {
@@ -320,7 +337,7 @@ $findCustomers = function() use ($entityManager) {
         ->getQuery()
         ->getResult();
 };
-/** 会員を検索するクロージャ */
+/* 会員を検索するクロージャ */
 Fixtures::add('findCustomers', $findCustomers);
 
 /** 新着情報を検索するクロージャ */

@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Fixture;
 
+use bheller\ImagesGenerator\ImagesGeneratorProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
@@ -172,7 +173,7 @@ class Generator
     /**
      * Member オブジェクトを生成して返す.
      *
-     * @param string $username. null の場合は, ランダムなユーザーIDが生成される.
+     * @param string $username . null の場合は, ランダムなユーザーIDが生成される.
      *
      * @return \Eccube\Entity\Member
      */
@@ -381,14 +382,17 @@ class Generator
         $this->entityManager->persist($Product);
         $this->entityManager->flush($Product);
 
+        $faker2 = Faker::create($this->locale);
+        $faker2->addProvider(new ImagesGeneratorProvider($faker2));
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
             if ($image_type) {
-                $image = $faker->image(
+                $image = $faker2->imageGenerator(
                     __DIR__.'/../../../../html/upload/save_image',
                     $faker->numberBetween(480, 640),
                     $faker->numberBetween(480, 640),
-                    $image_type, false);
+                    'png', false, true, '#cccccc', '#ffffff'
+                );
             } else {
                 $image = $faker->word.'.jpg';
             }

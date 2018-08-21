@@ -1,0 +1,9 @@
+{
+  "name": "ec-cube/PurchaseProcessors",
+  "version": "1.0.0",
+  "description": "PurchaseFlowにProcessorを追加するサンプル",
+  "type": "eccube-plugin",
+  "extra": {
+    "code": "PurchaseProcessors"
+  }
+}
