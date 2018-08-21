@@ -105,6 +105,26 @@ class ComposerApiService implements ComposerServiceInterface
         ], $output);
     }
 
+
+    /**
+     * Run update command
+     *
+     * @param boolean $dryRun
+     * @param null|OutputInterface $output
+     *
+     * @throws PluginException
+     */
+    public function execUpdate($dryRun, $output = null)
+    {
+        $this->runCommand([
+            'command' => 'update',
+            '--no-interaction' => true,
+            '--profile' => true,
+            '--no-scripts' => true,
+            '--dry-run' => !!$dryRun,
+        ], $output);
+    }
+
     /**
      * Get require
      *
@@ -193,7 +213,7 @@ class ComposerApiService implements ComposerServiceInterface
     {
         $this->init();
         $commands['--working-dir'] = $this->workingDir;
-        $commands['--no-ansi'] = 1;
+        $commands['--no-ansi'] = true;
         $input = new ArrayInput($commands);
         $output = $output ?: new BufferedOutput();
 
