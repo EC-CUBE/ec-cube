@@ -16,7 +16,7 @@ file that was distributed with this source code.
 
 <div class="ec-role">
     <div class="ec-pageHeader">
-        <h1>購入エラー</h1>
+        <h1>{{ 'front.shopping.error'|trans }}</h1>
     </div>
 </div>
 
@@ -25,8 +25,7 @@ file that was distributed with this source code.
         <div class="ec-off3Grid__cell">
             <div class="ec-off4Grid">
                 <div class="ec-off4Grid__cell">
-                    <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.label.back_to_top'|trans}}</a><br>
-                    <a class="ec-blockBtn--cancel" href="{{ url('cart') }}">{{'shopping.label.btn.back_to_cart'|trans}}</a>
+                    <a class="ec-blockBtn--cancel" href="{{ url('cart') }}">{{ 'front.shopping.back_to_cart'|trans }}</a>
                 </div>
             </div>
         </div>

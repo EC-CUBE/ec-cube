@@ -47,11 +47,11 @@ class PriceChangeValidator extends ItemValidator
             if ($item instanceof OrderItem) {
                 $item->setPrice($item->getProductClass()->getPrice02());
 
-                $this->throwInvalidItemException('cart.product.price.change', $item->getProductClass());
+                $this->throwInvalidItemException('front.shopping.price_changed', $item->getProductClass());
             } else {
                 // CartItem::priceは税込金額.
                 $item->setPrice($realPrice);
-                $this->throwInvalidItemException('cart.product.price.change', $item->getProductClass());
+                $this->throwInvalidItemException('front.shopping.price_changed', $item->getProductClass());
             }
         }
     }

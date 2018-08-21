@@ -1,0 +1,1441 @@
+#====================================================================================
+# 共通
+#====================================================================================
+
+common.select: 選択してください
+common.select__pref: 都道府県を選択
+common.select__unspecified: 指定なし
+common.select__all_products: 全ての商品
+common.required: 必須
+common.back: 戻る
+common.close: 閉じる
+common.send: 送信する
+common.registration: 登録する
+common.change: 変更
+common.delete: 削除
+common.ok: OK
+common.cancel: キャンセル
+common.go_to_top: トップページへ
+common.go_to_cart: カートへ進む
+common.go_to_confirm: 確認ページへ
+common.go_to_next: 次のページへ
+common.move_to_page_top: ページトップへ
+common.prev: 前へ
+common.next: 次へ
+common.first: 最初へ
+common.last: 最後へ
+common.name: お名前
+common.kana: お名前(カナ)
+common.first_name: 名
+common.last_name: 姓
+common.first_name_kana: メイ
+common.last_name_kana: セイ
+common.company_name: 会社名
+common.shop_name: 店名
+common.address: 住所
+common.pref: 都道府県
+common.postal_symbol: 〒
+common.postal_code_sample: 例：5530003
+common.search_postal_code: 郵便番号検索
+common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
+common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
+common.phone_number: 電話番号
+common.phone_number_sample: 例：11122223333
+common.mail_address: メールアドレス
+common.mail_address_sample: 例：ec-cube@example.com
+common.repeated_confirm: 確認のためもう一度入力してください
+common.password: パスワード
+common.password_sample: 半角英数記号%min%〜%max%文字
+common.password_for_confirmation: パスワード(確認)
+common.gender: 性別
+common.job: 職業
+common.birth_day: 生年月日
+common.tax_include: 税込
+common.separator__range: 〜
+common.separator__colon: ：
+common.quantity: 数量
+common.quantity__with_separator: 数量：
+common.subtotal: 小計
+common.subtotal__with_separator: 小計：
+common.total: 合計
+common.total__with_separator: 合計：
+common.delivery_fee: 送料
+common.charge: 手数料
+common.discount: 値引き
+common.point: ポイント
+common.enabled: 有効
+common.disabled: 無効
+common.user_name: '%last_name% %first_name% 様'
+common.login: ログイン
+common.remember_me: 次回から自動的にログインする
+common.signup: 新規会員登録
+common.forgot_login: ログイン情報をお忘れですか？
+common.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
+common.search_keyword: キーワードを入力
+common.customer_already_exists: 既に利用されているメールアドレスです
+common.member_already_exists: 既に利用されているログインIDです
+common.hidden_label: (非表示)
+
+#====================================================================================
+# フロント画面
+#====================================================================================
+
+#------------------------------------------------------------------------------------
+# ブロック
+#------------------------------------------------------------------------------------
+
+front.block.cart.go_to_cart: カートへ進む
+front.block.cart.no_item: 現在カート内に商品はございません。
+front.block.free.free_message__intro: 5000円以上の購入で
+front.block.free.free_message__title: 送料無料
+front.block.free.free_message__text: 一部地域は除く
+front.block.logo.sub_title: くらしを楽しむライフスタイルグッズ
+front.block.login.customer_registration: 新規会員登録
+front.block.login.mypage: マイページ
+front.block.login.favorite: お気に入り
+front.block.login.login: ログイン
+front.block.login.logout: ログアウト
+front.block.footer.about_us: 当サイトについて
+front.block.footer.privacy_policy: プライバシーポリシー
+front.block.footer.inquiry: お問い合わせ
+front.block.footer.act_on_specified_commercial_transactions: 特定商取引法に基づく表記
+front.block.news.read_more: もっと見る
+front.block.news.news_title: 新着情報
+front.block.news.see_details: 詳しくはこちら
+front.block.new_product.eyecatch_title: 新入荷商品特集
+front.block.new_product.eyecatch_sub_title: この季節にぴったりな商品をご用意しました
+front.block.new_product.eyecatch_body: さわやかな日差しが過ごしやすい季節。心地よいくらしのための、お部屋のアクセントになるおすすめのファブリックやグッズをご紹介します。
+front.block.new_product.eyecatch_view_list: 一覧を見る
+front.block.new_product.category_read_more: read more
+front.block.new_product.category_1_title: お気に入りのエスプレッソタイム
+front.block.new_product.category_1_body: コーヒータイムを上質な時間にしてくれる、口当たりのよさとデザイン性を兼ね備えたエスプレッソカップを集めました・・・
+front.block.new_product.category_2_title: アウトドアにおすすめのアイテム
+front.block.new_product.category_2_body: カジュアルすぎない感じがちょうどよい、大人のためのアウトドアマガジンから、バイヤーおすすめのアイテムをセレクト・・・
+front.block.new_product.category_3_title: フランス製のデッドストック
+front.block.new_product.category_3_body: 60～70年代のフランス製のデッドストックの器を集めました。絶妙な色合いと、独特の優しい風合いをお楽しみいただけ・・・
+front.block.new_product.item_1_title: 木彫りのぬくもりがあたたかいアニマルオブジェ
+front.block.new_product.item_1_name: オブジェ（ふくろう）
+front.block.new_product.item_2_title: 青色が美しい職人が仕上げた吹きガラス
+front.block.new_product.item_2_name: ガラス瓶
+front.block.new_product.item_3_title: いつかは持ちたい。一生モノの銀製カトラリー
+front.block.new_product.item_3_name: シルバーカトラリー
+front.block.new_product.item_4_title: こだわりのシルクスクリーンプリントがポイント
+front.block.new_product.item_4_name: フォトクッションカバー
+
+#------------------------------------------------------------------------------------
+# 問い合わせ
+#------------------------------------------------------------------------------------
+front.contact.title: お問い合わせ
+front.contact.inquiry_notice: |
+  内容によっては回答をさしあげるのにお時間をいただくこともございます。
+  また、休業日は翌営業日以降の対応となりますのでご了承ください。
+front.contact.order_notice: ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
+front.contact.inquiry_contents: お問い合わせ内容
+front.contact.complete_title: お問い合わせ(完了)
+front.contact.complete_message__title: お問い合わせ内容の送信が完了いたしました
+front.contact.complete_message__body: 万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
+
+#------------------------------------------------------------------------------------
+# 会員登録
+#------------------------------------------------------------------------------------
+
+front.entry.title: 新規会員登録
+front.entry.terms: 利用規約
+front.entry.agree_with_terms: に同意してお進みください # TODO 「%name%」に同意してお進みください、にしたい
+front.entry.agree: 同意する
+front.entry.disagree: 同意しない
+front.entry.confirm_title: 新規会員登録(確認)
+front.entry.confirm_message: |
+  下記の内容で登録してもよろしいでしょうか？
+  よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。
+front.entry.do_register: 会員登録をする
+front.entry.complete_title: 新規会員登録(完了)
+front.entry.complete_message__title: 会員登録ありがとうございます
+front.entry.complete_message__temporary: 現在仮会員の状態です。
+  ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、
+  本会員登録になった上でお買い物をお楽しみください。
+  今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.entry.complete_message__activated: それではショッピングをお楽しみください。
+  今後ともご愛顧賜りますようよろしくお願い申し上げます。
+
+#------------------------------------------------------------------------------------
+# パスワード再発行
+#------------------------------------------------------------------------------------
+
+front.forgot.title: パスワードの再発行
+front.forgot.message1: ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。
+front.forgot.message2: ※パスワード再発行メールを送信します。メールの内容をご確認の上、新しいパスワードを登録してください。
+front.forgot.complete_title: パスワードの再発行(メール送信)
+front.forgot.complete_message__title: パスワード再発行メールの送信が完了しました。
+front.forgot.complete_message__body: |
+  ご登録メールアドレスにパスワードを再発行するためのメールを送信いたしました。
+  メールの内容をご確認いただきますよう、お願いいたします。
+  ※メールが届かない場合はメールアドレスをご確認の上、再度お試しください。
+front.forgot.reset_title: パスワード再発行(再設定)
+front.forgot.reset_complete: パスワードを更新しました。
+front.forgot.reset_error: 有効期限が切れているか、無効なURLです。
+front.forgot.reset_not_found: 入力内容を確認してください。
+
+#------------------------------------------------------------------------------------
+# 当サイトについて/特定商取引法/...
+#------------------------------------------------------------------------------------
+
+front.about.title: 当サイトについて
+front.about.business_hour: 店舗営業時間
+front.about.good_traded: 取り扱い商品
+front.about.message: メッセージ
+front.agreement.title: 利用規約
+front.tradelaw.title: 特定商取引法に基づく表記
+front.privacy.title: プライバシーポリシー
+front.guide.title: ご利用ガイド
+
+#------------------------------------------------------------------------------------
+# マイページ
+#------------------------------------------------------------------------------------
+
+front.mypage.welcome: ようこそ%last_name% %first_name%さん
+front.mypage.title: マイページ
+front.mypage.welcome__point: 現在の所持ポイントは %point%pt です。
+front.mypage.nav__history: ご注文履歴
+front.mypage.nav__history_detail: ご注文履歴詳細
+front.mypage.nav__favorite: お気に入り一覧
+front.mypage.nav__customer: 会員情報編集
+front.mypage.nav__customer_complete: 会員情報編集(完了)
+front.mypage.nav__customer_address: お届け先一覧
+front.mypage.nav__withdrow: 退会手続き
+front.mypage.history_count: '%count%件の履歴があります'
+front.mypage.history_not_found: ご注文履歴はありません。
+front.mypage.view_detail: 詳細を見る
+front.mypage.order_no: ご注文番号
+front.mypage.order_status: ご注文状況
+front.mypage.order_date: ご注文日時
+front.mypage.use_point: ご利用ポイント
+front.mypage.add_point: 加算ポイント
+front.mypage.delivery_info: 配送情報
+front.mypage.delivery: お届け先
+front.mypage.delivery_provider: 配送方法
+front.mypage.delivery_date: お届け日
+front.mypage.delivery_time: お届け時間
+front.mypage.current_price: 【現在価格】
+front.mypage.reorder: 再注文する
+front.mypage.payment_info: お支払い情報
+front.mypage.payment: お支払い方法
+front.mypage.message: お問い合わせ
+front.mypage.reorder_message: ※金額が変更されている商品があるため、再注文時はご注意ください。
+front.mypage.mail_not_found: メール履歴はありません。
+front.mypage.mail_list: メール配信履歴一覧
+front.mypage.customer_complete_message__title: 会員登録内容の変更が完了いたしました
+front.mypage.customer_complete_message__body: 今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.mypage.favorite_count: '%count%件のお気に入りがあります'
+front.mypage.favorite_not_found: お気に入りは登録されていません。
+front.mypage.customer_address_count: '%count%件のお届け先があります'
+front.mypage.customer_address_not_found: お届け先は登録されていません。
+front.mypage.add_customer_address: '新規お届け先を追加する'
+front.mypage.withdraw_message__title: 退会手続きの前にご確認ください
+front.mypage.withdraw_message__body: 退会手続きが完了した時点で、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますのでご注意ください。
+front.mypage.withdraw_execute_message__title: 退会手続きを実行してもよろしいでしょうか？
+front.mypage.withdraw_confirm: 退会手続きへ
+front.mypage.withdraw_cancel: いいえ、退会しません
+front.mypage.withdraw_execute: はい、退会します
+front.mypage.withdraw_complete_message__title: 退会が完了いたしました
+front.mypage.withdraw_complete_message__body: |
+  ご利用いただき誠にありがとうございました。
+  またのご来店をお待ちしております。
+
+#------------------------------------------------------------------------------------
+# 商品
+#------------------------------------------------------------------------------------
+
+front.product.all_category: 全て
+front.product.search_result: 検索結果
+front.product.all_products: 全商品
+
+front.product.search__category_not_found: ご指定のカテゴリは存在しません
+front.product.search__product_not_found: お探しの商品は見つかりませんでした
+front.product.search_result__keyword: 「%name%」の検索結果
+front.product.search_result__detail: '<span class="ec-font-bold">%count%件</span><span>の商品が見つかりました</span>'
+front.product.add_cart: カートに入れる
+front.product.add_cart_complete: カートに追加しました。
+front.product.add_cart_error: カートへの追加に失敗しました。
+front.product.add_favorite: お気に入りに追加
+front.product.add_favorite_alrady: お気に入りに追加済です。
+front.product.out_of_stock: ただいま品切れ中です。
+front.product.out_of_stock_label: (品切れ中)
+front.product.added_to_favorite: お気に入りに追加済です。
+front.product.nomal_price: 通常価格
+front.product.sale_price: 販売価格
+front.product.code: 商品コード
+front.product.related_category: 関連カテゴリ
+front.product.continue: お買い物を続ける
+front.product.invalid_quantity: 1以上で入力してください。
+front.product.product_class_unselected: 項目が選択されていません
+
+#------------------------------------------------------------------------------------
+# カート
+#------------------------------------------------------------------------------------
+
+front.cart.title: ショッピングカート
+front.cart.nav__cart_items: カートの商品
+front.cart.nav__customer_info: お客様情報
+front.cart.nav__order: ご注文手続き
+front.cart.nav__confirm: ご注文内容確認
+front.cart.nav__complete: 完了
+front.cart.total_price: 商品の合計金額は「<strong>%price%</strong>」です。
+front.cart.divide_cart: 同時購入できない商品がカートに含まれています。
+front.cart.delete: 削除
+front.cart.delete__confirm: カートから商品を削除してよろしいですか？
+front.cart.product: 商品内容
+front.cart.checkout: レジに進む
+front.cart.continue: お買い物を続ける
+front.cart.no_items: 現在カート内に商品はございません。
+front.cart.delivery_fee_free__now: 現在送料無料です。
+front.cart.delivery_fee_free__price_and_quantity: あと「<strong>%price%</strong>」または「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
+front.cart.delivery_fee_free__price: あと「<strong>%price%</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
+front.cart.delivery_fee_free__quantity: '<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。'
+
+#------------------------------------------------------------------------------------
+# ショッピング
+#------------------------------------------------------------------------------------
+
+front.shopping.title: ご注文手続き
+front.shopping.customer_info: お客様情報
+front.shopping.delivery_info: 配送情報
+front.shopping.delivery_to: お届け先
+front.shopping.delivery_provider: 配送方法
+front.shopping.delivery_date: お届け日
+front.shopping.delivery_time: お届け時間
+front.shopping.to_multiple: お届け先を追加する
+front.shopping.payment_info: お支払方法
+front.shopping.point_info: 利用ポイント
+front.shopping.available_point: '%point% pt が利用可能です。'
+front.shopping.point_prev: 利用ポイント
+front.shopping.prev_point: ご注文前のポイント
+front.shopping.next_point: ご注文後のポイント
+front.shopping.add_point: 加算ポイント
+front.shopping.use_point: ご利用ポイント
+front.shopping.message_info: お問い合わせ
+front.shopping.message_placeholder: お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)
+front.shopping.go_to_confirm: 確認する
+front.shopping.back_to_cart: カートに戻る
+front.shopping.shipping_title: お届け先の指定
+front.shopping.shipping_add_new_shipping: 新規お届け先を追加する
+front.shopping.shipping_unselected: お届け先を指定してください
+front.shopping.shipping_send_selected_shipping: 選択したお届け先に送る
+front.shopping.shipping_multiple_title: お届け先の複数指定
+front.shopping.shipping_multiple_message: 各商品のお届け先を選択してください。
+front.shppping.shipping_multiple_add_shipping: 各商品のお届け先を選択してください。
+front.shopping.confirm_title: ご注文内容のご確認
+front.shopping.checkout: 注文する
+front.shopping.back_to_order: ご注文手続きに戻る
+front.shopping.complete_title: ご注文完了
+front.shopping.complete_message__title: ご注文ありがとうございました
+front.shopping.complete_message__body: |
+  ただいま、ご注文の確認メールをお送りさせていただきました。
+  万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
+  今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.shopping.continue: 購入を続ける
+front.shopping.guest_purchase_message: 会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
+front.shopping.guest_purchase: ゲスト購入
+front.shopping.nonmember: お客様情報の入力
+front.shopping.shipping_edit_title_nomember: 商品購入/お届け先の変更
+front.shopping.shipping_edit_header_customer: お届け先の追加
+front.shopping.shipping_edit_header_nonmember: お届け先の変更
+front.shopping.error: 購入エラー
+front.shopping.order_error: 購入処理でエラーが発生しました。
+front.shopping.system_error: 購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。
+front.shopping.out_of_stock: |
+  選択された商品(%product%)の在庫が不足しております。
+  一度に在庫数を超える購入はできません。
+front.shopping.over_sale_limit: |
+  選択された商品(%product%)は販売制限しております。
+  一度に販売制限数を超える購入はできません。
+front.shopping.out_of_stock_zero: |
+  選択された商品(%product%)の在庫が不足しております。
+  該当商品をカートから削除しました。
+front.shopping.over_price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。
+front.shopping.in_preparation: |
+  「%product%」はまだ配送の準備ができておりません。
+  恐れ入りますがお問い合わせページよりお問い合わせください。
+front.shopping.not_purchase: 現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。
+front.shopping.price_changed: 「%product%」の販売価格が変更されました。
+front.shopping.payment_total_invalid: 合計金額が不正です。
+front.shopping.different_payment_methods: 支払い方法が異なる商品が含まれているため、同時に購入することはできません。
+
+#====================================================================================
+# 管理画面
+#====================================================================================
+
+# flashメッセージ
+admin.common.save_complete: 保存しました
+admin.common.save_error: 保存に失敗しました
+admin.common.delete_complete: 削除しました
+admin.common.delete_error: 削除に失敗しました
+admin.common.delete_error_foreign_key: 関連するデータがあるため「%name%」を削除できませんでした
+admin.common.delete_error_already_deleted: 既に削除されています
+admin.common.move_complete: 並び順を更新しました
+admin.common.move_error: 並び順の更新に失敗しました
+admin.common.upload_complete: アップロードしました
+admin.common.upload_error: アップロードに失敗しました
+admin.common.csv_upload_complete: CSVファイルをアップロードしました
+admin.common.csv_upload_error: CSVファイルのアップロードに失敗しました
+admin.common.send_complete: メールを送信しました
+admin.common.send_error: メールの送信に失敗しました
+admin.common.create_complete: 作成しました
+admin.common.system_error: システムエラーが発生しました
+
+# action系のラベル
+admin.common.save: 保存
+admin.common.registration: 登録
+admin.common.registration__new: 新規登録
+admin.common.edit: 編集
+admin.common.copy: 複製
+admin.common.display: 表示
+admin.common.delete: 削除
+admin.common.cancel: キャンセル
+admin.common.search: 検索
+admin.common.search_clear: 検索条件をクリア
+admin.common.send: 送信
+admin.common.confirm: 確認
+admin.common.execute: 実行
+admin.common.close: 閉じる
+admin.common.bulk_registration: 一括登録を実行
+admin.common.decision: 決定
+admin.common.create: 作成
+admin.common.create__new: 新規作成
+admin.common.up: 上へ
+admin.common.down: 下へ
+admin.common.upload: アップロード
+admin.common.download: ダウンロード
+admin.common.prev: 前へ
+admin.common.next: 次へ
+admin.common.first: 最初へ
+admin.common.last: 最後へ
+
+# 汎用ラベル, メッセージ
+admin.common.show: 表示
+admin.common.hide: 非表示
+admin.common.required: 必須
+admin.common.bulk_actions: 一括操作
+admin.common.select: 選択してください
+admin.common.select__pref: 都道府県を選択
+admin.common.select__unspecified: 指定なし
+admin.common.separator__range: 〜
+admin.common.separator__colon: ：
+admin.common.count: '%count%件'
+admin.common.search_detail: 詳細検索
+admin.common.search_result: 検索結果：%count%件が該当しました
+admin.common.search_invalid_condition: 検索条件に誤りがあります
+admin.common.search_no_result: 検索条件に合致するデータが見つかりませんでした
+admin.common.search_try_change_condition: 検索条件を変えて、再度検索をお試しください
+admin.common.search_try_advanced_search: '[詳細検索]も試してみましょう'
+admin.common.csv_download: CSVダウンロード
+admin.common.csv_upload: CSVファイルをアップロード
+admin.common.csv_skeleton_download: 雛形ファイルダウンロード
+admin.common.csv_format: CSVファイルフォーマット
+admin.common.csv_select: CSVファイルを選択
+admin.common.file_select: ファイルを選択
+admin.common.file_select_empty: 選択されていません
+admin.common.csv_invalid_format: CSVのフォーマットが一致しません
+admin.common.csv_invalid_no_data: CSVデータが存在しません
+admin.common.csv_invalid_required: '%line%行目の%name%が設定されていません'
+admin.common.csv_invalid_greater_than_zero: '%line%行目の%name%は0以上の数値を設定してください。'
+admin.common.csv_invalid_format_line: '%line%行目のCSVフォーマットが一致しません'
+admin.common.csv_invalid_date_format: '%line%行目%name%の日付フォーマットが異なります'
+admin.common.csv_invalid_not_found: '%line%行目の%name%が存在しません'
+admin.common.csv_invalid_not_found_target: '%line%行目の%name%「%target_name%」が存在しません'
+admin.common.csv_invalid_not_same: '%line%行目の%name1%と%name2%には同じ値を使用できません'
+admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません'
+admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
+admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
+admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
+admin.common.delete_modal__title: 削除します
+admin.common.delete_modal__message: 'この操作はあとから取り消すことができません。「%name%」を削除してよろしいですか？'
+
+
+# エンティティに関連するラベル
+admin.common.id: ID
+admin.common.name: お名前
+admin.common.kana: お名前(カナ)
+admin.common.first_name: 名
+admin.common.last_name: 姓
+admin.common.company_name: 会社名
+admin.common.company_name_kana: 会社名(カナ)
+admin.common.address: 住所
+admin.common.pref: 都道府県
+admin.common.postal_symbol: 〒
+admin.common.postal_code_sample: 例：5530003
+admin.common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
+admin.common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
+admin.common.phone_number: 電話番号
+admin.common.mail_address: メールアドレス
+admin.common.password: パスワード
+admin.common.password_for_confirmation: パスワード(確認用)
+admin.common.gender: 性別
+admin.common.job: 職業
+admin.common.birth_day: 誕生日
+admin.common.birth_day__start: 誕生日(開始)
+admin.common.birth_day__end: 誕生日(終了)
+admin.common.point: ポイント
+admin.common.shop_memo: ショップ用メモ欄
+admin.common.create_date: 登録日
+admin.common.create_date__start: 登録日(開始)
+admin.common.create_date__end: 登録日(終了)
+admin.common.update_date: 更新日
+admin.common.update_date__start: 更新日(開始)
+admin.common.update_date__end: 更新日(終了)
+admin.common.last_update_date: 最終更新日
+admin.common.last_updater: 最終更新者
+admin.common.device_type: 端末種別
+admin.common.authority: 権限
+admin.common.payment_method: 支払方法
+admin.common.charge: 手数料
+#------------------------------------------------------------------------------------
+# ホーム
+#------------------------------------------------------------------------------------
+
+# 機能名称
+admin.home: ホーム
+admin.login: ログイン
+
+# ラベル
+admin.home.order_status_title: 注文状況
+admin.home.shop_status_title: ショップ状況
+admin.home.shop_status_out_of_stock: 在庫切れ商品数
+admin.home.shop_status_products: 取扱商品数
+admin.home.shop_status_customers: 会員数
+admin.home.sales_summany_title: 売上状況
+admin.home.sales_summany_value: '%amount% / %count% 件'
+admin.home.sales_summany_this_month: 今月の売上金額 / 売上件数
+admin.home.sales_summany_today: 今日の売上金額 / 売上件数
+admin.home.sales_summany_yesterday: 昨日の売上金額 / 売上件数
+admin.home.sales_summany_weekly: 週間
+admin.home.sales_summany_monthly: 月間
+admin.home.sales_summany_yearly: 年間
+admin.home.sales_summany_amount: 売上金額
+admin.home.sales_summany_count: 売上件数
+admin.home.recommend_plugins_title: おすすめのプラグイン
+admin.home.news_title: お知らせ
+
+admin.header.user_name: '%name% 様'
+admin.header.logout: ログアウト
+admin.header.last_login: 最終ログイン
+admin.header.change_password: パスワード変更
+
+admin.login.enable_javascript: JavaScript を有効にしてご利用ください
+admin.login.login: ログイン
+admin.login.login_id: ログインID
+admin.login.password: パスワード
+
+admin.change_password: パスワード変更
+admin.change_password.current_password: 現在のパスワード
+admin.change_password.new_password: 新しいパスワード
+admin.change_password.new_password_confirm: 新しいパスワード(確認)
+admin.change_password.password_changed: パスワードを更新しました
+
+admin.error.go_to_login: ログイン画面へ
+
+#------------------------------------------------------------------------------------
+# 商品管理
+#------------------------------------------------------------------------------------
+
+# 機能名称
+admin.product.product_management: 商品管理
+admin.product.product_list: 商品一覧
+admin.product.product_registration: 商品登録
+admin.product.product_class_registration: 商品規格登録
+admin.product.class_management: 規格管理
+admin.product.class_category_management: 規格分類管理
+admin.product.category_management: カテゴリ管理
+admin.product.tag_management: タグ管理
+admin.product.product_csv_upload: 商品CSV登録
+admin.product.category_csv_upload: カテゴリCSV登録
+
+# flashメッセージ
+admin.product.bulk_change_status_complete: '%status%: %count%件が正常に適用されました'
+admin.product.copy_complete: 商品を複製しました
+admin.product.copy_error: 商品の複製に失敗しました
+admin.product.reset_complete: 商品規格を初期化しました
+
+# ラベル/メッセージ
+admin.product.product: 商品
+admin.product.product__card_title: 商品情報
+admin.product.preview: 商品を確認
+admin.product.product_id: 商品ID
+admin.product.product_id__short: ID
+admin.product.display_status: 公開ステータス
+admin.product.display_status__short: 公開状態
+admin.product.display_status__show: 公開
+admin.product.display_status__hide: 非公開
+admin.product.display_status__abolished: 廃止
+admin.product.permanently_delete: 削除
+admin.product.permanently_delete__confirm_title: 商品を削除します
+admin.product.permanently_delete__confirm_message: 商品を削除してよろしいですか？
+admin.product.permanently_delete__in_prograss: 削除中...
+admin.product.permanently_delete__complete_message: 商品の削除処理が完了しました
+admin.product.permanently_delete__complete: 完了
+admin.product.permanently_delete__system_error: システムエラーが発生しました
+admin.product.copy__confirm_title: 商品を複製します
+admin.product.copy__confirm_message: 商品を複製してよろしいですか？
+admin.product.name: 商品名
+amdin.product.image: 商品画像
+amdin.product.image__short: 画像
+admin.product.sale_type: 販売種別
+admin.product.description_detail: 商品説明
+admin.product.description_list: 商品説明(一覧)
+admin.product.description_list__add: 商品説明(一覧)を追加
+admin.product.price: 価格
+admin.product.sale_price: 販売価格 # price02
+admin.product.normal_price: 通常価格 # price01
+admin.product.stock: 在庫数
+admin.product.stock__short: 在庫
+admin.product.stock__in_stock: あり
+admin.product.stock__out_of_stock: なし
+admin.product.search_word: 検索ワード
+admin.product.product_code: 商品コード
+admin.product.product_code__short: コード
+admin.product.product_name_and_code: 商品名・商品コード
+admin.product.sale_limit: 販売制限数
+admin.product.delivery_duration: 発送日目安
+admin.product.delivery_fee: 商品送料
+admin.product.free_area: フリーエリア
+admin.product.free_area__card_title: フリーエリア
+admin.product.delete_flag: 商品削除フラグ
+admin.product.search_category: カテゴリ検索
+admin.product.save_tag: タグ登録
+admin.product.create_date__card_title: 登録日・更新日
+admin.product.move_to_category: カテゴリの追加・編集
+admin.product.move_to_tag: タグの追加・編集
+admin.product.move_to_product_class: 商品規格の編集
+admin.product.move_to_product_class__confirm_title: '「%name%」の商品規格'
+admin.product.move_to_confirm_title: ページを移動します
+admin.product.move_to_confirm_message: '%name%に移動します。商品情報を保存してから移動しますか？'
+admin.product.move_to_confirm_move_only: 保存せずに移動
+admin.product.move_to_confirm_save_and_move: 保存して移動
+admin.product.multi_search_label: 商品名・商品ID・商品コード
+admin.product.product_class: 商品規格
+admin.product.product_class__short: 規格
+admin.product.product_class__create: 商品規格の設定
+admin.product.product_class__confirm: 規格確認
+admin.product.product_class__confirm_of_product: この商品の規格を確認
+admin.product.product_class__card_title: 商品規格情報
+admin.product.product_class__reset: 商品規格の初期化
+admin.product.product_class__reset_confirm_title: この商品の規格を初期化します
+admin.product.product_class__reset_confirm_message: この商品に登録された規格を初期化します。
+  これまでの販売データには影響はありませんが、この操作は取り消すことができません。
+  初期化しますか？
+admin.product.product_class__reset_confirm_excecute: 規格を初期化
+admin.product.product_class_set_stock_quantitiy: 在庫数を入力、もしくは在庫無制限を設定してください。
+admin.product.copy_first_line: 1行目をすべての行に複製
+admin.product.procuct_class_count: '%count%件の組み合わせがあります'
+admin.product.stock_unlimited: 在庫数無制限
+admin.product.stock_unlimited__short: 無制限
+admin.product.class_name: 規格名
+admin.product.class_name__backend_name: 管理名
+admin.product.class_name__card_title: 規格情報
+admin.product.class_category: 規格分類
+admin.product.class_category__card_title: 規格分類情報
+admin.product.class_category_name: 規格分類名
+admin.product.class_category_name__short: 分類名
+admin.product.class_category1: 規格分類1
+admin.product.class_category1__short: 規格1
+admin.product.class_category2: 規格分類2
+admin.product.class_category2__short: 規格2
+admin.product.category: カテゴリ
+admin.product.category__product_card_title: カテゴリ
+admin.product.category_id: カテゴリID
+  既存カテゴリの更新はカテゴリIDを設定
+admin.product.category_name: カテゴリ名
+admin.product.parent_category_id: 親カテゴリID
+admin.product.category_all: すべてのカテゴリ
+admin.product.tag: タグ
+admin.product.tag__product_card_title: タグ
+admin.product.select__class1: 規格1を選択してください
+admin.product.select__class2: 規格2を選択してください
+
+# 商品CSV雛形
+admin.product.product_csv.product_id_col: 商品ID
+admin.product.product_csv.product_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
+admin.product.product_csv.display_status_col: 公開ステータス(ID)
+admin.product.product_csv.display_status_description: ''
+admin.product.product_csv.product_name_col: 商品名
+admin.product.product_csv.product_name_description: ''
+admin.product.product_csv.shop_memo_col: ショップ用メモ欄
+admin.product.product_csv.shop_memo_description: ''
+admin.product.product_csv.description_list_col: 商品説明(一覧)
+admin.product.product_csv.description_list_description: ''
+admin.product.product_csv.description_detail_col: 商品説明(詳細)
+admin.product.product_csv.description_detail_description: ''
+admin.product.product_csv.keyword_col: 検索ワード
+admin.product.product_csv.keyword_description: ''
+admin.product.product_csv.free_area_col: フリーエリア
+admin.product.product_csv.free_area_description: ''
+admin.product.product_csv.delete_flag_col: 商品削除フラグ
+admin.product.product_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
+admin.product.product_csv.product_image_col: 商品画像
+admin.product.product_csv.product_image_description: 画像のファイル名を指定します。複数画像の場合、画像ファイル名をカンマ区切りで「"」で囲んでください。
+admin.product.product_csv.category_col: 商品カテゴリ(ID)
+admin.product.product_csv.category_description: カテゴリIDを指定します。複数カテゴリの場合、商品カテゴリIDをカンマ区切りで「"」で囲んでください。
+admin.product.product_csv.tag_col: タグ(ID)
+admin.product.product_csv.tag_description: タグIDを指定します。複数タグの場合、タグIDをカンマ区切りで「"」で囲んでください。
+admin.product.product_csv.sale_type_col: 販売種別(ID)
+admin.product.product_csv.sale_type_description: ''
+admin.product.product_csv.class_category1_col: 規格分類1(ID)
+admin.product.product_csv.class_category1_description: ''
+admin.product.product_csv.class_category2_col: 規格分類2(ID)
+admin.product.product_csv.class_category2_description: ''
+admin.product.product_csv.delivery_duration_col: 発送日目安(ID)
+admin.product.product_csv.delivery_duration_description: ''
+admin.product.product_csv.product_code_col: 商品コード
+admin.product.product_csv.product_code_description: ''
+admin.product.product_csv.stock_col: 在庫数
+admin.product.product_csv.stock_description: 在庫数無制限フラグが0の場合、0以上の数値を設定してください。
+admin.product.product_csv.stock_unlimited_col: 在庫数無制限フラグ
+admin.product.product_csv.stock_unlimited_description: '0:制限 1: 無制限を指定します。'
+admin.product.product_csv.sale_limit_col: 販売制限数
+admin.product.product_csv.sale_limit_description: 0以上の数値を設定
+admin.product.product_csv.normal_price_col: 通常価格
+admin.product.product_csv.normal_price_description: 0以上の数値を設定
+admin.product.product_csv.sale_price_col: 販売価格
+admin.product.product_csv.sale_price_description: 0以上の数値を設定
+admin.product.product_csv.delivery_fee_col: 送料
+admin.product.product_csv.delivery_fee_description: 商品ごとの送料設定が有効の場合、0以上の数値を設定
+
+# カテゴリCSV雛形
+admin.product.category_csv.category_id_col: カテゴリID
+admin.product.category_csv.category_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
+admin.product.category_csv.category_name_col: カテゴリ名
+admin.product.category_csv.category_name_description: ''
+admin.product.category_csv.parent_category_id_col: 親カテゴリID
+admin.product.category_csv.parent_category_id_description: ''
+admin.product.category_csv.delete_flag_col: カテゴリ削除フラグ
+admin.product.category_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
+
+#------------------------------------------------------------------------------------
+# 受注
+#------------------------------------------------------------------------------------
+
+# 機能名称
+admin.order.order_management: 受注管理
+admin.order.order_list: 受注一覧
+admin.order.order_registration: 受注登録
+admin.order.shipping_registration: 出荷登録
+admin.order.shipping_csv_upload: 出荷CSV登録
+admin.order.mail: メール通知
+
+# flashメッセージ
+admin.order.shipping_save_message: 出荷に関わる情報が変更されました。送料の変更が必要な場合は、受注管理より手動で変更してください。
+
+# ラベル/メッセージ
+admin.order.multi_search_label: 注文番号・お名前・会社名・メールアドレス・電話番号
+admin.order.order_info: 注文情報
+admin.order.order_date: 注文日
+admin.order.order_date__start: 注文日(開始)
+admin.order.order_date__end: 注文日(終了)
+admin.order.payment_date: 入金日
+admin.order.payment_date__start: 入金日(開始)
+admin.order.payment_date__end: 入金日(終了)
+admin.order.order_no: 注文番号
+admin.order.shipping_date: 出荷日
+admin.order.message: お問い合わせ
+admin.order.message_short: お問合せ
+admin.order.purchase_price: 購入金額
+admin.order.purchase_price__start: 購入金額(開始)
+admin.order.purchase_price__end: 購入金額(終了)
+admin.order.orderer: 注文者
+admin.order.orderer_name: 注文者名
+admin.order.orderer_kana: 注文者名(カナ)
+admin.order.orderer_company_name: 注文者会社名
+admin.order.copy_orderer: 注文者情報をコピー
+admin.order.output_delivery_note: 納品書を出力
+admin.order.output_delivery_note_short: 納品書出力
+admin.order.add_shipping: 出荷情報の追加
+admin.order.delete_shipping: 出荷情報を削除
+admin.order.delete_shipping_error__confirm_title: 出荷情報を削除できません
+admin.order.delete_shipping_error__confirm_message: まず出荷情報に設定されている明細を削除してから、出荷情報を削除してください
+admin.order.delete_shipping__confirm_message: '出荷情報は注文から削除されます。出荷情報(%num%)を削除しますか？'
+admin.order.order_item_info: 注文商品情報
+admin.order.order_item_type: 明細種別
+admin.order.add_product_item: 商品を追加
+admin.order.add_other_item: その他の明細を追加
+admin.order.update_calculation_results: 計算結果を更新
+admin.order.amount: 金額
+admin.order.quantity: 数量
+admin.order.tax_rate: 税率
+admin.order.tax_type: 課税区分
+admin.order.subtotal: 小計
+admin.order.discount: 値引き
+admin.order.delivery_fee: 送料
+admin.order.add_point: 加算ポイント
+admin.order.use_point: 利用ポイント
+admin.order.total: 合計
+admin.order.payment_total: お支払い合計
+admin.order.order_status: 対応状況
+admin.order.last_buy_date: 最終購入日
+admin.order.last_buy_date__start: 最終購入日(開始)
+admin.order.last_buy_date__end: 最終購入日(終了)
+admin.order.purchase_product: 購入商品名
+admin.order.purchase_count: 購入件数
+admin.order.purchase_count__start: 購入件数(開始)
+admin.order.purchase_count__end: 購入件数(終了)
+admin.order.tracking_number: お問い合わせ番号
+admin.order.tracking_number_error: お問い合わせ番号は半角英数字かハイフンのみを入力してください。
+admin.order.mail_purchase_product_count: '他%count%点'
+admin.order.mail_history: メール送信履歴
+admin.order.mail_send_date: メール送信日時
+admin.order.mail_subject: 件名
+admin.order.mail_body: 本文
+admin.order.mail_create: メールを作成
+admin.order.mail_destination_info: メール送信先
+admin.order.mail_mail_info: メール内容
+admin.order.mail_confirm: 送信内容を確認
+admin.order.mail_template: テンプレート
+admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
+admin.order.mail_failed: 取得に失敗しました。
+admin.order.shipping_info: 出荷情報
+admin.order.delivery_date: お届け日
+admin.order.delivery_time: お届け時間
+admin.order.delivery_provider: 配送方法
+admin.order.to_shipped: 出荷済にする
+admin.order.send_mail: メールする
+admin.order.shop_memo_for_shipped: 出荷用メモ欄
+admin.order.shipping__card_title: 出荷情報
+admin.order.shipping_id: 出荷ID
+admin.order.shipping_mail: 出荷メール
+admin.order.shipping_mail__completed: '%date%に出荷メールを送信済です。'
+admin.order.shipping_mail__sent: 送信済
+admin.order.shipping_mail__unsent: 未送信
+admin.order.bulk_action__confirm_view_mail_body: メールの文面を確認
+admin.order.bulk_action__confirm_message: この操作は保存済みのデータに対して処理を行います。また、編集中で登録が完了していない情報は失われます。登録が完了していない情報がある場合は先に登録を完了してください。
+admin.order.bulk_action__in_progress_message: 処理中...
+admin.order.bulk_action__complete_message: 完了しました。
+admin.order.shipping_mail_send: 出荷メール送信
+admin.order.shipping_mail_send__confirm_title: 出荷お知らせメールを送信します
+admin.order.shipping_mail_send__confirm_message: 出荷お知らせメールを送信します。メールの文面を確認してから［送信］ボタンを押してください。この操作は取り消すことができません。ご注意ください。
+admin.order.shipping_mail_send__complete_message: '%count%件のメールを送信しました。'
+admin.order.to_shipped__confirm_title: 出荷済に更新します
+admin.order.to_shipped__confirm_message: 出荷情報を出荷済みにします。同時におこなう操作を選択してから［実行］ボタンを押してください。この操作は取り消すことができません。ご注意ください。
+admin.order.to_shipped__confirm_send_mail: メールの送信
+admin.order.to_shipped__confirm_send_mail_in_same_time: 出荷お知らせメールを同時に送る
+admin.order.change_status: 対応状況の変更
+admin.order.csv_shipping_date_description: 出荷日を「YYYY-MM-DD」の形式で設定
+admin.order.order_csv: 受注CSV
+admin.order.shipping_csv: 出荷CSV
+admin.order.shipping_status: 出荷状況
+admin.order.delivery: お届け先
+admin.order.not_payment: 未入金
+admin.order.unshipped: 未出荷
+admin.order.delete__confirm_title: 注文情報を削除します
+admin.order.delete__confirm_message: 注文情報を削除してよろしいですか？
+admin.order.delete_item__confirm_message: '明細は注文から削除されます。「%name%」を削除してよろしいですか？'
+admin.order.change_payment_method_message: お支払方法の変更に伴う手数料の変更は手動にてお願いします
+admin.order.non_member: 非会員
+admin.order.search_from_customer: 会員から検索・入力
+admin.order.search_customer_title: 会員を検索
+admin.order.product_info: 商品情報
+admin.order.edit_multiple_shipping: お届け先を編集
+admin.order.edit_multiple_shipping_description: 複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます
+admin.order.product_item_not_found: 商品が追加されていません
+admin.order.delivery_note_create_date: 発行日
+admin.order.delivery_note_title: タイトル
+admin.order.delivery_note_title__default: お買上げ明細書(納品書)
+admin.order.delivery_note_output_format: 出力形式
+admin.order.delivery_note_output_format__browser: ブラウザで開く
+admin.order.delivery_note_output_format__file: ファイルに保存
+admin.order.delivery_note_message: メッセージ
+admin.order.delivery_note_message__default1: このたびはお買上げいただきありがとうございます。
+admin.order.delivery_note_message__default2: 下記の内容にて納品させていただきます。
+admin.order.delivery_note_message__default3: ご確認くださいますよう、お願いいたします。
+admin.order.delivery_note_memo: 備考
+admin.order.delivery_note_line1: 1行目
+admin.order.delivery_note_line2: 2行目
+admin.order.delivery_note_line3: 3行目
+admin.order.delivery_note_save_input: 入力内容を保存する
+admin.order.delivery_note_download_error: 'ダウンロードに失敗しました'
+admin.order.delivery_note_parameter_error: '出荷IDが指定されていません'
+
+# 出荷CSV雛形
+admin.order.shipping_csv.shipping_id_col: 出荷ID
+admin.order.shipping_csv.shipping_id_description: ''
+admin.order.shipping_csv.tracking_number_col: お問い合わせ番号
+admin.order.shipping_csv.tracking_number_description: ''
+admin.order.shipping_csv.shipping_date_col: 出荷日
+admin.order.shipping_csv.shipping_date_description: '出荷日を「YYYY-MM-DD」の形式で設定'
+
+#------------------------------------------------------------------------------------
+# 会員
+#------------------------------------------------------------------------------------
+
+# 機能名称
+admin.customer.customer_management: 会員管理
+admin.customer.customer_list: 会員一覧
+admin.customer.customer_registration: 会員登録
+admin.customer.customer_address_registration: お届け先登録
+
+# ラベル/メッセージ
+admin.customer.customer_id: 会員ID
+admin.customer.customer_info: 会員情報
+admin.customer.purchase_history: 注文履歴
+admin.customer.purchase_history__not_found: 注文履歴がありません
+admin.customer.customer_address: お届け先住所
+admin.customer.customer_address__not_found: お届け先住所がありません
+admin.customer.customer_address__add: お届け先住所を追加
+admin.customer.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
+admin.customer.customer_address_id: お届け先ID
+admin.customer.customer_address_info: お届け先情報
+admin.customer.multi_search_label: 会員ID・メールアドレス・お名前
+admin.customer.customer_status: 会員種別
+admin.customer.birth_month: 誕生月
+admin.customer.resend: 仮会員メール再送
+admin.customer.resend_confirm_title: 仮会員メールを再送します。
+admin.customer.resend_confirm_message: 仮登録メールを再送してもよろしいですか？
+admin.customer.no_customer_address: この会員のお届け先がありません
+admin.customer.no_purchase_history: この会員の購入履歴がありません
+
+#------------------------------------------------------------------------------------
+# コンテンツ管理
+#------------------------------------------------------------------------------------
+
+# 機能名称
+admin.content.contents_management: コンテンツ管理
+admin.content.news_management: 新着情報管理
+admin.content.file_management: ファイル管理
+admin.content.layout_management: レイアウト管理
+admin.content.page_management: ページ管理
+admin.content.block_management: ブロック管理
+admin.content.cache_management: キャッシュ管理
+
+# ラベル/メッセージ
+admin.content.file.add_file__card_title: ファイル・フォルダを追加
+admin.content.file.add_file: ファイルを追加
+admin.content.file.add_directory: フォルダを追加
+admin.content.file.directory_name: フォルダ名
+admin.content.file.file_list__card_title: このフォルダ内のファイル
+admin.content.file.updated: 更新
+admin.content.file.directory_tree: フォルダ構成
+admin.content.layout_delete: レイアウトを削除
+admin.content.layout_no_page: ページが登録されていません
+admin.content.layout__card_title: レイアウト概要
+admin.content.layout_name: レイアウト名
+admin.content.layout_edit__card_title: レイアウト編集
+admin.content.layout_drag_and_drop_message: ブロックをドラッグ＆ドロップ
+admin.content.layout_up: 上に移動
+admin.content.layout_down: 下に移動
+admin.content.layout_move_to: セクションに移動
+admin.content.layout_preview_code: コードプレビュー
+admin.content.layout_preview_code__confirm_title: ブロックのコードプレビュー
+admin.content.layout_preview_code__confirm_message: 編集が必要な場合はブロック編集画面から編集してください（この時レイアウト設定は保存されません）
+admin.content.layout_preview_code__confirm_move_to_block: コードを編集
+admin.content.layout_move_to__confirm_title: 'ブロックを移動'
+admin.content.layout_move_to__confirm_message: ブロックの移動先を選択してください
+admin.content.layout_move_to__execute: 移動
+admin.content.layout_section__unused: '未使用ブロック'
+admin.content.layout_section__head: '<head></head>タグ内'
+admin.content.layout_section__body_after: '<body>タグ直後'
+admin.content.layout_section__header: '#header'
+admin.content.layout_section__contents_top: '#contents_top'
+admin.content.layout_section__side_left: '#side_left'
+admin.content.layout_section__main_top: '#main_top'
+admin.content.layout_section__main_bottom: '#main_bottom'
+admin.content.layout_section__side_right: '#side_right'
+admin.content.layout_section__contents_bottom: '#contents_bottom'
+admin.content.layout_section__footer: '#footer'
+admin.content.layout_section__drawer: '#drawer'
+admin.content.layout_section__close_body_before: '</body>タグ直前'
+admin.content.page_name: ページ名
+admin.content.page__card_title: ページ設定
+admin.content.page_url: URL
+admin.content.page_url_exists: 既にURLが存在しています。
+admin.content.page_file_name: ファイル名
+admin.content.page_source_code: コード
+admin.content.page_layout__card_title: レイアウト設定
+admin.content.page_pc: PC
+admin.content.page_mobile: モバイル
+admin.content.page_meta__card_title: メタ設定
+admin.content.page_meta_author: author
+admin.content.page_meta_description: description
+admin.content.page_meta_keyword: keyword
+admin.content.page_meta_robot: robot
+admin.content.page_meta_metatag: metatag
+admin.content.page_meta_metatag_placeholder: |
+  <meta property="og:title" content="ページのタイトル" />
+  <meta property="og:image" content="画像のURL" />
+admin.content.block_name: ブロック名
+admin.content.block__card_title: ブロック設定
+admin.content.block_file_name: ファイル名
+admin.content.block_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
+admin.content.block_source_code: コード
+admin.content.cache__card_title: キャッシュ管理
+admin.content.cache_message: 本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。
+admin.content.cache_delete: キャッシュ削除
+
+#------------------------------------------------------------------------------------
+# 設定
+#------------------------------------------------------------------------------------
+
+# 機能名称
+admin.setting: 設定
+admin.setting.shop: 店舗設定
+admin.setting.shop.shop_setting: 基本設定
+admin.setting.shop.tradelaw_setting: 特定商取引法設定
+admin.setting.shop.agreement_setting: 利用規約設定
+admin.setting.shop.payment_list: 支払方法一覧
+admin.setting.shop.payment_setting: 支払方法設定
+admin.setting.shop.delivery_list: 配送方法一覧
+admin.setting.shop.delivery_setting: 配送方法設定
+admin.setting.shop.tax_setting: 税率設定
+admin.setting.shop.mail_setting: メール設定
+admin.setting.shop.csv_setting: CSV出力項目設定
+admin.setting.system: システム設定
+admin.setting.system.member_management: メンバー管理
+admin.setting.system.member_password_change: パスワード変更
+admin.setting.system.authority_management: 権限管理
+admin.setting.system.security_management: セキュリティ管理
+admin.setting.system.log_display: ログ表示
+admin.setting.system.master_data_management: マスタデータ管理
+admin.setting.system.system_info: システム情報
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：基本設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.shop.base_info: 店舗情報
+admin.setting.shop.company_name_kana: 会社名(カナ)
+admin.setting.shop.shop.shop_name: 店名
+admin.setting.shop.shop.shop_name_kana: 店名(カナ)
+admin.setting.shop.shop.shop_name_en: 店名(英語表記)
+admin.setting.shop.shop.business_hour: 店舗営業時間
+admin.setting.shop.shop.email_from: 送信元メールアドレス(From)
+admin.setting.shop.shop.email_for_inquiries: 問い合わせ受付メールアドレス(From, ReplyTo)
+admin.setting.shop.shop.email_reply_to: 返信受付メールアドレス(ReplyTo)
+admin.setting.shop.shop.email_return_path: 送信エラー受付メールアドレス(ReturnPath)
+admin.setting.shop.shop.good_traded: 取り扱い商品説明文
+admin.setting.shop.shop.message: 店舗からのメッセージ
+admin.setting.shop.shop.option_delivery_fee: 送料設定
+admin.setting.shop.shop.option_delivery_fee_free_amount: 送料無料条件（金額）
+admin.setting.shop.shop.option_delivery_fee_free_quantity: 送料無料条件（数量）
+admin.setting.shop.shop.option_delivery_fee_by_product: 商品ごとの送料設定
+admin.setting.shop.shop.option_customer: 会員設定
+admin.setting.shop.shop.option_customer_activate: 仮会員機能
+admin.setting.shop.shop.option_mypage_order_status_display: マイページに注文状況を表示
+admin.setting.shop.shop.option_favorite_product: お気に入り商品機能
+admin.setting.shop.shop.option_remember_me: 自動ログイン機能
+admin.setting.shop.shop.option_product: 商品設定
+admin.setting.shop.shop.nostock_hidden: 在庫切れ商品の非表示
+admin.setting.shop.shop.option_tax: 税設定
+admin.setting.shop.shop.option_product_tax: 商品別税率機能
+admin.setting.shop.shop.option_point: ポイント設定
+admin.setting.shop.shop.option_point_enabled: ポイント機能
+admin.setting.shop.shop.option_point_rate: ポイント付与率
+admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レート
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：支払方法設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.payment.terms_of_use: 利用条件
+admin.setting.shop.payment.unlimited: 無制限
+admin.setting.shop.payment.payment_name: 支払方法名
+admin.setting.shop.payment.logo_image: ロゴ画像
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：配送方法設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.delivery.base_info: 基本情報
+admin.setting.shop.delivery.delivery_name: 配送業者名
+admin.setting.shop.delivery.delivery_sevice_name: 配送方法名称
+admin.setting.shop.delivery.tracking_number_url: お問い合わせ番号URL
+admin.setting.shop.delivery.sale_type: 販売種別
+admin.setting.shop.delivery.payment_method: 取り扱う支払方法
+admin.setting.shop.delivery.delivery_time_setting: お届け時間設定
+admin.setting.shop.delivery.delivery_fee_by_pref: 都道府県別送料設定
+admin.setting.shop.delivery.apply_to_pref__title: 全国一律に設定
+admin.setting.shop.delivery.apply_to_pref__button: 各都道府県に適用
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：税率設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.tax.rounding_type: 課税規則
+admin.setting.shop.tax.base_rate_setting: 基本税率設定
+admin.setting.shop.tax.tax_rate: 税率
+admin.setting.shop.tax.apply_date: 適用日時
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：メール設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.mail.mail_template_edit: テンプレート編集
+admin.setting.shop.mail.mail_template: テンプレート
+admin.setting.shop.mail.mail_subject: 件名
+admin.setting.shop.mail.mail_body: 本文
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：CSV出力項目設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.csv.csv_colmuns: CSV出力項目
+admin.setting.shop.csv.csv_type: CSV種別
+admin.setting.shop.csv.non_output_colmuns: 出力しない項目
+admin.setting.shop.csv.output_colmuns: 出力する項目
+admin.setting.shop.csv.operation: 操作項目
+admin.setting.shop.csv.operation__output: 出力
+admin.setting.shop.csv.operation__release: 解除
+admin.setting.shop.csv.operation__all_output: すべて出力
+admin.setting.shop.csv.operation__all_release: すべて解除
+admin.setting.shop.csv.order: 項目順序
+admin.setting.shop.csv.order__up: ひとつ上へ
+admin.setting.shop.csv.order__down: ひとつ下へ
+admin.setting.shop.csv.order__top: 一番上へ
+admin.setting.shop.csv.order__bottom: 一番下へ
+admin.setting.shop.csv.how_to_use: |
+  任意の項目を押して選択してから［項目操作］ボタンで移動し、CSV出力する項目を設定してください。
+  出力する項目の順序は［項目順序］ボタンで変更することができます。
+  複数の項目を選択する場合はctrlキー（Macの場合はcommandキー）を押しながら項目を押します。shiftキーを押しながら選択すると範囲選択ができます。
+
+#------------------------------------------------------------------------------------
+# 設定：システム設定：メンバー管理 / パスワード変更
+#------------------------------------------------------------------------------------
+
+admin.setting.system.member.member_registration: メンバー登録
+admin.setting.system.member.name: 名前
+admin.setting.system.member.department: 所属
+admin.setting.system.member.login_id: ログインID
+admin.setting.system.member.password: パスワード
+admin.setting.system.member.password_confirm: パスワード(確認)
+admin.setting.system.member.work: 稼働
+admin.setting.system.member.delete__confirm_title: メンバーを削除します。
+admin.setting.system.member.delete__confirm_message: メンバーを削除してよろしいですか？
+admin.setting.system.member.work_can_not_change: 非稼働に変更することはできません。
+
+#------------------------------------------------------------------------------------
+# 設定：システム設定：権限管理
+#------------------------------------------------------------------------------------
+
+admin.setting.system.authority__card_title: 権限設定
+admin.setting.system.authority.description: '%url%以降からのURLを拒否URLに入力してください。
+  拒否URL以降がアクセス拒否されます。(URLは前方一致)'
+admin.setting.system.authority.example: '例) /setting <span class="text-danger">「/」を必ず記入してください</span>'
+admin.setting.system.authority.authority: 権限
+admin.setting.system.authority.deny_url: 拒否URL
+admin.setting.system.authority.add_row: 行を追加
+admin.setting.system.authority.authority_not_selected: 権限が選択されていません。
+admin.setting.system.authority.deny_url_is_empty: 拒否URLが入力されていません。
+admin.setting.system.authority.deny_url_is_invalid: 「/」を必ず記入してください。
+
+#------------------------------------------------------------------------------------
+# 設定：システム設定：セキュリティ管理
+#------------------------------------------------------------------------------------
+
+admin.setting.system.security__card_title: セキュリティ設定
+admin.setting.system.security.admin_url: 管理画面URL
+admin.setting.system.security.admin_url_description: 推測されにくいURLを設定することを推奨します。
+admin.setting.system.security.admin_url_changed: 管理画面のURLを変更しました。再度ログインを行ってください。
+admin.setting.system.security.ip_limit: IP制限
+admin.setting.system.security.ip_limit_description: |
+  管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
+  アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。
+admin.setting.system.security.ip_limit_sample: |
+  127.0.0.1
+  192.0.2.1
+admin.setting.system.security.force_ssl: SSLを強制
+admin.setting.system.security.force_ssl_description: httpsからの接続でなければSSL制限を設定できません。
+admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
+admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
+
+#------------------------------------------------------------------------------------
+# 設定：システム設定：ログ表示
+#------------------------------------------------------------------------------------
+
+admin.setting.system.log.line_number: 行
+admin.setting.system.log.read: 読み込む
+
+#------------------------------------------------------------------------------------
+# 設定：システム設定：マスタデータ管理
+#------------------------------------------------------------------------------------
+
+admin.setting.system.master_data.select: 選択
+admin.setting.system.master_data.description: |
+  マスターデータの値を設定できます。
+  重複したIDを登録することはできません。
+  空のIDを登録すると、値は削除されます。
+  設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
+admin.setting.system.master_data.id: ID
+admin.setting.system.master_data.name: Name
+admin.setting.system.master_data.duplicate_id: 重複したIDを登録することはできません。
+
+#------------------------------------------------------------------------------------
+# 設定：システム設定：システム情報
+#------------------------------------------------------------------------------------
+
+admin.setting.system.system.eccube: EC-CUBE
+admin.setting.system.system.server_os: サーバーOS
+admin.setting.system.system.database_server: DBサーバー
+admin.setting.system.system.web_server: WEBサーバー
+admin.setting.system.system.php: PHP
+admin.setting.system.system.user_agent: User Agent
+admin.setting.system.system.php_info: PHP情報
+
+#------------------------------------------------------------------------------------
+# オーナーズストア
+#------------------------------------------------------------------------------------
+
+admin.store: オーナーズストア
+
+# TODO: メッセージ精査
+admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
+admin.store.plugin.popup.delete.confirm.message: このプラグインを削除してもよろしいですか？
+admin.store.authentication_setting.803: オーナーズストア
+admin.store.authentication_setting.804: プラグイン認証キーの設定
+admin.store.authentication_setting.805: 認証キーの設定
+admin.store.authentication_setting.806: 認証キー
+admin.store.authentication_setting.807: '※認証キーは<a target="_blank" href="owners_store_url">EC-CUBEオーナーズストア</a>で取得できます。'
+admin.store.authentication_setting.808: 設定
+admin.store.plugin.809: インストールプラグイン一覧
+admin.store.plugin.810: オーナーズストア
+admin.store.plugin.811: オーナーズストアから新規追加
+admin.store.plugin.812: オーナーズストアのプラグイン
+admin.store.plugin.813: アップロードして新規追加
+admin.store.plugin.814: ユーザー独自プラグイン
+admin.store.plugin.815: 未登録プラグイン
+admin.store.plugin.816: プラグイン名
+admin.store.plugin.help: 接続に問題があるため、データを更新することはできません（イメージ、アップグレード情報など）。
+admin.store.plugin_confirm.817: オーナーズストア
+admin.store.plugin_confirm.818: プラグインインストール
+admin.store.plugin_confirm.819: 以下のプラグインをインストールします。
+admin.store.plugin_confirm.820: '%plugin%をインストールするために、以下のプラグインもインストールします。'
+admin.store.plugin_confirm.821: インストール
+admin.store.plugin_confirm.822: 戻る
+admin.store.plugin_confirm_uninstall.823: オーナーズストア
+admin.store.plugin_confirm_uninstall.824: プラグイン削除
+admin.store.plugin_confirm_uninstall.825: 以下のプラグインを削除します。
+admin.store.plugin_confirm_uninstall.826: 削除
+admin.store.plugin_confirm_uninstall.827: 戻る
+admin.store.plugin_handler.828: オーナーズストア
+admin.store.plugin_handler.829: 高度な設定
+admin.store.plugin_handler.830: プラグイン名
+admin.store.plugin_handler.831: ハンドラ名
+admin.store.plugin_handler.832: 優先度
+admin.store.plugin_handler.833: 操作
+admin.store.plugin_handler.834: 上へ
+admin.store.plugin_handler.835: 下へ
+admin.store.plugin_handler.836: プラグインハンドラー管理
+admin.store.plugin_handler.837: 検索条件に該当するデータがありませんでした
+admin.store.plugin_install.838: オーナーズストア
+admin.store.plugin_install.839: プラグインのアップロード
+admin.store.plugin_install.840: 新規プラグインアップロード
+admin.store.plugin_install.841: プラグイン<br>(zip、tar、tar.gz形式)
+admin.store.plugin_install.842: アップロード
+admin.store.plugin_owners_confirm.843: 価格
+admin.store.plugin_owners_confirm.844: DL数
+admin.store.plugin_owners_confirm.845: プラグインバージョン
+admin.store.plugin_owners_confirm.846: 最終更新日
+admin.store.plugin_owners_confirm.847: EC-CUBE対応バージョン
+admin.store.plugin_owners_confirm.848: 'ファイルサイズ<br>約 %size% KB'
+admin.store.plugin_owners_confirm.848.1: ファイルサイズ
+admin.store.plugin_owners_confirm.848.2: 約
+admin.store.plugin_owners_confirm.849: ライセンス
+admin.store.plugin_owners_confirm.850: 'このプラグインはEC-CUBE %version%をサポートしていないため、正常に動作しない可能性があります。'
+admin.store.plugin_owners_confirm.851: '%dependency%が必要です。同時にインストールされます。'
+admin.store.plugin_owners_confirm.852: '<strong>制作者</strong> : '
+admin.store.plugin_owners_install.853: オーナーズストア
+admin.store.plugin_owners_install.854: 購入済プラグイン
+admin.store.plugin_owners_install.855: プラグイン一覧
+admin.store.plugin_owners_install.856: 認証キーを設定してください
+admin.store.plugin_owners_install.857: 認証キー設定画面へ
+admin.store.plugin_owners_panel.858: おすすめ追加機能
+admin.store.plugin_owners_panel.859: インストール済
+admin.store.plugin_owners_panel.860: 今すぐ更新
+admin.store.plugin_owners_panel.861: 今すぐ購入
+admin.store.plugin_owners_panel.862: 今すぐインストール
+admin.store.plugin_owners_panel.863: プラグインバージョン
+admin.store.plugin_owners_panel.864: 更新日
+admin.store.plugin_owners_panel.865: EC-CUBE対応バージョン
+admin.store.plugin_owners_panel.866: 'ファイルサイズ<br>約 %size% KB'
+admin.store.plugin_owners_panel.867: 'このプラグインはEC-CUBE %version%をサポートしていないため、正常に動作しない可能性があります。'
+admin.store.plugin_owners_panel.868: '<strong>提供元</strong> : '
+admin.store.plugin_owners_search.form.placeholder: すべて
+admin.store.plugin_owners_search.form.category: カテゴリ
+admin.store.plugin_owners_search.form.price_type: 有料／無料
+admin.store.plugin_owners_search.form.price_type.fee: 有料
+admin.store.plugin_owners_search.form.price_type.free: 無料
+admin.store.plugin_owners_search.form.keyword: キーワード
+admin.store.plugin_owners_search.form.sort.new: 新着順
+admin.store.plugin_owners_search.form.sort.price: 価格が低い順
+admin.store.plugin_owners_search.form.sort.dl: DL
+admin.store.plugin_owners_search.search_button: 検索
+admin.store.plugin_owners_search.search_results: 検索結果（%number%／%total%ページ）
+admin.store.plugin_owners_search.latest: 最新バージョン：
+admin.store.plugin_owners_search.price: 販売価格
+admin.store.plugin_owners_search.dl: DL数
+admin.store.plugin_owners_search.support: 対応バージョン
+admin.store.plugin_owners_search.detail: 詳細
+admin.store.plugin_owners_search.install.free: 入手する
+admin.store.plugin_owners_search.install.fee: 購入する
+admin.store.plugin_owners_search.install: インストール済み
+admin.store.plugin_owners_search.modal.header: 商品詳細
+admin.store.plugin_owners_search.modal.download: ダウンロード数
+admin.store.plugin_owners_search.modal.version: プラグインバージョン
+admin.store.plugin_owners_search.modal.support: EC-CUBE知王バージョン
+admin.store.plugin_owners_search.modal.public_date: 公開日
+admin.store.plugin_owners_search.modal.update_date: 最終更新日
+admin.store.plugin_owners_search.modal.size: ファイルサイズ
+admin.store.plugin_owners_search.modal.size.format: '約 %size% KB'
+admin.store.plugin_owners_search.modal.license: ライセンス
+admin.store.plugin_owners_search.modal.develop: 制作者
+admin.store.plugin_owners_search.modal.contact: 資料請求・お問い合わせ
+admin.store.plugin_owners_search.modal.manual: マニュアルダウンロード
+admin.store.plugin_owners_search.modal.note: 'このプラグインはEC-CUBE %version%をサポートしていないため、正常に動作しない可能性があります。'
+admin.store.plugin_owners_search.modal.cancel: 一覧に戻る
+admin.store.plugin_owners_search.modal.submit: インストール確認へ
+admin.store.plugin_owners_search.modal.dependency: '%dependency%が必要です。同時にインストールされます。'
+admin.store.plugin_search.884: オーナーズストア
+admin.store.plugin_search.885: プラグインを探す
+admin.store.plugin_search.886: 検索結果
+admin.store.plugin_table.887: プラグイン名称
+admin.store.plugin_table.888: バージョン
+admin.store.plugin_table.889: コード
+admin.store.plugin_table.890: アップデート
+admin.store.plugin_table.891: 設定
+admin.store.plugin_table.892: (停止中)
+admin.store.plugin_table.893: 無効にする
+admin.store.plugin_table.894: 有効にする
+admin.store.plugin_table.895: このプラグインを削除してもよろしいですか？
+admin.store.plugin_table.896: 削除
+admin.store.plugin_table.897: 詳細を表示
+admin.store.plugin_table.898: アップデート
+admin.store.plugin_table.900: インストールされているプラグインはありません。
+admin.store.plugin_table.901: ステータス
+admin.store.plugin_table.902: 有効化
+admin.store.plugin_table.903: 無効化
+admin.store.plugin_table_official.901: プラグイン名
+admin.store.plugin_table_official.902: プラグインアイコン画像
+admin.store.plugin_table_official.903: プラグインバージョン
+admin.store.plugin_table_official.904: プラグインコード
+admin.store.plugin_table_official.905: アップデート
+admin.store.plugin_table_official.906: 設定
+admin.store.plugin_table_official.907: 制作者
+admin.store.plugin_table_official.908: (停止中)
+admin.store.plugin_table_official.909: 無効にする
+admin.store.plugin_table_official.910: 有効にする
+admin.store.plugin_table_official.911: 削除
+admin.store.plugin_table_official.912: 詳細を表示
+admin.store.plugin_table_official.913: アップロード
+admin.store.plugin_table_official.914: 新バージョンのプラグインが利用可能です。
+admin.store.plugin_table_official.915: 無効にする状態で利用可能
+admin.store.plugin_table_official.916: アップデート
+admin.store.plugin_table_official.917: プラグインバージョン：%version%
+admin.store.plugin_table_official.918: EC-CUBE対応バージョン：%versions%
+admin.store.plugin_table_official.919: 更新日：%update_date%
+admin.store.plugin_table_official.920: アップデート対象プラグインはありません
+admin.store.plugin_table_official.921: 詳細情報
+admin.store.plugin_table_official.924: 有効化
+admin.store.plugin_table_official.925: 無効化
+admin.store.plugin_table_official.923: インストールされているプラグインはありません。
+admin.store.template.924: オーナーズストア
+admin.store.template.925: テンプレート管理
+admin.store.template.926: テンプレート一覧
+admin.store.template.927: 選択
+admin.store.template.928: 名前
+admin.store.template.929: 保存先
+admin.store.template.930: ダウンロード
+admin.store.template.931: 削除
+admin.store.template.932: このテンプレートを削除してもよろしいですか？
+admin.store.template.933: 登録
+admin.store.template_add.934: オーナーズストア
+admin.store.template_add.935: テンプレートのアップロード
+admin.store.template_add.936: 新規テンプレートアップロード
+admin.store.template_add.937: テンプレートコード
+admin.store.template_add.938: テンプレート名
+admin.store.template_add.939: テンプレートファイル
+admin.store.template_add.940: アップロード
+admin.store.unregisterd_plugin_table.941: プラグイン
+admin.store.unregisterd_plugin_table.942: バージョン
+admin.store.unregisterd_plugin_table.943: コード
+admin.store.unregisterd_plugin_table.944: アップデート
+admin.store.unregisterd_plugin_table.945: 設定
+admin.store.unregisterd_plugin_table.946: 不明
+admin.store.unregisterd_plugin_table.947: 不明
+admin.store.unregisterd_plugin_table.948: 詳細を表示
+admin.store.unregisterd_plugin_table.949: 不明
+admin.store.unregisterd_plugin_table.950: 設定
+admin.store.install.label: 'プラグイン (zip、tar、tar.gz形式)'
+
+
+
+#------------------------------------------------------------------------------------
+# 情報
+#------------------------------------------------------------------------------------
+
+admin.info: 情報
+admin.info.official_site: 公式サイト
+admin.info.community: 開発コミュニティ
+
+#------------------------------------------------------------------------------------
+# ツールチップ
+#------------------------------------------------------------------------------------
+
+# TODO
+
+# tooltip.xxx.yyy: 〇〇を有効にします。フロント画面には表示されません。
+
+#====================================================================================
+# インストール画面
+#====================================================================================
+
+install.next: 次へ進む
+install.back: 前へ戻る
+install.update: 更新する
+install.title: ようこそ | EC-CUBEインストール
+install.welcom: ようこそ
+install.check_permission: 権限チェック
+install.site_configration: サイトの設定
+install.database_configration: データベースの設定
+install.database_initalization: データベースの初期化
+install.install_completed: インストール完了
+install.start_eccube_installation: '<p>EC-CUBEのインストールを開始します。</p><p>あらかじめ、使用するデータベースの情報（DB名など）をご準備ください。</p>'
+install.cooperation_of_providing_information: 'EC-CUBEのシステム向上・デバッグのため、サイト情報の提供にご協力おねがいいたします。<br>目的以外で利用することはございません。<br><span class="small">（サイト情報：お店のURL、PHPバージョン、DBバージョン）</span>'
+install.accept_infomation_provision: 送信を承諾する
+install.permission_is_valid: アクセス権限は正常です
+install.permission_is_invalid: 以下のディレクトリのアクセス制限を変更してください。
+install.system_requirement: システム要件をご確認ください
+install.required_extension_disabled: '[必須] %module%拡張モジュールが有効になっていません。'
+install.required_database_extension_disabled: '[必須] pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。'
+install.recommend_extension_disabled: '[推奨] %module%拡張モジュールが有効になっていません。'
+install.mod_rewite_unknown: mod_rewrite が有効になっているか不明です。
+install.mod_rewite_disabled: '[必須] mod_rewrite が有効になっていません。'
+install.member_name: 管理者
+install.member_department:
+install.shop_name: あなたの店名
+install.mail_address: メールアドレス（受注メールなどの宛先になります）
+install.login_id: 管理画面ログインID（半角英数字%min%～%max%文字）
+install.login_password: 管理画面パスワード（半角英数字%min%～%max%文字）
+install.security_configuration: セキュリティの設定
+install.directry_name: 管理画面のディレクトリ名（半角英数字%min%～%max%文字）
+install.directry_name_notice: セキュリティのため推測されにくいディレクトリ名を入力して下さい
+install.https_only: サイトへのアクセスを、SSL（https）経由に制限します
+install.https_only_notice: httpsからの接続でなければSSL制限を設定できません。
+install.ip_restriction: 管理画面へのアクセスを、以下のIPに制限します
+install.ip_is_invalid: '%ip%はIPv4アドレスではありません。'
+install.mail_configuration: メールの設定
+install.smtp_host: SMTPホスト
+install.smtp_port: SMTPポート
+install.smtp_user: SMTPユーザー
+install.smtp_password: SMTPパスワード
+install.database_type: データベースの種類
+install.database_pgsql: PostgreSQL
+install.database_mysql: MySQL
+install.database_sqlite: SQLite(開発者用)
+install.database_host: データベースのホスト名
+install.database_port: データベースのポート番号
+install.database_name: データベース名
+install.database_user: ユーザ名
+install.database_password: パスワード
+install.database_connection_error: データベースに接続できませんでした。
+install.database_do_initialize: データベースの初期化を行います。初期化には少し時間がかかる場合があります。<br>すでにテーブル等が作成されている場合は中断されます。
+install.database_skip_notice: 旧バージョンをインストールしていて、既存の情報を削除したくない場合はチェックをいれてください
+install.database_skip: データベースの初期化を行わない
+install.completed: インストールが完了しました！
+install.access_admin_page: 管理画面にアクセスしてみましょう
+install.perform_initial_setting: 先ほど登録したログインID・パスワードで、管理画面にログインすることができます。デザインの編集や商品を登録してみましょう！
+install.go_to_admin_page: 管理画面を表示

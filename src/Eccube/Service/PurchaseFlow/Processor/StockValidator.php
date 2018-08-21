@@ -39,10 +39,10 @@ class StockValidator extends ItemValidator
         $stock = $item->getProductClass()->getStock();
         $quantity = $item->getQuantity();
         if ($stock == 0) {
-            $this->throwInvalidItemException('cart.zero.stock', $item->getProductClass());
+            $this->throwInvalidItemException('front.shopping.out_of_stock_zero', $item->getProductClass());
         }
         if ($stock < $quantity) {
-            $this->throwInvalidItemException('cart.over.stock', $item->getProductClass());
+            $this->throwInvalidItemException('front.shopping.out_of_stock', $item->getProductClass());
         }
     }
 

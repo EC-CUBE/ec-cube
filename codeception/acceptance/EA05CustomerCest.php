@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\CustomerEditPage;
@@ -27,7 +38,6 @@ class EA05CustomerCest
     public function customer_検索(\AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC01-T01 検索');
-
 
         $CustomerListPage = CustomerManagePage::go($I);
 
@@ -57,7 +67,7 @@ class EA05CustomerCest
         CustomerManagePage::go($I)
             ->詳細検索_電話番号('あああ');
 
-        $I->see('検索条件に誤りがあります。', CustomerManagePage::$検索結果_エラーメッセージ);
+        $I->see('検索条件に誤りがあります', CustomerManagePage::$検索結果_エラーメッセージ);
     }
 
     public function customer_会員登録(\AcceptanceTester $I)
@@ -89,7 +99,7 @@ class EA05CustomerCest
 
         $CustomerRegisterPage->登録();
         /* ブラウザによるhtml5のエラーなのでハンドリング不可 */
-        $I->see('会員情報を保存しました。', CustomerEditPage::$登録完了メッセージ);
+        $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
     }
 
     public function customer_会員登録_必須項目未入力(\AcceptanceTester $I)
@@ -127,7 +137,7 @@ class EA05CustomerCest
         }
 
         $CustomerRegisterPage->登録();
-        $I->see('会員情報を保存しました。', CustomerEditPage::$登録完了メッセージ);
+        $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
 
         $CustomerRegisterPage
             ->入力_姓('')
@@ -208,7 +218,6 @@ class EA05CustomerCest
     {
         $I->wantTo('EA0501-UC04-T01 CSV出力項目設定');
 
-
         CustomerManagePage::go($I)
             ->検索()
             ->CSV出力項目設定();
@@ -234,7 +243,7 @@ class EA05CustomerCest
         $I->wait(5);
 
         $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
+        foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, '会員登録のご確認');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
         }

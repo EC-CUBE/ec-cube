@@ -32,7 +32,7 @@ class PaymentTotalNegativeValidator extends ItemHolderValidator
     protected function validate(ItemHolderInterface $item, PurchaseContext $context)
     {
         if ($item->getTotal() < 0) {
-            $this->throwInvalidItemException(trans('shopping.total.price', ['%totalPrice%' => number_format($item->getTotal())]));
+            $this->throwInvalidItemException(trans('front.shopping.payment_total_invalid'));
         }
     }
 }

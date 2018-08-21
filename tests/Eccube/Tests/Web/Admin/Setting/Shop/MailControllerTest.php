@@ -120,7 +120,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         $outPut = $this->container->get('session')->getFlashBag()->get('eccube.admin.error');
         $this->actual = array_shift($outPut);
-        $this->expected = 'admin.shop.mail.save.error';
+        $this->expected = 'admin.common.save_error';
         $this->verify();
     }
 
