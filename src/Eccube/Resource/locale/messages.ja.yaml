@@ -1051,6 +1051,7 @@ admin.setting.shop.delivery.delivery_time_setting: お届け時間設定
 admin.setting.shop.delivery.delivery_fee_by_pref: 都道府県別送料設定
 admin.setting.shop.delivery.apply_to_pref__title: 全国一律に設定
 admin.setting.shop.delivery.apply_to_pref__button: 各都道府県に適用
+admin.setting.shop.delivery.fee.invalid: 有効な値ではありません。
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：税率設定
