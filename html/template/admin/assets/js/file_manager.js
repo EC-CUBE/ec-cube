@@ -346,9 +346,9 @@
 
         if (children.length) {
             if (currentPath.indexOf(path) !== 0) {
-                ul.addClass('collapse');
+                ul.addClass('collapse list-unstyled');
             } else {
-                ul.addClass('collapsed');
+                ul.addClass('collapsed list-unstyled');
             }
 
             ul.attr('id', path.replace('/', '_'));

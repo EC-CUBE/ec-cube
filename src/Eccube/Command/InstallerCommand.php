@@ -14,7 +14,6 @@
 namespace Eccube\Command;
 
 use Dotenv\Dotenv;
-use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,11 +34,6 @@ class InstallerCommand extends Command
     protected $container;
 
     /**
-     * @var CacheUtil
-     */
-    protected $cacheUtil;
-
-    /**
      * @var SymfonyStyle
      */
     protected $io;
@@ -49,12 +43,11 @@ class InstallerCommand extends Command
      */
     protected $databaseUrl;
 
-    public function __construct(ContainerInterface $container, CacheUtil $cacheUtil)
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct();
 
         $this->container = $container;
-        $this->cacheUtil = $cacheUtil;
     }
 
     protected function configure()
@@ -169,6 +162,7 @@ class InstallerCommand extends Command
             'doctrine:schema:drop --force',
             'doctrine:schema:create',
             'eccube:fixtures:load',
+            'cache:clear --no-warmup',
         ];
 
         // コンテナを再ロードするため別プロセスで実行する.

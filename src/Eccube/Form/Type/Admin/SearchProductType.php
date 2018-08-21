@@ -13,10 +13,12 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
 use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\ProductStatusType;
+use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,13 +34,20 @@ class SearchProductType extends AbstractType
     protected $productStatusRepository;
 
     /**
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
      * SearchProductType constructor.
      *
      * @param ProductStatusRepository $productStatusRepository
+     * @param CategoryRepository $categoryRepository
      */
-    public function __construct(ProductStatusRepository $productStatusRepository)
+    public function __construct(ProductStatusRepository $productStatusRepository, CategoryRepository $categoryRepository)
     {
         $this->productStatusRepository = $productStatusRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -48,16 +57,23 @@ class SearchProductType extends AbstractType
     {
         $builder
             ->add('id', TextType::class, [
-                'label' => 'searchproduct.label.multi',
+                'label' => 'admin.product.multi_search_label',
                 'required' => false,
             ])
             ->add('category_id', MasterCategoryType::class, [
-                'label' => 'searchproduct.label.category',
-                'placeholder' => 'searchproduct.placeholder.select',
+                'choice_label' => 'NameWithLevel',
+                'label' => 'admin.product.category',
+                'placeholder' => 'common.select__all_products',
                 'required' => false,
+                'multiple' => false,
+                'expanded' => false,
+                'choices' => $this->categoryRepository->getList(null, true),
+                'choice_value' => function (Category $Category = null) {
+                    return $Category ? $Category->getId() : null;
+                },
             ])
             ->add('status', ProductStatusType::class, [
-                'label' => 'searchproduct.label.type',
+                'label' => 'admin.product.display_status',
                 'multiple' => true,
                 'required' => false,
                 'expanded' => true,
@@ -67,16 +83,16 @@ class SearchProductType extends AbstractType
                 ]]),
             ])
             ->add('stock', ChoiceType::class, [
-                'label' => 'searchproduct.label.stock',
+                'label' => 'admin.product.stock',
                 'choices' => [
-                    'admin.product.index.filter_in_stock' => ProductStock::IN_STOCK,
-                    'admin.product.index.filter_out_of_stock' => ProductStock::OUT_OF_STOCK,
+                    'admin.product.stock__in_stock' => ProductStock::IN_STOCK,
+                    'admin.product.stock__out_of_stock' => ProductStock::OUT_OF_STOCK,
                 ],
                 'expanded' => true,
                 'multiple' => true,
             ])
             ->add('create_date_start', DateType::class, [
-                'label' => 'searchproduct.label.registration_date_from',
+                'label' => 'admin.common.create_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -84,7 +100,7 @@ class SearchProductType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('create_date_end', DateType::class, [
-                'label' => 'searchproduct.label.registration_date_to',
+                'label' => 'admin.common.create_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -92,7 +108,7 @@ class SearchProductType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('update_date_start', DateType::class, [
-                'label' => 'searchproduct.label.updated_date_from',
+                'label' => 'admin.common.update_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -100,7 +116,7 @@ class SearchProductType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('update_date_end', DateType::class, [
-                'label' => 'searchproduct.label.updated_date_from',
+                'label' => 'admin.common.update_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',

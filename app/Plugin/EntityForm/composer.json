@@ -1,0 +1,9 @@
+{
+  "name": "ec-cube/EntityForm",
+  "version": "1.0.0",
+  "description": "エンティティからフォームを生成する機構のサンプル",
+  "type": "eccube-plugin",
+  "extra": {
+    "code": "EntityForm"
+  }
+}

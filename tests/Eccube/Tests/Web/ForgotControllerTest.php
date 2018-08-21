@@ -108,7 +108,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testResetWithDenied()
+    public function testResetWithInvalid()
     {
         $client = $this->client;
         $client->request(
@@ -116,7 +116,7 @@ class ForgotControllerTest extends AbstractWebTestCase
             '/forgot/reset/a___aaa'
         );
 
-        $this->expected = 403;
+        $this->expected = 404;
         $this->actual = $client->getResponse()->getStatusCode();
         $this->verify();
     }

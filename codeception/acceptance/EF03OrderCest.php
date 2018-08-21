@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
 use Page\Front\CartPage;
@@ -11,6 +22,7 @@ use Page\Front\ShoppingCompletePage;
 use Page\Front\ShoppingConfirmPage;
 use Page\Front\ShoppingLoginPage;
 use Page\Front\ShoppingPage;
+use Page\Front\TopPage;
 
 /**
  * @group front
@@ -36,17 +48,33 @@ class EF03OrderCest
         $I->loginAsMember($customer->getEmail(), 'password');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる(1);
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->お買い物を続ける();
 
         // トップページ
         $I->see('新着情報', '.ec-news__title');
+    }
+
+    public function order_一覧からカートに入れる(\AcceptanceTester $I)
+    {
+        $I->wantTo('EF0301-UC01-T02 カート 買い物を続ける');
+
+        $ProductListPage = TopPage::go($I)
+            ->検索('ディナーフォーク');
+
+        $CartPage = $ProductListPage
+            ->カートに入れる(1, 1, [3 => 'プラチナ'], [6 => '150cm'])
+            ->カートへ進む();
+
+        $I->assertEquals(1, $CartPage->明細数());
+        $I->assertContains('ディナーフォーク', $CartPage->商品名(1));
+        $I->assertContains('プラチナ', $CartPage->商品名(1));
+        $I->assertContains('150cm', $CartPage->商品名(1));
+        $I->assertEquals(1, $CartPage->商品数量(1));
     }
 
     public function order_カート削除(\AcceptanceTester $I)
@@ -56,11 +84,9 @@ class EF03OrderCest
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
 
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる(1);
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->商品削除(1);
@@ -75,18 +101,15 @@ class EF03OrderCest
         $I->loginAsMember($customer->getEmail(), 'password');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる(1);
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
 
         $cartPage = CartPage::go($I)
             ->商品数量増やす(1);
 
         // 確認
         $I->assertEquals('2', $cartPage->商品数量(1));
-
     }
 
     public function order_カート数量減らす(\AcceptanceTester $I)
@@ -97,12 +120,9 @@ class EF03OrderCest
         $I->loginAsMember($customer->getEmail(), 'password');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる(2);
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(2)
+            ->カートへ進む();
 
         $cartPage = CartPage::go($I)
             ->商品数量減らす(1);
@@ -120,12 +140,9 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる(1);
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -142,7 +159,7 @@ class EF03OrderCest
 
         // メール確認
         $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
+        foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -168,12 +185,9 @@ class EF03OrderCest
         $new_email = microtime(true).'.'.$faker->safeEmail;
         $BaseInfo = Fixtures::get('baseinfo');
 
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる(1);
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -236,12 +250,9 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる(1);
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -320,12 +331,9 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる(1);
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -339,13 +347,10 @@ class EF03OrderCest
         $I->logoutAsMember();
 
         // 商品詳細フォーク カートへ
-        $productPage = ProductDetailPage::go($I, 1)
+        ProductDetailPage::go($I, 1)
             ->規格選択(['プラチナ', '150cm'])
-            ->カートに入れる(1);
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+            ->カートに入れる(1)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -399,12 +404,9 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる($cart_quantity);
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる($cart_quantity)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -532,12 +534,9 @@ class EF03OrderCest
         $I->loginAsMember($customer->getEmail(), 'password');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる(1);
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -557,18 +556,16 @@ class EF03OrderCest
 
         if ($ProductClass->getClassCategory2()) {
             // 商品詳細
-            $productPage = ProductDetailPage::go($I, $Product->getId())
+            ProductDetailPage::go($I, $Product->getId())
                 ->規格選択([$ProductClass->getClassCategory1(), $ProductClass->getClassCategory2()])
-                ->カートに入れる(1);
+                ->カートに入れる(1)
+                ->カートへ進む();
         } else {
-            $productPage = ProductDetailPage::go($I, $Product->getId())
+            ProductDetailPage::go($I, $Product->getId())
                 ->規格選択([$ProductClass->getClassCategory1()])
-                ->カートに入れる(1);
+                ->カートに入れる(1)
+                ->カートへ進む();
         }
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -602,11 +599,9 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる($cart_quantity);
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる($cart_quantity)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -760,12 +755,9 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる($cart_quantity);
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる($cart_quantity)
+            ->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -857,12 +849,9 @@ class EF03OrderCest
         $I->see($name2, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(8) > p:nth-child(1)');
 
         // 商品詳細パーコレータ カートへ
-        $productPage = ProductDetailPage::go($I, 2)
-            ->カートに入れる($cart_quantity);
-
-        $I->wait(5);
-
-        $productPage->カートへ進む();
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる($cart_quantity)
+            ->カートへ進む();
 
         // 一旦カートに戻る
         CartPage::go($I)
@@ -968,7 +957,6 @@ class EF03OrderCest
         $I->assertEquals(1, $CartPage->明細数());
         $I->assertEquals('パーコレーター', $CartPage->商品名(1));
     }
-
 
     public function order_複数ブラウザ_片方でログインしてカートに追加しもう一方にログインして別の商品を追加する(\AcceptanceTester $I)
     {

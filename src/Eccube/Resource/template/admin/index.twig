@@ -10,54 +10,16 @@ file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
-{% block title %}{{ 'admin.index.159'|trans }}{% endblock %}
+{% block title %}{{ 'admin.home'|trans }}{% endblock %}
 {% block sub_title %}{% endblock %}
 
 {% block javascript %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script>
         $(function() {
-
-            Chart.plugins.register({
-                afterDatasetsDraw: function(chart, easing) {
-                    var ctx = chart.ctx;
-
-                    chart.data.datasets.forEach(function(dataset, i) {
-                        var meta = chart.getDatasetMeta(i);
-                        if (!meta.hidden) {
-                            meta.data.forEach(function(element, index) {
-                                ctx.fillStyle = 'rgb(0, 0, 0)';
-
-                                var fontSize = 14;
-                                var fontStyle = 'initial';
-                                var fontFamily = '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol';
-                                ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
-
-                                // Just naively convert to string for now
-                                if (meta.yAxisID != 'y-axis-2') {
-                                    var dataString = '¥' + dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                                } else {
-                                    var dataString = dataset.data[index].toString();
-                                }
-
-                                // Make sure alignment settings are correct
-                                ctx.textAlign = 'center';
-                                ctx.textBaseline = 'middle';
-
-                                var padding = 2;
-                                var position = element.tooltipPosition();
-                                ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
-                            });
-                        }
-                    });
-                }
-            });
-
-
             var options = {
                 legend: {
-                    // display: false
-                    position: 'bottom'
+                    display: false
                 },
                 layout: {
                     padding: {
@@ -67,34 +29,24 @@ file that was distributed with this source code.
                         bottom: 0
                     }
                 },
-                // tooltips: {
-                //     callbacks: {
-                //         label: function(tooltipItem, data) {
-                //             console.log(tooltipItem);
-                //             return '¥' + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                //         }
-                //     }
-                // },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return '¥' + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        }
+                    }
+                },
                 scales: {
                     yAxes: [
                         {
                             id: 'y-axis-1',
-                            display: false,
+                            display: true,
                             ticks: {
                                 beginAtZero: true,
                                 callback: function(label, index, labels) {
-                                    return '¥' + label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                                }
-                            }
-                        },
-                        {
-                            id: 'y-axis-2',
-                            display: false,
-                            ticks: {
-                                beginAtZero: true,
-                                stepSize: 50,
-                                callback: function(label, index, labels) {
-                                    return label.toString();
+                                    if (Math.floor(label) === label) {
+                                        return '¥' + label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                    }
                                 }
                             }
                         }
@@ -102,10 +54,8 @@ file that was distributed with this source code.
                 }
             };
 
-            var priceBackgroundColor = 'rgba(54, 162, 235, 0.2)';
-            var priceBorderColor = 'rgba(54, 162, 235, 1)';
-            var countBackgroundColor = 'rgba(254,97,132, 0.2)';
-            var countBorderColor = 'rgba(254,97,132, 1)';
+            var priceBackgroundColor = 'rgba(58, 115, 188, 1)';
+            var priceBorderColor = 'rgba(255, 255, 255, 0)';
 
             $.ajax({
                 url: '{{ url('admin_homepage_sale') }}',
@@ -118,22 +68,17 @@ file that was distributed with this source code.
 
                     var labels = [];
                     var prices = [];
-                    var counts = [];
                     var priceBackgroundColors = [];
                     var priceBorderColors = [];
-                    var countBackgroundColors = [];
-                    var countBorderColors = [];
                     Object.keys(data).forEach(function(key) {
                         labels.push(key);
                         prices.push(data[key].price);
-                        counts.push(data[key].count);
                         priceBackgroundColors.push(priceBackgroundColor);
                         priceBorderColors.push(priceBorderColor);
-                        countBackgroundColors.push(countBackgroundColor);
-                        countBorderColors.push(countBorderColor);
                     });
 
                     var ctx = $('#chart-' + i)[0].getContext('2d');
+                    ctx.canvas.height = 100;
                     var chart = new Chart(ctx, {
                         type: 'bar',
                         data: {
@@ -141,24 +86,12 @@ file that was distributed with this source code.
                             datasets: [
                                 {
                                     type: 'bar',
-                                    label: '{{ 'admin.index.label.payment_total'|trans }}',
+                                    label: '{{ 'admin.home.sales_summany_amount'|trans }}',
                                     data: prices,
                                     backgroundColor: priceBackgroundColors,
                                     borderColor: priceBorderColors,
-                                    borderWidth: 1,
+                                    borderWidth: 15,
                                     yAxisID: 'y-axis-1'
-                                },
-                                {
-                                    type: 'line',
-                                    label: '{{ 'admin.index.label.sales.count'|trans }}',
-                                    data: counts,
-                                    backgroundColor: countBackgroundColors,
-                                    borderColor: countBorderColors,
-                                    pointBackgroundColor: "rgba(254,97,132,0.8)",
-                                    fill: false,
-                                    tension: 0,
-                                    borderWidth: 1,
-                                    yAxisID: 'y-axis-2'
                                 }
                             ]
                         },
@@ -184,7 +117,7 @@ file that was distributed with this source code.
                         <div id="order-status" class="card rounded border-0 h-100">
                             <div class="card-header">
                                 <a href="{{ url('admin_order') }}">
-                                    <span class="card-title">{{ 'admin.index.160'|trans }}</span>
+                                    <span class="card-title">{{ 'admin.home.order_status_title'|trans }}</span>
                                 </a>
                             </div>
                             <div class="card-body p-0">
@@ -212,42 +145,48 @@ file that was distributed with this source code.
                         <div id="chart-statistics" class="card rounded border-0 h-100">
                             <div class="card-header">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                    <span class="card-title">{{ 'admin.index.summary.sales.situation'|trans }}</span>
+                                    <span class="card-title">{{ 'admin.home.sales_summany_title'|trans }}</span>
                                     <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="row text-center border-top border-bottom mb-3">
+                                <div class="row text-center border-bottom mb-3">
                                     <div class="col-4 py-2 border-right">
-                                        <div class="h3">
-                                            {{ salesThisMonth is empty ? '¥ 0' : salesThisMonth.order_amount|price }} / {{ salesThisMonth is empty ? 0 : salesThisMonth.order_count|number_format }} <span>件</span>
+                                        <div class="h4">
+                                            {% set amount = salesThisMonth is empty ? 0 : salesThisMonth.order_amount %}
+                                            {% set count = salesThisMonth is empty ? 0 : salesThisMonth.order_count %}
+                                            {{ 'admin.home.sales_summany_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
                                         </div>
-                                        <small>{{ 'admin.index.label.monthly'|trans }}</small>
+                                        <small>{{ 'admin.home.sales_summany_this_month'|trans }}</small>
                                     </div>
                                     <div class="col-4 py-2 border-right">
-                                        <div class="h3">
-                                            {{ salesToday is empty ? '¥ 0' : salesToday.order_amount|price }} / {{ salesToday is empty ? 0 : salesToday.order_count|number_format }} <span>件</span>
+                                        <div class="h4">
+                                            {% set amount = salesToday is empty ? 0 : salesToday.order_amount %}
+                                            {% set count = salesToday is empty ? 0 : salesToday.order_count %}
+                                            {{ 'admin.home.sales_summany_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
                                         </div>
-                                        <small>{{ 'admin.index.label.daily'|trans }}</small>
+                                        <small>{{ 'admin.home.sales_summany_today'|trans }}</small>
                                     </div>
                                     <div class="col-4 py-2">
-                                        <div class="h3">
-                                            {{ salesYesterday is empty ? '¥ 0' : salesYesterday.order_amount|price }} / {{ salesYesterday is empty ? 0 : salesYesterday.order_count|number_format }} <span>件</span>
+                                        <div class="h4">
+                                            {% set amount = salesYesterday is empty ? 0 : salesYesterday.order_amount %}
+                                            {% set count = salesYesterday is empty ? 0 : salesYesterday.order_count %}
+                                            {{ 'admin.home.sales_summany_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
                                         </div>
-                                        <small>{{ 'admin.index.label.yesterday'|trans }}</small>
+                                        <small>{{ 'admin.home.sales_summany_yesterday'|trans }}</small>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col text-center">
                                         <div class="btn-group nav d-inline-flex" id="pills-tab" role="tablist">
                                             <a class="nav-link active btn btn-ec-tab py-2 pl-4 pr-4" id="pills-weekly-tab" data-toggle="pill" href="#pills-weekly" role="tab" aria-controls="pills-weekly" aria-selected="true">
-                                                {{ 'admin.index.summary.sales.weekly'|trans }}
+                                                {{ 'admin.home.sales_summany_weekly'|trans }}
                                             </a>
                                             <a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-monthly-tab" data-toggle="pill" href="#pills-monthly" role="tab" aria-controls="pills-monthly" aria-selected="false">
-                                                {{ 'admin.index.summary.sales.monthly'|trans }}
+                                                {{ 'admin.home.sales_summany_monthly'|trans }}
                                             </a>
                                             <a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-year-tab" data-toggle="pill" href="#pills-year" role="tab" aria-controls="pills-year" aria-selected="false">
-                                                {{ 'admin.index.summary.sales.year'|trans }}
+                                                {{ 'admin.home.sales_summany_yearly'|trans }}
                                             </a>
                                         </div>
                                     </div>
@@ -280,7 +219,7 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                      title="Tooltip">
-                                    <span class="card-title">{{ 'admin.index.summary.shop.situation'|trans }}</span>
+                                    <span class="card-title">{{ 'admin.home.shop_status_title'|trans }}</span>
                                     <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
                                 </div>
                             </div>
@@ -292,7 +231,7 @@ file that was distributed with this source code.
                                                 <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
                                             </div>
                                             <div class="col p-0">
-                                                <span class="align-middle">{{ 'admin.index.summary.shop.items.stock'|trans }}</span>
+                                                <span class="align-middle">{{ 'admin.home.shop_status_out_of_stock'|trans }}</span>
                                             </div>
                                             <div class="col-auto text-right align-middle">
                                                 <span class="h4 align-middle font-weight-normal text-dark">{{ countNonStockProducts|number_format }}</span>
@@ -307,7 +246,7 @@ file that was distributed with this source code.
                                                 <i class="fa fa-cubes fa-2x text-secondary" aria-hidden="true"></i>
                                             </div>
                                             <div class="col p-0">
-                                                <span class="align-middle">{{ 'admin.index.summary.shop.handled.product'|trans }}</span>
+                                                <span class="align-middle">{{ 'admin.home.shop_status_products'|trans }}</span>
                                             </div>
                                             <div class="col-auto text-check align-middle">
                                                 <span class="h4 align-middle font-weight-normal text-dark">{{ countProducts|number_format }}</span>
@@ -322,7 +261,7 @@ file that was distributed with this source code.
                                                 <i class="fa fa-users fa-2x text-secondary" aria-hidden="true"></i>
                                             </div>
                                             <div class="col p-0">
-                                                <span class="align-middle">{{ 'admin.index.171'|trans }}</span>
+                                                <span class="align-middle">{{ 'admin.home.shop_status_customers'|trans }}</span>
                                             </div>
                                             <div class="col-auto text-check align-middle">
                                                 <span class="h4 align-middle font-weight-normal text-dark">{{ countCustomers|number_format }}</span>
@@ -335,13 +274,30 @@ file that was distributed with this source code.
                     </div>
                     <div class="col mb-4">
                         <div id="ec-cube-plugin" class="card rounded border-0 h-100">
-                            <div class="card-header">
+                            <div class="card-header border-bottom-0">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                    <span class="card-title">{{ 'admin.index.recommended.plugin'|trans }}</span>
+                                    <span class="card-title">{{ 'admin.home.recommend_plugins_title'|trans }}</span>
                                 </div>
                             </div>
-                            <div class="card-body p-0">
-                                {# todo おすすめプラグインを設定 #}
+                            <div class="card-body py-0">
+                                {% for plugin in recommendedPlugins %}
+                                    <div class="row py-3 border border-bottom-0 border-left-0 border-right-0">
+                                        <div class="col-5 col-md-4">
+                                            <a href="{{ plugin.store_url }}" target="_blank" title="{{ plugin.name }}">
+                                                <img src="{{ plugin.image }}" class="w-100" alt="{{ plugin.name }}">
+                                            </a>
+                                        </div>
+                                        <div class="col-7 col-md-8 pl-0">
+                                            <a href="{{ plugin.store_url }}" target="_blank">{{ plugin.name }}</a>
+                                            <p class="m-0 pt-2">
+                                                {{ plugin.short_description }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="card-footer">
+                                > <a href="https://www.ec-cube.net/owners/" target="_blank">{{ 'admin.home.recommend_plugins.owner_store'|trans }}</a>
                             </div>
                         </div><!-- /#ec-cube-plugin -->
                     </div>
@@ -349,7 +305,7 @@ file that was distributed with this source code.
                         <div id="ec-cube-news" class="card rounded border-0 h-100">
                             <div class="card-header">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                    <span class="card-title">{{ 'admin.index.161'|trans }}</span>
+                                    <span class="card-title">{{ 'admin.home.news_title'|trans }}</span>
                                 </div>
                             </div>
                             <div class="card-body p-0">

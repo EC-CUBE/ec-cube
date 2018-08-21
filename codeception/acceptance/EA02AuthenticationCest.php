@@ -1,11 +1,16 @@
 <?php
 
-/**
- * @group admin
- * @group admin01
- * @group authentication
- * @group ea2
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 class EA02AuthenticationCest
 {
     public function _before(\AcceptanceTester $I)
@@ -26,8 +31,8 @@ class EA02AuthenticationCest
         $I->logoutAsAdmin();
 
         $I->submitForm('#form1', [
-            'login_id' => "invalid",
-            'password' => "invalidpassword"
+            'login_id' => 'invalid',
+            'password' => 'invalidpassword',
         ]);
 
         $I->see('ログインできませんでした。', '#form1 > div:nth-child(5) > span');
