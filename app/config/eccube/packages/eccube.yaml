@@ -62,7 +62,7 @@ parameters:
     eccube_smtext_len: 100
     eccube_tax_rule_priority: ['product_id','product_class_id','pref_id','country_id']
     eccube_url_len: 1024
-    eccube_default_page_count: 10
+    eccube_default_page_count: 50
     eccube_admin_product_stock_status: 3
     eccube_customer_reset_expire: 10
     # CSVの区切り文字(タブ区切りにしたい場合は'\t'ではなく'    'で設定する

@@ -73,8 +73,14 @@ file that was distributed with this source code.
                                             <div class="col">
                                                 {{ form_widget(form.name.name02) }}
                                             </div>
-                                            {{ form_errors(form.name.name01) }}
-                                            {{ form_errors(form.name.name02) }}
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_errors(form.name.name01) }}
+                                            </div>
+                                            <div class="col">
+                                                {{ form_errors(form.name.name02) }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -91,8 +97,14 @@ file that was distributed with this source code.
                                             <div class="col">
                                                 {{ form_widget(form.kana.kana02) }}
                                             </div>
-                                            {{ form_errors(form.kana.kana01) }}
-                                            {{ form_errors(form.kana.kana02) }}
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_errors(form.kana.kana01) }}
+                                            </div>
+                                            <div class="col">
+                                                {{ form_errors(form.kana.kana02) }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -115,16 +127,20 @@ file that was distributed with this source code.
                                                 <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.common.postal_symbol'|trans }}</span></div>
                                                 <div class="col-2">
                                                     {{ form_widget(form.postal_code) }}
-                                                </div>
 
-                                                {{ form_errors(form.postal_code) }}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    {{ form_errors(form.postal_code) }}
+                                                </div>
                                             </div>
                                         </div>
-
                                         <div class="mb-3">
                                             <div class="row justify-content-start">
                                                 <div class="col-auto">
                                                     {{ form_widget(form.address.pref) }}
+                                                    {{ form_errors(form.address.pref) }}
                                                 </div>
                                             </div>
                                         </div>

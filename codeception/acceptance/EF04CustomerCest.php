@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 
 /**
@@ -53,7 +64,7 @@ class EF04CustomerCest
         $I->click('.ec-registerRole form button.ec-blockBtn--action');
 
         $I->seeEmailCount(2);
-        foreach (array($new_email, $BaseInfo->getEmail01()) as $email) {
+        foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, '会員登録のご確認');
             $I->seeInLastEmailTo($email, '姓 名 様');
             $I->seeInLastEmailTo($email, 'この度は会員登録依頼をいただきまして、有り難うございます。');
@@ -62,7 +73,6 @@ class EF04CustomerCest
         // 「トップページへ」ボタンを押下する
         $I->click('a.ec-blockBtn--cancel');
         $I->see('新着情報', '.ec-news__title');
-
 
         // アクティベートURL取得
         $activateUrl = $I->grabFromLastEmailTo($new_email, '@/entry/activate/(.*)@');
@@ -73,7 +83,7 @@ class EF04CustomerCest
         $I->see('新規会員登録(完了)', 'div.ec-pageHeader h1');
 
         $I->seeEmailCount(2);
-        foreach (array($new_email, $BaseInfo->getEmail01()) as $email) {
+        foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, '会員登録が完了しました。');
             $I->seeInLastEmailTo($email, '姓 名 様');
             $I->seeInLastEmailTo($email, '本会員登録が完了いたしました。');

@@ -1,7 +1,17 @@
 <?php
 
-namespace Page\Admin;
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
+namespace Page\Admin;
 
 class CsvSettingsPage extends AbstractAdminPageStyleGuide
 {
@@ -22,6 +32,7 @@ class CsvSettingsPage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new CsvSettingsPage($I);
+
         return $page->goPage('/setting/shop/csv', 'CSV出力項目設定店舗設定');
     }
 
@@ -29,27 +40,35 @@ class CsvSettingsPage extends AbstractAdminPageStyleGuide
     {
         $page = new CsvSettingsPage($I);
         $page->tester->see('CSV出力項目設定店舗設定', '.c-pageTitle');
+
         return $page;
     }
 
-    public function 入力_CSVタイプ($value) {
+    public function 入力_CSVタイプ($value)
+    {
         $this->tester->selectOption(['id' => 'csv-type'], $value);
+
         return $this;
     }
 
-    public function 選択_出力項目($value) {
+    public function 選択_出力項目($value)
+    {
         $this->tester->selectOption(['id' => 'csv-output'], $value);
+
         return $this;
     }
 
-    public function 削除() {
+    public function 削除()
+    {
         $this->tester->click('#remove');
+
         return $this;
     }
 
-    public function 設定() {
+    public function 設定()
+    {
         $this->tester->click('#csv-form > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
+
         return $this;
     }
-
 }

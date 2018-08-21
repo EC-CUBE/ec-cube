@@ -191,6 +191,7 @@ file that was distributed with this source code.
                                             {{ form_errors(form.quantity) }}
                                         </div>
                                     </div>
+                                    {{ form_rest(form) }}
                                 </form>
                                 <div class="ec-productRole__btn">
                                     <button type="submit" class="ec-blockBtn--action add-cart" data-cartid="{{ Product.id }}" form="productForm{{ Product.id }}">
