@@ -46,6 +46,9 @@ file that was distributed with this source code.
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
         $.fn.tooltip = bootstrapTooltip;
+        $(document).on('drop dragover', function(e) {
+            e.preventDefault();
+        });
         $(function() {
             // Todo: fix drag&drop style
             $("#thumb").sortable({
@@ -130,6 +133,7 @@ file that was distributed with this source code.
                 type: "post",
                 sequentialUploads: true,
                 dataType: 'json',
+                dropZone: $('#upload-zone'),
                 done: function(e, data) {
                     $('.progress').hide();
                     $.each(data.result.files, function(index, file) {
@@ -369,7 +373,7 @@ file that was distributed with this source code.
                                         </div>
                                         <div id="thumb" class="c-form__fileUploadThumbnails clearfix"></div>
                                         <p id="message"></p>
-                                        <div class="media py-3 border-ec-dashed mb-2 rounded">
+                                        <div id="upload-zone" class="media py-5 border-ec-dashed mb-2 rounded">
                                             <div class="media-body">
                                                 <i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true"></i>
                                                 {{ 'admin.common.drag_and_drop_image_description'|trans }}
@@ -721,6 +725,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
