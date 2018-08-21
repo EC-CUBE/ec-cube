@@ -68,10 +68,7 @@ file that was distributed with this source code.
                         </div>
 
                         <div class="row">
-                            <div class="col-6">
-                                {#Todo: This feature will implement later#}
-                            </div>
-                            <div class="col-6 text-right">
+                            <div class="col-12 text-right">
                                 <button class="btn btn-ec-sub" type="button" onclick="return window.history.back()">{{ 'admin.common.cancel'|trans }}</button>
                                 {% if is_update %}
                                     <a class="btn btn btn-primary prevention-mask" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false" href="{{ url('admin_store_plugin_api_upgrade', {'pluginCode': item.code, 'version': item.version}) }}">{{ 'admin.store.plugin.upgrade'|trans }}</a>
