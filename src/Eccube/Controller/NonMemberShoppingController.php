@@ -14,16 +14,12 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\Customer;
-use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Exception\CartException;
 use Eccube\Form\Type\Front\NonMemberType;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
-use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,11 +44,6 @@ class NonMemberShoppingController extends AbstractShoppingController
     protected $orderHelper;
 
     /**
-     * @var ShoppingService
-     */
-    protected $shoppingService;
-
-    /**
      * @var CartService
      */
     protected $cartService;
@@ -63,20 +54,17 @@ class NonMemberShoppingController extends AbstractShoppingController
      * @param ValidatorInterface $validator
      * @param PrefRepository $prefRepository
      * @param OrderHelper $orderHelper
-     * @param ShoppingService $shoppingService
      * @param CartService $cartService
      */
     public function __construct(
         ValidatorInterface $validator,
         PrefRepository $prefRepository,
         OrderHelper $orderHelper,
-        ShoppingService $shoppingService,
         CartService $cartService
     ) {
         $this->validator = $validator;
         $this->prefRepository = $prefRepository;
         $this->orderHelper = $orderHelper;
-        $this->shoppingService = $shoppingService;
         $this->cartService = $cartService;
     }
 
@@ -88,17 +76,14 @@ class NonMemberShoppingController extends AbstractShoppingController
      */
     public function index(Request $request)
     {
-        $cartService = $this->cartService;
-
-        // カートチェック
-        $response = $this->forwardToRoute('shopping_check_to_cart');
-        if ($response->isRedirection() || $response->getContent()) {
-            return $response;
-        }
-
         // ログイン済みの場合は, 購入画面へリダイレクト.
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('shopping');
+        }
+
+        // カートチェック.
+        if (!$this->orderHelper->verifyCart($this->cartService->getCart())) {
+            return $this->redirectToRoute('cart');
         }
 
         $builder = $this->formFactory->createBuilder(NonMemberType::class);
@@ -133,41 +118,13 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ->setAddr01($data['addr01'])
                 ->setAddr02($data['addr02']);
 
-            // 受注情報を取得
-            /** @var Order $Order */
-            $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
-
-            // 初回アクセス(受注データがない)の場合は, 受注情報を作成
-            if (is_null($Order)) {
-                // 受注情報を作成
-                try {
-                    // 受注情報を作成
-                    $Order = $this->orderHelper->createProcessingOrder(
-                        $Customer,
-                        $cartService->getCart()->getCartItems()
-                    );
-                    $cartService->setPreOrderId($Order->getPreOrderId());
-                    $cartService->save();
-                } catch (CartException $e) {
-                    $this->addRequestError($e->getMessage());
-
-                    return $this->redirectToRoute('cart');
-                }
-            }
-
-            $flowResult = $this->validatePurchaseFlow($Order);
-            if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                return $this->redirectToRoute('cart');
-            }
-
             // 非会員用セッションを作成
-            $this->session->set($this->sessionKey, $Customer);
-            $this->session->set($this->sessionCustomerAddressKey, serialize([]));
+            $this->session->set(OrderHelper::SESSION_NON_MEMBER, $Customer);
+            $this->session->set(OrderHelper::SESSION_NON_MEMBER_ADDRESSES, serialize([]));
 
             $event = new EventArgs(
                 [
                     'form' => $form,
-                    'Order' => $Order,
                 ],
                 $request
             );
@@ -177,7 +134,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 return $event->getResponse();
             }
 
-            log_info('非会員お客様情報登録完了', [$Order->getId()]);
+            log_info('非会員お客様情報登録完了');
 
             return $this->redirectToRoute('shopping');
         }
@@ -185,56 +142,6 @@ class NonMemberShoppingController extends AbstractShoppingController
         return [
             'form' => $form->createView(),
         ];
-    }
-
-    /**
-     * お届け先の設定（非会員）がクリックされた場合の処理
-     *
-     * @Route("/shopping/shipping_edit_change/{id}", name="shopping_shipping_edit_change", requirements={"id" = "\d+"})
-     */
-    public function shippingEditChange(Request $request, $id)
-    {
-        $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
-        if (!$Order) {
-            $this->addError('front.shopping.order_error');
-
-            return $this->redirectToRoute('shopping_error');
-        }
-
-        if ('POST' !== $request->getMethod()) {
-            return $this->redirectToRoute('shopping');
-        }
-
-        $builder = $this->shoppingService->getShippingFormBuilder($Order);
-
-        $event = new EventArgs(
-            [
-                'builder' => $builder,
-                'Order' => $Order,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_CHANGE_INITIALIZE, $event);
-
-        $form = $builder->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $message = $data['message'];
-            $Order->setMessage($message);
-            // 受注情報を更新
-            $this->entityManager->flush();
-
-            // お届け先設定一覧へリダイレクト
-            return $this->redirectToRoute('shopping_shipping_edit', ['id' => $id]);
-        }
-
-        return $this->redirectToRoute('Shopping/index.twig', [
-            'form' => $form->createView(),
-            'Order' => $Order,
-        ]);
     }
 
     /**
@@ -266,10 +173,10 @@ class NonMemberShoppingController extends AbstractShoppingController
 
                 return $this->json(['status' => 'NG'], 400);
             }
-            /** @var Order $Order */
-            $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
+            $preOrderId = $this->cartService->getPreOrderId();
+            $Order = $this->orderHelper->getPurchaseProcessingOrder($preOrderId);
             if (!$Order) {
-                log_info('カートが存在しません');
+                log_info('受注が存在しません');
                 $this->addError('front.shopping.order_error');
 
                 return $this->redirectToRoute('shopping_error');
@@ -286,10 +193,25 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ->setAddr01($data['customer_addr01'])
                 ->setAddr02($data['customer_addr02'])
                 ->setEmail($data['customer_email']);
-            // 配送先を更新
+
             $this->entityManager->flush();
-            // 受注関連情報を最新状態に更新
-            $this->entityManager->refresh($Order);
+
+            $Customer = new Customer();
+            $Customer
+                ->setName01($data['customer_name01'])
+                ->setName02($data['customer_name02'])
+                ->setKana01($data['customer_kana01'])
+                ->setKana02($data['customer_kana02'])
+                ->setCompanyName($data['customer_company_name'])
+                ->setPhoneNumber($data['customer_phone_number'])
+                ->setPostalCode($data['customer_postal_code'])
+                ->setPref($pref)
+                ->setAddr01($data['customer_addr01'])
+                ->setAddr02($data['customer_addr02'])
+                ->setEmail($data['customer_email']);
+
+            $this->session->set(OrderHelper::SESSION_NON_MEMBER, $Customer);
+
             $event = new EventArgs(
                 [
                     'Order' => $Order,
