@@ -90,6 +90,11 @@ class Context
             return null;
         }
 
-        return $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
+        if (is_object($user)) {
+            return $user;
+        }
+
+        return null;
     }
 }
