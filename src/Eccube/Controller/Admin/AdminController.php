@@ -87,7 +87,7 @@ class AdminController extends AbstractController
     /**
      * @var array 売り上げ状況用受注状況
      */
-    private $excludes = [OrderStatus::PROCESSING, OrderStatus::CANCEL, OrderStatus::PENDING];
+    private $excludes = [OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED];
 
     /**
      * AdminController constructor.
@@ -172,10 +172,11 @@ class AdminController extends AbstractController
          * 受注状況.
          */
         $excludes = [];
-        $excludes[] = OrderStatus::PENDING;
-        $excludes[] = OrderStatus::PROCESSING;
         $excludes[] = OrderStatus::CANCEL;
         $excludes[] = OrderStatus::DELIVERED;
+        $excludes[] = OrderStatus::PENDING;
+        $excludes[] = OrderStatus::PROCESSING;
+        $excludes[] = OrderStatus::RETURNED;
 
         $event = new EventArgs(
             [
