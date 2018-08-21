@@ -580,7 +580,6 @@ class ProductController extends AbstractController
                     $this->entityManager->persist($ProductTag);
                 }
 
-                $Product->setUpdateDate(new \DateTime());
                 $this->entityManager->flush();
 
                 log_info('商品登録完了', [$id]);
