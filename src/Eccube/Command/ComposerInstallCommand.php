@@ -18,9 +18,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ComposerUpdateCommand extends Command
+class ComposerInstallCommand extends Command
 {
-    protected static $defaultName = 'eccube:composer:update';
+    protected static $defaultName = 'eccube:composer:install';
 
     /**
      * @var ComposerApiService

@@ -105,7 +105,6 @@ class ComposerApiService implements ComposerServiceInterface
         ], $output);
     }
 
-
     /**
      * Run update command
      *
@@ -118,6 +117,25 @@ class ComposerApiService implements ComposerServiceInterface
     {
         $this->runCommand([
             'command' => 'update',
+            '--no-interaction' => true,
+            '--profile' => true,
+            '--no-scripts' => true,
+            '--dry-run' => !!$dryRun,
+        ], $output);
+    }
+
+    /**
+     * Run install command
+     *
+     * @param boolean $dryRun
+     * @param null|OutputInterface $output
+     *
+     * @throws PluginException
+     */
+    public function execInstall($dryRun, $output = null)
+    {
+        $this->runCommand([
+            'command' => 'install',
             '--no-interaction' => true,
             '--profile' => true,
             '--no-scripts' => true,
