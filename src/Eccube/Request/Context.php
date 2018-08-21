@@ -90,11 +90,14 @@ class Context
             return null;
         }
 
-        $user = $this->tokenStorage->getToken()->getUser();
-        if (is_object($user)) {
-            return $user;
+        if (null === $token = $this->tokenStorage->getToken()) {
+            return null;
         }
 
-        return null;
-    }
+        if (!is_object($user = $token->getUser())) {
+            // e.g. anonymous authentication
+            return null;
+        }
+
+        return $user;}
 }
