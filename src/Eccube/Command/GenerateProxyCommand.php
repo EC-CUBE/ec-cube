@@ -13,6 +13,7 @@
 
 namespace Eccube\Command;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Eccube\Service\EntityProxyService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,6 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateProxyCommand extends ContainerAwareCommand
 {
+    protected static $defaultName = 'eccube:generate:proxies';
+
     /**
      * @var EntityProxyService
      */
@@ -34,23 +37,29 @@ class GenerateProxyCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('eccube:generate:proxies')
             ->setDescription('Generate entity proxies');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // TODO プラグインディレクトリ
-//        $dirs = array_map(function($p) use ($app) {
-//            return $app['config']['root_dir'].'/app/Plugin/'.$p->getCode().'/Entity';
-//        }, $app[PluginRepository::class]->findAllEnabled());
-//
+        // アノテーションを読み込めるように設定.
+        AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__.'/../../../src');
 
-        $projectRoot = $this->getContainer()->getParameter('kernel.project_dir');
+        $container = $this->getContainer();
+        $projectDir = $container->getParameter('kernel.project_dir');
+        $includeDirs = [$projectDir.'/app/Customize/Entity'];
+
+        $enabledPlugins = $container->getParameter('eccube.plugins.enabled');
+        foreach ($enabledPlugins as $code) {
+            if (file_exists($projectDir.'/app/Plugin/'.$code.'/Entity')) {
+                $includeDirs[] = $projectDir.'/app/Plugin/'.$code.'/Entity';
+            }
+        }
+
         $this->entityProxyService->generate(
-            [$projectRoot.'/app/Customize/Entity'],
+            $includeDirs,
             [],
-            $projectRoot.'/app/proxy/entity',
+            $projectDir.'/app/proxy/entity',
             $output
         );
     }

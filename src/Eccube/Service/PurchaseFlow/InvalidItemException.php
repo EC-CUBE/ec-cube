@@ -19,10 +19,13 @@ class InvalidItemException extends \Exception
 {
     private $messageArgs = [];
 
-    public function __construct($message = null, $messageArgs = [])
+    private $warning;
+
+    public function __construct($message = null, $messageArgs = [], $warning = false)
     {
         parent::__construct($message);
         $this->messageArgs = $messageArgs;
+        $this->warning = $warning;
     }
 
     /**
@@ -31,6 +34,14 @@ class InvalidItemException extends \Exception
     public function getMessageArgs()
     {
         return $this->messageArgs;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWarning()
+    {
+        return $this->warning;
     }
 
     /**

@@ -19,7 +19,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MasterdataEditType;
 use Eccube\Form\Type\Admin\MasterdataType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -134,12 +134,13 @@ class MasterdataController extends AbstractController
                 $entityName = str_replace('-', '\\', $data['masterdata_name']);
                 $entity = new $entityName();
                 $sortNo = 0;
-                $ids = array_map(
+                $ids = array_filter(array_map(
                     function ($v) {
                         return $v['id'];
                     },
                     $data['data']
-                );
+                ));
+
                 foreach ($data['data'] as $key => $value) {
                     if ($value['id'] !== null && $value['name'] !== null) {
                         $entity->setId($value['id']);
@@ -169,10 +170,10 @@ class MasterdataController extends AbstractController
                         $event
                     );
 
-                    $this->addSuccess('admin.register.complete', 'admin');
+                    $this->addSuccess('admin.common.save_complete', 'admin');
                 } catch (\Exception $e) {
                     // 外部キー制約などで削除できない場合に例外エラーになる
-                    $this->addError('admin.register.failed', 'admin');
+                    $this->addError('admin.common.save_error', 'admin');
                 }
 
                 return $this->redirectToRoute(

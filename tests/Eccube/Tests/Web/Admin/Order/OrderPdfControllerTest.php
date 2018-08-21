@@ -78,7 +78,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
         $this->assertContains((string) $shippingId, $crawler->filter('#search_result')->html());
 
-        $expectedText = 'PDF出力';
+        $expectedText = '納品書出力';
         $actualNode = $crawler->filter('.btn-bulk-wrapper')->html();
         $this->assertContains($expectedText, $actualNode);
     }
@@ -179,7 +179,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->followRedirect();
 
         $html = $crawler->filter('.alert')->html();
-        $this->assertContains('注文番号がありません。', $html);
+        $this->assertContains('出荷IDが指定されていません', $html);
     }
 
     /**
@@ -351,7 +351,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      */
     private function getForm(Crawler $crawler)
     {
-        $form = $crawler->selectButton('この内容で作成する')->form();
+        $form = $crawler->selectButton('作成')->form();
         $form['order_pdf[_token]'] = 'dummy';
 
         return $form;

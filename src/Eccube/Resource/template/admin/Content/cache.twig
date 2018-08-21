@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'cache'] %}
 
-{% block title %}{{ 'admin.content.cache.18'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.content.cache.17'|trans }}{% endblock %}
+{% block title %}{{ 'admin.content.cache_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -26,33 +26,22 @@ file that was distributed with this source code.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col"><span class="card-title">{{ 'admin.content.cache.19'|trans }}</span></div>
+                                <div class="col"><span class="card-title">{{ 'admin.content.cache__card_title'|trans }}</span></div>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="row mb-2">
                                 <div class="col-auto">
-                                    <span>{{ 'admin.content.cache.20'|trans }}</span>
+                                    <span>{{ 'admin.content.cache_message'|trans }}</span>
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-auto">
-                                    <button type="submit" class="btn btn-ec-conversion">{{ 'admin.content.cache.22'|trans }}</button>
+                                    <button type="submit" class="btn btn-ec-conversion">{{ 'admin.content.cache_delete'|trans }}</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% if result is not empty %}
-                        <div class="card rounded border-0 mb-4">
-                            <div class="card-body">
-                                <div class="row mb-2">
-                                    <div class="col-auto">
-                                        <pre>{{ result }}</pre>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
                 </div>
             </div>
         </div>

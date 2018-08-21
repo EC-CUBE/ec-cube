@@ -1,8 +1,17 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Page\Admin;
-
 
 class MailSettingsPage extends AbstractAdminPageStyleGuide
 {
@@ -16,23 +25,28 @@ class MailSettingsPage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
-        return $page->goPage('/setting/shop/mail', 'メール設定基本情報設定');
+
+        return $page->goPage('/setting/shop/mail', 'メール設定店舗設定');
     }
 
-    public function 入力_テンプレート($value) {
+    public function 入力_テンプレート($value)
+    {
         $this->tester->selectOption(['id' => 'mail_template'], $value);
+
         return $this;
     }
 
-    public function 入力_件名($value) {
+    public function 入力_件名($value)
+    {
         $this->tester->fillField(['id' => 'mail_mail_subject'], $value);
+
         return $this;
     }
 
-    public function 登録() {
+    public function 登録()
+    {
         $this->tester->click('#form1 #aside_column button');
+
         return $this;
     }
-
-
 }

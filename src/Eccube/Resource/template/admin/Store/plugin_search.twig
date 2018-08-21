@@ -16,134 +16,98 @@ file that was distributed with this source code.
 {% block title %}{{'admin.store.plugin_search.885'|trans}}{% endblock %}
 {% block sub_title %}{{'admin.store.plugin_search.884'|trans}}{% endblock %}
 
-{% block javascript %}
-    <script src="{{ asset('assets/js/vendor/masonry.pkgd.min.js', 'admin') }}"></script>
-    <script>
-        $(function() {
-            $('.grid').masonry({
-                itemSelector: '.grid-item',
-                columnWidth: '.grid-item'
-            });
-
-            $('a.searchPluginModal').on('click', function (e) {
-                e.preventDefault();
-                var obj = $(this);
-                var id = obj.attr('data-id');
-                $.ajax({
-                    type: 'GET',
-                    dataType: 'jsonp',
-                    crossDomain: true,
-                    url: '{{ eccube_config.eccube_package_repo_url }}/detail/' + id,
-                    success: function (data) {
-                        showPopup(obj, data, id);
-                    },
-                    error: function () {
-                        alert('Plugin not found !');
-                    }
-                });
-            });
-
-            function showPopup(obj, data, id) {
-                var modal_plugin = $('#searchPluginModal');
-                var btn_html = obj.closest('div').find('#plugin-id-' + id).get(0).outerHTML;
-                $('#search_plugin_modal_box__body', modal_plugin).html(data);
-                $('#search_plugin_modal_box__buttons', modal_plugin).html(btn_html);
-                modal_plugin.modal('show');
-            }
-        });
-
-    </script>
-{% endblock javascript %}
-
 {% block stylesheet %}
     <style type="text/css">
-        .plugin-panel {
-            border: 1px solid #dedede;
-            padding: 10px;
-            margin: 5px 0;
+        .border-bt {
+            border-bottom: 1px solid rgba(0, 0, 0, .125);
         }
-        .plugin-meta {
-            padding: 0;
-            list-style: none;
-            margin: 0 0 15px;
+        #plugin-list a img{
+            max-height: 180px;
         }
-        .plugin-meta.dl-horizontal dt {
-            text-align: right;
-            padding-bottom: 0;
-            width: 180px;
+        #plugin-list .info{
+            min-height: 65%;
         }
-        .dl-horizontal dt {
-            text-align: left;
-            white-space: normal;
-            padding-bottom: 8px;
-            float: left;
-        }
-        .plugin-logo img {
-            width: 168px;
-            height: 126px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            float: left;
-        }
-        .plugin-meta.dl-horizontal dd {
-            padding-bottom: 0;
-            margin-left: 200px;
-        }
-        .plugin-block .grid{
-            padding: 10px 0;
-        }
-        #search_plugin_modal_box__body{
-            padding: 0 5px;
+        .plugin-ver li span{
+            display: inline-block;
         }
     </style>
-{% endblock stylesheet %}
-
+{% endblock %}
 {% block main %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                <div class="card rounded border-0 mb-4">
-                    <div class="card-header">
-                        <h4 class="box-title font-weight-bold">{{'admin.store.plugin_search.886'|trans}}</h4>
-                    </div>
-                    <div class="card-body p-0">
-                        {% if items|length > 0%}
-                            <div class="plugin-block">
-                                {% for item in promotionItems %}
-                                    <div class="col-12">
-                                        {{ include('@admin/Store/plugin_search_panel.twig') }}
-                                    </div>
-                                {% endfor %}
-
-                                <div class="grid">
-                                    {% for item in items %}
-                                        <div class="col-12 col-md-12 grid-item">
-                                            {{ include('@admin/Store/plugin_search_panel.twig') }}
-                                        </div>
+                {% if Categories|length > 0 %}
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col-12 p-4">
+                                    {% for key,category in Categories %}
+                                        <a href="{{ url('admin_store_plugin_owners_search', {'category_id' : key}) }}" class="px-3 text-dark">{{ category }}</a>
                                     {% endfor %}
-                                </div><!-- .row -->
-                            </div><!-- .plugin-block -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <form method="post" action="{{ url('admin_store_plugin_owners_search') }}" class="plugin-search" name="search">
+                    <div class="c-outsideBlock">
+                        {{ form_widget(searchForm._token) }}
+                        <div class="c-outsideBlock__contents mb-4">
+                            <div class="row justify-content-start">
+                                <div class="col-3 pl-0">
+                                    <label class="col-form-label">{{ searchForm.category_id.vars.label|trans }}</label>
+                                    {{ form_widget(searchForm.category_id) }}
+                                </div>
+                                <div class="col-3">
+                                    <label class="col-form-label">{{ searchForm.price_type.vars.label|trans }}</label>
+                                    {{ form_widget(searchForm.price_type) }}
+                                </div>
+                                <div class="col-3">
+                                    <label class="col-form-label">{{ searchForm.keyword.vars.label|trans }}</label>
+                                    {{ form_widget(searchForm.keyword) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="c-outsideBlock__contents mb-2 pl-0">
+                            <button class="btn btn-ec-conversion px-5 py-2" type="submit">{{ 'admin.store.plugin_owners_search.search_button'|trans }}</button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between mb-2">
+                        <div class="col-12 text-right">
+                            <div class="d-inline-block mr-2">
+                                {{ form_widget(searchForm.sort, {attr: {onchange: 'document.forms.search.submit();'}}) }}
+                            </div>
+                            <div class="d-inline-block">
+                                {{ form_widget(searchForm.page_count, {attr: {onchange: 'document.forms.search.submit();'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div id="plugin-list" class="card rounded border-0 my-4">
+                    <div class="card-header">
+                        <h5>{{ 'admin.store.plugin_owners_search.search_results'|trans({'%number%': pagination|length, '%total%' : total}) }}</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if pagination|length > 0%}
+                            {% for item in pagination %}
+                                <div class="row border-bt pb-2 mb-3">
+                                    {{ include('@admin/Store/plugin_search_panel.twig') }}
+                                </div>
+                            {% endfor %}
                         {% else %}
-                            <p class="text-danger">{{ message }}</p>
+                            {{ message }}
                         {% endif %}
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div id="search_plugin_modal_box" class="modal-content">
-                <div id="search_plugin_modal_box__header" class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">&nbsp;</h4>
+                    {% if pagination.totalItemCount > 0 %}
+                        <div class="row justify-content-md-center mb-4">
+                            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_store_plugin_owners_search_page' } %}
+                        </div>
+                    {% endif %}
                 </div>
-                <div id="search_plugin_modal_box__body" class="modal-body" style="background: #fff"></div>
-                <div id="search_plugin_modal_box__buttons" class="modal-footer" style="background: #fff"></div>
             </div>
         </div>
     </div>
 {% endblock %}
-

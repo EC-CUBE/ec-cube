@@ -59,13 +59,13 @@ class StockMultipleValidator extends ItemHolderValidator
             }
             $stock = $ProductClass->getStock();
             if ($stock == 0) {
-                $this->throwInvalidItemException('cart.zero.stock', $ProductClass);
+                $this->throwInvalidItemException('front.shopping.out_of_stock_zero', $ProductClass, true);
             }
             $total = 0;
             foreach ($Items as $Item) {
                 $total += $Item->getQuantity();
                 if ($stock < $total) {
-                    $this->throwInvalidItemException('cart.over.stock', $ProductClass);
+                    $this->throwInvalidItemException('front.shopping.out_of_stock', $ProductClass, true);
                 }
             }
         }

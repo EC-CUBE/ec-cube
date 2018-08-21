@@ -62,9 +62,8 @@ parameters:
     eccube_smtext_len: 100
     eccube_tax_rule_priority: ['product_id','product_class_id','pref_id','country_id']
     eccube_url_len: 1024
-    eccube_default_page_count: 10
+    eccube_default_page_count: 50
     eccube_admin_product_stock_status: 3
-    eccube_info_url: 'https://www.ec-cube.net/info/3/'
     eccube_customer_reset_expire: 10
     # CSVの区切り文字(タブ区切りにしたい場合は'\t'ではなく'    'で設定する
     eccube_csv_export_separator: ,
@@ -77,7 +76,10 @@ parameters:
     eccube_csv_import_delimiter: ,
     eccube_csv_import_enclosure: '"'
     eccube_csv_import_escape: \
+    eccube_info_url: 'https://www.ec-cube.net/info/4/'
     eccube_owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
+    eccube_official_site_url: https://www.ec-cube.net
+    eccube_community_site_url: https://xoops.ec-cube.net
     eccube_name_len: 16
     eccube_kana_len: 25
     eccube_address1_len: 32
@@ -111,4 +113,3 @@ parameters:
     # {random_alnum,桁数} : ランダムな半角英数大文字を桁数分作成
     eccube_order_no_format: ''
     eccube_order_pdf_message_len: 30
-

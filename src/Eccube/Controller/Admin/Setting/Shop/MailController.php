@@ -20,10 +20,10 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailTemplateRepository;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 /**
@@ -83,7 +83,7 @@ class MailController extends AbstractController
 
             // 新規登録は現時点では未実装とする.
             if (is_null($Mail)) {
-                $this->addError('admin.shop.mail.save.error', 'admin');
+                $this->addError('admin.common.save_error', 'admin');
 
                 return $this->redirectToRoute('admin_setting_shop_mail');
             }
@@ -111,7 +111,7 @@ class MailController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.shop.mail.save.complete', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
 
                 return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
             }

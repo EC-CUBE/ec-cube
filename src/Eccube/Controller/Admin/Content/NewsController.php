@@ -19,11 +19,10 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\NewsType;
 use Eccube\Repository\NewsRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class NewsController extends AbstractController
 {
@@ -137,8 +136,7 @@ class NewsController extends AbstractController
     /**
      * 指定した新着情報の表示順を1つ上げる。
      *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/content/news/{id}/up", requirements={"id" = "\d+"}, name="admin_content_news_up")
+     * @Route("/%eccube_admin_route%/content/news/{id}/up", requirements={"id" = "\d+"}, name="admin_content_news_up", methods={"PUT"})
      *
      * @param News $News
      *
@@ -164,8 +162,7 @@ class NewsController extends AbstractController
     /**
      * 指定した新着情報の表示順を1つ下げる。
      *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/content/news/{id}/down", requirements={"id" = "\d+"}, name="admin_content_news_down")
+     * @Route("/%eccube_admin_route%/content/news/{id}/down", requirements={"id" = "\d+"}, name="admin_content_news_down", methods={"PUT"})
      *
      * @param News $News
      *
@@ -191,8 +188,7 @@ class NewsController extends AbstractController
     /**
      * 指定した新着情報を削除する。
      *
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete")
+     * @Route("/%eccube_admin_route%/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete", methods={"DELETE"})
      *
      * @param Request $request
      * @param News $News
@@ -211,11 +207,11 @@ class NewsController extends AbstractController
             $event = new EventArgs(['News' => $News], $request);
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.news.delete.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
 
             log_info('新着情報削除完了', [$News->getId()]);
         } catch (\Exception $e) {
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('news.text.name')]);
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $News->getTitle()]);
             $this->addError($message, 'admin');
 
             log_error('新着情報削除エラー', [$News->getId(), $e]);

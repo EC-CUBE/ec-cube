@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['order', 'order_edit'] %}
 
-{% block title %}{{ 'admin.order.edit.242'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.order.edit.241'|trans }}{% endblock %}
+{% block title %}{{ 'admin.order.order_registration'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 {% form_theme searchCustomerModalForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
@@ -143,6 +143,9 @@ file that was distributed with this source code.
                 window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
                 return false;
             });
+            
+            // お届け時間の初期表示
+            $('#order_Shipping_Delivery').change();
         });
 
         // 配送業者選択時にお届け時間を設定
@@ -166,6 +169,12 @@ file that was distributed with this source code.
 {% endblock javascript %}
 
 {% block main %}
+    {# 決済処理中/購入処理中ステータスは登録・更新等の操作を無効にする #}
+    {% set action_disabled = false %}
+    {% if Order.OrderStatus is not empty and Order.OrderStatus.id in [
+        constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING'), constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')] -%}
+        {% set action_disabled = true %}
+    {%- endif %}
     <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="mode" value="">
         <input type="hidden" name="modal" value="">
@@ -177,7 +186,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.order'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.order_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderOverview" aria-expanded="false" aria-controls="orderOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -187,55 +196,54 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <div class="col-3">{{ 'admin.order.edit.244'|trans }}</div>
+                                            <div class="col-3">{{ 'admin.order.order_no'|trans }}</div>
                                             <div class="col">{{ Order.order_no }}</div>
                                         </div>
                                         <div class="row mb-3 form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.order.index.298'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
                                             <div class="col">
                                                 {% if Order.id is not empty %}
                                                     {{ form_widget(form.OrderStatus) }}
                                                     {{ form_errors(form.OrderStatus) }}
-                                                    <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.edit.248'|trans }}</p>
                                                 {% endif %}
                                             </div>
                                         </div>
                                         <div class="row mb-3 form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.order.edit.284'|trans }}</label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.payment_method'|trans }}</label>
                                             <div class="col">
                                                 {{ form_widget(form.Payment) }}
                                                 {{ form_errors(form.Payment) }}
-                                                <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.edit.285'|trans }}</p>
+                                                <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.change_payment_method_message'|trans }}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-inbox fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.order_date'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-inbox fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.order_date'|trans }}</div>
                                             <div class="col">{{ Order.order_date ? Order.order_date|date_sec : '' }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-money fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.payment_date'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-money fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.payment_date'|trans }}</div>
                                             <div class="col">{{ Order.payment_date ? Order.payment_date|date_sec : '' }}</div>
                                         </div>
                                         {% if not Order.isMultiple %}
                                             <div class="row mb-3">
-                                                <div class="col-3"><i class="fa fa-truck fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.shipping.edit.ship_date'|trans }}</div>
+                                                <div class="col-3"><i class="fa fa-truck fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.shipping_date'|trans }}</div>
                                                 <div class="col">
                                                     {{ Order.Shippings[0].shipping_date|date_sec }}
                                                 </div>
                                             </div>
                                         {% endif %}
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.update_date'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.common.update_date'|trans }}</div>
                                             <div class="col">{{ Order.update_date ? Order.update_date|date_sec : '' }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-mobile fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.device_type'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-mobile fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.common.device_type'|trans }}</div>
                                             <div class="col">{{ Order.device_type }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-commenting fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.message'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-commenting fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.message'|trans }}</div>
                                             <div class="col">{{ Order.message ? Order.message|nl2br : '' }}</div>
                                         </div>
                                     </div>
@@ -270,9 +278,9 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-2">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.customer_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.orderer'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
-                                <div class="col">{% if id %}<span class="mr-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.edit.256'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.full_name }} ({{ Order.full_name_kana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
+                                <div class="col">{% if id %}<span class="mr-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.full_name }} ({{ Order.full_name_kana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
                                 <div class="col-1 text-right"><a class="d-block" data-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo"><i class="fa {{ id ? 'fa-angle-down' : 'fa-angle-up' }} fa-lg"></i></a></div>
                             </div>
                         </div>
@@ -282,19 +290,20 @@ file that was distributed with this source code.
                                 {% if Order.id is empty %}
                                     <div class="row mb-3">
                                         <div class="col-auto">
-                                            <a class="btn btn-ec-regular px-3" data-toggle="modal" data-target="#searchCustomerModal">{{ 'admin.order.edit.label.search'|trans }}</a>
+                                            <a class="btn btn-ec-regular px-3" data-toggle="modal" data-target="#searchCustomerModal">{{ 'admin.order.search_from_customer'|trans }}</a>
                                         </div>
                                     </div>
+                                    <!-- 会員検索モーダル -->
                                     <div class="modal fade" id="searchCustomerModal" tabindex="-1" role="dialog" aria-labelledby="searchCustomerModal" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.order.edit.btn.search_customer'|trans }}</h5>
+                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.order.search_customer_title'|trans }}</h5>
                                                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.order.edit.290' }}) }}
-                                                    <button type="button" id="searchCustomerModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
+                                                    {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.customer.multi_search_label' }}) }}
+                                                    <button type="button" id="searchCustomerModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.common.search'|trans }}</button>
                                                     <div class="form-group" id="searchCustomerModalList"></div>
                                                 </div>
                                             </div>
@@ -304,49 +313,49 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row">
-                                            <label class="col-3">{{ 'admin.order.edit.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
+                                            <label class="col-3">{{ 'admin.customer.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
                                             <div class="col">
-                                                <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.edit.256'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
+                                                <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
                                                 {{ form_widget(form.Customer) }}
                                                 {{ form_errors(form.Customer) }}
                                             </div>
                                         </div>
                                         <div class="row form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.label.name'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.name'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 <div class="row">
                                                     <div class="col">
-                                                        {{ form_widget(form.name.name01, {attr: {placeholder: 'admin.common.label.family_name' }}) }}
+                                                        {{ form_widget(form.name.name01) }}
                                                         {{ form_errors(form.name.name01) }}
                                                     </div>
                                                     <div class="col">
-                                                        {{ form_widget(form.name.name02, {attr: {placeholder: 'admin.common.label.first_name' }}) }}
+                                                        {{ form_widget(form.name.name02) }}
                                                         {{ form_errors(form.name.name02) }}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.label.kana'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.kana'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 <div class="row">
                                                     <div class="col">
-                                                        {{ form_widget(form.kana.kana01, {attr: {placeholder: 'admin.common.label.family_name_kana' }}) }}
+                                                        {{ form_widget(form.kana.kana01) }}
                                                         {{ form_errors(form.kana.kana01) }}
                                                     </div>
                                                     <div class="col">
-                                                        {{ form_widget(form.kana.kana02, {attr: {placeholder: 'admin.common.label.first_name_kana' }}) }}
+                                                        {{ form_widget(form.kana.kana02) }}
                                                         {{ form_errors(form.kana.kana02) }}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.label.address'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.address'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 <div class="row mb-3">
                                                     <div class="col form-inline">
-                                                        {{ 'admin.order.edit.261'|trans }}
+                                                        {{ 'admin.common.postal_symbol'|trans }}
                                                         {{ form_widget(form.postal_code) }}
                                                         {{ form_errors(form.postal_code) }}
                                                     </div>
@@ -359,13 +368,13 @@ file that was distributed with this source code.
                                                 </div>
                                                 <div class="row mb-3">
                                                     <div class="col">
-                                                        {{ form_widget(form.address.addr01, { attr : {placeholder : 'admin.order.edit.262' }}) }}
+                                                        {{ form_widget(form.address.addr01) }}
                                                         {{ form_errors(form.address.addr01) }}
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col">
-                                                        {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.order.edit.263' }}) }}
+                                                        {{ form_widget(form.address.addr02) }}
                                                         {{ form_errors(form.address.addr02) }}
                                                     </div>
                                                 </div>
@@ -375,30 +384,30 @@ file that was distributed with this source code.
 
                                     <div class="col-6">
                                         <div class="row form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.label.email'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.mail_address'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 {{ form_widget(form.email) }}
                                                 {{ form_errors(form.email) }}
                                             </div>
                                         </div>
                                         <div class="row form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.label.tel'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.phone_number'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 {{ form_widget(form.phone_number) }}
                                                 {{ form_errors(form.phone_number) }}
                                             </div>
                                         </div>
                                         <div class="row form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.label.company'|trans }}</label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.company_name'|trans }}</label>
                                             <div class="col">
                                                 {{ form_widget(form.company_name) }}
                                                 {{ form_errors(form.company_name) }}
                                             </div>
                                         </div>
                                         <div class="row form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.order.edit.label.message'|trans }}</label>
+                                            <label class="col-3 col-form-label">{{ 'admin.order.message'|trans }}</label>
                                             <div class="col">
-                                                {{ form_widget(form.message, { attr : {'rows': 8, placeholder : 'admin.order.edit.264' }}) }}
+                                                {{ form_widget(form.message, { attr : {'rows': 8 }}) }}
                                                 {{ form_errors(form.message) }}
                                             </div>
                                         </div>
@@ -412,7 +421,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.shipping.edit.730'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.shipping_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#shippingInfo" aria-expanded="false" aria-controls="shippingInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -422,25 +431,30 @@ file that was distributed with this source code.
                                 {% if Order.isMultiple %}
                                     {# 複数配送の場合は配送先の表示のみ #}
                                     <div class="mb-3">
-                                        <a id="shipping-add" class="btn btn-ec-regular" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.edit'|trans }}</a>
-                                        複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます。
+                                        <a id="shipping-add" class="btn btn-ec-regular" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit_multiple_shipping'|trans }}</a>
+                                        <span class="ml-3">{{ 'admin.order.edit_multiple_shipping_description'|trans }}</span>
                                     </div>
                                     {% for shipping in Order.Shippings %}
                                         <div class="col">
-                                            <span class="mr-5">お届け先{{ loop.index }}</span>
-                                            {{ shipping.full_name }} ({{ shipping.full_name_kana }}) {% if shipping.company_name is not null %}{{ shipping.company_name }} {% endif %}〒{{ shipping.postal_code }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }} {{ shipping.phone_number }}{% if shipping.shipping_date is not null %} {{ shipping.shipping_date|date_sec }}{% endif %}
+                                            <span class="mr-5">{{ 'admin.order.delivery'|trans }}({{ loop.index }})</span>
+                                            {% set shipping_name = shipping.full_name ~ '(' ~ shipping.full_name_kana ~ ')' ~ shipping.company_name is not null ? shipping.company_name : '' %}
+                                            {% set shipping_addr = 'admin.common.postal_symbol'|trans ~ shipping.postal_code ~ ' ' ~ shipping.pref ~ shipping.addr01 ~ shipping.addr02 %}
+                                            {% set shipping_date = shipping.shipping_date is not null ? shipping.shipping_date|date_day : '' %}
+                                            {{ shipping_name}} {{ shipping_addr }} {{ shipping.phone_number }} {{ shipping_date }}
                                         </div>
                                     {% endfor %}
                                 {% else %}
                                     {# 単数配送の場合は配送先の編集が可能 #}
                                     <div class="row mb-3">
                                         <div class="col-6">
-                                            <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.edit.label.customer_info.copy'|trans }}</button>
-                                            <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
+                                            <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.copy_orderer'|trans }}</button>
+                                            {% if Order.id is not empty %}
+                                            <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.output_delivery_note'|trans }}</a>
+                                            {% endif %}
                                         </div>
                                         {% if Order.id is not empty %}
                                             <div class="col-6 text-right">
-                                                <a id="shipping-add" class="btn btn-ec-regular w-25" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.add'|trans }}</a>
+                                                <a id="shipping-add" class="btn btn-ec-regular w-25" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.add_shipping'|trans }}</a>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -448,41 +462,41 @@ file that was distributed with this source code.
                                         <span class="p-country-name" style="display:none;">Japan</span>
                                         <div class="col-6">
                                             <div class="row form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.common.label.name'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                                <label class="col-3 col-form-label">{{ 'admin.common.name'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                                 <div class="col">
                                                     <div class="row">
                                                         <div class="col">
-                                                            {{ form_widget(form.Shipping.name.name01, {attr: {placeholder: 'admin.common.label.family_name' }}) }}
+                                                            {{ form_widget(form.Shipping.name.name01) }}
                                                             {{ form_errors(form.Shipping.name.name01) }}
                                                         </div>
                                                         <div class="col">
-                                                            {{ form_widget(form.Shipping.name.name02, {attr: {placeholder: 'admin.common.label.first_name' }}) }}
+                                                            {{ form_widget(form.Shipping.name.name02) }}
                                                             {{ form_errors(form.Shipping.name.name02) }}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.common.label.kana'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                                <label class="col-3 col-form-label">{{ 'admin.common.kana'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                                 <div class="col">
                                                     <div class="row">
                                                         <div class="col">
-                                                            {{ form_widget(form.Shipping.kana.kana01, {attr: {placeholder: 'admin.common.label.family_name_kana' }}) }}
+                                                            {{ form_widget(form.Shipping.kana.kana01) }}
                                                             {{ form_errors(form.Shipping.kana.kana01) }}
                                                         </div>
                                                         <div class="col">
-                                                            {{ form_widget(form.Shipping.kana.kana02, {attr: {placeholder: 'admin.common.label.first_name_kana' }}) }}
+                                                            {{ form_widget(form.Shipping.kana.kana02) }}
                                                             {{ form_errors(form.Shipping.kana.kana02) }}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.common.label.address'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                                <label class="col-3 col-form-label">{{ 'admin.common.address'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                                 <div class="col">
                                                     <div class="row mb-3">
                                                         <div class="col form-inline">
-                                                            {{ 'admin.order.edit.261'|trans }}
+                                                            {{ 'admin.common.postal_symbol'|trans }}
                                                             {{ form_widget(form.Shipping.postal_code) }}
                                                             {{ form_errors(form.Shipping.postal_code) }}
                                                         </div>
@@ -495,13 +509,13 @@ file that was distributed with this source code.
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col">
-                                                            {{ form_widget(form.Shipping.address.addr01, { attr : {placeholder : 'admin.order.edit.262' }}) }}
+                                                            {{ form_widget(form.Shipping.address.addr01) }}
                                                             {{ form_errors(form.Shipping.address.addr01) }}
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            {{ form_widget(form.Shipping.address.addr02, { attr : { placeholder : 'admin.order.edit.263' }}) }}
+                                                            {{ form_widget(form.Shipping.address.addr02) }}
                                                             {{ form_errors(form.Shipping.address.addr02) }}
                                                         </div>
                                                     </div>
@@ -510,7 +524,7 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-6">
                                             <div class="row form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.common.label.tel'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                                <label class="col-3 col-form-label">{{ 'admin.common.phone_number'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.phone_number) }}
                                                     {{ form_errors(form.Shipping.phone_number) }}
@@ -518,7 +532,7 @@ file that was distributed with this source code.
                                             </div>
 
                                             <div class="row form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.common.label.company'|trans }}</label>
+                                                <label class="col-3 col-form-label">{{ 'admin.common.company_name'|trans }}</label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.company_name) }}
                                                     {{ form_errors(form.Shipping.company_name) }}
@@ -530,21 +544,21 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-6">
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.common.label.tracking_number'|trans }}</label>
+                                                <label class="col-3 col-form-label">{{ 'admin.order.tracking_number'|trans }}</label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.tracking_number) }}
                                                     {{ form_errors(form.Shipping.tracking_number) }}
                                                 </div>
                                             </div>
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.shipping.edit.delivery_provider'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                                <label class="col-3 col-form-label">{{ 'admin.order.delivery_provider'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.Delivery) }}
                                                     {{ form_errors(form.Shipping.Delivery) }}
                                                 </div>
                                             </div>
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.shipping.edit.note_title'|trans }}</label>
+                                                <label class="col-3 col-form-label">{{ 'admin.order.shop_memo_for_shipped'|trans }}</label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.note) }}
                                                     {{ form_errors(form.Shipping.note) }}
@@ -553,14 +567,14 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-6">
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label"><i class="fa fa-calendar-check-o fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.shipping.edit.date_to_deliver'|trans }}</label>
+                                                <label class="col-3 col-form-label"><i class="fa fa-calendar-check-o fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.delivery_date'|trans }}</label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.shipping_delivery_date) }}
                                                     {{ form_errors(form.Shipping.shipping_delivery_date) }}
                                                 </div>
                                             </div>
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label"><i class="fa fa-clock-o fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.shipping.edit.specified_time_zone'|trans }}</label>
+                                                <label class="col-3 col-form-label"><i class="fa fa-clock-o fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.delivery_time'|trans }}</label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.DeliveryTime) }}
                                                     {{ form_errors(form.Shipping.DeliveryTime) }}
@@ -576,7 +590,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderItem" aria-expanded="false" aria-controls="orderItem"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -587,30 +601,30 @@ file that was distributed with this source code.
                                     <div class="col-6">
                                         {# 複数配送の場合は商品追加できない #}
                                         {% if not Order.isMultiple %}
-                                            <a class="btn btn-ec-regular mr-2 add" data-toggle="modal" data-target="#addProduct">{{ 'admin.order.edit.btn.add_product'|trans }}</a>
+                                            <a class="btn btn-ec-regular mr-2 add" data-toggle="modal" data-target="#addProduct">{{ 'admin.order.add_product_item'|trans }}</a>
                                             <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProduct" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
+                                                            <h5 class="modal-title">{{ 'admin.order.add_product_item'|trans }}</h5>
                                                             <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
+                                                            {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3', 'placeholder': 'admin.product.multi_search_label' }}) }}
                                                             {{ form_widget(searchProductModalForm.category_id) }}
-                                                            <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
+                                                            <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.common.search'|trans }}</button>
                                                             <div id="searchProductModalList"></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         {% endif %}
-                                        <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#addOrderItemType">{{ 'admin.order.edit.btn.add_other_item'|trans }}</a>
+                                        <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#addOrderItemType">{{ 'admin.order.add_other_item'|trans }}</a>
                                         <div class="modal fade" id="addOrderItemType" tabindex="-1" role="dialog" aria-labelledby="addOrderItemType" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">{{ 'admin.order.edit.btn.add_other_item'|trans }}</h5>
+                                                        <h5 class="modal-title">{{ 'admin.order.add_other_item'|trans }}</h5>
                                                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -622,28 +636,28 @@ file that was distributed with this source code.
                                         {{ form_errors(form.OrderItemsErrors) }}
                                     </div>
                                     <div class="col-5 text-right">
-                                        <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate">{{ 'admin.order.edit.267'|trans }}</button>
+                                        <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate"{{ action_disabled ? ' disabled="disabled"' }}>{{ 'admin.order.update_calculation_results'|trans }}</button>
                                     </div>
                                 </div>
-                                <table id="table-form-field" class="table table-striped table-sm mb-0  text-nowrap"
+                                <table id="table-form-field" class="table table-striped table-sm mb-0"
                                        data-prototype="{% filter escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': form.OrderItems.vars.prototype}) }}{% endfilter %}">
                                     <thead class="table-active">
-                                    <tr>
-                                        <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.product_name_code'|trans }}</th>
+                                    <tr class="text-nowrap">
+                                        <th class="pt-2 pb-2 pl-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
                                         <th class="pt-2 pb-2">
-                                            <div class="col-8">{{ 'admin.common.label.price02'|trans }}</div>
+                                            <div class="col-8">{{ 'admin.order.amount'|trans }}</div>
                                         </th>
                                         <th class="pt-2 pb-2">
-                                            <div class="col-8">{{ 'admin.common.label.quantity'|trans }}</div>
+                                            <div class="col-8">{{ 'admin.order.quantity'|trans }}</div>
                                         </th>
                                         <th class="pt-2 pb-2">
-                                            <div class="col-8">{{ 'admin.common.label.tax'|trans }}</div>
+                                            <div class="col-8">{{ 'admin.order.tax_rate'|trans }}</div>
                                         </th>
                                         <th class="pt-2 pb-2">
-                                            <div class="col-8">{{ 'admin.common.label.tax_status'|trans }}</div>
+                                            <div class="col-8">{{ 'admin.order.tax_type'|trans }}</div>
                                         </th>
                                         <th class="pt-2 pb-2">
-                                            <div class="col-8">{{ 'admin.common.label.subtotal'|trans }}</div>
+                                            <div class="col-8">{{ 'admin.order.subtotal'|trans }}</div>
                                         </th>
                                         <th class="pt-2 pb-2 pr-3"></th>
                                     </tr>
@@ -655,6 +669,7 @@ file that was distributed with this source code.
                                             {# hidden values #}
                                             {{ form_widget(orderItemForm.ProductClass) }}
                                             {{ form_widget(orderItemForm.order_item_type) }}
+                                            <!-- 商品名 -->
                                             <td class="align-middle w-25 pl-3">
                                                 <p class="mb-0 font-weight-bold">
                                                     {# 商品とポイント値引きは名前変更できない #}
@@ -687,6 +702,7 @@ file that was distributed with this source code.
                                                 </span>
                                                 {{ form_errors(orderItemForm.product_name) }}
                                             </td>
+                                            <!-- 金額 -->
                                             <td class="align-middle">
                                                 <div class="col-12">
                                                     {# ポイント値引きは価格変更できない #}
@@ -698,6 +714,7 @@ file that was distributed with this source code.
                                                     {{ form_errors(orderItemForm.price) }}
                                                 </div>
                                             </td>
+                                            <!-- 数量 -->
                                             <td class="align-middle">
                                                 <div class="col-6">
                                                     {# 複数配送の場合は商品の個数を変更できない、ポイントの場合も個数を変更できない #}
@@ -709,16 +726,19 @@ file that was distributed with this source code.
                                                     {{ form_errors(orderItemForm.quantity) }}
                                                 </div>
                                             </td>
+                                            <!-- 税率 -->
                                             <td class="align-middle">
                                                 <div class="col-8">
                                                     {{ OrderItem.tax_rate }}
                                                 </div>
                                             </td>
+                                            <!-- 課税区分 -->
                                             <td class="align-middle">
                                                 <div class="col-8">
                                                     {{ OrderItem.tax_type }}
                                                 </div>
                                             </td>
+                                            <!-- 小計 -->
                                             <td class="align-middle">
                                                 <div class="col-8">
                                                     <span>{{ OrderItem.total_price|price }}</span>
@@ -729,26 +749,37 @@ file that was distributed with this source code.
                                                     {# 複数配送の場合は商品を削除できない #}
                                                     {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
                                                         <div class="col-auto text-center">
-                                                            <a class="btn btn-ec-actionIcon disabled">
-                                                                <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
-                                                            </a>
+                                                            <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                                 data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                                <a class="btn btn-ec-actionIcon disabled">
+                                                                    <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     {% else %}
                                                         <div class="col-auto text-center">
-                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
-                                                                <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
-                                                            </a>
+                                                            <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                                 data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}">
+                                                                    <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
+                                                            <!-- 明細の削除確認モーダル -->
                                                             <div class="modal fade" id="delete_{{ orderItemForm.vars.id }}" tabindex="-1" role="dialog" aria-labelledby="delete_{{ orderItemForm.vars.id }}" aria-hidden="true">
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title font-weight-bold">{{ 'admin.order.edit.delete.modal.header'|trans }}</h5>
-                                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                            <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">×</span>
+                                                                            </button>
                                                                         </div>
-                                                                        <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.edit.delete.modal.body'|trans }}</p></div>
+                                                                        <div class="modal-body text-left">
+                                                                            <p class="text-left">{{ 'admin.order.delete_item__confirm_message'|trans({ '%name%' : OrderItem.product_name }) }}</p>
+                                                                        </div>
                                                                         <div class="modal-footer">
-                                                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
-                                                                            <a href="#order-product" class="btn delete btn-ec-delete">{{ 'common.label.delete'|trans }}</a>
+                                                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                            <a href="#order-product" class="btn delete btn-ec-delete">{{ 'admin.common.delete'|trans }}</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -764,27 +795,27 @@ file that was distributed with this source code.
                                 <hr class="mt-0">
                                 <!-- 小計 -->
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.276'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.subtotal'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.subtotal|price }}</span></div>
                                 </div>
                                 <!-- 内値引き -->
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.277'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.discount'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">{{ (0 - Order.discount)|price }}</span></div>
                                 </div>
                                 <!-- 内送料 -->
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.279'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.delivery_fee'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.delivery_fee_total|price }}</span></div>
                                 </div>
                                 <!-- 内手数料 -->
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.280'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.charge'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.charge|price }}</span></div>
                                 </div>
                                 <!-- 加算ポイント -->
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.add_point'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.add_point'|trans }}</span></div>
                                     <div class="col-2 text-right">
                                         <span class="h4 align-middle font-weight-normal">
                                             {{ form.vars.value.addpoint|number_format }}
@@ -793,7 +824,7 @@ file that was distributed with this source code.
                                 </div>
                                 <!-- 利用ポイント -->
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.use_point'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.use_point'|trans }}</span></div>
                                     <div class="col-2 text-right">
                                         <span class="h4 align-middle font-weight-normal">
                                             {{ form_widget(form.use_point) }}
@@ -805,22 +836,23 @@ file that was distributed with this source code.
                                 <hr>
                                 <!-- 小計 -->
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.total'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.total'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.total|price }}</span></div>
                                 </div>
                                 <!-- 合計 -->
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.payment_total'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.payment_total'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.payment_total|price }}</span></div>
                                 </div>
                             </div>
                         </div>
                     </div><!-- .card.rounded -->
+                    <!-- ショップ用メモ欄 -->
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.common.label.memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea" aria-expanded="false" aria-controls="freeArea"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -831,11 +863,12 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div><!-- .card.rounded -->
+                    <!-- メール送信履歴 -->
                     {% if id is not null %}
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-8"><span class="card-title">{{ 'admin.order.edit.label.mail_delivery_history'|trans }}</span></div>
+                                    <div class="col-8"><span class="card-title">{{ 'admin.order.mail_history'|trans }}</span></div>
                                     <div class="col-4 text-right"><a data-toggle="collapse" href="#mailHistory" aria-expanded="false" aria-controls="mailHistory"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>
                             </div>
@@ -844,8 +877,8 @@ file that was distributed with this source code.
                                     <table class="table table-striped">
                                         <thead class="table-active">
                                         <tr>
-                                            <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.mail_delivery_date'|trans }}</th>
-                                            <th class="pt-2 pb-2 pr-3">{{ 'admin.order.edit.label.mail_delivery_title'|trans }}</th>
+                                            <th class="pt-2 pb-2 pl-3">{{ 'admin.order.mail_send_date'|trans }}</th>
+                                            <th class="pt-2 pb-2 pr-3">{{ 'admin.order.mail_subject'|trans }}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -866,7 +899,7 @@ file that was distributed with this source code.
                                                                     </p>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.common.label.close'|trans }}</button>
+                                                                    <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -877,7 +910,7 @@ file that was distributed with this source code.
                                         </tbody>
                                     </table>
                                     <div class="text-center">
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_order_mail', { id : Order.id }) }}">{{ 'admin.order.edit.label.mail'|trans }}</a>
+                                        <a class="btn btn-ec-regular" href="{{ url('admin_order_mail', { id : Order.id }) }}">{{ 'admin.order.mail_create'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -886,18 +919,19 @@ file that was distributed with this source code.
                 </div>
             </div>
         </div>
+        <!-- コンバージョンエリア -->
         <div class="c-conversionArea">
             <div class="c-conversionArea__container">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            <a class="c-beseLink" href="{{ url('admin_order', { 'resume': 1 }) }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.subnavi.395'|trans }}</span></a>
+                            <a class="c-beseLink" href="{{ url('admin_order', { 'resume': 1 }) }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.order_list'|trans }}</span></a>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button type="submit" class="btn btn-ec-conversion px-5" name="mode" value="register">{{ 'admin.order.edit.287'|trans }}</button>
+                                <button type="submit" class="btn btn-ec-conversion px-5" name="mode" value="register"{{ action_disabled ? ' disabled="disabled"' }}>{{ 'admin.common.registration'|trans }}</button>
                             </div>
                         </div>
                     </div>

@@ -150,7 +150,7 @@ class AbstractController extends Controller
     public function deleteMessage()
     {
         $this->clearMessage();
-        $this->addWarning('admin.delete.warning', 'admin');
+        $this->addWarning('admin.common.delete_error_already_deleted', 'admin');
     }
 
     /**
@@ -199,7 +199,7 @@ class AbstractController extends Controller
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $token = $request->get(Constant::TOKEN_NAME)
             ? $request->get(Constant::TOKEN_NAME)
-            : $request->headers->get('x-csrf-token');
+            : $request->headers->get('ECCUBE-CSRF-TOKEN');
 
         if (!$this->isCsrfTokenValid(Constant::TOKEN_NAME, $token)) {
             throw new AccessDeniedHttpException('CSRF token is invalid.');

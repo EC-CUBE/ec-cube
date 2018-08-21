@@ -22,11 +22,11 @@ use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class MailController extends AbstractController
 {
@@ -185,7 +185,7 @@ class MailController extends AbstractController
         $MailHistory = $this->mailHistoryRepository->find($id);
 
         if (null === $MailHistory) {
-            throw new NotFoundHttpException('history not found.');
+            throw new NotFoundHttpException();
         }
 
         $event = new EventArgs(

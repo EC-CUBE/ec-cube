@@ -12,8 +12,6 @@ framework:
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
         name: '%env(ECCUBE_COOKIE_NAME)%'
         cookie_path: '%env(ECCUBE_COOKIE_PATH)%'
-        # TODO cookieが発行されないため、いったんfalseに変更
-        cookie_secure: false
         cookie_lifetime: '%env(ECCUBE_COOKIE_LIFETIME)%'
         gc_maxlifetime: '%env(ECCUBE_GC_MAXLIFETIME)%'
         cookie_httponly: true

@@ -44,7 +44,6 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
-use Eccube\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -290,35 +289,6 @@ class ShoppingService
     }
 
     /**
-     * 受注情報を作成
-     *
-     * @param null|Customer $Customer
-     *
-     * @return \Eccube\Entity\Order
-     */
-    public function createOrder($Customer)
-    {
-        // ランダムなpre_order_idを作成
-        do {
-            $preOrderId = sha1(StringUtil::random(32));
-            $Order = $this->orderRepository->findOneBy([
-                'pre_order_id' => $preOrderId,
-                'OrderStatus' => OrderStatus::PROCESSING,
-            ]);
-        } while ($Order);
-
-        // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-        $Order = $this->registerPreOrder(
-            $Customer,
-            $preOrderId);
-
-        $this->cartService->setPreOrderId($preOrderId);
-        $this->cartService->save();
-
-        return $Order;
-    }
-
-    /**
      * 仮受注情報作成
      *
      * @param $Customer
@@ -337,7 +307,7 @@ class ShoppingService
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
 
-        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_MB : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         $this->entityManager->persist($Order);
@@ -723,36 +693,6 @@ class ShoppingService
     }
 
     /**
-     * 住所などの情報が変更された時に金額の再計算を行う
-     *
-     * @deprecated PurchaseFlowで行う
-     *
-     * @param Order $Order
-     *
-     * @return Order
-     */
-    public function getAmount(Order $Order)
-    {
-        // 初期選択の配送業者をセット
-        $shippings = $Order->getShippings();
-
-        // 配送料合計金額
-        // TODO CalculateDeliveryFeeStrategy でセットする
-        // $Order->setDeliveryFeeTotal($this->getShippingDeliveryFeeTotal($shippings));
-
-        // 配送料無料条件(合計金額)
-        $this->setDeliveryFreeAmount($Order);
-
-        // 配送料無料条件(合計数量)
-        $this->setDeliveryFreeQuantity($Order);
-
-        // 合計金額の計算
-        $this->calculatePrice($Order);
-
-        return $Order;
-    }
-
-    /**
      * 配送料金の設定
      *
      * @param Shipping $Shipping
@@ -1069,34 +1009,6 @@ class ShoppingService
             ]);
 
         return $builder;
-    }
-
-    /**
-     * フォームデータを更新
-     *
-     * @param Order $Order
-     * @param array $data
-     *
-     * @deprecated
-     */
-    public function setFormData(Order $Order, array $data)
-    {
-        // お問い合わせ
-        $Order->setMessage($data['message']);
-
-        // お届け先情報を更新
-        $shippings = $data['shippings'];
-        foreach ($shippings as $Shipping) {
-            $timeId = $Shipping->getTimeId();
-            $deliveryTime = null;
-            if ($timeId) {
-                $deliveryTime = $this->deliveryTimeRepository->find($timeId);
-            }
-            if ($deliveryTime) {
-                $Shipping->setShippingDeliveryTime($deliveryTime->getDeliveryTime());
-                $Shipping->setTimeId($timeId);
-            }
-        }
     }
 
     /**
