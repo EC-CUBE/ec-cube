@@ -18,7 +18,6 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\ShoppingService;
 
 /**
  * 受注情報更新処理.

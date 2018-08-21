@@ -24,7 +24,6 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Service\CartService;
 use Symfony\Component\HttpKernel\Client;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CartValidationTest extends AbstractWebTestCase
 {

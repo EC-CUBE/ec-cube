@@ -13,9 +13,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Entity\Cart;
-use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
 use Eccube\Service\OrderHelper;
 use Eccube\Tests\EccubeTestCase;
 

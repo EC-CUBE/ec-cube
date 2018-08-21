@@ -57,6 +57,7 @@ class AbstractShoppingController extends AbstractController
     /**
      * @param $eventName
      * @param EventArgs $event
+     *
      * @return EventArgs
      */
     protected function dispatchEvent($eventName, EventArgs $event)

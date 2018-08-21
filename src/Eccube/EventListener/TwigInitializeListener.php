@@ -188,7 +188,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $Member = $this->requestContext->getCurrentUser();
         if ($Member instanceof Member) {
             $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $Member->getAuthority()]);
-            $baseUrl = $event->getRequest()->getBaseUrl() . '/' . $this->eccubeConfig['eccube_admin_route'];
+            $baseUrl = $event->getRequest()->getBaseUrl().'/'.$this->eccubeConfig['eccube_admin_route'];
             $eccubeNav = $this->getDisplayEccubeNav($eccubeNav, $AuthorityRoles, $baseUrl);
         }
         $this->twig->addGlobal('eccubeNav', $eccubeNav);
@@ -219,7 +219,7 @@ class TwigInitializeListener implements EventSubscriberInterface
                 $param = array_key_exists('param', $childNav) ? $childNav['param'] : [];
                 $url = $this->router->generate($childNav['url'], $param);
                 foreach ($AuthorityRoles as $AuthorityRole) {
-                    $denyUrl = str_replace('/', '\/', $baseUrl . $AuthorityRole->getDenyUrl());
+                    $denyUrl = str_replace('/', '\/', $baseUrl.$AuthorityRole->getDenyUrl());
                     if (preg_match("/^({$denyUrl})/i", $url)) {
                         // 権限がないURLの場合は配列から削除
                         unset($parentNav[$key]);

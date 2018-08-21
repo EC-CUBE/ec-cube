@@ -343,7 +343,7 @@ class ShoppingController extends AbstractShoppingController
             log_info('[注文処理] 注文処理を開始します.', [$Order->getId()]);
 
             try {
-                /**
+                /*
                  * 集計処理
                  */
                 log_info('[注文処理] 集計処理を開始します.', [$Order->getId()]);
@@ -357,7 +357,7 @@ class ShoppingController extends AbstractShoppingController
                     return $this->redirectToRoute('shopping_error');
                 }
 
-                /**
+                /*
                  * 決済実行(前処理)
                  */
                 log_info('[注文処理] PaymentMethod::applyを実行します.', [$Order->getPayment()->getMethodClass()]);
@@ -398,7 +398,7 @@ class ShoppingController extends AbstractShoppingController
                     }
                 }
 
-                /**
+                /*
                  * 決済実行
                  *
                  * PaymentMethod::checkoutでは決済処理が行われ, 正常に処理出来た場合はPurchaseFlow::commitがコールされます.

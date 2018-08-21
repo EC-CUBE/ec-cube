@@ -119,6 +119,7 @@ class OrderHelper
      *
      * @param Customer $Customer
      * @param $CartItems
+     *
      * @return Order
      */
     public function createPurchaseProcessingOrder(Cart $Cart, Customer $Customer)
@@ -352,6 +353,7 @@ class OrderHelper
 
     /**
      * @param Customer $Customer
+     *
      * @return Shipping
      */
     private function createShippingFromCustomer(Customer $Customer)

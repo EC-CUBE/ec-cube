@@ -257,7 +257,6 @@ class OrderType extends AbstractType
             $i++;
         }
 
-
         return $PaymentsIntersected;
     }
 
@@ -266,6 +265,7 @@ class OrderType extends AbstractType
      *
      * @param Payment[] $Payments
      * @param $total
+     *
      * @return Payment[]
      */
     private function filterPayments(array $Payments, $total)

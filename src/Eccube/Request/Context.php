@@ -99,5 +99,6 @@ class Context
             return null;
         }
 
-        return $user;}
+        return $user;
+    }
 }
