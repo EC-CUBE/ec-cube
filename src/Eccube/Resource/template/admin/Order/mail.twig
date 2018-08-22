@@ -10,14 +10,16 @@ file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
-{% set menus = ['order', 'order_master'] %}
+{% set menus = ['order', 'order_edit'] %}
 
-{% block title %}{{'admin.order.mail.340'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.order.mail.339'|trans}}{% endblock %}
+{% block title %}{{ 'admin.order.mail'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
 <script>
 $(function() {
     $('#template-change').on('change', function() {
@@ -39,7 +41,7 @@ $(function() {
         }).done(function(data){
             modal.find('.modal-body').html(data);
         }).fail(function(){
-            modal.find('.modal-body').text('{{ 'admin.order.mail.341'|trans }}');
+            modal.find('.modal-body').text('{{ 'admin.order.mail_failed'|trans }}');
         });
     });
 
@@ -47,15 +49,41 @@ $(function() {
     {# TODO 入力チェック #}
     $('#mailConfirm').on('click', function (e) {
         e.preventDefault();
-        $('#confirmModal').modal('show');
+        $('#mode').val('confirm');
+        $('#order-mail-form').submit();
         return false;
     });
 
-    $('#sendMail').on('click', function(e) {
-        e.preventDefault();
-        $('#mode').val('complete');
-        $('#order-mail-form').submit();
-        return false;
+    ace.require('ace/ext/language_tools');
+    var editor = ace.edit('editor');
+    editor.session.setMode('ace/mode/twig');
+    editor.setTheme('ace/theme/tomorrow');
+    editor.setValue("{{ form.tpl_data.vars.value|escape('js') }}");
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true,
+        showInvisibles: true
+    });
+
+    {% if form.html_tpl_data.vars.value %}
+        var html_editor = ace.edit('html_editor');
+        html_editor.session.setMode('ace/mode/twig');
+        html_editor.setTheme('ace/theme/tomorrow');
+        html_editor.setValue("{{ form.html_tpl_data.vars.value|escape('js') }}");
+        html_editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true,
+            showInvisibles: true
+        });
+    {% endif %}
+
+    $('#order-mail-form').on('submit', function() {
+        $('#mail_tpl_data').val(editor.getValue());
+        {% if form.html_tpl_data.vars.value %}
+            $('#mail_html_tpl_data').val(html_editor.getValue());
+        {% endif %}
     });
 });
 </script>
@@ -69,7 +97,7 @@ $(function() {
                 <div class="card-header">
                     <div class="row">
                         <div class="col-8">
-                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.mail.349'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.mail_destination_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                         </div>
                         <div class="col-4 text-right"><a data-toggle="collapse" href="#mailTo" aria-expanded="false" aria-controls="mailTo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                     </div>
@@ -77,62 +105,32 @@ $(function() {
                 <div class="collapse show ec-cardCollapse" id="mailTo">
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.order.mail.350'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.order.order_no'|trans }}</span></div>
                             <div class="col-4"><span>{{ Order.id }}</span></div>
-                            <div class="col-2"><span>{{ 'admin.order.mail.351'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.order.purchase_price'|trans }}</span></div>
                             <div class="col-4"><span>{{ Order.payment_total|price }}</span></div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.order.mail.352'|trans }}</span></div>
-                            <div class="col-4"><span>{{ Order.name01 }} {{ Order.name02 }}（{{ Order.kana01 }} {{ Order.kana02 }}）</span><br>〒{{ Order.postal_code }}<br>{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</div>
-                            <div class="col-2"><span>{{ 'admin.order.mail.353'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.order.orderer'|trans }}</span></div>
+                            <div class="col-4"><span>{{ Order.name01 }} {{ Order.name02 }}（{{ Order.kana01 }} {{ Order.kana02 }}）</span><br>{{ 'admin.common.postal_symbol'|trans }}{{ Order.postal_code }}<br>{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</div>
+                            <div class="col-2"><span>{{ 'admin.order.purchase_product'|trans }}</span></div>
                             <div class="col-4"><span>
                             {% if Order.productOrderItems %}
                                 {{ Order.productOrderItems[0].productName }}
                                 {% if Order.productOrderItems|length > 2 %}
-                                    {{ 'admin.order.mail.354'|trans({'%count%':Order.productOrderItems|length - 1})|raw }}
+                                    {{ 'admin.order.mail_purchase_product_count'|trans({'%count%':Order.productOrderItems|length - 1})|raw }}
                                 {% endif %}
                             {% endif %}
                             </span></div>
                         </div>
                         <div class="row">
-                            <div class="col-2"><span>{{ 'admin.order.mail.355'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.order.order_status'|trans }}</span></div>
                             {# TODO ステータスごとのCSS #}
                             <div class="col-10"><span class="badge badge-ec-glay">{{ Order.orderStatus }}</span></div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            {% if MailHistories %}
-            <div class="card rounded border-0 mb-4">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-8"><span class="card-title">{{ 'admin.order.mail.356'|trans }}</span></div>
-                        <div class="col-4 text-right"><a data-toggle="collapse" href="#mailHistory" aria-expanded="false" aria-controls="mailHistory"><i class="fa fa-angle-up fa-lg"></i></a></div>
-                    </div>
-                </div>
-                <div class="collapse show ec-cardCollapse" id="mailHistory">
-                    <div class="card-body">
-                        <table class="table table-striped">
-                            <thead class="table-active">
-                            <tr><th class="pt-2 pb-2 pl-3">{{ 'admin.order.mail.357'|trans }}</th>
-                                <th class="pt-2 pb-2 pr-3">{{ 'admin.order.mail.359'|trans }}</th>
-                            </tr></thead>
-                            <tbody>
-                            {% for MailHistory in MailHistories %}
-                                <tr>
-                                    <td class="pl-3">{{ MailHistory.send_date|date('Y/m/d H:i:s') }}</td>
-                                    <td class="pr-3"><a class="text-primary" data-toggle="modal" data-target="#mailModal" data-id="{{ MailHistory.id }}" data-subject="{{ MailHistory.mail_subject }}">{{ MailHistory.mail_subject }}</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
 
             <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
                 {{ form_widget(form._token) }}
@@ -141,7 +139,7 @@ $(function() {
                 <div class="card rounded border-0 mb-4">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-8"><span class="card-title">{{ 'admin.order.mail.360'|trans }}</span></div>
+                        <div class="col-8"><span class="card-title">{{ 'admin.order.mail_mail_info'|trans }}</span></div>
                         <div class="col-4 text-right"><a data-toggle="collapse" href="#mailCreate" aria-expanded="false" aria-controls="mailCreate"><i class="fa fa-angle-up fa-lg"></i></a></div>
                     </div>
                 </div>
@@ -149,7 +147,7 @@ $(function() {
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-3">
-                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.mail.358'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                             </div>
                             <div class="col">
                                 {{ form_widget(form.template, {'id': 'template-change'}) }}
@@ -157,30 +155,42 @@ $(function() {
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-3"><span>{{ 'admin.order.mail.344'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                            <div class="col-3"><span>{{ 'admin.order.mail_subject'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                             <div class="col">
                                 {{ form_widget(form.mail_subject) }}
                                 {{ form_errors(form.mail_subject) }}
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-3"><span>{{ 'admin.order.mail.361'|trans }}</span></div>
-                            <div class="col">
-                                {{ form_widget(form.mail_header, {'attr': {'rows': '7'}}) }}
-                                {{ form_errors(form.mail_header) }}
-                            </div>
-                        </div>
-                        <div class="row mb-2">
                             <div class="col-3"><span>{{ 'admin.order.mail.body'|trans }}</span></div>
                             <div class="col">
-                                {{ body|nl2br }}
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-3"><span>{{ 'admin.order.mail.362'|trans }}</span></div>
-                            <div class="col">
-                                {{ form_widget(form.mail_footer, {'attr': {'rows': '7'}}) }}
-                                {{ form_errors(form.mail_footer) }}
+                                {# タブ表示 #}
+                                <ul class="nav nav-tabs text-center" role="tablist">
+                                    <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
+                                        <a href="#detail_box__tpl_data" class="nav-link" data-toggle="tab"><span>テキスト</span></a>
+                                    </li>
+                                    {% if form.html_tpl_data.vars.value %}
+                                    <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
+                                        <a href="#detail_box__html_tpl_data" class="nav-link" data-toggle="tab"><span>HTML</span></a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="detail_box__tpl_data" class="form-group tab-pane active">
+                                        {{ form_label(form.tpl_data) }}
+                                        <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid' }}"></div>
+                                        <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
+                                        {{ form_errors(form.tpl_data) }}
+                                    </div>
+                                    {% if form.html_tpl_data.vars.value %}
+                                    <div id="detail_box__html_tpl_data" class="form-group tab-pane">
+                                        {{ form_label(form.html_tpl_data) }}
+                                        <div id="html_editor" style="height: 480px" class="form-control{{ has_errors(form.html_tpl_data) ? ' is-invalid' }}"></div>
+                                        <div style="display: none">{{ form_widget(form.html_tpl_data) }}</div>
+                                        {{ form_errors(form.html_tpl_data) }}
+                                    </div>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -191,12 +201,12 @@ $(function() {
                     <div class="c-conversionArea__container">
                         <div class="row justify-content-between align-items-center">
                             <div class="col-6">
-                                <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.subnavi.395'|trans }}</span></a>
+                                <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.order_list'|trans }}</span></a>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="row align-items-center justify-content-end">
-                                    <div class="col-auto"><button type="button" class="btn btn-ec-conversion px-5" id="mailConfirm">{{ 'admin.order.mail.363'|trans }}</button></div>
+                                    <div class="col-auto"><button type="button" class="btn btn-ec-conversion px-5" id="mailConfirm">{{ 'admin.order.mail_confirm'|trans }}</button></div>
                                 </div>
                             </div>
                         </div>
@@ -219,30 +229,6 @@ $(function() {
             </div>
             <div class="modal-footer">
                 <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.order.mail.348'|trans }}</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="mailConfirm" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">
-                    <p class="font-weight-bold mb-2">{{ 'admin.order.mail.364'|trans }}</p><br>
-                </div>
-            </div>
-            {# TODO 送信前プレビュー機能 #}
-            <div class="modal-body">
-                <h5>[EC-CUBE SHOP] ご注文ありがとうございます</h5><br>
-                <p>テスト タロウ 様<br><br>この度はご注文いただき誠にありがとうございます。下記ご注文内容にお間違えがないかご確認下さい。<br><br>************************************************<br> ご請求金額<br>************************************************<br><br>ご注文番号：1<br>お支払い合計：￥53,920<br>お支払い方法：郵便振替<br>メッセージ：<br><br><br>************************************************<br> ご注文商品明細<br>************************************************<br><br>-------------------------------------------------<br>小　計 ￥52,920(うち消費税 ￥3,920)<br>手数料 ￥0<br>送　料 ￥1,000<br>============================================<br>合　計 ￥53,920<br><br>************************************************<br> ご注文者情報<br>************************************************<br><br>お名前　：テスト タロウ 様<br>フリガナ：テスト タロウ 様<br>郵便番号：〒532-0023<br>住所　　：大阪府大阪市淀川区十三東<br>電話番号：00-0000-0000<br>FAX番号 ：--<br>メールアドレス：witchdoktor0403@gmail.com<br><br>************************************************<br> 配送情報<br>************************************************<br><br>◎お届け先<br>お名前　：テスト タロウ 様<br>フリガナ：テスト タロウ 様<br>郵便番号：〒532-0023<br>住所　　：大阪府大阪市淀川区十三東<br>電話番号：00-0000-0000<br>FAX番号 ：--<br>
-                    お届け日：指定なし<br>お届け時間：指定なし<br><br>商品コード: fork-05<br>商品名: ディナーフォーク 銀 170mm<br>数量：1<br><br>商品コード:<br>商品名: 送料<br>数量：1<br><br>============================================<br><br><br>このメッセージはお客様へのお知らせ専用ですので、<br>このメッセージへの返信としてご質問をお送りいただいても回答できません。<br>ご了承ください。<br><br>ご質問やご不明な点がございましたら、こちらからお願いいたします。<br>
-                </p>
-            </div>
-            <div class="modal-footer">
-                {# TODO 入力チェック #}
-                {# TODO 送信完了メッセージ #}
-                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.close'|trans }}</button><button id="sendMail" class="btn btn-ec-conversion">{{ 'admin.order.mail.365'|trans }}</button>
             </div>
         </div>
     </div>

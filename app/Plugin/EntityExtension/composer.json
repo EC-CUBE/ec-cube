@@ -1,0 +1,9 @@
+{
+  "name": "ec-cube/EntityExtension",
+  "version": "1.0.0",
+  "description": "エンティティ拡張機能のサンプル",
+  "type": "eccube-plugin",
+  "extra": {
+    "code": "EntityExtension"
+  }
+}
