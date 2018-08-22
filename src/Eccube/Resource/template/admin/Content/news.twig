@@ -70,9 +70,7 @@ file that was distributed with this source code.
                                                     </a>
                                                 </div>
                                                 <div class="px-1 d-inline-block">
-
-                                                  {# TODO data-message修正 #}
-                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-toggle='tooltip' data-placement="top" title="{{'admin.common.delete'|trans}}" data-method="delete" data-message="{{'admin.content.news.60'|trans}}">
+                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-toggle='tooltip' data-placement="top" title="{{'admin.common.delete'|trans}}" data-method="delete" data-message="この新着情報を削除してもよろしいですか？">
                                                         <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
