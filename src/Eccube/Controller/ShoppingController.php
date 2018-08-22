@@ -283,6 +283,7 @@ class ShoppingController extends AbstractShoppingController
         $usePoint = $Order->getUsePoint();
 
         $form->handleRequest($request);
+        // Fixme: handle when error
         $Order->setUsePoint($usePoint);
 
         // 受注処理

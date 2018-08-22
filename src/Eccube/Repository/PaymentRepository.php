@@ -111,29 +111,33 @@ class PaymentRepository extends AbstractRepository
      * 共通の支払方法を取得
      *
      * @param $deliveries
+     * @param bool $returnType
      *
      * @return array
      */
     public function findAllowedPayments($deliveries, $returnType = false)
     {
+        $deliveries = array_unique($deliveries);
         $payments = [];
-        $saleTypes = [];
+        $isFirstLoop = true;
         foreach ($deliveries as $Delivery) {
+            $paymentTmp = [];
             $p = $this->findPayments($Delivery, $returnType);
             if ($p == null) {
                 continue;
             }
             foreach ($p as $payment) {
-                $payments[$payment['id']] = $payment;
-                $saleTypes[$Delivery->getSaleType()->getId()][$payment['id']] = true;
+                $paymentTmp[$payment['id']] = $payment;
             }
-        }
 
-        foreach ($payments as $key => $payment) {
-            foreach ($saleTypes as $row) {
-                if (!isset($row[$payment['id']])) {
-                    unset($payments[$key]);
-                    continue;
+            if ($isFirstLoop) {
+                $payments = $paymentTmp;
+                $isFirstLoop = false;
+            } else {
+                $payments = array_intersect_key($payments, $paymentTmp);
+
+                if (count($payments) == 0) {
+                    break;
                 }
             }
         }
