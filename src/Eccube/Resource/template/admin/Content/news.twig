@@ -18,12 +18,12 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block main %}
-    <div id="news_wrap" class="row m-0">
-        <div id="news_list_box" class="col-md-12">
-            <div id="news_list_box__body" class="box">
-                <a href="{{ url('admin_content_news_new') }}" class="btn btn-ec-conversion mb-3">{{'admin.content.news.63'|trans}}</a>
-                <div id="news_list_box__body" class="card rounded border-0 mb-4">
-                    <div id="news_list_box__body_inner" class="card-body p-0">
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <a href="{{ url('admin_content_news_new') }}" class="btn btn-ec-conversion mb-2">{{'admin.content.news.63'|trans}}</a>
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-body p-0">
                         <form name="form1" id="form1" method="post" action="">
                             <table class="table table-sm">
                                 <thead>
@@ -44,9 +44,9 @@ file that was distributed with this source code.
                                             <div class="text-right">
                                                 <div class="px-1 d-inline-block">
                                                   {% if loop.first == false %}
-                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }}data-toggle='tooltip' data-placement="top" title="上へ移動" data-method="put" data-confirm="false">
-                                                        <i class="fa fa-arrow-up fa-lg text-secondary" aria-hidden="true"></i>
-                                                    </a>
+                                                      <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }}data-toggle='tooltip' data-placement="top" title="上へ移動" data-method="put" data-confirm="false">
+                                                          <i class="fa fa-arrow-up fa-lg text-secondary" aria-hidden="true"></i>
+                                                      </a>
                                                   {% else %}
                                                       <a class="btn btn-ec-actionIcon disabled" href="">
                                                           <i class="fa fa-arrow-up fa-lg text-secondary" aria-hidden="true"></i>
@@ -55,9 +55,9 @@ file that was distributed with this source code.
                                                 </div>
                                                 <div class="px-1 d-inline-block">
                                                   {% if loop.last == false %}
-                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_down', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-toggle='tooltip' data-placement="top" title="下へ移動" data-method="put" data-confirm="false">
-                                                        <i class="fa fa-arrow-down fa-lg text-secondary" aria-hidden="true"></i>
-                                                    </a>
+                                                      <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_down', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-toggle='tooltip' data-placement="top" title="下へ移動" data-method="put" data-confirm="false">
+                                                          <i class="fa fa-arrow-down fa-lg text-secondary" aria-hidden="true"></i>
+                                                      </a>
                                                   {% else %}
                                                       <a class="btn btn-ec-actionIcon disabled" href="">
                                                           <i class="fa fa-arrow-down fa-lg text-secondary" aria-hidden="true"></i>
@@ -81,29 +81,29 @@ file that was distributed with this source code.
                                 </tbody>
                             </table>
                         </form>
-                    </div>
-                  {# TODO ページネーション実装 #}
-                    <div class="row justify-content-md-center pb-4">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a href="" class="page-link">Previous</a>
-                            </li>
-                            <li class="page-item active">
-                                <a href="" class="page-link">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a href="" class="page-link">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a href="" class="page-link">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a href="" class="page-link">4</a>
-                            </li>
-                            <li class="page-item">
-                                <a href="" class="page-link">Next</a>
-                            </li>
-                        </ul>
+                      {# TODO ページネーション実装 #}
+                        <div class="row justify-content-md-center pb-4">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a href="" class="page-link">Previous</a>
+                                </li>
+                                <li class="page-item active">
+                                    <a href="" class="page-link">1</a>
+                                </li>
+                                <li class="page-item">
+                                    <a href="" class="page-link">2</a>
+                                </li>
+                                <li class="page-item">
+                                    <a href="" class="page-link">3</a>
+                                </li>
+                                <li class="page-item">
+                                    <a href="" class="page-link">4</a>
+                                </li>
+                                <li class="page-item">
+                                    <a href="" class="page-link">Next</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
