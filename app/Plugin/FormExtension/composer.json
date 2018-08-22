@@ -1,0 +1,9 @@
+{
+  "name": "ec-cube/FormExtension",
+  "version": "1.0.0",
+  "description": "FormExtensionのサンプル",
+  "type": "eccube-plugin",
+  "extra": {
+    "code": "FormExtension"
+  }
+}

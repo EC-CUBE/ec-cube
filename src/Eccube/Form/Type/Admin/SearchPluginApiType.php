@@ -71,8 +71,8 @@ class SearchPluginApiType extends AbstractType
             'placeholder' => null,
             'class' => PageMax::class,
             'choice_label' => function (PageMax $pageMax) {
-                return $pageMax->getName().trans('admin.product.index.num');
-            }
+                return trans('admin.common.count', ['%count%' => $pageMax->getName()]);
+            },
         ]);
     }
 

@@ -53,10 +53,9 @@ class PluginInstallCommand extends Command
         if ($code) {
             $pluginDir = $this->pluginService->calcPluginDir($code);
             $this->pluginService->checkPluginArchiveContent($pluginDir);
-            $config = $this->pluginService->readYml($pluginDir.'/config.yml');
-            $event = $this->pluginService->readYml($pluginDir.'/event.yml');
+            $config = $this->pluginService->readConfig($pluginDir);
             $this->pluginService->checkSamePlugin($config['code']);
-            $this->pluginService->postInstall($config, $event, false);
+            $this->pluginService->postInstall($config, false);
 
             $this->clearCache($io);
             $io->success('Installed.');

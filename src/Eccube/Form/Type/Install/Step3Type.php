@@ -51,7 +51,7 @@ class Step3Type extends AbstractType
     {
         $builder
             ->add('shop_name', TextType::class, [
-                'label' => trans('step3.label.store_name'),
+                'label' => trans('install.shop_name'),
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([
@@ -60,16 +60,16 @@ class Step3Type extends AbstractType
                 ],
             ])
             ->add('email', EmailType::class, [
-                'label' => trans('step3.label.email'),
+                'label' => trans('install.mail_address'),
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Email(['strict' => true]),
                 ],
             ])
             ->add('login_id', TextType::class, [
-                'label' => trans('step3.label.login_id', [
-                    '%min_len%' => $this->eccubeConfig['eccube_id_min_len'],
-                    '%max_len%' => $this->eccubeConfig['eccube_id_max_len'],
+                'label' => trans('install.login_id', [
+                    '%min%' => $this->eccubeConfig['eccube_id_min_len'],
+                    '%max%' => $this->eccubeConfig['eccube_id_max_len'],
                 ]),
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -84,9 +84,9 @@ class Step3Type extends AbstractType
                 ],
             ])
             ->add('login_pass', PasswordType::class, [
-                'label' => trans('step3.label.login_pass', [
-                    '%min_len%' => $this->eccubeConfig['eccube_password_min_len'],
-                    '%max_len%' => $this->eccubeConfig['eccube_password_max_len'],
+                'label' => trans('install.login_password', [
+                    '%min%' => $this->eccubeConfig['eccube_password_min_len'],
+                    '%max%' => $this->eccubeConfig['eccube_password_max_len'],
                 ]),
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -101,9 +101,9 @@ class Step3Type extends AbstractType
                 ],
             ])
             ->add('admin_dir', TextType::class, [
-                'label' => trans('step3.label.admin_dir', [
-                    '%min_len%' => $this->eccubeConfig['eccube_id_min_len'],
-                    '%max_len%' => $this->eccubeConfig['eccube_id_max_len'],
+                'label' => trans('install.directry_name', [
+                    '%min%' => $this->eccubeConfig['eccube_id_min_len'],
+                    '%max%' => $this->eccubeConfig['eccube_id_max_len'],
                 ]),
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -115,27 +115,27 @@ class Step3Type extends AbstractType
                 ],
             ])
             ->add('admin_force_ssl', CheckboxType::class, [
-                'label' => trans('step3.label.ssl'),
+                'label' => trans('install.https_only'),
                 'required' => false,
             ])
             ->add('admin_allow_hosts', TextareaType::class, [
-                'label' => trans('step3.label.ips'),
+                'label' => trans('install.ip_restriction'),
                 'required' => false,
             ])
             ->add('smtp_host', TextType::class, [
-                'label' => trans('step3.label.smtp_host'),
+                'label' => trans('install.smtp_host'),
                 'required' => false,
             ])
             ->add('smtp_port', TextType::class, [
-                'label' => trans('step3.label.smtp_port'),
+                'label' => trans('install.smtp_port'),
                 'required' => false,
             ])
             ->add('smtp_username', TextType::class, [
-                'label' => trans('step3.label.smtp_user'),
+                'label' => trans('install.smtp_user'),
                 'required' => false,
             ])
             ->add('smtp_password', PasswordType::class, [
-                'label' => trans('step3.label.smtp_pass'),
+                'label' => trans('install.smtp_password'),
                 'required' => false,
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
@@ -150,7 +150,7 @@ class Step3Type extends AbstractType
                         ]
                     );
                     if ($errors->count() != 0) {
-                        $form['admin_allow_hosts']->addError(new FormError($ip.trans('setp3.text.error.ips')));
+                        $form['admin_allow_hosts']->addError(new FormError(trans('install.ip_is_invalid', ['%ip%' => $ip])));
                     }
                 }
             })
