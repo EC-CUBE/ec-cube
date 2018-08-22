@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Page\Front\CustomerAddressEditPage;
 use Page\Front\CustomerAddressListPage;
@@ -143,7 +154,7 @@ class EF05MypageCest
             $form['entry[mailmaga_flg]'] = '1';
         }
         // 会員情報フォームに会員情報を入力する
-        $I->submitForm("div.ec-editRole form", $form);
+        $I->submitForm('div.ec-editRole form', $form);
 
         // 会員情報編集（完了）画面が表示される
         $I->see('会員情報編集(完了)', 'div.ec-pageHeader h1');

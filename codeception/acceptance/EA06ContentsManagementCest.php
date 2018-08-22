@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Page\Admin\BlockEditPage;
 use Page\Admin\BlockManagePage;
@@ -225,7 +236,7 @@ class EA06ContentsManagementCest
         BlockEditPage::at($I)
             ->入力_ブロック名($block)
             ->入力_ファイル名($block)
-            ->入力_データ("<div id=".$block.">block1</div>")
+            ->入力_データ('<div id='.$block.'>block1</div>')
             ->登録();
         $I->see('保存しました', BlockEditPage::$登録完了メッセージ);
 
@@ -242,7 +253,7 @@ class EA06ContentsManagementCest
         /* 編集 */
         BlockManagePage::go($I)->編集(1);
         BlockEditPage::at($I)
-            ->入力_データ("<div id=".$block.">welcome</div>")
+            ->入力_データ('<div id='.$block.'>welcome</div>')
             ->登録();
         $I->see('保存しました', BlockEditPage::$登録完了メッセージ);
 

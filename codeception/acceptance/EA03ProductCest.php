@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Page\Admin\CategoryCsvUploadPage;
 use Page\Admin\CategoryManagePage;
@@ -39,8 +50,8 @@ class EA03ProductCest
 
         ProductManagePage::go($I)->検索('フォーク');
 
-        $I->see("検索結果：1件が該当しました", ProductManagePage::$検索結果_メッセージ);
-        $I->see("ディナーフォーク", ProductManagePage::$検索結果_一覧);
+        $I->see('検索結果：1件が該当しました', ProductManagePage::$検索結果_メッセージ);
+        $I->see('ディナーフォーク', ProductManagePage::$検索結果_一覧);
 
         ProductManagePage::go($I)->検索('gege@gege.com');
         $I->see('検索結果：0件が該当しました', ProductManagePage::$検索結果_メッセージ);
@@ -102,7 +113,7 @@ class EA03ProductCest
 
         ProductManagePage::go($I)->検索('お箸');
 
-        $I->see("検索条件に合致するデータが見つかりませんでした", ProductManagePage::$検索結果_結果なしメッセージ);
+        $I->see('検索条件に合致するデータが見つかりませんでした', ProductManagePage::$検索結果_結果なしメッセージ);
     }
 
     /**
@@ -119,7 +130,7 @@ class EA03ProductCest
             ->検索()
             ->CSVダウンロード();
 
-        $I->see("検索結果：".count($Products)."件が該当しました", ProductManagePage::$検索結果_メッセージ);
+        $I->see('検索結果：'.count($Products).'件が該当しました', ProductManagePage::$検索結果_メッセージ);
 
         $ProductCSV = $I->getLastDownloadFile('/^product_\d{14}\.csv$/');
         $I->assertGreaterOrEquals(count($Products), count(file($ProductCSV)), '検索結果以上の行数があるはず');
@@ -332,7 +343,7 @@ class EA03ProductCest
             ProductEditPage::$在庫数,
             ProductEditPage::$商品コード,
             ProductEditPage::$販売制限数,
-            ProductEditPage::$お届可能日
+            ProductEditPage::$お届可能日,
         ]);
 
         $ProductEditPage->登録();
@@ -344,7 +355,7 @@ class EA03ProductCest
         $I->wantTo('EA0302-UC01-T05-タグを商品に追加する');
 
         ProductEditPage::go($I)
-            ->入力_商品名("規格なし商品")
+            ->入力_商品名('規格なし商品')
             ->入力_販売価格(50000)
             ->クリックして開くタグリスト()
             ->クリックして選択タグ(2)
@@ -370,16 +381,14 @@ class EA03ProductCest
             ->検索('一括削除用')
             ->すべて選択();
 
-        $I->see("検索結果：5件が該当しました", ProductManagePage::$検索結果_メッセージ);
+        $I->see('検索結果：5件が該当しました', ProductManagePage::$検索結果_メッセージ);
 
         $ProductManagePage
             ->完全に削除()
             ->一括削除完了();
 
-        $I->see("検索結果：0件が該当しました", ProductManagePage::$検索結果_メッセージ);
+        $I->see('検索結果：0件が該当しました', ProductManagePage::$検索結果_メッセージ);
     }
-
-
 
     public function product_商品の一括削除_削除エラー(\AcceptanceTester $I)
     {
@@ -403,7 +412,7 @@ class EA03ProductCest
             ->検索("一括削除用_${timestamp}")
             ->すべて選択();
 
-        $I->see("検索結果：10件が該当しました", ProductManagePage::$検索結果_メッセージ);
+        $I->see('検索結果：10件が該当しました', ProductManagePage::$検索結果_メッセージ);
         $I->see("一括削除用_${timestamp}_受注あり", ProductManagePage::$検索結果_一覧);
         $I->see("一括削除用_${timestamp}_受注なし", ProductManagePage::$検索結果_一覧);
 
@@ -417,7 +426,7 @@ class EA03ProductCest
 
         $ProductManagePage->一括削除完了();
 
-        $I->see("検索結果：5件が該当しました", ProductManagePage::$検索結果_メッセージ);
+        $I->see('検索結果：5件が該当しました', ProductManagePage::$検索結果_メッセージ);
         $I->see("一括削除用_${timestamp}_受注あり", ProductManagePage::$検索結果_一覧);
         $I->dontSee("一括削除用_${timestamp}_受注なし", ProductManagePage::$検索結果_一覧);
     }
@@ -481,16 +490,16 @@ class EA03ProductCest
         $I->wantTo('EA0308-UC01-T01 規格表示順の変更');
 
         $ProductClassPage = ClassNameManagePage::go($I);
-        $I->see("サイズ", $ProductClassPage->一覧_名称(1));
-        $I->see("材質", $ProductClassPage->一覧_名称(2));
+        $I->see('サイズ', $ProductClassPage->一覧_名称(1));
+        $I->see('材質', $ProductClassPage->一覧_名称(2));
 
         $ProductClassPage->一覧_下に(1);
-        $I->see("材質", $ProductClassPage->一覧_名称(1));
-        $I->see("サイズ", $ProductClassPage->一覧_名称(2));
+        $I->see('材質', $ProductClassPage->一覧_名称(1));
+        $I->see('サイズ', $ProductClassPage->一覧_名称(2));
 
         $ProductClassPage->一覧_上に(2);
-        $I->see("サイズ", $ProductClassPage->一覧_名称(1));
-        $I->see("材質", $ProductClassPage->一覧_名称(2));
+        $I->see('サイズ', $ProductClassPage->一覧_名称(1));
+        $I->see('材質', $ProductClassPage->一覧_名称(2));
     }
 
     public function product_分類表示順の変更(\AcceptanceTester $I)
@@ -616,7 +625,7 @@ class EA03ProductCest
 
     public function product_カテゴリ表示順の変更(\AcceptanceTester $I)
     {
-        $I->wantTo("EA0309-UC01-T01 カテゴリ表示順の変更");
+        $I->wantTo('EA0309-UC01-T01 カテゴリ表示順の変更');
 
         $CategoryPage = CategoryManagePage::go($I);
         $I->see('インテリア', $CategoryPage->一覧_名称(2));
@@ -657,7 +666,7 @@ class EA03ProductCest
         $I->see('CSVファイルをアップロードしました', ProductCsvUploadPage::$完了メッセージ);
 
         ProductManagePage::go($I)->検索('アップロード商品');
-        $I->see("検索結果：3件が該当しました", ProductManagePage::$検索結果_メッセージ);
+        $I->see('検索結果：3件が該当しました', ProductManagePage::$検索結果_メッセージ);
     }
 
     /**
@@ -752,5 +761,4 @@ class EA03ProductCest
         $I->switchToNewWindow();
         $I->seeInCurrentUrl('/products/detail/');
     }
-
 }

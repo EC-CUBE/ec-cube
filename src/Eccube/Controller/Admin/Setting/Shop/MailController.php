@@ -67,6 +67,7 @@ class MailController extends AbstractController
 
         $form = $builder->getForm();
         $form['template']->setData($Mail);
+        $htmlFileName = $Mail ? $this->getHtmlFileName($Mail->getFileName()) : null;
 
         // 更新時
         if (!is_null($Mail)) {
@@ -76,6 +77,13 @@ class MailController extends AbstractController
                 ->getCode();
 
             $form->get('tpl_data')->setData($source);
+            if ($twig->getLoader()->exists($htmlFileName)) {
+                $source = $twig->getLoader()
+                    ->getSourceContext($htmlFileName)
+                    ->getCode();
+
+                $form->get('html_tpl_data')->setData($source);
+            }
         }
 
         if ('POST' === $request->getMethod()) {
@@ -100,6 +108,13 @@ class MailController extends AbstractController
                 $mailData = StringUtil::convertLineFeed($mailData);
                 $fs->dumpFile($filePath, $mailData);
 
+                // HTMLファイル用
+                $htmlMailData = $form->get('html_tpl_data')->getData();
+                if (!is_null($htmlMailData)) {
+                    $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
+                    $fs->dumpFile($templatePath.'/'.$htmlFileName, $htmlMailData);
+                }
+
                 $event = new EventArgs(
                     [
                         'form' => $form,
@@ -121,5 +136,21 @@ class MailController extends AbstractController
             'form' => $form->createView(),
             'id' => is_null($Mail) ? null : $Mail->getId(),
         ];
+    }
+
+    /**
+     * HTML用テンプレート名を取得する
+     *
+     * @param  string $fileName
+     *
+     * @return string
+     */
+    public function getHtmlFileName($fileName)
+    {
+        // HTMLテンプレートファイルの取得
+        $targetTemplate = explode('.', $fileName);
+        $suffix = '.html';
+
+        return $targetTemplate[0].$suffix.'.'.$targetTemplate[1];
     }
 }
