@@ -634,6 +634,7 @@ admin.product.class_name: 規格名
 admin.product.class_name__backend_name: 管理名
 admin.product.class_name__card_title: 規格情報
 admin.product.class_category: 規格分類
+admin.product.class_category__backend_name: 管理名
 admin.product.class_category__card_title: 規格分類情報
 admin.product.class_category_name: 規格分類名
 admin.product.class_category_name__short: 分類名
@@ -1035,6 +1036,7 @@ admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レー�
 
 admin.setting.shop.payment.terms_of_use: 利用条件
 admin.setting.shop.payment.unlimited: 無制限
+admin.setting.shop.payment.payment_id: ID
 admin.setting.shop.payment.payment_name: 支払方法名
 admin.setting.shop.payment.logo_image: ロゴ画像
 
