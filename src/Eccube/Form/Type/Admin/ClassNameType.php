@@ -46,6 +46,7 @@ class ClassNameType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'label' => 'classname.label.group_name',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([
@@ -54,6 +55,7 @@ class ClassNameType extends AbstractType
                 ],
             ])
             ->add('backend_name', TextType::class, [
+                'label' => 'classname.label.backend_name',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([

@@ -50,7 +50,7 @@ class PrefTypeTest extends AbstractTypeTestCase
         $choices = $view->vars['choices'];
 
         // placeholder
-        $this->assertEquals('common.select__pref', $view->vars['placeholder']);
+        $this->assertEquals($view->vars['placeholder'], 'form.pref.empty_value');
 
         $data = [];
         // attrなど含まれているので

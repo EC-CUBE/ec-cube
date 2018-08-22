@@ -10,14 +10,7 @@ file that was distributed with this source code.
 #}
 {{ Shipping.name01 }} {{ Shipping.name02 }} 様
 
-お客さまがご注文された以下の商品を発送いたしました。商品の到着まで、今しばらくお待ちください。
-
-{% if Shipping.tracking_number %}
-お問い合わせ番号：{{ Shipping.tracking_number }}
-{% if Shipping.Delivery.confirm_url %}
-お問い合わせURL：{{ Shipping.Delivery.confirm_url }}
-{% endif %}
-{% endif %}
+{{ header }}
 
 ************************************************
 　ご注文商品明細
@@ -60,3 +53,4 @@ file that was distributed with this source code.
 お届け日：{{ Shipping.shipping_delivery_date is empty ? '指定なし' : Shipping.shipping_delivery_date|date_day }}
 お届け時間：{{ Shipping.shipping_delivery_time|default('指定なし') }}
 
+{{ footer }}

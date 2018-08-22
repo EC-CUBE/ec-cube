@@ -23,6 +23,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class AddressType extends AbstractType
 {
     /**
@@ -99,24 +102,19 @@ class AddressType extends AbstractType
     {
         $resolver->setDefaults([
             'options' => [],
+            'help' => 'form.contact.address.help',
             'pref_options' => ['constraints' => [], 'attr' => ['class' => 'p-region-id']],
             'addr01_options' => [
                 'constraints' => [
                     new Assert\Length(['max' => $this->config['eccube_address1_len']]),
                 ],
-                'attr' => [
-                    'class' => 'p-locality p-street-address',
-                    'placeholder' => 'common.address_sample_01',
-                ],
+                'attr' => ['class' => 'p-locality p-street-address'],
             ],
             'addr02_options' => [
                 'constraints' => [
                     new Assert\Length(['max' => $this->config['eccube_address2_len']]),
                 ],
-                'attr' => [
-                    'class' => 'p-extended-address',
-                    'placeholder' => 'common.address_sample_02',
-                ],
+                'attr' => ['class' => 'p-extended-address'],
             ],
             'pref_name' => 'pref',
             'addr01_name' => 'addr01',

@@ -84,6 +84,7 @@ class ContactController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             switch ($request->get('mode')) {
                 case 'confirm':
+                    $builder->setAttribute('freeze', true);
                     $form = $builder->getForm();
                     $form->handleRequest($request);
 

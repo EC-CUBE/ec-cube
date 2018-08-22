@@ -202,12 +202,23 @@ class OwnerStoreController extends AbstractController
                         // Not purchased with paid items
                         $item['update_status'] = 4;
                     }
-
-                    $item = $this->pluginService->buildInfo($item);
                     $items[] = $item;
                 }
 
-            // Todo: news api will remove this?
+                // EC-CUBE version check
+                foreach ($items as &$item) {
+                    // Not applicable version
+                    $item['version_check'] = 0;
+                    if (in_array(Constant::VERSION, $item['supported_versions'])) {
+                        // Match version
+                        $item['version_check'] = 1;
+                    }
+                    // Add plugin dependency
+                    $item['depend'] = $this->pluginService->getRequirePluginName($items, $item);
+                }
+                unset($item);
+
+                // Todo: news api will remove this?
                 // Promotion item
 //                $i = 0;
 //                foreach ($items as $item) {
@@ -235,7 +246,7 @@ class OwnerStoreController extends AbstractController
             'searchForm' => $searchForm->createView(),
             'page_no' => $page_no,
             'message' => $message,
-            'Categories' => $category,
+            'Categories' => $category
         ];
     }
 
@@ -252,23 +263,31 @@ class OwnerStoreController extends AbstractController
      */
     public function doConfirm(Request $request, $id)
     {
-        list($json,) = $this->pluginApiService->getPlugin($id);
-        $plugin = [];
-        if ($json) {
-            $data = json_decode($json, true);
-            $plugin = $this->pluginService->buildInfo($data);
-        }
+        // Owner's store communication
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
+        list($json, $info) = $this->getRequestApi($url);
+        $data = json_decode($json, true);
+        $items = $data['item'];
 
-        if (empty($plugin)) {
+        // Find plugin in api
+        $index = array_search($id, array_column($items, 'product_id'));
+        if ($index === false) {
             throw new NotFoundHttpException();
         }
 
-        // Todo: need define plugin's dependency mechanism
-//        $requires = $this->pluginService->getPluginRequired($plugin);
+        $pluginCode = $items[$index]['product_code'];
+
+        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
+
+        // Prevent infinity loop: A -> B -> A.
+        $dependents[] = $plugin;
+        $dependents = $this->pluginService->getDependency($items, $plugin, $dependents);
+        // Unset first param
+        unset($dependents[0]);
 
         return [
             'item' => $plugin,
-            'requires' => [],
+            'dependents' => $dependents,
             'is_update' => $request->get('is_update', false),
         ];
     }
@@ -290,7 +309,7 @@ class OwnerStoreController extends AbstractController
 
         // Check plugin code
         $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
-        list($json,) = $this->getRequestApi($url);
+        list($json, $info) = $this->getRequestApi($url);
         $existFlg = false;
         $data = json_decode($json, true);
         if (isset($data['item']) && !empty($data['item'])) {
@@ -304,9 +323,9 @@ class OwnerStoreController extends AbstractController
         }
 
         $items = $data['item'];
-        $plugin = $this->pluginService->buildInfo($items);
+        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
         $dependents[] = $plugin;
-        $dependents = $this->pluginService->getPluginRequired($plugin);
+        $dependents = $this->pluginService->getDependency($items, $plugin, $dependents);
         // Unset first param
         unset($dependents[0]);
         $dependentModifier = [];
@@ -483,8 +502,9 @@ class OwnerStoreController extends AbstractController
     public function doUpdateConfirm(Plugin $plugin)
     {
         $source = $plugin->getSource();
+        $url = $this->generateUrl('admin_store_plugin_install_confirm', ['id' => $source, 'is_update' => true]);
 
-        return $this->forwardToRoute('admin_store_plugin_install_confirm', ['id' => $source, 'is_update' => true]);
+        return $this->forward($url);
     }
 
     /**
@@ -493,7 +513,6 @@ class OwnerStoreController extends AbstractController
      * @param string $url
      *
      * @return array
-     *
      * @deprecated since release, please preference PluginApiService
      */
     private function getRequestApi($url)
@@ -530,7 +549,6 @@ class OwnerStoreController extends AbstractController
      * @param array $data
      *
      * @return array
-     *
      * @deprecated since release, please preference PluginApiService
      */
     private function postRequestApi($url, $data)

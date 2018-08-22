@@ -69,6 +69,8 @@ class MailHistoryRepositoryTest extends EccubeTestCase
         $MailTemplate = new MailTemplate();
         $MailTemplate
             ->setName($faker->word)
+            ->setMailHeader($faker->word)
+            ->setMailFooter($faker->word)
             ->setMailSubject($faker->word)
             ->setCreator($this->Member);
         $this->entityManager->persist($MailTemplate);
@@ -79,7 +81,6 @@ class MailHistoryRepositoryTest extends EccubeTestCase
                 ->setOrder($this->Order)
                 ->setSendDate(new \DateTime())
                 ->setMailBody($faker->realText())
-                ->setMailHtmlBody($faker->realText())
                 ->setCreator($this->Member)
                 ->setMailSubject('mail_subject-'.$i);
 

@@ -13,8 +13,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'system', 'masterdata'] %}
 
-{% block title %}{{ 'admin.setting.system.master_data_management'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.system.masterdata.676'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system.masterdata.675'|trans }}{% endblock %}
 
 {% block main %}
     <div class="c-contentsArea__cols">
@@ -23,15 +23,15 @@ file that was distributed with this source code.
                 <form id="form1" name="form1" method="post" action="{{ url('admin_setting_system_masterdata') }}">
                     {{ form_widget(form._token) }}
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>{{ 'admin.setting.system.master_data_management'|trans }}</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.system.masterdata.677'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3">
-                                    {{ form_widget(form.masterdata) }}
+                                    {{ form_widget(form.masterdata, {'attr': {'class': 'form-control'}}) }}
                                     {{ form_errors(form.masterdata) }}
                                 </div>
                                 <div class="col mb-2">
-                                    <button class="btn btn-primary" type="submit">{{ 'admin.setting.system.master_data.select'|trans }}</button>
+                                    <button class="btn btn-primary" type="submit">{{ 'admin.setting.system.masterdata.678'|trans }}</button>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,10 @@ file that was distributed with this source code.
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="read">
-                                    {{ 'admin.setting.system.master_data.description'|trans|nl2br }}
+                                    {{ 'admin.setting.system.masterdata.679'|trans }}<br/>
+                                    {{ 'admin.setting.system.masterdata.680'|trans }}<br/>
+                                    {{ 'admin.setting.system.masterdata.681'|trans }}<br/>
+                                    {{ 'admin.setting.system.masterdata.682'|trans }}
                                 </div>
                             </div>
                             <div class="card-body">
@@ -53,10 +56,10 @@ file that was distributed with this source code.
                                     <thead>
                                     <tr>
                                         <th class="border-top-0 pt-2 pb-2 text-center" style="width: 20%">
-                                            {{ 'admin.setting.system.master_data.id'|trans }}
+                                            {{ 'admin.setting.system.masterdata.th_id'|trans }}
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">
-                                            {{ 'admin.setting.system.master_data.id'|trans }}
+                                            {{ 'admin.setting.system.masterdata.th_name'|trans }}
                                         </th>
                                     </tr>
                                     </thead>
@@ -88,7 +91,7 @@ file that was distributed with this source code.
                                     <div class="col-6">
                                         <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                                             <div class="col-auto">
-                                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.save'|trans }}</button>
+                                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.system.masterdata.683'|trans }}</button>
                                             </div>
                                         </div>
                                     </div>

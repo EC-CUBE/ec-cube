@@ -1,9 +1,0 @@
-{
-  "name": "ec-cube/Hoge",
-  "version": "1.0.0",
-  "description": "プラグインサンプル",
-  "type": "eccube-plugin",
-  "extra": {
-    "code": "Hoge"
-  }
-}

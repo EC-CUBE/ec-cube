@@ -18,7 +18,7 @@ file that was distributed with this source code.
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__favorite'|trans }}</h1>
+                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.favorites'|trans}}</h1>
             </div>
             {% include 'Mypage/navi.twig' %}
         </div>
@@ -27,16 +27,14 @@ file that was distributed with this source code.
             <div class="ec-favoriteRole">
                 {% if pagination.totalItemCount > 0 %}
                     <div class="ec-favoriteRole__header">
-                        <p>{{ 'front.mypage.favorite_count'|trans({'%count%':pagination.totalItemCount}) }}</p>
+                        <p>{{'mypage.message.favorite_results'|trans({'%count%':pagination.totalItemCount})|raw}}</p>
                     </div>
                     <div class="ec-favoriteRole__detail">
                         <ul class="ec-favoriteRole__itemList">
                             {% for FavoriteProduct in pagination %}
                                 {% set Product = FavoriteProduct.Product %}
                                 <li class="ec-favoriteRole__item">
-                                    <a class="ec-closeBtn--circle"
-                                       href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }}
-                                       data-method="delete">
+                                    <a class="ec-closeBtn--circle" href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                         <div class="ec-icon">
                                             <img src="{{ asset('assets/icon/cross-white.svg') }}" alt="close">
                                         </div>
@@ -62,7 +60,7 @@ file that was distributed with this source code.
                         {% include "pager.twig" with {'pages': pagination.paginationData} %}
                     </div>
                 {% else %}
-                    <div class="ec-favoriteRole__header">{{ 'front.mypage.favorite_not_found'|trans }}</div>
+                    <div class="ec-favoriteRole__header">{{'mypage.message.no_favorite'|trans}}</div>
                 {% endif %}
             </div>
         </div>

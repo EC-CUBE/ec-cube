@@ -27,7 +27,6 @@ use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 class TwigInitializeListener implements EventSubscriberInterface
@@ -73,11 +72,6 @@ class TwigInitializeListener implements EventSubscriberInterface
     private $mobileDetector;
 
     /**
-     * @var UrlGeneratorInterface
-     */
-    private $router;
-
-    /**
      * TwigInitializeListener constructor.
      *
      * @param Environment $twig
@@ -88,7 +82,6 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @param EccubeConfig $eccubeConfig
      * @param Context $context
      * @param MobileDetector $mobileDetector
-     * @param UrlGeneratorInterface $router
      */
     public function __construct(
         Environment $twig,
@@ -98,8 +91,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         AuthorityRoleRepository $authorityRoleRepository,
         EccubeConfig $eccubeConfig,
         Context $context,
-        MobileDetector $mobileDetector,
-        UrlGeneratorInterface $router
+        MobileDetector $mobileDetector
     ) {
         $this->twig = $twig;
         $this->baseInfoRepository = $baseInfoRepository;
@@ -109,7 +101,6 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->eccubeConfig = $eccubeConfig;
         $this->requestContext = $context;
         $this->mobileDetector = $mobileDetector;
-        $this->router = $router;
     }
 
     /**
@@ -183,53 +174,15 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('menus', $menus);
 
         // メニューの権限制御.
-        $eccubeNav = $this->eccubeConfig['eccube_nav'];
-
         $Member = $this->requestContext->getCurrentUser();
+        $AuthorityRoles = [];
         if ($Member instanceof Member) {
-            $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $Member->getAuthority()]);
-            $baseUrl = $event->getRequest()->getBaseUrl() . '/' . $this->eccubeConfig['eccube_admin_route'];
-            $eccubeNav = $this->getDisplayEccubeNav($eccubeNav, $AuthorityRoles, $baseUrl);
+            $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $this->requestContext->getCurrentUser()->getAuthority()]);
         }
-        $this->twig->addGlobal('eccubeNav', $eccubeNav);
-    }
-
-    /**
-     * URLに対する権限有無チェックして表示するNavを返す
-     *
-     * @param array $parentNav
-     * @param AuthorityRole[] $AuthorityRoles
-     * @param string $baseUrl
-     *
-     * @return array
-     */
-    private function getDisplayEccubeNav($parentNav, $AuthorityRoles, $baseUrl)
-    {
-        foreach ($parentNav as $key => $childNav) {
-            if (array_key_exists('children', $childNav) && count($childNav['children']) > 0) {
-                // 子のメニューがある場合は子の権限チェック
-                $parentNav[$key]['children'] = $this->getDisplayEccubeNav($childNav['children'], $AuthorityRoles, $baseUrl);
-
-                if (count($parentNav[$key]['children']) <= 0) {
-                    // 子が存在しない場合は配列から削除
-                    unset($parentNav[$key]);
-                }
-            } elseif (array_key_exists('url', $childNav)) {
-                // 子のメニューがなく、URLが設定されている場合は権限があるURLか確認
-                $param = array_key_exists('param', $childNav) ? $childNav['param'] : [];
-                $url = $this->router->generate($childNav['url'], $param);
-                foreach ($AuthorityRoles as $AuthorityRole) {
-                    $denyUrl = str_replace('/', '\/', $baseUrl . $AuthorityRole->getDenyUrl());
-                    if (preg_match("/^({$denyUrl})/i", $url)) {
-                        // 権限がないURLの場合は配列から削除
-                        unset($parentNav[$key]);
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $parentNav;
+        $roles = array_map(function (AuthorityRole $AuthorityRole) use ($event) {
+            return $event->getRequest()->getBaseUrl().'/'.$this->eccubeConfig['eccube_admin_route'].$AuthorityRole->getDenyUrl();
+        }, $AuthorityRoles);
+        $this->twig->addGlobal('AuthorityRoles', $roles);
     }
 
     /**

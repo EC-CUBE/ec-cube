@@ -64,6 +64,7 @@ class EntryControllerTest extends AbstractWebTestCase
             ],
             'sex' => 1,
             'job' => 1,
+            'point' => 1,
             'user_policy_check' => 1,
             Constant::TOKEN_NAME => 'dummy',
         ];
@@ -93,7 +94,7 @@ class EntryControllerTest extends AbstractWebTestCase
             ]
         );
 
-        $this->expected = '新規会員登録(確認)';
+        $this->expected = '新規会員登録確認';
         $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
         $this->verify();
 
@@ -204,7 +205,7 @@ class EntryControllerTest extends AbstractWebTestCase
     public function testActivateWithAbort()
     {
         $this->client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => '+++++++']));
-        $this->expected = 404;
+        $this->expected = 403;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
     }

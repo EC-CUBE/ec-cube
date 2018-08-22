@@ -78,7 +78,7 @@ class CsvImportController extends AbstractCsvImportController
                             $this->entityManager->flush();
                             $this->entityManager->getConnection()->commit();
 
-                            $this->addInfo('admin.common.csv_upload_complete', 'admin');
+                            $this->addInfo('admin.shipping.csv_import.save.complete', 'admin');
                         }
                     } finally {
                         $this->removeUploadedFile();
@@ -99,7 +99,7 @@ class CsvImportController extends AbstractCsvImportController
         $columnConfig = $this->getColumnConfig();
 
         if ($csv === false) {
-            $errors[] = trans('admin.common.csv_invalid_format');
+            $errors[] = trans('csvimport.text.error.format_invalid');
         }
 
         // 必須カラムの確認
@@ -110,13 +110,13 @@ class CsvImportController extends AbstractCsvImportController
         }));
         $csvColumns = $csv->getColumnHeaders();
         if (count(array_diff($requiredColumns, $csvColumns)) > 0) {
-            $errors[] = trans('admin.common.csv_invalid_format');
+            $errors[] = trans('csvimport.text.error.format_invalid');
         }
 
         // 行数の確認
         $size = count($csv);
         if ($size < 1) {
-            $errors[] = trans('admin.common.csv_invalid_format');
+            $errors[] = trans('csvimport.text.error.format_invalid');
         }
 
         $columnNames = array_combine(array_keys($columnConfig), array_column($columnConfig, 'name'));
@@ -124,7 +124,7 @@ class CsvImportController extends AbstractCsvImportController
         foreach ($csv as $line => $row) {
             // 出荷IDがなければエラー
             if (!isset($row[$columnNames['id']])) {
-                $errors[] = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $columnNames['id']]);
+                $errors[] = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $columnNames['id']]);
                 continue;
             }
 
@@ -133,7 +133,7 @@ class CsvImportController extends AbstractCsvImportController
 
             // 存在しない出荷IDはエラー
             if (is_null($Shipping)) {
-                $errors[] = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $columnNames['id']]);
+                $errors[] = trans('csvimportcontroller.notfound', ['%line%' => $line, '%name%' => $columnNames['id']]);
                 continue;
             }
 
@@ -145,7 +145,7 @@ class CsvImportController extends AbstractCsvImportController
                 // 日付フォーマットが異なる場合はエラー
                 $shippingDate = \DateTime::createFromFormat('Y-m-d', $row[$columnNames['shipping_date']]);
                 if ($shippingDate === false) {
-                    $errors[] = trans('admin.common.csv_invalid_date_format', ['%line%' => $line, '%name%' => $columnNames['id']]);
+                    $errors[] = trans('csvimportcontroller.invalid_date_format', ['%line%' => $line, '%name%' => $columnNames['id']]);
                     continue;
                 }
 
@@ -191,18 +191,18 @@ class CsvImportController extends AbstractCsvImportController
     {
         return [
             'id' => [
-                'name' => trans('admin.order.shipping_csv.shipping_id_col'),
-                'description' => trans('admin.order.shipping_csv.shipping_id_description'),
+                'name' => trans('admin.shipping.csv_shipping.id'),
+                'description' => trans('admin.shipping.csv_shipping.id.description'),
                 'required' => true,
             ],
             'tracking_number' => [
-                'name' => trans('admin.order.shipping_csv.tracking_number_col'),
-                'description' => trans('admin.order.shipping_csv.tracking_number_description'),
+                'name' => trans('admin.shipping.csv_shipping.tracking_number'),
+                'description' => trans('admin.shipping.csv_shipping.tracking_number.description'),
                 'required' => false,
             ],
             'shipping_date' => [
-                'name' => trans('admin.order.shipping_csv.shipping_date_col'),
-                'description' => trans('admin.order.shipping_csv.shipping_date_description'),
+                'name' => trans('admin.shipping.csv_shipping.shipping_date'),
+                'description' => trans('admin.shipping.csv_shipping.shipping_date.description'),
                 'required' => false,
             ],
         ];

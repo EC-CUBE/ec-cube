@@ -1,17 +1,13 @@
 <?php
-
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+/**
+ * Created by IntelliJ IDEA.
+ * User: kiyotaka_oku
+ * Date: 2016/11/01
+ * Time: 13:47
  */
 
 namespace Page\Admin;
+
 
 class TopPage
 {
@@ -27,4 +23,5 @@ class TopPage
     public static $ショップ状況 = '#shop-statistical .card-header .card-title';
     public static $ショップ状況_在庫切れ商品 = '#shop-statistical > div.card-body.p-0 > div:nth-child(1) > a'; //'#shop_info .link_list .tableish a:nth-child(1)';
     public static $ショップ状況_会員数 = '#shop-statistical > div.card-body.p-0 > div:nth-child(3) > a'; //'#shop_info .link_list .tableish a:nth-child(2)';
+
 }

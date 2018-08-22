@@ -1064,7 +1064,6 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
 
         /**
          * @param null|string $php_path
-         *
          * @return $this
          */
         public function setPhpPath($php_path)

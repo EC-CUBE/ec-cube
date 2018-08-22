@@ -18,10 +18,10 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\AuthorityRoleType;
 use Eccube\Repository\AuthorityRoleRepository;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 
 class AuthorityController extends AbstractController
 {
@@ -78,45 +78,47 @@ class AuthorityController extends AbstractController
             $form->get('AuthorityRoles')->add(uniqid(), AuthorityRoleType::class);
         }
 
-        $form->handleRequest($request);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            if ($form->isValid()) {
+                $data = $form->getData();
 
-            foreach ($AuthorityRoles as $AuthorityRole) {
-                $this->entityManager->remove($AuthorityRole);
-            }
+                foreach ($AuthorityRoles as $AuthorityRole) {
+                    $this->entityManager->remove($AuthorityRole);
+                }
 
-            foreach ($data['AuthorityRoles'] as $AuthorityRole) {
-                $Authority = $AuthorityRole->getAuthority();
-                $denyUrl = $AuthorityRole->getDenyUrl();
-                if ($Authority && !empty($denyUrl)) {
-                    $this->entityManager->persist($AuthorityRole);
-                } else {
-                    $id = $AuthorityRole->getId();
-                    if (!empty($id)) {
-                        $role = $this->authorityRoleRepository->find($id);
-                        if ($role) {
-                            // 削除
-                            $this->entityManager->remove($AuthorityRole);
+                foreach ($data['AuthorityRoles'] as $AuthorityRole) {
+                    $Authority = $AuthorityRole->getAuthority();
+                    $denyUrl = $AuthorityRole->getDenyUrl();
+                    if ($Authority && !empty($denyUrl)) {
+                        $this->entityManager->persist($AuthorityRole);
+                    } else {
+                        $id = $AuthorityRole->getId();
+                        if (!empty($id)) {
+                            $role = $this->authorityRoleRepository->find($id);
+                            if ($role) {
+                                // 削除
+                                $this->entityManager->remove($AuthorityRole);
+                            }
                         }
                     }
                 }
+                $this->entityManager->flush();
+
+                $event = new EventArgs(
+                    [
+                        'form' => $form,
+                        'AuthorityRoles' => $AuthorityRoles,
+                    ],
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_COMPLETE, $event);
+
+                $this->addSuccess('admin.system.authority.save.complete', 'admin');
+
+                return $this->redirectToRoute('admin_setting_system_authority');
             }
-            $this->entityManager->flush();
-
-            $event = new EventArgs(
-                [
-                    'form' => $form,
-                    'AuthorityRoles' => $AuthorityRoles,
-                ],
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_COMPLETE, $event);
-
-            $this->addSuccess('admin.common.save_complete', 'admin');
-
-            return $this->redirectToRoute('admin_setting_system_authority');
         }
 
         return [

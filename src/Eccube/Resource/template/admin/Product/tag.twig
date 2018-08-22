@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['product', 'product_tag'] %}
 
-{% block title %}{{ 'admin.product.tag_management'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.product.product_management'|trans }}{% endblock %}
+{% block title %}{{ 'admin.product.tag.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.product.tag.sub_title'|trans }}{% endblock %}
 
 {% block stylesheet %}
     <style>
@@ -118,14 +118,10 @@ file that was distributed with this source code.
                 current.find('.mode-edit').removeClass('d-none');
             });
 
-            // 削除モーダルのhrefとmessageの変更
-            $('#DeleteModal').on('shown.bs.modal', function(event) {
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
                 var target = $(event.relatedTarget);
-                // hrefの変更
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
-
-                // messageの変更
-                $(this).find('p.modal-message').text(target.data('message'));
             });
         });
     </script>
@@ -148,7 +144,7 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-auto align-items-center">
                                             <button class="btn btn-ec-regular" type="submit">
-                                                {{ 'admin.common.create__new'|trans }}
+                                                {{ 'admin.product.tag.create'|trans }}
                                             </button>
                                         </div>
                                     </form>
@@ -162,20 +158,17 @@ file that was distributed with this source code.
                                             <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a>
                                             </div>
                                             <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon mr-3 action-up{% if loop.first %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-up{% if loop.first %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.up'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-down{% if loop.last %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-down{% if loop.last %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.down'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <div class="d-inline-block mr-3" data-toggle="tooltip"
-                                                     data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
-                                                       data-url="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"
-                                                       data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Tag.name }) }}">
+                                                <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.delete'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}">
                                                         <i class="fa fa-close fa-lg text-secondary"></i>
                                                     </a>
                                                 </div>
@@ -188,38 +181,44 @@ file that was distributed with this source code.
                                                 {{ form_errors(forms[Tag.id].name) }}
                                             </div>
                                             <div class="col-auto align-items-center">
-                                                <button class="btn btn-ec-conversion" type="submit">{{ 'admin.common.decision'|trans }}</button>
+                                                <button class="btn btn-ec-conversion" type="submit">{{ 'admin.product.tag.ok'|trans }}</button>
                                             </div>
                                             <div class="col-auto align-items-center">
-                                                <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.common.cancel'|trans }}</button>
+                                                <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.product.tag.cancel'|trans }}</button>
                                             </div>
                                         </form>
                                     </li>
                                 {% endfor %}
                             </ul>
-                            <!-- 削除モーダル -->
-                            <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog"
-                                 aria-labelledby="DeleteModal" aria-hidden="true">
+                            <div class="modal fade" id="delete_modal" tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="delete_modal" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title font-weight-bold">
-                                                {{ 'admin.common.delete_modal__title'|trans }}
-                                            </h5>
-                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
+                                                {{ 'admin.product.tag.delete.confirm.title'|trans }}</h5>
+                                            <button class="close" type="button"
+                                                    data-dismiss="modal"
+                                                    aria-label="Close"><span
+                                                        aria-hidden="true">×</span>
                                             </button>
                                         </div>
                                         <div class="modal-body text-left">
-                                            <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
+                                            <p class="text-left">
+                                                {{ 'admin.product.tag.delete.confirm.message'|trans }}</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
-                                                {{ 'admin.common.cancel'|trans }}
+                                            <button class="btn btn-ec-sub" type="button"
+                                                    data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
                                             </button>
-                                            <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}
-                                               data-method="delete" data-confirm="false">
-                                                {{ 'admin.common.delete'|trans }}
+                                            <a
+                                                    href="#"
+                                                    class="btn btn-ec-delete"
+                                                    data-confirm="false"
+                                                    {{ csrf_token_for_anchor() }}
+                                                    data-method="delete">
+                                                {{ 'admin.product.index.delete'|trans }}
                                             </a>
                                         </div>
                                     </div>
@@ -228,7 +227,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                 </div>
-                <p>{{ 'admin.common.drag_and_drop_description'|trans }}</p>
+                <p>{{ 'admin.product.tag.drag&drop'|trans }}</p>
             </div>
         </div>
     </div>

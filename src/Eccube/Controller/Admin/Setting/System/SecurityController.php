@@ -75,7 +75,7 @@ class SecurityController extends AbstractController
 
                 file_put_contents($envFile, $env);
 
-                $this->addSuccess('admin.setting.system.security.admin_url_changed', 'admin');
+                $this->addSuccess('admin.system.security.route.dir.complete', 'admin');
 
                 // ログアウト
                 $this->tokenStorage->setToken(null);
@@ -87,7 +87,7 @@ class SecurityController extends AbstractController
                 return $this->redirect($request->getBaseUrl().'/'.$data['admin_route_dir']);
             }
 
-            $this->addSuccess('admin.common.save_complete', 'admin');
+            $this->addSuccess('admin.system.security.save.complete', 'admin');
 
             // キャッシュの削除
             $cacheUtil->clearCache();

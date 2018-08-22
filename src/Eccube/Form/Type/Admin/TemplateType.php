@@ -40,6 +40,7 @@ class TemplateType extends AbstractType
     {
         $builder
             ->add('code', TextType::class, [
+                'label' => 'template.label.tempalte_code',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -52,6 +53,7 @@ class TemplateType extends AbstractType
                 ],
             ])
             ->add('name', TextType::class, [
+                'label' => 'template.label.template_name',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -61,6 +63,7 @@ class TemplateType extends AbstractType
                 ],
             ])
             ->add('file', FileType::class, [
+                'label' => 'template.label.template_file',
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [

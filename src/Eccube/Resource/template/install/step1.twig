@@ -24,7 +24,7 @@ file that was distributed with this source code.
                           <div class="row">
                             <div class="alert alert-danger alert-dismissable">
                               <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
-                              <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }} <a href="https://www.ec-cube.net/product/system.php">{{ 'install.system_requirement'|trans }}</a>
+                              <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }} <a href="http://www.ec-cube.net/product/system.php">{{ 'step1.text.message.system_requirement1'|trans }}</a>{{ 'step1.text.message.system_requirement2'|trans }}
                             </div>
                           </div>
                           {% endfor %}
@@ -51,19 +51,19 @@ file that was distributed with this source code.
                                 {% endfor %}
                             {% endif %}
                             <div class="page-header">
-                                <h1>{{ 'install.welcom'|trans }}</h1>
+                                <h1>{{ 'step1.text.message.page_header'|trans }}</h1>
                             </div>
                             <form name="form1" id="form1" method="post" action="{{ path('install_step1') }}">
                                 {{ form_widget(form._token) }}
                                 <div class="intro">
                                     <svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg>
-                                    {{ 'install.start_eccube_installation'|trans|raw }}
+                                    {{ 'step1.text.message.install_start'|trans|raw }}
                                 </div>
                                 <div class="note_box">
                                     <p>
-                                        {{ 'install.cooperation_of_providing_information'|trans|raw }}
+                                        {{ 'step1.text.message.agree'|trans|raw }}
                                     </p>
-                                    {{ form_widget(form.agree, { 'label': 'install.accept_infomation_provision' }) }}
+                                    {{ form_widget(form.agree) }}
                                 </div>
                                 <ul class="btn_area">
                                     <li><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>

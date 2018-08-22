@@ -117,8 +117,6 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $editInlineForm = [
             'class_category_'.$classCategoryId => [
                 'name' => $editName,
-                'backend_name' => $editName,
-                'visible' => true,
                 Constant::TOKEN_NAME => 'dummy',
             ],
         ];
@@ -259,7 +257,6 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $TestClassCategory->setName('立方体')
             ->setSortNo(100)
             ->setClassName($TestClassName)
-            ->setBackendName($TestClassName)
             ->setVisible(true)
             ->setCreator($TestCreator);
 

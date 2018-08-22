@@ -94,7 +94,7 @@ class TaxRuleController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.common.save_complete', 'admin');
+                $this->addSuccess('admin.shop.tax.save.complete', 'admin');
 
                 return $this->redirectToRoute('admin_setting_shop_tax');
             }
@@ -127,7 +127,7 @@ class TaxRuleController extends AbstractController
                     $this->entityManager->persist($taxRuleData);
                     $this->entityManager->flush();
 
-                    $this->addSuccess('admin.common.save_complete', 'admin');
+                    $this->addSuccess('admin.shop.tax.save.complete', 'admin');
 
                     return $this->redirectToRoute('admin_setting_shop_tax');
                 }
@@ -167,7 +167,7 @@ class TaxRuleController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.common.delete_complete', 'admin');
+            $this->addSuccess('admin.shop.tax.delete.complete', 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_shop_tax');

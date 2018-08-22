@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'block'] %}
 
-{% block title %}{{ 'admin.content.block_management'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
+{% block title %}{{ 'admin.content.block.6'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.block.5'|trans }}{% endblock %}
 
 {% block stylesheet %}
     <style type="text/css">
@@ -62,9 +62,7 @@ file that was distributed with this source code.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="row justify-content-between mb-2">
-                    <div class="col-9">
-                        <a class="btn btn-ec-regular" href="{{ url('admin_content_block_new') }}">{{ 'admin.common.create__new'|trans }}</a>
-                    </div>
+                    <div class="col-9"></div>
                     <div class="col-3">
                         <div class="form-row">
                             <div class="col">
@@ -95,36 +93,46 @@ file that was distributed with this source code.
                                                     <div class="col-6 text-right">
                                                         <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}"
                                                            class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
-                                                           data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                           data-placement="top"
+                                                           title="{{ 'admin.content.block_edit.14'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
                                                     </div>
                                                     {% if Block.deletable %}
                                                         <div class="col-6">
-                                                            <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                                <a href="#" data-toggle="modal" data-target="#confirmModal-{{ Block.id }}" class="btn btn-ec-actionIcon">
-                                                                    <i class="fa fa-close fa-lg text-secondary"></i>
-                                                                </a>
-                                                            </div>
+                                                            <a href="#"
+                                                               data-toggle="modal"
+                                                               data-target="#confirmModal-{{ Block.id }}"
+                                                               class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="{{ 'admin.content.block_edit.17'|trans }}">
+                                                                <i class="fa fa-close fa-lg text-secondary"></i>
+                                                            </a>
                                                         </div>
-                                                        <div class="modal fade" id="confirmModal-{{ Block.id }}" tabindex="-1" role="dialog"
-                                                             aria-labelledby="confirmModal-{{ Block.id }}" aria-hidden="true">
+
+                                                        <div class="modal fade" id="confirmModal-{{ Block.id }}"
+                                                             tabindex="-1"
+                                                             role="dialog"
+                                                             aria-labelledby="confirmModal-{{ Block.id }}"
+                                                             aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
-                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">×</span>
-                                                                        </button>
+                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.content.block.delete.confirm.title'|trans }}</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                                     </div>
                                                                     <div class="modal-body text-left">
-                                                                        <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%' : Block.name }) }}</p>
+                                                                        <p class="text-left">{{ 'admin.content.block.delete.confirm.message'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                                        <a href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}"
-                                                                           class="btn btn-ec-delete" data-confirm="false" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                                            {{ 'admin.common.delete'|trans }}
+                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.label.cancel'|trans }}</button>
+                                                                        <a
+                                                                                href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}"
+                                                                                class="btn btn-ec-delete"
+                                                                                data-confirm="false"
+                                                                                {{ csrf_token_for_anchor() }}
+                                                                                data-method="delete">
+                                                                            {{ 'admin.common.label.ok'|trans }}
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -138,6 +146,13 @@ file that was distributed with this source code.
                                 {% endfor %}
                             </ul>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card rounded border-0">
+                <div id="ex-block-new" class="card-body p-4">
+                    <div class="text-center">
+                        <a href="{{ url('admin_content_block_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.content.block.11'|trans }}</a>
                     </div>
                 </div>
             </div>

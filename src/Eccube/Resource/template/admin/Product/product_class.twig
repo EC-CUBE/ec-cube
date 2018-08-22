@@ -10,10 +10,10 @@ file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
-{% set menus = ['product', 'product_edit'] %}
+{% set menus = ['product', 'product_master'] %}
 
-{% block title %}{{ 'admin.product.product_class_registration'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.product.product_management'|trans }}{% endblock %}
+{% block title %}{{ 'admin.product.product_class.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.product.product_class.sub_title'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 {% form_theme clearForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
@@ -121,13 +121,13 @@ file that was distributed with this source code.
                         <div id="ex-product_class-header" class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <span class="card-title align-middle">{{ Product.name }}</span>
+                                    <span class="card-title align-middle">{{ 'admin.product.product_class.product_name_label'|trans }}：{{ Product.name }}</span>
                                 </div>
                                 <div class="col-4 text-right">
                                     {# 規格の初期化ボタン #}
                                     <button class="btn btn-ec-delete" type="button"
                                             data-toggle="modal"
-                                            data-target="#initializationConfirm">{{ 'admin.product.product_class__reset'|trans }}
+                                            data-target="#initializationConfirm">{{ 'admin.product.product_class.clear_product_class_matrix'|trans }}
                                     </button>
                                     {# 規格の初期化モーダル #}
                                     <div class="modal fade" id="initializationConfirm" tabindex="-1"
@@ -136,25 +136,25 @@ file that was distributed with this source code.
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.product.product_class__reset_confirm_title'|trans }}</h5>
+                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.product.product_class.clear_product_class_message'|trans }}</h5>
                                                     <button class="close" type="button" data-dismiss="modal"
                                                             aria-label="Close"><span aria-hidden="true">×</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <p class="text-left">
-                                                        {{ 'admin.product.product_class__reset_confirm_message'|trans }}</p>
+                                                        {{ 'admin.product.product_class.clear_product_class_alert'|trans }}</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-ec-sub" type="button"
                                                             data-dismiss="modal">
-                                                        {{ 'admin.common.cancel'|trans }}
+                                                        {{ 'admin.product.product_class.clear_product_class_cancel'|trans }}
                                                     </button>
                                                     <form method="post"
                                                           action="{{ url('admin_product_product_class_clear', { id: Product.id, return: return_product }) }}">
                                                         {{ form_widget(clearForm._token) }}
                                                         <button class="btn btn-ec-delete" type="submit">
-                                                            {{ 'admin.product.product_class__reset_confirm_excecute'|trans }}
+                                                            {{ 'admin.product.product_class.clear_product_class_execute'|trans }}
                                                         </button>
                                                     </form>
                                                 </div>
@@ -168,10 +168,10 @@ file that was distributed with this source code.
                             <div class="row mb-2">
                                 <div class="col">
                                     <div class="d-inline-block mr-2">
-                                        <span>{{ 'admin.product.class_category1__short'|trans }}</span>
+                                        <span>{{ 'admin.product.product_class.class_name1_label'|trans }}</span>
                                     </div>
                                     <div class="d-inline-block">
-                                        <span>{{ ClassName1.name }} [{{ 'admin.product.class_name__backend_name'|trans }}{{ 'admin.common.separator__colon'|trans }}{{ ClassName1.backend_name }}]</span>
+                                        <span>{{ ClassName1.name }} [{{ 'admin.product.product_class.class_backend_name_label'|trans }} ：{{ ClassName1.backend_name }}]</span>
                                     </div>
                                 </div>
                             </div>
@@ -179,10 +179,10 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col">
                                         <div class="d-inline-block mr-2">
-                                            <span>{{ 'admin.product.class_category2__short'|trans }}</span>
+                                            <span>{{ 'admin.product.product_class.class_name2_label'|trans }}</span>
                                         </div>
                                         <div class="d-inline-block">
-                                            <span>{{ ClassName2.name }} [{{ 'admin.product.class_name__backend_name'|trans }}{{ 'admin.common.separator__colon'|trans }}{{ ClassName2.backend_name }}]</span>
+                                            <span>{{ ClassName2.name }} [{{ 'admin.product.product_class.class_backend_name_label'|trans }} ：{{ ClassName2.backend_name }}]</span>
                                         </div>
                                     </div>
                                 </div>
@@ -195,12 +195,12 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <span class="card-title align-middle">{{ Product.name }}</span>
+                                        <span class="card-title align-middle">{{ 'admin.product.product_class.product_name_label'|trans }}{{ Product.name }}</span>
                                     </div>
                                     <div class="col-4 text-right">
                                         {# 商品規格の設定ボタン #}
                                         <button class="btn btn-ec-conversion" type="submit">
-                                            {{ 'admin.product.product_class__create'|trans }}
+                                            {{ 'admin.product.product_class.create_product_class_matrix'|trans }}
                                         </button>
                                     </div>
                                 </div>
@@ -232,14 +232,14 @@ file that was distributed with this source code.
                                 <div class="row justify-content-between">
                                     <div class="col-6">
                                         <span class="align-middle">
-                                            {{ 'admin.product.procuct_class_count'|trans({
+                                            {{ 'admin.product.product_class.product_class_matrix_count'|trans({
                                                 '%count%' : form.product_classes|length
                                             }) }}</span>
                                         {{ form_errors(form.product_classes) }}
                                     </div>
                                     <div class="col-4 text-right">
                                         <button id="copy" class="btn btn-ec-regular"><i
-                                                    class="fa fa-files-o mr-1"></i><span>{{ 'admin.product.copy_first_line'|trans }}</span></button>
+                                                    class="fa fa-files-o mr-1"></i><span>一行目をすべての行に複製</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -251,19 +251,19 @@ file that was distributed with this source code.
                                     </th>
                                     <th class="pt-2 pb-2">{{ ClassName1 ? ClassName1.name }}</th>
                                     <th class="pt-2 pb-2">{{ ClassName2 ? ClassName2.name }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.product.stock__short'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.product.sale_limit'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.product.normal_price'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.product.sale_price'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.product_code'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.product_stock'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.product_sale_limit'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.product_price01'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.product_price02'|trans }}</th>
                                     {% if BaseInfo.option_product_delivery_fee %}
-                                        <th class="pt-2 pb-2">{{ 'admin.product.delivery_fee'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.product.product_class.delivery_fee'|trans }}</th>
                                     {% endif %}
                                     {% if BaseInfo.option_product_tax_rule %}
-                                        <th class="pt-2 pb-2">{{ 'admin.product.tax_rate'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.product.product_class.tax_rate'|trans }}</th>
                                     {% endif %}
-                                    <th class="pt-2 pb-2">{{ 'admin.product.delivery_duration'|trans }}</th>
-                                    <th class="pt-2 pb-2 pr-3">{{ 'admin.product.sale_type'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.delivery_date'|trans }}</th>
+                                    <th class="pt-2 pb-2 pr-3">{{ 'admin.product.product_class.sale_tyle'|trans }}</th>
 
                                     {# エンティティ拡張の自動出力 #}
                                     {% for product_class_form in form.product_classes %}
@@ -367,11 +367,11 @@ file that was distributed with this source code.
                                             {% if return_product %}
                                                 <a class="c-beseLink" href="{{ url(return_product, {'id': Product.id}) }}"><i
                                                             class="fa fa-backward"
-                                                            aria-hidden="true"></i><span>{{ 'admin.product.product_registration'|trans }}</span></a>
+                                                            aria-hidden="true"></i><span>{{ 'admin.product.index.back'|trans }}</span></a>
                                             {% else %}
                                                 <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}"><i
                                                             class="fa fa-backward"
-                                                            aria-hidden="true"></i><span>{{ 'admin.product.product_list'|trans }}</span></a>
+                                                            aria-hidden="true"></i><span>{{ 'admin.product.product_class.product_list'|trans }}</span></a>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -379,7 +379,9 @@ file that was distributed with this source code.
                                         <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                                             <div class="col-auto">
                                                 <button class="btn btn-ec-conversion px-5" name="{{ form.save.vars.full_name }}" type="submit">
-                                                    {{ 'admin.common.registration'|trans }}
+                                                    {{ Product.hasProductClass
+                                                    ? 'admin.product.product_class.update'|trans
+                                                    : 'admin.product.product_class.register'|trans }}
                                                 </button>
                                             </div>
                                         </div>
@@ -398,11 +400,11 @@ file that was distributed with this source code.
                                         {% if return_product %}
                                             <a class="c-beseLink" href="{{ url(return_product, {'id': Product.id}) }}"><i
                                                         class="fa fa-backward"
-                                                        aria-hidden="true"></i><span>{{ 'admin.product.product_registration'|trans }}</span></a>
+                                                        aria-hidden="true"></i><span>{{ 'admin.product.index.back'|trans }}</span></a>
                                         {% else %}
                                             <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}"><i
                                                         class="fa fa-backward"
-                                                        aria-hidden="true"></i><span>{{ 'admin.product.product_list'|trans }}</span></a>
+                                                        aria-hidden="true"></i><span>{{ 'admin.product.product_class.product_list'|trans }}</span></a>
                                         {% endif %}
                                     </div>
                                 </div>

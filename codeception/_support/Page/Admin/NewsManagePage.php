@@ -1,20 +1,12 @@
 <?php
 
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Page\Admin;
 
+
 class NewsManagePage extends AbstractAdminPage
 {
+
     public static $登録完了メッセージ = '#main .container-fluid div:nth-child(1) .alert-success';
 
     /**
@@ -28,14 +20,12 @@ class NewsManagePage extends AbstractAdminPage
     public static function go($I)
     {
         $page = new self($I);
-
         return $page->goPage('/content/news', 'コンテンツ管理新着情報管理');
     }
 
     public static function at($I)
     {
         $page = new self($I);
-
         return $page->atPage('コンテンツ管理新着情報管理');
     }
 
@@ -48,14 +38,12 @@ class NewsManagePage extends AbstractAdminPage
     {
         $this->一覧_メニュー($rowNum);
         $this->tester->click("#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > ul > li:nth-child(1) > a");
-
         return $this;
     }
 
     private function 一覧_メニュー($rowNum)
     {
         $this->tester->click("#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > a");
-
         return $this;
     }
 
@@ -68,7 +56,6 @@ class NewsManagePage extends AbstractAdminPage
     {
         $this->一覧_メニュー($rowNum);
         $this->tester->click("#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > ul > li:nth-child(3) > a");
-
         return $this;
     }
 
@@ -76,7 +63,6 @@ class NewsManagePage extends AbstractAdminPage
     {
         $this->一覧_メニュー($rowNum);
         $this->tester->click("#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > ul > li:nth-child(3) > a");
-
         return $this;
     }
 
@@ -84,7 +70,6 @@ class NewsManagePage extends AbstractAdminPage
     {
         $this->一覧_メニュー($rowNum);
         $this->tester->click("#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > ul > li:nth-child(2) > a");
-
         return $this;
     }
 }

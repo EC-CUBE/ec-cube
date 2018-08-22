@@ -18,19 +18,19 @@ file that was distributed with this source code.
         </div>
         <div class="col-auto text-right">
             <a class="btn btn-ec-actionIcon mr-3 action-up" href="" data-toggle="tooltip"
-               data-placement="top" title="{{ 'admin.common.up'|trans }}">
+               data-placement="top" title="{{ 'admin.setting.shop.delivery_edit.delivery_time_up'|trans }}">
                 <i class="fa fa-arrow-up fa-lg text-secondary"></i>
             </a>
             <a class="btn btn-ec-actionIcon mr-3 action-down" href="" data-toggle="tooltip"
-               data-placement="top" title="{{ 'admin.common.down'|trans }}">
+               data-placement="top" title="{{ 'admin.setting.shop.delivery_edit.delivery_time_down'|trans }}">
                 <i class="fa fa-arrow-down fa-lg text-secondary"></i>
             </a>
             <a class="btn btn-ec-actionIcon mr-3 action-edit" href="" data-toggle="tooltip"
-               data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+               data-placement="top" title="{{ 'admin.setting.shop.delivery_edit.delivery_time_edit'|trans }}">
                 <i class="fa fa-pencil fa-lg text-secondary"></i>
             </a>
             <a class="btn btn-ec-actionIcon mr-3 remove-delivery-time-item" href="" data-toggle="tooltip"
-               data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+               data-placement="top" title="{{ 'admin.setting.shop.delivery_edit.delivery_time_remove'|trans }}">
                 <i class="fa fa-close fa-lg text-secondary"></i>
             </a>
         </div>
@@ -42,10 +42,10 @@ file that was distributed with this source code.
                     {{ form_widget(form.delivery_time, {'attr': {'data-origin-value': form.vars.value }}) }}
                 </div>
                 <div class="col-auto d-flex align-items-center">
-                    <button class="btn btn-ec-conversion action-edit-submit" type="submit">{{ 'admin.common.decision'|trans }}</button>
+                    <button class="btn btn-ec-conversion action-edit-submit" type="submit">{{ 'admin.setting.shop.delivery_edit.delivery_time_submit'|trans }}</button>
                 </div>
                 <div class="col-auto d-flex align-items-center">
-                    <button class="btn btn-ec-sub action-edit-cancel" type="submit">{{ 'admin.common.cancel'|trans }}</button>
+                    <button class="btn btn-ec-sub action-edit-cancel" type="submit">{{ 'admin.setting.shop.delivery_edit.delivery_time_cancel'|trans }}</button>
                 </div>
                 {{ form_errors(form.delivery_time) }}
                 {{ form_widget(form.sort_no, {'attr': {'class': "sort-no" }}) }}

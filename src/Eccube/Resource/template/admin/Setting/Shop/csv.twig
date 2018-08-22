@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'shop', 'shop_csv'] %}
 
-{% block title %}{{ 'admin.setting.shop.csv_setting'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.csv.556'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.csv.555'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -77,10 +77,10 @@ file that was distributed with this source code.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>{{ 'admin.setting.shop.csv.csv_colmuns'|trans }}</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.csv.565'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row mb-4 justify-content-between">
-                                <div class="col-2"><span>{{ 'admin.setting.shop.csv.csv_type'|trans }}</span></div>
+                                <div class="col-2"><span>{{ 'admin.setting.shop.csv.566'|trans }}</span></div>
                                 <div class="col-6">
                                     {{ form_widget(form.csv_type, {'id': 'csv-type'}) }}
                                 </div>
@@ -89,85 +89,85 @@ file that was distributed with this source code.
                             <div class="row mb-2">
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label for="FormControlSelect1">{{ 'admin.setting.shop.csv.non_output_colmuns'|trans }}</label>
+                                        <label for="FormControlSelect1">{{ 'admin.setting.shop.csv.557'|trans }}</label>
                                         {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
                                     </div>
                                 </div>
                                 <div class="col-2 align-self-center">
                                     <div class="row mb-2">
-                                        <div class="col text-center"><span>{{ 'admin.setting.shop.csv.operation'|trans }}</span></div>
+                                        <div class="col text-center"><span>{{ 'admin.setting.shop.csv.567'|trans }}</span></div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="add"><i class="fa fa-arrow-right"
-                                                                                                  aria-hidden="true"></i><span>&nbsp;{{ 'admin.setting.shop.csv.operation__output'|trans }}</span>
+                                                                                                  aria-hidden="true"></i><span>&nbsp;{{ 'admin.setting.shop.csv.568'|trans }}</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="remove"><i class="fa fa-arrow-left"
-                                                                                                     aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.operation__release'|trans }}</span></i>
+                                                                                                     aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.569'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="add-all"><i
-                                                        class="fa fa-arrow-circle-right" aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.operation__all_output'|trans }}</span></i>
+                                                        class="fa fa-arrow-circle-right" aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.570'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="remove-all"><i class="fa fa-arrow-circle-left"
-                                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.operation__all_release'|trans }}</span></i>
+                                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.571'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label for="FormControlSelect2">{{ 'admin.setting.shop.csv.output_colmuns'|trans }}</label>
+                                        <label for="FormControlSelect2">{{ 'admin.setting.shop.csv.558'|trans }}</label>
                                         {{ form_widget(form.csv_output, {'id': 'csv-output', 'attr': {'size': '30'}}) }}
                                     </div>
                                 </div>
                                 <div class="col-2 align-self-center">
                                     <div class="row mb-2">
-                                        <div class="col text-center"><span>{{ 'admin.setting.shop.csv.order'|trans }}</span></div>
+                                        <div class="col text-center"><span>{{ 'admin.setting.shop.csv.559'|trans }}</span></div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block move" data-value="up"><i class="fa fa-arrow-up"
-                                                                                                              aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.order__up'|trans }}</span></i>
+                                                                                                              aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.572'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block move" data-value="down"><i class="fa fa-arrow-down"
-                                                                                                                aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.order__down'|trans }}</span></i>
+                                                                                                                aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.573'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block move-most" data-value="top"><i class="fa fa-arrow-circle-up"
-                                                                                                                    aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.order__top'|trans }}</span></i>
+                                                                                                                    aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.574'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block move-most" data-value="bottom"><i class="fa fa-arrow-circle-down"
-                                                                                                                       aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.order__bottom'|trans }}</span></i>
+                                                                                                                       aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.575'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <p></p>
-                            {{ 'admin.setting.shop.csv.how_to_use'|trans|nl2br }}
+                            {{ 'admin.setting.shop.csv.576'|trans|raw }}
                         </div>
                     </div>
                 </div>
@@ -183,7 +183,7 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'common.label.save'|trans }}</button>
                             </div>
                         </div>
                     </div>

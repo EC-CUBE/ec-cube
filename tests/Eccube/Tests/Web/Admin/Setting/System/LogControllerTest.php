@@ -105,7 +105,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        list($this->actual) = $crawler->filter('#admin_system_log_line_max')->extract(['style']);
+        list($this->actual) = $crawler->filter('#line-max')->extract(['style']);
         $this->expected = $expected;
         $this->verify();
         if ($message) {

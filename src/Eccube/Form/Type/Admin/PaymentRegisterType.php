@@ -50,6 +50,7 @@ class PaymentRegisterType extends AbstractType
     {
         $builder
             ->add('method', TextType::class, [
+                'label' => 'paymentregister.label.payment_method',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -57,6 +58,7 @@ class PaymentRegisterType extends AbstractType
                 ],
             ])
             ->add('rule_min', PriceType::class, [
+                'label' => 'paymentregister.label.rule',
                 'currency' => 'JPY',
                 'scale' => 0,
                 'grouping' => true,
@@ -77,6 +79,7 @@ class PaymentRegisterType extends AbstractType
                 'required' => false,
             ])
             ->add('payment_image_file', FileType::class, [
+                'label' => 'paymentregister.label.logo_image',
                 'mapped' => false,
                 'required' => false,
             ])
@@ -85,11 +88,12 @@ class PaymentRegisterType extends AbstractType
             ])
             ->add('visible', ChoiceType::class, [
                 'label' => false,
-                'choices' => ['admin.common.show' => true, 'admin.common.hide' => false],
+                'choices' => ['common.label.display' => true, 'common.label.hide' => false],
                 'required' => true,
                 'expanded' => false,
             ])
             ->add('charge', PriceType::class, [
+                'label' => 'paymentregister.label.commision',
             ])
             ->add('fixed', HiddenType::class)
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {

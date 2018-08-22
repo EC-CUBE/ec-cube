@@ -641,10 +641,10 @@ class OrderPdfService extends TcpdfFpdi
     protected function setDefaultData(array &$formData)
     {
         $defaultList = [
-            'title' => trans('admin.order.delivery_note_title__default'),
-            'message1' => trans('admin.order.delivery_note_message__default1'),
-            'message2' => trans('admin.order.delivery_note_message__default2'),
-            'message3' => trans('admin.order.delivery_note_message__default3'),
+            'title' => trans('admin.order.export.pdf.title.default'),
+            'message1' => trans('admin.order.export.pdf.message1.default'),
+            'message2' => trans('admin.order.export.pdf.message2.default'),
+            'message3' => trans('admin.order.export.pdf.message3.default'),
         ];
 
         foreach ($defaultList as $key => $value) {

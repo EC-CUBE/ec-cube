@@ -2,9 +2,6 @@
     "behat/gherkin": {
         "version": "v4.5.1"
     },
-    "bheller/images-generator": {
-        "version": "1.0.1"
-    },
     "captbaritone/mailcatcher-codeception-module": {
         "version": "1.2.1"
     },

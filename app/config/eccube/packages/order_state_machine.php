@@ -28,12 +28,14 @@ $container->loadFromExtension('framework', [
             'initial_place' => (string) Status::NEW,
             'places' => [
                 (string) Status::NEW,
+                (string) Status::PAY_WAIT,
                 (string) Status::CANCEL,
-                (string) Status::IN_PROGRESS,
+                (string) Status::BACK_ORDER,
                 (string) Status::DELIVERED,
                 (string) Status::PAID,
                 (string) Status::PENDING,
                 (string) Status::PROCESSING,
+                (string) Status::IN_PROGRESS,
                 (string) Status::RETURNED,
             ],
             'transitions' => [

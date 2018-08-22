@@ -75,7 +75,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // 初期化ボタンが表示されている
         $this->assertCount(1, $crawler->selectButton('商品規格の初期化'));
         // 更新ボタンが表示されている
-        $this->assertCount(1, $crawler->selectButton('登録'));
+        $this->assertCount(1, $crawler->selectButton('更新'));
     }
 
     /**
@@ -177,7 +177,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertContains('商品規格を登録しました。', $htmlMessage);
 
         // check database
         $taxRule = $this->taxRuleRepository->findBy(['Product' => $product]);
@@ -225,7 +225,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertContains('商品規格を登録しました。', $htmlMessage);
 
         // check database
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
@@ -271,7 +271,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertContains('商品規格を登録しました。', $htmlMessage);
 
         // check database
         /* @var TaxRule $taxRule */
@@ -301,7 +301,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // edit class category with tax rate invalid
         /* @var Form $form */
-        $form = $crawler->selectButton('登録')->form();
+        $form = $crawler->selectButton('更新')->form();
         $form['product_class_matrix[product_classes][0][checked]']->tick();
         $form['product_class_matrix[product_classes][0][stock]'] = 1;
         $form['product_class_matrix[product_classes][0][price02]'] = 1;
@@ -336,7 +336,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // edit class category with tax = 0
         /* @var Form $form */
-        $form = $crawler->selectButton('登録')->form();
+        $form = $crawler->selectButton('更新')->form();
         $form['product_class_matrix[product_classes][0][checked]']->tick();
         $form['product_class_matrix[product_classes][0][stock]'] = 1;
         $form['product_class_matrix[product_classes][0][price02]'] = 1;
@@ -347,7 +347,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
         $product = $this->productRepository->find($id);
@@ -376,7 +376,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // edit class category without tax
         /* @var Form $form */
-        $form = $crawler->selectButton('登録')->form();
+        $form = $crawler->selectButton('更新')->form();
         $form['product_class_matrix[product_classes][0][checked]']->tick();
         $form['product_class_matrix[product_classes][0][stock]'] = 1;
         $form['product_class_matrix[product_classes][0][price02]'] = 1;
@@ -387,7 +387,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
         $product = $this->productRepository->find($id);
@@ -415,7 +415,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         );
 
         /* @var Form $form */
-        $form = $crawler->selectButton('登録')->form();
+        $form = $crawler->selectButton('更新')->form();
         $form['product_class_matrix[product_classes][0][checked]']->tick();
         $form['product_class_matrix[product_classes][0][stock]'] = 1;
         $form['product_class_matrix[product_classes][0][price02]'] = 1;
@@ -426,7 +426,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
         $product = $this->productRepository->find($id);
@@ -471,7 +471,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // edit class category with tax
         /* @var Form $form */
-        $form = $crawler->selectButton('登録')->form();
+        $form = $crawler->selectButton('更新')->form();
         $form['product_class_matrix[product_classes][2][checked]']->tick();
         $form['product_class_matrix[product_classes][2][stock]'] = 1;
         $form['product_class_matrix[product_classes][2][price02]'] = 1;
@@ -484,7 +484,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
         /* @var TaxRule $taxRule */
@@ -512,7 +512,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // edit class category with tax
         /* @var Form $form */
-        $form = $crawler->selectButton('登録')->form();
+        $form = $crawler->selectButton('更新')->form();
         $form['product_class_matrix[product_classes][0][checked]']->untick();
         $this->client->submit($form);
 
@@ -521,7 +521,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertContains('商品規格を更新しました。', $htmlMessage);
         // check database
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */

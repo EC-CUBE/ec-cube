@@ -1,0 +1,38 @@
+<!doctype html>
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
+    <title>{{ error_title }}</title>
+    <link rel="icon" href="{{ app.config.front_urlpath }}/img/common/favicon.ico">
+    <link rel="stylesheet" href="{{ app.config.front_urlpath }}/assets/css/style.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}">
+</head>
+<body>
+<div class="ec-layoutRole">
+    <div class="ec-404Role">
+        <div class="ec-off4Grid">
+            <div class="ec-off4Grid__cell">
+                <div style="font-size:100px;text-align:center;">
+                    <div class="ec-404Role__icon ec-icon"><img src="{{ app.config.front_urlpath }}/assets/icon/exclamation-pale.svg" alt="">
+                    </div>
+                </div>
+                <p class="ec-404Role__title ec-reportHeading">{{ error_title }}
+                </p>
+                <p class="ec-404Role__description ec-reportDescription">{{ error_message }}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

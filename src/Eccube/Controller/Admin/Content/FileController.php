@@ -135,7 +135,9 @@ class FileController extends AbstractController
             ->add('file', FileType::class)
             ->add('create_file', TextType::class, [
                 'constraints' => [
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank([
+                        'message' => 'file.text.error.folder_name',
+                    ]),
                     new Assert\Regex([
                         'pattern' => '/[^[:alnum:]_.\\-]/',
                         'match' => false,
@@ -170,7 +172,7 @@ class FileController extends AbstractController
                 : $topDir;
             $fs->mkdir($nowDir.'/'.$filename);
 
-            $this->addSuccess('admin.common.create_complete', 'admin');
+            $this->addSuccess('admin.content.file.create_dir_success', 'admin');
         } catch (IOException $e) {
             $this->errors[] = ['message' => $e->getMessage()];
         }
@@ -194,7 +196,7 @@ class FileController extends AbstractController
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);
-                $this->addSuccess('admin.common.delete_complete', 'admin');
+                $this->addSuccess('admin.delete.complete', 'admin');
             }
         }
 
@@ -239,7 +241,7 @@ class FileController extends AbstractController
             ->add('file', FileType::class, [
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'admin.common.file_select_empty',
+                        'message' => 'file.text.error.file_not_selected',
                     ]),
                 ],
             ])
@@ -269,7 +271,7 @@ class FileController extends AbstractController
         $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
         try {
             $data['file']->move($nowDir, $filename);
-            $this->addSuccess('admin.common.upload_complete', 'admin');
+            $this->addSuccess('admin.content.file.upload_success', 'admin');
         } catch (FileException $e) {
             $this->errors[] = ['message' => $e->getMessage()];
         }

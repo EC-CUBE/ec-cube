@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'system', 'member'] %}
 
-{% block title %}{{ 'admin.setting.system.member_management'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.system.member.684'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system.member.685'|trans }}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_4_layout.html.twig' %}
 
@@ -48,26 +48,30 @@ file that was distributed with this source code.
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                <div id="ex-member-new" class="d-block mb-3">
-                    <a class="btn btn-ec-regular" href="{{ url('admin_setting_system_member_new') }}">{{ 'admin.common.registration__new'|trans }}</a>
-                </div>
                 <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="card-title">{{ 'admin.setting.system.member.686'|trans }}</span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body p-0">
                         <form name="form1" id="form1" method="post" action="">
                             <table class="table table-sm">
                                 <thead>
                                 <tr>
                                     <th class="border-top-0 pt-2 pb-2 text-center">
-                                        {{ 'admin.setting.system.member.name'|trans }}
+                                        {{ 'admin.setting.system.member.687'|trans }}
                                     </th>
                                     <th class="border-top-0 pt-2 pb-2 text-center">
-                                        {{ 'admin.setting.system.member.department'|trans }}
+                                        {{ 'admin.setting.system.member.688'|trans }}
                                     </th>
                                     <th class="border-top-0 pt-2 pb-2 text-center">
-                                        {{ 'admin.common.authority'|trans }}
+                                        {{ 'admin.setting.system.member.689'|trans }}
                                     </th>
                                     <th class="border-top-0 pt-2 pb-2 text-center">
-                                        {{ 'admin.setting.system.member.work'|trans }}
+                                        {{ 'admin.setting.system.member.690'|trans }}
                                     </th>
                                     <th class="border-top-0 pt-2 pb-2 text-center"></th>
                                 </tr>
@@ -94,7 +98,7 @@ file that was distributed with this source code.
                                                        href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}"
                                                        data-toggle="tooltip"
                                                        data-placement="top"
-                                                       data-original-title="{{ 'admin.common.edit'|trans }}">
+                                                       data-original-title="{{ 'admin.setting.system.member.691'|trans }}">
                                                         <i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -104,7 +108,7 @@ file that was distributed with this source code.
                                                        data-toggle="tooltip"
                                                        data-method="put"
                                                        data-placement="top"
-                                                       data-original-title="{{ 'admin.common.up'|trans }}">
+                                                       data-original-title="{{ 'admin.setting.system.member.694'|trans }}">
                                                         <i class="fa fa-arrow-up fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -114,26 +118,23 @@ file that was distributed with this source code.
                                                        data-toggle="tooltip"
                                                        data-method="put"
                                                        data-placement="top"
-                                                       data-original-title="{{ 'admin.common.down'|trans }}">
+                                                       data-original-title="{{ 'admin.setting.system.member.695'|trans }}">
                                                         <i class="fa fa-arrow-down fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
                                                 <div class="col-auto text-center">
                                                     {% if Member.id == app.user.id %}
-                                                        <a class="btn btn-ec-actionIcon action-delete mr-3 disabled"
-                                                            data-toggle="tooltip" data-placement="top"
-                                                            title="{{ 'admin.common.delete'|trans }}">
+                                                        <a class="btn btn-ec-actionIcon action-delete disabled"
+                                                           data-toggle="tooltip" data-placement="top"
+                                                           data-original-title="{{ 'admin.setting.system.member.692'|trans }}">
                                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
                                                     {% else %}
-                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top"
-                                                             title="{{ 'admin.common.delete'|trans }}">
-                                                            <a class="btn btn-ec-actionIcon action-delete"
-                                                               data-toggle="modal"
-                                                               data-target="#member_delete_{{ Member.id }}">
-                                                                <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
-                                                            </a>
-                                                        </div>
+                                                        <a class="btn btn-ec-actionIcon action-delete"
+                                                           data-toggle="modal"
+                                                           data-target="#member_delete_{{ Member.id }}">
+                                                            <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                        </a>
                                                         <div class="modal fade" id="member_delete_{{ Member.id }}" tabindex="-1"
                                                              role="dialog"
                                                              aria-labelledby="member_delete_{{ Member.id }}" aria-hidden="true">
@@ -141,7 +142,7 @@ file that was distributed with this source code.
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title font-weight-bold">
-                                                                            {{ 'admin.setting.system.member.delete__confirm_title'|trans }}</h5>
+                                                                            {{ 'admin.setting.system.member.delete_modal_title'|trans }}</h5>
                                                                         <button class="close" type="button"
                                                                                 data-dismiss="modal"
                                                                                 aria-label="Close"><span
@@ -150,16 +151,16 @@ file that was distributed with this source code.
                                                                     </div>
                                                                     <div class="modal-body text-left">
                                                                         <p class="text-left">
-                                                                            {{ 'admin.setting.system.member.delete__confirm_message'|trans }}</p>
+                                                                            {{ 'admin.setting.system.member.delete_modal_body'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
+                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
                                                                         </button>
                                                                         <a class="btn btn-ec-delete"
                                                                            href="{{ url('admin_setting_system_member_delete', {id: Member.id}) }}"
                                                                                 {{ csrf_token_for_anchor() }}
                                                                            data-method="delete" data-confirm="false">
-                                                                            {{ 'admin.common.delete'|trans }}
+                                                                            {{ 'common.label.delete'|trans }}
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -174,6 +175,15 @@ file that was distributed with this source code.
                                 </tbody>
                             </table>
                         </form>
+                    </div>
+                </div>
+                <div id="ex-member-new" class="card rounded border-0">
+                    <div class="card-body p-4">
+                        <div class="text-center btn-area-bottom">
+                            <a href="{{ url('admin_setting_system_member_new') }}" class="btn btn-ec-regular pl-4 pr-4">
+                                {{ 'admin.setting.system.member.696'|trans }}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

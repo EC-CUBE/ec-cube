@@ -32,7 +32,6 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
-use Eccube\Repository\ProductStockRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderPdfService;
@@ -100,11 +99,6 @@ class OrderController extends AbstractController
     /** @var OrderPdfRepository */
     protected $orderPdfRepository;
 
-    /**
-     * @var ProductStockRepository
-     */
-    protected $productStockRepository;
-
     /** @var OrderPdfService */
     protected $orderPdfService;
 
@@ -134,7 +128,6 @@ class OrderController extends AbstractController
      * @param OrderStatusRepository $orderStatusRepository
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
-     * @param ProductStockRepository $productStockRepository
      * @param OrderRepository $orderRepository
      * @param OrderPdfRepository $orderPdfRepository
      * @param OrderPdfService $orderPdfService
@@ -150,7 +143,6 @@ class OrderController extends AbstractController
         OrderStatusRepository $orderStatusRepository,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
-        ProductStockRepository $productStockRepository,
         OrderRepository $orderRepository,
         OrderPdfRepository $orderPdfRepository,
         OrderPdfService $orderPdfService,
@@ -166,7 +158,6 @@ class OrderController extends AbstractController
         $this->orderStatusRepository = $orderStatusRepository;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
-        $this->productStockRepository = $productStockRepository;
         $this->orderRepository = $orderRepository;
         $this->orderPdfRepository = $orderPdfRepository;
         $this->orderPdfService = $orderPdfService;
@@ -339,7 +330,7 @@ class OrderController extends AbstractController
 
         $this->entityManager->flush();
 
-        $this->addSuccess('admin.common.delete_complete', 'admin');
+        $this->addSuccess('admin.order.delete.complete', 'admin');
 
         return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
     }
@@ -515,19 +506,8 @@ class OrderController extends AbstractController
                     } else {
                         $result['mail'] = false;
                     }
-                    // 対応中・キャンセルの更新時は商品在庫を増減させているので商品情報を更新
-                    if ($OrderStatus->getId() == OrderStatus::IN_PROGRESS || $OrderStatus->getId() == OrderStatus::CANCEL) {
-                        foreach ($Order->getOrderItems() as $OrderItem) {
-                            $ProductClass = $OrderItem->getProductClass();
-                            if ($OrderItem->isProduct() && !$ProductClass->isStockUnlimited()) {
-                                $this->entityManager->flush($ProductClass);
-                                $ProductStock = $this->productStockRepository->findOneBy(['ProductClass' => $ProductClass]);
-                                $this->entityManager->flush($ProductStock);
-                            }
-                        }
-                    }
-                    $this->entityManager->flush($Order);
                     $this->entityManager->flush($Shipping);
+                    $this->entityManager->flush($Order);
 
                     // 会員の場合、購入回数、購入金額などを更新
                     if ($Customer = $Order->getCustomer()) {
@@ -574,7 +554,7 @@ class OrderController extends AbstractController
             [
                 new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 new Assert\Regex(
-                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('admin.order.tracking_number_error')]
+                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('form.type.admin.nottrackingnumberstyle')]
                 ),
             ]
         );
@@ -618,7 +598,7 @@ class OrderController extends AbstractController
         $ids = $request->get('ids', []);
 
         if (count($ids) == 0) {
-            $this->addError('admin.order.delivery_note_parameter_error', 'admin');
+            $this->addError('admin.order.export.pdf.parameter.not.found', 'admin');
             log_info('The Order cannot found!');
 
             return $this->redirectToRoute('admin_order');
@@ -630,10 +610,10 @@ class OrderController extends AbstractController
         if (!$OrderPdf) {
             $OrderPdf = new OrderPdf();
             $OrderPdf
-                ->setTitle(trans('admin.order.delivery_note_title__default'))
-                ->setMessage1(trans('admin.order.delivery_note_message__default1'))
-                ->setMessage2(trans('admin.order.delivery_note_message__default2'))
-                ->setMessage3(trans('admin.order.delivery_note_message__default3'));
+                ->setTitle(trans('admin.order.export.pdf.title.default'))
+                ->setMessage1(trans('admin.order.export.pdf.message1.default'))
+                ->setMessage2(trans('admin.order.export.pdf.message2.default'))
+                ->setMessage3(trans('admin.order.export.pdf.message3.default'));
         }
 
         /**

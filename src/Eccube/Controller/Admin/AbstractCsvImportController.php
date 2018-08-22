@@ -54,8 +54,8 @@ class AbstractCsvImportController extends AbstractController
             }
         } else {
             // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = StringUtil::characterEncoding($file);
-            if (!empty($encode) && $encode != 'UTF-8') {
+            $encode = StringUtil::characterEncoding(substr($file, 0, 6));
+            if ($encode != 'UTF-8') {
                 $file = mb_convert_encoding($file, 'UTF-8', $encode);
             }
         }

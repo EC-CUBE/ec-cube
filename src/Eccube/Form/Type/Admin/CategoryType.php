@@ -44,6 +44,7 @@ class CategoryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'label' => 'category.label.category_name',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([

@@ -53,7 +53,7 @@ class ClassNameController extends AbstractController
         if ($id) {
             $TargetClassName = $this->classNameRepository->find($id);
             if (!$TargetClassName) {
-                throw new NotFoundHttpException();
+                throw new NotFoundHttpException(trans('classname.text.error.no_option'));
             }
         } else {
             $TargetClassName = new \Eccube\Entity\ClassName();
@@ -102,7 +102,7 @@ class ClassNameController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.common.save_complete', 'admin');
+                $this->addSuccess('admin.class_name.save.complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_class_name');
             }
@@ -115,7 +115,7 @@ class ClassNameController extends AbstractController
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->classNameRepository->save($editForm->getData());
 
-                    $this->addSuccess('admin.common.save_complete', 'admin');
+                    $this->addSuccess('admin.class_name.save.complete', 'admin');
 
                     return $this->redirectToRoute('admin_product_class_name');
                 }
@@ -149,14 +149,14 @@ class ClassNameController extends AbstractController
             $event = new EventArgs(['ClassName' => $ClassName], $request);
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.common.delete_complete', 'admin');
+            $this->addSuccess('admin.class_name.delete.complete', 'admin');
 
             log_info('商品規格削除完了', [$ClassName->getId()]);
         } catch (\Exception $e) {
-            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $ClassName->getName()]);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('classname.text.name')]);
             $this->addError($message, 'admin');
 
-            log_error('商品規格削除エラー', [$ClassName->getId(), $e]);
+            log_error('商品企画削除エラー', [$ClassName->getId(), $e]);
         }
 
         return $this->redirectToRoute('admin_product_class_name');

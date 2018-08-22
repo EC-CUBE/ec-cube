@@ -44,14 +44,14 @@ class SystemController
     public function index(Request $request)
     {
         $info = [];
-        $info[] = ['title' => trans('admin.setting.system.system.eccube'), 'value' => Constant::VERSION];
-        $info[] = ['title' => trans('admin.setting.system.system.server_os'), 'value' => php_uname()];
-        $info[] = ['title' => trans('admin.setting.system.system.database_server'), 'value' => $this->systemService->getDbversion()];
-        $info[] = ['title' => trans('admin.setting.system.system.web_server'), 'value' => $request->server->get('SERVER_SOFTWARE')];
+        $info[] = ['title' => 'EC-CUBE', 'value' => Constant::VERSION];
+        $info[] = ['title' => trans('system.label.server_os'), 'value' => php_uname()];
+        $info[] = ['title' => trans('system.label.db_server'), 'value' => $this->systemService->getDbversion()];
+        $info[] = ['title' => trans('system.label.web_server'), 'value' => $request->server->get('SERVER_SOFTWARE')];
 
         $value = phpversion().' ('.implode(', ', get_loaded_extensions()).')';
-        $info[] = ['title' => trans('admin.setting.system.system.php'), 'value' => $value];
-        $info[] = ['title' => trans('admin.setting.system.system.user_agent'), 'value' => $request->headers->get('User-Agent')];
+        $info[] = ['title' => 'PHP', 'value' => $value];
+        $info[] = ['title' => trans('system.label.user_agent'), 'value' => $request->headers->get('User-Agent')];
 
         return [
             'info' => $info,

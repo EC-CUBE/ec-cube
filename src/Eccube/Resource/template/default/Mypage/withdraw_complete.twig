@@ -18,7 +18,7 @@ file that was distributed with this source code.
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__withdrow'|trans }}</h1>
+                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.cancel_membership'|trans}}</h1>
             </div>
         </div>
         <div class="ec-mypageRole">
@@ -26,11 +26,10 @@ file that was distributed with this source code.
                 <div class="ec-off4Grid">
                     <div class="ec-off4Grid__cell">
                         <div class="ec-reportHeading">
-                            <h2>{{ 'front.mypage.withdraw_complete_message__title'|trans }}</h2>
+                            <h2>退会が完了いたしました</h2>
                         </div>
-                        <p class="ec-reportDescription">{{ 'front.mypage.withdraw_complete_message__body'|trans|nl2br }}</p>
-                        <p><a href="{{ url('homepage') }}"
-                              class="ec-blockBtn--cancel">{{ 'common.go_to_top'|trans }}</a></p>
+                        <p class="ec-reportDescription">ご利用いただき誠にありがとうございました。<br>またのご来店をお待ちしております。</p>
+                        <p><a href="{{ url('homepage') }}" class="ec-blockBtn--cancel">{{'common.label.back_to_top'|trans}}</a></p>
                     </div>
                 </div>
             </div>

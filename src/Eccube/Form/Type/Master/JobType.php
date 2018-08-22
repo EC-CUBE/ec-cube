@@ -26,7 +26,7 @@ class JobType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => 'Eccube\Entity\Master\Job',
-            'placeholder' => 'common.select',
+            'placeholder' => 'form.job.empty_value',
         ]);
     }
 

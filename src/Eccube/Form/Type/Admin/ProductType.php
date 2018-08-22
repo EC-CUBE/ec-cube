@@ -71,22 +71,26 @@ class ProductType extends AbstractType
             ])
             // 基本情報
             ->add('name', TextType::class, [
+                'label' => 'product.label.product_name',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('product_image', FileType::class, [
+                'label' => 'product.label.product_image',
                 'multiple' => true,
                 'required' => false,
                 'mapped' => false,
             ])
             ->add('description_detail', TextareaType::class, [
+                'label' => 'product.label.product_description',
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
                 ],
             ])
             ->add('description_list', TextareaType::class, [
+                'label' => 'product.label.product_description_list',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
@@ -94,6 +98,7 @@ class ProductType extends AbstractType
             ])
             ->add('Category', ChoiceType::class, [
                 'choice_label' => 'Name',
+                'label' => 'product.label.product_category',
                 'multiple' => true,
                 'mapped' => false,
                 'expanded' => true,
@@ -116,6 +121,7 @@ class ProductType extends AbstractType
                 'mapped' => false,
             ])
             ->add('search_word', TextType::class, [
+                'label' => 'product.label.search_word',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
@@ -123,6 +129,7 @@ class ProductType extends AbstractType
             ])
             // サブ情報
             ->add('free_area', TextareaType::class, [
+                'label' => 'product.label.product_sub',
                 'required' => false,
                 'constraints' => [
                     new TwigLint(),
@@ -136,6 +143,7 @@ class ProductType extends AbstractType
                 ],
             ])
             ->add('note', TextareaType::class, [
+                'label' => 'product.label.owner_memo',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),

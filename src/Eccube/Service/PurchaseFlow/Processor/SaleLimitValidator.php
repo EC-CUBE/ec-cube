@@ -42,7 +42,7 @@ class SaleLimitValidator extends ItemValidator
 
         $quantity = $item->getQuantity();
         if ($limit < $quantity) {
-            $this->throwInvalidItemException('front.shopping.over_sale_limit', $item->getProductClass());
+            $this->throwInvalidItemException('cart.over.sale_limit', $item->getProductClass());
         }
     }
 

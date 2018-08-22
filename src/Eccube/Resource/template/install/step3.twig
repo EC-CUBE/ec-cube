@@ -35,7 +35,7 @@ file that was distributed with this source code.
         <div class="main_inner">
             <div class="main_content">
                 <div class="page-header">
-                    <h1>{{ 'install.site_configration'|trans }}</h1>
+                    <h1>{{ 'step3.text.message.page_header'|trans }}</h1>
                 </div>
                 <div class="container-fluid">
                     <div class="row">
@@ -47,17 +47,17 @@ file that was distributed with this source code.
                                 {{ form_row(form.login_id) }}
                                 {{ form_row(form.login_pass) }}
 
-                                <h2>{{ 'install.security_configuration'|trans}}</h2>
-                                {{ form_row(form.admin_dir , {attr : { placeholder: 'install.directry_name_notice'|trans }}) }}
+                                <h2>{{ 'step3.text.message.security_setting'|trans}}</h2>
+                                {{ form_row(form.admin_dir , {attr : {placeholder: 'step3.placeholder.admin_dir'|trans }}) }}
                                 {% if request.secure %}
                                     {{ form_row(form.admin_force_ssl) }}
                                 {% else %}
-                                    <span class="text-danger">{{ 'install.https_only_notice'|trans }}</span>
+                                    <span class="text-danger">{{ 'step3.text.message.ssl'|trans }}</span>
                                     {{ form_row(form.admin_force_ssl , {attr : {disabled: 'disabled', 'value': null}}) }}
                                 {% endif %}
                                 {{ form_row(form.admin_allow_hosts , {attr : {rows: '5'}}) }}
 
-                                <h2>{{ 'install.mail_configuration'|trans }}</h2>
+                                <h2>{{ 'step3.text.message.mail_setting'|trans }}</h2>
                                 {{ form_row(form.smtp_host) }}
                                 {{ form_row(form.smtp_port) }}
                                 {{ form_row(form.smtp_username) }}

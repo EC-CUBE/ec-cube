@@ -1,16 +1,5 @@
 <?php
 
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 use Codeception\Util\Fixtures;
 
 /**
@@ -49,7 +38,7 @@ class EF06OtherCest
         $I->amOnPage('/mypage/login');
         $I->submitForm('#login_mypage', [
             'login_email' => $customer->getEmail(),
-            'login_pass' => 'password',
+            'login_pass' => 'password'
         ]);
 
         $I->see('ログインできませんでした。', 'div.ec-login p.ec-errorMessage');
@@ -66,7 +55,7 @@ class EF06OtherCest
         $I->amOnPage('/mypage/login');
         $I->submitForm('#login_mypage', [
             'login_email' => $customer->getEmail().'.bad',
-            'login_pass' => 'password',
+            'login_pass' => 'password'
         ]);
 
         $I->see('ログインできませんでした。', 'div.ec-login p.ec-errorMessage');
@@ -91,9 +80,9 @@ class EF06OtherCest
         $customer = $createCustomer();
         $I->resetEmails();
         $I->submitForm('#form1', [
-            'login_email' => $customer->getEmail(),
+            'login_email' => $customer->getEmail()
         ]);
-        $I->see('パスワードの再発行(メール送信)', 'div.ec-pageHeader h1');
+        $I->see('パスワード発行メールの送信 完了', 'div.ec-pageHeader h1');
 
         $I->seeEmailCount(1);
         $I->seeInLastEmailSubjectTo($customer->getEmail(), 'パスワード変更のご確認');
@@ -107,10 +96,10 @@ class EF06OtherCest
         $password = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 20);
 
         // メルアド・新パスワード設定
-        $I->submitForm('#form1', [
+        $I->submitForm('#form1',[
             'login_email' => $customer->getEmail(),
             'password[first]' => $password,
-            'password[second]' => $password,
+            'password[second]' => $password
         ]);
 
         $I->see('ログイン', 'div.ec-pageHeader h1');
@@ -188,11 +177,11 @@ class EF06OtherCest
         $I->click('div.ec-contactConfirmRole div.ec-RegisterRole__actions button.ec-blockBtn--action');
 
         // 完了ページ
-        $I->see('お問い合わせ(完了)', 'div.ec-pageHeader h1');
+        $I->see('お問い合わせ完了', 'div.ec-pageHeader h1');
 
         // メールチェック
         $I->seeEmailCount(2);
-        foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
+        foreach (array($new_email, $BaseInfo->getEmail01()) as $email) {
             $I->seeInLastEmailSubjectTo($email, 'お問い合わせを受け付けました');
             $I->seeInLastEmailTo($email, '姓 名 様');
             $I->seeInLastEmailTo($email, 'お問い合わせ内容の送信');

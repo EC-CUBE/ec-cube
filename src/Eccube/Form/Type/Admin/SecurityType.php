@@ -64,6 +64,7 @@ class SecurityType extends AbstractType
         $allowHosts = implode("\n", $allowHosts);
         $builder
             ->add('admin_route_dir', TextType::class, [
+                'label' => 'security.label.directory_name',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
@@ -75,13 +76,14 @@ class SecurityType extends AbstractType
             ])
             ->add('admin_allow_hosts', TextareaType::class, [
                 'required' => false,
+                'label' => 'security.label.ip_restriction',
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
                 ],
                 'data' => $allowHosts,
             ])
             ->add('force_ssl', CheckboxType::class, [
-                'label' => 'admin.setting.system.security.force_ssl',
+                'label' => 'security.label.ssl_mandatory',
                 'required' => false,
                 'data' => $this->eccubeConfig->get('eccube_force_ssl'),
             ])
@@ -97,13 +99,13 @@ class SecurityType extends AbstractType
                         ]
                     );
                     if ($errors->count() != 0) {
-                        $form['admin_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
+                        $form['admin_allow_hosts']->addError(new FormError(trans('security.text.error.not_ipv4', ['%ip%' => $ip])));
                     }
                 }
 
                 $request = $this->requestStack->getCurrentRequest();
                 if ($data['force_ssl'] && !$request->isSecure()) {
-                    $form['force_ssl']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_https')));
+                    $form['force_ssl']->addError(new FormError(trans('security.text.error.not_https')));
                 }
             })
         ;

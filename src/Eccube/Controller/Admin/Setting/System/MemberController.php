@@ -129,9 +129,9 @@ class MemberController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
 
-            $this->addSuccess('admin.common.save_complete', 'admin');
+            $this->addSuccess('admin.member.save.complete', 'admin');
 
-            return $this->redirectToRoute('admin_setting_system_member_edit', ['id' => $Member->getId()]);
+            return $this->redirectToRoute('admin_setting_system_member');
         }
 
         $this->tokenStorage->getToken()->setUser($LoginMember);
@@ -199,9 +199,9 @@ class MemberController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
 
-            $this->addSuccess('admin.common.save_complete', 'admin');
+            $this->addSuccess('admin.member.save.complete', 'admin');
 
-            return $this->redirectToRoute('admin_setting_system_member_edit', ['id' => $Member->getId()]);
+            return $this->redirectToRoute('admin_setting_system_member');
         }
 
         $this->tokenStorage->getToken()->setUser($LoginMember);
@@ -222,11 +222,11 @@ class MemberController extends AbstractController
         try {
             $this->memberRepository->up($Member);
 
-            $this->addSuccess('admin.common.move_complete', 'admin');
+            $this->addSuccess('admin.member.up.complete', 'admin');
         } catch (\Exception $e) {
             log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
 
-            $this->addError('admin.common.move_error', 'admin');
+            $this->addError('admin.member.up.error', 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_system_member');
@@ -242,11 +242,11 @@ class MemberController extends AbstractController
         try {
             $this->memberRepository->down($Member);
 
-            $this->addSuccess('admin.common.move_complete', 'admin');
+            $this->addSuccess('admin.member.down.complete', 'admin');
         } catch (\Exception $e) {
             log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
 
-            $this->addError('admin.common.move_error', 'admin');
+            $this->addError('admin.member.down.error', 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_system_member');
@@ -272,18 +272,18 @@ class MemberController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.common.delete_complete', 'admin');
+            $this->addSuccess('admin.member.delete.complete', 'admin');
 
             log_info('メンバー削除完了', [$Member->getId()]);
         } catch (ForeignKeyConstraintViolationException $e) {
             log_info('メンバー削除エラー', [$Member->getId()]);
 
-            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Member->getName()]);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Member->getName()]);
             $this->addError($message, 'admin');
         } catch (\Exception $e) {
             log_info('メンバー削除エラー', [$Member->getId(), $e]);
 
-            $message = trans('admin.common.delete_error');
+            $message = trans('admin.delete.failed');
             $this->addError($message, 'admin');
         }
 

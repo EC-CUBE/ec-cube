@@ -107,6 +107,7 @@ class OrderType extends AbstractType
                 ],
             ])
             ->add('company_name', TextType::class, [
+                'label' => 'order.label.company_name',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -153,6 +154,7 @@ class OrderType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'required' => false,
+                'label' => 'order.label.email',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Email(['strict' => true]),
@@ -165,6 +167,7 @@ class OrderType extends AbstractType
                 ],
             ])
             ->add('company_name', TextType::class, [
+                'label' => 'order.label.company_name',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -173,6 +176,7 @@ class OrderType extends AbstractType
                 ],
             ])
             ->add('message', TextareaType::class, [
+                'label' => 'order.label.inquiry',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -182,15 +186,19 @@ class OrderType extends AbstractType
             ])
             ->add('discount', PriceType::class, [
                 'required' => false,
+                'label' => 'order.label.discount',
             ])
             ->add('delivery_fee_total', PriceType::class, [
                 'required' => false,
+                'label' => 'order.label.shipping_charge',
             ])
             ->add('charge', PriceType::class, [
                 'required' => false,
+                'label' => 'order.label.commision',
             ])
             ->add('use_point', NumberType::class, [
                 'required' => false,
+                'label' => 'admin.common.label.use_point',
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
@@ -199,6 +207,7 @@ class OrderType extends AbstractType
                 ],
             ])
             ->add('note', TextareaType::class, [
+                'label' => 'order.label.owner_note',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -445,7 +454,7 @@ class OrderType extends AbstractType
         if ($count < 1) {
             // 画面下部にエラーメッセージを表示させる
             $form = $event->getForm();
-            $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.product_item_not_found')));
+            $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.edit.product.error')));
         }
     }
 

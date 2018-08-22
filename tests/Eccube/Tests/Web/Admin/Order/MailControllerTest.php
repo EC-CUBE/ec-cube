@@ -43,6 +43,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $MailTemplate = new MailTemplate();
         $MailTemplate
             ->setName($faker->word)
+            ->setMailHeader($faker->word)
+            ->setMailFooter($faker->word)
             ->setMailSubject($faker->word)
             ->setCreator($this->Member);
         $this->entityManager->persist($MailTemplate);
@@ -67,6 +69,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = [
             'template' => 1,
             'mail_subject' => $faker->word,
+            'mail_header' => $faker->paragraph,
+            'mail_footer' => $faker->paragraph,
+            'tpl_data' => $faker->text,
             '_token' => 'dummy',
         ];
 
@@ -82,21 +87,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testIndexWithConfirm()
-    {
-        $form = $this->createFormData();
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
-            [
-                'mail' => $form,
-                'mode' => 'confirm',
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    public function testComplete()
+    public function testIndexWithComplete()
     {
         $this->client->enableProfiler();
         $form = $this->createFormData();

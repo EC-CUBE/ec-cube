@@ -30,7 +30,7 @@ class MailTemplateType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => 'Eccube\Entity\MailTemplate',
-            'placeholder' => 'common.select',
+            'placeholder' => 'admin.setting.shop.mail.place_holder',
             // なぜかsortNoを持っていない
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('mt')

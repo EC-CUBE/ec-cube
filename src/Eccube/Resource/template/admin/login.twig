@@ -23,17 +23,17 @@ file that was distributed with this source code.
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                         <p><img src="{{ asset('assets/img/logo2.png', 'admin') }}" width="106"></p>
                         <div class="form-group">
-                            {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'placeholder': 'admin.login.login_id', 'autofocus': true}}) }}
+                            {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'placeholder': 'admin.login.172', 'autofocus': true}}) }}
                         </div>
                         <div class="form-group">
-                            {{ form_widget(form.password, {'attr': {'placeholder': 'admin.login.password'}}) }}
+                            {{ form_widget(form.password, {'attr': {'placeholder': 'admin.login.173'}}) }}
                         </div>
                         {% if error %}
                             <div class="form-group">
-                                <span class="text-danger">{{ error.messageKey|trans(error.messageData, 'validators')|nl2br }}</span>
+                                <span class="text-danger">{{ error.messageKey|trans(error.messageData)|raw }}</span>
                             </div>
                         {% endif %}
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">{{ 'admin.login.login'|trans }}</button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">{{ 'admin.login.174'|trans }}</button>
                         {{ form_rest(form) }}
                     </form>
                 </div>

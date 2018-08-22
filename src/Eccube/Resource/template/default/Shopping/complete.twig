@@ -15,7 +15,7 @@ file that was distributed with this source code.
 {% block main %}
 <div class="ec-role">
     <div class="ec-pageHeader">
-        <h1>{{ 'front.shopping.complete_title'|trans }}</h1>
+        <h1>ご注文完了</h1>
     </div>
 </div>
 
@@ -26,33 +26,33 @@ file that was distributed with this source code.
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">{{ 'front.cart.nav__cart_items'|trans }}
+                <div class="ec-progress__label">{{'shopping.label.your_cart'|trans}}
                 </div>
             </li>
             {% if is_granted('ROLE_USER') == false %}
-                <li class="ec-progress__item">
-                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
-                    </div>
-                    <div class="ec-progress__label">{{ 'front.cart.nav__customer_info'|trans }}
-                    </div>
-                </li>
+            <li class="ec-progress__item">
+                <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                </div>
+                <div class="ec-progress__label">{{'shopping.label.customer_info'|trans}}
+                </div>
+            </li>
             {% endif %}
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">{{ 'front.cart.nav__order'|trans }}
+                <div class="ec-progress__label">ご注文手続き {# TODO 未翻訳 #}
                 </div>
             </li>
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">{{ 'front.cart.nav__confirm'|trans }}
+                <div class="ec-progress__label">{{'shopping.label.confirm_order'|trans}}
                 </div>
             </li>
-            <li class="ec-progress__item  is-complete">
-                <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+            <li class="ec-progress__item is-complete">
+                <div class="ec-progress__number">{{ step }}
                 </div>
-                <div class="ec-progress__label">{{ 'front.cart.nav__complete'|trans }}
+                <div class="ec-progress__label">{{'shopping.label.order_completed'|trans}}
                 </div>
             </li>
         </ul>
@@ -63,19 +63,17 @@ file that was distributed with this source code.
     <div class="ec-off3Grid ec-text-ac">
         <div class="ec-off3Grid__cell">
             <div class="ec-reportHeading">
-                <h2>{{ 'front.shopping.complete_message__title'|trans }}</h2>
+                <h2>{{'shopping.text.message.thank_you_order'|trans}}</h2>
             </div>
-            <p class="ec-reportDescription">{{ 'front.shopping.complete_message__body'|trans }}</p>
-
+            <p class="ec-reportDescription">{{'shopping.text.message.sent_email'|trans}}<br>{{'shopping.text.message.in_case'|trans}}<br>{{'shopping.text.message.thank_you_with_us'|trans}}</p>
             {% if Order.complete_message is not empty %}
                 {{ Order.complete_message|raw }}
             {% endif %}
-
             <div class="ec-off4Grid">
                 {% if hasNextCart %}
-                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--primary" href="{{ url('cart') }}">{{ 'front.shopping.continue'|trans }}</a></div>
+                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--primary" href="{{ url('cart') }}">購入を続ける</a></div> {# TODO 未翻訳 #}
                 {% else %}
-                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a></div>
+                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.label.back_to_top'|trans}}</a></div>
                 {% endif %}
             </div>
         </div>

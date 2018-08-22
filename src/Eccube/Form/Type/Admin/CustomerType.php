@@ -90,9 +90,6 @@ class CustomerType extends AbstractType
                         'message' => 'form.type.graph.invalid',
                     ]),
                 ],
-                'attr' => [
-                    'placeholder' => 'common.mail_address_sample',
-                ],
             ])
             ->add('sex', SexType::class, [
                 'required' => false,
@@ -134,6 +131,7 @@ class CustomerType extends AbstractType
                 NumberType::class,
                 [
                     'required' => false,
+                    'label' => '所有ポイント',
                     'constraints' => [
                         new Assert\Regex([
                             'pattern' => "/^\d+$/u",
@@ -143,6 +141,7 @@ class CustomerType extends AbstractType
                 ]
             )
             ->add('note', TextareaType::class, [
+                'label' => 'SHOP用メモ',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([

@@ -33,7 +33,7 @@ class DisplayStatusValidator extends ItemValidator
         }
         $ProductClass = $item->getProductClass();
         if (!$ProductClass->isEnable()) {
-            $this->throwInvalidItemException('front.shopping.not_purchase');
+            $this->throwInvalidItemException('cart.product.not.status');
         }
     }
 

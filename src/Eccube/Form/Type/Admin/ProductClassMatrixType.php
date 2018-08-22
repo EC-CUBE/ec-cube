@@ -34,14 +34,14 @@ class ProductClassMatrixType extends AbstractType
         $builder
             ->add('class_name1', EntityType::class, [
                 'class' => ClassName::class,
-                'placeholder' => 'admin.product.select__class1',
+                'placeholder' => '規格1を選択してください',
                 'constraints' => [
                     new NotBlank(),
                 ],
             ])
             ->add('class_name2', EntityType::class, [
                 'class' => ClassName::class,
-                'placeholder' => 'admin.product.select__class2',
+                'placeholder' => '規格2を選択してください',
                 'constraints' => new Callback(function (
                     ClassName $ClassName2 = null,
                     ExecutionContextInterface $context

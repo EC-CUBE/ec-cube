@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'shop', 'shop_payment'] %}
 
-{% block title %}{{ 'admin.setting.shop.payment_list'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.payment.596'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.payment.595'|trans }}{% endblock %}
 
 {% block stylesheet %}
     <style type="text/css">
@@ -118,14 +118,10 @@ file that was distributed with this source code.
                 }
             });
 
-            // 削除モーダルのhrefとmessageの変更
-            $('#DeleteModal').on('shown.bs.modal', function(event) {
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
                 var target = $(event.relatedTarget);
-                // hrefの変更
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
-
-                // messageの変更
-                $(this).find('p.modal-message').text(target.data('message'));
             });
         });
     </script>
@@ -135,18 +131,15 @@ file that was distributed with this source code.
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                <div class="d-block mb-3">
-                    <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_payment_new') }}">{{ 'admin.common.create__new'|trans }}</a>
-                </div>
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <ul class="list-group list-group-flush mb-4 sortable-container">
                             <li class="list-group-item">
                                 <div class="row justify-content-around">
                                     <div class="col-auto"><strong>&nbsp;</strong></div>
-                                    <div class="col-1"><strong>{{ 'admin.common.payment_method'|trans }}</strong></div>
-                                    <div class="col-1"><strong>{{ 'admin.common.charge'|trans }}</strong></div>
-                                    <div class="col"><strong>{{ 'admin.setting.shop.payment.terms_of_use'|trans }}</strong></div>
+                                    <div class="col-1"><strong>{{ 'admin.setting.shop.payment.597'|trans }}</strong></div>
+                                    <div class="col-1"><strong>{{ 'admin.setting.shop.payment.599'|trans }}</strong></div>
+                                    <div class="col"><strong>{{ 'admin.setting.shop.payment.600'|trans }}</strong></div>
                                 </div>
                             </li>
                             {% for Payment in Payments %}
@@ -164,28 +157,25 @@ file that was distributed with this source code.
                                             {% endif %}
 
                                             {% if Payment.rule_max > 0 %}
-                                                {{ 'admin.common.separator__range'|trans }} {{ Payment.rule_max|price }}
+                                                ～{{ Payment.rule_max|price }}
                                             {% elseif Payment.rule_max is null %}
-                                                {{ 'admin.common.separator__range'|trans }} {{ 'admin.setting.shop.payment.unlimited'|trans }}
+                                                ～{{ 'admin.setting.shop.payment.603'|trans }}
                                             {% endif %}
                                         </span>
                                         </div>
                                         <div class="col-3 text-right">
-                                            <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.608'|trans }}">
                                                 <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                             </a>
-                                            <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.609'|trans }}">
                                                 <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                             </a>
                                             {# TODO クラス名、id名の設定、メッセージID化、登録機能 #}
                                             <a class="btn btn-ec-actionIcon mr-3 check-display" id="{{ Payment.id }}" data-toggle="tooltip" data-placement="top" title="表示">
                                                 <i class="fa fa-eye display-show-toggle-{{ Payment.id }} fa-lg text-secondary"></i>
                                             </a>
-                                            <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top"
-                                                 title="{{ 'admin.common.delete'|trans }}">
-                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
-                                                   data-url="{{ url('admin_setting_shop_payment_delete', {'id' : Payment.id}) }}"
-                                                   data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Payment.method }) }}">
+                                            <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.607'|trans }}">
+                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_setting_shop_payment_delete', {'id' : Payment.id}) }}">
                                                     <i class="fa fa-close fa-lg text-secondary"></i>
                                                 </a>
                                             </div>
@@ -194,37 +184,45 @@ file that was distributed with this source code.
                                 </li>
                             {% endfor %}
                         </ul>
-                        <!-- 削除モーダル -->
-                        <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog"
-                             aria-labelledby="DeleteModal" aria-hidden="true">
+                        <div class="modal fade" id="delete_modal" tabindex="-1"
+                             role="dialog"
+                             aria-labelledby="delete_modal" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title font-weight-bold">
-                                            {{ 'admin.common.delete_modal__title'|trans }}
-                                        </h5>
-                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
+                                            {{ 'admin.setting.shop.payment.modal.header'|trans }}</h5>
+                                        <button class="close" type="button"
+                                                data-dismiss="modal"
+                                                aria-label="Close"><span
+                                                    aria-hidden="true">×</span>
                                         </button>
                                     </div>
                                     <div class="modal-body text-left">
-                                        <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
+                                        <p class="text-left">
+                                            {{ 'admin.setting.shop.payment.modal.body'|trans }}</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
-                                            {{ 'admin.common.cancel'|trans }}
+                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
                                         </button>
                                         <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}
-                                           data-method="delete" data-confirm="false">
-                                            {{ 'admin.common.delete'|trans }}
-                                        </a>
+                                           data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
-                <p>{{ 'admin.common.drag_and_drop_description'|trans }}</p>
+                <p>{{ 'admin.setting.shop.payment.notice'|trans }}</p>
+            </div>
+            <div class="card rounded border-0">
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
+                        <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.setting.shop.payment.610'|trans }}</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

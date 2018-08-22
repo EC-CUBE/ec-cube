@@ -15,7 +15,7 @@ file that was distributed with this source code.
 {% block main %}
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>{{ 'front.forgot.title'|trans }}</h1>
+            <h1>{{'login.label.reset_pass'|trans}}</h1>
         </div>
     </div>
     <div class="ec-forgotRole">
@@ -25,16 +25,15 @@ file that was distributed with this source code.
                 <div class="ec-off1Grid__cell">
                     <div class="ec-forgotRole__form">
                         <div class="ec-forgotRole__intro">
-                            <p class="ec-para-nomal">{{ 'front.forgot.message1'|trans }}</p>
-                            <p class="ec-para-nomal">{{ 'front.forgot.message2'|trans }}</p>
+                            <p class="ec-para-nomal"> ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。</p>
+                            <p class="ec-para-nomal"> ※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</p>
                         </div>
                         <div class="ec-borderedDefs">
                             <dl>
                                 <dt>
-                                    {{ form_label(form.login_email, 'common.mail_address', { 'label_attr': { 'class': 'ec-label' }}) }}
-                                </dt>
+                                    {{ form_label(form.login_email) }}</dt>
                                 <dd>
-                                    <div class="ec-input{{ has_errors(form.login_email) ? ' error' }}">
+                                    <div class="ec-input">
                                         {{ form_widget(form.login_email) }}
                                         {{ form_errors(form.login_email) }}
                                     </div>
@@ -45,9 +44,7 @@ file that was distributed with this source code.
                 </div>
             </div>
             <div class="ec-off4Grid">
-                <div class="ec-off4Grid__cell">
-                    <button type="submit" class="ec-blockBtn--action">{{ 'common.next'|trans }}</button>
-                </div>
+                <div class="ec-off4Grid__cell"><button type="submit" class="ec-blockBtn--action">{{'common.label.goto_next_page'|trans}}</button></p></div>
             </div>
         </form>
     </div>

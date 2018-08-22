@@ -31,15 +31,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
     {
         use NameTrait;
 
-        /**
-         * 出荷メール未送信
-         */
-        const SHIPPING_MAIL_UNSENT = 1;
-        /**
-         * 出荷メール送信済
-         */
-        const SHIPPING_MAIL_SENT = 2;
-
         public function getShippingMultipleDefaultName()
         {
             return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();

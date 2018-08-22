@@ -98,7 +98,7 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
         $TaxDisplayType = $this->taxDisplayTypeRepository->find(TaxDisplayType::INCLUDED);
         $Taxion = $this->taxTypeRepository->find(TaxType::TAXATION);
         $item = new OrderItem();
-        $item->setProductName($OrderItemType->getName())
+        $item->setProductName(trans('paymentprocessor.label.charge'))
             ->setQuantity(1)
             ->setPrice($itemHolder->getPayment()->getCharge())
             ->setOrderItemType($OrderItemType)

@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\QueryCustomize\Repository;
+namespace Plugin\QueryCustomize\Entity;
 
 use Eccube\Doctrine\Query\WhereClause;
 use Eccube\Doctrine\Query\WhereCustomizer;

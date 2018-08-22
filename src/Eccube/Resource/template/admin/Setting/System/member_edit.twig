@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'system', 'member'] %}
 
-{% block title %}{{ 'admin.setting.system.member.member_registration'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.system.member_edit.697'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system.member_edit.698'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -26,7 +26,7 @@ file that was distributed with this source code.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8"><span class="card-title">{{ 'admin.setting.system.member.member_registration'|trans }}</span></div>
+                                <div class="col-8"><span class="card-title">{{ 'admin.setting.system.member_edit.699'|trans }}</span></div>
                                 <div class="col-4 text-right">
                                     <a data-toggle="collapse" href="#memberInfo" aria-expanded="false" aria-controls="memberInfo">
                                         <i class="fa fa-angle-up fa-lg"></i>
@@ -38,8 +38,8 @@ file that was distributed with this source code.
                             <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.setting.system.member.name'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span>{{ 'member.label.name'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -53,8 +53,8 @@ file that was distributed with this source code.
 
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.setting.system.member.department'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span>{{ 'member.label.organization'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -67,8 +67,8 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.setting.system.member.login_id'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span>{{ 'member.label.login_id'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -81,8 +81,8 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.setting.system.member.password'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span>{{ 'member.label.pass'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -95,8 +95,8 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.setting.system.member.password_confirm'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span>{{ 'member.label.varify_pass'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -109,8 +109,8 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.common.authority'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span>{{ 'admin.setting.system.member.689'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -123,8 +123,8 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.setting.system.member.work'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span>{{ 'admin.setting.system.member.690'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.Work, {'attr': {'class': 'form-check-inline'}}) }}
@@ -154,6 +154,7 @@ file that was distributed with this source code.
                 </div>
             </div>
         </div>
+        {# TODO: conversionAreaがmockではbody直下にあるが、formの関係でcontentsArea内に移動させる #}
         <div class="c-conversionArea">
             <div class="c-conversionArea__container">
                 <div class="row justify-content-between align-items-center">
@@ -162,7 +163,7 @@ file that was distributed with this source code.
                             <a class="c-beseLink"
                                href="{{ url('admin_setting_system_member') }}">
                                 <i class="fa fa-backward" aria-hidden="true"></i>
-                                <span>{{ 'admin.setting.system.member_management'|trans }}</span>
+                                <span>{{ 'admin.setting.system.member_edit.700'|trans }}</span>
                             </a>
                         </div>
                     </div>
@@ -170,7 +171,7 @@ file that was distributed with this source code.
                         <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5"
-                                        type="submit">{{ 'admin.common.registration'|trans }}</button>
+                                        type="submit">{{ 'admin.setting.system.member_edit.701'|trans }}</button>
                             </div>
                         </div>
                     </div>

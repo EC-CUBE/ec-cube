@@ -176,7 +176,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         // message check
         $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
         $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $this->expected = 'admin.register.complete';
         $this->verify();
     }
 
@@ -213,7 +213,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         // message check
         $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
         $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $this->expected = 'admin.register.complete';
         $this->verify();
     }
 
@@ -245,7 +245,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         // message check
         $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
         $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $this->expected = 'admin.register.complete';
         $this->verify();
     }
 
@@ -279,7 +279,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         // message check
         $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
         $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $this->expected = 'admin.register.complete';
         $this->verify();
     }
 
@@ -311,7 +311,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         // message check
         $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
         $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $this->expected = 'admin.register.complete';
         $this->verify();
     }
 
@@ -364,7 +364,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         // message check
         $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
         $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $this->expected = 'admin.register.complete';
         $this->verify();
     }
 

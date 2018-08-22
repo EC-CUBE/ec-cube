@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 {% extends 'frame.twig' %}
 
-{% set current = 5 %}
+{% set current = 4 %}
 
 {% form_theme form _self %}
 {% block form_row %}
@@ -38,13 +38,13 @@ file that was distributed with this source code.
                     <div class="row">
                         <div class="col-md-12">
                             <div class="page-header">
-                                <h1>{{ 'install.database_initalization'|trans }}</h1>
-                                <p>{{ 'install.database_do_initialize'|trans|raw }}</p>
+                                <h1>{{ 'step5.text.message.page_header'|trans }}</h1>
+                                <p>{{ 'step5.text.message.page_header_message'|trans|raw }}</p>
                             </div>
                             <form name="form1" id="form1" method="post" action="{{ path('install_step5') }}">
                                 {{ form_widget(form._token) }}
                                 <div class="note_box">
-                                    <p>{{ 'install.database_skip_notice'|trans }}</p>
+                                    <p>{{ 'step5.text.message.no_update'|trans }}</p>
                                     {{ form_widget(form.no_update) }}
                                 </div>
 

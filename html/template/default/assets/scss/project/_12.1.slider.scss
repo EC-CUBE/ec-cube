@@ -31,18 +31,14 @@ Styleguide 12.1
     display: none;
     @include media_desktop {
       display: flex;
-      justify-content: flex-start;
-      flex-wrap: wrap;
+      justify-content: space-between;
       margin-bottom: 0;
     }
 
   }
   .slideThumb{
     margin-bottom: 25px;
-    width: 33%;
     opacity: .8;
-    cursor: pointer;
-
     &:focus {
       outline: none;
     }

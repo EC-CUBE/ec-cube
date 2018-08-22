@@ -44,6 +44,7 @@ class DeliveryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'label' => 'delivery.label.shipping_company',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -51,6 +52,7 @@ class DeliveryType extends AbstractType
                 ],
             ])
             ->add('service_name', TextType::class, [
+                'label' => 'delivery.label.name',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -58,9 +60,11 @@ class DeliveryType extends AbstractType
                 ],
             ])
             ->add('description', TextareaType::class, [
+                'label' => 'delivery.label.owner_note',
                 'required' => false,
             ])
             ->add('confirm_url', TextType::class, [
+                'label' => 'delivery.label.tracking_num',
                 'required' => false,
                 'constraints' => [
                     new Assert\Url(),
@@ -72,6 +76,7 @@ class DeliveryType extends AbstractType
                 ],
             ])
             ->add('payments', PaymentType::class, [
+                'label' => 'delivery.label.payment',
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
@@ -81,6 +86,7 @@ class DeliveryType extends AbstractType
                 ],
             ])
             ->add('delivery_times', CollectionType::class, [
+                'label' => 'delivery.label.delivery_time',
                 'required' => false,
                 'entry_type' => DeliveryTimeType::class,
                 'allow_add' => true,
@@ -93,6 +99,7 @@ class DeliveryType extends AbstractType
                 'mapped' => false,
             ])
             ->add('delivery_fees', CollectionType::class, [
+                'label' => 'delivery.label.pref_setting',
                 'required' => true,
                 'entry_type' => DeliveryFeeType::class,
                 'allow_add' => true,

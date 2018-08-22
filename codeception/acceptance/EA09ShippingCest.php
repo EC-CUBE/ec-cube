@@ -1,16 +1,5 @@
 <?php
 
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
@@ -48,9 +37,9 @@ class EA09ShippingCest
         // 対応中ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::IN_PROGRESS);
+        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::IN_PROGRESS);
 
-        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getCompanyName());
+        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
 
         $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
@@ -59,6 +48,7 @@ class EA09ShippingCest
 
         $OrderRegisterPage = OrderEditPage::at($I)
             ->お届け先の追加();
+
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
         $Shippings = $TargetShippings();
@@ -85,7 +75,7 @@ class EA09ShippingCest
             ->入力_番地_ビル名('address 2')
             ->出荷情報登録();
 
-        $I->see('保存しました', ShippingEditPage::$登録完了メッセージ);
+        $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
 
         $I->wait(10);
 
@@ -105,9 +95,9 @@ class EA09ShippingCest
         // 対応中ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::IN_PROGRESS);
+        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::IN_PROGRESS);
 
-        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getCompanyName());
+        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
 
         $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
@@ -116,6 +106,7 @@ class EA09ShippingCest
 
         $OrderRegisterPage = OrderEditPage::at($I)
             ->お届け先の追加();
+
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
         $Shippings = $TargetShippings();
@@ -141,7 +132,7 @@ class EA09ShippingCest
             ->入力_番地_ビル名('address 2', 1)
             ->出荷情報登録();
 
-        $I->see('保存しました', ShippingEditPage::$登録完了メッセージ);
+        $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
 
         $I->wait(10);
         // 出荷済みに変更
@@ -155,6 +146,7 @@ class EA09ShippingCest
             ->出荷完了にする(1)
             ->変更を確定(1);
         // TODO ステータス変更スキップしました
+
     }
 
     public function shipping_出荷CSV登録(\AcceptanceTester $I)
@@ -188,16 +180,16 @@ class EA09ShippingCest
         $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(1));
         $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(2));
         $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(3));
-        $I->assertEquals('未出荷', $OrderManagePage->取得_出荷日(1));
-        $I->assertEquals('未出荷', $OrderManagePage->取得_出荷日(2));
-        $I->assertEquals('未出荷', $OrderManagePage->取得_出荷日(3));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(1));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(2));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(3));
 
         /*
          * 出荷CSV登録
          */
 
         $csv = implode(PHP_EOL, [
-            '出荷ID,お問い合わせ番号,出荷日',
+            '出荷ID,出荷伝票番号,出荷日',
             $Orders[0]->getShippings()[0]->getId().',00001,2018-01-01',
             $Orders[1]->getShippings()[0]->getId().',00002,2018-02-02',
             $Orders[2]->getShippings()[0]->getId().',00003,2018-03-03',
@@ -211,7 +203,7 @@ class EA09ShippingCest
                 ->入力_CSVファイル('shipping.csv')
                 ->CSVアップロード();
 
-            $I->see('CSVファイルをアップロードしました', ShippingCsvUploadPage::$完了メッセージ);
+            $I->see('出荷登録CSVファイルをアップロードしました。', ShippingCsvUploadPage::$完了メッセージ);
 
             /*
              * 出荷再検索 出荷日/伝票番号が登録されたことを確認
@@ -272,9 +264,9 @@ class EA09ShippingCest
         $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(1));
         $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(2));
         $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(3));
-        $I->assertEquals('未出荷', $OrderManagePage->取得_出荷日(1));
-        $I->assertEquals('未出荷', $OrderManagePage->取得_出荷日(2));
-        $I->assertEquals('未出荷', $OrderManagePage->取得_出荷日(3));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(1));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(2));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(3));
 
         /*
          * 出荷CSV登録
@@ -314,6 +306,6 @@ class EA09ShippingCest
 
         ShippingCsvUploadPage::go($I)->雛形ダウンロード();
         $csv = $I->getLastDownloadFile('/^shipping\.csv$/');
-        $I->assertEquals(mb_convert_encoding(file_get_contents($csv), 'UTF-8', 'Shift_JIS'), '出荷ID,お問い合わせ番号,出荷日'.PHP_EOL);
+        $I->assertEquals(mb_convert_encoding(file_get_contents($csv), 'UTF-8', 'Shift_JIS'), '出荷ID,出荷伝票番号,出荷日'.PHP_EOL);
     }
 }

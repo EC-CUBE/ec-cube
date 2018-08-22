@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of EC-CUBE
  *
@@ -10,8 +9,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Eccube\Service;
+
 
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
@@ -38,7 +37,6 @@ class PluginApiService
 
     /**
      * PluginApiService constructor.
-     *
      * @param EccubeConfig $eccubeConfig
      * @param RequestStack $requestStack
      */
@@ -75,7 +73,7 @@ class PluginApiService
      */
     public function getCategory()
     {
-        $urlCategory = $this->getApiUrl().'/category';
+        $urlCategory = $this->getApiUrl() . '/category';
 
         return $this->getRequestApi($urlCategory);
     }
@@ -84,12 +82,11 @@ class PluginApiService
      * Get plugins list
      *
      * @param array $data
-     *
      * @return array($result, $info)
      */
     public function getPlugins($data)
     {
-        $url = $this->getApiUrl().'/plugins';
+        $url = $this->getApiUrl() . '/plugins';
         $params['category_id'] = $data['category_id'];
         $params['price_type'] = empty($data['price_type']) ? 'all' : $data['price_type'];
         $params['keyword'] = $data['keyword'];
@@ -98,19 +95,6 @@ class PluginApiService
         $params['per_page'] = (isset($data['page_count']) && !empty($data['page_count'])) ? $data['page_count'] : $this->eccubeConfig->get('eccube_default_page_count');
 
         return $this->getRequestApi($url, $params);
-    }
-
-    /**
-     * Get a plugin
-     *
-     * @param int|string $id Id or plugin code
-     * @return array [$result, $info]
-     */
-    public function getPlugin($id)
-    {
-        $url = $this->getApiUrl() . '/plugin/'.$id;
-
-        return $this->getRequestApi($url);
     }
 
     /**
@@ -131,14 +115,13 @@ class PluginApiService
      * Get api key from captcha image
      *
      * @param array $data
-     *
      * @return array($result, $info)
      */
     public function postApiKey($data)
     {
         $apiUrl = $this->getApiUrl().'/api_key';
 
-        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
+        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $this->requestStack->getCurrentRequest()->getBasePath();
         $data['eccube_url'] = $baseUrl;
         $data['eccube_version'] = Constant::VERSION;
 
@@ -155,7 +138,7 @@ class PluginApiService
      *
      * @return array($result, $info)
      */
-    public function postRequestApi($url, $data = [])
+    public function postRequestApi($url, $data = array())
     {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -166,7 +149,7 @@ class PluginApiService
 
         // Todo: will implement after server worked
         $key = null;
-        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
+        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $this->requestStack->getCurrentRequest()->getBasePath();
         // Option array
         $options = [
             // HEADER
@@ -203,10 +186,10 @@ class PluginApiService
      *
      * @return array($result, $info)
      */
-    public function getRequestApi($url, $data = [])
+    public function getRequestApi($url, $data = array())
     {
         if (count($data) > 0) {
-            $url .= '?'.http_build_query($data);
+            $url .=  '?' . http_build_query($data);
         }
 
         $curl = curl_init($url);

@@ -14,7 +14,7 @@ file that was distributed with this source code.
 
 <div class="ec-role">
     <div class="ec-pageHeader">
-        <h1>{{ 'front.about.title'|trans }}</h1>
+        <h1>{{'common.label.about_us'|trans}}</h1>
     </div>
     <div class="ec-off1Grid">
         <div class="ec-off1Grid__cell">
@@ -22,7 +22,7 @@ file that was distributed with this source code.
                 {% if BaseInfo.shop_name|default is not empty %}
                     <dl id="help_about_box__shop_name">
                         <dt>
-                            <label class="ec-label">{{ 'common.shop_name'|trans }}</label>
+                            <label class="ec-label">{{'common.label.shop_name'|trans}}</label>
                         </dt>
                         <dd>{{ BaseInfo.shop_name }}</dd>
                     </dl>
@@ -30,27 +30,27 @@ file that was distributed with this source code.
                 {% if BaseInfo.company_name|default is not empty %}
                     <dl id="help_about_box__company_name">
                         <dt>
-                            <label class="ec-label">{{ 'common.company_name'|trans }}</label>
+                            <label class="ec-label">{{'common.label.company_name'|trans}}</label>
                         </dt>
                         <dd>{{ BaseInfo.company_name }}</dd>
                     </dl>
                 {% endif %}
 
                 {% if BaseInfo.postal_code|default is not empty %}
-                    <dl id="help_about_box__address">
+                    <dl id="help_about_box__zip">
                         <dt>
-                            <label class="ec-label">{{ 'common.address'|trans }}</label>
+                            <label class="ec-label">{{'common.label.address'|trans}}</label>
                         </dt>
-                        <dd>{{ 'common.postal_symbol'|trans }}{{ BaseInfo.postal_code }}<br />
+                        <dd>〒{{ BaseInfo.postal_code }}<br />
                             {{ BaseInfo.pref }}{{ BaseInfo.addr01 }}{{ BaseInfo.addr02 }}
                         </dd>
                     </dl>
                 {% endif %}
 
                 {% if BaseInfo.phone_number|default is not empty %}
-                    <dl id="help_about_box__phone_number">
+                    <dl id="help_about_box__tel">
                         <dt>
-                            <label class="ec-label">{{ 'common.phone_number'|trans }}</label>
+                            <label class="ec-label">{{'common.label.phone_number'|trans}}</label>
                         </dt>
                         <dd>{{ BaseInfo.phone_number }}</dd>
                     </dl>
@@ -59,7 +59,7 @@ file that was distributed with this source code.
                 {% if BaseInfo.business_hour|default is not empty %}
                     <dl id="help_about_box__business_hour">
                         <dt>
-                            <label class="ec-label">{{ 'front.about.business_hour'|trans }}</label>
+                            <label class="ec-label">{{'common.label.business_hour'|trans}}</label>
                         </dt>
                         <dd>{{ BaseInfo.business_hour }}</dd>
                     </dl>
@@ -68,7 +68,7 @@ file that was distributed with this source code.
                 {% if BaseInfo.good_traded|default is not empty %}
                     <dl id="help_about_box__good_traded">
                         <dt>
-                            <label class="ec-label">{{ 'front.about.good_traded'|trans }}</label>
+                            <label class="ec-label">{{'common.label.good_traded'|trans}}</label>
                         </dt>
                         <dd>{{ BaseInfo.good_traded|nl2br }}</dd>
                     </dl>
@@ -77,7 +77,7 @@ file that was distributed with this source code.
                 {% if BaseInfo.message|default is not empty %}
                     <dl id="help_about_box__message">
                         <dt>
-                            <label class="ec-label">{{ 'front.about.message'|trans }}</label>
+                            <label class="ec-label">{{'admin.mail.order.203'|trans}}</label>
                         </dt>
                         <dd>{{ BaseInfo.message|nl2br }}</dd>
                     </dl>

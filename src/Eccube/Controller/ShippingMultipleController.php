@@ -118,7 +118,7 @@ class ShippingMultipleController extends AbstractShoppingController
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
-            $this->addError('front.shopping.order_error');
+            $this->addError('front.shopping.order.error');
 
             return $this->redirectToRoute('shopping_error');
         }
@@ -416,9 +416,7 @@ class ShippingMultipleController extends AbstractShoppingController
                 $count = count($CustomerAddresses);
                 if ($count >= $this->eccubeConfig['eccube_deliv_addr_max']) {
                     return [
-                        'error' => trans('common.customer_address_count_is_over', [
-                            '%eccube_deliv_addr_max%' => $this->eccubeConfig->get('eccube_deliv_addr_max'),
-                        ]),
+                        'error' => trans('delivery.text.error.max_delivery_address'),
                         'form' => $form->createView(),
                     ];
                 }

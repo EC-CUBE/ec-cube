@@ -9,7 +9,7 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 <!DOCTYPE html>
-<html lang="{{ eccube_config.locale }}">
+<html lang="ja">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,7 +17,7 @@ file that was distributed with this source code.
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('img/common/favicon.ico', 'install') }}">
-    <title>{{ 'install.title'|trans }}</title>
+    <title>{{ 'install.label.title'|trans }}</title>
     <link href="{{ asset('dist/css/bootstrap.min.css', 'install') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/dashboard.css', 'install') }}" rel="stylesheet">
     <script src="{{ asset('assets/js/ie10-viewport-bug-workaround.js', 'install') }}"></script>
@@ -41,12 +41,12 @@ file that was distributed with this source code.
         <aside id="side">
             <div class="step_nav">
                 <ol>
-                    <li{% if current >= 1 %} class="current"{% endif %}><span class="number">1</span>{{ 'install.welcom'|trans }}</li>
-                    <li{% if current >= 2 %} class="current"{% endif %}><span class="number">2</span>{{ 'install.check_permission'|trans }}</li>
-                    <li{% if current >= 3 %} class="current"{% endif %}><span class="number">3</span>{{ 'install.site_configration'|trans }}</li>
-                    <li{% if current >= 4 %} class="current"{% endif %}><span class="number">4</span>{{ 'install.database_configration'|trans }}</li>
-                    <li{% if current >= 5 %} class="current"{% endif %}><span class="number">5</span>{{ 'install.database_initalization'|trans }}</li>
-                    <li{% if current >= 6 %} class="current"{% endif %}><span class="number">6</span>{{ 'install.install_completed'|trans }}</li>
+                    <li{% if current >= 1 %} class="current"{% endif %}><span class="number">1</span>{{ 'install.label.step_nav1'|trans }}</li>
+                    <li{% if current >= 2 %} class="current"{% endif %}><span class="number">2</span>{{ 'install.label.step_nav2'|trans }}</li>
+                    <li{% if current >= 3 %} class="current"{% endif %}><span class="number">3</span>{{ 'install.label.step_nav3'|trans }}</li>
+                    <li{% if current >= 4 %} class="current"{% endif %}><span class="number">4</span>{{ 'install.label.step_nav4'|trans }}</li>
+                    <li{% if current >= 5 %} class="current"{% endif %}><span class="number">5</span>{{ 'install.label.step_nav5'|trans }}</li>
+                    <li{% if current >= 6 %} class="current"{% endif %}><span class="number">6</span>{{ 'install.label.step_nav6'|trans }}</li>
                 </ol>
             </div>
         </aside>

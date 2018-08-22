@@ -247,7 +247,7 @@ class EntryController extends AbstractController
             log_info('本会員登録開始');
             $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);
             if (is_null($Customer)) {
-                throw new HttpException\NotFoundHttpException();
+                throw new HttpException\NotFoundHttpException(trans('entrycontroller.text.error.registration'));
             }
 
             $CustomerStatus = $this->customerStatusRepository->find(CustomerStatus::REGULAR);
@@ -270,7 +270,7 @@ class EntryController extends AbstractController
 
             // Assign session carts into customer carts
             $Carts = $this->cartService->getCarts();
-            $qtyInCart = array_reduce($Carts, function ($qty, $Cart) {
+            $qtyInCart = array_reduce($Carts, function($qty, $Cart) {
                 return $qty + $Cart->getTotalQuantity();
             });
 
@@ -285,11 +285,12 @@ class EntryController extends AbstractController
 
             log_info('ログイン済に変更', [$this->getUser()->getId()]);
 
-            return [
-                'qtyInCart' => $qtyInCart,
-            ];
-        }
 
-        throw new HttpException\NotFoundHttpException();
+            return [
+                'qtyInCart' => $qtyInCart
+            ];
+        } else {
+            throw new HttpException\AccessDeniedHttpException(trans('entrycontroller.text.error.authorization'));
+        }
     }
 }

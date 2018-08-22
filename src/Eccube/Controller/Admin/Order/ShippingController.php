@@ -216,8 +216,8 @@ class ShippingController extends AbstractController
                 }
                 $this->entityManager->flush();
 
-                $this->addInfo('admin.order.shipping_save_message', 'admin');
-                $this->addSuccess('admin.common.save_complete', 'admin');
+                $this->addSuccess('admin.shipping.edit.save.complete', 'admin');
+                $this->addInfo('admin.shipping.edit.save.info', 'admin');
                 log_info('出荷登録完了', [$Order->getId()]);
 
                 return $this->redirectToRoute('admin_shipping_edit', ['id' => $Order->getId()]);
@@ -226,7 +226,7 @@ class ShippingController extends AbstractController
                 $this->addError('admin.flash.register_failed', 'admin');
             }
         } elseif ($form->isSubmitted() && $request->get('mode') == 'register' && $form->getErrors(true)) {
-            $this->addError('admin.common.save_error', 'admin');
+            $this->addError('admin.flash.register_failed', 'admin');
         }
 
         // 商品検索フォーム
@@ -264,7 +264,7 @@ class ShippingController extends AbstractController
      */
     public function previewShippingNotifyMail(Shipping $Shipping)
     {
-        return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder(), null, true));
+        return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder()));
     }
 
     /**

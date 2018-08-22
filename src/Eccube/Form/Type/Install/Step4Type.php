@@ -49,18 +49,18 @@ class Step4Type extends AbstractType
     {
         $database = [];
         if (extension_loaded('pdo_pgsql')) {
-            $database['pdo_pgsql'] = 'install.database_pgsql';
+            $database['pdo_pgsql'] = 'step4.label.postgresql';
         }
         if (extension_loaded('pdo_mysql')) {
-            $database['pdo_mysql'] = 'install.database_mysql';
+            $database['pdo_mysql'] = 'step4.label.mysql';
         }
         if (extension_loaded('pdo_sqlite')) {
-            $database['pdo_sqlite'] = 'install.database_sqlite';
+            $database['pdo_sqlite'] = 'step4.label.sqllite';
         }
 
         $builder
             ->add('database', ChoiceType::class, [
-                'label' => trans('install.database_type'),
+                'label' => trans('step4.label.database'),
                 'choices' => array_flip($database),
                 'expanded' => false,
                 'multiple' => false,
@@ -69,27 +69,27 @@ class Step4Type extends AbstractType
                 ],
             ])
             ->add('database_host', TextType::class, [
-                'label' => trans('install.database_host'),
+                'label' => trans('step4.label.database_host_name'),
                 'required' => false,
             ])
             ->add('database_port', TextType::class, [
-                'label' => trans('install.database_port'),
+                'label' => trans('step4.label.port_num'),
                 'required' => false,
             ])
             ->add('database_name', TextType::class, [
-                'label' => trans('install.database_name'),
+                'label' => trans('step4.label.db_name'),
                 'constraints' => [
                     new Assert\Callback([$this, 'validate']),
                 ],
             ])
             ->add('database_user', TextType::class, [
-                'label' => trans('install.database_user'),
+                'label' => trans('step4.label.user_name'),
                 'constraints' => [
                     new Assert\Callback([$this, 'validate']),
                 ],
             ])
             ->add('database_password', PasswordType::class, [
-                'label' => trans('install.database_password'),
+                'label' => trans('step4.label.pass'),
                 'required' => false,
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
@@ -117,7 +117,7 @@ class Step4Type extends AbstractType
                     $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
                     $conn->connect();
                 } catch (\Exception $e) {
-                    $form['database']->addError(new FormError(trans('install.database_connection_error').$e->getMessage()));
+                    $form['database']->addError(new FormError(trans('setp4.text.error.database_connection').$e->getMessage()));
                 }
             });
     }

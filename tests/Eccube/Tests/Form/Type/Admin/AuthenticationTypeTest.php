@@ -56,7 +56,7 @@ class AuthenticationTypeTest extends AbstractTypeTestCase
 
     public function testInvalidPhpPath_MaxLengthInvalid()
     {
-        $name = str_repeat('S', $this->eccubeConfig['eccube_smtext_len']).'S';
+        $name = str_repeat('S', $this->eccubeConfig['eccube_smtext_len']) . 'S';
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);

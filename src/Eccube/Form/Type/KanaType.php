@@ -54,7 +54,7 @@ class KanaType extends AbstractType
         $resolver->setDefaults([
             'lastname_options' => [
                 'attr' => [
-                    'placeholder' => 'common.last_name_kana',
+                    'placeholder' => 'Kana01',
                 ],
                 'constraints' => [
                     new Assert\Regex([
@@ -68,7 +68,7 @@ class KanaType extends AbstractType
             ],
             'firstname_options' => [
                 'attr' => [
-                    'placeholder' => 'common.first_name_kana',
+                    'placeholder' => 'Kana02',
                 ],
                 'constraints' => [
                     new Assert\Regex([

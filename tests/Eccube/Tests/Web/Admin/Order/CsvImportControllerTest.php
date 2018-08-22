@@ -23,16 +23,12 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 {
     public function testLoadCsv()
     {
-        $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
-        $Order = $this->createOrder($this->createCustomer());
-        $Order->setOrderStatus($OrderStatus);
-        $this->entityManager->flush();
-        $Shipping = $Order->getShippings()[0];
+        $Shipping = $this->createOrder($this->createCustomer())->getShippings()[0];
         self::assertNull($Shipping->getTrackingNumber());
         self::assertNull($Shipping->getShippingDate());
 
         $this->loadCsv([
-            '出荷ID,お問い合わせ番号,出荷日',
+            '出荷ID,出荷伝票番号,出荷日',
             $Shipping->getId().',1234,2018-01-23',
         ]);
 
@@ -49,7 +45,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         self::assertNull($Shipping->getShippingDate());
 
         $this->loadCsv([
-            '出荷ID,出荷日,お問い合わせ番号',
+            '出荷ID,出荷日,出荷伝票番号',
             $Shipping->getId().',2018-01-23,1234',
         ]);
 
@@ -82,32 +78,32 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         return [
             [
                 [
-                    '出荷日,お問い合わせ番号',
+                    '出荷日,出荷伝票番号',
                     '2018-01-23,1234',
-                ], 'CSVのフォーマットが一致しません',
+                ], 'CSVのフォーマットが一致しません。',
             ],
             [
                 [
-                    '出荷日,お問い合わせ番号',
-                ], 'CSVのフォーマットが一致しません',
+                    '出荷日,出荷伝票番号',
+                ], 'CSVのフォーマットが一致しません。',
             ],
             [
                 [
-                    '出荷ID,出荷日,お問い合わせ番号',
+                    '出荷ID,出荷日,出荷伝票番号',
                     '99999999,2018-01-23,1234',
-                ], '1行目の出荷IDが存在しません',
+                ], '1行目の出荷IDが存在しません。',
             ],
             [
                 [
-                    '出荷ID,出荷日,お問い合わせ番号',
+                    '出荷ID,出荷日,出荷伝票番号',
                     'x,2018-01-23,1234',
-                ], '1行目の出荷IDが存在しません',
+                ], '1行目の出荷IDが存在しません。',
             ],
             [
                 [
-                    '出荷ID,出荷日,お問い合わせ番号',
+                    '出荷ID,出荷日,出荷伝票番号',
                     '{id},2018/01/23,1234',
-                ], '1行目出荷IDの日付フォーマットが異なります',
+                ], '1行目出荷IDの日付フォーマットが異なります。',
             ],
         ];
     }
@@ -159,7 +155,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $tempFile = tempnam(sys_get_temp_dir(), 'csv_import_controller_test');
         file_put_contents($tempFile, implode(PHP_EOL, [
-            '出荷ID,お問い合わせ番号,出荷日',
+            '出荷ID,出荷伝票番号,出荷日',
             $Shipping1->getId().',1234,2018-01-11',
             $Shipping2->getId().',5678,2018-02-22',
             $Shipping3->getId().',9012,2018-03-22',
@@ -180,7 +176,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertRegexp(
-            '/CSVファイルをアップロードしました/u',
+            '/出荷登録CSVファイルをアップロードしました。/u',
             $crawler->filter('div.alert-primary')->text()
         );
 

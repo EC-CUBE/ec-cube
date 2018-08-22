@@ -13,7 +13,7 @@ file that was distributed with this source code.
 {% block main %}
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>{{ 'front.shopping.shipping_title'|trans }}</h1>
+            <h1>お届け先の指定</h1>
         </div>
     </div>
 
@@ -22,12 +22,12 @@ file that was distributed with this source code.
             <div class="ec-off1Grid__cell">
                 <div class="ec-addressRole">
                     {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
-                        <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">{{ 'front.shopping.shipping_add_new_shipping'|trans }}</a></div>
+                        <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">{{'mypage.label.add_address'|trans}}</a></div>
                     {% else %}
                         <div class="ec-alert-warning">
                             <div class="ec-alert-warning__text">
                                 <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                                {{ 'common.customer_address_count_is_over'|trans({ '%count%': eccube_config.eccube_deliv_addr_max }) }}
+                                お届け先登録上限の{{ eccube_config.eccube_deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください
                             </div>
                         </div>
                     {% endif %}
@@ -35,7 +35,7 @@ file that was distributed with this source code.
                         <div class="ec-alert-warning">
                             <div class="ec-alert-warning__text">
                                 <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                                {{ 'front.shopping.shipping_unselected'|trans }}
+                                お届け先を指定してください。
                             </div>
                         </div>
                     {% endif %}
@@ -63,8 +63,8 @@ file that was distributed with this source code.
                     <div class="ec-registerRole__actions">
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
-                                <button type="submit" class="ec-blockBtn--action">{{ 'front.shopping.shipping_send_selected_shipping'|trans }}</button>
-                                <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">{{ 'common.back'|trans }}</a>
+                                <button type="submit" class="ec-blockBtn--action">選択したお届け先に送る</button>
+                                <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">{{'common.label.btn.go_back'|trans}}</a>
                             </div>
                         </div>
                     </div>

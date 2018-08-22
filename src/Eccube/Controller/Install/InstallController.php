@@ -35,7 +35,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class InstallController extends AbstractController
@@ -92,18 +91,13 @@ class InstallController extends AbstractController
     /**
      * 最初からやり直す場合、SESSION情報をクリア.
      *
-     * @Route("/install", name="install")
-     *
+     * @Route("/", name="homepage")
      * @Template("index.twig")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index()
     {
-        if (!$this->isInstallEnv()) {
-            throw new NotFoundHttpException();
-        }
-
         $this->removeSessionData($this->session);
 
         return $this->redirectToRoute('install_step1');
@@ -121,10 +115,6 @@ class InstallController extends AbstractController
      */
     public function step1(Request $request)
     {
-        if (!$this->isInstallEnv()) {
-            throw new NotFoundHttpException();
-        }
-
         $form = $this->formFactory
             ->createBuilder(Step1Type::class)
             ->getForm();
@@ -161,10 +151,6 @@ class InstallController extends AbstractController
      */
     public function step2()
     {
-        if (!$this->isInstallEnv()) {
-            throw new NotFoundHttpException();
-        }
-
         $protectedDirs = [];
         foreach ($this->writableDirs as $writableDir) {
             $targetDirs = Finder::create()
@@ -197,10 +183,6 @@ class InstallController extends AbstractController
      */
     public function step3(Request $request)
     {
-        if (!$this->isInstallEnv()) {
-            throw new NotFoundHttpException();
-        }
-
         $sessionData = $this->getSessionData($this->session);
 
         // 再インストールの場合は環境変数から復旧
@@ -270,10 +252,6 @@ class InstallController extends AbstractController
      */
     public function step4(Request $request)
     {
-        if (!$this->isInstallEnv()) {
-            throw new NotFoundHttpException();
-        }
-
         $sessionData = $this->getSessionData($this->session);
 
         if (empty($sessionData['database'])) {
@@ -321,10 +299,6 @@ class InstallController extends AbstractController
      */
     public function step5(Request $request)
     {
-        if (!$this->isInstallEnv()) {
-            throw new NotFoundHttpException();
-        }
-
         $form = $this->formFactory
             ->createBuilder(Step5Type::class)
             ->getForm();
@@ -394,10 +368,6 @@ class InstallController extends AbstractController
      */
     public function complete(Request $request)
     {
-        if (!$this->isInstallEnv()) {
-            throw new NotFoundHttpException();
-        }
-
         $sessionData = $this->getSessionData($this->session);
         $databaseUrl = $this->createDatabaseUrl($sessionData);
         $mailerUrl = $this->createMailerUrl($sessionData);
@@ -438,31 +408,31 @@ class InstallController extends AbstractController
         ];
     }
 
-    protected function getSessionData(SessionInterface $session)
+    public function getSessionData(SessionInterface $session)
     {
         return $session->get('eccube.session.install', []);
     }
 
-    protected function removeSessionData(SessionInterface $session)
+    public function removeSessionData(SessionInterface $session)
     {
         $session->remove('eccube.session.install');
     }
 
-    protected function setSessionData(SessionInterface $session, $data = [])
+    public function setSessionData(SessionInterface $session, $data = [])
     {
         $data = array_replace_recursive($this->getSessionData($session), $data);
         $session->set('eccube.session.install', $data);
     }
 
-    protected function checkModules()
+    public function checkModules()
     {
         foreach ($this->requiredModules as $module) {
             if (!extension_loaded($module)) {
-                $this->addDanger(trans('install.required_extension_disabled', ['%module%' => $module]), 'install');
+                $this->addDanger(trans('install.text.error.required_module_not_enable', [$module]), 'install');
             }
         }
         if (!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
-            $this->addDanger(trans('install.required_database_extension_disabled'), 'install');
+            $this->addDanger(trans('install.text.error.required_enable_sql'), 'install');
         }
         foreach ($this->recommendedModules as $module) {
             if (!extension_loaded($module)) {
@@ -471,32 +441,34 @@ class InstallController extends AbstractController
                     //http://php.net/manual/en/migration71.deprecated.php
                     continue;
                 }
-                $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => $module]), 'install');
+                $this->addInfo(trans('install.text.error.recommended_module_not_enable', [$module]), 'install');
             }
         }
         if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
             if (!extension_loaded('wincache')) {
-                $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'wincache']), 'install');
+                $this->addInfo(trans('install.text.error.recommended_WinCache_not_enable'), 'install');
             }
         } else {
             if (!extension_loaded('apc')) {
-                $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'apc']), 'install');
+                $this->addInfo(trans('install.text.error.recommended_APC_not_enable'), 'install');
             }
         }
-        if (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false) {
+        if (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Apache', $_SERVER['SERVER_SOFTWARE']) !== false) {
             if (!function_exists('apache_get_modules')) {
-                $this->addWarning(trans('install.mod_rewrite_unknown'), 'install');
+                $this->addWarning(trans('install.text.error.mod_rewrite'), 'install');
             } elseif (!in_array('mod_rewrite', apache_get_modules())) {
-                $this->addDanger(trans('install.mod_rewrite_disabled'), 'install');
+                $this->addDanger(trans('install.text.error.enable_mod_rewrite'), 'install');
             }
-        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') !== false) {
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Microsoft-IIS',
+                $_SERVER['SERVER_SOFTWARE']) !== false
+        ) {
             // iis
-        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false) {
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos('nginx', $_SERVER['SERVER_SOFTWARE']) !== false) {
             // nginx
         }
     }
 
-    protected function createConnection(array $params)
+    public function createConnection(array $params)
     {
         $conn = DriverManager::getConnection($params);
         $conn->ping();
@@ -504,7 +476,7 @@ class InstallController extends AbstractController
         return $conn;
     }
 
-    protected function createEntityManager(Connection $conn)
+    public function createEntityManager(Connection $conn)
     {
         $paths = [
             $this->getParameter('kernel.project_dir').'/src/Eccube/Entity',
@@ -711,7 +683,7 @@ class InstallController extends AbstractController
         return $options;
     }
 
-    protected function createMigration(Connection $conn)
+    public function createMigration(Connection $conn)
     {
         $config = new Configuration($conn);
         $config->setMigrationsNamespace('DoctrineMigrations');
@@ -725,7 +697,7 @@ class InstallController extends AbstractController
         return $migration;
     }
 
-    protected function dropTables(EntityManager $em)
+    public function dropTables(EntityManager $em)
     {
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
         $schemaTool = new SchemaTool($em);
@@ -733,14 +705,14 @@ class InstallController extends AbstractController
         $em->getConnection()->executeQuery('DROP TABLE IF EXISTS doctrine_migration_versions');
     }
 
-    protected function createTables(EntityManager $em)
+    public function createTables(EntityManager $em)
     {
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
         $schemaTool = new SchemaTool($em);
         $schemaTool->createSchema($metadatas);
     }
 
-    protected function importCsv(EntityManager $em)
+    public function importCsv(EntityManager $em)
     {
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
         $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv');
@@ -749,7 +721,7 @@ class InstallController extends AbstractController
         $executer->execute($fixtures);
     }
 
-    protected function insert(Connection $conn, array $data)
+    public function insert(Connection $conn, array $data)
     {
         $conn->beginTransaction();
         try {
@@ -789,8 +761,8 @@ class InstallController extends AbstractController
                 'sort_no' => 1,
                 'update_date' => new \DateTime(),
                 'create_date' => new \DateTime(),
-                'name' => trans('install.member_name'),
-                'department' => $data['shop_name'],
+                'name' => trans('install.label'),
+                'department' => 'EC-CUBE SHOP',
                 'discriminator_type' => 'member',
             ], [
                 'update_date' => Type::DATETIME,
@@ -803,7 +775,7 @@ class InstallController extends AbstractController
         }
     }
 
-    protected function update(Connection $conn, array $data)
+    public function update(Connection $conn, array $data)
     {
         $conn->beginTransaction();
         try {
@@ -884,7 +856,7 @@ class InstallController extends AbstractController
      * @param array $params
      * @param EntityManager $em
      */
-    protected function sendAppData($params, EntityManager $em)
+    public function sendAppData($params, EntityManager $em)
     {
         $query = http_build_query($this->createAppData($params, $em));
         $header = [
@@ -957,22 +929,8 @@ class InstallController extends AbstractController
     /**
      * @return bool
      */
-    protected function isInstalled()
+    public function isInstalled()
     {
         return self::DEFAULT_AUTH_MAGIC !== $this->getParameter('eccube_auth_magic');
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isInstallEnv()
-    {
-        $env = $this->getParameter('kernel.environment');
-
-        if ($env === 'install' || $env === 'test') {
-            return true;
-        }
-
-        return false;
     }
 }

@@ -130,16 +130,6 @@ EOF
         }
         $Deliveries = $this->deliveryRepository->findAll();
         $j = 0;
-        $randomOrderStatus = [
-            OrderStatus::NEW,
-            OrderStatus::CANCEL,
-            OrderStatus::IN_PROGRESS,
-            OrderStatus::DELIVERED,
-            OrderStatus::PAID,
-            OrderStatus::PENDING,
-            OrderStatus::PROCESSING,
-            OrderStatus::RETURNED,
-        ];
         foreach ($Customers as $Customer) {
             $Delivery = $Deliveries[$faker->numberBetween(0, count($Deliveries) - 1)];
             $Product = $Products[$faker->numberBetween(0, $numberOfProducts - 1)];
@@ -147,7 +137,7 @@ EOF
             $discount = $faker->randomNumber(4);
             for ($i = 0; $i < $numberOfOrder; $i++) {
                 $Order = $this->generator->createOrder($Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount);
-                $Status = $this->entityManager->find(OrderStatus::class, $faker->randomElement($randomOrderStatus));
+                $Status = $this->entityManager->find(OrderStatus::class, $faker->numberBetween(1, 8));
                 $Order->setOrderStatus($Status);
                 $Order->setOrderDate($faker->dateTimeThisYear());
                 switch ($output->getVerbosity()) {

@@ -1,17 +1,8 @@
 <?php
 
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Page\Admin;
+
 
 class BlockEditPage extends AbstractAdminPageStyleGuide
 {
@@ -29,22 +20,19 @@ class BlockEditPage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
         $page->atPage('ブロック管理コンテンツ管理');
-        $page->tester->see('ブロック設定', '#content_block_form > div.c-contentsArea__cols > div > div > div > div.card-header > div > div.col-8 > span');
-
+        $page->tester->see('ブロック編集', '#content_block_form > div.c-contentsArea__cols > div > div > div > div.card-header > div > div.col-8 > span');
         return $page;
     }
 
     public function 入力_ブロック名($value)
     {
         $this->tester->fillField(['id' => 'block_name'], $value);
-
         return $this;
     }
 
     public function 入力_ファイル名($value)
     {
         $this->tester->fillField(['id' => 'block_file_name'], $value);
-
         return $this;
     }
 
@@ -52,14 +40,12 @@ class BlockEditPage extends AbstractAdminPageStyleGuide
     {
         $value = preg_replace("/([^\\\])'/", "$1\\'", $value);
         $this->tester->executeJS("ace.edit('editor').setValue('$value')");
-
         return $this;
     }
 
     public function 登録()
     {
         $this->tester->click('#content_block_form > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
-
         return $this;
     }
 }

@@ -161,7 +161,7 @@ class CsvController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE, $event);
 
-            $this->addSuccess('admin.common.save_complete', 'admin');
+            $this->addSuccess('admin.shop.csv.save.complete', 'admin');
 
             return $this->redirectToRoute('admin_setting_shop_csv', ['id' => $CsvType->getId()]);
         }

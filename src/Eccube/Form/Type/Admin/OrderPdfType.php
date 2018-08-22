@@ -60,6 +60,7 @@ class OrderPdfType extends AbstractType
         $config = $this->eccubeConfig;
         $builder
             ->add('ids', TextType::class, [
+                'label' => 'admin.order.export.pdf.label.001',
                 'required' => false,
                 'attr' => ['readonly' => 'readonly'],
                 'constraints' => [
@@ -67,6 +68,7 @@ class OrderPdfType extends AbstractType
                 ],
             ])
             ->add('issue_date', DateType::class, [
+                'label' => 'admin.order.export.pdf.label.002',
                 'widget' => 'single_text',
                 'required' => true,
                 'data' => new \DateTime(),
@@ -76,6 +78,7 @@ class OrderPdfType extends AbstractType
                 ],
             ])
             ->add('title', TextType::class, [
+                'label' => 'admin.order.export.pdf.label.003',
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_stext_len']],
                 'constraints' => [
@@ -83,18 +86,20 @@ class OrderPdfType extends AbstractType
                 ],
             ])
             ->add('download_kind', ChoiceType::class, [
+                'label' => 'admin.order.export.pdf.label.download_kind',
                 'choices' => [
-                    'admin.order.delivery_note_output_format__file' => 1,
-                    'admin.order.delivery_note_output_format__browser' => 2,
+                    'admin.order.export.pdf.label.file' => 1,
+                    'admin.order.export.pdf.label.browser' => 2,
                 ],
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
                 'mapped' => false,
-                'placeholder' => false,
+                'placeholder' => null,
             ])
             // メッセージ
             ->add('message1', TextType::class, [
+                'label' => 'admin.order.export.pdf.label.004',
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_order_pdf_message_len']],
                 'constraints' => [
@@ -103,6 +108,7 @@ class OrderPdfType extends AbstractType
                 'trim' => false,
             ])
             ->add('message2', TextType::class, [
+                'label' => 'admin.order.export.pdf.label.005',
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_order_pdf_message_len']],
                 'constraints' => [
@@ -111,6 +117,7 @@ class OrderPdfType extends AbstractType
                 'trim' => false,
             ])
             ->add('message3', TextType::class, [
+                'label' => 'admin.order.export.pdf.label.006',
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_order_pdf_message_len']],
                 'constraints' => [
@@ -120,6 +127,7 @@ class OrderPdfType extends AbstractType
             ])
             // 備考
             ->add('note1', TextType::class, [
+                'label' => 'admin.order.export.pdf.label.007',
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_stext_len']],
                 'constraints' => [
@@ -127,6 +135,7 @@ class OrderPdfType extends AbstractType
                 ],
             ])
             ->add('note2', TextType::class, [
+                'label' => 'admin.order.export.pdf.label.008',
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_stext_len']],
                 'constraints' => [
@@ -134,6 +143,7 @@ class OrderPdfType extends AbstractType
                 ],
             ])
             ->add('note3', TextType::class, [
+                'label' => 'admin.order.export.pdf.label.009',
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_stext_len']],
                 'constraints' => [
@@ -141,8 +151,8 @@ class OrderPdfType extends AbstractType
                 ],
             ])
             ->add('default', CheckboxType::class, [
-                'label' => 'admin.order.delivery_note_save_input',
                 'required' => false,
+                'label' => 'admin.order.export.pdf.label.010',
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
@@ -161,7 +171,7 @@ class OrderPdfType extends AbstractType
                 $expected = count($ids);
                 if ($actual != $expected) {
                     $form['ids']->addError(
-                        new FormError(trans('admin.order.delivery_note_parameter_error'))
+                        new FormError(trans('admin.order.export.pdf.parameter.not.found'))
                     );
                 }
             });

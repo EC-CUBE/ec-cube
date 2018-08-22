@@ -42,6 +42,7 @@ class TagType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'label' => 'cache.label.cache_dir', // FIXME キーが間違ってる？
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([

@@ -1,16 +1,4 @@
 <?php
-
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
 use Interactions\DragAndDropBy;
@@ -18,7 +6,6 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 /**
  * Inherited Methods
- *
  * @method void wantToTest($text)
  * @method void wantTo($text)
  * @method void execute($callable)
@@ -31,7 +18,7 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
  * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
- */
+*/
 class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
@@ -54,7 +41,7 @@ class AcceptanceTester extends \Codeception\Actor
 
         $I->submitForm('#form1', [
             'login_id' => $user,
-            'password' => $password,
+            'password' => $password
         ]);
 
         $I->see('ホーム', '.c-contentsArea .c-pageTitle > .c-pageTitle__titles');
@@ -90,7 +77,7 @@ class AcceptanceTester extends \Codeception\Actor
         $I->amOnPage('/mypage/login');
         $I->submitForm('#login_mypage', [
             'login_email' => $email,
-            'login_pass' => $password,
+            'login_pass' => $password
         ]);
         $I->see('新着情報', '.ec-news__title');
         $I->see('ログアウト', ['xpath' => "//*[@class='ec-headerNaviRole']//*[@class='ec-headerNav__item']//span[contains(text(), 'ログアウト')]"]);
@@ -116,10 +103,10 @@ class AcceptanceTester extends \Codeception\Actor
         $entityManager = Fixtures::get('entityManager');
 
         if (!is_array($stock)) {
-            $pc = $entityManager->getRepository('Eccube\Entity\ProductClass')->findOneBy(['Product' => $pid]);
+            $pc = $entityManager->getRepository('Eccube\Entity\ProductClass')->findOneBy(array('Product' => $pid));
             $pc->setStock($stock);
             $pc->setStockUnlimited(Constant::DISABLED);
-            $ps = $entityManager->getRepository('Eccube\Entity\ProductStock')->findOneBy(['ProductClass' => $pc->getId()]);
+            $ps = $entityManager->getRepository('Eccube\Entity\ProductStock')->findOneBy(array('ProductClass' => $pc->getId()));
             $ps->setStock($stock);
             $entityManager->persist($pc);
             $entityManager->persist($ps);
@@ -135,7 +122,7 @@ class AcceptanceTester extends \Codeception\Actor
                 $pc->setStock($stock[$key]);
                 $pc->setStockUnlimited(Constant::DISABLED);
                 $pc->setSaleLimit(2);
-                $ps = $entityManager->getRepository('Eccube\Entity\ProductStock')->findOneBy(['ProductClass' => $pc->getId()]);
+                $ps = $entityManager->getRepository('Eccube\Entity\ProductStock')->findOneBy(array('ProductClass' => $pc->getId()));
                 $ps->setStock($stock[$key]);
                 $entityManager->persist($pc);
                 $entityManager->persist($ps);
@@ -147,7 +134,7 @@ class AcceptanceTester extends \Codeception\Actor
     public function buyThis($num = 1)
     {
         $I = $this;
-        $I->fillField(['id' => 'quantity'], $num);
+        $I->fillField(['id' => "quantity"], $num);
         $I->click('#form1 .btn_area button');
     }
 
@@ -160,9 +147,7 @@ class AcceptanceTester extends \Codeception\Actor
 
     /**
      * @param string|$fileNameRegex ファイル名のパターン(CI環境で同時実行したときに区別するため)
-     *
      * @return string ファイルパス
-     *
      * @throws FileNotFoundException 指定したパターンにマッチするファイルがない場合
      */
     public function getLastDownloadFile($fileNameRegex, $retryCount = 3)
@@ -172,7 +157,7 @@ class AcceptanceTester extends \Codeception\Actor
         $files = array_map(function ($fileName) use ($downloadDir) {
             return $downloadDir.$fileName;
         }, $files);
-        $files = array_filter($files, function ($f) use ($fileNameRegex) {
+        $files = array_filter($files, function ($f) use ($fileNameRegex){
             return is_file($f) && preg_match($fileNameRegex, basename($f));
         });
         usort($files, function ($l, $r) {
@@ -182,12 +167,10 @@ class AcceptanceTester extends \Codeception\Actor
         if (empty($files)) {
             if ($retryCount > 0) {
                 $this->wait(3);
-
                 return $this->getLastDownloadFile($fileNameRegex, $retryCount - 1);
             }
             throw new FileNotFoundException($fileNameRegex);
         }
-
         return end($files);
     }
 
@@ -206,7 +189,6 @@ class AcceptanceTester extends \Codeception\Actor
 
     /**
      * dontSeeElementが遅いのでJSで存在チェックを行う。
-     *
      * @param array|$arrayOfSelector IDセレクタの配列
      */
     public function dontSeeElements($arrayOfSelector)
@@ -214,7 +196,6 @@ class AcceptanceTester extends \Codeception\Actor
         $self = $this;
         $result = array_filter($arrayOfSelector, function ($element) use ($self) {
             $id = $element['id'];
-
             return $self->executeJS("return document.getElementById('${id}') != null;");
         });
         $this->assertTrue(empty($result));

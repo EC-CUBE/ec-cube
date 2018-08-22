@@ -59,6 +59,7 @@ class BlockType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'label' => 'admin.content.block.form.label.block_name', // TODO form_label を使用しないのなら削除
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -68,6 +69,7 @@ class BlockType extends AbstractType
                 ],
             ])
             ->add('file_name', TextType::class, [
+                'label' => 'common.label.file_name', // TODO form_label を使用しないのなら削除
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -80,6 +82,7 @@ class BlockType extends AbstractType
                 ],
             ])
             ->add('block_html', TextareaType::class, [
+                'label' => 'block.label.block_type', // TODO form_label を使用しないのなら削除
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -115,7 +118,7 @@ class BlockType extends AbstractType
                     ->getQuery()
                     ->getResult();
                 if (count($Block) > 0) {
-                    $form['file_name']->addError(new FormError(trans('admin.content.block_file_name_exists')));
+                    $form['file_name']->addError(new FormError('※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。'));
                 }
             });
     }

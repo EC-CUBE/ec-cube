@@ -1,16 +1,5 @@
 <?php
 
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\DeliveryEditPage;
 use Page\Admin\DeliveryManagePage;
@@ -37,15 +26,15 @@ class EA07BasicinfoCest
     {
     }
 
-    public function basicinfo_基本設定(\AcceptanceTester $I)
+    public function basicinfo_ショップマスター(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0701-UC01-T01 基本設定');
+        $I->wantTo('EA0701-UC01-T01 ショップマスター');
 
         ShopSettingPage::go($I)
             ->入力_会社名('会社名')
             ->登録();
 
-        $I->see('保存しました', ShopSettingPage::$登録完了メッセージ);
+        $I->see('登録が完了しました。', ShopSettingPage::$登録完了メッセージ);
     }
 
     public function basicinfo_支払方法一覧(\AcceptanceTester $I)
@@ -72,6 +61,7 @@ class EA07BasicinfoCest
         $PaymentManagePage = PaymentManagePage::go($I);
         $I->see('郵便振替', $PaymentManagePage->一覧_支払方法(2));
 
+
         $PaymentManagePage->一覧_上に(2);
         $PaymentManagePage = PaymentManagePage::go($I);
         $I->see('郵便振替', $PaymentManagePage->一覧_支払方法(1));
@@ -94,10 +84,8 @@ class EA07BasicinfoCest
             ->入力_利用条件下限('1')
             ->登録();
 
-        PaymentEditPage::at($I);
-        $I->see('保存しました', PaymentEditPage::$登録完了メッセージ);
-
-        $PaymentManagePage = PaymentManagePage::go($I);
+        $PaymentManagePage = PaymentManagePage::at($I);
+        $I->see('登録が完了しました。', PaymentManagePage::$登録完了メッセージ);
         $I->see('payment method1', $PaymentManagePage->一覧_支払方法(1));
     }
 
@@ -116,10 +104,8 @@ class EA07BasicinfoCest
             ->入力_手数料('1000')
             ->登録();
 
-        PaymentEditPage::at($I);
-        $I->see('保存しました', PaymentEditPage::$登録完了メッセージ);
-
-        $PaymentManagePage = PaymentManagePage::go($I);
+        $PaymentManagePage = PaymentManagePage::at($I);
+        $I->see('登録が完了しました。', PaymentManagePage::$登録完了メッセージ);
         $I->see('payment method2', $PaymentManagePage->一覧_支払方法(1));
     }
 
@@ -159,10 +145,8 @@ class EA07BasicinfoCest
             ->入力_全国一律送料('100')
             ->登録();
 
-        DeliveryEditPage::at($I);
-        $I->see('保存しました', DeliveryEditPage::$登録完了メッセージ);
-
-        $DeliveryManagePage = DeliveryManagePage::go($I);
+        $DeliveryManagePage = DeliveryManagePage::at($I);
+        $I->see('登録が完了しました。', DeliveryManagePage::$登録完了メッセージ);
         $I->see('配送業者名', $DeliveryManagePage->一覧_名称(1));
     }
 
@@ -179,10 +163,8 @@ class EA07BasicinfoCest
             ->入力_配送業者名('配送業者名1')
             ->登録();
 
-        DeliveryEditPage::at($I);
-        $I->see('保存しました', DeliveryEditPage::$登録完了メッセージ);
-
-        $DeliveryManagePage = DeliveryManagePage::go($I);
+        $DeliveryManagePage = DeliveryManagePage::at($I);
+        $I->see('登録が完了しました。', DeliveryManagePage::$登録完了メッセージ);
         $I->see('配送業者名1', $DeliveryManagePage->一覧_名称(1));
     }
 
@@ -219,7 +201,7 @@ class EA07BasicinfoCest
         $TaxManagePage = TaxManagePage::go($I);
 
         // 一覧
-        $I->see('税率設定', '#page_admin_setting_shop_tax > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div.card-header');
+        $I->see('共通税率設定', '#page_admin_setting_shop_tax > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div.card-header');
         $I->see('8%', '#ex-tax_rule-1 > td.align-middle.text-right');
 
         // 登録
@@ -236,12 +218,12 @@ class EA07BasicinfoCest
             ->入力_消費税率(2, 12)
             ->決定(2);
 
-        $I->see('保存しました', TaxManagePage::$登録完了メッセージ);
+        $I->see('税率設定情報を保存しました。', TaxManagePage::$登録完了メッセージ);
         $I->see('12%', $TaxManagePage->一覧_税率(2));
 
         // 削除
         $TaxManagePage->一覧_削除(2);
-        $I->see('削除しました', TaxManagePage::$登録完了メッセージ);
+        $I->see('税率設定情報を削除しました。', TaxManagePage::$登録完了メッセージ);
     }
 
     public function basicinfo_メール設定(\AcceptanceTester $I)
@@ -254,7 +236,7 @@ class EA07BasicinfoCest
             ->入力_件名('ご注文有難うございました')
             ->登録();
 
-        $I->see('保存しました', MailSettingsPage::$登録完了メッセージ);
+        $I->see('メールテンプレート情報を保存しました。', MailSettingsPage::$登録完了メッセージ);
     }
 
     public function basicinfo_CSV出力項目(\AcceptanceTester $I)
@@ -268,6 +250,6 @@ class EA07BasicinfoCest
             ->削除()
             ->設定();
 
-        $I->see('保存しました', CsvSettingsPage::$登録完了メッセージ);
+        $I->see('CSV出力を設定しました。', CsvSettingsPage::$登録完了メッセージ);
     }
 }

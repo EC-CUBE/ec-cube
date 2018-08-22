@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
-use Eccube\Repository\ProductRepository;
 use Eccube\Twig\Extension\EccubeExtension;
 use Eccube\Tests\EccubeTestCase;
 
@@ -29,8 +28,7 @@ class EccubeExtensionTest extends EccubeTestCase
     {
         parent::setUp();
         $EccubeConfig = $this->container->get(EccubeConfig::class);
-        $productRepository = $this->container->get(ProductRepository::class);
-        $this->Extension = new EccubeExtension($EccubeConfig, $productRepository);
+        $this->Extension = new EccubeExtension($EccubeConfig);
     }
 
     public function testGetClassCategoriesAsJson()

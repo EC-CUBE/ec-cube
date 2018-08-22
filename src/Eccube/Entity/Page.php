@@ -48,12 +48,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
         const EDIT_TYPE_PREVIEW = 1;
         const EDIT_TYPE_DEFAULT = 2;
 
-        // 特定商取引法ページID
-        const TRADELAW_PAGE_ID = 21;
-
-        // ご利用規約ページID
-        const AGREEMENT_PAGE_ID = 19;
-
         public function getLayouts()
         {
             $Layouts = [];

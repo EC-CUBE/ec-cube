@@ -57,7 +57,7 @@ class MasterdataEditType extends AbstractType
                             $keys = array_keys($ids, $id);
                             // 重複した全ての入力項目にエラーを出力
                             foreach ($keys as $key) {
-                                $form['data'][$key]['id']->addError(new FormError(trans('admin.setting.system.master_data.duplicate_id')));
+                                $form['data'][$key]['id']->addError(new FormError(trans('admin.setting.system.masterdata.680')));
                             }
                         }
                     }

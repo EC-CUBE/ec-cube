@@ -67,14 +67,12 @@ class RepeatedPasswordType extends AbstractType
             ],
             'first_options' => [
                 'attr' => [
-                    'placeholder' => trans('common.password_sample', [
-                        '%min%' => $this->eccubeConfig['eccube_password_min_len'],
-                        '%max%' => $this->eccubeConfig['eccube_password_max_len'], ]),
+                    'placeholder' => '半角英数字記号'.$this->eccubeConfig['eccube_password_min_len'].'～'.$this->eccubeConfig['eccube_password_max_len'].'文字',
                 ],
             ],
             'second_options' => [
                 'attr' => [
-                    'placeholder' => 'common.repeated_confirm',
+                    'placeholder' => 'form.member.repeated.confirm',
                 ],
             ],
         ]);

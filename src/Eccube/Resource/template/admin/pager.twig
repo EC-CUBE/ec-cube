@@ -11,26 +11,28 @@ file that was distributed with this source code.
 {% if pages.pageCount > 1 %}
     <ul class="pagination">
 
-        <!-- 最初へ -->
+        {# 最初へ #}
         {% if pages.firstPageInRange != 1 %}
             <li class="page-item">
                 {# FIXME: Need check pass routes before use default _route from request #}
                 <a class="page-link" href="{{ path(
                     routes ? routes : app.request.attributes.get('_route'),
-                    app.request.query.all|merge({'page_no': pages.first})) }}">{{ 'admin.common.first'|trans }}</a></li>
+                    app.request.query.all|merge({'page_no': pages.first})) }}">{{ 'common.label.pager.first'|trans }}</a></li>
 
         {% endif %}
 
-        <!-- 前へ -->
+        {# 前へ #}
         {% if pages.previous is defined %}
             <li class="page-item">
                 {# FIXME: Need check pass routes before use default _route from request #}
                 <a class="page-link"
-                   href="{{ path(routes ? routes : app.request.attributes.get('_route'), app.request.query.all|merge({'page_no': pages.previous})) }}">{{ 'admin.common.prev'|trans }}</a>
+                   href="{{ path(routes ? routes : app.request.attributes.get('_route'), app.request.query.all|merge({'page_no': pages.previous})) }}">
+                    Previous
+                </a>
             </li>
         {% endif %}
 
-        <!-- 1ページリンクが表示されない場合、「...」を表示 -->
+        {# 1ページリンクが表示されない場合、「...」を表示 #}
         {% if pages.firstPageInRange != 1 %}
             <li class="page-item">...</li>
         {% endif %}
@@ -45,27 +47,29 @@ file that was distributed with this source code.
             </li>
         {% endfor %}
 
-        <!-- 最終ページリンクが表示されない場合、「...」を表示 -->
+        {# 最終ページリンクが表示されない場合、「...」を表示 #}
         {% if pages.last != pages.lastPageInRange %}
             <li class="page-item">...</li>
         {% endif %}
 
-        <!-- 次へ -->
+        {# 次へ #}
         {% if pages.next is defined %}
             <li class="page-item">
                 {# FIXME: Need check pass routes before use default _route from request #}
                 <a class="page-link"
-                   href="{{ path(routes ? routes : app.request.attributes.get('_route'),app.request.query.all|merge({'page_no': pages.next})) }}">{{ 'admin.common.next'|trans }}</a>
+                   href="{{ path(routes ? routes : app.request.attributes.get('_route'),app.request.query.all|merge({'page_no': pages.next})) }}">
+                    Next
+                </a>
             </li>
         {% endif %}
 
-        <!-- 最後へ -->
+        {# 最後へ #}
         {% if pages.last != pages.lastPageInRange %}
             <li class="page-item">
                 {# FIXME: Need check pass routes before use default _route from request #}
                 <a class="page-link" href="{{ path(
                     routes ? routes : app.request.attributes.get('_route'),
-                    app.request.query.all|merge({'page_no': pages.last})) }}">{{ 'admin.common.last'|trans }}</a></li>
+                    app.request.query.all|merge({'page_no': pages.last})) }}">{{ 'common.label.pager.last'|trans }}</a></li>
         {% endif %}
 
     </ul>

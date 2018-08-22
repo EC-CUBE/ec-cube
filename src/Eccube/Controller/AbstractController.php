@@ -150,7 +150,7 @@ class AbstractController extends Controller
     public function deleteMessage()
     {
         $this->clearMessage();
-        $this->addWarning('admin.common.delete_error_already_deleted', 'admin');
+        $this->addWarning('admin.delete.warning', 'admin');
     }
 
     /**

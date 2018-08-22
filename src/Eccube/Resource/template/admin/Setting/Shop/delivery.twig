@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
-{% block title %}{{ 'admin.setting.shop.delivery_list'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.delivery.570'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.delivery.569'|trans }}{% endblock %}
 
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
@@ -85,14 +85,10 @@ file that was distributed with this source code.
                 }
             });
 
-            // 削除モーダルのhrefとmessageの変更
-            $('#DeleteModal').on('shown.bs.modal', function(event) {
+            // 削除モーダルのhref変更
+            $('#delete_modal').on('shown.bs.modal', function(event) {
                 var target = $(event.relatedTarget);
-                // hrefの変更
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
-
-                // messageの変更
-                $(this).find('p.modal-message').text(target.data('message'));
             });
         });
     </script>
@@ -103,9 +99,6 @@ file that was distributed with this source code.
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
-                    <div class="d-block mb-3">
-                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_delivery_new') }}">{{ 'admin.common.create__new'|trans }}</a>
-                    </div>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-body p-0">
                             <div class="card rounded border-0 mb-2">
@@ -121,17 +114,14 @@ file that was distributed with this source code.
                                                         </a>
                                                     </div>
                                                     <div class="col-auto text-right">
-                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top"
-                                                             title="{{ 'admin.common.delete'|trans }}">
-                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
-                                                               data-url="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}"
-                                                               data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Delivery.name }) }}">
+                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_modal" data-url="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}">
                                                                 <i class="fa fa-close fa-lg"></i>
                                                             </a>
                                                         </div>
@@ -141,38 +131,52 @@ file that was distributed with this source code.
                                         {% endfor %}
                                     {% endif %}
                                 </ul>
-                                <!-- 削除モーダル -->
-                                <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog"
-                                     aria-labelledby="DeleteModal" aria-hidden="true">
+                                <div class="modal fade" id="delete_modal" tabindex="-1"
+                                     role="dialog"
+                                     aria-labelledby="delete_modal" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
+                                                {# TODO モーダルのタイトルの設定 #}
                                                 <h5 class="modal-title font-weight-bold">
-                                                    {{ 'admin.common.delete_modal__title'|trans }}
-                                                </h5>
-                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
+                                                    配送方法を削除します</h5>
+                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                             </div>
                                             <div class="modal-body text-left">
-                                                <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
+                                                {# TODO モーダルの文章の設定 #}
+                                                <p class="text-left">
+                                                    この配送方法を削除しますか？</p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
-                                                    {{ 'admin.common.cancel'|trans }}
+                                                <button class="btn btn-ec-sub" type="button"
+                                                        data-dismiss="modal">
+                                                    {{ 'admin.common.label.cancel'|trans }}
                                                 </button>
-                                                <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}
-                                                   data-method="delete" data-confirm="false">
-                                                    {{ 'admin.common.delete'|trans }}
+                                                <a
+                                                        href="#"
+                                                        class="btn btn-ec-delete"
+                                                        data-confirm="false"
+                                                        {{ csrf_token_for_anchor() }}
+                                                        data-method="delete">
+                                                    {{ 'admin.common.label.delete'|trans }}
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
-                    <p>{{ 'admin.common.drag_and_drop_description'|trans }}</p>
+                    <p>{{ 'admin.common.label.move.message'|trans }}</p>
+                </div>
+                <div class="card rounded border-0">
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
+                            <a href="{{ url('admin_setting_shop_delivery_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.setting.shop.delivery.577'|trans }}</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -53,7 +53,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 
 class ProductController extends AbstractController
 {
@@ -307,7 +306,7 @@ class ProductController extends AbstractController
     public function addImage(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
+            throw new BadRequestHttpException('リクエストが不正です');
         }
 
         $images = $request->files->get('admin_product');
@@ -319,7 +318,7 @@ class ProductController extends AbstractController
                     //ファイルフォーマット検証
                     $mimeType = $image->getMimeType();
                     if (0 !== strpos($mimeType, 'image')) {
-                        throw new UnsupportedMediaTypeHttpException();
+                        throw new UnsupportedMediaTypeHttpException('ファイル形式が不正です');
                     }
 
                     $extension = $image->getClientOriginalExtension();
@@ -348,7 +347,7 @@ class ProductController extends AbstractController
      * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
      * @Template("@admin/Product/product.twig")
      */
-    public function edit(Request $request, $id = null, RouterInterface $router)
+    public function edit(Request $request, $id = null)
     {
         $has_class = false;
         if (is_null($id)) {
@@ -594,23 +593,10 @@ class ProductController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
 
-                $this->addSuccess('admin.common.save_complete', 'admin');
+                $this->addSuccess('admin.register.complete', 'admin');
 
                 if ($returnLink = $form->get('return_link')->getData()) {
-                    try {
-                        // $returnLinkはpathの形式で渡される. pathが存在するかをルータでチェックする.
-                        $result = $router->match($returnLink);
-                        // パラメータのみ抽出
-                        $params = array_filter($result, function ($key) {
-                            return 0 !== \strpos($key, '_');
-                        }, ARRAY_FILTER_USE_KEY);
-
-                        // pathからurlを再構築してリダイレクト.
-                        return $this->redirectToRoute($result['_route'], $params);
-                    } catch (\Exception $e) {
-                        // マッチしない場合はログ出力してスキップ.
-                        log_warning('URLの形式が不正です。');
-                    }
+                    return $this->redirect($returnLink);
                 }
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
@@ -675,7 +661,7 @@ class ProductController extends AbstractController
             $Product = $this->productRepository->find($id);
             if (!$Product) {
                 if ($request->isXmlHttpRequest()) {
-                    $message = trans('admin.common.delete_error_already_deleted');
+                    $message = trans('admin.delete.warning');
 
                     return $this->json(['success' => $success, 'message' => $message]);
                 } else {
@@ -720,18 +706,18 @@ class ProductController extends AbstractController
                     log_info('商品削除完了', [$id]);
 
                     $success = true;
-                    $message = trans('admin.common.delete_complete');
+                    $message = trans('admin.delete.complete');
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
-                    $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);
+                    $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Product->getName()]);
                 }
             } else {
                 log_info('商品削除エラー', [$id]);
-                $message = trans('admin.common.delete_error');
+                $message = trans('admin.delete.failed');
             }
         } else {
             log_info('商品削除エラー', [$id]);
-            $message = trans('admin.common.delete_error');
+            $message = trans('admin.delete.failed');
         }
 
         if ($request->isXmlHttpRequest()) {
@@ -835,14 +821,14 @@ class ProductController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
 
-                $this->addSuccess('admin.product.copy_complete', 'admin');
+                $this->addSuccess('admin.product.copy.complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $CopyProduct->getId()]);
             } else {
-                $this->addError('admin.product.copy_error', 'admin');
+                $this->addError('admin.product.copy.failed', 'admin');
             }
         } else {
-            $msg = trans('admin.product.copy_error');
+            $msg = trans('admin.product.copy.failed');
             $this->addError($msg, 'admin');
         }
 
@@ -1028,7 +1014,7 @@ class ProductController extends AbstractController
         try {
             if ($count) {
                 $this->entityManager->flush();
-                $msg = $this->translator->trans('admin.product.bulk_change_status_complete', [
+                $msg = $this->translator->trans('admin.product.index.bulk_product_status_success_count', [
                     '%count%' => $count,
                     '%status%' => $ProductStatus->getName(),
                 ]);

@@ -19,7 +19,7 @@ file that was distributed with this source code.
                 $(this).find('li:gt(4)').each(function() {
                     $(this).hide();
                 });
-                $(this).append('<a id="news_readmore">» {{ 'front.block.news.read_more'|trans }}</a>');
+                $(this).append('<a id="news_readmore">» {{'common.label.readmore'|trans}}</a>');
                 var dispNum = 5;
                 $(this).find('#news_readmore').click(function() {
                     dispNum += 5;
@@ -35,13 +35,13 @@ file that was distributed with this source code.
 {% endblock %}
 
 <div class="ec-news">
-    <div class="ec-news__title">{{'front.block.news.news_title'|trans}}</div>
+    <div class="ec-news__title">{{'front_home.label.whats_new'|trans}}</div>
     <ul class="ec-news__items">
         {% for News in NewsList %}
         <li class="ec-news__item">
             <div class="ec-newsline">
                 <div class="ec-newsline__info">
-                    <div class="ec-newsline__date">{{ News.publish_date|date_day }}</div>
+                    <div class="ec-newsline__date">{{ News.publish_date|date("Y/m/d") }}</div>
                     <div class="ec-newsline__title">{{ News.title }}</div>
                     {% if News.description or News.url %}
                         <div class="ec-newsline__close">
@@ -54,7 +54,7 @@ file that was distributed with this source code.
                 <div class="ec-newsline__description">
                     {{ News.description|raw|nl2br }}
                     {% if News.url %}<br>
-                    <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>{{ 'front.block.news.see_details'|trans }}</a>
+                    <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>{{'common.label.see_details'|trans}}</a>
                     {% endif %}
                 </div>
                 {% endif %}

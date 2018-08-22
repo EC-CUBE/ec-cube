@@ -26,7 +26,7 @@ class Step5Type extends AbstractType
     {
         $builder
             ->add('no_update', CheckboxType::class, [
-                'label' => trans('install.database_skip'),
+                'label' => trans('step5.label.not_initialize_database'),
                 'required' => false,
             ])
         ;

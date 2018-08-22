@@ -67,7 +67,7 @@ class CategoryController extends AbstractController
             /** @var Category $Parent */
             $Parent = $this->categoryRepository->find($parent_id);
             if (!$Parent) {
-                throw new NotFoundHttpException();
+                throw new NotFoundHttpException(trans('category.text.error.no_parent_category'));
             }
         } else {
             $Parent = null;
@@ -75,7 +75,7 @@ class CategoryController extends AbstractController
         if ($id) {
             $TargetCategory = $this->categoryRepository->find($id);
             if (!$TargetCategory) {
-                throw new NotFoundHttpException();
+                throw new NotFoundHttpException(trans('category.text.error.no_category'));
             }
             $Parent = $TargetCategory->getParent();
         } else {
@@ -118,7 +118,7 @@ class CategoryController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 if ($this->eccubeConfig['eccube_category_nest_level'] < $TargetCategory->getHierarchy()) {
-                    throw new BadRequestHttpException();
+                    throw new BadRequestHttpException(trans('category.text.error.invalid_requesy'));
                 }
                 log_info('カテゴリ登録開始', [$id]);
 
@@ -136,7 +136,7 @@ class CategoryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.common.save_complete', 'admin');
+                $this->addSuccess('admin.category.save.complete', 'admin');
                 if ($Parent) {
                     return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
                 } else {
@@ -160,7 +160,7 @@ class CategoryController extends AbstractController
 
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
-                    $this->addSuccess('admin.common.save_complete', 'admin');
+                    $this->addSuccess('admin.category.save.complete', 'admin');
 
                     if ($Parent) {
                         return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
@@ -223,13 +223,13 @@ class CategoryController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.common.delete_complete', 'admin');
+            $this->addSuccess('admin.category.delete.complete', 'admin');
 
             log_info('カテゴリ削除完了', [$id]);
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
 
-            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $TargetCategory->getName()]);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('category.text.name')]);
             $this->addError($message, 'admin');
         }
 

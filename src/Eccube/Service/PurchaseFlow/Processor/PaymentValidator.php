@@ -74,7 +74,7 @@ class PaymentValidator extends ItemHolderValidator
 
         // 共通項がなければエラー
         if (empty($paymentIds)) {
-            $this->throwInvalidItemException('front.shopping.different_payment_methods');
+            $this->throwInvalidItemException('paymentprocessor.label.different_payment_method');
         }
     }
 

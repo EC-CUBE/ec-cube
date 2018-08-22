@@ -47,13 +47,6 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="backend_name", type="string", length=255, nullable=true)
-         */
-        private $backend_name;
-
-        /**
-         * @var string
-         *
          * @ORM\Column(name="name", type="string", length=255)
          */
         private $name;
@@ -114,30 +107,6 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         public function getId()
         {
             return $this->id;
-        }
-
-        /**
-         * Set backend_name.
-         *
-         * @param string $backendName
-         *
-         * @return ClassCategory
-         */
-        public function setBackendName($backendName)
-        {
-            $this->backend_name = $backendName;
-
-            return $this;
-        }
-
-        /**
-         * Get backend_name.
-         *
-         * @return string
-         */
-        public function getBackendName()
-        {
-            return $this->backend_name;
         }
 
         /**

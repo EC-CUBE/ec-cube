@@ -11,11 +11,11 @@ file that was distributed with this source code.
 <table class="table table-striped">
     <thead class="table-active">
     <tr>
-        <th class="pt-2 pb-2 pl-2">{{ 'admin.product.class_category1__short'|trans }}</th>
-        <th class="pt-2 pb-2">{{ 'admin.product.class_category2__short'|trans }}</th>
-        <th class="pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}</th>
-        <th class="pt-2 pb-2">{{ 'admin.product.stock'|trans }}</th>
-        <th class="pt-2 pb-2 pr-2">{{ 'admin.product.price'|trans }}</th>
+        <th class="pt-2 pb-2 pl-2">{{ 'admin.product.index.standart.modal.col1'|trans }}</th>
+        <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col2'|trans }}</th>
+        <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col3'|trans }}</th>
+        <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col4'|trans }}</th>
+        <th class="pt-2 pb-2 pr-2">{{ 'admin.product.index.standart.modal.col5'|trans }}</th>
     </tr>
     </thead>
     <tbody>
@@ -24,7 +24,7 @@ file that was distributed with this source code.
             <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
             <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
             <td>{{ Class.code }}</td>
-            <td>{% if Class.stock_unlimited %}{{ 'admin.product.stock_unlimited__short'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
+            <td>{% if Class.stock_unlimited %}{{ 'admin.product.index.standart.modal.unlimited'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
             <td class="pr-3">{{ Class.price02|price }}</td>
         </tr>
     {% endfor %}

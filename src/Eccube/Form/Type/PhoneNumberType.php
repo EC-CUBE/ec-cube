@@ -70,7 +70,7 @@ class PhoneNumberType extends AbstractType
 
             $constraints[] = new Assert\Type([
                 'type' => 'numeric',
-                'message' => 'errors.numeric_only',
+                'message' => 'form.type.numeric.invalid',
             ]);
 
             return $constraints;
@@ -80,7 +80,7 @@ class PhoneNumberType extends AbstractType
             'options' => ['constraints' => []],
             'constraints' => $constraints,
             'attr' => [
-                'placeholder' => 'common.phone_number_sample',
+                'placeholder' => 'PhoneNumber',
             ],
             'trim' => true,
         ]);

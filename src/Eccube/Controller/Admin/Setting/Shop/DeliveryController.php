@@ -249,9 +249,9 @@ class DeliveryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE, $event);
 
-                $this->addSuccess('admin.common.save_complete', 'admin');
+                $this->addSuccess('admin.register.complete', 'admin');
 
-                return $this->redirectToRoute('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]);
+                return $this->redirectToRoute('admin_setting_shop_delivery');
             }
         }
 
@@ -272,7 +272,7 @@ class DeliveryController extends AbstractController
             $this->entityManager->remove($Delivery);
             $this->entityManager->flush();
         } catch (ForeignKeyConstraintViolationException $e) {
-            $this->addError(trans('admin.common.delete_error_foreign_key', ['%name%' => $Delivery->getName()]), 'admin');
+            $this->addError(trans('admin.delete.failed.foreign_key', ['%name%' => $Delivery->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_setting_shop_delivery');
         }
@@ -299,7 +299,7 @@ class DeliveryController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
 
-        $this->addSuccess('admin.common.delete_complete', 'admin');
+        $this->addSuccess('admin.delete.complete', 'admin');
 
         return $this->redirectToRoute('admin_setting_shop_delivery');
     }
