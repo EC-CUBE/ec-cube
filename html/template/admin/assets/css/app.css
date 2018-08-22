@@ -290,8 +290,8 @@ Styleguide 3.0
     .c-mainNavArea__navItem li a:hover {
       text-decoration: none;
       background: rgba(15, 15, 15, 0.05); }
-  .c-mainNavArea__navItem .collapse > li a.c-mainNavArea__navItemSubTitle{
-      background:#f3f4f6}
+  .c-mainNavArea__navItem > ul > li .c-mainNavArea__navItemSubTitle{
+      background:#f3f4f6; }
   .c-mainNavArea__navItem li a.is-active {
     background: #54687A;
     color: #fff; }
