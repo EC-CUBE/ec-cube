@@ -14,7 +14,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Entity\Cart;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -24,10 +23,9 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
@@ -161,7 +159,8 @@ class CartController extends AbstractController
 
         foreach ($flowResults as $index => $result) {
             foreach ($result->getWarning() as $warning) {
-                $this->addRequestError($warning->getMessage(), "front.cart.${index}");
+                $cart_key = $Carts[$index]->getCartKey();
+                $this->addRequestError($warning->getMessage(), "front.cart.${cart_key}");
             }
         }
     }
@@ -177,10 +176,10 @@ class CartController extends AbstractController
      * - 削除
      *      - 明細を削除する
      *
-     * @Method("PUT")
      * @Route(
      *     path="/cart/{operation}/{productClassId}",
      *     name="cart_handle_item",
+     *     methods={"PUT"},
      *     requirements={
      *          "operation": "up|down|remove",
      *          "productClassId": "\d+"
@@ -227,9 +226,9 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @Route("/cart/buystep/{index}", name="cart_buystep", requirements={"index" = "\d+"}, defaults={"index" = 0})
+     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "[a-zA-Z0-9]+[_]\d+"})
      */
-    public function buystep(Request $request, $index)
+    public function buystep(Request $request, $cart_key)
     {
         $Carts = $this->cartService->getCart();
         if (!is_object($Carts)) {
@@ -242,7 +241,7 @@ class CartController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_INITIALIZE, $event);
 
-        $this->cartService->setPrimary($index);
+        $this->cartService->setPrimary($cart_key);
         $this->cartService->save();
 
         // FRONT_CART_BUYSTEP_COMPLETE

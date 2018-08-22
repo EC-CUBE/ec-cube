@@ -1,0 +1,46 @@
+<?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Command;
+
+use Eccube\Service\Composer\ComposerApiService;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+class ComposerRemoveCommand extends Command
+{
+    protected static $defaultName = 'eccube:composer:remove';
+
+    /**
+     * @var ComposerApiService
+     */
+    private $composerService;
+
+    public function __construct(ComposerApiService $composerService)
+    {
+        parent::__construct();
+        $this->composerService = $composerService;
+    }
+
+    protected function configure()
+    {
+        $this->addArgument('package', InputArgument::REQUIRED);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->composerService->execRemove($input->getArgument('package'), $output);
+    }
+}

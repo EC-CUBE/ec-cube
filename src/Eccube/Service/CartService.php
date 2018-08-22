@@ -136,28 +136,52 @@ class CartService
             return $this->carts;
         }
 
-        $cartKeys = $this->session->get('cart_keys', []);
-        $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
+        if ($this->getUser()) {
+            $this->carts = $this->getPersistedCarts();
+        } else {
+            $this->carts = $this->getSessionCarts();
+        }
 
         return $this->carts;
     }
 
     /**
-     * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
+     * 永続化されたカートを返す
      *
-     * @param Customer $Customer
+     * @return Cart[]
      */
-    public function mergeFromPersistedCart(Customer $Customer)
+    public function getPersistedCarts()
     {
-        $Carts = $this->cartRepository->findBy(['Customer' => $Customer]);
+        return $this->cartRepository->findBy(['Customer' => $this->getUser()]);
+    }
 
+    /**
+     * セッションにあるカートを返す
+     *
+     * @return Cart[]
+     */
+    public function getSessionCarts()
+    {
+        $cartKeys = $this->session->get('cart_keys', []);
+
+        return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
+    }
+
+    /**
+     * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
+     */
+    public function mergeFromPersistedCart()
+    {
         $CartItems = [];
-        foreach ($Carts as $Cart) {
+        foreach ($this->getPersistedCarts() as $Cart) {
             $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
         }
 
         // セッションにある非会員カートとDBから取得した会員カートをマージする.
-        $CartItems = $this->mergeAllCartItems($CartItems);
+        foreach ($this->getSessionCarts() as $Cart) {
+            $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
+        }
+
         $this->restoreCarts($CartItems);
     }
 
@@ -172,7 +196,20 @@ class CartService
             return null;
         }
 
-        return current($Carts);
+        $cartKeys = $this->session->get('cart_keys', []);
+        $Cart = null;
+        if (count($cartKeys) > 0) {
+            foreach ($Carts as $cart) {
+                if ($cart->getCartKey() === current($cartKeys)) {
+                    $Cart = $cart;
+                    break;
+                }
+            }
+        } else {
+            $Cart = current($Carts);
+        }
+
+        return $Cart;
     }
 
     /**
@@ -220,17 +257,15 @@ class CartService
 
     protected function restoreCarts($cartItems)
     {
-        if (empty($cartItems)) {
-            foreach ($this->getCarts() as $Cart) {
-                foreach ($Cart->getCartItems() as $i) {
-                    $this->entityManager->remove($i);
-                    $this->entityManager->flush($i);
-                }
-                $this->entityManager->remove($Cart);
-                $this->entityManager->flush($Cart);
+        foreach ($this->getCarts() as $Cart) {
+            foreach ($Cart->getCartItems() as $i) {
+                $this->entityManager->remove($i);
+                $this->entityManager->flush($i);
             }
-            $this->carts = [];
+            $this->entityManager->remove($Cart);
+            $this->entityManager->flush($Cart);
         }
+        $this->carts = [];
 
         /** @var Cart[] $Carts */
         $Carts = [];
@@ -382,16 +417,22 @@ class CartService
     {
         $Carts = $this->getCarts();
         if (!empty($Carts)) {
-            $removed = array_shift($Carts);
+            $removed = $this->getCart();
             if ($removed && UnitOfWork::STATE_MANAGED === $this->entityManager->getUnitOfWork()->getEntityState($removed)) {
                 $this->entityManager->remove($removed);
                 $this->entityManager->flush($removed);
 
                 $cartKeys = [];
-                foreach ($Carts as $Cart) {
+                foreach ($Carts as $key => $Cart) {
+                    // テーブルから削除されたカートを除外する
+                    if ($Cart == $removed) {
+                        unset($Carts[$key]);
+                    }
                     $cartKeys[] = $Cart->getCartKey();
                 }
                 $this->session->set('cart_keys', $cartKeys);
+                // 注文完了のカートキーをセッションから削除する
+                $this->session->remove('cart_key');
                 $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
             }
         }
@@ -408,14 +449,22 @@ class CartService
     }
 
     /**
-     * 指定したインデックスにあるカートを優先にする
+     * カートキーで指定したインデックスにあるカートを優先にする
      *
-     * @param int $index カートのインデックス
+     * @param string $cartKey カートキー
      */
-    public function setPrimary($index = 0)
+    public function setPrimary($cartKey)
     {
         $Carts = $this->getCarts();
-        $primary = $Carts[$index];
+        $primary = $Carts[0];
+        $index = 0;
+        foreach ($Carts as $key => $Cart) {
+            if ($Cart->getCartKey() === $cartKey) {
+                $index = $key;
+                $primary = $Carts[$index];
+                break;
+            }
+        }
         $prev = $Carts[0];
         array_splice($Carts, 0, 1, [$primary]);
         array_splice($Carts, $index, 1, [$prev]);

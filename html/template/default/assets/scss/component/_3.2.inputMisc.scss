@@ -1,0 +1,260 @@
+@import "../mixins/projects";
+@import "../mixins/forms";
+@import "./3.1.inputText";
+/*
+フォーム部品(その他)
+
+フォーム部品でテキストの入力以外の動作要素を定義します。
+
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+
+Styleguide 3.2
+*/
+
+/*
+ラジオ（水平）
+
+水平に並ぶラジオボタンフィールドです。
+
+各要素をlabelでくくって、コーディングします。
+
+ex [新規会員登録画面　性別選択部分](http://demo3.ec-cube.net/entry)
+
+Markup:
+.ec-radio
+  label
+    input(type="radio")
+    span 男性
+  label
+    input(type="radio")
+    span 女性
+
+Styleguide 3.2.2
+*/
+.ec-radio{
+  label{
+    margin-right:20px;
+  }
+  input{
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+  span{
+    font-weight: normal;
+  }
+
+}
+
+/*
+ラジオ(垂直)
+
+垂直に並ぶラジオボタンフィールドです。
+
+各要素をlabelでくくって、コーディングします。
+
+ex [購入画面 お支払方法](http://demo3.ec-cube.net/shopping)
+
+Markup:
+.ec-blockRadio
+  label
+    input(type="radio")
+    span 郵便振替
+  label
+    input(type="radio")
+    span 現金書留
+  label
+    input(type="radio")
+    span 銀行振込
+  label
+    input(type="radio")
+    span 代金引換
+
+Styleguide 3.2.3
+*/
+.ec-blockRadio{
+  label{
+    display: block;
+  }
+  span {
+    padding-left: 10px;
+    font-weight: normal;
+  }
+}
+/*
+セレクトボックス
+
+数量を表示するための小さなコンポーネントです。
+
+数値表示に最適化するため、数字は右端揃えで表示されます。
+
+ex [新規会員登録画面　都道府県選択部分](http://demo3.ec-cube.net/entry)
+
+Markup:
+.ec-select
+  select
+    option 都道府県を選択
+    option 北海道
+    option 青森県
+    option 岩手県
+    option ...
+.ec-select
+  select
+    option 選択して下さい
+    option 公務員
+    option コンサルタント
+    option コンピュータ関連技術職
+    option コンピュータ関連以外の技術職
+    option ...
+
+Styleguide 3.2.4
+*/
+.ec-selects {
+  margin-bottom: 20px;
+  @include borderBottom;
+}
+.ec-select{
+  @extend .ec-input;
+  margin-bottom: 16px;
+  select{
+    display: inline-block;
+    width: auto;
+    background-color: rgb(248, 248, 248);
+    -webkit-appearance: menulist;
+    -moz-appearance: menulist;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  label{
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  label:nth-child(3){
+    margin-left: 10px;
+    font-weight: bold;
+  }
+}
+.ec-select__delivery {
+  display: block;
+  margin-right: 16px;
+  @include media_desktop {
+    display: inline-block;
+  }
+}
+.ec-select__time {
+  display: block;
+  @include media_desktop {
+    display: inline-block;
+  }
+}
+
+/*
+生年月日選択
+
+数量を表示するための小さなコンポーネントです。
+
+数値表示に最適化するため、数字は右端揃えで表示されます。
+
+ex [新規会員登録画面　生年月日選択部分](http://demo3.ec-cube.net/entry)
+
+Markup:
+.ec-birth
+  select
+    option ----
+    option 1960
+    option 1961
+    option 1962
+    option ...
+  span /
+  select
+    option --
+    option 01
+    option 02
+    option 03
+    option ...
+  span /
+  select
+    option --
+    option 01
+    option 02
+    option 03
+    option ...
+
+Styleguide 3.2.5
+*/
+.ec-birth{
+  @extend .ec-input;
+  select{
+    display: inline-block;
+    width: auto;
+    margin: 0 0 10px;
+    background-color: rgb(248, 248, 248);
+    -webkit-appearance: menulist;
+    -moz-appearance: menulist;
+    &:focus {
+      box-shadow: none;
+    }
+    @include media_desktop{
+      margin: 0 8px 10px;
+    }
+  }
+  span{
+    margin-left:5px;
+  }
+}
+
+/*
+チェックボックス （水平）
+
+水平に並ぶチェックボックス フィールドです。
+
+各要素をlabelでくくって、コーディングします。
+
+ex [新規会員登録画面　利用規約](http://demo3.ec-cube.net/entry)
+
+Markup:
+.ec-checkbox
+  label
+    input(type="checkbox")
+    span 利用規約に同意する
+
+Styleguide 3.2.6
+*/
+.ec-checkbox{
+  label{
+    display: inline-block;
+  }
+  input{
+    margin-bottom: 10px;
+  }
+  span{
+    font-weight: normal;
+  }
+
+}
+
+/*
+チェックボックス (垂直)
+
+垂直に並ぶチェックボックス フィールドです。
+
+各要素をlabelでくくって、コーディングします。
+
+Markup:
+.ec-blockCheckbox
+  label
+    input(type="checkbox")
+    span 利用規約に同意する
+
+Styleguide 3.2.7
+*/
+.ec-blockCheckbox{
+  label{
+    display: block;
+  }
+  span {
+    font-weight: normal;
+  }
+}

@@ -17,6 +17,15 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+    <style>
+        .modal #captcha_image {
+            max-width: 300px;
+            max-height: 50px;
+        }
+    </style>
+{% endblock %}
+
 {% block main %}
     <form method="post" action="{{ url('admin_store_authentication_setting') }}">
     {{ form_widget(form._token) }}
@@ -25,20 +34,47 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h4 class="box-title font-weight-bold">{{'admin.store.authentication_setting.805'|trans}}</h4>
+                            <h5 class="box-title">{{'admin.store.authentication_setting.805'|trans}}</h5>
                         </div>
 
                         <div class="card-body">
                             <div class="row">
-                                {{ form_label(form.authentication_key) }}
-                                <div class="col-sm-9">
+                                <div class="col-3">
+                                    <div class="d-inline-block">
+                                        <span>{{ form.authentication_key.vars.label|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg" data-toggle="tooltip" data-placement="top" title="Tooltip"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
                                     {{ form_widget(form.authentication_key) }}
-                                    {{ form_errors(form.authentication_key) }}
-                                    <p>{{'admin.store.authentication_setting.807'|trans({'owners_store_url' : eccube_config.eccube_owners_store_url})|raw}}</p>
+                                </div>
+
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#captcha" type="button">
+                                    {{ 'admin.store.authentication_setting.captcha.open'|trans }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <h5 class="box-title">{{'admin.store.authentication_setting.php_path.header'|trans}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block">
+                                        <span>{{ form.php_path.vars.label|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg" data-toggle="tooltip" data-placement="top" title="Tooltip"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    {{ form_widget(form.php_path) }}
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->
@@ -48,7 +84,9 @@ file that was distributed with this source code.
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            &nbsp;
+                            <a class="c-beseLink" href="{{ url('admin_store_plugin') }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i>
+                                <span>プラグイン一覧へ</span></a>
                         </div>
                     </div>
                     <div class="col-6">
@@ -62,4 +100,30 @@ file that was distributed with this source code.
             </div>
         </div>
     </form>
+
+    <div class="modal fade" id="captcha" tabindex="-1" role="dialog" aria-labelledby="captcha" aria-hidden="true">
+        <form id="captcha-form" action="{{ url('admin_store_auth_captcha') }}" method="post">
+            {{ form_widget(captchaForm._token) }}
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold">{{ 'admin.store.authentication_setting.captcha.header'|trans }}</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body text-left">
+                        <p class="text-left">
+                            {{ 'admin.store.authentication_setting.captcha.message'|trans }}</p>
+                        <img id="captcha_image" class="mb-2" src="{{ asset("captcha.png", 'temp_image') }}">
+                        {{ form_widget(captchaForm.captcha) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}</button>
+                        <button class="btn btn-ec-conversion px-5" type="submit">
+                            {{ 'admin.store.authentication_setting.captcha.submit'|trans }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 {% endblock %}

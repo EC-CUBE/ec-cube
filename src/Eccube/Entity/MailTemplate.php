@@ -66,20 +66,6 @@ if (!class_exists('\Eccube\Entity\MailTemplate')) {
         private $mail_subject;
 
         /**
-         * @var string|null
-         *
-         * @ORM\Column(name="mail_header", type="string", length=4000, nullable=true)
-         */
-        private $mail_header;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="mail_footer", type="string", length=4000, nullable=true)
-         */
-        private $mail_footer;
-
-        /**
          * @var \DateTime
          *
          * @ORM\Column(name="create_date", type="datetimetz")
@@ -183,54 +169,6 @@ if (!class_exists('\Eccube\Entity\MailTemplate')) {
         public function getMailSubject()
         {
             return $this->mail_subject;
-        }
-
-        /**
-         * Set mailHeader.
-         *
-         * @param string|null $mailHeader
-         *
-         * @return MailTemplate
-         */
-        public function setMailHeader($mailHeader = null)
-        {
-            $this->mail_header = $mailHeader;
-
-            return $this;
-        }
-
-        /**
-         * Get mailHeader.
-         *
-         * @return string|null
-         */
-        public function getMailHeader()
-        {
-            return $this->mail_header;
-        }
-
-        /**
-         * Set mailFooter.
-         *
-         * @param string|null $mailFooter
-         *
-         * @return MailTemplate
-         */
-        public function setMailFooter($mailFooter = null)
-        {
-            $this->mail_footer = $mailFooter;
-
-            return $this;
-        }
-
-        /**
-         * Get mailFooter.
-         *
-         * @return string|null
-         */
-        public function getMailFooter()
-        {
-            return $this->mail_footer;
         }
 
         /**

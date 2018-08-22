@@ -35,15 +35,13 @@ use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\ShoppingService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ShoppingController extends AbstractShoppingController
@@ -193,8 +191,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入処理
      *
-     * @Route("/shopping/confirm", name="shopping_confirm")
-     * @Method("POST")
+     * @Route("/shopping/confirm", name="shopping_confirm", methods={"POST"})
      * @Template("Shopping/confirm.twig")
      */
     public function confirm(Request $request)
@@ -218,6 +215,13 @@ class ShoppingController extends AbstractShoppingController
 
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
+
+        // フォームエラーチェック
+        if (!$form->isValid()) {
+            $response = $this->forwardToRoute('shopping_redirect_to');
+
+            return $response;
+        }
 
         $flowResult = $this->validatePurchaseFlow($Order);
         if ($flowResult->hasWarning() || $flowResult->hasError()) {
@@ -253,8 +257,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入処理
      *
-     * @Route("/shopping/order", name="shopping_order")
-     * @Method("POST")
+     * @Route("/shopping/order", name="shopping_order", methods={"POST"})
      * @Template("Shopping/index.twig")
      */
     public function order(Request $request)
@@ -294,35 +297,6 @@ class ShoppingController extends AbstractShoppingController
             'form' => $form->createView(),
             'Order' => $Order,
         ];
-    }
-
-    /**
-     * 支払方法バーリデト
-     */
-    private function isValidPayment(Application $app, $form)
-    {
-        $data = $form->getData();
-        $paymentId = $data['payment']->getId();
-        $shippings = $data['shippings'];
-        $validCount = count($shippings);
-        foreach ($shippings as $Shipping) {
-            $payments = $app['eccube.repository.payment']->findPayments($Shipping->getDelivery());
-            if ($payments == null) {
-                continue;
-            }
-            foreach ($payments as $payment) {
-                if ($payment['id'] == $paymentId) {
-                    $validCount--;
-                    continue;
-                }
-            }
-        }
-        if ($validCount == 0) {
-            return true;
-        }
-        $form->get('payment')->addError(new FormError('front.shopping.payment.error'));
-
-        return false;
     }
 
     /**
@@ -457,7 +431,7 @@ class ShoppingController extends AbstractShoppingController
             $addressCurrNum = count($this->getUser()->getCustomerAddresses());
             $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException(trans('shoppingcontroller.text.error.number_of_address'));
+                throw new NotFoundHttpException();
             }
         }
 
@@ -478,7 +452,7 @@ class ShoppingController extends AbstractShoppingController
 
         $Shipping = $Order->findShipping($id);
         if (!$Shipping) {
-            throw new NotFoundHttpException(trans('shoppingcontroller.text.error.set_address'));
+            throw new NotFoundHttpException();
         }
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $Shipping->clearCustomerAddress();
@@ -672,7 +646,6 @@ class ShoppingController extends AbstractShoppingController
 
             try {
                 // 受注情報を作成
-                //$Order = $app['eccube.service.shopping']->createOrder($Customer);
                 $Order = $this->orderHelper->createProcessingOrder(
                     $Customer,
                     $this->cartService->getCart()->getCartItems()
@@ -711,12 +684,12 @@ class ShoppingController extends AbstractShoppingController
         $builder = $this->formFactory->createBuilder(OrderType::class, $Order);
 
         $event = new EventArgs(
-                [
-                    'builder' => $builder,
-                    'Order' => $Order,
-                ],
-                $request
-            );
+            [
+                'builder' => $builder,
+                'Order' => $Order,
+            ],
+            $request
+        );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
@@ -735,9 +708,6 @@ class ShoppingController extends AbstractShoppingController
     public function redirectToChange(Request $request)
     {
         $form = $this->parameterBag->get(OrderType::class);
-
-        // requestのバインド後、Calculatorに再集計させる
-        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
         // 支払い方法の変更や配送業者の変更があった場合はDBに保持する.
         if ($form->isSubmitted() && $form->isValid()) {
@@ -780,7 +750,7 @@ class ShoppingController extends AbstractShoppingController
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
-            $this->addError('front.shopping.order.error');
+            $this->addError('front.shopping.order_error');
 
             return $this->redirectToRoute('shopping_error');
         }
@@ -808,10 +778,6 @@ class ShoppingController extends AbstractShoppingController
             $em = $this->entityManager;
             $em->getConnection()->beginTransaction();
             try {
-                // お問い合わせ、配送時間などのフォーム項目をセット
-                // FormTypeで更新されるため不要
-                //$app['eccube.service.shopping']->setFormData($Order, $data);
-
                 $flowResult = $this->validatePurchaseFlow($Order);
                 if ($flowResult->hasWarning() || $flowResult->hasError()) {
                     // TODO エラーメッセージ
@@ -855,7 +821,6 @@ class ShoppingController extends AbstractShoppingController
 
                 $this->entityManager->getConnection()->rollback();
 
-                $this->log($e);
                 $this->addError($e->getMessage());
 
                 return $this->redirectToRoute('shopping_error');
@@ -864,7 +829,7 @@ class ShoppingController extends AbstractShoppingController
 
                 $this->entityManager->getConnection()->rollback();
 
-                $this->addError('front.shopping.system.error');
+                $this->addError('front.shopping.system_error');
 
                 return $this->redirectToRoute('shopping_error');
             }

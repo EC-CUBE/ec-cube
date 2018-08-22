@@ -29,12 +29,10 @@ class OrderStatus extends \Eccube\Entity\Master\AbstractMasterEntity
 {
     /** 新規受付. */
     const NEW = 1;
-    /** 入金待ち. */
-    const PAY_WAIT = 2;
-    /** キャンセル. */
+    /** 注文取消し. */
     const CANCEL = 3;
-    /** 取り寄せ中. */
-    const BACK_ORDER = 4;
+    /** 対応中. */
+    const IN_PROGRESS = 4;
     /** 発送済み. */
     const DELIVERED = 5;
     /** 入金済み. */
@@ -43,10 +41,8 @@ class OrderStatus extends \Eccube\Entity\Master\AbstractMasterEntity
     const PENDING = 7;
     /** 購入処理中. */
     const PROCESSING = 8;
-    /** 対応中 */
-    const IN_PROGRESS = 9;
     /** 返品 */
-    const RETURNED = 10;
+    const RETURNED = 9;
 
     /**
      * 受注一覧画面で, ステータスごとの受注件数を表示するかどうか

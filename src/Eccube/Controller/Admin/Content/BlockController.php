@@ -22,12 +22,11 @@ use Eccube\Form\Type\Admin\BlockType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 class BlockController extends AbstractController
@@ -159,7 +158,7 @@ class BlockController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE, $event);
 
-            $this->addSuccess('admin.register.complete', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
 
             return $this->redirectToRoute('admin_content_block_edit', ['id' => $Block->getId()]);
         }
@@ -172,8 +171,7 @@ class BlockController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete")
+     * @Route("/%eccube_admin_route%/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Block $Block, Filesystem $fs)
     {
@@ -202,7 +200,7 @@ class BlockController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.delete.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
 
             // twigキャッシュの削除
             $cacheDir = $this->getParameter('kernel.cache_dir').'/twig';

@@ -28,11 +28,10 @@ use Eccube\Repository\DeliveryTimeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\PaymentOptionRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class DeliveryController
@@ -250,9 +249,9 @@ class DeliveryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE, $event);
 
-                $this->addSuccess('admin.register.complete', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
 
-                return $this->redirectToRoute('admin_setting_shop_delivery');
+                return $this->redirectToRoute('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]);
             }
         }
 
@@ -263,8 +262,7 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Delivery $Delivery)
     {
@@ -274,7 +272,7 @@ class DeliveryController extends AbstractController
             $this->entityManager->remove($Delivery);
             $this->entityManager->flush();
         } catch (ForeignKeyConstraintViolationException $e) {
-            $this->addError(trans('admin.delete.failed.foreign_key', ['%name%' => $Delivery->getName()]), 'admin');
+            $this->addError(trans('admin.common.delete_error_foreign_key', ['%name%' => $Delivery->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_setting_shop_delivery');
         }
@@ -301,14 +299,13 @@ class DeliveryController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
 
-        $this->addSuccess('admin.delete.complete', 'admin');
+        $this->addSuccess('admin.common.delete_complete', 'admin');
 
         return $this->redirectToRoute('admin_setting_shop_delivery');
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility", methods={"PUT"})
      */
     public function visibility(Request $request, Delivery $Delivery)
     {
@@ -340,8 +337,7 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/sort_no/move", name="admin_setting_shop_delivery_sort_no_move")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery/sort_no/move", name="admin_setting_shop_delivery_sort_no_move", methods={"POST"})
      */
     public function moveSortNo(Request $request)
     {

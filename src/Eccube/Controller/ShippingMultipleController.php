@@ -31,10 +31,10 @@ use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\ShoppingService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ShippingMultipleController extends AbstractShoppingController
 {
@@ -79,7 +79,7 @@ class ShippingMultipleController extends AbstractShoppingController
      * @param PrefRepository $prefRepository
      * @param OrderItemTypeRepository $orderItemTypeRepository
      * @param ShoppingService $shoppingService
-     * @param CartService $cartService,
+     * @param CartService $cartService ,
      * @param OrderHelper $orderHelper
      */
     public function __construct(
@@ -118,7 +118,7 @@ class ShippingMultipleController extends AbstractShoppingController
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
-            $this->addError('front.shopping.order.error');
+            $this->addError('front.shopping.order_error');
 
             return $this->redirectToRoute('shopping_error');
         }
@@ -416,7 +416,9 @@ class ShippingMultipleController extends AbstractShoppingController
                 $count = count($CustomerAddresses);
                 if ($count >= $this->eccubeConfig['eccube_deliv_addr_max']) {
                     return [
-                        'error' => trans('delivery.text.error.max_delivery_address'),
+                        'error' => trans('common.customer_address_count_is_over', [
+                            '%eccube_deliv_addr_max%' => $this->eccubeConfig->get('eccube_deliv_addr_max'),
+                        ]),
                         'form' => $form->createView(),
                     ];
                 }

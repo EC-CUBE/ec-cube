@@ -16,12 +16,13 @@ namespace Eccube\Controller;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ForgotType;
+use Eccube\Form\Type\Front\PassowrdResetType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -32,7 +33,7 @@ class ForgotController extends AbstractController
     /**
      * @var ValidatorInterface
      */
-    protected $recursiveValidator;
+    protected $validator;
 
     /**
      * @var MailService
@@ -52,18 +53,18 @@ class ForgotController extends AbstractController
     /**
      * ForgotController constructor.
      *
-     * @param ValidatorInterface $recursiveValidator
+     * @param ValidatorInterface $validator
      * @param MailService $mailService
      * @param CustomerRepository $customerRepository
      * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(
-        ValidatorInterface $recursiveValidator,
+        ValidatorInterface $validator,
         MailService $mailService,
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory
     ) {
-        $this->recursiveValidator = $recursiveValidator;
+        $this->validator = $validator;
         $this->mailService = $mailService;
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
@@ -142,7 +143,7 @@ class ForgotController extends AbstractController
     }
 
     /**
-     * パスワードリマインダ完了画面.
+     * 再設定URL送信完了画面.
      *
      * @Route("/forgot/complete", name="forgot_complete")
      * @Template("Forgot/complete.twig")
@@ -168,7 +169,7 @@ class ForgotController extends AbstractController
             throw new HttpException\NotFoundHttpException();
         }
 
-        $errors = $this->recursiveValidator->validate(
+        $errors = $this->validator->validate(
             $reset_key,
             [
                 new Assert\NotBlank(),
@@ -180,49 +181,73 @@ class ForgotController extends AbstractController
             ]
         );
 
-        if ('GET' === $request->getMethod()
-            && count($errors) === 0
-        ) {
-            $Customer = $this->customerRepository
-                ->getRegularCustomerByResetKey($reset_key);
-            if (is_null($Customer)) {
-                throw new HttpException\NotFoundHttpException(trans('forgotcontroller.text.error.url'));
-            }
-
-            // パスワードの発行・更新
-            $encoder = $this->encoderFactory->getEncoder($Customer);
-            $pass = $this->customerRepository->getResetPassword();
-            $Customer->setPassword($pass);
-
-            // 発行したパスワードの暗号化
-            if ($Customer->getSalt() === null) {
-                $Customer->setSalt($this->encoderFactory->getEncoder($Customer)->createSalt());
-            }
-            $encPass = $encoder->encodePassword($pass, $Customer->getSalt());
-            $Customer->setPassword($encPass);
-
-            $Customer->setResetKey(null);
-
-            // パスワードを更新
-            $this->entityManager->persist($Customer);
-            $this->entityManager->flush();
-
-            $event = new EventArgs(
-                [
-                    'Customer' => $Customer,
-                ],
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_RESET_COMPLETE, $event);
-
-            // メール送信
-            $this->mailService->sendPasswordResetCompleteMail($Customer, $pass);
-            // ログ出力
-            log_info('reset password complete:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}");
-        } else {
-            throw new HttpException\AccessDeniedHttpException(trans('forgotcontroller.text.error.authorization'));
+        if (count($errors) > 0) {
+            // リセットキーに異常がある場合
+            throw new HttpException\NotFoundHttpException();
         }
 
-        return [];
+        $Customer = $this->customerRepository
+            ->getRegularCustomerByResetKey($reset_key);
+
+        if (null === $Customer) {
+            // リセットキーから会員データが取得できない場合
+            throw new HttpException\NotFoundHttpException();
+        }
+
+        $builder = $this->formFactory
+            ->createNamedBuilder('', PassowrdResetType::class);
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+        $error = null;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // リセットキー・入力メールアドレスで会員情報検索
+            $Customer = $this->customerRepository
+                ->getRegularCustomerByResetKey($reset_key, $form->get('login_email')->getData());
+            if ($Customer) {
+                // パスワードの発行・更新
+                $encoder = $this->encoderFactory->getEncoder($Customer);
+                $pass = $form->get('password')->getData();
+                $Customer->setPassword($pass);
+
+                // 発行したパスワードの暗号化
+                if ($Customer->getSalt() === null) {
+                    $Customer->setSalt($this->encoderFactory->getEncoder($Customer)->createSalt());
+                }
+                $encPass = $encoder->encodePassword($pass, $Customer->getSalt());
+
+                // パスワードを更新
+                $Customer->setPassword($encPass);
+                // リセットキーをクリア
+                $Customer->setResetKey(null);
+
+                // パスワードを更新
+                $this->entityManager->persist($Customer);
+                $this->entityManager->flush();
+
+                $event = new EventArgs(
+                    [
+                        'Customer' => $Customer,
+                    ],
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_RESET_COMPLETE, $event);
+
+                // 完了メッセージを設定
+                $this->addFlash('password_reset_complete', trans('front.forgot.reset_complete'));
+
+                // ログインページへリダイレクト
+                return $this->redirectToRoute('mypage_login');
+            } else {
+                // リセットキー・メールアドレスから会員データが取得できない場合
+                $error = trans('front.forgot.reset_not_found');
+            }
+        }
+
+        return [
+            'error' => $error,
+            'form' => $form->createView(),
+        ];
     }
 }

@@ -18,7 +18,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -33,6 +32,7 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
+use Eccube\Repository\ProductStockRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderPdfService;
@@ -40,14 +40,13 @@ use Eccube\Service\OrderStateMachine;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -101,6 +100,11 @@ class OrderController extends AbstractController
     /** @var OrderPdfRepository */
     protected $orderPdfRepository;
 
+    /**
+     * @var ProductStockRepository
+     */
+    protected $productStockRepository;
+
     /** @var OrderPdfService */
     protected $orderPdfService;
 
@@ -130,6 +134,7 @@ class OrderController extends AbstractController
      * @param OrderStatusRepository $orderStatusRepository
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
+     * @param ProductStockRepository $productStockRepository
      * @param OrderRepository $orderRepository
      * @param OrderPdfRepository $orderPdfRepository
      * @param OrderPdfService $orderPdfService
@@ -145,6 +150,7 @@ class OrderController extends AbstractController
         OrderStatusRepository $orderStatusRepository,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
+        ProductStockRepository $productStockRepository,
         OrderRepository $orderRepository,
         OrderPdfRepository $orderPdfRepository,
         OrderPdfService $orderPdfService,
@@ -160,6 +166,7 @@ class OrderController extends AbstractController
         $this->orderStatusRepository = $orderStatusRepository;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
+        $this->productStockRepository = $productStockRepository;
         $this->orderRepository = $orderRepository;
         $this->orderPdfRepository = $orderPdfRepository;
         $this->orderPdfService = $orderPdfService;
@@ -315,8 +322,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/order/bulk_delete", name="admin_order_bulk_delete")
+     * @Route("/%eccube_admin_route%/order/bulk_delete", name="admin_order_bulk_delete", methods={"POST"})
      */
     public function bulkDelete(Request $request)
     {
@@ -333,7 +339,7 @@ class OrderController extends AbstractController
 
         $this->entityManager->flush();
 
-        $this->addSuccess('admin.order.delete.complete', 'admin');
+        $this->addSuccess('admin.common.delete_complete', 'admin');
 
         return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
     }
@@ -457,8 +463,7 @@ class OrderController extends AbstractController
     /**
      * Update to order status
      *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status")
+     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status", methods={"PUT"})
      *
      * @param Request $request
      * @param Shipping $Shipping
@@ -510,8 +515,19 @@ class OrderController extends AbstractController
                     } else {
                         $result['mail'] = false;
                     }
-                    $this->entityManager->flush($Shipping);
+                    // 対応中・キャンセルの更新時は商品在庫を増減させているので商品情報を更新
+                    if ($OrderStatus->getId() == OrderStatus::IN_PROGRESS || $OrderStatus->getId() == OrderStatus::CANCEL) {
+                        foreach ($Order->getOrderItems() as $OrderItem) {
+                            $ProductClass = $OrderItem->getProductClass();
+                            if ($OrderItem->isProduct() && !$ProductClass->isStockUnlimited()) {
+                                $this->entityManager->flush($ProductClass);
+                                $ProductStock = $this->productStockRepository->findOneBy(['ProductClass' => $ProductClass]);
+                                $this->entityManager->flush($ProductStock);
+                            }
+                        }
+                    }
                     $this->entityManager->flush($Order);
+                    $this->entityManager->flush($Shipping);
 
                     // 会員の場合、購入回数、購入金額などを更新
                     if ($Customer = $Order->getCustomer()) {
@@ -538,8 +554,7 @@ class OrderController extends AbstractController
     /**
      * Update to Tracking number.
      *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number")
+     * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number", methods={"PUT"})
      *
      * @param Request $request
      * @param Shipping $shipping
@@ -559,7 +574,7 @@ class OrderController extends AbstractController
             [
                 new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 new Assert\Regex(
-                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('form.type.admin.nottrackingnumberstyle')]
+                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('admin.order.tracking_number_error')]
                 ),
             ]
         );
@@ -603,7 +618,7 @@ class OrderController extends AbstractController
         $ids = $request->get('ids', []);
 
         if (count($ids) == 0) {
-            $this->addError('admin.order.export.pdf.parameter.not.found', 'admin');
+            $this->addError('admin.order.delivery_note_parameter_error', 'admin');
             log_info('The Order cannot found!');
 
             return $this->redirectToRoute('admin_order');
@@ -615,10 +630,10 @@ class OrderController extends AbstractController
         if (!$OrderPdf) {
             $OrderPdf = new OrderPdf();
             $OrderPdf
-                ->setTitle(trans('admin.order.export.pdf.title.default'))
-                ->setMessage1(trans('admin.order.export.pdf.message1.default'))
-                ->setMessage2(trans('admin.order.export.pdf.message2.default'))
-                ->setMessage3(trans('admin.order.export.pdf.message3.default'));
+                ->setTitle(trans('admin.order.delivery_note_title__default'))
+                ->setMessage1(trans('admin.order.delivery_note_message__default1'))
+                ->setMessage2(trans('admin.order.delivery_note_message__default2'))
+                ->setMessage3(trans('admin.order.delivery_note_message__default3'));
         }
 
         /**

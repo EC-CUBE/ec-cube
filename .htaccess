@@ -10,6 +10,13 @@ DirectoryIndex index.php index.html .ht
     allow from all
 </Files>
 
+# クリックジャッキング対策
+Header always set X-Frame-Options SAMEORIGIN
+
+# XSS対策
+Header set X-XSS-Protection "1; mode=block"
+Header set X-Content-Type-Options nosniff
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
@@ -22,6 +29,6 @@ DirectoryIndex index.php index.html .ht
     # RewriteRule ^(.*) - [E=HTTPS:on]
 
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg)$ [NC]
+    RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>

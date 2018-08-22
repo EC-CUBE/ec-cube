@@ -21,11 +21,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginInstallCommand extends Command
 {
+    protected static $defaultName = 'eccube:plugin:install';
+
     use PluginCommandTrait;
 
     protected function configure()
     {
-        $this->setName('eccube:plugin:install')
+        $this
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
             ->setDescription('Install plugin from local.');
@@ -51,10 +53,9 @@ class PluginInstallCommand extends Command
         if ($code) {
             $pluginDir = $this->pluginService->calcPluginDir($code);
             $this->pluginService->checkPluginArchiveContent($pluginDir);
-            $config = $this->pluginService->readYml($pluginDir.'/config.yml');
-            $event = $this->pluginService->readYml($pluginDir.'/event.yml');
+            $config = $this->pluginService->readConfig($pluginDir);
             $this->pluginService->checkSamePlugin($config['code']);
-            $this->pluginService->postInstall($config, $event, false);
+            $this->pluginService->postInstall($config, false);
 
             $this->clearCache($io);
             $io->success('Installed.');

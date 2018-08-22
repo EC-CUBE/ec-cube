@@ -25,6 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateDummyDataCommand extends Command
 {
+    protected static $defaultName = 'eccube:fixtures:generate';
+
     /**
      * @var Generator
      */
@@ -51,7 +53,6 @@ class GenerateDummyDataCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('eccube:fixtures:generate')
             ->setDescription('Dummy data generator')
             ->addOption('with-locale', null, InputOption::VALUE_REQUIRED, 'Set to the locale.', 'ja_JP')
             ->addOption('without-image', null, InputOption::VALUE_NONE, 'Do not generate images.')
@@ -129,6 +130,16 @@ EOF
         }
         $Deliveries = $this->deliveryRepository->findAll();
         $j = 0;
+        $randomOrderStatus = [
+            OrderStatus::NEW,
+            OrderStatus::CANCEL,
+            OrderStatus::IN_PROGRESS,
+            OrderStatus::DELIVERED,
+            OrderStatus::PAID,
+            OrderStatus::PENDING,
+            OrderStatus::PROCESSING,
+            OrderStatus::RETURNED,
+        ];
         foreach ($Customers as $Customer) {
             $Delivery = $Deliveries[$faker->numberBetween(0, count($Deliveries) - 1)];
             $Product = $Products[$faker->numberBetween(0, $numberOfProducts - 1)];
@@ -136,7 +147,7 @@ EOF
             $discount = $faker->randomNumber(4);
             for ($i = 0; $i < $numberOfOrder; $i++) {
                 $Order = $this->generator->createOrder($Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount);
-                $Status = $this->entityManager->find(OrderStatus::class, $faker->numberBetween(1, 8));
+                $Status = $this->entityManager->find(OrderStatus::class, $faker->randomElement($randomOrderStatus));
                 $Order->setOrderStatus($Status);
                 $Order->setOrderDate($faker->dateTimeThisYear());
                 switch ($output->getVerbosity()) {

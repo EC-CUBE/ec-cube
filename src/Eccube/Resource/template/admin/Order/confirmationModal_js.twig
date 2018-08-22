@@ -12,7 +12,7 @@
                     updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
                     $('#notificationMail').attr('type', 'hidden');
                     $('.notificationMail').hide();
-                    $('#viewEmail').removeClass('collapse').addClass('collapsed');
+                    $('#viewEmail').removeClass('collapsed').addClass('collapsed');
                     ;
                     break;
                 default:
@@ -20,10 +20,10 @@
                     updater = new SimpleStatusUpdate(modal, eventTarget); // bulk-update is always false
                     $('#notificationMail').attr('type', 'checkbox');
                     $('.notificationMail').show();
-                    $('#viewEmail').removeClass('collapsed').addClass('collapse');
+                    $('#viewEmail').removeClass('collapsed').addClass('collapsed');
             }
             $.ajax(updater.getPreviewUrl()).done(function (res) {
-                $('#viewEmail > pre').text(res);
+                $('#viewEmail').html(res);
             });
             $('.modal-title', modal).text(updater.modalTitle);
             $('.modal-body > p.modal-message', modal).text(updater.modalMessage);
@@ -37,8 +37,9 @@
                 })
                 .text(updater.modalButton);
         });
-        // 一括更新
+        // プログレスバーの表示を制御
         $('#bulkChange, .progressModal').on('click', function (e) {
+            //alert(1119);
             var eventTarget = $(e.currentTarget);
             var type = eventTarget.data('type');
             var modal = $('#sentUpdateModal');
@@ -60,7 +61,7 @@
                     }
             }
             $('.modal-title', modal).text(updater.modalTitle);
-            $('.modal-body > p', modal).text("{{ 'admin.shipping.index.827'|trans }}");
+            $('.modal-body > p.modal-message', modal).text("{{ 'admin.order.bulk_action__in_progress_message'|trans }}");
             $('button', modal).hide();
             $('#bulk-options').hide();
             $('.progress', modal).show();
@@ -88,9 +89,9 @@
         this.totalCount = 0;
     }
     ConfirmationModal.prototype = {
-        modalTitle: "{{ 'admin.shipping.index.829'|trans }}",
-        modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
-        modalButton: "{{ 'admin.shipping.index.816'|trans }}",
+        modalTitle: "{{ 'admin.order.to_shipped__confirm_title'|trans }}",
+        modalMessage: "{{ 'admin.order.to_shipped__confirm_message'|trans }}",
+        modalButton: "{{ 'admin.common.execute'|trans }}",
         getPreviewUrl: function () {
             return null;
         },
@@ -110,12 +111,12 @@
         },
         fail: function (result) {
             $('<li><span class="badge badge-danger">ERROR</span> </li>')
-                .append($('<span></span>').text("{{ 'application.text.error.system'|trans }}"))
+                .append($('<span></span>').text("{{ 'admin.common.system_error'|trans }}"))
                 .appendTo('#bulkErrors');
         },
         always: function (result) {
             $('.progress', this.modal).hide();
-            $('.modal-body > p', this.modal).text("{{ 'admin.shipping.index.828'|trans }}");
+            $('.modal-body > p.modal-message', this.modal).text("{{ 'admin.order.bulk_action__complete_message'|trans }}");
             $('#bulkChangeComplete').show();
         },
         getPromises: function (progress, url, data) {
@@ -149,7 +150,7 @@
             value: ConfirmationModal
         },
         modalTitle: {
-            value: "{{ 'admin.order.index.option_bulk_change_status'|trans }}"
+            value: "{{ 'admin.order.change_status'|trans }}"
         },
         getTotalCount: {
             value: function () {
@@ -188,7 +189,7 @@
             value: function (result, progress) {
                 if (result.mail) {
                     this.mailCount++;
-                    this.notifierCompleteMessage = '{{ 'admin.shipping.index.837'|trans }}'.replace(/%count%/, this.mailCount);
+                    this.notifierCompleteMessage = '{{ 'admin.order.shipping_mail_send__complete_message'|trans }}'.replace(/%count%/, this.mailCount);
                 }
                 ConfirmationModal.prototype.progress.call(this, result, progress);
             }
@@ -196,7 +197,7 @@
         always: {
             value: function (result) {
                 ConfirmationModal.prototype.always.call(this, result);
-                $('.modal-body > p', this.modal).text("{{ 'admin.shipping.index.828'|trans }}" + this.notifierCompleteMessage);
+                $('.modal-body > p.modal-message', this.modal).text("{{ 'admin.order.bulk_action__complete_message'|trans }}" + this.notifierCompleteMessage);
             }
         },
         getPromises: {
@@ -222,13 +223,13 @@
             value: SimpleStatusUpdate
         },
         modalTitle: {
-            value: "{{ 'admin.shipping.index.832'|trans }}"
+            value: "{{ 'admin.order.shipping_mail_send__confirm_title'|trans }}"
         },
         modalMessage: {
-            value: "{{ 'admin.shipping.index.833'|trans }}"
+            value: "{{ 'admin.order.shipping_mail_send__confirm_message'|trans }}"
         },
         modalButton: {
-            value: "{{ 'admin.shipping.index.834'|trans }}"
+            value: "{{ 'admin.common.send'|trans }}"
         },
         getPreviewUrl: {
             value: function () {
@@ -261,13 +262,13 @@
             value: SimpleStatusUpdate
         },
         modalTitle: {
-            value: "{{ 'admin.shipping.index.835'|trans }}"
+            value: "{{ 'admin.order.shipping_mail_send__confirm_title'|trans }}"
         },
         modalMessage: {
-            value: "{{ 'admin.shipping.index.836'|trans }}"
+            value: "{{ 'admin.order.shipping_mail_send__confirm_message'|trans }}"
         },
         modalButton: {
-            value: "{{ 'admin.shipping.index.834'|trans }}"
+            value: "{{ 'admin.common.send'|trans }}"
         },
         getPromises: {
             value: function (progress) {

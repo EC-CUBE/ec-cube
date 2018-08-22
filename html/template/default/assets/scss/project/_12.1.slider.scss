@@ -1,0 +1,56 @@
+@import "../mixins/media";
+/*
+トップページ
+
+トップページ スライド部に関する Project コンポーネントを定義します。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+include /assets/tmpl/elements/12.1.slider.pug
++ec-sliderRole
+
+Styleguide 12.1
+*/
+.ec-sliderRole{
+  @include container;
+  margin-bottom: 24px;
+  ul{
+    padding: 0;
+    list-style: none;
+  }
+}
+.ec-sliderItemRole{
+  @include container;
+  margin-bottom: 24px;
+  ul{
+    padding: 0;
+    list-style: none;
+  }
+  .item_nav {
+    display: none;
+    @include media_desktop {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+
+  }
+  .slideThumb{
+    margin-bottom: 25px;
+    width: 33%;
+    opacity: .8;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      opacity: 1;
+    }
+    img {
+      width: 80%;
+    }
+  }
+}
