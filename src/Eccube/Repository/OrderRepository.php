@@ -252,6 +252,9 @@ class OrderRepository extends AbstractRepository
     {
         $qb = $this->createQueryBuilder('o')
             ->select('o, s')
+            ->addSelect('oi', 'p')
+            ->leftJoin('o.OrderItems', 'oi')
+            ->leftJoin('o.Pref', 'p')
             ->innerJoin('o.Shippings', 's');
 
         // order_id_start
@@ -428,7 +431,6 @@ class OrderRepository extends AbstractRepository
         // buy_product_name
         if (isset($searchData['buy_product_name']) && StringUtil::isNotBlank($searchData['buy_product_name'])) {
             $qb
-                ->leftJoin('o.OrderItems', 'oi')
                 ->andWhere('oi.product_name LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
         }

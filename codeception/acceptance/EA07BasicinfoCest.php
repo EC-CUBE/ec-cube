@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\DeliveryEditPage;
 use Page\Admin\DeliveryManagePage;
@@ -60,7 +71,6 @@ class EA07BasicinfoCest
 
         $PaymentManagePage = PaymentManagePage::go($I);
         $I->see('郵便振替', $PaymentManagePage->一覧_支払方法(2));
-
 
         $PaymentManagePage->一覧_上に(2);
         $PaymentManagePage = PaymentManagePage::go($I);
