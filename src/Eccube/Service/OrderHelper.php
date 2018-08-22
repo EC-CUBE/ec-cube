@@ -349,7 +349,7 @@ class OrderHelper
         $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
 
         // 利用可能な支払い方法を抽出.
-        $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);
+        $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true, $Order);
 
         // 初期の支払い方法を設定.
         $Payment = current($Payments);

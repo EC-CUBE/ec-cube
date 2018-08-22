@@ -14,7 +14,7 @@
 namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
+use Eccube\Entity\Payment;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
@@ -128,30 +128,31 @@ class OrderType extends AbstractType
                     return;
                 }
 
-                // 受注明細に含まれる販売種別を抽出.
-                $SaleTypes = array_reduce($Order->getOrderItems()->toArray(), function ($results, $OrderItem) {
-                    /* @var OrderItem $OrderItem */
-                    $ProductClass = $OrderItem->getProductClass();
-                    if (!is_null($ProductClass)) {
-                        $SaleType = $ProductClass->getSaleType();
-                        $results[$SaleType->getId()] = $SaleType;
-                    }
+                $Deliveries = [];
+                foreach ($Order->getShippings() as $shipping) {
+                    $Deliveries[] = $shipping->getDelivery();
+                }
 
-                    return $results;
-                }, []);
-
-                // 販売種別に紐づく配送業者を抽出
-                $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
                 // 利用可能な支払い方法を抽出.
-                $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);
+                $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true, $Order);
 
                 $form = $event->getForm();
+
+                $oldPayment = $Order->getPayment();
+                if (!$oldPayment || !array_key_exists($oldPayment->getId(), $Payments)) {
+                    if (count($Payments)) {
+                        $defaultPayment = current($Payments);
+                        $Order->setPayment($defaultPayment);
+                        $Order->setPaymentMethod($defaultPayment->getMethod());
+                    }
+                }
+
                 $form->add(
                     'Payment',
                     EntityType::class,
                     [
                         'class' => 'Eccube\Entity\Payment',
-                        'choice_label' => function ($Payment) {
+                        'choice_label' => function (Payment $Payment) {
                             return $Payment->getMethod();
                         },
                         'expanded' => true,

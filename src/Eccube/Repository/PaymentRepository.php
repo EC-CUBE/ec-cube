@@ -14,6 +14,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\Query;
+use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -111,29 +112,50 @@ class PaymentRepository extends AbstractRepository
      * 共通の支払方法を取得
      *
      * @param $deliveries
+     * @param bool $returnType
+     * @param Order $Order
      *
      * @return array
      */
-    public function findAllowedPayments($deliveries, $returnType = false)
+    public function findAllowedPayments($deliveries, $returnType = false, Order $Order = null)
     {
+        $deliveries = array_unique($deliveries);
         $payments = [];
-        $saleTypes = [];
+        $isFirstLoop = true;
+        $totalPayment = 0;
+        if (!is_null($Order)) {
+            $totalPayment = $Order->getSubtotal();
+        }
         foreach ($deliveries as $Delivery) {
+            $paymentTmp = [];
             $p = $this->findPayments($Delivery, $returnType);
             if ($p == null) {
                 continue;
             }
             foreach ($p as $payment) {
-                $payments[$payment['id']] = $payment;
-                $saleTypes[$Delivery->getSaleType()->getId()][$payment['id']] = true;
-            }
-        }
-
-        foreach ($payments as $key => $payment) {
-            foreach ($saleTypes as $row) {
-                if (!isset($row[$payment['id']])) {
-                    unset($payments[$key]);
+                if (empty($totalPayment)) {
+                    $paymentTmp[$payment['id']] = $payment;
                     continue;
+                }
+                if (is_null($payment['rule_min'])
+                    || $payment['rule_min'] <= $totalPayment
+                ) {
+                    if (is_null($payment['rule_max'])
+                        || ($payment['rule_max'] && $payment['rule_max'] >= $totalPayment)
+                    ) {
+                        $paymentTmp[$payment['id']] = $payment;
+                    }
+                }
+            }
+
+            if ($isFirstLoop) {
+                $payments = $paymentTmp;
+                $isFirstLoop = false;
+            } else {
+                $payments = array_intersect_key($payments, $paymentTmp);
+
+                if (count($payments) == 0) {
+                    break;
                 }
             }
         }

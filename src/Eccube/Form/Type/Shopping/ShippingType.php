@@ -17,6 +17,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Service\ShoppingService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -45,17 +46,28 @@ class ShippingType extends AbstractType
     protected $deliveryFeeRepository;
 
     /**
+     * @var ShoppingService
+     */
+    protected $shoppingSerive;
+
+    /**
      * ShippingType constructor.
      *
      * @param EccubeConfig $eccubeConfig
      * @param DeliveryRepository $deliveryRepository
      * @param DeliveryFeeRepository $deliveryFeeRepository
+     * @param ShoppingService $shoppingSerive
      */
-    public function __construct(EccubeConfig $eccubeConfig, DeliveryRepository $deliveryRepository, DeliveryFeeRepository $deliveryFeeRepository)
-    {
+    public function __construct(
+        EccubeConfig $eccubeConfig,
+        DeliveryRepository $deliveryRepository,
+        DeliveryFeeRepository $deliveryFeeRepository,
+        ShoppingService $shoppingSerive
+    ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->deliveryRepository = $deliveryRepository;
         $this->deliveryFeeRepository = $deliveryFeeRepository;
+        $this->shoppingSerive = $shoppingSerive;
     }
 
     /**
@@ -93,6 +105,7 @@ class ShippingType extends AbstractType
 
                 // 販売種別に紐づく配送業者を取得.
                 $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
+                $Deliveries = $this->shoppingSerive->filterDeliveries($Deliveries, $Shipping->getOrder());
 
                 // 配送業者のプルダウンにセット.
                 $form = $event->getForm();
