@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Master\OrderStatus;
 use Page\Admin\CsvSettingsPage;
@@ -40,7 +51,7 @@ class EA04OrderCest
         $I->see('検索結果：0件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         OrderManagePage::go($I)->詳細検索_電話番号('あああ');
-        $I->see('検索条件に誤りがあります。', OrderManagePage::$検索結果_エラーメッセージ);
+        $I->see('検索条件に誤りがあります', OrderManagePage::$検索結果_エラーメッセージ);
     }
 
     public function order_受注CSVダウンロード(\AcceptanceTester $I)
@@ -124,9 +135,9 @@ class EA04OrderCest
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::NEW);
+        $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::NEW);
 
-        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
+        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getCompanyName());
 
         $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
@@ -155,7 +166,7 @@ class EA04OrderCest
             ->入力_支払方法(['4' => '郵便振替'])
             ->受注情報登録();
 
-        $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
+        $I->see('保存しました', OrderEditPage::$登録完了メッセージ);
 
         /* ステータス変更 */
         $OrderRegisterPage
@@ -163,7 +174,7 @@ class EA04OrderCest
             ->入力_受注ステータス(['3' => '入金済み'])
             ->受注情報登録();
 
-        $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
+        $I->see('保存しました', OrderEditPage::$登録完了メッセージ);
 
         /* 明細の削除 */
         $itemName = $OrderRegisterPage->明細の項目名を取得(1);
@@ -172,13 +183,13 @@ class EA04OrderCest
         $I->wait(2);
 
         // before submit
-        $I->dontSee($itemName, "#table-form-field");
+        $I->dontSee($itemName, '#table-form-field');
 
         // after submit
         $OrderRegisterPage->受注情報登録();
-        $I->dontSee($itemName, "#table-form-field");
+        $I->dontSee($itemName, '#table-form-field');
 
-        $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
+        $I->see('保存しました', OrderEditPage::$登録完了メッセージ);
     }
 
     public function order_受注削除(\AcceptanceTester $I)
@@ -200,7 +211,7 @@ class EA04OrderCest
             ->一覧_削除()
             ->Accept_削除();
 
-        $I->see('受注情報を削除しました', ['css' => '#page_admin_order > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span']);
+        $I->see('削除しました', ['css' => '#page_admin_order > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span']);
         $I->assertNotEquals($OrderNumForDel, $OrderListPage->一覧_注文番号(1));
 
         // 削除キャンセル
@@ -234,6 +245,7 @@ class EA04OrderCest
         $I->resetEmails();
 
         OrderManagePage::go($I)
+            ->件数変更(10)
             ->一覧_全選択()
             ->一括メール送信();
 
@@ -247,7 +259,7 @@ class EA04OrderCest
         $OrderRegisterPage = OrderEditPage::go($I)->受注情報登録();
 
         /* 異常系 */
-        $I->dontSee('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
+        $I->dontSee('保存しました', OrderEditPage::$登録完了メッセージ);
 
         /* 正常系 */
         $OrderRegisterPage
@@ -268,7 +280,7 @@ class EA04OrderCest
             ->商品検索結果_選択(1)
             ->受注情報登録();
 
-        $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
+        $I->see('保存しました', OrderEditPage::$登録完了メッセージ);
     }
 
     public function order_pdfページをエクスポートする(\AcceptanceTester $I)
@@ -289,7 +301,7 @@ class EA04OrderCest
         $I->switchToWindow('newwin');
 
         // Check redirect to form pdf information
-        $I->see('受注管理帳票出力', OrderManagePage::$タイトル要素);
+        $I->see('納品書出力受注管理', OrderManagePage::$タイトル要素);
 
         $I->closeTab();
     }
@@ -311,7 +323,7 @@ class EA04OrderCest
         // 別ウィンドウ
         $I->switchToWindow('newwin');
 
-        $I->see('受注管理帳票出力', OrderManagePage::$タイトル要素);
+        $I->see('納品書出力受注管理', OrderManagePage::$タイトル要素);
 
         $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note1'], 'Test note first');
         $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note2'], 'Test note second');
@@ -345,7 +357,7 @@ class EA04OrderCest
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 2, array());
+        $newOrders = $createOrders($createCustomer(), 2, []);
         $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::NEW);
         foreach ($newOrders as $newOrder) {
             $newOrder->setOrderStatus($Status);
@@ -393,7 +405,7 @@ class EA04OrderCest
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 2, array());
+        $newOrders = $createOrders($createCustomer(), 2, []);
         $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::NEW);
         foreach ($newOrders as $newOrder) {
             $newOrder->setOrderStatus($Status);
@@ -422,11 +434,3 @@ class EA04OrderCest
         $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
     }
 }
-
-
-
-
-
-
-
-

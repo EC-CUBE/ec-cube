@@ -54,11 +54,12 @@ class KanaType extends AbstractType
         $resolver->setDefaults([
             'lastname_options' => [
                 'attr' => [
-                    'placeholder' => 'Kana01',
+                    'placeholder' => 'common.last_name_kana',
                 ],
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
+                        'message' => trans('form.type.notkanastyle'),
                     ]),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_kana_len'],
@@ -67,11 +68,12 @@ class KanaType extends AbstractType
             ],
             'firstname_options' => [
                 'attr' => [
-                    'placeholder' => 'Kana02',
+                    'placeholder' => 'common.first_name_kana',
                 ],
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
+                        'message' => trans('form.type.notkanastyle'),
                     ]),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_kana_len'],

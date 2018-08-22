@@ -19,10 +19,10 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -161,7 +161,7 @@ class CsvController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE, $event);
 
-            $this->addSuccess('admin.shop.csv.save.complete', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
 
             return $this->redirectToRoute('admin_setting_shop_csv', ['id' => $CsvType->getId()]);
         }

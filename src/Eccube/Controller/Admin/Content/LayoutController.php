@@ -21,8 +21,6 @@ use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\PageLayoutRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,6 +29,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Twig\Environment as Twig;
 
@@ -82,8 +81,7 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
+     * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete", methods={"DELETE"})
      *
      * @param Layout $Layout
      *
@@ -103,7 +101,7 @@ class LayoutController extends AbstractController
         $this->entityManager->remove($Layout);
         $this->entityManager->flush($Layout);
 
-        $this->addSuccess('admin.delete.complete', 'admin');
+        $this->addSuccess('admin.common.delete_complete', 'admin');
 
         return $this->redirectToRoute('admin_content_layout');
     }
@@ -159,7 +157,6 @@ class LayoutController extends AbstractController
                         new NotBlank(),
                     ],
                     'required' => false,
-                    'label' => trans('layout.label'),
                 ]
             )->add(
                 'DeviceType',
@@ -216,7 +213,7 @@ class LayoutController extends AbstractController
                 $this->entityManager->flush($BlockPosition);
             }
 
-            $this->addSuccess('admin.register.complete', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
 
             return $this->redirectToRoute('admin_content_layout_edit', ['id' => $Layout->getId()]);
         }
@@ -229,8 +226,7 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Method("GET")
-     * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block")
+     * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block", methods={"GET"})
      *
      * @param Request $request
      * @param Twig $twig
@@ -256,8 +252,8 @@ class LayoutController extends AbstractController
         }
 
         $source = $twig->getLoader()
-                ->getSourceContext('Block/'.$Block->getFileName().'.twig')
-                ->getCode();
+            ->getSourceContext('Block/'.$Block->getFileName().'.twig')
+            ->getCode();
 
         return $this->json([
             'id' => $Block->getId(),

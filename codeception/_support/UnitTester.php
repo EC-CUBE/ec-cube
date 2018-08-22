@@ -1,26 +1,21 @@
 <?php
 
-
-/**
- * Inherited Methods
- * @method void wantToTest($text)
- * @method void wantTo($text)
- * @method void execute($callable)
- * @method void expectTo($prediction)
- * @method void expect($prediction)
- * @method void amGoingTo($argumentation)
- * @method void am($role)
- * @method void lookForwardTo($achieveValue)
- * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
+/*
+ * This file is part of EC-CUBE
  *
- * @SuppressWarnings(PHPMD)
-*/
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 class UnitTester extends \Codeception\Actor
 {
     use _generated\UnitTesterActions;
 
-    /**
+    /*
      * Define custom actions here
      */
 }

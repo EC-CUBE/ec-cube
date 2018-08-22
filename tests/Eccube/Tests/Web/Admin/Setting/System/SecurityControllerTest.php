@@ -74,7 +74,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         // Message
         $outPut = $this->container->get('session')->getFlashBag()->get('eccube.admin.success');
         $this->actual = array_shift($outPut);
-        $this->expected = 'admin.system.security.route.dir.complete';
+        $this->expected = 'admin.setting.system.security.admin_url_changed';
         $this->verify();
 
         self::assertRegexp('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', file_get_contents($this->envFile));

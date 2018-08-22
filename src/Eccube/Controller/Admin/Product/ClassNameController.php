@@ -19,13 +19,12 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ClassNameType;
 use Eccube\Repository\ClassNameRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ClassNameController extends AbstractController
 {
@@ -54,7 +53,7 @@ class ClassNameController extends AbstractController
         if ($id) {
             $TargetClassName = $this->classNameRepository->find($id);
             if (!$TargetClassName) {
-                throw new NotFoundHttpException(trans('classname.text.error.no_option'));
+                throw new NotFoundHttpException();
             }
         } else {
             $TargetClassName = new \Eccube\Entity\ClassName();
@@ -103,7 +102,7 @@ class ClassNameController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.class_name.save.complete', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_class_name');
             }
@@ -116,7 +115,7 @@ class ClassNameController extends AbstractController
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->classNameRepository->save($editForm->getData());
 
-                    $this->addSuccess('admin.class_name.save.complete', 'admin');
+                    $this->addSuccess('admin.common.save_complete', 'admin');
 
                     return $this->redirectToRoute('admin_product_class_name');
                 }
@@ -136,8 +135,7 @@ class ClassNameController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/product/class_name/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_class_name_delete")
+     * @Route("/%eccube_admin_route%/product/class_name/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_class_name_delete", methods={"DELETE"})
      */
     public function delete(Request $request, ClassName $ClassName)
     {
@@ -151,22 +149,21 @@ class ClassNameController extends AbstractController
             $event = new EventArgs(['ClassName' => $ClassName], $request);
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.class_name.delete.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
 
             log_info('商品規格削除完了', [$ClassName->getId()]);
         } catch (\Exception $e) {
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('classname.text.name')]);
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $ClassName->getName()]);
             $this->addError($message, 'admin');
 
-            log_error('商品企画削除エラー', [$ClassName->getId(), $e]);
+            log_error('商品規格削除エラー', [$ClassName->getId(), $e]);
         }
 
         return $this->redirectToRoute('admin_product_class_name');
     }
 
     /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/product/class_name/sort_no/move", name="admin_product_class_name_sort_no_move")
+     * @Route("/%eccube_admin_route%/product/class_name/sort_no/move", name="admin_product_class_name_sort_no_move", methods={"POST"})
      */
     public function moveSortNo(Request $request)
     {

@@ -20,8 +20,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -130,9 +129,9 @@ class MemberController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
 
-            $this->addSuccess('admin.member.save.complete', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
 
-            return $this->redirectToRoute('admin_setting_system_member');
+            return $this->redirectToRoute('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         }
 
         $this->tokenStorage->getToken()->setUser($LoginMember);
@@ -200,9 +199,9 @@ class MemberController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
 
-            $this->addSuccess('admin.member.save.complete', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
 
-            return $this->redirectToRoute('admin_setting_system_member');
+            return $this->redirectToRoute('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         }
 
         $this->tokenStorage->getToken()->setUser($LoginMember);
@@ -214,8 +213,7 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up", methods={"PUT"})
      */
     public function up(Request $request, Member $Member)
     {
@@ -224,19 +222,18 @@ class MemberController extends AbstractController
         try {
             $this->memberRepository->up($Member);
 
-            $this->addSuccess('admin.member.up.complete', 'admin');
+            $this->addSuccess('admin.common.move_complete', 'admin');
         } catch (\Exception $e) {
             log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
 
-            $this->addError('admin.member.up.error', 'admin');
+            $this->addError('admin.common.move_error', 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_system_member');
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down", methods={"PUT"})
      */
     public function down(Request $request, Member $Member)
     {
@@ -245,19 +242,18 @@ class MemberController extends AbstractController
         try {
             $this->memberRepository->down($Member);
 
-            $this->addSuccess('admin.member.down.complete', 'admin');
+            $this->addSuccess('admin.common.move_complete', 'admin');
         } catch (\Exception $e) {
             log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
 
-            $this->addError('admin.member.down.error', 'admin');
+            $this->addError('admin.common.move_error', 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_system_member');
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Member $Member)
     {
@@ -276,18 +272,18 @@ class MemberController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.member.delete.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
 
             log_info('メンバー削除完了', [$Member->getId()]);
         } catch (ForeignKeyConstraintViolationException $e) {
             log_info('メンバー削除エラー', [$Member->getId()]);
 
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Member->getName()]);
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Member->getName()]);
             $this->addError($message, 'admin');
         } catch (\Exception $e) {
             log_info('メンバー削除エラー', [$Member->getId(), $e]);
 
-            $message = trans('admin.delete.failed');
+            $message = trans('admin.common.delete_error');
             $this->addError($message, 'admin');
         }
 

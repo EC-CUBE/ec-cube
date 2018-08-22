@@ -27,8 +27,6 @@ use Eccube\Repository\ShippingRepository;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Service\TaxRuleService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -37,6 +35,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ShippingController extends AbstractController
@@ -217,8 +216,8 @@ class ShippingController extends AbstractController
                 }
                 $this->entityManager->flush();
 
-                $this->addSuccess('admin.shipping.edit.save.complete', 'admin');
-                $this->addInfo('admin.shipping.edit.save.info', 'admin');
+                $this->addInfo('admin.order.shipping_save_message', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
                 log_info('出荷登録完了', [$Order->getId()]);
 
                 return $this->redirectToRoute('admin_shipping_edit', ['id' => $Order->getId()]);
@@ -227,7 +226,7 @@ class ShippingController extends AbstractController
                 $this->addError('admin.flash.register_failed', 'admin');
             }
         } elseif ($form->isSubmitted() && $request->get('mode') == 'register' && $form->getErrors(true)) {
-            $this->addError('admin.flash.register_failed', 'admin');
+            $this->addError('admin.common.save_error', 'admin');
         }
 
         // 商品検索フォーム
@@ -265,12 +264,11 @@ class ShippingController extends AbstractController
      */
     public function previewShippingNotifyMail(Shipping $Shipping)
     {
-        return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder()));
+        return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder(), null, true));
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail")
+     * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail", methods={"PUT"})
      *
      * @param Shipping $Shipping
      *

@@ -24,9 +24,9 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\ShoppingService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -196,7 +196,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     {
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
-            $this->addError('front.shopping.order.error');
+            $this->addError('front.shopping.order_error');
 
             return $this->redirectToRoute('shopping_error');
         }
@@ -270,7 +270,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
             if (!$Order) {
                 log_info('カートが存在しません');
-                $this->addError('front.shopping.order.error');
+                $this->addError('front.shopping.order_error');
 
                 return $this->redirectToRoute('shopping_error');
             }
@@ -361,7 +361,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
                 new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
-        ]);
+            ]);
 
         $errors[] = $this->validator->validate(
             $data['customer_company_name'],
