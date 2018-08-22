@@ -356,8 +356,7 @@ class CustomerRepository extends AbstractRepository
 
         $arr = [
             OrderStatus::NEW,
-            OrderStatus::PAY_WAIT,
-            OrderStatus::BACK_ORDER,
+            OrderStatus::IN_PROGRESS,
             OrderStatus::DELIVERED,
             OrderStatus::PAID,
         ];

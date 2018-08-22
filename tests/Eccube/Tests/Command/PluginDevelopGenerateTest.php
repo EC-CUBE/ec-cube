@@ -336,12 +336,6 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
         $pluginList = $entityManager->getRepository('\Eccube\\Entity\Plugin')->findBy(['code' => $code]);
         if ($pluginList) {
             foreach ($pluginList as $plugin) {
-                $pluginHandlerList = $entityManager->getRepository('\Eccube\Entity\PluginEventHandler')->findBy(['plugin_id' => $plugin->getId()]);
-                if ($pluginHandlerList) {
-                    foreach ($pluginHandlerList as $pluginHandler) {
-                        $entityManager->remove($pluginHandler);
-                    }
-                }
                 $entityManager->remove($plugin);
             }
             $entityManager->flush();

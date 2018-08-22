@@ -23,7 +23,7 @@
                     $('#viewEmail').removeClass('collapsed').addClass('collapsed');
             }
             $.ajax(updater.getPreviewUrl()).done(function (res) {
-                $('#viewEmail > pre').text(res);
+                $('#viewEmail').html(res);
             });
             $('.modal-title', modal).text(updater.modalTitle);
             $('.modal-body > p.modal-message', modal).text(updater.modalMessage);
