@@ -554,6 +554,7 @@ class Generator
             ->setUsePoint(0)    // TODO
             ->setOrderNo(sha1(StringUtil::random()))
         ;
+
         $this->entityManager->persist($Order);
         $this->entityManager->flush($Order);
         if (!is_object($Delivery)) {

@@ -51,13 +51,6 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
         private $code;
 
         /**
-         * @var string
-         *
-         * @ORM\Column(name="class_name", type="string", length=255)
-         */
-        private $class_name;
-
-        /**
          * @var boolean
          *
          * @ORM\Column(name="enabled", type="boolean", options={"default":false})
@@ -91,21 +84,6 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
          * @ORM\Column(name="update_date", type="datetimetz")
          */
         private $update_date;
-
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\PluginEventHandler", mappedBy="Plugin", cascade={"persist","remove"})
-         */
-        private $PluginEventHandlers;
-
-        /**
-         * Constructor
-         */
-        public function __construct()
-        {
-            $this->PluginEventHandlers = new \Doctrine\Common\Collections\ArrayCollection();
-        }
 
         /**
          * Get id.
@@ -163,30 +141,6 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
         public function getCode()
         {
             return $this->code;
-        }
-
-        /**
-         * Set className.
-         *
-         * @param string $className
-         *
-         * @return Plugin
-         */
-        public function setClassName($className)
-        {
-            $this->class_name = $className;
-
-            return $this;
-        }
-
-        /**
-         * Get className.
-         *
-         * @return string
-         */
-        public function getClassName()
-        {
-            return $this->class_name;
         }
 
         /**
@@ -307,42 +261,6 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
         public function getUpdateDate()
         {
             return $this->update_date;
-        }
-
-        /**
-         * Add pluginEventHandler.
-         *
-         * @param \Eccube\Entity\PluginEventHandler $pluginEventHandler
-         *
-         * @return Plugin
-         */
-        public function addPluginEventHandler(\Eccube\Entity\PluginEventHandler $pluginEventHandler)
-        {
-            $this->PluginEventHandlers[] = $pluginEventHandler;
-
-            return $this;
-        }
-
-        /**
-         * Remove pluginEventHandler.
-         *
-         * @param \Eccube\Entity\PluginEventHandler $pluginEventHandler
-         *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removePluginEventHandler(\Eccube\Entity\PluginEventHandler $pluginEventHandler)
-        {
-            return $this->PluginEventHandlers->removeElement($pluginEventHandler);
-        }
-
-        /**
-         * Get pluginEventHandlers.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getPluginEventHandlers()
-        {
-            return $this->PluginEventHandlers;
         }
     }
 }

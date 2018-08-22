@@ -125,10 +125,7 @@ file that was distributed with this source code.
                                     <div class="d-block border border-top-0 border-left-0 border-right-0">
                                         <a href="{{ url('admin_order', { 'order_status_id': OrderStatus.id }) }}" class="p-3 d-block">
                                             <div class="row align-items-center">
-                                                <div class="col-2 align-middle text-center">
-                                                    <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
-                                                </div>
-                                                <div class="col p-0">
+                                                <div class="col align-middle">
                                                     <span class="align-middle">{{ OrderStatus.name }}</span>
                                                 </div>
                                                 <div class="col-auto text-right align-middle">
@@ -149,10 +146,10 @@ file that was distributed with this source code.
                                     <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
                                 </div>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body pt-0">
                                 <div class="row text-center border-bottom mb-3">
                                     <div class="col-4 py-2 border-right">
-                                        <div class="h4">
+                                        <div class="h3">
                                             {% set amount = salesThisMonth is empty ? 0 : salesThisMonth.order_amount %}
                                             {% set count = salesThisMonth is empty ? 0 : salesThisMonth.order_count %}
                                             {{ 'admin.home.sales_summany_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
@@ -160,7 +157,7 @@ file that was distributed with this source code.
                                         <small>{{ 'admin.home.sales_summany_this_month'|trans }}</small>
                                     </div>
                                     <div class="col-4 py-2 border-right">
-                                        <div class="h4">
+                                        <div class="h3">
                                             {% set amount = salesToday is empty ? 0 : salesToday.order_amount %}
                                             {% set count = salesToday is empty ? 0 : salesToday.order_count %}
                                             {{ 'admin.home.sales_summany_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
@@ -168,7 +165,7 @@ file that was distributed with this source code.
                                         <small>{{ 'admin.home.sales_summany_today'|trans }}</small>
                                     </div>
                                     <div class="col-4 py-2">
-                                        <div class="h4">
+                                        <div class="h3">
                                             {% set amount = salesYesterday is empty ? 0 : salesYesterday.order_amount %}
                                             {% set count = salesYesterday is empty ? 0 : salesYesterday.order_count %}
                                             {{ 'admin.home.sales_summany_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
@@ -217,8 +214,7 @@ file that was distributed with this source code.
                     <div class="col mb-4">
                         <div id="shop-statistical" class="card rounded border-0 h-100">
                             <div class="card-header">
-                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                     title="Tooltip">
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
                                     <span class="card-title">{{ 'admin.home.shop_status_title'|trans }}</span>
                                     <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
                                 </div>
@@ -274,13 +270,30 @@ file that was distributed with this source code.
                     </div>
                     <div class="col mb-4">
                         <div id="ec-cube-plugin" class="card rounded border-0 h-100">
-                            <div class="card-header">
+                            <div class="card-header border-bottom-0">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
                                     <span class="card-title">{{ 'admin.home.recommend_plugins_title'|trans }}</span>
                                 </div>
                             </div>
-                            <div class="card-body p-0">
-                                {# todo おすすめプラグインを設定 #}
+                            <div class="card-body py-0">
+                                {% for plugin in recommendedPlugins %}
+                                    <div class="row py-3 border border-bottom-0 border-left-0 border-right-0">
+                                        <div class="col-5 col-md-4">
+                                            <a href="{{ plugin.store_url }}" target="_blank" title="{{ plugin.name }}">
+                                                <img src="{{ plugin.image }}" class="w-100" alt="{{ plugin.name }}">
+                                            </a>
+                                        </div>
+                                        <div class="col-7 col-md-8 pl-0">
+                                            <a href="{{ plugin.store_url }}" target="_blank">{{ plugin.name }}</a>
+                                            <p class="m-0 pt-2">
+                                                {{ plugin.short_description }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="card-footer">
+                                > <a href="https://www.ec-cube.net/owners/" target="_blank">{{ 'admin.home.recommend_plugins.owner_store'|trans }}</a>
                             </div>
                         </div><!-- /#ec-cube-plugin -->
                     </div>

@@ -55,6 +55,18 @@ file that was distributed with this source code.
                             {% if pluginDetail.update_status == 1 %}
                                 <a href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}"
                                    class="btn btn-ec-regular">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
+                                <ul class="plugin-meta dl-horizontal">
+                                    <li class="plugin-version">{{ 'admin.store.plugin_table_official.917'|trans({'%version%' : pluginDetail.version}) }}</li>
+                                    <li class="plugin-version">
+                                        {% set versions = '' %}
+                                        {% for version in pluginDetail.supported_versions %}
+                                            {% set versions = versions ~ version %}
+                                            {%- if loop.last == false%}{% set versions = versions ~ ',' %}{% endif -%}
+                                        {% endfor %}
+                                        {{ 'admin.store.plugin_table_official.918'|trans({'%versions%' : versions}) }}
+                                    </li>
+                                    <li class="plugin-update">{{ 'admin.store.plugin_table_official.919'|trans({'%update_date%' : pluginDetail.update_date|time_ago}) }}</li>
+                                </ul>
                             {% else %}
                                 <p class="mb-0">{{ 'admin.store.plugin_table_official.920'|trans }}。</p>
                             {% endif %}
@@ -70,7 +82,7 @@ file that was distributed with this source code.
                                                data-toggle="modal"
                                                data-target="#confirmModal-{{ Plugin.id }}"
                                                class="btn btn-ec-actionIcon">
-                                                <i class="fa fa-close fa-lg text-secondary" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"></i>
+                                                <i class="fa fa-close fa-lg text-secondary" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}"></i>
                                             </a>
 
                                             <div class="modal fade" id="confirmModal-{{ Plugin.id }}" tabindex="-1"
@@ -92,14 +104,14 @@ file that was distributed with this source code.
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-ec-sub" type="button"
-                                                                    data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                                    data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
                                                             </button>
                                                             <a href="{{ url('admin_store_plugin_delete_confirm', { id : Plugin.id }) }}"
                                                                     {{ csrf_token_for_anchor() }}
                                                                class="btn btn-ec-delete"
                                                                data-confirm="false"
                                                                data-method="delete">
-                                                                {{ 'common.label.delete'|trans }}
+                                                                {{ 'admin.common.delete'|trans }}
                                                             </a>
                                                         </div>
                                                     </div>
@@ -134,8 +146,6 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                             </div>
-                        {% else %}
-                            <a href="#" class="btn btn-ec-regular">{{ 'admin.store.plugin_confirm.821'|trans }}</a>
                         {% endif %}
                     </td>
                 </tr>

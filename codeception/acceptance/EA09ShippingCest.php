@@ -50,7 +50,7 @@ class EA09ShippingCest
         $createOrders = Fixtures::get('createOrders');
         $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::IN_PROGRESS);
 
-        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
+        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getCompanyName());
 
         $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
@@ -107,7 +107,7 @@ class EA09ShippingCest
         $createOrders = Fixtures::get('createOrders');
         $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::IN_PROGRESS);
 
-        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
+        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getCompanyName());
 
         $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
