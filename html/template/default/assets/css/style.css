@@ -8393,5 +8393,15 @@ Styleguide 22.1
     width: 33.33333%;
   }
 }
+  @media only screen and (max-width: 410px){
+
+  .ec-cartRow .ec-cartRow__delColumn{
+    width: 8%;
+  }
+
+  .ec-cartRow .ec-cartRow__amountColumn{
+    width: 24%;
+  }
+}
 
 /*# sourceMappingURL=maps/style.css.map */

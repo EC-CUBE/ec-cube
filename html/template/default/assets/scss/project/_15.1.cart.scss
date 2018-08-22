@@ -332,6 +332,14 @@ Styleguide 15.1.4
       display: table-cell;
     }
   }
+  @include media_phone{
+    .ec-cartRow__delColumn {
+      width: 8%;
+    }
+    .ec-cartRow__amountColumn {
+      width: 24%;
+    }
+  };
 }
 
 /*
