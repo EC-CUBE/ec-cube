@@ -196,7 +196,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     {
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
-            $this->addError('front.shopping.order.error');
+            $this->addError('front.shopping.order_error');
 
             return $this->redirectToRoute('shopping_error');
         }
@@ -270,7 +270,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
             if (!$Order) {
                 log_info('カートが存在しません');
-                $this->addError('front.shopping.order.error');
+                $this->addError('front.shopping.order_error');
 
                 return $this->redirectToRoute('shopping_error');
             }

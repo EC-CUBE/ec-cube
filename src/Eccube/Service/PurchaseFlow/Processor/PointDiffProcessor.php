@@ -150,11 +150,15 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             return false;
         }
 
+        if (!$itemHolder->getOrderStatus()) {
+            return false;
+        }
+
         switch ($itemHolder->getOrderStatus()->getId()) {
             case OrderStatus::NEW:
-            case OrderStatus::PAID:
             case OrderStatus::IN_PROGRESS:
             case OrderStatus::DELIVERED:
+            case OrderStatus::PAID:
                 break;
             default:
                 return false;

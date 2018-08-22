@@ -297,7 +297,7 @@ class EditController extends AbstractController
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
 
-                        $this->addSuccess('admin.order.save.complete', 'admin');
+                        $this->addSuccess('admin.common.save_complete', 'admin');
 
                         log_info('受注登録完了', [$TargetOrder->getId()]);
 
@@ -630,7 +630,8 @@ class EditController extends AbstractController
             $criteria
                 ->where($criteria->expr()->andX(
                     $criteria->expr()->neq('id', OrderItemType::PRODUCT),
-                    $criteria->expr()->neq('id', OrderItemType::TAX)
+                    $criteria->expr()->neq('id', OrderItemType::TAX),
+                    $criteria->expr()->neq('id', OrderItemType::POINT)
                 ))
                 ->orderBy(['sort_no' => 'ASC']);
 

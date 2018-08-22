@@ -13,17 +13,16 @@ file that was distributed with this source code.
 {% block main %}
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>パスワード発行メールの送信 完了</h1>
+            <h1>{{ 'front.forgot.complete_title'|trans }}</h1>
         </div>
     </div>
     <div class="ec-forgetCompleteRole">
         <div class="ec-off3Grid ec-text-ac">
             <div class="ec-off3Grid__cell">
                 <div class="ec-reportHeading">
-                    <h2>パスワード再発行メールの送信が完了しました。</h2>
+                    <h2>{{ 'front.forgot.complete_message__title'|trans }}</h2>
                 </div>
-                <p class="ec-reportDescription">ご登録メールアドレスにパスワードを再発行するためのメールを送信いたしました。<br>メールの内容をご確認いただきますよう、お願いいたします。</p>
-                <p class="ec-reportDescription">※メールが届かない場合はメールアドレスをご確認の上、再度お試しください。</p>
+                <p class="ec-reportDescription">{{ 'front.forgot.complete_message__body'|trans }}</p>
             </div>
         </div>
     </div>

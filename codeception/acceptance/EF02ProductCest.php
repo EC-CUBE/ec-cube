@@ -1,7 +1,17 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
-use Page\Front\CartPage;
 use Page\Front\ProductDetailPage;
 use Page\Front\ProductListPage;
 use Page\Front\TopPage;
@@ -45,7 +55,7 @@ class EF02ProductCest
         $topPage->カテゴリ選択(['キッチンツール']);
 
         // 各商品のサムネイルが表示される デフォルトは価格順
-        $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[1]"]);
+        $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[2]"]);
         $pPos = 0;
         $fPos = 0;
         foreach ($products as $key => $product) {
@@ -164,12 +174,12 @@ class EF02ProductCest
         $productPage = ProductDetailPage::go($I, 2);
 
         // デフォルトサムネイル表示確認
-        $img = $productPage->サムネイル画像URL();
+        $img = $productPage->サムネイル画像URL(1);
         $I->assertRegExp('/\/upload\/save_image\/cafe-1\.jpg$/', $img, $img.' が見つかりません');
 
         // 2個目のサムネイルクリック
         $productPage->サムネイル切替(2);
-        $img = $productPage->サムネイル画像URL();
+        $img = $productPage->サムネイル画像URL(2);
         $I->assertRegExp('/\/upload\/save_image\/cafe-2\.jpg$/', $img, $img.' が見つかりません');
     }
 
@@ -244,7 +254,7 @@ class EF02ProductCest
     public function product_商品詳細カート4(\AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T04 商品詳細(規格あり) カート 注文数＜販売制限数＜在庫数の注文');
-        $I->setStock(1, array(10, 10, 10, 10, 10, 10, 10, 10, 10));
+        $I->setStock(1, [10, 10, 10, 10, 10, 10, 10, 10, 10]);
 
         $productPage = ProductDetailPage::go($I, 1)
             ->規格選択(['プラチナ', '150cm'])
@@ -267,7 +277,7 @@ class EF02ProductCest
     public function product_商品詳細カート5(\AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T05 商品詳細(規格あり) カート 販売制限数＜注文数＜在庫数の注文');
-        $I->setStock(1, array(10, 10, 10, 10, 10, 10, 10, 10, 10));
+        $I->setStock(1, [10, 10, 10, 10, 10, 10, 10, 10, 10]);
 
         $productPage = ProductDetailPage::go($I, 1)
             ->規格選択(['プラチナ', '150cm'])
@@ -290,7 +300,7 @@ class EF02ProductCest
     public function product_商品詳細カート6(\AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T06 商品詳細(規格あり) カート 販売制限数＜在庫数＜注文数の注文');
-        $I->setStock(1, array(10, 10, 10, 10, 10, 10, 10, 10, 10));
+        $I->setStock(1, [10, 10, 10, 10, 10, 10, 10, 10, 10]);
 
         $productPage = ProductDetailPage::go($I, 1)
             ->規格選択(['プラチナ', '150cm'])

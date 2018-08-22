@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class BlockControllerTest extends AbstractAdminWebTestCase
@@ -44,7 +45,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
                     'name' => 'newblock',
                     'file_name' => 'file_name',
                     'block_html' => '<p>test</p>',
-                    'DeviceType' => 1,
+                    'DeviceType' => DeviceType::DEVICE_TYPE_MB,
                     'id' => 1,
                     '_token' => 'dummy',
                 ],

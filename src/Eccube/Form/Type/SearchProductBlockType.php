@@ -44,13 +44,12 @@ class SearchProductBlockType extends AbstractType
             'class' => 'Eccube\Entity\Category',
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
-            'placeholder' => 'searchproductblock.placeholder.all_products',
+            'placeholder' => 'common.select__all_products',
             'required' => false,
-            'label' => 'searchproductblock.label.select_categories',
         ]);
         $builder->add('name', SearchType::class, [
             'required' => false,
-            'label' => 'searchproductblock.label.product_name',
+            'label' => 'common.search_keyword',
             'attr' => [
                 'maxlength' => 50,
             ],

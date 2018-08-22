@@ -26,7 +26,6 @@ class Step1Type extends AbstractType
     {
         $builder
             ->add('agree', CheckboxType::class, [
-                'label' => trans('step1.label.confirm'),
                 'required' => false,
             ])
         ;

@@ -21,6 +21,9 @@ services:
     Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor:
         autowire: true
         public: true
+    Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor:
+        autowire: true
+        public: true
     Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator:
         autowire: true
         public: true

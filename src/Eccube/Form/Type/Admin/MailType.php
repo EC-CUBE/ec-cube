@@ -30,7 +30,6 @@ class MailType extends AbstractType
     {
         $builder
             ->add('template', MailTemplateType::class, [
-                'label' => 'mailtype.label.tmpl',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -38,21 +37,20 @@ class MailType extends AbstractType
                 'mapped' => false,
             ])
             ->add('mail_subject', TextType::class, [
-                'label' => 'mailtype.label.titles',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
             ])
-            ->add('mail_header', TextareaType::class, [
-                'label' => 'mailtype.label.headers',
-                'required' => false,
-            ])
-            ->add('mail_footer', TextareaType::class, [
-                'label' => 'mailtype.label.footers',
-                'required' => false,
-            ])
             ->add('tpl_data', TextareaType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new TwigLint(),
+                ],
+            ])
+            ->add('html_tpl_data', TextareaType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => false,

@@ -307,7 +307,7 @@ class ShoppingService
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
 
-        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_MB : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         $this->entityManager->persist($Order);
@@ -1147,6 +1147,12 @@ class ShoppingService
             ->setMailBody($message->getBody())
             ->setSendDate(new \DateTime())
             ->setOrder($Order);
+
+        // HTML用メールの設定
+        $multipart = $message->getChildren();
+        if (count($multipart) > 0) {
+            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+        }
 
         $this->entityManager->persist($MailHistory);
         $this->entityManager->flush($MailHistory);

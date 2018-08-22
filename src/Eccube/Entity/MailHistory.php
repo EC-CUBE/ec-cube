@@ -66,6 +66,13 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
         private $mail_body;
 
         /**
+         * @var string|null
+         *
+         * @ORM\Column(name="mail_html_body", type="text", nullable=true)
+         */
+        private $mail_html_body;
+
+        /**
          * @var \Eccube\Entity\Order
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="MailHistories")
@@ -165,6 +172,30 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
         public function getMailBody()
         {
             return $this->mail_body;
+        }
+
+        /**
+         * Set mailHtmlBody.
+         *
+         * @param string|null $mailHtmlBody
+         *
+         * @return MailHistory
+         */
+        public function setMailHtmlBody($mailHtmlBody = null)
+        {
+            $this->mail_html_body = $mailHtmlBody;
+
+            return $this;
+        }
+
+        /**
+         * Get mailHtmlBody.
+         *
+         * @return string|null
+         */
+        public function getMailHtmlBody()
+        {
+            return $this->mail_html_body;
         }
 
         /**

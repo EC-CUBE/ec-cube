@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 
 /**
@@ -38,7 +49,7 @@ class EF06OtherCest
         $I->amOnPage('/mypage/login');
         $I->submitForm('#login_mypage', [
             'login_email' => $customer->getEmail(),
-            'login_pass' => 'password'
+            'login_pass' => 'password',
         ]);
 
         $I->see('ログインできませんでした。', 'div.ec-login p.ec-errorMessage');
@@ -55,7 +66,7 @@ class EF06OtherCest
         $I->amOnPage('/mypage/login');
         $I->submitForm('#login_mypage', [
             'login_email' => $customer->getEmail().'.bad',
-            'login_pass' => 'password'
+            'login_pass' => 'password',
         ]);
 
         $I->see('ログインできませんでした。', 'div.ec-login p.ec-errorMessage');
@@ -65,7 +76,6 @@ class EF06OtherCest
     {
         $I->wantTo('EF0602-UC01-T01 パスワード再発行');
         $I->logoutAsMember();
-        $BaseInfo = Fixtures::get('baseinfo');
 
         // TOPページ→ログイン（「ログイン情報をお忘れですか？」リンクを押下する）→パスワード再発行
         $I->amOnPage('/mypage/login');
@@ -81,25 +91,30 @@ class EF06OtherCest
         $customer = $createCustomer();
         $I->resetEmails();
         $I->submitForm('#form1', [
-            'login_email' => $customer->getEmail()
+            'login_email' => $customer->getEmail(),
         ]);
-        $I->see('パスワード発行メールの送信 完了', 'div.ec-pageHeader h1');
+        $I->see('パスワードの再発行(メール送信)', 'div.ec-pageHeader h1');
 
-        $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
-            $I->seeInLastEmailSubjectTo($email, 'パスワード変更のご確認');
-        }
+        $I->seeEmailCount(1);
+        $I->seeInLastEmailSubjectTo($customer->getEmail(), 'パスワード変更のご確認');
+
         $url = $I->grabFromLastEmailTo($customer->getEmail(), '@/forgot/reset/(.*)@');
 
         $I->resetEmails();
         $I->amOnPage($url);
-        $I->see('パスワード変更(完了ページ)', 'div.ec-pageHeader h1');
-        $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
-            $I->seeInLastEmailSubjectTo($email, 'パスワード変更のお知らせ');
-        }
-        $new_password = $I->grabFromLastEmailTo($customer->getEmail(), '@新しいパスワード：(.*)@');
-        $I->loginAsMember($customer->getEmail(), trim(str_replace('新しいパスワード：', '', $new_password)));
+        $I->see('パスワード再発行(再設定ページ)', 'div.ec-pageHeader h1');
+
+        $password = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 20);
+
+        // メルアド・新パスワード設定
+        $I->submitForm('#form1', [
+            'login_email' => $customer->getEmail(),
+            'password[first]' => $password,
+            'password[second]' => $password,
+        ]);
+
+        $I->see('ログイン', 'div.ec-pageHeader h1');
+        $I->loginAsMember($customer->getEmail(), $password);
     }
 
     public function other_ログアウト(\AcceptanceTester $I)
@@ -173,11 +188,11 @@ class EF06OtherCest
         $I->click('div.ec-contactConfirmRole div.ec-RegisterRole__actions button.ec-blockBtn--action');
 
         // 完了ページ
-        $I->see('お問い合わせ完了', 'div.ec-pageHeader h1');
+        $I->see('お問い合わせ(完了)', 'div.ec-pageHeader h1');
 
         // メールチェック
         $I->seeEmailCount(2);
-        foreach (array($new_email, $BaseInfo->getEmail01()) as $email) {
+        foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'お問い合わせを受け付けました');
             $I->seeInLastEmailTo($email, '姓 名 様');
             $I->seeInLastEmailTo($email, 'お問い合わせ内容の送信');

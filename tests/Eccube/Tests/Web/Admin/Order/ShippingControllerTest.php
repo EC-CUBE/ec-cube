@@ -54,14 +54,14 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $form = $crawler->selectButton('出荷情報を登録')->form();
+        $form = $crawler->selectButton('登録')->form();
 
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
         $info = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-primary')->text();
         $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
-        $this->assertContains('出荷情報を登録しました。', $success);
-        $this->assertContains('出荷に関わる情報が変更されました：送料の変更が必要な場合は、受注管理より手動で変更してください。', $info);
+        $this->assertContains('保存しました', $success);
+        $this->assertContains('出荷に関わる情報が変更されました。送料の変更が必要な場合は、受注管理より手動で変更してください。', $info);
     }
 
     public function testEditAddTrackingNumber()
@@ -81,14 +81,14 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $form = $crawler->selectButton('出荷情報を登録')->form();
+        $form = $crawler->selectButton('登録')->form();
         $form['form[shippings][0][tracking_number]']->setValue($trackingNumber);
 
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
         $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
-        $this->assertContains('出荷情報を登録しました。', $success);
+        $this->assertContains('保存しました', $success);
 
         $expectedShipping = $this->entityManager->find(Shipping::class, $shippingId);
         $this->assertEquals($trackingNumber, $expectedShipping->getTrackingNumber());
@@ -116,7 +116,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // 出荷先を追加ボタンを押下
-        $form = $crawler->selectButton('出荷情報を登録')->form();
+        $form = $crawler->selectButton('登録')->form();
         $form['form[add_shipping]']->setValue('1');
 
         $this->client->submit($form);
@@ -124,9 +124,9 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         // 出荷登録フォームが２個に増えていることを確認
         $card1 = $crawler->filter('#form1 > div.c-contentsArea__cols > div > div > div:nth-child(1) > div.card-header > div > div.col-8 > div > span')->text();
-        $this->assertContains('出荷内容1', $card1);
+        $this->assertContains('出荷情報(1)', $card1);
         $card2 = $crawler->filter('#form1 > div.c-contentsArea__cols > div > div > div:nth-child(2) > div.card-header > div > div.col-8 > div > span')->text();
-        $this->assertContains('出荷内容2', $card2);
+        $this->assertContains('出荷情報(2)', $card2);
 
         // ２個の出荷登録フォームを作成
         $shippingFormData = $this->createShippingFormDataForEdit($Shipping);
