@@ -18,6 +18,7 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Service\MailService;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * MailService test cases.
@@ -30,6 +31,10 @@ class MailServiceTest extends AbstractServiceTestCase
     protected $Customer;
 
     /**
+     * @var Order
+     */
+    protected $Order;
+    /**
      * @var BaseInfo
      */
     protected $BaseInfo;
@@ -38,6 +43,11 @@ class MailServiceTest extends AbstractServiceTestCase
      * @var MailService
      */
     protected $mailService;
+
+    /**
+     * @var OrderRepository
+     */
+    protected $orderRepository;
 
     /**
      * @var \Swift_Message
@@ -51,8 +61,14 @@ class MailServiceTest extends AbstractServiceTestCase
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
+        $this->Order = $this->createOrder($this->Customer);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->mailService = $this->container->get(MailService::class);
+
+        $request = Request::createFromGlobals();
+        $this->container->get('request_stack')->push($request);
+        $twig = $this->container->get('twig');
+        $twig->addGlobal('BaseInfo', $this->BaseInfo);
     }
 
     public function testSendCustomerConfirmMail()
@@ -85,6 +101,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testSendCustomerCompleteMail()
@@ -113,6 +132,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendCustomerWithdrawMail()
@@ -142,6 +164,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testSendContactMail()
@@ -197,11 +222,14 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $this->expected = 'お問い合わせ内容';
         $this->verifyRegExp($Message, 'お問い合わせ内容');
+
+        // HTMLメールテスト
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendOrderMail()
     {
-        $Order = $this->createOrder($this->Customer);
+        $Order = $this->Order;
         $this->mailService->sendOrderMail($Order);
 
         $mailCollector = $this->getMailCollector();
@@ -225,6 +253,9 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
+
+        // HTMLメールテスト
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendAdminCustomerConfirmMail()
@@ -257,19 +288,20 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testSendAdminOrderMail()
     {
-        $Order = $this->createOrder($this->Customer);
+        $Order = $this->Order;
         $faker = $this->getFaker();
-        $header = $faker->paragraph;
-        $footer = $faker->paragraph;
         $subject = $faker->sentence;
         $formData = [
-            'mail_header' => $header,
-            'mail_footer' => $footer,
             'mail_subject' => $subject,
+            'tpl_data' => $faker->text,
+            'html_tpl_data' => $faker->text,
         ];
         $this->mailService->sendAdminOrderMail($Order, $formData);
 
@@ -284,7 +316,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->expected = $this->Customer->getEmail();
+        $this->expected = $Order->getEmail();
         $this->actual = key($Message->getTo());
         $this->verify();
 
@@ -295,6 +327,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendPasswordResetNotificationMail()
@@ -323,6 +358,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail03();
         $this->actual = key($Message->getReplyTo());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testSendPasswordResetCompleteMail()
@@ -349,6 +387,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
+
+        // HTMLメールテスト
+        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testConvertMessageISO()
@@ -361,7 +402,7 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $this->app->initMailer();
 
-        $Order = $this->createOrder($this->Customer);
+        $Order = $this->Order;
         // 戻り値はiso-2022-jpのmessage
         $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
 
@@ -397,7 +438,7 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $this->app->initMailer();
 
-        $Order = $this->createOrder($this->Customer);
+        $Order = $this->Order;
         // 戻り値はUTFのmessage
         $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
 
@@ -423,7 +464,8 @@ class MailServiceTest extends AbstractServiceTestCase
      */
     public function testSendShippingNotifyMail()
     {
-        $Order = $this->createOrder($this->Customer);
+        $this->markTestSkipped('実装確認中のためスキップ');
+        $Order = $this->Order;
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
 
@@ -441,6 +483,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $mailHistoryRepository = $this->container->get(MailHistoryRepository::class);
         $histories = $mailHistoryRepository->findBy(['Order' => $Order]);
         self::assertEquals(1, count($histories), 'メール履歴が作成されているはず');
+
+        // HTMLメールテスト
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     protected function verifyRegExp($Message, $errorMessage = null)

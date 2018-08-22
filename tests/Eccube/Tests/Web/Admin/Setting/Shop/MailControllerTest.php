@@ -41,8 +41,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $Mail->setName($faker->word);
         $Mail->setFileName('Mail/order.twig');
         $Mail->setMailSubject($faker->word);
-        $Mail->setMailHeader($faker->word);
-        $Mail->setMailFooter($faker->word);
         $this->entityManager->persist($Mail);
         $this->entityManager->flush();
 
@@ -81,9 +79,34 @@ class MailControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'template' => $MailTemplate->getId(),
             'mail_subject' => 'Test Subject',
-            'mail_header' => 'Test Header',
-            'mail_footer' => 'Test Footer',
             'tpl_data' => 'Test TPL Data',
+        ];
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()]),
+            ['mail' => $form]
+        );
+
+        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        $this->actual = $form['mail_subject'];
+        $this->expected = $MailTemplate->getMailSubject();
+        $this->verify();
+    }
+
+    /**
+     * Edit Html
+     */
+    public function testEditHtml()
+    {
+        $MailTemplate = $this->createMail();
+        $form = [
+            '_token' => 'dummy',
+            'template' => $MailTemplate->getId(),
+            'mail_subject' => 'Test Subject',
+            'tpl_data' => 'Test TPL Data',
+            'html_tpl_data' => '<font color="red">Test HTML TPL Data</font>',
         ];
         $this->client->request(
             'POST',
@@ -106,8 +129,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'template' => $mid,
             'mail_subject' => 'Test Subject',
-            'mail_header' => 'Test Header',
-            'mail_footer' => 'Test Footer',
         ];
         $this->client->request(
             'POST',
@@ -133,8 +154,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'template' => null,
             'mail_subject' => null,
-            'mail_header' => null,
-            'mail_footer' => null,
         ];
         $this->client->request(
             'POST',

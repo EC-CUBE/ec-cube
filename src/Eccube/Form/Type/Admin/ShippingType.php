@@ -148,8 +148,8 @@ class ShippingType extends AbstractType
                         ]),
                     ],
                     'attr' => [
-                        'class' => 'p-locality p-street-address',
-                        'placeholder' => 'admin.common.address_sample_01',
+                        'class' => 'p-extended-address',
+                        'placeholder' => 'admin.common.address_sample_02',
                     ],
                 ],
             ])

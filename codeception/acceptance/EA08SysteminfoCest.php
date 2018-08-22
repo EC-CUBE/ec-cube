@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Page\Admin\AuthorityManagePage;
 
@@ -221,7 +232,6 @@ class EA08SysteminfoCest
 
         $I->see('削除しました', '.c-contentsArea .alert-success');
         $I->see('管理者', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
-
     }
 
     public function systeminfo_メンバー管理自ユーザー削除(\AcceptanceTester $I)
@@ -332,7 +342,7 @@ class EA08SysteminfoCest
         $I->see('ログ表示システム設定', '.c-pageTitle');
 
         $option = $I->grabTextFrom('#admin_system_log_files option:nth-child(1)');
-        $I->selectOption("#admin_system_log_files", $option);
+        $I->selectOption('#admin_system_log_files', $option);
 
         $I->fillField(['id' => 'admin_system_log_line_max'], '1');
         $I->click(['css' => '#form1 button']);

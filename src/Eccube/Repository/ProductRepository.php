@@ -65,12 +65,13 @@ class ProductRepository extends AbstractRepository
     public function findWithSortedClassCategories($productId)
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'ps'])
+        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'ps', 'pt'])
             ->innerJoin('p.ProductClasses', 'pc')
             ->leftJoin('pc.ClassCategory1', 'cc1')
             ->leftJoin('pc.ClassCategory2', 'cc2')
             ->leftJoin('p.ProductImage', 'pi')
             ->innerJoin('pc.ProductStock', 'ps')
+            ->leftJoin('p.ProductTag', 'pt')
             ->where('p.id = :id')
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
@@ -177,7 +178,11 @@ class ProductRepository extends AbstractRepository
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            ->innerJoin('p.ProductClasses', 'pc');
+            ->addSelect('pc', 'pi', 'tr', 'ps')
+            ->innerJoin('p.ProductClasses', 'pc')
+            ->leftJoin('p.ProductImage', 'pi')
+            ->leftJoin('pc.TaxRule', 'tr')
+            ->leftJoin('pc.ProductStock', 'ps');
 
         // id
         if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {

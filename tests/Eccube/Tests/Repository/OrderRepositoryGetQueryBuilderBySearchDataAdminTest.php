@@ -368,7 +368,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testPaymentDateStart()
     {
-        $Status = $this->orderStatusRepo->find(6);
+        $Status = $this->orderStatusRepo->find(OrderStatus::PAID);
         $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
 
         $this->searchData = [
@@ -384,7 +384,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testPaymentDateEnd()
     {
-        $Status = $this->orderStatusRepo->find(6);
+        $Status = $this->orderStatusRepo->find(OrderStatus::PAID);
         $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
         $this->searchData = [
             'payment_date_end' => new \DateTime('+ 1 days'),
@@ -400,7 +400,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     public function testCommitDateStart()
     {
         $this->markTestSkipped('order.shipping_dateは不要と思われる.');
-        $Status = $this->orderStatusRepo->find(5);
+        $Status = $this->orderStatusRepo->find(OrderStatus::DELIVERED);
         $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
 
         $this->searchData = [
@@ -417,7 +417,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     public function testCommitDateEnd()
     {
         $this->markTestSkipped('order.shipping_dateは不要と思われる.');
-        $Status = $this->orderStatusRepo->find(5);
+        $Status = $this->orderStatusRepo->find(OrderStatus::DELIVERED);
         $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
         $this->searchData = [
             'shipping_date_end' => new \DateTime('+ 1 days'),

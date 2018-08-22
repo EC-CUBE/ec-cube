@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -45,6 +46,21 @@ class ClassCategoryType extends AbstractType
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                 ],
+            ])
+            ->add('backend_name', TextType::class, [
+                'label' => 'classname.label.backend_name',
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
+            ])
+            ->add('visible', ChoiceType::class, [
+                'label' => false,
+                'choices' => ['common.label.display' => true, 'common.label.hide' => false],
+                'required' => true,
+                'expanded' => false,
             ])
         ;
     }

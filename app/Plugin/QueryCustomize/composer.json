@@ -1,0 +1,9 @@
+{
+  "name": "ec-cube/QueryCustomize",
+  "version": "1.0.0",
+  "description": "クエリビルダ拡張のサンプル",
+  "type": "eccube-plugin",
+  "extra": {
+    "code": "QueryCustomize"
+  }
+}
