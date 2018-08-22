@@ -40,6 +40,6 @@ class ComposerInstallCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->composerService->execUpdate($input->getOption('dry-run'), $output);
+        $this->composerService->execInstall($input->getOption('dry-run'), $output);
     }
 }
