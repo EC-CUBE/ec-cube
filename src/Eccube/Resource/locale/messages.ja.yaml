@@ -1372,6 +1372,7 @@ admin.store.install.label: 'プラグイン (zip、tar、tar.gz形式)'
 admin.info: 情報
 admin.info.official_site: 公式サイト
 admin.info.community: 開発コミュニティ
+admin.info.document: ドキュメント
 
 #------------------------------------------------------------------------------------
 # ツールチップ
