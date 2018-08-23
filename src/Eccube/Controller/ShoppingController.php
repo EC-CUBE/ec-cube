@@ -97,7 +97,7 @@ class ShoppingController extends AbstractShoppingController
 
         // カートチェック.
         $Cart = $this->cartService->getCart();
-        if (!$this->orderHelper->verifyCart($Cart)) {
+        if (!($Cart && $this->orderHelper->verifyCart($Cart))) {
             log_info('[注文手続] カートが購入フローへ遷移できない状態のため, カート画面に遷移します.');
 
             return $this->redirectToRoute('cart');

@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
@@ -164,12 +165,12 @@ class OrderHelper
     }
 
     /**
-     * @param Cart|null $Cart
+     * @param Cart $Cart
      * @return bool
      */
-    public function verifyCart(Cart $Cart = null)
+    public function verifyCart(Cart $Cart)
     {
-        if ($Cart && count($Cart->getCartItems()) > 0) {
+        if (count($Cart->getCartItems()) > 0) {
             $divide = $this->session->get(self::SESSION_CART_DEVIDE_FLAG);
             if ($divide) {
                 log_info('ログイン時に販売種別が異なる商品がカートと結合されました。');

@@ -343,15 +343,17 @@ class ShippingMultipleController extends AbstractShoppingController
                 }
             }
             $Cart = $this->cartService->getCart();
-            foreach ($Cart->getCartItems() as $CartItem) {
-                $id = $CartItem->getProductClass()->getId();
-                if (isset($quantityByProductClass[$id])) {
-                    $CartItem->setQuantity($quantityByProductClass[$id]);
+            if ($Cart) {
+                foreach ($Cart->getCartItems() as $CartItem) {
+                    $id = $CartItem->getProductClass()->getId();
+                    if (isset($quantityByProductClass[$id])) {
+                        $CartItem->setQuantity($quantityByProductClass[$id]);
+                    }
                 }
-            }
 
-            $this->cartPurchaseFlow->validate($Cart, new PurchaseContext());
-            $this->cartService->save();
+                $this->cartPurchaseFlow->validate($Cart, new PurchaseContext());
+                $this->cartService->save();
+            }
 
             return $this->redirectToRoute('shopping');
         }
