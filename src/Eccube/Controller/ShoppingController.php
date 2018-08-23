@@ -357,45 +357,15 @@ class ShoppingController extends AbstractShoppingController
                     return $this->redirectToRoute('shopping_error');
                 }
 
+                log_info('[注文処理] PaymentMethodを取得します.', [$Order->getPayment()->getMethodClass()]);
+                $paymentMethod = $this->createPaymentMethod($Order, $form);
+
                 /*
                  * 決済実行(前処理)
                  */
-                log_info('[注文処理] PaymentMethod::applyを実行します.', [$Order->getPayment()->getMethodClass()]);
-                $paymentMethod = $this->createPaymentMethod($Order, $form);
-                $dispatcher = $paymentMethod->apply(); // 決済処理中.
-
-                // リンク式決済のように他のサイトへ遷移する場合などは, dispatcherに処理を移譲する.
-                if ($dispatcher instanceof PaymentDispatcher) {
-                    $response = $dispatcher->getResponse();
-                    $this->entityManager->flush();
-
-                    // dispatcherがresponseを保持している場合はresponseを返す
-                    if ($response && ($response->isRedirection() || $response->getContent())) {
-                        log_info('[注文処理] PaymentMethod::applyが指定したレスポンスを表示します.');
-
-                        return $response;
-                    }
-
-                    // forwardすることも可能.
-                    if ($dispatcher->isForward()) {
-                        log_info('[注文処理] PaymentMethod::applyによりForwardします.', [
-                            $dispatcher->getRoute(),
-                            $dispatcher->getPathParameters(),
-                            $dispatcher->getQueryParameters(),
-                        ]);
-
-                        return $this->forwardToRoute($dispatcher->getRoute(), $dispatcher->getPathParameters(),
-                            $dispatcher->getQueryParameters());
-                    } else {
-                        log_info('[注文処理] PaymentMethod::applyによりリダイレクトします.', [
-                            $dispatcher->getRoute(),
-                            $dispatcher->getPathParameters(),
-                            $dispatcher->getQueryParameters(),
-                        ]);
-
-                        return $this->redirectToRoute($dispatcher->getRoute(),
-                            array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
-                    }
+                log_info('[注文処理] PaymentMethod::applyを実行します.');
+                if ($response = $this->executeApply($paymentMethod)) {
+                    return $response;
                 }
 
                 /*
@@ -403,26 +373,9 @@ class ShoppingController extends AbstractShoppingController
                  *
                  * PaymentMethod::checkoutでは決済処理が行われ, 正常に処理出来た場合はPurchaseFlow::commitがコールされます.
                  */
-                log_info('[注文処理] PaymentMethod::checkoutを実行します.', [$Order->getPayment()->getMethodClass()]);
-                $PaymentResult = $paymentMethod->checkout();
-                $response = $PaymentResult->getResponse();
-                // PaymentResultがresponseを保持している場合はresponseを返す
-                if ($response && ($response->isRedirection() || $response->getContent())) {
-                    log_info('[注文処理] PaymentMethod::checkoutが指定したレスポンスを表示します.');
-
+                log_info('[注文処理] PaymentMethod::checkoutを実行します.');
+                if ($response = $this->executeCheckout($paymentMethod)) {
                     return $response;
-                }
-
-                // エラー時はロールバックして購入エラーとする.
-                if (!$PaymentResult->isSuccess()) {
-                    $this->entityManager->rollback();
-                    foreach ($PaymentResult->getErrors() as $error) {
-                        $this->addError($error);
-                    }
-
-                    log_info('[注文処理] PaymentMethod::checkoutのエラーのため, 購入エラー画面へ遷移します.', [$PaymentResult->getErrors()]);
-
-                    return $this->redirectToRoute('shopping_error');
                 }
 
                 $this->entityManager->flush();
@@ -757,5 +710,75 @@ class ShoppingController extends AbstractShoppingController
         $PaymentMethod->setFormType($form);
 
         return $PaymentMethod;
+    }
+
+    /**
+     * PaymentMethod::applyを実行する.
+     *
+     * @param PaymentMethodInterface $paymentMethod
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function executeApply(PaymentMethodInterface $paymentMethod)
+    {
+        $dispatcher = $paymentMethod->apply(); // 決済処理中.
+
+        // リンク式決済のように他のサイトへ遷移する場合などは, dispatcherに処理を移譲する.
+        if ($dispatcher instanceof PaymentDispatcher) {
+            $response = $dispatcher->getResponse();
+            $this->entityManager->flush();
+
+            // dispatcherがresponseを保持している場合はresponseを返す
+            if ($response && ($response->isRedirection() || $response->getContent())) {
+                log_info('[注文処理] PaymentMethod::applyが指定したレスポンスを表示します.');
+
+                return $response;
+            }
+
+            // forwardすることも可能.
+            if ($dispatcher->isForward()) {
+                log_info('[注文処理] PaymentMethod::applyによりForwardします.',
+                    [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters(),]);
+
+                return $this->forwardToRoute($dispatcher->getRoute(), $dispatcher->getPathParameters(),
+                    $dispatcher->getQueryParameters());
+            } else {
+                log_info('[注文処理] PaymentMethod::applyによりリダイレクトします.',
+                    [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters(),]);
+
+                return $this->redirectToRoute($dispatcher->getRoute(),
+                    array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
+            }
+        }
+    }
+
+    /**
+     * PaymentMethod::checkoutを実行する.
+     *
+     * @param PaymentMethodInterface $paymentMethod
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function executeCheckout(PaymentMethodInterface $paymentMethod)
+    {
+        $PaymentResult = $paymentMethod->checkout();
+        $response = $PaymentResult->getResponse();
+        // PaymentResultがresponseを保持している場合はresponseを返す
+        if ($response && ($response->isRedirection() || $response->getContent())) {
+            $this->entityManager->flush();
+            log_info('[注文処理] PaymentMethod::checkoutが指定したレスポンスを表示します.');
+
+            return $response;
+        }
+
+        // エラー時はロールバックして購入エラーとする.
+        if (!$PaymentResult->isSuccess()) {
+            $this->entityManager->rollback();
+            foreach ($PaymentResult->getErrors() as $error) {
+                $this->addError($error);
+            }
+
+            log_info('[注文処理] PaymentMethod::checkoutのエラーのため, 購入エラー画面へ遷移します.', [$PaymentResult->getErrors()]);
+
+            return $this->redirectToRoute('shopping_error');
+        }
     }
 }
