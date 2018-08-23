@@ -63,8 +63,14 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-3"><span>{{ 'news.label.date'|trans }}</span></div>
                                     <div class="col mb-2">
-                                        {{ form_widget(form.publish_date, {'attr': {'class': 'input_cal'}}) }}
-                                        {{ form_errors(form.publish_date) }}
+                                        <div class="row">
+                                            <div class="col-2 pr-2">
+                                                {{ form_widget(form.publish_date.date) }}
+                                            </div>
+                                            <div class="col-2 px-0">
+                                                {{ form_widget(form.publish_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -132,15 +138,14 @@ file that was distributed with this source code.
                                         <span>{{ 'admin.content.news_edit.67'|trans }}</span></a>
                                 </div>
                             </div>
-                            <div class="col-4 text-right">
-                                <div class="row align-items-center justify-content-end">
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="row align-items-center justify-content-end">
+                            <div class="col-6">
+                                <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                                     <div class="col-auto">
-                                        <button class="btn btn-ec-conversion px-5"
-                                                type="submit">{{ 'admin.content.news_edit.68'|trans }}</button>
+                                        {{ form_widget(form.visible) }}
+                                        {{ form_errors(form.visible) }}
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.content.news_edit.68'|trans }}</button>
                                     </div>
                                 </div>
                             </div>

@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Eccube\Entity\News;
 use Eccube\Repository\NewsRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
@@ -74,44 +73,6 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
-    public function testMoveSortNo()
-    {
-        /** @var News[] $News */
-        $News = $this->newsRepository->findBy([], ['sort_no' => 'DESC']);
-
-        $this->expected = [];
-        foreach ($News as $New) {
-            $this->expected[$New->getId()] = $New->getSortNo();
-        }
-
-        // swap sort_no
-        reset($this->expected);
-        $firstKey = key($this->expected);
-        end($this->expected);
-        $lastKey = key($this->expected);
-
-        $tmp = $this->expected[$firstKey];
-        $this->expected[$firstKey] = $this->expected[$lastKey];
-        $this->expected[$lastKey] = $tmp;
-
-        $this->client->request('POST',
-            $this->generateUrl('admin_content_news_sort_no_move'),
-            $this->expected,
-            [],
-            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
-        );
-
-        $News = $this->newsRepository->findBy([], ['sort_no' => 'DESC']);
-        $this->actual = [];
-        foreach ($News as $New) {
-            $this->actual[$New->getId()] = $New->getSortNo();
-        }
-        sort($this->expected);
-        sort($this->actual);
-
-        $this->verify();
-    }
-
     private function createNews($TestCreator, $sortNo = 1)
     {
         $TestNews = new \Eccube\Entity\News();
@@ -120,8 +81,8 @@ class NewsControllerTest extends AbstractAdminWebTestCase
             ->setTitle('テストタイトル'.$sortNo)
             ->setDescription('テスト内容'.$sortNo)
             ->setUrl('http://example.com/')
-            ->setSortNo(100 + $sortNo)
             ->setLinkMethod(false)
+            ->setVisible(true)
             ->setCreator($TestCreator);
 
         $this->entityManager->persist($TestNews);

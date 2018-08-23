@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'news'] %}
 
-{% block title %}{{'admin.content.news.53'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.news.54'|trans}}{% endblock %}
+{% block title %}新着情報管理{% endblock %}
+{% block sub_title %}コンテンツ管理{% endblock %}
 
 {% block stylesheet %}
     <style type="text/css">
@@ -23,118 +23,31 @@ file that was distributed with this source code.
     </style>
 {% endblock %}
 
-{% block javascript %}
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
-    <script>
-        $(function () {
-            // 初期表示時のsort noを保持.
-            var oldSortNos = [];
-            $('.sortable-item').each(function () {
-                oldSortNos.push(this.dataset.sortNo);
-            });
-            oldSortNos.sort(function (a, b) {
-                return a - b;
-            }).reverse();
-
-            // 並び替え後にsort noを更新
-            var updateSortNo = function () {
-                var newSortNos = {};
-                var i = 0;
-                $('.sortable-item').each(function () {
-                    newSortNos[this.dataset.id] = oldSortNos[i];
-                    i++;
-                });
-
-                $.ajax({
-                    url: '{{ url('admin_content_news_sort_no_move') }}',
-                    type: 'POST',
-                    data: newSortNos
-                }).always(function () {
-                    $(".modal-backdrop").remove();
-                });
-            };
-
-            // 最初と最後の↑↓を再描画
-            var redrawDisableAllows = function () {
-                var items = $('.sortable-item');
-                items.find('a').removeClass('disabled');
-                items.first().find('a.action-up').addClass('disabled');
-                items.last().find('a.action-down').addClass('disabled');
-            };
-
-            // オーバレイ後, 表示順の更新を行う
-            var moveSortNo = function () {
-                $('body').append($('<div class="modal-backdrop show"></div>'));
-                updateSortNo();
-                redrawDisableAllows();
-            };
-
-            // Up
-            $(".sortable-item").on('click', 'a.action-up', function (e) {
-                e.preventDefault();
-                var current = $(this).parents("li");
-
-                if (current.prev().hasClass('sortable-item')) {
-                    current.prev().before(current);
-                    moveSortNo();
-                }
-            });
-
-            // Down
-            $(".sortable-item").on('click', 'a.action-down', function (e) {
-                e.preventDefault();
-                var current = $(this).parents("li");
-
-                if (current.next().hasClass('sortable-item')) {
-                    current.next().after(current);
-                    moveSortNo();
-                }
-            });
-        });
-    </script>
-{% endblock %}
-
 {% block main %}
 <div class="c-contentsArea__cols">
     <div class="c-contentsArea__primaryCol">
         <div class="c-primaryCol">
-            <div class="row justify-content-between mb-2">
-                <div class="col-auto">
-                    <a class="btn btn-ec-conversion py-2" id="addNew" href="{{ url('admin_content_news_new') }}">{{'admin.content.news.63'|trans}}</a>
-                </div>
+            <div class="d-block mb-3">
+                <a id="addNew" class="btn btn-ec-regular" href="{{ url('admin_content_news_new') }}">{{ 'admin.common.create__new'|trans }}</a>
             </div>
-
             <div class="card rounded border-0 mb-4">
                 <div class="card-body p-0">
                     <ul class="list-group list-group-flush mb-4 sortable-container">
                         <li class="list-group-item">
                             <div class="row justify-content-around">
-                                <div class="col-1"><strong>{{'admin.content.news.56'|trans}}</strong></div>
-                                <div class="col-2"><strong>{{'admin.content.news.57'|trans}}</strong></div>
-                                <div class="col"><strong>{{'admin.content.news.58'|trans}}</strong></div>
+                                <div class="col-2"><strong>公開日時</strong></div>
+                                <div class="col-1"><strong>公開状態</strong></div>
+                                <div class="col"><strong>タイトル</strong></div>
                             </div>
                         </li>
                         {% for News in pagination %}
-                            <li class="list-group-item sortable-item" data-id="{{ News.id }}" data-sort-no="{{ News.sortNo }}">
+                            <li class="list-group-item sortable-item" data-id="{{ News.id }}">
                                 <div class="row justify-content-around">
-                                    <div class="col-1 d-flex align-items-center">{{ loop.index }}</div>
-                                    <div class="col-2 d-flex align-items-center"><span>{{ News.publishDate|date_day }}</span></div>
+                                    <div class="col-2 d-flex align-items-center"><span>{{ News.publishDate|date_min }}</span></div>
+                                    <div class="col-1 d-flex align-items-center">{{ News.visible == false ? '非公開' : '公開' }}</div>
                                     <div class="col d-flex align-items-center"><a href="{{ url('admin_content_news_edit', {id: News.id}) }}">{{ News.title }}</a></div>
-                                    <div class="col-3 text-right">
+                                    <div class="col-2">
                                         <div class="row">
-                                            <div class="col px-0 text-center">
-                                                <a class="btn btn-ec-actionIcon action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{'admin.common.up'|trans}}">
-                                                    <i class="fa fa-arrow-up fa-lg text-secondary"></i>
-                                                </a>
-                                            </div>
-                                            <div class="col px-0 text-center">
-                                                <a class="btn btn-ec-actionIcon action-down{{ loop.last ? ' disabled' }}"  data-toggle="tooltip" data-placement="top" title="{{'admin.common.down'|trans}}">
-                                                    <i class="fa fa-arrow-down fa-lg text-secondary"></i>
-                                                </a>
-                                            </div>
                                             <div class="col px-0 text-center">
                                                 <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_edit', {id: News.id}) }}" data-toggle="tooltip" data-placement="top" title="{{'admin.common.edit'|trans}}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
@@ -150,8 +63,7 @@ file that was distributed with this source code.
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-bold">
-                                                                    {{ 'admin.content.news.del.confirm.title'|trans }}</h5>
+                                                                <h5 class="modal-title font-weight-bold">削除します</h5>
                                                                 <button class="close" type="button"
                                                                         data-dismiss="modal"
                                                                         aria-label="Close"><span
@@ -159,14 +71,12 @@ file that was distributed with this source code.
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body text-left">
-                                                                <p class="text-left">
-                                                                    {{ 'admin.content.news.del.confirm.message'|trans }}</p>
+                                                                <p class="text-left">この操作は後で元に戻すことはできません。 「ニュース」を削除してもよろしいですか？</p>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
-                                                                </button>
+                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">キャンセル</button>
                                                                 <a class="btn btn-ec-delete" href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                   data-method="delete" data-confirm="false">{{'common.label.delete'|trans}}</a>
+                                                                   data-method="delete" data-confirm="false">削除</a>
                                                             </div>
                                                         </div>
                                                     </div>

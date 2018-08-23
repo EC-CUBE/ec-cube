@@ -59,7 +59,7 @@ class NewsController extends AbstractController
      */
     public function index(Request $request, $page_no = 1, Paginator $paginator)
     {
-        $NewsList = $this->newsRepository->findBy([], ['sort_no' => 'DESC']);
+        $NewsList = $this->newsRepository->findBy([], ['publish_date' => 'ASC', 'id' => 'ASC']);
 
         $event = new EventArgs(
             [
@@ -72,7 +72,7 @@ class NewsController extends AbstractController
         $pagination = $paginator->paginate(
             $NewsList,
             $page_no,
-            10
+            $this->eccubeConfig->get('eccube_default_page_count')
         );
 
         return [
@@ -142,31 +142,6 @@ class NewsController extends AbstractController
             'form' => $form->createView(),
             'News' => $News,
         ];
-    }
-
-    /**
-     * @Route("/%eccube_admin_route%/content/news/sort_no/move", name="admin_content_news_sort_no_move", methods={"POST"})
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function moveSortNo(Request $request)
-    {
-        if ($request->isXmlHttpRequest()) {
-            $this->isTokenValid();
-            $sortNos = $request->request->all();
-            foreach ($sortNos as $newsId => $sortNo) {
-                /** @var News $News */
-                $News = $this->newsRepository
-                    ->find($newsId);
-                $News->setSortNo($sortNo);
-                $this->entityManager->persist($News);
-            }
-            $this->entityManager->flush();
-        }
-
-        return new Response();
     }
 
     /**

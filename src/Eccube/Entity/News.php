@@ -52,13 +52,6 @@ if (!class_exists('\Eccube\Entity\News')) {
         private $publish_date;
 
         /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-         */
-        private $sort_no;
-
-        /**
          * @var string
          *
          * @ORM\Column(name="title", type="string", length=255)
@@ -99,6 +92,13 @@ if (!class_exists('\Eccube\Entity\News')) {
          * @ORM\Column(name="update_date", type="datetimetz")
          */
         private $update_date;
+
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="visible", type="boolean", options={"default":true})
+         */
+        private $visible;
 
         /**
          * @var \Eccube\Entity\Member
@@ -142,30 +142,6 @@ if (!class_exists('\Eccube\Entity\News')) {
         public function getPublishDate()
         {
             return $this->publish_date;
-        }
-
-        /**
-         * Set sortNo.
-         *
-         * @param int $sortNo
-         *
-         * @return News
-         */
-        public function setSortNo($sortNo)
-        {
-            $this->sort_no = $sortNo;
-
-            return $this;
-        }
-
-        /**
-         * Get sortNo.
-         *
-         * @return int
-         */
-        public function getSortNo()
-        {
-            return $this->sort_no;
         }
 
         /**
@@ -310,6 +286,26 @@ if (!class_exists('\Eccube\Entity\News')) {
         public function getUpdateDate()
         {
             return $this->update_date;
+        }
+
+        /**
+         * @return integer
+         */
+        public function isVisible()
+        {
+            return $this->visible;
+        }
+
+        /**
+         * @param boolean $visible
+         *
+         * @return News
+         */
+        public function setVisible($visible)
+        {
+            $this->visible = $visible;
+
+            return $this;
         }
 
         /**
