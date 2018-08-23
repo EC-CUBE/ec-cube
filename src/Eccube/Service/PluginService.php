@@ -419,10 +419,7 @@ class PluginService
                 ->setEnabled(false)
                 ->setVersion($meta['version'])
                 ->setSource($source)
-                ->setCode($meta['code'])
-                // TODO 日付の自動設定
-                ->setCreateDate(new \DateTime())
-                ->setUpdateDate(new \DateTime());
+                ->setCode($meta['code']);
 
             $em->persist($p);
             $em->flush();
