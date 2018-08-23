@@ -552,7 +552,7 @@ class Generator
             ->setNote($faker->realText())
             ->setAddPoint(0)    // TODO
             ->setUsePoint(0)    // TODO
-            ->setOrderNo(sha1(StringUtil::random()))
+            ->setOrderNo($faker->numberBetween(100, 999).'-'.$faker->numberBetween(1000000, 9999999).'-'.$faker->numberBetween(1000000, 9999999))
         ;
 
         $this->entityManager->persist($Order);
