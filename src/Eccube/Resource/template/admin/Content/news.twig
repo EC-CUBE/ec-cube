@@ -70,16 +70,7 @@ file that was distributed with this source code.
                 $('body').append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
                 redrawDisableAllows();
-            }
-
-            // Drag and Drop
-            $(".sortable-container").sortable({
-                items: '> .sortable-item',
-                cursor: 'move',
-                update: function (e, ui) {
-                    moveSortNo();
-                }
-            });
+            };
 
             // Up
             $(".sortable-item").on('click', 'a.action-up', function (e) {
@@ -110,37 +101,46 @@ file that was distributed with this source code.
 <div class="c-contentsArea__cols">
     <div class="c-contentsArea__primaryCol">
         <div class="c-primaryCol">
+            <div class="row justify-content-between mb-2">
+                <div class="col-auto">
+                    <a class="btn btn-ec-conversion py-2" href="{{ url('admin_content_news_new') }}">{{'admin.content.news.63'|trans}}</a>
+                </div>
+            </div>
+
             <div class="card rounded border-0 mb-4">
                 <div class="card-body p-0">
                     <ul class="list-group list-group-flush mb-4 sortable-container">
                         <li class="list-group-item">
                             <div class="row justify-content-around">
-                                <div class="col-auto"><strong>&nbsp;</strong></div>
                                 <div class="col-1"><strong>{{'admin.content.news.56'|trans}}</strong></div>
-                                <div class="col-1"><strong>{{'admin.content.news.57'|trans}}</strong></div>
+                                <div class="col-2"><strong>{{'admin.content.news.57'|trans}}</strong></div>
                                 <div class="col"><strong>{{'admin.content.news.58'|trans}}</strong></div>
                             </div>
                         </li>
-                        {% for News in NewsList %}
+                        {% for News in pagination %}
                             <li class="list-group-item sortable-item" data-id="{{ News.id }}" data-sort-no="{{ News.sortNo }}">
                                 <div class="row justify-content-around">
-                                    <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                     <div class="col-1 d-flex align-items-center">{{ loop.index }}</div>
-                                    <div class="col-1 d-flex align-items-center"><span>{{ News.publishDate|date_day }}</span></div>
+                                    <div class="col-2 d-flex align-items-center"><span>{{ News.publishDate|date_day }}</span></div>
                                     <div class="col d-flex align-items-center"><a href="{{ url('admin_content_news_edit', {id: News.id}) }}">{{ News.title }}</a></div>
                                     <div class="col-3 text-right">
                                         <div class="row">
-                                            <div class="col text-center">
-                                                <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{'admin.common.label.move.up'|trans}}">
+                                            <div class="col px-0 text-center">
+                                                <a class="btn btn-ec-actionIcon action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{'admin.common.up'|trans}}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
                                             </div>
-                                            <div class="col text-center">
-                                                <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}"  data-toggle="tooltip" data-placement="top" title="{{'admin.common.label.move.down'|trans}}">
+                                            <div class="col px-0 text-center">
+                                                <a class="btn btn-ec-actionIcon action-down{{ loop.last ? ' disabled' }}"  data-toggle="tooltip" data-placement="top" title="{{'admin.common.down'|trans}}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
                                             </div>
-                                            <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{'admin.common.delete'|trans}}">
+                                            <div class="col px-0 text-center">
+                                                <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_news_edit', {id: News.id}) }}" data-toggle="tooltip" data-placement="top" title="{{'admin.common.edit'|trans}}">
+                                                    <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                </a>
+                                            </div>
+                                            <div class="col pl-0 text-center" data-toggle="tooltip" data-placement="top" title="{{'admin.common.delete'|trans}}">
                                                 <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ News.id }}">
                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
@@ -178,15 +178,12 @@ file that was distributed with this source code.
                             </li>
                         {% endfor %}
                     </ul>
-                </div>
-            </div>
-            <p>{{'admin.setting.shop.payment.notice'|trans}}</p>
-        </div>
-        <div class="card rounded border-0">
-            <div class="card-body p-4">
-                <div class="text-center">
-                    {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
-                    <a href="{{ url('admin_content_news_new') }}" class="btn btn-ec-regular pl-4 pr-4" id="addNew">{{'admin.content.news.63'|trans}}</a>
+
+                    {% if pagination.paginationData.pageCount > 1 %}
+                        <div class="row justify-content-md-center mb-4">
+                            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_content_news_page' } %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

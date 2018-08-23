@@ -18,7 +18,9 @@ use Eccube\Entity\News;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\NewsType;
+use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\NewsRepository;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,22 +34,37 @@ class NewsController extends AbstractController
      */
     protected $newsRepository;
 
-    public function __construct(NewsRepository $newsRepository)
+    /**
+     * @var PageMaxRepository
+     */
+    protected $pageMaxRepository;
+
+    /**
+     * NewsController constructor.
+     *
+     * @param NewsRepository $newsRepository
+     * @param PageMaxRepository $pageMaxRepository
+     */
+    public function __construct(NewsRepository $newsRepository, PageMaxRepository $pageMaxRepository)
     {
         $this->newsRepository = $newsRepository;
+        $this->pageMaxRepository = $pageMaxRepository;
     }
 
     /**
      * 新着情報一覧を表示する。
      *
      * @Route("/%eccube_admin_route%/content/news", name="admin_content_news")
+     * @Route("/%eccube_admin_route%/content/news/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_content_news_page")
      * @Template("@admin/Content/news.twig")
      *
      * @param Request $request
+     * @param int $page_no
+     * @param Paginator $paginator
      *
      * @return array
      */
-    public function index(Request $request)
+    public function index(Request $request, $page_no = 1, Paginator $paginator)
     {
         $NewsList = $this->newsRepository->findBy([], ['sort_no' => 'DESC']);
 
@@ -64,9 +81,15 @@ class NewsController extends AbstractController
 
         $form = $builder->getForm();
 
+        $pagination = $paginator->paginate(
+            $NewsList,
+            $page_no,
+            10
+        );
+
         return [
             'form' => $form->createView(),
-            'NewsList' => $NewsList,
+            'pagination' => $pagination
         ];
     }
 
