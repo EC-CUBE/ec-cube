@@ -82,7 +82,8 @@ class NonMemberShoppingController extends AbstractShoppingController
         }
 
         // カートチェック.
-        if (!$this->orderHelper->verifyCart($this->cartService->getCart())) {
+        $Cart = $this->cartService->getCart();
+        if (!($Cart && $this->orderHelper->verifyCart($Cart))) {
             return $this->redirectToRoute('cart');
         }
 
