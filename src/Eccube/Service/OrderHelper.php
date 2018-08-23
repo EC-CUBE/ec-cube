@@ -14,6 +14,7 @@
 namespace Eccube\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
@@ -311,7 +312,7 @@ class OrderHelper
     }
 
     /**
-     * @param ArrayCollection|CartItem[] $CartItems
+     * @param Collection|ArrayCollection|CartItem[] $CartItems
      *
      * @return OrderItem[]
      */
@@ -348,7 +349,7 @@ class OrderHelper
             }
 
             return $OrderItem;
-        }, $CartItems->toArray());
+        }, $CartItems instanceof Collection ? $CartItems->toArray() : $CartItems);
     }
 
     /**

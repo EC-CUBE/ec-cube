@@ -1639,7 +1639,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set orderStatus.
          *
-         * @param object|\Eccube\Entity\Master\OrderStatus|null $orderStatus
+         * @param \Eccube\Entity\Master\OrderStatus|null|object $orderStatus
          *
          * @return Order
          */
