@@ -252,7 +252,7 @@ class ShoppingService
     {
         // 受注データを取得
         $preOrderId = $this->cartService->getPreOrderId();
-        if (!$preOrderId) {
+        if (empty($preOrderId)) {
             return null;
         }
 
@@ -277,6 +277,8 @@ class ShoppingService
      * @param string $sesisonKey
      *
      * @return $Customer|null
+     *
+     * @deprecated OrderHelper::getNonMemberを使用してください.
      */
     public function getNonMember($sesisonKey)
     {

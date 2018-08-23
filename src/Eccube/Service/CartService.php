@@ -122,6 +122,9 @@ class CartService
         $this->authorizationChecker = $authorizationChecker;
     }
 
+    /**
+     * @return Cart[]
+     */
     public function getCarts()
     {
         if (!empty($this->carts)) {
@@ -180,6 +183,9 @@ class CartService
     /**
      * @return ItemHolderInterface|Cart
      */
+    /**
+     * @return Cart|null
+     */
     public function getCart()
     {
         $Carts = $this->getCarts();
@@ -198,7 +204,7 @@ class CartService
                 }
             }
         } else {
-            $Cart = current($Carts);
+            $Cart = $Carts[0];
         }
 
         return $Cart;
@@ -395,12 +401,12 @@ class CartService
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getPreOrderId()
     {
         $Cart = $this->getCart();
-        if ($Cart) {
+        if (!empty($Cart)   ) {
             return $Cart->getPreOrderId();
         }
 

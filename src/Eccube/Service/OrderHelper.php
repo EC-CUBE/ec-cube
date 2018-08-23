@@ -15,6 +15,7 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Cart;
+use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
@@ -163,11 +164,8 @@ class OrderHelper
     }
 
     /**
-     * カーとの整合性チェック.
-     *
-     * @param Cart $Cart
-     *
-     * @return bool カートに商品が入っていない場合, またはログイン時にカートが分割されている場合にtrue
+     * @param Cart|null $Cart
+     * @return bool
      */
     public function verifyCart(Cart $Cart = null)
     {
@@ -215,13 +213,13 @@ class OrderHelper
     /**
      * 購入処理中の受注を取得する.
      *
-     * @param null $preOrderId
+     * @param null|string $preOrderId
      *
      * @return null|Order
      */
     public function getPurchaseProcessingOrder($preOrderId = null)
     {
-        if (!$preOrderId) {
+        if (null === $preOrderId) {
             return null;
         }
 
@@ -311,7 +309,7 @@ class OrderHelper
     }
 
     /**
-     * @param ArrayCollection $CartItems
+     * @param ArrayCollection|CartItem[] $CartItems
      *
      * @return OrderItem[]
      */
