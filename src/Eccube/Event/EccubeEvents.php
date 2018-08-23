@@ -302,6 +302,8 @@ final class EccubeEvents
     // index
     const ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE = 'admin.setting.shop.mail.index.initialize';
     const ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE = 'admin.setting.shop.mail.index.complete';
+    // preview
+    const ADMIN_SETTING_SHOP_MAIL_PREVIEW_COMPLETE = 'admin.setting.shop.mail.preview.complete';
 
     /**
      * Admin/Setting/Shop/PaymentController

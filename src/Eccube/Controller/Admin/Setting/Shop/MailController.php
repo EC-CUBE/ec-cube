@@ -139,13 +139,38 @@ class MailController extends AbstractController
     }
 
     /**
+     * @Route("/%eccube_admin_route%/setting/shop/mail/preview", name="admin_setting_shop_mail_preview")
+     * @Template("@admin/Setting/Shop/mail_view.twig")
+     */
+    public function preview(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $html_body = $request->get('html_body');
+
+        $event = new EventArgs(
+            [
+                'html_body' => $html_body,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_PREVIEW_COMPLETE, $event);
+
+        return [
+            'html_body' => $html_body,
+        ];
+    }
+
+    /**
      * HTML用テンプレート名を取得する
      *
      * @param  string $fileName
      *
      * @return string
      */
-    public function getHtmlFileName($fileName)
+    protected function getHtmlFileName($fileName)
     {
         // HTMLテンプレートファイルの取得
         $targetTemplate = explode('.', $fileName);

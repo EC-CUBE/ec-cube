@@ -25,8 +25,4 @@ file that was distributed with this source code.
     }
 </style>
 
-{% if html_body|length > 0 %}
-	<small>{{ html_body|trans|raw }}</small>
-{% else %}
-	<small>{{ body|raw|nl2br }}</small>
-{% endif %}
+<small>{{ html_body|trans|raw }}</small>

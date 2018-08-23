@@ -18,7 +18,7 @@ use Eccube\Entity\MailHistory;
 use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Form\Type\Admin\MailType;
+use Eccube\Form\Type\Admin\OrderMailType;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
@@ -78,7 +78,7 @@ class MailController extends AbstractController
     {
         $MailHistories = $this->mailHistoryRepository->findBy(['Order' => $Order]);
 
-        $builder = $this->formFactory->createBuilder(MailType::class);
+        $builder = $this->formFactory->createBuilder(OrderMailType::class);
 
         $event = new EventArgs(
             [
@@ -97,6 +97,7 @@ class MailController extends AbstractController
 
             $mode = $request->get('mode');
 
+            $body = null;
             // テンプレート変更の場合は. バリデーション前に内容差し替え.
             switch ($mode) {
                 case 'change':
@@ -105,20 +106,14 @@ class MailController extends AbstractController
                         $MailTemplate = $form->get('template')->getData();
                         $data = $form->getData();
 
-                        $twig = $MailTemplate->getFileName();
-                        if (!$twig) {
-                            $twig = 'Mail/order.twig';
-                        }
+                        if ($MailTemplate) {
+                            $twig = $MailTemplate->getFileName();
+                            if (!$twig) {
+                                $twig = 'Mail/order.twig';
+                            }
 
-                        // 本文確認用
-                        $body = $this->createBody($Order, $twig);
-                        // HTMLテンプレート
-                        $htmlBody = null;
-                        $targetTwig = explode('.', $twig);
-                        $suffix = '.html';
-                        $htmlTwig = $targetTwig[0].$suffix.'.'.$targetTwig[1];
-                        if ($this->twig->getLoader()->exists($htmlTwig)) {
-                            $htmlBody = $this->createBody($Order, $htmlTwig);
+                            // 本文確認用
+                            $body = $this->createBody($Order, $twig);
                         }
 
                         $form = $builder->getForm();
@@ -132,11 +127,10 @@ class MailController extends AbstractController
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE, $event);
                         $form->get('template')->setData($MailTemplate);
-                        $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
-                        $form->get('tpl_data')->setData($body);
-                        if (!is_null($htmlBody)) {
-                            $form->get('html_tpl_data')->setData($htmlBody);
+                        if ($MailTemplate) {
+                            $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
                         }
+                        $form->get('tpl_data')->setData($body);
                     }
                     break;
                 case 'confirm':
@@ -157,7 +151,6 @@ class MailController extends AbstractController
                     if ($form->isValid()) {
                         $data = $form->getData();
                         $data['tpl_data'] = $form->get('tpl_data')->getData();
-                        $data['html_tpl_data'] = $form->get('html_tpl_data')->getData();
 
                         // メール送信
                         $message = $this->mailService->sendAdminOrderMail($Order, $data);
@@ -170,12 +163,6 @@ class MailController extends AbstractController
                             ->setMailBody($message->getBody())
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
-
-                        // HTML用メールの設定
-                        if (!is_null($data['html_tpl_data'])) {
-                            $multipart = $message->getChildren();
-                            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
-                        }
 
                         $this->entityManager->persist($MailHistory);
                         $this->entityManager->flush($MailHistory);
@@ -191,7 +178,7 @@ class MailController extends AbstractController
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE, $event);
 
-                        $this->addSuccess('admin.order.mail_complete.364', 'admin');
+                        $this->addSuccess('admin.order.mail_send_complete', 'admin');
 
                         return $this->redirectToRoute('admin_order_page', ['page_no' => $this->session->get('eccube.admin.order.search.page_no', 1)]);
                     }
