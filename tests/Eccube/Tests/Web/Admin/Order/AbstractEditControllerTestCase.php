@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
@@ -48,7 +49,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         $order = [
             '_token' => 'dummy',
             'Customer' => $Customer->getId(),
-            'OrderStatus' => 9,
+            'OrderStatus' => OrderStatus::IN_PROGRESS,
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,

@@ -42,13 +42,15 @@ class MailType extends AbstractType
                     new Assert\NotBlank(),
                 ],
             ])
-            ->add('mail_header', TextareaType::class, [
-                'required' => false,
-            ])
-            ->add('mail_footer', TextareaType::class, [
-                'required' => false,
-            ])
             ->add('tpl_data', TextareaType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new TwigLint(),
+                ],
+            ])
+            ->add('html_tpl_data', TextareaType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => false,

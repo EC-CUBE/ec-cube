@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f39d51f94a4be9ad9eb1ac7db3cce788",
+    "content-hash": "417a870a30abe2dafd6fae9d99d0797b",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1645,16 +1645,16 @@
         },
         {
             "name": "ec-cube/plugin-installer",
-            "version": "0.0.3",
+            "version": "0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EC-CUBE/eccube-plugin-installer.git",
-                "reference": "ee1e90abf940c22a93e3aaaa1a5c5f93487f5e82"
+                "reference": "88462d525e45697b8b959b146ff83d8e28b1a67d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EC-CUBE/eccube-plugin-installer/zipball/ee1e90abf940c22a93e3aaaa1a5c5f93487f5e82",
-                "reference": "ee1e90abf940c22a93e3aaaa1a5c5f93487f5e82",
+                "url": "https://api.github.com/repos/EC-CUBE/eccube-plugin-installer/zipball/88462d525e45697b8b959b146ff83d8e28b1a67d",
+                "reference": "88462d525e45697b8b959b146ff83d8e28b1a67d",
                 "shasum": ""
             },
             "require": {
@@ -1674,7 +1674,7 @@
                 "MIT"
             ],
             "description": "EC-CUBE plugin installer.",
-            "time": "2018-08-14T05:05:32+00:00"
+            "time": "2018-08-22T06:35:25+00:00"
         },
         {
             "name": "egulias/email-validator",
