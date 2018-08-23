@@ -13,16 +13,13 @@ file that was distributed with this source code.
 {% block main %}
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>{{'common.label.policy'|trans}}</h1>
+            <h1>{{ 'front.privacy.title'|trans }}</h1>
         </div>
         <div class="ec-off1Grid">
             <div class="ec-off1Grid__cell">
                 <p>
-                    {% if BaseInfo.company_name is not null %}
-                        {{ BaseInfo.company_name }}は、
-                    {% endif %}
                     個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。
-                </p><br>
+                </p>
             </div>
         </div>
         <div class="ec-off1Grid">

@@ -69,7 +69,7 @@ class PostalType extends AbstractType
 
             $constraints[] = new Assert\Type([
                 'type' => 'numeric',
-                'message' => 'form.type.numeric.invalid',
+                'message' => 'errors.numeric_only',
             ]);
 
             return $constraints;
@@ -80,7 +80,7 @@ class PostalType extends AbstractType
             'constraints' => $constraints,
             'attr' => [
                 'class' => 'p-postal-code',
-                'placeholder' => 'Postal',
+                'placeholder' => 'common.postal_code_sample',
             ],
             'trim' => true,
         ]);

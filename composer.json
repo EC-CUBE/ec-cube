@@ -31,7 +31,7 @@
         "doctrine/lexer": "^1.0",
         "doctrine/migrations": "^1.8",
         "doctrine/orm": "^2.6",
-        "ec-cube/plugin-installer": "0.0.3",
+        "ec-cube/plugin-installer": "~0.0.4",
         "egulias/email-validator": "^2.1",
         "friendsofphp/php-cs-fixer": "^2.10",
         "guzzlehttp/guzzle": "^6.3",
@@ -102,6 +102,7 @@
         "vlucas/phpdotenv": "v2.4.0"
     },
     "require-dev": {
+        "bheller/images-generator": "^1.0",
         "captbaritone/mailcatcher-codeception-module": "^1.2",
         "codeception/codeception": "^2.4",
         "dama/doctrine-test-bundle": "^4.0",

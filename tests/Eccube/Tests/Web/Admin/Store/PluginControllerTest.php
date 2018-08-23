@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -11,7 +12,6 @@
  */
 
 namespace Eccube\Tests\Web\Admin\Store;
-
 
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -47,5 +47,4 @@ class PluginControllerTest extends AbstractAdminWebTestCase
         $this->actual = $this->container->get(BaseInfoRepository::class)->get()->getPhpPath();
         $this->verify();
     }
-
 }

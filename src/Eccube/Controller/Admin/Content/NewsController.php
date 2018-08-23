@@ -181,11 +181,11 @@ class NewsController extends AbstractController
             $event = new EventArgs(['News' => $News], $request);
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.news.delete.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
 
             log_info('新着情報削除完了', [$News->getId()]);
         } catch (\Exception $e) {
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('news.text.name')]);
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $News->getTitle()]);
             $this->addError($message, 'admin');
 
             log_error('新着情報削除エラー', [$News->getId(), $e]);

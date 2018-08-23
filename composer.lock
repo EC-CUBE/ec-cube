@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33ba1c22ea694f224a433ea8fadbc106",
+    "content-hash": "417a870a30abe2dafd6fae9d99d0797b",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1645,16 +1645,16 @@
         },
         {
             "name": "ec-cube/plugin-installer",
-            "version": "0.0.3",
+            "version": "0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EC-CUBE/eccube-plugin-installer.git",
-                "reference": "ee1e90abf940c22a93e3aaaa1a5c5f93487f5e82"
+                "reference": "88462d525e45697b8b959b146ff83d8e28b1a67d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EC-CUBE/eccube-plugin-installer/zipball/ee1e90abf940c22a93e3aaaa1a5c5f93487f5e82",
-                "reference": "ee1e90abf940c22a93e3aaaa1a5c5f93487f5e82",
+                "url": "https://api.github.com/repos/EC-CUBE/eccube-plugin-installer/zipball/88462d525e45697b8b959b146ff83d8e28b1a67d",
+                "reference": "88462d525e45697b8b959b146ff83d8e28b1a67d",
                 "shasum": ""
             },
             "require": {
@@ -1674,7 +1674,7 @@
                 "MIT"
             ],
             "description": "EC-CUBE plugin installer.",
-            "time": "2018-08-14T05:05:32+00:00"
+            "time": "2018-08-22T06:35:25+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -7352,6 +7352,56 @@
                 "parser"
             ],
             "time": "2017-08-30T11:04:43+00:00"
+        },
+        {
+            "name": "bheller/images-generator",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bruceheller/images-generator.git",
+                "reference": "50b61fe1dcf1b72b6a830debec4db22afd1e8ee1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bruceheller/images-generator/zipball/50b61fe1dcf1b72b6a830debec4db22afd1e8ee1",
+                "reference": "50b61fe1dcf1b72b6a830debec4db22afd1e8ee1",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "~1.4",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "bheller\\ImagesGenerator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bruce Heller",
+                    "email": "bheller@bheller.com",
+                    "homepage": "http://www.bheller.com"
+                }
+            ],
+            "description": "Generator of placeholder images for Faker",
+            "homepage": "https://github.com/bruceheller/images-generator",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures",
+                "images-generator",
+                "imagesgenerator"
+            ],
+            "time": "2016-03-03T08:40:48+00:00"
         },
         {
             "name": "captbaritone/mailcatcher-codeception-module",

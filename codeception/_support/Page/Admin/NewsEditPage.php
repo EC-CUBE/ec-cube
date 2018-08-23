@@ -1,12 +1,20 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Page\Admin;
 
-
 class NewsEditPage extends AbstractAdminPage
 {
-
     /**
      * NewsRegisterPage constructor.
      */
@@ -26,18 +34,21 @@ class NewsEditPage extends AbstractAdminPage
     public function 入力_日付($value)
     {
         $this->tester->executeJS("$('#admin_news_publish_date').val('".$value."').change();");
+
         return $this;
     }
 
     public function 入力_タイトル($value)
     {
         $this->tester->fillField(['id' => 'admin_news_title'], $value);
+
         return $this;
     }
 
     public function 入力_本文($value)
     {
         $this->tester->fillField(['id' => 'admin_news_description'], $value);
+
         return $this;
     }
 

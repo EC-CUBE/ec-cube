@@ -144,10 +144,11 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             ]
         );
 
-        $redirectUrl = $this->generateUrl('admin_setting_system_member');
+        $Member = $this->memberRepository->findOneBy(['login_id' => $formData['login_id']]);
+
+        $redirectUrl = $this->generateUrl('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $Member = $this->memberRepository->findOneBy(['login_id' => $formData['login_id']]);
         $this->actual = $Member->getLoginId();
         $this->expected = $formData['login_id'];
         $this->verify();
@@ -189,7 +190,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             ['admin_member' => $formData]
         );
 
-        $redirectUrl = $this->generateUrl('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = $Member->getLoginId();

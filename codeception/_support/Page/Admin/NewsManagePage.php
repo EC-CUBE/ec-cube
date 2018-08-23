@@ -1,12 +1,20 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Page\Admin;
 
-
 class NewsManagePage extends AbstractAdminPage
 {
-
     public static $登録完了メッセージ = '.c-container .c-contentsArea .alert-success';
 
     /**
@@ -20,12 +28,14 @@ class NewsManagePage extends AbstractAdminPage
     public static function go($I)
     {
         $page = new self($I);
+
         return $page->goPage('/content/news', 'コンテンツ管理新着情報管理');
     }
 
     public static function at($I)
     {
         $page = new self($I);
+
         return $page->atPage('コンテンツ管理新着情報管理');
     }
 
@@ -37,7 +47,8 @@ class NewsManagePage extends AbstractAdminPage
 
     public function 一覧_編集($rowNum)
     {
-        $this->tester->click("ul.list-group li:nth-child(${rowNum}) div > div:nth-child(4) > a");
+        $this->tester->click(" ul .list-group li:nth-child(${rowNum})
+     div > div :nth-child(4) > a");
         return $this;
     }
 
@@ -48,7 +59,8 @@ class NewsManagePage extends AbstractAdminPage
 
     public function 一覧_下へ($rowNum)
     {
-        $this->tester->click("ul.list-group li:nth-child(${rowNum}) div > div:nth-child(4) > a");
+        $this->tester->click(" ul .list-group li:nth-child(${rowNum})
+     div > div :nth-child(4) > a");
         return $this;
     }
 
