@@ -67,6 +67,7 @@ class NewsType extends AbstractType
             ])
             ->add('link_method', CheckboxType::class, [
                 'required' => false,
+                'label' => '別ウィンドウを開く',
                 'value' => '1',
             ])
             ->add('description', TextareaType::class, [
