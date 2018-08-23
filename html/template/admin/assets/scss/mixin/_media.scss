@@ -1,12 +1,5 @@
 //メディアクエリ
 
-@mixin media_sp(){
-  @media only screen and (max-width: 1024px) {
-    @content;
-  }
-}
-
-
 @mixin media_mainNav(){
   @media only screen and (max-width: 1280px) {
     @content;
@@ -20,7 +13,7 @@
 }
 
 @mixin media_small(){
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 767px) {
     @content;
   }
 }
