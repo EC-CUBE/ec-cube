@@ -35,8 +35,7 @@ file that was distributed with this source code.
                     <div class="ec-addressRole">
                         <div class="ec-addressRole__actions">
                             {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
-                                <a class="ec-inlineBtn"
-                                   href="{{ url('mypage_delivery_new') }}">{{ 'front.mypage.add_customer_address'|trans }}</a>
+                                <a class="ec-inlineBtn" href="{{ url('mypage_delivery_new') }}">{{ 'front.mypage.add_customer_address'|trans }}</a>
                             {% else %}
                                 <span class="ec-errorMessage">{{ 'common.customer_address_count_is_over'|trans({ '%count%': eccube_config.eccube_deliv_addr_max }) }}</span>
                             {% endif %}
@@ -46,17 +45,18 @@ file that was distributed with this source code.
                         <div class="ec-addressList">
                             {% for CustomerAddress in Customer.CustomerAddresses %}
                                 <div class="ec-addressList__item">
-                                    <a class="ec-addressList__remove"
-                                       href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}" {{ csrf_token_for_anchor() }}
-                                       data-method="delete"></a>
+                                    <a class="ec-addressList__remove" href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                        <div class="ec-icon">
+                                            <img src="{{ asset('assets/icon/cross.svg') }}" alt="remove">
+                                        </div>
+                                    </a>
                                     <div class="ec-addressList__address">
                                         <div>{{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}</div>
-                                        <div>{{ 'common.postal_symbol'|trans }}{{ CustomerAddress.postal_code }}
-                                            　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
+                                        <div>{{ 'common.postal_symbol'|trans }}{{ CustomerAddress.postal_code }} {{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
                                         <div>{{ CustomerAddress.phone_number }}</div>
                                     </div>
-                                    <div class="ec-addressList__action"><a class="ec-inlineBtn"
-                                                                           href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">{{ 'common.change'|trans }}</a>
+                                    <div class="ec-addressList__action">
+                                        <a class="ec-inlineBtn" href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">{{ 'common.change'|trans }}</a>
                                     </div>
                                 </div>
                             {% endfor %}
