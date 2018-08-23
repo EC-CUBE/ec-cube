@@ -262,7 +262,7 @@ front.product.add_favorite_alrady: お気に入りに追加済です。
 front.product.out_of_stock: ただいま品切れ中です。
 front.product.out_of_stock_label: (品切れ中)
 front.product.added_to_favorite: お気に入りに追加済です。
-front.product.nomal_price: 通常価格
+front.product.normal_price: 通常価格
 front.product.sale_price: 販売価格
 front.product.code: 商品コード
 front.product.related_category: 関連カテゴリ
@@ -291,7 +291,7 @@ front.cart.no_items: 現在カート内に商品はございません。
 front.cart.delivery_fee_free__now: 現在送料無料です。
 front.cart.delivery_fee_free__price_and_quantity: あと「<strong>%price%</strong>」または「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
 front.cart.delivery_fee_free__price: あと「<strong>%price%</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
-front.cart.delivery_fee_free__quantity: '<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。'
+front.cart.delivery_fee_free__quantity: あと「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
 
 #------------------------------------------------------------------------------------
 # ショッピング
