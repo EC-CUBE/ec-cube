@@ -141,7 +141,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * <button data-target="click" data-path="path('ルーティング')">更新する</button>
      *
-     * data-targetは, click/change/blur等のイベント名を指定してください。
+     * data-triggerは, click/change/blur等のイベント名を指定してください。
      * data-pathは任意のパラメータです. 指定しない場合, 注文手続き画面へリダイレクトします.
      *
      * @Route("/shopping/redirect_to", name="shopping_redirect_to", methods={"POST"})
