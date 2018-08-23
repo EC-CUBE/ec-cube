@@ -69,26 +69,4 @@ class DeliveryFeeRepositoryTest extends EccubeTestCase
         $this->actual = $DeliveryFee->getFee();
         $this->verify('配送料は'.$this->expected.'ではありません');
     }
-
-    public function testFindOrCreateWithCreate()
-    {
-        $Delivery = $this->deliveryRepo->find(1);
-        $Pref = new Pref();
-
-        $Pref
-            ->setId(500)
-            ->setName('その他')
-            ->setSortNo(99);
-        $this->entityManager->persist($Pref);
-        $this->entityManager->flush();
-
-        $DeliveryFee = $this->deliveryFeeRepo->findOneBy(
-            ['Delivery' => $Delivery, 'Pref' => $Pref]
-        );
-
-        $this->expected = 0;
-        $this->actual = $DeliveryFee->getFee();
-
-        $this->verify('配送料は'.$this->expected.'ではありません');
-    }
 }

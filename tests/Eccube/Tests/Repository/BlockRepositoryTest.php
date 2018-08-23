@@ -84,13 +84,4 @@ class BlockRepositoryTest extends EccubeTestCase
         $this->actual = count($Blocks);
         $this->verify();
     }
-
-    public function testGetBlock()
-    {
-        $Block = $this->blockRepository->getBlock($this->block_id, $this->DeviceType);
-        $this->assertNotNull($Block);
-        $this->expected = $this->block_id;
-        $this->actual = $Block->getId();
-        $this->verify('ブロックIDは'.$this->expected.'ではありません');
-    }
 }

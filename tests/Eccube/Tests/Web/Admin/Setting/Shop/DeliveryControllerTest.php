@@ -44,7 +44,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
 
         foreach ($Prefs as $Pref) {
             $DeliveryFee = $this->container->get(DeliveryFeeRepository::class)
-                ->findOrCreate([
+                ->findOneBy([
                     'Delivery' => $Delivery,
                     'Pref' => $Pref,
                 ]);

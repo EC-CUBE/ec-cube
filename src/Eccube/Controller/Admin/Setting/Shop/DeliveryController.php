@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\PaymentOption;
 use Eccube\Event\EccubeEvents;
