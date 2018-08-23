@@ -213,6 +213,12 @@ class ShoppingController extends AbstractShoppingController
         $form = $this->parameterBag->get(OrderType::class);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
+            if (!$form->isValid()) {
+                return $this->redirectToRoute('shopping');
+            }
+        }
+
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
 
