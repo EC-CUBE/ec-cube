@@ -139,7 +139,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * プラグインやカスタマイズでこの機能を使う場合は, twig側で以下のように記述してください.
      *
-     * <button data-target="click" data-path="path('ルーティング')">更新する</button>
+     * <button data-trigger="click" data-path="path('ルーティング')">更新する</button>
      *
      * data-triggerは, click/change/blur等のイベント名を指定してください。
      * data-pathは任意のパラメータです. 指定しない場合, 注文手続き画面へリダイレクトします.
