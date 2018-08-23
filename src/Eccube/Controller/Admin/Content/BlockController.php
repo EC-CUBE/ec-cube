@@ -88,7 +88,12 @@ class BlockController extends AbstractController
         if (null === $id) {
             $Block = $this->blockRepository->newBlock($DeviceType);
         } else {
-            $Block = $this->blockRepository->getBlock($id, $DeviceType);
+            $Block = $this->blockRepository->findOneBy(
+                [
+                    'id' => $id,
+                    'DeviceType' => $DeviceType
+                ]
+            );
         }
 
         if (!$Block) {
