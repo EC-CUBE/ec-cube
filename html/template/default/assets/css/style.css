@@ -6868,7 +6868,6 @@ Styleguide 17.1
   border-bottom: 1px dotted #ccc; }
 
 .ec-addressList .ec-addressList__remove {
-  display: table-cell;
   vertical-align: middle;
   padding: 16px;
   text-align: center; }
@@ -6880,13 +6879,15 @@ Styleguide 17.1
   display: table-cell;
   vertical-align: middle;
   padding: 16px;
-  margin-right: 4em; }
+  margin-right: 4em;
+  width: 80%; }
 
 .ec-addressList .ec-addressList__action {
   position: relative;
   vertical-align: middle;
+  text-align: right;
   top: 27px;
-  right: 0; }
+  padding-right: 10px; }
 
 /**
 メディアクエリ
