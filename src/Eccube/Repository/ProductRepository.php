@@ -299,28 +299,4 @@ class ProductRepository extends AbstractRepository
 
         return $this->queries->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
     }
-
-    /**
-     * get query builder.
-     *
-     * @param $Customer
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     *
-     * @see CustomerFavoriteProductRepository::getQueryBuilderByCustomer()
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function getFavoriteProductQueryBuilderByCustomer($Customer)
-    {
-        $qb = $this->createQueryBuilder('p')
-            ->innerJoin('p.CustomerFavoriteProducts', 'cfp')
-            ->where('cfp.Customer = :Customer AND p.Status = 1')
-            ->setParameter('Customer', $Customer);
-
-        // Order By
-        // XXX Paginater を使用した場合に PostgreSQL で正しくソートできない
-        $qb->addOrderBy('cfp.create_date', 'DESC');
-
-        return $this->queries->customize(QueryKey::PRODUCT_GET_FAVORITE, $qb, ['customer' => $Customer]);
-    }
 }

@@ -61,7 +61,7 @@ class DeliveryFeeRepositoryTest extends EccubeTestCase
         $this->assertNotNull($Pref);
         $this->assertNotNull($Delivery);
 
-        $DeliveryFee = $this->deliveryFeeRepo->findOrCreate(
+        $DeliveryFee = $this->deliveryFeeRepo->findOneBy(
             ['Delivery' => $Delivery, 'Pref' => $Pref]
         );
 
@@ -82,7 +82,7 @@ class DeliveryFeeRepositoryTest extends EccubeTestCase
         $this->entityManager->persist($Pref);
         $this->entityManager->flush();
 
-        $DeliveryFee = $this->deliveryFeeRepo->findOrCreate(
+        $DeliveryFee = $this->deliveryFeeRepo->findOneBy(
             ['Delivery' => $Delivery, 'Pref' => $Pref]
         );
 

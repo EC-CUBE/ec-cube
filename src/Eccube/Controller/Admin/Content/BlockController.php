@@ -85,8 +85,11 @@ class BlockController extends AbstractController
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $Block = $this->blockRepository
-            ->findOrCreate($id, $DeviceType);
+        if (null === $id) {
+            $Block = $this->blockRepository->newBlock($DeviceType);
+        } else {
+            $Block = $this->blockRepository->getBlock($id, $DeviceType);
+        }
 
         if (!$Block) {
             throw new NotFoundHttpException();

@@ -145,12 +145,18 @@ class DeliveryController extends AbstractController
 
         foreach ($Prefs as $Pref) {
             $DeliveryFee = $this->deliveryFeeRepository
-                ->findOrCreate(
+                ->findOneBy(
                     [
                         'Delivery' => $Delivery,
                         'Pref' => $Pref,
                     ]
                 );
+            if (!$DeliveryFee) {
+                $DeliveryFee = new DeliveryFee();
+                $DeliveryFee
+                    ->setPref($Pref)
+                    ->setDelivery($Delivery);
+            }
             if (!$DeliveryFee->getFee()) {
                 $Delivery->addDeliveryFee($DeliveryFee);
             }
