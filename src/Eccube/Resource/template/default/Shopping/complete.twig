@@ -65,7 +65,12 @@ file that was distributed with this source code.
             <div class="ec-reportHeading">
                 <h2>{{ 'front.shopping.complete_message__title'|trans }}</h2>
             </div>
-            <p class="ec-reportDescription">{{ 'front.shopping.complete_message__body'|trans }}</p>
+            <p class="ec-reportDescription">
+                {{ 'front.shopping.complete_message__body'|trans }}
+                {% if Order.id %}
+                    <br /><br /><strong>ご注文番号：{{ Order.orderNo }}</strong>
+                {% endif %}
+            </p>
 
             {% if Order.complete_message is not empty %}
                 {{ Order.complete_message|raw }}

@@ -514,6 +514,7 @@ admin.home.sales_summany_yearly: 年間
 admin.home.sales_summany_amount: 売上金額
 admin.home.sales_summany_count: 売上件数
 admin.home.recommend_plugins_title: おすすめのプラグイン
+admin.home.recommend_plugins.owner_store: オーナーズストア
 admin.home.news_title: お知らせ
 
 admin.header.user_name: '%name% 様'
@@ -1182,6 +1183,189 @@ admin.setting.system.system.php_info: PHP情報
 
 admin.store: オーナーズストア
 
+# TODO: メッセージ精査
+admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
+admin.store.plugin.popup.delete.confirm.message: このプラグインを削除してもよろしいですか？
+admin.store.authentication_setting.803: オーナーズストア
+admin.store.authentication_setting.804: プラグイン認証キーの設定
+admin.store.authentication_setting.805: 認証キーの設定
+admin.store.authentication_setting.806: 認証キー
+admin.store.authentication_setting.807: '※認証キーは<a target="_blank" href="owners_store_url">EC-CUBEオーナーズストア</a>で取得できます。'
+admin.store.authentication_setting.808: 設定
+admin.store.plugin.809: インストールプラグイン一覧
+admin.store.plugin.810: オーナーズストア
+admin.store.plugin.811: オーナーズストアから新規追加
+admin.store.plugin.812: オーナーズストアのプラグイン
+admin.store.plugin.813: アップロードして新規追加
+admin.store.plugin.814: ユーザー独自プラグイン
+admin.store.plugin.815: 未登録プラグイン
+admin.store.plugin.816: プラグイン名
+admin.store.plugin.help: オーナーズストアへの接続に問題があるため、詳細な情報を取得できませんでした。
+admin.store.plugin.install: インストール
+admin.store.plugin.upgrade: アップデート
+admin.store.plugin.price: 販売価格
+admin.store.plugin.detail.download: ダウンロード数
+admin.store.plugin.detail.version: プラグインバージョン
+admin.store.plugin.detail.support: EC-CUBE対応バージョン
+admin.store.plugin.detail.public_date: 公開日
+admin.store.plugin.detail.update_date: 最終更新日
+admin.store.plugin.detail.size: ファイルサイズ
+admin.store.plugin.detail.size.format: 約 %size% KB
+admin.store.plugin.detail.license: ライセンス
+admin.store.plugin.detail.develop: 制作者
+admin.store.plugin_confirm.title.upgrade: アップデート
+admin.store.plugin_confirm.title: インストール確認
+admin.store.plugin_confirm.subtitle: オーナーズストア
+admin.store.plugin_confirm.header: 以下のプラグインをインストールします
+admin.store.plugin_confirm.header.upgrade: 以下のプラグインを最新版にアップデートします
+admin.store.plugin_confirm.require.header: 「%name%」には以下のプラグインが必須です。同時にインストールされます
+admin.store.plugin_confirm_uninstall.823: オーナーズストア
+admin.store.plugin_confirm_uninstall.824: プラグイン削除
+admin.store.plugin_confirm_uninstall.825: 以下のプラグインを削除します。
+admin.store.plugin_confirm_uninstall.826: 削除
+admin.store.plugin_confirm_uninstall.827: 戻る
+admin.store.plugin_handler.828: オーナーズストア
+admin.store.plugin_handler.829: 高度な設定
+admin.store.plugin_handler.830: プラグイン名
+admin.store.plugin_handler.831: ハンドラ名
+admin.store.plugin_handler.832: 優先度
+admin.store.plugin_handler.833: 操作
+admin.store.plugin_handler.834: 上へ
+admin.store.plugin_handler.835: 下へ
+admin.store.plugin_handler.836: プラグインハンドラー管理
+admin.store.plugin_handler.837: 検索条件に該当するデータがありませんでした
+admin.store.plugin_install.838: オーナーズストア
+admin.store.plugin_install.839: プラグインのアップロード
+admin.store.plugin_install.840: 新規プラグインアップロード
+admin.store.plugin_install.841: プラグイン<br>(zip、tar、tar.gz形式)
+admin.store.plugin_install.842: アップロード
+admin.store.plugin_owners_confirm.843: 価格
+admin.store.plugin_owners_confirm.844: DL数
+admin.store.plugin_owners_confirm.845: プラグインバージョン
+admin.store.plugin_owners_confirm.846: 最終更新日
+admin.store.plugin_owners_confirm.847: EC-CUBE対応バージョン
+admin.store.plugin_owners_confirm.848: 'ファイルサイズ<br>約 %size% KB'
+admin.store.plugin_owners_confirm.848.1: ファイルサイズ
+admin.store.plugin_owners_confirm.848.2: 約
+admin.store.plugin_owners_confirm.849: ライセンス
+admin.store.plugin_owners_confirm.850: 'このプラグインはEC-CUBE %version%をサポートしていないため、正常に動作しない可能性があります。'
+admin.store.plugin_owners_confirm.851: '%dependency%が必要です。同時にインストールされます。'
+admin.store.plugin_owners_confirm.852: '<strong>制作者</strong> : '
+admin.store.plugin_owners_install.853: オーナーズストア
+admin.store.plugin_owners_install.854: 購入済プラグイン
+admin.store.plugin_owners_install.855: プラグイン一覧
+admin.store.plugin_owners_install.856: 認証キーを設定してください
+admin.store.plugin_owners_install.857: 認証キー設定画面へ
+admin.store.plugin_owners_panel.858: おすすめ追加機能
+admin.store.plugin_owners_panel.859: インストール済
+admin.store.plugin_owners_panel.860: 今すぐ更新
+admin.store.plugin_owners_panel.861: 今すぐ購入
+admin.store.plugin_owners_panel.862: 今すぐインストール
+admin.store.plugin_owners_panel.863: プラグインバージョン
+admin.store.plugin_owners_panel.864: 更新日
+admin.store.plugin_owners_panel.865: EC-CUBE対応バージョン
+admin.store.plugin_owners_panel.866: 'ファイルサイズ<br>約 %size% KB'
+admin.store.plugin_owners_panel.867: 'このプラグインはEC-CUBE %version%をサポートしていないため、正常に動作しない可能性があります。'
+admin.store.plugin_owners_panel.868: '<strong>提供元</strong> : '
+admin.store.plugin_owners_search.form.placeholder: すべて
+admin.store.plugin_owners_search.form.category: カテゴリ
+admin.store.plugin_owners_search.form.price_type: 有料／無料
+admin.store.plugin_owners_search.form.price_type.fee: 有料
+admin.store.plugin_owners_search.form.price_type.free: 無料
+admin.store.plugin_owners_search.form.keyword: キーワード
+admin.store.plugin_owners_search.form.sort.new: 新着順
+admin.store.plugin_owners_search.form.sort.price: 価格が低い順
+admin.store.plugin_owners_search.form.sort.dl: DL
+admin.store.plugin_owners_search.search_button: 検索
+admin.store.plugin_owners_search.search_results: 検索結果（%number%／%total%ページ）
+admin.store.plugin_owners_search.latest: 最新バージョン：
+admin.store.plugin_owners_search.dl: DL数
+admin.store.plugin_owners_search.support: 対応バージョン
+admin.store.plugin_owners_search.detail: 詳細
+admin.store.plugin_owners_search.install.free: 入手する
+admin.store.plugin_owners_search.install.fee: 購入する
+admin.store.plugin_owners_search.install: インストール済み
+admin.store.plugin_owners_search.modal.header: 商品詳細
+admin.store.plugin_owners_search.modal.contact: 資料請求・お問い合わせ
+admin.store.plugin_owners_search.modal.manual: マニュアルダウンロード
+admin.store.plugin_owners_search.modal.note: 'このプラグインはEC-CUBE %version%をサポートしていないため、正常に動作しない可能性があります。'
+admin.store.plugin_owners_search.modal.cancel: 一覧に戻る
+admin.store.plugin_owners_search.modal.submit: インストール確認へ
+admin.store.plugin_owners_search.modal.dependency: '%dependency%が必要です。同時にインストールされます。'
+admin.store.plugin_search.884: オーナーズストア
+admin.store.plugin_search.885: プラグインを探す
+admin.store.plugin_search.886: 検索結果
+admin.store.plugin_table.887: プラグイン名称
+admin.store.plugin_table.888: バージョン
+admin.store.plugin_table.889: コード
+admin.store.plugin_table.890: アップデート
+admin.store.plugin_table.891: 設定
+admin.store.plugin_table.892: (停止中)
+admin.store.plugin_table.893: 無効にする
+admin.store.plugin_table.894: 有効にする
+admin.store.plugin_table.895: このプラグインを削除してもよろしいですか？
+admin.store.plugin_table.896: 削除
+admin.store.plugin_table.897: 詳細を表示
+admin.store.plugin_table.898: アップデート
+admin.store.plugin_table.900: インストールされているプラグインはありません。
+admin.store.plugin_table.901: ステータス
+admin.store.plugin_table.902: 有効化
+admin.store.plugin_table.903: 無効化
+admin.store.plugin_table_official.901: プラグイン名
+admin.store.plugin_table_official.902: プラグインアイコン画像
+admin.store.plugin_table_official.903: プラグインバージョン
+admin.store.plugin_table_official.904: プラグインコード
+admin.store.plugin_table_official.905: アップデート
+admin.store.plugin_table_official.906: 設定
+admin.store.plugin_table_official.907: 制作者
+admin.store.plugin_table_official.908: (停止中)
+admin.store.plugin_table_official.909: 無効にする
+admin.store.plugin_table_official.910: 有効にする
+admin.store.plugin_table_official.911: 削除
+admin.store.plugin_table_official.912: 詳細を表示
+admin.store.plugin_table_official.913: アップロード
+admin.store.plugin_table_official.914: 新バージョンのプラグインが利用可能です。
+admin.store.plugin_table_official.915: 無効にする状態で利用可能
+admin.store.plugin_table_official.916: アップデート
+admin.store.plugin_table_official.917: プラグインバージョン：%version%
+admin.store.plugin_table_official.918: EC-CUBE対応バージョン：%versions%
+admin.store.plugin_table_official.919: 更新日：%update_date%
+admin.store.plugin_table_official.920: アップデート対象プラグインはありません
+admin.store.plugin_table_official.921: 詳細情報
+admin.store.plugin_table_official.924: 有効化
+admin.store.plugin_table_official.925: 無効化
+admin.store.plugin_table_official.923: インストールされているプラグインはありません。
+admin.store.template.924: オーナーズストア
+admin.store.template.925: テンプレート管理
+admin.store.template.926: テンプレート一覧
+admin.store.template.927: 選択
+admin.store.template.928: 名前
+admin.store.template.929: 保存先
+admin.store.template.930: ダウンロード
+admin.store.template.931: 削除
+admin.store.template.932: このテンプレートを削除してもよろしいですか？
+admin.store.template.933: 登録
+admin.store.template_add.934: オーナーズストア
+admin.store.template_add.935: テンプレートのアップロード
+admin.store.template_add.936: 新規テンプレートアップロード
+admin.store.template_add.937: テンプレートコード
+admin.store.template_add.938: テンプレート名
+admin.store.template_add.939: テンプレートファイル
+admin.store.template_add.940: アップロード
+admin.store.unregisterd_plugin_table.941: プラグイン
+admin.store.unregisterd_plugin_table.942: バージョン
+admin.store.unregisterd_plugin_table.943: コード
+admin.store.unregisterd_plugin_table.944: アップデート
+admin.store.unregisterd_plugin_table.945: 設定
+admin.store.unregisterd_plugin_table.946: 不明
+admin.store.unregisterd_plugin_table.947: 不明
+admin.store.unregisterd_plugin_table.948: 詳細を表示
+admin.store.unregisterd_plugin_table.949: 不明
+admin.store.unregisterd_plugin_table.950: 設定
+admin.store.install.label: 'プラグイン (zip、tar、tar.gz形式)'
+
+
+
 #------------------------------------------------------------------------------------
 # 情報
 #------------------------------------------------------------------------------------
@@ -1189,6 +1373,7 @@ admin.store: オーナーズストア
 admin.info: 情報
 admin.info.official_site: 公式サイト
 admin.info.community: 開発コミュニティ
+admin.info.document: ドキュメント
 
 #------------------------------------------------------------------------------------
 # ツールチップ

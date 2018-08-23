@@ -18,6 +18,11 @@ Header set X-XSS-Protection "1; mode=block"
 Header set X-Content-Type-Options nosniff
 
 <IfModule mod_rewrite.c>
+    #403 Forbidden対応方法
+    #ページアクセスできない時シンボリックリンクが有効になっていない可能性あります、
+    #オプションを追加してください
+    #Options +FollowSymLinks +SymLinksIfOwnerMatch
+
     RewriteEngine On
 
     # Authorization ヘッダが取得できない環境への対応
@@ -29,6 +34,6 @@ Header set X-Content-Type-Options nosniff
     # RewriteRule ^(.*) - [E=HTTPS:on]
 
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg)$ [NC]
+    RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
