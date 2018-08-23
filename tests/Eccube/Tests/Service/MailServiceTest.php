@@ -326,9 +326,6 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
-
-        // HTMLメールテスト
-        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendPasswordResetNotificationMail()
