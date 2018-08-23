@@ -23,14 +23,14 @@ class MultipleShippingPage extends AbstractFrontPage
     public static function at($I)
     {
         $page = new self($I);
-        $page->tester->see('お届け先の複数指定', 'div.ec-layoutRole__main h1');
+        $page->tester->see('お届け先の複数指定', 'div.ec-pageHeader h1');
 
         return $page;
     }
 
     public function 新規お届け先を追加する()
     {
-        $this->tester->click('#multiple_list_box__body > p:nth-child(2) > a');
+        $this->tester->click('#shipping-multiple-form > div:nth-child(2) > a');
 
         return $this;
     }
