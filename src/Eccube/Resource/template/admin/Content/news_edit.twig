@@ -50,67 +50,74 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h4 class="box-title font-weight-bold">{{ 'admin.content.news_edit.66'|trans }}</h4>
+                            <div class="row">
+                                <div class="col-8">
+                                    <span class="card-title">{{ 'admin.content.news_edit.66'|trans }}</span></div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#newsForm"
+                                                                 aria-expanded="true" aria-controls="newsForm"><i class="fa fa-lg fa-angle-up"></i></a></div>
+                            </div>
                         </div>
-
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-3"><span>{{ 'news.label.date'|trans }}</span></div>
-                                <div class="col mb-2">
-                                    {{ form_widget(form.publish_date, {'attr': {'class': 'input_cal'}}) }}
-                                    {{ form_errors(form.publish_date) }}
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-3"><span>{{ 'news.label.title'|trans }}</span></div>
-                                <div class="col mb-2">
-                                    {{ form_widget(form.title) }}
-                                    {{ form_errors(form.title) }}
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-3"><span>{{ 'news.label.url'|trans }}</span></div>
-                                <div class="col mb-2">
-                                    {{ form_widget(form.url) }}
-                                    {{ form_errors(form.url) }}
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-3"><span>{{ 'news.label.new_window'|trans }}</span></div>
-                                <div class="col mb-2">
-                                    {{ form_widget(form.link_method) }}
-                                    {{ form_errors(form.link_method) }}
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-3"><span>{{ 'news.label.text_body'|trans }}</span></div>
-                                <div class="col mb-2">
-                                    {{ form_widget(form.description) }}
-                                    {{ form_errors(form.description) }}
-                                </div>
-                            </div>
-
-                            {# エンティティ拡張の自動出力 #}
-                            {% for f in form if f.vars.eccube_form_options.auto_render %}
-                                {% if f.vars.eccube_form_options.form_theme %}
-                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
-                                    {{ form_row(f) }}
-                                {% else %}
-                                    <div class="row mb-2">
-                                        <div class="col-3">
-                                            <span>{{ f.vars.label|trans }}</span>
-                                        </div>
-                                        <div class="col">
-                                            {{ form_widget(f) }}
-                                            {{ form_errors(f) }}
-                                        </div>
+                        <div class="ec-cardCollapse collapse show" id="newsForm" style="">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-3"><span>{{ 'news.label.date'|trans }}</span></div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.publish_date, {'attr': {'class': 'input_cal'}}) }}
+                                        {{ form_errors(form.publish_date) }}
                                     </div>
-                                {% endif %}
-                            {% endfor %}
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-3"><span>{{ 'news.label.title'|trans }}</span></div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.title) }}
+                                        {{ form_errors(form.title) }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-3"><span>{{ 'news.label.url'|trans }}</span></div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.url) }}
+                                        {{ form_errors(form.url) }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-3">&nbsp;</div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.link_method) }}
+                                        {{ form_errors(form.link_method) }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-3"><span>{{ 'news.label.text_body'|trans }}</span></div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.description) }}
+                                        {{ form_errors(form.description) }}
+                                    </div>
+                                </div>
+
+                                {# エンティティ拡張の自動出力 #}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                        {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span>{{ f.vars.label|trans }}</span>
+                                            </div>
+                                            <div class="col">
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>

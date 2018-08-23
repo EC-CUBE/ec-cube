@@ -35,20 +35,13 @@ class NewsController extends AbstractController
     protected $newsRepository;
 
     /**
-     * @var PageMaxRepository
-     */
-    protected $pageMaxRepository;
-
-    /**
      * NewsController constructor.
      *
      * @param NewsRepository $newsRepository
-     * @param PageMaxRepository $pageMaxRepository
      */
-    public function __construct(NewsRepository $newsRepository, PageMaxRepository $pageMaxRepository)
+    public function __construct(NewsRepository $newsRepository)
     {
         $this->newsRepository = $newsRepository;
-        $this->pageMaxRepository = $pageMaxRepository;
     }
 
     /**
@@ -68,18 +61,13 @@ class NewsController extends AbstractController
     {
         $NewsList = $this->newsRepository->findBy([], ['sort_no' => 'DESC']);
 
-        $builder = $this->formFactory->createBuilder();
-
         $event = new EventArgs(
             [
-                'builder' => $builder,
                 'NewsList' => $NewsList,
             ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE, $event);
-
-        $form = $builder->getForm();
 
         $pagination = $paginator->paginate(
             $NewsList,
@@ -88,7 +76,6 @@ class NewsController extends AbstractController
         );
 
         return [
-            'form' => $form->createView(),
             'pagination' => $pagination
         ];
     }

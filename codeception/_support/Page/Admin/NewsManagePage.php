@@ -41,7 +41,7 @@ class NewsManagePage extends AbstractAdminPage
 
     public function 新規登録()
     {
-        $this->tester->click('.c-contentsArea .c-contentsArea__cols .c-contentsArea__primaryCol .card-body #addNew
+        $this->tester->click('.c-contentsArea .c-contentsArea__cols .c-contentsArea__primaryCol .justify-content-between #addNew
         ');
     }
 
