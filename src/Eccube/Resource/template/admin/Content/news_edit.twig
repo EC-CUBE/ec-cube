@@ -43,60 +43,63 @@ $(function() {
 {% endblock javascript %}
 
 {% block main %}
-    <div class="row" id="aside_wrap">
-        <div id="detail_wrap" class="col-md-9">
-            <div id="detail_box" class="box">
-                <div id="detail_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.content.news_edit.66'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="?">
-                    <div id="detail_box__body" class="box-body">
-
-                        {{ form_row(form._token) }}
-
-                        <div id="detail_box__date" class="form-group">
-                            {{ form_label(form.publish_date) }}
-                            <div class="col-sm-10">
-                                {{ form_widget(form.publish_date, {'attr': {'class': 'input_cal'}}) }}
-                                {{ form_errors(form.publish_date) }}
-                            </div>
+    <div class="row m-0" id="aside_wrap">
+        <div id="detail_wrap" class="col-12">
+            <div id="detail_box" class="card rounded border-0 mb-4">
+                <div id="detail_box__header" class="card-header">
+                    <div class="row">
+                        <div class="col-8">
+                            <span class="card-title">{{'admin.content.news_edit.66'|trans}}</span>
                         </div>
+                        <div class="col-4 text-right">
+                            <a data-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo">
+                                <i class="fa fa-angle-up fa-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse show ec-cardCollapse" id="ordererInfo">
+                    <div class="card-body">
+                        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="?">
+                            <div id="detail_box__body" class="box-body">
 
-                        {{ form_row(form.title) }}
+                              {{ form_row(form._token) }}
+                                <div id="detail_box__date" class="form-group row">
+                                  {{ form_label(form.publish_date) }}
+                                    <div class="col-5">
+                                      {{ form_widget(form.publish_date, {'attr': {'class': 'input_cal'}}) }}
+                                      {{ form_errors(form.publish_date) }}
+                                    </div>
+                                </div>
 
-                        {{ form_row(form.url) }}
+                              {{ form_row(form.title) }}
 
-                        {{ form_row(form.link_method) }}
+                              {{ form_row(form.url) }}
 
-                        {{ form_row(form.description) }}
+                              {{ form_row(form.link_method) }}
 
-                    </div><!-- /.box-body -->
-                </form>
-            </div><!-- /.box -->
+                              {{ form_row(form.description) }}
 
-            <div id="detail_box__footer" class="row">
-                <div id="detail_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <p><a href="{{ url('admin_content_news') }}">{{'admin.content.news_edit.67'|trans}}</a></p>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-
-        </div><!-- /.col -->
-
-        <div class="col-md-3" id="aside_column">
-            <div id="common_box" class="col_inner">
-                <div id="common_box__body" class="box no-header">
-                    <div id="common_button_box" class="box-body">
-                        <div id="common_button_box__insert_button" class="row text-center">
-                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit(); return false;">{{'admin.content.news_edit.68'|trans}}</button>
-                            </div>
+        </div>
+        <div class="card-footer position-fixed fixed-bottom col-12 border-0" style="background-color: rgba(47,63,78,.8)">
+            <div class="row m-0 justify-content-between align-items-center">
+                <div id="detail_box__back_button" class="col-6 align-items-center justify-content-start">
+                    <a href="{{ url('admin_content_news') }}" class="text-white"><i class="fa fa-backward text-white mr-2" aria-hidden="true"></i>{{'admin.content.news_edit.65'|trans}}</a>
+                </div>
+                <div class="col-6">
+                    <div class="row align-items-center justify-content-end">
+                        <div class="col-auto">
+                            <button class="btn btn-primary btn-block btn-lg px-5" onclick="document.form1.submit(); return false;">{{'admin.content.news_edit.68'|trans}}</button>
                         </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
+                    </div>
+                </div>
             </div>
-        </div><!-- /.col -->
-
-
+        </div>
     </div>
 
 {% endblock %}
