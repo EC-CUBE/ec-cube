@@ -1200,6 +1200,7 @@ admin.store.plugin.813: アップロードして新規追加
 admin.store.plugin.814: ユーザー独自プラグイン
 admin.store.plugin.815: 未登録プラグイン
 admin.store.plugin.816: プラグイン名
+admin.store.plugin.help: オーナーズストアへの接続に問題があるため、詳細な情報を取得できませんでした。
 admin.store.plugin.install: インストール
 admin.store.plugin.upgrade: アップデート
 admin.store.plugin.price: 販売価格
