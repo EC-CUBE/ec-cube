@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\Delivery;
+use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Repository\DeliveryFeeRepository;
@@ -48,6 +49,11 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
                     'Delivery' => $Delivery,
                     'Pref' => $Pref,
                 ]);
+            if (!$DeliveryFee) {
+                $DeliveryFee = new DeliveryFee();
+                $DeliveryFee->setDelivery($Delivery)
+                    ->setPref($Pref);
+            }
             $DeliveryFee->setFee($faker->randomNumber(3));
 
             $this->entityManager->persist($DeliveryFee);
@@ -57,6 +63,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         }
 
         $Payment = new Payment();
+        $Payment->setVisible(true);
         $this->entityManager->persist($Payment);
         $this->entityManager->flush();
         $PaymentOption = new PaymentOption();
