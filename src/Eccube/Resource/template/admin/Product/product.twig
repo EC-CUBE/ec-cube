@@ -192,9 +192,7 @@ file that was distributed with this source code.
                 }
             });
 
-            {# TODO: Should move logic of js into .js file instead of .html file #}
             var confirmFormChange = function(form, target, modal) {
-                {# TODO: Should detect form change before show confirm modal #}
                 var returnLink = form.find('input[type="hidden"][name*="return_link"]'),
                     saveBtn = modal.find('a[data-action="save"]'),
                     cancelBtn = modal.find('a[data-action="cancel"]');
