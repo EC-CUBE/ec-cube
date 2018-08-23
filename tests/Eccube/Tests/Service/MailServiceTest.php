@@ -301,7 +301,6 @@ class MailServiceTest extends AbstractServiceTestCase
         $formData = [
             'mail_subject' => $subject,
             'tpl_data' => $faker->text,
-            'html_tpl_data' => $faker->text,
         ];
         $this->mailService->sendAdminOrderMail($Order, $formData);
 

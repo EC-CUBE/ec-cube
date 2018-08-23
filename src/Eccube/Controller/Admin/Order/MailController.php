@@ -233,7 +233,7 @@ class MailController extends AbstractController
      */
     public function mailAll(Request $request)
     {
-        $builder = $this->formFactory->createBuilder(MailType::class);
+        $builder = $this->formFactory->createBuilder(OrderMailType::class);
 
         $event = new EventArgs(
             [
@@ -284,7 +284,6 @@ class MailController extends AbstractController
                         // 本文確認用
                         $body = $this->createBody($Order, $MailTemplate->getFileName());
                         $data['tpl_data'] = $body;
-                        $data['html_tpl_data'] = null;
 
                         // メール送信
                         $this->mailService->sendAdminOrderMail($Order, $data);
