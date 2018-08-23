@@ -711,6 +711,7 @@ class ShoppingController extends AbstractShoppingController
      * PaymentMethod::applyを実行する.
      *
      * @param PaymentMethodInterface $paymentMethod
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     protected function executeApply(PaymentMethodInterface $paymentMethod)
@@ -732,13 +733,13 @@ class ShoppingController extends AbstractShoppingController
             // forwardすることも可能.
             if ($dispatcher->isForward()) {
                 log_info('[注文処理] PaymentMethod::applyによりForwardします.',
-                    [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters(),]);
+                    [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters()]);
 
                 return $this->forwardToRoute($dispatcher->getRoute(), $dispatcher->getPathParameters(),
                     $dispatcher->getQueryParameters());
             } else {
                 log_info('[注文処理] PaymentMethod::applyによりリダイレクトします.',
-                    [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters(),]);
+                    [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters()]);
 
                 return $this->redirectToRoute($dispatcher->getRoute(),
                     array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
@@ -750,6 +751,7 @@ class ShoppingController extends AbstractShoppingController
      * PaymentMethod::checkoutを実行する.
      *
      * @param PaymentMethodInterface $paymentMethod
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     protected function executeCheckout(PaymentMethodInterface $paymentMethod)

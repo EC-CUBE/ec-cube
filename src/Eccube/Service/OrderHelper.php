@@ -166,6 +166,7 @@ class OrderHelper
 
     /**
      * @param Cart $Cart
+     *
      * @return bool
      */
     public function verifyCart(Cart $Cart)

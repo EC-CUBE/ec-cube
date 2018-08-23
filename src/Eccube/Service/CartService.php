@@ -181,9 +181,6 @@ class CartService
     }
 
     /**
-     * @return ItemHolderInterface|Cart
-     */
-    /**
      * @return Cart|null
      */
     public function getCart()
@@ -406,7 +403,7 @@ class CartService
     public function getPreOrderId()
     {
         $Cart = $this->getCart();
-        if (!empty($Cart)   ) {
+        if (!empty($Cart)) {
             return $Cart->getPreOrderId();
         }
 
