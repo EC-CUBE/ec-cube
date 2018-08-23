@@ -64,7 +64,11 @@ $(function() {
 {% endblock javascript %}
 
 {% block main %}
-    <h1 class="page-heading">お届け先の複数指定</h1>
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>お届け先の複数指定</h1>
+        </div>
+    </div>
     {# TODO エラーメッセージ #}
     <div id="confirm_flow_box" class="row">
         <div id="confirm_flow_box__body" class="col-md-12">
@@ -95,66 +99,60 @@ $(function() {
             {% endfor %}
         </div><!-- /.col -->
     </div><!-- /.row -->
-    <div id="multiple_wrap" class="container-fluid">
+
+    <div class="ec-AddAddress">
         <form id="shipping-multiple-form" method="post" action="{{ url('shopping_shipping_multiple') }}">
             {{ form_widget(form._token) }}
-            <div id="multiple_list_box" class="row">
-                <div id="multiple_list_box__body" class="col-sm-10 col-sm-offset-1">
-                    <p class="message">各商品のお届け先を選択してください。(※数量の合計は、カゴの中の数量と合わせてください。)</p>
+            <div class="ec-AddAddress__info">
+                <p>各商品のお届け先を選択してください。(※数量の合計は、カゴの中の数量と合わせてください。)</p>
+            </div>
 
-                    {% for error in errors %}
-                        <div class="text-danger">{{ error.message }}</div>
-                    {% endfor %}
+            {% for error in errors %}
+                <div class="text-danger">{{ error.message }}</div>
+            {% endfor %}
 
-                    <p><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn btn-default btn-sm">{{'mypage.label.add_address'|trans}}</a></p>
+            <div class="ec-AddAddress__btn"><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn ec-inlineBtn">{{'mypage.label.add_address'|trans}}</a></div>
 
-                    {% for orderItem in OrderItems %}
-                        {% set idx = loop.index0 %}
-                        {% set itemvalue = 0 %}
-                        <hr>
-                        <div id="multiple_list__item_box--{{ idx }}" class="cart_item table shipping_multiple_table">
-                            <div id="multiple_list__item_box__body--{{ idx }}" class="tbody">
-                                <div id="multiple_list__item_box_body_inner--{{ idx }}" class="item_box tr">
-                                    <div id="multiple_list__item--{{ idx }}" class="td table">
-                                        <div id="multiple_list__image--{{ idx }}" class="item_photo"><img src="{{ asset(orderItem.product.MainListImage|no_image_product, 'save_image') }}" alt="{{ orderItem.productName }}"/></div>
-                                        <dl id="multiple_list__item_detail--{{ idx }}" class="item_detail">
-                                            <dt id="multiple_list__product_name--{{ idx }}" class="item_name text-default">
-                                                <strong>{{ orderItem.productName }}</strong></dt>
-                                            <dd id="multiple_list__product_class_category--{{ idx }}" class="item_pattern small">
-                                                <p>
-                                                    {% if orderItem.productClass.classCategory1 %}
-                                                        {{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}
-                                                        <br>
-                                                    {% endif %}
-                                                    {% if orderItem.productClass.classCategory2 %}
-                                                        {{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}
-                                                        <br>
-                                                    {% endif %}
-                                                </p>
-                                            </dd>
-                                            <dd id="multiple_list__total_price--{{ idx }}">小計：{{ orderItem.totalPrice|price }}</dd>
-                                            {% for key, value in compItemQuantities %}
-                                                {% if orderItem.productClass.id == key %}
-                                                    <dd id="multiple_list__value--{{ idx }}_{{ key }}">{{'common.label.qty'|trans}}：{{ value }}</dd>
-                                                    {% set itemvalue = value %}
-                                                {% endif %}
-                                            {% endfor %}
-                                        </dl>
-                                    </div>
-                                </div>
-                                <!--/item_box-->
+            {% for orderItem in OrderItems %}
+                {% set idx = loop.index0 %}
+                {% set itemvalue = 0 %}
+                <div id="multiple_list__item_box--{{ idx }}" class="ec-AddAddress__add">
+                    <div class="ec-AddAddress__item">
+                        <div class="ec-AddAddress__itemThumb">
+                            <img src="{{ asset(orderItem.product.MainListImage|no_image_product, 'save_image') }}">
+                        </div>
+                        <div class="ec-AddAddress__itemtContent">
+                            <div class="ec-AddAddress__itemtTitle">{{ orderItem.productName }}
                             </div>
-                        </div><!--/cart_item-->
+                            {% if orderItem.productClass.classCategory1 %}
+                                <div class="ec-AddAddress__itemtSize">{{ orderItem.productClass.classCategory1 }}</div>
+                            {% endif %}
+                            {% if orderItem.productClass.classCategory2 %}
+                                <div class="ec-AddAddress__itemtSize">{{ orderItem.productClass.classCategory2 }}</div>
+                            {% endif %}
+                            <div class="ec-AddAddress__itemtPrice">小計：{{ orderItem.totalPrice|price }}</div>
 
-                        <div id="item{{ idx }}">
-                            {% for shipping in form.shipping_multiple[idx].shipping %}
-                                <div id="item{{ idx }}-{{ loop.index0 }}" data-itemidx="{{ loop.index0 }}" class="shipping_item item{{ idx }} form-inline" style="margin-bottom: 5px;">
-                                    <div id="multiple_list__shipping_address--{{ idx }}_{{ loop.index0 }}" class="form-group">
+                            {% for key, value in compItemQuantities %}
+                                {% if orderItem.productClass.id == key %}
+                                    <div class="ec-AddAddress__itemtNumber" id="multiple_list__value--{{ idx }}_{{ key }}">{{'common.label.qty'|trans}}：{{ value }}</div>
+                                    {% set itemvalue = value %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div id="item{{ idx }}">
+                        {% for shipping in form.shipping_multiple[idx].shipping %}
+                            <div id="item{{ idx }}-{{ loop.index0 }}" data-itemidx="{{ loop.index0 }}" class="ec-AddAddress__select shipping_item item{{ idx }}" style="margin-bottom: 5px;">
+                                <div id="multiple_list__shipping_address--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectAddress">
+                                    <div class="ec-select">
                                         <label>お届け先</label>
                                         {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
                                         {{ form_errors(shipping.customer_address) }}
                                     </div>
-                                    <div id="multiple_list__shipping_quantity--{{ idx }}_{{ loop.index0 }}" class="form-group">
+                                </div>
+                                <div id="multiple_list__shipping_quantity--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectNumber">
+                                    <div class="ec-input">
                                         <label>数量</label>
                                         {% for key, value in compItemQuantities %}
                                             {% if orderItem.productClass.id == key %}
@@ -164,26 +162,29 @@ $(function() {
                                             {% endif %}
                                         {% endfor %}
                                     </div>
-                                    <button id="button__delete--{{ idx }}_{{ loop.index0 }}" type="button" class="btn btn-default btn-sm delete" data-itemidx="{{ idx }}-{{ loop.index0 }}" style="{% if loop.index0 == 0 %}display: none;{% endif %}">{{'common.label.delete'|trans}}</button>
                                 </div>
-                            {% endfor %}
-                        </div>
-                        <p id="multiple_list__add_button{{ idx }}">
-                            <button id="button__add{{ idx }}" type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
-                        </p>
-                    {% endfor %}
-                    <div id="multiple_list__footer" class="row no-padding">
-                        <div id="multiple_list__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
-                            <p id="multiple_list__confirm_button">
-                                <button id="button__confirm" type="submit" class="btn btn-primary btn-block">選択したお届け先に送る</button>
-                            </p>
-                            <p id="multiple_list__back_button"><a href="{{ url('shopping') }}" class="btn btn-info btn-block">{{'common.label.btn.go_back'|trans}}</a></p>
-                        </div>
+
+                                <button id="button__delete--{{ idx }}_{{ loop.index0 }}" type="button" class="btn ec-inlineBtn delete"
+                                        style="{% if loop.index0 == 0 %}display:none;{% endif %}"
+                                        data-itemidx="{{ idx }}-{{ loop.index0 }}">{{'common.label.delete'|trans}}</button>
+                            </div>
+                        {% endfor %}
                     </div>
 
+                    <div id="multiple_list__add_button{{ idx }}" class="ec-AddAddress__btn">
+                        <button id="button__add{{ idx }}" type="button" class="ec-inlineBtn add" data-idx="{{ idx }}">お届け先追加</button>
+                    </div>
                 </div>
-            </div><!-- /.row -->
+            {% endfor %}
+
+            <div class="ec-AddAddress__actions">
+                <div class="ec-off4Grid">
+                    <div class="ec-off4Grid__cell">
+                        <button type="submit" class="ec-blockBtn--action">選択したお届け先に送る</button>
+                        <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">戻る</a>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
-
 {% endblock %}
