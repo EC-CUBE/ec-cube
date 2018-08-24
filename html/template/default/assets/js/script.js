@@ -19,8 +19,8 @@ $(function() {
         $('.ec-headerRole__cart').toggleClass('is_active');
     });
 
-    $('.ec-newsline__close').on('click', function() {
-        $(this).parents('.ec-newsline').toggleClass('is_active');
+    $(".ec-newsRole__newsCloseBtn").on("click",function(){
+      $(this).parents(".ec-newsRole__newsItem").toggleClass("is_active")
     });
 
     $('.ec-orderMail__link').on('click', function() {
