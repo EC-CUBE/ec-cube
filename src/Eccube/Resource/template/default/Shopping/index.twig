@@ -354,7 +354,7 @@ file that was distributed with this source code.
                     <div class="ec-orderPayment">
                         <div class="ec-rectHeading">
                             <h2>{{ 'front.shopping.point_info'|trans }}</h2>
-                            <p>{{ 'front.shopping.available_point'|trans({ '%point%': Order.Customer.Point }) }}</p>
+                            <p>{{ 'front.shopping.available_point'|trans({ '%point%': Order.Customer.Point|number_format }) }}</p>
                             {{ form_widget(form.use_point, {'attr': {'class': 'form-control use_point'}}) }}
                             {{ form_errors(form.use_point) }}
                         </div>
