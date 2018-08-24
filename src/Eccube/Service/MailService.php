@@ -397,6 +397,20 @@ class MailService
 
         $count = $this->mailer->send($message);
 
+        $MailHistory = new MailHistory();
+        $MailHistory->setMailSubject($message->getSubject())
+            ->setMailBody($message->getBody())
+            ->setOrder($Order)
+            ->setSendDate(new \DateTime());
+
+        // HTML用メールの設定
+        $multipart = $message->getChildren();
+        if (count($multipart) > 0) {
+            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+        }
+
+        $this->mailHistoryRepository->save($MailHistory);
+
         log_info('受注メール送信完了', ['count' => $count]);
 
         return $message;
