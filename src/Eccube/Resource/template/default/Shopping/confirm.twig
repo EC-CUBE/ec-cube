@@ -60,10 +60,8 @@ file that was distributed with this source code.
     </div>
 </div>
 
-    <form id="shopping-form" method="post" action="{{ url('shopping_order') }}">
+    <form id="shopping-form" method="post" action="{{ url('shopping_checkout') }}">
     {{ form_widget(form._token) }}
-    {{ form_widget(form.mode) }}
-    {{ form_widget(form.param) }}
     <div class="ec-orderRole">
         <div class="ec-orderRole__detail">
             <div class="ec-orderOrder">
@@ -165,7 +163,17 @@ file that was distributed with this source code.
                     {{ form_widget(form.Payment, {'type': 'hidden'}) }}
                 </div>
             </div>
-
+            {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+            <div class="ec-orderPayment">
+                <div class="ec-rectHeading">
+                    <h2>{{ 'front.shopping.point_info'|trans }}</h2>
+                </div>
+                <div class="ec-blockRadio">
+                    {{ Order.use_point|number_format }} pt
+                    {{ form_widget(form.use_point, {'type': 'hidden'}) }}
+                </div>
+            </div>
+            {% endif %}
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">
                     <h2>{{ 'front.shopping.message_info'|trans }}</h2>
