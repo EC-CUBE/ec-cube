@@ -37,10 +37,13 @@ file that was distributed with this source code.
                 <form method="post" action="{{ url('mypage_withdraw') }}">
                     {{ form_widget(form._token) }}
                     <div class="ec-off4Grid">
-                        <div class="ec-off4Grid__cell"><a class="ec-withdrawConfirmRole__cancel ec-blockBtn--cancel"
-                                                          href="{{ url('mypage') }}">{{ 'front.mypage.withdraw_execute'|trans }}</a>
+                        <div class="ec-off4Grid__cell">
+                            <a class="ec-withdrawConfirmRole__cancel ec-blockBtn--cancel" href="{{ url('mypage') }}">
+                                {{ 'front.mypage.withdraw_cancel'|trans }}
+                            </a>
                             <button type="submit" class="ec-blockBtn" name="mode"
-                                    value="cancel">{{ 'front.mypage.withdraw_cancel'|trans }}</button>
+                                    value="complete">{{ 'front.mypage.withdraw_execute'|trans }}
+                            </button>
                         </div>
                     </div>
                 </form>

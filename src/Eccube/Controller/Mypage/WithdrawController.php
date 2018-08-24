@@ -77,9 +77,6 @@ class WithdrawController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             switch ($request->get('mode')) {
-                case 'cancel':
-                    return $this->redirectToRoute('mypage');
-
                 case 'confirm':
                     log_info('退会確認画面表示');
 
