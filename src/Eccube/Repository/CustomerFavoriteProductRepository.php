@@ -42,8 +42,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
             $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
             $CustomerFavoriteProduct->setCustomer($Customer);
             $CustomerFavoriteProduct->setProduct($Product);
-            $CustomerFavoriteProduct->setCreateDate(new \DateTime());
-            $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
 
             $em = $this->getEntityManager();
             $em->persist($CustomerFavoriteProduct);
