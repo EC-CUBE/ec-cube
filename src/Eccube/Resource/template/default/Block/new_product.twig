@@ -13,7 +13,7 @@ file that was distributed with this source code.
     <div class="ec-eyecatchRole">
         <img class="ec-eyecatchRole__image" src="{{ asset('img/top/img_about.jpg') }}" alt="" role="presentation"/>
         <div class="ec-eyecatchRole__intro">
-            {# TODO ↓テキスト置換必要　#}
+            {# TODO ロジック差し込み　#}
             <p class="ec-eyecatchRole__introEnTitle">CUBE GELATO ICE
             </p>
             <p class="ec-eyecatchRole__introTitle"> {{ 'front.block.new_product.eyecatch_title'|trans }}
@@ -23,65 +23,68 @@ file that was distributed with this source code.
             </p><a class="ec-blockBtn--top" href="/products/list?category_id=6">{{ 'front.block.new_product.eyecatch_view_list'|trans }}</a>
         </div>
     </div>
+</div>
 
-    <div class="ec-displayB">
-        <div class="ec-displayB__cell">
-            <a href="#">
-                <div class="ec-displayB__img"><img src="{{ asset('img/top/img03.jpg') }}"></div>
-                <div class="ec-displayB__catch">{{ 'front.block.new_product.category_1_title'|trans }}</div>
-                <div class="ec-displayB__comment ec-font-size-1">{{ 'front.block.new_product.category_1_body'|trans }}</div>
-                <div class="ec-displayB__link">{{ 'front.block.new_product.category_read_more'|trans }}</div>
-            </a>
-        </div>
-        <div class="ec-displayB__cell">
-            <a href="#">
-                <div class="ec-displayB__img"><img src="{{ asset('img/top/img04.jpg') }}"></div>
-                <div class="ec-displayB__catch">{{ 'front.block.new_product.category_2_title'|trans }}</div>
-                <div class="ec-displayB__comment ec-font-size-1">{{ 'front.block.new_product.category_2_body'|trans }}</div>
-                <div class="ec-displayB__link">{{ 'front.block.new_product.category_read_more'|trans }}</div>
-            </a>
-        </div>
-        <div class="ec-displayB__cell">
-            <a href="#">
-                <div class="ec-displayB__img"><img src="{{ asset('img/top/img05.jpg') }}"></div>
-                <div class="ec-displayB__catch">{{ 'front.block.new_product.category_3_title'|trans }}</div>
-                <div class="ec-displayB__comment ec-font-size-1">{{ 'front.block.new_product.category_3_body'|trans }}</div>
-                <div class="ec-displayB__link">{{ 'front.block.new_product.category_read_more'|trans }}</div>
-            </a>
+<div class="ec-topicRole">
+    <div class="ec-role">
+        {# TODO ロジック差し込み　#}
+        <div class="ec-secHeading"><span class="ec-secHeading__en">TOPICS</span><span class="ec-secHeading__line"></span><span class="ec-secHeading__ja">特集</span></div>
+        <div class="ec-topicRole__list">
+            <div class="ec-topicRole__listItem"><a href="/moc/guest/search/"><img src="{{ asset('img/top/img_bnr01.jpg') }}"></a>
+                <p class="ec-topicRole__listItemTitle">濃厚なのにアイスよりヘルシー!! ジェラート特集
+                </p>
+            </div>
+            <div class="ec-topicRole__listItem"><a href="/moc/guest/search/"><img src="{{ asset('img/top/img_bnr02.jpg') }}"></a>
+                <p class="ec-topicRole__listItemTitle">サクサク食感が魅力!! コーンアイス特集
+                </p>
+            </div>
         </div>
     </div>
-    <div class="ec-displayC">
-        <div class="ec-displayC__cell">
-            <a class="ec-displayC" href="#">
-                <div class="ec-displayC__img"><img src="{{ asset('img/top/img06.jpg') }}"></div>
-                <div class="ec-displayC__catch">{{ 'front.block.new_product.item_1_title'|trans }}</div>
-                <div class="ec-displayC__title">{{ 'front.block.new_product.item_1_name'|trans }}</div>
-                <div class="ec-displayC__price">{{ 1785|price }}}</div>
-            </a>
+</div>
+
+<div class="ec-role">
+    <div class="ec-newItemRole">
+        <div class="ec-newItemRole__list">
+            <div class="ec-newItemRole__listItem">
+                <div class="ec-newItemRole__listItemHeading ec-secHeading--tandem">
+                    {# TODO ロジック差し込み　#}
+                    <span class="ec-secHeading__en">NEW ITEM</span>
+                    <span class="ec-secHeading__line"></span><span class="ec-secHeading__ja">新着商品</span>
+                    <a class="ec-inlineBtn--top" href="/moc/guest/search/">more</a>
+                </div>
+            </div>
+            <div class="ec-newItemRole__listItem"><a href="/moc/guest/item/"><img src="{{ asset('img/top/img_item01_01.jpg') }}">
+                    <p class="ec-newItemRole__listItemTitle">彩のジェラート"CUBE"
+                    </p>
+                    <p class="ec-newItemRole__listItemPrice">￥1,200(税込)
+                    </p></a>
+            </div>
+            <div class="ec-newItemRole__listItem"><a href="/moc/guest/item/"><img src="{{ asset('img/top/img_item02_01.jpg') }}">
+                    <p class="ec-newItemRole__listItemTitle">チェリーアイスサンド
+                    </p>
+                    <p class="ec-newItemRole__listItemPrice">￥800(税込)
+                    </p></a>
+            </div>
+            <div class="ec-newItemRole__listItem"><a href="/moc/guest/item/"><img src="{{ asset('img/top/img_item01_03.jpg') }}">
+                    <p class="ec-newItemRole__listItemTitle">タイトル
+                    </p>
+                    <p class="ec-newItemRole__listItemPrice">￥600(税込)
+                    </p></a>
+            </div>
         </div>
-        <div class="ec-displayC__cell">
-            <a class="ec-displayC" href="#">
-                <div class="ec-displayC__img"><img src="{{ asset('img/top/img07.jpg') }}"></div>
-                <div class="ec-displayC__catch">{{ 'front.block.new_product.item_2_title'|trans }}</div>
-                <div class="ec-displayC__title">{{ 'front.block.new_product.item_2_name'|trans }}</div>
-                <div class="ec-displayC__price">{{ 1785|price }}</div>
-            </a>
-        </div>
-        <div class="ec-displayC__cell">
-            <a class="ec-displayC" href="#">
-                <div class="ec-displayC__img"><img src="{{ asset('img/top/img08.jpg') }}"></div>
-                <div class="ec-displayC__catch">{{ 'front.block.new_product.item_3_title'|trans }}</div>
-                <div class="ec-displayC__title">{{ 'front.block.new_product.item_3_name'|trans }}</div>
-                <div class="ec-displayC__price--sp">{{ 1785|price }}</div>
-            </a>
-        </div>
-        <div class="ec-displayC__cell">
-            <a class="ec-displayC" href="#">
-                <div class="ec-displayC__img"><img src="{{ asset('img/top/img09.jpg') }}"></div>
-                <div class="ec-displayC__catch">{{ 'front.block.new_product.item_4_title'|trans }}</div>
-                <div class="ec-displayC__title">{{ 'front.block.new_product.item_4_name'|trans }}</div>
-                <div class="ec-displayC__price">{{ 1785|price }}</div>
-            </a>
+    </div>
+</div>
+<div class="ec-categoryRole">
+    <div class="ec-role">
+        {# TODO ロジック差し込み　#}
+        <div class="ec-secHeading"><span class="ec-secHeading__en">CATEGORY</span><span class="ec-secHeading__line"></span><span class="ec-secHeading__ja">カテゴリ</span></div>
+        <div class="ec-categoryRole__list">
+            <div class="ec-categoryRole__listItem"><a href="/moc/guest/search/"><img src="http://placehold.it/300x150/ccc/fff/&amp;text=hoge"></a>
+            </div>
+            <div class="ec-categoryRole__listItem"><a href="/moc/guest/search/"><img src="http://placehold.it/300x150/ccc/fff/&amp;text=hoge"></a>
+            </div>
+            <div class="ec-categoryRole__listItem"><a href="/moc/guest/search/"><img src="http://placehold.it/300x150/ccc/fff/&amp;text=hoge"></a>
+            </div>
         </div>
     </div>
 </div>
