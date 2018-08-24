@@ -30,7 +30,7 @@ class MultipleShippingPage extends AbstractFrontPage
 
     public function 新規お届け先を追加する()
     {
-        $this->tester->click('#shipping-multiple-form > div.ec-AddAddress__btn > a');
+        $this->tester->click('#shipping-multiple-form > div.ec-AddAddress__new > a');
 
         return $this;
     }

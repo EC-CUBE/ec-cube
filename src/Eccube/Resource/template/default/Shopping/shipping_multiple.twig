@@ -111,7 +111,7 @@ $(function() {
                 <div class="text-danger">{{ error.message }}</div>
             {% endfor %}
 
-            <div class="ec-AddAddress__btn" style="margin-bottom: 20px"><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn ec-inlineBtn">{{'新規お届け先を追加する'|trans}}</a></div>
+            <div class="ec-AddAddress__new"><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn ec-inlineBtn">{{'新規お届け先を追加する'|trans}}</a></div>
 
             {% for orderItem in OrderItems %}
                 {% set idx = loop.index0 %}
@@ -143,7 +143,7 @@ $(function() {
 
                     <div id="item{{ idx }}">
                         {% for shipping in form.shipping_multiple[idx].shipping %}
-                            <div id="item{{ idx }}-{{ loop.index0 }}" data-itemidx="{{ loop.index0 }}" class="ec-AddAddress__select shipping_item item{{ idx }}" style="margin-bottom: 5px;">
+                            <div id="item{{ idx }}-{{ loop.index0 }}" data-itemidx="{{ loop.index0 }}" class="ec-AddAddress__select shipping_item item{{ idx }}">
                                 <div id="multiple_list__shipping_address--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectAddress">
                                     <div class="ec-select">
                                         <label>お届け先</label>
