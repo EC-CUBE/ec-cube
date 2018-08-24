@@ -59,15 +59,15 @@ class NewsRepository extends AbstractRepository
     }
 
     /**
-     * @return mixed
+     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getListAll()
+    public function getQueryBuilderAll()
     {
         $qb = $this->createQueryBuilder('n');
         $qb->orderBy('n.publish_date', 'DESC')
             ->addOrderBy('n.id', 'DESC');
 
-        return $qb->getQuery()->getResult();
+        return $qb;
     }
 
     /**

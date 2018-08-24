@@ -94,7 +94,7 @@ if (!class_exists('\Eccube\Entity\News')) {
         private $update_date;
 
         /**
-         * @var int
+         * @var boolean
          *
          * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */

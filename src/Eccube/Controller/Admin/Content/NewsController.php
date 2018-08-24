@@ -59,18 +59,18 @@ class NewsController extends AbstractController
      */
     public function index(Request $request, $page_no = 1, Paginator $paginator)
     {
-        $NewsList = $this->newsRepository->getListAll();
+        $qb = $this->newsRepository->getQueryBuilderAll();
 
         $event = new EventArgs(
             [
-                'NewsList' => $NewsList,
+                'qb' => $qb,
             ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE, $event);
 
         $pagination = $paginator->paginate(
-            $NewsList,
+            $qb,
             $page_no,
             $this->eccubeConfig->get('eccube_default_page_count')
         );
