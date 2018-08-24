@@ -59,7 +59,19 @@ class NewsRepository extends AbstractRepository
     }
 
     /**
-     * @return array
+     * @return mixed
+     */
+    public function getListAll()
+    {
+        $qb = $this->createQueryBuilder('n');
+        $qb->orderBy('n.publish_date', 'DESC')
+            ->addOrderBy('n.id', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return mixed
      */
     public function getList()
     {
@@ -67,7 +79,7 @@ class NewsRepository extends AbstractRepository
         $qb->where('n.publish_date <= :date')
             ->andWhere('n.visible = TRUE')
             ->setParameter('date', new \DateTime())
-            ->orderBy('n.publish_date', 'ASC');
+            ->orderBy('n.publish_date', 'DESC');
 
         return $qb->getQuery()->getResult();
     }

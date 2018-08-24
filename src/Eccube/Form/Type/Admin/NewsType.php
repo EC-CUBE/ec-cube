@@ -81,7 +81,7 @@ class NewsType extends AbstractType
             ])
             ->add('visible', ChoiceType::class, [
                 'label' => false,
-                'choices' => ['非公開' => true, '公開' => false],
+                'choices' => ['公開' => true, '非公開' => false],
                 'required' => true,
                 'expanded' => false,
             ]);

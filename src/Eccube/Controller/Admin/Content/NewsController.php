@@ -59,7 +59,7 @@ class NewsController extends AbstractController
      */
     public function index(Request $request, $page_no = 1, Paginator $paginator)
     {
-        $NewsList = $this->newsRepository->findBy([], ['publish_date' => 'ASC', 'id' => 'ASC']);
+        $NewsList = $this->newsRepository->getListAll();
 
         $event = new EventArgs(
             [
