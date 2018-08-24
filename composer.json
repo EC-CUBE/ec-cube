@@ -95,6 +95,7 @@
         "symfony/validator": "^3.4",
         "symfony/var-dumper": "^3.4",
         "symfony/web-profiler-bundle": "^3.4",
+        "symfony/web-server-bundle": "^3.4",
         "symfony/workflow": "^3.4",
         "symfony/yaml": "^3.4",
         "twig/extensions": "^1.5",
@@ -113,8 +114,7 @@
         "phpunit/phpunit": "^6.5",
         "symfony/browser-kit": "^3.4",
         "symfony/maker-bundle": "^1.0",
-        "symfony/phpunit-bridge": "^3.4",
-        "symfony/web-server-bundle": "^3.4"
+        "symfony/phpunit-bridge": "^3.4"
     },
     "autoload": {
         "files": [
