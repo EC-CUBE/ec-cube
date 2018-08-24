@@ -32,41 +32,6 @@ class DeliveryRepository extends AbstractRepository
     }
 
     /**
-     * @deprecated 呼び出し元で制御する
-     *
-     * @param $id
-     *
-     * @return Delivery|null|object
-     */
-    public function findOrCreate($id)
-    {
-        if ($id == 0) {
-            $em = $this->getEntityManager();
-
-            $SaleType = $em
-                ->getRepository(SaleType::class)
-                ->findOneBy([], ['sort_no' => 'DESC']);
-
-            $Delivery = $this->findOneBy([], ['sort_no' => 'DESC']);
-
-            $sortNo = 1;
-            if ($Delivery) {
-                $sortNo = $Delivery->getSortNo() + 1;
-            }
-
-            $Delivery = new Delivery();
-            $Delivery
-                ->setSortNo($sortNo)
-                ->setVisible(true)
-                ->setSaleType($SaleType);
-        } else {
-            $Delivery = $this->find($id);
-        }
-
-        return $Delivery;
-    }
-
-    /**
      * 複数の販売種別から配送業者を取得
      *
      * @param $saleTypes

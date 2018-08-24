@@ -108,13 +108,14 @@ file that was distributed with this source code.
                     </div>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-body p-0">
-                            <div class="card rounded border-0 mb-2">
+                            <div class="card rounded border-0">
                                 <ul class="list-group list-group-flush sortable-container">
                                     {% if Deliveries|length > 0 %}
                                         {% for Delivery in Deliveries %}
                                             <li id="ex-delivery-{{ Delivery.id }}" class="list-group-item sortable-item" data-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
                                                 <div class="row justify-content-around">
                                                     <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
+                                                    <div class="col-auto d-flex align-items-center">{{ Delivery.id }}</div>
                                                     <div class="col d-flex align-items-center">
                                                         <a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">
                                                             {{ Delivery.name }} / {{ Delivery.service_name }}{{ Delivery.visible == false ? 'delivery.text.hidden'|trans }}

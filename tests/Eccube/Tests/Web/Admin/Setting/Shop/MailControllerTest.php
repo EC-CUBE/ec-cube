@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Eccube\Entity\MailTemplate;
 use Eccube\Repository\MailTemplateRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
@@ -37,7 +38,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $faker = $this->getFaker();
         // create new mail
-        $Mail = $this->container->get(MailTemplateRepository::class)->findOrCreate(0);
+        $Mail = new MailTemplate();
         $Mail->setName($faker->word);
         $Mail->setFileName('Mail/order.twig');
         $Mail->setMailSubject($faker->word);

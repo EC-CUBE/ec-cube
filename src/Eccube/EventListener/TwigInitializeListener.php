@@ -33,6 +33,11 @@ use Twig\Environment;
 class TwigInitializeListener implements EventSubscriberInterface
 {
     /**
+     * @var bool 初期化済かどうか.
+     */
+    protected $initialized = false;
+
+    /**
      * @var Environment
      */
     protected $twig;
@@ -120,20 +125,19 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $globals = $this->twig->getGlobals();
-        if (array_key_exists('BaseInfo', $globals) && $globals['BaseInfo'] === null) {
-            $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
-        }
-
-        if (!$event->isMasterRequest()) {
+        if ($this->initialized) {
             return;
         }
+
+        $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
 
         if ($this->requestContext->isAdmin()) {
             $this->setAdminGlobals($event);
         } else {
             $this->setFrontVaribales($event);
         }
+
+        $this->initialized = true;
     }
 
     /**
