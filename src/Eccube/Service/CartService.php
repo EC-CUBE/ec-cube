@@ -75,11 +75,6 @@ class CartService
     protected $cartItemAllocator;
 
     /**
-     * @var OrderHelper
-     */
-    protected $orderHelper;
-
-    /**
      * @var OrderRepository
      */
     protected $orderRepository;
@@ -102,7 +97,6 @@ class CartService
      * @param ProductClassRepository $productClassRepository
      * @param CartItemComparator $cartItemComparator
      * @param CartItemAllocator $cartItemAllocator
-     * @param OrderHelper $orderHelper
      * @param TokenStorageInterface $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
@@ -113,7 +107,6 @@ class CartService
         CartRepository $cartRepository,
         CartItemComparator $cartItemComparator,
         CartItemAllocator $cartItemAllocator,
-        OrderHelper $orderHelper,
         OrderRepository $orderRepository,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
@@ -124,12 +117,14 @@ class CartService
         $this->cartRepository = $cartRepository;
         $this->cartItemComparator = $cartItemComparator;
         $this->cartItemAllocator = $cartItemAllocator;
-        $this->orderHelper = $orderHelper;
         $this->orderRepository = $orderRepository;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
     }
 
+    /**
+     * @return Cart[]
+     */
     public function getCarts()
     {
         if (!empty($this->carts)) {
@@ -186,7 +181,7 @@ class CartService
     }
 
     /**
-     * @return ItemHolderInterface|Cart
+     * @return Cart|null
      */
     public function getCart()
     {
@@ -206,7 +201,7 @@ class CartService
                 }
             }
         } else {
-            $Cart = current($Carts);
+            $Cart = $Carts[0];
         }
 
         return $Cart;
@@ -403,11 +398,16 @@ class CartService
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getPreOrderId()
     {
-        return $this->getCart()->getPreOrderId();
+        $Cart = $this->getCart();
+        if (!empty($Cart)) {
+            return $Cart->getPreOrderId();
+        }
+
+        return null;
     }
 
     /**

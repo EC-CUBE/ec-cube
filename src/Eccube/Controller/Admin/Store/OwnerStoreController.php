@@ -207,7 +207,7 @@ class OwnerStoreController extends AbstractController
                     $items[] = $item;
                 }
 
-            // Todo: news api will remove this?
+                // Todo: news api will remove this?
                 // Promotion item
 //                $i = 0;
 //                foreach ($items as $item) {
@@ -252,7 +252,7 @@ class OwnerStoreController extends AbstractController
      */
     public function doConfirm(Request $request, $id)
     {
-        list($json,) = $this->pluginApiService->getPlugin($id);
+        list($json) = $this->pluginApiService->getPlugin($id);
         $plugin = [];
         if ($json) {
             $data = json_decode($json, true);
@@ -290,7 +290,7 @@ class OwnerStoreController extends AbstractController
 
         // Check plugin code
         $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
-        list($json,) = $this->getRequestApi($url);
+        list($json) = $this->getRequestApi($url);
         $existFlg = false;
         $data = json_decode($json, true);
         if (isset($data['item']) && !empty($data['item'])) {
