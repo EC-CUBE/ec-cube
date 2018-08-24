@@ -92,6 +92,7 @@ class InstallController extends AbstractController
     /**
      * 最初からやり直す場合、SESSION情報をクリア.
      *
+     * @Route("/", name="homepage")
      * @Route("/install", name="install")
      *
      * @Template("index.twig")
