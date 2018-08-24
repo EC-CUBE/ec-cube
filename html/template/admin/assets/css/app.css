@@ -48,8 +48,7 @@ Styleguide 1.0
 
 画面上部に固定表示されます。ロゴ・店舗名（および店舗ページへのリンク）・ユーザメニューが含まれます。<br>
 <br>
-デバイスサイズが1280px以下になると、メインナビを出現させるためのバーガーメニューが出現します。<br>
-デバイスサイズが1024px以下になると、表示領域の確保のためロゴが非表示となります。<br>
+デバイスサイズが767px以下になると、メインナビを出現させるためのバーガーメニューが出現し、表示領域の確保のためロゴが非表示となります。<br>
 <br>
 ユーザメニューのフキダシはBootstrapにて実装しております。詳細はBootstrapの<a href="https://getbootstrap.com/docs/4.0/components/popovers/" target="_blank">popvers</a>ページをご確認下さい。
 
@@ -166,7 +165,7 @@ Styleguide 2.0
 メインナビエリア
 
 画面左に固定表示されます。<br>
-デバイスサイズが1280px以下になった時、非表示になります。ヘッダーバー内のバーガーメニューを押下することで`.c-mainNavArea`に`.is-active`が付与され表示されます。<br>
+デバイスサイズが767px以下になった時、非表示になります。ヘッダーバー内のバーガーメニューを押下することで`.c-mainNavArea`に`.is-active`が付与され表示されます。<br>
 <br>
 下層メニューの展開はBootstrapにて実装しております。詳細はBootstrapの<a href="https://getbootstrap.com/docs/4.0/components/collapse/" target="_blank">Collapse</a>ページをご確認下さい。
 
@@ -369,8 +368,8 @@ Styleguide 3.0
 /*
 カーテン
 
-デバイスサイズが1280px以下時、メインナビエリアが出現した際にナビ以外の操作を抑制するために表示されます。`is-active`が付与されることで表示状態になります。<br>
-ナビナビエリアやカーテン部分をクリックした時、デバイスサイズが1280pxより上回る時は非表示なります。
+デバイスサイズが767px以下時、メインナビエリアが出現した際にナビ以外の操作を抑制するために表示されます。`is-active`が付与されることで表示状態になります。<br>
+ナビナビエリアやカーテン部分をクリックした時、デバイスサイズが768pxより上回る時は非表示なります。
 
 Markup:
 <!-- imgはスタイルガイドにおけるサンプル表示の都合上記述しています。-->
@@ -1138,7 +1137,7 @@ Font Awesome v4.7.0 で利用可能なフォント群については、<a href="
 Styleguide 11.0
 */
 
-@media only screen and (max-width: 768px){
+@media only screen and (max-width: 767px){
   .c-headerBar__logo{
     display: none; }
   .c-headerBar__toggleBtn{
