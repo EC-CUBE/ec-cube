@@ -9,27 +9,21 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-<div class="ec-eyecatchRole">
-    <div class="ec-grid2">
-        <div class="ec-grid2__cell">
-            <div class="ec-splitImg">
-                <div class="ec-splitImg__item"><img src="{{ asset('img/top/img01.jpg') }}">
-                </div>
-                <div class="ec-splitImg__item"><img src="{{ asset('img/top/img02.jpg') }}">
-                </div>
-            </div>
-        </div>
-        <div class="ec-grid2__cell">
-            <div class="ec-eyecatchRole__intro">
-                <p class="ec-eyecatchRole__introTitle">{{ 'front.block.new_product.eyecatch_title'|trans }}</p>
-                <p class="ec-heading-bold">{{ 'front.block.new_product.eyecatch_sub_title'|trans }}</p>
-                <p class="ec-font-size-4">{{ 'front.block.new_product.eyecatch_body'|trans }}</p>
-                <p><a class="ec-inlineBtn--primary" href="/products/list?category_id=6">{{ 'front.block.new_product.eyecatch_view_list'|trans }}<span class="ec-icon"><img src="{{ asset('assets/icon/angle-right-white.svg') }}"></span></a></p>
-            </div>
+<div class="ec-role">
+    <div class="ec-eyecatchRole">
+        <img class="ec-eyecatchRole__image" src="{{ asset('img/top/img_about.jpg') }}" alt="" role="presentation"/>
+        <div class="ec-eyecatchRole__intro">
+            {# TODO ↓テキスト置換必要　#}
+            <p class="ec-eyecatchRole__introEnTitle">CUBE GELATO ICE
+            </p>
+            <p class="ec-eyecatchRole__introTitle"> {{ 'front.block.new_product.eyecatch_title'|trans }}
+            </p>
+            <p class="ec-eyecatchRole__introDescriptiron">
+                {{ 'front.block.new_product.eyecatch_body'|trans }}
+            </p><a class="ec-blockBtn--top" href="/products/list?category_id=6">{{ 'front.block.new_product.eyecatch_view_list'|trans }}</a>
         </div>
     </div>
-</div>
-<div class="ec-role">
+
     <div class="ec-displayB">
         <div class="ec-displayB__cell">
             <a href="#">
