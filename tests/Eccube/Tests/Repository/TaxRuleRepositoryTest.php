@@ -132,18 +132,6 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         return $TaxRule;
     }
 
-    /**
-     * @deprecated
-     */
-    public function testGetById()
-    {
-        $Result = $this->taxRuleRepository->getById(1);
-
-        $this->expected = 1;
-        $this->actual = $Result->getId();
-        $this->verify();
-    }
-
     public function testGetList()
     {
         $this->TaxRule2
