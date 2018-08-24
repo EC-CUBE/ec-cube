@@ -133,7 +133,7 @@ class NewsController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE, $event);
 
-            $this->addSuccess('admin.news.save.complete', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
 
             return $this->redirectToRoute('admin_content_news');
         }
