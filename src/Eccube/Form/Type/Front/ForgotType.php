@@ -50,7 +50,7 @@ class ForgotType extends AbstractType
             ],
             'constraints' => [
                 new Assert\NotBlank(),
-                new Assert\Email(['strict' => true]),
+                new Assert\Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
             ],
         ]);
     }

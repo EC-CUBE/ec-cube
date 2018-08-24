@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -22,6 +23,21 @@ use Symfony\Component\OptionsResolver\Options;
 
 class RepeatedEmailType extends AbstractType
 {
+    /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
+     * ContactType constructor.
+     *
+     * @param EccubeConfig $eccubeConfig
+     */
+    public function __construct(EccubeConfig $eccubeConfig)
+    {
+        $this->eccubeConfig = $eccubeConfig;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -34,7 +50,7 @@ class RepeatedEmailType extends AbstractType
             'options' => [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(['strict' => true]),
+                    new Assert\Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
                         'message' => 'form.type.graph.invalid',

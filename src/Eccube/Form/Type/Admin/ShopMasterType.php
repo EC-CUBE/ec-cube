@@ -105,28 +105,28 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(['strict' => true]),
+                    new Assert\Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                 ],
             ])
             ->add('email02', EmailType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(['strict' => true]),
+                    new Assert\Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                 ],
             ])
             ->add('email03', EmailType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(['strict' => true]),
+                    new Assert\Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                 ],
             ])
             ->add('email04', EmailType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(['strict' => true]),
+                    new Assert\Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                 ],
             ])
             ->add('good_traded', TextareaType::class, [

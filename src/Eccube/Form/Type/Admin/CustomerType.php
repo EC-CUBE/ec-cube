@@ -83,8 +83,7 @@ class CustomerType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    // configでこの辺りは変えられる方が良さそう
-                    new Assert\Email(['strict' => true]),
+                    new Assert\Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
                         'message' => 'form.type.graph.invalid',

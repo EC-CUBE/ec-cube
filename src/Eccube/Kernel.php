@@ -37,6 +37,7 @@ use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\ItemPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
+use Eccube\Validator\EmailValidator\NoRFCEmailValidator;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -89,6 +90,14 @@ class Kernel extends BaseKernel
         UTCDateTimeType::setTimeZone($this->container->getParameter('timezone'));
         UTCDateTimeTzType::setTimeZone($this->container->getParameter('timezone'));
         date_default_timezone_set($this->container->getParameter('timezone'));
+
+        // RFC違反のメールを送信できるよう独自のValidationを設定
+        \Swift::init(function () {
+            \Swift_DependencyContainer::getInstance()
+                ->register('email.validator')
+                ->asSharedInstanceOf(NoRFCEmailValidator::class)
+                ->addConstructorValue($this->container->getParameter('eccube_rfc_email_check'));
+        });
 
         // Activate to $app
         $app = Application::getInstance(['debug' => $this->isDebug()]);

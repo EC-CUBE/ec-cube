@@ -104,6 +104,8 @@ parameters:
     eccube_reset_complete_mail_template_id: 7 #パスワードリマインダー
     eccube_shipping_notify_mail_template_id: 8 #出荷通知メール
     eccube_package_repo_url: null
+    # メールアドレスをRFC準拠でチェックするか true: チェックする、false: チェックしない
+    eccube_rfc_email_check: false
     # 注文番号のフォーマット. 以下のフォーマットが利用可能です. フォーマットを空にした場合, dtb_order.idを出力します.
     # {yyyy} : 西暦(4桁)
     # {yy}: 西暦(2桁)
