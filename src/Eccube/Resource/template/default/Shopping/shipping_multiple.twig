@@ -104,14 +104,14 @@ $(function() {
         <form id="shipping-multiple-form" method="post" action="{{ url('shopping_shipping_multiple') }}">
             {{ form_widget(form._token) }}
             <div class="ec-AddAddress__info">
-                <p>各商品のお届け先を選択してください。(※数量の合計は、カゴの中の数量と合わせてください。)</p>
+                <p>各商品のお届け先を選択してください。</p>
             </div>
 
             {% for error in errors %}
                 <div class="text-danger">{{ error.message }}</div>
             {% endfor %}
 
-            <div class="ec-AddAddress__btn"><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn ec-inlineBtn">{{'mypage.label.add_address'|trans}}</a></div>
+            <div class="ec-AddAddress__btn" style="margin-bottom: 20px"><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn ec-inlineBtn">{{'新規お届け先を追加する'|trans}}</a></div>
 
             {% for orderItem in OrderItems %}
                 {% set idx = loop.index0 %}
@@ -134,7 +134,7 @@ $(function() {
 
                             {% for key, value in compItemQuantities %}
                                 {% if orderItem.productClass.id == key %}
-                                    <div class="ec-AddAddress__itemtNumber" id="multiple_list__value--{{ idx }}_{{ key }}">{{'common.label.qty'|trans}}：{{ value }}</div>
+                                    <div class="ec-AddAddress__itemtNumber" id="multiple_list__value--{{ idx }}_{{ key }}">{{'数量'|trans}}：{{ value }}</div>
                                     {% set itemvalue = value %}
                                 {% endif %}
                             {% endfor %}
@@ -165,8 +165,8 @@ $(function() {
                                 </div>
 
                                 <button id="button__delete--{{ idx }}_{{ loop.index0 }}" type="button" class="btn ec-inlineBtn delete"
-                                        style="{% if loop.index0 == 0 %}display:none;{% endif %}"
-                                        data-itemidx="{{ idx }}-{{ loop.index0 }}">{{'common.label.delete'|trans}}</button>
+                                        {% if loop.index0 == 0 %}style="display:none;"{% endif %}
+                                        data-itemidx="{{ idx }}-{{ loop.index0 }}">{{'common.delete'|trans}}</button>
                             </div>
                         {% endfor %}
                     </div>
