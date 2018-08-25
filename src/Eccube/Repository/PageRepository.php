@@ -68,25 +68,19 @@ class PageRepository extends AbstractRepository
     }
 
     /**
-     * @param DeviceType $DeviceType
      * @param string $url
-     * @throws NoResultException
      *
      * @return Page
+     *
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getByUrl(DeviceType $DeviceType, $url)
+    public function getByUrl($url)
     {
         $qb = $this->createQueryBuilder('p');
-        $Page = $qb->select('p, pll,l, bp, b')
-            ->leftJoin('p.PageLayouts', 'pll')
-            ->leftJoin('pll.Layout', 'l')
-            ->leftJoin('l.BlockPositions', 'bp')
-            ->leftJoin('bp.Block', 'b')
+        $Page = $qb->select('p')
             ->where('p.url = :route')
-            ->andWhere('l.DeviceType = :DeviceType')
-            ->orderBy('bp.block_row', 'ASC')
             ->setParameter('route', $url)
-            ->setParameter('DeviceType', $DeviceType)
             ->getQuery()
             ->useResultCache(true, $this->getCacheLifetime())
             ->getSingleResult();

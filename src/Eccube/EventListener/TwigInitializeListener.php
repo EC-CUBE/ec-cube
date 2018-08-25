@@ -16,10 +16,14 @@ namespace Eccube\EventListener;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
+use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Member;
+use Eccube\Entity\Page;
+use Eccube\Entity\PageLayout;
 use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
@@ -83,6 +87,11 @@ class TwigInitializeListener implements EventSubscriberInterface
     private $router;
 
     /**
+     * @var LayoutRepository
+     */
+    private $layoutRepository;
+
+    /**
      * TwigInitializeListener constructor.
      *
      * @param Environment $twig
@@ -94,6 +103,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @param Context $context
      * @param MobileDetector $mobileDetector
      * @param UrlGeneratorInterface $router
+     * @param LayoutRepository $layoutRepository
      */
     public function __construct(
         Environment $twig,
@@ -104,7 +114,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         EccubeConfig $eccubeConfig,
         Context $context,
         MobileDetector $mobileDetector,
-        UrlGeneratorInterface $router
+        UrlGeneratorInterface $router,
+        LayoutRepository $layoutRepository
     ) {
         $this->twig = $twig;
         $this->baseInfoRepository = $baseInfoRepository;
@@ -115,6 +126,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->requestContext = $context;
         $this->mobileDetector = $mobileDetector;
         $this->router = $router;
+        $this->layoutRepository = $layoutRepository;
     }
 
     /**
@@ -159,20 +171,47 @@ class TwigInitializeListener implements EventSubscriberInterface
         if ($this->mobileDetector->isMobile()) {
             $type = DeviceType::DEVICE_TYPE_MB;
         }
-        $DeviceType = $this->deviceTypeRepository->find($type);
 
-        try {
-            $Page = $this->pageRepository->getByUrl($DeviceType, $route);
-        } catch (NoResultException $e) {
-            try {
-                log_info('fallback to PC layout');
-                $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
-                $Page = $this->pageRepository->getByUrl($DeviceType, $route);
-            } catch (NoResultException $e) {
-                $Page = $this->pageRepository->newPage();
+        // URLからPageを取得
+        /** @var Page[] $Pages */
+        $Pages = $this->pageRepository->findBy(['url' => $route]);
+
+        // 該当するPageがない場合は空のページをセット
+        if (empty($Pages)) {
+            $Page = $this->pageRepository->newPage();
+        } else {
+            $Page = $Pages[0];
+        }
+
+        /** @var PageLayout[] $PageLayouts */
+        $PageLayouts = $Page->getPageLayouts();
+
+        // Pageに紐づくLayoutからDeviceTypeが一致するLayoutを探す
+        $Layout = null;
+        foreach ($PageLayouts as $PageLayout) {
+            if ($PageLayout->getLayout()->getDeviceType()->getId() == $type) {
+                $Layout = $PageLayout->getLayout();
+                break;
             }
         }
 
+        // Pageに紐づくLayoutにDeviceTypeが一致するLayoutがない場合はPCのレイアウトを探す
+        if (is_null($Layout)) {
+            log_info('fallback to PC layout');
+            foreach ($PageLayouts as $PageLayout) {
+                if ($PageLayout->getLayout()->getDeviceType()->getId() == $type) {
+                    $Layout = $PageLayout->getLayout();
+                    break;
+                }
+            }
+        }
+
+        // Layoutのデータがない場合は空のLayoutをセット
+        if (is_null($Layout)) {
+            $Layout = new Layout();
+        }
+
+        $this->twig->addGlobal('Layout', $Layout);
         $this->twig->addGlobal('Page', $Page);
         $this->twig->addGlobal('title', $Page->getName());
     }
