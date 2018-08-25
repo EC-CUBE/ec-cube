@@ -91,7 +91,7 @@ class BlockController extends AbstractController
             $Block = $this->blockRepository->findOneBy(
                 [
                     'id' => $id,
-                    'DeviceType' => $DeviceType
+                    'DeviceType' => $DeviceType,
                 ]
             );
         }
