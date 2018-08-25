@@ -20,14 +20,55 @@ file that was distributed with this source code.
 {% block stylesheet %}
     <style>
         .modal #captcha_image {
-            max-width: 300px;
+            max-width: 400px;
             max-height: 50px;
+            border: 1px #b9b9ba solid;
         }
     </style>
 {% endblock %}
 
+{% block javascript %}
+<script>
+
+    function refreshCaptchaImage() {
+        $('#captcha_image').attr('src', "{{ eccube_config.eccube_package_repo_url }}/captcha" + '?' + new Date().getTime())
+    }
+
+    $('#generate_key').on('click', function() {
+        $.ajax({
+            type: 'POST',
+            url: "{{ eccube_config.eccube_package_repo_url }}/api_key",
+            dataType: 'json',
+            cache: false,
+            data: {
+                "captcha": $('#captcha_text').val(),
+                "eccube_url": '{{ eccubeUrl }}',
+                "eccube_version": "{{ constant('Eccube\\Common\\Constant::VERSION') }}"
+            },
+            xhrFields: {
+                withCredentials: true
+            }
+        }).done(function(data) {
+            $('#captcha').modal('hide');
+            $('#admin_authentication_authentication_key').val(data.api_key);
+            $('#form').submit()
+        }).fail(function(res) {
+            if (res.status == 400) {
+                $('#captcha_error').show();
+                refreshCaptchaImage();
+            } else {
+                alert('{{ 'admin.common.system_error'|trans }}');
+            }
+        });
+        return false;
+    });
+    $('#captcha-refresh').on('click', refreshCaptchaImage);
+</script>
+{% endblock %}
+
+
 {% block main %}
-    <form method="post" action="{{ url('admin_store_authentication_setting') }}">
+    <form id="form" method="post" action="{{ url('admin_store_authentication_setting') }}">
     {{ form_widget(form._token) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
@@ -103,7 +144,6 @@ file that was distributed with this source code.
 
     <div class="modal fade" id="captcha" tabindex="-1" role="dialog" aria-labelledby="captcha" aria-hidden="true">
         <form id="captcha-form" method="post">
-            {{ form_widget(captchaForm._token) }}
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -111,16 +151,18 @@ file that was distributed with this source code.
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                     </div>
                     <div class="modal-body text-left">
-                        <p class="text-left">
-                            {{ 'admin.store.authentication_setting.captcha.message'|trans }}</p>
-                        <img id="captcha_image" class="mb-2" src="{{ asset("captcha.png", 'temp_image') }}">
-                        {{ form_widget(captchaForm.captcha) }}
+                        <img id="captcha_image" class="mb-2" src="{{ eccube_config.eccube_package_repo_url }}/captcha">
+                        <button id="captcha-refresh" type="button" class="btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                        <input type="text" id="captcha_text" value="" class="form-control" placeholder="{{ 'admin.store.authentication_setting.captcha.message'|trans }}"/>
+                        <span id="captcha_error" class="invalid-feedback" style="display: none">
+                            <span class="mb-0 d-block">
+                                <span class="initialism form-error-icon badge badge-danger">エラー</span> <span class="form-error-message">入力された文字列が正しくありません。</span>
+                            </span>
+                        </span>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.cancel'|trans }}</button>
-                        <button class="btn btn-ec-conversion px-5" type="submit">
-                            {{ 'admin.store.authentication_setting.api_key.get'|trans }}
-                        </button>
+                        <button id="generate_key" class="btn btn-ec-conversion" type="button">{{ 'admin.store.authentication_setting.api_key.get'|trans }}</button>
                     </div>
                 </div>
             </div>

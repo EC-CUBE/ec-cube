@@ -37,6 +37,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PluginController extends AbstractController
 {
@@ -452,54 +453,13 @@ class PluginController extends AbstractController
             $this->entityManager->persist($this->BaseInfo);
             $this->entityManager->flush();
 
-            $this->addSuccess('admin.flash.register_completed', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
         }
-
-        $builderCaptcha = $this->formFactory->createBuilder(CaptchaType::class);
-
-        // get captcha image, save it to temp folder
-        list($captcha, $info) = $this->pluginApiService->getCaptcha();
-        $tmpFolder = $this->eccubeConfig->get('eccube_temp_image_dir');
-        file_put_contents($tmpFolder.'/captcha.png', $captcha);
 
         return [
             'form' => $form->createView(),
-            'captchaForm' => $builderCaptcha->getForm()->createView(),
+            'eccubeUrl' => $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
-    }
-
-    /**
-     * Captcha
-     * Todo: check fail (implement after the api defined)
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     *
-     * @Route("/%eccube_admin_route%/store/plugin/auth/captcha", name="admin_store_auth_captcha")
-     */
-    public function authenticationCaptcha(Request $request)
-    {
-        $builder = $this->formFactory->createBuilder(CaptchaType::class);
-        $form = $builder->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $param['captcha'] = $form['captcha']->getData();
-            list($ret, $info) = $this->pluginApiService->postApiKey($param);
-            if ($ret && $data = json_decode($ret, true)) {
-                if (isset($data['api_key']) && !empty($data['api_key'])) {
-                    $this->BaseInfo->setAuthenticationKey($data['api_key']);
-                    $this->entityManager->persist($this->BaseInfo);
-                    $this->entityManager->flush($this->BaseInfo);
-                    $this->addSuccess('admin.flash.register_completed', 'admin');
-
-                    return $this->redirectToRoute('admin_store_authentication_setting');
-                }
-            }
-        }
-        $this->addError('admin.flash.register_failed', 'admin');
-
-        return $this->redirectToRoute('admin_store_authentication_setting');
     }
 
     /**
