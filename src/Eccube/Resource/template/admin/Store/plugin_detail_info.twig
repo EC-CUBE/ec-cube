@@ -19,6 +19,10 @@ file that was distributed with this source code.
     <li class="row"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin.detail.size'|trans }}</span>{{ 'admin.store.plugin.detail.size.format'|trans({'%size%' : size}) }}</li>
     <li class="row"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin.detail.license'|trans }}</span>{{ item.license }}</li>
     <li class="row"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin.detail.develop'|trans }}</span>
-        {% if item.author.url is not empty %}<a href="{{ item.author.url }}" target="_blank">{{ item.author.name }}</a>{% else %}{{ item.author.name }}{% endif %}
+        {% if item.author is not empty %}
+            {% if item.author.url is not empty %}
+                <a href="{{ item.author.url }}" target="_blank">{{ item.author.name }}</a>{% else %}{{ item.author.name }}
+            {% endif %}
+        {% endif %}
     </li>
 </ul>
