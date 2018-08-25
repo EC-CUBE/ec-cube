@@ -425,16 +425,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
         private $PageLayouts;
 
         /**
-         * @var \Eccube\Entity\Master\DeviceType
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
-         * @ORM\JoinColumns({
-         *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
-         * })
-         */
-        private $DeviceType;
-
-        /**
          * @var \Eccube\Entity\Page
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page")
@@ -831,30 +821,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
         public function getBlockPositions()
         {
             return $this->BlockPositions;
-        }
-
-        /**
-         * Set deviceType.
-         *
-         * @param \Eccube\Entity\Master\DeviceType|null $deviceType
-         *
-         * @return Page
-         */
-        public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
-        {
-            $this->DeviceType = $deviceType;
-
-            return $this;
-        }
-
-        /**
-         * Get deviceType.
-         *
-         * @return \Eccube\Entity\Master\DeviceType|null
-         */
-        public function getDeviceType()
-        {
-            return $this->DeviceType;
         }
 
         /**

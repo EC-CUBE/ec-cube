@@ -42,8 +42,7 @@ class PageRepositoryTest extends EccubeTestCase
 
     public function testGet()
     {
-        $Page = $this->pageRepo
-            ->getByDeviceTypeAndId($this->DeviceType, 1);
+        $Page = $this->pageRepo->find(1);
 
         $this->expected = 1;
         $this->actual = $Page->getId();
@@ -69,7 +68,7 @@ class PageRepositoryTest extends EccubeTestCase
 
     public function testGetPageList()
     {
-        $Pages = $this->pageRepo->getPageList($this->DeviceType);
+        $Pages = $this->pageRepo->getPageList();
         $All = $this->pageRepo->findAll();
 
         $this->expected = count($All) - 2;

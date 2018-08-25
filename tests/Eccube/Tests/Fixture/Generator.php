@@ -800,9 +800,8 @@ class Generator
     public function createPage()
     {
         $faker = $this->getFaker();
-        $DeviceType = $this->entityManager->find(DeviceType::class, DeviceType::DEVICE_TYPE_PC);
         /** @var Page $Page */
-        $Page = $this->pageRepository->newPage($DeviceType);
+        $Page = $this->pageRepository->newPage();
         $Page
             ->setName($faker->word)
             ->setUrl($faker->word)

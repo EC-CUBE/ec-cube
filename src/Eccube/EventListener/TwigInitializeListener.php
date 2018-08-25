@@ -134,7 +134,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         if ($this->requestContext->isAdmin()) {
             $this->setAdminGlobals($event);
         } else {
-            $this->setFrontVaribales($event);
+            $this->setFrontVariables($event);
         }
 
         $this->initialized = true;
@@ -145,7 +145,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function setFrontVaribales(GetResponseEvent $event)
+    public function setFrontVariables(GetResponseEvent $event)
     {
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
         $attributes = $event->getRequest()->attributes;
@@ -169,7 +169,7 @@ class TwigInitializeListener implements EventSubscriberInterface
                 $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
                 $Page = $this->pageRepository->getByUrl($DeviceType, $route);
             } catch (NoResultException $e) {
-                $Page = $this->pageRepository->newPage($DeviceType);
+                $Page = $this->pageRepository->newPage();
             }
         }
 
