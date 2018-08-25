@@ -1190,6 +1190,20 @@ admin.setting.system.system.php_info: PHP情報
 
 admin.store: オーナーズストア
 
+admin.store.plugin: プラグイン
+admin.store.plugin.plugin_owners_install: プラグインを探す
+admin.store.plugin.plugin_list: プラグイン一覧
+admin.store.template: テンプレート
+admin.store.template.template_list: テンプレート一覧
+admin.store.template.template_install: アップロード
+admin.store.authentication_setting: 認証キー設定
+admin.store.authentication_setting.api_key: 認証キー
+admin.store.authentication_setting.api_key.get: 認証キー取得
+admin.store.authentication_setting.captcha.message: 画像に表示されている文字を入力してください。
+admin.store.authentication_setting.php_path.setting: PHPパスの設定
+admin.store.authentication_setting.php_path: PHPパス
+
+
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
 admin.store.plugin.popup.delete.confirm.message: このプラグインを削除してもよろしいですか？

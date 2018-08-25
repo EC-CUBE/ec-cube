@@ -50,7 +50,7 @@ file that was distributed with this source code.
                                 </div>
 
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#captcha" type="button">
-                                    {{ 'admin.store.authentication_setting.captcha.open'|trans }}
+                                    {{ 'admin.store.authentication_setting.api_key.get'|trans }}
                                 </button>
                             </div>
                         </div>
@@ -58,7 +58,7 @@ file that was distributed with this source code.
 
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h5 class="box-title">{{'admin.store.authentication_setting.php_path.header'|trans}}</h5>
+                            <h5 class="box-title">{{'admin.store.authentication_setting.php_path.setting'|trans}}</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -102,12 +102,12 @@ file that was distributed with this source code.
     </form>
 
     <div class="modal fade" id="captcha" tabindex="-1" role="dialog" aria-labelledby="captcha" aria-hidden="true">
-        <form id="captcha-form" action="{{ url('admin_store_auth_captcha') }}" method="post">
+        <form id="captcha-form" method="post">
             {{ form_widget(captchaForm._token) }}
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title font-weight-bold">{{ 'admin.store.authentication_setting.captcha.header'|trans }}</h5>
+                        <h5 class="modal-title font-weight-bold">{{ 'admin.store.authentication_setting.api_key.get'|trans }}</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                     </div>
                     <div class="modal-body text-left">
@@ -117,9 +117,9 @@ file that was distributed with this source code.
                         {{ form_widget(captchaForm.captcha) }}
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}</button>
+                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.cancel'|trans }}</button>
                         <button class="btn btn-ec-conversion px-5" type="submit">
-                            {{ 'admin.store.authentication_setting.captcha.submit'|trans }}
+                            {{ 'admin.store.authentication_setting.api_key.get'|trans }}
                         </button>
                     </div>
                 </div>
