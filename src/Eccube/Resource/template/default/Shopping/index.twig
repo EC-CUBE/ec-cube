@@ -20,8 +20,9 @@ file that was distributed with this source code.
                 $('#shopping_order_redirect_to').val($(this).attr('data-path'));
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
             };
-            var $redirect = $('[data-trigger]');
-            $redirect.on($redirect.attr('data-trigger'), $redirectCallback);
+            $('[data-trigger]').each(function() {
+                $(this).on($(this).attr('data-trigger'), $redirectCallback);
+            });
 
             {% if is_granted('ROLE_USER') == false %}
             var ref = [];
@@ -316,7 +317,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="ec-input {{ has_errors(form.use_point) ? ' error'}}">
                             <p>{{ 'front.shopping.available_point'|trans({ '%point%': Order.Customer.Point|number_format }) }}</p>
-                            {{ form_widget(form.use_point, { 'attr': { 'type': 'text', 'class': 'form-control', 'data-trigger': 'blur' }}) }}
+                            {{ form_widget(form.use_point, { 'attr': { 'type': 'text', 'class': 'form-control', 'data-trigger': 'change' }}) }}
                             {{ form_errors(form.use_point) }}
                         </div>
                     </div>
