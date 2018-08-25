@@ -343,7 +343,7 @@ Fixtures::add('findCustomers', $findCustomers);
 /** 新着情報を検索するクロージャ */
 Fixtures::add('findNews', function() use ($entityManager) {
     return $entityManager->getRepository(\Eccube\Entity\News::class)
-        ->findBy(['visible' => true], ['publish_date' => 'DESC']);
+        ->findBy(['visible' => true], ['publish_date' => 'DESC', 'id' => 'DESC']);
 });
 
 /** 新着情報を登録するクロージャ */
