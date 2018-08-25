@@ -276,7 +276,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/install", name="admin_store_plugin_api_install")
+     * @Route("/install", name="admin_store_plugin_api_install", methods={"POST"})
      *
      * @param Request $request
      *
@@ -284,79 +284,20 @@ class OwnerStoreController extends AbstractController
      */
     public function apiInstall(Request $request)
     {
+
         $pluginCode = $request->get('pluginCode');
-        $eccubeVersion = $request->get('eccubeVersion');
-        $version = $request->get('version');
 
-        // Check plugin code
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
-        list($json) = $this->getRequestApi($url);
-        $existFlg = false;
-        $data = json_decode($json, true);
-        if (isset($data['item']) && !empty($data['item'])) {
-            $existFlg = $this->pluginService->checkPluginExist($data['item'], $pluginCode);
-        }
-        if ($existFlg === false) {
-            log_info(sprintf('%s plugin not found!', $pluginCode));
-            $this->addError('admin.plugin.not.found', 'admin');
-
-            return $this->redirectToRoute('admin_store_plugin_owners_search');
-        }
-
-        $items = $data['item'];
-        $plugin = $this->pluginService->buildInfo($items);
-        $dependents[] = $plugin;
-        $dependents = $this->pluginService->getPluginRequired($plugin);
-        // Unset first param
-        unset($dependents[0]);
-        $dependentModifier = [];
-        $packageNames = '';
-        if (!empty($dependents)) {
-            foreach ($dependents as $key => $item) {
-                $pluginItem = [
-                    'product_code' => $item['product_code'],
-                    'version' => $item['version'],
-                ];
-                array_push($dependentModifier, $pluginItem);
-                // Re-format plugin code
-                $dependents[$key]['product_code'] = self::$vendorName.'/'.$item['product_code'];
-            }
-            $packages = array_column($dependents, 'version', 'product_code');
-            $packageNames = $this->pluginService->parseToComposerCommand($packages);
-        }
-        $packageNames .= ' '.self::$vendorName.'/'.$pluginCode.':'.$version;
-        $data = [
-            'code' => $pluginCode,
-            'version' => $version,
-            'core_version' => $eccubeVersion,
-            'php_version' => phpversion(),
-            'db_version' => $this->systemService->getDbversion(),
-            'os' => php_uname('s').' '.php_uname('r').' '.php_uname('v'),
-            'host' => $request->getHost(),
-            'web_server' => $request->server->get('SERVER_SOFTWARE'),
-            'composer_version' => $this->composerService->composerVersion(),
-            'composer_execute_mode' => $this->composerService->getMode(),
-            'dependents' => json_encode($dependentModifier),
-        ];
-
+        $log = null;
         try {
-            $this->composerService->execRequire($packageNames);
-            // Do report to package repo
-            $url = $this->eccubeConfig['eccube_package_repo_url'].'/report';
-            $this->postRequestApi($url, $data);
-            $this->addSuccess('admin.plugin.install.complete', 'admin');
+            $log = $this->composerService->execRequire("ec-cube/".$pluginCode);
 
-            return $this->redirectToRoute('admin_store_plugin');
+            return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $exception) {
+            log_info($log);
             log_info($exception);
         }
 
-        // Do report to package repo
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/report/fail';
-        $this->postRequestApi($url, $data);
-        $this->addError('admin.plugin.install.fail', 'admin');
-
-        return $this->redirectToRoute('admin_store_plugin_owners_search');
+        return $this->json(['success' => false, 'log' => $log]);
     }
 
     /**

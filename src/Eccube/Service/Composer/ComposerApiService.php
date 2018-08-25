@@ -67,12 +67,13 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
      * @param null|OutputInterface $output
      *
+     * @return string
      * @throws PluginException
      */
     public function execRequire($packageName, $output = null)
     {
         $packageName = explode(' ', trim($packageName));
-        $this->runCommand([
+        return $this->runCommand([
             'command' => 'require',
             'packages' => $packageName,
             '--no-interaction' => true,
