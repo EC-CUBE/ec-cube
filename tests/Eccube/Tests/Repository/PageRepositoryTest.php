@@ -40,16 +40,6 @@ class PageRepositoryTest extends EccubeTestCase
         $this->templateDefaultRealDir = $this->container->getParameter('eccube_theme_src_dir');
     }
 
-    public function testFindUnusedBlocks()
-    {
-        $Blocks = $this->pageRepo->findUnusedBlocks($this->DeviceType, 1);
-
-        // Current: total 13, used: 7 (1,7,8,10,11,12,13)
-        $this->expected = 6;
-        $this->actual = count($Blocks);
-        $this->verify();
-    }
-
     public function testGet()
     {
         $Page = $this->pageRepo

@@ -71,34 +71,6 @@ class PageRepository extends AbstractRepository
      * @param DeviceType $DeviceType
      * @param int $pageId
      *
-     * @return array
-     */
-    public function findUnusedBlocks(DeviceType $DeviceType, $pageId)
-    {
-        $em = $this->getEntityManager();
-        $blockRepo = $em->getRepository('Eccube\Entity\Block');
-        $ownBlockPositions = $this->getByDeviceTypeAndId($DeviceType, $pageId)->getBlockPositions();
-        $ids = [];
-        foreach ($ownBlockPositions as $ownBlockPosition) {
-            $ids[] = $ownBlockPosition->getBlock()->getId();
-        }
-
-        // $idsが空配列だと、$ids以外のblockを取得するSQLが生成されないため、存在しないidを入れる
-        if (empty($ids)) {
-            $ids[] = \Eccube\Entity\Block::UNUSED_BLOCK_ID;
-        }
-
-        return $blockRepo->createQueryBuilder('b')
-            ->where('b.id not in (:ids)')
-            ->setParameter(':ids', $ids)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @param DeviceType $DeviceType
-     * @param int $pageId
-     *
      * @return mixed
      */
     public function getByDeviceTypeAndId(DeviceType $DeviceType, $pageId)
