@@ -62,15 +62,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         private $block_row;
 
         /**
-         * @var int
-         *
-         * @ORM\Column(name="anywhere", type="smallint", options={"default":0})
-         *
-         * @deprecated
-         */
-        private $anywhere = 0;
-
-        /**
          * @var \Eccube\Entity\Block
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Block", inversedBy="BlockPositions")
@@ -196,34 +187,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         public function getBlockRow()
         {
             return $this->block_row;
-        }
-
-        /**
-         * Set anywhere.
-         *
-         * @param int $anywhere
-         *
-         * @return BlockPosition
-         *
-         * @deprecated
-         */
-        public function setAnywhere($anywhere)
-        {
-            $this->anywhere = $anywhere;
-
-            return $this;
-        }
-
-        /**
-         * Get anywhere.
-         *
-         * @return int
-         *
-         * @deprecated
-         */
-        public function getAnywhere()
-        {
-            return $this->anywhere;
         }
 
         /**
