@@ -500,7 +500,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->searchData = [
             'buy_total_start' => '0',
-            'buy_total_end' => '0'
+            'buy_total_end' => '0',
         ];
 
         $this->scenario();
@@ -552,7 +552,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->searchData = [
             'buy_times_start' => '0',
-            'buy_times_end' => '0'
+            'buy_times_end' => '0',
         ];
 
         $this->scenario();
