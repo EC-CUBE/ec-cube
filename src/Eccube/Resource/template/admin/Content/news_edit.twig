@@ -12,7 +12,7 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'news'] %}
 
-{% block title %}新着情報管理{% endblock %}
+{% block title %}新着情報設定{% endblock %}
 {% block sub_title %}コンテンツ管理{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
@@ -52,7 +52,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <span class="card-title">新着情報登録・編集</span></div>
+                                    <span class="card-title">新着情報</span></div>
                                 <div class="col-4 text-right">
                                     <a data-toggle="collapse" href="#newsForm"
                                                                  aria-expanded="true" aria-controls="newsForm"><i class="fa fa-lg fa-angle-up"></i></a></div>
@@ -61,7 +61,7 @@ file that was distributed with this source code.
                         <div class="ec-cardCollapse collapse show" id="newsForm" style="">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-3"><span>日付</span></div>
+                                    <div class="col-3"><span>公開日時</span></div>
                                     <div class="col mb-2">
                                         <div class="row">
                                             <div class="col-2 pr-2">
@@ -135,7 +135,7 @@ file that was distributed with this source code.
                                 <div class="c-conversionArea__leftBlockItem">
                                     <a class="c-beseLink" href="{{ url('admin_content_news') }}">
                                         <i class="fa fa-backward" aria-hidden="true"></i>
-                                        <span>新着情報管理</span></a>
+                                        <span>新着情報一覧</span></a>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -146,11 +146,7 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="col-auto">
                                         <button class="btn btn-ec-conversion px-5" type="submit">
-                                            {% if(News.id) %}
-                                                更新
-                                            {% else %}
-                                                登録
-                                            {% endif %}
+                                            登録
                                         </button>
                                     </div>
                                 </div>

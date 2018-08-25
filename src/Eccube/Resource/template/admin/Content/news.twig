@@ -12,7 +12,7 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'news'] %}
 
-{% block title %}新着情報管理{% endblock %}
+{% block title %}新着情報一覧{% endblock %}
 {% block sub_title %}コンテンツ管理{% endblock %}
 
 {% block stylesheet %}
@@ -63,7 +63,7 @@ file that was distributed with this source code.
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-bold">削除します</h5>
+                                                                <h5 class="modal-title font-weight-bold">新着情報を削除します</h5>
                                                                 <button class="close" type="button"
                                                                         data-dismiss="modal"
                                                                         aria-label="Close"><span
@@ -71,7 +71,7 @@ file that was distributed with this source code.
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body text-left">
-                                                                <p class="text-left">この操作は後で元に戻すことはできません。 「ニュース」を削除してもよろしいですか？</p>
+                                                                <p class="text-left">この操作は後で元に戻すことはできません。 「{{ News.title }}」を削除してもよろしいですか？</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-ec-sub" type="button" data-dismiss="modal">キャンセル</button>
