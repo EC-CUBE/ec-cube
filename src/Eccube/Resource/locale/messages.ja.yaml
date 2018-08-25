@@ -792,6 +792,9 @@ admin.order.mail_mail_info: メール内容
 admin.order.mail_confirm: 送信内容を確認
 admin.order.mail_template: テンプレート
 admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
+admin.order.mail_send_return: 送信内容の入力に戻る
+admin.order.mail_send: 送信
+admin.order.mail_send_complete: メールを送信しました。
 admin.order.mail_failed: 取得に失敗しました。
 admin.order.shipping_info: 出荷情報
 admin.order.delivery_date: お届け日
@@ -1072,6 +1075,8 @@ admin.setting.shop.mail.mail_template_edit: テンプレート編集
 admin.setting.shop.mail.mail_template: テンプレート
 admin.setting.shop.mail.mail_subject: 件名
 admin.setting.shop.mail.mail_body: 本文
+admin.setting.shop.mail.mail_text: テキスト
+admin.setting.shop.mail.mail_html: HTML
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：CSV出力項目設定
