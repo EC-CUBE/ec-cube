@@ -19,7 +19,6 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\StockValidator'
@@ -60,7 +59,6 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator'
