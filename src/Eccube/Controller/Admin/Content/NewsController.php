@@ -101,6 +101,7 @@ class NewsController extends AbstractController
             }
         } else {
             $News = new \Eccube\Entity\News();
+            $News->setPublishDate(new \DateTime());
         }
 
         $builder = $this->formFactory
