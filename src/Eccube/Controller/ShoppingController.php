@@ -189,6 +189,8 @@ class ShoppingController extends AbstractShoppingController
 
             try {
                 // リダイレクト先のチェック.
+                $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
+                $redirectTo = preg_replace($pattern, '', $redirectTo);
                 $result = $router->match($redirectTo);
                 // パラメータのみ抽出
                 $params = array_filter($result, function ($key) {
