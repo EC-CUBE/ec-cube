@@ -1,22 +1,45 @@
 $(function() {
-    $('.ec-headerNavSP__itemMenu').on('click', function() {
-        $('.ec-layoutRole').toggleClass('is_active');
-        $('.ec-drawerRole').toggleClass('is_active');
-        $('body').toggleClass('have_curtain');
+    $(".ec-headerNavSP").on("click",function(){
+      $(".ec-layoutRole").toggleClass("is_active");
+      $(".ec-drawerRole").toggleClass("is_active");
+      $(".ec-drawerRoleClose").toggleClass("is_active");
+      $("body").toggleClass("have_curtain");
     });
 
-    $('.ec-overlayRole').on('click', function() {
-        $('body').removeClass('have_curtain');
-        $('.ec-layoutRole').removeClass('is_active');
-        $('.ec-drawerRole').removeClass('is_active');
+    $(".ec-overlayRole").on("click",function(){
+      $("body").removeClass("have_curtain");
+      $(".ec-layoutRole").removeClass("is_active");
+      $(".ec-drawerRole").removeClass("is_active");
+      $(".ec-drawerRoleClose").removeClass("is_active");
+    });
+
+    $(".ec-drawerRoleClose").on("click",function(){
+      $("body").removeClass("have_curtain");
+      $(".ec-layoutRole").removeClass("is_active");
+      $(".ec-drawerRole").removeClass("is_active");
+      $(".ec-drawerRoleClose").removeClass("is_active");
+    });
+
+    // TODO ロジック差し込み
+
+    $(".ec-cartNavi").on("click",function(){
+      $(".ec-cartNavi").toggleClass("is-active")
+    });
+
+    $(".ec-cartNavi").on("click",function(){
+      $(".ec-cartNaviIsset").toggleClass("is-active")
+    });
+
+    $(".ec-cartNavi").on("click",function(){
+      $(".ec-cartNaviNull").toggleClass("is-active")
     });
 
     $(document).on('click', '.ec-cartNavi', function() {
-        $('.ec-headerRole__cart').toggleClass('is_active');
+        $('.ec-headerRole__cart').toggleClass('is-active');
     });
 
     $(document).on('click', '.ec-cartNavi--cancel', function() {
-        $('.ec-headerRole__cart').toggleClass('is_active');
+        $('.ec-headerRole__cart').toggleClass('is-active');
     });
 
     $(".ec-newsRole__newsCloseBtn").on("click",function(){
@@ -45,8 +68,8 @@ $(function() {
     $('.ec-itemNav ul a').click(function() {
         var child = $(this).siblings();
         if(child.length > 0 ){
-            if(child.is(':visible')){ 
-                return true;                
+            if(child.is(':visible')){
+                return true;
             }else{
                 child.slideToggle();
                 return false;
