@@ -45,10 +45,10 @@ class AbstractShoppingController extends AbstractController
         /** @var PurchaseFlowResult $flowResult */
         $flowResult = $this->purchaseFlow->validate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
-            $this->addRequestError($warning);
+            $this->addError($warning->getMessage());
         }
         foreach ($flowResult->getErrors() as $error) {
-            $this->addRequestError($error);
+            $this->addError($error->getMessage());
         }
 
         return $flowResult;
