@@ -8,14 +8,37 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
+<div class="ec-headerNaviRole">
+
+    <div class="ec-headerNaviRole__left">
+
+        <div class="ec-headerNaviRole__search is_inDrawer">
+            {{ render(path('block_search_product')) }}
+        </div>
+
+        <div class="ec-headerRole__navSP">
+            {{ render(url('block_cart_sp')) }}
+        </div>
+
+    </div>
+
+    <div class="ec-headerNaviRole__right">
+
+        <div class="ec-headerNaviRole__nav is_inDrawer">
+            {{ include('Block/login.twig') }}
+        </div>
+
+        <div class="ec-headerRole__cart">
+            {{ render(url('block_cart')) }}
+        </div>
+
+    </div>
+
+
+</div>
+
 <div class="ec-headerRole">
     <div class="ec-headerRole__title">
         {{ include('Block/logo.twig') }}
-    </div>
-    <div class="ec-headerRole__cart">
-        {{ render(url('block_cart')) }}
-    </div>
-    <div class="ec-headerRole__navSP">
-        {{ render(url('block_cart_sp')) }}
     </div>
 </div>
