@@ -90,7 +90,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
-        $expected->addProcessResult(ProcessResult::error('error 1'));
+        $expected->addProcessResult(ProcessResult::error('error 1', PurchaseFlowTest_FailItemHolderValidator::class));
         self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
@@ -102,8 +102,8 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder->addOrderItem(new OrderItem());
 
         $expected = new PurchaseFlowResult($itemHolder);
-        $expected->addProcessResult(ProcessResult::warn('error 1'));
-        $expected->addProcessResult(ProcessResult::warn('error 2'));
+        $expected->addProcessResult(ProcessResult::warn('error 1', PurchaseFlowTest_FailValidator::class));
+        $expected->addProcessResult(ProcessResult::warn('error 2', PurchaseFlowTest_FailValidator::class));
         self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
@@ -116,10 +116,10 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder->addOrderItem(new OrderItem());
 
         $expected = new PurchaseFlowResult($itemHolder);
-        $expected->addProcessResult(ProcessResult::warn('error 1'));
-        $expected->addProcessResult(ProcessResult::warn('error 2'));
-        $expected->addProcessResult(ProcessResult::warn('error 1'));
-        $expected->addProcessResult(ProcessResult::warn('error 2'));
+        $expected->addProcessResult(ProcessResult::warn('error 1', PurchaseFlowTest_FailValidator::class));
+        $expected->addProcessResult(ProcessResult::warn('error 2', PurchaseFlowTest_FailValidator::class));
+        $expected->addProcessResult(ProcessResult::warn('error 1', PurchaseFlowTest_FailValidator::class));
+        $expected->addProcessResult(ProcessResult::warn('error 2', PurchaseFlowTest_FailValidator::class));
         self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 }

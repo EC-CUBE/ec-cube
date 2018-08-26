@@ -34,13 +34,13 @@ abstract class ItemValidator
         try {
             $this->validate($item, $context);
 
-            return ProcessResult::success();
+            return ProcessResult::success(null, static::class);
         } catch (InvalidItemException $e) {
             if ($item instanceof CartItem) {
                 $this->handle($item, $context);
             }
 
-            return ProcessResult::warn($e->getMessage());
+            return ProcessResult::warn($e->getMessage(), static::class);
         }
     }
 
