@@ -300,6 +300,7 @@ class OwnerStoreController extends AbstractController
      */
     public function apiInstall(Request $request)
     {
+        $this->isTokenValid();
 
         $pluginCode = $request->get('pluginCode');
 
@@ -313,7 +314,7 @@ class OwnerStoreController extends AbstractController
             log_error($e);
         }
 
-        return $this->json(['success' => false, 'log' => $log]);
+        return $this->json(['success' => false, 'log' => $log], 500);
     }
 
     /**
