@@ -534,11 +534,29 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function __clone()
         {
+            $OriginOrderItems = $this->OrderItems;
             $OrderItems = new ArrayCollection();
             foreach ($this->OrderItems as $OrderItem) {
                 $OrderItems->add(clone $OrderItem);
             }
             $this->OrderItems = $OrderItems;
+
+            // ShippingとOrderItemが循環参照するため, 手動でヒモ付を変更する.
+            $Shippings = new ArrayCollection();
+            foreach ($this->Shippings as $Shipping) {
+                $CloneShipping = clone $Shipping;
+                foreach ($OriginOrderItems as $OrderItem) {
+                    $CloneShipping->removeOrderItem($OrderItem);
+                }
+                foreach ($this->OrderItems as $OrderItem) {
+                    if ($OrderItem->getShipping() && $OrderItem->getShipping()->getId() == $Shipping->getId()) {
+                        $OrderItem->setShipping($CloneShipping);
+                    }
+                    $CloneShipping->addOrderItem($OrderItem);
+                }
+                $Shippings->add($CloneShipping);
+            }
+            $this->Shippings = $Shippings;
         }
 
         /**
