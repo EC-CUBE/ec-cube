@@ -78,7 +78,12 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
                 $productStock = $this->productStockRepository->find(
                     $item->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
                 );
+            }
+        }
 
+        foreach ($itemHolder->getProductOrderItems() as $item) {
+            // 在庫が無制限かチェックし、制限ありなら在庫を減らす
+            if (!$item->getProductClass()->isStockUnlimited()) {
                 $stock = $callback($productStock->getStock(), $item->getQuantity());
                 $productStock->setStock($stock);
                 $item->getProductClass()->setStock($stock);
