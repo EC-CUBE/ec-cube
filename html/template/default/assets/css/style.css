@@ -3587,7 +3587,6 @@ include /assets/tmpl/elements/7.2.search.pug
 Styleguide 7.2.1
 */
 .ec-topicpath {
-  letter-spacing: -.4em;
   -webkit-margin-before: 0;
   -webkit-margin-after: 0;
   -webkit-margin-start: 0;
