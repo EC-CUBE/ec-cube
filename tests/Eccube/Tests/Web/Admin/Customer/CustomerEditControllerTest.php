@@ -21,6 +21,8 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class CustomerEditControllerTest
+ *
+ * @group cache-clear
  */
 class CustomerEditControllerTest extends AbstractAdminWebTestCase
 {
