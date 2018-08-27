@@ -37,7 +37,7 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
         private $id;
 
         /**
-         * @var string
+         * @var float
          *
          * @ORM\Column(name="fee", type="decimal", precision=12, scale=2, options={"unsigned":true})
          */
@@ -76,7 +76,7 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
         /**
          * Set fee.
          *
-         * @param string $fee
+         * @param float $fee
          *
          * @return DeliveryFee
          */
@@ -90,7 +90,7 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
         /**
          * Get fee.
          *
-         * @return string
+         * @return float
          */
         public function getFee()
         {

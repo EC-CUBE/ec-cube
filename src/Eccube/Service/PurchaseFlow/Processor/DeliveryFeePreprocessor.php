@@ -59,6 +59,8 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      * @param EntityManagerInterface $entityManager
      * @param TaxRuleRepository $taxRuleRepository
      * @param DeliveryFeeRepository $deliveryFeeRepository
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function __construct(
         BaseInfoRepository $baseInfoRepository,
@@ -75,13 +77,13 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
     /**
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
-     *
-     * @throws \Doctrine\ORM\NoResultException
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if ($this->containsDeliveryFeeItem($itemHolder) == false) {
+        if (!$this->containsDeliveryFeeItem($itemHolder)) {
             $this->addDeliveryFeeItem($itemHolder);
+        } elseif ($this->isChangeDeliveryFee($itemHolder)) {
+            $this->updateDeliveryFeeItem($itemHolder);
         }
     }
 
@@ -103,8 +105,6 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
 
     /**
      * @param ItemHolderInterface $itemHolder
-     *
-     * @throws \Doctrine\ORM\NoResultException
      */
     private function addDeliveryFeeItem(ItemHolderInterface $itemHolder)
     {
@@ -120,16 +120,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
         /* @var Shipping $Shipping */
         foreach ($Order->getShippings() as $Shipping) {
             // 送料の計算
-            $deliveryFeeProduct = 0;
-            if ($this->BaseInfo->isOptionProductDeliveryFee()) {
-                /** @var OrderItem $orderItem */
-                foreach ($Shipping->getOrderItems() as $orderItem) {
-                    if (!$orderItem->isProduct()) {
-                        continue;
-                    }
-                    $deliveryFeeProduct += $orderItem->getProductClass()->getDeliveryFee() * $orderItem->getQuantity();
-                }
-            }
+            $deliveryFeeProduct = $this->getDeliveryFeeProduct($Shipping);
 
             /** @var DeliveryFee $DeliveryFee */
             $DeliveryFee = $this->deliveryFeeRepository->findOneBy([
@@ -153,5 +144,93 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
             $itemHolder->addItem($OrderItem);
             $Shipping->addOrderItem($OrderItem);
         }
+    }
+
+    /**
+     * Check delivery fee change
+     * One shipping - one delivery fee
+     *
+     * @param ItemHolderInterface $itemHolder
+     *
+     * @return bool
+     */
+    private function isChangeDeliveryFee(ItemHolderInterface $itemHolder)
+    {
+        /** @var Order $Order */
+        $Order = $itemHolder;
+        /* @var Shipping $Shipping */
+        foreach ($Order->getShippings() as $Shipping) {
+            // 送料の計算
+            $deliveryFeeProduct = $this->getDeliveryFeeProduct($Shipping);
+
+            /** @var DeliveryFee $DeliveryFee */
+            $DeliveryFee = $this->deliveryFeeRepository->findOneBy([
+                'Delivery' => $Shipping->getDelivery(),
+                'Pref' => $Shipping->getPref(),
+            ]);
+            $totalDeliveryFee = $DeliveryFee->getFee() + $deliveryFeeProduct;
+
+            // is change
+            if ($Shipping->getShippingDeliveryFee() != $totalDeliveryFee) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Update delivery fee
+     * One shipping - one delivery fee
+     *
+     * @param ItemHolderInterface $itemHolder
+     */
+    private function updateDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    {
+        /** @var Order $Order */
+        $Order = $itemHolder;
+        /* @var Shipping $Shipping */
+        foreach ($Order->getShippings() as $Shipping) {
+            // 送料の計算
+            $deliveryFeeProduct = $this->getDeliveryFeeProduct($Shipping);
+
+            /** @var DeliveryFee $DeliveryFee */
+            $DeliveryFee = $this->deliveryFeeRepository->findOneBy([
+                'Delivery' => $Shipping->getDelivery(),
+                'Pref' => $Shipping->getPref(),
+            ]);
+
+            $Shipping->setShippingDeliveryFee($DeliveryFee->getFee() + $deliveryFeeProduct);
+            $Shipping->setFeeId($DeliveryFee->getId());
+
+            foreach ($Shipping->getOrderItems() as $orderItem) {
+                if ($orderItem->isDeliveryFee()) {
+                    $orderItem->setPrice($Shipping->getShippingDeliveryFee());
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Calculate delivery fee per product
+     *
+     * @param $Shipping
+     * @return float|int
+     */
+    private function getDeliveryFeeProduct(Shipping $Shipping)
+    {
+        $deliveryFeeProduct = 0;
+        if ($this->BaseInfo->isOptionProductDeliveryFee()) {
+            /** @var OrderItem $orderItem */
+            foreach ($Shipping->getOrderItems() as $orderItem) {
+                if (!$orderItem->isProduct()) {
+                    continue;
+                }
+                $deliveryFeeProduct += $orderItem->getProductClass()->getDeliveryFee() * $orderItem->getQuantity();
+            }
+        }
+
+        return $deliveryFeeProduct;
     }
 }
