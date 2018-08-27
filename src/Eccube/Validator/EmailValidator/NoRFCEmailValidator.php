@@ -18,7 +18,6 @@ use Egulias\EmailValidator\Validation\EmailValidation;
 
 class NoRFCEmailValidator extends EmailValidator
 {
-
     /**
      * @param $email
      * @param EmailValidation $emailValidation

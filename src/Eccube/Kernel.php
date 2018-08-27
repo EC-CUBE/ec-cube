@@ -95,7 +95,7 @@ class Kernel extends BaseKernel
         $rfcCheck = $this->container->getParameter('eccube_rfc_email_check');
         if (!$rfcCheck) {
             // RFC違反のメールを許容する
-            \Swift::init(function() {
+            \Swift::init(function () {
                 \Swift_DependencyContainer::getInstance()
                     ->register('email.validator')
                     ->asSharedInstanceOf(NoRFCEmailValidator::class);
