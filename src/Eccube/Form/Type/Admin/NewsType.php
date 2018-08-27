@@ -44,9 +44,10 @@ class NewsType extends AbstractType
     {
         $builder
             ->add('publish_date', DateTimeType::class, [
-                'required' => true,
-                'date_widget' => 'single_text',
-                'time_widget' => 'single_text',
+                'date_widget' => 'choice',
+                'input' => 'datetime',
+                'format' => 'yyyy-MM-dd hh:mm',
+                'years' => range(date('Y'), date('Y') + 3),
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
@@ -67,13 +68,13 @@ class NewsType extends AbstractType
             ])
             ->add('link_method', CheckboxType::class, [
                 'required' => false,
-                'label' => '別ウィンドウを開く',
+                'label' => 'admin.content.news.new_window',
                 'value' => '1',
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
                 'attr' => [
-                    'rows' => 8
+                    'rows' => 8,
                 ],
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
@@ -81,11 +82,10 @@ class NewsType extends AbstractType
             ])
             ->add('visible', ChoiceType::class, [
                 'label' => false,
-                'choices' => ['公開' => true, '非公開' => false],
+                'choices' => ['admin.content.news.display_status__show' => true, 'admin.content.news.display_status__hide' => false],
                 'required' => true,
                 'expanded' => false,
             ]);
-
     }
 
     /**
