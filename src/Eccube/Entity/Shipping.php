@@ -71,14 +71,14 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="kana01", type="string", length=255)
+         * @ORM\Column(name="kana01", type="string", length=255, nullable=true)
          */
         private $kana01;
 
         /**
          * @var string
          *
-         * @ORM\Column(name="kana02", type="string", length=255)
+         * @ORM\Column(name="kana02", type="string", length=255, nullable=true)
          */
         private $kana02;
 
