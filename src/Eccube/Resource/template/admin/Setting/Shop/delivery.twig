@@ -110,6 +110,13 @@ file that was distributed with this source code.
                         <div class="card-body p-0">
                             <div class="card rounded border-0">
                                 <ul class="list-group list-group-flush sortable-container">
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-auto"><strong>&nbsp;</strong></div>
+                                            <div class="col-auto"><strong>{{ 'admin.common.id'|trans }}</strong></div>
+                                            <div class="col-2"><strong>{{ 'admin.setting.shop.delivery.delivery_name'|trans }}</strong></div>
+                                        </div>
+                                    </li>
                                     {% if Deliveries|length > 0 %}
                                         {% for Delivery in Deliveries %}
                                             <li id="ex-delivery-{{ Delivery.id }}" class="list-group-item sortable-item" data-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
