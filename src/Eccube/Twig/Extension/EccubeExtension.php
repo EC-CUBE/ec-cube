@@ -37,6 +37,7 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * EccubeExtension constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      * @param ProductRepository $productRepository
      */

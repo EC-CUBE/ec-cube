@@ -19,6 +19,7 @@ use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
@@ -87,7 +88,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 完了画面
-        $crawler = $this->scenarioComplete($Customer, $this->generateUrl('shopping_order'));
+        $crawler = $this->scenarioComplete($Customer, $this->generateUrl('shopping_checkout'));
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
@@ -163,10 +164,10 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                     ],
                 ],
                 'Payment' => 1,
+                'use_point' => 0,
                 'message' => $this->getFaker()->realText(),
                 '_token' => $token,
             ],
-            ['shopping_order_mode' => 'delivery'],
         ]);
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
@@ -196,10 +197,10 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                     ],
                 ],
                 'Payment' => 1,
+                'use_point' => 0,
                 'message' => $this->getFaker()->realText(),
                 '_token' => $token,
             ],
-            ['shopping_order_mode' => 'delivery'],
         ]);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -232,10 +233,10 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                     ],
                 ],
                 'Payment' => 1,
+                'use_point' => 0,
                 'message' => $this->getFaker()->realText(),
                 '_token' => $token,
             ],
-            ['shopping_order_mode' => 'payment'],
         ]);
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
@@ -323,7 +324,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         ]);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->expected = '有効な値ではありません。';
+        $this->expected = '入力されていません。';
         $this->actual = $crawler->filter('p.ec-errorMessage')->text();
         $this->verify();
     }
@@ -383,9 +384,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                     ],
                 ],
                 'Payment' => 1,
+                'use_point' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_change',
-                'param' => $shippingId,
+                'redirect_to' => $this->generateUrl('shopping_shipping', ['id' => $shippingId], UrlGeneratorInterface::ABSOLUTE_PATH),
                 '_token' => $token,
             ],
         ]);

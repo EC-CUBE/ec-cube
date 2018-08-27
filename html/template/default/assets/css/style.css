@@ -6622,6 +6622,8 @@ Styleguide 15.2.6
     margin-bottom: 10px; }
   .ec-AddAddress .ec-AddAddress__itemtSize {
     margin-bottom: 10px; }
+  .ec-AddAddress .ec-AddAddress__select {
+    margin-bottom: 5px; }
   .ec-AddAddress .ec-AddAddress__selectAddress {
     display: inline-block; }
     .ec-AddAddress .ec-AddAddress__selectAddress label {
@@ -6641,6 +6643,8 @@ Styleguide 15.2.6
       width: 80px; }
   .ec-AddAddress .ec-AddAddress__actions .ec-blockBtn--action {
     margin-bottom: 8px; }
+  .ec-AddAddress .ec-AddAddress__new {
+    margin-bottom: 20px; }
 
 /**
 メディアクエリ
@@ -6868,7 +6872,6 @@ Styleguide 17.1
   border-bottom: 1px dotted #ccc; }
 
 .ec-addressList .ec-addressList__remove {
-  display: table-cell;
   vertical-align: middle;
   padding: 16px;
   text-align: center; }
@@ -6880,13 +6883,15 @@ Styleguide 17.1
   display: table-cell;
   vertical-align: middle;
   padding: 16px;
-  margin-right: 4em; }
+  margin-right: 4em;
+  width: 80%; }
 
 .ec-addressList .ec-addressList__action {
   position: relative;
   vertical-align: middle;
+  text-align: right;
   top: 27px;
-  right: 0; }
+  padding-right: 10px; }
 
 /**
 メディアクエリ

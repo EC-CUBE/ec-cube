@@ -15,6 +15,7 @@ use Codeception\Util\Fixtures;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
@@ -116,8 +117,18 @@ if ($allOrderCount < $config['fixture_order_num']) {
             ->setParameter('Customer', $Customer)
             ->getQuery()
             ->getSingleScalarResult();
+        $randomOrderStatus = [
+            OrderStatus::NEW,
+            OrderStatus::CANCEL,
+            OrderStatus::IN_PROGRESS,
+            OrderStatus::DELIVERED,
+            OrderStatus::PAID,
+            OrderStatus::PENDING,
+            OrderStatus::PROCESSING,
+            OrderStatus::RETURNED,
+        ];
         for ($i = $orderCountPerCustomer; $i < $config['fixture_order_num'] / count($Customers); $i++) {
-            $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->numberBetween(1, 8));
+            $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->randomElement($randomOrderStatus));
             $OrderDate = $faker->dateTimeThisYear();
             $progress('Generating Orders');
             createOrder($container, $Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount, $Status, $OrderDate);
@@ -157,7 +168,6 @@ function createOrder($container, Customer $Customer, array $ProductClasses, $Del
     $Order = $generator->createOrder($Customer, $ProductClasses, $Delivery, $charge, $discount);
     $Order->setOrderStatus($Status);
     $Order->setOrderDate($OrderDate);
-    $Order->setOrderNo(\Eccube\Util\StringUtil::random(6));
     $entityManager->flush($Order);
 
     return $Order;
@@ -196,18 +206,18 @@ Fixtures::add('categories', $categories);
 
 $findOrders = function () use ($entityManager) {
     return $entityManager->getRepository('Eccube\Entity\Order')
-    ->createQueryBuilder('o')
-    ->getQuery()
-    ->getResult();
+        ->createQueryBuilder('o')
+        ->getQuery()
+        ->getResult();
 };
 /* 受注を検索するクロージャ. */
 Fixtures::add('findOrders', $findOrders);
 
 $findShippings = function () use ($entityManager) {
     return $entityManager->getRepository('Eccube\Entity\Shipping')
-    ->createQueryBuilder('o')
-    ->getQuery()
-    ->getResult();
+        ->createQueryBuilder('o')
+        ->getQuery()
+        ->getResult();
 };
 /* 出荷を検索するクロージャ. */
 Fixtures::add('findShippings', $findShippings);
@@ -282,15 +292,24 @@ Fixtures::add('createCustomer', $createCustomer);
 $createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = [], $Status = null) use ($container, $entityManager, $faker) {
     $generator = $container->get('Eccube\Tests\Fixture\Generator');
     $Orders = [];
+    $randomOrderStatus = [
+        OrderStatus::NEW,
+        OrderStatus::CANCEL,
+        OrderStatus::IN_PROGRESS,
+        OrderStatus::DELIVERED,
+        OrderStatus::PAID,
+        OrderStatus::PENDING,
+        OrderStatus::PROCESSING,
+        OrderStatus::RETURNED,
+    ];
     for ($i = 0; $i < $numberOfOrders; $i++) {
         $Order = $generator->createOrder($Customer, $ProductClasses);
         $Status = $Status
             ? $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($Status)
-            : $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->numberBetween(1, 7));
+            : $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->randomElement($randomOrderStatus));
         $OrderDate = $faker->dateTimeThisYear();
         $Order->setOrderStatus($Status);
         $Order->setOrderDate($OrderDate);
-        $Order->setOrderNo(\Eccube\Util\StringUtil::random(6));
         $entityManager->flush($Order);
         $Orders[] = $Order;
     }
@@ -324,21 +343,18 @@ Fixtures::add('findCustomers', $findCustomers);
 /* 新着情報を検索するクロージャ */
 Fixtures::add('findNews', function () use ($entityManager) {
     return $entityManager->getRepository(\Eccube\Entity\News::class)
-        ->findBy([], ['sort_no' => 'DESC']);
+        ->findBy(['visible' => true], ['publish_date' => 'DESC']);
 });
 
-/* 新着情報を登録するクロージャ */
-Fixtures::add('createNews', function ($publishDate, $title, $description, $url = null) use ($entityManager) {
-    $TopNews = $entityManager->getRepository(\Eccube\Entity\News::class)
-        ->findOneBy([], ['sort_no' => 'DESC']);
-    $sortNo = $TopNews ? $TopNews->getSortNo() + 1 : 1;
+
+/** 新着情報を登録するクロージャ */
+Fixtures::add('createNews', function($publishDate, $title, $description, $url = null) use ($entityManager) {
     $News = new \Eccube\Entity\News();
     $News->setPublishDate($publishDate);
     $News->setTitle($title);
     $News->setDescription($description);
     $News->setUrl($url);
-    $News->setSortNo($sortNo);
-
+    $News->setVisible(true);
     $entityManager->persist($News);
     $entityManager->flush($News);
 

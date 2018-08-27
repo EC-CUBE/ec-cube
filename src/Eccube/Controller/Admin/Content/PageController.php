@@ -99,8 +99,11 @@ class PageController extends AbstractController
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $Page = $this->pageRepository
-            ->findOrCreate($id, $DeviceType);
+        if (null === $id) {
+            $Page = $this->pageRepository->newPage($DeviceType);
+        } else {
+            $Page = $this->pageRepository->getByDeviceTypeAndId($DeviceType, $id);
+        }
 
         $isUserDataPage = true;
 

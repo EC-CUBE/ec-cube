@@ -48,6 +48,7 @@ class EA09ShippingCest
         // 対応中ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $newOrders */
         $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::IN_PROGRESS);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
@@ -105,6 +106,7 @@ class EA09ShippingCest
         // 対応中ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $newOrders */
         $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::IN_PROGRESS);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());

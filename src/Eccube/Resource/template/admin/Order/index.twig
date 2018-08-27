@@ -514,19 +514,6 @@ file that was distributed with this source code.
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {# TODO IN_PROGRESS と RETURNED の色を決める #}
-                                    {% set cssClassStatus = {
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::BACK_ORDER')): "badge-ec-red",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::CANCEL')): "badge-ec-glay",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')): "badge-ec-yellow",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::IN_PROGRESS')): "badge-ec-yellow",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::RETURNED')): "badge-ec-yellow"
-                                    } %}
                                     {% for Order in pagination %}
                                         {% for Shipping in Order.Shippings %}
                                             <tr>
@@ -544,7 +531,7 @@ file that was distributed with this source code.
                                                     {{ Order.payment_method }}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
+                                                    <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
                                                 </td>
                                                 <td class="align-middle text-right">
                                                     {{ Order.payment_total|price }}<br>
@@ -661,7 +648,7 @@ file that was distributed with this source code.
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body">
-                                <p class="mb-4"></p>
+                                <p class="modal-message"></p>
                                 <ul id="bulkErrors"></ul>
                                 <div id="bulk-options">
                                     <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.order.to_shipped__confirm_send_mail'|trans }}</div>
