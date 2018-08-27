@@ -15,9 +15,11 @@ namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\PageMax;
 use Eccube\Entity\Plugin;
 use Eccube\Form\Type\Admin\SearchPluginApiType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerProcessService;
@@ -66,6 +68,9 @@ class OwnerStoreController extends AbstractController
 
     private static $vendorName = 'ec-cube';
 
+    /** @var BaseInfo */
+    private $BaseInfo;
+
     /**
      * OwnerStoreController constructor.
      *
@@ -75,6 +80,9 @@ class OwnerStoreController extends AbstractController
      * @param ComposerApiService $composerApiService
      * @param SystemService $systemService
      * @param PluginApiService $pluginApiService
+     * @param BaseInfoRepository $baseInfoRepository
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function __construct(
         PluginRepository $pluginRepository,
@@ -82,12 +90,14 @@ class OwnerStoreController extends AbstractController
         ComposerProcessService $composerProcessService,
         ComposerApiService $composerApiService,
         SystemService $systemService,
-        PluginApiService $pluginApiService
+        PluginApiService $pluginApiService,
+        BaseInfoRepository $baseInfoRepository
     ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->systemService = $systemService;
         $this->pluginApiService = $pluginApiService;
+        $this->BaseInfo = $baseInfoRepository->get();
 
         // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
@@ -113,6 +123,12 @@ class OwnerStoreController extends AbstractController
      */
     public function search(Request $request, $page_no = null, Paginator $paginator)
     {
+
+        if (!$this->BaseInfo->getAuthenticationKey()) {
+            $this->addWarning('認証キーを設定してください。', 'admin');
+            return $this->redirectToRoute('admin_store_authentication_setting');
+        }
+
         // Acquire downloadable plug-in information from owners store
         $items = [];
         $message = '';
