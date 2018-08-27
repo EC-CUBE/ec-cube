@@ -471,7 +471,7 @@ file that was distributed with this source code.
                                                 <div class="col">
                                                     {% if shippingForm.vars.value.shipping_date %}
                                                         {# 登録済みの出荷で出荷日が設定されている場合は出荷日を表示する #}
-                                                        <span>{{ shippingForm.vars.value.shipping_date|date_day }}</span>
+                                                        <span>{{ shippingForm.vars.value.shipping_date|date_min }}</span>
                                                     {% elseif shippingForm.vars.value.id %}
                                                         {# 登録済みの出荷で出荷日が設定されていない場合 #}
                                                         <!-- 出荷済にするボタン -->
