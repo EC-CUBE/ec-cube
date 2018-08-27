@@ -34,9 +34,7 @@ class NoRFCEmailValidator extends EmailValidator
         $quoted_string = "\"$qcontent*\"";
         $atext = '[a-zA-Z0-9!#$%&\'*+\-\/\=?^_`{|}~]';
         $dot_atom = "$atext+(?:[.]$atext+)*";
-        $local_part = "(?:$dot_atom|$quoted_string)";
         $domain = $dot_atom;
-        $addr_spec = "{$local_part}[@]$domain";
         $dot_atom_loose = "$atext+(?:[.]|$atext)*";
         $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
         $addr_spec_loose = "{$local_part_loose}[@]$domain";
