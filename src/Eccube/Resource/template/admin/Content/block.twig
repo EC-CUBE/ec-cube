@@ -94,14 +94,14 @@ file that was distributed with this source code.
                                                 <div class="row">
                                                     <div class="col-6 text-right">
                                                         <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}"
-                                                           class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
+                                                           class="btn btn-ec-actionIcon mr-3" data-tooltip="true"
                                                            data-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
                                                     </div>
                                                     {% if Block.deletable %}
                                                         <div class="col-6">
-                                                            <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                            <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <a href="#" data-toggle="modal" data-target="#confirmModal-{{ Block.id }}" class="btn btn-ec-actionIcon">
                                                                     <i class="fa fa-close fa-lg text-secondary"></i>
                                                                 </a>
