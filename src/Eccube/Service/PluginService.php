@@ -22,6 +22,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
@@ -105,6 +106,7 @@ class PluginService
      * @param EccubeConfig $eccubeConfig
      * @param ContainerInterface $container
      * @param CacheUtil $cacheUtil
+     * @param ComposerApiService $composerService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -113,7 +115,8 @@ class PluginService
         SchemaService $schemaService,
         EccubeConfig $eccubeConfig,
         ContainerInterface $container,
-        CacheUtil $cacheUtil
+        CacheUtil $cacheUtil,
+        ComposerApiService $composerService
     ) {
         $this->entityManager = $entityManager;
         $this->pluginRepository = $pluginRepository;
@@ -124,6 +127,7 @@ class PluginService
         $this->environment = $eccubeConfig->get('kernel.environment');
         $this->container = $container;
         $this->cacheUtil = $cacheUtil;
+        $this->composerService = $composerService;
     }
 
     /**
@@ -660,35 +664,12 @@ class PluginService
      */
     public function getPluginRequired($plugin)
     {
-        // Check require
-        if (!isset($plugin['require']) || empty($plugin['require'])) {
-            return [];
-        }
-//        $require = $plugin['require'];
+        $results = [];
+        $this->composerService->foreachRequires('ec-cube/'.$plugin['code'], function($package) use(&$results) {
+            $results[] = $package;
+        }, 'eccube-plugin');
 
-        $requirePlugins = [];
-        // Check require
-//        foreach ($require as $pluginName => $version) {
-//            $pluginCode = str_replace(self::VENDOR_NAME . '/', '', $pluginName);
-//            $pluginCode = Container::camelize($pluginCode);
-//            $dependPlugin = $this->buildInfo($plugins, $pluginName);
-//            // Prevent call self
-//            if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
-//                continue;
-//            }
-//
-//            // Check duplicate in dependency
-//            $index = array_search($dependPlugin['product_code'], array_column($dependents, 'product_code'));
-//            if ($index === false) {
-//                // Update require version
-//                $dependPlugin['version'] = $version;
-//                $dependents[] = $dependPlugin;
-//                // Check child dependency
-//                $dependents = $this->getPluginRequired($plugins, $dependPlugin, $dependents);
-//            }
-//        }
-
-        return $requirePlugins;
+        return $results;
     }
 
     /**
@@ -701,7 +682,6 @@ class PluginService
     public function buildInfo($plugin)
     {
         $this->supportedVersion($plugin);
-        $plugin['require'] = $this->getRequireOfPlugin($plugin);
 
         return $plugin;
     }
@@ -719,41 +699,6 @@ class PluginService
             // Match version
             $plugin['version_check'] = true;
         }
-    }
-
-    /**
-     * Get require plugin
-     *
-     * @param array $plugin  target plugin from api
-     *
-     * @return mixed format [0 => ['name' => pluginName1, 'version' => pluginVersion1], 1 => ['name' => pluginName2, 'version' => pluginVersion2]]
-     */
-    public function getRequireOfPlugin($plugin)
-    {
-//        $pluginCode = $plugin['code'];
-        // Need dependency Mechanism
-        /*
-        $pluginDir = $this->calcPluginDir($pluginCode);
-        $composerPath = $pluginDir.'/composer.json';
-        // read composer.json
-        if (!file_exists($composerPath)) {
-            return [];
-        }
-        $content = file_get_contents($composerPath);
-        $content = json_decode($content,true);
-
-        $require = [];
-        if (isset($content['require']) && !empty($content['require'])) {
-            foreach ($content['require'] as $name => $version) {
-                $require[] = [
-                    'name' => $name,
-                    'version' => $version,
-                ];
-            }
-        }
-         */
-
-        return [];
     }
 
     /**

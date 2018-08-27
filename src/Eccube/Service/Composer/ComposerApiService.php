@@ -56,6 +56,7 @@ class ComposerApiService implements ComposerServiceInterface
         $output = $this->runCommand([
             'command' => 'info',
             'package' => $pluginName,
+            '--available' => true
         ]);
 
         return OutputParser::parseInfo($output);
@@ -153,14 +154,22 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @throws PluginException
      */
-    public function foreachRequires($packageName, $callback, $typeFilter = null)
+    public function foreachRequires($packageName, $callback, $typeFilter = null, $level = 0)
     {
+        if (strpos($packageName, '/') === false) {
+            return;
+        }
         $info = $this->execInfo($packageName);
         if (isset($info['requires'])) {
             foreach ($info['requires'] as $name => $version) {
-                $package = $this->execInfo($name);
-                if (is_null($typeFilter) || @$package['type'] === $typeFilter) {
-                    $callback($package);
+                if (isset($info['type']) && $info['type'] === $typeFilter) {
+                    $this->foreachRequires($name, $callback, $typeFilter, $level + 1);
+                    if (isset($info['descrip.'])) {
+                        $info['description'] = $info['descrip.'];
+                    }
+                    if ($level) {
+                        $callback($info);
+                    }
                 }
             }
         }
