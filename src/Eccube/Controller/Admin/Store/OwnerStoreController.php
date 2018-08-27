@@ -265,6 +265,7 @@ class OwnerStoreController extends AbstractController
      * @param string $id
      *
      * @return array
+     * @throws \Eccube\Exception\PluginException
      */
     public function doConfirm(Request $request, $id)
     {
@@ -296,7 +297,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiInstall(Request $request)
     {
@@ -375,29 +376,40 @@ class OwnerStoreController extends AbstractController
      *
      * @param Plugin $Plugin
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiUninstall(Plugin $Plugin)
     {
         $this->isTokenValid();
 
         if ($Plugin->isEnabled()) {
-            $this->addError('admin.plugin.uninstall.error.not_disable', 'admin');
+            return $this->json(['success' => false, 'message' => trans('admin.plugin.uninstall.error.not_disable')], 400);
+        }
 
-            return $this->redirectToRoute('admin_store_plugin');
+        $pluginCode = $Plugin->getCode();
+        $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
+
+        if (!empty($otherDepend)) {
+            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $otherDepend[0]]);
+            $dependName = $otherDepend[0];
+            if ($DependPlugin) {
+                $dependName = $DependPlugin->getName();
+            }
+            $message = trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+
+            return $this->json(['success' => false, 'message' => $message], 400);
         }
 
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
         try {
-            $this->composerService->execRemove($packageName);
-            $this->addSuccess('admin.plugin.uninstall.complete', 'admin');
-        } catch (\Exception $exception) {
-            log_info($exception);
-            $this->addError('admin.plugin.uninstall.error', 'admin');
+            $log = $this->composerService->execRemove($packageName);
+            return $this->json(['success' => false, 'log' => $log]);
+        } catch (\Exception $e) {
+            log_error($e);
+            return $this->json(['success' => false, 'log' => $e->getMessage()], 500);
         }
 
-        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**

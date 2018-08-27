@@ -347,6 +347,7 @@ class PluginController extends AbstractController
      * @param Plugin $Plugin
      *
      * @return RedirectResponse
+     * @throws \Exception
      */
     public function uninstall(Plugin $Plugin)
     {
