@@ -32,7 +32,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         /**
          * @var integer
          *
-         * @ORM\Column(name="id", type="bigint", options={"unsigned":true})
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
          * @ORM\Id
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
