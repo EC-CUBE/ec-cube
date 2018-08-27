@@ -33,43 +33,44 @@ file that was distributed with this source code.
     });
 </script>
 {% endblock %}
-
-<div class="ec-newsRole">
-    <div class="ec-secHeading">
-        <span class="ec-secHeading__en">NEWS</span>
-        <span class="ec-secHeading__line"></span>
-        <span class="ec-secHeading__ja">{{'front.block.news.news_title'|trans}}</span>
-    </div>
-    <div class="ec-newsRole__news">
-        {% for News in NewsList %}
-            <div class="ec-newsRole__newsItem">
-                <div class="ec-newsRole__newsHeading">
-                    <div class="ec-newsRole__newsDate">
-                        {{ News.publish_date|date_day }}
-                    </div>
-                    <div class="ec-newsRole__newsColumn">
-                        <div class="ec-newsRole__newsTitle">
-                            {{ News.title }}
+<div class="ec-role">
+    <div class="ec-newsRole">
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">NEWS</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">{{'front.block.news.news_title'|trans}}</span>
+        </div>
+        <div class="ec-newsRole__news">
+            {% for News in NewsList %}
+                <div class="ec-newsRole__newsItem">
+                    <div class="ec-newsRole__newsHeading">
+                        <div class="ec-newsRole__newsDate">
+                            {{ News.publish_date|date_day }}
                         </div>
-                        {% if News.description or News.url %}
-                            <div class="ec-newsRole__newsClose">
-                                <a class="ec-newsRole__newsCloseBtn">
-                                    <i class="fas fa-angle-down"></i>
-                                </a>
+                        <div class="ec-newsRole__newsColumn">
+                            <div class="ec-newsRole__newsTitle">
+                                {{ News.title }}
                             </div>
+                            {% if News.description or News.url %}
+                                <div class="ec-newsRole__newsClose">
+                                    <a class="ec-newsRole__newsCloseBtn">
+                                        <i class="fas fa-angle-down"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="ec-newsRole__newsDescription">
+                        {{ News.description|raw|nl2br }}
+                        {% if News.url %}
+                            <br>
+                            <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>
+                                {{ 'front.block.news.see_details'|trans }}
+                            </a>
                         {% endif %}
                     </div>
                 </div>
-                <div class="ec-newsRole__newsDescription">
-                    {{ News.description|raw|nl2br }}
-                    {% if News.url %}
-                        <br>
-                        <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>
-                            {{ 'front.block.news.see_details'|trans }}
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 </div>
