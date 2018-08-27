@@ -18,9 +18,7 @@ use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Repository\DeliveryFeeRepository;
-use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\PrefRepository;
-use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**

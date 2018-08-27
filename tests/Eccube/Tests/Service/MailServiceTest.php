@@ -301,7 +301,6 @@ class MailServiceTest extends AbstractServiceTestCase
         $formData = [
             'mail_subject' => $subject,
             'tpl_data' => $faker->text,
-            'html_tpl_data' => $faker->text,
         ];
         $this->mailService->sendAdminOrderMail($Order, $formData);
 
@@ -327,9 +326,6 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $this->BaseInfo->getEmail01();
         $this->actual = key($Message->getBcc());
         $this->verify();
-
-        // HTMLメールテスト
-        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendPasswordResetNotificationMail()
