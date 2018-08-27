@@ -149,7 +149,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_content_layout_delete', ['id' => $Layout->getId()])
         );
         $crawler = $this->client->followRedirect();
-        $this->assertRegExp('/削除が完了しました。/u', $crawler->filter('div.alert-success')->text());
+        $this->assertRegExp('/削除しました/u', $crawler->filter('div.alert-success')->text());
     }
 
     public function testDeleteFail()
@@ -208,6 +208,6 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_content_layout_delete', ['id' => $Layout->getId()])
         );
         $crawler = $this->client->followRedirect();
-        $this->assertRegExp('/既に削除されています。/u', $crawler->filter('div.alert-warning')->text());
+        $this->assertRegExp('/既に削除されています/u', $crawler->filter('div.alert-warning')->text());
     }
 }

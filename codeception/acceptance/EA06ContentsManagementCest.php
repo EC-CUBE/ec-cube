@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Page\Admin\BlockEditPage;
 use Page\Admin\BlockManagePage;
@@ -45,9 +56,9 @@ class EA06ContentsManagementCest
             ->登録();
 
         $NewsListPage = NewsManagePage::at($I);
-        $I->see('新着情報を保存しました。', NewsManagePage::$登録完了メッセージ);
+        $I->see('保存しました', NewsManagePage::$登録完了メッセージ);
 
-        $NewsListPage->一覧_編集(1);
+        $NewsListPage->一覧_編集(2);
 
         NewsEditPage::of($I)
             ->入力_タイトル('news_title2')
@@ -55,18 +66,16 @@ class EA06ContentsManagementCest
 
         $NewsListPage = NewsManagePage::at($I);
         $I->see('新着情報を保存しました。', NewsManagePage::$登録完了メッセージ);
-        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(1));
-
-        $NewsListPage->一覧_下へ(1);
         $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(2));
 
-        $NewsListPage->一覧_上へ(1);
-        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(1));
+        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(2));
 
-        $NewsListPage->一覧_削除(1);
-        $I->acceptPopup();
+        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(2));
 
-        $I->assertNotEquals('news_title2', $NewsListPage->一覧_タイトル(1));
+        $NewsListPage->一覧_削除(2);
+        $NewsListPage->ポップアップを受け入れます(2);
+
+        $I->assertNotEquals('news_title2', $NewsListPage->一覧_タイトル(2));
     }
 
     /**
@@ -133,7 +142,7 @@ class EA06ContentsManagementCest
             ->入力_内容($page)
             ->入力_PC用レイアウト('下層ページ用レイアウト')
             ->登録();
-        $I->see('登録が完了しました。', PageEditPage::$登録完了メッセージ);
+        $I->see('保存しました', PageEditPage::$登録完了メッセージ);
 
         $I->amOnPage('/user_data/'.$page);
         $I->see($page, 'body');
@@ -143,7 +152,7 @@ class EA06ContentsManagementCest
         PageEditPage::at($I)
             ->入力_内容("{% extends 'default_frame.twig' %}")
             ->登録();
-        $I->see('登録が完了しました。', PageEditPage::$登録完了メッセージ);
+        $I->see('保存しました', PageEditPage::$登録完了メッセージ);
 
         $I->amOnPage('/user_data/'.$page);
         $config = Fixtures::get('config');
@@ -155,7 +164,7 @@ class EA06ContentsManagementCest
             ->ブロックを移動('新着情報', '#position_4')
             ->登録();
 
-        $I->see('登録が完了しました。', LayoutEditPage::$登録完了メッセージ);
+        $I->see('保存しました', LayoutEditPage::$登録完了メッセージ);
         $I->amOnPage('/user_data/'.$page);
         $I->see('新着情報', '.ec-news');
 
@@ -192,7 +201,7 @@ class EA06ContentsManagementCest
 
         /* 削除 */
         PageManagePage::go($I)->削除($page);
-        $I->see('削除が完了しました。', PageEditPage::$登録完了メッセージ);
+        $I->see('削除しました', PageEditPage::$登録完了メッセージ);
     }
 
     public function contentsmanagement_検索未使用ブロック(\AcceptanceTester $I)
@@ -224,9 +233,9 @@ class EA06ContentsManagementCest
         BlockEditPage::at($I)
             ->入力_ブロック名($block)
             ->入力_ファイル名($block)
-            ->入力_データ("<div id=".$block.">block1</div>")
+            ->入力_データ('<div id='.$block.'>block1</div>')
             ->登録();
-        $I->see('登録が完了しました。', BlockEditPage::$登録完了メッセージ);
+        $I->see('保存しました', BlockEditPage::$登録完了メッセージ);
 
         // TOPページにブロックを配置
         LayoutManagePage::go($I)->レイアウト編集('トップページ用レイアウト');
@@ -241,9 +250,9 @@ class EA06ContentsManagementCest
         /* 編集 */
         BlockManagePage::go($I)->編集(1);
         BlockEditPage::at($I)
-            ->入力_データ("<div id=".$block.">welcome</div>")
+            ->入力_データ('<div id='.$block.'>welcome</div>')
             ->登録();
-        $I->see('登録が完了しました。', BlockEditPage::$登録完了メッセージ);
+        $I->see('保存しました', BlockEditPage::$登録完了メッセージ);
 
         $I->amOnPage('/');
         $I->see('welcome', ['id' => $block]);

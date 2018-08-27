@@ -62,7 +62,7 @@ $(function() {
                         <div class="card-body">
                             <div class="row mb-2">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.mail.358'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.order.mail.358'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 </div>
                                 <div class="col">
                                     {{ form_widget(form.template, {'id': 'template-change'}) }}
@@ -70,30 +70,16 @@ $(function() {
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'admin.order.mail.344'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'admin.order.mail.344'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col">
                                     {{ form_widget(form.mail_subject) }}
                                     {{ form_errors(form.mail_subject) }}
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'admin.order.mail.361'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
-                                <div class="col">
-                                    {{ form_widget(form.mail_header, {'attr': {'rows': '7'}}) }}
-                                    {{ form_errors(form.mail_header) }}
-                                </div>
-                            </div>
-                            <div class="row mb-2">
                                 <div class="col-3"><span>{{ 'admin.order.mail.body'|trans }}</span></div>
                                 <div class="col">
                                     {{ body|nl2br }}
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'admin.order.mail.362'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
-                                <div class="col">
-                                    {{ form_widget(form.mail_footer, {'attr': {'rows': '7'}}) }}
-                                    {{ form_errors(form.mail_footer) }}
                                 </div>
                             </div>
                         </div>
@@ -140,7 +126,7 @@ $(function() {
             <div class="modal-footer">
                 {# TODO 入力チェック #}
                 {# TODO 送信完了メッセージ #}
-                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.close'|trans }}</button><button id="sendMail" class="btn btn-ec-conversion">{{ 'admin.order.mail.365'|trans }}</button>
+                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.close'|trans }}</button><button id="sendMail" class="btn btn-ec-conversion">{{ 'admin.order.mail.365'|trans }}</button>
             </div>
         </div>
     </div>

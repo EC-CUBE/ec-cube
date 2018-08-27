@@ -23,6 +23,7 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
+use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -113,7 +114,7 @@ class CartController extends AbstractController
         }
 
         // カートが分割された時のセッション情報を削除
-        $request->getSession()->remove('cart.divide');
+        $request->getSession()->remove(OrderHelper::SESSION_CART_DEVIDE_FLAG);
 
         return [
             'totalPrice' => $totalPrice,
@@ -159,7 +160,8 @@ class CartController extends AbstractController
 
         foreach ($flowResults as $index => $result) {
             foreach ($result->getWarning() as $warning) {
-                $this->addRequestError($warning->getMessage(), "front.cart.${index}");
+                $cart_key = $Carts[$index]->getCartKey();
+                $this->addRequestError($warning->getMessage(), "front.cart.${cart_key}");
             }
         }
     }
@@ -225,9 +227,9 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @Route("/cart/buystep/{index}", name="cart_buystep", requirements={"index" = "\d+"}, defaults={"index" = 0})
+     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "[a-zA-Z0-9]+[_]\d+"})
      */
-    public function buystep(Request $request, $index)
+    public function buystep(Request $request, $cart_key)
     {
         $Carts = $this->cartService->getCart();
         if (!is_object($Carts)) {
@@ -240,7 +242,7 @@ class CartController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_INITIALIZE, $event);
 
-        $this->cartService->setPrimary($index);
+        $this->cartService->setPrimary($cart_key);
         $this->cartService->save();
 
         // FRONT_CART_BUYSTEP_COMPLETE

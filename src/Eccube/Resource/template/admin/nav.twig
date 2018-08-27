@@ -10,75 +10,80 @@ file that was distributed with this source code.
 #}
 <nav>
     <ul class="c-mainNavArea__nav">
+        <!-- ホーム -->
         <li class="c-mainNavArea__navItem">
             <a class="c-mainNavArea__navItemTitle" href="{{ url('admin_homepage') }}">
                 <i class="fa fa-home fa-fw" aria-hidden="true"></i>
-                <span>{{ 'admin.nav.home'|trans }}</span>
+                <span>{{ 'admin.home'|trans }}</span>
             </a>
         </li>
-        {% for key1, level1 in eccube_config.eccube_nav if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 not in AuthorityRoles %}
+        {% for key1, level1 in eccubeNav %}
             <li class="c-mainNavArea__navItem">
                 {% if level1.children is defined and level1.children|length > 0 %}
                     <a class="c-mainNavArea__navItemTitle{{ active_menus(menus)[0] != key1 ? ' collapsed' }}"
                        data-toggle="collapse" href="#nav-{{ key1 }}"
                        aria-expanded="{{ active_menus(menus)[0] == key1 ? 'true' : 'false' }}"
-                       aria-controls="nav-{{ key1 }}"><i class="fa {{ level1.icon }} fa-fw"
-                                                              aria-hidden="true"></i><span>{{ level1.name|trans }}</span></a>
-                    <ul class="collapse {% if active_menus(menus)[0] == key1 %} show{% endif %}"
-                        id="nav-{{ key1 }}">
-                        {% for key2, level2 in level1.children if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 ~ '/' ~ key2 not in AuthorityRoles %}
-                            {% if level2.url is defined and path(level2.url) in AuthorityRoles %}
-                            {% else %}
+                       aria-controls="nav-{{ key1 }}">
+                        <i class="fa {{ level1.icon }} fa-fw" aria-hidden="true"></i>
+                        <span>{{ level1.name|trans }}</span>
+                    </a>
+                    <ul class="collapse {% if active_menus(menus)[0] == key1 %} show{% endif %}" id="nav-{{ key1 }}">
+                        {% for key2, level2 in level1.children %}
+                            <li>
                                 {% if level2.children is defined and level2.children|length > 0 %}
-                                    <li>
-                                        <a class="c-mainNavArea__navItemSubTitle{{ active_menus(menus)[1] != key2 ? ' collapsed' }}"
-                                           data-toggle="collapse" href="#nav-{{ key2 }}"
-                                           aria-expanded="{{ active_menus(menus)[1] != key2 ? 'true' : 'false' }}"
-                                           aria-controls="nav-{{ key2 }}"><span>{{ level2.name|trans }}</span></a>
-                                        <ul class="collapse{{ active_menus(menus)[1] == key2 ? ' show' }}"
-                                            id="nav-{{ key2 }}">
-                                            {% for key3, level3 in level2.children %}
-                                                {% if level3.url is defined and path(level3.url) in AuthorityRoles %}
-                                                {% else %}
-                                                    <li>
-                                                        <a href="{{ url(level3.url) }}"{{ active_menus(menus)[2] == key3 ? ' class="is-active"' }}>{{ level3.name|trans }}</a>
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
+                                    <a class="c-mainNavArea__navItemSubTitle{{ active_menus(menus)[1] != key2 ? ' collapsed' }}"
+                                       data-toggle="collapse" href="#nav-{{ key2 }}"
+                                       aria-expanded="{{ active_menus(menus)[1] != key2 ? 'true' : 'false' }}"
+                                       aria-controls="nav-{{ key2 }}">
+                                        <span>{{ level2.name|trans }}</span>
+                                    </a>
+                                    <ul class="collapse{{ active_menus(menus)[1] == key2 ? ' show' }}" id="nav-{{ key2 }}">
+                                        {% for key3, level3 in level2.children %}
+                                            <li>
+                                                <a href="{{ url(level3.url, level3.param is defined ? level3.param : []) }}"{{ active_menus(menus)[2] == key3 ? ' class="is-active"' }}>
+                                                    <span>{{ level3.name|trans }}</span>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 {% else %}
-                                    <li>
-                                        <a href="{{ url(level2.url) }}"{{ active_menus(menus)[1] == key2 ? ' class="is-active"' }}>{{ level2.name|trans }}</a>
-                                    </li>
+                                    <a href="{{ url(level2.url, level2.param is defined ? level2.param : []) }}"{{ active_menus(menus)[1] == key2 ? ' class="is-active"' }}>
+                                        <span>{{ level2.name|trans }}</span>
+                                    </a>
                                 {% endif %}
-                            {% endif %}
+                            </li>
                         {% endfor %}
                     </ul>
                 {% else %}
-                    {% if level1.url is defined and path(level1.url) in AuthorityRoles == false %}
-                        <a class="c-mainNavArea__navItemTitle" href="{{ url(level1.url) }}"><i
-                                    class="fa {{ level1.icon }}"
-                                    aria-hidden="true"></i><span>{{ level1.name|trans }}</span></a>
-                    {% else %}
-                        <div class="c-mainNavArea__navItemTitle"><i class="fa {{ level1.icon }} fa-fw" aria-hidden="true"></i><span>{{ level1.name|trans }}</span>
-                        </div>
-                    {% endif %}
+                    <a class="c-mainNavArea__navItemTitle" href="{{ url(level1.url, level1.param is defined ? level1.param : []) }}">
+                        <i class="fa {{ level1.icon }}" aria-hidden="true"></i>
+                        <span>{{ level1.name|trans }}</span>
+                    </a>
                 {% endif %}
             </li>
         {% endfor %}
-
-        {# TODO スタイルガイド機能の実装 #}
-        {# 可能ならばconfigで設定して下記を削除する #}
+        <!-- 情報 -->
         <li class="c-mainNavArea__navItem">
             <a class="c-mainNavArea__navItemTitle collapsed" data-toggle="collapse" href="#others" aria-expanded="false"
                aria-controls="others">
-                <i class="fa fa-truck fa-fw" aria-hidden="true"></i>
-                <span>{{ 'admin.nav.other'|trans }}</span>
+                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                <span>{{ 'admin.info'|trans }}</span>
             </a>
             <ul class="collapse" id="others">
                 <li>
-                    <a href="/styleguide/">{{ 'admin.nav.styleguide'|trans }}</a>
+                    <a href="{{ eccube_config.eccube_official_site_url }}" target="_blank">
+                        <span>{{ 'admin.info.official_site'|trans }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ eccube_config.eccube_community_site_url }}" target="_blank">
+                        <span>{{ 'admin.info.community'|trans }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ eccube_config.eccube_document_url }}" target="_blank">
+                        <span>{{ 'admin.info.document'|trans }}</span>
+                    </a>
                 </li>
             </ul>
         </li>

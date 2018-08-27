@@ -15,9 +15,13 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -209,6 +213,59 @@ class PointProcessorTest extends EccubeTestCase
     }
 
     /**
+     * @dataProvider useAddPointExcludeShippingFeeProvider
+     *
+     * @param $price int 商品の値段
+     * @param $deliveryFee int
+     * @param $addPoint int 期待する付与ポイント
+     */
+    public function testAddPointExcludeShippingFee($price, $deliveryFee, $addPoint)
+    {
+        $Customer = new Customer();
+        $Customer->setPoint(1000);
+
+        /* @var ProductClass $ProductClass */
+        $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
+        $Order = new Order();
+        $Order->setCustomer($Customer);
+        $Order->setUsePoint(0);
+        $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
+        // add shipping fee
+        $DeliveryFeeType = $this->entityManager
+            ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
+        $TaxInclude = $this->entityManager
+            ->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+        $Taxion = $this->entityManager
+            ->find(TaxType::class, TaxType::TAXATION);
+        $OrderItem = new OrderItem();
+        $OrderItem->setProductName($DeliveryFeeType->getName())
+            ->setPrice($deliveryFee)
+            ->setQuantity(1)
+            ->setOrderItemType($DeliveryFeeType)
+            ->setOrder($Order)
+            ->setTaxDisplayType($TaxInclude)
+            ->setTaxType($Taxion);
+        $Order->addOrderItem($OrderItem);
+
+        $purchaseFlow = new PurchaseFlow();
+        $purchaseFlow->addItemHolderPreprocessor($this->processor);
+
+        $context = new PurchaseContext(null, $Customer);
+        $purchaseFlow->validate($Order, $context);
+
+        self::assertEquals($addPoint, $Order->getAddPoint());
+    }
+
+    public function useAddPointExcludeShippingFeeProvider()
+    {
+        return [
+            [200, 200, 2],
+            [400, 0, 4],
+            [100, 20000, 1],
+        ];
+    }
+
+    /**
      * ポイント換算レートのテスト
      *
      * @dataProvider pointConversionRateProvider
@@ -309,6 +366,8 @@ class PointProcessorTest extends EccubeTestCase
         $OrderItem->setProductClass($ProductClass);
         $OrderItem->setPrice($price);
         $OrderItem->setQuantity($quantity);
+        $ProductType = $this->container->get(OrderItemTypeRepository::class)->find(OrderItemType::PRODUCT);
+        $OrderItem->setOrderItemType($ProductType);
 
         return $OrderItem;
     }

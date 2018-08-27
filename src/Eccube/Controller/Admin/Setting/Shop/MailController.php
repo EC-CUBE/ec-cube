@@ -67,6 +67,7 @@ class MailController extends AbstractController
 
         $form = $builder->getForm();
         $form['template']->setData($Mail);
+        $htmlFileName = $Mail ? $this->getHtmlFileName($Mail->getFileName()) : null;
 
         // 更新時
         if (!is_null($Mail)) {
@@ -76,6 +77,13 @@ class MailController extends AbstractController
                 ->getCode();
 
             $form->get('tpl_data')->setData($source);
+            if ($twig->getLoader()->exists($htmlFileName)) {
+                $source = $twig->getLoader()
+                    ->getSourceContext($htmlFileName)
+                    ->getCode();
+
+                $form->get('html_tpl_data')->setData($source);
+            }
         }
 
         if ('POST' === $request->getMethod()) {
@@ -83,7 +91,7 @@ class MailController extends AbstractController
 
             // 新規登録は現時点では未実装とする.
             if (is_null($Mail)) {
-                $this->addError('admin.shop.mail.save.error', 'admin');
+                $this->addError('admin.common.save_error', 'admin');
 
                 return $this->redirectToRoute('admin_setting_shop_mail');
             }
@@ -100,6 +108,13 @@ class MailController extends AbstractController
                 $mailData = StringUtil::convertLineFeed($mailData);
                 $fs->dumpFile($filePath, $mailData);
 
+                // HTMLファイル用
+                $htmlMailData = $form->get('html_tpl_data')->getData();
+                if (!is_null($htmlMailData)) {
+                    $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
+                    $fs->dumpFile($templatePath.'/'.$htmlFileName, $htmlMailData);
+                }
+
                 $event = new EventArgs(
                     [
                         'form' => $form,
@@ -111,7 +126,7 @@ class MailController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.shop.mail.save.complete', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
 
                 return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
             }
@@ -121,5 +136,46 @@ class MailController extends AbstractController
             'form' => $form->createView(),
             'id' => is_null($Mail) ? null : $Mail->getId(),
         ];
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/setting/shop/mail/preview", name="admin_setting_shop_mail_preview")
+     * @Template("@admin/Setting/Shop/mail_view.twig")
+     */
+    public function preview(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $html_body = $request->get('html_body');
+
+        $event = new EventArgs(
+            [
+                'html_body' => $html_body,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_PREVIEW_COMPLETE, $event);
+
+        return [
+            'html_body' => $html_body,
+        ];
+    }
+
+    /**
+     * HTML用テンプレート名を取得する
+     *
+     * @param  string $fileName
+     *
+     * @return string
+     */
+    protected function getHtmlFileName($fileName)
+    {
+        // HTMLテンプレートファイルの取得
+        $targetTemplate = explode('.', $fileName);
+        $suffix = '.html';
+
+        return $targetTemplate[0].$suffix.'.'.$targetTemplate[1];
     }
 }

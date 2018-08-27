@@ -1,0 +1,62 @@
+/*
+住所一覧
+
+カート 注文詳細 に関する Project コンポーネントを定義します。
+
+ex [マイページ内 お届け先編集](http://demo3.ec-cube.net/mypage/delivery)
+
+Markup:
+include /assets/tmpl/elements/17.1.address.pug
++ec-addressList
++ec-addressRole
+
+sg-wrapper:
+<div class="ec-addressRole">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 17.1
+
+*/
+.ec-addressRole{
+  & &__item{
+    border-top: 1px dotted #ccc;
+  }
+  & &__actions{
+    margin-top: 32px;
+    padding-bottom:20px;
+    border-bottom: 1px dotted #ccc;
+  }
+}
+.ec-addressList{
+  & &__item{
+    display: table;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px dotted #ccc;
+  }
+  & &__remove{
+    //display: table-cell;
+    vertical-align: middle;
+    padding: 16px;
+    text-align: center;
+    .ec-icon img {
+      width: 1em;
+      height: 1em;
+    }
+  }
+  & &__address{
+    display: table-cell;
+    vertical-align: middle;
+    padding: 16px;
+    margin-right:4em;
+    width: 80%;
+  }
+  & &__action{
+    position: relative;
+    vertical-align: middle;
+    text-align: right;
+    top: 27px;
+    padding-right: 10px;
+  }
+}

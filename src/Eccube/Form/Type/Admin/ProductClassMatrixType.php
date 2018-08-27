@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityRepository;
 use Eccube\Entity\ClassName;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -34,14 +35,22 @@ class ProductClassMatrixType extends AbstractType
         $builder
             ->add('class_name1', EntityType::class, [
                 'class' => ClassName::class,
-                'placeholder' => '規格1を選択してください',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cn')
+                        ->orderBy('cn.sort_no', 'DESC');
+                },
+                'placeholder' => 'admin.product.select__class1',
                 'constraints' => [
                     new NotBlank(),
                 ],
             ])
             ->add('class_name2', EntityType::class, [
                 'class' => ClassName::class,
-                'placeholder' => '規格2を選択してください',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cn')
+                        ->orderBy('cn.sort_no', 'DESC');
+                },
+                'placeholder' => 'admin.product.select__class2',
                 'constraints' => new Callback(function (
                     ClassName $ClassName2 = null,
                     ExecutionContextInterface $context

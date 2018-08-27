@@ -35,7 +35,7 @@ class ProductStatusValidator extends ItemValidator
         if ($item->isProduct()) {
             $Product = $item->getProductClass()->getProduct();
             if ($Product->getStatus()->getId() != ProductStatus::DISPLAY_SHOW) {
-                $this->throwInvalidItemException('cart.product.not.status');
+                $this->throwInvalidItemException('front.shopping.not_purchase');
             }
         }
     }

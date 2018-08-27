@@ -73,7 +73,6 @@ class MainEditType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'mainedit.label.name',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -83,7 +82,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('url', TextType::class, [
-                'label' => 'URL',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -96,7 +94,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('file_name', TextType::class, [
-                'label' => 'mainedit.label.file_name',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -118,7 +115,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('author', TextType::class, [
-                'label' => 'author',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -127,7 +123,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('description', TextType::class, [
-                'label' => 'description',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -136,7 +131,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('keyword', TextType::class, [
-                'label' => 'keyword',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -145,7 +139,6 @@ class MainEditType extends AbstractType
                 ],
             ])
             ->add('meta_robots', TextType::class, [
-                'label' => 'robots',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -153,7 +146,6 @@ class MainEditType extends AbstractType
                     ]),
                 ],
             ])->add('meta_tags', TextAreaType::class, [
-                'label' => '追加metaタグ',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -165,7 +157,6 @@ class MainEditType extends AbstractType
                 'mapped' => false,
                 'placeholder' => '---',
                 'required' => false,
-                'label' => 'PC',
                 'class' => Layout::class,
                 'query_builder' => function (EntityRepository $er) {
                     $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
@@ -180,10 +171,9 @@ class MainEditType extends AbstractType
                 'mapped' => false,
                 'placeholder' => '---',
                 'required' => false,
-                'label' => 'mainedit.label.smartphone',
                 'class' => Layout::class,
                 'query_builder' => function (EntityRepository $er) {
-                    $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_SP);
+                    $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_MB);
 
                     return $er->createQueryBuilder('l')
                         ->where('l.DeviceType = :DeviceType')
@@ -202,7 +192,7 @@ class MainEditType extends AbstractType
                     if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_PC) {
                         $form['PcLayout']->setData($Layout);
                     }
-                    if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_SP) {
+                    if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_MB) {
                         $form['SpLayout']->setData($Layout);
                     }
                 }
@@ -213,6 +203,7 @@ class MainEditType extends AbstractType
                 /** @var Page $Page */
                 $Page = $event->getData();
 
+                // urlの重複チェック
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(p)')
                     ->from('Eccube\\Entity\\Page', 'p')
@@ -221,10 +212,8 @@ class MainEditType extends AbstractType
                     ->setParameter('url', $Page->getUrl())
                     ->setParameter('DeviceType', $Page->getDeviceType());
 
-                if (null === $Page->getId()) {
-                    $qb
-                        ->andWhere('p.id IS NOT NULL');
-                } else {
+                // 更新の場合は自身のデータを重複チェックから除外する
+                if (!is_null($Page->getId())) {
                     $qb
                         ->andWhere('p.id <> :page_id')
                         ->setParameter('page_id', $Page->getId());
@@ -232,7 +221,30 @@ class MainEditType extends AbstractType
 
                 $count = $qb->getQuery()->getSingleScalarResult();
                 if ($count > 0) {
-                    $form['url']->addError(new FormError('mainedit.text.error.url_exists'));
+                    $form['url']->addError(new FormError(trans('admin.content.page_url_exists')));
+                }
+
+                // ファイルの重複チェック
+                $qb = $this->entityManager->createQueryBuilder();
+                $qb->select('count(p)')
+                    ->from('Eccube\\Entity\\Page', 'p')
+                    ->where('p.file_name = :file_name')
+                    ->andWhere('p.DeviceType = :DeviceType')
+                    ->andWhere('p.edit_type = :edit_type')
+                    ->setParameter('file_name', $Page->getFileName())
+                    ->setParameter('DeviceType', $Page->getDeviceType())
+                    ->setParameter('edit_type', $Page->getEditType());
+
+                // 更新の場合は自身のデータを重複チェックから除外する
+                if (!is_null($Page->getId())) {
+                    $qb
+                        ->andWhere('p.id <> :page_id')
+                        ->setParameter('page_id', $Page->getId());
+                }
+
+                $count = $qb->getQuery()->getSingleScalarResult();
+                if ($count > 0) {
+                    $form['file_name']->addError(new FormError('※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。'));
                 }
             });
     }

@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\PaymentOption;
 use Eccube\Event\EccubeEvents;
@@ -145,12 +146,18 @@ class DeliveryController extends AbstractController
 
         foreach ($Prefs as $Pref) {
             $DeliveryFee = $this->deliveryFeeRepository
-                ->findOrCreate(
+                ->findOneBy(
                     [
                         'Delivery' => $Delivery,
                         'Pref' => $Pref,
                     ]
                 );
+            if (!$DeliveryFee) {
+                $DeliveryFee = new DeliveryFee();
+                $DeliveryFee
+                    ->setPref($Pref)
+                    ->setDelivery($Delivery);
+            }
             if (!$DeliveryFee->getFee()) {
                 $Delivery->addDeliveryFee($DeliveryFee);
             }
@@ -249,9 +256,9 @@ class DeliveryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE, $event);
 
-                $this->addSuccess('admin.register.complete', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
 
-                return $this->redirectToRoute('admin_setting_shop_delivery');
+                return $this->redirectToRoute('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]);
             }
         }
 
@@ -272,7 +279,7 @@ class DeliveryController extends AbstractController
             $this->entityManager->remove($Delivery);
             $this->entityManager->flush();
         } catch (ForeignKeyConstraintViolationException $e) {
-            $this->addError(trans('admin.delete.failed.foreign_key', ['%name%' => $Delivery->getName()]), 'admin');
+            $this->addError(trans('admin.common.delete_error_foreign_key', ['%name%' => $Delivery->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_setting_shop_delivery');
         }
@@ -299,7 +306,7 @@ class DeliveryController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
 
-        $this->addSuccess('admin.delete.complete', 'admin');
+        $this->addSuccess('admin.common.delete_complete', 'admin');
 
         return $this->redirectToRoute('admin_setting_shop_delivery');
     }

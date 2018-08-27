@@ -1,12 +1,20 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Page\Admin;
 
-
 class PageManagePage extends AbstractAdminPageStyleGuide
 {
-
     /**
      * PageManagePage constructor.
      */
@@ -18,6 +26,7 @@ class PageManagePage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
+
         return $page->goPage('/content/page', 'ページ管理コンテンツ管理');
     }
 
@@ -33,12 +42,13 @@ class PageManagePage extends AbstractAdminPageStyleGuide
 
     public function 削除($pageName)
     {
-        $this->tester->click(['xpath'=> "//*[@class='table table-sm']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/a"]);
+        $this->tester->click(['xpath' => "//*[@id='list_page_tbl']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/a"]);
         $this->accept_削除($pageName);
     }
 
-    public function accept_削除($pageName) {
-        $this->tester->waitForElementVisible(['xpath' => "//*[@class='table table-sm']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/div[contains(@class, 'modal')]"]);
-        $this->tester->click(['xpath' => "//*[@class='table table-sm']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/div[contains(@class, 'modal')]/div/div/div/a[contains(@class, 'btn-ec-delete')]"]);
+    public function accept_削除($pageName)
+    {
+        $this->tester->waitForElementVisible(['xpath' => "//*[@id='list_page_tbl']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/div[contains(@class, 'modal')]"]);
+        $this->tester->click(['xpath' => "//*[@id='list_page_tbl']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/div[contains(@class, 'modal')]/div/div/div/a[contains(@class, 'btn-ec-delete')]"]);
     }
 }

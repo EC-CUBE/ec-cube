@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'file'] %}
 
-{% block title %}{{ 'admin.content.file.24'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.content.file.23'|trans }}{% endblock %}
+{% block title %}{{ 'admin.content.file_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -60,28 +60,28 @@ file that was distributed with this source code.
                     <ol class="breadcrumb mb-2 p-0" id="bread"></ol>
                 </nav>
                 <div class="card rounded border-0 mb-4">
-                    <div class="card-header"><span class="card-title">{{ 'admin.content.file.title.upload_and_create'|trans }}</span></div>
+                    <div class="card-header"><span class="card-title">{{ 'admin.content.file.add_file__card_title'|trans }}</span></div>
                     <div class="card-body">
                         <div id="upload_box__file" class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.content.file.label.upload'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.content.file.add_file'|trans }}</span></div>
                             <div class="col mb-3">
                                 <div class="mb-2">
                                     {{ form_widget(form.file) }}{# TODO input type="file" の装飾 #}
                                 </div>
                                 <div class="mb-2">
-                                    <a class="btn btn-ec-conversion action-upload" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{ 'admin.content.file.26'|trans }}</a>
+                                    <a class="btn btn-ec-conversion action-upload" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{ 'admin.common.upload'|trans }}</a>
                                 </div>
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.content.file.27'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.content.file.add_directory'|trans }}</span></div>
                             <div class="col">
                                 <div class="form-row">
                                     <div class="col-3">
-                                        {{ form_widget(form.create_file, {attr: {placeholder: 'admin.content.file.create_dir_placeholder'}}) }}
+                                        {{ form_widget(form.create_file, {attr: {placeholder: 'admin.content.file.directory_name'}}) }}
                                     </div>
                                     <div class="col-auto">
-                                        <a class="btn btn-ec-regular action-create" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{ 'admin.content.file.28'|trans }}</a>
+                                        <a class="btn btn-ec-regular action-create" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{ 'admin.common.create__new'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +99,7 @@ file that was distributed with this source code.
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-8"><span class="card-title">{{ 'admin.content.file.title.lists'|trans }}</span></div>
+                                    <div class="col-8"><span class="card-title">{{ 'admin.content.file.file_list__card_title'|trans }}</span></div>
                                     <div class="col-4 text-right"><a data-toggle="collapse" href="#fileList" aria-expanded="false" aria-controls="fileList"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>
                             </div>
@@ -139,32 +139,32 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle">
-                                                    {{ file.file_time|date_sec }} {{ 'admin.content.file.31'|trans }}
+                                                    {{ file.file_time|date_sec }} {{ 'admin.content.file.updated'|trans }}
                                                 </td>
                                                 {% if file.is_dir %}
                                                     <td class="align-middle text-right pr-3">
                                                         <div class="row justify-content-end">
                                                             <div class="col-auto text-center">
-                                                                <a class="btn btn-ec-actionIcon action-delete {% if file.is_empty == false %}disabled{% endif %}"
-                                                                   data-toggle="modal" data-target="#confirmModal-{{ loop.index }}"
-                                                                   data-tooltip="tooltip" data-placement="top" title="{{ 'admin.content.file.34'|trans }}"
-                                                                   data-original-title="{{ 'admin.content.file.34'|trans }}">
+                                                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                                    <a class="btn btn-ec-actionIcon action-delete {% if file.is_empty == false %}disabled{% endif %}"
+                                                                   data-toggle="modal" data-target="#confirmModal-{{ loop.index }}">
                                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                </div>
                                                                 <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.content.folder.delete.confirm.title'|trans }}</h5>
+                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                                             </div>
                                                                             <div class="modal-body text-left">
-                                                                                <p class="text-left">{{ 'admin.content.folder.delete.confirm.message'|trans }}</p>
+                                                                                <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': file.file_name }) }}</p>
                                                                             </div>
                                                                             <div class="modal-footer">
-                                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
+                                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                                 <a class="btn btn-ec-delete" data-confirm="false"
                                                                                    href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                                                    {{ 'common.label.delete'|trans }}
+                                                                                    {{ 'admin.common.delete'|trans }}
                                                                                 </a>
                                                                             </div>
                                                                         </div>
@@ -177,37 +177,41 @@ file that was distributed with this source code.
                                                     <td class="align-middle text-right pr-3">
                                                         <div class="row justify-content-end">
                                                             <div class="col-auto text-center">
-                                                                <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank" class="btn btn-ec-actionIcon action-view" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.content.file.36'|trans }}"><i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank" class="btn btn-ec-actionIcon action-view" data-tooltip="true" data-placement="top" title="{{ 'admin.common.display'|trans }}">
+                                                                    <i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
                                                             </div>
-
                                                             <div class="col-auto text-center">
-                                                                <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon action-download" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.content.file.37'|trans }}"><i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon action-download" data-tooltip="true" data-placement="top" title="{{ 'admin.common.download'|trans }}">
+                                                                    <i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
                                                             </div>
-
                                                             <div class="col-auto text-center">
-                                                                <a class="btn btn-ec-actionIcon action-delete" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.content.file.34'|trans }}" data-original-title="{{ 'admin.content.file.34'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-
+                                                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                                    <a class="btn btn-ec-actionIcon action-delete" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}">
+                                                                        <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                                    </a>
+                                                                </div>
                                                                 <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.content.file.delete.confirm.title'|trans }}</h5>
+                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                                             </div>
                                                                             <div class="modal-body text-left">
-                                                                                <p class="text-left">{{ 'admin.content.file.delete.confirm.message'|trans }}</p>
+                                                                                <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': file.file_name }) }}</p>
                                                                             </div>
                                                                             <div class="modal-footer">
-                                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
+                                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                                 <a class="btn btn-ec-delete" data-confirm="false"
                                                                                    href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                                                    {{ 'common.label.delete'|trans }}
+                                                                                    {{ 'admin.common.delete'|trans }}
                                                                                 </a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                     </td>
@@ -226,20 +230,20 @@ file that was distributed with this source code.
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-8"><span class="card-title">{{ 'admin.content.file.title.folders'|trans }}</span></div>
+                                    <div class="col-8"><span class="card-title">{{ 'admin.content.file.directory_tree'|trans }}</span></div>
                                     <div class="col-4 text-right"><a data-toggle="collapse" href="#folderDirectory" aria-expanded="false" aria-controls="folderDirectory"><i class="fa fa-lg fa-angle-down"></i></a></div>
                                 </div>
                             </div>
                             <div class="collapse show ec-cardCollapse" id="folderDirectory">
                                 <div class="card-body">
                                     <div class="c-directoryTree--folder mb-3">
-                                        <ul id="directory_userdata"> {# TODO フォルダ構成 #}
+                                        <ul id="directory_userdata" class="list-unstyled"> {# TODO フォルダ構成 #}
                                             <li>
                                                 <label class="collapsed" data-toggle="collapse" href="#directory_userdata" aria-expanded="false" aria-controls="directory_userdata">user_data</label>
-                                                <ul class="collapse" style="">
+                                                <ul class="collapse list-unstyled" style="">
                                                     <li>
                                                         <label class="collapsed" data-toggle="collapse" href="#directory_pdf" aria-expanded="false" aria-controls="directory_pdf"><a href="/content/file">pdf</a></label>
-                                                        <ul class="collapse" id="directory_pdf">
+                                                        <ul class="collapse list-unstyled" id="directory_pdf">
                                                             <li>
                                                                 <label><a href="/content/file">フォルダA</a></label>
                                                             </li>
@@ -248,7 +252,7 @@ file that was distributed with this source code.
                                                             </li>
                                                             <li>
                                                                 <label class="collapsed" data-toggle="collapse" href="#directory_eBook" aria-expanded="false" aria-controls="directory_eBook"><span class="font-weight-bold">電子書籍</span></label>
-                                                                <ul class="collapse" id="directory_eBook">
+                                                                <ul class="collapse list-unstyled" id="directory_eBook">
                                                                     <li>
                                                                         <label><span>実用書</span></label>
                                                                     </li>
@@ -266,5 +270,6 @@ file that was distributed with this source code.
                     </div>
                 </div>
             </div>
+        </div>
     </form>
 {% endblock %}

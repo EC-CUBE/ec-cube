@@ -77,11 +77,21 @@ class DeliveryController extends AbstractController
             $addressCurrNum = count($Customer->getCustomerAddresses());
             $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException(trans('delivery.text.error.max_delivery_address'));
+                throw new NotFoundHttpException();
+            }
+            $CustomerAddress = new CustomerAddress();
+            $CustomerAddress->setCustomer($Customer);
+        } else {
+            $CustomerAddress = $this->customerAddressRepository->findOneBy(
+                [
+                    'id' => $id,
+                    'Customer' => $Customer,
+                ]
+            );
+            if (!$CustomerAddress) {
+                throw new NotFoundHttpException();
             }
         }
-
-        $CustomerAddress = $this->customerAddressRepository->findOrCreateByCustomerAndId($Customer, $id);
 
         $parentPage = $request->get('parent_page', null);
 

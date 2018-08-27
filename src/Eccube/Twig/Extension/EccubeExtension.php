@@ -14,7 +14,10 @@
 namespace Eccube\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
+use Eccube\Repository\ProductRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\FormView;
 use Twig\Extension\AbstractExtension;
@@ -28,9 +31,21 @@ class EccubeExtension extends AbstractExtension
      */
     protected $eccubeConfig;
 
-    public function __construct(EccubeConfig $eccubeConfig)
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    /**
+     * EccubeExtension constructor.
+     *
+     * @param EccubeConfig $eccubeConfig
+     * @param ProductRepository $productRepository
+     */
+    public function __construct(EccubeConfig $eccubeConfig, ProductRepository $productRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -44,14 +59,8 @@ class EccubeExtension extends AbstractExtension
             new TwigFunction('has_errors', [$this, 'hasErrors']),
             new TwigFunction('active_menus', [$this, 'getActiveMenus']),
             new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
-            new TwigFunction('php_*', function () {
-                $arg_list = func_get_args();
-                $function = array_shift($arg_list);
-                if (is_callable($function)) {
-                    return call_user_func_array($function, $arg_list);
-                }
-                trigger_error('Called to an undefined function : php_'.$function, E_USER_WARNING);
-            }, ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new TwigFunction('product', [$this, 'getProduct']),
+            new TwigFunction('php_*', [$this, 'getPhpFunctions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
         ];
     }
 
@@ -192,9 +201,9 @@ class EccubeExtension extends AbstractExtension
     public function getProduct($id)
     {
         try {
-            $Product = $this->app['eccube.repository.product']->get($id);
+            $Product = $this->productRepository->findWithSortedClassCategories($id);
 
-            if ($Product->getStatus()->getId() == Disp::DISPLAY_SHOW) {
+            if ($Product->getStatus()->getId() == ProductStatus::DISPLAY_SHOW) {
                 return $Product;
             }
         } catch (\Exception $e) {
@@ -236,12 +245,16 @@ class EccubeExtension extends AbstractExtension
         $class_categories = [
             '__unselected' => [
                 '__unselected' => [
-                    'name' => trans('product.text.please_select'),
+                    'name' => trans('common.select'),
                     'product_class_id' => '',
                 ],
             ],
         ];
         foreach ($Product->getProductClasses() as $ProductClass) {
+            /** @var ProductClass $ProductClass */
+            if (!$ProductClass->isVisible()) {
+                continue;
+            }
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
@@ -250,11 +263,11 @@ class EccubeExtension extends AbstractExtension
             }
             $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
             $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
-            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName().($ProductClass->getStockFind() ? '' : trans('product.text.out_of_stock')) : '';
+            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName().($ProductClass->getStockFind() ? '' : trans('front.product.out_of_stock_label')) : '';
 
             $class_categories[$class_category_id1]['#'] = [
                 'classcategory_id2' => '',
-                'name' => trans('product.text.please_select'),
+                'name' => trans('common.select'),
                 'product_class_id' => '',
             ];
             $class_categories[$class_category_id1]['#'.$class_category_id2] = [
@@ -325,25 +338,5 @@ class EccubeExtension extends AbstractExtension
         $html .= '></i>';
 
         return $html;
-    }
-
-    /**
-     * URLに対する権限有無チェック
-     *
-     * @param $target
-     * @param $AuthorityRoles
-     *
-     * @return boolean
-     */
-    public function isAuthorizedUrl($target, $AuthorityRoles)
-    {
-        foreach ($AuthorityRoles as $authorityRole) {
-            $denyUrl = str_replace('/', '\/', $authorityRole);
-            if (preg_match("/^({$denyUrl})/i", $target)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

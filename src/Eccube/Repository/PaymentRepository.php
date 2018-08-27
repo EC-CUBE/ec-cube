@@ -36,35 +36,6 @@ class PaymentRepository extends AbstractRepository
     }
 
     /**
-     * @deprecated 呼び出し元で制御する
-     *
-     * @param $id
-     *
-     * @return \Eccube\Entity\Payment|null|object
-     */
-    public function findOrCreate($id)
-    {
-        if ($id == 0) {
-            $Payment = $this->findOneBy([], ['sort_no' => 'DESC']);
-
-            $sortNo = 1;
-            if ($Payment) {
-                $sortNo = $Payment->getSortNo() + 1;
-            }
-
-            $Payment = new \Eccube\Entity\Payment();
-            $Payment
-                ->setSortNo($sortNo)
-                ->setFixed(true)
-                ->setVisible(true);
-        } else {
-            $Payment = $this->find($id);
-        }
-
-        return $Payment;
-    }
-
-    /**
      * @return array
      */
     public function findAllArray()
