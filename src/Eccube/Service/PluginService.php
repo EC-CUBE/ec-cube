@@ -732,7 +732,7 @@ class PluginService
     {
 //        $pluginCode = $plugin['code'];
         // Need dependency Mechanism
-        /**
+        /*
         $pluginDir = $this->calcPluginDir($pluginCode);
         $composerPath = $pluginDir.'/composer.json';
         // read composer.json

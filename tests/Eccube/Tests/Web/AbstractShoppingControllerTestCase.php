@@ -149,16 +149,23 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 
         $this->client->enableProfiler();
 
+        $parameters = [
+            '_shopping_order' => [
+                'Shippings' => $shippings,
+                'Payment' => 3,
+                'message' => $faker->realText(),
+                '_token' => 'dummy',
+            ],
+        ];
+
+        if ($Customer) {
+            $parameters['_shopping_order']['use_point'] = 0;
+        }
+
         $crawler = $this->client->request(
             'POST',
             $confirm_url,
-            ['_shopping_order' => [
-                      'Shippings' => $shippings,
-                      'Payment' => 3,
-                      'message' => $faker->realText(),
-                      '_token' => 'dummy',
-                  ],
-            ]
+            $parameters
         );
 
         return $crawler;

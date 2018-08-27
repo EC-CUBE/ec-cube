@@ -124,7 +124,7 @@ class EccubeDataCollector extends DataCollector
             foreach (array_merge($enabled, $disabled) as $code) {
                 $Plugin = null;
 
-                /** @var Plugin $Plugin */
+                /* @var Plugin $Plugin */
                 foreach ($Plugins as $p) {
                     if ($code == $p->getCode()) {
                         $Plugin = $p;

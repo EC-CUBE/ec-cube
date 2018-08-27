@@ -33,6 +33,11 @@ use Twig\Environment;
 class TwigInitializeListener implements EventSubscriberInterface
 {
     /**
+     * @var bool 初期化済かどうか.
+     */
+    protected $initialized = false;
+
+    /**
      * @var Environment
      */
     protected $twig;
@@ -120,16 +125,19 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $globals = $this->twig->getGlobals();
-        if (array_key_exists('BaseInfo', $globals) && $globals['BaseInfo'] === null) {
-            $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
+        if ($this->initialized) {
+            return;
         }
+
+        $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
 
         if ($this->requestContext->isAdmin()) {
             $this->setAdminGlobals($event);
         } else {
             $this->setFrontVaribales($event);
         }
+
+        $this->initialized = true;
     }
 
     /**
@@ -184,7 +192,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $Member = $this->requestContext->getCurrentUser();
         if ($Member instanceof Member) {
             $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $Member->getAuthority()]);
-            $baseUrl = $event->getRequest()->getBaseUrl() . '/' . $this->eccubeConfig['eccube_admin_route'];
+            $baseUrl = $event->getRequest()->getBaseUrl().'/'.$this->eccubeConfig['eccube_admin_route'];
             $eccubeNav = $this->getDisplayEccubeNav($eccubeNav, $AuthorityRoles, $baseUrl);
         }
         $this->twig->addGlobal('eccubeNav', $eccubeNav);
@@ -215,7 +223,7 @@ class TwigInitializeListener implements EventSubscriberInterface
                 $param = array_key_exists('param', $childNav) ? $childNav['param'] : [];
                 $url = $this->router->generate($childNav['url'], $param);
                 foreach ($AuthorityRoles as $AuthorityRole) {
-                    $denyUrl = str_replace('/', '\/', $baseUrl . $AuthorityRole->getDenyUrl());
+                    $denyUrl = str_replace('/', '\/', $baseUrl.$AuthorityRole->getDenyUrl());
                     if (preg_match("/^({$denyUrl})/i", $url)) {
                         // 権限がないURLの場合は配列から削除
                         unset($parentNav[$key]);
