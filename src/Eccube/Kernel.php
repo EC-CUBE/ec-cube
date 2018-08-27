@@ -92,12 +92,15 @@ class Kernel extends BaseKernel
         date_default_timezone_set($this->container->getParameter('timezone'));
 
         // RFC違反のメールを送信できるよう独自のValidationを設定
-        \Swift::init(function () {
-            \Swift_DependencyContainer::getInstance()
-                ->register('email.validator')
-                ->asSharedInstanceOf(NoRFCEmailValidator::class)
-                ->addConstructorValue($this->container->getParameter('eccube_rfc_email_check'));
-        });
+        $rfcCheck = $this->container->getParameter('eccube_rfc_email_check');
+        if (!$rfcCheck) {
+            // RFC違反のメールを許容する
+            \Swift::init(function() {
+                \Swift_DependencyContainer::getInstance()
+                    ->register('email.validator')
+                    ->asSharedInstanceOf(NoRFCEmailValidator::class);
+            });
+        }
 
         // Activate to $app
         $app = Application::getInstance(['debug' => $this->isDebug()]);

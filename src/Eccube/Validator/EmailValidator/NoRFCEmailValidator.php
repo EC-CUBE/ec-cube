@@ -18,21 +18,6 @@ use Egulias\EmailValidator\Validation\EmailValidation;
 
 class NoRFCEmailValidator extends EmailValidator
 {
-    /**
-     * @var boolean
-     */
-    protected $eccube_rfc_email_check;
-
-    /**
-     * NoRFCEmailValidator constructor.
-     *
-     * @param bool $eccube_rfc_email_check
-     */
-    public function __construct($eccube_rfc_email_check)
-    {
-        parent::__construct();
-        $this->eccube_rfc_email_check = $eccube_rfc_email_check;
-    }
 
     /**
      * @param $email
@@ -57,12 +42,8 @@ class NoRFCEmailValidator extends EmailValidator
         $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
         $addr_spec_loose = "{$local_part_loose}[@]$domain";
 
-        if ($this->eccube_rfc_email_check) {
-            $regexp = "/\A{$addr_spec}\z/";
-        } else {
-            // 携帯メールアドレス用に、..や.@を許容する。
-            $regexp = "/\A{$addr_spec_loose}\z/";
-        }
+        // 携帯メールアドレス用に、..や.@を許容する。
+        $regexp = "/\A{$addr_spec_loose}\z/";
 
         if (preg_match($regexp, $email)) {
             return true;
