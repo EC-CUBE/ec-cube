@@ -20,26 +20,16 @@ $(function() {
       $(".ec-drawerRoleClose").removeClass("is_active");
     });
 
-    // TODO ロジック差し込み
-
-    $(".ec-cartNavi").on("click",function(){
-      $(".ec-cartNavi").toggleClass("is-active")
-    });
-
-    $(".ec-cartNavi").on("click",function(){
-      $(".ec-cartNaviIsset").toggleClass("is-active")
-    });
-
-    $(".ec-cartNavi").on("click",function(){
-      $(".ec-cartNaviNull").toggleClass("is-active")
-    });
-
     $(document).on('click', '.ec-cartNavi', function() {
-        $('.ec-headerRole__cart').toggleClass('is-active');
+        $('.ec-cartNavi').toggleClass('is-active');
+        $('.ec-cartNaviIsset').toggleClass('is-active');
+        $(".ec-cartNaviNull").toggleClass("is-active")
     });
 
     $(document).on('click', '.ec-cartNavi--cancel', function() {
-        $('.ec-headerRole__cart').toggleClass('is-active');
+        $('.ec-cartNavi').toggleClass('is-active');
+        $('.ec-cartNaviIsset').toggleClass('is-active');
+        $(".ec-cartNaviNull").toggleClass("is-active")
     });
 
     $(".ec-newsRole__newsCloseBtn").on("click",function(){

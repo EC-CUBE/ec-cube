@@ -9,7 +9,10 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 <div class="ec-cartNaviWrap">
-    <div class="ec-cartNavi"><i class="ec-cartNavi__icon fas fa-shopping-cart"><span class="ec-cartNavi__badge">{{ totalQuantity|number_format }}</span></i>
+    <div class="ec-cartNavi">
+        <i class="ec-cartNavi__icon fas fa-shopping-cart">
+            <span class="ec-cartNavi__badge">{{ totalQuantity|number_format }}</span>
+        </i>
         <div class="ec-cartNavi__label">
             <div class="ec-cartNavi__price">{{ totalPrice|price }}</div>
         </div>
