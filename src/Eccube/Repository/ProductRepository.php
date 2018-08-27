@@ -65,12 +65,13 @@ class ProductRepository extends AbstractRepository
     public function findWithSortedClassCategories($productId)
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'ps'])
+        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'ps', 'pt'])
             ->innerJoin('p.ProductClasses', 'pc')
             ->leftJoin('pc.ClassCategory1', 'cc1')
             ->leftJoin('pc.ClassCategory2', 'cc2')
             ->leftJoin('p.ProductImage', 'pi')
             ->innerJoin('pc.ProductStock', 'ps')
+            ->leftJoin('p.ProductTag', 'pt')
             ->where('p.id = :id')
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
@@ -177,7 +178,11 @@ class ProductRepository extends AbstractRepository
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            ->innerJoin('p.ProductClasses', 'pc');
+            ->addSelect('pc', 'pi', 'tr', 'ps')
+            ->innerJoin('p.ProductClasses', 'pc')
+            ->leftJoin('p.ProductImage', 'pi')
+            ->leftJoin('pc.TaxRule', 'tr')
+            ->leftJoin('pc.ProductStock', 'ps');
 
         // id
         if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
@@ -293,29 +298,5 @@ class ProductRepository extends AbstractRepository
             ->orderBy('p.update_date', 'DESC');
 
         return $this->queries->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
-    }
-
-    /**
-     * get query builder.
-     *
-     * @param $Customer
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     *
-     * @see CustomerFavoriteProductRepository::getQueryBuilderByCustomer()
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function getFavoriteProductQueryBuilderByCustomer($Customer)
-    {
-        $qb = $this->createQueryBuilder('p')
-            ->innerJoin('p.CustomerFavoriteProducts', 'cfp')
-            ->where('cfp.Customer = :Customer AND p.Status = 1')
-            ->setParameter('Customer', $Customer);
-
-        // Order By
-        // XXX Paginater を使用した場合に PostgreSQL で正しくソートできない
-        $qb->addOrderBy('cfp.create_date', 'DESC');
-
-        return $this->queries->customize(QueryKey::PRODUCT_GET_FAVORITE, $qb, ['customer' => $Customer]);
     }
 }

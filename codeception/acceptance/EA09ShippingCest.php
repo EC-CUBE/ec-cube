@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
@@ -37,7 +48,8 @@ class EA09ShippingCest
         // 対応中ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::IN_PROGRESS);
+        /** @var Order[] $newOrders */
+        $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::IN_PROGRESS);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
 
@@ -48,7 +60,6 @@ class EA09ShippingCest
 
         $OrderRegisterPage = OrderEditPage::at($I)
             ->お届け先の追加();
-
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
         $Shippings = $TargetShippings();
@@ -95,7 +106,8 @@ class EA09ShippingCest
         // 対応中ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::IN_PROGRESS);
+        /** @var Order[] $newOrders */
+        $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::IN_PROGRESS);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
 
@@ -106,7 +118,6 @@ class EA09ShippingCest
 
         $OrderRegisterPage = OrderEditPage::at($I)
             ->お届け先の追加();
-
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
         $Shippings = $TargetShippings();
@@ -146,7 +157,6 @@ class EA09ShippingCest
             ->出荷完了にする(1)
             ->変更を確定(1);
         // TODO ステータス変更スキップしました
-
     }
 
     public function shipping_出荷CSV登録(\AcceptanceTester $I)

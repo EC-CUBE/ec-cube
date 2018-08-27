@@ -49,7 +49,7 @@ file that was distributed with this source code.
                             <dd>
                                 <div class="ec-halfInput{{ has_errors(form.kana.kana01, form.kana.kana02) ? ' error' }}">
                                     {{ form_widget(form.kana.kana01, {'attr': { 'placeholder': 'common.last_name_kana' }}) }}
-                                    {{ form_widget(form.kana.kana02, {'attr': { 'placeholder': 'common.first_naee_kana' }}) }}
+                                    {{ form_widget(form.kana.kana02, {'attr': { 'placeholder': 'common.first_name_kana' }}) }}
                                     {{ form_errors(form.kana.kana01) }}
                                     {{ form_errors(form.kana.kana02) }}
                                 </div>
@@ -82,7 +82,7 @@ file that was distributed with this source code.
                                     {{ form_errors(form.address.addr01) }}
                                 </div>
                                 <div class="ec-input{{ has_errors(form.address.addr02) ? ' error' }}">
-                                    {{ form_widget(form.address.addr02,  { 'attr': { 'placeholder': 'common.address_sample_01' }}) }}
+                                    {{ form_widget(form.address.addr02,  { 'attr': { 'placeholder': 'common.address_sample_02' }}) }}
                                     {{ form_errors(form.address.addr02) }}
                                 </div>
                             </dd>

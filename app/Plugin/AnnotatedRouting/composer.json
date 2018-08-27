@@ -1,0 +1,9 @@
+{
+  "name": "ec-cube/AnnotatedRouting",
+  "version": "1.0.0",
+  "description": "アノテーションルーティングサンプル",
+  "type": "eccube-plugin",
+  "extra": {
+    "code": "AnnotatedRouting"
+  }
+}

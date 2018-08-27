@@ -234,7 +234,7 @@ class ClassCategoryController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
 
-        $this->addSuccess('admin.common.delete_complete', 'admin');
+        $this->addSuccess('admin.common.save_complete', 'admin');
 
         return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
     }

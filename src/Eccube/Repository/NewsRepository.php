@@ -32,67 +32,12 @@ class NewsRepository extends AbstractRepository
     }
 
     /**
-     * 新着情報の表示順を1上げる.
-     *
-     * @param News $News
-     *
-     * @throws \Exception 更新対象の新着情報より上位の新着情報が存在しない場合.
-     */
-    public function up(News $News)
-    {
-        $sortNo = $News->getSortNo();
-        $News2 = $this->findOneBy(['sort_no' => $sortNo + 1]);
-
-        if (!$News2) {
-            throw new \Exception(sprintf('%s より上位の新着情報が存在しません.', $News->getId()));
-        }
-
-        $News->setSortNo($sortNo + 1);
-        $News2->setSortNo($sortNo);
-
-        $em = $this->getEntityManager();
-        $em->flush([$News, $News2]);
-    }
-
-    /**
-     * 新着情報の表示順を1下げる.
-     *
-     * @param News $News
-     *
-     * @throws \Exception \Exception 更新対象の新着情報より上位の新着情報が存在しない場合.
-     */
-    public function down(News $News)
-    {
-        $sortNo = $News->getSortNo();
-        $News2 = $this->findOneBy(['sort_no' => $sortNo - 1]);
-
-        if (!$News2) {
-            throw new \Exception();
-        }
-
-        $News->setSortNo($sortNo - 1);
-        $News2->setSortNo($sortNo);
-
-        $em = $this->getEntityManager();
-        $em->flush([$News, $News2]);
-    }
-
-    /**
      * 新着情報を登録します.
      *
      * @param $News
      */
     public function save($News)
     {
-        if (!$News->getId()) {
-            $sortNo = $this->createQueryBuilder('n')
-                ->select('COALESCE(MAX(n.sort_no), 0)')
-                ->getQuery()
-                ->getSingleScalarResult();
-            $News
-                ->setSortNo($sortNo + 1);
-        }
-
         $em = $this->getEntityManager();
         $em->persist($News);
         $em->flush($News);
@@ -108,28 +53,33 @@ class NewsRepository extends AbstractRepository
      */
     public function delete($News)
     {
-        $this->createQueryBuilder('n')
-            ->update()
-            ->set('n.sort_no', 'n.sort_no - 1')
-            ->where('n.sort_no > :sort_no')
-            ->setParameter('sort_no', $News->getSortNo())
-            ->getQuery()
-            ->execute();
-
         $em = $this->getEntityManager();
         $em->remove($News);
         $em->flush($News);
     }
 
     /**
-     * @return array
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getQueryBuilderAll()
+    {
+        $qb = $this->createQueryBuilder('n');
+        $qb->orderBy('n.publish_date', 'DESC')
+            ->addOrderBy('n.id', 'DESC');
+
+        return $qb;
+    }
+
+    /**
+     * @return mixed
      */
     public function getList()
     {
         $qb = $this->createQueryBuilder('n');
         $qb->where('n.publish_date <= :date')
+            ->andWhere('n.visible = TRUE')
             ->setParameter('date', new \DateTime())
-            ->orderBy('n.sort_no', 'DESC');
+            ->orderBy('n.publish_date', 'DESC');
 
         return $qb->getQuery()->getResult();
     }

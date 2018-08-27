@@ -490,16 +490,18 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    /* https://github.com/EC-CUBE/ec-cube/issues/945
-     * 0 が無視されてしまう
     public function testBuyTotalStartWithZero()
     {
         $this->Customer->setBuyTotal(0);
+        $this->Customer1->setBuyTotal(1);
+        $this->Customer2->setBuyTotal(1);
+        $this->Customer3->setBuyTotal(1);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'buy_total_start' => '0'
-        );
+        $this->searchData = [
+            'buy_total_start' => '0',
+            'buy_total_end' => '0',
+        ];
 
         $this->scenario();
 
@@ -507,7 +509,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->actual = count($this->Results);
         $this->verify();
     }
-    */
 
     public function testBuyTotalEnd()
     {
@@ -541,16 +542,18 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    /* https://github.com/EC-CUBE/ec-cube/issues/945
-     * 0 が無視されてしまう
     public function testBuyTimesStartWithZero()
     {
         $this->Customer->setBuyTimes(0);
+        $this->Customer1->setBuyTimes(1);
+        $this->Customer2->setBuyTimes(1);
+        $this->Customer3->setBuyTimes(1);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'buy_times_start' => '0'
-        );
+        $this->searchData = [
+            'buy_times_start' => '0',
+            'buy_times_end' => '0',
+        ];
 
         $this->scenario();
 
@@ -558,7 +561,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->actual = count($this->Results);
         $this->verify();
     }
-    */
 
     public function testBuyTimesEnd()
     {

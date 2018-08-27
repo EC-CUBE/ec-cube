@@ -117,8 +117,7 @@ class ProductController extends AbstractController
         // searchForm
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $this->formFactory->createNamedBuilder('', SearchProductType::class);
-        $builder->setAttribute('freeze', true);
-        $builder->setAttribute('freeze_display_text', false);
+
         if ($request->getMethod() === 'GET') {
             $builder->setMethod('GET');
         }

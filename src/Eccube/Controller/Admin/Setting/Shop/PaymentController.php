@@ -82,9 +82,17 @@ class PaymentController extends AbstractController
     public function edit(Request $request, Payment $Payment = null)
     {
         if (is_null($Payment)) {
-            // FIXME
-            $Payment = $this->paymentRepository
-                ->findOrCreate(0);
+            $Payment = $this->paymentRepository->findOneBy([], ['sort_no' => 'DESC']);
+            $sortNo = 1;
+            if ($Payment) {
+                $sortNo = $Payment->getSortNo() + 1;
+            }
+
+            $Payment = new \Eccube\Entity\Payment();
+            $Payment
+                ->setSortNo($sortNo)
+                ->setFixed(true)
+                ->setVisible(true);
         }
 
         $builder = $this->formFactory
@@ -101,11 +109,11 @@ class PaymentController extends AbstractController
 
         $form = $builder->getForm();
 
-        $form->setData($Payment);
-        $form->handleRequest($request);
-
         // 既に画像保存されてる場合は取得する
         $oldPaymentImage = $Payment->getPaymentImage();
+
+        $form->setData($Payment);
+        $form->handleRequest($request);
 
         // 登録ボタン押下
         if ($form->isSubmitted() && $form->isValid()) {

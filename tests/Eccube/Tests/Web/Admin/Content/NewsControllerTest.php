@@ -13,10 +13,26 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Eccube\Repository\NewsRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class NewsControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var NewsRepository
+     */
+    protected $newsRepository;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->newsRepository = $this->container->get(NewsRepository::class);
+    }
+
     public function testRoutingAdminContentNews()
     {
         $this->client->request('GET', $this->generateUrl('admin_content_news'));
@@ -57,32 +73,6 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
-    public function testRoutingAdminContentNewsUp()
-    {
-        $Member = $this->createMember();
-        $News1 = $this->createNews($Member, 1);
-        $News2 = $this->createNews($Member, 2);
-
-        $redirectUrl = $this->generateUrl('admin_content_news');
-        $this->client->request('PUT',
-            $this->generateUrl('admin_content_news_up', ['id' => $News1->getId()])
-        );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-    }
-
-    public function testRoutingAdminContentNewsDown()
-    {
-        $Member = $this->createMember();
-        $News1 = $this->createNews($Member, 1);
-        $News2 = $this->createNews($Member, 2);
-
-        $redirectUrl = $this->generateUrl('admin_content_news');
-        $this->client->request('PUT',
-            $this->generateUrl('admin_content_news_down', ['id' => $News2->getId()])
-        );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-    }
-
     private function createNews($TestCreator, $sortNo = 1)
     {
         $TestNews = new \Eccube\Entity\News();
@@ -91,8 +81,8 @@ class NewsControllerTest extends AbstractAdminWebTestCase
             ->setTitle('テストタイトル'.$sortNo)
             ->setDescription('テスト内容'.$sortNo)
             ->setUrl('http://example.com/')
-            ->setSortNo(100 + $sortNo)
             ->setLinkMethod(false)
+            ->setVisible(true)
             ->setCreator($TestCreator);
 
         $this->entityManager->persist($TestNews);

@@ -1,0 +1,184 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['order', 'order_master'] %}
+
+{% block title %}{{'admin.order.mail'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.order.order_management'|trans}}{% endblock %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+<script>
+$(function() {
+    $('#template-change').on('change', function() {
+        $('#mode').val('change');
+        $('#order-mail-form').submit();
+        return false;
+    });
+
+    $('#mailModal').on('show.bs.modal', function (event) {
+        var modal = $(this);
+        modal.find('.modal-body').html('');
+        modal.find('.modal-title').text($(event.relatedTarget).data('subject'));
+        $.ajax({
+            url: "{{ url('admin_order_mail_view') }}",
+            cache: false,
+            data: {
+                'id' : $(event.relatedTarget).data('id')
+            }
+        }).done(function(data){
+            modal.find('.modal-body').html(data);
+        }).fail(function(){
+            modal.find('.modal-body').text('{{ 'admin.order.mail_failed'|trans }}');
+        });
+    });
+
+    $('#back').on('click', function(e) {
+        e.preventDefault();
+        $('#mode').val('back');
+        $('#order-mail-form').submit();
+        return false;
+    });
+
+    $('#sendMail').on('click', function(e) {
+        e.preventDefault();
+        $('#mode').val('complete');
+        $('#order-mail-form').submit();
+        return false;
+    });
+});
+</script>
+{% endblock javascript %}
+
+{% block main %}
+<div class="c-contentsArea__cols">
+    <div class="c-contentsArea__primaryCol">
+        <div class="c-primaryCol">
+            <div class="card rounded border-0 mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.mail_destination_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                        </div>
+                        <div class="col-4 text-right"><a data-toggle="collapse" href="#mailTo" aria-expanded="false" aria-controls="mailTo"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                    </div>
+                </div>
+                <div class="collapse show ec-cardCollapse" id="mailTo">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-2"><span>{{ 'admin.order.order_no'|trans }}</span></div>
+                            <div class="col-4"><span>{{ Order.id }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.order.purchase_price'|trans }}</span></div>
+                            <div class="col-4"><span>{{ Order.payment_total|price }}</span></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-2"><span>{{ 'admin.order.orderer'|trans }}</span></div>
+                            <div class="col-4"><span>{{ Order.name01 }} {{ Order.name02 }}（{{ Order.kana01 }} {{ Order.kana02 }}）</span><br>〒{{ Order.postal_code }}<br>{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</div>
+                            <div class="col-2"><span>{{ 'admin.order.purchase_product'|trans }}</span></div>
+                            <div class="col-4"><span>
+                            {% if Order.productOrderItems %}
+                                {{ Order.productOrderItems[0].productName }}
+                                {% if Order.productOrderItems|length > 2 %}
+                                    {{ 'admin.order.mail_purchase_product_count'|trans({'%count%':Order.productOrderItems|length - 1})|raw }}
+                                {% endif %}
+                            {% endif %}
+                            </span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"><span>{{ 'admin.order.order_status'|trans }}</span></div>
+                            {# TODO ステータスごとのCSS #}
+                            <div class="col-10"><span class="badge badge-ec-glay">{{ Order.orderStatus }}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
+                {{ form_widget(form._token) }}
+                <input id="mode" type="hidden" name="mode">
+
+                <div class="card rounded border-0 mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-8"><span class="card-title">{{ 'admin.order.mail_mail_info'|trans }}</span></div>
+                        <div class="col-4 text-right"><a data-toggle="collapse" href="#mailCreate" aria-expanded="false" aria-controls="mailCreate"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                    </div>
+                </div>
+                <div class="collapse show ec-cardCollapse" id="mailCreate">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                            </div>
+                            <div class="col">
+                                {{ form.template.vars.data }}
+                                {{ form_widget(form.template, { type : 'hidden' }) }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-3"><span>{{ 'admin.order.mail_subject'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                            <div class="col">
+                                {{ form.mail_subject.vars.data }}
+                                {{ form_widget(form.mail_subject, { type : 'hidden' }) }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-3"><span>{{ 'admin.order.mail_body'|trans }}</span></div>
+                            <div class="col">
+                                <div id="detail_box__tpl_data" class="form-group tab-pane active">
+                                    {{ form.tpl_data.vars.data|trans|raw|nl2br }}
+                                    <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <div class="c-conversionArea">
+                    <div class="c-conversionArea__container">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col-6">
+                                <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="javascript:void(0)" id="back"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.mail_send_return'|trans }}</span></a>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row align-items-center justify-content-end">
+                                    <div class="col-auto"><button type="button" class="btn btn-ec-conversion px-5" id="sendMail">{{ 'admin.order.mail_send'|trans }}</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="mailModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.order.mail.348'|trans }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
