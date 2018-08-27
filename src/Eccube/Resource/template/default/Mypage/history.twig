@@ -178,7 +178,7 @@ file that was distributed with this source code.
                     </dl>
                     {% if Order.discount > 0 %}
                         <dl class="ec-totalBox__spec">
-                            <dt>{{ 'common.discount'|price }}</dt>
+                            <dt>{{ 'common.discount'|trans }}</dt>
                             <dd>{{ (0 - Order.discount)|price }}</dd>
                         </dl>
                     {% endif %}
