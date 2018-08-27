@@ -4240,35 +4240,6 @@ Styleguide 8.1.2
   .ec-newsline.is_active .ec-icon img {
     transform: rotateX(180deg); }
 
-/*
-バナー
-
-バナー形式でお知ら情報を伝える際の背景つきボックスです。
-
-ex [トップページ　バナー部分](http://demo3.ec-cube.net/)
-
-Markup:
-include /assets/tmpl/elements/8.1.info.pug
-+ec-banner
-
-Styleguide 8.1.3
-*/
-.ec-banner {
-  padding: 16px;
-  margin-bottom: 16px;
-  background: #F8F8F8;
-  text-align: center;
-  font-weight: bold;
-  border: 1px solid #ccc; }
-  .ec-banner .ec-banner__intro {
-    color: #DE5D50;
-    font-size: 20px;
-    font-weight: bold; }
-  .ec-banner .ec-banner__title {
-    color: #DE5D50;
-    font-size: 32px;
-    font-weight: bold; }
-
 /**
  * ECCUBE 固有のスタイルユーティリティ
  */
@@ -4482,10 +4453,9 @@ include /assets/tmpl/elements/11.1.role.pug
 Styleguide 11.1
 */
 .ec-role {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -4493,7 +4463,7 @@ Styleguide 11.1
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-role:after {
     content: " ";
     display: table; }
@@ -4655,10 +4625,9 @@ Styleguide 11.2
   z-index: 10; }
 
 .ec-headerRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -4666,7 +4635,7 @@ Styleguide 11.2
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px;
+  max-width: 1130px;
   padding-top: 15px;
   position: relative;
   display: -ms-flexbox;
@@ -4714,10 +4683,9 @@ Styleguide 11.2
     text-align: right; }
 
 .ec-headerNaviRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -4725,7 +4693,7 @@ Styleguide 11.2
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-headerNaviRole:after {
     content: " ";
     display: table; }
@@ -5022,10 +4990,9 @@ sg-wrapper:
 Styleguide 11.2.5
 */
 .ec-cateoryNaviRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -5033,7 +5000,7 @@ Styleguide 11.2.5
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px;
+  max-width: 1130px;
   display: none; }
   .ec-cateoryNaviRole:after {
     content: " ";
@@ -5081,6 +5048,7 @@ Styleguide 11.2.5
 
 .ec-itemNav__nav li a {
   display: block;
+  border-bottom: 1px solid #E8E8E8;
   margin: 0;
   padding: 16px;
   height: 55px;
@@ -5111,29 +5079,29 @@ Styleguide 11.2.5
   transition: .3s; }
 
 .ec-itemNav__nav li ul li a {
+  border-bottom: 1px solid #E8E8E8;
   padding: 16px;
   font-size: 16px;
   font-weight: bold;
-  color: #525263;
+  color: white;
   text-align: left;
-  background: #fff;
-  border-bottom: 1px solid #E8E8E8; }
+  background: black; }
 
 .ec-itemNav__nav > li:hover > a {
   background: #fafafa; }
 
 .ec-itemNav__nav > li:hover li:hover > a {
-  background: #fafafa; }
+  background: #333; }
 
 .ec-itemNav__nav li ul li ul {
   top: 0;
   left: 100%; }
 
 .ec-itemNav__nav li ul li ul li a {
-  background: #fff; }
+  background: #7D7D7D; }
 
 .ec-itemNav__nav li:hover ul li ul li a:hover {
-  background: #fafafa; }
+  background: #333; }
 
 /*
 ヘッダー：SPヘッダー
@@ -5258,42 +5226,9 @@ include /assets/tmpl/elements/11.8.footer.pug
 Styleguide 11.3
 */
 .ec-footerRole {
-  background: #f8f8f8;
-  border-top: 1px solid #e8e8e8;
-  padding-top: 12px;
-  padding-bottom: 24px;
-  margin-top: 36px; }
-  .ec-footerRole .ec-footerRole__inner {
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 10px;
-    padding-right: 10px;
-    box-sizing: border-box;
-    font-size: 16px;
-    font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
-    line-height: 1.4;
-    color: #525263;
-    -webkit-text-size-adjust: 100%;
-    width: 100%;
-    max-width: 1150px; }
-    .ec-footerRole .ec-footerRole__inner:after {
-      content: " ";
-      display: table; }
-    .ec-footerRole .ec-footerRole__inner:after {
-      clear: both; }
-    .ec-footerRole .ec-footerRole__inner textarea {
-      /* for chrome fontsize bug */
-      font-family: sans-serif; }
-    .ec-footerRole .ec-footerRole__inner img {
-      max-width: 100%; }
-    .ec-footerRole .ec-footerRole__inner html {
-      box-sizing: border-box; }
-    .ec-footerRole .ec-footerRole__inner *,
-    .ec-footerRole .ec-footerRole__inner *:before,
-    .ec-footerRole .ec-footerRole__inner *:after {
-      box-sizing: inherit; }
-    .ec-footerRole .ec-footerRole__inner img {
-      width: 100%; }
+  border-top: 1px solid #7d7d7d;
+  margin-top: 100px;
+  background: black; }
 
 /*
 フッターナビ
@@ -5314,17 +5249,22 @@ sg-wrapper:
 Styleguide 11.3.1
 */
 .ec-footerNavi {
+  padding: 0;
+  color: white;
   list-style: none;
-  text-align: center;
-  padding: 0; }
+  text-align: center; }
   .ec-footerNavi .ec-footerNavi__link {
-    display: inline-block;
-    margin: 0 8px 8px; }
+    display: block; }
     .ec-footerNavi .ec-footerNavi__link a {
+      display: block;
+      border-bottom: 1px solid #7d7d7d;
+      padding: 15px 0;
+      font-size: 14px;
       color: inherit;
       text-decoration: none; }
     .ec-footerNavi .ec-footerNavi__link:hover a {
-      color: #686868;
+      opacity: .8;
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
       text-decoration: none; }
 
 /*
@@ -5346,23 +5286,29 @@ sg-wrapper:
 Styleguide 11.3.2
 */
 .ec-footerTitle {
-  margin-top: 20px;
-  text-align: center; }
+  padding: 40px 0 60px;
+  text-align: center;
+  color: white; }
   .ec-footerTitle .ec-footerTitle__logo {
-    font-weight: bold; }
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-family: "游ゴシック", YuGothic, "Yu Gothic"; }
     .ec-footerTitle .ec-footerTitle__logo a {
       color: inherit;
       text-decoration: none; }
     .ec-footerTitle .ec-footerTitle__logo a:hover {
       text-decoration: none; }
     .ec-footerTitle .ec-footerTitle__logo a {
-      font-size: 16px;
+      font-size: 22px;
       color: inherit; }
     .ec-footerTitle .ec-footerTitle__logo:hover a {
-      color: #686868;
+      opacity: .8;
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
       text-decoration: none; }
   .ec-footerTitle .ec-footerTitle__copyright {
-    font-size: 10px; }
+    font-size: 10px;
+    font-family: "游ゴシック", YuGothic, "Yu Gothic"; }
 
 /**
 メディアクエリ
@@ -5383,10 +5329,9 @@ include /assets/tmpl/elements/12.1.slider.pug
 Styleguide 12.1
 */
 .ec-sliderRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -5394,7 +5339,7 @@ Styleguide 12.1
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px;
+  max-width: 1130px;
   margin-bottom: 24px; }
   .ec-sliderRole:after {
     content: " ";
@@ -5419,10 +5364,9 @@ Styleguide 12.1
     list-style: none; }
 
 .ec-sliderItemRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -5430,7 +5374,7 @@ Styleguide 12.1
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px;
+  max-width: 1130px;
   margin-bottom: 24px; }
   .ec-sliderItemRole:after {
     content: " ";
@@ -5488,80 +5432,508 @@ include /assets/tmpl/elements/12.2.eyecatch.pug
 Styleguide 12.2
 */
 .ec-eyecatchRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
-  box-sizing: border-box;
-  font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
-  line-height: 1.4;
-  color: #525263;
-  -webkit-text-size-adjust: 100%;
-  width: 100%;
-  max-width: 1150px;
-  margin-bottom: 30px;
-  text-align: center; }
-  .ec-eyecatchRole:after {
-    content: " ";
-    display: table; }
-  .ec-eyecatchRole:after {
-    clear: both; }
-  .ec-eyecatchRole textarea {
-    /* for chrome fontsize bug */
-    font-family: sans-serif; }
-  .ec-eyecatchRole img {
-    max-width: 100%; }
-  .ec-eyecatchRole html {
-    box-sizing: border-box; }
-  .ec-eyecatchRole *,
-  .ec-eyecatchRole *:before,
-  .ec-eyecatchRole *:after {
-    box-sizing: inherit; }
-  .ec-eyecatchRole img {
-    width: 100%; }
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-bottom: 40px; }
+  .ec-eyecatchRole .ec-eyecatchRole__image {
+    display: block;
+    margin-bottom: 40px;
+    width: 100%;
+    height: 100%; }
   .ec-eyecatchRole .ec-eyecatchRole__intro {
-    box-sizing: border-box;
-    padding: 0 3%; }
+    color: black;
+    font-family: "游ゴシック", YuGothic, "Yu Gothic"; }
+  .ec-eyecatchRole .ec-eyecatchRole__introEnTitle {
+    margin-bottom: .8em;
+    font-size: 16px;
+    font-weight: normal; }
   .ec-eyecatchRole .ec-eyecatchRole__introTitle {
-    margin-top: 10px;
+    margin-bottom: .8em;
     font-size: 24px;
     font-weight: bold; }
-  .ec-eyecatchRole p {
+  .ec-eyecatchRole .ec-eyecatchRole__introDescriptiron {
+    margin-bottom: 20px;
     font-size: 16px;
-    margin-bottom: 20px; }
+    line-height: 2; }
 
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
 /*
-トップページ
+ボタン
 
-アイキャッチで使用する 分割画像レイアウトです。
+トップページで使用されているボタンのスタイルです。
 
 ex [トップページ](http://demo3.ec-cube.net/)
 
 Markup:
-include /assets/tmpl/elements/12.2.eyecatch.pug
-+ec-eyecatchTop
-
 sg-wrapper:
-<div class="ec-eyecatchRole">
+<div class="ec-role">
   <sg-wrapper-content/>
 </div>
 
-
-
-Styleguide 12.2.1
+Styleguide 12.3
 */
-.ec-splitImg {
-  display: -ms-flexbox;
-  display: flex; }
-  .ec-splitImg .ec-splitImg__item {
-    width: 50%; }
-    .ec-splitImg .ec-splitImg__item img {
-      width: 100%; }
-  .ec-splitImg .ec-splitImg__item:nth-of-type(1) {
-    padding-right: 8px; }
-  .ec-splitImg .ec-splitImg__item:nth-of-type(2) {
-    padding-left: 8px; }
+/*
+通常ボタン
+
+インラインの要素としてボタンを定義出来ます。
+
+Markup:
+.ec-inlineBtn--top more
+
+Styleguide 12.3.1
+*/
+.ec-inlineBtn--top {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857;
+  border-radius: 0px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: white;
+  background-color: black;
+  border-color: black; }
+  .ec-inlineBtn--top:focus, .ec-inlineBtn--top.focus, .ec-inlineBtn--top:active:focus, .ec-inlineBtn--top:active.focus, .ec-inlineBtn--top.active:focus, .ec-inlineBtn--top.active.focus {
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px; }
+  .ec-inlineBtn--top:hover, .ec-inlineBtn--top:focus, .ec-inlineBtn--top.focus {
+    color: #525263;
+    text-decoration: none; }
+  .ec-inlineBtn--top:active, .ec-inlineBtn--top.active {
+    outline: 0;
+    background-image: none;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
+  .ec-inlineBtn--top.disabled, .ec-inlineBtn--top[disabled],
+  fieldset[disabled] .ec-inlineBtn--top {
+    cursor: not-allowed;
+    opacity: 0.65;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=65)";
+    filter: alpha(opacity=65);
+    box-shadow: none; }
+  .ec-inlineBtn--top:focus, .ec-inlineBtn--top.focus {
+    color: white;
+    background-color: black;
+    border-color: black; }
+  .ec-inlineBtn--top:hover {
+    color: white;
+    background-color: black;
+    border-color: black; }
+  .ec-inlineBtn--top:active, .ec-inlineBtn--top.active,
+  .open > .ec-inlineBtn--top.dropdown-toggle {
+    color: white;
+    background-color: black;
+    border-color: black; }
+    .ec-inlineBtn--top:active:hover, .ec-inlineBtn--top:active:focus, .ec-inlineBtn--top:active.focus, .ec-inlineBtn--top.active:hover, .ec-inlineBtn--top.active:focus, .ec-inlineBtn--top.active.focus,
+    .open > .ec-inlineBtn--top.dropdown-toggle:hover,
+    .open > .ec-inlineBtn--top.dropdown-toggle:focus,
+    .open > .ec-inlineBtn--top.dropdown-toggle.focus {
+      color: white;
+      background-color: black;
+      border-color: black; }
+  .ec-inlineBtn--top:active, .ec-inlineBtn--top.active,
+  .open > .ec-inlineBtn--top.dropdown-toggle {
+    background-image: none; }
+  .ec-inlineBtn--top.disabled:hover, .ec-inlineBtn--top.disabled:focus, .ec-inlineBtn--top.disabled.focus, .ec-inlineBtn--top[disabled]:hover, .ec-inlineBtn--top[disabled]:focus, .ec-inlineBtn--top[disabled].focus,
+  fieldset[disabled] .ec-inlineBtn--top:hover,
+  fieldset[disabled] .ec-inlineBtn--top:focus,
+  fieldset[disabled] .ec-inlineBtn--top.focus {
+    background-color: black;
+    border-color: black; }
+  .ec-inlineBtn--top .badge {
+    color: black;
+    background-color: white; }
+  .ec-inlineBtn--top .ec-icon img {
+    width: 1em;
+    vertical-align: text-bottom; }
+
+/*
+ロングボタン（全幅）
+
+ロングタイプのボタンです。
+
+Markup:
+.ec-blockBtn--top 商品一覧へ
+
+Styleguide 2.1.2
+*/
+.ec-blockBtn--top {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857;
+  border-radius: 0px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: white;
+  background-color: black;
+  border-color: black;
+  display: block;
+  height: 56px;
+  line-height: 56px;
+  padding-top: 0;
+  padding-bottom: 0; }
+  .ec-blockBtn--top:focus, .ec-blockBtn--top.focus, .ec-blockBtn--top:active:focus, .ec-blockBtn--top:active.focus, .ec-blockBtn--top.active:focus, .ec-blockBtn--top.active.focus {
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px; }
+  .ec-blockBtn--top:hover, .ec-blockBtn--top:focus, .ec-blockBtn--top.focus {
+    color: #525263;
+    text-decoration: none; }
+  .ec-blockBtn--top:active, .ec-blockBtn--top.active {
+    outline: 0;
+    background-image: none;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
+  .ec-blockBtn--top.disabled, .ec-blockBtn--top[disabled],
+  fieldset[disabled] .ec-blockBtn--top {
+    cursor: not-allowed;
+    opacity: 0.65;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=65)";
+    filter: alpha(opacity=65);
+    box-shadow: none; }
+  .ec-blockBtn--top:focus, .ec-blockBtn--top.focus {
+    color: white;
+    background-color: black;
+    border-color: black; }
+  .ec-blockBtn--top:hover {
+    color: white;
+    background-color: black;
+    border-color: black; }
+  .ec-blockBtn--top:active, .ec-blockBtn--top.active,
+  .open > .ec-blockBtn--top.dropdown-toggle {
+    color: white;
+    background-color: black;
+    border-color: black; }
+    .ec-blockBtn--top:active:hover, .ec-blockBtn--top:active:focus, .ec-blockBtn--top:active.focus, .ec-blockBtn--top.active:hover, .ec-blockBtn--top.active:focus, .ec-blockBtn--top.active.focus,
+    .open > .ec-blockBtn--top.dropdown-toggle:hover,
+    .open > .ec-blockBtn--top.dropdown-toggle:focus,
+    .open > .ec-blockBtn--top.dropdown-toggle.focus {
+      color: white;
+      background-color: black;
+      border-color: black; }
+  .ec-blockBtn--top:active, .ec-blockBtn--top.active,
+  .open > .ec-blockBtn--top.dropdown-toggle {
+    background-image: none; }
+  .ec-blockBtn--top.disabled:hover, .ec-blockBtn--top.disabled:focus, .ec-blockBtn--top.disabled.focus, .ec-blockBtn--top[disabled]:hover, .ec-blockBtn--top[disabled]:focus, .ec-blockBtn--top[disabled].focus,
+  fieldset[disabled] .ec-blockBtn--top:hover,
+  fieldset[disabled] .ec-blockBtn--top:focus,
+  fieldset[disabled] .ec-blockBtn--top.focus {
+    background-color: black;
+    border-color: black; }
+  .ec-blockBtn--top .badge {
+    color: black;
+    background-color: white; }
+  .ec-blockBtn--top .ec-icon img {
+    width: 1em;
+    vertical-align: text-bottom; }
+
+/*
+見出し
+
+トップページで使用されている見出しのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.4
+*/
+/*
+横並び見出し
+
+横並びの見出しです。
+
+Markup:
+.ec-secHeading
+  span.ec-secHeading__en TOPIC
+  span.ec-secHeading__line |
+  span.ec-secHeading__ja 特集
+
+Styleguide 12.4.1
+*/
+.ec-secHeading {
+  margin-bottom: 15px;
+  color: black; }
+  .ec-secHeading .ec-secHeading__en {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: .2em; }
+  .ec-secHeading .ec-secHeading__line {
+    display: inline-block;
+    margin: 0 20px;
+    width: 1px;
+    height: 14px;
+    background: black; }
+  .ec-secHeading .ec-secHeading__ja {
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: .15em;
+    vertical-align: 2px; }
+
+/*
+縦並び見出し
+
+縦並びの見出しです。
+
+Markup:
+.ec-secHeading--tandem
+  span.ec-secHeading__en TOPIC
+  span.ec-secHeading__line |
+  span.ec-secHeading__ja 特集
+
+Styleguide 12.4.2
+*/
+.ec-secHeading--tandem {
+  margin-bottom: 15px;
+  color: black;
+  text-align: center; }
+  .ec-secHeading--tandem .ec-secHeading__en {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: .2em; }
+  .ec-secHeading--tandem .ec-secHeading__line {
+    display: block;
+    margin: 13px auto;
+    width: 20px;
+    height: 1px;
+    background: black; }
+  .ec-secHeading--tandem .ec-secHeading__ja {
+    display: block;
+    margin-bottom: 30px;
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: .15em;
+    vertical-align: 2px; }
+
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
+トピック（アイテム2列）
+
+トップページで使用されているトピックのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.5.1
+*/
+.ec-topicRole {
+  padding: 40px 0;
+  background: #F8F8F8; }
+  .ec-topicRole .ec-topicRole__list {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap; }
+  .ec-topicRole .ec-topicRole__listItem {
+    margin-bottom: 20px;
+    width: 100%;
+    height: auto; }
+  .ec-topicRole .ec-topicRole__listItemTitle {
+    margin-top: .5em;
+    font-size: 14px;
+    color: black; }
+
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
+カテゴリ（アイテム4列 スマホの時は2列）
+
+トップページで使用されているアイテムリストのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.6.1
+*/
+.ec-newItemRole {
+  padding: 40px 0; }
+  .ec-newItemRole .ec-newItemRole__list {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap; }
+  .ec-newItemRole .ec-newItemRole__listItem {
+    margin-bottom: 4%;
+    width: 48%;
+    height: auto; }
+    .ec-newItemRole .ec-newItemRole__listItem:nth-child(odd) {
+      margin-right: 4%; }
+  .ec-newItemRole .ec-newItemRole__listItemHeading {
+    margin-top: calc(45% - 20px); }
+  .ec-newItemRole .ec-newItemRole__listItemTitle {
+    margin: 8px 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: black; }
+  .ec-newItemRole .ec-newItemRole__listItemPrice {
+    font-size: 12px;
+    color: black; }
+
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
+カテゴリ（アイテム3列）
+
+トップページで使用されているカテゴリのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.7.1
+*/
+.ec-categoryRole {
+  padding: 40px 0;
+  color: black;
+  background: #F8F8F8; }
+  .ec-categoryRole .ec-categoryRole__list {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap; }
+  .ec-categoryRole .ec-categoryRole__listItem {
+    margin-bottom: 20px;
+    width: 100%;
+    height: auto; }
+
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
+見出し
+
+トップページで使用されている新着情報のスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.8.1
+*/
+.ec-newsRole {
+  padding: 40px 0 0; }
+  .ec-newsRole .ec-newsRole__news {
+    box-sizing: border-box; }
+  .ec-newsRole .ec-newsRole__newsItem {
+    width: 100%; }
+    .ec-newsRole .ec-newsRole__newsItem:not(:last-of-type) {
+      border-bottom: 1px solid #ccc; }
+    .ec-newsRole .ec-newsRole__newsItem:last-of-type {
+      margin-bottom: 20px; }
+  .ec-newsRole .ec-newsRole__newsDate {
+    display: block;
+    margin: 15px 0 5px;
+    font-size: 12px;
+    color: black; }
+  .ec-newsRole .ec-newsRole__newsColumn {
+    display: -ms-flexbox;
+    display: flex; }
+  .ec-newsRole .ec-newsRole__newsTitle {
+    display: inline-block;
+    margin-bottom: 10px;
+    width: 90%;
+    font-size: 12px;
+    font-weight: bold;
+    color: #7D7D7D;
+    line-height: 1.2; }
+  .ec-newsRole .ec-newsRole__newsClose {
+    display: inline-block;
+    width: 10%;
+    position: relative; }
+  .ec-newsRole .ec-newsRole__newsCloseBtn {
+    display: inline-block;
+    margin-left: auto;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    color: white;
+    text-align: center;
+    background: black;
+    cursor: pointer;
+    position: absolute;
+    right: 5px; }
+  .ec-newsRole .ec-newsRole__newsDescription {
+    max-height: 0;
+    font-size: 12px;
+    line-height: 1.2;
+    overflow: hidden;
+    transition: all .8s linear; }
+    .ec-newsRole .ec-newsRole__newsDescription a {
+      color: #0092C4; }
+  .ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription {
+    margin: 0 0 10px;
+    max-height: 100vh;
+    transition: all .8s linear; }
+  .ec-newsRole__newsItem.is_active .ec-newsRole__newsCloseBtn i {
+    display: inline-block;
+    transform: rotateX(180deg) translateY(2px); }
 
 /**
 メディアクエリ
@@ -5587,10 +5959,9 @@ Styleguide 13.1
   margin-bottom: 0;
   padding: 0; }
   .ec-searchnavRole .ec-searchnavRole__infos {
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
     box-sizing: border-box;
     font-size: 16px;
     font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -5598,7 +5969,7 @@ Styleguide 13.1
     color: #525263;
     -webkit-text-size-adjust: 100%;
     width: 100%;
-    max-width: 1150px;
+    max-width: 1130px;
     display: -ms-flexbox;
     display: flex;
     border-top: 0;
@@ -5655,10 +6026,9 @@ Styleguide 13.2
 
 */
 .ec-shelfRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -5666,7 +6036,7 @@ Styleguide 13.2
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-shelfRole:after {
     content: " ";
     display: table; }
@@ -5918,10 +6288,9 @@ include /assets/tmpl/elements/14.1.product.pug
 Styleguide 14.1
 */
 .ec-productRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -5929,7 +6298,7 @@ Styleguide 14.1
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-productRole:after {
     content: " ";
     display: table; }
@@ -6028,10 +6397,9 @@ Styleguide 15.1
 
 */
 .ec-cartRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -6039,7 +6407,7 @@ Styleguide 15.1
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px;
+  max-width: 1130px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
@@ -6156,10 +6524,9 @@ Styleguide 15.1.3
     font-weight: bold; }
 
 .ec-cartCompleteRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -6167,7 +6534,7 @@ Styleguide 15.1.3
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-cartCompleteRole:after {
     content: " ";
     display: table; }
@@ -6409,10 +6776,9 @@ include /assets/tmpl/elements/15.2.order.pug
 Styleguide 15.2
 */
 .ec-orderRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -6420,7 +6786,7 @@ Styleguide 15.2
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px;
+  max-width: 1130px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
@@ -6915,10 +7281,9 @@ Styleguide 18.1
 
 */
 .ec-forgotRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -6926,7 +7291,7 @@ Styleguide 18.1
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-forgotRole:after {
     content: " ";
     display: table; }
@@ -6970,10 +7335,9 @@ Styleguide 19.1
 
 */
 .ec-registerRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -6981,7 +7345,7 @@ Styleguide 19.1
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-registerRole:after {
     content: " ";
     display: table; }
@@ -7009,10 +7373,9 @@ Styleguide 19.1
     margin-bottom: 16px; }
 
 .ec-registerCompleteRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -7020,7 +7383,7 @@ Styleguide 19.1
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-registerCompleteRole:after {
     content: " ";
     display: table; }
@@ -7060,10 +7423,9 @@ Styleguide 19.2
 
 */
 .ec-contactRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -7071,7 +7433,7 @@ Styleguide 19.2
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-contactRole:after {
     content: " ";
     display: table; }
@@ -7096,10 +7458,9 @@ Styleguide 19.2
     margin: 16px 0; }
 
 .ec-contactConfirmRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -7107,7 +7468,7 @@ Styleguide 19.2
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-contactConfirmRole:after {
     content: " ";
     display: table; }
@@ -7132,10 +7493,9 @@ Styleguide 19.2
     margin-bottom: 16px; }
 
 .ec-contactCompleteRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -7143,7 +7503,7 @@ Styleguide 19.2
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-contactCompleteRole:after {
     content: " ";
     display: table; }
@@ -7184,10 +7544,9 @@ Styleguide 19.3
 
 */
 .ec-customerRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -7195,7 +7554,7 @@ Styleguide 19.3
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-customerRole:after {
     content: " ";
     display: table; }
@@ -7220,10 +7579,9 @@ Styleguide 19.3
     margin-bottom: 10px; }
 
 .ec-contactConfirmRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -7231,7 +7589,7 @@ Styleguide 19.3
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-contactConfirmRole:after {
     content: " ";
     display: table; }
@@ -7256,10 +7614,9 @@ Styleguide 19.3
     margin-bottom: 16px; }
 
 .ec-contactCompleteRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -7267,7 +7624,7 @@ Styleguide 19.3
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px; }
+  max-width: 1130px; }
   .ec-contactCompleteRole:after {
     content: " ";
     display: table; }
@@ -7397,10 +7754,9 @@ Styleguide 21.1
 
 */
 .ec-withdrawRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -7408,7 +7764,7 @@ Styleguide 21.1
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px;
+  max-width: 1130px;
   text-align: center;
   padding: 0 16px; }
   .ec-withdrawRole:after {
@@ -7490,10 +7846,9 @@ Styleguide 22.1
 
 */
 .ec-userEditCompleteRole {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -7501,7 +7856,7 @@ Styleguide 22.1
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%;
-  max-width: 1150px;
+  max-width: 1130px;
   text-align: center;
   padding: 0 16px; }
   .ec-userEditCompleteRole:after {
@@ -7781,11 +8136,6 @@ Styleguide 22.1
     font-size: 24px;
   }
 
-  .ec-banner{
-    margin-left: 3%;
-    margin-bottom: 16px;
-  }
-
   .ec-navlistRole .ec-navlistRole__navlist{
     -ms-flex-wrap: nowrap;
         flex-wrap: nowrap;
@@ -7947,12 +8297,6 @@ Styleguide 22.1
     text-decoration: none;
   }
 
-  .ec-itemNav{
-    margin: 20px 0 30px;
-    border-bottom: 1px solid #D9D9D9;
-    border-top: 1px solid #D9D9D9;
-  }
-
   .ec-itemNav__nav{
     display: inline-block;
   }
@@ -7985,9 +8329,12 @@ Styleguide 22.1
   }
 
   .ec-itemNav__nav li ul li ul:before{
-    content: ">";
+    content: "\f054";
+    font-family: FontAwesome;
+    font-size: 12px;
+    color: white;
     position: absolute;
-    top: 13px;
+    top: 19px;
     right: auto;
     left: -20px;
   }
@@ -8011,20 +8358,77 @@ Styleguide 22.1
   }
 
   .ec-footerRole{
-    padding-top: 32px;
-    margin-top: 80px;
+    padding-top: 40px;
+  }
+
+  .ec-footerRole .ec-footerRole__inner{
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
+    line-height: 1.4;
+    color: #525263;
+    -webkit-text-size-adjust: 100%;
+    width: 100%;
+    max-width: 1130px;
+  }
+
+  .ec-footerRole .ec-footerRole__inner:after{
+    content: " ";
+    display: table;
+  }
+
+  .ec-footerRole .ec-footerRole__inner:after{
+    clear: both;
+  }
+
+  .ec-footerRole .ec-footerRole__inner textarea{
+    /* for chrome fontsize bug */
+    font-family: sans-serif;
+  }
+
+  .ec-footerRole .ec-footerRole__inner img{
+    max-width: 100%;
+  }
+
+  .ec-footerRole .ec-footerRole__inner html{
+    box-sizing: border-box;
+  }
+
+  .ec-footerRole .ec-footerRole__inner *,
+      .ec-footerRole .ec-footerRole__inner *:before,
+      .ec-footerRole .ec-footerRole__inner *:after{
+    box-sizing: inherit;
+  }
+
+  .ec-footerRole .ec-footerRole__inner img{
+    width: 100%;
+  }
+
+  .ec-footerNavi .ec-footerNavi__link{
+    display: inline-block;
+  }
+
+  .ec-footerNavi .ec-footerNavi__link a{
+    display: inline-block;
+    border-bottom: none;
+    margin: 0 10px;
+    padding: 0;
+    text-decoration: underline;
   }
 
   .ec-footerTitle{
-    margin-top: 80px;
+    padding: 50px 0 80px;
   }
 
   .ec-footerTitle .ec-footerTitle__logo a{
-    font-size: 2em;
+    font-size: 24px;
   }
 
   .ec-footerTitle .ec-footerTitle__copyright{
-    font-size: .8em;
+    font-size: 12px;
   }
 
   .ec-sliderItemRole .item_nav{
@@ -8037,27 +8441,158 @@ Styleguide 22.1
     margin-bottom: 0;
   }
 
+  .ec-eyecatchRole{
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+  }
+
+  .ec-eyecatchRole .ec-eyecatchRole__image{
+    width: 45%;
+    -ms-flex-order: 2;
+        order: 2;
+  }
+
+  .ec-eyecatchRole .ec-eyecatchRole__intro{
+    padding-right: 5%;
+    -ms-flex-order: 1;
+        order: 1;
+  }
+
+  .ec-eyecatchRole .ec-eyecatchRole__introEnTitle{
+    margin-top: 45px;
+  }
+
   .ec-eyecatchRole .ec-eyecatchRole__introTitle{
-    font-size: 32px;
+    margin-bottom: 1em;
+    font-size: 26px;
   }
 
-  .ec-eyecatchRole p{
-    font-size: 20px;
+  .ec-eyecatchRole .ec-eyecatchRole__introDescriptiron{
+    margin-bottom: 30px;
   }
 
-  .ec-splitImg .ec-splitImg__item:nth-of-type(1){
-    padding-right: 3%;
+  .ec-blockBtn--top{
+    max-width: 260px;
   }
 
-  .ec-splitImg .ec-splitImg__item:nth-of-type(2){
-    padding-left: 3%;
+  .ec-topicRole{
+    padding: 60px 0;
+  }
+
+  .ec-topicRole .ec-topicRole__list{
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+  }
+
+  .ec-topicRole .ec-topicRole__listItem{
+    width: calc(100% / 2);
+  }
+
+  .ec-topicRole .ec-topicRole__listItem:not(:last-of-type){
+    margin-right: 30px;
+  }
+
+  .ec-topicRole .ec-topicRole__listItemTitle{
+    margin-top: 1em;
+  }
+
+  .ec-newItemRole{
+    padding: 60px 0;
+  }
+
+  .ec-newItemRole .ec-newItemRole__list{
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+  }
+
+  .ec-newItemRole .ec-newItemRole__listItem{
+    margin-bottom: 15px;
+    width: calc(100% / 4);
+  }
+
+  .ec-newItemRole .ec-newItemRole__listItem:not(:last-of-type){
+    margin-right: 30px;
+  }
+
+  .ec-newItemRole .ec-newItemRole__listItem:nth-child(odd){
+    margin-right: 30px;
+  }
+
+  .ec-newItemRole .ec-newItemRole__listItemTitle{
+    margin: 20px 0 10px;
+  }
+
+  .ec-categoryRole{
+    padding: 60px 0;
+  }
+
+  .ec-categoryRole .ec-categoryRole__list{
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+  }
+
+  .ec-categoryRole .ec-categoryRole__listItem{
+    width: calc(100% / 3);
+  }
+
+  .ec-categoryRole .ec-categoryRole__listItem:not(:last-of-type){
+    margin-right: 30px;
+  }
+
+  .ec-newsRole{
+    padding: 60px 0 0;
+  }
+
+  .ec-newsRole .ec-newsRole__news{
+    border: 16px solid #F8F8F8;
+    padding: 20px 30px 30px;
+  }
+
+  .ec-newsRole .ec-newsRole__newsItem:last-of-type{
+    margin-bottom: 10px;
+  }
+
+  .ec-newsRole .ec-newsRole__newsItem{
+    padding: 20px 0;
+  }
+
+  .ec-newsRole .ec-newsRole__newsHeading{
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  .ec-newsRole .ec-newsRole__newsDate{
+    display: inline-block;
+    margin: 0;
+    min-width: 120px;
+    font-size: 14px;
+  }
+
+  .ec-newsRole .ec-newsRole__newsColumn{
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    min-width: calc(100% - 120px);
+  }
+
+  .ec-newsRole .ec-newsRole__newsTitle{
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .ec-newsRole .ec-newsRole__newsDescription{
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription{
+    margin: 20px 0;
   }
 
   .ec-searchnavRole{
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
     box-sizing: border-box;
     font-size: 16px;
     font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
@@ -8065,7 +8600,7 @@ Styleguide 22.1
     color: #525263;
     -webkit-text-size-adjust: 100%;
     width: 100%;
-    max-width: 1150px;
+    max-width: 1130px;
   }
 
   .ec-searchnavRole:after{

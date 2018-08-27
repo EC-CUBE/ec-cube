@@ -8,40 +8,15 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% if is_granted('ROLE_USER') %}
-    <div class="ec-headerNav">
-        <div class="ec-headerNav__item">
-            <a class="ec-icon" href="{{ url('mypage') }}"><img src="{{ asset('assets/icon/user.svg') }}"
-                                                              alt=""><span>{{ 'front.block.login.mypage'|trans }}</span></a>
-        </div>
-        {% if BaseInfo.option_favorite_product %}
-            <div class="ec-headerNav__item">
-                <a class="ec-icon" href="{{ url('mypage_favorite') }}"><img
-                            src="{{ asset('assets/icon/favorite.svg') }}"
-                            alt=""><span>{{ 'front.block.login.favorite'|trans }}</span></a>
-            </div>
-        {% endif %}
-        <div class="ec-headerNav__item">
-            <a class="ec-icon" href="{{ url('logout') }}"><img src="{{ asset('assets/icon/login.svg') }}"
-                                                                     alt=""><span>{{ 'front.block.login.logout'|trans }}</span></a>
-        </div>
+
+{# TODO ロジック差し込み #}
+
+<div class="ec-headerNav">
+    <div class="ec-headerNav__item"><a href="/moc/guest/register"><i class="ec-headerNav__itemIcon fas fa-user"></i><span class="ec-headerNav__itemLink">新規登録</span></a>
     </div>
-{% else %}
-    <div class="ec-headerNav">
-        <div class="ec-headerNav__item">
-            <a class="ec-icon" href="{{ url('entry') }}"><img src="{{ asset('assets/icon/user.svg') }}"
-                                                              alt=""><span>{{ 'front.block.login.customer_registration'|trans }}</span></a>
-        </div>
-        {% if BaseInfo.option_favorite_product %}
-            <div class="ec-headerNav__item">
-                <a class="ec-icon" href="{{ url('mypage_favorite') }}"><img
-                            src="{{ asset('assets/icon/favorite.svg') }}"
-                            alt=""><span>{{ 'front.block.login.favorite'|trans }}</span></a>
-            </div>
-        {% endif %}
-        <div class="ec-headerNav__item">
-            <a class="ec-icon" href="{{ url('mypage_login') }}"><img src="{{ asset('assets/icon/login.svg') }}"
-                                                                     alt=""><span>{{ 'front.block.login.login'|trans }}</span></a>
-        </div>
+    <div class="ec-headerNav__item"><a href="/moc/guest/login"><i class="ec-headerNav__itemIcon fas fa-heart"></i><span class="ec-headerNav__itemLink">お気に入り</span></a>
     </div>
-{% endif %}
+    <div class="ec-headerNav__item"><a href="/moc/guest/login"><i class="ec-headerNav__itemIcon fas fa-lock"></i><span class="ec-headerNav__itemLink">ログイン</span></a>
+    </div>
+</div>
+
