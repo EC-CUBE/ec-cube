@@ -39,14 +39,14 @@ class PaymentTotalLimitValidator extends ItemHolderValidator
     }
 
     /**
-     * @param ItemHolderInterface $item
+     * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
-    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        $totalPrice = $item->getTotal();
+        $totalPrice = $itemHolder->getTotal();
         if ($totalPrice > $this->maxTotalFee) {
             $this->throwInvalidItemException('front.shopping.over_price_limit');
         }

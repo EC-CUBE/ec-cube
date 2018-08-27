@@ -20,7 +20,7 @@ use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
- * 手数料明細の金額とdtb_paymentに登録されている手数料の差異を検知するバリデータ.
+ * 手数料が変更されたかどうかを検知するバリデータ.
  */
 class PaymentChargeChangeValidator extends ItemHolderValidator
 {
@@ -36,33 +36,16 @@ class PaymentChargeChangeValidator extends ItemHolderValidator
             return;
         }
 
-        // 手数料明細がない場合はスキップする.
-        if (!$this->hasChargeItems($itemHolder)) {
+        /** @var Order $originHolder */
+        $originHolder = $context->getOriginHolder();
+
+        // 受注の生成直後はチェックしない.
+        if (!$originHolder->getOrderNo()) {
             return;
         }
 
-        $charge = $itemHolder->getCharge();
-        $realCharge = $itemHolder->getPayment()->getCharge();
-
-        if ($charge != $realCharge) {
-            foreach ($itemHolder->getOrderItems() as $item) {
-                // 手数料明細は支払手数料に紐づく1件のみの想定
-                if ($item->isCharge()) {
-                    $item->setPrice($realCharge);
-                    $this->throwInvalidItemException('手数料が変更されました.', null, true);
-                }
-            }
+        if ($originHolder->getCharge() != $itemHolder->getCharge()) {
+            $this->throwInvalidItemException('手数料が更新されました。金額をご確認ください。', null, true);
         }
-    }
-
-    protected function hasChargeItems(Order $Order)
-    {
-        foreach ($Order->getOrderItems() as $item) {
-            if ($item->isCharge()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

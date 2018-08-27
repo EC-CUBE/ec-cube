@@ -42,6 +42,16 @@ class PurchaseFlow
     protected $itemHolderValidators;
 
     /**
+     * @var ArrayCollection|ItemHolderValidator[]
+     */
+    protected $itemHolderPostValidators;
+
+    /**
+     * @var ArrayCollection|DiscountProcessor[]
+     */
+    protected $discountProcessors;
+
+    /**
      * @var ArrayCollection|PurchaseProcessor[]
      */
     protected $purchaseProcessors;
@@ -53,6 +63,8 @@ class PurchaseFlow
         $this->itemHolderValidators = new ArrayCollection();
         $this->itemPreprocessors = new ArrayCollection();
         $this->itemHolderPreprocessors = new ArrayCollection();
+        $this->itemHolderPostValidators = new ArrayCollection();
+        $this->discountProcessors = new ArrayCollection();
     }
 
     public function setPurchaseProcessors(ArrayCollection $processors)
@@ -80,25 +92,21 @@ class PurchaseFlow
         $this->itemHolderPreprocessors = $itemHolderPreprocessors;
     }
 
+    public function setItemHolderPostValidators(ArrayCollection $itemHolderPostValidators)
+    {
+        $this->itemHolderPostValidators = $itemHolderPostValidators;
+    }
+
+    public function setDiscountProcessors(ArrayCollection $discountProcessors)
+    {
+        $this->discountProcessors = $discountProcessors;
+    }
+
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $this->calculateAll($itemHolder);
 
         $flowResult = new PurchaseFlowResult($itemHolder);
-
-        foreach ($itemHolder->getItems() as $item) {
-            foreach ($this->itemPreprocessors as $itemPreprocessor) {
-                $itemPreprocessor->process($item, $context);
-            }
-        }
-
-        $this->calculateAll($itemHolder);
-
-        foreach ($this->itemHolderPreprocessors as $holderPreprocessor) {
-            $holderPreprocessor->process($itemHolder, $context);
-        }
-
-        $this->calculateAll($itemHolder);
 
         foreach ($itemHolder->getItems() as $item) {
             foreach ($this->itemValidators as $itemValidator) {
@@ -115,6 +123,44 @@ class PurchaseFlow
         }
 
         $this->calculateAll($itemHolder);
+
+        foreach ($itemHolder->getItems() as $item) {
+            foreach ($this->itemPreprocessors as $itemPreprocessor) {
+                $itemPreprocessor->process($item, $context);
+            }
+        }
+
+        $this->calculateAll($itemHolder);
+
+        foreach ($this->itemHolderPreprocessors as $holderPreprocessor) {
+            $result = $holderPreprocessor->process($itemHolder, $context);
+            if ($result) {
+                $flowResult->addProcessResult($result);
+            }
+
+            $this->calculateAll($itemHolder);
+        }
+
+        foreach ($this->discountProcessors as $discountProcessor) {
+            $discountProcessor->removeDiscountItem($itemHolder, $context);
+        }
+
+        $this->calculateAll($itemHolder);
+
+        foreach ($this->discountProcessors as $discountProcessor) {
+            $result = $discountProcessor->addDiscountItem($itemHolder, $context);
+            if ($result) {
+                $flowResult->addProcessResult($result);
+            }
+            $this->calculateAll($itemHolder);
+        }
+
+        foreach ($this->itemHolderPostValidators as $itemHolderPostValidator) {
+            $result = $itemHolderPostValidator->execute($itemHolder, $context);
+            $flowResult->addProcessResult($result);
+
+            $this->calculateAll($itemHolder);
+        }
 
         return $flowResult;
     }
@@ -138,7 +184,7 @@ class PurchaseFlow
      * 購入フロー確定処理.
      *
      * @param ItemHolderInterface $target
-     * @param PurchaseContext     $context
+     * @param PurchaseContext $context
      *
      * @throws PurchaseException
      */
@@ -185,6 +231,11 @@ class PurchaseFlow
     public function addItemHolderValidator(ItemHolderValidator $itemHolderValidator)
     {
         $this->itemHolderValidators[] = $itemHolderValidator;
+    }
+
+    public function addItemHolderPostValidator(ItemHolderValidator $itemHolderValidator)
+    {
+        $this->itemHolderPostValidators[] = $itemHolderValidator;
     }
 
     /**

@@ -13,7 +13,6 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 
 /**
@@ -24,7 +23,7 @@ abstract class ItemValidator
     use ValidatorTrait;
 
     /**
-     * @param ItemInterface   $item
+     * @param ItemInterface $item
      * @param PurchaseContext $context
      *
      * @return ProcessResult
@@ -36,10 +35,6 @@ abstract class ItemValidator
 
             return ProcessResult::success(null, static::class);
         } catch (InvalidItemException $e) {
-            if ($item instanceof CartItem) {
-                $this->handle($item, $context);
-            }
-
             return ProcessResult::warn($e->getMessage(), static::class);
         }
     }

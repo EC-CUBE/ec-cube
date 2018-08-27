@@ -40,6 +40,7 @@ class ProcessResult
     /**
      * @param string|null $message
      * @param string|null $class
+     *
      * @return ProcessResult
      */
     public static function warn($message = null, $class = null)
@@ -50,6 +51,7 @@ class ProcessResult
     /**
      * @param string|null $message
      * @param string|null $class
+     *
      * @return ProcessResult
      */
     public static function error($message = null, $class = null)
@@ -60,6 +62,7 @@ class ProcessResult
     /**
      * @param string|null $message
      * @param string|null $class
+     *
      * @return ProcessResult
      */
     public static function success($message = null, $class = null)

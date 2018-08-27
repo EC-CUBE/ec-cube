@@ -24,14 +24,14 @@ use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 class PaymentTotalNegativeValidator extends ItemHolderValidator
 {
     /**
-     * @param ItemHolderInterface $item
+     * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      *
      * @throws InvalidItemException
      */
-    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if ($item->getTotal() < 0) {
+        if ($itemHolder->getTotal() < 0) {
             $this->throwInvalidItemException(trans('front.shopping.payment_total_invalid'));
         }
     }

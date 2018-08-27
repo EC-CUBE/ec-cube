@@ -38,22 +38,12 @@ services:
     eccube.purchase.flow.shopping:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
-            - [setItemHolderPreprocessors, ['@eccube.purchase.flow.shopping.holder_preprocessors']]
             - [setItemValidators, ['@eccube.purchase.flow.shopping.item_validators']]
             - [setItemHolderValidators, ['@eccube.purchase.flow.shopping.holder_validators']]
+            - [setItemHolderPreprocessors, ['@eccube.purchase.flow.shopping.holder_preprocessors']]
+            - [setDiscountProcessors, ['@eccube.purchase.flow.shopping.discount_processors']]
+            - [setItemHolderPostValidators, ['@eccube.purchase.flow.shopping.holder_post_validators']]
             - [setPurchaseProcessors, ['@eccube.purchase.flow.shopping.purchase']]
-
-
-    eccube.purchase.flow.shopping.holder_preprocessors:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     eccube.purchase.flow.shopping.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -69,9 +59,34 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\EmptyItemsValidator'  # 空明細の削除処理
+
+    eccube.purchase.flow.shopping.holder_preprocessors:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'  # 税額の計算
+                - '@Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'  # 税額の計算
+
+    eccube.purchase.flow.shopping.discount_processors:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor' # ポイント明細の追加
+
+    eccube.purchase.flow.shopping.holder_post_validators:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'  # 加算ポイントの計算
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentChargeChangeValidator' # 手数料の変更検知
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeChangeValidator' # 送料の変更検知
 
     eccube.purchase.flow.shopping.purchase:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -96,7 +111,6 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
@@ -108,8 +122,8 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
 
     eccube.purchase.flow.order.purchase:
         class: Doctrine\Common\Collections\ArrayCollection
