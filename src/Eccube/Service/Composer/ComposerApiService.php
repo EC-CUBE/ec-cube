@@ -46,16 +46,17 @@ class ComposerApiService implements ComposerServiceInterface
      * Run get info command
      *
      * @param string $pluginName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     *
+     * @param string|null $version
      * @return array
      *
      * @throws PluginException
      */
-    public function execInfo($pluginName)
+    public function execInfo($pluginName, $version)
     {
         $output = $this->runCommand([
             'command' => 'info',
             'package' => $pluginName,
+            'version' => $version,
             '--available' => true
         ]);
 
@@ -149,21 +150,23 @@ class ComposerApiService implements ComposerServiceInterface
      * Get require
      *
      * @param string $packageName
+     * @param string|null $version
      * @param string $callback
      * @param null $typeFilter
      *
+     * @param int $level
      * @throws PluginException
      */
-    public function foreachRequires($packageName, $callback, $typeFilter = null, $level = 0)
+    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0)
     {
         if (strpos($packageName, '/') === false) {
             return;
         }
-        $info = $this->execInfo($packageName);
+        $info = $this->execInfo($packageName, $version);
         if (isset($info['requires'])) {
             foreach ($info['requires'] as $name => $version) {
                 if (isset($info['type']) && $info['type'] === $typeFilter) {
-                    $this->foreachRequires($name, $callback, $typeFilter, $level + 1);
+                    $this->foreachRequires($name, $version, $callback, $typeFilter, $level + 1);
                     if (isset($info['descrip.'])) {
                         $info['description'] = $info['descrip.'];
                     }

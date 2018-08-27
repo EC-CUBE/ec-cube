@@ -85,6 +85,8 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")
      * @Template("@admin/Store/plugin.twig")
+     * @param Request $request
+     * @return array
      */
     public function index(Request $request)
     {
@@ -93,13 +95,13 @@ class PluginController extends AbstractController
         $Plugins = $this->pluginRepository->findBy([], ['code' => 'ASC']);
 
         // ファイル設置プラグインの取得.
-        $unregisterdPlugins = $this->getUnregisteredPlugins($Plugins);
-        $unregisterdPluginsConfigPages = [];
-        foreach ($unregisterdPlugins as $unregisterdPlugin) {
+        $unregisteredPlugins = $this->getUnregisteredPlugins($Plugins);
+        $unregisteredPluginsConfigPages = [];
+        foreach ($unregisteredPlugins as $unregisteredPlugin) {
             try {
-                $code = $unregisterdPlugin['code'];
+                $code = $unregisteredPlugin['code'];
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
-                $unregisterdPluginsConfigPages[$code] = $this->generateUrl('plugin_'.$code.'_config');
+                $unregisteredPluginsConfigPages[$code] = $this->generateUrl('plugin_'.$code.'_config');
             } catch (RouteNotFoundException $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
@@ -176,8 +178,8 @@ class PluginController extends AbstractController
             'officialPlugins' => $officialPlugins,
             'unofficialPlugins' => $unofficialPlugins,
             'configPages' => $configPages,
-            'unregisterdPlugins' => $unregisterdPlugins,
-            'unregisterdPluginsConfigPages' => $unregisterdPluginsConfigPages,
+            'unregisteredPlugins' => $unregisteredPlugins,
+            'unregisteredPluginsConfigPages' => $unregisteredPluginsConfigPages,
             'officialPluginsDetail' => $officialPluginsDetail,
         ];
     }
@@ -255,6 +257,7 @@ class PluginController extends AbstractController
      * @param Plugin $Plugin
      *
      * @return RedirectResponse
+     * @throws PluginException
      */
     public function enable(Plugin $Plugin, CacheUtil $cacheUtil)
     {
@@ -263,28 +266,34 @@ class PluginController extends AbstractController
         if ($Plugin->isEnabled()) {
             $this->addError('admin.plugin.already.enable', 'admin');
         } else {
-            $requires = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
-            if (!empty($requires)) {
-                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $requires[0]]);
-                $dependName = $requires[0];
-                if ($DependPlugin) {
-                    $dependName = $DependPlugin->getName();
-                }
-                $message = trans('admin.plugin.enable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-                $this->addError($message, 'admin');
 
-                return $this->redirectToRoute('admin_store_plugin');
+            // ストアからインストールしたプラグインは依存プラグインが有効化されているかを確認
+            if ($Plugin->getSource()) {
+                $requires = $this->pluginService->getPluginRequired($Plugin);
+                $requires = array_filter($requires, function($req) {
+                    $code = preg_replace('/^ec-cube\//', '', $req['name']);
+                    /** @var Plugin $DependPlugin */
+                    $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+                    return $DependPlugin->isEnabled() == false;
+                });
+                if (!empty($requires)) {
+                    $names = array_map(function($req) {
+                        return "「${req['description']}」";
+                    }, $requires);
+                    $message = trans('%depend_name%を先に有効化してください。', ['%name%' => $Plugin->getName(), '%depend_name%' => implode(', ', $names)]);
+                    $this->addError($message, 'admin');
+
+                    return $this->redirectToRoute('admin_store_plugin');
+                }
             }
+
             $this->pluginService->enable($Plugin);
-            $this->addSuccess('admin.plugin.enable.complete', 'admin');
+            $this->addSuccess(trans('「%plugin_name%」を有効にしました。', ['%plugin_name%' => $Plugin->getName()]), 'admin');
         }
 
-        // キャッシュを削除してリダイレクト
-        // リダイレクトにredirectToRoute関数を使用していないのは、削除したキャッシュが再生成されてしまうため。
-        $url = $this->generateUrl('admin_store_plugin');
         $cacheUtil->clearCache();
 
-        return $this->redirect($url);
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**

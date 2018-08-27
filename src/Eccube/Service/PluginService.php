@@ -658,14 +658,19 @@ class PluginService
      * Get array require by plugin
      * Todo: need define dependency plugin mechanism
      *
-     * @param array $plugin     format as plugin from api
+     * @param array|Plugin $plugin format as plugin from api
      *
      * @return array|mixed
+     * @throws PluginException
      */
     public function getPluginRequired($plugin)
     {
+        $pluginCode = $plugin instanceof Plugin ? $plugin->getCode() : $plugin['code'];
+        $pluginVersion = $plugin instanceof Plugin ? $plugin->getVersion() : $plugin['version'];
+
         $results = [];
-        $this->composerService->foreachRequires('ec-cube/'.$plugin['code'], function($package) use(&$results) {
+
+        $this->composerService->foreachRequires('ec-cube/'.$pluginCode, $pluginVersion, function($package) use(&$results) {
             $results[] = $package;
         }, 'eccube-plugin');
 
@@ -699,48 +704,6 @@ class PluginService
             // Match version
             $plugin['version_check'] = true;
         }
-    }
-
-    /**
-     * Check require plugin in enable
-     *
-     * @param string $pluginCode
-     *
-     * @return array plugin code
-     */
-    public function findRequirePluginNeedEnable($pluginCode)
-    {
-        $dir = $this->eccubeConfig['plugin_realdir'].'/'.$pluginCode;
-        $composerFile = $dir.'/composer.json';
-        if (!file_exists($composerFile)) {
-            return [];
-        }
-        $jsonText = file_get_contents($composerFile);
-        $json = json_decode($jsonText, true);
-        // Check require
-        if (!isset($json['require']) || empty($json['require'])) {
-            return [];
-        }
-        $require = $json['require'];
-
-        // Remove vendor plugin
-        if (isset($require[self::VENDOR_NAME.'/plugin-installer'])) {
-            unset($require[self::VENDOR_NAME.'/plugin-installer']);
-        }
-        $requires = [];
-        foreach ($require as $name => $version) {
-            // Check plugin of ec-cube only
-            if (strpos($name, self::VENDOR_NAME.'/') !== false) {
-                $requireCode = str_replace(self::VENDOR_NAME.'/', '', $name);
-                $ret = $this->isEnable($requireCode);
-                if ($ret) {
-                    continue;
-                }
-                $requires[] = $requireCode;
-            }
-        }
-
-        return $requires;
     }
 
     /**
