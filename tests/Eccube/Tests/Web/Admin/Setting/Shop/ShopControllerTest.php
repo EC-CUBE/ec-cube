@@ -21,8 +21,6 @@ use Faker\Provider\Base;
 
 /**
  * Class ShopControllerTest
- *
- * @group cache-clear
  */
 class ShopControllerTest extends AbstractAdminWebTestCase
 {

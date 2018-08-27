@@ -21,9 +21,6 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\TaxRuleService;
 
-/**
- * @group cache-clear
- */
 class EditControllerTest extends AbstractEditControllerTestCase
 {
     protected $Customer;
