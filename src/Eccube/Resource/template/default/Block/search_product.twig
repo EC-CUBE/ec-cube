@@ -9,18 +9,32 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-{# TODO ロジック差し込み#}
+{# TODO デザイン調整 #}
+{#<div class="ec-headerSearch">#}
+    {#<form class="input-group" method="get" id="searchform" action="{{ path('product_list') }}">#}
+        {#<div class="input-group-btn">#}
+            {#<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">すべて<span class="caret"></span></button>#}
+            {#<ul class="dropdown-menu">#}
+                {#<li><a href="#">メニュー1</a></li>#}
+                {#<li class="divider" role="separator"></li>#}
+                {#<li><a href="#">メニュー1</a></li>#}
+            {#</ul>#}
+        {#</div>#}
+        {#<input class="form-control" type="text" aria-label="キーワードを入力">#}
+        {#<a class="ec-headerSearch__btn"><i class="fas fa-search"></i></a>#}
+    {#</form>#}
+{#</div>#}
+
 <div class="ec-headerSearch">
     <form class="input-group" method="get" id="searchform" action="{{ path('product_list') }}">
-        <div class="input-group-btn">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">すべて<span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                <li><a href="#">メニュー1</a></li>
-                <li class="divider" role="separator"></li>
-                <li><a href="#">メニュー1</a></li>
-            </ul>
+        <div class="ec-select">
+            {{ form_widget(form.category_id) }}
         </div>
-        <input class="form-control" type="text" aria-label="キーワードを入力">
-        <a class="ec-headerSearch__btn"><i class="fas fa-search"></i></a>
+        <div class="ec-input">
+            {{ form_widget(form.name, {'attr': { 'placeholder' : "common.search_keyword" }} ) }}
+            <button class="ec-headerSearch__btn" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
     </form>
 </div>
