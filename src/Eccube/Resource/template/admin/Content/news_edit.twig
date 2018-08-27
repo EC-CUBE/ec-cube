@@ -12,35 +12,11 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'news'] %}
 
-{% block title %}新着情報設定{% endblock %}
-{% block sub_title %}コンテンツ管理{% endblock %}
+
+{% block title %}{{ 'admin.content.news_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
-
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
-{% endblock stylesheet %}
-
-{% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
-    <script>
-        $(function () {
-            var inputDate = document.createElement('input');
-            inputDate.setAttribute('type', 'date');
-            if (inputDate.type !== 'date') {
-                $('#admin_news_publish_date').datetimepicker({
-                    locale: 'ja',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
-            }
-
-        });
-    </script>
-{% endblock javascript %}
 
 {% block main %}
     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="?">
@@ -52,7 +28,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <span class="card-title">新着情報</span></div>
+                                    <span class="card-title">{{ 'admin.content.news.news_registration'|trans }}</span></div>
                                 <div class="col-4 text-right">
                                     <a data-toggle="collapse" href="#newsForm"
                                                                  aria-expanded="true" aria-controls="newsForm"><i class="fa fa-lg fa-angle-up"></i></a></div>
@@ -61,21 +37,15 @@ file that was distributed with this source code.
                         <div class="ec-cardCollapse collapse show" id="newsForm" style="">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-3"><span>公開日時</span></div>
+                                    <div class="col-3"><span>{{ 'admin.content.news.publish_date'|trans }}</span></div>
                                     <div class="col mb-2">
-                                        <div class="row">
-                                            <div class="col-2 pr-2">
-                                                {{ form_widget(form.publish_date.date) }}
-                                            </div>
-                                            <div class="col-2 px-0">
-                                                {{ form_widget(form.publish_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
-                                            </div>
-                                        </div>
+                                        {{ form_widget(form.publish_date) }}
+                                        {{ form_errors(form.publish_date) }}
                                     </div>
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-3"><span>タイトル</span></div>
+                                    <div class="col-3"><span>{{ 'admin.content.news.title'|trans }}</span></div>
                                     <div class="col mb-2">
                                         {{ form_widget(form.title) }}
                                         {{ form_errors(form.title) }}
@@ -83,7 +53,7 @@ file that was distributed with this source code.
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-3"><span>URL</span></div>
+                                    <div class="col-3"><span>{{ 'admin.content.news.url'|trans }}</span></div>
                                     <div class="col mb-2">
                                         {{ form_widget(form.url) }}
                                         {{ form_errors(form.url) }}
@@ -99,7 +69,7 @@ file that was distributed with this source code.
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-3"><span>本文</span></div>
+                                    <div class="col-3"><span>{{ 'admin.content.news.body'|trans }}</span></div>
                                     <div class="col mb-2">
                                         {{ form_widget(form.description) }}
                                         {{ form_errors(form.description) }}
@@ -135,7 +105,7 @@ file that was distributed with this source code.
                                 <div class="c-conversionArea__leftBlockItem">
                                     <a class="c-beseLink" href="{{ url('admin_content_news') }}">
                                         <i class="fa fa-backward" aria-hidden="true"></i>
-                                        <span>新着情報一覧</span></a>
+                                        <span>{{ 'admin.content.news_management'|trans }}</span></a>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -145,9 +115,7 @@ file that was distributed with this source code.
                                         {{ form_errors(form.visible) }}
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-ec-conversion px-5" type="submit">
-                                            登録
-                                        </button>
+                                        <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
                                     </div>
                                 </div>
                             </div>
