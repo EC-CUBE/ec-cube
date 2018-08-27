@@ -14,6 +14,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Event\EventArgs;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
@@ -24,26 +25,6 @@ class AbstractShoppingController extends AbstractController
      * @var PurchaseFlow
      */
     protected $purchaseFlow;
-
-    /**
-     * @var PurchaseContext
-     */
-    protected $purchaseContext;
-
-    /**
-     * @var string 非会員用セッションキー
-     */
-    protected $sessionKey = 'eccube.front.shopping.nonmember';
-
-    /**
-     * @var string 非会員用セッションキー
-     */
-    protected $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
-
-    /**
-     * @var string 受注IDキー
-     */
-    protected $sessionOrderKey = 'eccube.front.shopping.order.id';
 
     /**
      * @param PurchaseFlow $shoppingPurchaseFlow
@@ -71,5 +52,18 @@ class AbstractShoppingController extends AbstractController
         }
 
         return $flowResult;
+    }
+
+    /**
+     * @param $eventName
+     * @param EventArgs $event
+     *
+     * @return EventArgs
+     */
+    protected function dispatchEvent($eventName, EventArgs $event)
+    {
+        $this->eventDispatcher->dispatch($eventName, $event);
+
+        return $event;
     }
 }

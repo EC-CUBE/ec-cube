@@ -146,25 +146,25 @@ file that was distributed with this source code.
             
             // お届け時間の初期表示
             $('#order_Shipping_Delivery').change();
-        });
 
-        // 配送業者選択時にお届け時間を設定
-        var times = {{ shippingDeliveryTimes|raw }};
-        $('#order_Shipping_Delivery').change(function(){
-            var deliveryId = $(this).val();
-            var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
-            $shippingDeliveryTime.find('option').remove();
-            $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
-            if (typeof(times[deliveryId]) !== 'undefined') {
-                for (var timeId in times[deliveryId]){
-                    timeValue = times[deliveryId][timeId];
-                    $shippingDeliveryTime.append($('<option></option>')
-                        .val(timeId)
-                        .text(timeValue));
+
+            // 配送業者選択時にお届け時間を設定
+            var times = {{ shippingDeliveryTimes|raw }};
+            $('#order_Shipping_Delivery').change(function(){
+                var deliveryId = $(this).val();
+                var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
+                $shippingDeliveryTime.find('option').remove();
+                $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
+                if (typeof(times[deliveryId]) !== 'undefined') {
+                    for (var timeId in times[deliveryId]){
+                        timeValue = times[deliveryId][timeId];
+                        $shippingDeliveryTime.append($('<option></option>')
+                            .val(timeId)
+                            .text(timeValue));
+                    }
                 }
-            }
+            });
         });
-
     </script>
 {% endblock javascript %}
 
@@ -186,7 +186,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.order_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.order_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderOverview" aria-expanded="false" aria-controls="orderOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -200,7 +200,7 @@ file that was distributed with this source code.
                                             <div class="col">{{ Order.order_no }}</div>
                                         </div>
                                         <div class="row mb-3 form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-tooltip="true" data-placement="top" title="Tooltip"></i></label>
                                             <div class="col">
                                                 {% if Order.id is not empty %}
                                                     {{ form_widget(form.OrderStatus) }}
@@ -278,7 +278,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-2">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.orderer'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.orderer'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col">{% if id %}<span class="mr-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.full_name }} ({{ Order.full_name_kana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
                                 <div class="col-1 text-right"><a class="d-block" data-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo"><i class="fa {{ id ? 'fa-angle-down' : 'fa-angle-up' }} fa-lg"></i></a></div>
@@ -313,7 +313,7 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row">
-                                            <label class="col-3">{{ 'admin.customer.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
+                                            <label class="col-3">{{ 'admin.customer.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-tooltip="true" data-placement="top" title="Tooltip"></i></label>
                                             <div class="col">
                                                 <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
                                                 {{ form_widget(form.Customer) }}
@@ -421,7 +421,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.shipping_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.shipping_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#shippingInfo" aria-expanded="false" aria-controls="shippingInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -590,7 +590,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderItem" aria-expanded="false" aria-controls="orderItem"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -749,7 +749,7 @@ file that was distributed with this source code.
                                                     {# 複数配送の場合は商品を削除できない #}
                                                     {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
                                                         <div class="col-auto text-center">
-                                                            <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                            <div class="d-inline-block mr-3" data-tooltip="true"
                                                                  data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon disabled">
                                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
@@ -758,7 +758,7 @@ file that was distributed with this source code.
                                                         </div>
                                                     {% else %}
                                                         <div class="col-auto text-center">
-                                                            <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                            <div class="d-inline-block mr-3" data-tooltip="true"
                                                                  data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}">
                                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
@@ -852,7 +852,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea" aria-expanded="false" aria-controls="freeArea"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>

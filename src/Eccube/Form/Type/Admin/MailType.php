@@ -31,10 +31,10 @@ class MailType extends AbstractType
         $builder
             ->add('template', MailTemplateType::class, [
                 'required' => true,
+                'mapped' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
-                'mapped' => false,
             ])
             ->add('mail_subject', TextType::class, [
                 'required' => true,

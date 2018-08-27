@@ -237,7 +237,7 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
                                              title="Tooltip">
                                             <span class="card-title">{{ 'admin.order.shipping__card_title'|trans }}({{ loop.index }})</span>
                                             <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
@@ -246,7 +246,7 @@ file that was distributed with this source code.
                                     <div class="col-4 text-right">
                                         {% if form.shippings|length > 1 %}
                                             <!-- 出荷が2つ以上ある場合は, 出荷の削除ボタンを表示する -->
-                                            <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#delete_shipping_{{ shippingForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                            <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#delete_shipping_{{ shippingForm.vars.id }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                 {{ 'admin.order.delete_shipping'|trans }}
                                             </a>
@@ -471,7 +471,7 @@ file that was distributed with this source code.
                                                 <div class="col">
                                                     {% if shippingForm.vars.value.shipping_date %}
                                                         {# 登録済みの出荷で出荷日が設定されている場合は出荷日を表示する #}
-                                                        <span>{{ shippingForm.vars.value.shipping_date|date_day }}</span>
+                                                        <span>{{ shippingForm.vars.value.shipping_date|date_min }}</span>
                                                     {% elseif shippingForm.vars.value.id %}
                                                         {# 登録済みの出荷で出荷日が設定されていない場合 #}
                                                         <!-- 出荷済にするボタン -->
@@ -480,7 +480,7 @@ file that was distributed with this source code.
                                                            data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
                                                            data-update-status-url="{{ url('admin_shipping_update_order_status', { id: shippingForm.vars.value.id}) }}"
                                                            data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: shippingForm.vars.value.id}) }}"
-                                                           data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
+                                                           data-tooltip="true" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
                                                             <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                             {{ 'admin.order.to_shipped'|trans }}
                                                         </button>
@@ -614,7 +614,7 @@ file that was distributed with this source code.
                                                     <td class="align-middle text-right pr-3">
                                                         <div class="row justify-content-end">
                                                             <div class="col-auto text-center">
-                                                                <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                                <div class="d-inline-block mr-3" data-tooltip="true"
                                                                      data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                     <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}">
                                                                         <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>

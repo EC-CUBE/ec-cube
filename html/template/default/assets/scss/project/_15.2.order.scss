@@ -267,7 +267,7 @@ Styleguide 15.2.6
 
   }
   & &__select {
-
+    margin-bottom: 5px;
   }
   & &__selectAddress {
     display: inline-block;
@@ -299,5 +299,8 @@ Styleguide 15.2.6
     .ec-blockBtn--action {
       margin-bottom: 8px;
     }
+  }
+  & &__new {
+    margin-bottom: 20px;
   }
 }
