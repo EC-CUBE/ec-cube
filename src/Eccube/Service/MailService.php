@@ -397,6 +397,20 @@ class MailService
 
         $count = $this->mailer->send($message);
 
+        $MailHistory = new MailHistory();
+        $MailHistory->setMailSubject($message->getSubject())
+            ->setMailBody($message->getBody())
+            ->setOrder($Order)
+            ->setSendDate(new \DateTime());
+
+        // HTML用メールの設定
+        $multipart = $message->getChildren();
+        if (count($multipart) > 0) {
+            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+        }
+
+        $this->mailHistoryRepository->save($MailHistory);
+
         log_info('受注メール送信完了', ['count' => $count]);
 
         return $message;
@@ -486,16 +500,8 @@ class MailService
             ->setTo([$Order->getEmail()])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
-
-        if (is_null($formData['html_tpl_data'])) {
-            $message->setBody($formData['tpl_data']);
-        } else {
-            $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($formData['tpl_data'], 'text/plain')
-                ->addPart($formData['html_tpl_data'], 'text/html');
-        }
+            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBody($formData['tpl_data']);
 
         $event = new EventArgs(
             [

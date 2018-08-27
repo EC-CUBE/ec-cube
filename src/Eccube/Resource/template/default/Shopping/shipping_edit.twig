@@ -145,7 +145,11 @@ file that was distributed with this source code.
                             <div class="ec-off4Grid">
                                 <div class="ec-off4Grid__cell">
                                     <button type="submit" class="ec-blockBtn--action">{{ 'common.registration'|trans }}</button>
-                                    <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
+                                    {% if is_granted('ROLE_USER') %}
+                                    <a href="{{ url('shopping_shipping', { 'id': shippingId }) }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
+                                    {% else %}
+                                        <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

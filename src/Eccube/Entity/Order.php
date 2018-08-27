@@ -477,6 +477,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
+         *
          * @var \Eccube\Entity\Master\CustomerOrderStatus
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
@@ -488,6 +489,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
+         *
          * @var \Eccube\Entity\Master\OrderStatusColor
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
@@ -1637,7 +1639,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set orderStatus.
          *
-         * @param \Eccube\Entity\Master\OrderStatus|null $orderStatus
+         * @param \Eccube\Entity\Master\OrderStatus|null|object $orderStatus
          *
          * @return Order
          */

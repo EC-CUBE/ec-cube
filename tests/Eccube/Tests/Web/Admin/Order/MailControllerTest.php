@@ -104,7 +104,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
-                'mail' => $form,
+                'admin_order_mail' => $form,
                 'mode' => 'complete',
             ]
         );
@@ -165,7 +165,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->generateUrl('admin_order_mail_all'),
             [
-                'mail' => $form,
+                'admin_order_mail' => $form,
                 'mode' => 'complete',
                 'ids' => implode(',', $ids),
             ]

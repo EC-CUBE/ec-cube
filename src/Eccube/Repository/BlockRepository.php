@@ -45,23 +45,6 @@ class BlockRepository extends AbstractRepository
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @deprecated 呼び出し元で制御する
-     *
-     * @param $block_id
-     * @param $DeviceType
-     *
-     * @return Block|null
-     */
-    public function findOrCreate($block_id, $DeviceType)
-    {
-        if ($block_id == null) {
-            return $this->newBlock($DeviceType);
-        } else {
-            return $this->getBlock($block_id, $DeviceType);
-        }
-    }
-
     public function newBlock($DeviceType)
     {
         $Block = new \Eccube\Entity\Block();
@@ -69,40 +52,6 @@ class BlockRepository extends AbstractRepository
             ->setDeviceType($DeviceType)
             ->setUseController(false)
             ->setDeletable(true);
-
-        return $Block;
-    }
-
-    /**
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    private function getNewBlockId($DeviceType)
-    {
-        $qb = $this->createQueryBuilder('b')
-            ->select('max(b.id) +1 as block_id')
-            ->where('b.DeviceType = :DeviceType')
-            ->setParameter('DeviceType', $DeviceType);
-        $result = $qb->getQuery()->getSingleResult();
-
-        return $result['block_id'];
-    }
-
-    /**
-     * ブロックの情報を取得.
-     *
-     * @deprecated Use magic finder methods. BlockRepository::findOneByIdAndDeviceType()
-     *
-     * @param  integer $block_id ブロックID
-     * @param  \Eccube\Entity\Master\DeviceType $DeviceType
-     *
-     * @return Block
-     */
-    public function getBlock($block_id, $DeviceType)
-    {
-        $Block = $this->findOneBy([
-            'id' => $block_id,
-            'DeviceType' => $DeviceType,
-        ]);
 
         return $Block;
     }
@@ -126,41 +75,5 @@ class BlockRepository extends AbstractRepository
             ->getResult();
 
         return $Blocks;
-    }
-
-    /**
-     * ページの属性を取得する.
-     *
-     * この関数は, dtb_pagelayout の情報を検索する.
-     * $deviceTypeId は必須. デフォルト値は DEVICE_TYPE_PC.
-     *
-     * @param  DeviceType $DeviceType 端末種別ID
-     * @param  string $where 追加の検索条件
-     * @param  string[] $parameters 追加の検索パラメーター
-     *
-     * @return array                             ページ属性の配列
-     *
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function getPageList(DeviceType $DeviceType, $where = null, $parameters = [])
-    {
-        $qb = $this->createQueryBuilder('l')
-            ->orderBy('l.id', 'DESC')
-            ->where('l.DeviceType = :DeviceType')
-            ->setParameter('DeviceType', $DeviceType)
-            ->andWhere('l.id <> 0')
-            ->orderBy('l.id', 'ASC');
-        if (!is_null($where)) {
-            $qb->andWhere($where);
-            foreach ($parameters as $key => $val) {
-                $qb->setParameter($key, $val);
-            }
-        }
-
-        $Pages = $qb
-            ->getQuery()
-            ->getResult();
-
-        return $Pages;
     }
 }
