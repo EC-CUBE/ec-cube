@@ -105,9 +105,9 @@ class ProductController extends AbstractController
     public function index(Request $request, Paginator $paginator)
     {
         // Doctrine SQLFilter
-        // if ($this->BaseInfo->isOptionNostockHidden()) {
-        //     $this->entityManager->getFilters()->enable('option_nostock_hidden');
-        // }
+         if ($this->BaseInfo->isOptionNostockHidden()) {
+             $this->entityManager->getFilters()->enable('option_nostock_hidden');
+         }
 
         // handleRequestは空のqueryの場合は無視するため
         if ($request->getMethod() === 'GET') {
