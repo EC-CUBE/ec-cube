@@ -1877,20 +1877,20 @@ class CartValidationTest extends AbstractWebTestCase
         $paymentForm = [
             '_token' => 'dummy',
             'Payment' => 4,
+            'use_point' => 0,
             'message' => $this->getFaker()->paragraph,
             'Shippings' => [
                 ['Delivery' => 1],
             ],
         ];
         $this->client->request('POST', $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
-        $this->client->followRedirect();
-        $crawler = $this->client->followRedirect();
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_error')));
 
         // THEN
         // check message error
+        $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
         $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1924,20 +1924,20 @@ class CartValidationTest extends AbstractWebTestCase
         $paymentForm = [
             '_token' => 'dummy',
             'Payment' => 4, // change payment
+            'use_point' => 0,
             'message' => $this->getFaker()->paragraph,
             'Shippings' => [
                 ['Delivery' => 1],
             ],
         ];
         $this->client->request('POST', $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
-        $this->client->followRedirect();
-        $crawler = $this->client->followRedirect();
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_error')));
 
         // THEN
         // check message error
+        $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
         $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1972,21 +1972,21 @@ class CartValidationTest extends AbstractWebTestCase
         $paymentForm = [
             '_token' => 'dummy',
             'Payment' => 4, // change payment
+            'use_point' => 0,
             'message' => $this->getFaker()->paragraph,
             'Shippings' => [
                 ['Delivery' => 1],
             ],
         ];
         $this->client->request('POST', $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
-        $this->client->followRedirect();
-        $crawler = $this->client->followRedirect();
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_error')));
 
         // THEN
         // check message error
+        $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
         $this->assertContains('選択された商品('.$this->getProductName($ProductClass).')の在庫が不足しております。', $message);
         $this->assertContains('該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -2021,22 +2021,20 @@ class CartValidationTest extends AbstractWebTestCase
         $paymentForm = [
             '_token' => 'dummy',
             'Payment' => 4, // change payment
+            'use_point' => 0,
             'message' => $this->getFaker()->paragraph,
             'Shippings' => [
                 ['Delivery' => 1],
             ],
         ];
         $this->client->request('POST', $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
-
-        // only one redirect (shopping 1)
-        $this->client->followRedirect();
-        $crawler = $this->client->followRedirect();
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_error')));
 
         // THEN
         // check message error
+        $crawler = $this->client->followRedirect();
         $message = $crawler->filter('.ec-layoutRole__main')->text();
         $this->assertContains('選択された商品('.$this->getProductName($ProductClass).')の在庫が不足しております。', $message);
-        $this->assertContains((string) $stock, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**
@@ -2074,23 +2072,21 @@ class CartValidationTest extends AbstractWebTestCase
         $paymentForm = [
             '_token' => 'dummy',
             'Payment' => 4, // change payment
+            'use_point' => 0,
             'message' => $this->getFaker()->paragraph,
             'Shippings' => [
                 ['Delivery' => 1],
             ],
         ];
         $this->client->request('POST', $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
-
-        // only one redirect (shopping 1)
-        $this->client->followRedirect();
-        $crawler = $this->client->followRedirect();
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_error')));
 
         // THEN
         // check message error
+        $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
         $this->assertContains('選択された商品('.$this->getProductName($ProductClass).')は販売制限しております。', $message);
         $this->assertContains('一度に販売制限数を超える購入はできません。', $message);
-        $this->assertContains((string) $saleLimit, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**

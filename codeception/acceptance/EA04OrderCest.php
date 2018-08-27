@@ -13,6 +13,7 @@
 
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\OrderEditPage;
 use Page\Admin\OrderManagePage;
@@ -135,6 +136,7 @@ class EA04OrderCest
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $newOrders */
         $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::NEW);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());

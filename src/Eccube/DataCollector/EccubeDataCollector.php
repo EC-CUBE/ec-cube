@@ -120,8 +120,18 @@ class EccubeDataCollector extends DataCollector
             $enabled = $this->container->getParameter('eccube.plugins.enabled');
             $disabled = $this->container->getParameter('eccube.plugins.disabled');
 
+            $Plugins = $this->pluginRepository->findAll();
             foreach (array_merge($enabled, $disabled) as $code) {
-                $Plugin = $this->pluginRepository->findOneBy(['code' => $code]);
+                $Plugin = null;
+
+                /* @var Plugin $Plugin */
+                foreach ($Plugins as $p) {
+                    if ($code == $p->getCode()) {
+                        $Plugin = $p;
+                        break;
+                    }
+                }
+
                 if (!$Plugin) {
                     $Plugin = new Plugin();
                     $Plugin->setCode($code);

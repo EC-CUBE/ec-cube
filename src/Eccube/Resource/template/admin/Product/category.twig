@@ -181,7 +181,7 @@ file that was distributed with this source code.
             <div id="ex-primaryCol" class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
-                        <div class="card rounded border-0 mb-2">
+                        <div class="card rounded border-0">
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
                                     <form role="form" name="form1" id="form1" method="post"
@@ -225,9 +225,8 @@ file that was distributed with this source code.
                                         <li id="ex-category-{{ Category.id }}" class="list-group-item sortable-item" data-id="{{ Category.id }}" data-sort-no="{{ Category.sort_no }}">
                                             {% if Category.id != TargetCategory.id %}
                                                 <div class="row justify-content-around mode-view">
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <i class="fa fa-bars text-ec-gray"></i>
-                                                    </div>
+                                                    <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
+                                                    <div class="col-auto d-flex align-items-center">{{ Category.id }}</div>
                                                     <div class="col d-flex align-items-center">
                                                         <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
                                                     </div>

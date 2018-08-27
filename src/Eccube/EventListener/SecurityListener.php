@@ -19,6 +19,7 @@ use Eccube\Entity\Member;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Service\OrderHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\AuthenticationEvents;
@@ -69,7 +70,7 @@ class SecurityListener implements EventSubscriberInterface
             $this->cartService->save();
             if (count($this->cartService->getCarts()) > 1) {
                 // カートが分割されていればメッセージを表示
-                $event->getRequest()->getSession()->set('cart.divide', true);
+                $event->getRequest()->getSession()->set(OrderHelper::SESSION_CART_DEVIDE_FLAG, true);
             }
         }
     }

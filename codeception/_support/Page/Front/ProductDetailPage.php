@@ -49,6 +49,7 @@ class ProductDetailPage extends AbstractFrontPage
     public function サムネイル切替($num)
     {
         $this->tester->click("div:nth-child(1) > div > div.item_nav > div:nth-child(${num})");
+
         return $this;
     }
 

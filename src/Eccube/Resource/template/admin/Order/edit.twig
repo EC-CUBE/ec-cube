@@ -168,25 +168,24 @@ file that was distributed with this source code.
                 });
             };
             confirmFormChange($('#form1'), $('a[data-action="confirm"]'), $('#confirmFormChangeModal'))
-        });
 
-        // 配送業者選択時にお届け時間を設定
-        var times = {{ shippingDeliveryTimes|raw }};
-        $('#order_Shipping_Delivery').change(function(){
-            var deliveryId = $(this).val();
-            var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
-            $shippingDeliveryTime.find('option').remove();
-            $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
-            if (typeof(times[deliveryId]) !== 'undefined') {
-                for (var timeId in times[deliveryId]){
-                    timeValue = times[deliveryId][timeId];
-                    $shippingDeliveryTime.append($('<option></option>')
-                        .val(timeId)
-                        .text(timeValue));
+            // 配送業者選択時にお届け時間を設定
+            var times = {{ shippingDeliveryTimes|raw }};
+            $('#order_Shipping_Delivery').change(function(){
+                var deliveryId = $(this).val();
+                var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
+                $shippingDeliveryTime.find('option').remove();
+                $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
+                if (typeof(times[deliveryId]) !== 'undefined') {
+                    for (var timeId in times[deliveryId]){
+                        timeValue = times[deliveryId][timeId];
+                        $shippingDeliveryTime.append($('<option></option>')
+                            .val(timeId)
+                            .text(timeValue));
+                    }
                 }
-            }
+            });
         });
-
     </script>
 {% endblock javascript %}
 
@@ -945,7 +944,11 @@ file that was distributed with this source code.
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <p>
-                                                                        {{ MailHistory.mail_body|nl2br }}
+                                                                        {% if MailHistory.mail_html_body|length > 0 %}
+                                                                            {{ MailHistory.mail_html_body|trans|raw }}
+                                                                        {% else %}
+                                                                            {{ MailHistory.mail_body|nl2br }}
+                                                                        {% endif %}
                                                                     </p>
                                                                 </div>
                                                                 <div class="modal-footer">

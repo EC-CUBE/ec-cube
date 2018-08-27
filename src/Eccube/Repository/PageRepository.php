@@ -190,24 +190,6 @@ class PageRepository extends AbstractRepository
     }
 
     /**
-     * @param int $page_id
-     * @param DeviceType $DeviceType
-     *
-     * @return Page|mixed
-     */
-    public function findOrCreate($page_id, DeviceType $DeviceType)
-    {
-        if (is_null($page_id)) {
-            $Page = $this
-                ->newPage($DeviceType);
-
-            return $Page;
-        } else {
-            return $this->getByDeviceTypeAndId($DeviceType, $page_id);
-        }
-    }
-
-    /**
      * ページの属性を取得する.
      *
      * この関数は, dtb_Page の情報を検索する.

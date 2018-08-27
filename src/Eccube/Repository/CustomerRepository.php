@@ -172,12 +172,12 @@ class CustomerRepository extends AbstractRepository
         }
 
         // buy_times
-        if (!empty($searchData['buy_times_start']) && $searchData['buy_times_start']) {
+        if (isset($searchData['buy_times_start']) && StringUtil::isNotBlank($searchData['buy_times_start'])) {
             $qb
                 ->andWhere('c.buy_times >= :buy_times_start')
                 ->setParameter('buy_times_start', $searchData['buy_times_start']);
         }
-        if (!empty($searchData['buy_times_end']) && $searchData['buy_times_end']) {
+        if (isset($searchData['buy_times_end']) && StringUtil::isNotBlank($searchData['buy_times_end'])) {
             $qb
                 ->andWhere('c.buy_times <= :buy_times_end')
                 ->setParameter('buy_times_end', $searchData['buy_times_end']);
@@ -356,8 +356,7 @@ class CustomerRepository extends AbstractRepository
 
         $arr = [
             OrderStatus::NEW,
-            OrderStatus::PAY_WAIT,
-            OrderStatus::BACK_ORDER,
+            OrderStatus::IN_PROGRESS,
             OrderStatus::DELIVERED,
             OrderStatus::PAID,
         ];
