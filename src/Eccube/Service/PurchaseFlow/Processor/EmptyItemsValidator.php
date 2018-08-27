@@ -45,18 +45,22 @@ class EmptyItemsValidator extends ItemHolderValidator
      */
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if (!$itemHolder instanceof Order) {
-            return;
-        }
-
         foreach ($itemHolder->getItems() as $item) {
             if ($item->isProduct() && $item->getQuantity() == 0) {
-                foreach ($itemHolder->getShippings() as $Shipping) {
-                    $Shipping->removeOrderItem($item);
+                if ($itemHolder instanceof Order) {
+                    foreach ($itemHolder->getShippings() as $Shipping) {
+                        $Shipping->removeOrderItem($item);
+                    }
+                    $itemHolder->removeOrderItem($item);
+                } else {
+                    $itemHolder->removeItem($item);
                 }
-                $itemHolder->removeOrderItem($item);
                 $this->entityManager->remove($item);
             }
+        }
+
+        if (!$itemHolder instanceof Order) {
+            return;
         }
 
         foreach ($itemHolder->getShippings() as $Shipping) {

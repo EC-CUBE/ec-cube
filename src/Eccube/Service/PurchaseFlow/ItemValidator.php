@@ -35,6 +35,8 @@ abstract class ItemValidator
 
             return ProcessResult::success(null, static::class);
         } catch (InvalidItemException $e) {
+            $this->handle($item, $context);
+
             return ProcessResult::warn($e->getMessage(), static::class);
         }
     }

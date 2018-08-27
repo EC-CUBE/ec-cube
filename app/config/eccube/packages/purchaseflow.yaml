@@ -32,6 +32,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\EmptyItemsValidator'  # 空明細の削除処理
 
     # Purchase Flow for Shopping
 

@@ -299,6 +299,14 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         }
 
         /**
+         * @param ItemInterface $item
+         */
+        public function removeItem(ItemInterface $item)
+        {
+            $this->CartItems->removeElement($item);
+        }
+
+        /**
          * 個数の合計を返します。
          *
          * @return integer
