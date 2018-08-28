@@ -14,7 +14,6 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\Delivery;
-use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Payment;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
