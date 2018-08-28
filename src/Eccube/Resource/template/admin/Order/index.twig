@@ -539,11 +539,11 @@ file that was distributed with this source code.
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     {% if Order.message is not empty %}
-                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_message" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.message }}" aria-describedby="tooltip819464">
+                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_message" data-tooltip="true" data-placement="top" title="" data-original-title="{{ Order.message }}" aria-describedby="tooltip819464">
                                                             <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
                                                     {% elseif Order.note is not empty %}
-                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
+                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-tooltip="true" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
                                                             <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
                                                     {% endif %}
@@ -562,7 +562,7 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                     {% if Shipping.mail_send_date %}
                                                         {% set send_mail_date = Shipping.mail_send_date|date_min %}
-                                                        <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{ 'admin.order.shipping_mail__completed'|trans({'%date%': send_mail_date}) }}"></i>
+                                                        <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-tooltip="true" data-placement="top" data-original-title="{{ 'admin.order.shipping_mail__completed'|trans({'%date%': send_mail_date}) }}"></i>
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle text-center">
@@ -590,7 +590,7 @@ file that was distributed with this source code.
                                                             </a>
                                                         </div>
                                                         <div class="col-auto text-center">
-                                                            <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.output_delivery_note_short'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-tooltip="true" data-placement="top" title data-original-title="{{ 'admin.order.output_delivery_note_short'|trans }}">
                                                                 <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
@@ -600,7 +600,7 @@ file that was distributed with this source code.
                                                                data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
                                                                data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
                                                                data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
-                                                               data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
+                                                               data-tooltip="true" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
                                                                 <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
@@ -641,7 +641,7 @@ file that was distributed with this source code.
 
                 <!-- 出荷済にする確認モーダル -->
                 <div class="modal fade" id="sentUpdateModal" tabindex="-1" role="dialog" aria-labelledby="sentUpdateModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title font-weight-bold"><!--confirmationModal_js.twig--></h5>

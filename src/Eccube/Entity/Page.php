@@ -107,13 +107,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
         private $keyword;
 
         /**
-         * @var string|null
-         *
-         * @ORM\Column(name="update_url", type="string", length=255, nullable=true)
-         */
-        private $update_url;
-
-        /**
          * @var \DateTime
          *
          * @ORM\Column(name="create_date", type="datetimetz")
@@ -354,30 +347,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
         public function getKeyword()
         {
             return $this->keyword;
-        }
-
-        /**
-         * Set updateUrl.
-         *
-         * @param string|null $updateUrl
-         *
-         * @return Page
-         */
-        public function setUpdateUrl($updateUrl = null)
-        {
-            $this->update_url = $updateUrl;
-
-            return $this;
-        }
-
-        /**
-         * Get updateUrl.
-         *
-         * @return string|null
-         */
-        public function getUpdateUrl()
-        {
-            return $this->update_url;
         }
 
         /**

@@ -587,8 +587,6 @@ class Generator
             ->setOrder($Order)
             ->setPref($Pref)
             ->setDelivery($Delivery)
-            ->setFeeId($DeliveryFee->getId())
-            ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
 
         $Order->addShipping($Shipping);
@@ -644,12 +642,11 @@ class Generator
             $Order->addOrderItem($OrderItem);
         }
 
-        $shipment_delivery_fee = $Shipping->getShippingDeliveryFee();
         $OrderItemDeliveryFee = new OrderItem();
         $OrderItemDeliveryFee->setShipping($Shipping)
             ->setOrder($Order)
             ->setProductName('送料')
-            ->setPrice($shipment_delivery_fee)
+            ->setPrice($fee)
             ->setQuantity(1)
             ->setTaxType($Taxion) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込

@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\MailTemplate;
-use Eccube\Repository\MailTemplateRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
