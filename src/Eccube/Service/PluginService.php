@@ -648,6 +648,10 @@ class PluginService
             $this->callPluginManagerMethod($meta, 'update');
             $em->flush();
             $em->getConnection()->commit();
+
+            $generatedFiles = $this->regenerateProxy($plugin, false);
+            $this->schemaService->updateSchema($generatedFiles, $this->projectRoot.'/app/proxy/entity');
+
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
             throw $e;
