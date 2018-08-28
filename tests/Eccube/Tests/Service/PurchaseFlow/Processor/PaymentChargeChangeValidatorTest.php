@@ -47,7 +47,6 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->paymentRepository = $this->container->get(PaymentRepository::class);
         $this->validator = new PaymentChargeChangeValidator();
 
         $this->Customer = $this->createCustomer();
@@ -69,44 +68,25 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
         self::assertTrue($result->isSuccess());
     }
 
-    public function testValidateNoChargeItems()
+    public function testValidateNoCharged()
     {
-        foreach ($this->Order->getOrderItems() as $item) {
-            if ($item->isCharge()) {
-                $this->Order->removeOrderItem($item);
-            }
-        }
+        $CloneOrder = clone $this->Order;
+        $CloneOrder->setCharge(100);
+        $this->Order->setCharge(100);
 
-        $result = $this->validator->execute($this->Order, new PurchaseContext());
+        $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        // 手数料明細がない場合は何もしない..
         self::assertTrue($result->isSuccess());
     }
 
-    public function testValidateNoChanged()
+    public function testValidateChanged()
     {
-        $result = $this->validator->execute($this->Order, new PurchaseContext());
+        $CloneOrder = clone $this->Order;
+        $CloneOrder->setCharge(100);
+        $this->Order->setCharge(200);
 
-        // 差異がない場合はsuccess.
-        self::assertTrue($result->isSuccess());
-    }
+        $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-    public function testValidateChargeChanged()
-    {
-        // dtb_paymentのchargeを更新
-        $Payment = $this->Order->getPayment();
-        $Payment->setCharge($Payment->getCharge() + 1);
-
-        $result = $this->validator->execute($this->Order, new PurchaseContext());
-
-        // warningになるはず.
         self::assertTrue($result->isWarning());
-
-        foreach ($this->Order->getOrderItems() as $item) {
-            if ($item->isCharge()) {
-                // 手数料明細の金額が丸められている.
-                self::assertSame($Payment->getCharge(), $item->getPrice());
-            }
-        }
     }
 }
