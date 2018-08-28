@@ -204,34 +204,43 @@ class PluginService
     // インストール事後処理
     public function postInstall($config, $source)
     {
-        // Proxyのクラスをロードせずにスキーマを更新するために、
-        // インストール時には一時的なディレクトリにProxyを生成する
-        $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
-        @mkdir($tmpProxyOutputDir);
+        // dbにプラグイン登録
+        $plugin = $this->registerPlugin($config, $source);
+        $this->generateTempProxyAndUpdateSchema($plugin, $config);
+    }
 
-        try {
-            // dbにプラグイン登録
-            $plugin = $this->registerPlugin($config, $source);
+    public function generateTempProxyAndUpdateSchema(Plugin $plugin, $config)
+    {
+        if ($plugin->isEnabled()) {
+            $generatedFiles = $this->regenerateProxy($plugin, false);
+            $this->schemaService->updateSchema($generatedFiles, $this->projectRoot . '/app/proxy/entity');
+        } else {
+            // Proxyのクラスをロードせずにスキーマを更新するために、
+            // インストール時には一時的なディレクトリにProxyを生成する
+            $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
+            @mkdir($tmpProxyOutputDir);
 
-            // プラグインmetadata定義を追加
-            $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
-            if (file_exists($entityDir)) {
-                $ormConfig = $this->entityManager->getConfiguration();
-                $chain = $ormConfig->getMetadataDriverImpl();
-                $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
-                $namespace = 'Plugin\\'.$config['code'].'\\Entity';
-                $chain->addDriver($driver, $namespace);
-                $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+            try {
+                // プラグインmetadata定義を追加
+                $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+                if (file_exists($entityDir)) {
+                    $ormConfig = $this->entityManager->getConfiguration();
+                    $chain = $ormConfig->getMetadataDriverImpl();
+                    $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
+                    $namespace = 'Plugin\\'.$config['code'].'\\Entity';
+                    $chain->addDriver($driver, $namespace);
+                    $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+                }
+
+                // 一時的に利用するProxyを生成してからスキーマを更新する
+                $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
+                $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
+            } finally {
+                foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
+                    unlink($f);
+                }
+                rmdir($tmpProxyOutputDir);
             }
-
-            // インストール時には一時的に利用するProxyを生成してからスキーマを更新する
-            $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
-            $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
-        } finally {
-            foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
-                unlink($f);
-            }
-            rmdir($tmpProxyOutputDir);
         }
     }
 
@@ -648,9 +657,6 @@ class PluginService
             $this->callPluginManagerMethod($meta, 'update');
             $em->flush();
             $em->getConnection()->commit();
-
-            $generatedFiles = $this->regenerateProxy($plugin, false);
-            $this->schemaService->updateSchema($generatedFiles, $this->projectRoot.'/app/proxy/entity');
 
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
