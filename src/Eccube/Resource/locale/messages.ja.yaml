@@ -1209,13 +1209,15 @@ admin.store.template.invalid_upload_file: ファイルの拡張子に誤りが�
 admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
-admin.store.authentication_setting: 認証キー設定
-admin.store.authentication_setting.api_key: 認証キー
-admin.store.authentication_setting.api_key.get: 認証キー取得
-admin.store.authentication_setting.captcha.message: 画像に表示されている文字を入力してください。
-admin.store.authentication_setting.php_path.setting: PHPパスの設定
-admin.store.authentication_setting.php_path: PHPパス
-
+admin.store.setting: 設定
+admin.store.setting.api_key_setting: 認証キー設定
+admin.store.setting.api_key: 認証キー
+admin.store.setting.get_api_key: 認証キー取得
+admin.store.setting.captcha_message: 画像に表示されている文字を入力してください。
+admin.store.setting.php_path_setting: PHPパスの設定
+admin.store.setting.php_path: PHPパス
+admin.store.setting.invalid_captcha: 入力された文字列が正しくありません。
+admin.store.setting.captcha_error: エラー
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する

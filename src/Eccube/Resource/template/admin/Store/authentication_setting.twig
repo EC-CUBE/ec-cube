@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['store', 'authentication_setting'] %}
 
-{% block title %}{{'admin.store.authentication_setting.804'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.store.authentication_setting.803'|trans}}{% endblock %}
+{% block title %}{{ 'admin.store.setting'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.store'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -75,7 +75,7 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h5 class="box-title">{{'admin.store.authentication_setting.805'|trans}}</h5>
+                            <span>{{'admin.store.setting.api_key_setting'|trans}}</span>
                         </div>
 
                         <div class="card-body">
@@ -91,7 +91,7 @@ file that was distributed with this source code.
                                 </div>
 
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#captcha" type="button">
-                                    {{ 'admin.store.authentication_setting.api_key.get'|trans }}
+                                    {{ 'admin.store.setting.get_api_key'|trans }}
                                 </button>
                             </div>
                         </div>
@@ -99,7 +99,7 @@ file that was distributed with this source code.
 
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h5 class="box-title">{{'admin.store.authentication_setting.php_path.setting'|trans}}</h5>
+                            <h5 class="box-title">{{'admin.store.setting.php_path_setting'|trans}}</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -127,13 +127,13 @@ file that was distributed with this source code.
                         <div class="c-conversionArea__leftBlockItem">
                             <a class="c-beseLink" href="{{ url('admin_store_plugin') }}">
                                 <i class="fa fa-backward" aria-hidden="true"></i>
-                                <span>プラグイン一覧へ</span></a>
+                                <span>{{ 'admin.store.plugin.plugin_list'|trans }}</span></a>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">{{'admin.store.authentication_setting.808'|trans}}</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{'admin.common.registration'|trans}}</button>
                             </div>
                         </div>
                     </div>
@@ -147,22 +147,22 @@ file that was distributed with this source code.
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title font-weight-bold">{{ 'admin.store.authentication_setting.api_key.get'|trans }}</h5>
+                        <h5 class="modal-title font-weight-bold">{{ 'admin.store.setting.get_api_key'|trans }}</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                     </div>
                     <div class="modal-body text-left">
                         <img id="captcha_image" class="mb-2" src="{{ eccube_config.eccube_package_repo_url }}/captcha">
                         <button id="captcha-refresh" type="button" class="btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i></button>
-                        <input type="text" id="captcha_text" value="" class="form-control" placeholder="{{ 'admin.store.authentication_setting.captcha.message'|trans }}"/>
+                        <input type="text" id="captcha_text" value="" class="form-control" placeholder="{{ 'admin.store.setting.captcha_message'|trans }}"/>
                         <span id="captcha_error" class="invalid-feedback" style="display: none">
                             <span class="mb-0 d-block">
-                                <span class="initialism form-error-icon badge badge-danger">エラー</span> <span class="form-error-message">入力された文字列が正しくありません。</span>
+                                <span class="initialism form-error-icon badge badge-danger">{{ 'admin.store.setting.captcha_error'|trans }}</span> <span class="form-error-message">{{ 'admin.store.setting.invalid_captcha'|trans }}</span>
                             </span>
                         </span>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.cancel'|trans }}</button>
-                        <button id="generate_key" class="btn btn-ec-conversion" type="button">{{ 'admin.store.authentication_setting.api_key.get'|trans }}</button>
+                        <button id="generate_key" class="btn btn-ec-conversion" type="button">{{ 'admin.store.setting.get_api_key'|trans }}</button>
                     </div>
                 </div>
             </div>
