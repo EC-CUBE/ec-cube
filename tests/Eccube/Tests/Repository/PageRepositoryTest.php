@@ -45,7 +45,7 @@ class PageRepositoryTest extends EccubeTestCase
         $Blocks = $this->pageRepo->findUnusedBlocks($this->DeviceType, 1);
 
         // Current: total 13, used: 7 (1,7,8,10,11,12,13)
-        $this->expected = 7;
+        $this->expected = 5;
         $this->actual = count($Blocks);
         $this->verify();
     }
