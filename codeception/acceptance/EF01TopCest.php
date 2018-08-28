@@ -59,7 +59,7 @@ class EF01TopCest
         $newsAll = $findNews();
         foreach ($newsAll as $index => $news) {
             $rowNum = $index + 1;
-            $I->see($news['title'], 'div.ec-news .ec-news__item:nth-child('.$rowNum.') .ec-newsline__title');
+            $I->see($news['title'], '#page_homepage > div.ec-layoutRole > div.ec-layoutRole__contents > div > div.ec-layoutRole__mainBottom > div:nth-child(6) > div > div.ec-newsRole__news > div:nth-child('.$rowNum.') > div.ec-newsRole__newsHeading > div.ec-newsRole__newsColumn > div.ec-newsRole__newsTitle');
             // 5件を超えるとread moreが表示される.
             if ($rowNum > 5) {
                 break;

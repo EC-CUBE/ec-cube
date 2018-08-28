@@ -56,7 +56,7 @@ class EF03OrderCest
             ->お買い物を続ける();
 
         // トップページ
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_一覧からカートに入れる(\AcceptanceTester $I)
@@ -173,7 +173,7 @@ class EF03OrderCest
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_ゲスト購入(\AcceptanceTester $I)
@@ -237,7 +237,7 @@ class EF03OrderCest
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_ゲスト購入情報変更(\AcceptanceTester $I)
@@ -316,7 +316,7 @@ class EF03OrderCest
 
         // topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     /**
@@ -381,7 +381,7 @@ class EF03OrderCest
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_ログインユーザ購入複数配送(\AcceptanceTester $I)
@@ -522,7 +522,7 @@ class EF03OrderCest
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_ログイン後に複数カートになればカートに戻す(\AcceptanceTester $I)
@@ -729,7 +729,7 @@ class EF03OrderCest
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     /**
@@ -887,7 +887,7 @@ class EF03OrderCest
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_複数配送設定画面での販売制限エラー(\AcceptanceTester $I)

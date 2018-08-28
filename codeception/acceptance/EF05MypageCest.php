@@ -163,7 +163,7 @@ class EF05MypageCest
         $I->click('div.ec-registerCompleteRole a.ec-blockBtn--cancel');
 
         // TOPページヘ遷移する
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function mypage_お届け先編集表示(\AcceptanceTester $I)
@@ -308,6 +308,6 @@ class EF05MypageCest
         $I->click('div.ec-withdrawCompleteRole a.ec-blockBtn--cancel');
 
         // TOPページヘ遷移する
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 }

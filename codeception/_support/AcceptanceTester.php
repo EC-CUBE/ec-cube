@@ -92,8 +92,8 @@ class AcceptanceTester extends \Codeception\Actor
             'login_email' => $email,
             'login_pass' => $password,
         ]);
-        $I->see('新着情報', '.ec-news__title');
-        $I->see('ログアウト', ['xpath' => "//*[@class='ec-headerNaviRole']//*[@class='ec-headerNav__item']//span[contains(text(), 'ログアウト')]"]);
+        $I->see('新着情報', '.ec-secHeading__ja');
+        $I->see('ログアウト', ['css' => "#page_homepage > div.ec-layoutRole > div.ec-layoutRole__header > div.ec-headerNaviRole > div.ec-headerNaviRole__right > div.ec-headerNaviRole__nav > div > div:nth-child(3) > a > span"]);
     }
 
     public function logoutAsMember()
