@@ -160,7 +160,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * @var int
          *
-         * @ORM\Column(name="hierarchy", type="integer")
+         * @ORM\Column(name="hierarchy", type="integer", options={"unsigned":true})
          */
         private $hierarchy;
 

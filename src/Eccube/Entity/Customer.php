@@ -119,7 +119,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="password", type="string", length=255, nullable=true)
+         * @ORM\Column(name="password", type="string", length=255)
          */
         private $password;
 
