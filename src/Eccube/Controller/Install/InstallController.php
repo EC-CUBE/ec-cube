@@ -341,30 +341,38 @@ class InstallController extends AbstractController
             // for sqlite, resolve %kernel.project_dir% paramter.
             $url = $this->container->getParameterBag()->resolveValue($url);
 
-            $conn = $this->createConnection(['url' => $url]);
-            $em = $this->createEntityManager($conn);
-            $migration = $this->createMigration($conn);
+            try {
+                $conn = $this->createConnection(['url' => $url]);
+                $em = $this->createEntityManager($conn);
+                $migration = $this->createMigration($conn);
 
-            if ($noUpdate) {
-                $this->update($conn, [
-                    'auth_magic' => $sessionData['authmagic'],
-                    'login_id' => $sessionData['login_id'],
-                    'login_pass' => $sessionData['login_pass'],
-                    'shop_name' => $sessionData['shop_name'],
-                    'email' => $sessionData['email'],
-                ]);
-            } else {
-                $this->dropTables($em);
-                $this->createTables($em);
-                $this->importCsv($em);
-                $this->migrate($migration);
-                $this->insert($conn, [
-                    'auth_magic' => $sessionData['authmagic'],
-                    'login_id' => $sessionData['login_id'],
-                    'login_pass' => $sessionData['login_pass'],
-                    'shop_name' => $sessionData['shop_name'],
-                    'email' => $sessionData['email'],
-                ]);
+                if ($noUpdate) {
+                    $this->update($conn, [
+                        'auth_magic' => $sessionData['authmagic'],
+                        'login_id' => $sessionData['login_id'],
+                        'login_pass' => $sessionData['login_pass'],
+                        'shop_name' => $sessionData['shop_name'],
+                        'email' => $sessionData['email'],
+                    ]);
+                } else {
+                    $this->dropTables($em);
+                    $this->createTables($em);
+                    $this->importCsv($em);
+                    $this->migrate($migration);
+                    $this->insert($conn, [
+                        'auth_magic' => $sessionData['authmagic'],
+                        'login_id' => $sessionData['login_id'],
+                        'login_pass' => $sessionData['login_pass'],
+                        'shop_name' => $sessionData['shop_name'],
+                        'email' => $sessionData['email'],
+                    ]);
+                }
+            } catch (\Exception $e) {
+                log_error($e->getMessage());
+                $this->addError($e->getMessage());
+                return [
+                    'form' => $form->createView(),
+                ];
             }
 
             if (isset($sessionData['agree']) && $sessionData['agree']) {
