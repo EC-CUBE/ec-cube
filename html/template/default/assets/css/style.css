@@ -4654,13 +4654,13 @@ Styleguide 11.2
   .ec-headerNaviRole img {
     width: 100%; }
   .ec-headerNaviRole .ec-headerNaviRole__left {
-    width: calc(100% / 3); }
+    width: calc(100% / 2); }
   .ec-headerNaviRole .ec-headerNaviRole__search {
     display: none; }
   .ec-headerNaviRole .ec-headerNaviRole__navSP {
     display: block; }
   .ec-headerNaviRole .ec-headerNaviRole__right {
-    width: calc(100% / 3 * 2);
+    width: calc(100% / 2);
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: end;
@@ -4815,47 +4815,61 @@ sg-wrapper:
 
 Styleguide 11.2.4
 */
-.ec-headerSearch .input-group {
-  border: none;
-  border-radius: 9999px;
-  background: #F8F8F8;
-  position: relative; }
+.ec-headerSearch:after {
+  content: " ";
+  display: table; }
 
-.ec-headerSearch .input-group-btn {
-  border-bottom-left-radius: 9999px;
-  border-top-left-radius: 9999px;
-  background: black; }
-  .ec-headerSearch .input-group-btn .btn-default {
-    border: 1px solid black;
-    border-bottom-left-radius: 9999px;
-    border-top-left-radius: 9999px;
-    max-width: 130px;
+.ec-headerSearch:after {
+  clear: both; }
+
+.ec-headerSearch .ec-headerSearch__category {
+  float: none; }
+  .ec-headerSearch .ec-headerSearch__category .ec-select {
+    margin-bottom: 0; }
+  .ec-headerSearch .ec-headerSearch__category select {
+    border: 1px solid #000;
+    font-size: 22.4px;
+    font-size: 1.4rem;
+    padding: 6px 10px;
+    border-radius: 6px 6px 0 0;
+    box-shadow: none;
+    box-sizing: border-box;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: white;
-    background: black;
+    color: #fff;
+    background: #000;
     overflow: hidden; }
-    .ec-headerSearch .input-group-btn .btn-default:focus {
-      color: #fff;
-      background-color: black;
-      border-color: black; }
 
-.ec-headerSearch .form-control {
-  border: none;
-  background: transparent;
-  box-shadow: none; }
+.ec-headerSearch .ec-headerSearch__keyword {
+  position: relative;
+  color: #525263;
+  border: 1px solid #ccc;
+  border-radius: 6px 6px 6px 6px; }
+  .ec-headerSearch .ec-headerSearch__keyword input[type="search"] {
+    width: 100%;
+    font-size: 19.2px;
+    font-size: 1.2rem;
+    border: 0 none;
+    padding: 0.5em 50px 0.5em 1em;
+    box-shadow: none;
+    background: none;
+    box-sizing: border-box;
+    margin-bottom: 0; }
+  .ec-headerSearch .ec-headerSearch__keyword .ec-icon {
+    width: 25px;
+    height: 25px; }
 
-.ec-headerSearch .ec-headerSearch__btn {
-  display: inline-block;
-  width: 40px;
-  color: black;
-  cursor: pointer;
-  text-align: center;
-  background: #F8F8F8;
+.ec-headerSearch .ec-headerSearch__keywordBtn {
+  border: 0;
+  background: none;
   position: absolute;
-  top: 5px;
   right: 0;
-  z-index: 10; }
+  top: 6px;
+  display: block;
+  font-size: 25px;
+  overflow: hidden;
+  white-space: nowrap;
+  z-index: 1; }
 
 /*
 ヘッダー：カテゴリナビ
@@ -5016,40 +5030,11 @@ Styleguide 11.2.6
     width: 100%;
     background: #F8F8F8; }
   .ec-drawerRole .ec-headerSearch {
-    border-radius: 6px;
-    width: 100%;
-    height: auto;
-    position: relative; }
-    .ec-drawerRole .ec-headerSearch .ec-select {
-      border: none;
-      border-top-left-radius: 6px;
-      border-top-right-radius: 6px;
-      margin-bottom: 0;
-      width: 100%;
-      background: black; }
-      .ec-drawerRole .ec-headerSearch .ec-select select {
-        border: none;
-        border-top-left-radius: 6px;
-        border-top-right-radius: 6px;
-        width: 100%;
-        color: white;
-        background: black; }
-    .ec-drawerRole .ec-headerSearch .ec-input, .ec-drawerRole .ec-headerSearch .ec-halfInput, .ec-drawerRole .ec-headerSearch .ec-numberInput, .ec-drawerRole .ec-headerSearch .ec-zipInput, .ec-drawerRole .ec-headerSearch .ec-telInput, .ec-drawerRole .ec-headerSearch .ec-select, .ec-drawerRole .ec-headerSearch .ec-birth {
-      margin-bottom: 0; }
-      .ec-drawerRole .ec-headerSearch .ec-input input, .ec-drawerRole .ec-headerSearch .ec-halfInput input, .ec-drawerRole .ec-headerSearch .ec-numberInput input, .ec-drawerRole .ec-headerSearch .ec-zipInput input, .ec-drawerRole .ec-headerSearch .ec-telInput input, .ec-drawerRole .ec-headerSearch .ec-select input, .ec-drawerRole .ec-headerSearch .ec-birth input {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        border-bottom-left-radius: 6px;
-        border-bottom-right-radius: 6px; }
-    .ec-drawerRole .ec-headerSearch .ec-headerSearch__btn {
-      box-sizing: border-box;
-      padding: 9px 0;
-      color: black;
-      background: white;
-      position: absolute;
-      top: auto;
-      bottom: 1px;
-      right: 3px; }
+    padding: 16px 8px 26px;
+    background: #EBEBEB;
+    color: #636378; }
+    .ec-drawerRole .ec-headerSearch select {
+      width: 100% !important; }
   .ec-drawerRole .ec-headerCategoryArea .ec-headerCategoryArea__heading {
     border-top: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
@@ -8293,6 +8278,20 @@ Styleguide 22.1
 
   .ec-headerNav .ec-headerNav__itemLink{
     display: inline-block;
+  }
+
+  .ec-headerSearch .ec-headerSearch__category{
+    float: left;
+    width: 43%;
+  }
+
+  .ec-headerSearch .ec-headerSearch__category select{
+    max-width: 180px;
+  }
+
+  .ec-headerSearch .ec-headerSearch__keyword{
+    float: right;
+    width: 57%;
   }
 
   .ec-cateoryNaviRole{
