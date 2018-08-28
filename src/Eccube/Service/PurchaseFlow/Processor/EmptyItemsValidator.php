@@ -63,20 +63,26 @@ class EmptyItemsValidator extends ItemHolderValidator
             return;
         }
 
+        // 受注の場合は, Shippingに紐づく商品明細がない場合はShippingも削除する.
         foreach ($itemHolder->getShippings() as $Shipping) {
             $hasProductItem = false;
             foreach ($Shipping->getOrderItems() as $item) {
                 if ($item->isProduct()) {
                     $hasProductItem = true;
+                    break;
                 }
             }
 
             if (!$hasProductItem) {
+                foreach ($Shipping->getOrderItems() as $item) {
+                    $this->entityManager->remove($item);
+                }
                 $itemHolder->removeShipping($Shipping);
                 $this->entityManager->remove($Shipping);
             }
         }
 
+        // Shippingがなくなれば購入エラー.
         if (count($itemHolder->getShippings()) < 1) {
             $this->throwInvalidItemException('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。');
         }
