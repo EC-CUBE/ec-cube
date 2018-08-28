@@ -113,7 +113,7 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
+                #- '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     eccube.purchase.flow.order.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
