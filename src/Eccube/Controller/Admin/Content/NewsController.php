@@ -18,12 +18,10 @@ use Eccube\Entity\News;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\NewsType;
-use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\NewsRepository;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -76,7 +74,7 @@ class NewsController extends AbstractController
         );
 
         return [
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ];
     }
 

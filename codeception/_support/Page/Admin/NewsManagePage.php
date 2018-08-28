@@ -49,6 +49,7 @@ class NewsManagePage extends AbstractAdminPage
     {
         $this->tester->click(" ul .list-group li:nth-child(${rowNum})
      div > div :nth-child(4) > a");
+
         return $this;
     }
 
@@ -61,12 +62,14 @@ class NewsManagePage extends AbstractAdminPage
     {
         $this->tester->click(" ul .list-group li:nth-child(${rowNum})
      div > div :nth-child(4) > a");
+
         return $this;
     }
 
     public function 一覧_削除($rowNum)
     {
         $this->tester->click("ul.list-group li:nth-child(${rowNum}) div > div:nth-child(5) > div > div:nth-child(3) > a.btn-ec-actionIcon");
+
         return $this;
     }
 
@@ -74,7 +77,8 @@ class NewsManagePage extends AbstractAdminPage
     {
         $modal = "ul.list-group li:nth-child(${rowNum}) div > div:nth-child(5) > div > div:nth-child(3) div.modal";
         $this->tester->waitForElementVisible(['css' => $modal]);
-        $this->tester->click($modal." .modal-footer a.btn-ec-delete");
+        $this->tester->click($modal.' .modal-footer a.btn-ec-delete');
+
         return $this;
     }
 }

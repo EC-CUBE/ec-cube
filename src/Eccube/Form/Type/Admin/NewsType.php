@@ -73,7 +73,7 @@ class NewsType extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => false,
                 'attr' => [
-                    'rows' => 8
+                    'rows' => 8,
                 ],
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
@@ -85,7 +85,6 @@ class NewsType extends AbstractType
                 'required' => true,
                 'expanded' => false,
             ]);
-
     }
 
     /**
