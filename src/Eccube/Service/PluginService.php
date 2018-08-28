@@ -390,6 +390,7 @@ class PluginService
             'code' => $json['extra']['code'],
             'name' => isset($json['description']) ? $json['description'] : $json['extra']['code'],
             'version' => $json['version'],
+            'source' => isset($json['extra']['id']) ? $json['extra']['id'] : false,
         ];
     }
 

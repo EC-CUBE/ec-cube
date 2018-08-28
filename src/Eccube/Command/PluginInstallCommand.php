@@ -73,7 +73,7 @@ class PluginInstallCommand extends Command
             }
 
             $this->pluginService->checkSamePlugin($config['code']);
-            $this->pluginService->postInstall($config, false);
+            $this->pluginService->postInstall($config, $config['source']);
 
             $this->clearCache($io);
             $io->success('Installed.');
