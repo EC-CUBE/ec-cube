@@ -16,7 +16,6 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 use Eccube\Entity\Cart;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
-use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeChangeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -38,17 +37,11 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
      */
     private $Order;
 
-    /**
-     * @var DeliveryFeeRepository
-     */
-    private $deliveryFeeRepository;
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->deliveryFeeRepository = $this->container->get(DeliveryFeeRepository::class);
-        $this->validator = new DeliveryFeeChangeValidator($this->deliveryFeeRepository);
+        $this->validator = new DeliveryFeeChangeValidator();
 
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
@@ -56,8 +49,7 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
 
     public function testNewInstance()
     {
-        $deliveryFeeRepository = $this->container->get(DeliveryFeeRepository::class);
-        $validator = new DeliveryFeeChangeValidator($deliveryFeeRepository);
+        $validator = new DeliveryFeeChangeValidator();
 
         self::assertInstanceOf(DeliveryFeeChangeValidator::class, $validator);
     }
@@ -70,37 +62,24 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
         self::assertTrue($result->isSuccess());
     }
 
-    public function testValidateWithNoDeliveryFeeItem()
+    public function testValidateNochanged()
     {
-        // 送料明細のない受注を作成.
-        foreach ($this->Order->getOrderItems() as $item) {
-            $this->Order->removeOrderItem($item);
-        }
+        $CloneOrder = clone $this->Order;
+        $CloneOrder->setDeliveryFeeTotal(100);
+        $this->Order->setDeliveryFeeTotal(100);
 
-        // 送料明細がない場合は何もしない.
-        $result = $this->validator->execute($this->Order, new PurchaseContext());
+        $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
         self::assertTrue($result->isSuccess());
     }
 
-    public function testValidateDeliveryFeeTotalZero()
+    public function testValidateChanged()
     {
-        $this->Order->setDeliveryFeeTotal(0);
+        $CloneOrder = clone $this->Order;
+        $CloneOrder->setDeliveryFeeTotal(100);
+        $this->Order->setDeliveryFeeTotal(200);
 
-        // 送料が0の場合は何もしない.
-        $result = $this->validator->execute($this->Order, new PurchaseContext());
-
-        self::assertTrue($result->isSuccess());
-    }
-
-    public function testValidateFeeChanged()
-    {
-        $Fees = $this->deliveryFeeRepository->findAll();
-        foreach ($Fees as $Fee) {
-            $Fee->setFee($Fee->getFee() + 1);
-            $this->entityManager->flush($Fee);
-        }
-        $result = $this->validator->execute($this->Order, new PurchaseContext());
+        $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
         self::assertTrue($result->isWarning());
     }
