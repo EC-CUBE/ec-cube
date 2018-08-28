@@ -173,14 +173,12 @@ class TwigInitializeListener implements EventSubscriberInterface
         }
 
         // URLからPageを取得
-        /** @var Page[] $Pages */
-        $Pages = $this->pageRepository->findBy(['url' => $route]);
+        /** @var Page $Page */
+        $Page = $this->pageRepository->findOneBy(['url' => $route]);
 
         // 該当するPageがない場合は空のページをセット
-        if (empty($Pages)) {
+        if (!$Page) {
             $Page = $this->pageRepository->newPage();
-        } else {
-            $Page = $Pages[0];
         }
 
         /** @var PageLayout[] $PageLayouts */
@@ -189,17 +187,17 @@ class TwigInitializeListener implements EventSubscriberInterface
         // Pageに紐づくLayoutからDeviceTypeが一致するLayoutを探す
         $Layout = null;
         foreach ($PageLayouts as $PageLayout) {
-            if ($PageLayout->getLayout()->getDeviceType()->getId() == $type) {
+            if ($PageLayout->getDeviceTypeId() == $type) {
                 $Layout = $PageLayout->getLayout();
                 break;
             }
         }
 
         // Pageに紐づくLayoutにDeviceTypeが一致するLayoutがない場合はPCのレイアウトを探す
-        if (is_null($Layout)) {
+        if (!$Layout) {
             log_info('fallback to PC layout');
             foreach ($PageLayouts as $PageLayout) {
-                if ($PageLayout->getLayout()->getDeviceType()->getId() == $type) {
+                if ($PageLayout->getDeviceTypeId() == DeviceType::DEVICE_TYPE_PC) {
                     $Layout = $PageLayout->getLayout();
                     break;
                 }
@@ -207,7 +205,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         }
 
         // Layoutのデータがない場合は空のLayoutをセット
-        if (is_null($Layout)) {
+        if (!$Layout) {
             $Layout = new Layout();
         }
 
