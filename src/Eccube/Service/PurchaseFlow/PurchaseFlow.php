@@ -238,6 +238,11 @@ class PurchaseFlow
         $this->itemHolderPostValidators[] = $itemHolderValidator;
     }
 
+    public function addDiscountProcessor(DiscountProcessor $discountProcessor)
+    {
+        $this->discountProcessors[] = $discountProcessor;
+    }
+
     /**
      * @param ItemHolderInterface $itemHolder
      */
