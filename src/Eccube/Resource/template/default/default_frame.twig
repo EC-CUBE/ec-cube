@@ -138,67 +138,10 @@ file that was distributed with this source code.
 <div class="ec-overlayRole"></div>
 <div class="ec-drawerRoleClose"><i class="fas fa-times"></i></div>
 <div class="ec-drawerRole">
-    {# TODO 検討 SP向け#}
-
-    <div class="ec-headerSearchArea">
-        <div class="ec-headerSearch">
-            <div class="ec-select">
-                <select>
-                    <option>すべてのカテゴリ</option>
-                    <option>北海道</option>
-                    <option>青森県</option>
-                    <option>岩手県</option>
-                    <option>...</option>
-                </select>
-            </div><a class="ec-headerSearch__down"><i class="fas fa-sort-down"></i></a>
-            <div class="ec-input">
-                <input type="text" placeholder="キーワードを入力"><a class="ec-headerSearch__btn"><i class="fas fa-search"></i></a>
-            </div>
-        </div>
-    </div>
-    <div class="ec-headerCategoryArea">
-        <div class="ec-headerCategoryArea__heading">
-            <p>カテゴリ一覧</p>
-        </div>
-        <div class="ec-itemNav">
-            <ul class="ec-itemNav__nav">
-                <li><a href="#">新商品</a>
-                    <ul>
-                        <li><a href="#">ジェラート</a>
-                            <ul>
-                                <li><a href="#">彩のジェラート</a>
-                                    <ul>
-                                        <li><a href="#">CUBE</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="#">アイスサンド</a>
-                            <ul>
-                                <li><a href="#">フルーツ</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">カテゴリ1-3</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">ジェラート</a></li>
-                <li><a href="#">アイスサンド</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="ec-headerLinkArea">
-        <div class="ec-headerLink__list"><a class="ec-headerLink__item" href="/moc/guest/cart1/">
-                <div class="ec-headerLink__icon"><i class="fas fa-shopping-cart"></i></div><span>カートを見る</span></a><a class="ec-headerLink__item" href="/moc/guest/login/">
-                <div class="ec-headerLink__icon"><i class="fas fa-lock"></i></div><span>ログイン</span></a><a class="ec-headerLink__item" href="/moc/user/favorite/">
-                <div class="ec-headerLink__icon"><i class="fas fa-heart"></i></div><span>お気に入り</span></a><a class="ec-headerLink__item" href="/moc/guest/register/">
-                <div class="ec-headerLink__icon"><i class="fas fa-user"></i></div><span>新規会員登録</span></a><a class="ec-headerLink__item" href="/moc/">
-                <div class="ec-headerLink__icon"><i class="fas fa-home"></i></div><span>ホームに戻る</span></a></div>
-    </div>
-
     {# Layout: DRAWER #}
-    {#{% if Page.Drawer %}#}
-        {#{{ include('block.twig', {'Blocks': Page.Drawer}) }}#}
-    {#{% endif %}#}
+    {% if Page.Drawer %}
+        {{ include('block.twig', {'Blocks': Page.Drawer}) }}
+    {% endif %}
 </div>
 <div class="ec-blockTopBtn pagetop"></div>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
