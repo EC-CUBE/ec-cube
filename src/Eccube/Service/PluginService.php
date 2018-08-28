@@ -205,8 +205,32 @@ class PluginService
     public function postInstall($config, $source)
     {
         // dbにプラグイン登録
-        $plugin = $this->registerPlugin($config, $source);
-        $this->generateTempProxyAndUpdateSchema($plugin, $config);
+
+        $this->entityManager->getConnection()->beginTransaction();
+
+        try {
+            $plugin = new Plugin();
+            // インストール直後はプラグインは有効にしない
+            $plugin->setName($config['name'])
+                ->setEnabled(false)
+                ->setVersion($config['version'])
+                ->setSource($source)
+                ->setCode($config['code']);
+
+            $this->entityManager->persist($plugin);
+            $this->entityManager->flush();
+
+            $this->generateTempProxyAndUpdateSchema($plugin, $config);
+
+            $this->callPluginManagerMethod($config, 'install');
+
+            $this->entityManager->flush();
+            $this->entityManager->getConnection()->commit();
+
+        } catch (\Exception $e) {
+            $this->entityManager->getConnection()->rollback();
+            throw new PluginException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     public function generateTempProxyAndUpdateSchema(Plugin $plugin, $config)
