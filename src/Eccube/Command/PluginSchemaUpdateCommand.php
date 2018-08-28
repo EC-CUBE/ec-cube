@@ -31,7 +31,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class PluginSchemaUpdate extends Command
+class PluginSchemaUpdateCommand extends Command
 {
     use PluginCommandTrait;
 
@@ -59,6 +59,6 @@ class PluginSchemaUpdate extends Command
         $this->pluginService->generateTempProxyAndUpdateSchema($Plugin, $config);
         $this->clearCache($io);
 
-        $io->success('Updated.');
+        $io->success('Schema Updated.');
     }
 }
