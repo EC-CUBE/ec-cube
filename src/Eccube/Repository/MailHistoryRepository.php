@@ -55,4 +55,22 @@ class MailHistoryRepository extends AbstractRepository
             ])
             ->getSingleResult();
     }
+
+    /**
+     * @param MailHistory $MailHistory
+     * @return bool
+     */
+    public function flush(MailHistory $MailHistory)
+    {
+        try {
+            $this->getEntityManager()->flush($MailHistory);
+
+            return true;
+        } catch (\Exception $exception) {
+            $this->getEntityManager()->rollback();
+            log_error($exception->getMessage());
+        }
+
+        return false;
+    }
 }
