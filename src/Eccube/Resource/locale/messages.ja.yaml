@@ -205,6 +205,7 @@ front.mypage.nav__customer_address: お届け先一覧
 front.mypage.nav__withdrow: 退会手続き
 front.mypage.history_count: '%count%件の履歴があります'
 front.mypage.history_not_found: ご注文履歴はありません。
+front.mypage.message_not_found: 記載なし
 front.mypage.view_detail: 詳細を見る
 front.mypage.order_no: ご注文番号
 front.mypage.order_status: ご注文状況
