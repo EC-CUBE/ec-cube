@@ -44,26 +44,22 @@ class OrderPdfRepository extends AbstractRepository
          */
         $Member = $arrData['admin'];
 
-        try {
-            $OrderPdf = $this->find($Member);
-            if (!$OrderPdf) {
-                $OrderPdf = new OrderPdf();
-            }
-
-            $OrderPdf->setMemberId($Member->getId())
-                ->setTitle($arrData['title'])
-                ->setMessage1($arrData['message1'])
-                ->setMessage2($arrData['message2'])
-                ->setMessage3($arrData['message3'])
-                ->setNote1($arrData['note1'])
-                ->setNote2($arrData['note2'])
-                ->setNote3($arrData['note3'])
-                ->setVisible(true);
-            $this->getEntityManager()->persist($OrderPdf);
-            $this->getEntityManager()->flush($OrderPdf);
-        } catch (\Exception $e) {
-            return false;
+        $OrderPdf = $this->find($Member);
+        if (!$OrderPdf) {
+            $OrderPdf = new OrderPdf();
         }
+
+        $OrderPdf->setMemberId($Member->getId())
+            ->setTitle($arrData['title'])
+            ->setMessage1($arrData['message1'])
+            ->setMessage2($arrData['message2'])
+            ->setMessage3($arrData['message3'])
+            ->setNote1($arrData['note1'])
+            ->setNote2($arrData['note2'])
+            ->setNote3($arrData['note3'])
+            ->setVisible(true);
+        $this->getEntityManager()->persist($OrderPdf);
+        $this->getEntityManager()->flush($OrderPdf);
 
         return true;
     }

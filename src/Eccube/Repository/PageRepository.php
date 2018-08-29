@@ -123,7 +123,7 @@ class PageRepository extends AbstractRepository
             ->select('p, bp, b')
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
             ->leftJoin('bp.Block', 'b')
-            ->andWhere('p.DeviceType = :DeviceType AND bp.anywhere = 1')
+            ->andWhere('p.DeviceType = :DeviceType')
             ->addOrderBy('bp.section', 'ASC')
             ->addOrderBy('bp.block_row', 'ASC');
 

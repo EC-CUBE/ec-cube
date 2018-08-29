@@ -29,26 +29,29 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
     /**
      * @var CustomerAddressRepository
      */
-    protected $customerAddress;
+    protected $customerAddressRepository;
 
     public function setUp()
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->customerAddress = $this->container->get(CustomerAddressRepository::class);
+        $this->customerAddressRepository = $this->container->get(CustomerAddressRepository::class);
     }
 
     public function testDelete()
     {
+        $faker = $this->getFaker();
         $CustomerAddress = new CustomerAddress();
-        $CustomerAddress->setCustomer($this->Customer);
+        $CustomerAddress->setCustomer($this->Customer)
+            ->setName01($faker->lastName)
+            ->setName02($faker->firstName);
         $this->entityManager->persist($CustomerAddress);
         $this->entityManager->flush();
 
         $id = $CustomerAddress->getId();
-        $this->customerAddress->delete($CustomerAddress);
+        $this->customerAddressRepository->delete($CustomerAddress);
 
-        $CustomerAddress = $this->customerAddress->find($id);
+        $CustomerAddress = $this->customerAddressRepository->find($id);
         $this->assertNull($CustomerAddress);
     }
 }
