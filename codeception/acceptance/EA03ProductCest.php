@@ -461,11 +461,11 @@ class EA03ProductCest
         $displayValue = $I->grabValueFrom(ClassNameManagePage::$表示名編集3);
         $I->assertEquals('display test class1', $displayValue);
 
-        $ProductClassPage->規格編集(2);
+        $ProductClassPage->規格編集(3);
 
         $I->see('保存しました', ClassNameManagePage::$登録完了メッセージ);
         // remove added class
-        ClassNameManagePage::go($I)->一覧_削除(2)
+        ClassNameManagePage::go($I)->一覧_削除(3)
             ->acceptModal();
     }
 
@@ -490,16 +490,16 @@ class EA03ProductCest
         $I->wantTo('EA0308-UC01-T01 規格表示順の変更');
 
         $ProductClassPage = ClassNameManagePage::go($I);
-        $I->see('サイズ', $ProductClassPage->一覧_名称(2));
-        $I->see('材質', $ProductClassPage->一覧_名称(3));
-
-        $ProductClassPage->一覧_下に(2);
-        $I->see('材質', $ProductClassPage->一覧_名称(2));
         $I->see('サイズ', $ProductClassPage->一覧_名称(3));
+        $I->see('材質', $ProductClassPage->一覧_名称(4));
 
-        $ProductClassPage->一覧_上に(3);
-        $I->see('サイズ', $ProductClassPage->一覧_名称(2));
+        $ProductClassPage->一覧_下に(3);
         $I->see('材質', $ProductClassPage->一覧_名称(3));
+        $I->see('サイズ', $ProductClassPage->一覧_名称(4));
+
+        $ProductClassPage->一覧_上に(4);
+        $I->see('サイズ', $ProductClassPage->一覧_名称(3));
+        $I->see('材質', $ProductClassPage->一覧_名称(4));
     }
 
     public function product_分類表示順の変更(\AcceptanceTester $I)
@@ -507,32 +507,32 @@ class EA03ProductCest
         $I->wantTo('EA0311-UC01-T01 分類表示順の変更');
 
         ClassNameManagePage::go($I)
-            ->一覧_分類登録(2);
+            ->一覧_分類登録(3);
 
         $ProductClassCategoryPage = ClassCategoryManagePage::at($I);
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(1));
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(2));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(3));
-
-        $ProductClassCategoryPage->一覧_下に(1);
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(1));
         $I->see('150cm', $ProductClassCategoryPage->一覧_名称(2));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(4));
 
         $ProductClassCategoryPage->一覧_下に(2);
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(1));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(2));
+        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(2));
         $I->see('150cm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(4));
 
-        $ProductClassCategoryPage->一覧_上に(3);
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(1));
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(2));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(3));
-
-        $ProductClassCategoryPage->一覧_上に(2);
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(1));
+        $ProductClassCategoryPage->一覧_下に(3);
         $I->see('170mm', $ProductClassCategoryPage->一覧_名称(2));
         $I->see('120mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(4));
+
+        $ProductClassCategoryPage->一覧_上に(4);
+        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(2));
+        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(4));
+
+        $ProductClassCategoryPage->一覧_上に(3);
+        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(2));
+        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(4));
     }
 
     public function product_分類登録(\AcceptanceTester $I)
@@ -584,10 +584,10 @@ class EA03ProductCest
 
         $CategoryPage->一覧_編集(3);
 
-        $I->seeElement('body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(2) > form.mode-edit');
+        $I->seeElement('body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(3) > form.mode-edit');
 
-        $CategoryPage->一覧_インライン編集_カテゴリ名(2, 'test category11')
-            ->一覧_インライン編集_決定(2);
+        $CategoryPage->一覧_インライン編集_カテゴリ名(3, 'test category11')
+            ->一覧_インライン編集_決定(3);
 
         $I->see('保存しました', CategoryManagePage::$登録完了メッセージ);
 
@@ -605,7 +605,7 @@ class EA03ProductCest
 
         // サブカテゴリ EA0305-UC01-03 & UC01-04
         $CategoryPage = CategoryManagePage::go($I)
-            ->一覧_選択(2);
+            ->一覧_選択(3);
 
         $I->see('test category11', CategoryManagePage::$パンくず_1階層);
 
@@ -615,11 +615,11 @@ class EA03ProductCest
         $I->see('保存しました', CategoryManagePage::$登録完了メッセージ);
 
         // カテゴリ削除 (children)
-        $CategoryPage->一覧_削除(2)
+        $CategoryPage->一覧_削除(3)
             ->acceptModal();
 
         // Delete category root
-        CategoryManagePage::go($I)->一覧_削除(2)
+        CategoryManagePage::go($I)->一覧_削除(3)
             ->acceptModal();
     }
 
@@ -628,29 +628,29 @@ class EA03ProductCest
         $I->wantTo('EA0309-UC01-T01 カテゴリ表示順の変更');
 
         $CategoryPage = CategoryManagePage::go($I);
-        $I->see('インテリア', $CategoryPage->一覧_名称(3));
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(4));
-        $I->see('新入荷', $CategoryPage->一覧_名称(5));
-
-        $CategoryPage->一覧_下に(3);
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(3));
         $I->see('インテリア', $CategoryPage->一覧_名称(4));
-        $I->see('新入荷', $CategoryPage->一覧_名称(5));
+        $I->see('キッチンツール', $CategoryPage->一覧_名称(5));
+        $I->see('新入荷', $CategoryPage->一覧_名称(6));
 
         $CategoryPage->一覧_下に(4);
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(3));
-        $I->see('新入荷', $CategoryPage->一覧_名称(4));
+        $I->see('キッチンツール', $CategoryPage->一覧_名称(4));
         $I->see('インテリア', $CategoryPage->一覧_名称(5));
+        $I->see('新入荷', $CategoryPage->一覧_名称(6));
 
-        $CategoryPage->一覧_上に(5);
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(3));
-        $I->see('インテリア', $CategoryPage->一覧_名称(4));
-        $I->see('新入荷', $CategoryPage->一覧_名称(5));
-
-        $CategoryPage->一覧_上に(4);
-        $I->see('インテリア', $CategoryPage->一覧_名称(3));
+        $CategoryPage->一覧_下に(5);
         $I->see('キッチンツール', $CategoryPage->一覧_名称(4));
         $I->see('新入荷', $CategoryPage->一覧_名称(5));
+        $I->see('インテリア', $CategoryPage->一覧_名称(6));
+
+        $CategoryPage->一覧_上に(6);
+        $I->see('キッチンツール', $CategoryPage->一覧_名称(4));
+        $I->see('インテリア', $CategoryPage->一覧_名称(5));
+        $I->see('新入荷', $CategoryPage->一覧_名称(6));
+
+        $CategoryPage->一覧_上に(5);
+        $I->see('インテリア', $CategoryPage->一覧_名称(4));
+        $I->see('キッチンツール', $CategoryPage->一覧_名称(5));
+        $I->see('新入荷', $CategoryPage->一覧_名称(6));
     }
 
     public function product_商品CSV登録(\AcceptanceTester $I)
