@@ -72,7 +72,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
                 ['id' => 1]
             ),
             [
-                'form' => [
+                'admin_layout' => [
                     '_token' => 'dummy',
                     'name' => 'テストレイアウト',
                     'DeviceType' => DeviceType::DEVICE_TYPE_PC,
@@ -112,7 +112,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
                 ['id' => 1]
             ),
             [
-                'form' => [
+                'admin_layout' => [
                     '_token' => 'dummy',
                     'name' => 'テストレイアウト',
                     'DeviceType' => DeviceType::DEVICE_TYPE_PC,
