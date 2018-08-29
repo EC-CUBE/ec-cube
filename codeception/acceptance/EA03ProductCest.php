@@ -479,7 +479,7 @@ class EA03ProductCest
             ->入力_表示名('display test class1')
             ->規格作成();
 
-        ClassNameManagePage::go($I)->一覧_削除(2)
+        ClassNameManagePage::go($I)->一覧_削除(3)
             ->acceptModal();
 
         $I->see('削除しました', ClassNameManagePage::$登録完了メッセージ);
@@ -555,18 +555,18 @@ class EA03ProductCest
             ->分類作成();
 
         $I->see('保存しました', ClassCategoryManagePage::$登録完了メッセージ);
-        $I->see('test class2 category1', $ProductClassCategoryPage->一覧_名称(1));
+        $I->see('test class2 category1', $ProductClassCategoryPage->一覧_名称(2));
 
         // Edit class category 1
-        $ProductClassCategoryPage->一覧_編集(1)
-            ->一覧_入力_分類名(1, 'edit class category')
-            ->一覧_分類作成(1);
+        $ProductClassCategoryPage->一覧_編集(2)
+            ->一覧_入力_分類名(2, 'edit class category')
+            ->一覧_分類作成(2);
 
         $I->see('保存しました', ClassCategoryManagePage::$登録完了メッセージ);
-        $I->see('edit class category', $ProductClassCategoryPage->一覧_名称(1));
+        $I->see('edit class category', $ProductClassCategoryPage->一覧_名称(2));
 
         // delete test
-        $ProductClassCategoryPage->一覧_削除(1)
+        $ProductClassCategoryPage->一覧_削除(2)
             ->acceptModal();
 
         $I->see('削除しました', ClassCategoryManagePage::$登録完了メッセージ);
