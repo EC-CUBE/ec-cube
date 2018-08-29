@@ -283,10 +283,9 @@ file that was distributed with this source code.
                                 <div class="col mb-2">
                                     <div class="input-group col-4 pl-0">
                                         <div class="input-group-prepend">
-                                            {{ form_widget(form.basic_point_rate) }}
-                                            {{ form_errors(form.basic_point_rate) }}
+                                            {{ form_widget(form.basic_point_rate) }}<span class="pl-1 pt-2 col-auto">%</span>
                                         </div>
-
+                                        {{ form_errors(form.basic_point_rate) }}
                                     </div>
                                 </div>
                             </div>
@@ -298,9 +297,8 @@ file that was distributed with this source code.
                                     <div class="input-group col-4 pl-0">
                                         <div class="input-group-prepend">
                                             {{ form_widget(form.point_conversion_rate) }}
-                                            {{ form_errors(form.point_conversion_rate) }}
                                         </div>
-
+                                        {{ form_errors(form.point_conversion_rate) }}
                                     </div>
                                 </div>
                             </div>
