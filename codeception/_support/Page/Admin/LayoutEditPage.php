@@ -88,7 +88,7 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
     }
 
     public function 選択_プレビューページ($value) {
-        $this->tester->selectOption(['id' => 'form_Page'], $value);
+        $this->tester->selectOption(['id' => 'admin_layout_Page'], $value);
         return $this;
     }
 
