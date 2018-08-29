@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Block;
-use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\BlockRepository;
@@ -139,9 +138,9 @@ class BlockPositionRepositoryTest extends EccubeTestCase
 
         $count = 1;
         foreach ($this->UsedBlocks as $Block) {
-            $data['block_id_'. $count] = $Block->getId();
-            $data['section_'. $count] = $Block->getId();
-            $data['block_row_'. $count] = $Block->getId();
+            $data['block_id_'.$count] = $Block->getId();
+            $data['section_'.$count] = $Block->getId();
+            $data['block_row_'.$count] = $Block->getId();
 
             $count++;
         }
