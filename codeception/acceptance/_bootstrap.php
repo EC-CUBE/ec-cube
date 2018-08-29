@@ -346,9 +346,8 @@ Fixtures::add('findNews', function () use ($entityManager) {
         ->findBy(['visible' => true], ['publish_date' => 'DESC']);
 });
 
-
-/** 新着情報を登録するクロージャ */
-Fixtures::add('createNews', function($publishDate, $title, $description, $url = null) use ($entityManager) {
+/* 新着情報を登録するクロージャ */
+Fixtures::add('createNews', function ($publishDate, $title, $description, $url = null) use ($entityManager) {
     $News = new \Eccube\Entity\News();
     $News->setPublishDate($publishDate);
     $News->setTitle($title);

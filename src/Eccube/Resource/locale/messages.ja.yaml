@@ -964,6 +964,15 @@ admin.content.block_source_code: コード
 admin.content.cache__card_title: キャッシュ管理
 admin.content.cache_message: 本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。
 admin.content.cache_delete: キャッシュ削除
+admin.content.news.publish_date: 公開日時
+admin.content.news.display_status: 公開状態
+admin.content.news.display_status__show: 公開
+admin.content.news.display_status__hide: 非公開
+admin.content.news.title: タイトル
+admin.content.news.url: URL
+admin.content.news.body: 本文
+admin.content.news.news_registration: 新着情報登録
+admin.content.news.new_window: 別ウィンドウで開く
 
 #------------------------------------------------------------------------------------
 # 設定

@@ -184,14 +184,14 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="name01", type="string", length=255, nullable=true)
+         * @ORM\Column(name="name01", type="string", length=255)
          */
         private $name01;
 
         /**
          * @var string|null
          *
-         * @ORM\Column(name="name02", type="string", length=255, nullable=true)
+         * @ORM\Column(name="name02", type="string", length=255)
          */
         private $name02;
 
