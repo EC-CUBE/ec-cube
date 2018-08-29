@@ -293,13 +293,13 @@ class OwnerStoreController extends AbstractController
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/install", name="admin_store_plugin_api_install", methods={"POST"})
+     * @Route("/composer_install", name="admin_store_plugin_api_composer_install", methods={"POST"})
      *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiInstall(Request $request)
+    public function composerInstall(Request $request)
     {
         $this->isTokenValid();
 
@@ -316,6 +316,37 @@ class OwnerStoreController extends AbstractController
         }
 
         return $this->json(['success' => false, 'log' => $log], 500);
+    }
+
+
+    /**
+     * Api Install plugin by composer connect with package repo
+     *
+     * @Route("/install", name="admin_store_plugin_api_install", methods={"POST"})
+     *
+     * @param Request $request
+     *
+     * @return Response
+     * @throws \Exception
+     */
+    public function install(Request $request)
+    {
+        $this->isTokenValid();
+
+        $pluginCode = $request->get('pluginCode');
+
+        if (!$pluginCode) {
+            throw new NotFoundHttpException();
+        }
+
+        try {
+            $this->pluginService->installWithCode($pluginCode);
+            return new Response();
+        } catch (\Exception $e) {
+            log_error($e);
+            throw $e;
+        }
+
     }
 
     /**

@@ -193,6 +193,36 @@ class PluginService
         return true;
     }
 
+    /**
+     *
+     *
+     * @param $code string sプラグインコード
+     * @throws PluginException
+     */
+    public function installWithCode($code)
+    {
+        $pluginDir = $this->calcPluginDir($code);
+        $this->checkPluginArchiveContent($pluginDir);
+        $config = $this->readConfig($pluginDir);
+
+        // 依存プラグインが有効になっていない場合はエラー
+        $requires = $this->getPluginRequired($config);
+        $notInstalledOrDisabled = array_filter($requires, function($req) {
+            $code = preg_replace('/^ec-cube\//', '', $req['name']);
+            /** @var Plugin $DependPlugin */
+            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+            return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
+        });
+
+        if (!empty($notInstalledOrDisabled)) {
+            $names = array_map(function($p) { return $p['name']; }, $notInstalledOrDisabled);
+            throw new PluginException(implode(', ', $names)."を有効化してください。");
+        }
+
+        $this->checkSamePlugin($config['code']);
+        $this->postInstall($config, $config['source']);
+    }
+
     // インストール事前処理
     public function preInstall()
     {
@@ -346,16 +376,6 @@ class PluginService
         if (!isset($meta['version'])) {
             // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
             throw new PluginException('config.yml version invalid_character(\W) ');
-        }
-        if (isset($meta['orm.path'])) {
-            if (!is_array($meta['orm.path'])) {
-                throw new PluginException('config.yml orm.path invalid_character(\W) ');
-            }
-        }
-        if (isset($meta['service'])) {
-            if (!is_array($meta['service'])) {
-                throw new PluginException('config.yml service invalid_character(\W) ');
-            }
         }
     }
 
