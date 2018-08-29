@@ -6794,11 +6794,11 @@ Styleguide 16.2.5
 .ec-orderMails .ec-orderMails__time {
   margin: 0; }
 
-.ec-orderMails .ec-orderMails__body {
-  display: none; }
-
 .ec-orderMails .ec-inlineBtn {
   display: none; }
+
+.ec-orderMails .ec-orderMail__body .container {
+  width: 100%; }
 
 /*
 注文履歴詳細 メール履歴個別
@@ -6820,8 +6820,6 @@ Styleguide 16.2.6
   margin-bottom: 16px; }
   .ec-orderMail .ec-orderMail__time {
     margin: 0; }
-  .ec-orderMail .ec-orderMail__body {
-    display: none; }
   .ec-orderMail .ec-orderMail__time {
     margin-bottom: 4px; }
   .ec-orderMail .ec-orderMail__link a {

@@ -39,17 +39,17 @@ Styleguide 16.2.5
   & &__time{
     margin: 0;
   }
-  & &__body{
-    display: none;
-  }
   .ec-inlineBtn {
     display: none;
     @include media_desktop {
       display: inline-block;
     }
-
   }
-
+  .ec-orderMail__body {
+    .container {
+      width: 100%
+    }
+  }
 }
 
 
@@ -75,9 +75,6 @@ Styleguide 16.2.6
   margin-bottom: 16px;
   & &__time{
     margin: 0;
-  }
-  & &__body{
-    display: none;
   }
   & &__time {
     margin-bottom: 4px;
