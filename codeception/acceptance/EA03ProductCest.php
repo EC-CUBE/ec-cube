@@ -628,29 +628,29 @@ class EA03ProductCest
         $I->wantTo('EA0309-UC01-T01 カテゴリ表示順の変更');
 
         $CategoryPage = CategoryManagePage::go($I);
-        $I->see('インテリア', $CategoryPage->一覧_名称(4));
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(5));
-        $I->see('新入荷', $CategoryPage->一覧_名称(6));
-
-        $CategoryPage->一覧_下に(4);
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(4));
-        $I->see('インテリア', $CategoryPage->一覧_名称(5));
-        $I->see('新入荷', $CategoryPage->一覧_名称(6));
-
-        $CategoryPage->一覧_下に(5);
+        $I->see('インテリア', $CategoryPage->一覧_名称(3));
         $I->see('キッチンツール', $CategoryPage->一覧_名称(4));
         $I->see('新入荷', $CategoryPage->一覧_名称(5));
-        $I->see('インテリア', $CategoryPage->一覧_名称(6));
 
-        $CategoryPage->一覧_上に(6);
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(4));
+        $CategoryPage->一覧_下に(3);
+        $I->see('キッチンツール', $CategoryPage->一覧_名称(3));
+        $I->see('インテリア', $CategoryPage->一覧_名称(4));
+        $I->see('新入荷', $CategoryPage->一覧_名称(5));
+
+        $CategoryPage->一覧_下に(4);
+        $I->see('キッチンツール', $CategoryPage->一覧_名称(3));
+        $I->see('新入荷', $CategoryPage->一覧_名称(4));
         $I->see('インテリア', $CategoryPage->一覧_名称(5));
-        $I->see('新入荷', $CategoryPage->一覧_名称(6));
 
         $CategoryPage->一覧_上に(5);
+        $I->see('キッチンツール', $CategoryPage->一覧_名称(3));
         $I->see('インテリア', $CategoryPage->一覧_名称(4));
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(5));
-        $I->see('新入荷', $CategoryPage->一覧_名称(6));
+        $I->see('新入荷', $CategoryPage->一覧_名称(5));
+
+        $CategoryPage->一覧_上に(4);
+        $I->see('インテリア', $CategoryPage->一覧_名称(3));
+        $I->see('キッチンツール', $CategoryPage->一覧_名称(4));
+        $I->see('新入荷', $CategoryPage->一覧_名称(5));
     }
 
     public function product_商品CSV登録(\AcceptanceTester $I)
