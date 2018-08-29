@@ -28,6 +28,7 @@ class NewsEditPage extends AbstractAdminPage
         $page = new self($I);
         $page->atPage('コンテンツ管理新着情報管理');
         $page->tester->see('新着情報登録・編集', '.c-container .c-contentsArea .c-contentsArea__cols .card-header');
+
         return $page;
     }
 
@@ -55,6 +56,7 @@ class NewsEditPage extends AbstractAdminPage
     public function 登録()
     {
         $this->tester->click('.c-contentsArea .c-contentsArea__cols .c-conversionArea .btn-ec-conversion');
+
         return $this;
     }
 }
