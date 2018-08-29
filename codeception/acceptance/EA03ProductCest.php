@@ -465,7 +465,7 @@ class EA03ProductCest
 
         $I->see('保存しました', ClassNameManagePage::$登録完了メッセージ);
         // remove added class
-        ClassNameManagePage::go($I)->一覧_削除(3)
+        ClassNameManagePage::go($I)->一覧_削除(2)
             ->acceptModal();
     }
 
@@ -479,7 +479,7 @@ class EA03ProductCest
             ->入力_表示名('display test class1')
             ->規格作成();
 
-        ClassNameManagePage::go($I)->一覧_削除(3)
+        ClassNameManagePage::go($I)->一覧_削除(2)
             ->acceptModal();
 
         $I->see('削除しました', ClassNameManagePage::$登録完了メッセージ);
