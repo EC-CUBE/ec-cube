@@ -79,7 +79,7 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function testInvalidData($data)
     {
         $this->form->submit($data);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
     public function testInvalid_Blank()
