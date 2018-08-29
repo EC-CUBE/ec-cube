@@ -22,6 +22,11 @@ use Eccube\Entity\OrderItem;
 class PurchaseFlow
 {
     /**
+     * @var string
+     */
+    protected $flowType;
+
+    /**
      * @var ArrayCollection|ItemPreprocessor[]
      */
     protected $itemPreprocessors;
@@ -67,6 +72,11 @@ class PurchaseFlow
         $this->discountProcessors = new ArrayCollection();
     }
 
+    public function setFlowType($flowType)
+    {
+        $this->flowType = $flowType;
+    }
+
     public function setPurchaseProcessors(ArrayCollection $processors)
     {
         $this->purchaseProcessors = $processors;
@@ -104,6 +114,8 @@ class PurchaseFlow
 
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
+        $context->setFlowType($this->flowType);
+
         $this->calculateAll($itemHolder);
 
         $flowResult = new PurchaseFlowResult($itemHolder);
@@ -175,6 +187,8 @@ class PurchaseFlow
      */
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
     {
+        $context->setFlowType($this->flowType);
+
         foreach ($this->purchaseProcessors as $processor) {
             $processor->prepare($target, $context);
         }
@@ -190,6 +204,8 @@ class PurchaseFlow
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
+        $context->setFlowType($this->flowType);
+
         foreach ($this->purchaseProcessors as $processor) {
             $processor->commit($target, $context);
         }
@@ -203,6 +219,8 @@ class PurchaseFlow
      */
     public function rollback(ItemHolderInterface $target, PurchaseContext $context)
     {
+        $context->setFlowType($this->flowType);
+
         foreach ($this->purchaseProcessors as $processor) {
             $processor->rollback($target, $context);
         }

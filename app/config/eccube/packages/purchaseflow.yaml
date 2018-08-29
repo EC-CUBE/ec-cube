@@ -5,6 +5,7 @@ services:
     eccube.purchase.flow.cart:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
+            - [setFlowType, ['cart']]
             - [setItemValidators, ['@eccube.purchase.flow.cart.item_validators']]
             - [setItemHolderValidators, ['@eccube.purchase.flow.cart.holder_validators']]
             - [setItemPreprocessors, ['@eccube.purchase.flow.cart.item_preprocessors']]
@@ -45,6 +46,7 @@ services:
     eccube.purchase.flow.shopping:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
+            - [setFlowType, ['shopping']]
             - [setItemValidators, ['@eccube.purchase.flow.shopping.item_validators']]
             - [setItemHolderValidators, ['@eccube.purchase.flow.shopping.holder_validators']]
             - [setItemHolderPreprocessors, ['@eccube.purchase.flow.shopping.holder_preprocessors']]
@@ -109,6 +111,7 @@ services:
     eccube.purchase.flow.order:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
+            - [setFlowType, ['order']]
             - [setItemValidators, ['@eccube.purchase.flow.order.item_validators']]
             - [setItemHolderValidators, ['@eccube.purchase.flow.order.holder_validators']]
             - [setItemHolderPreprocessors, ['@eccube.purchase.flow.order.holder_preprocessors']]
