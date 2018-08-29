@@ -42,7 +42,7 @@ class PageManagePage extends AbstractAdminPageStyleGuide
 
     public function 削除($pageName)
     {
-        $this->tester->click(['xpath'=> "//*[@class='table table-sm']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/a"]);
+        $this->tester->click(['xpath' => "//*[@class='table table-sm']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/a"]);
         $this->accept_削除($pageName);
     }
 

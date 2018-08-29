@@ -13,15 +13,12 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
-use Eccube\Entity\PageLayout;
-use Eccube\Form\Type\Master\DeviceTypeType;
+use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Entity\Master\ProductStatus;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\PageLayoutRepository;
@@ -29,14 +26,11 @@ use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Twig\Environment as Twig;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -185,40 +179,7 @@ class LayoutController extends AbstractController
                 ->getResult();
         }
 
-        $builder = $this->formFactory->createBuilder(FormType::class, $Layout);
-        $builder
-            ->add(
-                'name',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                    'required' => false,
-                ]
-            )->add(
-                'DeviceType',
-                DeviceTypeType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                    'required' => false,
-                ]
-            )->add('Page', EntityType::class, [
-                'mapped' => false,
-                'placeholder' => 'ページを選択してください',
-                'required' => false,
-                'choice_label' => 'Page.name',
-                'choice_value' => 'page_id',
-                'class' => PageLayout::class,
-                'query_builder' => function (EntityRepository $er) use ($id) {
-                    return $er->createQueryBuilder('pl')
-                        ->orderBy('pl.page_id', 'ASC')
-                        ->where('pl.layout_id = :layout_id')
-                        ->setParameter('layout_id', $id);
-                },
-            ]);
+        $builder = $this->formFactory->createBuilder(LayoutType::class, $Layout, ['layout_id' => $id]);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -343,7 +304,7 @@ class LayoutController extends AbstractController
      */
     public function preview(Request $request, $id)
     {
-        $form = $request->get('form');
+        $form = $request->get('admin_layout');
         $this->isPreview = true;
 
         return $this->edit($request, $id, $form['Page']);

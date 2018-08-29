@@ -185,7 +185,7 @@ file that was distributed with this source code.
         $('#preview-button').on('click', function(){
             var page_id = $('#{{ form.Page.vars.id }}').val();
             if (!page_id) {
-                alert('プレビューするページを選択してください。');
+                alert("{{ 'admin.content.layout_preview_select_page'|trans }}");
                 return false;
             }
 
@@ -442,7 +442,7 @@ file that was distributed with this source code.
                                             </div>
                                             <div class="card-body">
                                                 <div class="d-block text-center">
-                                                    <button id="preview-button" class="btn btn-block btn-ec-regular">プレビュー</button>
+                                                    <button id="preview-button" class="btn btn-block btn-ec-regular">{{ 'admin.content.layout_preview'|trans }}</button>
                                                 </div>
                                             </div>
                                         </div>
