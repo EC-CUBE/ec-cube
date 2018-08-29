@@ -238,7 +238,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="ec-orderDelivery__item">
                             <ul class="ec-borderedList">
-                                {% for orderItem in shipping.orderItems %}
+                                {% for orderItem in shipping.productOrderItems %}
                                     <li>
                                         <div class="ec-imageGrid">
                                             <div class="ec-imageGrid__img"><img src="{{ asset((orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product, 'save_image') }}" alt="{{ orderItem.productName }}"></div>
@@ -344,6 +344,16 @@ file that was distributed with this source code.
                         <dd>{{ (0 - Order.discount)|price}}</dd>
                     </dl>
                     <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                    {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                        <dl class="ec-totalBox__spec">
+                            <dt>{{ 'front.shopping.use_point'|trans }}</dt>
+                            <dd>{{ Order.UsePoint|number_format }} pt</dd>
+                        </dl>
+                        <dl class="ec-totalBox__spec">
+                            <dt><span class="ec-font-bold">{{ 'front.shopping.add_point'|trans }}</span></dt>
+                            <dd><span class="ec-font-bold">{{ Order.AddPoint|number_format }} pt</span></dd>
+                        </dl>
+                    {% endif %}
                     <div class="ec-totalBox__btn">
                         <button type="submit" class="ec-blockBtn--action">{{ 'front.shopping.go_to_confirm'|trans }}</button>
                         <a href="{{ url("cart") }}" class="ec-blockBtn--cancel">{{ 'front.shopping.back_to_cart'|trans }}</a>
