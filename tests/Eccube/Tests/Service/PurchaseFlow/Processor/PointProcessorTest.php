@@ -76,7 +76,7 @@ class PointProcessorTest extends EccubeTestCase
      * @param $customerPoint int 保有ポイント
      * @param $isError boolean エラーかどうか
      */
-    public function testUsePointOverCustomerPoint($usePoint, $customerPoint, $isError)
+    public function testUsePointOverCustomerPointShoppingFlow($usePoint, $customerPoint, $isError)
     {
         $Customer = new Customer();
         $Customer->setPoint($customerPoint);
@@ -89,8 +89,10 @@ class PointProcessorTest extends EccubeTestCase
         $Order->setUsePoint($usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
 
-        $this->processor->removeDiscountItem($Order, new PurchaseContext(null, $Customer));
-        $result = $this->processor->addDiscountItem($Order, new PurchaseContext(null, $Customer));
+        $context = new PurchaseContext(null, $Customer);
+        $context->setFlowType(PurchaseContext::SHOPPING_FLOW);
+        $this->processor->removeDiscountItem($Order, $context);
+        $result = $this->processor->addDiscountItem($Order, $context);
 
         if ($isError) {
             self::assertEquals($isError, $result->isWarning());
@@ -133,8 +135,46 @@ class PointProcessorTest extends EccubeTestCase
         $Order->setUsePoint($usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
-        $this->processor->removeDiscountItem($Order, new PurchaseContext(null, $Customer));
-        $result = $this->processor->addDiscountItem($Order, new PurchaseContext(null, $Customer));
+        $context = new PurchaseContext(null, $Customer);
+        $context->setFlowType(PurchaseContext::ORDER_FLOW);
+        $this->processor->removeDiscountItem($Order, $context);
+        $result = $this->processor->addDiscountItem($Order, $context);
+
+        if ($isError) {
+            self::assertEquals($isError, $result->isError());
+            self::assertEquals('利用ポイントがお支払い金額を上回っています', $result->getMessage());
+            self::assertEquals($usePoint, $Order->getUsePoint());
+        } else {
+            self::assertNull($result);
+            self::assertEquals($usePoint, $Order->getUsePoint());
+        }
+    }
+
+    /**
+     * @dataProvider usePointOverPriceProvider
+     *
+     * @param $usePoint int 利用ポイント
+     * @param $isError boolean エラーかどうか
+     */
+    public function testUsePointOverPriceShoppingFlow($usePoint, $isError)
+    {
+        $price = 100; // 商品の値段
+
+        $Customer = new Customer();
+        $Customer->setPoint(10000);
+
+        /* @var ProductClass $ProductClass */
+        $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
+        $Order = new Order();
+        $Order->setTotal(100);
+        $Order->setCustomer($Customer);
+        $Order->setUsePoint($usePoint);
+        $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
+
+        $context = new PurchaseContext(null, $Customer);
+        $context->setFlowType(PurchaseContext::SHOPPING_FLOW);
+        $this->processor->removeDiscountItem($Order, $context);
+        $result = $this->processor->addDiscountItem($Order, $context);
 
         if ($isError) {
             self::assertEquals($isError, $result->isWarning());
