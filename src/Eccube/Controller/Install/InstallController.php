@@ -512,6 +512,9 @@ class InstallController extends AbstractController
 
     protected function createConnection(array $params)
     {
+        if (strpos($params['url'], 'mysql') !== false) {
+            $params['charset'] = 'utf8';
+        }
         $conn = DriverManager::getConnection($params);
         $conn->ping();
 
