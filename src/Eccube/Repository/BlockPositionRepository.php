@@ -44,9 +44,10 @@ class BlockPositionRepository extends AbstractRepository
     /**
      * レイアウトに紐づくブロックの個数分登録を行う
      *
-     * @param  array $data
-     * @param  Eccube\Entity\Block[] $Blocks
-     * @param  Eccube\Entity\Block[] $UnusedBlocks
+     * @param  array|null $data
+     * @param  $Blocks
+     * @param  $UnusedBlocks
+     * @param  Eccube\Entity\Layout|null $Layout
      */
     public function register($data, $Blocks, $UnusedBlocks, $Layout)
     {
