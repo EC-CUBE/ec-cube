@@ -24,8 +24,56 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class BlockPositionRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var BlockRepository
+     */
+    protected $blockRepository;
+
+    /**
+     * BlockPositionRepository constructor.
+     *
+     * @param BlockRepository $blockRepository
+     * @param RegistryInterface $registry
+     */
+    public function __construct(BlockRepository $blockRepository, RegistryInterface $registry)
     {
         parent::__construct($registry, BlockPosition::class);
+        $this->blockRepository = $blockRepository;
+    }
+
+    /**
+     * レイアウトに紐づくブロックの個数分登録を行う
+     *
+     * @param  array $data
+     * @param  Eccube\Entity\Block[] $Blocks
+     * @param  Eccube\Entity\Block[] $UnusedBlocks
+     */
+    public function register($data, $Blocks, $UnusedBlocks, $Layout)
+    {
+        $em = $this->getEntityManager();
+
+        $max = count($Blocks) + count($UnusedBlocks);
+        for ($i = 0; $i < $max; $i++) {
+            // block_idが取得できない場合はinsertしない
+            if (!isset($data['block_id_'.$i])) {
+                continue;
+            }
+            // 未使用ブロックはinsertしない
+            if ($data['section_'.$i] == \Eccube\Entity\Page::TARGET_ID_UNUSED) {
+                continue;
+            }
+            $Block = $this->blockRepository->find($data['block_id_'.$i]);
+            $BlockPosition = new BlockPosition();
+            $BlockPosition
+                ->setBlockId($data['block_id_'.$i])
+                ->setLayoutId($Layout->getId())
+                ->setBlockRow($data['block_row_'.$i])
+                ->setSection($data['section_'.$i])
+                ->setBlock($Block)
+                ->setLayout($Layout);
+            $Layout->addBlockPosition($BlockPosition);
+            $em->persist($BlockPosition);
+            $em->flush($BlockPosition);
+        }
     }
 }

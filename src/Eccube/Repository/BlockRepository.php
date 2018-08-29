@@ -76,4 +76,22 @@ class BlockRepository extends AbstractRepository
 
         return $Blocks;
     }
+
+    /**
+     * 未設定のブロックを取得
+     *
+     * @param  Ecube\Entity\Block[]  $Blocks
+     *
+     * @return null|Ecube\Entity\Block[]
+     */
+    public function getUnusedBlocks($Blocks = [])
+    {
+        $UnusedBlocks = $this->createQueryBuilder('b')
+            ->where('not in (:blocks)')
+            ->setParameter('blocks', $Blocks)
+            ->getQuery()
+            ->getResult();
+
+        return $UnusedBlocks;
+    }
 }

@@ -15,11 +15,11 @@ namespace Eccube\Controller\Admin\Content;
 
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
 use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Repository\BlockRepository;
+use Eccube\Repository\BlockPositionRepository;
 use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
@@ -43,6 +43,10 @@ class LayoutController extends AbstractController
      * @var BlockRepository
      */
     protected $blockRepository;
+    /**
+     * @var BlockPositionRepository
+     */
+    protected $blockPositionRepository;
 
     /**
      * @var LayoutRepository
@@ -84,9 +88,10 @@ class LayoutController extends AbstractController
      * @param ProductRepository $productRepository
      * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository, PageRepository $pageRepository, ProductRepository $productRepository, DeviceTypeRepository $deviceTypeRepository)
+    public function __construct(BlockRepository $blockRepository, BlockPositionRepository $blockPositionRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository, PageRepository $pageRepository, ProductRepository $productRepository, DeviceTypeRepository $deviceTypeRepository)
     {
         $this->blockRepository = $blockRepository;
+        $this->blockPositionRepository = $blockPositionRepository;
         $this->layoutRepository = $layoutRepository;
         $this->pageLayoutRepository = $pageLayoutRepository;
         $this->pageRepository = $pageRepository;
@@ -148,35 +153,19 @@ class LayoutController extends AbstractController
         if (is_null($id)) {
             $Layout = new Layout();
         } else {
-            // todo レポジトリへ移動
             try {
-                $Layout = $this->layoutRepository->createQueryBuilder('l')
-                    ->select('l, bp, b')
-                    ->leftJoin('l.BlockPositions', 'bp')
-                    ->leftJoin('bp.Block', 'b')
-                    ->where('l.id = :layout_id')
-                    ->orderBy('bp.block_row', 'ASC')
-                    ->setParameter('layout_id', $this->isPreview ? 0 : $id)
-                    ->getQuery()
-                    ->getSingleResult();
+                $Layout = $this->layoutRepository->get($this->isPreview ? 0 : $id);
             } catch (NoResultException $e) {
                 throw new NotFoundHttpException();
             }
         }
 
-        // todo レポジトリへ移動
         // 未使用ブロックの取得
         $Blocks = $Layout->getBlocks();
         if (empty($Blocks)) {
             $UnusedBlocks = $this->blockRepository->findAll();
         } else {
-            $UnusedBlocks = $this->blockRepository
-                ->createQueryBuilder('b')
-                ->select('b')
-                ->where('b not in (:blocks)')
-                ->setParameter('blocks', $Blocks)
-                ->getQuery()
-                ->getResult();
+            $UnusedBlocks = $this->blockRepository->getUnusedBlocks($Blocks);
         }
 
         $builder = $this->formFactory->createBuilder(LayoutType::class, $Layout, ['layout_id' => $id]);
@@ -200,30 +189,8 @@ class LayoutController extends AbstractController
             }
 
             // ブロックの個数分登録を行う.
-            $max = count($Blocks) + count($UnusedBlocks);
             $data = $request->request->all();
-            for ($i = 0; $i < $max; $i++) {
-                // block_idが取得できない場合はinsertしない
-                if (!isset($data['block_id_'.$i])) {
-                    continue;
-                }
-                // 未使用ブロックはinsertしない
-                if ($data['section_'.$i] == \Eccube\Entity\Page::TARGET_ID_UNUSED) {
-                    continue;
-                }
-                $Block = $this->blockRepository->find($data['block_id_'.$i]);
-                $BlockPosition = new BlockPosition();
-                $BlockPosition
-                    ->setBlockId($data['block_id_'.$i])
-                    ->setLayoutId($Layout->getId())
-                    ->setBlockRow($data['block_row_'.$i])
-                    ->setSection($data['section_'.$i])
-                    ->setBlock($Block)
-                    ->setLayout($Layout);
-                $Layout->addBlockPosition($BlockPosition);
-                $this->entityManager->persist($BlockPosition);
-                $this->entityManager->flush($BlockPosition);
-            }
+            $this->blockPositionRepository->register($data, $Blocks, $UnusedBlocks, $Layout);
 
             // プレビューモード
             if ($this->isPreview) {
