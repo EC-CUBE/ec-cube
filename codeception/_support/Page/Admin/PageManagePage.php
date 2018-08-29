@@ -49,6 +49,6 @@ class PageManagePage extends AbstractAdminPageStyleGuide
     public function accept_削除($pageName)
     {
         $this->tester->waitForElementVisible(['xpath' => "//*[@class='table table-sm']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/div[contains(@class, 'modal')]"]);
-        $this->tester->click(['xpath' => "//*[@class='table table-sm']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/div[contains(@class, 'modal')]/div/div/div/a[contains(@class, 'btn btn-ec-delete')]"]);
+        $this->tester->click(['xpath' => "//*[@class='table table-sm']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/div[contains(@class, 'modal')]/div/div/div/a[@class='btn btn-ec-delete']"]);
     }
 }
