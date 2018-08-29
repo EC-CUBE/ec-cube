@@ -26,7 +26,7 @@ use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 /**
  * 購入フローにおけるポイント処理.
  */
-class PointProcessor implements ItemHolderPreprocessor, DiscountProcessor, PurchaseProcessor
+class PointProcessor implements DiscountProcessor, PurchaseProcessor
 {
     /**
      * @var EntityManagerInterface
@@ -48,27 +48,6 @@ class PointProcessor implements ItemHolderPreprocessor, DiscountProcessor, Purch
     {
         $this->entityManager = $entityManager;
         $this->pointHelper = $pointHelper;
-    }
-
-
-    /**
-     * 受注データ調整処理。
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
-    {
-        if (!$this->supports($itemHolder)) {
-            return;
-        }
-
-        $this->pointHelper->removePointDiscountItem($itemHolder);
-
-        if ($itemHolder->getUsePoint() > 0) {
-            $discount = $this->pointHelper->pointToPrice($itemHolder->getUsePoint());
-            $this->pointHelper->addPointDiscountItem($itemHolder, $discount);
-        }
     }
 
     /*
@@ -103,23 +82,33 @@ class PointProcessor implements ItemHolderPreprocessor, DiscountProcessor, Purch
         if ($usePoint > 0) {
             $result = null;
 
-            // 支払い金額 < 利用ポイントによる値引き額.
-            if ($itemHolder->getTotal() + $discount < 0) {
-                $minus = $itemHolder->getTotal() + $discount;
-                // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
-                $overPoint = $this->pointHelper->priceToPoint($minus);
-                $usePoint = $itemHolder->getUsePoint() + $overPoint;
-                $discount = $this->pointHelper->pointToDiscount($usePoint);
-                $result = ProcessResult::warn('利用ポイントがお支払い金額を上回っています', self::class);
-            }
+            // 購入フロー実行時
+            if ($context->isShoppingFlow()) {
 
-            // 所有ポイント < 利用ポイント
-            $Customer = $itemHolder->getCustomer();
-            if ($Customer->getPoint() < $usePoint) {
-                // 利用ポイントが所有ポイントを上回っていた場合は所有ポイントで上書き
-                $usePoint = $Customer->getPoint();
-                $discount = $this->pointHelper->pointToDiscount($usePoint);
-                $result = ProcessResult::warn('利用ポイントが所有ポイントを上回っています', self::class);
+                // 支払い金額 < 利用ポイントによる値引き額.
+                if ($itemHolder->getTotal() + $discount < 0) {
+                    $minus = $itemHolder->getTotal() + $discount;
+                    // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
+                    $overPoint = $this->pointHelper->priceToPoint($minus);
+                    $usePoint = $itemHolder->getUsePoint() + $overPoint;
+                    $discount = $this->pointHelper->pointToDiscount($usePoint);
+                    $result = ProcessResult::warn('利用ポイントがお支払い金額を上回っています', self::class);
+                }
+
+                // 所有ポイント < 利用ポイント
+                $Customer = $itemHolder->getCustomer();
+                if ($Customer->getPoint() < $usePoint) {
+                    // 利用ポイントが所有ポイントを上回っていた場合は所有ポイントで上書き
+                    $usePoint = $Customer->getPoint();
+                    $discount = $this->pointHelper->pointToDiscount($usePoint);
+                    $result = ProcessResult::warn('利用ポイントが所有ポイントを上回っています', self::class);
+                }
+            // 受注登録・編集実行時
+            } else {
+                // 支払い金額 < 利用ポイントによる値引き額.
+                if ($itemHolder->getTotal() + $discount < 0) {
+                    $result = ProcessResult::error('利用ポイントがお支払い金額を上回っています', self::class);
+                }
             }
 
             $itemHolder->setUsePoint($usePoint);

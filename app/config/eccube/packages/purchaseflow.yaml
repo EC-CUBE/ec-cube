@@ -134,10 +134,12 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor' # ポイント明細の追加
 
     eccube.purchase.flow.order.discount_processors:
         class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor' # ポイント明細の追加
 
     eccube.purchase.flow.order.holder_post_validators:
         class: Doctrine\Common\Collections\ArrayCollection
