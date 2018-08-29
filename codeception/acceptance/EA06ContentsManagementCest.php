@@ -158,10 +158,6 @@ class EA06ContentsManagementCest
         $config = Fixtures::get('config');
         $I->seeElement('div.ec-layoutRole__footer');
 
-        /* 削除 */
-        PageManagePage::go($I)->削除($page);
-        $I->see('削除しました', PageEditPage::$登録完了メッセージ);
-
         /* レイアウト編集 */
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
         LayoutEditPage::at($I)
@@ -170,7 +166,7 @@ class EA06ContentsManagementCest
 
         $I->see('保存しました', LayoutEditPage::$登録完了メッセージ);
         $I->amOnPage('/user_data/'.$page);
-        $I->see('新着情報', '.ec-news');
+        $I->see('新着情報', '.ec-news__title');
 
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
         LayoutEditPage::at($I)
@@ -202,6 +198,10 @@ class EA06ContentsManagementCest
             ->プレビュー();
 
         $I->switchToNewWindow();
+
+        /* 削除 */
+        PageManagePage::go($I)->削除($page);
+        $I->see('削除しました', PageEditPage::$登録完了メッセージ);
     }
 
     public function contentsmanagement_検索未使用ブロック(\AcceptanceTester $I)
