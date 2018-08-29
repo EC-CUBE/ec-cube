@@ -84,10 +84,11 @@ class BlockRepository extends AbstractRepository
      *
      * @return null|Ecube\Entity\Block[]
      */
-    public function getUnusedBlocks($Blocks = [])
+    public function getUnusedBlocks($Blocks)
     {
         $UnusedBlocks = $this->createQueryBuilder('b')
-            ->where('not in (:blocks)')
+            ->select('b')
+            ->where('b not in (:blocks)')
             ->setParameter('blocks', $Blocks)
             ->getQuery()
             ->getResult();
