@@ -161,6 +161,7 @@ class LayoutController extends AbstractController
         }
 
         // 未使用ブロックの取得
+        $UnusedBlocks = [];
         $Blocks = $Layout->getBlocks();
         if (empty($Blocks)) {
             $UnusedBlocks = $this->blockRepository->findAll();
