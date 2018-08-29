@@ -205,20 +205,12 @@ file that was distributed with this source code.
                 <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
                 {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                     <dl class="ec-totalBox__spec">
-                        <dt>{{ 'front.shopping.prev_point'|trans }}</dt>
-                        <dd>{{ Order.Customer.Point|number_format }} pt</dd>
-                    </dl>
-                    <dl class="ec-totalBox__spec">
                         <dt>{{ 'front.shopping.use_point'|trans }}</dt>
                         <dd>{{ Order.UsePoint|number_format }} pt</dd>
                     </dl>
                     <dl class="ec-totalBox__spec">
                         <dt>{{ 'front.shopping.add_point'|trans }}</dt>
                         <dd>{{ Order.AddPoint|number_format }} pt</dd>
-                    </dl>
-                    <dl class="ec-totalBox__spec">
-                        <dt>{{ 'front.shopping.next_point'|trans }}</dt>
-                        <dd>{{ (Order.Customer.Point - Order.UsePoint + Order.AddPoint)|number_format }} pt</dd>
                     </dl>
                 {% endif %}
                 <div class="ec-totalBox__btn">
