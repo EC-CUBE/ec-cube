@@ -13,6 +13,9 @@
 
 namespace Eccube\Controller\Install;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\CachedReader;
+use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
@@ -24,6 +27,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
@@ -341,30 +345,39 @@ class InstallController extends AbstractController
             // for sqlite, resolve %kernel.project_dir% paramter.
             $url = $this->container->getParameterBag()->resolveValue($url);
 
-            $conn = $this->createConnection(['url' => $url]);
-            $em = $this->createEntityManager($conn);
-            $migration = $this->createMigration($conn);
+            try {
+                $conn = $this->createConnection(['url' => $url]);
+                $em = $this->createEntityManager($conn);
+                $migration = $this->createMigration($conn);
 
-            if ($noUpdate) {
-                $this->update($conn, [
-                    'auth_magic' => $sessionData['authmagic'],
-                    'login_id' => $sessionData['login_id'],
-                    'login_pass' => $sessionData['login_pass'],
-                    'shop_name' => $sessionData['shop_name'],
-                    'email' => $sessionData['email'],
-                ]);
-            } else {
-                $this->dropTables($em);
-                $this->createTables($em);
-                $this->importCsv($em);
-                $this->migrate($migration);
-                $this->insert($conn, [
-                    'auth_magic' => $sessionData['authmagic'],
-                    'login_id' => $sessionData['login_id'],
-                    'login_pass' => $sessionData['login_pass'],
-                    'shop_name' => $sessionData['shop_name'],
-                    'email' => $sessionData['email'],
-                ]);
+                if ($noUpdate) {
+                    $this->update($conn, [
+                        'auth_magic' => $sessionData['authmagic'],
+                        'login_id' => $sessionData['login_id'],
+                        'login_pass' => $sessionData['login_pass'],
+                        'shop_name' => $sessionData['shop_name'],
+                        'email' => $sessionData['email'],
+                    ]);
+                } else {
+                    $this->dropTables($em);
+                    $this->createTables($em);
+                    $this->importCsv($em);
+                    $this->migrate($migration);
+                    $this->insert($conn, [
+                        'auth_magic' => $sessionData['authmagic'],
+                        'login_id' => $sessionData['login_id'],
+                        'login_pass' => $sessionData['login_pass'],
+                        'shop_name' => $sessionData['shop_name'],
+                        'email' => $sessionData['email'],
+                    ]);
+                }
+            } catch (\Exception $e) {
+                log_error($e->getMessage());
+                $this->addError($e->getMessage());
+
+                return [
+                    'form' => $form->createView(),
+                ];
             }
 
             if (isset($sessionData['agree']) && $sessionData['agree']) {
@@ -511,7 +524,11 @@ class InstallController extends AbstractController
             $this->getParameter('kernel.project_dir').'/src/Eccube/Entity',
             $this->getParameter('kernel.project_dir').'/app/Customize/Entity',
         ];
-        $config = Setup::createAnnotationMetadataConfiguration($paths, true, null, null, false);
+        $config = Setup::createConfiguration(true);
+        $driver = new AnnotationDriver(new CachedReader(new AnnotationReader(), new ArrayCache()), $paths);
+        $driver->setTraitProxiesDirectory($this->getParameter('kernel.project_dir').'/app/proxy/entity');
+        $config->setMetadataDriverImpl($driver);
+
         $em = EntityManager::create($conn, $config);
 
         return $em;
