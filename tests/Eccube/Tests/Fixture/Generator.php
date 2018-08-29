@@ -498,19 +498,16 @@ class Generator
         $Product->addProductClass($ProductClass);
 
         $Categories = $this->categoryRepository->findAll();
-        $i = 0;
         foreach ($Categories as $Category) {
             $ProductCategory = new ProductCategory();
             $ProductCategory
                 ->setCategory($Category)
                 ->setProduct($Product)
                 ->setCategoryId($Category->getId())
-                ->setProductId($Product->getId())
-                ->setSortNo($i);
+                ->setProductId($Product->getId());
             $this->entityManager->persist($ProductCategory);
             $this->entityManager->flush($ProductCategory);
             $Product->addProductCategory($ProductCategory);
-            $i++;
         }
 
         $this->entityManager->flush($Product);
