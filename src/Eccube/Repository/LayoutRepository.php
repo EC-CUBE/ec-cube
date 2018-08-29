@@ -14,6 +14,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\Layout;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
