@@ -15,14 +15,24 @@ namespace Eccube\Plugin;
 
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AbstractPluginManager
+abstract class AbstractPluginManager
 {
     const MIGRATION_TABLE_PREFIX = 'migration_';
 
-    public function migrationSchema($app, $migrationFilePath, $pluginCode, $version = null)
+    /**
+     * Migrate the schema.
+     *
+     * @param ContainerInterface $container
+     * @param string $migrationFilePath
+     * @param string $pluginCode
+     * @param string $version
+     * @return array An array of migration sql statements. This will be empty if the the $confirm callback declines to execute the migration
+     */
+    public function migrationSchema(ContainerInterface $container, $migrationFilePath, $pluginCode, $version = null)
     {
-        $config = new Configuration($app['db']);
+        $config = new Configuration($container->get('doctrine.dbal.connection'));
         $config->setMigrationsNamespace('DoctrineMigrations');
         $config->setMigrationsDirectory($migrationFilePath);
         $config->registerMigrationsFromDirectory($migrationFilePath);
@@ -31,6 +41,46 @@ class AbstractPluginManager
         $migration->setNoMigrationException(true);
         // null 又は 'last' を渡すと最新バージョンまでマイグレートする
         // 0か'first'を渡すと最初に戻る
-        $migration->migrate($version, false);
+        return $migration->migrate($version, false);
     }
+
+    /**
+     * Install the plugin.
+     *
+     * @param array $meta
+     * @param ContainerInterface $container
+     */
+    abstract public function install(array $meta, ContainerInterface $container);
+
+    /**
+     * Update the plugin.
+     *
+     * @param array $meta
+     * @param ContainerInterface $container
+     */
+    abstract public function update(array $meta, ContainerInterface $container);
+
+    /**
+     * Enable the plugin.
+     *
+     * @param array $meta
+     * @param ContainerInterface $container
+     */
+    abstract public function enable(array $meta, ContainerInterface $container);
+
+    /**
+     * Disable the plugin.
+     *
+     * @param array $meta
+     * @param ContainerInterface $container
+     */
+    abstract public function disable(array $meta, ContainerInterface $container);
+
+    /**
+     * Uninstall the plugin.
+     *
+     * @param array $meta
+     * @param ContainerInterface $container
+     */
+    abstract public function uninstall(array $meta, ContainerInterface $container);
 }
