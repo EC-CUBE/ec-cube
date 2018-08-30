@@ -3903,7 +3903,7 @@ Styleguide 7.3.6
   background: #f8f8f8;
   box-sizing: border-box;
   padding: 16px;
-  z-index: 3;
+  z-index: 20;
   position: absolute;
   right: 0; }
   .ec-cartNaviIsset .ec-cartNaviIsset__cart {
