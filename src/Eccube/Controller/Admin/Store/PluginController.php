@@ -33,6 +33,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -250,19 +251,25 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを有効にします。
      *
-     * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable", methods={"PUT"})
+     * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable", methods={"POST"})
      *
      * @param Plugin $Plugin
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      * @throws PluginException
      */
-    public function enable(Plugin $Plugin, CacheUtil $cacheUtil)
+    public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request)
     {
         $this->isTokenValid();
 
+        $log = null;
+
         if ($Plugin->isEnabled()) {
-            $this->addError('admin.plugin.already.enable', 'admin');
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(['success' => true]);
+            } else {
+                $this->addError('admin.plugin.already.enable', 'admin');
+            }
         } else {
 
             // ストアからインストールしたプラグインは依存プラグインが有効化されているかを確認
@@ -279,34 +286,48 @@ class PluginController extends AbstractController
                         return "「${req['description']}」";
                     }, $requires);
                     $message = trans('%depend_name%を先に有効化してください。', ['%name%' => $Plugin->getName(), '%depend_name%' => implode(', ', $names)]);
-                    $this->addError($message, 'admin');
 
-                    return $this->redirectToRoute('admin_store_plugin');
+                    if ($request->isXmlHttpRequest()) {
+                        return $this->json(['success' => false, 'message' => $message], 400);
+                    } else {
+                        $this->addError($message, 'admin');
+                        return $this->redirectToRoute('admin_store_plugin');
+                    }
                 }
             }
 
+            ob_start();
             $this->pluginService->enable($Plugin);
-            $this->addSuccess(trans('「%plugin_name%」を有効にしました。', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+            $log = ob_get_clean();
+            ob_end_flush();
         }
 
-        $cacheUtil->clearCache();
+//        $cacheUtil->clearCache();
 
-        return $this->redirectToRoute('admin_store_plugin');
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(['success' => true, 'log' => $log]);
+        } else {
+            $this->addSuccess(trans('「%plugin_name%」を有効にしました。', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+            return $this->redirectToRoute('admin_store_plugin');
+        }
     }
 
     /**
      * 対象のプラグインを無効にします。
      *
-     * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable", methods={"PUT"})
+     * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable", methods={"POST"})
      *
+     * @param Request $request
      * @param Plugin $Plugin
      *
-     * @return RedirectResponse
+     * @param CacheUtil $cacheUtil
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse
      */
-    public function disable(Plugin $Plugin, CacheUtil $cacheUtil)
+    public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
+        $log = null;
         if ($Plugin->isEnabled()) {
             $dependents = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
             if (!empty($dependents)) {
@@ -316,25 +337,41 @@ class PluginController extends AbstractController
                     $dependName = $DependPlugin->getName();
                 }
                 $message = trans('admin.plugin.disable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-                $this->addError($message, 'admin');
 
-                return $this->redirectToRoute('admin_store_plugin');
+                if ($request->isXmlHttpRequest()) {
+                    return $this->json(['message'=> $message], 400);
+                } else {
+                    $this->addError($message, 'admin');
+                    return $this->redirectToRoute('admin_store_plugin');
+                }
             }
 
+            ob_start();
             $this->pluginService->disable($Plugin);
-            $this->addSuccess('admin.plugin.disable.complete', 'admin');
-        } else {
-            $this->addError('admin.plugin.already.disable', 'admin');
+            $log = ob_get_clean();
+            ob_end_flush();
 
-            return $this->redirectToRoute('admin_store_plugin');
+
+        } else {
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(['success' => true]);
+            } else {
+                $this->addError('admin.plugin.already.disable', 'admin');
+                return $this->redirectToRoute('admin_store_plugin');
+            }
         }
 
         // キャッシュを削除してリダイレクト
         // リダイレクトにredirectToRoute関数を使用していないのは、削除したキャッシュが再生成されてしまうため。
         $url = $this->generateUrl('admin_store_plugin');
-        $cacheUtil->clearCache();
+//        $cacheUtil->clearCache();
 
-        return $this->redirect($url);
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(['success' => true, 'log' => $log]);
+        } else {
+            $this->addSuccess('admin.plugin.disable.complete', 'admin');
+            return $this->redirect($url);
+        }
     }
 
     /**

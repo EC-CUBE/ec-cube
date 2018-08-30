@@ -253,7 +253,7 @@ class PluginService
                 $this->entityManager->flush();
             }
 
-            $this->generateTempProxyAndUpdateSchema($Plugin, $config);
+            $this->generateProxyAndUpdateSchema($Plugin, $config);
 
             $this->callPluginManagerMethod($config, 'install');
 
@@ -270,7 +270,7 @@ class PluginService
         }
     }
 
-    public function generateTempProxyAndUpdateSchema(Plugin $plugin, $config)
+    public function generateProxyAndUpdateSchema(Plugin $plugin, $config)
     {
         if ($plugin->isEnabled()) {
             $generatedFiles = $this->regenerateProxy($plugin, false);
@@ -447,9 +447,9 @@ class PluginService
         }
     }
 
-    public function calcPluginDir($name)
+    public function calcPluginDir($code)
     {
-        return $this->projectRoot.'/app/Plugin/'.$name;
+        return $this->projectRoot.'/app/Plugin/'.$code;
     }
 
     /**

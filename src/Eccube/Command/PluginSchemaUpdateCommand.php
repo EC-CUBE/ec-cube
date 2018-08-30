@@ -56,7 +56,7 @@ class PluginSchemaUpdateCommand extends Command
         /** @var Plugin $Plugin */
         $Plugin = $this->pluginRepository->findByCode('Emperor');
         $config = $this->pluginService->readConfig($this->pluginRealDir.DIRECTORY_SEPARATOR.$Plugin->getCode());
-        $this->pluginService->generateTempProxyAndUpdateSchema($Plugin, $config);
+        $this->pluginService->generateProxyAndUpdateSchema($Plugin, $config);
         $this->clearCache($io);
 
         $io->success('Schema Updated.');

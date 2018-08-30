@@ -13,7 +13,6 @@
 
 namespace Eccube\Controller\Admin\Store;
 
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\PageMax;
@@ -262,29 +261,27 @@ class OwnerStoreController extends AbstractController
      * @Template("@admin/Store/plugin_confirm.twig")
      *
      * @param Request $request
-     * @param string $id
-     *
      * @return array
      * @throws \Eccube\Exception\PluginException
      */
     public function doConfirm(Request $request, $id)
     {
         list($json) = $this->pluginApiService->getPlugin($id);
-        $plugin = [];
+        $item = [];
         if ($json) {
             $data = json_decode($json, true);
-            $plugin = $this->pluginService->buildInfo($data);
+            $item = $this->pluginService->buildInfo($data);
         }
 
-        if (empty($plugin)) {
+        if (empty($item)) {
             throw new NotFoundHttpException();
         }
 
-        // Todo: need define plugin's dependency mechanism
-        $requires = $this->pluginService->getPluginRequired($plugin);
+        // Todo: need define item's dependency mechanism
+        $requires = $this->pluginService->getPluginRequired($item);
 
         return [
-            'item' => $plugin,
+            'item' => $item,
             'requires' => $requires,
             'is_update' => $request->get('is_update', false),
         ];
@@ -415,29 +412,93 @@ class OwnerStoreController extends AbstractController
     /**
      * オーナーズブラグインインストール、アップデート
      *
-     * @Route("/upgrade/{pluginCode}/{version}", name="admin_store_plugin_api_upgrade", methods={"PUT"})
+     * @Route("/upgrade", name="admin_store_plugin_api_upgrade", methods={"POST"})
      *
-     * @param string $pluginCode
-     * @param string $version
-     *
-     * @return RedirectResponse
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUpgrade($pluginCode, $version)
+    public function apiUpgrade(Request $request)
     {
         $this->isTokenValid();
-        // Run install plugin
-        $this->forward($this->generateUrl('admin_store_plugin_api_install', ['pluginCode' => $pluginCode, 'eccubeVersion' => Constant::VERSION, 'version' => $version]));
 
-        if ($this->session->getFlashBag()->has('eccube.admin.error')) {
-            $this->session->getFlashBag()->clear();
-            $this->addError('admin.plugin.update.error', 'admin');
+        $pluginCode = $request->get('pluginCode');
+        $version = $request->get('version');
 
-            return $this->redirectToRoute('admin_store_plugin');
+        $log = null;
+        try {
+            $log = $this->composerService->execRequire("ec-cube/".$pluginCode.':'.$version);
+
+            return $this->json(['success' => true, 'log' => $log]);
+        } catch (\Exception $e) {
+            $log = $e->getMessage();
+            log_error($e);
         }
-        $this->session->getFlashBag()->clear();
-        $this->addSuccess('admin.plugin.update.complete', 'admin');
 
-        return $this->redirectToRoute('admin_store_plugin');
+        return $this->json(['success' => false, 'log' => $log], 500);
+    }
+
+    /**
+     * オーナーズブラグインインストール、スキーマ更新
+     *
+     * @Route("/schema_update", name="admin_store_plugin_api_schema_update", methods={"POST"})
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function apiSchemaUpdate(Request $request)
+    {
+        $this->isTokenValid();
+
+        $pluginCode = $request->get('pluginCode');
+
+        try {
+            $Plugin = $this->pluginRepository->findByCode($pluginCode);
+            $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($Plugin->getCode()));
+
+            ob_start();
+            $this->pluginService->generateProxyAndUpdateSchema($Plugin, $config);
+            $log = ob_get_clean();
+            ob_end_flush();
+
+            return $this->json(['success' => true, 'log' => $log]);
+        } catch (\Exception $e) {
+            $log = $e->getMessage();
+            log_error($e);
+            return $this->json(['success' => false, 'log' => $log], 500);
+        }
+
+    }
+
+    /**
+     * オーナーズブラグインインストール、更新処理
+     *
+     * @Route("/update", name="admin_store_plugin_api_update", methods={"POST"})
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function apiUpdate(Request $request)
+    {
+        $this->isTokenValid();
+
+        $pluginCode = $request->get('pluginCode');
+
+        $log = null;
+        try {
+            $Plugin = $this->pluginRepository->findByCode($pluginCode);
+            $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($Plugin->getCode()));
+            ob_start();
+            $this->pluginService->updatePlugin($Plugin, $config);
+            $log = ob_get_clean();
+            ob_end_flush();
+
+            return $this->json(['success' => true, 'log' => $log]);
+        } catch (\Exception $e) {
+            $log = $e->getMessage();
+            log_error($e);
+        }
+
+        return $this->json(['success' => false, 'log' => $log], 500);
     }
 
     /**
@@ -446,15 +507,33 @@ class OwnerStoreController extends AbstractController
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     * @param Plugin $plugin
-     *
-     * @return Response
+     * @param Request $request
+     * @param Plugin $Plugin
+     * @return array
      */
-    public function doUpdateConfirm(Plugin $plugin)
+    public function doUpdateConfirm(Request $request, Plugin $Plugin)
     {
-        $source = $plugin->getSource();
+        list($json) = $this->pluginApiService->getPlugin($Plugin->getSource());
+        $item = [];
+        if ($json) {
+            $data = json_decode($json, true);
+            $item = $this->pluginService->buildInfo($data);
+        }
 
-        return $this->forwardToRoute('admin_store_plugin_install_confirm', ['id' => $source, 'is_update' => true]);
+        if (empty($item)) {
+            throw new NotFoundHttpException();
+        }
+//
+//        // Todo: need define item's dependency mechanism
+//        $requires = $this->pluginService->getPluginRequired($item);
+
+        return [
+            'item' => $item,
+            'requires' => [],
+            'is_update' => true,
+            'Plugin' => $Plugin
+        ];
+
     }
 
     /**
