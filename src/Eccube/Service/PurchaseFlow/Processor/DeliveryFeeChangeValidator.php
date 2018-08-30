@@ -16,13 +16,14 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 送料明細の金額とdtb_delivery_feeに登録されている送料の差異を検知するバリデータ.
  */
-class DeliveryFeeChangeValidator extends ItemHolderValidator
+class DeliveryFeeChangeValidator extends ItemHolderPostValidator
 {
     /**
      * @param ItemHolderInterface $itemHolder

@@ -16,13 +16,14 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 手数料が変更されたかどうかを検知するバリデータ.
  */
-class PaymentChargeChangeValidator extends ItemHolderValidator
+class PaymentChargeChangeValidator extends ItemHolderPostValidator
 {
     /**
      * @param ItemHolderInterface $itemHolder

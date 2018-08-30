@@ -15,13 +15,14 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 
 /**
  * 購入金額上限チェック.
  */
-class PaymentTotalLimitValidator extends ItemHolderValidator
+class PaymentTotalLimitValidator extends ItemHolderPostValidator
 {
     /**
      * @var int

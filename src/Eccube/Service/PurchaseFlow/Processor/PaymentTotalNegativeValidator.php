@@ -15,13 +15,14 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 
 /**
  * 合計金額のマイナスチェック.
  */
-class PaymentTotalNegativeValidator extends ItemHolderValidator
+class PaymentTotalNegativeValidator extends ItemHolderPostValidator
 {
     /**
      * @param ItemHolderInterface $itemHolder

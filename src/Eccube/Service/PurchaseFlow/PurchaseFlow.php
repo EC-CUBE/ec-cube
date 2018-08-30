@@ -47,7 +47,7 @@ class PurchaseFlow
     protected $itemHolderValidators;
 
     /**
-     * @var ArrayCollection|ItemHolderValidator[]
+     * @var ArrayCollection|ItemHolderPostValidator[]
      */
     protected $itemHolderPostValidators;
 
@@ -251,7 +251,7 @@ class PurchaseFlow
         $this->itemHolderValidators[] = $itemHolderValidator;
     }
 
-    public function addItemHolderPostValidator(ItemHolderValidator $itemHolderValidator)
+    public function addItemHolderPostValidator(ItemHolderPostValidator $itemHolderValidator)
     {
         $this->itemHolderPostValidators[] = $itemHolderValidator;
     }
@@ -266,7 +266,7 @@ class PurchaseFlow
      */
     protected function calculateTotal(ItemHolderInterface $itemHolder)
     {
-        $total = $itemHolder->getItems()->reduce(function ($sum, ItemInterface $item) {
+        $total = array_reduce($itemHolder->getItems()->toArray(), function ($sum, ItemInterface $item) {
             $sum += $item->getPriceIncTax() * $item->getQuantity();
 
             return $sum;

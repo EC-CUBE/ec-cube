@@ -18,13 +18,14 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 加算ポイント.
  */
-class AddPointProcessor extends ItemHolderValidator
+class AddPointProcessor extends ItemHolderPostValidator
 {
     /**
      * @var BaseInfo

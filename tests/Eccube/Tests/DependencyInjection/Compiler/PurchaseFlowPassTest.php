@@ -19,10 +19,13 @@ use Eccube\Annotation\ShoppingFlow;
 use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
+use Eccube\Service\PurchaseFlow\DiscountProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\ItemPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemValidator;
+use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
@@ -77,6 +80,8 @@ class PurchaseFlowPassTest extends EccubeTestCase
             [PurchaseFlowPassTest_ItemValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_VALIDATOR_TAG],
             [PurchaseFlowPassTest_ItemHolderPreprocessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_PREPROCESSOR_TAG],
             [PurchaseFlowPassTest_ItemHolderValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],
+            [PurchaseFlowPassTest_ItemHolderPostValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_POST_VALIDATOR_TAG],
+            [PurchaseFlowPassTest_DiscountProcessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::DISCOUNT_PROCESSOR_TAG],
             [PurchaseFlowPassTest_PurchaseProcessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::PURCHASE_PROCESSOR_TAG],
         ];
     }
@@ -181,6 +186,37 @@ class PurchaseFlowPassTest_ItemHolderPreprocessor implements ItemHolderPreproces
 class PurchaseFlowPassTest_ItemHolderValidator extends ItemHolderValidator
 {
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    {
+        PurchaseFlowPassTest::$called = true;
+    }
+}
+
+/**
+ * Class PurchaseFlowPassTest_ItemHolderPostValidator
+ *
+ * @CartFlow
+ */
+class PurchaseFlowPassTest_ItemHolderPostValidator extends ItemHolderPostValidator
+{
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    {
+        PurchaseFlowPassTest::$called = true;
+    }
+}
+
+/**
+ * Class PurchaseFlowPassTest_DiscountProcessor
+ *
+ * @CartFlow
+ */
+class PurchaseFlowPassTest_DiscountProcessor implements DiscountProcessor
+{
+    public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    {
+        PurchaseFlowPassTest::$called = true;
+    }
+
+    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
     }
