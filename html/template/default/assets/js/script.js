@@ -23,14 +23,6 @@ $(function() {
         $(this).parents('.ec-newsline').toggleClass('is_active');
     });
 
-    $('.ec-orderMail__link').on('click', function() {
-        $('.ec-orderMail__body').slideToggle();
-    });
-
-    $('.ec-orderMail__close').on('click', function() {
-        $('.ec-orderMail__body').slideToggle();
-    });
-
     $('.is_inDrawer').each(function() {
         var html = $(this).html();
         $(html).appendTo('.ec-drawerRole');
