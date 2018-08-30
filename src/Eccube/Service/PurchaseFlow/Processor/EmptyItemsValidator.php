@@ -84,7 +84,7 @@ class EmptyItemsValidator extends ItemHolderValidator
 
         // Shippingがなくなれば購入エラー.
         if (count($itemHolder->getShippings()) < 1) {
-            $this->throwInvalidItemException('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。');
+            $this->throwInvalidItemException('front.shopping.empty_items_error');
         }
     }
 }
