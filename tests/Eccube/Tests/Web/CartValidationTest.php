@@ -679,7 +679,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         $message = $crawler->filter('.ec-layoutRole__main')->text();
 
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
     }
 
     /**
