@@ -1343,7 +1343,6 @@ class CsvImportController extends AbstractCsvImportController
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
-        $ProductCategory->setSortNo($sortNo);
 
         return $ProductCategory;
     }
