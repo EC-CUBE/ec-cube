@@ -19,6 +19,7 @@ use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Repository\CsvRepository;
@@ -418,7 +419,7 @@ class CsvExportService
     {
         $session = $request->getSession();
         $builder = $this->formFactory
-            ->createBuilder(SearchProductType::class);
+            ->createBuilder(SearchCustomerType::class);
         $searchForm = $builder->getForm();
 
         $viewData = $session->get('eccube.admin.customer.search', []);
