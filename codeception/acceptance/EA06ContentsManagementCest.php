@@ -173,7 +173,7 @@ class EA06ContentsManagementCest
             ->ブロックを移動('カート', '#position_2')
             ->登録();
         LayoutEditPage::at($I)
-            ->ブロックを移動('ログインナビ', '#position_2')
+            ->ブロックを移動('ログインナビ(共通)', '#position_2')
             ->登録();
         LayoutEditPage::at($I)
             ->ブロックを移動('商品検索', '#position_2')
