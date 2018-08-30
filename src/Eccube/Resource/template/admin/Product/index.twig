@@ -347,7 +347,7 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.display_status__short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.common.create_date'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.common.update_date'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 pr-3" colspan="3"></th>
+                                        <th class="border-top-0 pt-2 pb-2 pr-3" colspan="3">&nbsp;</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -405,15 +405,15 @@ file that was distributed with this source code.
                                                 {{ Product.update_date|date_min }}
                                             </td>
                                             <td class="align-middle pr-3" colspan="3">
-                                                <div class="row">
-                                                    <div class="col text-center" data-tooltip="true"
+                                                <div class="row mr-0">
+                                                    <div class="col text-center pl-0" data-tooltip="true"
                                                          data-placement="top"
                                                          title="{{ 'admin.common.display'|trans }}"><a class="btn btn-ec-actionIcon"
                                                                                                               href="{{ url('product_detail', {id:Product.id}) }}"
                                                                                                               target="_blank"><i
                                                                     class="fa fa-eye fa-lg text-secondary"
                                                                     aria-hidden="true"></i></a></div>
-                                                    <div class="col text-center" data-tooltip="true"
+                                                    <div class="col text-center pr-4" data-tooltip="true"
                                                          data-placement="top"
                                                          title="{{ 'admin.common.copy'|trans }}">
                                                         <a href="#" class="btn btn-ec-actionIcon"
