@@ -239,20 +239,27 @@ class PluginService
         $this->entityManager->getConnection()->beginTransaction();
 
         try {
-            $plugin = new Plugin();
-            // インストール直後はプラグインは有効にしない
-            $plugin->setName($config['name'])
-                ->setEnabled(false)
-                ->setVersion($config['version'])
-                ->setSource($source)
-                ->setCode($config['code']);
+            $Plugin = $this->pluginRepository->findByCode($config['code']);
 
-            $this->entityManager->persist($plugin);
-            $this->entityManager->flush();
+            if (!$Plugin) {
+                $Plugin = new Plugin();
+                // インストール直後はプラグインは有効にしない
+                $Plugin->setName($config['name'])
+                    ->setEnabled(false)
+                    ->setVersion($config['version'])
+                    ->setSource($source)
+                    ->setCode($config['code']);
+                $this->entityManager->persist($Plugin);
+                $this->entityManager->flush();
+            }
 
-            $this->generateTempProxyAndUpdateSchema($plugin, $config);
+            $this->generateTempProxyAndUpdateSchema($Plugin, $config);
 
             $this->callPluginManagerMethod($config, 'install');
+
+            $Plugin->setInitialized(true);
+            $this->entityManager->persist($Plugin);
+            $this->entityManager->flush();
 
             $this->entityManager->flush();
             $this->entityManager->getConnection()->commit();
@@ -433,8 +440,9 @@ class PluginService
 
     public function checkSamePlugin($code)
     {
-        $repo = $this->pluginRepository->findOneBy(['code' => $code]);
-        if ($repo) {
+        /** @var Plugin $Plugin */
+        $Plugin = $this->pluginRepository->findOneBy(['code' => $code]);
+        if ($Plugin && $Plugin->isInitialized()) {
             throw new PluginException('plugin already installed.');
         }
     }
@@ -464,12 +472,9 @@ class PluginService
      * @return Plugin
      *
      * @throws PluginException
-     * @throws \Doctrine\DBAL\ConnectionException
      */
     public function registerPlugin($meta, $source = 0)
     {
-        $em = $this->entityManager;
-        $em->getConnection()->beginTransaction();
         try {
             $p = new Plugin();
             // インストール直後はプラグインは有効にしない
@@ -479,15 +484,9 @@ class PluginService
                 ->setSource($source)
                 ->setCode($meta['code']);
 
-            $em->persist($p);
-            $em->flush();
-
-            $this->callPluginManagerMethod($meta, 'install');
-
-            $em->flush();
-            $em->getConnection()->commit();
+            $this->entityManager->persist($p);
+            $this->entityManager->flush($p);
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
 
