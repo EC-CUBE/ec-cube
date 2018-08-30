@@ -21,13 +21,13 @@ $(function() {
     });
 
     // TODO: カート展開時のアイコン変更処理
-    $(document).on('click', '.ec-cartNavi', function() {
+    $('.ec-headerRole__cart').on('click', '.ec-cartNavi', function() {
         // $('.ec-cartNavi').toggleClass('is-active');
         $('.ec-cartNaviIsset').toggleClass('is-active');
         $(".ec-cartNaviNull").toggleClass("is-active")
     });
 
-    $(document).on('click', '.ec-cartNavi--cancel', function() {
+    $('.ec-headerRole__cart').on('click', '.ec-cartNavi--cancel', function() {
         // $('.ec-cartNavi').toggleClass('is-active');
         $('.ec-cartNaviIsset').toggleClass('is-active');
         $(".ec-cartNaviNull").toggleClass("is-active")
