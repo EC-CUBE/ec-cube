@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -232,10 +233,18 @@ class ShippingType extends AbstractType
         );
 
         // POSTされないデータをエンティティにセットする.
-        // TODO Calculatorで行うのが適切.
+        // TODO PurchaseFlow で行うのが適切.
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            /** @var Shipping $Shipping */
             $Shipping = $event->getData();
             $form = $event->getForm();
+            /** @var Delivery $Delivery */
+            $Delivery = $form['Delivery']->getData();
+            if ($Delivery) {
+                $Shipping->setShippingDeliveryName($Delivery->getName());
+            } else {
+                $Shipping->setShippingDeliveryName(null);
+            }
             $DeliveryDate = $form['shipping_delivery_date']->getData();
             if ($DeliveryDate) {
                 $Shipping->setShippingDeliveryDate(new \DateTime($DeliveryDate));
