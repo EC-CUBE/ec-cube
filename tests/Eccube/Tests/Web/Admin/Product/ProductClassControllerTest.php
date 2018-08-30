@@ -542,18 +542,18 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassSortByRank()
     {
         /* @var $ClassCategory \Eccube\Entity\ClassCategory */
-        //set 金 rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '金']);
+        //set チョコ rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'チョコ']);
         $ClassCategory->setSortNo(3);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set 銀 rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '銀']);
+        //set 抹茶 rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '抹茶']);
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set プラチナ rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'プラチナ']);
+        //set バニラ rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'バニラ']);
         $ClassCategory->setSortNo(1);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
@@ -571,14 +571,14 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
             }
         }
 
-        //金, 銀, プラチナ sort by rank setup above.
-        $this->expected = '金';
+        //チョコ, 抹茶, バニラ sort by rank setup above.
+        $this->expected = 'チョコ';
         $this->actual = $classCategories[1];
         $this->assertContains($this->expected, $this->actual);
-        $this->expected = '銀';
+        $this->expected = '抹茶';
         $this->actual = $classCategories[4];
         $this->assertContains($this->expected, $this->actual);
-        $this->expected = 'プラチナ';
+        $this->expected = 'バニラ';
         $this->actual = $classCategories[7];
         $this->assertContains($this->expected, $this->actual);
     }

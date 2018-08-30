@@ -86,41 +86,45 @@ common.hidden_label: (非表示)
 
 front.block.cart.go_to_cart: カートへ進む
 front.block.cart.no_item: 現在カート内に商品はございません。
-front.block.free.free_message__intro: 5000円以上の購入で
-front.block.free.free_message__title: 送料無料
-front.block.free.free_message__text: 一部地域は除く
-front.block.logo.sub_title: くらしを楽しむライフスタイルグッズ
+front.block.footer.about_us: 当サイトについて
+front.block.footer.privacy_policy: プライバシーポリシー
+front.block.footer.inquiry: お問い合わせ
+front.block.footer.act_on_specified_commercial_transactions: 特定商取引法に基づく表記
+front.block.category.list: カテゴリ一覧
+front.block.category.category__en: CATEGORY
+front.block.category.category__ja: カテゴリ
+front.block.topic.topic__en: TOPICS
+front.block.topic.topic__ja: 特集
+front.block.topic.title__gelato: 濃厚なのにアイスよりヘルシー!! ジェラート特集
+front.block.topic.title__ice: サクサク食感が魅力!! コーンアイス特集
+front.block.eyecatch.title__en: CUBE GELATO ICE
+front.block.eyecatch.title__ja: 彩のジェラート"CUBE"をご堪能ください。
+front.block.eyecatch.descriptiron: |
+  ジェラートとはイタリアン・アイスクリームのことで、一般的なアイスクリームに比べて、乳脂肪分が低くいのが特徴です。
+  当店では厳選した旬の果物のおいしさをそのままジェラートに仕上げました。風味が濃厚でありながら、甘さ控えめでヘルシーなキューブジェラートをご堪能ください。
+  さらにジェラートの製法を活かした、アイスキャンディ・アイスサンドも販売しております。
+front.block.eyecatch.view_list: 一覧を見る
+front.block.new_item.title__en: NEW ITEM
+front.block.new_item.title__ja: 新着商品
+front.block.new_item.more: more
+front.block.new_item.item_1_name: 彩のジェラート"CUBE"
+front.block.new_item.item_1_price: ￥1,200(税込)
+front.block.new_item.item_2_name: チェリーアイスサンド
+front.block.new_item.item_2_price: ￥800(税込)
+front.block.new_item.item_3_name: 彩のジェラート"CUBE" NEO
+front.block.new_item.item_3_price: ￥600(税込)
+front.block.news.title__en: NEWS
+front.block.news.title__ja: 新着情報
+front.block.news.read_more: more
+front.block.news.see_details: 詳しくはこちら
 front.block.login.customer_registration: 新規会員登録
 front.block.login.mypage: マイページ
 front.block.login.favorite: お気に入り
 front.block.login.login: ログイン
 front.block.login.logout: ログアウト
-front.block.footer.about_us: 当サイトについて
-front.block.footer.privacy_policy: プライバシーポリシー
-front.block.footer.inquiry: お問い合わせ
-front.block.footer.act_on_specified_commercial_transactions: 特定商取引法に基づく表記
-front.block.news.read_more: もっと見る
-front.block.news.news_title: 新着情報
-front.block.news.see_details: 詳しくはこちら
-front.block.new_product.eyecatch_title: 新入荷商品特集
-front.block.new_product.eyecatch_sub_title: この季節にぴったりな商品をご用意しました
-front.block.new_product.eyecatch_body: さわやかな日差しが過ごしやすい季節。心地よいくらしのための、お部屋のアクセントになるおすすめのファブリックやグッズをご紹介します。
-front.block.new_product.eyecatch_view_list: 一覧を見る
-front.block.new_product.category_read_more: read more
-front.block.new_product.category_1_title: お気に入りのエスプレッソタイム
-front.block.new_product.category_1_body: コーヒータイムを上質な時間にしてくれる、口当たりのよさとデザイン性を兼ね備えたエスプレッソカップを集めました・・・
-front.block.new_product.category_2_title: アウトドアにおすすめのアイテム
-front.block.new_product.category_2_body: カジュアルすぎない感じがちょうどよい、大人のためのアウトドアマガジンから、バイヤーおすすめのアイテムをセレクト・・・
-front.block.new_product.category_3_title: フランス製のデッドストック
-front.block.new_product.category_3_body: 60～70年代のフランス製のデッドストックの器を集めました。絶妙な色合いと、独特の優しい風合いをお楽しみいただけ・・・
-front.block.new_product.item_1_title: 木彫りのぬくもりがあたたかいアニマルオブジェ
-front.block.new_product.item_1_name: オブジェ（ふくろう）
-front.block.new_product.item_2_title: 青色が美しい職人が仕上げた吹きガラス
-front.block.new_product.item_2_name: ガラス瓶
-front.block.new_product.item_3_title: いつかは持ちたい。一生モノの銀製カトラリー
-front.block.new_product.item_3_name: シルバーカトラリー
-front.block.new_product.item_4_title: こだわりのシルクスクリーンプリントがポイント
-front.block.new_product.item_4_name: フォトクッションカバー
+front.block.login.to_cart: カートを見る
+front.block.login.to_home: ホームに戻る
+
 
 #------------------------------------------------------------------------------------
 # 問い合わせ
@@ -262,7 +266,7 @@ front.product.add_favorite_alrady: お気に入りに追加済です。
 front.product.out_of_stock: ただいま品切れ中です。
 front.product.out_of_stock_label: (品切れ中)
 front.product.added_to_favorite: お気に入りに追加済です。
-front.product.nomal_price: 通常価格
+front.product.normal_price: 通常価格
 front.product.sale_price: 販売価格
 front.product.code: 商品コード
 front.product.related_category: 関連カテゴリ
@@ -291,7 +295,7 @@ front.cart.no_items: 現在カート内に商品はございません。
 front.cart.delivery_fee_free__now: 現在送料無料です。
 front.cart.delivery_fee_free__price_and_quantity: あと「<strong>%price%</strong>」または「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
 front.cart.delivery_fee_free__price: あと「<strong>%price%</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
-front.cart.delivery_fee_free__quantity: '<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。'
+front.cart.delivery_fee_free__quantity: あと「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
 
 #------------------------------------------------------------------------------------
 # ショッピング
@@ -514,6 +518,7 @@ admin.home.sales_summany_yearly: 年間
 admin.home.sales_summany_amount: 売上金額
 admin.home.sales_summany_count: 売上件数
 admin.home.recommend_plugins_title: おすすめのプラグイン
+admin.home.recommend_plugins.owner_store: オーナーズストア
 admin.home.news_title: お知らせ
 
 admin.header.user_name: '%name% 様'
@@ -633,6 +638,7 @@ admin.product.class_name: 規格名
 admin.product.class_name__backend_name: 管理名
 admin.product.class_name__card_title: 規格情報
 admin.product.class_category: 規格分類
+admin.product.class_category__backend_name: 管理名
 admin.product.class_category__card_title: 規格分類情報
 admin.product.class_category_name: 規格分類名
 admin.product.class_category_name__short: 分類名
@@ -790,6 +796,9 @@ admin.order.mail_mail_info: メール内容
 admin.order.mail_confirm: 送信内容を確認
 admin.order.mail_template: テンプレート
 admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
+admin.order.mail_send_return: 送信内容の入力に戻る
+admin.order.mail_send: 送信
+admin.order.mail_send_complete: メールを送信しました。
 admin.order.mail_failed: 取得に失敗しました。
 admin.order.shipping_info: 出荷情報
 admin.order.delivery_date: お届け日
@@ -967,6 +976,15 @@ admin.content.block_source_code: コード
 admin.content.cache__card_title: キャッシュ管理
 admin.content.cache_message: 本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。
 admin.content.cache_delete: キャッシュ削除
+admin.content.news.publish_date: 公開日時
+admin.content.news.display_status: 公開状態
+admin.content.news.display_status__show: 公開
+admin.content.news.display_status__hide: 非公開
+admin.content.news.title: タイトル
+admin.content.news.url: URL
+admin.content.news.body: 本文
+admin.content.news.news_registration: 新着情報登録
+admin.content.news.new_window: 別ウィンドウで開く
 
 #------------------------------------------------------------------------------------
 # 設定
@@ -1034,6 +1052,7 @@ admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レー�
 
 admin.setting.shop.payment.terms_of_use: 利用条件
 admin.setting.shop.payment.unlimited: 無制限
+admin.setting.shop.payment.payment_id: ID
 admin.setting.shop.payment.payment_name: 支払方法名
 admin.setting.shop.payment.logo_image: ロゴ画像
 
@@ -1069,6 +1088,8 @@ admin.setting.shop.mail.mail_template_edit: テンプレート編集
 admin.setting.shop.mail.mail_template: テンプレート
 admin.setting.shop.mail.mail_subject: 件名
 admin.setting.shop.mail.mail_body: 本文
+admin.setting.shop.mail.mail_text: テキスト
+admin.setting.shop.mail.mail_html: HTML
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：CSV出力項目設定
@@ -1199,12 +1220,25 @@ admin.store.plugin.813: アップロードして新規追加
 admin.store.plugin.814: ユーザー独自プラグイン
 admin.store.plugin.815: 未登録プラグイン
 admin.store.plugin.816: プラグイン名
-admin.store.plugin_confirm.817: オーナーズストア
-admin.store.plugin_confirm.818: プラグインインストール
-admin.store.plugin_confirm.819: 以下のプラグインをインストールします。
-admin.store.plugin_confirm.820: '%plugin%をインストールするために、以下のプラグインもインストールします。'
-admin.store.plugin_confirm.821: インストール
-admin.store.plugin_confirm.822: 戻る
+admin.store.plugin.help: オーナーズストアへの接続に問題があるため、詳細な情報を取得できませんでした。
+admin.store.plugin.install: インストール
+admin.store.plugin.upgrade: アップデート
+admin.store.plugin.price: 販売価格
+admin.store.plugin.detail.download: ダウンロード数
+admin.store.plugin.detail.version: プラグインバージョン
+admin.store.plugin.detail.support: EC-CUBE対応バージョン
+admin.store.plugin.detail.public_date: 公開日
+admin.store.plugin.detail.update_date: 最終更新日
+admin.store.plugin.detail.size: ファイルサイズ
+admin.store.plugin.detail.size.format: 約 %size% KB
+admin.store.plugin.detail.license: ライセンス
+admin.store.plugin.detail.develop: 制作者
+admin.store.plugin_confirm.title.upgrade: アップデート
+admin.store.plugin_confirm.title: インストール確認
+admin.store.plugin_confirm.subtitle: オーナーズストア
+admin.store.plugin_confirm.header: 以下のプラグインをインストールします
+admin.store.plugin_confirm.header.upgrade: 以下のプラグインを最新版にアップデートします
+admin.store.plugin_confirm.require.header: 「%name%」には以下のプラグインが必須です。同時にインストールされます
 admin.store.plugin_confirm_uninstall.823: オーナーズストア
 admin.store.plugin_confirm_uninstall.824: プラグイン削除
 admin.store.plugin_confirm_uninstall.825: 以下のプラグインを削除します。
@@ -1265,7 +1299,6 @@ admin.store.plugin_owners_search.form.sort.dl: DL
 admin.store.plugin_owners_search.search_button: 検索
 admin.store.plugin_owners_search.search_results: 検索結果（%number%／%total%ページ）
 admin.store.plugin_owners_search.latest: 最新バージョン：
-admin.store.plugin_owners_search.price: 販売価格
 admin.store.plugin_owners_search.dl: DL数
 admin.store.plugin_owners_search.support: 対応バージョン
 admin.store.plugin_owners_search.detail: 詳細
@@ -1273,15 +1306,6 @@ admin.store.plugin_owners_search.install.free: 入手する
 admin.store.plugin_owners_search.install.fee: 購入する
 admin.store.plugin_owners_search.install: インストール済み
 admin.store.plugin_owners_search.modal.header: 商品詳細
-admin.store.plugin_owners_search.modal.download: ダウンロード数
-admin.store.plugin_owners_search.modal.version: プラグインバージョン
-admin.store.plugin_owners_search.modal.support: EC-CUBE知王バージョン
-admin.store.plugin_owners_search.modal.public_date: 公開日
-admin.store.plugin_owners_search.modal.update_date: 最終更新日
-admin.store.plugin_owners_search.modal.size: ファイルサイズ
-admin.store.plugin_owners_search.modal.size.format: '約 %size% KB'
-admin.store.plugin_owners_search.modal.license: ライセンス
-admin.store.plugin_owners_search.modal.develop: 制作者
 admin.store.plugin_owners_search.modal.contact: 資料請求・お問い合わせ
 admin.store.plugin_owners_search.modal.manual: マニュアルダウンロード
 admin.store.plugin_owners_search.modal.note: 'このプラグインはEC-CUBE %version%をサポートしていないため、正常に動作しない可能性があります。'
@@ -1369,6 +1393,7 @@ admin.store.install.label: 'プラグイン (zip、tar、tar.gz形式)'
 admin.info: 情報
 admin.info.official_site: 公式サイト
 admin.info.community: 開発コミュニティ
+admin.info.document: ドキュメント
 
 #------------------------------------------------------------------------------------
 # ツールチップ

@@ -106,6 +106,44 @@ class ComposerApiService implements ComposerServiceInterface
     }
 
     /**
+     * Run update command
+     *
+     * @param boolean $dryRun
+     * @param null|OutputInterface $output
+     *
+     * @throws PluginException
+     */
+    public function execUpdate($dryRun, $output = null)
+    {
+        $this->runCommand([
+            'command' => 'update',
+            '--no-interaction' => true,
+            '--profile' => true,
+            '--no-scripts' => true,
+            '--dry-run' => (bool) $dryRun,
+        ], $output);
+    }
+
+    /**
+     * Run install command
+     *
+     * @param boolean $dryRun
+     * @param null|OutputInterface $output
+     *
+     * @throws PluginException
+     */
+    public function execInstall($dryRun, $output = null)
+    {
+        $this->runCommand([
+            'command' => 'install',
+            '--no-interaction' => true,
+            '--profile' => true,
+            '--no-scripts' => true,
+            '--dry-run' => (bool) $dryRun,
+        ], $output);
+    }
+
+    /**
      * Get require
      *
      * @param string $packageName
@@ -193,7 +231,7 @@ class ComposerApiService implements ComposerServiceInterface
     {
         $this->init();
         $commands['--working-dir'] = $this->workingDir;
-        $commands['--no-ansi'] = 1;
+        $commands['--no-ansi'] = true;
         $input = new ArrayInput($commands);
         $output = $output ?: new BufferedOutput();
 

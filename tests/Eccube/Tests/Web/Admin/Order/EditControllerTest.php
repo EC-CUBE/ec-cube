@@ -252,7 +252,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $formData = $this->createFormData($Customer, $this->Product);
-        $formData['OrderStatus'] = 8; // 購入処理中で受注を登録する
+        $formData['OrderStatus'] = OrderStatus::PROCESSING; // 購入処理中で受注を登録する
         // 管理画面から受注登録
         $this->client->request(
             'POST',

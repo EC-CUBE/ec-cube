@@ -28,21 +28,4 @@ class DeliveryTimeRepository extends AbstractRepository
     {
         parent::__construct($registry, DeliveryTime::class);
     }
-
-    /**
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function findOrCreate(array $conditions)
-    {
-        $DeliveryTime = $this->findOneBy($conditions);
-
-        if ($DeliveryTime instanceof \Eccube\Entity\DeliveryTime) {
-            return $DeliveryTime;
-        }
-
-        $DeliveryTime = new \Eccube\Entity\DeliveryTime();
-        $DeliveryTime->setDelivery($conditions['Delivery']);
-
-        return $DeliveryTime;
-    }
 }

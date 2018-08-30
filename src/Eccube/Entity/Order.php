@@ -184,14 +184,14 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="name01", type="string", length=255, nullable=true)
+         * @ORM\Column(name="name01", type="string", length=255)
          */
         private $name01;
 
         /**
          * @var string|null
          *
-         * @ORM\Column(name="name02", type="string", length=255, nullable=true)
+         * @ORM\Column(name="name02", type="string", length=255)
          */
         private $name02;
 
@@ -476,6 +476,8 @@ if (!class_exists('\Eccube\Entity\Order')) {
         private $DeviceType;
 
         /**
+         * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
+         *
          * @var \Eccube\Entity\Master\CustomerOrderStatus
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
@@ -484,6 +486,18 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * })
          */
         private $CustomerOrderStatus;
+
+        /**
+         * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
+         *
+         * @var \Eccube\Entity\Master\OrderStatusColor
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
+         * })
+         */
+        private $OrderStatusColor;
 
         /**
          * @var \Eccube\Entity\Master\OrderStatus
@@ -1599,9 +1613,33 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
+         * Set orderStatusColor.
+         *
+         * @param \Eccube\Entity\Master\OrderStatusColor|null $orderStatusColor
+         *
+         * @return Order
+         */
+        public function setOrderStatusColor(\Eccube\Entity\Master\OrderStatusColor $orderStatusColor = null)
+        {
+            $this->OrderStatusColor = $orderStatusColor;
+
+            return $this;
+        }
+
+        /**
+         * Get orderStatusColor.
+         *
+         * @return \Eccube\Entity\Master\OrderStatusColor|null
+         */
+        public function getOrderStatusColor()
+        {
+            return $this->OrderStatusColor;
+        }
+
+        /**
          * Set orderStatus.
          *
-         * @param \Eccube\Entity\Master\OrderStatus|null $orderStatus
+         * @param \Eccube\Entity\Master\OrderStatus|null|object $orderStatus
          *
          * @return Order
          */

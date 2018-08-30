@@ -13,6 +13,7 @@
 
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\OrderEditPage;
 use Page\Admin\OrderManagePage;
@@ -135,6 +136,7 @@ class EA04OrderCest
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $newOrders */
         $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::NEW);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
@@ -194,6 +196,7 @@ class EA04OrderCest
 
     public function order_受注削除(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('未実装：受注削除は未実装');
         $I->wantTo('EA0401-UC08-T01(& UC08-T02) 受注削除');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
@@ -276,7 +279,7 @@ class EA04OrderCest
             ->入力_電話番号('111-111-111')
             ->注文者情報をコピー()
             ->入力_配送業者([1 => 'サンプル業者'])
-            ->商品検索('パーコレーター')
+            ->商品検索('チェリーアイスサンド')
             ->商品検索結果_選択(1)
             ->受注情報登録();
 

@@ -79,9 +79,19 @@ class DeliveryController extends AbstractController
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException();
             }
+            $CustomerAddress = new CustomerAddress();
+            $CustomerAddress->setCustomer($Customer);
+        } else {
+            $CustomerAddress = $this->customerAddressRepository->findOneBy(
+                [
+                    'id' => $id,
+                    'Customer' => $Customer,
+                ]
+            );
+            if (!$CustomerAddress) {
+                throw new NotFoundHttpException();
+            }
         }
-
-        $CustomerAddress = $this->customerAddressRepository->findOrCreateByCustomerAndId($Customer, $id);
 
         $parentPage = $request->get('parent_page', null);
 

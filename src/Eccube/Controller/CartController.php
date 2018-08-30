@@ -23,6 +23,7 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
+use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -113,7 +114,7 @@ class CartController extends AbstractController
         }
 
         // カートが分割された時のセッション情報を削除
-        $request->getSession()->remove('cart.divide');
+        $request->getSession()->remove(OrderHelper::SESSION_CART_DEVIDE_FLAG);
 
         return [
             'totalPrice' => $totalPrice,

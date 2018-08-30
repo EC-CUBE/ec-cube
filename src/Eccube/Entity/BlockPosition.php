@@ -30,15 +30,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         /**
          * @var int
          *
-         * @ORM\Column(name="page_id", type="integer", options={"unsigned":true}, nullable=true)
-         *
-         * @deprecated
-         */
-        private $page_id;
-
-        /**
-         * @var int
-         *
          * @ORM\Column(name="section", type="integer", options={"unsigned":true})
          * @ORM\Id
          * @ORM\GeneratedValue(strategy="NONE")
@@ -71,15 +62,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         private $block_row;
 
         /**
-         * @var int
-         *
-         * @ORM\Column(name="anywhere", type="smallint", options={"default":0})
-         *
-         * @deprecated
-         */
-        private $anywhere = 0;
-
-        /**
          * @var \Eccube\Entity\Block
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Block", inversedBy="BlockPositions")
@@ -110,34 +92,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
          * })
          */
         private $Layout;
-
-        /**
-         * Set pageId.
-         *
-         * @param int $pageId
-         *
-         * @return BlockPosition
-         *
-         * @deprecated
-         */
-        public function setPageId($pageId)
-        {
-            $this->page_id = $pageId;
-
-            return $this;
-        }
-
-        /**
-         * Get pageId.
-         *
-         * @return int
-         *
-         * @deprecated
-         */
-        public function getPageId()
-        {
-            return $this->page_id;
-        }
 
         /**
          * Set section.
@@ -233,34 +187,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         public function getBlockRow()
         {
             return $this->block_row;
-        }
-
-        /**
-         * Set anywhere.
-         *
-         * @param int $anywhere
-         *
-         * @return BlockPosition
-         *
-         * @deprecated
-         */
-        public function setAnywhere($anywhere)
-        {
-            $this->anywhere = $anywhere;
-
-            return $this;
-        }
-
-        /**
-         * Get anywhere.
-         *
-         * @return int
-         *
-         * @deprecated
-         */
-        public function getAnywhere()
-        {
-            return $this->anywhere;
         }
 
         /**

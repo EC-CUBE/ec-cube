@@ -14,9 +14,19 @@ file that was distributed with this source code.
         display: block;
         overflow: visible;
     }
+    #table1 {
+        width: 100% !important;
+    }
+    #table2 {
+        width: 100% !important;
+    }
     .modal-open #main {
         visibility:hidden;
     }
 </style>
 
-<small>{{ body|raw|nl2br }}</small>
+{% if html_body|length > 0 %}
+	<small>{{ html_body|trans|raw }}</small>
+{% else %}
+	<small>{{ body|raw|nl2br }}</small>
+{% endif %}

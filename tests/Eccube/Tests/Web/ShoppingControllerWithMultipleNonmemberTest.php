@@ -119,7 +119,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
             ]
         );
 
-        $this->scenarioComplete(null, $this->generateUrl('shopping_order'),
+        $this->scenarioComplete(null, $this->generateUrl('shopping_checkout'),
             [
                 // 配送先1
                 [
@@ -1448,7 +1448,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         $this->scenarioComplete(
             null,
-            $this->generateUrl('shopping_order')
+            $this->generateUrl('shopping_checkout')
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
