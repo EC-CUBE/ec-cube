@@ -2,6 +2,7 @@
 @import "../mixins/projects";
 @import "../mixins/clearfix";
 @import "../mixins/animation";
+
 /*
 ヘッダー
 
@@ -21,7 +22,7 @@ include /assets/tmpl/elements/11.4.categoryNavi.pug
 
 Styleguide 11.2
 */
-.ec-layoutRole{
+.ec-layoutRole {
   width: 100%;
   transition: transform 0.3s;
   background: #fff;
@@ -29,7 +30,7 @@ Styleguide 11.2
     padding: 0;
   }
 
-  & &__contents{
+  & &__contents {
     margin-right: auto;
     margin-left: auto;
     width: 100%;
@@ -38,40 +39,33 @@ Styleguide 11.2
     flex-wrap: nowrap;
 
   }
-  & &__main{
+  & &__main {
     width: 100%;
   }
-  & &__mainWithColumn{
+  & &__mainWithColumn {
     width: 100%;
-    @include media_desktop(){
+    @include media_desktop() {
       width: 75%;
     }
   }
-  & &__mainBetweenColumn{
+  & &__mainBetweenColumn {
     width: 100%;
-    @include media_desktop(){
+    @include media_desktop() {
       width: 50%;
     }
   }
   & &__left,
-  & &__right{
+  & &__right {
     display: none;
-    @include media_desktop(){
+    @include media_desktop() {
       display: block;
       width: 25%;
     }
   }
 }
 
-.ec-layoutRole.is_active{
-  transform: translateX(-260px);
-  transition: transform 0.3s;
-  z-index: 10;
-  @include media_desktop(){
-    transform: translateX(0px);
-  }
-}
-.ec-headerRole{
+
+.ec-headerRole {
   @include container;
   padding-top: 15px;
   position: relative;
@@ -81,7 +75,7 @@ Styleguide 11.2
   @include media_desktop {
     @include clearfix;
   }
-  &::before{
+  &::before {
     display: none;
   }
   display: flex;
@@ -92,147 +86,98 @@ Styleguide 11.2
     width: 100%;
     @include clearfix;
   }
-  & &__title{
-    width: 73%;
-    @include media_desktop() {
-      width: 100%;
-    }
+  & &__title {
+    width: 100%;
   }
-  & &__cart{
-    display: none;
-    position: absolute;
-    top:15px;
-    right: 0;
-    @include media_desktop(){
-      display: block;
-      @include reset_link;
-    }
-  }
-  & &__navSP{
+  & &__navSP {
     display: block;
     position: absolute;
-    top:15px;
-    width: 30%;
-    right: 0px;
+    top: 15px;
+    width: 27%;
+    right: 0;
     text-align: right;
     @include media_desktop {
       display: none;
     }
   }
 }
-.ec-headerNaviRole{
+
+.ec-headerNaviRole {
   @include container;
-  @include clearfix;
-  & &__search{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+
+  @include media_desktop {
+    padding-bottom: 40px;
+  }
+
+  & &__left {
+    width: calc(100% / 2);
+
+  }
+
+  & &__search {
     display: none;
-    @include media_desktop(){
-      display: block;
-      float: left;
-      width: 370px;
+    @include media_desktop() {
+      display: inline-block;
+      margin-top: 10px;
       @include reset_link;
     }
   }
-  & &__nav{
-    display: none;
-    @include media_desktop(){
-      display: block;
-      float: right;
-      width: 50%;
+  & &__navSP {
+    display: block;
+    @include media_desktop() {
+      display: none;
       @include reset_link;
     }
   }
 
+  & &__right {
+    width: calc(100% / 2);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  & &__nav {
+    display: inline-block;
+    @include reset_link;
+  }
+  & &__cart {
+    display: inline-block;
+    @include reset_link;
+  }
 }
+
 .ec-headerNavSP {
-  margin-right: 10px;
-  width: 100%;
-  height: auto;
-  vertical-align: top;
-  text-align: right;
-  & &__item{
-    display: inline-block;
-    margin-right: 10px;
-    width: auto;
-    text-align: center;
+  display: block;
+  //display: inline-block;
+  border-radius: 50%;
+  box-sizing: border-box;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  text-align: center;
+  color: black;
+  background: white;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+
+  .fas {
+    vertical-align: top;
   }
-  & &__item:nth-of-type(2){
-    margin-left: 5px;
-  }
-  .ec-cartNaviSP{
-    display: inline-block;
-    font-size: 30px;
-    cursor: pointer;
-    position: relative;
-    .ec-cartNaviSP__icon{
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      color: $clrDarkGray;
-    }
-    .ec-cartNaviSP__badge{
-      display: inline-block;
-      padding: 3px 7px;
-      min-width: 10px;
-      font-size: 10px;
-      font-weight: 700;
-      line-height: 1;
-      color: #fff;
-      text-align: center;
-      white-space: nowrap;
-      vertical-align: baseline;
-      background: #DE5D50;
-      border-radius: 10px;
-      position: absolute;
-      top: 0;
-      right: -10px;
-    }
-  }
-  & &__itemMenu {
-    display: block;
-    position: relative;
-    width: 25px;
-    height: 15px;
-    cursor: pointer;
-    span {
-      display: inline-block;
-      transition: all .4s;
-      box-sizing: border-box;
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: #525263;
-    }
-    span:nth-of-type(1) {
-      top: 0;
-      transform: translateY(0) rotate(0);
-      transition: all .3s;
-    }
-    span:nth-of-type(2) {
-      top: 6px;
-      opacity: 1;
-      transition: all .3s;
-    }
-    span:nth-of-type(3) {
-      bottom: 0;
-      transform: translateY(0) rotate(0);
-      transition: all .3s;
-    }
+
+  @include media_desktop {
+    display: none;
   }
 }
-.have_curtain .ec-headerNavSP__itemMenu {
-  span:nth-of-type(1) {
-    transform: translateY(2px) rotate(-45deg);
-    transition: all .3s;
-  }
-  span:nth-of-type(2) {
-    opacity: 0;
-    transition: all .3s;
-  }
-  span:nth-of-type(3) {
-    transform: translateY(-10px) rotate(45deg);
-    transition: all .3s;
-  }
+.ec-headerNavSP.is-active {
+  display: none;
 }
 
 /*
@@ -246,33 +191,35 @@ include /assets/tmpl/elements/11.2.header.pug
 
 Styleguide 11.2.1
 */
-.ec-headerTitle{
+.ec-headerTitle {
   @include commonStyle();
   & &__title {
+    text-align: center;
     h1 {
       margin: 0;
       padding: 0;
     }
-    a{
+    a {
       display: inline-block;
-      margin-bottom: 15px;
+      margin-bottom: 30px;
       text-decoration: none;
       font-size: 20px;
-      @include media_desktop(){
-        margin-bottom: 30px;
+
+      @include media_desktop() {
         font-size: 40px;
       }
       font-weight: bold;
-      color: #000;
+      color: black;
 
       &:hover {
-        color: #666;
+        opacity: .8;
       }
     }
   }
   & &__subtitle {
     font-size: 10px;
-    @include media_desktop(){
+    text-align: center;
+    @include media_desktop() {
       font-size: 16px;
       margin-bottom: 10px;
     }
@@ -305,31 +252,34 @@ sg-wrapper:
 
 Styleguide 11.2.3
 */
-.ec-headerNav{
+.ec-headerNav {
   text-align: right;
-  & &__item{
+  & &__item {
     margin-left: 0;
     display: inline-block;
     font-size: 28px;
-    line-height: 50px;
+  }
+  & &__itemIcon {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 18px;
+    color: black;
     @include media_desktop {
-      margin-left: 10px;
+      margin-right: 0;
+      font-size: 20px;
     }
-    @include reset_link;
-    span{
-      font-size: 14px;
-    }
-    .ec-icon {
-      img {
-        width: 30px;
-        height: 30px;
-        vertical-align: middle;
-        margin-right: 5px;
-      }
+  }
+  & &__itemLink {
+    display: none;
+    margin-right: 5px;
+    font-size: 14px;
+    vertical-align: middle;
+    color: black;
+    @include media_desktop {
+      display: inline-block;
     }
   }
 }
-
 
 /*
 ヘッダー：検索ボックス
@@ -360,45 +310,98 @@ Styleguide 11.2.4
       width: 43%;
     }
     .ec-select {
-      margin-bottom: 6px;
-    }
-    select{
-      width: auto;
-      max-width: 100%;
-      height: 50px;
-      border: 1px solid #ccc;
-      font-size: 1.6rem;
-      padding: 0.5em 1em;
-      border-radius: 5px;
-      box-shadow: none;
-      box-sizing: border-box;
-      -webkit-appearance: menulist;
-      appearance: menulist;
-      @include media_desktop {
-        max-width: 180px;
+      overflow: hidden;
+      width: 100%;
+      margin: 0;
+      text-align: center;
+
+      select {
+        width: 100%;
+        padding-right: 1em;
+        cursor: pointer;
+        text-indent: 0.01px;
+        text-overflow: ellipsis;
+        border: none;
+        outline: none;
+        background: transparent;
+        background-image: none;
+        box-shadow: none;
+        -webkit-appearance: none;
+        appearance: none;
+        color: #fff;
+
+        @include media_desktop {
+          max-width: 165px;
+          height: 36px;
+        }
+
+        &::-ms-expand {
+          display: none;
+        }
       }
+
+      &.ec-select_search {
+        position: relative;
+        border: 0;
+        background: #000;
+        color: #fff;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+
+        @include media_desktop {
+          border-top-right-radius: inherit;
+          border-top-left-radius: 50px;
+          border-bottom-left-radius: 50px;
+        }
+
+
+        &::before {
+          position: absolute;
+          top: 0.8em;
+          right: 0.4em;
+          width: 0;
+          height: 0;
+          padding: 0;
+          content: '';
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 6px solid #fff;
+          pointer-events: none;
+        }
+
+        select {
+          padding: 8px 24px 8px 8px;
+          color: #fff;
+        }
+      }
+
     }
   }
   & &__keyword{
-    float: none;
-    height: 50px;
-    padding: 0 40px 0 10px;
-    border-bottom: 1px solid #ccc;
     position: relative;
     color: $clrDarkGray;
+    border: 1px solid #ccc;
+    background-color: #f6f6f6;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+
     @include media_desktop {
       float: right;
       width: 57%;
+      border-bottom-left-radius: inherit;
+      border-top-right-radius: 50px;
+      border-bottom-right-radius: 50px;
     }
     input[type="search"]{
-      height: 50px;
       width: 100%;
-      font-size: 1.6rem;
+      height: 34px;
+      font-size: 1.2rem;
       border: 0 none;
-      padding: 0.5em 0;
+      padding: 0.5em 50px 0.5em 1em;
       box-shadow: none;
       background: none;
       box-sizing: border-box;
+      margin-bottom: 0;
     }
     .ec-icon {
       width: 25px;
@@ -410,15 +413,14 @@ Styleguide 11.2.4
     background: none;
     position: absolute;
     right: 0;
-    top: 6px;
+    top: 0;
     display: block;
-    font-size: 25px;
+    font-size: 20px;
     overflow: hidden;
     white-space: nowrap;
     z-index: 1;
   }
 }
-
 
 /*
 ヘッダー：カテゴリナビ
@@ -437,10 +439,10 @@ sg-wrapper:
 
 Styleguide 11.2.5
 */
-.ec-cateoryNaviRole{
+.ec-cateoryNaviRole {
   @include container;
   display: none;
-  @include media_desktop(){
+  @include media_desktop() {
     display: block;
     width: 100%;
     @include reset_link;
@@ -452,13 +454,9 @@ Styleguide 11.2.5
   padding: 0;
   width: 100%;
   height: 100%;
-  text-align:center;
-  @include media_desktop {
-    margin: 20px 0 30px;
-    border-bottom: 1px solid #D9D9D9;
-    border-top: 1px solid #D9D9D9;
-  }
+  text-align: center;
 }
+
 .ec-itemNav__nav {
   display: block;
   margin: 0 auto;
@@ -467,7 +465,7 @@ Styleguide 11.2.5
   height: auto;
   list-style-type: none;
   text-align: center;
-  vertical-align:bottom;
+  vertical-align: bottom;
   @include media_desktop {
     display: inline-block;
   }
@@ -485,8 +483,10 @@ Styleguide 11.2.5
     width: auto;
   }
 }
+
 .ec-itemNav__nav li a {
   display: block;
+  border-bottom: 1px solid #E8E8E8;
   margin: 0;
   padding: 16px;
   height: 55px;
@@ -532,19 +532,24 @@ Styleguide 11.2.5
     height: 0;
   }
 }
+
 .ec-itemNav__nav li ul li a {
+  border-bottom: 1px solid #E8E8E8;
   padding: 16px;
   font-size: 16px;
   font-weight: bold;
-  color: #525263;
+  color: white;
   text-align: left;
-  background: #fff;
-  border-bottom: 1px solid #E8E8E8;
+  background: black;
 }
 
-.ec-itemNav__nav > li:hover > a {  background: #fafafa; }
-.ec-itemNav__nav > li:hover li:hover > a {  background: #fafafa; }
+.ec-itemNav__nav > li:hover > a {
+  background: #fafafa;
+}
 
+.ec-itemNav__nav > li:hover li:hover > a {
+  background: #333;
+}
 
 .ec-itemNav__nav > li:hover > ul > li {
   @include media_desktop {
@@ -561,9 +566,12 @@ Styleguide 11.2.5
 
 .ec-itemNav__nav li ul li ul:before {
   @include media_desktop {
-    content: ">";
+    content: "\f054";
+    font-family: FontAwesome;
+    font-size: 12px;
+    color: white;
     position: absolute;
-    top: 13px;
+    top: 19px;
     right: auto;
     left: -20px;
   }
@@ -576,10 +584,13 @@ Styleguide 11.2.5
   }
 }
 
-.ec-itemNav__nav li ul li ul li a {  background: #fff }
+.ec-itemNav__nav li ul li ul li a {
+  background: #7D7D7D
+}
 
-.ec-itemNav__nav li:hover ul li ul li a:hover {  background: #fafafa; }
-
+.ec-itemNav__nav li:hover ul li ul li a:hover {
+  background: #333;
+}
 
 /*
 ヘッダー：SPヘッダー
@@ -594,32 +605,29 @@ ex [トップページ](http://demo3.ec-cube.net/)画面サイズが768px以下�
 Styleguide 11.2.6
 */
 
-.ec-drawerRole{
-  overflow-y:scroll;
-  display: block;
-  background: #F6F6F6;
-  position: fixed;
-  top:0;
+.ec-drawerRole {
+  overflow-y: scroll;
+  background: black;
   width: 260px;
-  height:100vh;
-  right:0;
-  z-index: -1;
-  transition: z-index 0ms 1ms;
-  @include media_desktop(){
-    display: none;
-  }
-}
-
-.ec-drawerRole.is_active{
+  height: 100vh;
+  transform: translateX(-300px);
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 1;
-  transition: z-index 0ms 300ms;
-  @include media_desktop(){
+  transition: z-index 0ms 1ms;
+  @include media_desktop() {
     display: none;
   }
-}
 
-.ec-drawerRole{
-   .ec-headerSearch{
+
+  .ec-headerSearchArea {
+    padding: 20px 10px;
+    width: 100%;
+    background: #F8F8F8;
+  }
+
+  .ec-headerSearch{
     padding: 16px 8px 26px;
     background: #EBEBEB;
     color: #636378;
@@ -627,40 +635,130 @@ Styleguide 11.2.6
       width: 100% !important;
     }
   }
-   .ec-headerNav{
-    .ec-headerNav__item{
-      text-align: left;
-      display: block;
-      padding-left: 10px;
-      height: 60px;
-      border-bottom: 1px solid #e8e8e8;
-      line-height: 50px;
-      font-size: 30px;
-      @include media_desktop {
-        padding:0 10px;
-        height: 50px;
-      }
+
+  .ec-headerCategoryArea{
+    .ec-headerCategoryArea__heading {
+      border-top: 1px solid #CCCCCC;
+      border-bottom: 1px solid #CCCCCC;
+      padding: 1em 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: black;
+      background: #F8F8F8;
     }
 
+
+    .ec-itemNav__nav li a {
+      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      color: black;
+      font-weight: normal;
+      background: #f8f8f8;
+    }
+
+    .ec-itemNav__nav li ul li a {
+      border-bottom: 1px solid #ccc;
+      padding-left: 20px;
+      font-weight: normal;
+      background: white;
+    }
+
+    .ec-itemNav__nav > li:hover > a {
+      background: #f8f8f8;
+    }
+
+    .ec-itemNav__nav > li:hover li:hover > a {
+      background: white;
+    }
+
+    .ec-itemNav__nav li ul li ul li a {
+      padding-left: 40px;
+      color: black;
+      background: white;
+    }
+
+    .ec-itemNav__nav li:hover ul li ul li a:hover {
+      background: white;
+    }
+
+    .ec-itemNav__nav li ul li ul li ul li a{
+      padding-left: 60px;
+      font-weight: normal;
+    }
   }
-  .ec-itemNav{
-    .ec-itemNav__item{
+  .ec-headerLinkArea {
+    background: black;
+
+    .ec-headerLink__list {
+      border-top: 1px solid #ccc;
+
+    }
+
+    .ec-headerLink__item {
       display: block;
-      text-align: left;
-      border-bottom: 1px solid #e8e8e8;
-      line-height: 50px;
+      border-bottom: 1px solid #ccc;
+      padding: 15px 20px;
+      font-size: 16px;
       font-weight: bold;
-      a {
-        padding:0 10px;
-        height: 50px;
-      }
+      color: white;
     }
-    .ec-itemNavAccordion {
-      display: none;
+    .ec-headerLink__icon {
+      display: inline-block;
+      width: 28px;
+      font-size: 17px;
     }
+
+
+
+  }
+
+}
+
+.ec-drawerRoleClose {
+  display: none;
+  border-radius: 50%;
+  box-sizing: border-box;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  text-align: center;
+  color: black;
+  background: white;
+  position: fixed;
+  top: 10px;
+  left: 270px;
+  z-index: 1000;
+
+  .fas {
+    vertical-align: top;
+  }
+  @include media_desktop {
+    display: none;
+  }
+
+}
+
+.ec-drawerRole.is_active {
+  display: block;
+  transform: translateX(0);
+  transition: all .3s;
+  z-index: 100000;
+
+  @include media_desktop() {
+    display: none;
   }
 }
-.ec-overlayRole{
+.ec-drawerRoleClose.is_active  {
+  display: inline-block;
+  transition: all .3s;
+
+  @include media_desktop {
+    display: none;
+  }
+}
+
+.ec-overlayRole {
   position: fixed;
   width: 100%;
   height: 100vh;
@@ -670,15 +768,22 @@ Styleguide 11.2.6
   background: transparent;
   transform: translateX(0);
   transition: all .3s;
-  visibility:hidden;
+  visibility: hidden;
+
+  @include media_desktop {
+    display: none;
+  }
 }
+
 .have_curtain .ec-overlayRole {
   display: block;
   opacity: 1;
-  background: rgba(0,0,0, 0.5);
-  transform: translateX(-260px);
-  transition: all .3s;
+  background: rgba(0, 0, 0, 0.5);
   visibility: visible;
+
+  @include media_desktop {
+    display: none;
+  }
 }
 
 /*

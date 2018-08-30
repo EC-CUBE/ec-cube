@@ -11,7 +11,7 @@ file that was distributed with this source code.
 <div class="ec-headerSearch">
     <form method="get" id="searchform" action="{{ path('product_list') }}">
         <div class="ec-headerSearch__category">
-            <div class="ec-select">
+            <div class="ec-select ec-select_search">
                 {{ form_widget(form.category_id) }}
             </div>
         </div>
@@ -19,7 +19,9 @@ file that was distributed with this source code.
             <div class="ec-input">
                 {{ form_widget(form.name, {'attr': { 'placeholder' : "common.search_keyword" }} ) }}
                 <button class="ec-headerSearch__keywordBtn" type="submit">
-                    <div class="ec-icon"><img src="{{ asset('assets/icon/search-dark.svg') }}" alt=""></div>
+                    <div class="ec-icon">
+                        <img src="{{ asset('assets/icon/search-dark.svg') }}" alt="">
+                    </div>
                 </button>
             </div>
         </div>

@@ -48,10 +48,10 @@ class EA03ProductCest
     {
         $I->wantTo('EA0301-UC01-T01 (& UC01-T02) 商品検索');
 
-        ProductManagePage::go($I)->検索('フォーク');
+        ProductManagePage::go($I)->検索('ジェラート');
 
         $I->see('検索結果：1件が該当しました', ProductManagePage::$検索結果_メッセージ);
-        $I->see('ディナーフォーク', ProductManagePage::$検索結果_一覧);
+        $I->see('彩のジェラートCUBE', ProductManagePage::$検索結果_一覧);
 
         ProductManagePage::go($I)->検索('gege@gege.com');
         $I->see('検索結果：0件が該当しました', ProductManagePage::$検索結果_メッセージ);
@@ -179,7 +179,7 @@ class EA03ProductCest
             ->規格管理();
 
         $ProductClassEditPage = ProductClassEditPage::at($I)
-            ->入力_規格1('材質')
+            ->入力_規格1('フレーバー')
             ->規格設定();
 
         $I->see('3件の組み合わせがあります', 'div.c-contentsArea__cols > div > div > form div.card-header > div > div.col-6 > span');
@@ -318,7 +318,7 @@ class EA03ProductCest
 
         // 規格なし商品では商品種別等が編集可能
         ProductManagePage::go($I)
-            ->検索('パーコレーター')
+            ->検索('チェリーアイスサンド')
             ->検索結果_選択(1);
         ProductEditPage::at($I);
 
@@ -332,7 +332,7 @@ class EA03ProductCest
 
         // 規格あり商品では商品種別等が編集不可
         ProductManagePage::go($I)
-            ->検索('ディナーフォーク')
+            ->検索('彩のジェラートCUBE')
             ->検索結果_選択(1);
         $ProductEditPage = ProductEditPage::at($I);
 
@@ -491,15 +491,15 @@ class EA03ProductCest
 
         $ProductClassPage = ClassNameManagePage::go($I);
         $I->see('サイズ', $ProductClassPage->一覧_名称(3));
-        $I->see('材質', $ProductClassPage->一覧_名称(4));
+        $I->see('フレーバー', $ProductClassPage->一覧_名称(4));
 
         $ProductClassPage->一覧_下に(3);
-        $I->see('材質', $ProductClassPage->一覧_名称(3));
+        $I->see('フレーバー', $ProductClassPage->一覧_名称(3));
         $I->see('サイズ', $ProductClassPage->一覧_名称(4));
 
         $ProductClassPage->一覧_上に(4);
         $I->see('サイズ', $ProductClassPage->一覧_名称(3));
-        $I->see('材質', $ProductClassPage->一覧_名称(4));
+        $I->see('フレーバー', $ProductClassPage->一覧_名称(4));
     }
 
     public function product_分類表示順の変更(\AcceptanceTester $I)
@@ -510,29 +510,29 @@ class EA03ProductCest
             ->一覧_分類登録(3);
 
         $ProductClassCategoryPage = ClassCategoryManagePage::at($I);
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(3));
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(4));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(5));
+        $I->see('16mm × 16mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('32mm × 32mm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('64cm × 64cm', $ProductClassCategoryPage->一覧_名称(5));
 
         $ProductClassCategoryPage->一覧_下に(3);
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(3));
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(4));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(5));
+        $I->see('32mm × 32mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('16mm × 16mm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('64cm × 64cm', $ProductClassCategoryPage->一覧_名称(5));
 
         $ProductClassCategoryPage->一覧_下に(4);
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(3));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(4));
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(5));
+        $I->see('32mm × 32mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('64cm × 64cm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('16mm × 16mm', $ProductClassCategoryPage->一覧_名称(5));
 
         $ProductClassCategoryPage->一覧_上に(5);
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(3));
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(4));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(5));
+        $I->see('32mm × 32mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('16mm × 16mm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('64cm × 64cm', $ProductClassCategoryPage->一覧_名称(5));
 
         $ProductClassCategoryPage->一覧_上に(4);
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(3));
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(4));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(5));
+        $I->see('16mm × 16mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('32mm × 32mm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('64cm × 64cm', $ProductClassCategoryPage->一覧_名称(5));
     }
 
     public function product_分類登録(\AcceptanceTester $I)
@@ -628,29 +628,29 @@ class EA03ProductCest
         $I->wantTo('EA0309-UC01-T01 カテゴリ表示順の変更');
 
         $CategoryPage = CategoryManagePage::go($I);
-        $I->see('インテリア', $CategoryPage->一覧_名称(3));
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(4));
-        $I->see('新入荷', $CategoryPage->一覧_名称(5));
+        $I->see('新入荷', $CategoryPage->一覧_名称(3));
+        $I->see('ジェラート', $CategoryPage->一覧_名称(4));
+        $I->see('アイスサンド', $CategoryPage->一覧_名称(5));
 
         $CategoryPage->一覧_下に(3);
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(3));
-        $I->see('インテリア', $CategoryPage->一覧_名称(4));
-        $I->see('新入荷', $CategoryPage->一覧_名称(5));
+        $I->see('ジェラート', $CategoryPage->一覧_名称(3));
+        $I->see('新入荷', $CategoryPage->一覧_名称(4));
+        $I->see('アイスサンド', $CategoryPage->一覧_名称(5));
 
         $CategoryPage->一覧_下に(4);
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(3));
-        $I->see('新入荷', $CategoryPage->一覧_名称(4));
-        $I->see('インテリア', $CategoryPage->一覧_名称(5));
+        $I->see('ジェラート', $CategoryPage->一覧_名称(3));
+        $I->see('アイスサンド', $CategoryPage->一覧_名称(4));
+        $I->see('新入荷', $CategoryPage->一覧_名称(5));
 
         $CategoryPage->一覧_上に(5);
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(3));
-        $I->see('インテリア', $CategoryPage->一覧_名称(4));
-        $I->see('新入荷', $CategoryPage->一覧_名称(5));
+        $I->see('ジェラート', $CategoryPage->一覧_名称(3));
+        $I->see('新入荷', $CategoryPage->一覧_名称(4));
+        $I->see('アイスサンド', $CategoryPage->一覧_名称(5));
 
         $CategoryPage->一覧_上に(4);
-        $I->see('インテリア', $CategoryPage->一覧_名称(3));
-        $I->see('キッチンツール', $CategoryPage->一覧_名称(4));
-        $I->see('新入荷', $CategoryPage->一覧_名称(5));
+        $I->see('新入荷', $CategoryPage->一覧_名称(3));
+        $I->see('ジェラート', $CategoryPage->一覧_名称(4));
+        $I->see('アイスサンド', $CategoryPage->一覧_名称(5));
     }
 
     public function product_商品CSV登録(\AcceptanceTester $I)
@@ -721,7 +721,7 @@ class EA03ProductCest
         $I->wantTo('EA0310-UC05-T01 一覧からの商品確認');
 
         ProductManagePage::go($I)
-            ->検索('パーコレーター')
+            ->検索('チェリーアイスサンド')
             ->検索結果_確認(1);
 
         $I->switchToNewWindow();
@@ -733,7 +733,7 @@ class EA03ProductCest
         $I->wantTo('EA0310-UC05-T02 編集からの商品確認 公開');
 
         ProductManagePage::go($I)
-            ->検索('パーコレーター')
+            ->検索('チェリーアイスサンド')
             ->検索結果_選択(1);
 
         ProductEditPage::at($I)
@@ -750,7 +750,7 @@ class EA03ProductCest
         $I->wantTo('EA0310-UC05-T03 編集からの商品確認 非公開');
 
         ProductManagePage::go($I)
-            ->検索('パーコレーター')
+            ->検索('チェリーアイスサンド')
             ->検索結果_選択(1);
 
         ProductEditPage::at($I)
