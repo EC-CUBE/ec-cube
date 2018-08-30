@@ -247,11 +247,20 @@ class ComposerApiService implements ComposerServiceInterface
         $commands['--working-dir'] = $this->workingDir;
         $commands['--no-ansi'] = true;
         $input = new ArrayInput($commands);
-        $output = $output ?: new BufferedOutput();
+        $useBufferedOutput = $output === null;
+
+        if ($useBufferedOutput) {
+            $output = new BufferedOutput();
+            ob_start(function($buffer) use ($output) {
+                $output->write($buffer);
+                return null;
+            });
+        }
 
         $exitCode = $this->consoleApplication->run($input, $output);
 
-        if ($output instanceof BufferedOutput) {
+        if ($useBufferedOutput) {
+            ob_end_clean();
             $log = $output->fetch();
             if ($exitCode) {
                 log_error($log);
