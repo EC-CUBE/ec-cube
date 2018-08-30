@@ -90,7 +90,6 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_上に($rowNum)
     {
-        ++$rowNum;
         $this->tester->dragAndDropBy("ul.list-group > li:nth-child(${rowNum})", 0, -60);
 
         return $this;
@@ -98,7 +97,6 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_下に($rowNum)
     {
-        ++$rowNum;
         $this->tester->dragAndDropBy("ul.list-group > li:nth-child(${rowNum})", 0, 60);
 
         return $this;
@@ -106,8 +104,6 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_名称($rowNum)
     {
-        ++$rowNum;
-
         return "ul.list-group > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center";
     }
 }

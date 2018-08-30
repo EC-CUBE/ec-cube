@@ -510,29 +510,29 @@ class EA03ProductCest
             ->一覧_分類登録(3);
 
         $ProductClassCategoryPage = ClassCategoryManagePage::at($I);
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(2));
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(3));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(4));
-
-        $ProductClassCategoryPage->一覧_下に(2);
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(2));
         $I->see('150cm', $ProductClassCategoryPage->一覧_名称(3));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(5));
 
         $ProductClassCategoryPage->一覧_下に(3);
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(2));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(3));
         $I->see('150cm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(5));
 
-        $ProductClassCategoryPage->一覧_上に(4);
-        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(2));
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(3));
-        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(4));
-
-        $ProductClassCategoryPage->一覧_上に(3);
-        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(2));
+        $ProductClassCategoryPage->一覧_下に(4);
         $I->see('170mm', $ProductClassCategoryPage->一覧_名称(3));
         $I->see('120mm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(5));
+
+        $ProductClassCategoryPage->一覧_上に(5);
+        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(5));
+
+        $ProductClassCategoryPage->一覧_上に(4);
+        $I->see('150cm', $ProductClassCategoryPage->一覧_名称(3));
+        $I->see('170mm', $ProductClassCategoryPage->一覧_名称(4));
+        $I->see('120mm', $ProductClassCategoryPage->一覧_名称(5));
     }
 
     public function product_分類登録(\AcceptanceTester $I)
@@ -546,7 +546,7 @@ class EA03ProductCest
 
         $I->see('保存しました', ClassNameManagePage::$登録完了メッセージ);
 
-        $ProductClassPage->一覧_分類登録(2);
+        $ProductClassPage->一覧_分類登録(3);
         $I->see('test class2', '#page_admin_product_class_category > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(1) > div.card-body > div:nth-child(2) > div:nth-child(2) > span');
 
         // Create a class category
