@@ -141,9 +141,7 @@ class PluginController extends AbstractController
         // オーナーズストアからダウンロード可能プラグイン情報を取得
         $authKey = $this->BaseInfo->getAuthenticationKey();
         // オーナーズストア通信
-        // TODO: get url from api service instead of direct from controller
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/plugins/purchased';
-        list($json, $info) = $this->getRequestApi($request, $authKey, $url);
+        list($json, $info) = $this->pluginApiService->getPurchased();
         $officialPluginsDetail = [];
         if ($json) {
             // 接続成功時

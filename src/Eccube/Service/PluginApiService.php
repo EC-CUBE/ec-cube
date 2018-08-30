@@ -112,6 +112,17 @@ class PluginApiService
     }
 
     /**
+     * Get purchased plugins list
+     *
+     * @return array($result, $info)
+     */
+    public function getPurchased()
+    {
+        $url = $this->getApiUrl().'/plugins/purchased';
+        return $this->getRequestApi($url);
+    }
+
+    /**
      * Get a plugin
      *
      * @param int|string $id Id or plugin code
