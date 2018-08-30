@@ -192,11 +192,10 @@ class OrderType extends AbstractType
 
     private function addPaymentForm(FormInterface $form, array $choices, Payment $data = null)
     {
-        // TODO メッセージIDの調整
-        $message = 'お支払い方法を選択してください。';
+        $message = trans('front.shopping.payment_method_unselected');
 
         if (empty($choices)) {
-            $message = '選択できるお支払方法がありません。配送方法が異なる場合は統一してください。';
+            $message = trans('front.shopping.payment_method_not_fount');
         }
 
         $form->add('Payment', EntityType::class, [
@@ -210,7 +209,7 @@ class OrderType extends AbstractType
             ],
             'choices' => $choices,
             'data' => $data,
-            'invalid_message' => $message
+            'invalid_message' => $message,
         ]);
     }
 
