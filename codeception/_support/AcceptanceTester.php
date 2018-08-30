@@ -93,7 +93,7 @@ class AcceptanceTester extends \Codeception\Actor
             'login_pass' => $password,
         ]);
         $I->see('新着情報', '.ec-secHeading__ja');
-        $I->see('ログアウト', ['css' => "div.ec-layoutRole__header > div.ec-headerNaviRole > div.ec-headerNaviRole__right > div.ec-headerNaviRole__nav > div > div:nth-child(3) > a > span"]);
+        $I->see('ログアウト', ['css' => 'div.ec-layoutRole__header > div.ec-headerNaviRole > div.ec-headerNaviRole__right > div.ec-headerNaviRole__nav > div > div:nth-child(3) > a > span']);
     }
 
     public function logoutAsMember()
