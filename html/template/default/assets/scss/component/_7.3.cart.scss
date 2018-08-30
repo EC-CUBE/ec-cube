@@ -127,111 +127,89 @@ sg-wrapper:
 
 Styleguide 7.3.5
 */
-.ec-cartNavi{
-  border: 1px solid #D9D9D9;
-  width: 256px;
-  position: relative;
-  display: block;
-  height: 44px;
-  overflow: hidden;
-  white-space: nowrap;
-  z-index: 3;
-  cursor: pointer;
-  & &__icon {
-    width: 30px;
-    height: 30px;
+.ec-cartNaviWrap{
+  @include media_desktop {
     position: relative;
-    top: 8px;
-    left: 8px;
-    @include fadeIn(inline-block,200ms);
   }
-  & &__iconClose {
-    width: 25px;
-    height: 25px;
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    @include fadeOut(200ms);
+}
+.ec-cartNavi{
+  display: inline-block;
+  padding: 10px 0 0;
+  width: auto;
+  color: black;
+  background: transparent;
+  @include media_desktop {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 99999px;
+    box-sizing: border-box;
+    padding: 12px 17px 10px;
+    width: 140px;
+    height: 44px;
+    white-space: nowrap;
+    cursor: pointer;
+    background: #F8F8F8;
+  }
+
+  & &__icon {
+    display: inline-block;
+    font-size: 20px;
+    @include fadeIn(inline-block,200ms);
+    position: relative;
+
   }
   & &__badge{
-    position: absolute;
-    left: 45px;
-    top: 13px;
     display: inline-block;
-    min-width: 10px;
-    padding: 3px 7px;
+    border-radius: 99999px;
+    box-sizing: border-box;
+    padding: 5px;
+    height: 17px;
     font-size: 10px;
-    font-weight: 700;
-    line-height: 1;
+    line-height: 0.7;
+    vertical-align: top;
     color: #fff;
-    text-align: center;
+    text-align: left;
     white-space: nowrap;
-    vertical-align: baseline;
     background-color: #DE5D50;
-    border-radius: 10px;
-    @include fadeIn(inline-block);
-  }
-  & &__label{
-    font-size: 12px;
     position: absolute;
-    right:0;
-    top:0;
-    height: 44px;
-    line-height: 44px;
-    vertical-align: middle;
-    margin-right: 16px;
+    left: 60%;
+    top: -10px;
+    @include media_desktop {
+      display: inline-block;
+      min-width: 17px;
+      position: absolute;
+      left: 120%;
+      top: 0;
+    }
   }
   & &__price{
-    display: inline-block;
-    font-size: 16px;
-  }
-}
-.is_active {
-  .ec-cartNavi__icon{
-    @include fadeOut;
-  }
-  .ec-cartNavi__badge{
     display: none;
-  }
-  .ec-cartNavi__iconClose {
 
-    @include fadeIn(inline-block,200ms);
-  }
-}
-
-.ec-cartNaviNull {
-  display: none;
-  min-width: 256px;
-  text-align: center;
-  background: #f3f3f3;
-  box-sizing: border-box;
-  padding: 16px;
-  z-index: 3;
-  position: absolute;
-  @include fadeOut;
-  & &__message {
-    border: 1px solid #D9D9D9;
-    padding: 16px 0;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    background-color: #F99;
-    p {
-      margin: 0;
+    @include media_desktop {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: normal;
+      vertical-align: top;
     }
   }
 }
+.ec-cartNavi.is-active {
 
-.is_active {
-  .ec-cartNaviNull {
-    @include fadeIn;
-    display: block;
+  .ec-cartNavi__icon {
+    &:before {
+      content: "\f00d";
+      font-family: FontAwesome;
+    }
   }
-  .ec-cartNaviIsset {
-    @include fadeIn;
-    display: block;
+  .ec-cartNavi__badge{
+    display: none;
+    @include media_desktop {
+      display: none;
+    }
+
   }
 }
+
 
 /*
 カートナビゲーションのポップアップ(商品詳細)
@@ -270,15 +248,36 @@ Styleguide 7.3.6
 */
 .ec-cartNaviIsset {
   display: none;
-  min-width: 256px;
-  max-width:256px;
+  width: 100%;
   text-align: center;
-  background: #f3f3f3;
+  background: #f8f8f8;
   box-sizing: border-box;
   padding: 16px;
   z-index: 3;
   position: absolute;
-  @include fadeOut;
+  right: 0;
+
+  @include media_desktop {
+    margin-top: 10px;
+    min-width: 256px;
+    max-width:256px;
+
+    &::before {
+      display: inline-block;
+      content: "";
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 8.5px 10px 8.5px;
+      border-color: transparent transparent #f8f8f8 transparent;
+      position: absolute;
+      top: -9px;
+
+    }
+  }
+
+
+
   & &__cart {
     @include clearfix;
     border-bottom: 1px solid #E8E8E8;
@@ -320,6 +319,10 @@ Styleguide 7.3.6
   & &__cartContentNumber {
     font-size: 14px;
   }
+}
+
+.ec-cartNaviIsset.is-active {
+  display: block;
 }
 
 
@@ -370,6 +373,56 @@ sg-wrapper:
 
 Styleguide 7.3.7
 */
+
+
+.ec-cartNaviNull {
+  display: none;
+  width: 100%;
+  text-align: center;
+  background: #f8f8f8;
+  box-sizing: border-box;
+  padding: 16px;
+  z-index: 3;
+  position: absolute;
+  right: 0;
+
+  @include media_desktop {
+    margin-top: 10px;
+    min-width: 256px;
+    max-width:256px;
+
+    &::before {
+      display: inline-block;
+      content: "";
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 8.5px 10px 8.5px;
+      border-color: transparent transparent #f8f8f8 transparent;
+      position: absolute;
+      top: -9px;
+
+    }
+  }
+
+  & &__message {
+    border: 1px solid #D9D9D9;
+    padding: 16px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #F99;
+    p {
+      margin: 0;
+    }
+  }
+}
+
+.ec-cartNaviNull.is-active {
+  display: block;
+}
+
+
 
 /*
 総計
