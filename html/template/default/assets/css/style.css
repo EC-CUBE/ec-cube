@@ -3822,7 +3822,7 @@ Styleguide 7.3.5
 
 .ec-cartNavi {
   display: inline-block;
-  padding: 10px 0 0;
+  padding: 10px 0 0 20px;
   width: auto;
   color: black;
   background: transparent; }
@@ -4654,13 +4654,13 @@ Styleguide 11.2
   .ec-headerNaviRole img {
     width: 100%; }
   .ec-headerNaviRole .ec-headerNaviRole__left {
-    width: calc(100% / 2); }
+    width: calc(100% / 3); }
   .ec-headerNaviRole .ec-headerNaviRole__search {
     display: none; }
   .ec-headerNaviRole .ec-headerNaviRole__navSP {
     display: block; }
   .ec-headerNaviRole .ec-headerNaviRole__right {
-    width: calc(100% / 2);
+    width: calc(100% * 2 / 3);
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: end;
@@ -4785,7 +4785,8 @@ Styleguide 11.2.3
     font-size: 28px; }
   .ec-headerNav .ec-headerNav__itemIcon {
     display: inline-block;
-    margin-right: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
     font-size: 18px;
     color: black; }
   .ec-headerNav .ec-headerNav__itemLink {
