@@ -88,7 +88,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
     {
         foreach ($itemHolder->getShippings() as $Shipping) {
             foreach ($Shipping->getOrderItems() as $item) {
-                if ($item->isDeliveryFee()) {
+                if ($item->getProcessorName() == DeliveryFeePreprocessor::class) {
                     $Shipping->removeOrderItem($item);
                     $itemHolder->removeOrderItem($item);
                     $this->entityManager->remove($item);
@@ -141,7 +141,8 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
                 ->setShipping($Shipping)
                 ->setOrder($itemHolder)
                 ->setTaxDisplayType($TaxInclude)
-                ->setTaxType($Taxion);
+                ->setTaxType($Taxion)
+                ->setProcessorName(DeliveryFeePreprocessor::class);
 
             $itemHolder->addItem($OrderItem);
             $Shipping->addOrderItem($OrderItem);

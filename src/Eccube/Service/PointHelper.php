@@ -20,6 +20,7 @@ use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\OrderItem;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 
 class PointHelper
 {
@@ -132,7 +133,8 @@ class PointHelper
             ->setOrderItemType($DiscountType)
             ->setTaxDisplayType($TaxInclude)
             ->setTaxType($Taxation)
-            ->setOrder($itemHolder);
+            ->setOrder($itemHolder)
+            ->setProcessorName(PointProcessor::class);
         $itemHolder->addItem($OrderItem);
     }
 
@@ -144,7 +146,7 @@ class PointHelper
     public function removePointDiscountItem(ItemHolderInterface $itemHolder)
     {
         foreach ($itemHolder->getItems() as $item) {
-            if ($item->isPoint()) {
+            if ($item->getProcessorName() == PointProcessor::class) {
                 $itemHolder->removeOrderItem($item);
                 $this->entityManager->remove($item);
             }

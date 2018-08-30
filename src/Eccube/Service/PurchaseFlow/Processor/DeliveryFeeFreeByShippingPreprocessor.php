@@ -77,7 +77,7 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
                 }
                 if ($isFree) {
                     foreach ($Shipping->getOrderItems() as $Item) {
-                        if ($Item->isDeliveryFee()) {
+                        if ($Item->getProcessorName() == DeliveryFeePreprocessor::class) {
                             $Item->setQuantity(0);
                         }
                     }
