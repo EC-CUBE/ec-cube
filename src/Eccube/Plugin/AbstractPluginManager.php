@@ -22,35 +22,15 @@ abstract class AbstractPluginManager
     const MIGRATION_TABLE_PREFIX = 'migration_';
 
     /**
-     * Migrate the schema.
-     *
-     * @param ContainerInterface $container
-     * @param string $migrationFilePath
-     * @param string $pluginCode
-     * @param string $version
-     * @return array An array of migration sql statements. This will be empty if the the $confirm callback declines to execute the migration
-     */
-    public function migrationSchema(ContainerInterface $container, $migrationFilePath, $pluginCode, $version = null)
-    {
-        $config = new Configuration($container->get('doctrine.dbal.connection'));
-        $config->setMigrationsNamespace('DoctrineMigrations');
-        $config->setMigrationsDirectory($migrationFilePath);
-        $config->registerMigrationsFromDirectory($migrationFilePath);
-        $config->setMigrationsTableName(self::MIGRATION_TABLE_PREFIX.$pluginCode);
-        $migration = new Migration($config);
-        $migration->setNoMigrationException(true);
-        // null 又は 'last' を渡すと最新バージョンまでマイグレートする
-        // 0か'first'を渡すと最初に戻る
-        return $migration->migrate($version, false);
-    }
-
-    /**
      * Install the plugin.
      *
      * @param array $meta
      * @param ContainerInterface $container
      */
-    abstract public function install(array $meta, ContainerInterface $container);
+    public function install(array $meta, ContainerInterface $container)
+    {
+        // quiet.
+    }
 
     /**
      * Update the plugin.
@@ -58,7 +38,10 @@ abstract class AbstractPluginManager
      * @param array $meta
      * @param ContainerInterface $container
      */
-    abstract public function update(array $meta, ContainerInterface $container);
+    public function update(array $meta, ContainerInterface $container)
+    {
+        // quiet.
+    }
 
     /**
      * Enable the plugin.
@@ -66,7 +49,10 @@ abstract class AbstractPluginManager
      * @param array $meta
      * @param ContainerInterface $container
      */
-    abstract public function enable(array $meta, ContainerInterface $container);
+    public function enable(array $meta, ContainerInterface $container)
+    {
+        // quiet.
+    }
 
     /**
      * Disable the plugin.
@@ -74,7 +60,10 @@ abstract class AbstractPluginManager
      * @param array $meta
      * @param ContainerInterface $container
      */
-    abstract public function disable(array $meta, ContainerInterface $container);
+    public function disable(array $meta, ContainerInterface $container)
+    {
+        // quiet.
+    }
 
     /**
      * Uninstall the plugin.
@@ -82,5 +71,8 @@ abstract class AbstractPluginManager
      * @param array $meta
      * @param ContainerInterface $container
      */
-    abstract public function uninstall(array $meta, ContainerInterface $container);
+    public function uninstall(array $meta, ContainerInterface $container)
+    {
+        // quiet.
+    }
 }
