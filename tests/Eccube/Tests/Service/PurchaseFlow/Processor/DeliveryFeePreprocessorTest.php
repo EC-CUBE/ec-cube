@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
+use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
@@ -24,7 +25,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
 
-class DeliveryFeeProcessorTest extends EccubeTestCase
+class DeliveryFeePreprocessorTest extends EccubeTestCase
 {
     /** @var BaseInfoRepository */
     protected $BaseInfoRepository;
@@ -133,6 +134,34 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
         /** @var OrderItem $DeliveryFee */
         $DeliveryFee = current($this->getDeliveryFees($Order));
         $this->assertEquals($deliveryFee * $quantity + $deliveryOriginal, $DeliveryFee->getTotalPrice());
+    }
+
+    public function testProcessWithDeliveryFeeUpdate()
+    {
+        $processor = $this->container->get(DeliveryFeePreprocessor::class);
+        $Order = $this->createOrder($this->createCustomer());
+        $newFee = 50000;
+        $oldFee = 0;
+        $Shipping = null;
+
+        // Update delivery (change delivery)
+        foreach ($Order->getOrderItems() as $OrderItem) {
+            if ($OrderItem->isDeliveryFee()) {
+                $Shipping = $OrderItem->getShipping();
+                $oldFee = $Shipping->getShippingDeliveryFee();
+                $delivery = $Shipping->getDelivery();
+                /** @var DeliveryFee $newDeliveryFee */
+                $newDeliveryFee = $delivery->getDeliveryFees()->last();
+                $newDeliveryFee->setFee($newFee);
+                $newPref = $newDeliveryFee->getPref();
+                $Shipping->setPref($newPref);
+                break;
+            }
+        }
+        $processor->process($Order, new PurchaseContext());
+
+        self::assertNotEquals($oldFee, $Shipping->getShippingDeliveryFee());
+        self::assertEquals($newFee, $Shipping->getShippingDeliveryFee());
     }
 
     private function getDeliveryFees(Order $Order)
