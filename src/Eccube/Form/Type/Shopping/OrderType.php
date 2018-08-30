@@ -92,6 +92,11 @@ class OrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // ShoppingController::checkoutから呼ばれる場合は, フォーム項目の定義をスキップする.
+        if ($options['skip_add_form']) {
+            return;
+        }
+
         $builder->add('message', TextareaType::class, [
             'required' => false,
             'constraints' => [
@@ -175,6 +180,7 @@ class OrderType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => 'Eccube\Entity\Order',
+                'skip_add_form' => false,
             ]
         );
     }

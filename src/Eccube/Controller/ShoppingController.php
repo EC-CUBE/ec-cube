@@ -334,7 +334,10 @@ class ShoppingController extends AbstractShoppingController
         }
 
         // フォームの生成.
-        $form = $this->createForm(OrderType::class, $Order);
+        $form = $this->createForm(OrderType::class, $Order, [
+            // 確認画面から注文処理へ遷移する場合は, Orderエンティティで値を引き回すためフォーム項目の定義をスキップする.
+            'skip_add_form' => true,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

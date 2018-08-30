@@ -118,22 +118,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $crawler = $this->scenarioConfirm($Customer);
 
         // 完了画面
-        $crawler = $this->scenarioComplete(
-            $Customer,
-            $this->generateUrl('shopping_checkout'),
-            [
-                // 配送先1
-                [
-                    'Delivery' => 1,
-                    'DeliveryTime' => 1,
-                ],
-                // 配送先2
-                [
-                    'Delivery' => 1,
-                    'DeliveryTime' => 1,
-                ],
-            ]
-        );
+        $crawler = $this->scenarioCheckout($Customer);
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
