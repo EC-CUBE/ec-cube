@@ -27,6 +27,22 @@ if (!class_exists('\Eccube\Entity\Layout')) {
      */
     class Layout extends AbstractEntity
     {
+        // 配置ID
+        /** 配置ID: 未使用 */
+        const TARGET_ID_UNUSED = 0;
+        const TARGET_ID_HEAD = 1;
+        const TARGET_ID_BODY_AFTER = 2;
+        const TARGET_ID_HEADER = 3;
+        const TARGET_ID_CONTENTS_TOP = 4;
+        const TARGET_ID_SIDE_LEFT = 5;
+        const TARGET_ID_MAIN_TOP = 6;
+        const TARGET_ID_MAIN_BOTTOM = 7;
+        const TARGET_ID_SIDE_RIGHT = 8;
+        const TARGET_ID_CONTENTS_BOTTOM = 9;
+        const TARGET_ID_FOOTER = 10;
+        const TARGET_ID_DRAWER = 11;
+        const TARGET_ID_CLOSE_BODY_BEFORE = 12;
+
         /**
          * トップページ用レイアウト
          */
@@ -70,19 +86,32 @@ if (!class_exists('\Eccube\Entity\Layout')) {
          */
         public function getBlocks($targetId = null)
         {
-            $Blocks = [];
+            /** @var BlockPosition[] $TargetBlockPositions */
+            $TargetBlockPositions = [];
+            // $targetIdのBlockPositionのみ抽出
             foreach ($this->BlockPositions as $BlockPosition) {
                 if (is_null($targetId)) {
-                    $Blocks[] = $BlockPosition->getBlock();
+                    $TargetBlockPositions[] = $BlockPosition;
                     continue;
                 }
 
                 if ($BlockPosition->getSection() == $targetId) {
-                    $Blocks[] = $BlockPosition->getBlock();
+                    $TargetBlockPositions[] = $BlockPosition;
                 }
             }
 
-            return $Blocks;
+            // blockRow順にsort
+            uasort($TargetBlockPositions, function (BlockPosition $a, BlockPosition $b) {
+                return ($a->getBlockRow() < $b->getBlockRow()) ? -1 : 1;
+            });
+
+            // Blockの配列を作成
+            $TargetBlocks = [];
+            foreach ($TargetBlockPositions as $BlockPosition) {
+                $TargetBlocks[] = $BlockPosition->getBlock();
+            }
+
+            return $TargetBlocks;
         }
 
         /**
@@ -90,13 +119,88 @@ if (!class_exists('\Eccube\Entity\Layout')) {
          *
          * @return BlockPosition[]
          */
-        public function getBlockPositionsBy($targetId)
+        public function getBlockPositionsByTargetId($targetId)
         {
             return $this->BlockPositions->filter(
-            function ($BlockPosition) use ($targetId) {
-                return $BlockPosition->getSection() == $targetId;
-            }
-        );
+                function ($BlockPosition) use ($targetId) {
+                    return $BlockPosition->getSection() == $targetId;
+                }
+            );
+        }
+
+        public function getUnused()
+        {
+            return $this->getBlocks(self::TARGET_ID_UNUSED);
+        }
+
+        public function getHead()
+        {
+            return $this->getBlocks(self::TARGET_ID_HEAD);
+        }
+
+        public function getBodyAfter()
+        {
+            return $this->getBlocks(self::TARGET_ID_BODY_AFTER);
+        }
+
+        public function getHeader()
+        {
+            return $this->getBlocks(self::TARGET_ID_HEADER);
+        }
+
+        public function getContentsTop()
+        {
+            return $this->getBlocks(self::TARGET_ID_CONTENTS_TOP);
+        }
+
+        public function getSideLeft()
+        {
+            return $this->getBlocks(self::TARGET_ID_SIDE_LEFT);
+        }
+
+        public function getMainTop()
+        {
+            return $this->getBlocks(self::TARGET_ID_MAIN_TOP);
+        }
+
+        public function getMainBottom()
+        {
+            return $this->getBlocks(self::TARGET_ID_MAIN_BOTTOM);
+        }
+
+        public function getSideRight()
+        {
+            return $this->getBlocks(self::TARGET_ID_SIDE_RIGHT);
+        }
+
+        public function getContentsBottom()
+        {
+            return $this->getBlocks(self::TARGET_ID_CONTENTS_BOTTOM);
+        }
+
+        public function getFooter()
+        {
+            return $this->getBlocks(self::TARGET_ID_FOOTER);
+        }
+
+        public function getDrawer()
+        {
+            return $this->getBlocks(self::TARGET_ID_DRAWER);
+        }
+
+        public function getCloseBodyBefore()
+        {
+            return $this->getBlocks(self::TARGET_ID_CLOSE_BODY_BEFORE);
+        }
+
+        /**
+         * Get ColumnNum
+         *
+         * @return integer
+         */
+        public function getColumnNum()
+        {
+            return 1 + ($this->getSideLeft() ? 1 : 0) + ($this->getSideRight() ? 1 : 0);
         }
 
         // -----------------------

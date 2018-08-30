@@ -191,5 +191,19 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         {
             return $this->Layout;
         }
+
+        /**
+         * DeviceTypeがあればDeviceTypeIdを返す
+         * DeviceTypeがなければnullを返す
+         *
+         * @return int|null
+         */
+        public function getDeviceTypeId()
+        {
+            if ($this->Layout->getDeviceType()) {
+                return $this->Layout->getDeviceType()->getId();
+            }
+            return null;
+        }
     }
 }

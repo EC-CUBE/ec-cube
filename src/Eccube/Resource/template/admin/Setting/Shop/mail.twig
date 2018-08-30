@@ -30,38 +30,71 @@ file that was distributed with this source code.
                     location.href = '{{ url('admin_setting_shop_mail') }}';
                 }
             });
-        });
 
-        ace.require('ace/ext/language_tools');
-        var editor = ace.edit('editor');
-        editor.session.setMode('ace/mode/twig');
-        editor.setTheme('ace/theme/tomorrow');
-        editor.setValue("{{ form.tpl_data.vars.value|escape('js') }}");
-        editor.setOptions({
-            enableBasicAutocompletion: true,
-            enableSnippets: true,
-            enableLiveAutocompletion: true,
-            showInvisibles: true
-        });
-
-        {% if form.html_tpl_data.vars.value %}
-            var html_editor = ace.edit('html_editor');
-            html_editor.session.setMode('ace/mode/twig');
-            html_editor.setTheme('ace/theme/tomorrow');
-            html_editor.setValue("{{ form.html_tpl_data.vars.value|escape('js') }}");
-            html_editor.setOptions({
+            ace.require('ace/ext/language_tools');
+            var editor = ace.edit('editor');
+            editor.session.setMode('ace/mode/twig');
+            editor.setTheme('ace/theme/tomorrow');
+            editor.setValue("{{ form.tpl_data.vars.value|escape('js') }}");
+            editor.setOptions({
                 enableBasicAutocompletion: true,
                 enableSnippets: true,
                 enableLiveAutocompletion: true,
                 showInvisibles: true
             });
-        {% endif %}
 
-        $('#form1').on('submit', function() {
-            $('#mail_tpl_data').val(editor.getValue());
             {% if form.html_tpl_data.vars.value %}
-                $('#mail_html_tpl_data').val(html_editor.getValue());
+                var html_editor = ace.edit('html_editor');
+                html_editor.session.setMode('ace/mode/twig');
+                html_editor.setTheme('ace/theme/tomorrow');
+                html_editor.setValue("{{ form.html_tpl_data.vars.value|escape('js') }}");
+                html_editor.setOptions({
+                    enableBasicAutocompletion: true,
+                    enableSnippets: true,
+                    enableLiveAutocompletion: true,
+                    showInvisibles: true
+                });
             {% endif %}
+
+            $('#form1').on('submit', function() {
+                $('#mail_tpl_data').val(editor.getValue());
+                {% if form.html_tpl_data.vars.value %}
+                    $('#mail_html_tpl_data').val(html_editor.getValue());
+                {% endif %}
+            });
+
+            // HTMLメールモーダル表示
+            $('#htmlPreviewModal').on('show.bs.modal', function (event) {
+                var html = $('#viewEmail');
+                html.children().remove();
+
+                // HTMLを読み込んでモーダルに表示    
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'html',
+                    data: {
+                        'html_body' : html_editor.getValue(),
+                    },
+                    url: '{{ url('admin_setting_shop_mail_preview') }}',
+                    success: function(data) {
+                        // モーダルに結果を書き出し.
+                        $('#viewEmail').html(data);
+                    },
+                    error: function() {
+                        alert('preview html mail failed.');
+                    }
+                });
+            });
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var activated_tab = e.target;
+                var id = $(activated_tab).attr('id');
+                if (id == 'menu__{{ form.html_tpl_data.vars.id }}') {
+                    $('#preview_button').attr('style', 'display:blocked;');
+                } else {
+                    $('#preview_button').attr('style', 'display:none;');
+                }
+            });
         });
     </script>
 {% endblock javascript %}
@@ -95,13 +128,22 @@ file that was distributed with this source code.
                                     {# タブ表示 #}
                                     <ul class="nav nav-tabs text-center" role="tablist">
                                         <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
-                                            <a href="#detail_box__tpl_data" class="nav-link" data-toggle="tab"><span>テキスト</span></a>
+                                            <a id="menu__{{ form.tpl_data.vars.id }}" href="#detail_box__tpl_data" class="nav-link active" data-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_text'|trans }}</span></a>
                                         </li>
                                         {% if form.html_tpl_data.vars.value %}
                                         <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
-                                            <a href="#detail_box__html_tpl_data" class="nav-link" data-toggle="tab"><span>HTML</span></a>
+                                            <a id="menu__{{ form.html_tpl_data.vars.id }}" href="#detail_box__html_tpl_data" class="nav-link" data-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_html'|trans }}</span></a>
                                         </li>
                                         {% endif %}
+                                        <div class="col-1">
+                                            <div class="d-inline-block">
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" id="preview_button" class="btn btn-block btn-ec-regular" style="display:none;" data-toggle="modal" data-target="#htmlPreviewModal">
+                                                        プレビュー
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </ul>
                                     <div class="tab-content">
                                         <div id="detail_box__tpl_data" class="form-group tab-pane active">
@@ -159,4 +201,24 @@ file that was distributed with this source code.
             </div>
         </div>
     </form>
+
+    <!-- HTMLメールを確認するモーダル -->
+    <div class="modal fade" id="htmlPreviewModal" tabindex="-1" role="dialog" aria-labelledby="htmlPreviewModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">HTMLメールを確認する</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="bg-light p-4 bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

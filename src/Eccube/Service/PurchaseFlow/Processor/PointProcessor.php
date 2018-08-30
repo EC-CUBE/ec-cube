@@ -203,11 +203,13 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             }
 
             // TODO: ポイントは税抜き分しか割引されない、ポイント明細は税抜きのままでいいのか？
+            $point = 0;
             if ($item->isPoint()) {
                 $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
-            } else {
+            // Only calc point on product
+            } elseif ($item->isProduct()) {
                 // ポイント = 単価 * ポイント付与率 * 数量
-                $point = round($item->getPriceIncTax() * ($pointRate / 100)) * $item->getQuantity();
+                $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
             }
 
             return $carry + $point;

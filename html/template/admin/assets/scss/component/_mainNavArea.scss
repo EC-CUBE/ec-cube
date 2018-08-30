@@ -4,7 +4,7 @@
 メインナビエリア
 
 画面左に固定表示されます。<br>
-デバイスサイズが1280px以下になった時、非表示になります。ヘッダーバー内のバーガーメニューを押下することで`.c-mainNavArea`に`.is-active`が付与され表示されます。<br>
+デバイスサイズが767px以下になった時、非表示になります。ヘッダーバー内のバーガーメニューを押下することで`.c-mainNavArea`に`.is-active`が付与され表示されます。<br>
 <br>
 下層メニューの展開はBootstrapにて実装しております。詳細はBootstrapの<a href="https://getbootstrap.com/docs/4.0/components/collapse/" target="_blank">Collapse</a>ページをご確認下さい。
 
@@ -110,14 +110,19 @@ Styleguide 3.0
   left: 0;
   overflow-y: scroll;
   z-index: 500;
+  transition: width 0.3s ease;
 
-  @include media_mainNav {
+  @include media_middle {
+    width: 160px;
+  }
+
+  @include media_small {
     left: -220px;
     width: 0;
     height: 0;
     opacity: 0;
-    transition: left 0.2s , opacity 0.1s 0.2s, width 0.1s 0.3s, height 0.3s;
   }
+
   ul {
     padding-left: 0;
   }
@@ -131,15 +136,22 @@ Styleguide 3.0
       background: #fff;
       color: $navy70;
       font-size: 14px;
+
+      @include media_middle {
+        font-size: 13px;
+      }
     }
     li {
       a {
         display: block;
-        padding: 10px 40px;
+        padding: 10px 30px 10px 40px;
         text-align: left;
         color: inherit;
         font-size: inherit;
         cursor: pointer;
+        @include media_middle {
+          padding: 10px 0 10px 25px;
+        }
         &:hover {
           text-decoration: none;
           background: $black05;
@@ -148,6 +160,15 @@ Styleguide 3.0
       a.is-active {
         background: $navy70;
         color: #fff;
+      }
+      ul li {
+        a {
+          padding: 10px 30px 10px 50px;
+
+          @include media_middle {
+            padding: 10px 0 10px 30px;
+          }
+        }
       }
     }
   }
@@ -160,6 +181,9 @@ Styleguide 3.0
     color: $navy80;
     cursor: pointer;
     position: relative;
+    @include media_middle {
+      font-size: 14px;
+    }
     &::after {
       display: inline-block;
       width: 16px;
@@ -172,6 +196,9 @@ Styleguide 3.0
       position: absolute;
       top: 7px;
       right: 15px;
+      @include media_middle {
+        right: 5px;
+      }
     }
     &:hover {
       background: $black05;
@@ -184,6 +211,9 @@ Styleguide 3.0
       margin-right: .5em;
       color: $navy70;
       font-size: inherit;
+      @include media_middle {
+        right: 1px;
+      }
     }
     span {
       color: $navy80;
@@ -195,6 +225,7 @@ Styleguide 3.0
   }
   &__navItemSubTitle {
     display: block;
+    background: #fafbfc;
     border-bottom: 1px solid $dllNavy20;
     padding: 10px 35px;
     font-size: 16px;
@@ -213,6 +244,9 @@ Styleguide 3.0
       position: absolute;
       top: 7px;
       right: 15px;
+      @include media_middle {
+        right: 5px;
+      }
     }
     &.collapsed::after {
       content: "\f107";
@@ -237,8 +271,8 @@ Styleguide 3.0
 /*
 カーテン
 
-デバイスサイズが1280px以下時、メインナビエリアが出現した際にナビ以外の操作を抑制するために表示されます。`is-active`が付与されることで表示状態になります。<br>
-ナビナビエリアやカーテン部分をクリックした時、デバイスサイズが1280pxより上回る時は非表示なります。
+デバイスサイズが767px以下時、メインナビエリアが出現した際にナビ以外の操作を抑制するために表示されます。`is-active`が付与されることで表示状態になります。<br>
+ナビナビエリアやカーテン部分をクリックした時、デバイスサイズが768pxより上回る時は非表示なります。
 
 Markup:
 <!-- imgはスタイルガイドにおけるサンプル表示の都合上記述しています。-->

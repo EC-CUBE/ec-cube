@@ -24,7 +24,6 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
-use Eccube\Exception\CsvImportException;
 use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
@@ -1154,8 +1153,7 @@ class CsvImportController extends AbstractCsvImportController
      */
     protected function addErrors($message)
     {
-        $e = new CsvImportException($message);
-        $this->errors[] = $e;
+        $this->errors[] = $message;
     }
 
     /**
@@ -1345,7 +1343,6 @@ class CsvImportController extends AbstractCsvImportController
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
-        $ProductCategory->setSortNo($sortNo);
 
         return $ProductCategory;
     }

@@ -16,7 +16,6 @@ namespace Eccube\Service;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
@@ -44,11 +43,6 @@ class PluginService
      * @var PluginRepository
      */
     protected $pluginRepository;
-
-    /**
-     * @var Application
-     */
-    protected $app;
 
     /**
      * @var EntityProxyService
@@ -419,10 +413,7 @@ class PluginService
                 ->setEnabled(false)
                 ->setVersion($meta['version'])
                 ->setSource($source)
-                ->setCode($meta['code'])
-                // TODO 日付の自動設定
-                ->setCreateDate(new \DateTime())
-                ->setUpdateDate(new \DateTime());
+                ->setCode($meta['code']);
 
             $em->persist($p);
             $em->flush();
@@ -449,8 +440,7 @@ class PluginService
         if (class_exists($class)) {
             $installer = new $class(); // マネージャクラスに所定のメソッドがある場合だけ実行する
             if (method_exists($installer, $method)) {
-                // FIXME appを削除.
-                $installer->$method($meta, $this->app, $this->container);
+                $installer->$method($meta, $this->container);
             }
         }
     }
@@ -735,7 +725,7 @@ class PluginService
     {
 //        $pluginCode = $plugin['code'];
         // Need dependency Mechanism
-        /**
+        /*
         $pluginDir = $this->calcPluginDir($pluginCode);
         $composerPath = $pluginDir.'/composer.json';
         // read composer.json

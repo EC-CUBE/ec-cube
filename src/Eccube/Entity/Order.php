@@ -184,14 +184,14 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="name01", type="string", length=255, nullable=true)
+         * @ORM\Column(name="name01", type="string", length=255)
          */
         private $name01;
 
         /**
          * @var string|null
          *
-         * @ORM\Column(name="name02", type="string", length=255, nullable=true)
+         * @ORM\Column(name="name02", type="string", length=255)
          */
         private $name02;
 
@@ -477,6 +477,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
+         *
          * @var \Eccube\Entity\Master\CustomerOrderStatus
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
@@ -488,6 +489,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
+         *
          * @var \Eccube\Entity\Master\OrderStatusColor
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
@@ -1637,7 +1639,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set orderStatus.
          *
-         * @param \Eccube\Entity\Master\OrderStatus|null $orderStatus
+         * @param \Eccube\Entity\Master\OrderStatus|null|object $orderStatus
          *
          * @return Order
          */
