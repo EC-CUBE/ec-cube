@@ -30,15 +30,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         /**
          * @var int
          *
-         * @ORM\Column(name="page_id", type="integer", options={"unsigned":true}, nullable=true)
-         *
-         * @deprecated
-         */
-        private $page_id;
-
-        /**
-         * @var int
-         *
          * @ORM\Column(name="section", type="integer", options={"unsigned":true})
          * @ORM\Id
          * @ORM\GeneratedValue(strategy="NONE")
@@ -101,34 +92,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
          * })
          */
         private $Layout;
-
-        /**
-         * Set pageId.
-         *
-         * @param int $pageId
-         *
-         * @return BlockPosition
-         *
-         * @deprecated
-         */
-        public function setPageId($pageId)
-        {
-            $this->page_id = $pageId;
-
-            return $this;
-        }
-
-        /**
-         * Get pageId.
-         *
-         * @return int
-         *
-         * @deprecated
-         */
-        public function getPageId()
-        {
-            return $this->page_id;
-        }
 
         /**
          * Set section.

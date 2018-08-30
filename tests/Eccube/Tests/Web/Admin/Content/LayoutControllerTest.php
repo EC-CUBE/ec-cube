@@ -185,7 +185,6 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $Page = new Page();
-        $Page->setDeviceType($PcDeviceType);
         $Page->setName('Page for unit test');
         $Page->setUrl('layout-test-delete-fail');
         $this->pageRepository->save($Page);

@@ -70,14 +70,10 @@ class PageController extends AbstractController
      */
     public function index(Request $request)
     {
-        $DeviceType = $this->deviceTypeRepository
-            ->find(DeviceType::DEVICE_TYPE_PC);
-
-        $Pages = $this->pageRepository->getPageList($DeviceType);
+        $Pages = $this->pageRepository->getPageList();
 
         $event = new EventArgs(
             [
-                'DeviceType' => $DeviceType,
                 'Pages' => $Pages,
             ],
             $request
@@ -96,13 +92,10 @@ class PageController extends AbstractController
      */
     public function edit(Request $request, $id = null, Environment $twig, Router $router)
     {
-        $DeviceType = $this->deviceTypeRepository
-            ->find(DeviceType::DEVICE_TYPE_PC);
-
         if (null === $id) {
-            $Page = $this->pageRepository->newPage($DeviceType);
+            $Page = $this->pageRepository->newPage();
         } else {
-            $Page = $this->pageRepository->getByDeviceTypeAndId($DeviceType, $id);
+            $Page = $this->pageRepository->find($id);
         }
 
         $isUserDataPage = true;
@@ -113,7 +106,6 @@ class PageController extends AbstractController
         $event = new EventArgs(
             [
                 'builder' => $builder,
-                'DeviceType' => $DeviceType,
                 'Page' => $Page,
             ],
             $request
@@ -264,13 +256,9 @@ class PageController extends AbstractController
     {
         $this->isTokenValid();
 
-        $DeviceType = $this->deviceTypeRepository
-            ->find(DeviceType::DEVICE_TYPE_PC);
-
         $Page = $this->pageRepository
             ->findOneBy([
                 'id' => $id,
-                'DeviceType' => $DeviceType,
             ]);
 
         if (!$Page) {
@@ -292,7 +280,6 @@ class PageController extends AbstractController
 
             $event = new EventArgs(
                 [
-                    'DeviceType' => $DeviceType,
                     'Page' => $Page,
                 ],
                 $request
