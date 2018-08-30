@@ -125,6 +125,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
     /**
      * @dataProvider flowTypeProvider
+     *
      * @param $flow
      * @param $message
      */

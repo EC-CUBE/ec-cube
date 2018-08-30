@@ -18,7 +18,6 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Service\PointHelper;
 use Eccube\Service\PurchaseFlow\DiscountProcessor;
-use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
@@ -84,7 +83,6 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
 
             // 購入フロー実行時
             if ($context->isShoppingFlow()) {
-
                 // 支払い金額 < 利用ポイントによる値引き額.
                 if ($itemHolder->getTotal() + $discount < 0) {
                     $minus = $itemHolder->getTotal() + $discount;
@@ -103,7 +101,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
                     $discount = $this->pointHelper->pointToDiscount($usePoint);
                     $result = ProcessResult::warn('利用ポイントが所有ポイントを上回っています', self::class);
                 }
-            // 受注登録・編集実行時
+                // 受注登録・編集実行時
             } else {
                 // 支払い金額 < 利用ポイントによる値引き額.
                 if ($itemHolder->getTotal() + $discount < 0) {
@@ -191,5 +189,4 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
 
         return true;
     }
-
 }

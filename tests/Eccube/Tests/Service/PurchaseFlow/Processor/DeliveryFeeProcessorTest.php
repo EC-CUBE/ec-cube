@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
-use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;

@@ -17,7 +17,6 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 
 /**
  * 合計金額のマイナスチェック.
