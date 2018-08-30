@@ -13,13 +13,10 @@ file that was distributed with this source code.
     <div class="ec-eyecatchRole">
         <img class="ec-eyecatchRole__image" src="{{ asset('img/top/img_about.jpg') }}" alt="" role="presentation"/>
         <div class="ec-eyecatchRole__intro">
-            <p class="ec-eyecatchRole__introEnTitle">CUBE GELATO ICE
-            </p>
-            <p class="ec-eyecatchRole__introTitle"> {{ 'front.block.new_product.eyecatch_title'|trans }}
-            </p>
-            <p class="ec-eyecatchRole__introDescriptiron">
-                {{ 'front.block.new_product.eyecatch_body'|trans }}
-            </p><a class="ec-blockBtn--top" href="/products/list?category_id=6">{{ 'front.block.new_product.eyecatch_view_list'|trans }}</a>
+            <p class="ec-eyecatchRole__introEnTitle">{{ 'front.block.eyecatch.title__en'|trans }}</p>
+            <p class="ec-eyecatchRole__introTitle">{{ 'front.block.eyecatch.title__ja'|trans }}</p>
+            <p class="ec-eyecatchRole__introDescriptiron">{{ 'front.block.eyecatch.descriptiron'|trans|nl2br }}</p>
+            <a class="ec-blockBtn--top" href="{{ url('product_list') }}?category_id=6">{{ 'front.block.eyecatch.view_list'|trans }}</a>
         </div>
     </div>
 </div>

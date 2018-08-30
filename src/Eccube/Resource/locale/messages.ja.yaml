@@ -86,41 +86,45 @@ common.hidden_label: (非表示)
 
 front.block.cart.go_to_cart: カートへ進む
 front.block.cart.no_item: 現在カート内に商品はございません。
-front.block.free.free_message__intro: 5000円以上の購入で
-front.block.free.free_message__title: 送料無料
-front.block.free.free_message__text: 一部地域は除く
-front.block.logo.sub_title: くらしを楽しむライフスタイルグッズ
+front.block.footer.about_us: 当サイトについて
+front.block.footer.privacy_policy: プライバシーポリシー
+front.block.footer.inquiry: お問い合わせ
+front.block.footer.act_on_specified_commercial_transactions: 特定商取引法に基づく表記
+front.block.category.list: カテゴリ一覧
+front.block.category.category__en: CATEGORY
+front.block.category.category__ja: カテゴリ
+front.block.topic.topic__en: TOPICS
+front.block.topic.topic__ja: 特集
+front.block.topic.title__gelato: 濃厚なのにアイスよりヘルシー!! ジェラート特集
+front.block.topic.title__ice: サクサク食感が魅力!! コーンアイス特集
+front.block.eyecatch.title__en: CUBE GELATO ICE
+front.block.eyecatch.title__ja: 彩のジェラート"CUBE"をご堪能ください。
+front.block.eyecatch.descriptiron: |
+  ジェラートとはイタリアン・アイスクリームのことで、一般的なアイスクリームに比べて、乳脂肪分が低くいのが特徴です。
+  当店では厳選した旬の果物のおいしさをそのままジェラートに仕上げました。風味が濃厚でありながら、甘さ控えめでヘルシーなキューブジェラートをご堪能ください。
+  さらにジェラートの製法を活かした、アイスキャンディ・アイスサンドも販売しております。
+front.block.eyecatch.view_list: 一覧を見る
+front.block.new_item.title__en: NEW ITEM
+front.block.new_item.title__ja: 新着商品
+front.block.new_item.more: more
+front.block.new_item.item_1_name: 彩のジェラート"CUBE"
+front.block.new_item.item_1_price: ￥1,200(税込)
+front.block.new_item.item_2_name: チェリーアイスサンド
+front.block.new_item.item_2_price: ￥800(税込)
+front.block.new_item.item_3_name: 彩のジェラート"CUBE" NEO
+front.block.new_item.item_3_price: ￥600(税込)
+front.block.news.title__en: NEWS
+front.block.news.title__ja: 新着情報
+front.block.news.read_more: more
+front.block.news.see_details: 詳しくはこちら
 front.block.login.customer_registration: 新規会員登録
 front.block.login.mypage: マイページ
 front.block.login.favorite: お気に入り
 front.block.login.login: ログイン
 front.block.login.logout: ログアウト
-front.block.footer.about_us: 当サイトについて
-front.block.footer.privacy_policy: プライバシーポリシー
-front.block.footer.inquiry: お問い合わせ
-front.block.footer.act_on_specified_commercial_transactions: 特定商取引法に基づく表記
-front.block.news.read_more: more
-front.block.news.news_title: 新着情報
-front.block.news.see_details: 詳しくはこちら
-front.block.new_product.eyecatch_title: 新入荷商品特集
-front.block.new_product.eyecatch_sub_title: この季節にぴったりな商品をご用意しました
-front.block.new_product.eyecatch_body: さわやかな日差しが過ごしやすい季節。心地よいくらしのための、お部屋のアクセントになるおすすめのファブリックやグッズをご紹介します。
-front.block.new_product.eyecatch_view_list: 一覧を見る
-front.block.new_product.category_read_more: read more
-front.block.new_product.category_1_title: お気に入りのエスプレッソタイム
-front.block.new_product.category_1_body: コーヒータイムを上質な時間にしてくれる、口当たりのよさとデザイン性を兼ね備えたエスプレッソカップを集めました・・・
-front.block.new_product.category_2_title: アウトドアにおすすめのアイテム
-front.block.new_product.category_2_body: カジュアルすぎない感じがちょうどよい、大人のためのアウトドアマガジンから、バイヤーおすすめのアイテムをセレクト・・・
-front.block.new_product.category_3_title: フランス製のデッドストック
-front.block.new_product.category_3_body: 60～70年代のフランス製のデッドストックの器を集めました。絶妙な色合いと、独特の優しい風合いをお楽しみいただけ・・・
-front.block.new_product.item_1_title: 木彫りのぬくもりがあたたかいアニマルオブジェ
-front.block.new_product.item_1_name: オブジェ（ふくろう）
-front.block.new_product.item_2_title: 青色が美しい職人が仕上げた吹きガラス
-front.block.new_product.item_2_name: ガラス瓶
-front.block.new_product.item_3_title: いつかは持ちたい。一生モノの銀製カトラリー
-front.block.new_product.item_3_name: シルバーカトラリー
-front.block.new_product.item_4_title: こだわりのシルクスクリーンプリントがポイント
-front.block.new_product.item_4_name: フォトクッションカバー
+front.block.login.to_cart: カートを見る
+front.block.login.to_home: ホームに戻る
+
 
 #------------------------------------------------------------------------------------
 # 問い合わせ

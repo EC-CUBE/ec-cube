@@ -15,7 +15,7 @@ file that was distributed with this source code.
             <div class="ec-headerLink__icon">
                 <i class="fas fa-shopping-cart"></i>
             </div>
-            <span>カートを見る</span>
+            <span>{{ 'front.block.login.to_cart'|trans }}</span>
         </a>
         {% if is_granted('ROLE_USER') %}
             <a class="ec-headerLink__item" href="{{ url('mypage') }}">
@@ -64,7 +64,7 @@ file that was distributed with this source code.
             <div class="ec-headerLink__icon">
                 <i class="fas fa-home"></i>
             </div>
-            <span>ホームに戻る</span>
+            <span>{{ 'front.block.login.to_home'|trans }}</span>
         </a>
     </div>
 </div>

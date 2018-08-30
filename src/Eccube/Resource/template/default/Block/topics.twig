@@ -11,15 +11,23 @@ file that was distributed with this source code.
 
 <div class="ec-topicRole">
     <div class="ec-role">
-        <div class="ec-secHeading"><span class="ec-secHeading__en">TOPICS</span><span class="ec-secHeading__line"></span><span class="ec-secHeading__ja">特集</span></div>
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">{{ 'front.block.topic.topic__en'|trans }}</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">{{ 'front.block.topic.topic__ja'|trans }}</span>
+        </div>
         <div class="ec-topicRole__list">
-            <div class="ec-topicRole__listItem"><a href="/moc/guest/search/"><img src="{{ asset('img/top/img_bnr01.jpg') }}"></a>
-                <p class="ec-topicRole__listItemTitle">濃厚なのにアイスよりヘルシー!! ジェラート特集
-                </p>
+            <div class="ec-topicRole__listItem">
+                <a href="/moc/guest/search/">
+                    <img src="{{ asset('img/top/img_bnr01.jpg') }}">
+                </a>
+                <p class="ec-topicRole__listItemTitle">{{ 'front.block.topic.title__gelato'|trans }}</p>
             </div>
-            <div class="ec-topicRole__listItem"><a href="/moc/guest/search/"><img src="{{ asset('img/top/img_bnr02.jpg') }}"></a>
-                <p class="ec-topicRole__listItemTitle">サクサク食感が魅力!! コーンアイス特集
-                </p>
+            <div class="ec-topicRole__listItem">
+                <a href="/moc/guest/search/">
+                    <img src="{{ asset('img/top/img_bnr02.jpg') }}">
+                </a>
+                <p class="ec-topicRole__listItemTitle">{{ 'front.block.topic.title__ice'|trans }}</p>
             </div>
         </div>
     </div>
