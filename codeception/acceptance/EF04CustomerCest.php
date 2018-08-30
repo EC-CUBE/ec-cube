@@ -72,7 +72,7 @@ class EF04CustomerCest
 
         // 「トップページへ」ボタンを押下する
         $I->click('a.ec-blockBtn--cancel');
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
 
         // アクティベートURL取得
         $activateUrl = $I->grabFromLastEmailTo($new_email, '@/entry/activate/(.*)@');
@@ -90,7 +90,7 @@ class EF04CustomerCest
         }
 
         $I->click('div.ec-registerCompleteRole a.ec-blockBtn--cancel');
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function customer_会員登録異常1(\AcceptanceTester $I)
@@ -161,7 +161,7 @@ class EF04CustomerCest
         $I->amOnPage('/entry');
 
         $I->click('.ec-layoutRole__main form a.ec-blockBtn--cancel');
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function customer_会員登録戻る(\AcceptanceTester $I)

@@ -111,6 +111,7 @@ class CsvImportController extends AbstractCsvImportController
         $csvColumns = $csv->getColumnHeaders();
         if (count(array_diff($requiredColumns, $csvColumns)) > 0) {
             $errors[] = trans('admin.common.csv_invalid_format');
+
             return;
         }
 
@@ -118,6 +119,7 @@ class CsvImportController extends AbstractCsvImportController
         $size = count($csv);
         if ($size < 1) {
             $errors[] = trans('admin.common.csv_invalid_format');
+
             return;
         }
 
