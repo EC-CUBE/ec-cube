@@ -196,6 +196,7 @@ class EA04OrderCest
 
     public function order_受注削除(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('未実装：受注削除は未実装');
         $I->wantTo('EA0401-UC08-T01(& UC08-T02) 受注削除');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
