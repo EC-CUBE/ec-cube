@@ -14,7 +14,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Event\EventArgs;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
@@ -38,6 +37,7 @@ class AbstractShoppingController extends AbstractController
     /**
      * @param ItemHolderInterface $itemHolder
      * @param bool $returnResponse レスポンスを返すかどうか. falseの場合はPurchaseFlowResultを返す.
+     *
      * @return PurchaseFlowResult|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     protected function executePurchaseFlow(ItemHolderInterface $itemHolder, $returnResponse = true)

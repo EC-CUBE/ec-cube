@@ -13,8 +13,6 @@
 
 namespace Eccube\Plugin;
 
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\Migration;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class AbstractPluginManager

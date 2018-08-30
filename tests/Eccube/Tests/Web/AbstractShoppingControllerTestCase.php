@@ -185,7 +185,6 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             ],
         ];
 
-
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('shopping_checkout'),
