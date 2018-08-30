@@ -104,11 +104,11 @@ class EF01TopCest
         $topPage = TopPage::go($I);
 
         // カテゴリを選択、そのまま続けて子カテゴリを選択する
-        $topPage->カテゴリ選択(['キッチンツール', '調理器具']);
+        $topPage->カテゴリ選択(['アイスサンド', 'フルーツ']);
 
         // 商品一覧の上部に、選択されたカテゴリとその親カテゴリのリンクが表示される
-        $I->see('調理器具', '.ec-topicpath');
-        $I->see('パーコレーター', '.ec-shelfGrid');
+        $I->see('フルーツ', '.ec-topicpath');
+        $I->see('チェリーアイスサンド', '.ec-shelfGrid');
     }
 
     public function topページ_全件検索(\AcceptanceTester $I)
@@ -131,17 +131,17 @@ class EF01TopCest
         $topPage = TopPage::go($I);
 
         // カテゴリを選択する
-        $I->selectOption(['id' => 'category_id'], '調理器具');
+        $I->selectOption(['id' => 'category_id'], 'フルーツ');
 
         // 虫眼鏡ボタンを押下する
         $topPage->検索();
 
         // 商品一覧の上部に、選択されたカテゴリとその親カテゴリのリンクが表示される
-        $I->see('調理器具', '.ec-topicpath');
+        $I->see('フルーツ', '.ec-topicpath');
 
         // カテゴリに分類されている商品のみ表示される
-        $I->see('パーコレーター', '.ec-shelfGrid');
-        $I->dontSee('ディナーフォーク', '.ec-shelfGrid');
+        $I->see('チェリーアイスサンド', '.ec-shelfGrid');
+        $I->dontSee('彩のジェラートCUBE', '.ec-shelfGrid');
     }
 
     public function topページ_キーワード絞込検索(\AcceptanceTester $I)
@@ -150,16 +150,16 @@ class EF01TopCest
         $topPage = TopPage::go($I);
 
         // キーワードを入力する
-        $I->fillField(['id' => 'name'], 'フォーク');
+        $I->fillField(['id' => 'name'], 'ジェラート');
 
         // 虫眼鏡ボタンを押下する
         $topPage->検索();
 
         // 商品一覧の上部に、選択されたカテゴリとその親カテゴリのリンクが表示される
-        $I->see('フォーク', '.ec-topicpath');
+        $I->see('ジェラート', '.ec-topicpath');
 
         // カテゴリに分類されている商品のみ表示される
-        $I->dontSee('パーコレーター', '.ec-topicpath');
-        $I->see('ディナーフォーク', '.ec-shelfGrid');
+        $I->dontSee('チェリーアイスサンド', '.ec-topicpath');
+        $I->see('彩のジェラートCUBE', '.ec-shelfGrid');
     }
 }
