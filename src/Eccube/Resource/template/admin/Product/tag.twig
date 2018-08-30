@@ -153,6 +153,13 @@ file that was distributed with this source code.
                                         </div>
                                     </form>
                                 </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-auto"><strong>&nbsp;</strong></div>
+                                        <div class="col-auto"><strong>{{ 'admin.common.id'|trans }}</strong></div>
+                                        <div class="col-1"><strong>{{ 'admin.product.tag'|trans }}</strong></div>
+                                    </div>
+                                </li>
                                 {% for Tag in Tags %}
                                     <li id="ex-tag-{{ Tag.id }}" class="list-group-item sortable-item" data-id="{{ Tag.id }}"
                                         data-sort-no="{{ Tag.sortNo }}">
