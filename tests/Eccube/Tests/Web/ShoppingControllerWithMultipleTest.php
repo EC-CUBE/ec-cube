@@ -1254,10 +1254,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ]
         );
 
-        $this->scenarioComplete(
-            $Customer,
-            $this->generateUrl('shopping_checkout')
-        );
+        $this->scenarioCheckout($Customer);
 
         $BaseInfo = $this->baseInfoRepository->get();
         /** @var \Swift_Message[] $Messages */
