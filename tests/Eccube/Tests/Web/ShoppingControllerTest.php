@@ -20,6 +20,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Tests\Fixture\Generator;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -498,7 +499,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
         $SaleTypeNormal = $this->entityManager->find(SaleType::class, SaleType::SALE_TYPE_NORMAL);
-        $Delivery = $this->entityManager->find(Delivery::class, 2);
+        $Delivery = $this->container->get(Generator::class)->createDelivery();
         $Delivery->setSaleType($SaleTypeNormal);
         $this->entityManager->flush($Delivery);
 
