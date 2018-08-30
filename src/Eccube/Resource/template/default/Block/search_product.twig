@@ -8,11 +8,10 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{# デザイン調整 #}
 <div class="ec-headerSearch">
     <form method="get" id="searchform" action="{{ path('product_list') }}">
         <div class="ec-headerSearch__category">
-            <div class="ec-select">
+            <div class="ec-select ec-select_search">
                 {{ form_widget(form.category_id) }}
             </div>
         </div>

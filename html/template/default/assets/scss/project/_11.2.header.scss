@@ -265,13 +265,13 @@ Styleguide 11.2.3
     font-size: 18px;
     color: black;
     @include media_desktop {
-      margin-right: 7px;
+      margin-right: 0;
       font-size: 20px;
     }
   }
   & &__itemLink {
     display: none;
-    margin-right: 15px;
+    margin-right: 5px;
     font-size: 14px;
     vertical-align: middle;
     color: black;
@@ -310,39 +310,91 @@ Styleguide 11.2.4
       width: 43%;
     }
     .ec-select {
-      margin-bottom: 0;
-    }
-    select{
-      //width: auto;
-      //max-width: 100%;
-      border: 1px solid #000;
-      font-size: 1.4rem;
-      padding: 6px 10px;
-      border-radius: 6px 6px 0 0;
-      box-shadow: none;
-      box-sizing: border-box;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      color: #fff;
-      background: #000;
       overflow: hidden;
+      width: 100%;
+      margin: 0;
+      text-align: center;
 
-      @include media_desktop {
-        max-width: 180px;
+      select {
+        width: 100%;
+        padding-right: 1em;
+        cursor: pointer;
+        text-indent: 0.01px;
+        text-overflow: ellipsis;
+        border: none;
+        outline: none;
+        background: transparent;
+        background-image: none;
+        box-shadow: none;
+        -webkit-appearance: none;
+        appearance: none;
+        color: #fff;
+
+        @include media_desktop {
+          max-width: 165px;
+          height: 36px;
+        }
+
+        &::-ms-expand {
+          display: none;
+        }
       }
+
+      &.ec-select_search {
+        position: relative;
+        border: 0;
+        background: #000;
+        color: #fff;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+
+        @include media_desktop {
+          border-top-right-radius: inherit;
+          border-top-left-radius: 50px;
+          border-bottom-left-radius: 50px;
+        }
+
+
+        &::before {
+          position: absolute;
+          top: 0.8em;
+          right: 0.4em;
+          width: 0;
+          height: 0;
+          padding: 0;
+          content: '';
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 6px solid #fff;
+          pointer-events: none;
+        }
+
+        select {
+          padding: 8px 24px 8px 8px;
+          color: #fff;
+        }
+      }
+
     }
   }
   & &__keyword{
     position: relative;
     color: $clrDarkGray;
     border: 1px solid #ccc;
-    border-radius: 6px 6px 6px 6px;
+    background-color: #f6f6f6;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+
     @include media_desktop {
       float: right;
       width: 57%;
+      border-bottom-left-radius: inherit;
+      border-top-right-radius: 50px;
+      border-bottom-right-radius: 50px;
     }
     input[type="search"]{
       width: 100%;
+      height: 34px;
       font-size: 1.2rem;
       border: 0 none;
       padding: 0.5em 50px 0.5em 1em;
@@ -361,9 +413,9 @@ Styleguide 11.2.4
     background: none;
     position: absolute;
     right: 0;
-    top: 6px;
+    top: 0;
     display: block;
-    font-size: 25px;
+    font-size: 20px;
     overflow: hidden;
     white-space: nowrap;
     z-index: 1;
