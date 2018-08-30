@@ -522,9 +522,11 @@ class PluginService
         $pluginDir = $this->calcPluginDir($plugin->getCode());
         $this->cacheUtil->clearCache();
         $config = $this->readConfig($pluginDir);
-        $this->callPluginManagerMethod($config, 'disable');
+
+        if ($plugin->isEnabled()) {
+            $this->disable($plugin);
+        }
         $this->callPluginManagerMethod($config, 'uninstall');
-        $this->disable($plugin);
         $this->unregisterPlugin($plugin);
 
         // スキーマを更新する
