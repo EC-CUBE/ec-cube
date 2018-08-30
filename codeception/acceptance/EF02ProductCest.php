@@ -216,7 +216,7 @@ class EF02ProductCest
         $productPage->カートに入れる(6);
         $I->wait(5);
 
-        $I->assertContains('選択された商品(パーコレーター)は販売制限しております。 一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertContains('「パーコレーター」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
@@ -239,7 +239,7 @@ class EF02ProductCest
         $productPage->カートに入れる(12);
         $I->wait(5);
 
-        $I->assertContains('選択された商品(パーコレーター)は販売制限しております。 一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertContains('「パーコレーター」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
@@ -285,7 +285,7 @@ class EF02ProductCest
 
         $I->wait(5);
 
-        $I->assertContains('選択された商品(ディナーフォーク - プラチナ - 150cm)は販売制限しております。 一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertContains('「ディナーフォーク - プラチナ - 150cm」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
@@ -308,7 +308,7 @@ class EF02ProductCest
 
         $I->wait(5);
 
-        $I->assertContains('選択された商品(ディナーフォーク - プラチナ - 150cm)は販売制限しております。 一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertContains('「ディナーフォーク - プラチナ - 150cm」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
