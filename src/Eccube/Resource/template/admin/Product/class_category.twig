@@ -176,6 +176,13 @@ file that was distributed with this source code.
                                         </div>
                                     </form>
                                 </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-auto"><strong>&nbsp;</strong></div>
+                                        <div class="col-auto"><strong>{{ 'admin.common.id'|trans }}</strong></div>
+                                        <div class="col-1"><strong>{{ 'admin.product.class_category'|trans }}</strong></div>
+                                    </div>
+                                </li>
                                 {% for ClassCategory in ClassCategories %}
                                     <li id="ex-class_category-{{ ClassCategory.id }}" class="list-group-item sortable-item" data-classname-id="{{ ClassCategory.ClassName.id }}" data-id="{{ ClassCategory.id }}" data-sort-no="{{ ClassCategory.sortNo }}">
                                         <div class="row justify-content-around mode-view">

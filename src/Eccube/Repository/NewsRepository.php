@@ -79,7 +79,8 @@ class NewsRepository extends AbstractRepository
         $qb->where('n.publish_date <= :date')
             ->andWhere('n.visible = TRUE')
             ->setParameter('date', new \DateTime())
-            ->orderBy('n.publish_date', 'DESC');
+            ->orderBy('n.publish_date', 'DESC')
+            ->addOrderBy('n.id', 'DESC');
 
         return $qb->getQuery()->getResult();
     }

@@ -15,22 +15,64 @@ namespace Eccube\Plugin;
 
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AbstractPluginManager
+abstract class AbstractPluginManager
 {
     const MIGRATION_TABLE_PREFIX = 'migration_';
 
-    public function migrationSchema($app, $migrationFilePath, $pluginCode, $version = null)
+    /**
+     * Install the plugin.
+     *
+     * @param array $meta
+     * @param ContainerInterface $container
+     */
+    public function install(array $meta, ContainerInterface $container)
     {
-        $config = new Configuration($app['db']);
-        $config->setMigrationsNamespace('DoctrineMigrations');
-        $config->setMigrationsDirectory($migrationFilePath);
-        $config->registerMigrationsFromDirectory($migrationFilePath);
-        $config->setMigrationsTableName(self::MIGRATION_TABLE_PREFIX.$pluginCode);
-        $migration = new Migration($config);
-        $migration->setNoMigrationException(true);
-        // null 又は 'last' を渡すと最新バージョンまでマイグレートする
-        // 0か'first'を渡すと最初に戻る
-        $migration->migrate($version, false);
+        // quiet.
+    }
+
+    /**
+     * Update the plugin.
+     *
+     * @param array $meta
+     * @param ContainerInterface $container
+     */
+    public function update(array $meta, ContainerInterface $container)
+    {
+        // quiet.
+    }
+
+    /**
+     * Enable the plugin.
+     *
+     * @param array $meta
+     * @param ContainerInterface $container
+     */
+    public function enable(array $meta, ContainerInterface $container)
+    {
+        // quiet.
+    }
+
+    /**
+     * Disable the plugin.
+     *
+     * @param array $meta
+     * @param ContainerInterface $container
+     */
+    public function disable(array $meta, ContainerInterface $container)
+    {
+        // quiet.
+    }
+
+    /**
+     * Uninstall the plugin.
+     *
+     * @param array $meta
+     * @param ContainerInterface $container
+     */
+    public function uninstall(array $meta, ContainerInterface $container)
+    {
+        // quiet.
     }
 }
