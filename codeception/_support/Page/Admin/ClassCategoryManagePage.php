@@ -50,7 +50,6 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_編集($rowNum)
     {
-        ++$rowNum;
         $this->tester->click("ul.list-group > li:nth-child(${rowNum}) a:nth-child(3)");
 
         return $this;
@@ -58,7 +57,6 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_入力_分類名($row, $value)
     {
-        ++$row;
         $this->tester->fillField(['css' => "ul.list-group > li:nth-child(${row}) form input[type=text]"], $value);
 
         return $this;
@@ -66,7 +64,6 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_分類作成($row)
     {
-        ++$row;
         $this->tester->click("ul.list-group > li:nth-child(${row}) form button[type=submit]");
 
         return $this;
@@ -74,7 +71,6 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_削除($rowNum)
     {
-        ++$rowNum;
         $this->tester->click("ul.list-group > li:nth-child(${rowNum}) > div > div.col-auto.text-right > div > a");
 
         return $this;

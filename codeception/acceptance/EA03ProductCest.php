@@ -555,18 +555,18 @@ class EA03ProductCest
             ->分類作成();
 
         $I->see('保存しました', ClassCategoryManagePage::$登録完了メッセージ);
-        $I->see('test class2 category1', $ProductClassCategoryPage->一覧_名称(2));
+        $I->see('test class2 category1', $ProductClassCategoryPage->一覧_名称(3));
 
         // Edit class category 1
-        $ProductClassCategoryPage->一覧_編集(2)
-            ->一覧_入力_分類名(2, 'edit class category')
-            ->一覧_分類作成(2);
+        $ProductClassCategoryPage->一覧_編集(3)
+            ->一覧_入力_分類名(3, 'edit class category')
+            ->一覧_分類作成(3);
 
         $I->see('保存しました', ClassCategoryManagePage::$登録完了メッセージ);
-        $I->see('edit class category', $ProductClassCategoryPage->一覧_名称(2));
+        $I->see('edit class category', $ProductClassCategoryPage->一覧_名称(3));
 
         // delete test
-        $ProductClassCategoryPage->一覧_削除(2)
+        $ProductClassCategoryPage->一覧_削除(3)
             ->acceptModal();
 
         $I->see('削除しました', ClassCategoryManagePage::$登録完了メッセージ);
