@@ -308,7 +308,7 @@ class EF02ProductCest
 
         $I->wait(5);
 
-        $I->assertContains('「彩のジェラートCUBE - チョコ - 16mm × 16mm」は販売制限しております。 一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertContains('「彩のジェラートCUBE - チョコ - 16mm × 16mm」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 

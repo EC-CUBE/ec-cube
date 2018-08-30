@@ -679,7 +679,6 @@ class CartValidationTest extends AbstractWebTestCase
 
         $message = $crawler->filter('.ec-layoutRole__main')->text();
 
-        $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
         $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
     }
 
@@ -708,7 +707,6 @@ class CartValidationTest extends AbstractWebTestCase
         $message = $crawler->filter('.ec-layoutRole__main')->text();
 
         $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
     }
 
     /**
@@ -739,8 +737,6 @@ class CartValidationTest extends AbstractWebTestCase
         // check message error
         $message = $crawler->filter('.ec-layoutRole__main')->text();
         $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('該当商品をカートから削除しました。', $message);
     }
 
     /**
@@ -1891,7 +1887,6 @@ class CartValidationTest extends AbstractWebTestCase
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
         $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
     }
 
     /**
@@ -1939,7 +1934,6 @@ class CartValidationTest extends AbstractWebTestCase
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
         $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
     }
 
     /**
@@ -1988,7 +1982,6 @@ class CartValidationTest extends AbstractWebTestCase
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
         $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
     }
 
     /**
