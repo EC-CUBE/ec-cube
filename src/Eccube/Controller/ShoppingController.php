@@ -110,7 +110,7 @@ class ShoppingController extends AbstractShoppingController
 
         // 集計処理.
         log_info('[注文手続] 集計処理を開始します.', [$Order->getId()]);
-        $flowResult = $this->validatePurchaseFlow($Order);
+        $flowResult = $this->executePurchaseFlow($Order, false);
         $this->entityManager->flush();
 
         if ($flowResult->hasError()) {
@@ -177,19 +177,11 @@ class ShoppingController extends AbstractShoppingController
 
         if ($form->isSubmitted() && $form->isValid()) {
             log_info('[リダイレクト] 集計処理を開始します.', [$Order->getId()]);
-            $flowResult = $this->validatePurchaseFlow($Order);
+            $response = $this->executePurchaseFlow($Order);
             $this->entityManager->flush();
 
-            if ($flowResult->hasError()) {
-                log_info('[リダイレクト] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
-
-                return $this->redirectToRoute('shopping_error');
-            }
-
-            if ($flowResult->hasWarning()) {
-                log_info('[リダイレクト] Warningが発生したため注文手続き画面へ遷移します.', [$flowResult->getWarning()]);
-
-                return $this->redirectToRoute('shopping');
+            if ($response) {
+                return $response;
             }
 
             $redirectTo = $form['redirect_to']->getData();
@@ -261,19 +253,11 @@ class ShoppingController extends AbstractShoppingController
 
         if ($form->isSubmitted() && $form->isValid()) {
             log_info('[注文確認] 集計処理を開始します.', [$Order->getId()]);
-            $flowResult = $this->validatePurchaseFlow($Order);
+            $response = $this->executePurchaseFlow($Order);
             $this->entityManager->flush();
 
-            if ($flowResult->hasError()) {
-                log_info('[注文確認] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
-
-                return $this->redirectToRoute('shopping_error');
-            }
-
-            if ($flowResult->hasWarning()) {
-                log_info('[注文確認] Warningが発生したため注文手続き画面へ遷移します.', [$flowResult->getWarning()]);
-
-                return $this->redirectToRoute('shopping');
+            if ($response) {
+                return $response;
             }
 
             log_info('[注文確認] PaymentMethod::verifyを実行します.', [$Order->getPayment()->getMethodClass()]);
@@ -361,19 +345,11 @@ class ShoppingController extends AbstractShoppingController
                  * 集計処理
                  */
                 log_info('[注文処理] 集計処理を開始します.', [$Order->getId()]);
-                $flowResult = $this->validatePurchaseFlow($Order);
+                $response = $this->executePurchaseFlow($Order);
                 $this->entityManager->flush();
 
-                if ($flowResult->hasError()) {
-                    log_info('[注文処理] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
-
-                    return $this->redirectToRoute('shopping_error');
-                }
-
-                if ($flowResult->hasWarning()) {
-                    log_info('[注文処理] Warningが発生したため注文手続き画面へ遷移します.', [$flowResult->getWarning()]);
-
-                    return $this->redirectToRoute('shopping');
+                if ($response) {
+                    return $response;
                 }
 
                 log_info('[注文処理] PaymentMethodを取得します.', [$Order->getPayment()->getMethodClass()]);
@@ -531,19 +507,11 @@ class ShoppingController extends AbstractShoppingController
             $Shipping->setFromCustomerAddress($CustomerAddress);
 
             // 合計金額の再計算
-            $flowResult = $this->validatePurchaseFlow($Order);
+            $response = $this->executePurchaseFlow($Order);
             $this->entityManager->flush();
 
-            if ($flowResult->hasError()) {
-                log_info('[お届先情報更新] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
-
-                return $this->redirectToRoute('shopping_error');
-            }
-
-            if ($flowResult->hasWarning()) {
-                log_info('[お届先情報更新] Warningが発生したため注文手続き画面へ遷移します.', [$flowResult->getWarning()]);
-
-                return $this->redirectToRoute('shopping');
+            if ($response) {
+                return $response;
             }
 
             $event = new EventArgs(
@@ -629,18 +597,11 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // 合計金額の再計算
-            $flowResult = $this->validatePurchaseFlow($Order);
+            $response = $this->executePurchaseFlow($Order);
             $this->entityManager->flush();
-            if ($flowResult->hasError()) {
-                log_info('[お届先情報更新] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
 
-                return $this->redirectToRoute('shopping_error');
-            }
-
-            if ($flowResult->hasWarning()) {
-                log_info('[お届先情報更新] Warningが発生したため注文手続き画面へ遷移します.', [$flowResult->getWarning()]);
-
-                return $this->redirectToRoute('shopping');
+            if ($response) {
+                return $response;
             }
 
             $event = new EventArgs(

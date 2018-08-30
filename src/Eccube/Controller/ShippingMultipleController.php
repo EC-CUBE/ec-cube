@@ -305,7 +305,7 @@ class ShippingMultipleController extends AbstractShoppingController
             }
 
             // 合計金額の再計算
-            $flowResult = $this->validatePurchaseFlow($Order);
+            $flowResult = $this->executePurchaseFlow($Order, false);
             if ($flowResult->hasError()) {
                 return $this->redirectToRoute('shopping_error');
             }

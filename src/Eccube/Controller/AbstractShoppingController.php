@@ -37,10 +37,10 @@ class AbstractShoppingController extends AbstractController
 
     /**
      * @param ItemHolderInterface $itemHolder
-     *
-     * @return PurchaseFlowResult
+     * @param bool $returnResponse レスポンスを返すかどうか. falseの場合はPurchaseFlowResultを返す.
+     * @return PurchaseFlowResult|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    protected function validatePurchaseFlow(ItemHolderInterface $itemHolder)
+    protected function executePurchaseFlow(ItemHolderInterface $itemHolder, $returnResponse = true)
     {
         /** @var PurchaseFlowResult $flowResult */
         $flowResult = $this->purchaseFlow->validate($itemHolder, new PurchaseContext(clone $itemHolder, $itemHolder->getCustomer()));
@@ -51,19 +51,20 @@ class AbstractShoppingController extends AbstractController
             $this->addError($error->getMessage());
         }
 
-        return $flowResult;
-    }
+        if (!$returnResponse) {
+            return $flowResult;
+        }
 
-    /**
-     * @param $eventName
-     * @param EventArgs $event
-     *
-     * @return EventArgs
-     */
-    protected function dispatchEvent($eventName, EventArgs $event)
-    {
-        $this->eventDispatcher->dispatch($eventName, $event);
+        if ($flowResult->hasError()) {
+            log_info('Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
 
-        return $event;
+            return $this->redirectToRoute('shopping_error');
+        }
+
+        if ($flowResult->hasWarning()) {
+            log_info('Warningが発生したため注文手続き画面へ遷移します.', [$flowResult->getWarning()]);
+
+            return $this->redirectToRoute('shopping');
+        }
     }
 }
