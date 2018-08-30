@@ -1154,8 +1154,7 @@ class CsvImportController extends AbstractCsvImportController
      */
     protected function addErrors($message)
     {
-        $e = new CsvImportException($message);
-        $this->errors[] = $e;
+        $this->errors[] = $message;
     }
 
     /**

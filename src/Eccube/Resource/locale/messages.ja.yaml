@@ -262,7 +262,7 @@ front.product.add_favorite_alrady: お気に入りに追加済です。
 front.product.out_of_stock: ただいま品切れ中です。
 front.product.out_of_stock_label: (品切れ中)
 front.product.added_to_favorite: お気に入りに追加済です。
-front.product.nomal_price: 通常価格
+front.product.normal_price: 通常価格
 front.product.sale_price: 販売価格
 front.product.code: 商品コード
 front.product.related_category: 関連カテゴリ
@@ -291,7 +291,7 @@ front.cart.no_items: 現在カート内に商品はございません。
 front.cart.delivery_fee_free__now: 現在送料無料です。
 front.cart.delivery_fee_free__price_and_quantity: あと「<strong>%price%</strong>」または「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
 front.cart.delivery_fee_free__price: あと「<strong>%price%</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
-front.cart.delivery_fee_free__quantity: '<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。'
+front.cart.delivery_fee_free__quantity: あと「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
 
 #------------------------------------------------------------------------------------
 # ショッピング
@@ -792,6 +792,9 @@ admin.order.mail_mail_info: メール内容
 admin.order.mail_confirm: 送信内容を確認
 admin.order.mail_template: テンプレート
 admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
+admin.order.mail_send_return: 送信内容の入力に戻る
+admin.order.mail_send: 送信
+admin.order.mail_send_complete: メールを送信しました。
 admin.order.mail_failed: 取得に失敗しました。
 admin.order.shipping_info: 出荷情報
 admin.order.delivery_date: お届け日
@@ -969,6 +972,15 @@ admin.content.block_source_code: コード
 admin.content.cache__card_title: キャッシュ管理
 admin.content.cache_message: 本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。
 admin.content.cache_delete: キャッシュ削除
+admin.content.news.publish_date: 公開日時
+admin.content.news.display_status: 公開状態
+admin.content.news.display_status__show: 公開
+admin.content.news.display_status__hide: 非公開
+admin.content.news.title: タイトル
+admin.content.news.url: URL
+admin.content.news.body: 本文
+admin.content.news.news_registration: 新着情報登録
+admin.content.news.new_window: 別ウィンドウで開く
 
 #------------------------------------------------------------------------------------
 # 設定
@@ -1072,6 +1084,8 @@ admin.setting.shop.mail.mail_template_edit: テンプレート編集
 admin.setting.shop.mail.mail_template: テンプレート
 admin.setting.shop.mail.mail_subject: 件名
 admin.setting.shop.mail.mail_body: 本文
+admin.setting.shop.mail.mail_text: テキスト
+admin.setting.shop.mail.mail_html: HTML
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：CSV出力項目設定

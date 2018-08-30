@@ -120,7 +120,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--no-interaction' => true,
             '--profile' => true,
             '--no-scripts' => true,
-            '--dry-run' => !!$dryRun,
+            '--dry-run' => (bool) $dryRun,
         ], $output);
     }
 
@@ -139,7 +139,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--no-interaction' => true,
             '--profile' => true,
             '--no-scripts' => true,
-            '--dry-run' => !!$dryRun,
+            '--dry-run' => (bool) $dryRun,
         ], $output);
     }
 

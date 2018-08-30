@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Master\MailTemplateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -20,9 +21,26 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Eccube\Form\Validator\TwigLint;
+use Doctrine\ORM\EntityRepository;
 
-class MailType extends AbstractType
+class OrderMailType extends AbstractType
 {
+    /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
+     * MailType constructor.
+     *
+     * @param EccubeConfig $eccubeConfig
+     */
+    public function __construct(
+        EccubeConfig $eccubeConfig
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,11 +48,14 @@ class MailType extends AbstractType
     {
         $builder
             ->add('template', MailTemplateType::class, [
-                'required' => true,
+                'required' => false,
                 'mapped' => false,
-                'constraints' => [
-                    new Assert\NotBlank(),
-                ],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('mt')
+                        ->andWhere('mt.id = :id')
+                        ->setParameter('id', $this->eccubeConfig['eccube_order_mail_template_id'])
+                        ->orderBy('mt.id', 'ASC');
+                },
             ])
             ->add('mail_subject', TextType::class, [
                 'required' => true,
@@ -50,14 +71,6 @@ class MailType extends AbstractType
                     new TwigLint(),
                 ],
             ])
-            ->add('html_tpl_data', TextareaType::class, [
-                'label' => false,
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new TwigLint(),
-                ],
-            ])
         ;
     }
 
@@ -66,6 +79,6 @@ class MailType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'mail';
+        return 'admin_order_mail';
     }
 }

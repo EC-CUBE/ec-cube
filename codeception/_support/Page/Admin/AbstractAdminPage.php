@@ -53,7 +53,7 @@ abstract class AbstractAdminPage
      */
     protected function atPage($pageTitle)
     {
-        $this->tester->see($pageTitle, '#main .page-header');
+        $this->tester->see($pageTitle, '.c-container .c-pageTitle__titles');
 
         return $this;
     }

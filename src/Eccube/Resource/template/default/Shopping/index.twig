@@ -15,43 +15,13 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         $(function() {
-
-            $('.delivery').on('change', function() {
+            var $redirectCallback = function () {
                 loadingOverlay();
-                $('#shopping_order_mode').val('delivery');
+                $('#shopping_order_redirect_to').val($(this).attr('data-path'));
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-            });
-
-            $('.payment').on('change', function() {
-                loadingOverlay();
-                $('#shopping_order_mode').val('payment');
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-            });
-
-            $('.use_point').on('blur', function() {
-                loadingOverlay();
-                $('#shopping_order_mode').val('use_point');
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-            });
-
-            $('.btn-shipping').click(function() {
-                loadingOverlay();
-                $('#shopping_order_mode').val('shipping_change');
-                $('#shopping_order_param').val($(this).data('id'));
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-            });
-
-            $('.btn-shipping-edit').click(function() {
-                loadingOverlay();
-                $('#shopping_order_mode').val('shipping_edit_change');
-                $('#shopping_order_param').val($(this).data('id'));
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-            });
-
-            $('.btn-shipping-multiple').click(function() {
-                loadingOverlay();
-                $('#shopping_order_mode').val('shipping_multiple_change');
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+            };
+            $('[data-trigger]').each(function() {
+                $(this).on($(this).attr('data-trigger'), $redirectCallback);
             });
 
             {% if is_granted('ROLE_USER') == false %}
@@ -189,49 +159,37 @@ file that was distributed with this source code.
             </ul>
         </div>
     </div>
-
-    {# TODO エラーメッセージ #}
-    <div id="confirm_flow_box" class="row">
-        <div id="confirm_flow_box__body" class="col-md-12">
-            {% for error in app.session.flashbag.get('eccube.front.error') %}
-                <div id="confirm_flow_box__message" class="message">
-                    <p class="errormsg bg-danger">
-                        <svg class="cb cb-warning">
-                            <use xlink:href="#cb-warning"/>
-                        </svg>{{ error|trans|nl2br }}
-                    </p>
+    <div class="ec-role">
+        <div class="ec-off3Grid">
+            <div class="ec-off3Grid__cell">
+                {% for error in app.session.flashbag.get('eccube.front.error') %}
+                <div class="ec-alert-warning">
+                    <div class="ec-alert-warning__icon"><img src="/html/template/default/assets/icon/exclamation-white.svg"></div>
+                    <div class="ec-alert-warning__text">{{ error|trans|nl2br }}</div>
                 </div>
-            {% endfor %}
-            {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
-            {% for error in app.session.flashbag.get('eccube.front.request.error') %}
-                {% set idx = loop.index0 %}
-                {% if productStr[idx] is defined %}
-                    <div id="cart_box__message--{{ loop.index }}" class="message">
-                        <p class="errormsg bg-danger">
-                            <svg class="cb cb-warning">
-                                <use xlink:href="#cb-warning"/>
-                            </svg>
-                            {{ error|trans({'%product%':productStr[idx]})|nl2br }}
-                        </p>
-                    </div>
-                {% else %}
-                    <div id="confirm_flow_box__message--{{ loop.index }}" class="message">
-                        <p class="errormsg bg-danger">
-                            <svg class="cb cb-warning">
-                                <use xlink:href="#cb-warning"/>
-                            </svg>{{ error|trans|nl2br }}
-                        </p>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div><!-- /.col -->
-    </div><!-- /.row -->
-
+                {% endfor %}
+                {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
+                {% for error in app.session.flashbag.get('eccube.front.request.error') %}
+                    {% set idx = loop.index0 %}
+                    {% if productStr[idx] is defined %}
+                    <div class="ec-alert-warning">
+                        <div class="ec-alert-warning__icon"><img src="/html/template/default/assets/icon/exclamation-white.svg"></div>
+                    <div class="ec-alert-warning__text">{{ error|trans({'%product%':productStr[idx]})|nl2br }}</div>
+                    {% else %}
+                        <div class="ec-alert-warning">
+                            <div class="ec-alert-warning__icon"><img src="/html/template/default/assets/icon/exclamation-white.svg"></div>
+                            <div class="ec-alert-warning__text">{{ error|trans|nl2br }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
     <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
         {{ form_widget(form._token) }}
-        {{ form_widget(form.mode) }}
-        {{ form_widget(form.param) }}
+        {{ form_widget(form.redirect_to) }}
         <div class="ec-orderRole">
             <div class="ec-orderRole__detail">
                 <div class="ec-orderAccount">
@@ -279,9 +237,9 @@ file that was distributed with this source code.
                         <div class="ec-orderDelivery__title">{{ 'front.shopping.delivery_to'|trans }}{% if Order.multiple %}({{ loop.index }}){% endif %}
                             <div class="ec-orderDelivery__change">
                                 {% if is_granted('ROLE_USER') %}
-                                    <button class="ec-inlineBtn btn-shipping" data-id="{{ shipping.id }}">{{ 'common.change'|trans }}</button>
+                                    <button class="ec-inlineBtn" data-id="{{ shipping.id }}" data-trigger="click" data-path="{{ path('shopping_shipping', {'id': shipping.id}) }}">{{ 'common.change'|trans }}</button>
                                 {% else %}
-                                    <button class="ec-inlineBtn btn-shipping-edit" data-id="{{ shipping.id }}">{{ 'common.change'|trans }}</button>
+                                    <button class="ec-inlineBtn" data-id="{{ shipping.id }}" data-trigger="click" data-path="{{ path('shopping_shipping_edit', {'id': shipping.id}) }}">{{ 'common.change'|trans }}</button>
                                 {% endif %}
                             </div>
                         </div>
@@ -315,7 +273,7 @@ file that was distributed with this source code.
                             <div class="ec-selects">
                                 <div class="ec-select">
                                     <label>{{ 'front.shopping.delivery_provider'|trans }}</label>
-                                    {{ form_widget(form.Shippings[idx].Delivery, {'attr': {'class': 'delivery form-control'}}) }}
+                                    {{ form_widget(form.Shippings[idx].Delivery, { 'attr': { 'class': 'form-control', 'data-trigger': 'change' }}) }}
                                     {{ form_errors(form.Shippings[idx].Delivery) }}
                                 </div>
                                 <div class="ec-select ec-select__delivery">
@@ -332,35 +290,37 @@ file that was distributed with this source code.
                         </div>
                     {% endfor %}
                     <div class="ec-orderDelivery__edit">
-                        <button type="button" class="ec-inlineBtn btn-shipping-multiple">{{ 'front.shopping.to_multiple'|trans }}</button>
+                        <button type="button" class="ec-inlineBtn" data-trigger="click" data-path="{{ path('shopping_shipping_multiple') }}">{{ 'front.shopping.to_multiple'|trans }}</button>
                     </div>
                 </div>
                 <div class="ec-orderPayment">
                     <div class="ec-rectHeading">
                         <h2>{{ 'front.shopping.payment_info'|trans }}</h2>
                     </div>
-                    <div class="ec-blockRadio">
+                    <div class="ec-radio">
                         {% for key, child in form.Payment %}
+                            <div style="display: block;">
                             {% set Payment = form.Payment.vars.choices[key].data %}
-                            <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}</label>
+                            {{ form_widget(child, { 'attr': { 'data-trigger': 'change' }}) }}
                             {% if Payment.payment_image is not null %}
                                 <img src="{{ asset(Payment.payment_image, 'save_image') }}">
                             {% endif %}
+                            </div>
                         {% endfor %}
-                        {{ form_errors(form.Payment) }}
                     </div>
+                    <div class="ec-input {{ has_errors(form.Payment) ? ' error'}}">{{ form_errors(form.Payment) }}</div>
                 </div>
                 {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                     <div class="ec-orderPayment">
                         <div class="ec-rectHeading">
                             <h2>{{ 'front.shopping.point_info'|trans }}</h2>
-                            <p>{{ 'front.shopping.available_point'|trans({ '%point%': Order.Customer.Point }) }}</p>
-                            {{ form_widget(form.use_point, {'attr': {'class': 'form-control use_point'}}) }}
+                        </div>
+                        <div class="ec-input {{ has_errors(form.use_point) ? ' error'}}">
+                            <p>{{ 'front.shopping.available_point'|trans({ '%point%': Order.Customer.Point|number_format }) }}</p>
+                            {{ form_widget(form.use_point, { 'attr': { 'type': 'text', 'class': 'form-control', 'data-trigger': 'change' }}) }}
                             {{ form_errors(form.use_point) }}
                         </div>
                     </div>
-                {% else %}
-                    {{ form_widget(form.use_point, {'type': 'hidden'}) }}
                 {% endif %}
                 <div class="ec-orderConfirm">
                     <div class="ec-rectHeading">

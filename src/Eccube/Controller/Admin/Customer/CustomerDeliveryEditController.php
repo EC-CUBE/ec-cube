@@ -62,7 +62,7 @@ class CustomerDeliveryEditController extends AbstractController
             $CustomerAddress = $this->customerAddressRepository->findOneBy(
                 [
                     'id' => $did,
-                    'Customer' => $Customer
+                    'Customer' => $Customer,
                 ]
             );
             if (!$CustomerAddress) {
