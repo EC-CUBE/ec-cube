@@ -493,7 +493,7 @@ class EA03ProductCest
         $I->see('サイズ', $ProductClassPage->一覧_名称(3));
         $I->see('フレーバー', $ProductClassPage->一覧_名称(4));
 
-        $ProductClassPage->一覧_下に(2);
+        $ProductClassPage->一覧_下に(3);
         $I->see('フレーバー', $ProductClassPage->一覧_名称(3));
         $I->see('サイズ', $ProductClassPage->一覧_名称(4));
 

@@ -170,7 +170,7 @@ class EA06ContentsManagementCest
 
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
         LayoutEditPage::at($I)
-            ->ブロックを移動('カゴの中', '#position_2')
+            ->ブロックを移動('カート', '#position_2')
             ->登録();
         LayoutEditPage::at($I)
             ->ブロックを移動('ログインナビ', '#position_2')
@@ -213,7 +213,7 @@ class EA06ContentsManagementCest
         LayoutManagePage::go($I)->レイアウト編集($layoutName);
         $items = $I->grabMultiple(LayoutEditPage::$未使用ブロックアイテム);
         LayoutEditPage::at($I)
-            ->検索ブロック名('TOPICS');
+            ->検索ブロック名('トピック');
 
         $I->seeNumberOfElements(LayoutEditPage::$未使用ブロックアイテム, 1);
 

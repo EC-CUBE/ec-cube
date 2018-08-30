@@ -8,35 +8,30 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% set Categories = repository('Eccube\\Entity\\Category').getList() %}
 
-{% macro tree(Category) %}
-    {% from _self import tree %}
-    <a href="{{ url('product_list') }}?category_id={{ Category.id }}">
-        {{ Category.name }}
-    </a>
-    {% if Category.children|length > 0 %}
-        <ul>
-            {% for ChildCategory in Category.children %}
-                <li>
-                    {{ tree(ChildCategory) }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endmacro %}
-
-{# @see https://github.com/bolt/bolt/pull/2388 #}
-{% from _self import tree %}
-
-<div class="ec-cateoryNaviRole">
-    <div class="ec-itemNav">
-        <ul class="ec-itemNav__nav">
-            {% for Category in Categories %}
-                <li>
-                    {{ tree(Category) }}
-                </li>
-            {% endfor %}
-        </ul>
+<div class="ec-categoryRole">
+    <div class="ec-role">
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">{{ 'front.block.category.category__en'|trans }}</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">{{ 'front.block.category.category__ja'|trans }}</span>
+        </div>
+        <div class="ec-categoryRole__list">
+            <div class="ec-categoryRole__listItem">
+                <a href="{{ url('product_list') }}?category_id=2">
+                    <img src="{{ asset('img/top/img_hero_pc01.jpg') }}">
+                </a>
+            </div>
+            <div class="ec-categoryRole__listItem">
+                <a href="{{ url('product_list') }}?category_id=1">
+                    <img src="{{ asset('img/top/img_hero_pc02.jpg') }}">
+                </a>
+            </div>
+            <div class="ec-categoryRole__listItem">
+                <a href="{{ url('product_list') }}?category_id=5">
+                    <img src="{{ asset('img/top/img_hero_pc03.jpg') }}">
+                </a>
+            </div>
+        </div>
     </div>
 </div>
