@@ -256,7 +256,7 @@ class OrderType extends AbstractType
         }
 
         if (empty($PaymentsByDeliveries)) {
-            return [];
+            return new ArrayCollection();
         }
 
         $i = 0;
