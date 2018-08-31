@@ -16,6 +16,7 @@ namespace Eccube\Service\Composer;
 use Composer\Console\Application;
 use Eccube\Common\EccubeConfig;
 use Eccube\Exception\PluginException;
+use Eccube\Repository\BaseInfoRepository;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -37,9 +38,12 @@ class ComposerApiService implements ComposerServiceInterface
 
     private $workingDir;
 
-    public function __construct(EccubeConfig $eccubeConfig)
+    private $baseInfo;
+
+    public function __construct(EccubeConfig $eccubeConfig, BaseInfoRepository $baseInfoRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
+        $this->baseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -204,7 +208,7 @@ class ComposerApiService implements ComposerServiceInterface
         if ($value) {
             $commands['setting-value'] = $value;
         }
-        $output = $this->runCommand($commands);
+        $output = $this->runCommand($commands, null, false);
 
         return OutputParser::parseConfig($output);
     }
@@ -221,7 +225,7 @@ class ComposerApiService implements ComposerServiceInterface
         $output = $this->runCommand([
             'command' => 'config',
             '--list' => true,
-        ]);
+        ], null, false);
 
         return OutputParser::parseList($output);
     }
@@ -246,9 +250,11 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @throws PluginException
      */
-    public function runCommand($commands, $output = null)
+    public function runCommand($commands, $output = null, $init = true)
     {
-        $this->init();
+        if ($init) {
+            $this->init();
+        }
         $commands['--working-dir'] = $this->workingDir;
         $commands['--no-ansi'] = true;
         $input = new ArrayInput($commands);
@@ -289,11 +295,34 @@ class ComposerApiService implements ComposerServiceInterface
         ini_set('memory_limit', '-1');
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
+        $this->initConsole();
+        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
+        $config = $this->getConfig();
+        if (!isset($config['repositories']['eccube'])) {
+            $url = $this->eccubeConfig['eccube_package_repo_url'];
+            $json = json_encode([
+                'type' => 'composer',
+                'url' => $url,
+                'options' => [
+                    'http' => [
+                        'header' => ['X-ECCUBE-KEY: '.$this->baseInfo->getAuthenticationKey()]
+                    ]
+                ]
+            ]);
+            $this->execConfig('repositories.eccube', [$json]);
+            if (strpos($url, 'http://') == 0) {
+                $this->execConfig('secure-http', ['false']);
+            }
+            $this->initConsole();
+        }
+    }
+
+    private function initConsole()
+    {
         $consoleApplication = new Application();
         $consoleApplication->resetComposer();
         $consoleApplication->setAutoExit(false);
         $this->consoleApplication = $consoleApplication;
-        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
     }
 
     /**
