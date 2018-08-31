@@ -49,6 +49,7 @@ class PluginApiService
      * @param EccubeConfig $eccubeConfig
      * @param RequestStack $requestStack
      * @param BaseInfoRepository $baseInfoRepository
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -119,6 +120,7 @@ class PluginApiService
     public function getPurchased()
     {
         $url = $this->getApiUrl().'/plugins/purchased';
+
         return $this->getRequestApi($url);
     }
 

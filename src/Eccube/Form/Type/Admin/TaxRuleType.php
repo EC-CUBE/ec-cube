@@ -64,7 +64,7 @@ class TaxRuleType extends AbstractType
                 'format' => 'yyyy-MM-dd hh:mm',
                 'years' => range(date('Y'), date('Y') + 10),
                 'placeholder' => [
-                    'year' => '----', 'month' => '--', 'day' => '--'
+                    'year' => '----', 'month' => '--', 'day' => '--',
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),

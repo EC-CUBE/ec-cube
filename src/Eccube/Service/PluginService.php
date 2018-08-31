@@ -188,9 +188,8 @@ class PluginService
     }
 
     /**
-     *
-     *
      * @param $code string sプラグインコード
+     *
      * @throws PluginException
      */
     public function installWithCode($code)
@@ -201,16 +200,17 @@ class PluginService
 
         // 依存プラグインが有効になっていない場合はエラー
         $requires = $this->getPluginRequired($config);
-        $notInstalledOrDisabled = array_filter($requires, function($req) {
+        $notInstalledOrDisabled = array_filter($requires, function ($req) {
             $code = preg_replace('/^ec-cube\//', '', $req['name']);
             /** @var Plugin $DependPlugin */
             $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+
             return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
         });
 
         if (!empty($notInstalledOrDisabled)) {
-            $names = array_map(function($p) { return $p['name']; }, $notInstalledOrDisabled);
-            throw new PluginException(implode(', ', $names)."を有効化してください。");
+            $names = array_map(function ($p) { return $p['name']; }, $notInstalledOrDisabled);
+            throw new PluginException(implode(', ', $names).'を有効化してください。');
         }
 
         $this->checkSamePlugin($config['code']);
@@ -257,7 +257,6 @@ class PluginService
 
             $this->entityManager->flush();
             $this->entityManager->getConnection()->commit();
-
         } catch (\Exception $e) {
             $this->entityManager->getConnection()->rollback();
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
@@ -268,7 +267,7 @@ class PluginService
     {
         if ($plugin->isEnabled()) {
             $generatedFiles = $this->regenerateProxy($plugin, false);
-            $this->schemaService->updateSchema($generatedFiles, $this->projectRoot . '/app/proxy/entity');
+            $this->schemaService->updateSchema($generatedFiles, $this->projectRoot.'/app/proxy/entity');
         } else {
             // Proxyのクラスをロードせずにスキーマを更新するために、
             // インストール時には一時的なディレクトリにProxyを生成する
@@ -696,7 +695,6 @@ class PluginService
             $this->callPluginManagerMethod($meta, 'update');
             $em->flush();
             $em->getConnection()->commit();
-
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
             throw $e;
@@ -710,6 +708,7 @@ class PluginService
      * @param array|Plugin $plugin format as plugin from api
      *
      * @return array|mixed
+     *
      * @throws PluginException
      */
     public function getPluginRequired($plugin)
@@ -719,7 +718,7 @@ class PluginService
 
         $results = [];
 
-        $this->composerService->foreachRequires('ec-cube/'.$pluginCode, $pluginVersion, function($package) use(&$results) {
+        $this->composerService->foreachRequires('ec-cube/'.$pluginCode, $pluginVersion, function ($package) use (&$results) {
             $results[] = $package;
         }, 'eccube-plugin');
 

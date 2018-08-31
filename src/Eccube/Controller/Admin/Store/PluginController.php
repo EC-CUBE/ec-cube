@@ -19,7 +19,6 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\AuthenticationType;
-use Eccube\Form\Type\Admin\CaptchaType;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\BaseInfoRepository;
@@ -86,7 +85,9 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")
      * @Template("@admin/Store/plugin.twig")
+     *
      * @param Request $request
+     *
      * @return array
      */
     public function index(Request $request)
@@ -256,6 +257,7 @@ class PluginController extends AbstractController
      * @param Plugin $Plugin
      *
      * @return RedirectResponse|JsonResponse
+     *
      * @throws PluginException
      */
     public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request)
@@ -271,18 +273,18 @@ class PluginController extends AbstractController
                 $this->addError('admin.plugin.already.enable', 'admin');
             }
         } else {
-
             // ストアからインストールしたプラグインは依存プラグインが有効化されているかを確認
             if ($Plugin->getSource()) {
                 $requires = $this->pluginService->getPluginRequired($Plugin);
-                $requires = array_filter($requires, function($req) {
+                $requires = array_filter($requires, function ($req) {
                     $code = preg_replace('/^ec-cube\//', '', $req['name']);
                     /** @var Plugin $DependPlugin */
                     $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+
                     return $DependPlugin->isEnabled() == false;
                 });
                 if (!empty($requires)) {
-                    $names = array_map(function($req) {
+                    $names = array_map(function ($req) {
                         return "「${req['description']}」";
                     }, $requires);
                     $message = trans('%depend_name%を先に有効化してください。', ['%name%' => $Plugin->getName(), '%depend_name%' => implode(', ', $names)]);
@@ -291,6 +293,7 @@ class PluginController extends AbstractController
                         return $this->json(['success' => false, 'message' => $message], 400);
                     } else {
                         $this->addError($message, 'admin');
+
                         return $this->redirectToRoute('admin_store_plugin');
                     }
                 }
@@ -308,6 +311,7 @@ class PluginController extends AbstractController
             return $this->json(['success' => true, 'log' => $log]);
         } else {
             $this->addSuccess(trans('「%plugin_name%」を有効にしました。', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
             return $this->redirectToRoute('admin_store_plugin');
         }
     }
@@ -319,8 +323,8 @@ class PluginController extends AbstractController
      *
      * @param Request $request
      * @param Plugin $Plugin
-     *
      * @param CacheUtil $cacheUtil
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse
      */
     public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
@@ -339,9 +343,10 @@ class PluginController extends AbstractController
                 $message = trans('admin.plugin.disable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
 
                 if ($request->isXmlHttpRequest()) {
-                    return $this->json(['message'=> $message], 400);
+                    return $this->json(['message' => $message], 400);
                 } else {
                     $this->addError($message, 'admin');
+
                     return $this->redirectToRoute('admin_store_plugin');
                 }
             }
@@ -350,13 +355,12 @@ class PluginController extends AbstractController
             $this->pluginService->disable($Plugin);
             $log = ob_get_clean();
             ob_end_flush();
-
-
         } else {
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => true]);
             } else {
                 $this->addError('admin.plugin.already.disable', 'admin');
+
                 return $this->redirectToRoute('admin_store_plugin');
             }
         }
@@ -370,6 +374,7 @@ class PluginController extends AbstractController
             return $this->json(['success' => true, 'log' => $log]);
         } else {
             $this->addSuccess('admin.plugin.disable.complete', 'admin');
+
             return $this->redirect($url);
         }
     }
@@ -382,6 +387,7 @@ class PluginController extends AbstractController
      * @param Plugin $Plugin
      *
      * @return RedirectResponse
+     *
      * @throws \Exception
      */
     public function uninstall(Plugin $Plugin)
@@ -503,7 +509,7 @@ class PluginController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'eccubeUrl' => $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)
+            'eccubeUrl' => $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
     }
 

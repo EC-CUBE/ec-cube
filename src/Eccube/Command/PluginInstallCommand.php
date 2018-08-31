@@ -44,13 +44,13 @@ class PluginInstallCommand extends Command
         if ($path) {
             if ($this->pluginService->install($path)) {
                 $io->success('Installed.');
+
                 return 0;
             }
         }
 
         // 設置済ファイルからインストール
         if ($code) {
-
             $this->pluginService->installWithCode($code);
             $this->clearCache($io);
             $io->success('Installed.');

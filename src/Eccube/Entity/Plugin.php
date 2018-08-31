@@ -223,6 +223,7 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
 
         /**
          * Get initialized.
+         *
          * @return bool
          */
         public function isInitialized(): bool

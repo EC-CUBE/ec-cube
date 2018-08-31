@@ -47,6 +47,7 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @param string $pluginName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
      * @param string|null $version
+     *
      * @return array
      *
      * @throws PluginException
@@ -57,7 +58,7 @@ class ComposerApiService implements ComposerServiceInterface
             'command' => 'info',
             'package' => $pluginName,
             'version' => $version,
-            '--available' => true
+            '--available' => true,
         ]);
 
         return OutputParser::parseInfo($output);
@@ -70,11 +71,13 @@ class ComposerApiService implements ComposerServiceInterface
      * @param null|OutputInterface $output
      *
      * @return string
+     *
      * @throws PluginException
      */
     public function execRequire($packageName, $output = null)
     {
         $packageName = explode(' ', trim($packageName));
+
         return $this->runCommand([
             'command' => 'require',
             'packages' => $packageName,
@@ -94,11 +97,13 @@ class ComposerApiService implements ComposerServiceInterface
      * @param null|OutputInterface $output
      *
      * @return string
+     *
      * @throws PluginException
      */
     public function execRemove($packageName, $output = null)
     {
         $packageName = explode(' ', trim($packageName));
+
         return $this->runCommand([
             'command' => 'remove',
             'packages' => $packageName,
@@ -154,8 +159,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string|null $version
      * @param string $callback
      * @param null $typeFilter
-     *
      * @param int $level
+     *
      * @throws PluginException
      */
     public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0)
@@ -251,8 +256,9 @@ class ComposerApiService implements ComposerServiceInterface
 
         if ($useBufferedOutput) {
             $output = new BufferedOutput();
-            ob_start(function($buffer) use ($output) {
+            ob_start(function ($buffer) use ($output) {
                 $output->write($buffer);
+
                 return null;
             });
         }

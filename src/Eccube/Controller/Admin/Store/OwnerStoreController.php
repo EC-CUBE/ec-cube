@@ -31,7 +31,6 @@ use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -80,6 +79,7 @@ class OwnerStoreController extends AbstractController
      * @param SystemService $systemService
      * @param PluginApiService $pluginApiService
      * @param BaseInfoRepository $baseInfoRepository
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -122,9 +122,9 @@ class OwnerStoreController extends AbstractController
      */
     public function search(Request $request, $page_no = null, Paginator $paginator)
     {
-
         if (!$this->BaseInfo->getAuthenticationKey()) {
             $this->addWarning('認証キーを設定してください。', 'admin');
+
             return $this->redirectToRoute('admin_store_authentication_setting');
         }
 
@@ -261,7 +261,9 @@ class OwnerStoreController extends AbstractController
      * @Template("@admin/Store/plugin_confirm.twig")
      *
      * @param Request $request
+     *
      * @return array
+     *
      * @throws \Eccube\Exception\PluginException
      */
     public function doConfirm(Request $request, $id)
@@ -304,7 +306,7 @@ class OwnerStoreController extends AbstractController
 
         $log = null;
         try {
-            $log = $this->composerService->execRequire("ec-cube/".$pluginCode);
+            $log = $this->composerService->execRequire('ec-cube/'.$pluginCode);
 
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
@@ -401,12 +403,13 @@ class OwnerStoreController extends AbstractController
         $packageName = self::$vendorName.'/'.$pluginCode;
         try {
             $log = $this->composerService->execRemove($packageName);
+
             return $this->json(['success' => false, 'log' => $log]);
         } catch (\Exception $e) {
             log_error($e);
+
             return $this->json(['success' => false, 'log' => $e->getMessage()], 500);
         }
-
     }
 
     /**
@@ -415,6 +418,7 @@ class OwnerStoreController extends AbstractController
      * @Route("/upgrade", name="admin_store_plugin_api_upgrade", methods={"POST"})
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiUpgrade(Request $request)
@@ -426,7 +430,7 @@ class OwnerStoreController extends AbstractController
 
         $log = null;
         try {
-            $log = $this->composerService->execRequire("ec-cube/".$pluginCode.':'.$version);
+            $log = $this->composerService->execRequire('ec-cube/'.$pluginCode.':'.$version);
 
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
@@ -443,6 +447,7 @@ class OwnerStoreController extends AbstractController
      * @Route("/schema_update", name="admin_store_plugin_api_schema_update", methods={"POST"})
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiSchemaUpdate(Request $request)
@@ -464,9 +469,9 @@ class OwnerStoreController extends AbstractController
         } catch (\Exception $e) {
             $log = $e->getMessage();
             log_error($e);
+
             return $this->json(['success' => false, 'log' => $log], 500);
         }
-
     }
 
     /**
@@ -475,6 +480,7 @@ class OwnerStoreController extends AbstractController
      * @Route("/update", name="admin_store_plugin_api_update", methods={"POST"})
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiUpdate(Request $request)
@@ -509,6 +515,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param Request $request
      * @param Plugin $Plugin
+     *
      * @return array
      */
     public function doUpdateConfirm(Request $request, Plugin $Plugin)
@@ -531,9 +538,8 @@ class OwnerStoreController extends AbstractController
             'item' => $item,
             'requires' => [],
             'is_update' => true,
-            'Plugin' => $Plugin
+            'Plugin' => $Plugin,
         ];
-
     }
 
     /**
