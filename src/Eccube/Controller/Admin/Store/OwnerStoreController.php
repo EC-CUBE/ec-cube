@@ -122,7 +122,7 @@ class OwnerStoreController extends AbstractController
      */
     public function search(Request $request, $page_no = null, Paginator $paginator)
     {
-        if (!$this->BaseInfo->getAuthenticationKey()) {
+        if (empty($this->BaseInfo->getAuthenticationKey())) {
             $this->addWarning('認証キーを設定してください。', 'admin');
 
             return $this->redirectToRoute('admin_store_authentication_setting');
@@ -581,33 +581,6 @@ class OwnerStoreController extends AbstractController
         curl_close($curl);
 
         log_info('http get_info', $info);
-
-        return [$result, $info];
-    }
-
-    /**
-     * API post request processing
-     *
-     * @param string $url
-     * @param array $data
-     *
-     * @return array
-     *
-     * @deprecated since release, please preference PluginApiService
-     */
-    private function postRequestApi($url, $data)
-    {
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        $result = curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $message = curl_error($curl);
-        $info['message'] = $message;
-        curl_close($curl);
-        log_info('http post_info', $info);
 
         return [$result, $info];
     }
