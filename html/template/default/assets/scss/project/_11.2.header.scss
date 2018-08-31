@@ -317,8 +317,8 @@ Styleguide 11.2.4
 
       select {
         width: 100%;
-        padding-right: 1em;
         cursor: pointer;
+        padding: 8px 24px 8px 8px;
         text-indent: 0.01px;
         text-overflow: ellipsis;
         border: none;
@@ -326,13 +326,16 @@ Styleguide 11.2.4
         background: transparent;
         background-image: none;
         box-shadow: none;
-        -webkit-appearance: none;
         appearance: none;
         color: #fff;
 
         @include media_desktop {
           max-width: 165px;
           height: 36px;
+        }
+
+        option {
+          color: #000;
         }
 
         &::-ms-expand {
@@ -354,7 +357,6 @@ Styleguide 11.2.4
           border-bottom-left-radius: 50px;
         }
 
-
         &::before {
           position: absolute;
           top: 0.8em;
@@ -368,13 +370,7 @@ Styleguide 11.2.4
           border-top: 6px solid #fff;
           pointer-events: none;
         }
-
-        select {
-          padding: 8px 24px 8px 8px;
-          color: #fff;
-        }
       }
-
     }
   }
   & &__keyword{
@@ -404,8 +400,8 @@ Styleguide 11.2.4
       margin-bottom: 0;
     }
     .ec-icon {
-      width: 25px;
-      height: 25px;
+      width: 20px;
+      height: 20px;
     }
   }
   & &__keywordBtn{
@@ -528,7 +524,7 @@ Styleguide 11.2.5
   transition: .3s;
   @include media_desktop {
     height: 55px;
-    overflow: auto;
+    overflow: hidden;
     height: 0;
   }
 }
@@ -562,6 +558,7 @@ Styleguide 11.2.5
 .ec-itemNav__nav li ul li ul {
   top: 0;
   left: 100%;
+  width: auto;
 }
 
 .ec-itemNav__nav li ul li ul:before {
@@ -581,6 +578,7 @@ Styleguide 11.2.5
   @include media_desktop {
     overflow: visible;
     height: 55px;
+    width: auto;
   }
 }
 
