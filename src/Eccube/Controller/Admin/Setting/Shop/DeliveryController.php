@@ -214,6 +214,7 @@ class DeliveryController extends AbstractController
                     }
                 }
                 foreach ($DeliveryData['DeliveryTimes'] as $DeliveryTime) {
+                    $DeliveryTime->setVisible(true);
                     $DeliveryTime->setDelivery($Delivery);
                 }
 
