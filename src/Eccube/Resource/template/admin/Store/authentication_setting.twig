@@ -43,7 +43,8 @@ file that was distributed with this source code.
             data: {
                 "captcha": $('#captcha_text').val(),
                 "eccube_url": '{{ eccubeUrl }}',
-                "eccube_version": "{{ constant('Eccube\\Common\\Constant::VERSION') }}"
+                "eccube_version": "{{ constant('Eccube\\Common\\Constant::VERSION') }}",
+                "eccube_shop_name": "{{ eccubeShopName }}"
             },
             xhrFields: {
                 withCredentials: true

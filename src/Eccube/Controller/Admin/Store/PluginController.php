@@ -506,6 +506,7 @@ class PluginController extends AbstractController
         return [
             'form' => $form->createView(),
             'eccubeUrl' => $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'eccubeShopName' => $this->BaseInfo->getShopName()
         ];
     }
 
