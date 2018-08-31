@@ -144,7 +144,8 @@ Styleguide 7.3.5
     border-radius: 99999px;
     box-sizing: border-box;
     padding: 12px 17px 10px;
-    width: 140px;
+    width: auto;
+    min-width: 140px;
     height: 44px;
     white-space: nowrap;
     cursor: pointer;
@@ -177,8 +178,8 @@ Styleguide 7.3.5
     @include media_desktop {
       display: inline-block;
       min-width: 17px;
-      position: absolute;
-      left: 120%;
+      position: relative;
+      left: 0;
       top: 0;
     }
   }
@@ -189,7 +190,7 @@ Styleguide 7.3.5
       display: inline-block;
       font-size: 14px;
       font-weight: normal;
-      vertical-align: top;
+      vertical-align: middle;
     }
   }
 }
@@ -198,7 +199,6 @@ Styleguide 7.3.5
   .ec-cartNavi__icon {
     &:before {
       content: "\f00d";
-      font-family: FontAwesome;
     }
   }
   .ec-cartNavi__badge{
