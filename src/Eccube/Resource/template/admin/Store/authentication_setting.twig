@@ -31,13 +31,13 @@ file that was distributed with this source code.
 <script>
 
     function refreshCaptchaImage() {
-        $('#captcha_image').attr('src', "{{ eccube_config.eccube_package_repo_url }}/captcha" + '?' + new Date().getTime())
+        $('#captcha_image').attr('src', "{{ eccube_config.eccube_package_api_url }}/captcha" + '?' + new Date().getTime())
     }
 
     $('#generate_key').on('click', function() {
         $.ajax({
             type: 'POST',
-            url: "{{ eccube_config.eccube_package_repo_url }}/api_key",
+            url: "{{ eccube_config.eccube_package_api_url }}/api_key",
             dataType: 'json',
             cache: false,
             data: {
@@ -152,7 +152,7 @@ file that was distributed with this source code.
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                     </div>
                     <div class="modal-body text-left">
-                        <img id="captcha_image" class="mb-2" src="{{ eccube_config.eccube_package_repo_url }}/captcha">
+                        <img id="captcha_image" class="mb-2" src="{{ eccube_config.eccube_package_api_url }}/captcha">
                         <button id="captcha-refresh" type="button" class="btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                         <input type="text" id="captcha_text" value="" class="form-control" placeholder="{{ 'admin.store.setting.captcha_message'|trans }}"/>
                         <span id="captcha_error" class="invalid-feedback" style="display: none">

@@ -330,7 +330,7 @@ class OwnerStoreController extends AbstractController
     public function deleteConfirm(Plugin $Plugin)
     {
         // Owner's store communication
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
+        $url = $this->eccubeConfig['eccube_package_api_url'].'/search/packages.json';
         list($json,) = $this->getRequestApi($url);
         $data = json_decode($json, true);
         $items = $data['item'];

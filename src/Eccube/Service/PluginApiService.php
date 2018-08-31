@@ -66,7 +66,7 @@ class PluginApiService
     public function getApiUrl()
     {
         if (empty($this->apiUrl)) {
-            return $this->eccubeConfig->get('eccube_package_repo_url');
+            return $this->eccubeConfig->get('eccube_package_api_url');
         }
 
         return $this->apiUrl;
