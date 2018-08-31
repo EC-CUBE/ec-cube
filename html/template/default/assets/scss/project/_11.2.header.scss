@@ -405,19 +405,18 @@ Styleguide 11.2.4
       margin-bottom: 0;
     }
     .ec-icon {
-      width: 25px;
-      height: 25px;
+      width: 22px;
+      height: 22px;
     }
   }
   & &__keywordBtn{
     border: 0;
     background: none;
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-55%);
     display: block;
-    font-size: 20px;
-    overflow: hidden;
     white-space: nowrap;
     z-index: 1;
   }
