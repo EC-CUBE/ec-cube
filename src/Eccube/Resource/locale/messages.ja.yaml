@@ -718,6 +718,7 @@ admin.product.category_csv.delete_flag_description: 0:登録 1:削除を指定�
 # 機能名称
 admin.order.order_management: 受注管理
 admin.order.order_list: 受注一覧
+admin.order.order_entry: 入力画面
 admin.order.order_registration: 受注登録
 admin.order.shipping_registration: 出荷登録
 admin.order.shipping_csv_upload: 出荷CSV登録
