@@ -198,19 +198,21 @@ class PluginService
         $this->checkPluginArchiveContent($pluginDir);
         $config = $this->readConfig($pluginDir);
 
-        // 依存プラグインが有効になっていない場合はエラー
-        $requires = $this->getPluginRequired($config);
-        $notInstalledOrDisabled = array_filter($requires, function ($req) {
-            $code = preg_replace('/^ec-cube\//', '', $req['name']);
-            /** @var Plugin $DependPlugin */
-            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+        if (isset($config['source']) && $config['source']) {
+            // 依存プラグインが有効になっていない場合はエラー
+            $requires = $this->getPluginRequired($config);
+            $notInstalledOrDisabled = array_filter($requires, function ($req) {
+                $code = preg_replace('/^ec-cube\//', '', $req['name']);
+                /** @var Plugin $DependPlugin */
+                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
 
-            return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
-        });
+                return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
+            });
 
-        if (!empty($notInstalledOrDisabled)) {
-            $names = array_map(function ($p) { return $p['name']; }, $notInstalledOrDisabled);
-            throw new PluginException(implode(', ', $names).'を有効化してください。');
+            if (!empty($notInstalledOrDisabled)) {
+                $names = array_map(function ($p) { return $p['name']; }, $notInstalledOrDisabled);
+                throw new PluginException(implode(', ', $names).'を有効化してください。');
+            }
         }
 
         $this->checkSamePlugin($config['code']);
