@@ -20,14 +20,15 @@ $(function() {
       $(".ec-drawerRoleClose").removeClass("is_active");
     });
 
-    $(document).on('click', '.ec-cartNavi', function() {
-        $('.ec-cartNavi').toggleClass('is-active');
+    // TODO: カート展開時のアイコン変更処理
+    $('.ec-headerRole__cart').on('click', '.ec-cartNavi', function() {
+        // $('.ec-cartNavi').toggleClass('is-active');
         $('.ec-cartNaviIsset').toggleClass('is-active');
         $(".ec-cartNaviNull").toggleClass("is-active")
     });
 
-    $(document).on('click', '.ec-cartNavi--cancel', function() {
-        $('.ec-cartNavi').toggleClass('is-active');
+    $('.ec-headerRole__cart').on('click', '.ec-cartNavi--cancel', function() {
+        // $('.ec-cartNavi').toggleClass('is-active');
         $('.ec-cartNaviIsset').toggleClass('is-active');
         $(".ec-cartNaviNull").toggleClass("is-active")
     });
