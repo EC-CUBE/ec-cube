@@ -13,9 +13,9 @@
 
 namespace Eccube\Command;
 
-use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -26,26 +26,28 @@ class PluginUpdateCommand extends Command
 
     use PluginCommandTrait;
 
-    private $pluginRealDir;
-
-    /**
-     * PluginUpdateCommand constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     */
-    public function __construct(EccubeConfig $eccubeConfig)
+    protected function configure()
     {
-        parent::__construct();
-        $this->pluginRealDir = $eccubeConfig['plugin_realdir'];
+        $this
+            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code')
+            ->setDescription('Execute plugin update process.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
 
+        $code = $input->getArgument('code');
+
         /** @var Plugin $Plugin */
-        $Plugin = $this->pluginRepository->findByCode('Emperor');
-        $config = $this->pluginService->readConfig($this->pluginRealDir.DIRECTORY_SEPARATOR.$Plugin->getCode());
+        $Plugin = $this->pluginRepository->findByCode($code);
+
+        if (!$Plugin) {
+            $io->error("No such plugin `${code}`.");
+            return 1;
+        }
+
+        $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($code));
         $this->pluginService->updatePlugin($Plugin, $config);
         $this->clearCache($io);
 
