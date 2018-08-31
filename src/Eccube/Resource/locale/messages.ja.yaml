@@ -1217,6 +1217,7 @@ admin.store.template.invalid_upload_file: ファイルの拡張子に誤りが�
 admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
+admin.store.plugin.search.not_found: 検索条件に該当するデータがありませんでした。
 admin.store.setting: 設定
 admin.store.setting.api_key_setting: 認証キー設定
 admin.store.setting.api_key: 認証キー

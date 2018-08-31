@@ -233,7 +233,7 @@ class OwnerStoreController extends AbstractController
 //                    $i++;
 //                }
             } else {
-                $message = trans('ownerstore.text.error.ec_cube_error');
+                $message = trans('admin.store.plugin.search.not_found');
             }
         }
 
