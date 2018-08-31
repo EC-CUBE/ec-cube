@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Delivery;
+use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Repository\BaseInfoRepository;
@@ -502,6 +503,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $Delivery = $this->container->get(Generator::class)->createDelivery();
         $Delivery->setSaleType($SaleTypeNormal);
         $this->entityManager->flush($Delivery);
+        $Payments = $this->paymentRepository->findAll();
+        $this->setUpPayments($Delivery, $Payments);
+        $this->entityManager->flush();
 
         // カート画面
         $this->scenarioCartIn($Customer);
@@ -523,6 +527,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 ]
             ]
         );
+
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
@@ -531,13 +536,10 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $this->scenarioComplete(
             $Customer,
             $this->generateUrl('shopping_checkout'),
-            [
-                [
-                    'Delivery' => $Delivery->getId(),
-                    'DeliveryTime' => null,
-                ]
-            ]
+            [],
+            true
         );
+
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
@@ -570,5 +572,24 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->expected = $Delivery->getName();
         $this->actual = $Shipping->getShippingDeliveryName();
         $this->verify();
+    }
+
+    /**
+     * @param Delivery $Delivery
+     * @param Payment[] $Payments
+     */
+    private function setUpPayments(Delivery $Delivery, array $Payments)
+    {
+        foreach ($Payments as $Payment) {
+            $PaymentOption = new PaymentOption();
+            $PaymentOption
+                ->setDeliveryId($Delivery->getId())
+                ->setPaymentId($Payment->getId())
+                ->setDelivery($Delivery)
+                ->setPayment($Payment);
+            $Payment->addPaymentOption($PaymentOption);
+            $this->entityManager->persist($PaymentOption);
+            $this->entityManager->flush($PaymentOption);
+        }
     }
 }
