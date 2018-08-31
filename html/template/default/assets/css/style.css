@@ -3822,7 +3822,7 @@ Styleguide 7.3.5
 
 .ec-cartNavi {
   display: inline-block;
-  padding: 10px 0 0;
+  padding: 10px 0 0 20px;
   width: auto;
   color: black;
   background: transparent; }
@@ -3902,7 +3902,7 @@ Styleguide 7.3.6
   background: #f8f8f8;
   box-sizing: border-box;
   padding: 16px;
-  z-index: 3;
+  z-index: 20;
   position: absolute;
   right: 0; }
   .ec-cartNaviIsset .ec-cartNaviIsset__cart {
@@ -4653,13 +4653,13 @@ Styleguide 11.2
   .ec-headerNaviRole img {
     width: 100%; }
   .ec-headerNaviRole .ec-headerNaviRole__left {
-    width: calc(100% / 2); }
+    width: calc(100% / 3); }
   .ec-headerNaviRole .ec-headerNaviRole__search {
     display: none; }
   .ec-headerNaviRole .ec-headerNaviRole__navSP {
     display: block; }
   .ec-headerNaviRole .ec-headerNaviRole__right {
-    width: calc(100% / 2);
+    width: calc(100% * 2 / 3);
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: end;
@@ -4784,7 +4784,8 @@ Styleguide 11.2.3
     font-size: 28px; }
   .ec-headerNav .ec-headerNav__itemIcon {
     display: inline-block;
-    margin-right: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
     font-size: 18px;
     color: black; }
   .ec-headerNav .ec-headerNav__itemLink {
@@ -4886,18 +4887,17 @@ Styleguide 11.2.4
     box-sizing: border-box;
     margin-bottom: 0; }
   .ec-headerSearch .ec-headerSearch__keyword .ec-icon {
-    width: 20px;
-    height: 20px; }
+    width: 22px;
+    height: 22px; }
 
 .ec-headerSearch .ec-headerSearch__keywordBtn {
   border: 0;
   background: none;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-55%);
   display: block;
-  font-size: 20px;
-  overflow: hidden;
   white-space: nowrap;
   z-index: 1; }
 
