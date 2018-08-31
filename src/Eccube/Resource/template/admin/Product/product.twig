@@ -23,9 +23,10 @@ file that was distributed with this source code.
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <style>
         #thumb div {
-            float:left;
+            float: left;
             margin: 4px
         }
+
         .ui-state-highlight {
             height: 70px;
             width: 70px;
@@ -45,6 +46,9 @@ file that was distributed with this source code.
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
         $.fn.tooltip = bootstrapTooltip;
+        $(document).on('drop dragover', function(e) {
+            e.preventDefault();
+        });
         $(function() {
             // Todo: fix drag&drop style
             $("#thumb").sortable({
@@ -89,12 +93,13 @@ file that was distributed with this source code.
             {% for delete_image in form.delete_images %}
             $("#thumb").append('{{ form_widget(delete_image) }}');
             {% endfor %}
-            // Todo: fix hideSvg
-            var hideSvg = function() {
+            var hideThumbnail = function() {
                 if ($("#thumb div").length > 0) {
                     $("#icon_no_image").css("display", "none");
+                    $('#message').text("{{ 'admin.common.drag_and_drop_description'|trans }}")
                 } else {
                     $("#icon_no_image").css("display", "");
+                    $('#message').empty();
                 }
             };
             // Todo: fix update sort by drag&drop
@@ -107,7 +112,7 @@ file that was distributed with this source code.
                     $(this).append($sortNo);
                 });
             };
-            hideSvg();
+            hideThumbnail();
             updateSortNo();
             // Delete of images
             var count_del = 0;
@@ -118,7 +123,7 @@ file that was distributed with this source code.
                 $new_delete_image.val(src);
                 $("#thumb").append($new_delete_image);
                 $(thumbnail).remove();
-                hideSvg();
+                hideThumbnail();
                 updateSortNo();
                 count_del++;
             });
@@ -128,8 +133,9 @@ file that was distributed with this source code.
                 type: "post",
                 sequentialUploads: true,
                 dataType: 'json',
+                dropZone: $('#upload-zone'),
                 done: function(e, data) {
-                    $('#progress').hide();
+                    $('.progress').hide();
                     $.each(data.result.files, function(index, file) {
                         var path = '{{ asset('', 'temp_image') }}' + file;
                         var $img = $(proto_img.replace(/__path__/g, path));
@@ -139,25 +145,25 @@ file that was distributed with this source code.
                         $('#thumb').append($child);
                         count_add++;
                     });
-                    hideSvg();
+                    hideThumbnail();
                     updateSortNo();
                 },
                 fail: function(e, data) {
                     alert('admin.product.product.497' | trans);
                 },
                 always: function(e, data) {
-                    $('#progress').hide();
-                    $('#progress .progress-bar').width('0%');
+                    $('.progress').hide();
+                    $('.progress .progress-bar').width('0%');
                 },
                 start: function(e, data) {
-                    $('#progress').show();
+                    $('.progress').show();
                 },
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
                 maxFileSize: 10000000,
                 maxNumberOfFiles: 10,
                 progressall: function(e, data) {
                     var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('#progress .progress-bar').css(
+                    $('.progress .progress-bar').css(
                         'width',
                         progress + '%'
                     );
@@ -311,23 +317,21 @@ file that was distributed with this source code.
                         <div class="collapse show ec-cardCollapse" id="basicConfig">
                             <div class="card-body">
                                 {% if Product.id %}
-                                <div class="row">
-                                    <div class="col-3">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
-                                             title="Tooltip">
-                                            <span>{{ 'admin.product.product_id'|trans }}</span>
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip">
+                                                <span>{{ 'admin.product.product_id'|trans }}</span>
+                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <p>{{ Product.id }}</p>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <p>{{ Product.id }}</p>
-                                    </div>
-                                </div>
                                 {% endif %}
                                 <div class="row">
                                     <div class="col-3">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
-                                             title="Tooltip">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip">
                                             <span>{{ 'admin.product.name'|trans }}</span>
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                             <span class="badge badge-primary ml-1">
@@ -343,8 +347,7 @@ file that was distributed with this source code.
                                 {% if has_class == false %}
                                     <div class="row">
                                         <div class="col-3">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top"
-                                                 title="Tooltip">
+                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip">
                                                 <span>{{ 'admin.product.sale_type'|trans }}</span>
                                                 <i class="fa fa-question-circle fa-lg ml-1"></i>
                                                 <span class="badge badge-primary ml-1">
@@ -359,29 +362,28 @@ file that was distributed with this source code.
                                 {% endif %}
                                 <div class="row">
                                     <div class="col-3">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
-                                             title="Tooltip">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip">
                                             <span>{{ 'amdin.product.image'|trans }}</span>
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
                                     </div>
                                     <div class="col mb-2">
-                                        <div class="text-center w-100 py-5 border-ec-dashed mb-2 rounded">
-                                            <i class="fa fa-cloud-upload fa-4x text-ec-lightGray"
-                                               aria-hidden="true"></i>
-                                            <p class="font-weight-bold text-ec-gray">
+                                        <div class="progress" style="display: none;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div id="thumb" class="c-form__fileUploadThumbnails clearfix"></div>
+                                        <p id="message"></p>
+                                        <div id="upload-zone" class="media py-5 border-ec-dashed mb-2 rounded">
+                                            <div class="media-body">
+                                                <i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true"></i>
                                                 {{ 'admin.common.drag_and_drop_image_description'|trans }}
-                                            </p>
-                                            {{ form_widget(form.product_image, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
-                                            {{ form_errors(form.product_image) }}
-                                            <a class="btn btn-ec-regular mr-2"
-                                               onclick="$('#admin_product_product_image').click()">
-                                                {{ 'admin.common.file_select'|trans }}
-                                            </a>
-                                        </div>
-                                        <div id="thumb" class="c-form__fileUploadThumbnails">
-                                        </div>
-                                        <p style="clear:both;">{{ 'admin.common.drag_and_drop_description'|trans }}</p>
+                                                {{ form_widget(form.product_image, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
+                                                {{ form_errors(form.product_image) }}
+                                                <a class="btn btn-ec-regular mr-2" onclick="$('#admin_product_product_image').click()">
+                                                    {{ 'admin.common.file_select'|trans }}
+                                                </a>
+                                            </div><!-- /.media-body -->
+                                        </div><!-- /.media -->
                                     </div>
                                 </div>
                                 <div class="row">
@@ -723,6 +725,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -734,9 +737,9 @@ file that was distributed with this source code.
                                 <div class="card-body">
                                     <div class="d-block text-center">
                                         <a class="btn btn-block btn-ec-regular"
-                                        target="_blank"
-                                        href="{{ url('product_detail', {id:id}) }}"
-                                        title="{{ 'admin.product.preview'|trans }}">{{ 'admin.product.preview'|trans }}</a>
+                                           target="_blank"
+                                           href="{{ url('product_detail', {id:id}) }}"
+                                           title="{{ 'admin.product.preview'|trans }}">{{ 'admin.product.preview'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
