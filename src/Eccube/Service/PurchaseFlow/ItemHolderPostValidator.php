@@ -18,13 +18,13 @@ use Eccube\Entity\ItemHolderInterface;
 /**
  * カート/受注の妥当性検証を行う.
  */
-abstract class ItemHolderValidator
+abstract class ItemHolderPostValidator
 {
     use ValidatorTrait;
 
     /**
      * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext     $context
+     * @param PurchaseContext $context
      *
      * @return ProcessResult
      */
@@ -48,8 +48,4 @@ abstract class ItemHolderValidator
      * @throws InvalidItemException
      */
     abstract protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context);
-
-    protected function handle(ItemHolderInterface $itemHolder)
-    {
-    }
 }

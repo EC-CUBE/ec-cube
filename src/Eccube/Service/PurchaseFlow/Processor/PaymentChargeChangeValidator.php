@@ -14,14 +14,15 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
- * 合計金額のマイナスチェック.
+ * 手数料が変更されたかどうかを検知するバリデータ.
  */
-class PaymentTotalNegativeValidator extends ItemHolderPostValidator
+class PaymentChargeChangeValidator extends ItemHolderPostValidator
 {
     /**
      * @param ItemHolderInterface $itemHolder
@@ -31,8 +32,20 @@ class PaymentTotalNegativeValidator extends ItemHolderPostValidator
      */
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if ($itemHolder->getTotal() < 0) {
-            $this->throwInvalidItemException(trans('front.shopping.payment_total_invalid'));
+        if (!$itemHolder instanceof Order) {
+            return;
+        }
+
+        /** @var Order $originHolder */
+        $originHolder = $context->getOriginHolder();
+
+        // 受注の生成直後はチェックしない.
+        if (!$originHolder->getOrderNo()) {
+            return;
+        }
+
+        if ($originHolder->getCharge() != $itemHolder->getCharge()) {
+            $this->throwInvalidItemException('手数料が更新されました。金額をご確認ください。', null, true);
         }
     }
 }

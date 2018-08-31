@@ -14,14 +14,15 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
- * 合計金額のマイナスチェック.
+ * 送料明細の金額とdtb_delivery_feeに登録されている送料の差異を検知するバリデータ.
  */
-class PaymentTotalNegativeValidator extends ItemHolderPostValidator
+class DeliveryFeeChangeValidator extends ItemHolderPostValidator
 {
     /**
      * @param ItemHolderInterface $itemHolder
@@ -31,8 +32,20 @@ class PaymentTotalNegativeValidator extends ItemHolderPostValidator
      */
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if ($itemHolder->getTotal() < 0) {
-            $this->throwInvalidItemException(trans('front.shopping.payment_total_invalid'));
+        if (!$itemHolder instanceof Order) {
+            return;
+        }
+
+        /** @var Order $originHolder */
+        $originHolder = $context->getOriginHolder();
+
+        // 受注の生成直後はチェックしない.
+        if (!$originHolder->getOrderNo()) {
+            return;
+        }
+
+        if ($originHolder->getDeliveryFeeTotal() != $itemHolder->getDeliveryFeeTotal()) {
+            $this->throwInvalidItemException('送料が更新されました。金額をご確認ください。', null, true);
         }
     }
 }
