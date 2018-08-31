@@ -13,17 +13,17 @@ file that was distributed with this source code.
 {% block javascript %}
 <script>
     $(function() {
-        $('.news__items').each(function() {
-            var listLenght = $(this).find('li').length;
+        $('.ec-newsRole__news').each(function() {
+            var listLenght = $(this).find('.ec-newsRole__newsItem').length;
             if (listLenght > 5) {
-                $(this).find('li:gt(4)').each(function() {
+                $(this).find('.ec-newsRole__newsItem:gt(4)').each(function() {
                     $(this).hide();
                 });
-                $(this).append('<a id="news_readmore">» {{ 'front.block.news.read_more'|trans }}</a>');
+                $(this).append('<a id="news_readmore" class="ec-inlineBtn--top">{{ 'front.block.news.read_more'|trans }}</a>');
                 var dispNum = 5;
                 $(this).find('#news_readmore').click(function() {
                     dispNum += 5;
-                    $(this).parent().find('li:lt(' + dispNum + ')').show(400);
+                    $(this).parent().find('.ec-newsRole__newsItem:lt(' + dispNum + ')').show(400);
                     if (dispNum >= listLenght) {
                         $(this).hide();
                     }
@@ -33,33 +33,44 @@ file that was distributed with this source code.
     });
 </script>
 {% endblock %}
-
-<div class="ec-news">
-    <div class="ec-news__title">{{'front.block.news.news_title'|trans}}</div>
-    <ul class="ec-news__items">
-        {% for News in NewsList %}
-        <li class="ec-news__item">
-            <div class="ec-newsline">
-                <div class="ec-newsline__info">
-                    <div class="ec-newsline__date">{{ News.publish_date|date_day }}</div>
-                    <div class="ec-newsline__title">{{ News.title }}</div>
-                    {% if News.description or News.url %}
-                        <div class="ec-newsline__close">
-                            <a class="ec-closeBtn--circle"><div class="ec-icon"><img src="{{ asset('assets/icon/angle-down-white.svg') }}" alt=""></div>
-                            </a>
+<div class="ec-role">
+    <div class="ec-newsRole">
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">{{'front.block.news.title__en'|trans}}</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">{{'front.block.news.title__ja'|trans}}</span>
+        </div>
+        <div class="ec-newsRole__news">
+            {% for News in NewsList %}
+                <div class="ec-newsRole__newsItem">
+                    <div class="ec-newsRole__newsHeading">
+                        <div class="ec-newsRole__newsDate">
+                            {{ News.publish_date|date_day }}
                         </div>
-                    {% endif %}
+                        <div class="ec-newsRole__newsColumn">
+                            <div class="ec-newsRole__newsTitle">
+                                {{ News.title }}
+                            </div>
+                            {% if News.description or News.url %}
+                                <div class="ec-newsRole__newsClose">
+                                    <a class="ec-newsRole__newsCloseBtn">
+                                        <i class="fas fa-angle-down"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="ec-newsRole__newsDescription">
+                        {{ News.description|raw|nl2br }}
+                        {% if News.url %}
+                            <br>
+                            <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>
+                                {{ 'front.block.news.see_details'|trans }}
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
-                {% if News.description or News.url %}
-                <div class="ec-newsline__description">
-                    {{ News.description|raw|nl2br }}
-                    {% if News.url %}<br>
-                    <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>{{ 'front.block.news.see_details'|trans }}</a>
-                    {% endif %}
-                </div>
-                {% endif %}
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </div>
+    </div>
 </div>

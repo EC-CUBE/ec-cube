@@ -17,10 +17,6 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
-{% endblock stylesheet %}
-
 {% block javascript %}
     <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock %}
@@ -180,7 +176,7 @@ file that was distributed with this source code.
                         <div id="ex-shop-delivery" class="card-body">
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_delivery_fee_free_amount'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_delivery_fee_free_amount'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 mb-2">
                                     {{ form_widget(form.delivery_free_amount) }}
@@ -190,7 +186,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_delivery_fee_free_quantity'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_delivery_fee_free_quantity'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 mb-2">
                                     {{ form_widget(form.delivery_free_quantity) }}
@@ -257,7 +253,7 @@ file that was distributed with this source code.
                         <div id="ex-shop-tax" class="card-body">
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_product_tax'|trans }}</span></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_product_tax'|trans }}</span></div>
                                 </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_product_tax_rule) }}
@@ -278,7 +274,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_point_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_point_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
                                     <div class="input-group col-4 pl-0">
@@ -292,7 +288,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_point_conversion_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_point_conversion_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
                                     <div class="input-group col-4 pl-0">

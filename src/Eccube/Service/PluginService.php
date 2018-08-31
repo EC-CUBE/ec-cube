@@ -16,7 +16,6 @@ namespace Eccube\Service;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
@@ -45,11 +44,6 @@ class PluginService
      * @var PluginRepository
      */
     protected $pluginRepository;
-
-    /**
-     * @var Application
-     */
-    protected $app;
 
     /**
      * @var EntityProxyService
@@ -503,8 +497,7 @@ class PluginService
         if (class_exists($class)) {
             $installer = new $class(); // マネージャクラスに所定のメソッドがある場合だけ実行する
             if (method_exists($installer, $method)) {
-                // FIXME appを削除.
-                $installer->$method($meta, $this->app, $this->container);
+                $installer->$method($meta, $this->container);
             }
         }
     }

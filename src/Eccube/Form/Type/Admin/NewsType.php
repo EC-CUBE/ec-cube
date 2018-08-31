@@ -17,9 +17,10 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\News;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,12 +43,11 @@ class NewsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('publish_date', DateType::class, [
-                'required' => true,
+            ->add('publish_date', DateTimeType::class, [
+                'date_widget' => 'choice',
                 'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd hh:mm',
+                'years' => range(date('Y'), date('Y') + 3),
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
@@ -68,13 +68,23 @@ class NewsType extends AbstractType
             ])
             ->add('link_method', CheckboxType::class, [
                 'required' => false,
+                'label' => 'admin.content.news.new_window',
                 'value' => '1',
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
+                'attr' => [
+                    'rows' => 8,
+                ],
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
                 ],
+            ])
+            ->add('visible', ChoiceType::class, [
+                'label' => false,
+                'choices' => ['admin.content.news.display_status__show' => true, 'admin.content.news.display_status__hide' => false],
+                'required' => true,
+                'expanded' => false,
             ]);
     }
 

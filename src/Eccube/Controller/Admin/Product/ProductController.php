@@ -598,6 +598,8 @@ class ProductController extends AbstractController
                 if ($returnLink = $form->get('return_link')->getData()) {
                     try {
                         // $returnLinkはpathの形式で渡される. pathが存在するかをルータでチェックする.
+                        $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
+                        $returnLink = preg_replace($pattern, '', $returnLink);
                         $result = $router->match($returnLink);
                         // パラメータのみ抽出
                         $params = array_filter($result, function ($key) {
@@ -993,7 +995,6 @@ class ProductController extends AbstractController
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
-        $ProductCategory->setSortNo($count);
 
         return $ProductCategory;
     }

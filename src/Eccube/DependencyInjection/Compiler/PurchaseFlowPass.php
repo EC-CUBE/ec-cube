@@ -28,6 +28,8 @@ class PurchaseFlowPass implements CompilerPassInterface
     const ITEM_VALIDATOR_TAG = 'eccube.item.validator';
     const ITEM_HOLDER_PREPROCESSOR_TAG = 'eccube.item.holder.preprocessor';
     const ITEM_HOLDER_VALIDATOR_TAG = 'eccube.item.holder.validator';
+    const ITEM_HOLDER_POST_VALIDATOR_TAG = 'eccube.item.holder.post.validator';
+    const DISCOUNT_PROCESSOR_TAG = 'eccube.discount.processor';
     const PURCHASE_PROCESSOR_TAG = 'eccube.purchase.processor';
 
     public function process(ContainerBuilder $container)
@@ -43,6 +45,8 @@ class PurchaseFlowPass implements CompilerPassInterface
             self::ITEM_VALIDATOR_TAG => 'addItemValidator',
             self::ITEM_HOLDER_PREPROCESSOR_TAG => 'addItemHolderPreprocessor',
             self::ITEM_HOLDER_VALIDATOR_TAG => 'addItemHolderValidator',
+            self::ITEM_HOLDER_POST_VALIDATOR_TAG => 'addItemHolderPostValidator',
+            self::DISCOUNT_PROCESSOR_TAG => 'addDiscountProcessor',
             self::PURCHASE_PROCESSOR_TAG => 'addPurchaseProcessor',
         ];
 

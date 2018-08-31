@@ -170,4 +170,27 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 
         return $crawler;
     }
+
+    protected function scenarioCheckout(Customer $Customer = null)
+    {
+        if ($Customer) {
+            $this->loginTo($Customer);
+        }
+
+        $this->client->enableProfiler();
+
+        $parameters = [
+            '_shopping_order' => [
+                '_token' => 'dummy',
+            ],
+        ];
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('shopping_checkout'),
+            $parameters
+        );
+
+        return $crawler;
+    }
 }

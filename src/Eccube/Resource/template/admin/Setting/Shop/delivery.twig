@@ -110,6 +110,13 @@ file that was distributed with this source code.
                         <div class="card-body p-0">
                             <div class="card rounded border-0">
                                 <ul class="list-group list-group-flush sortable-container">
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-auto"><strong>&nbsp;</strong></div>
+                                            <div class="col-auto"><strong>{{ 'admin.common.id'|trans }}</strong></div>
+                                            <div class="col-2"><strong>{{ 'admin.setting.shop.delivery.delivery_name'|trans }}</strong></div>
+                                        </div>
+                                    </li>
                                     {% if Deliveries|length > 0 %}
                                         {% for Delivery in Deliveries %}
                                             <li id="ex-delivery-{{ Delivery.id }}" class="list-group-item sortable-item" data-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
@@ -122,13 +129,13 @@ file that was distributed with this source code.
                                                         </a>
                                                     </div>
                                                     <div class="col-auto text-right">
-                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top"
+                                                        <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">
                                                             <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
                                                                data-url="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}"

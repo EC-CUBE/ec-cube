@@ -68,7 +68,7 @@ file that was distributed with this source code.
                                             <a href="#" class="btn btn-ec-actionIcon"
                                                data-toggle="modal"
                                                data-target="#confirmModal-{{ Plugin.id }}">
-                                                <i class="fa fa-close fa-lg text-secondary" data-toggle="tooltip" data-placement="top" title="削除"></i>
+                                                <i class="fa fa-close fa-lg text-secondary" data-tooltip="true" data-placement="top" title="削除"></i>
                                             </a>
 
                                             <div class="modal fade" id="confirmModal-{{ Plugin.id }}" tabindex="-1"
@@ -110,13 +110,13 @@ file that was distributed with this source code.
                                             <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
                                                data-method="put" data-confirm="false">
-                                                <i class="fa fa-pause fa-lg text-secondary" data-toggle="tooltip" data-placement="top" title="{{ 'admin.store.plugin_table.903'|trans }}"></i>
+                                                <i class="fa fa-pause fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.store.plugin_table.903'|trans }}"></i>
                                             </a>
                                         {% else %}
                                             <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
                                                data-method="put" data-confirm="false">
-                                                <i class="fa fa-play fa-lg text-secondary" data-toggle="tooltip" data-placement="top" title="{{ 'admin.store.plugin_table.902'|trans }}"></i>
+                                                <i class="fa fa-play fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.store.plugin_table.902'|trans }}"></i>
                                             </a>
                                         {% endif %}
                                     </div>
@@ -124,7 +124,7 @@ file that was distributed with this source code.
                                         {% if configPages[Plugin.code] is defined %}
                                             <a href='{{ configPages[Plugin.code] }}'
                                                class="btn btn-ec-actionIcon">
-                                                <i class="fa fa-cog fa-lg text-secondary" data-toggle="tooltip"
+                                                <i class="fa fa-cog fa-lg text-secondary" data-tooltip="true"
                                                    data-placement="top" title="{{ 'admin.store.plugin_table.891'|trans }}"></i></a>
                                         {% endif %}
                                     </div>

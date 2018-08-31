@@ -20,33 +20,8 @@ file that was distributed with this source code.
     </div>
 </div>
 
-<div class="ec-role">
-    <div class="ec-off3Grid">
-        <div class="ec-off3Grid__cell">
-            {% for error in app.session.flashbag.get('eccube.front.error') %}
-                <div class="ec-alert-warning">
-                    <div class="ec-alert-warning__icon"><img src="/html/template/default/assets/icon/exclamation-white.svg"></div>
-                    <div class="ec-alert-warning__text">{{ error|trans|nl2br }}</div>
-                </div>
-            {% endfor %}
-            {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
-            {% for error in app.session.flashbag.get('eccube.front.request.error') %}
-            {% set idx = loop.index0 %}
-            {% if productStr[idx] is defined %}
-            <div class="ec-alert-warning">
-                <div class="ec-alert-warning__icon"><img src="/html/template/default/assets/icon/exclamation-white.svg"></div>
-                <div class="ec-alert-warning__text">{{ error|trans({'%product%':productStr[idx]})|nl2br }}</div>
-                {% else %}
-                    <div class="ec-alert-warning">
-                        <div class="ec-alert-warning__icon"><img src="/html/template/default/assets/icon/exclamation-white.svg"></div>
-                        <div class="ec-alert-warning__text">{{ error|trans|nl2br }}</div>
-                    </div>
-                {% endif %}
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
+<!-- アラートメッセージ -->
+{{ include('Shopping/alert.twig', { 'error_only': true }) }}
 
 <div class="ec-role">
     <div class="ec-off3Grid">

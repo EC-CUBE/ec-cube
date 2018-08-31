@@ -32,6 +32,8 @@ use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Service\Payment\PaymentMethodInterface;
+use Eccube\Service\PurchaseFlow\DiscountProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\ItemPreprocessor;
@@ -206,6 +208,10 @@ class Kernel extends BaseKernel
             ->addTag(PurchaseFlowPass::ITEM_HOLDER_PREPROCESSOR_TAG);
         $container->registerForAutoconfiguration(ItemHolderValidator::class)
             ->addTag(PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG);
+        $container->registerForAutoconfiguration(ItemHolderPostValidator::class)
+            ->addTag(PurchaseFlowPass::ITEM_HOLDER_POST_VALIDATOR_TAG);
+        $container->registerForAutoconfiguration(DiscountProcessor::class)
+            ->addTag(PurchaseFlowPass::DISCOUNT_PROCESSOR_TAG);
         $container->registerForAutoconfiguration(PurchaseProcessor::class)
             ->addTag(PurchaseFlowPass::PURCHASE_PROCESSOR_TAG);
         $container->addCompilerPass(new PurchaseFlowPass());

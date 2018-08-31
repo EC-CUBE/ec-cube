@@ -68,105 +68,19 @@ class PageRepository extends AbstractRepository
     }
 
     /**
-     * @param DeviceType $DeviceType
-     * @param int $pageId
-     *
-     * @return array
-     */
-    public function findUnusedBlocks(DeviceType $DeviceType, $pageId)
-    {
-        $em = $this->getEntityManager();
-        $blockRepo = $em->getRepository('Eccube\Entity\Block');
-        $ownBlockPositions = $this->getByDeviceTypeAndId($DeviceType, $pageId)->getBlockPositions();
-        $ids = [];
-        foreach ($ownBlockPositions as $ownBlockPosition) {
-            $ids[] = $ownBlockPosition->getBlock()->getId();
-        }
-
-        // $idsが空配列だと、$ids以外のblockを取得するSQLが生成されないため、存在しないidを入れる
-        if (empty($ids)) {
-            $ids[] = \Eccube\Entity\Block::UNUSED_BLOCK_ID;
-        }
-
-        return $blockRepo->createQueryBuilder('b')
-            ->where('b.id not in (:ids)')
-            ->setParameter(':ids', $ids)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @param DeviceType $DeviceType
-     * @param int $pageId
-     *
-     * @return mixed
-     */
-    public function getByDeviceTypeAndId(DeviceType $DeviceType, $pageId)
-    {
-        $qb = $this->createQueryBuilder('p')
-            ->select('p, bp, b')
-            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
-            ->leftJoin('bp.Block', 'b')
-            ->andWhere('p.DeviceType = :DeviceType AND p.id = :pageId')
-            ->addOrderBy('bp.section', 'ASC')
-            ->addOrderBy('bp.block_row', 'ASC');
-
-        $ownResult = $qb
-            ->getQuery()
-            ->setParameters([
-                'DeviceType' => $DeviceType,
-                'pageId' => $pageId,
-            ])
-            ->getSingleResult();
-
-        $qb = $this->createQueryBuilder('p')
-            ->select('p, bp, b')
-            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
-            ->leftJoin('bp.Block', 'b')
-            ->andWhere('p.DeviceType = :DeviceType AND bp.anywhere = 1')
-            ->addOrderBy('bp.section', 'ASC')
-            ->addOrderBy('bp.block_row', 'ASC');
-
-        $anyResults = $qb
-            ->getQuery()
-            ->setParameters([
-                'DeviceType' => $DeviceType,
-            ])
-            ->getResult();
-
-        $OwnBlockPosition = $ownResult->getBlockPositions();
-        foreach ($anyResults as $anyResult) {
-            $BlockPositions = $anyResult->getBlockPositions();
-            foreach ($BlockPositions as $BlockPosition) {
-                if (!$OwnBlockPosition->contains($BlockPosition)) {
-                    $ownResult->addBlockPosition($BlockPosition);
-                }
-            }
-        }
-
-        return $ownResult;
-    }
-
-    /**
-     * @param DeviceType $DeviceType
      * @param string $url
-     * @throw NoResultException
      *
      * @return Page
+     *
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getByUrl(DeviceType $DeviceType, $url)
+    public function getByUrl($url)
     {
         $qb = $this->createQueryBuilder('p');
-        $Page = $qb->select('p, pll,l, bp, b')
-            ->leftJoin('p.PageLayouts', 'pll')
-            ->leftJoin('pll.Layout', 'l')
-            ->leftJoin('l.BlockPositions', 'bp')
-            ->leftJoin('bp.Block', 'b')
+        $Page = $qb->select('p')
             ->where('p.url = :route')
-            ->andWhere('l.DeviceType = :DeviceType')
-            ->orderBy('bp.block_row', 'ASC')
             ->setParameter('route', $url)
-            ->setParameter('DeviceType', $DeviceType)
             ->getQuery()
             ->useResultCache(true, $this->getCacheLifetime())
             ->getSingleResult();
@@ -175,16 +89,12 @@ class PageRepository extends AbstractRepository
     }
 
     /**
-     * @param DeviceType $DeviceType
-     *
      * @return Page
      */
-    public function newPage(DeviceType $DeviceType)
+    public function newPage()
     {
         $Page = new \Eccube\Entity\Page();
-        $Page
-            ->setDeviceType($DeviceType)
-            ->setEditType(Page::EDIT_TYPE_USER);
+        $Page->setEditType(Page::EDIT_TYPE_USER);
 
         return $Page;
     }
@@ -193,23 +103,18 @@ class PageRepository extends AbstractRepository
      * ページの属性を取得する.
      *
      * この関数は, dtb_Page の情報を検索する.
-     * $deviceTypeId は必須. デフォルト値は DEVICE_TYPE_PC.
      *
-     * @param  \Eccube\Entity\Master\DeviceType  $DeviceType 端末種別ID
      * @param  string                            $where 追加の検索条件
      * @param  string[]                          $parameters 追加の検索パラメーター
      *
      * @return array                             ページ属性の配列
      */
-    public function getPageList(DeviceType $DeviceType, $where = null, $parameters = [])
+    public function getPageList($where = null, $parameters = [])
     {
-        $qb = $this->createQueryBuilder('l')
-            ->orderBy('l.id', 'DESC')
-            ->where('l.DeviceType = :DeviceType')
-            ->setParameter('DeviceType', $DeviceType)
-            ->andWhere('l.id <> 0')
-            ->andWhere('l.MasterPage is null')
-            ->orderBy('l.id', 'ASC');
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.id <> 0')
+            ->andWhere('p.MasterPage is null')
+            ->orderBy('p.id', 'ASC');
         if (!is_null($where)) {
             $qb->andWhere($where);
             foreach ($parameters as $key => $val) {

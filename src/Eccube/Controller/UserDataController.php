@@ -54,13 +54,9 @@ class UserDataController extends AbstractController
      */
     public function index(Request $request, $route)
     {
-        $DeviceType = $this->deviceTypeRepository
-            ->find(DeviceType::DEVICE_TYPE_PC);
-
         $Page = $this->pageRepository->findOneBy(
             [
                 'url' => $route,
-                'DeviceType' => $DeviceType,
                 'edit_type' => Page::EDIT_TYPE_USER,
             ]
         );
@@ -73,7 +69,6 @@ class UserDataController extends AbstractController
 
         $event = new EventArgs(
             [
-                'DeviceType' => $DeviceType,
                 'Page' => $Page,
                 'file' => $file,
             ],
