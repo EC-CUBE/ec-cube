@@ -603,12 +603,13 @@ file that was distributed with this source code.
                                                             <a class="btn btn-ec-actionIcon confirmationModal"
                                                                data-type="mail" data-bulk-update="false"
                                                                data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
-                                                               data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}">
+                                                               data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
+                                                               data-tooltip="true" data-placement="top" title="出荷メール送信">
                                                                 <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
                                                         <div class="col-auto text-center">
-                                                            <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-tooltip="true" data-placement="top" title data-original-title="{{ 'admin.order.output_delivery_note_short'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-tooltip="true" data-placement="top" title="{{ 'admin.order.output_delivery_note_short'|trans }}">
                                                                 <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
