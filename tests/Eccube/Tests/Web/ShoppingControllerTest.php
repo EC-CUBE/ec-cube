@@ -88,7 +88,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 完了画面
-        $crawler = $this->scenarioComplete($Customer, $this->generateUrl('shopping_checkout'));
+        $crawler = $this->scenarioCheckout($Customer);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
@@ -324,7 +324,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         ]);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->expected = '入力されていません。';
+        $this->expected = 'お支払い方法を選択してください。';
         $this->actual = $crawler->filter('p.ec-errorMessage')->text();
         $this->verify();
     }

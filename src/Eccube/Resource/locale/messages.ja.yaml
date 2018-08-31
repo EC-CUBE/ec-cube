@@ -347,23 +347,18 @@ front.shopping.shipping_edit_header_nonmember: お届け先の変更
 front.shopping.error: 購入エラー
 front.shopping.order_error: 購入処理でエラーが発生しました。
 front.shopping.system_error: 購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。
-front.shopping.out_of_stock: |
-  選択された商品(%product%)の在庫が不足しております。
-  一度に在庫数を超える購入はできません。
-front.shopping.over_sale_limit: |
-  選択された商品(%product%)は販売制限しております。
-  一度に販売制限数を超える購入はできません。
-front.shopping.out_of_stock_zero: |
-  選択された商品(%product%)の在庫が不足しております。
-  該当商品をカートから削除しました。
+front.shopping.empty_items_error: ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。
+front.shopping.out_of_stock: 「%product%」の在庫が不足しております。一度に在庫数を超える購入はできません。
+front.shopping.over_sale_limit: 「%product%」は販売制限しております。一度に販売制限数を超える購入はできません。
+front.shopping.out_of_stock_zero: 「%product%」の在庫が不足しております。該当商品をカートから削除しました。
 front.shopping.over_price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。
-front.shopping.in_preparation: |
-  「%product%」はまだ配送の準備ができておりません。
-  恐れ入りますがお問い合わせページよりお問い合わせください。
+front.shopping.in_preparation: 「%product%」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。
 front.shopping.not_purchase: 現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。
 front.shopping.price_changed: 「%product%」の販売価格が変更されました。
 front.shopping.payment_total_invalid: 合計金額が不正です。
 front.shopping.different_payment_methods: 支払い方法が異なる商品が含まれているため、同時に購入することはできません。
+front.shopping.payment_method_unselected: お支払い方法を選択してください。
+front.shopping.payment_method_not_fount: 選択できるお支払い方法がありません。配送方法が異なる場合は同じ配送方法を選んでください。
 
 #====================================================================================
 # 管理画面

@@ -28,7 +28,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -92,6 +91,11 @@ class OrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // ShoppingController::checkoutから呼ばれる場合は, フォーム項目の定義をスキップする.
+        if ($options['skip_add_form']) {
+            return;
+        }
+
         $builder->add('message', TextareaType::class, [
             'required' => false,
             'constraints' => [
@@ -136,37 +140,37 @@ class OrderType extends AbstractType
 
         // 支払い方法のプルダウンを生成(Submit時)
         // 配送方法の選択によって使用できる支払い方法がかわるため, フォームを再生成する.
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             /** @var Order $Order */
-            $Order = $event->getData();
-            if (null === $Order || !$Order->getId()) {
-                return;
+            $Order = $event->getForm()->getData();
+            $data = $event->getData();
+
+            $Deliveries = [];
+            if (!empty($data['Shippings'])) {
+                foreach ($data['Shippings'] as $Shipping) {
+                    if (!empty($Shipping['Delivery'])) {
+                        $Delivery = $this->deliveryRepository->find($Shipping['Delivery']);
+                        if ($Delivery) {
+                            $Deliveries[] = $Delivery;
+                        }
+                    }
+                }
             }
 
-            $Deliveries = $this->getDeliveries($Order);
             $Payments = $this->getPayments($Deliveries);
-            $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal());
-
-            if (!empty($Payments) && !in_array($Order->getPayment(), $Payments)) {
-                $Order->setPayment(current($Payments));
-            }
+            $Payments = $this->filterPayments($Payments, $Order->getSubtotal());
 
             $form = $event->getForm();
-            $this->addPaymentForm($form, $Payments, $Order->getPayment());
+            $this->addPaymentForm($form, $Payments);
         });
 
-        // 支払い方法のバリデーション
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var Order $Order */
             $Order = $event->getData();
             $Payment = $Order->getPayment();
-            if (null === $Payment) {
-                $form = $event->getForm();
-                $form['Payment']->addError(new FormError('選択できるお支払方法がありません。配送方法を統一してください。'));
-
-                return;
+            if ($Payment && $Payment->getMethod()) {
+                $Order->setPaymentMethod($Payment->getMethod());
             }
-            $Order->setPaymentMethod($Payment->getMethod());
         });
     }
 
@@ -175,6 +179,7 @@ class OrderType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => 'Eccube\Entity\Order',
+                'skip_add_form' => false,
             ]
         );
     }
@@ -186,6 +191,12 @@ class OrderType extends AbstractType
 
     private function addPaymentForm(FormInterface $form, array $choices, Payment $data = null)
     {
+        $message = trans('front.shopping.payment_method_unselected');
+
+        if (empty($choices)) {
+            $message = trans('front.shopping.payment_method_not_fount');
+        }
+
         $form->add('Payment', EntityType::class, [
             'class' => Payment::class,
             'choice_label' => 'method',
@@ -193,10 +204,11 @@ class OrderType extends AbstractType
             'multiple' => false,
             'placeholder' => false,
             'constraints' => [
-                new NotBlank(),
+                new NotBlank(['message' => $message]),
             ],
             'choices' => $choices,
             'data' => $data,
+            'invalid_message' => $message,
         ]);
     }
 

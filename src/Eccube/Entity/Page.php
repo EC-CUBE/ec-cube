@@ -27,22 +27,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
      */
     class Page extends \Eccube\Entity\AbstractEntity
     {
-        // 配置ID
-        /** 配置ID: 未使用 */
-        const TARGET_ID_UNUSED = 0;
-        const TARGET_ID_HEAD = 1;
-        const TARGET_ID_BODY_AFTER = 2;
-        const TARGET_ID_HEADER = 3;
-        const TARGET_ID_CONTENTS_TOP = 4;
-        const TARGET_ID_SIDE_LEFT = 5;
-        const TARGET_ID_MAIN_TOP = 6;
-        const TARGET_ID_MAIN_BOTTOM = 7;
-        const TARGET_ID_SIDE_RIGHT = 8;
-        const TARGET_ID_CONTENTS_BOTTOM = 9;
-        const TARGET_ID_FOOTER = 10;
-        const TARGET_ID_DRAWER = 11;
-        const TARGET_ID_CLOSE_BODY_BEFORE = 12;
-
         // 編集可能フラグ
         const EDIT_TYPE_USER = 0;
         const EDIT_TYPE_PREVIEW = 1;
@@ -62,257 +46,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
             }
 
             return $Layouts;
-        }
-
-        /**
-         * Get ColumnNum
-         *
-         * @return integer
-         */
-        public function getColumnNum()
-        {
-            return 1 + ($this->getSideLeft() ? 1 : 0) + ($this->getSideRight() ? 1 : 0);
-        }
-
-        public function getTheme()
-        {
-            $hasLeft = $this->getSideLeft() ? true : false;
-            $hasRight = $this->getSideRight() ? true : false;
-
-            $theme = 'theme_main_only';
-            if ($hasLeft && $hasRight) {
-                $theme = 'theme_side_both';
-            } elseif ($hasLeft) {
-                $theme = 'theme_side_left';
-            } elseif ($hasRight) {
-                $theme = 'theme_side_right';
-            }
-
-            return $theme;
-        }
-
-        /**
-         * Get BlockPositionByTargetId
-         *
-         * @param integer $target_id
-         *
-         * @return array
-         */
-        public function getBlocksPositionByTargetId($target_id)
-        {
-            $BlockPositions = [];
-            foreach ($this->getBlockPositions() as $BlockPosition) {
-                if ($BlockPosition->getSection() === $target_id) {
-                    $BlockPositions[] = $BlockPosition;
-                }
-            }
-
-            return $BlockPositions;
-        }
-
-        /**
-         * @deprecated
-         *
-         * @return BlockPosition
-         */
-        public function getUnusedPosition()
-        {
-            return $this->getBlocksPositionByTargetId(self::TARGET_ID_UNUSED);
-        }
-
-        /**
-         * @deprecated
-         *
-         * @return BlockPosition
-         */
-        public function getHeadPosition()
-        {
-            return $this->getBlocksPositionByTargetId(self::TARGET_ID_HEAD);
-        }
-
-        /**
-         * @deprecated
-         *
-         * @return BlockPosition
-         */
-        public function getHeaderPosition()
-        {
-            return $this->getBlocksPositionByTargetId(self::TARGET_ID_HEADER);
-        }
-
-        /**
-         * @deprecated
-         *
-         * @return BlockPosition
-         */
-        public function getContentsTopPosition()
-        {
-            return $this->getBlocksPositionByTargetId(self::TARGET_ID_CONTENTS_TOP);
-        }
-
-        /**
-         * @deprecated
-         *
-         * @return BlockPosition
-         */
-        public function getSideLeftPosition()
-        {
-            return $this->getBlocksPositionByTargetId(self::TARGET_ID_SIDE_LEFT);
-        }
-
-        /**
-         * @deprecated
-         *
-         * @return BlockPosition
-         */
-        public function getMainTopPosition()
-        {
-            return $this->getBlocksPositionByTargetId(self::TARGET_ID_MAIN_TOP);
-        }
-
-        /**
-         * @deprecated
-         *
-         * @return BlockPosition
-         */
-        public function getMainBottomPosition()
-        {
-            return $this->getBlocksPositionByTargetId(self::TARGET_ID_MAIN_BOTTOM);
-        }
-
-        /**
-         * @deprecated
-         *
-         * @return BlockPosition
-         */
-        public function getSideRightPosition()
-        {
-            return $this->getBlocksPositionByTargetId(self::TARGET_ID_SIDE_RIGHT);
-        }
-
-        /**
-         * @deprecated
-         *
-         * @return BlockPosition
-         */
-        public function getContentsBottomPosition()
-        {
-            return $this->getBlocksPositionByTargetId(self::TARGET_ID_CONTENTS_BOTTOM);
-        }
-
-        public function getFooterPosition()
-        {
-            return $this->getBlocksPositionByTargetId(self::TARGET_ID_FOOTER);
-        }
-
-        /**
-         * @deprecated
-         *
-         * Get BlocsByTargetId
-         *
-         * @param integer $target_id
-         *
-         * @return \Eccube\Entity\Block[]
-         */
-        public function getBlocksByTargetId($target_id)
-        {
-            $Blocks = [];
-            foreach ($this->getBlockPositions() as $BlockPositions) {
-                if ($BlockPositions->getTargetId() === $target_id) {
-                    $Blocks[] = $BlockPositions->getBlock();
-                }
-            }
-
-            return $Blocks;
-        }
-
-        public function getUnused()
-        {
-            return $this->getBlocksByTargetId(self::TARGET_ID_UNUSED);
-        }
-
-        public function getHead()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_HEAD) : [];
-        }
-
-        public function getBodyAfter()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_BODY_AFTER) : [];
-        }
-
-        public function getHeader()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_HEADER) : [];
-        }
-
-        public function getContentsTop()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_CONTENTS_TOP) : [];
-        }
-
-        public function getSideLeft()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_SIDE_LEFT) : [];
-        }
-
-        public function getMainTop()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_MAIN_TOP) : [];
-        }
-
-        public function getMainBottom()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_MAIN_BOTTOM) : [];
-        }
-
-        public function getSideRight()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_SIDE_RIGHT) : [];
-        }
-
-        public function getContentsBottom()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_CONTENTS_BOTTOM) : [];
-        }
-
-        public function getFooter()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_FOOTER) : [];
-        }
-
-        public function getDrawer()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_DRAWER) : [];
-        }
-
-        public function getCloseBodyBefore()
-        {
-            $Layout = current($this->getLayouts());
-
-            return $Layout ? $Layout->getBlocks(self::TARGET_ID_CLOSE_BODY_BEFORE) : [];
         }
 
         /**
@@ -404,28 +137,9 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Page", cascade={"persist","remove"})
-         *
-         * @deprecated
-         */
-        private $BlockPositions;
-
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Page", cascade={"persist","remove"})
          */
         private $PageLayouts;
-
-        /**
-         * @var \Eccube\Entity\Master\DeviceType
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
-         * @ORM\JoinColumns({
-         *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
-         * })
-         */
-        private $DeviceType;
 
         /**
          * @var \Eccube\Entity\Page
@@ -442,7 +156,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
          */
         public function __construct()
         {
-            $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
             $this->PageLayouts = new \Doctrine\Common\Collections\ArrayCollection();
         }
 
@@ -733,32 +446,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
         }
 
         /**
-         * Add blockPosition.
-         *
-         * @param \Eccube\Entity\BlockPosition $blockPosition
-         *
-         * @return Page
-         */
-        public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
-        {
-            $this->BlockPositions[] = $blockPosition;
-
-            return $this;
-        }
-
-        /**
-         * Remove blockPosition.
-         *
-         * @param \Eccube\Entity\BlockPosition $blockPosition
-         *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
-        {
-            return $this->BlockPositions->removeElement($blockPosition);
-        }
-
-        /**
          * Get pageLayoutLayout.
          *
          * @return \Doctrine\Common\Collections\Collection
@@ -790,40 +477,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
         public function removePageLayout(\Eccube\Entity\PageLayout $PageLayout)
         {
             $this->PageLayouts->removeElement($PageLayout);
-        }
-
-        /**
-         * Get blockPositions.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getBlockPositions()
-        {
-            return $this->BlockPositions;
-        }
-
-        /**
-         * Set deviceType.
-         *
-         * @param \Eccube\Entity\Master\DeviceType|null $deviceType
-         *
-         * @return Page
-         */
-        public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
-        {
-            $this->DeviceType = $deviceType;
-
-            return $this;
-        }
-
-        /**
-         * Get deviceType.
-         *
-         * @return \Eccube\Entity\Master\DeviceType|null
-         */
-        public function getDeviceType()
-        {
-            return $this->DeviceType;
         }
 
         /**

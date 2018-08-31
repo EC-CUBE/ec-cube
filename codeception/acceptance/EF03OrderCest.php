@@ -912,9 +912,9 @@ class EF03OrderCest
             ->入力_数量('0', '0', 100)
             ->選択したお届け先に送る();
 
-        MultipleShippingPage::at($I);
+        ShoppingPage::at($I);
 
-        $I->see('選択された商品(チェリーアイスサンド)は販売制限しております。', 'p.errormsg');
+        $I->see('「チェリーアイスサンド」は販売制限しております。', 'div.ec-alert-warning__text');
     }
 
     public function order_複数ブラウザでログインしてカートに追加する(\AcceptanceTester $I)

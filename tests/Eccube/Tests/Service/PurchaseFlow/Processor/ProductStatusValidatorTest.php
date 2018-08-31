@@ -17,14 +17,14 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
-use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
+use Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class DisplayStatusValidatorTest extends EccubeTestCase
+class ProductStatusValidatorTest extends EccubeTestCase
 {
     /**
-     * @var DisplayStatusValidator
+     * @var ProductStatusValidator
      */
     protected $validator;
 
@@ -49,7 +49,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
 
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
-        $this->validator = $this->container->get(DisplayStatusValidator::class);
+        $this->validator = $this->container->get(ProductStatusValidator::class);
         $this->cartItem = new CartItem();
         $this->cartItem->setQuantity(10);
         $this->cartItem->setProductClass($this->ProductClass);
@@ -57,7 +57,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(DisplayStatusValidator::class, $this->validator);
+        self::assertInstanceOf(ProductStatusValidator::class, $this->validator);
     }
 
     /**

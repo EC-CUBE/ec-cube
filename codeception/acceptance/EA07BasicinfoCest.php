@@ -225,8 +225,8 @@ class EA07BasicinfoCest
         // 登録
         $TaxManagePage
             ->入力_消費税率(1, '10')
-            ->入力_適用日(date('Y-m-d'))
-            ->入力_適用時(date('H:i'))
+            ->入力_適用日(date('Y'), date('n'), date('j'))
+            ->入力_適用時(date('G'), date('i'))
             ->共通税率設定_登録();
         $I->see('10%', $TaxManagePage->一覧_税率(2));
 

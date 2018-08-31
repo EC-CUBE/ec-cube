@@ -88,7 +88,7 @@ class PointDiffProcessorTest extends EccubeTestCase
         self::assertEquals($isError, $result->hasError());
 
         if ($isError) {
-            self::assertEquals('利用ポイントが所有ポイントを上回っています.', $result->getErrors()[0]->getMessage());
+            self::assertEquals('利用ポイントが所有ポイントを上回っています', $result->getErrors()[0]->getMessage());
         }
     }
 
@@ -145,14 +145,16 @@ class PointDiffProcessorTest extends EccubeTestCase
         $AfterOrder->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
         $purchaseFlow = new PurchaseFlow();
-        $purchaseFlow->addItemHolderPreprocessor($this->pointProcessor); // Preprocessorでポイント明細を作成してtotalを計算し直す必要がある
+        $purchaseFlow->addDiscountProcessor($this->pointProcessor); // Preprocessorでポイント明細を作成してtotalを計算し直す必要がある
         $purchaseFlow->addItemHolderValidator($this->processor);
         $result = $purchaseFlow->validate($AfterOrder, new PurchaseContext($BeforeOrder, $Customer));
 
         self::assertEquals($isError, $result->hasError());
 
         if ($isError) {
-            self::assertEquals('利用ポイントがお支払い金額を上回っています.', $result->getErrors()[0]->getMessage());
+            $errors = $result->getErrors();
+            $error = array_shift($errors); // PointDiffProcessorがsuccess, PointProcessorがerrorを返すので.
+            self::assertEquals('利用ポイントがお支払い金額を上回っています', $error->getMessage());
         }
     }
 
