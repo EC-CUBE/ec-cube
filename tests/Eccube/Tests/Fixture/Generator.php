@@ -762,7 +762,8 @@ class Generator
             $DeliveryTime
                 ->setDelivery($Delivery)
                 ->setDeliveryTime($faker->word)
-                ->setSortNo($i + 1);
+                ->setSortNo($i + 1)
+                ->setVisible(true);
             $this->entityManager->persist($DeliveryTime);
             $this->entityManager->flush($DeliveryTime);
             $Delivery->addDeliveryTime($DeliveryTime);
