@@ -41,18 +41,20 @@ file that was distributed with this source code.
 
 
         $('.add-cart').on('click', function(e) {
-            e.preventDefault();
             var $form = $(this).parents('li').find('form');
 
             // 個数フォームのチェック
             var $quantity = $form.parent().find('.quantity');
             if ($quantity.val() < 1) {
-                $quantity[0].setCustomValidity("{{ 'front.product.invalid_quantity'|trans }}");
+                $quantity[0].setCustomValidity('{{ 'front.product.invalid_quantity'|trans }}');
+                setTimeout(function () {
+                    loadingOverlay('hide');
+                }, 100);
                 return true;
             } else {
-                $quantity[0].setCustomValidity("");
+                $quantity[0].setCustomValidity('');
             }
-
+            e.preventDefault();
             $.ajax({
                 url: $form.attr('action'),
                 type: $form.attr('method'),
