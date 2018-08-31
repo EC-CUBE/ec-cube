@@ -134,7 +134,7 @@ class OwnerStoreController extends AbstractController
         $total = 0;
         $category = [];
 
-        list($json, $info) = $this->pluginApiService->getCategory();
+        list($json,) = $this->pluginApiService->getCategory();
         if (!empty($json)) {
             $data = json_decode($json, true);
             $category = array_column($data, 'name', 'id');
@@ -331,7 +331,7 @@ class OwnerStoreController extends AbstractController
     {
         // Owner's store communication
         $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
-        list($json, $info) = $this->getRequestApi($url);
+        list($json,) = $this->getRequestApi($url);
         $data = json_decode($json, true);
         $items = $data['item'];
 
@@ -359,8 +359,7 @@ class OwnerStoreController extends AbstractController
         }
 
         // Build info
-        $pluginCode = $Plugin->getCode();
-        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
+        $plugin = $this->pluginService->buildInfo($items);
         $plugin['id'] = $Plugin->getId();
 
         return [
@@ -458,6 +457,11 @@ class OwnerStoreController extends AbstractController
 
         try {
             $Plugin = $this->pluginRepository->findByCode($pluginCode);
+
+            if (!$Plugin) {
+                throw new NotFoundHttpException();
+            }
+
             $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($Plugin->getCode()));
 
             ob_start();
@@ -492,6 +496,10 @@ class OwnerStoreController extends AbstractController
         $log = null;
         try {
             $Plugin = $this->pluginRepository->findByCode($pluginCode);
+            if (!$Plugin) {
+                throw new NotFoundHttpException();
+            }
+
             $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($Plugin->getCode()));
             ob_start();
             $this->pluginService->updatePlugin($Plugin, $config);
@@ -513,12 +521,11 @@ class OwnerStoreController extends AbstractController
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     * @param Request $request
      * @param Plugin $Plugin
      *
      * @return array
      */
-    public function doUpdateConfirm(Request $request, Plugin $Plugin)
+    public function doUpdateConfirm(Plugin $Plugin)
     {
         list($json) = $this->pluginApiService->getPlugin($Plugin->getSource());
         $item = [];

@@ -86,11 +86,10 @@ class PluginController extends AbstractController
      * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")
      * @Template("@admin/Store/plugin.twig")
      *
-     * @param Request $request
-     *
      * @return array
+     * @throws PluginException
      */
-    public function index(Request $request)
+    public function index()
     {
         $pluginForms = [];
         $configPages = [];
@@ -139,11 +138,8 @@ class PluginController extends AbstractController
             }
         }
 
-        // Todo: Need new authentication mechanism
-        // オーナーズストアからダウンロード可能プラグイン情報を取得
-        $authKey = $this->BaseInfo->getAuthenticationKey();
         // オーナーズストア通信
-        list($json, $info) = $this->pluginApiService->getPurchased();
+        list($json,) = $this->pluginApiService->getPurchased();
         $officialPluginsDetail = [];
         if ($json) {
             // 接続成功時
@@ -357,7 +353,7 @@ class PluginController extends AbstractController
             ob_end_flush();
         } else {
             if ($request->isXmlHttpRequest()) {
-                return $this->json(['success' => true]);
+                return $this->json(['success' => true, 'log' => $log]);
             } else {
                 $this->addError('admin.plugin.already.disable', 'admin');
 
@@ -514,76 +510,12 @@ class PluginController extends AbstractController
     }
 
     /**
-     * APIリクエスト処理
-     *
-     * @param Request $request
-     * @param string|null $authKey
-     * @param string $url
-     *
-     * @deprecated since release, please refer PluginApiService
-     *
-     * @return array
-     */
-    private function getRequestApi(Request $request, $authKey, $url)
-    {
-        $curl = curl_init($url);
-
-        $options = [// オプション配列
-            //HEADER
-            CURLOPT_HTTPHEADER => [
-                'Authorization: '.base64_encode($authKey),
-                'x-eccube-store-url: '.base64_encode($request->getSchemeAndHttpHost().$request->getBasePath()),
-                'x-eccube-store-version: '.base64_encode(Constant::VERSION),
-            ],
-            CURLOPT_HTTPGET => true,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FAILONERROR => true,
-            CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
-        ];
-
-        curl_setopt_array($curl, $options); /// オプション値を設定
-        $result = curl_exec($curl);
-        $info = curl_getinfo($curl);
-
-        $message = curl_error($curl);
-        $info['message'] = $message;
-        curl_close($curl);
-
-        log_info('http get_info', $info);
-
-        return [$result, $info];
-    }
-
-    /**
-     * レスポンスのチェック
-     *
-     * @param $info
-     *
-     * @return string
-     *
-     * @deprecated since release, please refer PluginApiService
-     */
-    private function getResponseErrorMessage($info)
-    {
-        if (!empty($info)) {
-            $statusCode = $info['http_code'];
-            $message = $info['message'];
-
-            $message = $statusCode.' : '.$message;
-        } else {
-            $message = trans('plugin.text.error.timeout_or_invalid_url');
-        }
-
-        return $message;
-    }
-
-    /**
      * フォルダ設置のみのプラグインを取得する.
      *
      * @param array $plugins
      *
      * @return array
+     * @throws PluginException
      */
     protected function getUnregisteredPlugins(array $plugins)
     {
@@ -606,7 +538,7 @@ class PluginController extends AbstractController
             }
             try {
                 $this->pluginService->checkPluginArchiveContent($dir->getRealPath());
-            } catch (\Eccube\Exception\PluginException $e) {
+            } catch (PluginException $e) {
                 //config.yamlに不備があった際は全てスキップ
                 log_warning($e->getMessage());
                 continue;
