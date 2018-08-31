@@ -13,9 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
-use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 

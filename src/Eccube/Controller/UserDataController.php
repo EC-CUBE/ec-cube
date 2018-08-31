@@ -13,7 +13,6 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;

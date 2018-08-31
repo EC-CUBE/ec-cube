@@ -244,7 +244,7 @@ class AdminController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
 
         // 推奨プラグイン
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/plugins/recommended';
+        $url = $this->eccubeConfig['eccube_package_api_url'].'/plugins/recommended';
         list($json, $info) = $this->pluginApiService->getRequestApi($url);
         $recommendedPlugins = json_decode($json, true);
 

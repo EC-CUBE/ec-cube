@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 
 class UserDataControllerTest extends AbstractWebTestCase

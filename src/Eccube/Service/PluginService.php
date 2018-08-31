@@ -21,6 +21,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
@@ -99,6 +100,7 @@ class PluginService
      * @param EccubeConfig $eccubeConfig
      * @param ContainerInterface $container
      * @param CacheUtil $cacheUtil
+     * @param ComposerApiService $composerService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -107,7 +109,8 @@ class PluginService
         SchemaService $schemaService,
         EccubeConfig $eccubeConfig,
         ContainerInterface $container,
-        CacheUtil $cacheUtil
+        CacheUtil $cacheUtil,
+        ComposerApiService $composerService
     ) {
         $this->entityManager = $entityManager;
         $this->pluginRepository = $pluginRepository;
@@ -118,6 +121,7 @@ class PluginService
         $this->environment = $eccubeConfig->get('kernel.environment');
         $this->container = $container;
         $this->cacheUtil = $cacheUtil;
+        $this->composerService = $composerService;
     }
 
     /**
@@ -183,6 +187,38 @@ class PluginService
         return true;
     }
 
+    /**
+     * @param $code string sプラグインコード
+     *
+     * @throws PluginException
+     */
+    public function installWithCode($code)
+    {
+        $pluginDir = $this->calcPluginDir($code);
+        $this->checkPluginArchiveContent($pluginDir);
+        $config = $this->readConfig($pluginDir);
+
+        if (isset($config['source']) && $config['source']) {
+            // 依存プラグインが有効になっていない場合はエラー
+            $requires = $this->getPluginRequired($config);
+            $notInstalledOrDisabled = array_filter($requires, function ($req) {
+                $code = preg_replace('/^ec-cube\//', '', $req['name']);
+                /** @var Plugin $DependPlugin */
+                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+
+                return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
+            });
+
+            if (!empty($notInstalledOrDisabled)) {
+                $names = array_map(function ($p) { return $p['name']; }, $notInstalledOrDisabled);
+                throw new PluginException(implode(', ', $names).'を有効化してください。');
+            }
+        }
+
+        $this->checkSamePlugin($config['code']);
+        $this->postInstall($config, $config['source']);
+    }
+
     // インストール事前処理
     public function preInstall()
     {
@@ -194,34 +230,73 @@ class PluginService
     // インストール事後処理
     public function postInstall($config, $source)
     {
-        // Proxyのクラスをロードせずにスキーマを更新するために、
-        // インストール時には一時的なディレクトリにProxyを生成する
-        $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
-        @mkdir($tmpProxyOutputDir);
+        // dbにプラグイン登録
+
+        $this->entityManager->getConnection()->beginTransaction();
 
         try {
-            // dbにプラグイン登録
-            $plugin = $this->registerPlugin($config, $source);
+            $Plugin = $this->pluginRepository->findByCode($config['code']);
 
-            // プラグインmetadata定義を追加
-            $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
-            if (file_exists($entityDir)) {
-                $ormConfig = $this->entityManager->getConfiguration();
-                $chain = $ormConfig->getMetadataDriverImpl();
-                $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
-                $namespace = 'Plugin\\'.$config['code'].'\\Entity';
-                $chain->addDriver($driver, $namespace);
-                $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+            if (!$Plugin) {
+                $Plugin = new Plugin();
+                // インストール直後はプラグインは有効にしない
+                $Plugin->setName($config['name'])
+                    ->setEnabled(false)
+                    ->setVersion($config['version'])
+                    ->setSource($source)
+                    ->setCode($config['code']);
+                $this->entityManager->persist($Plugin);
+                $this->entityManager->flush();
             }
 
-            // インストール時には一時的に利用するProxyを生成してからスキーマを更新する
-            $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
-            $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
-        } finally {
-            foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
-                unlink($f);
+            $this->generateProxyAndUpdateSchema($Plugin, $config);
+
+            $this->callPluginManagerMethod($config, 'install');
+
+            $Plugin->setInitialized(true);
+            $this->entityManager->persist($Plugin);
+            $this->entityManager->flush();
+
+            $this->entityManager->flush();
+            $this->entityManager->getConnection()->commit();
+        } catch (\Exception $e) {
+            $this->entityManager->getConnection()->rollback();
+            throw new PluginException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    public function generateProxyAndUpdateSchema(Plugin $plugin, $config)
+    {
+        if ($plugin->isEnabled()) {
+            $generatedFiles = $this->regenerateProxy($plugin, false);
+            $this->schemaService->updateSchema($generatedFiles, $this->projectRoot.'/app/proxy/entity');
+        } else {
+            // Proxyのクラスをロードせずにスキーマを更新するために、
+            // インストール時には一時的なディレクトリにProxyを生成する
+            $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
+            @mkdir($tmpProxyOutputDir);
+
+            try {
+                // プラグインmetadata定義を追加
+                $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+                if (file_exists($entityDir)) {
+                    $ormConfig = $this->entityManager->getConfiguration();
+                    $chain = $ormConfig->getMetadataDriverImpl();
+                    $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
+                    $namespace = 'Plugin\\'.$config['code'].'\\Entity';
+                    $chain->addDriver($driver, $namespace);
+                    $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+                }
+
+                // 一時的に利用するProxyを生成してからスキーマを更新する
+                $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
+                $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
+            } finally {
+                foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
+                    unlink($f);
+                }
+                rmdir($tmpProxyOutputDir);
             }
-            rmdir($tmpProxyOutputDir);
         }
     }
 
@@ -304,16 +379,6 @@ class PluginService
             // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
             throw new PluginException('config.yml version invalid_character(\W) ');
         }
-        if (isset($meta['orm.path'])) {
-            if (!is_array($meta['orm.path'])) {
-                throw new PluginException('config.yml orm.path invalid_character(\W) ');
-            }
-        }
-        if (isset($meta['service'])) {
-            if (!is_array($meta['service'])) {
-                throw new PluginException('config.yml service invalid_character(\W) ');
-            }
-        }
     }
 
     /**
@@ -347,6 +412,7 @@ class PluginService
             'code' => $json['extra']['code'],
             'name' => isset($json['description']) ? $json['description'] : $json['extra']['code'],
             'version' => $json['version'],
+            'source' => isset($json['extra']['id']) ? $json['extra']['id'] : false,
         ];
     }
 
@@ -369,15 +435,16 @@ class PluginService
 
     public function checkSamePlugin($code)
     {
-        $repo = $this->pluginRepository->findOneBy(['code' => $code]);
-        if ($repo) {
+        /** @var Plugin $Plugin */
+        $Plugin = $this->pluginRepository->findOneBy(['code' => $code]);
+        if ($Plugin && $Plugin->isInitialized()) {
             throw new PluginException('plugin already installed.');
         }
     }
 
-    public function calcPluginDir($name)
+    public function calcPluginDir($code)
     {
-        return $this->projectRoot.'/app/Plugin/'.$name;
+        return $this->projectRoot.'/app/Plugin/'.$code;
     }
 
     /**
@@ -400,12 +467,9 @@ class PluginService
      * @return Plugin
      *
      * @throws PluginException
-     * @throws \Doctrine\DBAL\ConnectionException
      */
     public function registerPlugin($meta, $source = 0)
     {
-        $em = $this->entityManager;
-        $em->getConnection()->beginTransaction();
         try {
             $p = new Plugin();
             // インストール直後はプラグインは有効にしない
@@ -415,15 +479,9 @@ class PluginService
                 ->setSource($source)
                 ->setCode($meta['code']);
 
-            $em->persist($p);
-            $em->flush();
-
-            $this->callPluginManagerMethod($meta, 'install');
-
-            $em->flush();
-            $em->getConnection()->commit();
+            $this->entityManager->persist($p);
+            $this->entityManager->flush($p);
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
 
@@ -458,9 +516,11 @@ class PluginService
         $pluginDir = $this->calcPluginDir($plugin->getCode());
         $this->cacheUtil->clearCache();
         $config = $this->readConfig($pluginDir);
-        $this->callPluginManagerMethod($config, 'disable');
+
+        if ($plugin->isEnabled()) {
+            $this->disable($plugin);
+        }
         $this->callPluginManagerMethod($config, 'uninstall');
-        $this->disable($plugin);
         $this->unregisterPlugin($plugin);
 
         // スキーマを更新する
@@ -647,41 +707,24 @@ class PluginService
      * Get array require by plugin
      * Todo: need define dependency plugin mechanism
      *
-     * @param array $plugin     format as plugin from api
+     * @param array|Plugin $plugin format as plugin from api
      *
      * @return array|mixed
+     *
+     * @throws PluginException
      */
     public function getPluginRequired($plugin)
     {
-        // Check require
-        if (!isset($plugin['require']) || empty($plugin['require'])) {
-            return [];
-        }
-//        $require = $plugin['require'];
+        $pluginCode = $plugin instanceof Plugin ? $plugin->getCode() : $plugin['code'];
+        $pluginVersion = $plugin instanceof Plugin ? $plugin->getVersion() : $plugin['version'];
 
-        $requirePlugins = [];
-        // Check require
-//        foreach ($require as $pluginName => $version) {
-//            $pluginCode = str_replace(self::VENDOR_NAME . '/', '', $pluginName);
-//            $pluginCode = Container::camelize($pluginCode);
-//            $dependPlugin = $this->buildInfo($plugins, $pluginName);
-//            // Prevent call self
-//            if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
-//                continue;
-//            }
-//
-//            // Check duplicate in dependency
-//            $index = array_search($dependPlugin['product_code'], array_column($dependents, 'product_code'));
-//            if ($index === false) {
-//                // Update require version
-//                $dependPlugin['version'] = $version;
-//                $dependents[] = $dependPlugin;
-//                // Check child dependency
-//                $dependents = $this->getPluginRequired($plugins, $dependPlugin, $dependents);
-//            }
-//        }
+        $results = [];
 
-        return $requirePlugins;
+        $this->composerService->foreachRequires('ec-cube/'.$pluginCode, $pluginVersion, function ($package) use (&$results) {
+            $results[] = $package;
+        }, 'eccube-plugin');
+
+        return $results;
     }
 
     /**
@@ -694,7 +737,6 @@ class PluginService
     public function buildInfo($plugin)
     {
         $this->supportedVersion($plugin);
-        $plugin['require'] = $this->getRequireOfPlugin($plugin);
 
         return $plugin;
     }
@@ -712,83 +754,6 @@ class PluginService
             // Match version
             $plugin['version_check'] = true;
         }
-    }
-
-    /**
-     * Get require plugin
-     *
-     * @param array $plugin  target plugin from api
-     *
-     * @return mixed format [0 => ['name' => pluginName1, 'version' => pluginVersion1], 1 => ['name' => pluginName2, 'version' => pluginVersion2]]
-     */
-    public function getRequireOfPlugin($plugin)
-    {
-//        $pluginCode = $plugin['code'];
-        // Need dependency Mechanism
-        /*
-        $pluginDir = $this->calcPluginDir($pluginCode);
-        $composerPath = $pluginDir.'/composer.json';
-        // read composer.json
-        if (!file_exists($composerPath)) {
-            return [];
-        }
-        $content = file_get_contents($composerPath);
-        $content = json_decode($content,true);
-
-        $require = [];
-        if (isset($content['require']) && !empty($content['require'])) {
-            foreach ($content['require'] as $name => $version) {
-                $require[] = [
-                    'name' => $name,
-                    'version' => $version,
-                ];
-            }
-        }
-         */
-
-        return [];
-    }
-
-    /**
-     * Check require plugin in enable
-     *
-     * @param string $pluginCode
-     *
-     * @return array plugin code
-     */
-    public function findRequirePluginNeedEnable($pluginCode)
-    {
-        $dir = $this->eccubeConfig['plugin_realdir'].'/'.$pluginCode;
-        $composerFile = $dir.'/composer.json';
-        if (!file_exists($composerFile)) {
-            return [];
-        }
-        $jsonText = file_get_contents($composerFile);
-        $json = json_decode($jsonText, true);
-        // Check require
-        if (!isset($json['require']) || empty($json['require'])) {
-            return [];
-        }
-        $require = $json['require'];
-
-        // Remove vendor plugin
-        if (isset($require[self::VENDOR_NAME.'/plugin-installer'])) {
-            unset($require[self::VENDOR_NAME.'/plugin-installer']);
-        }
-        $requires = [];
-        foreach ($require as $name => $version) {
-            // Check plugin of ec-cube only
-            if (strpos($name, self::VENDOR_NAME.'/') !== false) {
-                $requireCode = str_replace(self::VENDOR_NAME.'/', '', $name);
-                $ret = $this->isEnable($requireCode);
-                if ($ret) {
-                    continue;
-                }
-                $requires[] = $requireCode;
-            }
-        }
-
-        return $requires;
     }
 
     /**

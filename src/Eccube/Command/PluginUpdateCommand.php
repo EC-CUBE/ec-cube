@@ -13,50 +13,44 @@
 
 namespace Eccube\Command;
 
+use Eccube\Entity\Plugin;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class PluginEnableCommand extends Command
+class PluginUpdateCommand extends Command
 {
-    protected static $defaultName = 'eccube:plugin:enable';
+    protected static $defaultName = 'eccube:plugin:update';
 
     use PluginCommandTrait;
 
     protected function configure()
     {
         $this
-            ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code');
+            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code')
+            ->setDescription('Execute plugin update process.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
 
-        $code = $input->getOption('code');
+        $code = $input->getArgument('code');
 
-        if (empty($code)) {
-            $io->error('code is required.');
+        /** @var Plugin $Plugin */
+        $Plugin = $this->pluginRepository->findByCode($code);
 
-            return;
+        if (!$Plugin) {
+            $io->error("No such plugin `${code}`.");
+            return 1;
         }
 
-        $plugin = $this->pluginRepository->findByCode($code);
-        if (is_null($plugin)) {
-            $io->error("Plugin `$code` is not found.");
-
-            return;
-        }
-
-        if (!$plugin->isInitialized()) {
-            $this->pluginService->installWithCode($plugin->getCode());
-        }
-
-        $this->pluginService->enable($plugin);
+        $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($code));
+        $this->pluginService->updatePlugin($Plugin, $config);
         $this->clearCache($io);
 
-        $io->success('Plugin Enabled.');
+        $io->success('Updated.');
     }
 }

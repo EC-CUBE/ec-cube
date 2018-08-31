@@ -1197,6 +1197,36 @@ admin.setting.system.system.php_info: PHP情報
 #------------------------------------------------------------------------------------
 
 admin.store: オーナーズストア
+admin.store.template: テンプレート
+admin.store.template.template_list: テンプレート一覧
+admin.store.template.template_install: アップロード
+admin.store.template.template_install__page_title: テンプレートのアップロード
+admin.store.template.select: 選択
+admin.store.template.save_path: 保存先
+admin.store.template.download: ダウンロード
+admin.store.template.upload_new_template: 新規テンプレートアップロード
+admin.store.template.template_name: テンプレート名
+admin.store.template.template_code: テンプレートコード
+admin.store.template.template_file: テンプレートファイル
+admin.store.template.file_format: 'File format: zip,tar,tar.gz'
+admin.store.template.delete_error__default_template: デフォルトテンプレートは削除できません
+admin.store.template.delete_error__current_template: 設定中のテンプレートは削除できません
+admin.store.template.template_code_already_exists: テンプレートコードは既に利用されています
+admin.store.template.upload_failed: アップロードに失敗しました
+admin.store.template.invalid_upload_file: ファイルの拡張子に誤りがあります
+admin.store.plugin: プラグイン
+admin.store.plugin.plugin_owners_install: プラグインを探す
+admin.store.plugin.plugin_list: プラグイン一覧
+admin.store.plugin.search.not_found: 検索条件に該当するデータがありませんでした。
+admin.store.setting: 設定
+admin.store.setting.api_key_setting: 認証キー設定
+admin.store.setting.api_key: 認証キー
+admin.store.setting.get_api_key: 認証キー取得
+admin.store.setting.captcha_message: 画像に表示されている文字を入力してください。
+admin.store.setting.php_path_setting: PHPパスの設定
+admin.store.setting.php_path: PHPパス
+admin.store.setting.invalid_captcha: 入力された文字列が正しくありません。
+admin.store.setting.captcha_error: エラー
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
@@ -1350,23 +1380,6 @@ admin.store.plugin_table_official.921: 詳細情報
 admin.store.plugin_table_official.924: 有効化
 admin.store.plugin_table_official.925: 無効化
 admin.store.plugin_table_official.923: インストールされているプラグインはありません。
-admin.store.template.924: オーナーズストア
-admin.store.template.925: テンプレート管理
-admin.store.template.926: テンプレート一覧
-admin.store.template.927: 選択
-admin.store.template.928: 名前
-admin.store.template.929: 保存先
-admin.store.template.930: ダウンロード
-admin.store.template.931: 削除
-admin.store.template.932: このテンプレートを削除してもよろしいですか？
-admin.store.template.933: 登録
-admin.store.template_add.934: オーナーズストア
-admin.store.template_add.935: テンプレートのアップロード
-admin.store.template_add.936: 新規テンプレートアップロード
-admin.store.template_add.937: テンプレートコード
-admin.store.template_add.938: テンプレート名
-admin.store.template_add.939: テンプレートファイル
-admin.store.template_add.940: アップロード
 admin.store.unregisterd_plugin_table.941: プラグイン
 admin.store.unregisterd_plugin_table.942: バージョン
 admin.store.unregisterd_plugin_table.943: コード

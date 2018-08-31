@@ -23,6 +23,152 @@ file that was distributed with this source code.
     {{'admin.store.plugin_confirm.subtitle'|trans}}
 {% endblock %}
 
+{% block javascript %}
+<script>
+$(function() {
+
+    var MODES = {
+        'install': {
+            'name': 'インストール',
+            'init': function(ctx) {
+                ctx.progressBar.css('width', (0.5/ctx.totalCount*100) + '%');
+            },
+            'execute': function(ctx) {
+                return ctx.deferred.then(function() {
+                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」をインストール中');
+                    ctx.log('**************** ' + ctx.plugin.pluginCode + ' ****************');
+                    return $.post("{{ url('admin_store_plugin_api_install') }}", ctx.plugin).then(function(data) {
+                        ctx.currentCount += 1;
+                        ctx.progressBar.css('width', ((ctx.currentCount/ctx.totalCount + 0.5/ctx.totalCount)*100) + '%');
+                        ctx.log(data.log);
+                    })
+                });
+            }
+        },
+        'upgrade': {
+            'name': 'アップデート',
+            'init': function(ctx) {},
+            'execute': function(ctx) {
+                return ctx.deferred.then(function() {
+                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」を無効化中');
+                    ctx.log('**************** Disable ****************');
+                    return $.post(ctx.relatedTarget.data('disable-url'), ctx.plugin).then(function(data) {
+                        ctx.currentCount += 1;
+                        ctx.progressBar.css('width', '10%');
+                        ctx.log(data.log);
+                    })
+                }).then(function() {
+                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」をアップデート中');
+                    ctx.log('**************** Upgrade ****************');
+                    return $.post("{{ url('admin_store_plugin_api_upgrade') }}", ctx.plugin).then(function(data) {
+                        ctx.currentCount += 1;
+                        ctx.progressBar.css('width', '40%');
+                        ctx.log(data.log);
+                    })
+                }).then(function() {
+                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」のスキーマ更新中');
+                    ctx.log('**************** Schema Update ****************');
+                    return $.post("{{ url('admin_store_plugin_api_schema_update') }}", ctx.plugin).then(function(data) {
+                        ctx.currentCount += 1;
+                        ctx.progressBar.css('width', '60%');
+                        ctx.log(data.log);
+                    })
+                }).then(function() {
+                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」の更新処理中');
+                    ctx.log('**************** Update ****************');
+                    return $.post("{{ url('admin_store_plugin_api_update') }}", ctx.plugin).then(function(data) {
+                        ctx.currentCount += 1;
+                        ctx.progressBar.css('width', '80%');
+                        ctx.log(data.log);
+                    })
+                }).then(function() {
+                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」を有効化中');
+                    ctx.log('**************** Enable ****************');
+                    return $.post(ctx.relatedTarget.data('enable-url'), ctx.plugin).then(function(data) {
+                        ctx.currentCount += 1;
+                        ctx.progressBar.css('width', '100%');
+                        ctx.log(data.log);
+                    })
+                });
+            }
+        }
+    };
+
+    var mode;
+    var relatedTarget;
+    var modal = $('#installModal');
+    var message = $('div.modal-body > p', modal);
+
+    $('#installModal').on('show.bs.modal', function(e) {
+        relatedTarget = $(e.relatedTarget);
+        mode = MODES[relatedTarget.data('mode')];
+        $('.modal-title', modal).text(mode.name + '確認');
+        message.text('「{{ item.name }} ({{ item.version }})」を' + mode.name + 'しますか？');
+        $('#installBtn').text(mode.name);
+    });
+
+    $('#installBtn').on('click', function() {
+        message.text('「{{ item.name }} ({{ item.version }})」を' + mode.name + '中。この処理には数分かかる場合があります。画面をリロードせずにこのままお待ち下さい。');
+        var footer = $('div.modal-footer', modal).hide();
+        var progress = $('div.progress', modal).show();
+        var statusBar = $('#installStatus').text('');
+        var log = function(text) {
+            if (text) {
+                $('#installLog').text($('#installLog').text() ? ($('#installLog').text() + '\n' + text) : text);
+            }
+        };
+
+        var requires = {{ requires|json_encode|raw }};
+        requires = requires.map(function(req) {
+            return {'pluginCode':req.name.replace(/^ec-cube\//, '') }
+        });
+        requires.push({'pluginCode': '{{ item.code }}', 'version': '{{ item.version }}'});
+
+        var progressBar = $('div.progress-bar', progress);
+
+        var d = $.Deferred().resolve();
+
+        var ctx = {
+            'statusBar': statusBar,
+            'progressBar': progressBar,
+            'log': log,
+            'currentCount': 0,
+            'totalCount': requires.length,
+            'deferred': d,
+            'relatedTarget': relatedTarget
+        };
+
+        mode.init(ctx);
+
+        requires.forEach(function(req) {
+            d = mode.execute($.extend({}, ctx, {
+                'plugin': req,
+                'deferred': d
+            }));
+        });
+
+        d.done(function() {
+            $('div.progress-bar', progress).css('width', '100%');
+            message.text('インストールが完了しました。');
+        }).fail(function(res) {
+            message.text('システムエラーが発生しました。');
+            if (res.responseJSON) {
+                log(res.responseJSON.log);
+            }
+        }).always(function() {
+            statusBar.hide();
+            $('#installLogPane').show();
+            $('button', footer).hide();
+            $('a', footer).show();
+            footer.show();
+            progress.hide();
+        });
+    });
+});
+
+</script>
+{% endblock %}
+
 {% block main %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
@@ -46,9 +192,11 @@ file that was distributed with this source code.
                             <div class="col-12 text-right">
                                 <button class="btn btn-ec-sub" type="button" onclick="return window.history.back()">{{ 'admin.common.cancel'|trans }}</button>
                                 {% if is_update %}
-                                    <a class="btn btn btn-primary prevention-mask" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false" href="{{ url('admin_store_plugin_api_upgrade', {'pluginCode': item.code, 'version': item.version}) }}">{{ 'admin.store.plugin.upgrade'|trans }}</a>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#installModal" data-mode="upgrade"
+                                            data-enable-url="{{ url('admin_store_plugin_enable', { id: Plugin.id }) }}"
+                                            data-disable-url="{{ url('admin_store_plugin_disable', { id: Plugin.id }) }}">{{ 'admin.store.plugin.upgrade'|trans }}</button>
                                 {% else %}
-                                    <a class="btn btn btn-primary prevention-mask" href="{{ url('admin_store_plugin_api_install', {'pluginCode': item.code, 'eccubeVersion': constant('Eccube\\Common\\Constant::VERSION'), 'version': item.version}) }}">{{ 'admin.store.plugin.install'|trans }}</a>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#installModal" data-mode="install">{{ 'admin.store.plugin.install'|trans }}</button>
                                 {% endif %}
                             </div>
                         </div>
@@ -62,11 +210,44 @@ file that was distributed with this source code.
                     </div>
                     <div class="card-body">
                         {% for plugin in requires %}
-                            {% include '@admin/Store/plugin_confirm_panel.twig' with {'item': plugin, 'is_update': is_update} only %}
+                            <ul>
+                                <li>{{ plugin.description }} {{ plugin.versions }}</li>
+                            </ul>
+                            {#{% include '@admin/Store/plugin_confirm_panel.twig' with {'item': plugin, 'is_update': is_update} only %}#}
                         {% endfor %}
                     </div>
                 </div>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div id="installModal" class="modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                </div>
+                <div class="modal-body">
+                    <p></p>
+                    <div id="installProgress" class="progress" style="display: none">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div>
+                        <p class="text-right small" id="installStatus"></p>
+                    </div>
+                    <div id="installLogPane" style="display: none;">
+                        <div class="d-inline-block collapsed" data-toggle="collapse" href="#installLog" aria-expanded="false" aria-controls="installLog">
+                            <a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">ログを確認</span></a>
+                        </div>
+                        <pre class="collapsed collapse" id="installLog"></pre>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ec-sub" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                    <button type="button" class="btn btn-ec-conversion" id="installBtn"></button>
+                    <a href="{{ url('admin_store_plugin') }}" class="btn btn-ec-regular" style="display: none">完了</a>
+                </div>
             </div>
         </div>
     </div>

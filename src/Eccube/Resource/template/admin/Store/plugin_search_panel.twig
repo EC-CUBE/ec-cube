@@ -94,15 +94,15 @@ file that was distributed with this source code.
                     </div>
                 </div>
 
-                {% if item.require is not empty %}
-                    <div class="row mt-2">
-                        <div class="col-12">
-                            {% for require in item.require %}
-                                <p class="text-danger">{{ 'admin.store.plugin_owners_search.modal.dependency'|trans({"%dependency%" : require.name})  }}</p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
+                {#{% if item.require is not empty %}#}
+                    {#<div class="row mt-2">#}
+                        {#<div class="col-12">#}
+                            {#{% for require in item.require %}#}
+                                {#<p class="text-danger">{{ 'admin.store.plugin_owners_search.modal.dependency'|trans({"%dependency%" : require.name})  }}</p>#}
+                            {#{% endfor %}#}
+                        {#</div>#}
+                    {#</div>#}
+                {#{% endif %}#}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-ec-sub" data-dismiss="modal">{{ 'admin.store.plugin_owners_search.modal.cancel'|trans }}</button>
