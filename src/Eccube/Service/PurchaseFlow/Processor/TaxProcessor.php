@@ -96,6 +96,11 @@ class TaxProcessor implements ItemHolderPreprocessor
                 $TaxRule = $this->taxRuleRepository->getByRule($item->getProduct(), $item->getProductClass());
             }
 
+            // $TaxRuleを取得出来ない場合は基本税率設定を使用.
+            if (null === $TaxRule) {
+                $TaxRule = $this->taxRuleRepository->getByRule();
+            }
+
             // 税込表示の場合は, priceが税込金額のため割り戻す.
             if ($item->getTaxDisplayType()->getId() == TaxDisplayType::INCLUDED) {
                 $tax = $this->taxRuleService->calcTaxIncluded(
