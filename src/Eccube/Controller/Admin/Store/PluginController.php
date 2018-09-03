@@ -295,13 +295,19 @@ class PluginController extends AbstractController
                 }
             }
 
+
             ob_start();
+
+            if (!$Plugin->isInitialized()) {
+                $this->pluginService->installWithCode($Plugin->getCode());
+            }
+
             $this->pluginService->enable($Plugin);
             $log = ob_get_clean();
             ob_end_flush();
         }
 
-//        $cacheUtil->clearCache();
+        $cacheUtil->clearCache();
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
@@ -361,17 +367,14 @@ class PluginController extends AbstractController
             }
         }
 
-        // キャッシュを削除してリダイレクト
-        // リダイレクトにredirectToRoute関数を使用していないのは、削除したキャッシュが再生成されてしまうため。
-        $url = $this->generateUrl('admin_store_plugin');
-//        $cacheUtil->clearCache();
+        $cacheUtil->clearCache();
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
         } else {
             $this->addSuccess('admin.plugin.disable.complete', 'admin');
 
-            return $this->redirect($url);
+            return $this->redirectToRoute('admin_store_plugin');
         }
     }
 
