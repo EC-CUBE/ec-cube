@@ -115,7 +115,7 @@ class EccubeExtension extends AbstractExtension
      */
     public function getNoImageProduct($image)
     {
-        return empty($image) ? 'no_image_product.jpg' : $image;
+        return empty($image) ? 'no_image_product.png' : $image;
     }
 
     /**
