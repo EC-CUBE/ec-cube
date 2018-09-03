@@ -22,6 +22,7 @@ use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Repository\ShippingRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -54,6 +55,11 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     protected $orderRepository;
 
     /**
+     * @var ShippingRepository
+     */
+    protected $shippingRepository;
+
+    /**
      * @var CustomerRepository
      */
     protected $customerRepository;
@@ -67,6 +73,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->sexRepository = $this->container->get(SexRepository::class);
         $this->csvTypeRepository = $this->container->get(CsvTypeRepository::class);
         $this->orderRepository = $this->container->get(OrderRepository::class);
+        $this->shippingRepository = $this->container->get(ShippingRepository::class);
         $this->customerRepository = $this->container->get(CustomerRepository::class);
 
         // FIXME: Should remove exist data before generate data for test
@@ -248,10 +255,15 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testBulkDelete()
     {
         $orderIds = [];
+        $shippingIds = [];
         $Customer = $this->createCustomer();
         for ($i = 0; $i < 5; $i++) {
             $Order = $this->createOrder($Customer);
             $orderIds[] = $Order->getId();
+            $Shippings = $Order->getShippings();
+            foreach ($Shippings as $Shipping) {
+                $shippingIds[] = $Shipping->getId();
+            }
         }
 
         $this->entityManager->flush();
@@ -259,8 +271,11 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_order_bulk_delete'),
-            ['ids' => $orderIds]
+            ['ids' => $shippingIds]
         );
+
+        $Shippings = $this->container->get(ShippingRepository::class)->findBy(['id' => $shippingIds]);
+        $this->assertCount(0, $Shippings);
 
         $Orders = $this->container->get(OrderRepository::class)->findBy(['id' => $orderIds]);
         $this->assertCount(0, $Orders);
