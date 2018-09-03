@@ -144,27 +144,29 @@ file that was distributed with this source code.
                                                 {% if file.is_dir %}
                                                     <td class="align-middle pr-3">
                                                         <div class="text-right">
-                                                            <div class="px-1 d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                                <a class="btn btn-ec-actionIcon action-delete {% if file.is_empty == false %}disabled{% endif %}"
-                                                               data-toggle="modal" data-target="#confirmModal-{{ loop.index }}">
-                                                                <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                                            </div>
-                                                            <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
-                                                                <div class="modal-dialog" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
-                                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                                        </div>
-                                                                        <div class="modal-body text-left">
-                                                                            <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': file.file_name }) }}</p>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                                            <a class="btn btn-ec-delete" data-confirm="false"
-                                                                               href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                                                {{ 'admin.common.delete'|trans }}
-                                                                            </a>
+                                                            <div class="px-1 d-inline-block">
+                                                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                                    <a class="btn btn-ec-actionIcon action-delete {% if file.is_empty == false %}disabled{% endif %}"
+                                                                       data-toggle="modal" data-target="#confirmModal-{{ loop.index }}">
+                                                                        <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                </div>
+                                                                <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                            </div>
+                                                                            <div class="modal-body text-left">
+                                                                                <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': file.file_name }) }}</p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                                <a class="btn btn-ec-delete" data-confirm="false"
+                                                                                   href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                                                    {{ 'admin.common.delete'|trans }}
+                                                                                </a>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
