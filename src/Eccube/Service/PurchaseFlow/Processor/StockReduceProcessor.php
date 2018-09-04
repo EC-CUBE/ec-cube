@@ -81,9 +81,9 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
             if (!$item->getProductClass()->isStockUnlimited()) {
                 // 在庫チェックあり
-                // 在庫に対してロック(select ... for update)を実行
                 /* @var ProductStock $productStock */
                 $productStock = $item->getProductClass()->getProductStock();
+                // 在庫に対してロックを実行
                 $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
                 $stock = $callback($productStock->getStock(), $item->getQuantity());
                 $productStock->setStock($stock);
