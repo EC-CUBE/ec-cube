@@ -173,17 +173,17 @@ file that was distributed with this source code.
                                         </span>
                                         </div>
                                         <div class="col-3 text-right">
-                                            <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-2 action-up{{ loop.first ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                 <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                             </a>
-                                            <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-2 action-down{{ loop.last ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                 <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                             </a>
                                             {# TODO クラス名、id名の設定、メッセージID化、登録機能 #}
-                                            <a class="btn btn-ec-actionIcon mr-3 check-display" id="{{ Payment.id }}" data-tooltip="true" data-placement="top" title="表示">
+                                            <a class="btn btn-ec-actionIcon mr-2 check-display" id="{{ Payment.id }}" data-tooltip="true" data-placement="top" title="表示">
                                                 <i class="fa fa-eye display-show-toggle-{{ Payment.id }} fa-lg text-secondary"></i>
                                             </a>
-                                            <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top"
+                                            <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top"
                                                  title="{{ 'admin.common.delete'|trans }}">
                                                 <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
                                                    data-url="{{ url('admin_setting_shop_payment_delete', {'id' : Payment.id}) }}"

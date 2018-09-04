@@ -142,9 +142,9 @@ file that was distributed with this source code.
                                                     {{ file.file_time|date_sec }} {{ 'admin.content.file.updated'|trans }}
                                                 </td>
                                                 {% if file.is_dir %}
-                                                    <td class="align-middle text-right pr-3">
-                                                        <div class="row justify-content-end">
-                                                            <div class="col-auto text-center">
+                                                    <td class="align-middle pr-3">
+                                                        <div class="text-right">
+                                                            <div class="px-1 d-inline-block">
                                                                 <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                     <a class="btn btn-ec-actionIcon action-delete {% if file.is_empty == false %}disabled{% endif %}"
                                                                    data-toggle="modal" data-target="#confirmModal-{{ loop.index }}">
@@ -174,19 +174,19 @@ file that was distributed with this source code.
                                                         </div>
                                                     </td>
                                                 {% else %}
-                                                    <td class="align-middle text-right pr-3">
-                                                        <div class="row justify-content-end">
-                                                            <div class="col-auto text-center">
+                                                    <td class="align-middle pr-3">
+                                                        <div class="text-right">
+                                                            <div class="px-1 d-inline-block">
                                                                 <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank" class="btn btn-ec-actionIcon action-view" data-tooltip="true" data-placement="top" title="{{ 'admin.common.display'|trans }}">
                                                                     <i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
-                                                            <div class="col-auto text-center">
+                                                            <div class="px-1 d-inline-block">
                                                                 <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon action-download" data-tooltip="true" data-placement="top" title="{{ 'admin.common.download'|trans }}">
                                                                     <i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
-                                                            <div class="col-auto text-center">
+                                                            <div class="px-1 d-inline-block">
                                                                 <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                     <a class="btn btn-ec-actionIcon action-delete" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}">
                                                                         <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
