@@ -200,7 +200,7 @@ file that was distributed with this source code.
                                             <div class="col">{{ Order.order_no }}</div>
                                         </div>
                                         <div class="row mb-3 form-group">
-                                            <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.order_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-tooltip="true" data-placement="top" title="Tooltip"></i></label>
+                                            <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.order_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                             <div class="col">
                                                 {% if Order.id is not empty %}
                                                     {{ form_widget(form.OrderStatus) }}
