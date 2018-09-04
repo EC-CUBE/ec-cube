@@ -1479,8 +1479,14 @@ tooltip.admin.setting.shop.shop.option_product_tax: オンにすると、商品�
 tooltip.admin.setting.shop.shop.option_point_enabled: 購入金額に対するポイント付与率を編集できます。
 tooltip.admin.setting.shop.shop.option_point_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
 tooltip.admin.setting.shop.shop.option_point_conversion_rate: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
-
-
+tooltip.admin.setting.shop.payment.logo_image: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
+tooltip.admin.setting.shop.delivery.sale_type: この配送方法で取り扱える販売種別を指定します。
+tooltip.admin.setting.shop.delivery.apply_to_pref: すべての都道府県に同じ送料を一括で設定できます。あとから個々の都道府県の送料を書き換えることも可能です。
+tooltip.admin.setting.shop.delivery.shop_memo: 店舗用のメモ欄です。フロント側には表示されません。
+tooltip.admin.setting.shop.tax_setting: 商品共通の税率を設定できます。新しい税率を追加することで基本税率設定を上書きすることが可能です。
+tooltip.admin.setting.shop.mail.mail_template: 既存のメールテンプレートを選択してください。以下に内容が表示されます。
+tooltip.admin.setting.shop.csv.csv_columns: 各種のデータをCSVで出力できます。出力したい項目をこちらで設定することが可能です。
+tooltip.admin.setting.shop.csv.csv_type: 設定したいCSVの種類を指定してください。
 
 #====================================================================================
 # インストール画面
