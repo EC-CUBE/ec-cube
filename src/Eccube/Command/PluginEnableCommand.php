@@ -50,6 +50,10 @@ class PluginEnableCommand extends Command
             return;
         }
 
+        if (!$plugin->isInitialized()) {
+            $this->pluginService->installWithCode($plugin->getCode());
+        }
+
         $this->pluginService->enable($plugin);
         $this->clearCache($io);
 

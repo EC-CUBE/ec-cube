@@ -8,6 +8,47 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
+<script>
+$(function() {
+    var currentPlugin = null;
+    var modal = $('#officialPluginDeleteModal');
+    modal.on('show.bs.modal', function(e) {
+        currentPlugin = $(e.relatedTarget).data();
+    });
+    $('#officialPluginDeleteButton').on('click', function() {
+
+        var footer = $('div.modal-footer', modal).hide();
+        var message = $('div.modal-body p', modal).text('「' + currentPlugin.name + ' (' + currentPlugin.version + ')」を削除中。この処理には数分かかる場合があります。画面をリロードせずにこのままお待ち下さい。')
+        var progress = $('div.progress', modal).show();
+        var url = '{{ url('admin_store_plugin_api_uninstall', {id:0}) }}'.replace(
+            /(.*\/)(0)(\/.*)/,
+            function(all, pre, id, rest) { return pre + currentPlugin.id + rest }
+        );
+        $.ajax({url: url, type: 'delete'}).then(
+            function(data) {
+                message.text('削除が完了しました。');
+                $('#deleteLog').text(data.log);
+                $('#deleteLogPane').show();
+                progress.hide();
+                footer.show().find('button').toggle();
+            },
+            function(res) {
+                if (res.responseJSON.message) {
+                    message.text(res.responseJSON.message);
+                } else {
+                    message.text('削除に失敗しました。');
+                }
+                if (res.responseJSON.log) {
+                    $('#deleteLog').text(res.responseJSON.log);
+                }
+                progress.hide();
+                $('#deleteLogPane').show();
+                footer.show().find('button').toggle();
+            }
+        );
+    });
+});
+</script>
 {% if Plugins|length > 0 %}
     <div class="card-body p-0">
         <table class="table table-sm">
@@ -43,9 +84,9 @@ file that was distributed with this source code.
                     <td class="align-middle">
                         {% if Plugin.id %}
                             {% if Plugin.enabled %}
-                                <span class="text-success">{{ 'common.label.enabled'|trans }}</span>
+                                <span class="text-success">{{ 'common.enabled'|trans }}</span>
                             {% else %}
-                                <span class="text-secondary">{{ 'common.label.disabled'|trans }}</span>
+                                <span class="text-secondary">{{ 'common.disabled'|trans }}</span>
                             {% endif %}
                         {% endif %}
                     </td>
@@ -79,57 +120,28 @@ file that was distributed with this source code.
                                         {% if Plugin.enabled == false %}
                                             <a href="#"
                                                data-toggle="modal"
-                                               data-target="#confirmModal-{{ Plugin.id }}"
+                                               data-target="#officialPluginDeleteModal"
+                                               data-id="{{ Plugin.id }}"
+                                               data-name="{{ Plugin.name }}"
+                                               data-version="{{ Plugin.version }}"
                                                class="btn btn-ec-actionIcon">
                                                 <i class="fa fa-close fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}"></i>
                                             </a>
 
-                                            <div class="modal fade" id="confirmModal-{{ Plugin.id }}" tabindex="-1"
-                                                 role="dialog"
-                                                 aria-labelledby="confirmModal-{{ Plugin.id }}" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title font-weight-bold">
-                                                                {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
-                                                            <button class="close" type="button"
-                                                                    data-dismiss="modal"
-                                                                    aria-label="Close"><span aria-hidden="true">×</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body text-left">
-                                                            <p class="text-left">
-                                                                {{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn btn-ec-sub" type="button"
-                                                                    data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
-                                                            </button>
-                                                            <a href="{{ url('admin_store_plugin_delete_confirm', { id : Plugin.id }) }}"
-                                                                    {{ csrf_token_for_anchor() }}
-                                                               class="btn btn-ec-delete"
-                                                               data-confirm="false"
-                                                               data-method="delete">
-                                                                {{ 'admin.common.delete'|trans }}
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         {% endif %}
                                     </div>
                                     <div class="col-4 px-0">
                                         {% if Plugin.enabled %}
                                             <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
-                                               data-method="put" data-confirm="false">
+                                               data-method="post" data-confirm="false">
                                                 <i class="fa fa-pause fa-lg text-secondary" data-tooltip="true"
                                                    data-placement="top" title="{{ 'admin.store.plugin_table_official.925'|trans }}"></i>
                                             </a>
                                         {% else %}
                                             <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
-                                               data-method="put" data-confirm="false">
+                                               data-method="post" data-confirm="false">
                                                 <i class="fa fa-play fa-lg text-secondary" data-tooltip="true"
                                                    data-placement="top" title="{{ 'admin.store.plugin_table_official.924'|trans }}"></i>
                                             </a>
@@ -162,3 +174,33 @@ file that was distributed with this source code.
         </div>
     </div>
 {% endif %}
+
+<div class="modal fade" id="officialPluginDeleteModal" tabindex="-1" role="dialog"
+     aria-labelledby="officialPluginDeleteModal" aria-hidden="true"
+     data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold">
+                    {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
+            </div>
+            <div class="modal-body text-left">
+                <p class="text-left">{{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
+                <div class="progress" style="display: none">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div id="deleteLogPane" style="display: none;">
+                    <div class="d-inline-block collapsed" data-toggle="collapse" href="#deleteLog" aria-expanded="false" aria-controls="deleteLog">
+                        <a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">ログを確認</span></a>
+                    </div>
+                    <pre class="collapsed collapse" id="deleteLog"></pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                <button id="officialPluginDeleteButton" class="btn btn-ec-delete" type="button">{{ 'admin.common.delete'|trans }}</button>
+                <button class="btn btn-ec-sub" style="display: none" onclick="location.reload(true);">完了</button>
+            </div>
+        </div>
+    </div>
+</div>

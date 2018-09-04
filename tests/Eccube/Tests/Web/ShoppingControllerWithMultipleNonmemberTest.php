@@ -119,20 +119,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
             ]
         );
 
-        $this->scenarioComplete(null, $this->generateUrl('shopping_checkout'),
-            [
-                // 配送先1
-                [
-                    'Delivery' => 1,
-                    'DeliveryTime' => 1,
-                ],
-                // 配送先2
-                [
-                    'Delivery' => 1,
-                    'DeliveryTime' => 1,
-                ],
-            ]
-        );
+        $this->scenarioCheckout();
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
@@ -1446,10 +1433,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
             ]
         );
 
-        $this->scenarioComplete(
-            null,
-            $this->generateUrl('shopping_checkout')
-        );
+        $this->scenarioCheckout();
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 

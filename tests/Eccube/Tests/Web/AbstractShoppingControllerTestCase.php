@@ -131,7 +131,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         );
     }
 
-    protected function scenarioComplete(Customer $Customer = null, $confirm_url, array $shippings = [])
+    protected function scenarioComplete(Customer $Customer = null, $confirm_url, array $shippings = [], $doComplete = false)
     {
         if ($Customer) {
             $this->loginTo($Customer);
@@ -149,22 +149,52 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 
         $this->client->enableProfiler();
 
-        $parameters = [
-            '_shopping_order' => [
-                'Shippings' => $shippings,
-                'Payment' => 3,
-                'message' => $faker->realText(),
-                '_token' => 'dummy',
-            ],
-        ];
-
-        if ($Customer) {
-            $parameters['_shopping_order']['use_point'] = 0;
+        if ($doComplete) {
+            $parameters = [
+                '_shopping_order' => [
+                    '_token' => 'dummy'
+                ]
+            ];
+        } else {
+            $parameters = [
+                '_shopping_order' => [
+                    'Shippings' => $shippings,
+                    'Payment' => 3,
+                    'message' => $faker->realText(),
+                    '_token' => 'dummy',
+                ],
+            ];
+            if ($Customer) {
+                $parameters['_shopping_order']['use_point'] = 0;
+            }
         }
 
         $crawler = $this->client->request(
             'POST',
             $confirm_url,
+            $parameters
+        );
+
+        return $crawler;
+    }
+
+    protected function scenarioCheckout(Customer $Customer = null)
+    {
+        if ($Customer) {
+            $this->loginTo($Customer);
+        }
+
+        $this->client->enableProfiler();
+
+        $parameters = [
+            '_shopping_order' => [
+                '_token' => 'dummy',
+            ],
+        ];
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('shopping_checkout'),
             $parameters
         );
 

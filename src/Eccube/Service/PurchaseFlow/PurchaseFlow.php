@@ -22,6 +22,11 @@ use Eccube\Entity\OrderItem;
 class PurchaseFlow
 {
     /**
+     * @var string
+     */
+    protected $flowType;
+
+    /**
      * @var ArrayCollection|ItemPreprocessor[]
      */
     protected $itemPreprocessors;
@@ -42,6 +47,16 @@ class PurchaseFlow
     protected $itemHolderValidators;
 
     /**
+     * @var ArrayCollection|ItemHolderPostValidator[]
+     */
+    protected $itemHolderPostValidators;
+
+    /**
+     * @var ArrayCollection|DiscountProcessor[]
+     */
+    protected $discountProcessors;
+
+    /**
      * @var ArrayCollection|PurchaseProcessor[]
      */
     protected $purchaseProcessors;
@@ -53,6 +68,13 @@ class PurchaseFlow
         $this->itemHolderValidators = new ArrayCollection();
         $this->itemPreprocessors = new ArrayCollection();
         $this->itemHolderPreprocessors = new ArrayCollection();
+        $this->itemHolderPostValidators = new ArrayCollection();
+        $this->discountProcessors = new ArrayCollection();
+    }
+
+    public function setFlowType($flowType)
+    {
+        $this->flowType = $flowType;
     }
 
     public function setPurchaseProcessors(ArrayCollection $processors)
@@ -80,25 +102,23 @@ class PurchaseFlow
         $this->itemHolderPreprocessors = $itemHolderPreprocessors;
     }
 
+    public function setItemHolderPostValidators(ArrayCollection $itemHolderPostValidators)
+    {
+        $this->itemHolderPostValidators = $itemHolderPostValidators;
+    }
+
+    public function setDiscountProcessors(ArrayCollection $discountProcessors)
+    {
+        $this->discountProcessors = $discountProcessors;
+    }
+
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
+        $context->setFlowType($this->flowType);
+
         $this->calculateAll($itemHolder);
 
         $flowResult = new PurchaseFlowResult($itemHolder);
-
-        foreach ($itemHolder->getItems() as $item) {
-            foreach ($this->itemPreprocessors as $itemPreprocessor) {
-                $itemPreprocessor->process($item, $context);
-            }
-        }
-
-        $this->calculateAll($itemHolder);
-
-        foreach ($this->itemHolderPreprocessors as $holderPreprocessor) {
-            $holderPreprocessor->process($itemHolder, $context);
-        }
-
-        $this->calculateAll($itemHolder);
 
         foreach ($itemHolder->getItems() as $item) {
             foreach ($this->itemValidators as $itemValidator) {
@@ -116,6 +136,44 @@ class PurchaseFlow
 
         $this->calculateAll($itemHolder);
 
+        foreach ($itemHolder->getItems() as $item) {
+            foreach ($this->itemPreprocessors as $itemPreprocessor) {
+                $itemPreprocessor->process($item, $context);
+            }
+        }
+
+        $this->calculateAll($itemHolder);
+
+        foreach ($this->itemHolderPreprocessors as $holderPreprocessor) {
+            $result = $holderPreprocessor->process($itemHolder, $context);
+            if ($result) {
+                $flowResult->addProcessResult($result);
+            }
+
+            $this->calculateAll($itemHolder);
+        }
+
+        foreach ($this->discountProcessors as $discountProcessor) {
+            $discountProcessor->removeDiscountItem($itemHolder, $context);
+        }
+
+        $this->calculateAll($itemHolder);
+
+        foreach ($this->discountProcessors as $discountProcessor) {
+            $result = $discountProcessor->addDiscountItem($itemHolder, $context);
+            if ($result) {
+                $flowResult->addProcessResult($result);
+            }
+            $this->calculateAll($itemHolder);
+        }
+
+        foreach ($this->itemHolderPostValidators as $itemHolderPostValidator) {
+            $result = $itemHolderPostValidator->execute($itemHolder, $context);
+            $flowResult->addProcessResult($result);
+
+            $this->calculateAll($itemHolder);
+        }
+
         return $flowResult;
     }
 
@@ -129,6 +187,8 @@ class PurchaseFlow
      */
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
     {
+        $context->setFlowType($this->flowType);
+
         foreach ($this->purchaseProcessors as $processor) {
             $processor->prepare($target, $context);
         }
@@ -138,12 +198,14 @@ class PurchaseFlow
      * 購入フロー確定処理.
      *
      * @param ItemHolderInterface $target
-     * @param PurchaseContext     $context
+     * @param PurchaseContext $context
      *
      * @throws PurchaseException
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
+        $context->setFlowType($this->flowType);
+
         foreach ($this->purchaseProcessors as $processor) {
             $processor->commit($target, $context);
         }
@@ -157,6 +219,8 @@ class PurchaseFlow
      */
     public function rollback(ItemHolderInterface $target, PurchaseContext $context)
     {
+        $context->setFlowType($this->flowType);
+
         foreach ($this->purchaseProcessors as $processor) {
             $processor->rollback($target, $context);
         }
@@ -187,12 +251,22 @@ class PurchaseFlow
         $this->itemHolderValidators[] = $itemHolderValidator;
     }
 
+    public function addItemHolderPostValidator(ItemHolderPostValidator $itemHolderValidator)
+    {
+        $this->itemHolderPostValidators[] = $itemHolderValidator;
+    }
+
+    public function addDiscountProcessor(DiscountProcessor $discountProcessor)
+    {
+        $this->discountProcessors[] = $discountProcessor;
+    }
+
     /**
      * @param ItemHolderInterface $itemHolder
      */
     protected function calculateTotal(ItemHolderInterface $itemHolder)
     {
-        $total = $itemHolder->getItems()->reduce(function ($sum, ItemInterface $item) {
+        $total = array_reduce($itemHolder->getItems()->toArray(), function ($sum, ItemInterface $item) {
             $sum += $item->getPriceIncTax() * $item->getQuantity();
 
             return $sum;

@@ -54,8 +54,9 @@ jobs:
         - *eccube_setup
       env: DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
       script:
-        - ./bin/phpunit --exclude-group cache-clear
+        - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
         - ./bin/phpunit --group cache-clear
+        - ./bin/phpunit --group cache-clear-install
     - <<: *unit_test
       env: DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
     - &e2e_test

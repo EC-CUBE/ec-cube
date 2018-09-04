@@ -159,7 +159,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="delivery_free_amount", type="decimal", precision=12, scale=2, nullable=true)
+         * @ORM\Column(name="delivery_free_amount", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true})
          */
         private $delivery_free_amount;
 

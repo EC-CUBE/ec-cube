@@ -42,9 +42,9 @@ file that was distributed with this source code.
                         </td>
                         <td class="align-middle">
                             {% if Plugin.enabled %}
-                                <span class="text-success">{{ 'common.label.enabled'|trans }}</span>
+                                <span class="text-success">{{ 'common.enabled'|trans }}</span>
                             {% else %}
-                                <span class="text-secondary">{{ 'common.label.disabled'|trans }}</span>
+                                <span class="text-secondary">{{ 'common.disabled'|trans }}</span>
                             {% endif %}
                         </td>
                         <td class="align-middle">
@@ -109,13 +109,13 @@ file that was distributed with this source code.
                                         {% if Plugin.enabled %}
                                             <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
-                                               data-method="put" data-confirm="false">
+                                               data-method="post" data-confirm="false">
                                                 <i class="fa fa-pause fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.store.plugin_table.903'|trans }}"></i>
                                             </a>
                                         {% else %}
                                             <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
-                                               data-method="put" data-confirm="false">
+                                               data-method="post" data-confirm="false">
                                                 <i class="fa fa-play fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.store.plugin_table.902'|trans }}"></i>
                                             </a>
                                         {% endif %}
