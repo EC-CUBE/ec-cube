@@ -1420,8 +1420,8 @@ tooltip.admin.product.sale_limit: 購入者が一度に購入できる個数を�
 tooltip.admin.product.delivery_duration: 発送日の目安期間を商品ごとに登録できます。
 tooltip.admin.product.product_class: この商品に設定された規格を確認・管理できます。
 tooltip.admin.product.free_area: 商品詳細ページに入力内容が表示されます。表示位置はデザインテンプレートによって異なります。
-tooltip.admin.common.shop_memo: 店舗用のメモ欄です。フロント画面には表示されません。
-tooltip.admin.product.class_name__backend_name: 管理者用に別名を登録しておくことができます（例：規格名：サイズ　管理名：サイズ（服）、サイズ（靴）等 ）。フロント画面には表示されません。
+tooltip.admin.product.shop_memo: 店舗用のメモ欄です。フロント画面には表示されません。
+tooltip.admin.product.backend_name: 管理者用に別名を登録しておくことができます（例：規格名：サイズ　管理名：サイズ（服）、サイズ（靴）等 ）。フロント画面には表示されません。
 tooltip.admin.product.csv_upload: 所定の型のCSVデータを用いて商品を一括で登録することができます。
 tooltip.admin.product.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
 tooltip.admin.category.csv_upload: 所定の型のCSVデータを用いてカテゴリを一括で登録することができます。
@@ -1455,6 +1455,7 @@ tooltip.admin.customer.customer_address: この会員が登録しているお届
 tooltip.admin.customer.purchase_history: この会員が注文をした履歴が表示されます。
 tooltip.admin.customer.shop_memo: 店舗用のメモ欄です。フロント側には表示されません。
 tooltip.admin.content.news.url: この新着情報の詳細な内容を記したウェブページある場合、URLを入力します。外部サイトのURLなどを利用することもできます。
+tooltip.admin.content.news.body: HTMLタグが利用可能です。
 tooltip.admin.content.layout_edit: テンプレートのセクションごとにブロックをドラッグ＆ドロップで配置することができます。
 tooltip.admin.content.page_file_name: ページの内容を記述したtwigテンプレートファイルの名前です。
 tooltip.admin.content.page_source_code: テンプレートファイルを編集します。twigで記述します。
@@ -1480,6 +1481,7 @@ tooltip.admin.setting.shop.shop.option_point_enabled: 購入金額に対する�
 tooltip.admin.setting.shop.shop.option_point_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
 tooltip.admin.setting.shop.shop.option_point_conversion_rate: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
 tooltip.admin.setting.shop.payment.logo_image: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
+tooltip.admin.setting.shop.delivery.tracking_number_url: 配送業者のお問い合わせページURLを指定します。
 tooltip.admin.setting.shop.delivery.sale_type: この配送方法で取り扱える販売種別を指定します。
 tooltip.admin.setting.shop.delivery.apply_to_pref: すべての都道府県に同じ送料を一括で設定できます。あとから個々の都道府県の送料を書き換えることも可能です。
 tooltip.admin.setting.shop.delivery.shop_memo: 店舗用のメモ欄です。フロント側には表示されません。
@@ -1489,7 +1491,7 @@ tooltip.admin.setting.shop.csv.csv_columns: 各種のデータをCSVで出力で
 tooltip.admin.setting.shop.csv.csv_type: 設定したいCSVの種類を指定してください。
 tooltip.admin.setting.system.member.authority: 権限管理で設定した権限を選択できます。
 tooltip.admin.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
-tooltip.admin.setting.system.security.admin_url: 管理画面にログインするためのURLを変更します。
+tooltip.admin.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
 tooltip.admin.setting.system.security.ip_limit: 管理画面にログインできる接続元のIPアドレスを制限します。
 tooltip.admin.setting.system.security.force_ssl: ショップサイトと管理画面への接続をSSL(https)での接続に制限します。
 tooltip.admin.setting.system.log_display: アクセスやエラー状況などのログを確認できます。

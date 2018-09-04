@@ -73,7 +73,11 @@ file that was distributed with this source code.
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-3"><span>{{ 'admin.content.news.body'|trans }}</span></div>
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.content.news.body'|trans }}">
+                                            <span>{{ 'admin.content.news.body'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                    </div>
                                     <div class="col mb-2">
                                         {{ form_widget(form.description) }}
                                         {{ form_errors(form.description) }}
