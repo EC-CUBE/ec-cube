@@ -1407,9 +1407,25 @@ admin.info.document: ドキュメント
 # ツールチップ
 #------------------------------------------------------------------------------------
 
-# TODO
-
-# tooltip.xxx.yyy: 〇〇を有効にします。フロント画面には表示されません。
+tooltip.admin.product.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
+tooltip.admin.product.product_id: 自動的に採番される商品のIDです。
+tooltip.admin.product.sale_type: 通常商品やダウンロード商品といった販売方法が異なる場合に利用します。販売種別のリストは［マスターデータ管理］のmtb_sale_typeから編集できます。
+tooltip.admin.product.image: 複数の商品画像をドラッグ＆ドロップで登録できます。
+tooltip.admin.product.description_detail: 商品ページに表示される説明文です。HTMLタグが利用可能です。
+tooltip.admin.product.description_list: 商品一覧ページに表示される商品説明文です。未設定の場合、商品一覧画面に説明は表示されません。
+tooltip.admin.product.normal_price: 販売価格が特別な価格である場合、通常価格を併せて表示することができます。
+tooltip.admin.product.search_word: サイト内検索で利用されるキーワードです。
+tooltip.admin.product.product_code: 自由に設定できる商品コードです。
+tooltip.admin.product.sale_limit: 購入者が一度に購入できる個数を制限することができます。
+tooltip.admin.product.delivery_duration: 発送日の目安期間を商品ごとに登録できます。
+tooltip.admin.product.product_class: この商品に設定された規格を確認・管理できます。
+tooltip.admin.product.free_area: 商品詳細ページに入力内容が表示されます。表示位置はデザインテンプレートによって異なります。
+tooltip.admin.common.shop_memo: 店舗用のメモ欄です。フロント画面には表示されません。
+tooltip.admin.product.class_name__backend_name: 管理者用に別名を登録しておくことができます（例：規格名：サイズ　管理名：サイズ（服）、サイズ（靴）等 ）。フロント画面には表示されません。
+tooltip.admin.product.csv_upload: 所定の型のCSVデータを用いて商品を一括で登録することができます。
+tooltip.admin.product.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
+tooltip.admin.category.csv_upload: 所定の型のCSVデータを用いてカテゴリを一括で登録することができます。
+tooltip.admin.category.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
 
 #====================================================================================
 # インストール画面
