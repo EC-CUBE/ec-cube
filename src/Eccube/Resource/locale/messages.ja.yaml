@@ -1440,7 +1440,7 @@ tooltip.admin.order.customer_id: 自動的に採番される会員のIDです。
 tooltip.admin.order.shipping_info: 出荷先情報を表示します。出荷先の追加も可能です。1受注で複数の出荷先がある場合は「お届け先を編集」から出荷先詳細情報が確認できます。
 tooltip.admin.order.shipping_info.tracking_number: お問い合せ番号（出荷伝票番号）がある場合、こちらから入力できます。受注一覧からまとめて入力することも可能です。
 tooltip.admin.order.shipping_info.delivery_provider: 配達業者、配達方法を変更できます。変更後、送料が変わる可能性がありますので、ご注意ください。
-tooltip.tooltip.admin.order.shipping_info.shop_memo: 出荷担当者、及び配送業者用のメモを保存しておけます。出荷用CSV等で確認が可能です。
+tooltip.admin.order.shipping_info.shop_memo: 出荷担当者、及び配送業者用のメモを保存しておけます。出荷用CSV等で確認が可能です。
 tooltip.admin.order.product_info: 購入された商品情報、及び、送料、手数料を含めた計算結果が表示されます。商品の追加や金額変更を行った場合は、計算結果の更新を行ってください。
 tooltip.admin.order.shop_memo: 店舗用メモを保存しておけます。フロント画面には表示されません。
 tooltip.admin.order.mail_history: これまでに配信したメールの確認・新規メールの作成ができます。
@@ -1463,7 +1463,22 @@ tooltip.admin.content.page_meta: ページのMETAタグの内容を指定でき�
 tooltip.admin.content.block_name: ブロックの管理用名称です。
 tooltip.admin.content.block_file_name: このブロックの内容を記述したtwigテンプレートファイルの名前です。管理画面ではあとから変更できません。
 tooltip.admin.content.block_source_code: テンプレートファイルを編集します。twigで記述します。
-
+tooltip.admin.setting.shop.shop.email_from: 店舗からメールを送信した場合の送信元になるメールアドレスです。
+tooltip.admin.setting.shop.shop.email_for_inquiries: 問い合わせフォームから問い合わせがあった場合に、その通知を受信するメールアドレスです。
+tooltip.admin.setting.shop.shop.email_reply_to: 返信メールを受け付けるメールアドレスです。
+tooltip.admin.setting.shop.shop.email_return_path: 店舗からメールを送信しエラーが生じた場合に、その通知を受信するメールアドレスです。
+tooltip.admin.setting.shop.shop.good_traded: 店舗が取り扱う商品についての簡単な説明文です。
+tooltip.admin.setting.shop.shop.message: フロント側に表示されます。表示位置はデザインテンプレートによって異なります。
+tooltip.admin.setting.shop.shop.option_delivery_fee_free_amount: この金額を超える購入があった場合、送料を無料とします。
+tooltip.admin.setting.shop.shop.option_delivery_fee_free_quantity: この個数を超える購入があった場合、送料を無料とします。
+tooltip.admin.setting.shop.shop.option_delivery_fee_by_product: ここをオンにすると、商品ごとに送料を指定できるようになります。
+tooltip.admin.setting.shop.shop.option_customer_activate: 顧客の会員登録直後は仮会員とし、メールアドレスの確認などを経て本会員として登録できる機能です。
+tooltip.admin.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
+tooltip.admin.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
+tooltip.admin.setting.shop.shop.option_product_tax: オンにすると、商品別に税率を設定することができるようになります。
+tooltip.admin.setting.shop.shop.option_point_enabled: 購入金額に対するポイント付与率を編集できます。
+tooltip.admin.setting.shop.shop.option_point_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
+tooltip.admin.setting.shop.shop.option_point_conversion_rate: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
 
 
 
