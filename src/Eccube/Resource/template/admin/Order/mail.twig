@@ -131,7 +131,10 @@ $(function() {
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-3">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_template'|trans }}"><span>{{ 'admin.order.mail_template'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_template'|trans }}">
+                                    <span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                </div>
+                                <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                             </div>
                             <div class="col">
                                 {{ form_widget(form.template, {'id': 'template-change'}) }}
@@ -140,7 +143,10 @@ $(function() {
                         </div>
                         <div class="row mb-2">
                             <div class="col-3">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_subject'|trans }}"><span>{{ 'admin.order.mail_subject'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_subject'|trans }}">
+                                    <span>{{ 'admin.order.mail_subject'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                </div>
+                                <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                             </div>
                             <div class="col">
                                 {{ form_widget(form.mail_subject) }}
