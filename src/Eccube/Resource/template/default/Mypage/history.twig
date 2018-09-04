@@ -152,9 +152,7 @@ file that was distributed with this source code.
                         <div class="ec-orderMail">
                             <div class="ec-orderMail__time">{{ MailHistory.send_date|date_sec }}</div>
                             <div class="ec-orderMail__link"><a>{{ MailHistory.mail_subject }}</a></div>
-                            <pre class="ec-orderMail__body" style="display: none;">
-                                    {{ MailHistory.mail_body|nl2br }}
-                                <p class="ec-orderMail__close"><a>{{ 'common.close'|trans }}</a></p></pre>
+                            <div class="ec-orderMail__body">{{ MailHistory.mail_body|nl2br }}<p class="ec-orderMail__close"><a>{{ 'common.close'|trans }}</a></p></div>
                         </div>
                     {% else %}
                         <p class="ec-reportDescription">{{ 'front.mypage.mail_not_found'|trans }}</p>
