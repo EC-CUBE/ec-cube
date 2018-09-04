@@ -1449,7 +1449,11 @@ tooltip.admin.order.mail_template: メールのテンプレートを選択しま
 tooltip.admin.order.mail_subject: メールの件名を修正できます。
 tooltip.admin.shipping.csv_upload: 所定の型のCSVデータを用いて出荷情報を一括で登録することができます。
 tooltip.admin.shipping.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
-
+tooltip.admin.customer.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
+tooltip.admin.customer.customer_id: 自動的に採番される会員のIDです。
+tooltip.admin.customer.customer_address: この会員が登録しているお届け先です。この画面から追加することもできます。
+tooltip.admin.customer.purchase_history: この会員が注文をした履歴が表示されます。
+tooltip.admin.customer.shop_memo: 店舗用のメモ欄です。フロント側には表示されません。
 
 
 
