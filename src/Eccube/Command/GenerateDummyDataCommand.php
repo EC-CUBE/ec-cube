@@ -92,7 +92,7 @@ EOF
         $numberOfCustomer = $input->getOption('customers');
 
         $Customers = [];
-        $Products = $this->productRepository->findAll();
+        $Products = [];
 
         $faker = Faker::create($locale);
         for ($i = 0; $i < $numberOfCustomer; $i++) {
@@ -149,7 +149,13 @@ EOF
         ];
         foreach ($Customers as $Customer) {
             $Delivery = $Deliveries[$faker->numberBetween(0, count($Deliveries) - 1)];
-            $Product = $Products[$faker->numberBetween(0, count($Products) - 1)];
+            if (count($Products) > 0) {
+                $Product = $Products[$faker->numberBetween(0, count($Products) - 1)];
+            } else {
+                $orderBy = ['ASC', 'DESC'];
+                $orderByKey = $faker->numberBetween(0, 1);
+                $Product = $this->productRepository->findOneBy([], ['id' => $orderBy[$orderByKey]]);
+            }
             $charge = $faker->randomNumber(4);
             $discount = $faker->randomNumber(4);
             for ($i = 0; $i < $numberOfOrder; $i++) {
