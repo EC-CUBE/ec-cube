@@ -1,6 +1,6 @@
 DirectoryIndex index.php index.html .ht
 
-<FilesMatch "^composer|^COPYING|^\.env|^Procfile|^app\.json|^gulpfile\.js|^packages\.json|^packages-lock\.json|web\.config|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml)$">
+<FilesMatch "^composer|^COPYING|^\.env|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml)$">
     order allow,deny
     deny from all
 </FilesMatch>
