@@ -886,6 +886,8 @@ admin.customer.customer_address__add: お届け先住所を追加
 admin.customer.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
 admin.customer.customer_address_id: お届け先ID
 admin.customer.customer_address_info: お届け先情報
+admin.customer.customer_address.delete.header: お届け先を削除します
+admin.customer.customer_address.delete.confirm: このお届け先を削除してもよろしいですか？
 admin.customer.multi_search_label: 会員ID・メールアドレス・お名前
 admin.customer.customer_status: 会員種別
 admin.customer.birth_month: 誕生月
