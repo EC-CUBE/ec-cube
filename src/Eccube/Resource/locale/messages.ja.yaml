@@ -1426,6 +1426,32 @@ tooltip.admin.product.csv_upload: 所定の型のCSVデータを用いて商品�
 tooltip.admin.product.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
 tooltip.admin.category.csv_upload: 所定の型のCSVデータを用いてカテゴリを一括で登録することができます。
 tooltip.admin.category.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
+tooltip.admin.order.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
+tooltip.admin.order.order_search_status: 受注の対応状況による絞り込み検索ができます。カッコ内は対応すべき受注の件数が表示されています。
+tooltip.admin.order.bulk_actions: チェックを入れた受注に対して、一括処理を行います。充分に確認をしてから実行してください。
+tooltip.admin.order.orderer: 受注番号（自動採番）・注文者名、注文日時が表示されます。
+tooltip.admin.order.message_short: 受注の対応状況を表示します。1受注で出荷先が複数ある場合は、全て出荷されると対応状況が「出荷済」となります。
+tooltip.admin.order.shipping_status: お問い合せ番号（出荷伝票番号）を入力することができます。Enterボタンで更新されます。
+tooltip.admin.order.tracking_number: 顧客からのお問い合せ、ショップ用のメモを表示します。どちらもある場合は、顧客からのお問い合せが優先して表示されます。
+tooltip.admin.order.order_info: 受注（注文）の基本情報です。
+tooltip.admin.order.order_no: 注文時に自動で採番される管理番号です。
+tooltip.admin.order.order_status: 受注の対応状況を変更できます。ただし、新規受注登録の場合は対応状況の。また、1受注で出荷先が複数ある場合は、全て出荷されると対応状況が「出荷済」となります。
+tooltip.admin.order.customer_id: 自動的に採番される会員のIDです。
+tooltip.admin.order.shipping_info: 出荷先情報を表示します。出荷先の追加も可能です。1受注で複数の出荷先がある場合は「お届け先を編集」から出荷先詳細情報が確認できます。
+tooltip.admin.order.shipping_info.tracking_number: お問い合せ番号（出荷伝票番号）がある場合、こちらから入力できます。受注一覧からまとめて入力することも可能です。
+tooltip.admin.order.shipping_info.delivery_provider: 配達業者、配達方法を変更できます。変更後、送料が変わる可能性がありますので、ご注意ください。
+tooltip.tooltip.admin.order.shipping_info.shop_memo: 出荷担当者、及び配送業者用のメモを保存しておけます。出荷用CSV等で確認が可能です。
+tooltip.admin.order.product_info: 購入された商品情報、及び、送料、手数料を含めた計算結果が表示されます。商品の追加や金額変更を行った場合は、計算結果の更新を行ってください。
+tooltip.admin.order.shop_memo: 店舗用メモを保存しておけます。フロント画面には表示されません。
+tooltip.admin.order.mail_history: これまでに配信したメールの確認・新規メールの作成ができます。
+tooltip.admin.order.mail_destination_info: 注文者にメールが送信できます。
+tooltip.admin.order.mail_template: メールのテンプレートを選択します。
+tooltip.admin.order.mail_subject: メールの件名を修正できます。
+tooltip.admin.shipping.csv_upload: 所定の型のCSVデータを用いて出荷情報を一括で登録することができます。
+tooltip.admin.shipping.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
+
+
+
 
 #====================================================================================
 # インストール画面

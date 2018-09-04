@@ -9,7 +9,6 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
-
 {% set menus = ['order', 'order_master'] %}
 
 {% block title %}{{ 'admin.order.order_list'|trans }}{% endblock %}
@@ -195,13 +194,13 @@ file that was distributed with this source code.
                     <div class="col-12">
                         {{ form_widget(searchForm._token) }}
                         <div>
-                            <label class="col-form-label">{{ 'admin.order.multi_search_label'|trans }}</label>
+                            <label class="col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.multi_search_label'|trans }}">{{ 'admin.order.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
-                                <p class="col-form-label">{{ 'admin.order.order_status'|trans }}</p>
+                                <label class="col-form-label"  data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.order_search_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                 <div id="admin_search_order_status">
                                     {% set statusForm = searchForm.status %}
                                     <!-- 各対応状況の件数を表示する -->
@@ -445,7 +444,7 @@ file that was distributed with this source code.
                             <div class="col-7">
                                 <div class="row justify-content-between">
                                     <div class="col-auto d-none btn-bulk-wrapper">
-                                        <label class="mr-2">{{ 'admin.common.bulk_actions'|trans }}</label>
+                                        <label class="mr-2" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.bulk_actions'|trans }}">{{ 'admin.common.bulk_actions'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                         <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-type="mail" data-bulk-update="true">
                                             {{ 'admin.order.send_mail'|trans }}
                                         </button>
@@ -520,13 +519,13 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center pl-3">
                                             <input type="checkbox" id="toggle_check_all" name="filter" value="open">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.orderer'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.orderer'|trans }}">{{ 'admin.order.orderer'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.payment_method'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.message_short'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.shipping_status'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.message_short'|trans }}">{{ 'admin.order.message_short'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.shipping_status'|trans }}">{{ 'admin.order.shipping_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.tracking_number'|trans }}">{{ 'admin.order.tracking_number'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.delivery'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>
                                     </tr>
