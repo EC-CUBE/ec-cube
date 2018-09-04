@@ -122,6 +122,11 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_order_date_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('order_date_end', DateType::class, [
                 'label' => 'admin.order.order_date__end',
@@ -130,6 +135,11 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_order_date_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('payment_date_start', DateType::class, [
                 'label' => 'admin.order.payment_date__start',
@@ -138,6 +148,11 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_payment_date_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('payment_date_end', DateType::class, [
                 'label' => 'admin.order.payment_date__start',
@@ -146,6 +161,11 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_payment_date_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('update_date_start', DateType::class, [
                 'label' => 'admin.common.update_date__start',
@@ -154,6 +174,11 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_update_date_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('update_date_end', DateType::class, [
                 'label' => 'admin.common.update_date__end',
@@ -162,6 +187,11 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_update_date_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('shipping_delivery_date_start', DateType::class, [
                 'label' => 'admin.order.delivery_date__start',
@@ -170,6 +200,11 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_shipping_delivery_date_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('shipping_delivery_date_end', DateType::class, [
                 'label' => 'admin.order.delivery_date__start',
@@ -178,6 +213,11 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_shipping_delivery_date_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('payment_total_start', PriceType::class, [
                 'label' => 'admin.order.purchase_price__start',

@@ -14,11 +14,10 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
-use Eccube\Repository\BaseInfoRepository;
+use Eccube\Service\PointHelper;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
@@ -34,20 +33,20 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     protected $entityManager;
 
     /**
-     * @var BaseInfo
+     * @var PointHelper
      */
-    protected $BaseInfo;
+    protected $pointHelper;
 
     /**
-     * AddPointProcessor constructor.
+     * PointDiffProcessor constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param BaseInfoRepository $baseInfoRepository
+     * @param PointHelper $pointHelper
      */
-    public function __construct(EntityManagerInterface $entityManager, BaseInfoRepository $baseInfoRepository)
+    public function __construct(EntityManagerInterface $entityManager, PointHelper $pointHelper)
     {
         $this->entityManager = $entityManager;
-        $this->BaseInfo = $baseInfoRepository->get();
+        $this->pointHelper = $pointHelper;
     }
 
     /*
@@ -68,12 +67,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
         // 所有ポイント < 新規利用ポイント
         $Customer = $itemHolder->getCustomer();
         if ($Customer->getPoint() < $diffUsePoint) {
-            $this->throwInvalidItemException('利用ポイントが所有ポイントを上回っています.');
-        }
-
-        // 支払い金額 < 利用ポイント
-        if ($itemHolder->getTotal() < 0) {
-            $this->throwInvalidItemException('利用ポイントがお支払い金額を上回っています.');
+            $this->throwInvalidItemException('利用ポイントが所有ポイントを上回っています');
         }
     }
 
@@ -93,8 +87,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
         $diffUsePoint = $this->getDiffOfUsePoint($itemHolder, $context);
 
         // ユーザの保有ポイントを減算
-        $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint($Customer->getPoint() - $diffUsePoint);
+        $this->pointHelper->prepare($itemHolder, $diffUsePoint);
     }
 
     /**
@@ -116,8 +109,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
         $diffUsePoint = $this->getDiffOfUsePoint($itemHolder, $context);
 
-        $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint($Customer->getPoint() + $diffUsePoint);
+        $this->pointHelper->rollback($itemHolder, $diffUsePoint);
     }
 
     /*
@@ -142,7 +134,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      */
     private function supports(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if (!$this->BaseInfo->isOptionPoint()) {
+        if (!$this->pointHelper->isPointEnabled()) {
             return false;
         }
 

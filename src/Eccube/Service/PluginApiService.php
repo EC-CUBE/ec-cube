@@ -15,6 +15,8 @@ namespace Eccube\Service;
 
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
+use Eccube\Repository\BaseInfoRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class PluginApiService
@@ -37,15 +39,25 @@ class PluginApiService
     private $requestStack;
 
     /**
+     * @var BaseInfo
+     */
+    private $BaseInfo;
+
+    /**
      * PluginApiService constructor.
      *
      * @param EccubeConfig $eccubeConfig
      * @param RequestStack $requestStack
+     * @param BaseInfoRepository $baseInfoRepository
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack)
+    public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack, BaseInfoRepository $baseInfoRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->requestStack = $requestStack;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -54,7 +66,7 @@ class PluginApiService
     public function getApiUrl()
     {
         if (empty($this->apiUrl)) {
-            return $this->eccubeConfig->get('eccube_package_repo_url');
+            return $this->eccubeConfig->get('eccube_package_api_url');
         }
 
         return $this->apiUrl;
@@ -98,6 +110,18 @@ class PluginApiService
         $params['per_page'] = (isset($data['page_count']) && !empty($data['page_count'])) ? $data['page_count'] : $this->eccubeConfig->get('eccube_default_page_count');
 
         return $this->getRequestApi($url, $params);
+    }
+
+    /**
+     * Get purchased plugins list
+     *
+     * @return array($result, $info)
+     */
+    public function getPurchased()
+    {
+        $url = $this->getApiUrl().'/plugins/purchased';
+
+        return $this->getRequestApi($url);
     }
 
     /**
@@ -212,9 +236,17 @@ class PluginApiService
 
         $curl = curl_init($url);
 
+        $key = $this->BaseInfo->getAuthenticationKey();
+        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
+
         // Option array
         $options = [
             // HEADER
+            CURLOPT_HTTPHEADER => [
+                'X-ECCUBE-KEY: '.$key,
+                'X-ECCUBE-URL: '.$baseUrl,
+                'X-ECCUBE-VERSION: '.Constant::VERSION,
+            ],
             CURLOPT_HTTPGET => true,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_RETURNTRANSFER => true,

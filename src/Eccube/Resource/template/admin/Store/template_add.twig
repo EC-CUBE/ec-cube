@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['store', 'template', 'template_install'] %}
 
-{% block title %}{{'admin.store.template_add.934'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.store.template_add.935'|trans}}{% endblock %}
+{% block title %}{{ 'admin.store.template.template_install__page_title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.store'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -24,10 +24,10 @@ file that was distributed with this source code.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span class="card-title">{{'admin.store.template_add.936'|trans}}</span></div>
+                        <div class="card-header"><span class="card-title">{{ 'admin.store.template.upload_new_template'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row mb-2">
-                                <div class="col-2"><span>{{'admin.store.template_add.937'|trans}}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                <div class="col-2"><span>{{ 'admin.store.template.template_code'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 <div class="col-10">
                                     {{ form_widget(form.code) }}
                                     {{ form_errors(form.code) }}
@@ -35,7 +35,7 @@ file that was distributed with this source code.
                             </div>
 
                             <div class="row mb-2">
-                                <div class="col-2"><span>{{'admin.store.template_add.938'|trans}}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                <div class="col-2"><span>{{ 'admin.store.template.template_name'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 <div class="col-10">
                                     {{ form_widget(form.name) }}
                                     {{ form_errors(form.name) }}
@@ -43,8 +43,8 @@ file that was distributed with this source code.
                             </div>
 
                             <div class="row mb-2">
-                                <div class="col-2"><span>{{'admin.store.template_add.939'|trans}}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
-                                    <br>File format: zip,tar,tar.gz
+                                <div class="col-2"><span>{{ 'admin.store.template.template_file'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    <br>{{ 'admin.store.template.file_format'|trans }}
                                 </div>
                                 <div class="col-10">
                                     {{ form_widget(form.file, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}

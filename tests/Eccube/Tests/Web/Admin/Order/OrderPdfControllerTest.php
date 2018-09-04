@@ -386,7 +386,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
             'order_pdf[note1]' => '',
             'order_pdf[note2]' => '',
             'order_pdf[note3]' => '',
-            'order_pdf[default]' => '1'
+            'order_pdf[default]' => '1',
         ]);
 
         $client->submit($form);

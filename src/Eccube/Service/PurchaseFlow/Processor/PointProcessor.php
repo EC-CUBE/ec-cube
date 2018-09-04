@@ -14,24 +14,18 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Entity\ItemInterface;
-use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
-use Eccube\Repository\BaseInfoRepository;
-use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
-use Eccube\Service\PurchaseFlow\ItemHolderValidator;
+use Eccube\Service\PointHelper;
+use Eccube\Service\PurchaseFlow\DiscountProcessor;
+use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 
 /**
  * 購入フローにおけるポイント処理.
  */
-class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocessor, PurchaseProcessor
+class PointProcessor implements DiscountProcessor, PurchaseProcessor
 {
     /**
      * @var EntityManagerInterface
@@ -39,74 +33,88 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     protected $entityManager;
 
     /**
-     * @var BaseInfo
+     * @var PointHelper
      */
-    protected $BaseInfo;
+    protected $pointHelper;
 
     /**
-     * AddPointProcessor constructor.
+     * PointProcessor constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param BaseInfoRepository $baseInfoRepository
+     * @param PointHelper $pointHelper
      */
-    public function __construct(EntityManagerInterface $entityManager, BaseInfoRepository $baseInfoRepository)
+    public function __construct(EntityManagerInterface $entityManager, PointHelper $pointHelper)
     {
         $this->entityManager = $entityManager;
-        $this->BaseInfo = $baseInfoRepository->get();
+        $this->pointHelper = $pointHelper;
     }
 
     /*
-     * ItemHolderPreprocessor
+     * DiscountProcessors
      */
 
     /**
      * {@inheritdoc}
      */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->supports($itemHolder)) {
             return;
         }
+
+        $this->pointHelper->removePointDiscountItem($itemHolder);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    {
+        if (!$this->supports($itemHolder)) {
+            return;
+        }
+
+        $usePoint = $itemHolder->getUsePoint();
+        $discount = $this->pointHelper->pointToDiscount($usePoint);
 
         // 利用ポイントがある場合は割引明細を追加
-        $this->removePointDiscountItem($itemHolder);
-        if ($itemHolder->getUsePoint() > 0) {
-            $discount = $this->pointToPrice($itemHolder->getUsePoint());
-            $this->addPointDiscountItem($itemHolder, $discount);
-        }
+        if ($usePoint > 0) {
+            $result = null;
 
-        // 付与ポイントを計算
-        $addPoint = $this->calculateAddPoint($itemHolder);
-        $itemHolder->setAddPoint($addPoint);
-    }
+            // 購入フロー実行時
+            if ($context->isShoppingFlow()) {
+                // 支払い金額 < 利用ポイントによる値引き額.
+                if ($itemHolder->getTotal() + $discount < 0) {
+                    $minus = $itemHolder->getTotal() + $discount;
+                    // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
+                    $overPoint = $this->pointHelper->priceToPoint($minus);
+                    $usePoint = $itemHolder->getUsePoint() + $overPoint;
+                    $discount = $this->pointHelper->pointToDiscount($usePoint);
+                    $result = ProcessResult::warn('利用ポイントがお支払い金額を上回っています', self::class);
+                }
 
-    /*
-     * ItemHolderValidator
-     */
+                // 所有ポイント < 利用ポイント
+                $Customer = $itemHolder->getCustomer();
+                if ($Customer->getPoint() < $usePoint) {
+                    // 利用ポイントが所有ポイントを上回っていた場合は所有ポイントで上書き
+                    $usePoint = $Customer->getPoint();
+                    $discount = $this->pointHelper->pointToDiscount($usePoint);
+                    $result = ProcessResult::warn('利用ポイントが所有ポイントを上回っています', self::class);
+                }
+                // 受注登録・編集実行時
+            } else {
+                // 支払い金額 < 利用ポイントによる値引き額.
+                if ($itemHolder->getTotal() + $discount < 0) {
+                    $result = ProcessResult::error('利用ポイントがお支払い金額を上回っています', self::class);
+                }
+            }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
-    {
-        if (!$this->supports($itemHolder)) {
-            return;
-        }
+            $itemHolder->setUsePoint($usePoint);
+            $this->pointHelper->addPointDiscountItem($itemHolder, $discount);
 
-        // 所有ポイント < 利用ポイント
-        $Customer = $itemHolder->getCustomer();
-        if ($Customer->getPoint() < $itemHolder->getUsePoint()) {
-            // 利用ポイントが所有ポイントを上回っていた場合は所有ポイントで上書き
-            $itemHolder->setUsePoint($Customer->getPoint());
-            $this->throwInvalidItemException('利用ポイントが所有ポイントを上回っています.');
-        }
-
-        // 支払い金額 < 利用ポイント
-        if ($itemHolder->getTotal() < 0) {
-            // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
-            $overPoint = floor($itemHolder->getTotal() / $this->BaseInfo->getPointConversionRate());
-            $itemHolder->setUsePoint($itemHolder->getUsePoint() + $overPoint);
-            $this->throwInvalidItemException('利用ポイントがお支払い金額を上回っています.');
+            if ($result) {
+                return $result;
+            }
         }
     }
 
@@ -124,8 +132,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
         }
 
         // ユーザの保有ポイントを減算
-        $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint($Customer->getPoint() - $itemHolder->getUsePoint());
+        $this->pointHelper->prepare($itemHolder, $itemHolder->getUsePoint());
     }
 
     /**
@@ -146,8 +153,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             return;
         }
 
-        $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint($Customer->getPoint() + $itemHolder->getUsePoint());
+        $this->pointHelper->rollback($itemHolder, $itemHolder->getUsePoint());
     }
 
     /*
@@ -169,7 +175,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      */
     private function supports(ItemHolderInterface $itemHolder)
     {
-        if (!$this->BaseInfo->isOptionPoint()) {
+        if (!$this->pointHelper->isPointEnabled()) {
             return false;
         }
 
@@ -182,94 +188,5 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
         }
 
         return true;
-    }
-
-    /**
-     * 付与ポイントを計算.
-     *
-     * @param ItemHolderInterface $itemHolder
-     *
-     * @return int
-     */
-    private function calculateAddPoint(ItemHolderInterface $itemHolder)
-    {
-        $basicPointRate = $this->BaseInfo->getBasicPointRate();
-
-        // 明細ごとのポイントを集計
-        $totalPoint = array_reduce($itemHolder->getItems()->toArray(), function ($carry, ItemInterface $item) use ($basicPointRate) {
-            $pointRate = $item->getPointRate();
-            if ($pointRate === null) {
-                $pointRate = $basicPointRate;
-            }
-
-            // TODO: ポイントは税抜き分しか割引されない、ポイント明細は税抜きのままでいいのか？
-            $point = 0;
-            if ($item->isPoint()) {
-                $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
-            // Only calc point on product
-            } elseif ($item->isProduct()) {
-                // ポイント = 単価 * ポイント付与率 * 数量
-                $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
-            }
-
-            return $carry + $point;
-        }, 0);
-
-        return $totalPoint < 0 ? 0 : $totalPoint;
-    }
-
-    /**
-     * 明細追加処理.
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param integer $discount
-     */
-    private function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount)
-    {
-        $DiscountType = $this->entityManager->find(OrderItemType::class, OrderItemType::POINT);
-        $TaxInclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-        $Taxation = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
-
-        // TODO TaxProcessorが先行して実行されるため, 税額等の値は個別にセットする.
-        $OrderItem = new OrderItem();
-        $OrderItem->setProductName($DiscountType->getName())
-            ->setPrice($discount)
-            ->setQuantity(1)
-            ->setTax(0)
-            ->setTaxRate(0)
-            ->setTaxRuleId(null)
-            ->setRoundingType(null)
-            ->setOrderItemType($DiscountType)
-            ->setTaxDisplayType($TaxInclude)
-            ->setTaxType($Taxation)
-            ->setOrder($itemHolder);
-        $itemHolder->addItem($OrderItem);
-    }
-
-    /**
-     * 既存のポイント明細を削除する.
-     *
-     * @param ItemHolderInterface $itemHolder
-     */
-    private function removePointDiscountItem(ItemHolderInterface $itemHolder)
-    {
-        foreach ($itemHolder->getItems() as $item) {
-            if ($item->isPoint()) {
-                $itemHolder->removeOrderItem($item);
-                $this->entityManager->remove($item);
-            }
-        }
-    }
-
-    /**
-     * ポイントを金額に変換する.
-     *
-     * @param integer $point int ポイント
-     *
-     * @return int 金額
-     */
-    private function pointToPrice($point)
-    {
-        return intval($point * $this->BaseInfo->getPointConversionRate()) * -1;
     }
 }

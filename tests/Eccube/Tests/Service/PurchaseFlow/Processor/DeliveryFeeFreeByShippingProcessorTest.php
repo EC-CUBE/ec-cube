@@ -20,6 +20,7 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor;
+use Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
@@ -235,6 +236,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         $OrderItem->setPrice($fee);
         $OrderItem->setQuantity(1);
         $OrderItem->setShipping($Shipping);
+        $OrderItem->setProcessorName(DeliveryFeePreprocessor::class);
         $Shipping->addOrderItem($OrderItem);
 
         return $OrderItem;

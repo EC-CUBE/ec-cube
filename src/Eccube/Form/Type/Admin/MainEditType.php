@@ -208,9 +208,7 @@ class MainEditType extends AbstractType
                 $qb->select('count(p)')
                     ->from('Eccube\\Entity\\Page', 'p')
                     ->where('p.url = :url')
-                    ->andWhere('p.DeviceType = :DeviceType')
-                    ->setParameter('url', $Page->getUrl())
-                    ->setParameter('DeviceType', $Page->getDeviceType());
+                    ->setParameter('url', $Page->getUrl());
 
                 // 更新の場合は自身のデータを重複チェックから除外する
                 if (!is_null($Page->getId())) {
@@ -229,10 +227,8 @@ class MainEditType extends AbstractType
                 $qb->select('count(p)')
                     ->from('Eccube\\Entity\\Page', 'p')
                     ->where('p.file_name = :file_name')
-                    ->andWhere('p.DeviceType = :DeviceType')
                     ->andWhere('p.edit_type = :edit_type')
                     ->setParameter('file_name', $Page->getFileName())
-                    ->setParameter('DeviceType', $Page->getDeviceType())
                     ->setParameter('edit_type', $Page->getEditType());
 
                 // 更新の場合は自身のデータを重複チェックから除外する

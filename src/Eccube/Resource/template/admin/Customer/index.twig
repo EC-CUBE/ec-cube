@@ -18,61 +18,92 @@ file that was distributed with this source code.
 {% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/tempusdominus-bootstrap-4.min.css', 'admin') }}">
+    <style type="text/css">
+        .datepicker-days th.dow:first-child,
+        .datepicker-days td:first-child {
+            color: #f00;
+        }
+
+        .datepicker-days th.dow:last-child,
+        .datepicker-days td:last-child {
+            color: #00f;
+        }
+    </style>
 {% endblock stylesheet %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
     <script>
         $(function() {
+            if ($('[type="date"]').prop('type') != 'date') {
+                // input type属性でdateが利用できるかどうか(カレンダー表示できないブラウザ対応)
+                $.when(
+                    $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
+                    $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
+                    $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
+                ).done(function() {
+                    $('input[id$=_date_start]').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-            var inputDate = document.createElement('input');
-            inputDate.setAttribute('type', 'date');
-            if (inputDate.type !== 'date') {
-                $('input[id$=_date_start]').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
+                    $('input[id$=_date_end]').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-                $('input[id$=_date_end]').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
+                    $('#admin_search_customer_birth_start').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-                $('#admin_search_customer_birth_start').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
+                    $('#admin_search_customer_birth_end').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-                $('#admin_search_customer_birth_end').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
+                    $('#admin_search_customer_last_buy_start').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-                $('#admin_search_customer_last_buy_start').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
-
-                $('#admin_search_customer_last_buy_end').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
+                    $('#admin_search_customer_last_buy_end').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
                 });
             }
+
         });
 
     </script>

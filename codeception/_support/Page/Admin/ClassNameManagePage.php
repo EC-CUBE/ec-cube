@@ -69,14 +69,11 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_名称($rowNum)
     {
-        ++$rowNum;
-
         return "#page_admin_product_class_name > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center > a";
     }
 
     public function 一覧_分類登録($rowNum)
     {
-        ++$rowNum;
         $this->tester->click("#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center > a");
 
         return $this;
@@ -107,7 +104,6 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_上に($rowNum)
     {
-        ++$rowNum;
         $this->tester->dragAndDropBy("#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum})", 0, -60);
 
         return $this;
@@ -115,7 +111,6 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_下に($rowNum)
     {
-        ++$rowNum;
         $this->tester->dragAndDropBy("#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum})", 0, 60);
 
         return $this;

@@ -16,6 +16,7 @@ namespace Eccube\Service\Composer;
 use Composer\Console\Application;
 use Eccube\Common\EccubeConfig;
 use Eccube\Exception\PluginException;
+use Eccube\Repository\BaseInfoRepository;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -37,25 +38,31 @@ class ComposerApiService implements ComposerServiceInterface
 
     private $workingDir;
 
-    public function __construct(EccubeConfig $eccubeConfig)
+    private $baseInfo;
+
+    public function __construct(EccubeConfig $eccubeConfig, BaseInfoRepository $baseInfoRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
+        $this->baseInfo = $baseInfoRepository->get();
     }
 
     /**
      * Run get info command
      *
      * @param string $pluginName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @param string|null $version
      *
      * @return array
      *
      * @throws PluginException
      */
-    public function execInfo($pluginName)
+    public function execInfo($pluginName, $version)
     {
         $output = $this->runCommand([
             'command' => 'info',
             'package' => $pluginName,
+            'version' => $version,
+            '--available' => true,
         ]);
 
         return OutputParser::parseInfo($output);
@@ -67,12 +74,15 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
      * @param null|OutputInterface $output
      *
+     * @return string
+     *
      * @throws PluginException
      */
     public function execRequire($packageName, $output = null)
     {
         $packageName = explode(' ', trim($packageName));
-        $this->runCommand([
+
+        return $this->runCommand([
             'command' => 'require',
             'packages' => $packageName,
             '--no-interaction' => true,
@@ -90,12 +100,15 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
      * @param null|OutputInterface $output
      *
+     * @return string
+     *
      * @throws PluginException
      */
     public function execRemove($packageName, $output = null)
     {
         $packageName = explode(' ', trim($packageName));
-        $this->runCommand([
+
+        return $this->runCommand([
             'command' => 'remove',
             'packages' => $packageName,
             '--ignore-platform-reqs' => true,
@@ -147,19 +160,29 @@ class ComposerApiService implements ComposerServiceInterface
      * Get require
      *
      * @param string $packageName
+     * @param string|null $version
      * @param string $callback
      * @param null $typeFilter
+     * @param int $level
      *
      * @throws PluginException
      */
-    public function foreachRequires($packageName, $callback, $typeFilter = null)
+    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0)
     {
-        $info = $this->execInfo($packageName);
+        if (strpos($packageName, '/') === false) {
+            return;
+        }
+        $info = $this->execInfo($packageName, $version);
         if (isset($info['requires'])) {
             foreach ($info['requires'] as $name => $version) {
-                $package = $this->execInfo($name);
-                if (is_null($typeFilter) || @$package['type'] === $typeFilter) {
-                    $callback($package);
+                if (isset($info['type']) && $info['type'] === $typeFilter) {
+                    $this->foreachRequires($name, $version, $callback, $typeFilter, $level + 1);
+                    if (isset($info['descrip.'])) {
+                        $info['description'] = $info['descrip.'];
+                    }
+                    if ($level) {
+                        $callback($info);
+                    }
                 }
             }
         }
@@ -185,7 +208,7 @@ class ComposerApiService implements ComposerServiceInterface
         if ($value) {
             $commands['setting-value'] = $value;
         }
-        $output = $this->runCommand($commands);
+        $output = $this->runCommand($commands, null, false);
 
         return OutputParser::parseConfig($output);
     }
@@ -202,7 +225,7 @@ class ComposerApiService implements ComposerServiceInterface
         $output = $this->runCommand([
             'command' => 'config',
             '--list' => true,
-        ]);
+        ], null, false);
 
         return OutputParser::parseList($output);
     }
@@ -227,17 +250,29 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @throws PluginException
      */
-    public function runCommand($commands, $output = null)
+    public function runCommand($commands, $output = null, $init = true)
     {
-        $this->init();
+        if ($init) {
+            $this->init();
+        }
         $commands['--working-dir'] = $this->workingDir;
         $commands['--no-ansi'] = true;
         $input = new ArrayInput($commands);
-        $output = $output ?: new BufferedOutput();
+        $useBufferedOutput = $output === null;
+
+        if ($useBufferedOutput) {
+            $output = new BufferedOutput();
+            ob_start(function ($buffer) use ($output) {
+                $output->write($buffer);
+
+                return null;
+            });
+        }
 
         $exitCode = $this->consoleApplication->run($input, $output);
 
-        if ($output instanceof BufferedOutput) {
+        if ($useBufferedOutput) {
+            ob_end_clean();
             $log = $output->fetch();
             if ($exitCode) {
                 log_error($log);
@@ -260,11 +295,34 @@ class ComposerApiService implements ComposerServiceInterface
         ini_set('memory_limit', '-1');
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
+        $this->initConsole();
+        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
+        $config = $this->getConfig();
+        if (!isset($config['repositories']['eccube'])) {
+            $url = $this->eccubeConfig['eccube_package_api_url'];
+            $json = json_encode([
+                'type' => 'composer',
+                'url' => $url,
+                'options' => [
+                    'http' => [
+                        'header' => ['X-ECCUBE-KEY: '.$this->baseInfo->getAuthenticationKey()]
+                    ]
+                ]
+            ]);
+            $this->execConfig('repositories.eccube', [$json]);
+            if (strpos($url, 'http://') == 0) {
+                $this->execConfig('secure-http', ['false']);
+            }
+            $this->initConsole();
+        }
+    }
+
+    private function initConsole()
+    {
         $consoleApplication = new Application();
         $consoleApplication->resetComposer();
         $consoleApplication->setAutoExit(false);
         $this->consoleApplication = $consoleApplication;
-        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
     }
 
     /**

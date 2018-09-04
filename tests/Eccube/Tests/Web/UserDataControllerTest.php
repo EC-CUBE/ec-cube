@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 
 class UserDataControllerTest extends AbstractWebTestCase
@@ -31,19 +30,12 @@ class UserDataControllerTest extends AbstractWebTestCase
 
         $this->userDataDir = $this->eccubeConfig->get('eccube_theme_user_data_dir');
 
-        $DeviceType = $this->entityManager
-            ->getRepository(DeviceType::class)
-            ->find(DeviceType::DEVICE_TYPE_PC);
-
-        if ($DeviceType) {
-            $page = new Page();
-            $page->setUrl($this->fileName)
-                ->setFileName($this->fileName)
-                ->setDeviceType($DeviceType)
-                ->setEditType(Page::EDIT_TYPE_USER);
-            $this->entityManager->persist($page);
-            $this->entityManager->flush();
-        }
+        $page = new Page();
+        $page->setUrl($this->fileName)
+            ->setFileName($this->fileName)
+            ->setEditType(Page::EDIT_TYPE_USER);
+        $this->entityManager->persist($page);
+        $this->entityManager->flush();
     }
 
     public function tearDown()

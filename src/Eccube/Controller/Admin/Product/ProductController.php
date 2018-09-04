@@ -995,7 +995,6 @@ class ProductController extends AbstractController
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
-        $ProductCategory->setSortNo($count);
 
         return $ProductCategory;
     }

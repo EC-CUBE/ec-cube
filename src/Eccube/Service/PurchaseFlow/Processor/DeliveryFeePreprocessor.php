@@ -80,25 +80,21 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if ($this->containsDeliveryFeeItem($itemHolder) == false) {
-            $this->addDeliveryFeeItem($itemHolder);
-        }
+        $this->removeDeliveryFeeItem($itemHolder);
+        $this->saveDeliveryFeeItem($itemHolder);
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     *
-     * @return bool
-     */
-    private function containsDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    private function removeDeliveryFeeItem(ItemHolderInterface $itemHolder)
     {
-        foreach ($itemHolder->getItems() as $item) {
-            if ($item->isDeliveryFee()) {
-                return true;
+        foreach ($itemHolder->getShippings() as $Shipping) {
+            foreach ($Shipping->getOrderItems() as $item) {
+                if ($item->getProcessorName() == DeliveryFeePreprocessor::class) {
+                    $Shipping->removeOrderItem($item);
+                    $itemHolder->removeOrderItem($item);
+                    $this->entityManager->remove($item);
+                }
             }
         }
-
-        return false;
     }
 
     /**
@@ -106,7 +102,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      *
      * @throws \Doctrine\ORM\NoResultException
      */
-    private function addDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    private function saveDeliveryFeeItem(ItemHolderInterface $itemHolder)
     {
         $DeliveryFeeType = $this->entityManager
             ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
@@ -122,12 +118,12 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
             // 送料の計算
             $deliveryFeeProduct = 0;
             if ($this->BaseInfo->isOptionProductDeliveryFee()) {
-                /** @var OrderItem $orderItem */
-                foreach ($Shipping->getOrderItems() as $orderItem) {
-                    if (!$orderItem->isProduct()) {
+                /** @var OrderItem $item */
+                foreach ($Shipping->getOrderItems() as $item) {
+                    if (!$item->isProduct()) {
                         continue;
                     }
-                    $deliveryFeeProduct += $orderItem->getProductClass()->getDeliveryFee() * $orderItem->getQuantity();
+                    $deliveryFeeProduct += $item->getProductClass()->getDeliveryFee() * $item->getQuantity();
                 }
             }
 
@@ -145,7 +141,8 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
                 ->setShipping($Shipping)
                 ->setOrder($itemHolder)
                 ->setTaxDisplayType($TaxInclude)
-                ->setTaxType($Taxion);
+                ->setTaxType($Taxion)
+                ->setProcessorName(DeliveryFeePreprocessor::class);
 
             $itemHolder->addItem($OrderItem);
             $Shipping->addOrderItem($OrderItem);

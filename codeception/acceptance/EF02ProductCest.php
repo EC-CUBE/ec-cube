@@ -29,13 +29,13 @@ class EF02ProductCest
         $topPage = TopPage::go($I);
 
         // TOPページ>商品一覧（ヘッダーのいずれかのカテゴリを選択）へ遷移
-        $topPage->カテゴリ選択(['キッチンツール', '調理器具']);
+        $topPage->カテゴリ選択(['アイスサンド', 'フルーツ']);
 
         // 登録商品がカテゴリごとに一覧表示される
-        $I->see('調理器具', '.ec-topicpath');
+        $I->see('フルーツ', '.ec-topicpath');
 
         // 一覧ページで商品がサムネイル表示される
-        $I->see('パーコレーター', '.ec-shelfGrid');
+        $I->see('チェリーアイスサンド', '.ec-shelfGrid');
     }
 
     public function product_商品一覧ヘッダ以外のカテゴリリンク(\AcceptanceTester $I)
@@ -52,17 +52,17 @@ class EF02ProductCest
         $topPage = TopPage::go($I);
 
         // TOPページ>商品一覧（ヘッダーのいずれかのカテゴリを選択）へ遷移
-        $topPage->カテゴリ選択(['キッチンツール']);
+        $topPage->カテゴリ選択(['新入荷']);
 
         // 各商品のサムネイルが表示される デフォルトは価格順
         $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[2]"]);
         $pPos = 0;
         $fPos = 0;
         foreach ($products as $key => $product) {
-            if ($product == 'パーコレーター') {
+            if ($product == 'チェリーアイスサンド') {
                 $pPos = $key;
             }
-            if ($product == 'ディナーフォーク') {
+            if ($product == '彩のジェラートCUBE') {
                 $fPos = $key;
             }
         }
@@ -79,10 +79,10 @@ class EF02ProductCest
         $pPos = 0;
         $fPos = 0;
         foreach ($products as $key => $product) {
-            if ($product == 'パーコレーター') {
+            if ($product == 'チェリーアイスサンド') {
                 $pPos = $key;
             }
-            if ($product == 'ディナーフォーク') {
+            if ($product == '彩のジェラートCUBE') {
                 $fPos = $key;
             }
         }
@@ -98,7 +98,7 @@ class EF02ProductCest
         $topPage = TopPage::go($I);
 
         // TOPページ>商品一覧（ヘッダーのいずれかのカテゴリを選択）へ遷移
-        $topPage->カテゴリ選択(['キッチンツール']);
+        $topPage->カテゴリ選択(['新入荷']);
         $listPage = new ProductListPage($I);
 
         // 各商品のサムネイルが表示される
@@ -121,7 +121,7 @@ class EF02ProductCest
         $topPage = TopPage::go($I);
 
         // TOPページ>商品一覧（ヘッダーのいずれかのカテゴリを選択）へ遷移
-        $topPage->カテゴリ選択(['キッチンツール']);
+        $topPage->カテゴリ選択(['新入荷']);
 
         // 絞込検索条件では、検索数が多い場合、「次へ」「前へ」「ページ番号」が表示される
         $I->see('1', ['css' => 'li.ec-pager__item--active']);
@@ -159,13 +159,13 @@ class EF02ProductCest
         $productPage = ProductDetailPage::go($I, 2);
 
         // 商品詳細の関連カテゴリに表示されている、カテゴリリンクを押下する
-        $productPage->カテゴリ選択(['キッチンツール', '調理器具']);
+        $productPage->カテゴリ選択(['アイスサンド', 'フルーツ']);
 
         // 登録商品がカテゴリごとに一覧表示される
-        $I->see('調理器具', '.ec-topicpath');
+        $I->see('フルーツ', '.ec-topicpath');
 
         // 一覧ページで商品がサムネイル表示される
-        $I->see('パーコレーター', '.ec-shelfGrid');
+        $I->see('チェリーアイスサンド', '.ec-shelfGrid');
     }
 
     public function product_商品詳細サムネイル(\AcceptanceTester $I)
@@ -175,12 +175,12 @@ class EF02ProductCest
 
         // デフォルトサムネイル表示確認
         $img = $productPage->サムネイル画像URL(1);
-        $I->assertRegExp('/\/upload\/save_image\/cafe-1\.jpg$/', $img, $img.' が見つかりません');
+        $I->assertRegExp('/\/upload\/save_image\/sand-1\.png$/', $img, $img.' が見つかりません');
 
         // 2個目のサムネイルクリック
         $productPage->サムネイル切替(2);
         $img = $productPage->サムネイル画像URL(2);
-        $I->assertRegExp('/\/upload\/save_image\/cafe-2\.jpg$/', $img, $img.' が見つかりません');
+        $I->assertRegExp('/\/upload\/save_image\/sand-2\.png$/', $img, $img.' が見つかりません');
     }
 
     public function product_商品詳細カート1(\AcceptanceTester $I)
@@ -198,7 +198,7 @@ class EF02ProductCest
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('パーコレーター', $cartPage->商品名(1));
+        $I->assertContains('チェリーアイスサンド', $cartPage->商品名(1));
         $I->assertContains('4', $cartPage->商品数量(1));
 
         // カートを空に
@@ -216,12 +216,12 @@ class EF02ProductCest
         $productPage->カートに入れる(6);
         $I->wait(5);
 
-        $I->assertContains('選択された商品(パーコレーター)は販売制限しております。 一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertContains('「チェリーアイスサンド」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('パーコレーター', $cartPage->商品名(1));
+        $I->assertContains('チェリーアイスサンド', $cartPage->商品名(1));
         $I->assertContains('5', $cartPage->商品数量(1));
 
         // カートを空に
@@ -239,12 +239,12 @@ class EF02ProductCest
         $productPage->カートに入れる(12);
         $I->wait(5);
 
-        $I->assertContains('選択された商品(パーコレーター)は販売制限しております。 一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertContains('「チェリーアイスサンド」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('パーコレーター', $cartPage->商品名(1));
+        $I->assertContains('チェリーアイスサンド', $cartPage->商品名(1));
         $I->assertContains('5', $cartPage->商品数量(1));
 
         // カートを空に
@@ -257,7 +257,7 @@ class EF02ProductCest
         $I->setStock(1, [10, 10, 10, 10, 10, 10, 10, 10, 10]);
 
         $productPage = ProductDetailPage::go($I, 1)
-            ->規格選択(['プラチナ', '150cm'])
+            ->規格選択(['チョコ', '16mm × 16mm'])
             ->カートに入れる(1);
 
         $I->wait(5);
@@ -267,7 +267,7 @@ class EF02ProductCest
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('ディナーフォーク', $cartPage->商品名(1));
+        $I->assertContains('彩のジェラートCUBE', $cartPage->商品名(1));
         $I->assertContains('1', $cartPage->商品数量(1));
 
         // カートを空に
@@ -280,17 +280,17 @@ class EF02ProductCest
         $I->setStock(1, [10, 10, 10, 10, 10, 10, 10, 10, 10]);
 
         $productPage = ProductDetailPage::go($I, 1)
-            ->規格選択(['プラチナ', '150cm'])
+            ->規格選択(['チョコ', '16mm × 16mm'])
             ->カートに入れる(3);
 
         $I->wait(5);
 
-        $I->assertContains('選択された商品(ディナーフォーク - プラチナ - 150cm)は販売制限しております。 一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertContains('「彩のジェラートCUBE - チョコ - 16mm × 16mm」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('ディナーフォーク', $cartPage->商品名(1));
+        $I->assertContains('彩のジェラートCUBE', $cartPage->商品名(1));
         $I->assertContains('2', $cartPage->商品数量(1));
 
         // カートを空に
@@ -303,17 +303,17 @@ class EF02ProductCest
         $I->setStock(1, [10, 10, 10, 10, 10, 10, 10, 10, 10]);
 
         $productPage = ProductDetailPage::go($I, 1)
-            ->規格選択(['プラチナ', '150cm'])
+            ->規格選択(['チョコ', '16mm × 16mm'])
             ->カートに入れる(12);
 
         $I->wait(5);
 
-        $I->assertContains('選択された商品(ディナーフォーク - プラチナ - 150cm)は販売制限しております。 一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertContains('「彩のジェラートCUBE - チョコ - 16mm × 16mm」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('ディナーフォーク', $cartPage->商品名(1));
+        $I->assertContains('彩のジェラートCUBE', $cartPage->商品名(1));
         $I->assertContains('2', $cartPage->商品数量(1));
 
         // カートを空に

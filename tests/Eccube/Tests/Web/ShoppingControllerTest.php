@@ -13,11 +13,15 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\Delivery;
+use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Tests\Fixture\Generator;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -88,7 +92,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 完了画面
-        $crawler = $this->scenarioComplete($Customer, $this->generateUrl('shopping_checkout'));
+        $crawler = $this->scenarioCheckout($Customer);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
@@ -324,7 +328,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         ]);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->expected = '入力されていません。';
+        $this->expected = 'お支払い方法を選択してください。';
         $this->actual = $crawler->filter('p.ec-errorMessage')->text();
         $this->verify();
     }
@@ -487,5 +491,105 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // Title
         $this->assertContains('お届け先の追加', $crawler->html());
+    }
+
+    /**
+     * カート→購入確認画面→完了画面(配送業者を変更する)
+     */
+    public function testCompleteWithChangeDeliveryName()
+    {
+        $Customer = $this->createCustomer();
+        $SaleTypeNormal = $this->entityManager->find(SaleType::class, SaleType::SALE_TYPE_NORMAL);
+        $Delivery = $this->container->get(Generator::class)->createDelivery();
+        $Delivery->setSaleType($SaleTypeNormal);
+        $this->entityManager->flush($Delivery);
+        $Payments = $this->paymentRepository->findAll();
+        $this->setUpPayments($Delivery, $Payments);
+        $this->entityManager->flush();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // 手続き画面
+        $crawler = $this->scenarioConfirm($Customer);
+        $this->expected = 'ご注文手続き';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => $Delivery->getId(),
+                    'DeliveryTime' => null,
+                ]
+            ]
+        );
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
+
+        // 完了画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_checkout'),
+            [],
+            true
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
+
+        $BaseInfo = $this->baseInfoRepository->get();
+        $mailCollector = $this->getMailCollector(false);
+        $Messages = $mailCollector->getMessages();
+        $Message = $Messages[0];
+
+        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
+        $this->actual = $Message->getSubject();
+        $this->verify();
+
+        // 生成された受注のチェック
+        $Order = $this->container->get(OrderRepository::class)->findOneBy(
+            [
+                'Customer' => $Customer,
+            ]
+        );
+
+        $OrderNew = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
+        $this->expected = $OrderNew;
+        $this->actual = $Order->getOrderStatus();
+        $this->verify();
+
+        $this->expected = $Customer->getName01();
+        $this->actual = $Order->getName01();
+        $this->verify();
+
+        $Shipping = $Order->getShippings()->first();
+
+        $this->expected = $Delivery->getName();
+        $this->actual = $Shipping->getShippingDeliveryName();
+        $this->verify();
+    }
+
+    /**
+     * @param Delivery $Delivery
+     * @param Payment[] $Payments
+     */
+    private function setUpPayments(Delivery $Delivery, array $Payments)
+    {
+        foreach ($Payments as $Payment) {
+            $PaymentOption = new PaymentOption();
+            $PaymentOption
+                ->setDeliveryId($Delivery->getId())
+                ->setPaymentId($Payment->getId())
+                ->setDelivery($Delivery)
+                ->setPayment($Payment);
+            $Payment->addPaymentOption($PaymentOption);
+            $this->entityManager->persist($PaymentOption);
+            $this->entityManager->flush($PaymentOption);
+        }
     }
 }
