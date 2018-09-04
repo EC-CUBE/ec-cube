@@ -1454,6 +1454,16 @@ tooltip.admin.customer.customer_id: 自動的に採番される会員のIDです
 tooltip.admin.customer.customer_address: この会員が登録しているお届け先です。この画面から追加することもできます。
 tooltip.admin.customer.purchase_history: この会員が注文をした履歴が表示されます。
 tooltip.admin.customer.shop_memo: 店舗用のメモ欄です。フロント側には表示されません。
+tooltip.admin.content.news.url: この新着情報の詳細な内容を記したウェブページある場合、URLを入力します。外部サイトのURLなどを利用することもできます。
+tooltip.admin.content.layout_edit: テンプレートのセクションごとにブロックをドラッグ＆ドロップで配置することができます。
+tooltip.admin.content.page_file_name: ページの内容を記述したtwigテンプレートファイルの名前です。
+tooltip.admin.content.page_source_code: テンプレートファイルを編集します。twigで記述します。
+tooltip.admin.content.page_layout: このページに適用するレイアウトを選択します。
+tooltip.admin.content.page_meta: ページのMETAタグの内容を指定できます。
+tooltip.admin.content.block_name: ブロックの管理用名称です。
+tooltip.admin.content.block_file_name: このブロックの内容を記述したtwigテンプレートファイルの名前です。管理画面ではあとから変更できません。
+tooltip.admin.content.block_source_code: テンプレートファイルを編集します。twigで記述します。
+
 
 
 
