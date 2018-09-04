@@ -48,7 +48,7 @@ foreach ($files as $file) {
 foreach ($templates as $template) {
     $replaced = $template->content;
     foreach ($messages as $messageId => $messageText) {
-        $pattern = "/'".$messageId."'/";
+        $pattern = "/('|\")".$messageId."('|\")/";   // 'message_id' or "message_id"を置換
         $replacement = "'".$messageText."'";
         $result = \preg_replace($pattern, $replacement, $replaced);
         if (null === $result) {
