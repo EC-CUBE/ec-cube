@@ -1487,6 +1487,15 @@ tooltip.admin.setting.shop.tax_setting: 商品共通の税率を設定できま�
 tooltip.admin.setting.shop.mail.mail_template: 既存のメールテンプレートを選択してください。以下に内容が表示されます。
 tooltip.admin.setting.shop.csv.csv_columns: 各種のデータをCSVで出力できます。出力したい項目をこちらで設定することが可能です。
 tooltip.admin.setting.shop.csv.csv_type: 設定したいCSVの種類を指定してください。
+tooltip.admin.setting.system.member.authority: 権限管理で設定した権限を選択できます。
+tooltip.admin.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
+tooltip.admin.setting.system.security.admin_url: 管理画面にログインするためのURLを変更します。
+tooltip.admin.setting.system.security.ip_limit: 管理画面にログインできる接続元のIPアドレスを制限します。
+tooltip.admin.setting.system.security.force_ssl: ショップサイトと管理画面への接続をSSL(https)での接続に制限します。
+tooltip.admin.setting.system.log_display: アクセスやエラー状況などのログを確認できます。
+tooltip.admin.setting.system.master_data_management: 各種マスターデータを管理します。
+tooltip.admin.setting.system.system_info: このEC-CUBEに関係しているシステム環境の情報を表示しています。
+tooltip.admin.setting.system.system.php_info: このEC-CUBEに関係しているPHPの詳細な情報を表示しています。
 
 #====================================================================================
 # インストール画面

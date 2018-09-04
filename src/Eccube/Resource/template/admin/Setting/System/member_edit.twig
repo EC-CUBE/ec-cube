@@ -109,8 +109,11 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.common.authority'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.setting.system.member.authority'|trans }}">
+                                            <span>{{ 'admin.common.authority'|trans }}</span>
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        </div>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -123,8 +126,11 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.setting.system.member.work'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.setting.system.member.work'|trans }}">
+                                            <span>{{ 'admin.setting.system.member.work'|trans }}</span>
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        </div>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.Work, {'attr': {'class': 'form-check-inline'}}) }}
