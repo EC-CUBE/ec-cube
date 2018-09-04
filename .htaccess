@@ -33,15 +33,15 @@ Header set X-Content-Type-Options nosniff
     # RewriteCond %{HTTP:x-sakura-forwarded-for} !^$
     # RewriteRule ^(.*) - [E=HTTPS:on]
 
-    RewriteRule "/\.git|^\.git" - [F]
-    RewriteRule "/src/|^src/" - [F]
-    RewriteRule "/app/|^app/" - [F]
-    RewriteRule "/tests/|^tests/" - [F]
-    RewriteRule "/var/|^var/" - [F]
-    RewriteRule "/vendor/|^vendor/" - [F]
-    RewriteRule "/node_modules/|^node_modules/" - [F]
-    RewriteRule "/codeception/|^codeception/" - [F]
-    RewriteRule "/bin/|^bin/" - [F]
+    RewriteRule "^\.git" - [F]
+    RewriteRule "^src/" - [F]
+    RewriteRule "^app/" - [F]
+    RewriteRule "^tests/" - [F]
+    RewriteRule "^var/" - [F]
+    RewriteRule "^vendor/" - [F]
+    RewriteRule "^node_modules/" - [F]
+    RewriteRule "^codeception/" - [F]
+    RewriteRule "^bin/" - [F]
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
