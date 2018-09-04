@@ -186,7 +186,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.order_info'|trans }}"><span class="card-title">{{ 'admin.order.order_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.order_info'|trans }}"><span class="card-title">{{ 'admin.order.order_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderOverview" aria-expanded="false" aria-controls="orderOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -196,11 +196,11 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <div class="col-3" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.order_no'|trans }}">{{ 'admin.order.order_no'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                            <div class="col-3" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.order_no'|trans }}">{{ 'admin.order.order_no'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                             <div class="col">{{ Order.order_no }}</div>
                                         </div>
                                         <div class="row mb-3 form-group">
-                                            <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.order_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-tooltip="true" data-placement="top" title="Tooltip"></i></label>
+                                            <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.order_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-tooltip="true" data-placement="top" title="Tooltip"></i></label>
                                             <div class="col">
                                                 {% if Order.id is not empty %}
                                                     {{ form_widget(form.OrderStatus) }}
@@ -313,7 +313,7 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row">
-                                            <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.customer_id'|trans }}">{{ 'admin.customer.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                            <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.customer_id'|trans }}">{{ 'admin.customer.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                             <div class="col">
                                                 <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
                                                 {{ form_widget(form.Customer) }}
@@ -421,7 +421,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.shipping_info'|trans }}"><span class="card-title">{{ 'admin.order.shipping_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.shipping_info'|trans }}"><span class="card-title">{{ 'admin.order.shipping_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#shippingInfo" aria-expanded="false" aria-controls="shippingInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -544,21 +544,21 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-6">
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.shipping_info.tracking_number'|trans }}">{{ 'admin.order.tracking_number'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                                <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.shipping_info.tracking_number'|trans }}">{{ 'admin.order.tracking_number'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.tracking_number) }}
                                                     {{ form_errors(form.Shipping.tracking_number) }}
                                                 </div>
                                             </div>
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.shipping_info.delivery_provider'|trans }}">{{ 'admin.order.delivery_provider'|trans }}<span class="badge badge-primary ml-1"></span><i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                                <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.shipping_info.delivery_provider'|trans }}">{{ 'admin.order.delivery_provider'|trans }}<span class="badge badge-primary ml-1"></span><i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.Delivery) }}
                                                     {{ form_errors(form.Shipping.Delivery) }}
                                                 </div>
                                             </div>
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.shipping_info.shop_memo'|trans }}">{{ 'admin.order.shop_memo_for_shipped'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                                <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.shipping_info.shop_memo'|trans }}">{{ 'admin.order.shop_memo_for_shipped'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.note) }}
                                                     {{ form_errors(form.Shipping.note) }}
@@ -590,7 +590,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.product_info'|trans }}"><span class="card-title">{{ 'admin.order.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.product_info'|trans }}"><span class="card-title">{{ 'admin.order.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderItem" aria-expanded="false" aria-controls="orderItem"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -852,7 +852,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.shop_memo'|trans }}"><span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.shop_memo'|trans }}"><span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea" aria-expanded="false" aria-controls="freeArea"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -869,7 +869,7 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.admin.order.mail_history'|trans }}"><span class="card-title">{{ 'admin.order.mail_history'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_history'|trans }}"><span class="card-title">{{ 'admin.order.mail_history'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                     </div>
                                     <div class="col-4 text-right"><a data-toggle="collapse" href="#mailHistory" aria-expanded="false" aria-controls="mailHistory"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>
