@@ -87,9 +87,9 @@ file that was distributed with this source code.
                                         <td class="align-middle text-center">
                                             {{ Member.Work.name }}
                                         </td>
-                                        <td class="align-middle text-center">
-                                            <div class="row justify-content-end">
-                                                <div class="col-auto text-center">
+                                        <td class="align-middle pr-3">
+                                            <div class="text-right">
+                                                <div class="px-1 d-inline-block">
                                                     <a class="btn btn-ec-actionIcon action-edit"
                                                        href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}"
                                                        data-tooltip="true"
@@ -98,7 +98,7 @@ file that was distributed with this source code.
                                                         <i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
-                                                <div class="col-auto text-center">
+                                                <div class="px-1 d-inline-block">
                                                     <a class="btn btn-ec-actionIcon action-up {% if loop.first %} disabled {% endif %}"
                                                        href="{{ url('admin_setting_system_member_up', {id: Member.id}) }}"
                                                        data-tooltip="true"
@@ -108,7 +108,7 @@ file that was distributed with this source code.
                                                         <i class="fa fa-arrow-up fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
-                                                <div class="col-auto text-center">
+                                                <div class="px-1 d-inline-block">
                                                     <a class="btn btn-ec-actionIcon action-down {% if loop.last %} disabled {% endif %}"
                                                        href="{{ url('admin_setting_system_member_down', {id: Member.id}) }}"
                                                        data-tooltip="true"
@@ -118,15 +118,15 @@ file that was distributed with this source code.
                                                         <i class="fa fa-arrow-down fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
-                                                <div class="col-auto text-center">
+                                                <div class="px-1 d-inline-block">
                                                     {% if Member.id == app.user.id %}
-                                                        <a class="btn btn-ec-actionIcon action-delete mr-3 disabled"
+                                                        <a class="btn btn-ec-actionIcon action-delete mr-2 disabled"
                                                             data-tooltip="true" data-placement="top"
                                                             title="{{ 'admin.common.delete'|trans }}">
                                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
                                                     {% else %}
-                                                        <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top"
+                                                        <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">
                                                             <a class="btn btn-ec-actionIcon action-delete"
                                                                data-toggle="modal"
