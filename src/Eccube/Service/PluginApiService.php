@@ -45,10 +45,12 @@ class PluginApiService
      * @var BaseInfo
      */
     private $BaseInfo;
+
     /**
      * @var PluginRepository
      */
     private $pluginRepository;
+
     /**
      * @var PluginService
      */
@@ -62,7 +64,7 @@ class PluginApiService
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
-     *
+     * 
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -197,7 +199,7 @@ class PluginApiService
                 $item['update_status'] = 4;
             }
 
-            $item = $this->pluginService->buildInfo($item);
+            $item = $this->buildInfo($item);
             $items[] = $item;
         }
 
@@ -220,7 +222,7 @@ class PluginApiService
         $payload = $this->getRequestApi($url);
         $json = json_decode($payload, true);
 
-        return $this->pluginService->buildInfo($json);
+        return $this->buildInfo($json);
     }
 
     /**
@@ -274,5 +276,34 @@ class PluginApiService
         }
 
         return $result;
+    }
+
+    /**
+     * Get plugin information
+     *
+     * @param array $plugin
+     *
+     * @return array|null
+     */
+    public function buildInfo(&$plugin)
+    {
+        $this->supportedVersion($plugin);
+
+        return $plugin;
+    }
+
+    /**
+     * Check support version
+     *
+     * @param $plugin
+     */
+    public function supportedVersion(&$plugin)
+    {
+        // Check the eccube version that the plugin supports.
+        $plugin['version_check'] = false;
+        if (in_array(Constant::VERSION, $plugin['supported_versions'])) {
+            // Match version
+            $plugin['version_check'] = true;
+        }
     }
 }

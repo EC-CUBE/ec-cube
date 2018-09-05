@@ -728,35 +728,6 @@ class PluginService
     }
 
     /**
-     * Get plugin information
-     *
-     * @param array $plugin
-     *
-     * @return array|null
-     */
-    public function buildInfo(&$plugin)
-    {
-        $this->supportedVersion($plugin);
-
-        return $plugin;
-    }
-
-    /**
-     * Check support version
-     *
-     * @param $plugin
-     */
-    public function supportedVersion(&$plugin)
-    {
-        // Check the eccube version that the plugin supports.
-        $plugin['version_check'] = false;
-        if (in_array(Constant::VERSION, $plugin['supported_versions'])) {
-            // Match version
-            $plugin['version_check'] = true;
-        }
-    }
-
-    /**
      * Find the dependent plugins that need to be disabled
      *
      * @param string $pluginCode
