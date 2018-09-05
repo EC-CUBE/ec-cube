@@ -77,7 +77,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
                     'hour' => $now->format('G'),
                     // Symfony specification of without leading zero
                     // https://symfony.com/doc/3.4/reference/forms/types/datetime.html#minutes
-                    'minute' => (int)$now->format('i'),
+                    'minute' => (int) $now->format('i'),
                 ],
             ],
         ];
