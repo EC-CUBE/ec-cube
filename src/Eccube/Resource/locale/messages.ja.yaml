@@ -392,7 +392,6 @@ admin.common.display: 表示
 admin.common.delete: 削除
 admin.common.cancel: キャンセル
 admin.common.search: 検索
-admin.common.search_clear: 検索条件をクリア
 admin.common.send: 送信
 admin.common.confirm: 確認
 admin.common.execute: 実行
