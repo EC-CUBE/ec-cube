@@ -17,6 +17,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Plugin;
+use Eccube\Exception\PluginApiException;
 use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\AuthenticationType;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
@@ -87,6 +88,7 @@ class PluginController extends AbstractController
      * @Template("@admin/Store/plugin.twig")
      *
      * @return array
+     *
      * @throws PluginException
      */
     public function index()
@@ -139,11 +141,9 @@ class PluginController extends AbstractController
         }
 
         // オーナーズストア通信
-        list($json,) = $this->pluginApiService->getPurchased();
         $officialPluginsDetail = [];
-        if ($json) {
-            // 接続成功時
-            $data = json_decode($json, true);
+        try {
+            $data = $this->pluginApiService->getPurchased();
             foreach ($data as $item) {
                 if (isset($officialPlugins[$item['id']])) {
                     $Plugin = $officialPlugins[$item['id']];
@@ -167,6 +167,8 @@ class PluginController extends AbstractController
                     }
                 }
             }
+        } catch (PluginApiException $e) {
+            $this->addWarning($e->getMessage(), 'admin');
         }
 
         return [
@@ -294,7 +296,6 @@ class PluginController extends AbstractController
                     }
                 }
             }
-
 
             ob_start();
 
@@ -509,7 +510,7 @@ class PluginController extends AbstractController
         return [
             'form' => $form->createView(),
             'eccubeUrl' => $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'eccubeShopName' => $this->BaseInfo->getShopName()
+            'eccubeShopName' => $this->BaseInfo->getShopName(),
         ];
     }
 
@@ -519,6 +520,7 @@ class PluginController extends AbstractController
      * @param array $plugins
      *
      * @return array
+     *
      * @throws PluginException
      */
     protected function getUnregisteredPlugins(array $plugins)

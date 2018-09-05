@@ -305,9 +305,9 @@ class ComposerApiService implements ComposerServiceInterface
                 'url' => $url,
                 'options' => [
                     'http' => [
-                        'header' => ['X-ECCUBE-KEY: '.$this->baseInfo->getAuthenticationKey()]
-                    ]
-                ]
+                        'header' => ['X-ECCUBE-KEY: '.$this->baseInfo->getAuthenticationKey()],
+                    ],
+                ],
             ]);
             $this->execConfig('repositories.eccube', [$json]);
             if (strpos($url, 'http://') == 0) {

@@ -734,7 +734,7 @@ class PluginService
      *
      * @return array|null
      */
-    public function buildInfo($plugin)
+    public function buildInfo(&$plugin)
     {
         $this->supportedVersion($plugin);
 
