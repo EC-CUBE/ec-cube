@@ -14,19 +14,6 @@ file that was distributed with this source code.
 
 {% set body_class = 'mypage' %}
 
-{% block javascript %}
-    <script>
-        $(function () {
-            $(".title").on("click", function () {
-                $(this).next().slideToggle();
-            });
-            $(".close").on("click", function () {
-                $(this).parent().slideToggle();
-            });
-        });
-    </script>
-{% endblock %}
-
 {% block main %}
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
