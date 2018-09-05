@@ -31,9 +31,13 @@ class PluginApiException extends \Exception
     private static function getResponseErrorMessage($info)
     {
         if (!empty($info)) {
-            $statusCode = $info['http_code'];
-            $message = $info['message'];
-            $message = $statusCode.' : '.$message;
+            $messageId = 'admin.store.package.api.'.$info['http_code'].'.error';
+            $message = trans($messageId);
+            if ($message === $messageId) {
+                $statusCode = $info['http_code'];
+                $message = $info['message'];
+                $message = $statusCode.' : '.$message;
+            }
         } else {
             $message = trans('ownerstore.text.error.timeout');
         }

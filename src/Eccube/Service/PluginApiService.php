@@ -64,7 +64,7 @@ class PluginApiService
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
-     * 
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
