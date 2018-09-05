@@ -72,18 +72,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         private $Block;
 
         /**
-         * @var \Eccube\Entity\PageLayout
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="BlockPositions")
-         * @ORM\JoinColumns({
-         *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
-         * })
-         *
-         * @deprecated
-         */
-        private $Page;
-
-        /**
          * @var \Eccube\Entity\Layout
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="BlockPositions")
@@ -235,34 +223,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         public function getLayout()
         {
             return $this->Layout;
-        }
-
-        /**
-         * Set pageLayout.
-         *
-         * @param \Eccube\Entity\Page|null $Page
-         *
-         * @return BlockPosition
-         *
-         * @deprecated
-         */
-        public function setPage(\Eccube\Entity\Page $Page = null)
-        {
-            $this->Page = $Page;
-
-            return $this;
-        }
-
-        /**
-         * Get pageLayout.
-         *
-         * @return PageLayout
-         *
-         * @deprecated
-         */
-        public function getPage()
-        {
-            return $this->Page;
         }
     }
 }
