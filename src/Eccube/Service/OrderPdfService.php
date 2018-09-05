@@ -387,12 +387,12 @@ class OrderPdfService extends TcpdfFpdi
         $Order = $Shipping->getOrder();
 
         // 購入者都道府県+住所1
-        $text = $Order->getPref().$Order->getAddr01();
+        $text = $Shipping->getPref().$Shipping->getAddr01();
         $this->lfText(27, 47, $text, 10);
-        $this->lfText(27, 51, $Order->getAddr02(), 10); //購入者住所2
+        $this->lfText(27, 51, $Shipping->getAddr02(), 10); //購入者住所2
 
         // 購入者氏名
-        $text = $Order->getName01().'　'.$Order->getName02().'　様';
+        $text = $Shipping->getName01().'　'.$Shipping->getName02().'　様';
         $this->lfText(27, 59, $text, 11);
 
         // =========================================
