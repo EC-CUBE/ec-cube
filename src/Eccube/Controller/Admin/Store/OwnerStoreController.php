@@ -275,56 +275,6 @@ class OwnerStoreController extends AbstractController
     }
 
     /**
-     * Do confirm page
-     *
-     * @Route("/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
-     * @Template("@admin/Store/plugin_confirm_uninstall.twig")
-     *
-     * @param Plugin $Plugin
-     *
-     * @return array|RedirectResponse
-     */
-    public function deleteConfirm(Plugin $Plugin)
-    {
-        // Owner's store communication
-        $url = $this->eccubeConfig['eccube_package_api_url'].'/search/packages.json';
-        list($json) = $this->getRequestApi($url);
-        $data = json_decode($json, true);
-        $items = $data['item'];
-
-        // The plugin depends on it
-        $pluginCode = $Plugin->getCode();
-        $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
-
-        if (!empty($otherDepend)) {
-            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $otherDepend[0]]);
-            $dependName = $otherDepend[0];
-            if ($DependPlugin) {
-                $dependName = $DependPlugin->getName();
-            }
-            $message = trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-            $this->addError($message, 'admin');
-
-            return $this->redirectToRoute('admin_store_plugin');
-        }
-
-        // Check plugin in api
-        $pluginSource = $Plugin->getSource();
-        $index = array_search($pluginSource, array_column($items, 'product_id'));
-        if ($index === false) {
-            throw new NotFoundHttpException();
-        }
-
-        // Build info
-        $plugin = $this->pluginService->buildInfo($items);
-        $plugin['id'] = $Plugin->getId();
-
-        return [
-            'item' => $plugin,
-        ];
-    }
-
-    /**
      * New ways to remove plugin: using composer command
      *
      * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall", methods={"DELETE"})
