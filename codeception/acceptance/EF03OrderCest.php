@@ -914,7 +914,7 @@ class EF03OrderCest
 
         ShoppingPage::at($I);
 
-        $I->see('「チェリーアイスサンド」は販売制限しております。', 'div:nth-child(3) > div > div.ec-alert-warning__text');
+        $I->see('「チェリーアイスサンド」の在庫が不足しております。一度に在庫数を超える購入はできません。', 'div:nth-child(2) > div > div.ec-alert-warning__text');
     }
 
     public function order_複数ブラウザでログインしてカートに追加する(\AcceptanceTester $I)
