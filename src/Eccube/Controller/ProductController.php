@@ -164,7 +164,7 @@ class ProductController extends AbstractController
                 AddCartType::class,
                 null,
                 [
-                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId(), true),
+                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId()),
                     'allow_extra_fields' => true,
                 ]
             );

@@ -59,10 +59,10 @@ class ProductRepository extends AbstractRepository
      * Find the Product with sorted ClassCategories.
      *
      * @param integer $productId
-     * @param bool $visibleOnly product_class.visibleがtrueのものだけを対象にするかどうか.
+     *
      * @return Product
      */
-    public function findWithSortedClassCategories($productId, $visibleOnly = false)
+    public function findWithSortedClassCategories($productId)
     {
         $qb = $this->createQueryBuilder('p');
         $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt'])
@@ -72,15 +72,13 @@ class ProductRepository extends AbstractRepository
             ->leftJoin('p.ProductImage', 'pi')
             ->leftJoin('p.ProductTag', 'pt')
             ->where('p.id = :id')
+            ->andWhere('pc.visible = :visible')
+            ->setParameter('id', $productId)
+            ->setParameter('visible', true)
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
-        if ($visibleOnly) {
-            $qb
-                ->andWhere('pc.visible = :visible')
-                ->setParameter('visible', true);
-        }
+
         $product = $qb
-            ->setParameter('id', $productId)
             ->getQuery()
             ->getSingleResult();
 

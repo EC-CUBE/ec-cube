@@ -25,7 +25,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 
         $this->entityManager->clear();
 
-        $Result = $this->productRepository->findWithSortedClassCategories($Product->getId(), true);
+        $Result = $this->productRepository->findWithSortedClassCategories($Product->getId());
 
         // visible = trueのみ取得する, 合計3件.
         self::assertCount(3, $Result->getProductClasses());
