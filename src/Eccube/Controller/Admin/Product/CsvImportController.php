@@ -1154,7 +1154,7 @@ class CsvImportController extends AbstractCsvImportController
             $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['price02']]);
             $this->addErrors($message);
         } else {
-            $price02 = $row[$headerByKey['price02']];
+            $price02 = str_replace(',', '', $row[$headerByKey['price02']]);
             $errors = $this->validator->validate($price02, new GreaterThanOrEqual(['value' => 0]));
             if ($errors->count() === 0) {
                 $ProductClass->setPrice02($price02);
