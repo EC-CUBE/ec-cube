@@ -8,6 +8,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
+{% autoescape false %}
 {{ Shipping.name01 }} {{ Shipping.name02 }} 様
 
 お客さまがご注文された以下の商品を発送いたしました。商品の到着まで、今しばらくお待ちください。
@@ -38,7 +39,7 @@ file that was distributed with this source code.
 お名前　：{{ Shipping.name01 }} {{ Shipping.name02 }} 様
 フリガナ：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
 {% if Shipping.company_name %}
-    会社名　：{{ Shipping.company_name }}
+会社名　：{{ Shipping.company_name }}
 {% endif %}
 郵便番号：〒{{ Shipping.postal_code }}
 住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
@@ -51,7 +52,7 @@ file that was distributed with this source code.
 お名前　：{{ Shipping.name01 }} {{ Shipping.name02 }} 様
 フリガナ：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
 {% if Shipping.company_name %}
-    会社名　：{{ Shipping.company_name }}
+会社名　：{{ Shipping.company_name }}
 {% endif %}
 郵便番号：〒{{ Shipping.postal_code }}
 住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
@@ -59,4 +60,4 @@ file that was distributed with this source code.
 
 お届け日：{{ Shipping.shipping_delivery_date is empty ? '指定なし' : Shipping.shipping_delivery_date|date_day }}
 お届け時間：{{ Shipping.shipping_delivery_time|default('指定なし') }}
-
+{% endautoescape %}
