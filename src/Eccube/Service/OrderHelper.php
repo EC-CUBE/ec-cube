@@ -277,6 +277,19 @@ class OrderHelper
         $this->session->remove(self::SESSION_NON_MEMBER_ADDRESSES);
     }
 
+    /**
+     * 会員情報の更新日時が受注の作成日時よりも新しければ, 受注の注文者情報を更新する.
+     *
+     * @param Order $Order
+     * @param Customer $Customer
+     */
+    public function updateCustomerInfo(Order $Order, Customer $Customer)
+    {
+        if ($Order->getCreateDate() < $Customer->getUpdateDate()) {
+            $this->setCustomer($Order, $Customer);
+        }
+    }
+
     private function createPreOrderId()
     {
         // ランダムなpre_order_idを作成

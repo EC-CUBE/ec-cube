@@ -72,7 +72,6 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <span>{{ 'admin.content.page_name'|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
@@ -84,7 +83,6 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <span>{{ 'admin.content.page_url'|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
@@ -102,8 +100,10 @@ file that was distributed with this source code.
                                 </div>
                                 <!-- ファイル名 -->
                                 <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_file_name'|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    <div class="col-2">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_file_name'|trans }}">
+                                            <span>{{ 'admin.content.page_file_name'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
                                         <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
@@ -126,8 +126,10 @@ file that was distributed with this source code.
                                 </div>
                                 <!-- コード -->
                                 <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_source_code'|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    <div class="col-2">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_source_code'|trans }}">
+                                            <span>{{ 'admin.content.page_source_code'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
                                         <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
@@ -159,9 +161,12 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip">
-                                        <span class="card-title">{{ 'admin.content.page_layout__card_title'|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                         title="{{ 'tooltip.content.page_layout'|trans }}">
+                                        <span class="card-title">
+                                            {{ 'admin.content.page_layout__card_title'|trans }}
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="col-4 text-right">
@@ -197,7 +202,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_meta'|trans }}">
                                         <span class="card-title">{{ 'admin.content.page_meta__card_title'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>

@@ -77,10 +77,19 @@ file that was distributed with this source code.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>{{ 'admin.setting.shop.csv.csv_colmuns'|trans }}</span></div>
+                        <div class="card-header">
+                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.csv.csv_columns'|trans }}">
+                                <span>{{ 'admin.setting.shop.csv.csv_colmuns'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                            </div>
+                        </div>
                         <div class="card-body">
                             <div class="row mb-4 justify-content-between">
-                                <div class="col-2"><span>{{ 'admin.setting.shop.csv.csv_type'|trans }}</span></div>
+                                <div class="col-2">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.csv.csv_type'|trans }}">
+                                        <span>{{ 'admin.setting.shop.csv.csv_type'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
+                                </div>
                                 <div class="col-6">
                                     {{ form_widget(form.csv_type, {'id': 'csv-type'}) }}
                                 </div>

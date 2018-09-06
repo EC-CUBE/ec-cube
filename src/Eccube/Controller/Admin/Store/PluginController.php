@@ -24,6 +24,7 @@ use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
 use Eccube\Util\CacheUtil;
@@ -61,6 +62,10 @@ class PluginController extends AbstractController
      * @var PluginApiService
      */
     protected $pluginApiService;
+    /**
+     * @var ComposerApiService
+     */
+    private $composerApiService;
 
     /**
      * PluginController constructor.
@@ -70,15 +75,17 @@ class PluginController extends AbstractController
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginApiService $pluginApiService
      *
+     * @param ComposerApiService $composerApiService
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService)
+    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService, ComposerApiService $composerApiService)
     {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->pluginApiService = $pluginApiService;
+        $this->composerApiService = $composerApiService;
     }
 
     /**
@@ -478,6 +485,9 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
      * @Template("@admin/Store/authentication_setting.twig")
+     * @param Request $request
+     *
+     * @return array
      */
     public function authenticationSetting(Request $request)
     {
@@ -492,6 +502,9 @@ class PluginController extends AbstractController
             $this->BaseInfo = $form->getData();
             $this->entityManager->persist($this->BaseInfo);
             $this->entityManager->flush();
+
+            // composerの認証を更新
+            $this->composerApiService->configureRepository($this->BaseInfo);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
         }
