@@ -154,7 +154,7 @@ front.entry.confirm_message: |
   よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。
 front.entry.do_register: 会員登録をする
 front.entry.complete_title: 新規会員登録(完了)
-front.entry.complete_temporary_title: 新規会員登録(仮登録完了)
+front.entry.complete_title__temporary: 新規会員登録(仮登録完了)
 front.entry.complete_message__title: 会員登録ありがとうございます
 front.entry.complete_message__temporary: 現在、仮会員の状態です。
   ただいま、ご入力いただいたメールアドレス宛に、ご本人様確認用のメールをお送りいたしました。
