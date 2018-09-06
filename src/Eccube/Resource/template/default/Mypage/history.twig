@@ -129,7 +129,7 @@ file that was distributed with this source code.
                     <div class="ec-rectHeading">
                         <h2>{{ 'front.mypage.message'|trans }}</h2>
                     </div>
-                    <p>{{ Order.message|default('')|nl2br }}</p>
+                    <p>{{ Order.message|nl2br|default('front.mypage.message_not_found'|trans) }}</p>
                 </div>
                 <div class="ec-orderMails">
                     <div class="ec-rectHeading">
