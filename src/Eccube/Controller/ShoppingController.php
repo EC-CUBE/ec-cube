@@ -127,6 +127,12 @@ class ShoppingController extends AbstractShoppingController
             $this->cartService->save();
         }
 
+        // マイページで会員情報が更新されていれば, Orderの注文者情報も更新する.
+        if ($Customer->getId()) {
+            $this->orderHelper->updateCustomerInfo($Order, $Customer);
+            $this->entityManager->flush();
+        }
+
         $form = $this->createForm(OrderType::class, $Order);
 
         return [
