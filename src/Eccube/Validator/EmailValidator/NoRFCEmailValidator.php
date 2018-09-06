@@ -20,17 +20,11 @@ class NoRFCEmailValidator extends EmailValidator
 {
     /**
      * @param $email
-     * @param EmailValidation $emailValidation
-     *
+     * @param EmailValidation|null $emailValidation
      * @return bool
      */
-    public function isValid($email, EmailValidation $emailValidation)
+    public function isValid($email, EmailValidation $emailValidation = null)
     {
-
-        $pattern = "/^[a-zA-Z0-9_\.@\+\?-]+$/i";
-        if (strlen($email) > 0 && !preg_match($pattern, $email)) {
-            return false;
-        }
 
         $wsp = '[\x20\x09]';
         $vchar = '[\x21-\x7e]';

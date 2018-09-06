@@ -19,6 +19,7 @@ use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
+use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -66,7 +67,7 @@ class ContactType extends AbstractType
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                 ],
             ])
             ->add('contents', TextareaType::class, [
