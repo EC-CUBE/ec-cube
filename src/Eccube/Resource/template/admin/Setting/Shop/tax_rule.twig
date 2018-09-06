@@ -58,7 +58,12 @@ file that was distributed with this source code.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
-                    <div class="card-header"><span>{{ 'admin.setting.shop.tax_setting'|trans }}</span></div>
+                    <div class="card-header">
+                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.tax_setting'|trans }}">
+                            <span>{{ 'admin.setting.shop.tax_setting'|trans }}</span>
+                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                        </div>
+                    </div>
                     <div class="card-body p-0">
                         <table class="table tabel-sm">
                             <colgroup>

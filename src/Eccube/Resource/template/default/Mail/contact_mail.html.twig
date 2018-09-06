@@ -9,77 +9,77 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-<body bgcolor="#F0F0F0" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;" >
-    <br>
-    <br>
-    <div align="center"><a href="{{ url('homepage') }}" style="font-family:Helvetica, Arial, sans-serif;font-size:30px;color:#333333;text-decoration:none;">{{ BaseInfo.shop_name }}</a></div>
-    <!-- 100% background wrapper (grey background) -->
-    <table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#F0F0F0" style="border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;" >
-        <tr>
-            <td align="center" valign="top" bgcolor="#F0F0F0" style="background-color:#F0F0F0;border-collapse:collapse;" >
-                <br>
-                <!-- 600px container (white background) -->
-                <table id="html-mail-table1" border="0" width="600px" cellpadding="10" cellspacing="0" class="container" style="border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;" >
-                    <tr>
-                        <td class="container-padding content" align="left" style="border-collapse:collapse;padding-left:24px;padding-right:24px;padding-top:12px;padding-bottom:12px;background-color:#ffffff;" >
-                            <br>
-                            <div class="title" style="font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;color:#374550;">{{'common.label.inquiry'|trans}}を受付いたしました。</div>
-                            <br>
+<body bgcolor="#F0F0F0" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;">
+<br>
+<br>
+<div align="center"><a href="{{ url('homepage') }}" style="font-family:Helvetica, Arial, sans-serif;font-size:30px;color:#333333;text-decoration:none;">{{ BaseInfo.shop_name }}</a></div>
+<!-- 100% background wrapper (grey background) -->
+<table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#F0F0F0" style="border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+    <tr>
+        <td align="center" valign="top" bgcolor="#F0F0F0" style="background-color:#F0F0F0;border-collapse:collapse;">
+            <br>
+            <!-- 600px container (white background) -->
+            <table id="html-mail-table1" border="0" width="600px" cellpadding="10" cellspacing="0" class="container" style="border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+                <tr>
+                    <td class="container-padding content" align="left" style="border-collapse:collapse;padding-left:24px;padding-right:24px;padding-top:12px;padding-bottom:12px;background-color:#ffffff;">
+                        <br>
+                        <div class="title" style="font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;color:#374550;">お問い合わせを受付いたしました。</div>
+                        <br>
+                        <div class="body-text" style="font-family:Helvetica, Arial, sans-serif;font-size:14px;line-height:20px;text-align:left;color:#333333;">
                             以下のお問い合わせを受付致しました。<br>
                             確認次第ご連絡いたしますので、少々お待ちください。<br>
                             <br>
                             <br>
-                            <div class="body-text" style="font-family:Helvetica, Arial, sans-serif;font-size:14px;line-height:20px;text-align:left;color:#333333;" >
-                                <dl style="display: flex;border-bottom: 1px dotted #ccc;margin: 0;">
-                                    <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">{{ 'Name'|trans }}</label></dt>
-                                    <dd style="width: 70%;line-height: 3;">{{ data.name01 }} {{ data.name02 }}</dd>
-                                </dl>
-                                <dl style="display: flex;border-bottom: 1px dotted #ccc;margin: 0;">
-                                    <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">{{ 'Kana'|trans }}</label></dt>
-                                    <dd style="width: 70%;line-height: 3;">{{ data.kana01 }} {{ data.kana02 }}</dd>
-                                </dl>
-                                <dl style="display: flex;border-bottom: 1px dotted #ccc;margin: 0;">
-                                    <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">{{ 'Address'|trans }}</label></dt>
-                                    <dd style="width: 70%;line-height: 3;"><span>〒</span>{{ data.postal_code }} {{ data.pref }} {{ data.addr01 }} {{ data.addr02 }}</dd>
-                                </dl>
-                                <dl style="display: flex;border-bottom: 1px dotted #ccc;margin: 0;">
-                                    <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">{{ 'signup.label.tel_number'|trans }}</label></dt>
-                                    <dd style="width: 70%;line-height: 3;">{{ data.phone_number }}</dd>
-                                </dl>
-                                <dl style="display: flex;border-bottom: 1px dotted #ccc;margin: 0;">
-                                    <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">{{ 'Email'|trans }}</label></dt>
-                                    <dd style="width: 70%;line-height: 3;">{{ data.email }}</dd>
-                                </dl>
-                                <dl style="display: flex;margin: 0;">
-                                    <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">{{ 'Contents'|trans }}</label></dt>
-                                    <dd style="width: 70%;line-height: 3;">{{ data.contents|nl2br }}</dd>
-                                </dl>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <!--/600px container -->
-                <br>
-                <br>
-                <table id="html-mail-table2" border="0" width="600" cellpadding="10" cellspacing="0" class="container" style="border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;" >
-                    <tr>
-                        <td class="container-padding content footer-text" align="left" style="border-collapse:collapse;font-family:Helvetica, Arial, sans-serif;font-size:12px;line-height:16px;color:#aaaaaa;padding-left:24px;padding-right:24px;padding-top:12px;padding-bottom:12px;background-color:#ffffff;" >
-                            本メールは、{{ BaseInfo.shop_name }}より送信しております。<br />
-                            もしお心当たりが無い場合は、その旨 <a href="mailto:{{ BaseInfo.email02 }}" style="text-decoration:none;">{{ BaseInfo.email02 }}</a> までご連絡いただければ幸いです。<br />
-                            <br />
-                            <div class="title" style="font-size:14px;font-family:Helvetica, Arial, sans-serif;font-weight:600;color:#374550;" ><a href="{{ url('homepage') }}" style="color:#aaaaaa;text-decoration:none;" >{{ BaseInfo.shop_name }}</a></div>
-                            <div>copyright &copy; {{ BaseInfo.shop_name }} all rights reserved.</div>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-    <!--/100% background wrapper-->
-    <br>
-    <br>
+                            <dl style="display: flex;border-bottom: 1px dotted #ccc;margin: 0;">
+                                <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">お名前</label></dt>
+                                <dd style="width: 70%;line-height: 3;">{{ data.name01 }} {{ data.name02 }}</dd>
+                            </dl>
+                            <dl style="display: flex;border-bottom: 1px dotted #ccc;margin: 0;">
+                                <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">お名前(カナ)</label></dt>
+                                <dd style="width: 70%;line-height: 3;">{{ data.kana01 }} {{ data.kana02 }}</dd>
+                            </dl>
+                            <dl style="display: flex;border-bottom: 1px dotted #ccc;margin: 0;">
+                                <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">住所</label></dt>
+                                <dd style="width: 70%;line-height: 3;"><span>〒</span>{{ data.postal_code }} {{ data.pref }} {{ data.addr01 }} {{ data.addr02 }}</dd>
+                            </dl>
+                            <dl style="display: flex;border-bottom: 1px dotted #ccc;margin: 0;">
+                                <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">電話番号</label></dt>
+                                <dd style="width: 70%;line-height: 3;">{{ data.phone_number }}</dd>
+                            </dl>
+                            <dl style="display: flex;border-bottom: 1px dotted #ccc;margin: 0;">
+                                <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">メールアドレス</label></dt>
+                                <dd style="width: 70%;line-height: 3;">{{ data.email }}</dd>
+                            </dl>
+                            <dl style="display: flex;margin: 0;">
+                                <dt style="padding-top: 14px;width: 30%;"><label class="ec-label">お問い合わせ内容</label></dt>
+                                <dd style="width: 70%;line-height: 3;">{{ data.contents|nl2br }}</dd>
+                            </dl>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <!--/600px container -->
+            <br>
+            <br>
+            <table id="html-mail-table2" border="0" width="600" cellpadding="10" cellspacing="0" class="container" style="border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+                <tr>
+                    <td class="container-padding content footer-text" align="left" style="border-collapse:collapse;font-family:Helvetica, Arial, sans-serif;font-size:12px;line-height:16px;color:#aaaaaa;padding-left:24px;padding-right:24px;padding-top:12px;padding-bottom:12px;background-color:#ffffff;">
+                        本メールは、{{ BaseInfo.shop_name }}より送信しております。<br/>
+                        もしお心当たりが無い場合は、その旨 <a href="mailto:{{ BaseInfo.email02 }}" style="text-decoration:none;">{{ BaseInfo.email02 }}</a> までご連絡いただければ幸いです。<br/>
+                        <br/>
+                        <div class="title" style="font-size:14px;font-family:Helvetica, Arial, sans-serif;font-weight:600;color:#374550;"><a href="{{ url('homepage') }}" style="color:#aaaaaa;text-decoration:none;">{{ BaseInfo.shop_name }}</a></div>
+                        <div>copyright &copy; {{ BaseInfo.shop_name }} all rights reserved.</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!--/100% background wrapper-->
+<br>
+<br>
 </body>
 
 </html>

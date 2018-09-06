@@ -8,6 +8,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
+{% autoescape false %}
 {{ Order.name01 }} {{ Order.name02 }} 様
 
 この度はご注文いただき誠にありがとうございます。下記ご注文内容にお間違えがないかご確認下さい。
@@ -63,13 +64,12 @@ file that was distributed with this source code.
 ************************************************
 
 {%  for Shipping in Order.Shippings %}
-◎お届け先{% if Order.multiple %}{{ loop.index }}
-{% endif %}
+◎お届け先{% if Order.multiple %}{{ loop.index }}{% endif %}
 
 お名前　：{{ Shipping.name01 }} {{ Shipping.name02 }} 様
 お名前(フリガナ)：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
 {% if Shipping.company_name %}
-配送業者　：{{ Shipping.company_name }}
+会社名　：{{ Shipping.company_name }}
 {% endif %}
 郵便番号：〒{{ Shipping.postal_code }}
 住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
@@ -92,9 +92,9 @@ file that was distributed with this source code.
 
 ============================================
 
-
 このメッセージはお客様へのお知らせ専用ですので、
 このメッセージへの返信としてご質問をお送りいただいても回答できません。
 ご了承ください。
 
 ご質問やご不明な点がございましたら、こちらからお願いいたします。
+{% endautoescape %}

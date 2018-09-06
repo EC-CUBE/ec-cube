@@ -25,16 +25,18 @@ file that was distributed with this source code.
                 <tr>
                     <td class="container-padding content" align="left" style="border-collapse:collapse;padding-left:24px;padding-right:24px;padding-top:12px;padding-bottom:12px;background-color:#ffffff;">
                         <br>
-                        <div class="title" style="font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;color:#374550;">本会員登録が完了いたしました。</div>
+                        <div class="title" style="font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;color:#374550;">この度は会員登録依頼をいただきまして、有り難うございます。</div>
                         <br>
                         <div class="body-text" style="font-family:Helvetica, Arial, sans-serif;font-size:14px;line-height:20px;text-align:left;color:#333333;">
                             {{ Customer.name01 }} {{ Customer.name02 }} 様<br>
                             <br>
                             {{ BaseInfo.shop_name }}でございます。<br/>
-                            この度は会員登録依頼をいただきましてまことに有り難うございます。<br/>
-                            ショッピングをお楽しみくださいませ。<br/>
+                            現在は仮登録の状態です。<br/><br/>
+                            本会員登録を完了するには下記URLにアクセスしてください。<br><br/>
+                            <a href="{{ activateUrl }}">{{ activateUrl }}</a>
                             <br/>
-                            今後ともどうぞ{{ BaseInfo.shop_name }}をよろしくお願い申し上げます。<br/>
+                            <br/>
+                            上記URLにて本会員登録が完了いたしましたら改めてご登録内容ご確認メールをお送り致します。
                             <br/>
                             <br/>
                         </div>
