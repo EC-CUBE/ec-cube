@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
+use Eccube\Exception\PluginApiException;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
@@ -91,6 +92,11 @@ class PluginService
     protected $cacheUtil;
 
     /**
+     * @var PluginApiService
+     */
+    private $pluginApiService;
+
+    /**
      * PluginService constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -101,6 +107,7 @@ class PluginService
      * @param ContainerInterface $container
      * @param CacheUtil $cacheUtil
      * @param ComposerApiService $composerService
+     * @param PluginApiService $pluginApiService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -110,7 +117,8 @@ class PluginService
         EccubeConfig $eccubeConfig,
         ContainerInterface $container,
         CacheUtil $cacheUtil,
-        ComposerApiService $composerService
+        ComposerApiService $composerService,
+        PluginApiService $pluginApiService
     ) {
         $this->entityManager = $entityManager;
         $this->pluginRepository = $pluginRepository;
@@ -122,6 +130,7 @@ class PluginService
         $this->container = $container;
         $this->cacheUtil = $cacheUtil;
         $this->composerService = $composerService;
+        $this->pluginApiService = $pluginApiService;
     }
 
     /**
@@ -481,6 +490,8 @@ class PluginService
 
             $this->entityManager->persist($p);
             $this->entityManager->flush($p);
+
+            $this->pluginApiService->pluginInstalled($p);
         } catch (\Exception $e) {
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
@@ -536,6 +547,7 @@ class PluginService
             $this->removeAssets($plugin->getCode());
         }
 
+        $this->pluginApiService->pluginUninstalled($plugin);
         return true;
     }
 
@@ -615,6 +627,12 @@ class PluginService
 
             $em->flush();
             $em->getConnection()->commit();
+
+            if ($enable) {
+                $this->pluginApiService->pluginEnabled($plugin);
+            } else {
+                $this->pluginApiService->pluginDisabled($plugin);
+            }
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
             throw $e;
@@ -879,19 +897,6 @@ class PluginService
             $file = new Filesystem();
             $file->remove($assetsDir);
         }
-    }
-
-    /**
-     * Is update
-     *
-     * @param string $pluginVersion
-     * @param string $remoteVersion
-     *
-     * @return boolean
-     */
-    public function isUpdate($pluginVersion, $remoteVersion)
-    {
-        return version_compare($pluginVersion, $remoteVersion, '<');
     }
 
     /**

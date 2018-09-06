@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class PluginApiService
 {
-    /**
+   /**
      * Url for Api
      *
      * @var string
@@ -52,29 +52,22 @@ class PluginApiService
     private $pluginRepository;
 
     /**
-     * @var PluginService
-     */
-    private $pluginService;
-
-    /**
      * PluginApiService constructor.
      *
      * @param EccubeConfig $eccubeConfig
      * @param RequestStack $requestStack
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginRepository $pluginRepository
-     * @param PluginService $pluginService
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack, BaseInfoRepository $baseInfoRepository, PluginRepository $pluginRepository, PluginService $pluginService)
+    public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack, BaseInfoRepository $baseInfoRepository, PluginRepository $pluginRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->requestStack = $requestStack;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->pluginRepository = $pluginRepository;
-        $this->pluginService = $pluginService;
     }
 
     /**
@@ -107,7 +100,7 @@ class PluginApiService
         try {
             $urlCategory = $this->getApiUrl().'/category';
 
-            return $this->getRequestApi($urlCategory);
+            return $this->requestApi($urlCategory);
         } catch (PluginApiException $e) {
             return [];
         }
@@ -132,7 +125,7 @@ class PluginApiService
         $params['page'] = (isset($data['page_no']) && !empty($data['page_no'])) ? $data['page_no'] : 1;
         $params['per_page'] = (isset($data['page_count']) && !empty($data['page_count'])) ? $data['page_count'] : $this->eccubeConfig->get('eccube_default_page_count');
 
-        $payload = $this->getRequestApi($url, $params);
+        $payload = $this->requestApi($url, $params);
         $data = json_decode($payload, true);
 
         if (isset($data['plugins'])) {
@@ -153,7 +146,7 @@ class PluginApiService
     {
         $url = $this->getApiUrl().'/plugins/purchased';
 
-        $payload = $this->getRequestApi($url);
+        $payload = $this->requestApi($url);
         $plugins = json_decode($payload, true);
 
         return $this->buildPlugins($plugins);
@@ -170,7 +163,7 @@ class PluginApiService
     {
         $url = $this->getApiUrl().'/plugins/recommended';
 
-        $payload = $this->getRequestApi($url);
+        $payload = $this->requestApi($url);
         $plugins = json_decode($payload, true);
 
         return $this->buildPlugins($plugins);
@@ -188,7 +181,7 @@ class PluginApiService
                 if ($plugin->getSource() == $item['id']) {
                     // Installed
                     $item['update_status'] = 2;
-                    if ($this->pluginService->isUpdate($plugin->getVersion(), $item['version'])) {
+                    if ($this->isUpdate($plugin->getVersion(), $item['version'])) {
                         // Need update
                         $item['update_status'] = 3;
                     }
@@ -206,6 +199,19 @@ class PluginApiService
     }
 
     /**
+     * Is update
+     *
+     * @param string $pluginVersion
+     * @param string $remoteVersion
+     *
+     * @return boolean
+     */
+    private function isUpdate($pluginVersion, $remoteVersion)
+    {
+        return version_compare($pluginVersion, $remoteVersion, '<');
+    }
+
+    /**
      * Get a plugin
      *
      * @param int|string $id Id or plugin code
@@ -218,10 +224,40 @@ class PluginApiService
     {
         $url = $this->getApiUrl().'/plugin/'.$id;
 
-        $payload = $this->getRequestApi($url);
+        $payload = $this->requestApi($url);
         $json = json_decode($payload, true);
 
         return $this->buildInfo($json);
+    }
+
+    public function pluginInstalled(Plugin $Plugin)
+    {
+        $this->updatePluginStatus('/status/installed', $Plugin);
+    }
+
+    public function pluginEnabled(Plugin $Plugin)
+    {
+        $this->updatePluginStatus('/status/enabled', $Plugin);
+    }
+
+    public function pluginDisabled(Plugin $Plugin)
+    {
+        $this->updatePluginStatus('/status/disabled', $Plugin);
+    }
+
+    public function pluginUninstalled(Plugin $Plugin)
+    {
+        $this->updatePluginStatus('/status/uninstalled', $Plugin);
+    }
+
+    private function updatePluginStatus($url, Plugin $Plugin)
+    {
+        if ($Plugin->getSource()) {
+            try {
+                $this->requestApi($this->getApiUrl().$url, ['id' => $Plugin->getSource()], true);
+            } catch (PluginApiException $ignore) {
+            }
+        }
     }
 
     /**
@@ -234,16 +270,28 @@ class PluginApiService
      *
      * @throws PluginApiException
      */
-    public function getRequestApi($url, $data = [])
+    public function requestApi($url, $data = [], $post = false)
     {
-        if (count($data) > 0) {
+        if ($post === false && count($data) > 0) {
             $url .= '?'.http_build_query($data);
         }
 
         $curl = curl_init($url);
 
+        if ($post) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+
+            if (count($data) > 0) {
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            }
+        }
+
         $key = $this->BaseInfo->getAuthenticationKey();
-        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
+
+        $baseUrl = null;
+        if ($this->requestStack->getCurrentRequest()) {
+            $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
+        }
 
         // Option array
         $options = [
@@ -253,7 +301,7 @@ class PluginApiService
                 'X-ECCUBE-URL: '.$baseUrl,
                 'X-ECCUBE-VERSION: '.Constant::VERSION,
             ],
-            CURLOPT_HTTPGET => true,
+            CURLOPT_HTTPGET => $post === false,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FAILONERROR => true,

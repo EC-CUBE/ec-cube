@@ -145,11 +145,7 @@ class PluginController extends AbstractController
         try {
             $data = $this->pluginApiService->getPurchased();
             foreach ($data as $item) {
-                $Plugin = null;
-
-                if (isset($officialPlugins[$item['id']])) {
-                    $Plugin = $officialPlugins[$item['id']];
-                } else {
+                if (isset($officialPlugins[$item['id']]) === false) {
                     $Plugin = new Plugin();
                     $Plugin->setName($item['name']);
                     $Plugin->setCode($item['code']);
@@ -158,12 +154,7 @@ class PluginController extends AbstractController
                     $Plugin->setEnabled(false);
                     $officialPlugins[$item['id']] = $Plugin;
                 }
-
                 $officialPluginsDetail[$item['id']] = $item;
-                $officialPluginsDetail[$item['id']]['update_status'] = 0;
-                if ($this->pluginService->isUpdate($Plugin->getVersion(), $item['version'])) {
-                    $officialPluginsDetail[$item['id']]['update_status'] = 1;
-                }
             }
         } catch (PluginApiException $e) {
             $this->addWarning($e->getMessage(), 'admin');
