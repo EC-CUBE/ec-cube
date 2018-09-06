@@ -225,11 +225,11 @@ class PaymentController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.delete_complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->entityManager->rollback();
 
-            $message = trans('admin.delete_error_foreign_key', ['%name%' => $TargetPayment->getMethod()]);
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $TargetPayment->getMethod()]);
             $this->addError($message, 'admin');
         }
 
