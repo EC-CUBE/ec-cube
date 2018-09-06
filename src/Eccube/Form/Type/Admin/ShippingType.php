@@ -165,7 +165,12 @@ class ShippingType extends AbstractType
                 'choice_label' => function (Delivery $Delivery) {
                     return $Delivery->isVisible()
                         ? $Delivery->getServiceName()
-                        : $Delivery->getServiceName().trans('common.hidden_label');
+                        : $Delivery->getServiceName().trans('admin.common.hidden_label');
+                },
+                'query_builder' => function ($er) {
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.visible', 'DESC') // 非表示は下に配置
+                        ->addOrderBy('p.sort_no', 'ASC');
                 },
                 'placeholder' => false,
                 'constraints' => [
