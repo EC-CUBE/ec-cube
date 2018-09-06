@@ -30,6 +30,25 @@ file that was distributed with this source code.
                 })
             }
         });
+
+        // アニメーション
+        var counter = 0;
+        $('.ec-newsRole__newsCloseBtn').each(function(){
+            counter++;
+        });
+        for (var i = 1; i <= counter; i++) {
+            var descriptionArray = [];
+            descriptionArray[i - 1] = $('#newsDescription' + i).height();
+            $('#newsDescription' + i).css('max-height', '0');
+        }
+        $('.ec-newsRole__newsCloseBtn').click(function(){
+            var id = $(this).attr('id');
+            if ($('#newsDescription' + id).height() == 0) {
+                $('#newsDescription' + id).css('max-height', descriptionArray[id - 1]);
+            } else {
+                $('#newsDescription' + id).css('max-height', '0');
+            }
+        });
     });
 </script>
 {% endblock %}
@@ -53,14 +72,14 @@ file that was distributed with this source code.
                             </div>
                             {% if News.description or News.url %}
                                 <div class="ec-newsRole__newsClose">
-                                    <a class="ec-newsRole__newsCloseBtn">
+                                    <a class="ec-newsRole__newsCloseBtn" id="{{ News.id }}">
                                         <i class="fas fa-angle-down"></i>
                                     </a>
                                 </div>
                             {% endif %}
                         </div>
                     </div>
-                    <div class="ec-newsRole__newsDescription">
+                    <div class="ec-newsRole__newsDescription" id="newsDescription{{ News.id }}">
                         {{ News.description|raw|nl2br }}
                         {% if News.url %}
                             <br>

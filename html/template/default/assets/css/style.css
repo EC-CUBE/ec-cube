@@ -5900,16 +5900,15 @@ Styleguide 12.8.1
     position: absolute;
     right: 5px; }
   .ec-newsRole .ec-newsRole__newsDescription {
-    max-height: 0;
     font-size: 12px;
     line-height: 1.2;
     overflow: hidden;
-    transition: all .8s linear; }
+    transition: all .8s linear;
+    margin: 0 0 10px; }
     .ec-newsRole .ec-newsRole__newsDescription a {
       color: #0092C4; }
   .ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription {
     margin: 0 0 10px;
-    max-height: 100vh;
     transition: all .8s linear; }
   .ec-newsRole__newsItem.is_active .ec-newsRole__newsCloseBtn i {
     display: inline-block;
@@ -8648,6 +8647,7 @@ Styleguide 22.1
   .ec-newsRole .ec-newsRole__newsDescription{
     font-size: 14px;
     line-height: 1.8;
+    margin: 20px 0;
   }
 
   .ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription{
