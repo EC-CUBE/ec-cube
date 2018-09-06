@@ -104,6 +104,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param ProductRepository $productRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param ValidatorInterface $validator
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

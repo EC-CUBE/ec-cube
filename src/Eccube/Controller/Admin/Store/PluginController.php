@@ -87,6 +87,7 @@ class PluginController extends AbstractController
      * @Template("@admin/Store/plugin.twig")
      *
      * @return array
+     *
      * @throws PluginException
      */
     public function index()
@@ -139,7 +140,7 @@ class PluginController extends AbstractController
         }
 
         // オーナーズストア通信
-        list($json,) = $this->pluginApiService->getPurchased();
+        list($json) = $this->pluginApiService->getPurchased();
         $officialPluginsDetail = [];
         if ($json) {
             // 接続成功時
@@ -294,7 +295,6 @@ class PluginController extends AbstractController
                     }
                 }
             }
-
 
             ob_start();
 
@@ -509,7 +509,7 @@ class PluginController extends AbstractController
         return [
             'form' => $form->createView(),
             'eccubeUrl' => $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'eccubeShopName' => $this->BaseInfo->getShopName()
+            'eccubeShopName' => $this->BaseInfo->getShopName(),
         ];
     }
 
@@ -519,6 +519,7 @@ class PluginController extends AbstractController
      * @param array $plugins
      *
      * @return array
+     *
      * @throws PluginException
      */
     protected function getUnregisteredPlugins(array $plugins)
