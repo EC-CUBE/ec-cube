@@ -13,6 +13,29 @@ file that was distributed with this source code.
 {% block javascript %}
 <script>
     $(function() {
+        // アニメーション
+        var counter = 0;
+        $('.ec-newsRole__newsItem').each(function(){
+            counter++;
+        });
+        var descriptionArray = [];
+        for (var i = 0; i < counter; i++) {
+            if ($('#newsDescription' + (i + 1))) {
+                descriptionArray[i] = $('#newsDescription' + (i + 1)).height();
+                $('#newsDescription' + (i + 1)).css('max-height', '0');
+            } else {
+              descriptionArray[i] = '';
+            }
+        }
+        $('.ec-newsRole__newsCloseBtn').click(function(){
+            var id = $(this).attr('id');
+            if ($('#newsDescription' + id).height() == 0) {
+                $('#newsDescription' + id).css('max-height', descriptionArray[id - 1]);
+            } else {
+                $('#newsDescription' + id).css('max-height', '0');
+            }
+        });
+
         $('.ec-newsRole__news').each(function() {
             var listLenght = $(this).find('.ec-newsRole__newsItem').length;
             if (listLenght > 5) {
@@ -28,25 +51,6 @@ file that was distributed with this source code.
                         $(this).hide();
                     }
                 })
-            }
-        });
-
-        // アニメーション
-        var counter = 0;
-        $('.ec-newsRole__newsCloseBtn').each(function(){
-            counter++;
-        });
-        for (var i = 1; i <= counter; i++) {
-            var descriptionArray = [];
-            descriptionArray[i - 1] = $('#newsDescription' + i).height();
-            $('#newsDescription' + i).css('max-height', '0');
-        }
-        $('.ec-newsRole__newsCloseBtn').click(function(){
-            var id = $(this).attr('id');
-            if ($('#newsDescription' + id).height() == 0) {
-                $('#newsDescription' + id).css('max-height', descriptionArray[id - 1]);
-            } else {
-                $('#newsDescription' + id).css('max-height', '0');
             }
         });
     });
