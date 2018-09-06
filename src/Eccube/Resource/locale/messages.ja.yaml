@@ -579,6 +579,7 @@ admin.product.copy__confirm_message: 商品を複製してよろしいですか�
 admin.product.name: 商品名
 amdin.product.image: 商品画像
 amdin.product.image__short: 画像
+amdin.product.image.size: '推奨サイズ : 600px以上'
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
@@ -1051,6 +1052,7 @@ admin.setting.shop.payment.unlimited: 無制限
 admin.setting.shop.payment.payment_id: ID
 admin.setting.shop.payment.payment_name: 支払方法名
 admin.setting.shop.payment.logo_image: ロゴ画像
+admin.setting.shop.payment.logo_image.size: '推奨サイズ : 500px × 200px'
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：配送方法設定
