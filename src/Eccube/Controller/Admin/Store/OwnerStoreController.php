@@ -449,40 +449,4 @@ class OwnerStoreController extends AbstractController
             return $this->redirectToRoute('admin_store_authentication_setting');
         }
     }
-
-    /**
-     * API request processing
-     *
-     * @param string $url
-     *
-     * @return array
-     *
-     * @deprecated since release, please preference PluginApiService
-     */
-    private function getRequestApi($url)
-    {
-        $curl = curl_init($url);
-
-        // Option array
-        $options = [
-            // HEADER
-            CURLOPT_HTTPGET => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FAILONERROR => true,
-            CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
-        ];
-
-        // Set option value
-        curl_setopt_array($curl, $options);
-        $result = curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $message = curl_error($curl);
-        $info['message'] = $message;
-        curl_close($curl);
-
-        log_info('http get_info', $info);
-
-        return [$result, $info];
-    }
 }

@@ -145,13 +145,10 @@ class PluginController extends AbstractController
         try {
             $data = $this->pluginApiService->getPurchased();
             foreach ($data as $item) {
+                $Plugin = null;
+
                 if (isset($officialPlugins[$item['id']])) {
                     $Plugin = $officialPlugins[$item['id']];
-                    $officialPluginsDetail[$item['id']] = $item;
-                    $officialPluginsDetail[$item['id']]['update_status'] = 0;
-                    if ($this->pluginService->isUpdate($Plugin->getVersion(), $item['version'])) {
-                        $officialPluginsDetail[$item['id']]['update_status'] = 1;
-                    }
                 } else {
                     $Plugin = new Plugin();
                     $Plugin->setName($item['name']);
@@ -160,11 +157,12 @@ class PluginController extends AbstractController
                     $Plugin->setSource($item['id']);
                     $Plugin->setEnabled(false);
                     $officialPlugins[$item['id']] = $Plugin;
-                    $officialPluginsDetail[$item['id']] = $item;
-                    $officialPluginsDetail[$item['id']]['update_status'] = 0;
-                    if ($this->pluginService->isUpdate($Plugin->getVersion(), $item['version'])) {
-                        $officialPluginsDetail[$item['id']]['update_status'] = 1;
-                    }
+                }
+
+                $officialPluginsDetail[$item['id']] = $item;
+                $officialPluginsDetail[$item['id']]['update_status'] = 0;
+                if ($this->pluginService->isUpdate($Plugin->getVersion(), $item['version'])) {
+                    $officialPluginsDetail[$item['id']]['update_status'] = 1;
                 }
             }
         } catch (PluginApiException $e) {

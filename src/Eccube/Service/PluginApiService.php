@@ -200,7 +200,6 @@ class PluginApiService
             }
 
             $item = $this->buildInfo($item);
-            $items[] = $item;
         }
 
         return $plugins;
@@ -283,7 +282,7 @@ class PluginApiService
      *
      * @param array $plugin
      *
-     * @return array|null
+     * @return array
      */
     public function buildInfo(&$plugin)
     {
