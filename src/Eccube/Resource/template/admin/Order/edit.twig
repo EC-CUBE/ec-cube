@@ -887,8 +887,9 @@ file that was distributed with this source code.
                                         {% for MailHistory in Order.MailHistories %}
                                             <tr>
                                                 <td class="pl-3">{{ MailHistory.send_date|date_min }}</td>
-                                                <td class="pr-3"><a class="text-primary" data-toggle="modal" data-target="#mail2">{{ MailHistory.mail_subject }}</a>
-                                                    <div class="modal fade" id="mail2" tabindex="-1" role="dialog" aria-labelledby="mail2" aria-hidden="true">
+                                                <td class="pr-3">
+                                                    <a class="text-primary" data-toggle="modal" data-target="#mail2-{{ loop.index }}">{{ MailHistory.mail_subject }}</a>
+                                                    <div class="modal fade" id="mail2-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="mail2-{{ loop.index }}" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">

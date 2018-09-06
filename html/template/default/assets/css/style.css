@@ -7170,12 +7170,14 @@ Styleguide 16.2.6
     display: none; }
   .ec-orderMail .ec-orderMail__time {
     margin-bottom: 4px; }
-  .ec-orderMail .ec-orderMail__link a {
-    color: #0092C4;
-    text-decoration: none;
-    cursor: pointer; }
-  .ec-orderMail .ec-orderMail__link a:hover {
-    color: #33A8D0; }
+  .ec-orderMail .ec-orderMail__link {
+    margin-bottom: 4px; }
+    .ec-orderMail .ec-orderMail__link a {
+      color: #0092C4;
+      text-decoration: none;
+      cursor: pointer; }
+    .ec-orderMail .ec-orderMail__link a:hover {
+      color: #33A8D0; }
   .ec-orderMail .ec-orderMail__close a {
     color: #0092C4;
     text-decoration: none;

@@ -37,12 +37,13 @@ $(function() {
       $(this).parents(".ec-newsRole__newsItem").toggleClass("is_active")
     });
 
+    // マイページ　購入履歴　メール配信履歴一覧の折りたたみ
     $('.ec-orderMail__link').on('click', function() {
-        $('.ec-orderMail__body').slideToggle();
+        $(this).siblings('.ec-orderMail__body').slideToggle();
     });
 
     $('.ec-orderMail__close').on('click', function() {
-        $('.ec-orderMail__body').slideToggle();
+        $(this).parent().slideToggle();
     });
 
     $('.is_inDrawer').each(function() {
