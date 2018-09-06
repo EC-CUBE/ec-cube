@@ -40,6 +40,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CsvImportController extends AbstractCsvImportController
 {
@@ -83,6 +85,11 @@ class CsvImportController extends AbstractCsvImportController
      */
     protected $BaseInfo;
 
+    /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
     private $errors = [];
 
     /**
@@ -96,9 +103,21 @@ class CsvImportController extends AbstractCsvImportController
      * @param ProductStatusRepository $productStatusRepository
      * @param ProductRepository $productRepository
      * @param BaseInfoRepository $baseInfoRepository
+     * @param ValidatorInterface $validator
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(DeliveryDurationRepository $deliveryDurationRepository, SaleTypeRepository $saleTypeRepository, TagRepository $tagRepository, CategoryRepository $categoryRepository, ClassCategoryRepository $classCategoryRepository, ProductStatusRepository $productStatusRepository, ProductRepository $productRepository, BaseInfoRepository $baseInfoRepository)
-    {
+    public function __construct(
+        DeliveryDurationRepository $deliveryDurationRepository,
+        SaleTypeRepository $saleTypeRepository,
+        TagRepository $tagRepository,
+        CategoryRepository $categoryRepository,
+        ClassCategoryRepository $classCategoryRepository,
+        ProductStatusRepository $productStatusRepository,
+        ProductRepository $productRepository,
+        BaseInfoRepository $baseInfoRepository,
+        ValidatorInterface $validator
+    ) {
         $this->deliveryDurationRepository = $deliveryDurationRepository;
         $this->saleTypeRepository = $saleTypeRepository;
         $this->tagRepository = $tagRepository;
@@ -107,6 +126,7 @@ class CsvImportController extends AbstractCsvImportController
         $this->productStatusRepository = $productStatusRepository;
         $this->productRepository = $productRepository;
         $this->BaseInfo = $baseInfoRepository->get();
+        $this->validator = $validator;
     }
 
     /**
@@ -266,7 +286,8 @@ class CsvImportController extends AbstractCsvImportController
                             if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                 if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isBlank($row[$headerByKey['delivery_fee']])) {
                                     $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
-                                    if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
+                                    $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(['value' => 0]));
+                                    if ($errors->count() === 0) {
                                         $ProductClassOrg->setDeliveryFee($deliveryFee);
                                     } else {
                                         $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['delivery_fee']]);
@@ -360,7 +381,8 @@ class CsvImportController extends AbstractCsvImportController
                                         $headerByKey['delivery_fee'] = trans('csvimport.label.delivery_fee');
                                         if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
                                             $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
-                                            if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
+                                            $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(['value' => 0]));
+                                            if ($errors->count() === 0) {
                                                 $pc->setDeliveryFee($deliveryFee);
                                             } else {
                                                 $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['delivery_fee']]);
@@ -445,7 +467,8 @@ class CsvImportController extends AbstractCsvImportController
                                     if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                         if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
                                             $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
-                                            if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
+                                            $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(['value' => 0]));
+                                            if ($errors->count() === 0) {
                                                 $ProductClass->setDeliveryFee($deliveryFee);
                                             } else {
                                                 $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['delivery_fee']]);
@@ -943,7 +966,8 @@ class CsvImportController extends AbstractCsvImportController
 
         if (isset($row[$headerByKey['price01']]) && StringUtil::isNotBlank($row[$headerByKey['price01']])) {
             $price01 = str_replace(',', '', $row[$headerByKey['price01']]);
-            if (preg_match('/^\d+$/', $price01) && $price01 >= 0) {
+            $errors = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
+            if ($errors->count() === 0) {
                 $ProductClass->setPrice01($price01);
             } else {
                 $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['price01']]);
@@ -953,7 +977,8 @@ class CsvImportController extends AbstractCsvImportController
 
         if (isset($row[$headerByKey['price02']]) && StringUtil::isNotBlank($row[$headerByKey['price02']])) {
             $price02 = str_replace(',', '', $row[$headerByKey['price02']]);
-            if (preg_match('/^\d+$/', $price02) && $price02 >= 0) {
+            $errors = $this->validator->validate($price02, new GreaterThanOrEqual(['value' => 0]));
+            if ($errors->count() === 0) {
                 $ProductClass->setPrice02($price02);
             } else {
                 $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['price02']]);
@@ -966,7 +991,8 @@ class CsvImportController extends AbstractCsvImportController
 
         if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
             $delivery_fee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
-            if (preg_match('/^\d+$/', $delivery_fee) && $delivery_fee >= 0) {
+            $errors = $this->validator->validate($delivery_fee, new GreaterThanOrEqual(['value' => 0]));
+            if ($errors->count() === 0) {
                 $ProductClass->setDeliveryFee($delivery_fee);
             } else {
                 $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['delivery_fee']]);
@@ -1115,7 +1141,8 @@ class CsvImportController extends AbstractCsvImportController
 
         if ($row[$headerByKey['price01']] != '') {
             $price01 = str_replace(',', '', $row[$headerByKey['price01']]);
-            if (preg_match('/^\d+$/', $price01) && $price01 >= 0) {
+            $errors = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
+            if ($errors->count() === 0) {
                 $ProductClass->setPrice01($price01);
             } else {
                 $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['price01']]);
@@ -1128,7 +1155,8 @@ class CsvImportController extends AbstractCsvImportController
             $this->addErrors($message);
         } else {
             $price02 = str_replace(',', '', $row[$headerByKey['price02']]);
-            if (preg_match('/^\d+$/', $price02) && $price02 >= 0) {
+            $errors = $this->validator->validate($price02, new GreaterThanOrEqual(['value' => 0]));
+            if ($errors->count() === 0) {
                 $ProductClass->setPrice02($price02);
             } else {
                 $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['price02']]);
