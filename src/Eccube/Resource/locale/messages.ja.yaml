@@ -596,6 +596,7 @@ admin.product.product_name_and_code: 商品名・商品コード
 admin.product.sale_limit: 販売制限数
 admin.product.delivery_duration: 発送日目安
 admin.product.delivery_fee: 商品送料
+admin.product.tax_rate: 税率
 admin.product.free_area: フリーエリア
 admin.product.free_area__card_title: フリーエリア
 admin.product.delete_flag: 商品削除フラグ
