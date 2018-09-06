@@ -134,7 +134,7 @@ class OwnerStoreController extends AbstractController
         $total = 0;
         $category = [];
 
-        list($json,) = $this->pluginApiService->getCategory();
+        list($json) = $this->pluginApiService->getCategory();
         if (!empty($json)) {
             $data = json_decode($json, true);
             $category = array_column($data, 'name', 'id');
@@ -331,7 +331,7 @@ class OwnerStoreController extends AbstractController
     {
         // Owner's store communication
         $url = $this->eccubeConfig['eccube_package_api_url'].'/search/packages.json';
-        list($json,) = $this->getRequestApi($url);
+        list($json) = $this->getRequestApi($url);
         $data = json_decode($json, true);
         $items = $data['item'];
 
