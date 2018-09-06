@@ -3614,7 +3614,7 @@ Styleguide 7.2.1
     min-width: 16px;
     text-align: center;
     position: relative;
-    letter-spacing: initial; }
+    letter-spacing: normal; }
   .ec-topicpath .ec-topicpath__item--active {
     font-weight: bold; }
     .ec-topicpath .ec-topicpath__item--active a {
