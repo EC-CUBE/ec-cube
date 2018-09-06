@@ -248,9 +248,9 @@ class PaymentController extends AbstractController
         $this->entityManager->flush();
 
         if ($Payment->isVisible()) {
-            $this->addSuccess('admin.payment.visible.complete', 'admin');
+            $this->addSuccess(trans('admin.common.to_show_complete', ['%name%' => $Payment->getMethod()]), 'admin');
         } else {
-            $this->addSuccess('admin.payment.invisible.complete', 'admin');
+            $this->addSuccess(trans('admin.common.to_hide_complete', ['%name%' => $Payment->getMethod()]), 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_shop_payment');
