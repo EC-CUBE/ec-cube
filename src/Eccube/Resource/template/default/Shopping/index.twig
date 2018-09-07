@@ -15,7 +15,7 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         $(function() {
-            var $redirectCallback = function () {
+            var $redirectCallback = function() {
                 loadingOverlay();
                 $('#shopping_order_redirect_to').val($(this).attr('data-path'));
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
@@ -233,7 +233,7 @@ file that was distributed with this source code.
                                                 {% if orderItem.productClass is not null and orderItem.productClass.classCategory2 %}
                                                     <p>{{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}</p>
                                                 {% endif %}
-                                                <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>{{ 'common.subtotal__with_separator'|trans}}{{ orderItem.totalPrice|price }}</span></p>
+                                                <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>{{ 'common.subtotal__with_separator'|trans }}{{ orderItem.totalPrice|price }}</span></p>
                                             </div>
                                         </div>
                                     </li>
@@ -258,7 +258,7 @@ file that was distributed with this source code.
                                     {{ form_errors(form.Shippings[idx].shipping_delivery_date) }}
                                 </div>
                                 <div class="ec-select ec-select__time">
-                                    <label>{{ 'front.shopping.delivery_time'|trans}}</label>
+                                    <label>{{ 'front.shopping.delivery_time'|trans }}</label>
                                     {{ form_widget(form.Shippings[idx].DeliveryTime, {'attr': {'class': 'form-control'}}) }}
                                     {{ form_errors(form.Shippings[idx].DeliveryTime) }}
                                 </div>
@@ -276,22 +276,22 @@ file that was distributed with this source code.
                     <div class="ec-radio">
                         {% for key, child in form.Payment %}
                             <div style="display: block;">
-                            {% set Payment = form.Payment.vars.choices[key].data %}
-                            {{ form_widget(child, { 'attr': { 'data-trigger': 'change' }}) }}
-                            {% if Payment.payment_image is not null %}
-                                <img src="{{ asset(Payment.payment_image, 'save_image') }}">
-                            {% endif %}
+                                {% set Payment = form.Payment.vars.choices[key].data %}
+                                {{ form_widget(child, { 'attr': { 'data-trigger': 'change' }}) }}
+                                {% if Payment.payment_image is not null %}
+                                    <p><img src="{{ asset(Payment.payment_image, 'save_image') }}"></p>
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="ec-input {{ has_errors(form.Payment) ? ' error'}}">{{ form_errors(form.Payment) }}</div>
+                    <div class="ec-input {{ has_errors(form.Payment) ? ' error' }}">{{ form_errors(form.Payment) }}</div>
                 </div>
                 {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                     <div class="ec-orderPayment">
                         <div class="ec-rectHeading">
                             <h2>{{ 'front.shopping.point_info'|trans }}</h2>
                         </div>
-                        <div class="ec-input {{ has_errors(form.use_point) ? ' error'}}">
+                        <div class="ec-input {{ has_errors(form.use_point) ? ' error' }}">
                             <p>{{ 'front.shopping.available_point'|trans({ '%point%': Order.Customer.Point|number_format }) }}</p>
                             {{ form_widget(form.use_point, { 'attr': { 'type': 'text', 'class': 'form-control', 'data-trigger': 'change' }}) }}
                             {{ form_errors(form.use_point) }}
@@ -324,7 +324,7 @@ file that was distributed with this source code.
                     </dl>
                     <dl class="ec-totalBox__spec">
                         <dt>{{ 'common.discount'|trans }}</dt>
-                        <dd>{{ (0 - Order.discount)|price}}</dd>
+                        <dd>{{ (0 - Order.discount)|price }}</dd>
                     </dl>
                     <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
                     {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
