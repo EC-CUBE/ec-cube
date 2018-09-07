@@ -1,11 +1,11 @@
 DirectoryIndex index.php index.html .ht
 
-<FilesMatch "^composer|^autoload|^cli-config|^COPYING|\.(ini|lock|dist|git|sh|bak|swp)$">
+<FilesMatch "^composer|^COPYING|^\.env|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml)$">
     order allow,deny
     deny from all
 </FilesMatch>
 
-<Files ~ "index.php|index_dev.php">
+<Files ~ "index.php">
     order deny,allow
     allow from all
 </Files>
@@ -24,7 +24,7 @@ Header set X-Content-Type-Options nosniff
     #Options +FollowSymLinks +SymLinksIfOwnerMatch
 
     RewriteEngine On
-
+    
     # Authorization ヘッダが取得できない環境への対応
     RewriteCond %{HTTP:Authorization} ^(.*)
     RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
@@ -32,6 +32,16 @@ Header set X-Content-Type-Options nosniff
     # さくらのレンタルサーバでサイトへのアクセスをSSL経由に制限する場合の対応
     # RewriteCond %{HTTP:x-sakura-forwarded-for} !^$
     # RewriteRule ^(.*) - [E=HTTPS:on]
+
+    RewriteRule "^\.git" - [F]
+    RewriteRule "^src/" - [F]
+    RewriteRule "^app/" - [F]
+    RewriteRule "^tests/" - [F]
+    RewriteRule "^var/" - [F]
+    RewriteRule "^vendor/" - [F]
+    RewriteRule "^node_modules/" - [F]
+    RewriteRule "^codeception/" - [F]
+    RewriteRule "^bin/" - [F]
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]

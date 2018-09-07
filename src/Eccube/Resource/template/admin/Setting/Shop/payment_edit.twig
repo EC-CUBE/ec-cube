@@ -21,17 +21,6 @@ file that was distributed with this source code.
     <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload.css', 'admin') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload-ui.css', 'admin') }}">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <style>
-        .ui-state-highlight {
-            height: 148px;
-            border: dashed 1px #ccc;
-            background: #fff;
-        }
-        .c-form__fileUploadThumbnail {
-            width: 400px;
-            height: 100px;
-        }
-    </style>
 {% endblock stylesheet %}
 
 {% block javascript %}
@@ -44,91 +33,97 @@ file that was distributed with this source code.
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
         $.fn.tooltip = bootstrapTooltip;
+        $(document).on('drop dragover', function(e) {
+            e.preventDefault();
+        });
 
-        var hideSvg = function() {
-            if ($("#thumb li").length > 0) {
-                $("#icon_no_image").css("display", "none");
-            } else {
-                $("#icon_no_image").css("display", "");
-            }
-        };
+        $(function() {
+            var hideThumbnail = function() {
+                if ($('#thumb div').length > 0) {
+                    $('#icon_no_image').css('display', 'none');
+                } else {
+                    $('#icon_no_image').css('display', '');
+                }
+            };
 
-        var proto_img = '<div class="c-form__fileUploadThumbnail" id="payment_image" style="background-image:url(\'__path__\');">' +
-            '<span class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></span>' +
-            '</div>';
-        var payment_image = $("#{{ form.payment_image.vars.id }}").val();
-        if (payment_image != "") {
-            var filename = $("#{{ form.payment_image.vars.id }}").val();
-            if (payment_image == "{{ oldPaymentImage }}") {
-                var path = '{{ asset('', 'save_image') }}' + filename;
-            } else {
-                var path = '{{ asset('', 'temp_image') }}' + filename;
-            }
-            var $img = $(proto_img.replace(/__path__/g, path));
-            $("#{{ form.payment_image.vars.id }}").val(filename);
-
-            $('#thumb').append($img);
-            hideSvg();
-        }
-        hideSvg();
-
-        $('#{{ form.payment_image_file.vars.id }}').fileupload({
-            url: "{{ url('admin_payment_image_add') }}",
-            type: "post",
-            dataType: 'json',
-            done: function(e, data) {
-                $('#progress').hide();
-                var path = '{{ asset('', 'temp_image') }}/' + data.result.filename;
+            var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');">' +
+                '<a class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></a>' +
+                '</div>';
+            var payment_image = $('#{{ form.payment_image.vars.id }}').val();
+            if (payment_image != '') {
+                var filename = $('#{{ form.payment_image.vars.id }}').val();
+                if (payment_image == '{{ oldPaymentImage }}') {
+                    var path = '{{ asset('', 'save_image') }}' + filename;
+                } else {
+                    var path = '{{ asset('', 'temp_image') }}' + filename;
+                }
                 var $img = $(proto_img.replace(/__path__/g, path));
-                $("#{{ form.payment_image.vars.id }}").val(data.result.filename);
+                $('#{{ form.payment_image.vars.id }}').val(filename);
 
                 $('#thumb').append($img);
-                hideSvg();
-            },
-            fail: function(e, data) {
-                alert('{{ 'admin.common.upload_error'|trans }}');
-            },
-            always: function(e, data) {
-                $('#progress').hide();
-                $('#progress .progress-bar').width('0%');
-            },
-            start: function(e, data) {
-                if ($(".c-form__fileUploadThumbnail").length >= 1) {
-                    $.each($(".delete-image"), function (index, delete_image) {
-                        delete_image.click();
-                    });
-                }
-                $('#progress').show();
-                $("#thumb").find("li").remove();
-                $("#{{ form.payment_image.vars.id }}").val('');
-            },
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            maxFileSize: 10000000,
-            maxNumberOfFiles: 1,
-            progressall: function(e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#progress .progress-bar').css(
-                    'width',
-                    progress + '%'
-                );
-            },
-            processalways: function(e, data) {
-                if (data.files.error) {
-                    alert("{{ 'admin.common.upload_error'|trans }}");
-                }
+                hideThumbnail();
             }
-        });
+            hideThumbnail();
 
-        $("#thumb").on("click", ".delete-image", function() {
-            $("#{{ form.payment_image.vars.id }}").val('');
-            var thumbnail = $(this).parents('div.c-form__fileUploadThumbnail');
-            $(thumbnail).remove();
-            hideSvg();
-        });
+            $('#{{ form.payment_image_file.vars.id }}').fileupload({
+                url: "{{ url('admin_payment_image_add') }}",
+                type: 'post',
+                dataType: 'json',
+                dropZone: $('#upload-zone'),
+                done: function(e, data) {
+                    $('.progress').hide();
+                    var path = '{{ asset('', 'temp_image') }}/' + data.result.filename;
+                    var $img = $(proto_img.replace(/__path__/g, path));
+                    $('#{{ form.payment_image.vars.id }}').val(data.result.filename);
 
-        // 画像アップロード
-        $('#file_upload').on('click', function() {
-            $('#{{ form.payment_image_file.vars.id }}').click();
+                    $('#thumb').append($img);
+                    hideThumbnail();
+                },
+                fail: function(e, data) {
+                    alert('{{ 'admin.common.upload_error'|trans }}');
+                },
+                always: function(e, data) {
+                    $('.progress').hide();
+                    $('.progress .progress-bar').width('0%');
+                },
+                start: function(e, data) {
+                    if ($('.c-form__fileUploadThumbnail').length >= 1) {
+                        $.each($('.delete-image'), function(index, delete_image) {
+                            delete_image.click();
+                        });
+                    }
+                    $('.progress').show();
+                    $('#thumb').find('div').remove();
+                    $('#{{ form.payment_image.vars.id }}').val('');
+                },
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                maxFileSize: 10000000,
+                maxNumberOfFiles: 1,
+                progressall: function(e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('.progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                },
+                processalways: function(e, data) {
+                    if (data.files.error) {
+                        alert("{{ 'admin.common.upload_error'|trans }}");
+                    }
+                }
+            });
+
+            $('#thumb').on('click', '.delete-image', function() {
+                $('#{{ form.payment_image.vars.id }}').val('');
+                var thumbnail = $(this).parents('div.c-form__fileUploadThumbnail');
+                $(thumbnail).remove();
+                hideThumbnail();
+            });
+
+            // 画像アップロード
+            $('#file_upload').on('click', function() {
+                $('#{{ form.payment_image_file.vars.id }}').click();
+            });
         });
     </script>
 {% endblock %}
@@ -176,29 +171,28 @@ file that was distributed with this source code.
 
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'Tooptip'|trans }}">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.payment.logo_image'|trans }}">
                                         <span>{{ 'admin.setting.shop.payment.logo_image'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <br>{{ 'admin.setting.shop.payment.logo_image_size'|trans }}
                                     </div>
                                 </div>
                                 <div class="col mb-2">
-                                    {#Todo: implement upload image new style#}
-                                    <div id="detail_box__files" class="col-sm-9 col-lg-10">
-                                        <div class="photo_files" id="drag-drop-area">
-                                            <ul id="thumb" class="clearfix"></ul>
-                                        </div>
-
-                                        <div id="detail_list__payment_image_body" class="col-sm-9 col-lg-10">
-                                            <div id="progress" class="progress progress-striped active" style="display:none;">
-                                                <div class="progress-bar progress-bar-info"></div>
-                                            </div>
-                                            {{ form_widget(form.payment_image, { attr : { style : 'display:none;' } }) }}
-                                            {{ form_widget(form.payment_image_file, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
-                                            <a id="file_upload" class="with-icon">
-                                                {{ 'admin.common.upload'|trans }}
-                                            </a>
-                                            {{ form_errors(form.payment_image_file) }}
-                                        </div>
+                                    <div class="progress" style="display: none;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                    <div id="thumb" class="c-form__fileUploadThumbnails clearfix"></div>
+                                    {{ form_widget(form.payment_image, { attr : { style : 'display:none;' } }) }}
+                                    <div id="upload-zone" class="media py-5 border-ec-dashed mb-2 rounded">
+                                        <div class="media-body">
+                                            <i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true"></i>
+                                            {{ 'admin.common.drag_and_drop_image_description'|trans }}
+                                            {{ form_widget(form.payment_image_file, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
+                                            {{ form_errors(form.payment_image) }}
+                                            <a class="btn btn-ec-regular mr-2" onclick="$('#payment_register_payment_image_file').click()">
+                                                {{ 'admin.common.file_select'|trans }}
+                                            </a>
+                                        </div><!-- /.media-body -->
+                                    </div><!-- /.media -->
                                 </div>
                             </div>
                             {# エンティティ拡張の自動出力 #}

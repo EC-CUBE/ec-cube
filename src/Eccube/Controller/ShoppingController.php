@@ -127,6 +127,12 @@ class ShoppingController extends AbstractShoppingController
             $this->cartService->save();
         }
 
+        // マイページで会員情報が更新されていれば, Orderの注文者情報も更新する.
+        if ($Customer->getId()) {
+            $this->orderHelper->updateCustomerInfo($Order, $Customer);
+            $this->entityManager->flush();
+        }
+
         $form = $this->createForm(OrderType::class, $Order);
 
         return [
@@ -407,6 +413,7 @@ class ShoppingController extends AbstractShoppingController
             // メール送信
             log_info('[注文処理] 注文メールの送信を行います.', [$Order->getId()]);
             $this->mailService->sendOrderMail($Order);
+            $this->entityManager->flush();
 
             log_info('[注文処理] 注文処理が完了しました. 購入完了画面へ遷移します.', [$Order->getId()]);
 

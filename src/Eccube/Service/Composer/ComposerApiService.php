@@ -15,6 +15,7 @@ namespace Eccube\Service\Composer;
 
 use Composer\Console\Application;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\BaseInfoRepository;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -37,13 +38,15 @@ class ComposerApiService implements ComposerServiceInterface
     private $consoleApplication;
 
     private $workingDir;
-
-    private $baseInfo;
+    /**
+     * @var BaseInfoRepository
+     */
+    private $baseInfoRepository;
 
     public function __construct(EccubeConfig $eccubeConfig, BaseInfoRepository $baseInfoRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
-        $this->baseInfo = $baseInfoRepository->get();
+        $this->baseInfoRepository = $baseInfoRepository;
     }
 
     /**
@@ -288,33 +291,36 @@ class ComposerApiService implements ComposerServiceInterface
 
     /**
      * Init composer console application
+     * @param BaseInfo|null $BaseInfo
+     * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private function init()
+    private function init($BaseInfo = null)
     {
+        $BaseInfo = $BaseInfo ?: $this->baseInfoRepository->get();
+
         set_time_limit(0);
         ini_set('memory_limit', '-1');
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
         $this->initConsole();
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
-        $config = $this->getConfig();
-        if (!isset($config['repositories']['eccube'])) {
-            $url = $this->eccubeConfig['eccube_package_api_url'];
-            $json = json_encode([
-                'type' => 'composer',
-                'url' => $url,
-                'options' => [
-                    'http' => [
-                        'header' => ['X-ECCUBE-KEY: '.$this->baseInfo->getAuthenticationKey()]
-                    ]
+        $url = $this->eccubeConfig['eccube_package_api_url'];
+        $json = json_encode([
+            'type' => 'composer',
+            'url' => $url,
+            'options' => [
+                'http' => [
+                    'header' => ['X-ECCUBE-KEY: '.$BaseInfo->getAuthenticationKey()]
                 ]
-            ]);
-            $this->execConfig('repositories.eccube', [$json]);
-            if (strpos($url, 'http://') == 0) {
-                $this->execConfig('secure-http', ['false']);
-            }
-            $this->initConsole();
+            ]
+        ]);
+        $this->execConfig('repositories.eccube', [$json]);
+        if (strpos($url, 'http://') == 0) {
+            $this->execConfig('secure-http', ['false']);
         }
+        $this->initConsole();
     }
 
     private function initConsole()
@@ -323,6 +329,11 @@ class ComposerApiService implements ComposerServiceInterface
         $consoleApplication->resetComposer();
         $consoleApplication->setAutoExit(false);
         $this->consoleApplication = $consoleApplication;
+    }
+
+    public function configureRepository(BaseInfo $BaseInfo)
+    {
+        $this->init($BaseInfo);
     }
 
     /**

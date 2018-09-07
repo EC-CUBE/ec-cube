@@ -65,20 +65,20 @@ class ProductRepository extends AbstractRepository
     public function findWithSortedClassCategories($productId)
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'ps', 'pt'])
+        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt'])
             ->innerJoin('p.ProductClasses', 'pc')
             ->leftJoin('pc.ClassCategory1', 'cc1')
             ->leftJoin('pc.ClassCategory2', 'cc2')
             ->leftJoin('p.ProductImage', 'pi')
-            ->innerJoin('pc.ProductStock', 'ps')
             ->leftJoin('p.ProductTag', 'pt')
             ->where('p.id = :id')
+            ->andWhere('pc.visible = :visible')
+            ->setParameter('id', $productId)
+            ->setParameter('visible', true)
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
+
         $product = $qb
-            ->setParameters([
-                'id' => $productId,
-            ])
             ->getQuery()
             ->getSingleResult();
 

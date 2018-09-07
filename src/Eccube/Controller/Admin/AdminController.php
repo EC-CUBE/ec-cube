@@ -24,6 +24,7 @@ use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Exception\PluginApiException;
 use Eccube\Form\Type\Admin\ChangePasswordType;
 use Eccube\Form\Type\Admin\LoginType;
 use Eccube\Repository\CustomerRepository;
@@ -244,9 +245,11 @@ class AdminController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
 
         // 推奨プラグイン
-        $url = $this->eccubeConfig['eccube_package_api_url'].'/plugins/recommended';
-        list($json, $info) = $this->pluginApiService->getRequestApi($url);
-        $recommendedPlugins = json_decode($json, true);
+        $recommendedPlugins = [];
+        try {
+            $recommendedPlugins = $this->pluginApiService->getRecommended();
+        } catch (PluginApiException $ignore) {
+        }
 
         return [
             'Orders' => $Orders,

@@ -268,7 +268,7 @@ Styleguide 3.0
   position: fixed;
   top: 0;
   left: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
   z-index: 500;
   transition: width 0.3s ease; }
   .c-mainNavArea ul {
@@ -1149,7 +1149,9 @@ Styleguide 11.0
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; }
   .c-contentsArea{
-    margin-left: 0; } }
+    margin-left: 0; }
+  .c-conversionArea{
+    width: 100%; } }
 
 @media only screen and (min-width: 768px) and (max-width: 1279px){
   .c-mainNavArea{
@@ -1169,7 +1171,9 @@ Styleguide 11.0
   .c-mainNavArea__navItemSubTitle:after{
     right: 5px; }
   .c-contentsArea{
-    margin-left: 160px; } }
+    margin-left: 160px; }
+  .c-conversionArea{
+    width: calc(100% - 160px); } }
 
 @media only screen and (max-width: 1280px){
   .c-curtain.is-active{
@@ -1180,8 +1184,6 @@ Styleguide 11.0
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     background: rgba(0, 0, 0, 0.6);
     z-index: 300;
-    position: fixed; }
-  .c-conversionArea{
-    width: 100%; } }
+    position: fixed; } }
 
 /*# sourceMappingURL=maps/app.css.map */
