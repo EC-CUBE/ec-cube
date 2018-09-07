@@ -70,7 +70,7 @@ class PaymentResult
      */
     public function getErrors()
     {
-        return [];
+        return $this->errors;
     }
 
     /**
