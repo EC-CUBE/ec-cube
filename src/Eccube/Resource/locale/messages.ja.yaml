@@ -581,9 +581,9 @@ admin.product.permanently_delete__system_error: システムエラーが発生�
 admin.product.copy__confirm_title: 商品を複製します
 admin.product.copy__confirm_message: 商品を複製してよろしいですか？
 admin.product.name: 商品名
-amdin.product.image: 商品画像
-amdin.product.image__short: 画像
-amdin.product.image_size: '推奨サイズ : 600px x 600px以上'
+admin.product.image: 商品画像
+admin.product.image__short: 画像
+admin.product.image_size: '推奨サイズ : 600px x 600px以上'
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
@@ -1517,8 +1517,8 @@ install.update: 更新する
 install.title: ようこそ | EC-CUBEインストール
 install.welcom: ようこそ
 install.check_permission: 権限チェック
-install.site_configration: サイトの設定
-install.database_configration: データベースの設定
+install.site_configuration: サイトの設定
+install.database_configuration: データベースの設定
 install.database_initalization: データベースの初期化
 install.install_completed: インストール完了
 install.start_eccube_installation: '<p>EC-CUBEのインストールを開始します。</p><p>あらかじめ、使用するデータベースの情報（DB名など）をご準備ください。</p>'
