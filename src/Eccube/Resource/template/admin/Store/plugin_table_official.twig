@@ -92,7 +92,7 @@ $(function() {
                     </td>
                     <td class="align-middle">
                         {% if Plugin.id and pluginDetail %}
-                            {% if pluginDetail.update_status == 1 %}
+                            {% if pluginDetail.update_status == 3 %}
                                 <a href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}"
                                    class="btn btn-ec-regular">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
                                 <ul class="plugin-meta dl-horizontal">

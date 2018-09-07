@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 <div class="col-sm-2 pr-2 pr-sm-3">
-    <a href="#" data-toggle="modal" data-target="#searchPluginModal">
+    <a href="#" data-toggle="modal" data-target="#searchPluginModal-{{ item.id }}">
         <img class="w-100 img-responsive" src="{{ item.image|default(asset('noimage_plugin_list.png', 'save_image')) }}" alt="{{ item.name }}">
     </a>
 </div>
@@ -34,80 +34,25 @@ file that was distributed with this source code.
     </div>
 </div>
 <div class="col-sm-4 col-md-3 text-right">
-    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular">{{'admin.store.plugin_owners_search.detail'|trans}}</a>
-    <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">
+    <form action="{{ eccube_config.eccube_owners_store_url }}/products/detail.php?product_id={{ item.id }}" method="post" target="_blank">
+        <a href="#" data-toggle="modal" data-target="#searchPluginModal-{{ item.id }}" class="btn btn-ec-regular">{{'admin.store.plugin_owners_search.detail'|trans}}</a>
         {% if item.update_status == 1 %}
-            {{ 'admin.store.plugin_owners_search.install.free'|trans }}
+            <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">
+                {{ 'admin.store.plugin_owners_search.install.free'|trans }}
+            </a>
+        {% elseif item.update_status == 2 %}
+            <a href="#" class="btn btn-ec-regular">{{ 'admin.store.plugin.installed'|trans }}</a>
+        {% elseif item.update_status == 3 %}
+            <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">
+                {{ 'admin.store.plugin.update'|trans }}
+            </a>
         {% elseif item.update_status == 4 %}
-            {{ 'admin.store.plugin_owners_search.install.fee'|trans }}
-        {% else %}
-            {{ 'admin.store.plugin_owners_search.install'|trans }}
+            <input type="hidden" name="mode" value="link_site" />
+            <input type="hidden" name="public_key" value="{{ BaseInfo.authentication_key }}" />
+            <input type="submit" class="btn btn-primary" value="{{ 'admin.store.plugin_owners_search.install.fee'|trans }}" />
         {% endif %}
-    </a>
+    </form>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog" aria-labelledby="searchPluginModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title font-weight-bold" id="exampleModalLabel">{{ 'admin.store.plugin_owners_search.modal.header'|trans }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row mb-5">
-                    <div class="col-6">
-                        <img class="w-100 img-responsive"
-                             src="{{ item.image|default(asset('noimage_plugin_list.png', 'save_image')) }}" alt="{{ item.name }}">
-                    </div>
-                    <div class="col-6">
-                        <h5 class="font-weight-bold mb-3">{{ item.name }}</h5>
-                        <p>{{ item.short_description }}</p>
-                        <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">{{ 'admin.store.plugin.price'|trans }} </span> {{ item.price|price }}<small> ({{ 'common.tax_include'|trans }})</small></p>
-                    </div>
-                </div>
-                <div class="row mb-4">
-                    <div class="col-7">
-                        {{ include('@admin/Store/plugin_detail_info.twig') }}
-                    </div>
-                    <div class="col-5 text-right">
-                        <a class="btn btn-ec-regular btn-lg mb-3" href="{{ item.contact_url }}" target="_blank"><i class="fa fa-image fa-lg text-secondary"></i> {{ 'admin.store.plugin_owners_search.modal.contact'|trans }}</a>
-                        <a class="btn btn-ec-regular btn-lg" href="{{ item.manual_url }}" target="_blank"><i class="fa fa-image fa-lg text-secondary"></i> {{ 'admin.store.plugin_owners_search.modal.manual'|trans }}</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="alert alert-danger border border-danger">
-                            {% set version_check = item.version_check  %}
-                            {% if version_check == 0 %}
-                                <p class="text-danger mb-1">{{ 'admin.store.plugin_owners_search.modal.note'|trans({"%version%": constant('Eccube\\Common\\Constant::VERSION') }) }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="row mt-4">
-                    <div class="col-12">
-                        {{ item.long_description|raw }}
-                    </div>
-                </div>
-
-                {#{% if item.require is not empty %}#}
-                    {#<div class="row mt-2">#}
-                        {#<div class="col-12">#}
-                            {#{% for require in item.require %}#}
-                                {#<p class="text-danger">{{ 'admin.store.plugin_owners_search.modal.dependency'|trans({"%dependency%" : require.name})  }}</p>#}
-                            {#{% endfor %}#}
-                        {#</div>#}
-                    {#</div>#}
-                {#{% endif %}#}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-ec-sub" data-dismiss="modal">{{ 'admin.store.plugin_owners_search.modal.cancel'|trans }}</button>
-                <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">{{ 'admin.store.plugin_owners_search.modal.submit'|trans }}</a>
-            </div>
-        </div>
-    </div>
-</div>
+{{ include('@admin/Store/plugin_detail_modal.twig') }}

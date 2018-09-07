@@ -1223,6 +1223,8 @@ admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
 admin.store.plugin.search.not_found: 検索条件に該当するデータがありませんでした。
+admin.store.plugin.installed: インストール済み
+admin.store.plugin.update: アップデート
 admin.store.setting: 設定
 admin.store.setting.api_key_setting: 認証キー設定
 admin.store.setting.api_key: 認証キー
@@ -1232,6 +1234,9 @@ admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス
 admin.store.setting.invalid_captcha: 入力された文字列が正しくありません。
 admin.store.setting.captcha_error: エラー
+admin.store.package.api.0.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
+admin.store.package.api.403.error: オーナーズストアの認証に失敗しました。認証キーの設定を確認してください。
+admin.store.package.api.500.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
