@@ -370,7 +370,7 @@ class CsvExportService
     public function fputcsv($row)
     {
         if (is_null($this->convertEncodingCallBack)) {
-            $this->convertEncodingCallBack = $this->getConvertEncodhingCallback();
+            $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
         }
 
         fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->eccubeConfig['eccube_csv_export_separator']);
