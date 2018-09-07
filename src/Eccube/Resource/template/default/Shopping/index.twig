@@ -36,7 +36,6 @@ file that was distributed with this source code.
                     $(form[index]).empty().append(input);
                 });
 
-                $('#customer').prop("disabled", true);
                 $('.non-customer-display').hide();
                 $('.non-customer-edit').show();
                 $('.mod-button').show();
@@ -79,14 +78,12 @@ file that was distributed with this source code.
                     loadingOverlay('hide');
                 });
 
-                $('#customer').prop("disabled", false);
                 $('.non-customer-display').show();
                 $('.non-customer-edit').hide();
                 $('.mod-button').hide();
             });
 
             $('#customer-cancel').click(function() {
-                $('#customer').prop("disabled", false);
                 $('.non-customer-display').show();
                 $('.non-customer-edit').hide();
                 $('.mod-button').hide();
@@ -157,7 +154,7 @@ file that was distributed with this source code.
                         <h2>{{ 'front.shopping.customer_info'|trans }}</h2>
                     </div>
                     {% if is_granted('ROLE_USER') == false %}
-                        <div class="ec-orderAccount__change">
+                        <div class="ec-orderAccount__change non-customer-display">
                             <button id="customer" class="ec-inlineBtn" type="button">{{ 'common.change'|trans }}</button>
                         </div>
                     {% endif %}
@@ -174,7 +171,8 @@ file that was distributed with this source code.
                         <div class="ec-borderedDefs  non-customer-edit" style="display:none;">
                             <dl>
                                 <dt>
-                                    <label class="ec-label required">お名前</label><span class="ec-required">必須</span>
+                                    <label class="ec-label required">{{ 'common.name'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
                                 </dt>
                                 <dd>
                                     <div class="ec-halfInput">
@@ -185,7 +183,8 @@ file that was distributed with this source code.
                             </dl>
                             <dl>
                                 <dt>
-                                    <label class="ec-label required">お名前(カナ)</label><span class="ec-required">必須</span>
+                                    <label class="ec-label required">{{ 'common.kana'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
                                 </dt>
                                 <dd>
                                     <div class="ec-halfInput">
@@ -196,7 +195,7 @@ file that was distributed with this source code.
                             </dl>
                             <dl>
                                 <dt>
-                                    <label class="ec-label" for="nonmember_company_name">会社名</label>
+                                    <label class="ec-label" for="nonmember_company_name">{{ 'common.company_name'|trans }}</label>
                                 </dt>
                                 <dd>
                                     <div class="ec-halfInput">
@@ -206,16 +205,22 @@ file that was distributed with this source code.
                             </dl>
                             <dl>
                                 <dt>
-                                    <label class="ec-label required">住所</label><span class="ec-required">必須</span>
+                                    <label class="ec-label required">{{ 'common.address'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
                                 </dt>
                                 <dd>
-                                    <div class="ec-zipInput"><span>〒</span>
+                                    <div class="ec-zipInput">
+                                        <span>{{ 'common.postal_symbol'|trans }}</span>
                                         <span class="customer-form customer-postal_code"></span>
                                         <div class="ec-zipInputHelp">
                                             <div class="ec-zipInputHelp__icon">
-                                                <div class="ec-icon"><img src="/html/template/default/assets/icon/question-white.svg" alt="">
+                                                <div class="ec-icon">
+                                                    <img src="/html/template/default/assets/icon/question-white.svg" alt="">
                                                 </div>
-                                            </div><a href="http://www.post.japanpost.jp/zipcode/" target="_blank"><span>郵便番号検索</span></a>
+                                            </div>
+                                            <a href="http://www.post.japanpost.jp/zipcode/" target="_blank">
+                                                <span>{{ 'common.search_postal_code'|trans }}</span>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="ec-select">
@@ -231,7 +236,8 @@ file that was distributed with this source code.
                             </dl>
                             <dl>
                                 <dt>
-                                    <label class="ec-label required" for="nonmember_phone_number">電話番号</label><span class="ec-required">必須</span>
+                                    <label class="ec-label required" for="nonmember_phone_number">{{ 'common.phone_number'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
                                 </dt>
                                 <dd>
                                     <div class="ec-telInput">
@@ -241,7 +247,8 @@ file that was distributed with this source code.
                             </dl>
                             <dl>
                                 <dt>
-                                    <label class="ec-label required">メールアドレス</label><span class="ec-required">必須</span>
+                                    <label class="ec-label required">{{ 'common.mail_address'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
                                 </dt>
                                 <dd>
                                     <div class="ec-input">
@@ -251,7 +258,7 @@ file that was distributed with this source code.
                             </dl>
                         </div>
                         <div class="mod-button" style="display:none;">
-                            <span id="customer-ok"><button type="button" class="ec-inlineBtn">OK</button></span>
+                            <span id="customer-ok"><button type="button" class="ec-inlineBtn">{{ 'common.ok'|trans }}</button></span>
                             <span id="customer-cancel"><button type="button" class="ec-inlineBtn">{{ 'common.cancel'|trans }}</button></span>
                         </div>
                         <input type="hidden" id="customer-name01" class="customer-in" name="customer_name01" value="{{ Order.name01 }}">
