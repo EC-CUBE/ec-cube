@@ -23,7 +23,7 @@ class PaymentResult
     /**
      * @var array
      */
-    private $errors;
+    private $errors = [];
 
     /**
      * @var boolean
