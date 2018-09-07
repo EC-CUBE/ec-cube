@@ -25,46 +25,30 @@ file that was distributed with this source code.
             });
 
             {% if is_granted('ROLE_USER') == false %}
-            var ref = [];
-            var name = [];
-            var input = [];
-            var customerin = [];
+            var edit = $('.customer-edit');
+            var hidden = $('.customer-in');
+            var form = $('.customer-form');
 
             $('#customer').click(function() {
-                // ref = $('.customer-name01');
-                var edit = $('.customer-edit');
-                var hidden = $('.customer-in');
-
                 $(edit).each(function(index) {
-                    ref[index] = $(this);
-                });
-                $(hidden).each(function(index) {
-                    customerin[index] = $(this);
-                });
-                $(ref).each(function(index) {
-                    name[index] = $(this).text();
-                });
-                $(name).each(function(index) {
-                    input[index] = $('<input id="edit' + index + '" type="text" />').val(name[index]);
-                });
-                $(input).each(function(index) {
-                    ref[index].empty().append(input[index]);
+                    var name = $(this).text();
+                    var input = $('<input id="edit' + index + '" type="text" />').val(name);
+                    $(form[index]).empty().append(input);
                 });
 
                 $('#customer').prop("disabled", true);
+                $('.non-customer-display').hide();
+                $('.non-customer-edit').show();
                 $('.mod-button').show();
             });
 
             $('#customer-ok').click(function() {
-                $(ref).each(function(index) {
-                    var nameAfter = input[index].val();
-                    ref[index].empty().text(nameAfter);
-                    customerin[index].val(nameAfter);
-                    input[index].remove();
+                $(form).each(function(index) {
+                    $(hidden[index]).val($(form[index]).children('input').val());
                 });
 
                 var postData = {};
-                $('.customer-in').each(function() {
+                $(hidden).each(function() {
                     postData[$(this).attr('name')] = $(this).val();
                 });
 
@@ -77,34 +61,34 @@ file that was distributed with this source code.
                     dataType: 'json'
                 }).done(function(data) {
                     if (data.status == 'OK') {
+                        $(form).each(function(index) {
+                            $(edit[index]).empty().text($(form[index]).children('input').val());
+                            $(form[index]).empty();
+                        });
+
                         // kana field
-                        ref[2].empty().text(data.kana01);
-                        ref[3].empty().text(data.kana02);
+                        $(edit[2]).empty().text(data.kana01);
+                        $(edit[3]).empty().text(data.kana02);
                         $('#customer-kana01').val(data.kana01);
                         $('#customer-kana02').val(data.kana02);
                     }
                 }).fail(function() {
                     alert('更新に失敗しました。入力内容を確認してください。');
-                    $(ref).each(function(index) {
-                        ref[index].empty().text(name[index]);
-                        input[index].remove();
-                    });
                 }).always(function(data) {
                     // overlayを無効
                     loadingOverlay('hide');
                 });
 
                 $('#customer').prop("disabled", false);
+                $('.non-customer-display').show();
+                $('.non-customer-edit').hide();
                 $('.mod-button').hide();
             });
 
             $('#customer-cancel').click(function() {
-                $(ref).each(function(index) {
-                    ref[index].empty().text(name[index]);
-                    input[index].remove();
-                });
-
                 $('#customer').prop("disabled", false);
+                $('.non-customer-display').show();
+                $('.non-customer-edit').hide();
                 $('.mod-button').hide();
             });
             {% endif %}
@@ -177,16 +161,95 @@ file that was distributed with this source code.
                             <button id="customer" class="ec-inlineBtn" type="button">{{ 'common.change'|trans }}</button>
                         </div>
                     {% endif %}
-                    <div class="ec-orderAccount__account">
+                    <div class="ec-orderAccount__account non-customer-display">
                         <p class="ec-halfInput"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様</p>
                         <p class="ec-halfInput"><span class="customer-edit customer-kana01">{{ Order.kana01 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana02 }}</span></p>
+                        <p class="ec-input"><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
                         <p class="ec-zipInput">〒<span class="customer-edit customer-postal_code">{{ Order.postal_code }}</span></p>
                         <p class="ec-input"><span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
                         <p class="ec-telInput"><span class="customer-edit customer-phone_number">{{ Order.phone_number }}</span></p>
                         <p class="ec-input"><span class="customer-edit customer-email">{{ Order.email }}</span></p>
-                        <p class="ec-input"><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
                     </div>
                     {% if is_granted('ROLE_USER') == false %}
+                        <div class="ec-borderedDefs  non-customer-edit" style="display:none;">
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">お名前</label><span class="ec-required">必須</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-halfInput">
+                                        <span class="customer-form customer-name01"></span>
+                                        <span class="customer-form customer-name02"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">お名前(カナ)</label><span class="ec-required">必須</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-halfInput">
+                                        <span class="customer-form customer-kana01"></span>
+                                        <span class="customer-form customer-kana02"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label" for="nonmember_company_name">会社名</label>
+                                </dt>
+                                <dd>
+                                    <div class="ec-halfInput">
+                                        <span class="customer-form customer-company_name"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">住所</label><span class="ec-required">必須</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-zipInput"><span>〒</span>
+                                        <span class="customer-form customer-postal_code"></span>
+                                        <div class="ec-zipInputHelp">
+                                            <div class="ec-zipInputHelp__icon">
+                                                <div class="ec-icon"><img src="/html/template/default/assets/icon/question-white.svg" alt="">
+                                                </div>
+                                            </div><a href="http://www.post.japanpost.jp/zipcode/" target="_blank"><span>郵便番号検索</span></a>
+                                        </div>
+                                    </div>
+                                    <div class="ec-select">
+                                        <span class="customer-form customer-address_pref"></span>
+                                    </div>
+                                    <div class="ec-input">
+                                        <span class="customer-form customer-address_addr01"></span>
+                                    </div>
+                                    <div class="ec-input">
+                                        <span class="customer-form customer-address_addr02"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required" for="nonmember_phone_number">電話番号</label><span class="ec-required">必須</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-telInput">
+                                        <span class="customer-form customer-phone_number"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">メールアドレス</label><span class="ec-required">必須</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-input">
+                                        <span class="customer-form customer-email"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
                         <div class="mod-button" style="display:none;">
                             <span id="customer-ok"><button type="button" class="ec-inlineBtn">OK</button></span>
                             <span id="customer-cancel"><button type="button" class="ec-inlineBtn">{{ 'common.cancel'|trans }}</button></span>
@@ -195,13 +258,13 @@ file that was distributed with this source code.
                         <input type="hidden" id="customer-name02" class="customer-in" name="customer_name02" value="{{ Order.name02 }}">
                         <input type="hidden" id="customer-kana01" class="customer-in" name="customer_kana01" value="{{ Order.kana01 }}">
                         <input type="hidden" id="customer-kana02" class="customer-in" name="customer_kana02" value="{{ Order.kana02 }}">
+                        <input type="hidden" id="customer-company-name" class="customer-in" name="customer_company_name" value="{{ Order.companyName }}">
                         <input type="hidden" id="customer-postal_code" class="customer-in" name="customer_postal_code" value="{{ Order.postal_code }}">
                         <input type="hidden" id="customer-pref" class="customer-in" name="customer_pref" value="{{ Order.pref }}">
                         <input type="hidden" id="customer-addr01" class="customer-in" name="customer_addr01" value="{{ Order.addr01 }}">
                         <input type="hidden" id="customer-addr02" class="customer-in" name="customer_addr02" value="{{ Order.addr02 }}">
                         <input type="hidden" id="customer-phone_number" class="customer-in" name="customer_phone_number" value="{{ Order.phone_number }}">
                         <input type="hidden" id="customer-email" class="customer-in" name="customer_email" value="{{ Order.email }}">
-                        <input type="hidden" id="customer-company-name" class="customer-in" name="customer_company_name" value="{{ Order.companyName }}">
                     {% endif %}
                 </div>
                 <div class="ec-orderDelivery">
