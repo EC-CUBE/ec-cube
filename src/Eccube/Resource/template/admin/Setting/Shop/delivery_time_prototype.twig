@@ -8,13 +8,14 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
+{% set DeliveryTime = form.vars.value %}
 <li class="list-group-item delivery-time-item sortable-item">
     <div class="row justify-content-around mode-view">
         <div class="col-auto d-flex align-items-center">
             <i class="fa fa-bars text-ec-gray"></i>
         </div>
         <div class="col d-flex align-items-center">
-            <a class="display-label">{% if form.vars.value == '' %}__value__{% else %}{{ form.vars.value }}{% endif %}</a>
+            <a class="display-label">{% if DeliveryTime is empty %}__value__{% else %}{{ DeliveryTime }}{% endif %}</a>
         </div>
         <div class="col-auto text-right">
             <a class="btn btn-ec-actionIcon mr-3 action-up" href="" data-tooltip="true"
@@ -29,6 +30,17 @@ file that was distributed with this source code.
                data-placement="top" title="{{ 'admin.common.edit'|trans }}">
                 <i class="fa fa-pencil fa-lg text-secondary"></i>
             </a>
+            {% if DeliveryTime is empty %}
+            <a class="btn btn-ec-actionIcon mr-3 action-visible" href="" data-tooltip="true"
+               data-placement="top" title="{{ 'admin.common.to_hide'|trans }}">
+                <i class="fa fa-toggle-on fa-lg text-secondary" aria-hidden="true"></i>
+            </a>
+            {% else %}
+                <a class="btn btn-ec-actionIcon mr-3 action-visible" href="" data-tooltip="true"
+                   data-placement="top" title="{{ DeliveryTime.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}">
+                    <i class="fa fa-toggle-{{ DeliveryTime.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
+                </a>
+            {% endif %}
             <a class="btn btn-ec-actionIcon mr-3 remove-delivery-time-item" href="" data-tooltip="true"
                data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                 <i class="fa fa-close fa-lg text-secondary"></i>
@@ -50,6 +62,8 @@ file that was distributed with this source code.
                 {{ form_errors(form.delivery_time) }}
                 {{ form_widget(form.sort_no, {'attr': {'class': "sort-no" }}) }}
                 {{ form_errors(form.sort_no) }}
+                {{ form_widget(form.visible, {'attr': {'class': "visible d-none" }}) }}
+                {{ form_errors(form.visible) }}
             </div>
         </div>
     </div>
