@@ -185,9 +185,9 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     public function testDeleteWithException()
     {
         $Product = $this->createProduct();
-        /** @var ProductClass[] $ProductClassess */
-        $ProductClassess = $Product->getProductClasses();
-        foreach ($ProductClassess as $ProductClass) {
+        /** @var ProductClass[] $ProductClasses */
+        $ProductClasses = $Product->getProductClasses();
+        foreach ($ProductClasses as $ProductClass) {
             $ClassCategory1 = $ProductClass->getClassCategory1();
             if ($ClassCategory1 === null) {
                 continue;

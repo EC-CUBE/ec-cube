@@ -69,8 +69,8 @@ class TopController extends AbstractController
 
         dump($pagination->getTotalItemCount());
 
-        foreach ($pagination as $customr) {
-            dump($customr->getId());
+        foreach ($pagination as $customer) {
+            dump($customer->getId());
         }
 
         return new Response('paginator sample.');

@@ -101,7 +101,7 @@ class Step3Type extends AbstractType
                 ],
             ])
             ->add('admin_dir', TextType::class, [
-                'label' => trans('install.directry_name', [
+                'label' => trans('install.directory_name', [
                     '%min%' => $this->eccubeConfig['eccube_id_min_len'],
                     '%max%' => $this->eccubeConfig['eccube_id_max_len'],
                 ]),

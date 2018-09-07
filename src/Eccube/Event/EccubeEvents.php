@@ -16,7 +16,7 @@ namespace Eccube\Event;
 final class EccubeEvents
 {
     /**
-     * Admin/AdminContoller
+     * Admin/AdminController
      */
     // login
     const ADMIN_ADMIM_LOGIN_INITIALIZE = 'admin.admin.login.initialize';
@@ -232,7 +232,7 @@ final class EccubeEvents
      */
     // csvProduct
 
-    // csvCatgory
+    // csvCategory
 
     // csvTemplate
 

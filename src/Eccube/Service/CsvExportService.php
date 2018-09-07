@@ -280,9 +280,9 @@ class CsvExportService
         $this->fopen();
 
         $query = $this->qb->getQuery();
-        foreach ($query->getResult() as $iteratableResult) {
-            $closure($iteratableResult, $this);
-            $this->entityManager->detach($iteratableResult);
+        foreach ($query->getResult() as $iterableResult) {
+            $closure($iterableResult, $this);
+            $this->entityManager->detach($iterableResult);
             $query->free();
             flush();
         }
@@ -315,7 +315,7 @@ class CsvExportService
         // データを取得.
         $data = $entity->offsetGet($Csv->getFieldName());
 
-        // one to one の場合は, dtb_csv.referece_field_nameと比較し, 合致する結果を取得する.
+        // one to one の場合は, dtb_csv.reference_field_name, 合致する結果を取得する.
         if ($data instanceof \Eccube\Entity\AbstractEntity) {
             if (EntityUtil::isNotEmpty($data)) {
                 return $data->offsetGet($Csv->getReferenceFieldName());
@@ -346,7 +346,7 @@ class CsvExportService
      *
      * @return \Closure
      */
-    public function getConvertEncodhingCallback()
+    public function getConvertEncodingCallback()
     {
         $config = $this->eccubeConfig;
 

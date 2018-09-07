@@ -214,7 +214,7 @@ class ProductClassEditType extends AbstractType
 
             // 在庫数無制限
             if (empty($data['stock_unlimited']) && null === $data['stock']) {
-                $form['stock_unlimited']->addError(new FormError(trans('productclass.text.error.set_stock_quantitiy')));
+                $form['stock_unlimited']->addError(new FormError(trans('productclass.text.error.set_stock_quantity')));
             }
 
             // 販売制限数

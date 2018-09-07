@@ -48,7 +48,7 @@ file that was distributed with this source code.
                                 {{ form_row(form.login_pass) }}
 
                                 <h2>{{ 'install.security_configuration'|trans}}</h2>
-                                {{ form_row(form.admin_dir , {attr : { placeholder: 'install.directry_name_notice'|trans }}) }}
+                                {{ form_row(form.admin_dir , {attr : { placeholder: 'install.directory_name_notice'|trans }}) }}
                                 {% if request.secure %}
                                     {{ form_row(form.admin_force_ssl) }}
                                 {% else %}

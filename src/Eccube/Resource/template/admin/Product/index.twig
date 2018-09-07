@@ -71,7 +71,7 @@ file that was distributed with this source code.
 
                 // 削除中のUI変更処理
                 modal.find('button').attr('disabled', 'disabled');
-                $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__in_prograss'|trans }}");
+                $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__in_progress'|trans }}");
                 $('.progress', modal).show();
 
                 var checkedList = $('input[type=checkbox][data-delete-url]:checked');
