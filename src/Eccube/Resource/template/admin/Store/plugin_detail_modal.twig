@@ -46,8 +46,24 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <form action="{{ eccube_config.eccube_owners_store_url }}/products/detail.php?product_id={{ item.id }}" method="post" target="_blank">
                 <button type="button" class="btn btn-ec-sub" data-dismiss="modal">{{ 'admin.store.plugin_owners_search.modal.cancel'|trans }}</button>
-                <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">{{ 'admin.store.plugin_owners_search.modal.submit'|trans }}</a>
+                {% if item.update_status == 1 %}
+                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">
+                        {{ 'admin.store.plugin_owners_search.install.free'|trans }}
+                    </a>
+                {% elseif item.update_status == 2 %}
+                    <a href="#" class="btn btn-ec-regular">{{ 'admin.store.plugin.installed'|trans }}</a>
+                {% elseif item.update_status == 3 %}
+                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">
+                        {{ 'admin.store.plugin.update'|trans }}
+                    </a>
+                {% elseif item.update_status == 4 %}
+                    <input type="hidden" name="mode" value="link_site" />
+                    <input type="hidden" name="public_key" value="{{ BaseInfo.authentication_key }}" />
+                    <input type="submit" class="btn btn-primary" value="{{ 'admin.store.plugin_owners_search.install.fee'|trans }}" />
+                {% endif %}
+                </form>
             </div>
         </div>
     </div>

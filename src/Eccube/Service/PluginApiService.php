@@ -192,7 +192,7 @@ class PluginApiService
                 $item['update_status'] = 4;
             }
 
-            $item = $this->buildInfo($item);
+            $this->buildInfo($item);
         }
 
         return $plugins;
