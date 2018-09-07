@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -196,6 +197,7 @@ class ShippingType extends AbstractType
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
+                /** @var Shipping $Shipping */
                 $Shipping = $event->getData();
                 if (is_null($Shipping) || !$Shipping->getId()) {
                     return;
@@ -206,6 +208,10 @@ class ShippingType extends AbstractType
                 $Delivery = $Shipping->getDelivery();
                 if ($Delivery) {
                     $DeliveryTimes = $Delivery->getDeliveryTimes();
+                    $DeliveryTimes = $DeliveryTimes->filter(function (DeliveryTime $DeliveryTime) {
+                        return $DeliveryTime->isVisible();
+                    });
+
                     foreach ($DeliveryTimes as $deliveryTime) {
                         if ($deliveryTime->getId() == $Shipping->getTimeId()) {
                             $ShippingDeliveryTime = $deliveryTime;

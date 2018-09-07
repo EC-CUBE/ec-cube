@@ -74,7 +74,6 @@ common.customer_address_count_is_over: お届け先登録の上限の%eccube_del
 common.search_keyword: キーワードを入力
 common.customer_already_exists: 既に利用されているメールアドレスです
 common.member_already_exists: 既に利用されているログインIDです
-common.hidden_label: (非表示)
 
 #====================================================================================
 # フロント画面
@@ -382,6 +381,8 @@ admin.common.send_complete: メールを送信しました
 admin.common.send_error: メールの送信に失敗しました
 admin.common.create_complete: 作成しました
 admin.common.system_error: システムエラーが発生しました
+admin.common.to_show_complete: 「%name%」を表示にしました。
+admin.common.to_hide_complete: 「%name%」を非表示にしました。
 
 # action系のラベル
 admin.common.save: 保存
@@ -413,6 +414,9 @@ admin.common.last: 最後へ
 # 汎用ラベル, メッセージ
 admin.common.show: 表示
 admin.common.hide: 非表示
+admin.common.hidden_label: (非表示)
+admin.common.to_show: 非表示中 | 表示にする
+admin.common.to_hide: 表示中 | 非表示にする
 admin.common.required: 必須
 admin.common.bulk_actions: 一括操作
 admin.common.select: 選択してください
