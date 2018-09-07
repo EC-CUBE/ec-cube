@@ -13,7 +13,6 @@
 
 namespace Eccube\Service;
 
-use Eccube\Application;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\OrderItem;
@@ -44,7 +43,7 @@ class OrderPdfService extends TcpdfFpdi
     protected $taxRuleService;
 
     /**
-     * @var Application
+     * @var EccubeConfig
      */
     private $eccubeConfig;
 
@@ -415,7 +414,7 @@ class OrderPdfService extends TcpdfFpdi
 
         $this->lfText(25, 125, $orderDate, 10);
         //注文番号
-        $this->lfText(25, 135, $Order->getId(), 10);
+        $this->lfText(25, 135, $Order->getOrderNo(), 10);
 
         // 総合計金額
         if (!$Order->isMultiple()) {
@@ -462,7 +461,7 @@ class OrderPdfService extends TcpdfFpdi
 
             // product
             $productName = $OrderItem->getProductName();
-            if ($OrderItem->getProductCode()) {
+            if (null !== $OrderItem->getProductCode()) {
                 $productName .= ' / '.$OrderItem->getProductName();
             }
             if ($classCategory) {
