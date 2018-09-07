@@ -1485,9 +1485,9 @@ tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後�
 tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
 tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
 tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に税率を設定することができるようになります。
-tooltip.setting.shop.shop.option_point_enabled: 購入金額に対するポイント付与率を編集できます。
-tooltip.setting.shop.shop.option_point_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
-tooltip.setting.shop.shop.option_point_conversion_rate: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
+tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。
+tooltip.setting.shop.shop.option_point_rate: 購入金額に対するポイント付与率を編集できます。
+tooltip.setting.shop.shop.option_point_conversion_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
 tooltip.setting.shop.payment.logo_image: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
 tooltip.setting.shop.delivery.tracking_number_url: 配送業者のお問い合わせページURLを指定します。
 tooltip.setting.shop.delivery.sale_type: この配送方法で取り扱える販売種別を指定します。
