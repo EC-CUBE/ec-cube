@@ -452,7 +452,7 @@ class OrderPdfService extends TcpdfFpdi
             }
 
             // product
-            $arrOrder[$i][0] = sprintf('%s / %s / %s', $OrderItem->getProductName(), $OrderItem->getProductCode(), $classCategory);
+            $arrOrder[$i][0] = $OrderItem->getProductName().($OrderItem->getProductCode() ? ' / '.$OrderItem->getProductCode() : '').($classCategory ? ' / '.$classCategory : '');
             // 購入数量
             $arrOrder[$i][1] = number_format($OrderItem->getQuantity());
             // 税込金額（単価）
