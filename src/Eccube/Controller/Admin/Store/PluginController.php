@@ -309,7 +309,7 @@ class PluginController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
         } else {
-            $this->addSuccess(trans('「%plugin_name%」を有効にしました。', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+            $this->addSuccess(trans('admin.store.plugin.enable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_store_plugin');
         }
@@ -369,7 +369,7 @@ class PluginController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
         } else {
-            $this->addSuccess('admin.plugin.disable.complete', 'admin');
+            $this->addSuccess(trans('admin.store.plugin.disable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_store_plugin');
         }

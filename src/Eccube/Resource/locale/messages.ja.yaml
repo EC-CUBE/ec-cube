@@ -1227,6 +1227,8 @@ admin.store.plugin.plugin_list: プラグイン一覧
 admin.store.plugin.search.not_found: 検索条件に該当するデータがありませんでした。
 admin.store.plugin.installed: インストール済み
 admin.store.plugin.update: アップデート
+admin.store.plugin.enable.complete: 「%plugin_name%」を有効にしました。
+admin.store.plugin.disable.complete: 「%plugin_name%」を無効にしました。
 admin.store.setting: 設定
 admin.store.setting.api_key_setting: 認証キー設定
 admin.store.setting.api_key: 認証キー
