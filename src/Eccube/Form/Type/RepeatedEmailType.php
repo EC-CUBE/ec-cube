@@ -51,7 +51,6 @@ class RepeatedEmailType extends AbstractType
             'options' => [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(['strict' => true]),
                     new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                 ],
             ],
