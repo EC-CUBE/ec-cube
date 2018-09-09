@@ -96,7 +96,7 @@ parameters:
     eccube_postal_code: 8
     eccube_password_min_len: 8
     eccube_password_max_len: 32
-    eccube_composer_memory_limit: 1536
+    eccube_composer_memory_limit: 1536M
     eccube_order_mail_template_id: 1 #注文受付メール
     eccube_entry_confirm_mail_template_id: 2 #会員仮登録メール
     eccube_entry_complete_mail_template_id: 3 #会員本登録メール

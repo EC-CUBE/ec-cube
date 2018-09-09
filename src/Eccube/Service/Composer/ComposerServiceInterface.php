@@ -40,6 +40,8 @@ interface ComposerServiceInterface
      */
     public function execRemove($packageName, $output = null);
 
+    public function execConfig($key, $value = null);
+
     public function configureRepository(BaseInfo $BaseInfo);
 
     public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0);
