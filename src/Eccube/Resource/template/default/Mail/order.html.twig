@@ -42,7 +42,7 @@ file that was distributed with this source code.
                             {% if BaseInfo.isOptionPoint %}
                             ご利用ポイント：{{ Order.usePoint }} pt<br/>
                             {% endif %}
-                            メッセージ：{{ Order.message }}<br/>
+                            お問い合わせ：{{ Order.message }}<br/>
                             <br/>
                             <hr style="border-top: 3px double #8c8b8b;">
                             　ご注文商品明細<br/>
@@ -69,7 +69,7 @@ file that was distributed with this source code.
                             ご注文者情報<br/>
                             <hr style="border-top: 3px double #8c8b8b;">
                             お名前：{{ Order.name01 }} {{ Order.name02 }} 様<br/>
-                            お名前(フリガナ)：{{ Order.kana01 }} {{ Order.kana02 }} 様<br/>
+                            お名前(カナ)：{{ Order.kana01 }} {{ Order.kana02 }} 様<br/>
                             {% if Order.company_name %}
                                 会社名：{{ Order.company_name }}<br/>
                             {% endif %}
@@ -86,7 +86,7 @@ file that was distributed with this source code.
                                 ◎お届け先{% if Order.multiple %}{{ loop.index }}{% endif %}<br/>
                                 <br/>
                                 お名前：{{ Shipping.name01 }} {{ Shipping.name02 }} 様<br/>
-                                お名前(フリガナ)：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様<br/>
+                                お名前(カナ)：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様<br/>
                                 {% if Shipping.company_name %}
                                     会社名：{{ Shipping.company_name }}<br/>
                                 {% endif %}

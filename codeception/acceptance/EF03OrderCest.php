@@ -164,7 +164,7 @@ class EF03OrderCest
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
             $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
@@ -228,7 +228,7 @@ class EF03OrderCest
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, '姓03 名03 様');
             $I->seeInLastEmailTo($email, 'お名前：姓03 名03 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：セイ メイ 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：セイ メイ 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒5300001');
             $I->seeInLastEmailTo($email, '住所：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
             $I->seeInLastEmailTo($email, '電話番号：111111111');
@@ -369,7 +369,7 @@ class EF03OrderCest
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
             $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
@@ -508,7 +508,7 @@ class EF03OrderCest
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
             $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
@@ -715,7 +715,7 @@ class EF03OrderCest
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
             $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
@@ -875,7 +875,7 @@ class EF03OrderCest
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
             $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());

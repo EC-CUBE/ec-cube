@@ -24,7 +24,7 @@ file that was distributed with this source code.
 {% if BaseInfo.isOptionPoint %}
 ご利用ポイント：{{ Order.usePoint }} pt
 {% endif %}
-メッセージ：{{ Order.message }}
+お問い合わせ：{{ Order.message }}
 
 
 ************************************************
@@ -54,7 +54,7 @@ file that was distributed with this source code.
 　ご注文者情報
 ************************************************
 お名前：{{ Order.name01 }} {{ Order.name02 }} 様
-お名前(フリガナ)：{{ Order.kana01 }} {{ Order.kana02 }} 様
+お名前(カナ)：{{ Order.kana01 }} {{ Order.kana02 }} 様
 {% if Order.company_name %}
 会社名：{{ Order.company_name }}
 {% endif %}
@@ -71,7 +71,7 @@ file that was distributed with this source code.
 ◎お届け先{% if Order.multiple %}{{ loop.index }}{% endif %}
 
 お名前：{{ Shipping.name01 }} {{ Shipping.name02 }} 様
-お名前(フリガナ)：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
+お名前(カナ)：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
 {% if Shipping.company_name %}
 会社名：{{ Shipping.company_name }}
 {% endif %}
