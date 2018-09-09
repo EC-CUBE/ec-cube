@@ -8514,7 +8514,6 @@ Styleguide 22.1
   }
 
   .ec-eyecatchRole .ec-eyecatchRole__image{
-    width: 45%;
     -ms-flex-order: 2;
         order: 2;
   }
