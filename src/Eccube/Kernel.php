@@ -88,13 +88,16 @@ class Kernel extends BaseKernel
 
         parent::boot();
 
+        $container = $this->getContainer();
+
         // DateTime/DateTimeTzのタイムゾーンを設定.
-        UTCDateTimeType::setTimeZone($this->container->getParameter('timezone'));
-        UTCDateTimeTzType::setTimeZone($this->container->getParameter('timezone'));
-        date_default_timezone_set($this->container->getParameter('timezone'));
+        $timezone = $container->getParameter('timezone');
+        UTCDateTimeType::setTimeZone($timezone);
+        UTCDateTimeTzType::setTimeZone($timezone);
+        date_default_timezone_set($timezone);
 
         // RFC違反のメールを送信できるよう独自のValidationを設定
-        if (!$this->container->getParameter('eccube_rfc_email_check')) {
+        if (!$container->getParameter('eccube_rfc_email_check')) {
             // RFC違反のメールを許容する
             \Swift::init(function () {
                 \Swift_DependencyContainer::getInstance()
@@ -105,11 +108,11 @@ class Kernel extends BaseKernel
 
         // Activate to $app
         $app = Application::getInstance(['debug' => $this->isDebug()]);
-        $app->setParentContainer($this->container);
+        $app->setParentContainer($container);
         $app->initialize();
         $app->boot();
 
-        $this->container->set('app', $app);
+        $container->set('app', $app);
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
