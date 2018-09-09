@@ -153,11 +153,11 @@ front.entry.confirm_message: |
   よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。
 front.entry.do_register: 会員登録をする
 front.entry.complete_title: 新規会員登録(完了)
+front.entry.complete_title__temporary: 新規会員登録(仮登録完了)
 front.entry.complete_message__title: 会員登録ありがとうございます
-front.entry.complete_message__temporary: 現在仮会員の状態です。
-  ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、
-  本会員登録になった上でお買い物をお楽しみください。
-  今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.entry.complete_message__temporary: 現在、仮会員の状態です。
+  ただいま、ご入力いただいたメールアドレス宛に、ご本人様確認用のメールをお送りいたしました。
+  メール本文内のURLクリックすると、本会員登録が完了となります。
 front.entry.complete_message__activated: それではショッピングをお楽しみください。
   今後ともご愛顧賜りますようよろしくお願い申し上げます。
 
@@ -583,6 +583,7 @@ admin.product.copy__confirm_message: 商品を複製してよろしいですか�
 admin.product.name: 商品名
 amdin.product.image: 商品画像
 amdin.product.image__short: 画像
+amdin.product.image_size: '推奨サイズ : 600px x 600px以上'
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
@@ -1055,6 +1056,7 @@ admin.setting.shop.payment.unlimited: 無制限
 admin.setting.shop.payment.payment_id: ID
 admin.setting.shop.payment.payment_name: 支払方法名
 admin.setting.shop.payment.logo_image: ロゴ画像
+admin.setting.shop.payment.logo_image_size: '推奨サイズ : 500px × 100px'
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：配送方法設定
@@ -1223,6 +1225,8 @@ admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
 admin.store.plugin.search.not_found: 検索条件に該当するデータがありませんでした。
+admin.store.plugin.installed: インストール済み
+admin.store.plugin.update: アップデート
 admin.store.setting: 設定
 admin.store.setting.api_key_setting: 認証キー設定
 admin.store.setting.api_key: 認証キー
@@ -1232,6 +1236,9 @@ admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス
 admin.store.setting.invalid_captcha: 入力された文字列が正しくありません。
 admin.store.setting.captcha_error: エラー
+admin.store.package.api.0.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
+admin.store.package.api.403.error: オーナーズストアの認証に失敗しました。認証キーの設定を確認してください。
+admin.store.package.api.500.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
@@ -1478,9 +1485,9 @@ tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後�
 tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
 tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
 tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に税率を設定することができるようになります。
-tooltip.setting.shop.shop.option_point_enabled: 購入金額に対するポイント付与率を編集できます。
-tooltip.setting.shop.shop.option_point_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
-tooltip.setting.shop.shop.option_point_conversion_rate: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
+tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。
+tooltip.setting.shop.shop.option_point_rate: 購入金額に対するポイント付与率を編集できます。
+tooltip.setting.shop.shop.option_point_conversion_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
 tooltip.setting.shop.payment.logo_image: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
 tooltip.setting.shop.delivery.tracking_number_url: 配送業者のお問い合わせページURLを指定します。
 tooltip.setting.shop.delivery.sale_type: この配送方法で取り扱える販売種別を指定します。

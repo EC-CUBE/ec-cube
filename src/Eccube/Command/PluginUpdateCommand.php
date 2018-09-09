@@ -44,6 +44,7 @@ class PluginUpdateCommand extends Command
 
         if (!$Plugin) {
             $io->error("No such plugin `${code}`.");
+
             return 1;
         }
 

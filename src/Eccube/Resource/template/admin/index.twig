@@ -90,7 +90,7 @@ file that was distributed with this source code.
                                     data: prices,
                                     backgroundColor: priceBackgroundColors,
                                     borderColor: priceBorderColors,
-                                    borderWidth: 15,
+                                    borderWidth: 1,
                                     yAxisID: 'y-axis-1'
                                 }
                             ]
@@ -273,25 +273,26 @@ file that was distributed with this source code.
                                     <span class="card-title">{{ 'admin.home.recommend_plugins_title'|trans }}</span>
                                 </div>
                             </div>
-                            <div class="card-body py-0">
+                            <div class="card-body py-0" style="max-height: 395px; overflow-y: scroll">
                                 {% for plugin in recommendedPlugins %}
                                     <div class="row py-3 border border-bottom-0 border-left-0 border-right-0">
                                         <div class="col-5 col-md-4">
-                                            <a href="{{ plugin.store_url }}" target="_blank" title="{{ plugin.name }}">
+                                            <a href="#" data-toggle="modal" data-target="#searchPluginModal-{{ plugin.id }}">
                                                 <img src="{{ plugin.image }}" class="w-100" alt="{{ plugin.name }}">
                                             </a>
                                         </div>
                                         <div class="col-7 col-md-8 pl-0">
-                                            <a href="{{ plugin.store_url }}" target="_blank">{{ plugin.name }}</a>
+                                            <a href="#" data-toggle="modal" data-target="#searchPluginModal-{{ plugin.id }}">{{ plugin.name }}</a>
                                             <p class="m-0 pt-2">
                                                 {{ plugin.short_description }}
                                             </p>
                                         </div>
                                     </div>
+                                    {{ include('@admin/Store/plugin_detail_modal.twig', {'item': plugin} ) }}
                                 {% endfor %}
                             </div>
                             <div class="card-footer">
-                                > <a href="https://www.ec-cube.net/owners/" target="_blank">{{ 'admin.home.recommend_plugins.owner_store'|trans }}</a>
+                                > <a href="{{ url('admin_store_plugin_owners_search_page') }}">{{ 'admin.home.recommend_plugins.owner_store'|trans }}</a>
                             </div>
                         </div><!-- /#ec-cube-plugin -->
                     </div>
