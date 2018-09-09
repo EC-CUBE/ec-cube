@@ -67,7 +67,7 @@ class SearchOrderType extends AbstractType
                     'constraints' => [
                         new Assert\Regex([
                             'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
-                            'message' => 'form.type.admin.notkanastyle',
+                            'message' => 'form_error.kana_only',
                         ]),
                     ],
                 ])
@@ -91,7 +91,7 @@ class SearchOrderType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^[\d-]+$/u",
-                        'message' => 'form.type.admin.nottelstyle',
+                        'message' => 'form_error.graph_and_hyphen_only',
                     ]),
                 ],
             ])

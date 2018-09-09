@@ -47,7 +47,6 @@ class RepeatedEmailType extends AbstractType
         $resolver->setDefaults([
             'entry_type' => EmailType::class,
             'required' => true,
-            'invalid_message' => 'form.member.email.invalid',
             'options' => [
                 'constraints' => [
                     new Assert\NotBlank(),

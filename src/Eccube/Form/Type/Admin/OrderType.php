@@ -195,7 +195,7 @@ class OrderType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid',
+                        'message' => 'form_error.numeric_only',
                     ]),
                 ],
             ])

@@ -80,7 +80,7 @@ class Step3Type extends AbstractType
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
+                        'message' => 'form_error.graph_only',
                     ]),
                 ],
             ])
@@ -97,7 +97,7 @@ class Step3Type extends AbstractType
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
+                        'message' => 'form_error.graph_only',
                     ]),
                 ],
             ])

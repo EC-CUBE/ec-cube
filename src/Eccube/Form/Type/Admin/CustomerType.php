@@ -106,7 +106,7 @@ class CustomerType extends AbstractType
                 'constraints' => [
                     new Assert\LessThanOrEqual([
                         'value' => date('Y-m-d', strtotime('-1 day')),
-                        'message' => 'form.type.select.select_is_future_or_now_date',
+                        'message' => 'form_error.select_is_future_or_now_date',
                     ]),
                 ],
             ])
@@ -133,7 +133,7 @@ class CustomerType extends AbstractType
                     'constraints' => [
                         new Assert\Regex([
                             'pattern' => "/^\d+$/u",
-                            'message' => 'form.type.numeric.invalid',
+                            'message' => 'form_error.numeric_only',
                         ]),
                     ],
                 ]

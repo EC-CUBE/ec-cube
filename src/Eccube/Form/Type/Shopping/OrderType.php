@@ -116,7 +116,7 @@ class OrderType extends AbstractType
                     new NotBlank(),
                     new Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid',
+                        'message' => 'form_error.numeric_only',
                     ]),
                     new Length(['max' => 11]),
                 ],

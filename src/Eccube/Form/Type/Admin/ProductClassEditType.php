@@ -207,7 +207,7 @@ class ProductClassEditType extends AbstractType
             $errors = $this->validator->validate($data['stock'], [
                 new Assert\Regex([
                     'pattern' => "/^\d+$/u",
-                    'message' => 'form.type.numeric.invalid',
+                    'message' => 'form_error.numeric_only',
                 ]),
             ]);
             $this->addErrors('stock', $form, $errors);
@@ -227,7 +227,7 @@ class ProductClassEditType extends AbstractType
                 ]),
                 new Assert\Regex([
                     'pattern' => "/^\d+$/u",
-                    'message' => 'form.type.numeric.invalid',
+                    'message' => 'form_error.numeric_only',
                 ]),
             ]);
             $this->addErrors('sale_limit', $form, $errors);
@@ -244,7 +244,7 @@ class ProductClassEditType extends AbstractType
                 new Assert\Range(['min' => 0, 'max' => 100]),
                 new Assert\Regex([
                     'pattern' => "/^\d+(\.\d+)?$/",
-                    'message' => 'form.type.float.invalid',
+                    'message' => 'form_error.float_only',
                 ]),
             ]);
             $this->addErrors('tax_rate', $form, $errors);
