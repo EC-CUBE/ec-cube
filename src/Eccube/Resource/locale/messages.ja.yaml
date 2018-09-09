@@ -72,7 +72,7 @@ common.signup: 新規会員登録
 common.forgot_login: ログイン情報をお忘れですか？
 common.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
 common.search_keyword: キーワードを入力
-common.customer_already_exists: 既に利用されているメールアドレスです
+common.customer_already_exists: このメールアドレスは利用できません
 common.member_already_exists: 既に利用されているログインIDです
 
 #====================================================================================
@@ -155,11 +155,12 @@ front.entry.do_register: 会員登録をする
 front.entry.complete_title: 新規会員登録(完了)
 front.entry.complete_title__temporary: 新規会員登録(仮登録完了)
 front.entry.complete_message__title: 会員登録ありがとうございます
-front.entry.complete_message__temporary: 現在、仮会員の状態です。
-  ただいま、ご入力いただいたメールアドレス宛に、ご本人様確認用のメールをお送りいたしました。
-  メール本文内のURLクリックすると、本会員登録が完了となります。
-front.entry.complete_message__activated: それではショッピングをお楽しみください。
-  今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.entry.complete_message__temporary: |
+  現在、仮会員の状態です。ただいま、ご入力いただいたメールアドレス宛に、ご本人様確認用のメールをお送りいたしました。
+  メール本文内のURLをクリックすると、本会員登録が完了となります。
+front.entry.complete_message__activated: |
+  会員登録が完了しました。
+  それでは、ショッピングをお楽しみください。
 
 #------------------------------------------------------------------------------------
 # パスワード再発行
@@ -229,7 +230,7 @@ front.mypage.reorder_message: ※金額が変更されている商品がある�
 front.mypage.mail_not_found: メール履歴はありません。
 front.mypage.mail_list: メール配信履歴一覧
 front.mypage.customer_complete_message__title: 会員登録内容の変更が完了いたしました
-front.mypage.customer_complete_message__body: 今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.mypage.customer_complete_message__body: それでは、引き続きショッピングをお楽しみください。
 front.mypage.favorite_count: '%count%件のお気に入りがあります'
 front.mypage.favorite_not_found: お気に入りは登録されていません。
 front.mypage.customer_address_count: '%count%件のお届け先があります'
@@ -335,8 +336,7 @@ front.shopping.complete_title: ご注文完了
 front.shopping.complete_message__title: ご注文ありがとうございました
 front.shopping.complete_message__body: |
   ただいま、ご注文の確認メールをお送りさせていただきました。
-  万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
-  今後ともご愛顧賜りますようよろしくお願い申し上げます。
+  万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがお問い合わせくださいますようお願いいたします。
 front.shopping.continue: 購入を続ける
 front.shopping.guest_purchase_message: 会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
 front.shopping.guest_purchase: ゲスト購入
@@ -346,8 +346,8 @@ front.shopping.shipping_edit_header_customer: お届け先の追加
 front.shopping.shipping_edit_header_nonmember: お届け先の変更
 front.shopping.error: 購入エラー
 front.shopping.order_error: 購入処理でエラーが発生しました。
-front.shopping.system_error: 購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。
-front.shopping.empty_items_error: ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。
+front.shopping.system_error: 購入処理で予期しないエラーが発生しました。恐れ入りますがお問い合わせページよりご連絡ください。
+front.shopping.empty_items_error: ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。
 front.shopping.out_of_stock: 「%product%」の在庫が不足しております。一度に在庫数を超える購入はできません。
 front.shopping.over_sale_limit: 「%product%」は販売制限しております。一度に販売制限数を超える購入はできません。
 front.shopping.out_of_stock_zero: 「%product%」の在庫が不足しております。該当商品をカートから削除しました。
@@ -700,7 +700,7 @@ admin.product.product_csv.stock_description: 在庫数無制限フラグが0の�
 admin.product.product_csv.stock_unlimited_col: 在庫数無制限フラグ
 admin.product.product_csv.stock_unlimited_description: '0:制限 1: 無制限を指定します。'
 admin.product.product_csv.sale_limit_col: 販売制限数
-admin.product.product_csv.sale_limit_description: 0以上の数値を設定
+admin.product.product_csv.sale_limit_description: 1以上の数値を設定
 admin.product.product_csv.normal_price_col: 通常価格
 admin.product.product_csv.normal_price_description: 0以上の数値を設定
 admin.product.product_csv.sale_price_col: 販売価格
@@ -1158,7 +1158,7 @@ admin.setting.system.security.admin_url_changed: 管理画面のURLを変更し�
 admin.setting.system.security.ip_limit: IP制限
 admin.setting.system.security.ip_limit_description: |
   管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
-  アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。
+  アクセスを許可するIPアドレスを1行ずつ入力してください。何も入力しない場合は全てを許可します。
 admin.setting.system.security.ip_limit_sample: |
   127.0.0.1
   192.0.2.1
