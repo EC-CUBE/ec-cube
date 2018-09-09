@@ -16,6 +16,12 @@ namespace Eccube\Validator\EmailValidator;
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\EmailValidation;
 
+/**
+ * SwiftMailerで使用するEmailのバリデータ.
+ *
+ * eccube_rfc_email_checkがfalseの際に, このバリデータが使用される.
+ * 日本のキャリアメールで使用されていた, ..や.@の形式を許容します.
+ */
 class NoRFCEmailValidator extends EmailValidator
 {
     /**
@@ -25,7 +31,6 @@ class NoRFCEmailValidator extends EmailValidator
      */
     public function isValid($email, EmailValidation $emailValidation = null)
     {
-
         $wsp = '[\x20\x09]';
         $vchar = '[\x21-\x7e]';
         $quoted_pair = "\\\\(?:$vchar|$wsp)";

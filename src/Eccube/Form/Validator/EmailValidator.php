@@ -14,13 +14,19 @@
 namespace Eccube\Form\Validator;
 
 use Eccube\Validator\EmailValidator\NoRFCEmailValidator;
-use Egulias\EmailValidator\Validation\EmailValidation;
-use Egulias\EmailValidator\Validation\NoRFCWarningsValidation;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Exception\RuntimeException;
+use Symfony\Component\Validator\Constraints\EmailValidator as BaseEmailValidator;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class EmailValidator extends \Symfony\Component\Validator\Constraints\EmailValidator
+/**
+ * フォームで使用するEmailのバリデータ.
+ *
+ * eccube_rfc_email_checkがtrueの場合, Symfony\Component\Validator\Constraints\EmailValidatorを使用してチェックを行います.
+ * falseの場合は, Eccube\Validator\EmailValidator\NoRFCEmailValidatorを使用してチェックを行います.
+ * NoRFCEmailValidatorは, 日本のキャリアメールで使用されていた, ..や.@の形式を許容します.
+ */
+class EmailValidator extends ConstraintValidator
 {
     /**
      * {@inheritdoc}
@@ -31,57 +37,33 @@ class EmailValidator extends \Symfony\Component\Validator\Constraints\EmailValid
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Email');
         }
 
+        if ($constraint->strict) {
+            $baseEmailValidator = new BaseEmailValidator($constraint->strict);
+            $baseEmailValidator->initialize($this->context);
+            $baseEmailValidator->validate($value, $constraint);
+
+            return;
+        }
+
         if (null === $value || '' === $value) {
             return;
         }
 
-        if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
+        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        $value = (string)$value;
+        $value = (string) $value;
 
-        if (null === $constraint->strict) {
-            $constraint->strict = false;
+        $noRfcValidator = new NoRFCEmailValidator();
+        if (!$noRfcValidator->isValid($value)) {
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Email::INVALID_FORMAT_ERROR)
+                ->addViolation();
         }
 
-        if ($constraint->strict) {
-            if (!class_exists('\Egulias\EmailValidator\EmailValidator')) {
-                throw new RuntimeException('Strict email validation requires egulias/email-validator ~1.2|~2.0');
-            }
-
-            $strictValidator = new \Egulias\EmailValidator\EmailValidator();
-
-            if (interface_exists(EmailValidation::class) && !$strictValidator->isValid($value, new NoRFCWarningsValidation())) {
-                $this->context->buildViolation($constraint->message)
-                    ->setParameter('{{ value }}', $this->formatValue($value))
-                    ->setCode(Email::INVALID_FORMAT_ERROR)
-                    ->addViolation();
-
-                return;
-            } elseif (!interface_exists(EmailValidation::class) && !$strictValidator->isValid($value, false, true)) {
-                $this->context->buildViolation($constraint->message)
-                    ->setParameter('{{ value }}', $this->formatValue($value))
-                    ->setCode(Email::INVALID_FORMAT_ERROR)
-                    ->addViolation();
-
-                return;
-            }
-        } else {
-
-            $validator = new NoRFCEmailValidator();
-
-            if (!$validator->isValid($value)) {
-                $this->context->buildViolation($constraint->message)
-                    ->setParameter('{{ value }}', $this->formatValue($value))
-                    ->setCode(Email::INVALID_FORMAT_ERROR)
-                    ->addViolation();
-
-                return;
-            }
-        }
-
-        $host = (string)substr($value, strrpos($value, '@') + 1);
+        $host = (string) substr($value, strrpos($value, '@') + 1);
 
         // Check for host DNS resource records
         if ($constraint->checkMX) {
