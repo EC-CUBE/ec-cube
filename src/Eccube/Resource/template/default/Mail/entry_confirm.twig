@@ -8,7 +8,8 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-　※本メールは自動配信メールです。
+{% autoescape false %}
+※本メールは自動配信メールです。
 
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 　※本メールは、
@@ -29,12 +30,9 @@ file that was distributed with this source code.
 現在は仮登録の状態です。
 　　　~~~~~~
 本会員登録を完了するには下記URLにアクセスしてください。
-※入力されたお客様の情報はSSL暗号化通信により保護されます。
 
 {{ activateUrl }}
 
 上記URLにて本会員登録が完了いたしましたら改めてご登録内容ご確認
 メールをお送り致します。
-
-
-
+{% endautoescape %}

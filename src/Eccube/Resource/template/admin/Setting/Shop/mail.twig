@@ -109,7 +109,11 @@ file that was distributed with this source code.
                         <div class="card-header"><span class="card-title">{{ 'admin.setting.shop.mail.mail_template_edit'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row mb-2">
-                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                <div class="col-2">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.mail.mail_template'|trans }}">
+                                        <span>{{ 'admin.setting.shop.mail.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
+                                </div>
                                 <div class="col-10">
                                     {{ form_widget(form.template) }}
                                     {{ form_errors(form.template) }}

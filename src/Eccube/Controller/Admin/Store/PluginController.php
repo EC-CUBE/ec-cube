@@ -17,12 +17,14 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Plugin;
+use Eccube\Exception\PluginApiException;
 use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\AuthenticationType;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
 use Eccube\Util\CacheUtil;
@@ -60,6 +62,10 @@ class PluginController extends AbstractController
      * @var PluginApiService
      */
     protected $pluginApiService;
+    /**
+     * @var ComposerApiService
+     */
+    private $composerApiService;
 
     /**
      * PluginController constructor.
@@ -69,15 +75,17 @@ class PluginController extends AbstractController
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginApiService $pluginApiService
      *
+     * @param ComposerApiService $composerApiService
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService)
+    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService, ComposerApiService $composerApiService)
     {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->pluginApiService = $pluginApiService;
+        $this->composerApiService = $composerApiService;
     }
 
     /**
@@ -87,6 +95,7 @@ class PluginController extends AbstractController
      * @Template("@admin/Store/plugin.twig")
      *
      * @return array
+     *
      * @throws PluginException
      */
     public function index()
@@ -139,20 +148,11 @@ class PluginController extends AbstractController
         }
 
         // オーナーズストア通信
-        list($json,) = $this->pluginApiService->getPurchased();
         $officialPluginsDetail = [];
-        if ($json) {
-            // 接続成功時
-            $data = json_decode($json, true);
+        try {
+            $data = $this->pluginApiService->getPurchased();
             foreach ($data as $item) {
-                if (isset($officialPlugins[$item['id']])) {
-                    $Plugin = $officialPlugins[$item['id']];
-                    $officialPluginsDetail[$item['id']] = $item;
-                    $officialPluginsDetail[$item['id']]['update_status'] = 0;
-                    if ($this->pluginService->isUpdate($Plugin->getVersion(), $item['version'])) {
-                        $officialPluginsDetail[$item['id']]['update_status'] = 1;
-                    }
-                } else {
+                if (isset($officialPlugins[$item['id']]) === false) {
                     $Plugin = new Plugin();
                     $Plugin->setName($item['name']);
                     $Plugin->setCode($item['code']);
@@ -160,13 +160,11 @@ class PluginController extends AbstractController
                     $Plugin->setSource($item['id']);
                     $Plugin->setEnabled(false);
                     $officialPlugins[$item['id']] = $Plugin;
-                    $officialPluginsDetail[$item['id']] = $item;
-                    $officialPluginsDetail[$item['id']]['update_status'] = 0;
-                    if ($this->pluginService->isUpdate($Plugin->getVersion(), $item['version'])) {
-                        $officialPluginsDetail[$item['id']]['update_status'] = 1;
-                    }
                 }
+                $officialPluginsDetail[$item['id']] = $item;
             }
+        } catch (PluginApiException $e) {
+            $this->addWarning($e->getMessage(), 'admin');
         }
 
         return [
@@ -294,7 +292,6 @@ class PluginController extends AbstractController
                     }
                 }
             }
-
 
             ob_start();
 
@@ -488,6 +485,9 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
      * @Template("@admin/Store/authentication_setting.twig")
+     * @param Request $request
+     *
+     * @return array
      */
     public function authenticationSetting(Request $request)
     {
@@ -503,13 +503,16 @@ class PluginController extends AbstractController
             $this->entityManager->persist($this->BaseInfo);
             $this->entityManager->flush();
 
+            // composerの認証を更新
+            $this->composerApiService->configureRepository($this->BaseInfo);
+
             $this->addSuccess('admin.common.save_complete', 'admin');
         }
 
         return [
             'form' => $form->createView(),
             'eccubeUrl' => $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'eccubeShopName' => $this->BaseInfo->getShopName()
+            'eccubeShopName' => $this->BaseInfo->getShopName(),
         ];
     }
 
@@ -519,6 +522,7 @@ class PluginController extends AbstractController
      * @param array $plugins
      *
      * @return array
+     *
      * @throws PluginException
      */
     protected function getUnregisteredPlugins(array $plugins)

@@ -225,11 +225,11 @@ class PaymentController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.delete_complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->entityManager->rollback();
 
-            $message = trans('admin.delete_error_foreign_key', ['%name%' => $TargetPayment->getMethod()]);
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $TargetPayment->getMethod()]);
             $this->addError($message, 'admin');
         }
 
@@ -248,9 +248,9 @@ class PaymentController extends AbstractController
         $this->entityManager->flush();
 
         if ($Payment->isVisible()) {
-            $this->addSuccess('admin.payment.visible.complete', 'admin');
+            $this->addSuccess(trans('admin.common.to_show_complete', ['%name%' => $Payment->getMethod()]), 'admin');
         } else {
-            $this->addSuccess('admin.payment.invisible.complete', 'admin');
+            $this->addSuccess(trans('admin.common.to_hide_complete', ['%name%' => $Payment->getMethod()]), 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_shop_payment');

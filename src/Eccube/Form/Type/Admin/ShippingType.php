@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityRepository;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Shipping;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
@@ -165,7 +166,12 @@ class ShippingType extends AbstractType
                 'choice_label' => function (Delivery $Delivery) {
                     return $Delivery->isVisible()
                         ? $Delivery->getServiceName()
-                        : $Delivery->getServiceName().trans('common.hidden_label');
+                        : $Delivery->getServiceName().trans('admin.common.hidden_label');
+                },
+                'query_builder' => function ($er) {
+                    return $er->createQueryBuilder('d')
+                        ->orderBy('d.visible', 'DESC') // 非表示は下に配置
+                        ->addOrderBy('d.sort_no', 'ASC');
                 },
                 'placeholder' => false,
                 'constraints' => [
@@ -228,12 +234,19 @@ class ShippingType extends AbstractType
                 // お届け時間を配送業者で絞り込み
                 $form->add('DeliveryTime', EntityType::class, [
                     'class' => 'Eccube\Entity\DeliveryTime',
-                    'choice_label' => 'delivery_time',
+                    'choice_label' => function (DeliveryTime $DeliveryTime) {
+                        return $DeliveryTime->isVisible()
+                            ? $DeliveryTime->getDeliveryTime()
+                            : $DeliveryTime->getDeliveryTime().trans('admin.common.hidden_label');
+                    },
                     'placeholder' => 'common.select__unspecified',
                     'required' => false,
                     'data' => $DeliveryTime,
                     'query_builder' => function (EntityRepository $er) use ($Delivery) {
                         $qb = $er->createQueryBuilder('dt');
+                        $qb
+                            ->orderBy('dt.visible', 'DESC') // 非表示は下に配置
+                            ->addOrderBy('dt.sort_no', 'ASC');
                         if ($Delivery) {
                             $qb
                                 ->where('dt.Delivery = :Delivery')

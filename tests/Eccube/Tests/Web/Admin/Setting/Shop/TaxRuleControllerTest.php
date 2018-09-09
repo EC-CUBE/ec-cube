@@ -75,7 +75,9 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
                 ],
                 'time' => [
                     'hour' => $now->format('G'),
-                    'minute' => $now->format('i'),
+                    // Symfony specification of without leading zero
+                    // https://symfony.com/doc/3.4/reference/forms/types/datetime.html#minutes
+                    'minute' => (int) $now->format('i'),
                 ],
             ],
         ];
@@ -123,5 +125,45 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_setting_shop_tax_delete', ['id' => $tid])
         );
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testEditWithTime()
+    {
+        $TaxRule = $this->createTaxRule();
+        $tid = $TaxRule->getId();
+        $now = new \DateTime();
+        $form = [
+            '_token' => 'dummy',
+            'tax_rate' => 10,
+            'rounding_type' => rand(1, 3),
+            'apply_date' => [
+                'date' => [
+                    'year' => $now->format('Y'),
+                    'month' => $now->format('n'),
+                    'day' => $now->format('j'),
+                ],
+                'time' => [
+                    'hour' => 23,
+                    'minute' => 1,
+                ],
+            ],
+        ];
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_setting_shop_tax'),
+            [
+                'tax_rule' => $form,
+                'tax_rule_id' => "$tid",
+                'mode' => 'edit_inline',
+            ]
+        );
+
+        $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        $this->expected = $form['tax_rate'];
+        $this->actual = $TaxRule->getTaxRate();
+        $this->verify();
     }
 }

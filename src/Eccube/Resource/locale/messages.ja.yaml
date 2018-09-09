@@ -74,7 +74,6 @@ common.customer_address_count_is_over: お届け先登録の上限の%eccube_del
 common.search_keyword: キーワードを入力
 common.customer_already_exists: 既に利用されているメールアドレスです
 common.member_already_exists: 既に利用されているログインIDです
-common.hidden_label: (非表示)
 
 #====================================================================================
 # フロント画面
@@ -154,11 +153,11 @@ front.entry.confirm_message: |
   よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。
 front.entry.do_register: 会員登録をする
 front.entry.complete_title: 新規会員登録(完了)
+front.entry.complete_title__temporary: 新規会員登録(仮登録完了)
 front.entry.complete_message__title: 会員登録ありがとうございます
-front.entry.complete_message__temporary: 現在仮会員の状態です。
-  ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、
-  本会員登録になった上でお買い物をお楽しみください。
-  今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.entry.complete_message__temporary: 現在、仮会員の状態です。
+  ただいま、ご入力いただいたメールアドレス宛に、ご本人様確認用のメールをお送りいたしました。
+  メール本文内のURLクリックすると、本会員登録が完了となります。
 front.entry.complete_message__activated: それではショッピングをお楽しみください。
   今後ともご愛顧賜りますようよろしくお願い申し上げます。
 
@@ -209,6 +208,7 @@ front.mypage.nav__customer_address: お届け先一覧
 front.mypage.nav__withdrow: 退会手続き
 front.mypage.history_count: '%count%件の履歴があります'
 front.mypage.history_not_found: ご注文履歴はありません。
+front.mypage.message_not_found: 記載なし
 front.mypage.view_detail: 詳細を見る
 front.mypage.order_no: ご注文番号
 front.mypage.order_status: ご注文状況
@@ -381,6 +381,8 @@ admin.common.send_complete: メールを送信しました
 admin.common.send_error: メールの送信に失敗しました
 admin.common.create_complete: 作成しました
 admin.common.system_error: システムエラーが発生しました
+admin.common.to_show_complete: 「%name%」を表示にしました。
+admin.common.to_hide_complete: 「%name%」を非表示にしました。
 
 # action系のラベル
 admin.common.save: 保存
@@ -392,7 +394,6 @@ admin.common.display: 表示
 admin.common.delete: 削除
 admin.common.cancel: キャンセル
 admin.common.search: 検索
-admin.common.search_clear: 検索条件をクリア
 admin.common.send: 送信
 admin.common.confirm: 確認
 admin.common.execute: 実行
@@ -413,6 +414,9 @@ admin.common.last: 最後へ
 # 汎用ラベル, メッセージ
 admin.common.show: 表示
 admin.common.hide: 非表示
+admin.common.hidden_label: (非表示)
+admin.common.to_show: 非表示中 | 表示にする
+admin.common.to_hide: 表示中 | 非表示にする
 admin.common.required: 必須
 admin.common.bulk_actions: 一括操作
 admin.common.select: 選択してください
@@ -445,6 +449,7 @@ admin.common.csv_invalid_not_found_target: '%line%行目の%name%「%target_name
 admin.common.csv_invalid_not_same: '%line%行目の%name1%と%name2%には同じ値を使用できません'
 admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません'
 admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
+admin.common.csv_invalid_foreign_key: '%line%行目の%name%は関連するデータがあるため削除できません'
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 admin.common.delete_modal__title: 削除します
@@ -579,6 +584,7 @@ admin.product.copy__confirm_message: 商品を複製してよろしいですか�
 admin.product.name: 商品名
 amdin.product.image: 商品画像
 amdin.product.image__short: 画像
+amdin.product.image_size: '推奨サイズ : 600px x 600px以上'
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
@@ -597,6 +603,7 @@ admin.product.product_name_and_code: 商品名・商品コード
 admin.product.sale_limit: 販売制限数
 admin.product.delivery_duration: 発送日目安
 admin.product.delivery_fee: 商品送料
+admin.product.tax_rate: 税率
 admin.product.free_area: フリーエリア
 admin.product.free_area__card_title: フリーエリア
 admin.product.delete_flag: 商品削除フラグ
@@ -1050,6 +1057,7 @@ admin.setting.shop.payment.unlimited: 無制限
 admin.setting.shop.payment.payment_id: ID
 admin.setting.shop.payment.payment_name: 支払方法名
 admin.setting.shop.payment.logo_image: ロゴ画像
+admin.setting.shop.payment.logo_image_size: '推奨サイズ : 500px × 100px'
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：配送方法設定
@@ -1218,6 +1226,8 @@ admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
 admin.store.plugin.search.not_found: 検索条件に該当するデータがありませんでした。
+admin.store.plugin.installed: インストール済み
+admin.store.plugin.update: アップデート
 admin.store.setting: 設定
 admin.store.setting.api_key_setting: 認証キー設定
 admin.store.setting.api_key: 認証キー
@@ -1227,6 +1237,9 @@ admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス
 admin.store.setting.invalid_captcha: 入力された文字列が正しくありません。
 admin.store.setting.captcha_error: エラー
+admin.store.package.api.0.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
+admin.store.package.api.403.error: オーナーズストアの認証に失敗しました。認証キーの設定を確認してください。
+admin.store.package.api.500.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
@@ -1407,9 +1420,93 @@ admin.info.document: ドキュメント
 # ツールチップ
 #------------------------------------------------------------------------------------
 
-# TODO
-
-# tooltip.xxx.yyy: 〇〇を有効にします。フロント画面には表示されません。
+tooltip.product.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
+tooltip.product.product_id: 自動的に採番される商品のIDです。
+tooltip.product.sale_type: 通常商品やダウンロード商品といった販売方法が異なる場合に利用します。販売種別のリストは［マスターデータ管理］のmtb_sale_typeから編集できます。
+tooltip.product.image: 複数の商品画像をドラッグ＆ドロップで登録できます。
+tooltip.product.description_detail: 商品ページに表示される説明文です。HTMLタグが利用可能です。
+tooltip.product.description_list: 商品一覧ページに表示される商品説明文です。未設定の場合、商品一覧画面に説明は表示されません。
+tooltip.product.normal_price: 販売価格が特別な価格である場合、通常価格を併せて表示することができます。
+tooltip.product.search_word: サイト内検索で利用されるキーワードです。
+tooltip.product.product_code: 自由に設定できる商品コードです。
+tooltip.product.sale_limit: 購入者が一度に購入できる個数を制限することができます。
+tooltip.product.delivery_duration: 発送日の目安期間を商品ごとに登録できます。
+tooltip.product.product_class: この商品に設定された規格を確認・管理できます。
+tooltip.product.free_area: 商品詳細ページに入力内容が表示されます。表示位置はデザインテンプレートによって異なります。
+tooltip.product.shop_memo: 店舗用のメモ欄です。フロント画面には表示されません。
+tooltip.product.backend_name: 管理者用に別名を登録しておくことができます（例：規格名：サイズ　管理名：サイズ（服）、サイズ（靴）等 ）。フロント画面には表示されません。
+tooltip.product.csv_upload: 所定の型のCSVデータを用いて商品を一括で登録することができます。
+tooltip.product.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
+tooltip.category.csv_upload: 所定の型のCSVデータを用いてカテゴリを一括で登録することができます。
+tooltip.category.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
+tooltip.order.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
+tooltip.order.order_search_status: 受注の対応状況による絞り込み検索ができます。カッコ内は対応すべき受注の件数が表示されています。
+tooltip.order.bulk_actions: チェックを入れた受注に対して、一括処理を行います。充分に確認をしてから実行してください。
+tooltip.order.order_info: 受注（注文）の基本情報です。
+tooltip.order.order_no: 注文時に自動で採番される管理番号です。
+tooltip.order.order_status: 受注の対応状況を変更できます。ただし、新規受注登録の場合は対応状況の。また、1受注で出荷先が複数ある場合は、全て出荷されると対応状況が「出荷済」となります。
+tooltip.order.customer_id: 自動的に採番される会員のIDです。
+tooltip.order.shipping_info: 出荷先情報を表示します。出荷先の追加も可能です。1受注で複数の出荷先がある場合は「お届け先を編集」から出荷先詳細情報が確認できます。
+tooltip.order.shipping_info.tracking_number: お問い合せ番号（出荷伝票番号）がある場合、こちらから入力できます。受注一覧からまとめて入力することも可能です。
+tooltip.order.shipping_info.delivery_provider: 配達業者、配達方法を変更できます。変更後、送料が変わる可能性がありますので、ご注意ください。
+tooltip.order.shipping_info.shop_memo: 出荷担当者、及び配送業者用のメモを保存しておけます。出荷用CSV等で確認が可能です。
+tooltip.order.product_info: 購入された商品情報、及び、送料、手数料を含めた計算結果が表示されます。商品の追加や金額変更を行った場合は、計算結果の更新を行ってください。
+tooltip.order.shop_memo: 店舗用メモを保存しておけます。フロント画面には表示されません。
+tooltip.order.mail_history: これまでに配信したメールの確認・新規メールの作成ができます。
+tooltip.order.mail_destination_info: 注文者にメールが送信できます。
+tooltip.order.mail_template: メールのテンプレートを選択します。
+tooltip.order.mail_subject: メールの件名を修正できます。
+tooltip.shipping.csv_upload: 所定の型のCSVデータを用いて出荷情報を一括で登録することができます。
+tooltip.shipping.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
+tooltip.customer.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
+tooltip.customer.customer_id: 自動的に採番される会員のIDです。
+tooltip.customer.customer_address: この会員が登録しているお届け先です。この画面から追加することもできます。
+tooltip.customer.purchase_history: この会員が注文をした履歴が表示されます。
+tooltip.customer.shop_memo: 店舗用のメモ欄です。フロント側には表示されません。
+tooltip.content.news.url: この新着情報の詳細な内容を記したウェブページある場合、URLを入力します。外部サイトのURLなどを利用することもできます。
+tooltip.content.news.body: HTMLタグが利用可能です。
+tooltip.content.layout_edit: テンプレートのセクションごとにブロックをドラッグ＆ドロップで配置することができます。
+tooltip.content.page_file_name: ページの内容を記述したtwigテンプレートファイルの名前です。
+tooltip.content.page_source_code: テンプレートファイルを編集します。twigで記述します。
+tooltip.content.page_layout: このページに適用するレイアウトを選択します。
+tooltip.content.page_meta: ページのMETAタグの内容を指定できます。
+tooltip.content.block_name: ブロックの管理用名称です。
+tooltip.content.block_file_name: このブロックの内容を記述したtwigテンプレートファイルの名前です。管理画面ではあとから変更できません。
+tooltip.content.block_source_code: テンプレートファイルを編集します。twigで記述します。
+tooltip.setting.shop.shop.email_from: 店舗からメールを送信した場合の送信元になるメールアドレスです。
+tooltip.setting.shop.shop.email_for_inquiries: 問い合わせフォームから問い合わせがあった場合に、その通知を受信するメールアドレスです。
+tooltip.setting.shop.shop.email_reply_to: 返信メールを受け付けるメールアドレスです。
+tooltip.setting.shop.shop.email_return_path: 店舗からメールを送信しエラーが生じた場合に、その通知を受信するメールアドレスです。
+tooltip.setting.shop.shop.good_traded: 店舗が取り扱う商品についての簡単な説明文です。
+tooltip.setting.shop.shop.message: フロント側に表示されます。表示位置はデザインテンプレートによって異なります。
+tooltip.setting.shop.shop.option_delivery_fee_free_amount: この金額を超える購入があった場合、送料を無料とします。
+tooltip.setting.shop.shop.option_delivery_fee_free_quantity: この個数を超える購入があった場合、送料を無料とします。
+tooltip.setting.shop.shop.option_delivery_fee_by_product: ここをオンにすると、商品ごとに送料を指定できるようになります。
+tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後は仮会員とし、メールアドレスの確認などを経て本会員として登録できる機能です。
+tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
+tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
+tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に税率を設定することができるようになります。
+tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。
+tooltip.setting.shop.shop.option_point_rate: 購入金額に対するポイント付与率を編集できます。
+tooltip.setting.shop.shop.option_point_conversion_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
+tooltip.setting.shop.payment.logo_image: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
+tooltip.setting.shop.delivery.tracking_number_url: 配送業者のお問い合わせページURLを指定します。
+tooltip.setting.shop.delivery.sale_type: この配送方法で取り扱える販売種別を指定します。
+tooltip.setting.shop.delivery.apply_to_pref: すべての都道府県に同じ送料を一括で設定できます。あとから個々の都道府県の送料を書き換えることも可能です。
+tooltip.setting.shop.delivery.shop_memo: 店舗用のメモ欄です。フロント側には表示されません。
+tooltip.setting.shop.tax_setting: 商品共通の税率を設定できます。新しい税率を追加することで基本税率設定を上書きすることが可能です。
+tooltip.setting.shop.mail.mail_template: 既存のメールテンプレートを選択してください。以下に内容が表示されます。
+tooltip.setting.shop.csv.csv_columns: 各種のデータをCSVで出力できます。出力したい項目をこちらで設定することが可能です。
+tooltip.setting.shop.csv.csv_type: 設定したいCSVの種類を指定してください。
+tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。
+tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
+tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
+tooltip.setting.system.security.ip_limit: 管理画面にログインできる接続元のIPアドレスを制限します。
+tooltip.setting.system.security.force_ssl: ショップサイトと管理画面への接続をSSL(https)での接続に制限します。
+tooltip.setting.system.log_display: アクセスやエラー状況などのログを確認できます。
+tooltip.setting.system.master_data_management: 各種マスターデータを管理します。
+tooltip.setting.system.system_info: このEC-CUBEに関係しているシステム環境の情報を表示しています。
+tooltip.setting.system.system.php_info: このEC-CUBEに関係しているPHPの詳細な情報を表示しています。
 
 #====================================================================================
 # インストール画面

@@ -145,7 +145,7 @@ file that was distributed with this source code.
                                 <div class="row justify-content-around">
                                     <div class="col-auto"><strong>&nbsp;</strong></div>
                                     <div class="col-auto"><strong>{{ 'admin.setting.shop.payment.payment_id'|trans }}</strong></div>
-                                    <div class="col-1"><strong>{{ 'admin.common.payment_method'|trans }}</strong></div>
+                                    <div class="col-2"><strong>{{ 'admin.common.payment_method'|trans }}</strong></div>
                                     <div class="col-1"><strong>{{ 'admin.common.charge'|trans }}</strong></div>
                                     <div class="col"><strong>{{ 'admin.setting.shop.payment.terms_of_use'|trans }}</strong></div>
                                 </div>
@@ -155,7 +155,7 @@ file that was distributed with this source code.
                                     <div class="row justify-content-around">
                                         <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                         <div class="col-auto d-flex align-items-center">{{ Payment.id }}</div>
-                                        <div class="col-1 d-flex align-items-center"><a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">{{ Payment.methodForAdmin }}</a></div>
+                                        <div class="col-2 d-flex align-items-center"><a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">{{ Payment.method }}</a></div>
                                         <div class="col-1 d-flex align-items-center"><span>{{ Payment.charge|price }}</span></div>
                                         <div class="col d-flex align-items-center">
                                         <span>
@@ -179,9 +179,10 @@ file that was distributed with this source code.
                                             <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                 <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                             </a>
-                                            {# TODO クラス名、id名の設定、メッセージID化、登録機能 #}
-                                            <a class="btn btn-ec-actionIcon mr-3 check-display" id="{{ Payment.id }}" data-tooltip="true" data-placement="top" title="表示">
-                                                <i class="fa fa-eye display-show-toggle-{{ Payment.id }} fa-lg text-secondary"></i>
+                                            <a class="btn btn-ec-actionIcon mr-3 action-visible" href="{{ url('admin_setting_shop_payment_visible', {'id': Payment.id }) }}"
+                                               data-tooltip="true" data-placement="top" title="{{ Payment.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}"
+                                               data-confirm="false" data-method="put" {{ csrf_token_for_anchor() }} >
+                                                <i class="fa fa-toggle-{{ Payment.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
                                             </a>
                                             <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top"
                                                  title="{{ 'admin.common.delete'|trans }}">

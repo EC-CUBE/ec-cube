@@ -17,6 +17,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\PageMax;
 use Eccube\Entity\Plugin;
+use Eccube\Exception\PluginApiException;
 use Eccube\Form\Type\Admin\SearchPluginApiType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
@@ -129,12 +130,9 @@ class OwnerStoreController extends AbstractController
         }
 
         // Acquire downloadable plug-in information from owners store
-        $items = [];
-        $message = '';
-        $total = 0;
         $category = [];
 
-        list($json,) = $this->pluginApiService->getCategory();
+        $json = $this->pluginApiService->getCategory();
         if (!empty($json)) {
             $data = json_decode($json, true);
             $category = array_column($data, 'name', 'id');
@@ -189,52 +187,16 @@ class OwnerStoreController extends AbstractController
         // Owner's store communication
         $searchData['page_no'] = $page_no;
         $searchData['page_count'] = $pageCount;
-        list($json, $info) = $this->pluginApiService->getPlugins($searchData);
-        if (empty($json)) {
-            $message = $this->pluginApiService->getResponseErrorMessage($info);
-        } else {
-            $data = json_decode($json, true);
+
+        $total = 0;
+        $items = [];
+
+        try {
+            $data = $this->pluginApiService->getPlugins($searchData);
             $total = $data['total'];
-            if (isset($data['plugins']) && count($data['plugins']) > 0) {
-                // Check plugin installed
-                $pluginInstalled = $this->pluginRepository->findAll();
-                // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : not purchased
-                foreach ($data['plugins'] as $item) {
-                    // Not install/purchased
-                    $item['update_status'] = 1;
-                    /** @var Plugin $plugin */
-                    foreach ($pluginInstalled as $plugin) {
-                        if ($plugin->getSource() == $item['id']) {
-                            // Installed
-                            $item['update_status'] = 2;
-                            if ($this->pluginService->isUpdate($plugin->getVersion(), $item['version'])) {
-                                // Need update
-                                $item['update_status'] = 3;
-                            }
-                        }
-                    }
-                    if ($item['purchased'] == false && (isset($item['purchase_required']) && $item['purchase_required'] == true)) {
-                        // Not purchased with paid items
-                        $item['update_status'] = 4;
-                    }
-
-                    $item = $this->pluginService->buildInfo($item);
-                    $items[] = $item;
-                }
-
-                // Todo: news api will remove this?
-                // Promotion item
-//                $i = 0;
-//                foreach ($items as $item) {
-//                    if ($item['promotion'] == 1) {
-//                        $promotionItems[] = $item;
-//                        unset($items[$i]);
-//                    }
-//                    $i++;
-//                }
-            } else {
-                $message = trans('admin.store.plugin.search.not_found');
-            }
+            $items = $data['plugins'];
+        } catch (PluginApiException $e) {
+            $this->addError($e->getMessage(), 'admin');
         }
 
         // The usage is set because `$items` are already paged.
@@ -249,7 +211,6 @@ class OwnerStoreController extends AbstractController
             'total' => $total,
             'searchForm' => $searchForm->createView(),
             'page_no' => $page_no,
-            'message' => $message,
             'Categories' => $category,
         ];
     }
@@ -268,25 +229,21 @@ class OwnerStoreController extends AbstractController
      */
     public function doConfirm(Request $request, $id)
     {
-        list($json) = $this->pluginApiService->getPlugin($id);
-        $item = [];
-        if ($json) {
-            $data = json_decode($json, true);
-            $item = $this->pluginService->buildInfo($data);
+        try {
+            $item = $this->pluginApiService->getPlugin($id);
+            // Todo: need define item's dependency mechanism
+            $requires = $this->pluginService->getPluginRequired($item);
+
+            return [
+                'item' => $item,
+                'requires' => $requires,
+                'is_update' => $request->get('is_update', false),
+            ];
+        } catch (PluginApiException $e) {
+            $this->addError($e->getMessage(), 'admin');
+
+            return $this->redirectToRoute('admin_store_authentication_setting');
         }
-
-        if (empty($item)) {
-            throw new NotFoundHttpException();
-        }
-
-        // Todo: need define item's dependency mechanism
-        $requires = $this->pluginService->getPluginRequired($item);
-
-        return [
-            'item' => $item,
-            'requires' => $requires,
-            'is_update' => $request->get('is_update', false),
-        ];
     }
 
     /**
@@ -315,56 +272,6 @@ class OwnerStoreController extends AbstractController
         }
 
         return $this->json(['success' => false, 'log' => $log], 500);
-    }
-
-    /**
-     * Do confirm page
-     *
-     * @Route("/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
-     * @Template("@admin/Store/plugin_confirm_uninstall.twig")
-     *
-     * @param Plugin $Plugin
-     *
-     * @return array|RedirectResponse
-     */
-    public function deleteConfirm(Plugin $Plugin)
-    {
-        // Owner's store communication
-        $url = $this->eccubeConfig['eccube_package_api_url'].'/search/packages.json';
-        list($json,) = $this->getRequestApi($url);
-        $data = json_decode($json, true);
-        $items = $data['item'];
-
-        // The plugin depends on it
-        $pluginCode = $Plugin->getCode();
-        $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
-
-        if (!empty($otherDepend)) {
-            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $otherDepend[0]]);
-            $dependName = $otherDepend[0];
-            if ($DependPlugin) {
-                $dependName = $DependPlugin->getName();
-            }
-            $message = trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-            $this->addError($message, 'admin');
-
-            return $this->redirectToRoute('admin_store_plugin');
-        }
-
-        // Check plugin in api
-        $pluginSource = $Plugin->getSource();
-        $index = array_search($pluginSource, array_column($items, 'product_id'));
-        if ($index === false) {
-            throw new NotFoundHttpException();
-        }
-
-        // Build info
-        $plugin = $this->pluginService->buildInfo($items);
-        $plugin['id'] = $Plugin->getId();
-
-        return [
-            'item' => $plugin,
-        ];
     }
 
     /**
@@ -527,61 +434,19 @@ class OwnerStoreController extends AbstractController
      */
     public function doUpdateConfirm(Plugin $Plugin)
     {
-        list($json) = $this->pluginApiService->getPlugin($Plugin->getSource());
-        $item = [];
-        if ($json) {
-            $data = json_decode($json, true);
-            $item = $this->pluginService->buildInfo($data);
+        try {
+            $item = $this->pluginApiService->getPlugin($Plugin->getSource());
+
+            return [
+                'item' => $item,
+                'requires' => [],
+                'is_update' => true,
+                'Plugin' => $Plugin,
+            ];
+        } catch (PluginApiException $e) {
+            $this->addError($e->getMessage(), 'admin');
+
+            return $this->redirectToRoute('admin_store_authentication_setting');
         }
-
-        if (empty($item)) {
-            throw new NotFoundHttpException();
-        }
-//
-//        // Todo: need define item's dependency mechanism
-//        $requires = $this->pluginService->getPluginRequired($item);
-
-        return [
-            'item' => $item,
-            'requires' => [],
-            'is_update' => true,
-            'Plugin' => $Plugin,
-        ];
-    }
-
-    /**
-     * API request processing
-     *
-     * @param string $url
-     *
-     * @return array
-     *
-     * @deprecated since release, please preference PluginApiService
-     */
-    private function getRequestApi($url)
-    {
-        $curl = curl_init($url);
-
-        // Option array
-        $options = [
-            // HEADER
-            CURLOPT_HTTPGET => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FAILONERROR => true,
-            CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
-        ];
-
-        // Set option value
-        curl_setopt_array($curl, $options);
-        $result = curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $message = curl_error($curl);
-        $info['message'] = $message;
-        curl_close($curl);
-
-        log_info('http get_info', $info);
-
-        return [$result, $info];
     }
 }
