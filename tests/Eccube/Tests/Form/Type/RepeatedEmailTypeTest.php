@@ -16,9 +16,6 @@ namespace Eccube\Tests\Form\Type;
 use Eccube\Form\Type\RepeatedEmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 
-/**
- * @group cache-clear
- */
 class RepeatedEmailTypeTest extends AbstractTypeTestCase
 {
     /**

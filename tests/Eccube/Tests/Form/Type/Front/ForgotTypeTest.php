@@ -15,9 +15,6 @@ namespace Eccube\Tests\Form\Type\Front;
 
 use Eccube\Form\Type\Front\ForgotType;
 
-/**
- * @group cache-clear
- */
 class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Symfony\Component\Form\FormInterface */

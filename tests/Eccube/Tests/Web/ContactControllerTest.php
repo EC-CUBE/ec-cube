@@ -15,9 +15,6 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\BaseInfo;
 
-/**
- * @group cache-clear
- */
 class ContactControllerTest extends AbstractWebTestCase
 {
     protected function createFormData()

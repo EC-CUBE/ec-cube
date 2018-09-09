@@ -94,12 +94,7 @@ class Kernel extends BaseKernel
         date_default_timezone_set($this->container->getParameter('timezone'));
 
         // RFC違反のメールを送信できるよう独自のValidationを設定
-        // 初期値はRFC準拠として設定
-        $rfcCheck = true;
-        if ($this->container->hasParameter('eccube_rfc_email_check')) {
-            $rfcCheck = $this->container->getParameter('eccube_rfc_email_check');
-        }
-        if (!$rfcCheck) {
+        if (!$this->container->getParameter('eccube_rfc_email_check')) {
             // RFC違反のメールを許容する
             \Swift::init(function () {
                 \Swift_DependencyContainer::getInstance()
