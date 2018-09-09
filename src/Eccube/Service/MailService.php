@@ -644,49 +644,6 @@ class MailService
     }
 
     /**
-     * ポイントでマイナス発生時にメール通知する。
-     *
-     * @param Order $Order
-     * @param int $currentPoint
-     * @param int $changePoint
-     */
-    public function sendPointNotifyMail(\Eccube\Entity\Order $Order, $currentPoint = 0, $changePoint = 0)
-    {
-        $body = $this->twig->render('Mail/point_notify.twig', [
-            'Order' => $Order,
-            'currentPoint' => $currentPoint,
-            'changePoint' => $changePoint,
-        ]);
-
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] ポイント通知')
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$this->BaseInfo->getEmail01()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
-
-        // HTMLテンプレートが存在する場合
-        $htmlFileName = $this->getHtmlTemplate('Mail/point_notify.twig');
-        if (!is_null($htmlFileName)) {
-            $htmlBody = $this->twig->render($htmlFileName, [
-                'Order' => $Order,
-                'currentPoint' => $currentPoint,
-                'changePoint' => $changePoint,
-            ]);
-
-            $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
-        } else {
-            $message->setBody($body);
-        }
-
-        $this->mailer->send($message);
-    }
-
-    /**
      * 発送通知メールを送信する.
      * 発送通知メールは受注ごとに送られる
      *
