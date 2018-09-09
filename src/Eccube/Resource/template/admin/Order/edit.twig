@@ -165,6 +165,31 @@ file that was distributed with this source code.
                 }
             });
         });
+
+        {# ポイント機能が有効かつ会員の場合のみポイントの割引金額を変更する #}
+        {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+            // 再計算時のポイントの割引金額の更新
+            function updatePointItem() {
+                // ポイント換算レート
+                var pointConversionRate = {{ BaseInfo.point_conversion_rate }};
+                // 利用ポイント
+                var usePoint = $('#order_use_point').val();
+
+                // 利用ポイントが数値以外の時は割引金額を更新しない
+                if (isNaN(usePoint)) return;
+
+                // 割引金額を計算
+                var discountPrice = (-1) * pointConversionRate * usePoint;
+
+                // ポイント明細の金額の要素を取得
+                var $pointPrice = $('.pointPrice');
+
+                // ポイント明細の金額の要素がある場合はポイントの更新
+                if ($pointPrice.length) {
+                    $pointPrice.val(discountPrice);
+                }
+            }
+        {% endif %}
     </script>
 {% endblock javascript %}
 
@@ -175,7 +200,7 @@ file that was distributed with this source code.
         constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING'), constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')] -%}
         {% set action_disabled = true %}
     {%- endif %}
-    <form name="form1" id="form1" method="post" action="?">
+    <form name="form1" id="form1" method="post" action="?"{% if BaseInfo.isOptionPoint and Order.Customer is not null %} onsubmit="updatePointItem()"{% endif %}>
         <input type="hidden" name="mode" value="">
         <input type="hidden" name="modal" value="">
         {{ form_widget(form._token) }}
@@ -707,7 +732,7 @@ file that was distributed with this source code.
                                                 <div class="col-12">
                                                     {# ポイント値引きは価格変更できない #}
                                                     {% if OrderItem.isPoint %}
-                                                        {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType, 'attr': { 'readonly': 'readonly' } }) }}
+                                                        {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType, 'attr': { 'readonly': 'readonly', 'class': 'pointPrice' } }) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType }) }}
                                                     {% endif %}
