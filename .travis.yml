@@ -39,26 +39,33 @@ eccube_setup: &eccube_setup |
   bin/console doctrine:schema:create
   bin/console eccube:fixtures:load
 
+package_api_setup: &package_api_setup |
+  mkdir ${PWD}/repos
+  wget -O ${PWD}/repos/ProductReview-4.0.0-beta-1.tgz https://github.com/EC-CUBE/ProductReview-plugin/releases/download/4.0.0-beta-1/ProductReview-4.0.0-beta-1.tgz
+  wget -O ${PWD}/repos/SamplePayment-1.0.0-beta-1.tgz https://github.com/EC-CUBE/sample-payment-plugin/releases/download/1.0.0-beta-1/SamplePayment-1.0.0-beta-1.tgz
+  docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+
+
 jobs:
   fast_finish: true
   allow_failures:
     - env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
   include:
-    - &unit_test
-      stage: Unit Test
-      before_install:
-        - *php_setup
-        - gem install mailcatcher
-      install:
-        - *composer_install
-        - *eccube_setup
-      env: DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
-      script:
-        - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
-        - ./bin/phpunit --group cache-clear
-        - ./bin/phpunit --group cache-clear-install
-    - <<: *unit_test
-      env: DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
+#    - &unit_test
+#      stage: Unit Test
+#      before_install:
+#        - *php_setup
+#        - gem install mailcatcher
+#      install:
+#        - *composer_install
+#        - *eccube_setup
+#      env: DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
+#      script:
+#        - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
+#        - ./bin/phpunit --group cache-clear
+#        - ./bin/phpunit --group cache-clear-install
+#    - <<: *unit_test
+#      env: DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
     - &e2e_test
       stage: E2E Test
       before_install:
@@ -75,12 +82,24 @@ jobs:
         - *eccube_setup
       env: GROUP=admin01 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
       script: ./codeception.sh -g ${GROUP}
+#    - <<: *e2e_test
+#      env: GROUP=admin02 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+#    - <<: *e2e_test
+#      env: GROUP=admin03 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+#    - <<: *e2e_test
+#      env: GROUP=front APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
     - <<: *e2e_test
-      env: GROUP=admin02 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+      env: GROUP=front APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025 ECCUBE_PACKAGE_API_URL=http://localhost:8080
+      script:
+        - *package_api_setup
+        - psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        - ./codeception.sh EA10OwnersStoreCest
     - <<: *e2e_test
-      env: GROUP=admin03 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
-    - <<: *e2e_test
-      env: GROUP=front APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+      env: GROUP=front APP_ENV=codeception DATABASE_URL=mysql://root:@localhost/eccube_db DATABASE_SERVER_VERSION=5 MAILER_URL=smtp://localhost:1025 ECCUBE_PACKAGE_API_URL=http://localhost:8080
+      script:
+        - *package_api_setup
+        - mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
+        - ./codeception.sh EA10OwnersStoreCest
     # - stage: Code Coverage
     #   if: type != pull_request
     #   env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
