@@ -181,7 +181,7 @@ file that was distributed with this source code.
                     $('.ec-headerRole__cart').html(html);
                 });
             }).fail(function(data) {
-                alert('カートの追加に失敗しました。');
+                alert('{{ 'front.product.add_cart_error'|trans }}');
             }).always(function(data) {
                 // Buttonを有効にする
                 $('.add-cart').prop('disabled', false);

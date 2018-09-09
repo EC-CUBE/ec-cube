@@ -867,7 +867,7 @@ admin.order.delivery_note_line3: 3行目
 admin.order.delivery_note_save_input: 入力内容を保存する
 admin.order.delivery_note_download_error: 'ダウンロードに失敗しました'
 admin.order.delivery_note_parameter_error: '出荷IDが指定されていません'
-admin.order.failed_to_change_status: '%name": %from% から %to% にはステータス変更できません'
+admin.order.failed_to_change_status: '%name%": %from% から %to% にはステータス変更できません'
 admin.order.failed_to_change_status__short: '%from% から %to% にはステータス変更できません'
 admin.order.skip_change_status: '%name": ステータス変更をスキップしました'
 
@@ -1061,6 +1061,7 @@ admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レー�
 #------------------------------------------------------------------------------------
 
 admin.setting.shop.payment.terms_of_use: 利用条件
+admin.setting.shop.payment.terms_of_use_error: 下限・上限の値を確認してください
 admin.setting.shop.payment.unlimited: 無制限
 admin.setting.shop.payment.payment_id: ID
 admin.setting.shop.payment.payment_name: 支払方法名
