@@ -181,7 +181,6 @@ class ContactControllerTest extends AbstractWebTestCase
         // RFCに準拠していないメールアドレスを設定
         $formData['email'] = 'aa..@example.com';
 
-        $this->client->enableProfiler();
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('contact'),
