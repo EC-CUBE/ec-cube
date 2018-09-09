@@ -14,8 +14,8 @@ file that was distributed with this source code.
 <script>
     $(function() {
         $('.ec-newsRole__news').each(function() {
-            var listLenght = $(this).find('.ec-newsRole__newsItem').length;
-            if (listLenght > 5) {
+            var listLength = $(this).find('.ec-newsRole__newsItem').length;
+            if (listLength > 5) {
                 $(this).find('.ec-newsRole__newsItem:gt(4)').each(function() {
                     $(this).hide();
                 });
@@ -24,7 +24,7 @@ file that was distributed with this source code.
                 $(this).find('#news_readmore').click(function() {
                     dispNum += 5;
                     $(this).parent().find('.ec-newsRole__newsItem:lt(' + dispNum + ')').show(400);
-                    if (dispNum >= listLenght) {
+                    if (dispNum >= listLength) {
                         $(this).hide();
                     }
                 })

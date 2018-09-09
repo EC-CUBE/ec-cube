@@ -64,7 +64,7 @@ class OrderType extends AbstractType
     /**
      * @var OrderStatusRepository
      */
-    protected $orderStatusRepisotory;
+    protected $orderStatusRepository;
 
     /**
      * OrderType constructor.
@@ -82,7 +82,7 @@ class OrderType extends AbstractType
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
         $this->orderStateMachine = $orderStateMachine;
-        $this->orderStatusRepisotory = $orderStatusRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
     }
 
     /**
@@ -304,7 +304,7 @@ class OrderType extends AbstractType
         }
 
         /** @var ArrayCollection|OrderStatus[] $OrderStatuses */
-        $OrderStatuses = $this->orderStatusRepisotory->findBy([], ['sort_no' => 'ASC']);
+        $OrderStatuses = $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']);
         $OrderStatuses = new ArrayCollection($OrderStatuses);
 
         foreach ($OrderStatuses as $Status) {
@@ -384,7 +384,7 @@ class OrderType extends AbstractType
 
         // 新規登録時は, 新規受付ステータスで登録する.
         if (null === $Order->getOrderStatus()) {
-            $Order->setOrderStatus($this->orderStatusRepisotory->find(OrderStatus::NEW));
+            $Order->setOrderStatus($this->orderStatusRepository->find(OrderStatus::NEW));
         } else {
             // 編集時は, mapped => falseで定義しているため, フォームから変更後データを取得する.
             $form = $event->getForm();

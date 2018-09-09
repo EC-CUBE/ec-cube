@@ -27,7 +27,7 @@ class PointHelper
     /**
      * @var BaseInfoRepository
      */
-    protected $baseInfoReppsitory;
+    protected $baseInfoRepository;
 
     /**
      * @var EntityManagerInterface
@@ -37,12 +37,12 @@ class PointHelper
     /**
      * PointHelper constructor.
      *
-     * @param BaseInfoRepository $baseInfoReppsitory
+     * @param BaseInfoRepository $baseInfoRepository
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(BaseInfoRepository $baseInfoReppsitory, EntityManagerInterface $entityManager)
+    public function __construct(BaseInfoRepository $baseInfoRepository, EntityManagerInterface $entityManager)
     {
-        $this->baseInfoReppsitory = $baseInfoReppsitory;
+        $this->baseInfoRepository = $baseInfoRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -56,7 +56,7 @@ class PointHelper
      */
     public function isPointEnabled()
     {
-        $BaseInfo = $this->baseInfoReppsitory->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         return $BaseInfo->isOptionPoint();
     }
@@ -73,7 +73,7 @@ class PointHelper
      */
     public function pointToPrice($point)
     {
-        $BaseInfo = $this->baseInfoReppsitory->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         return intval($point * $BaseInfo->getPointConversionRate());
     }
@@ -105,7 +105,7 @@ class PointHelper
      */
     public function priceToPoint($price)
     {
-        $BaseInfo = $this->baseInfoReppsitory->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         return floor($price / $BaseInfo->getPointConversionRate());
     }

@@ -331,20 +331,6 @@ class MailService
     }
 
     /**
-     * Alias of sendContactMail().
-     *
-     * @param $formData お問い合わせ内容
-     *
-     * @see sendContactMail()
-     * @deprecated since 3.0.0, to be removed in 3.1
-     * @see https://github.com/EC-CUBE/ec-cube/issues/1315
-     */
-    public function sendrContactMail($formData)
-    {
-        $this->sendContactMail($formData);
-    }
-
-    /**
      * Send order mail.
      *
      * @param \Eccube\Entity\Order $Order 受注情報
