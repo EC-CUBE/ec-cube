@@ -1068,6 +1068,7 @@ admin.setting.shop.payment.payment_name: 支払方法名
 admin.setting.shop.payment.logo_image: ロゴ画像
 admin.setting.shop.payment.logo_image_size: '推奨サイズ : 500px × 100px'
 
+
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：配送方法設定
 #------------------------------------------------------------------------------------
@@ -1108,7 +1109,7 @@ admin.setting.shop.mail.preview: プレビュー
 # 設定：店舗設定：CSV出力項目設定
 #------------------------------------------------------------------------------------
 
-admin.setting.shop.csv.csv_colmuns: CSV出力項目
+admin.setting.shop.csv.csv_columns: CSV出力項目
 admin.setting.shop.csv.csv_type: CSV種別
 admin.setting.shop.csv.non_output_colmuns: 出力しない項目
 admin.setting.shop.csv.output_colmuns: 出力する項目
@@ -1600,3 +1601,8 @@ purchase_flow.over_customer_point: 利用ポイントが所有ポイントを上
 purchase_flow.over_payment_total: 利用ポイントがお支払い金額を上回っています。
 purchase_flow.over_stock: 「%name%」の在庫が足りません。
 
+#------------------------------------------------------------------------------------
+# Form Error
+#------------------------------------------------------------------------------------
+
+form_error.
