@@ -509,16 +509,16 @@ admin.home.shop_status_title: ショップ状況
 admin.home.shop_status_out_of_stock: 在庫切れ商品数
 admin.home.shop_status_products: 取扱商品数
 admin.home.shop_status_customers: 会員数
-admin.home.sales_summany_title: 売上状況
-admin.home.sales_summany_value: '%amount% / %count% 件'
-admin.home.sales_summany_this_month: 今月の売上金額 / 売上件数
-admin.home.sales_summany_today: 今日の売上金額 / 売上件数
-admin.home.sales_summany_yesterday: 昨日の売上金額 / 売上件数
-admin.home.sales_summany_weekly: 週間
-admin.home.sales_summany_monthly: 月間
-admin.home.sales_summany_yearly: 年間
-admin.home.sales_summany_amount: 売上金額
-admin.home.sales_summany_count: 売上件数
+admin.home.sales_summary_title: 売上状況
+admin.home.sales_summary_value: '%amount% / %count% 件'
+admin.home.sales_summary_this_month: 今月の売上金額 / 売上件数
+admin.home.sales_summary_today: 今日の売上金額 / 売上件数
+admin.home.sales_summary_yesterday: 昨日の売上金額 / 売上件数
+admin.home.sales_summary_weekly: 週間
+admin.home.sales_summary_monthly: 月間
+admin.home.sales_summary_yearly: 年間
+admin.home.sales_summary_amount: 売上金額
+admin.home.sales_summary_count: 売上件数
 admin.home.recommend_plugins_title: おすすめのプラグイン
 admin.home.recommend_plugins.owner_store: オーナーズストア
 admin.home.news_title: お知らせ
@@ -577,16 +577,16 @@ admin.product.display_status__abolished: 廃止
 admin.product.permanently_delete: 削除
 admin.product.permanently_delete__confirm_title: 商品を削除します
 admin.product.permanently_delete__confirm_message: 商品を削除してよろしいですか？
-admin.product.permanently_delete__in_prograss: 削除中...
+admin.product.permanently_delete__in_progress: 削除中...
 admin.product.permanently_delete__complete_message: 商品の削除処理が完了しました
 admin.product.permanently_delete__complete: 完了
 admin.product.permanently_delete__system_error: システムエラーが発生しました
 admin.product.copy__confirm_title: 商品を複製します
 admin.product.copy__confirm_message: 商品を複製してよろしいですか？
 admin.product.name: 商品名
-amdin.product.image: 商品画像
-amdin.product.image__short: 画像
-amdin.product.image_size: '推奨サイズ : 600px x 600px以上'
+admin.product.image: 商品画像
+admin.product.image__short: 画像
+admin.product.image_size: '推奨サイズ : 600px x 600px以上'
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
@@ -633,7 +633,7 @@ admin.product.product_class__reset_confirm_message: この商品に登録され�
   これまでの販売データには影響はありませんが、この操作は取り消すことができません。
   初期化しますか？
 admin.product.product_class__reset_confirm_excecute: 規格を初期化
-admin.product.product_class_set_stock_quantitiy: 在庫数を入力、もしくは在庫無制限を設定してください。
+admin.product.product_class_set_stock_quantity: 在庫数を入力、もしくは在庫無制限を設定してください。
 admin.product.copy_first_line: 1行目をすべての行に複製
 admin.product.procuct_class_count: '%count%件の組み合わせがあります'
 admin.product.stock_unlimited: 在庫数無制限
@@ -1404,16 +1404,16 @@ admin.store.plugin_table_official.921: 詳細情報
 admin.store.plugin_table_official.924: 有効化
 admin.store.plugin_table_official.925: 無効化
 admin.store.plugin_table_official.923: インストールされているプラグインはありません。
-admin.store.unregisterd_plugin_table.941: プラグイン
-admin.store.unregisterd_plugin_table.942: バージョン
-admin.store.unregisterd_plugin_table.943: コード
-admin.store.unregisterd_plugin_table.944: アップデート
-admin.store.unregisterd_plugin_table.945: 設定
-admin.store.unregisterd_plugin_table.946: 不明
-admin.store.unregisterd_plugin_table.947: 不明
-admin.store.unregisterd_plugin_table.948: 詳細を表示
-admin.store.unregisterd_plugin_table.949: 不明
-admin.store.unregisterd_plugin_table.950: 設定
+admin.store.unregistered_plugin_table.941: プラグイン
+admin.store.unregistered_plugin_table.942: バージョン
+admin.store.unregistered_plugin_table.943: コード
+admin.store.unregistered_plugin_table.944: アップデート
+admin.store.unregistered_plugin_table.945: 設定
+admin.store.unregistered_plugin_table.946: 不明
+admin.store.unregistered_plugin_table.947: 不明
+admin.store.unregistered_plugin_table.948: 詳細を表示
+admin.store.unregistered_plugin_table.949: 不明
+admin.store.unregistered_plugin_table.950: 設定
 admin.store.install.label: 'プラグイン (zip、tar、tar.gz形式)'
 
 
@@ -1529,8 +1529,8 @@ install.update: 更新する
 install.title: ようこそ | EC-CUBEインストール
 install.welcom: ようこそ
 install.check_permission: 権限チェック
-install.site_configration: サイトの設定
-install.database_configration: データベースの設定
+install.site_configuration: サイトの設定
+install.database_configuration: データベースの設定
 install.database_initalization: データベースの初期化
 install.install_completed: インストール完了
 install.start_eccube_installation: '<p>EC-CUBEのインストールを開始します。</p><p>あらかじめ、使用するデータベースの情報（DB名など）をご準備ください。</p>'
@@ -1551,8 +1551,8 @@ install.mail_address: メールアドレス（受注メールなどの宛先に�
 install.login_id: 管理画面ログインID（半角英数字%min%～%max%文字）
 install.login_password: 管理画面パスワード（半角英数字%min%～%max%文字）
 install.security_configuration: セキュリティの設定
-install.directry_name: 管理画面のディレクトリ名（半角英数字%min%～%max%文字）
-install.directry_name_notice: セキュリティのため推測されにくいディレクトリ名を入力して下さい
+install.directory_name: 管理画面のディレクトリ名（半角英数字%min%～%max%文字）
+install.directory_name_notice: セキュリティのため推測されにくいディレクトリ名を入力して下さい
 install.https_only: サイトへのアクセスを、SSL（https）経由に制限します
 install.https_only_notice: httpsからの接続でなければSSL制限を設定できません。
 install.ip_restriction: 管理画面へのアクセスを、以下のIPに制限します

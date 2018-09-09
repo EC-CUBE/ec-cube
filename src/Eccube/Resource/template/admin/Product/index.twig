@@ -71,7 +71,7 @@ file that was distributed with this source code.
 
                 // 削除中のUI変更処理
                 modal.find('button').attr('disabled', 'disabled');
-                $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__in_prograss'|trans }}");
+                $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__in_progress'|trans }}");
                 $('.progress', modal).show();
 
                 var checkedList = $('input[type=checkbox][data-delete-url]:checked');
@@ -354,7 +354,7 @@ file that was distributed with this source code.
                                             <input type="checkbox" name="filter" value="open" id="trigger_check_all">
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_id__short'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'amdin.product.image__short'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.image__short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.name'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.price'|trans }}</th>

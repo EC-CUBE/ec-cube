@@ -594,7 +594,7 @@ class Generator
             $Product = $this->createProduct();
             $ProductClasses = $Product->getProductClasses();
         }
-        $Taxion = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
+        $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
         $NonTaxable = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
         $TaxExclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
         $TaxInclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
@@ -618,7 +618,7 @@ class Generator
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($quantity)
-                ->setTaxType($Taxion) // 課税
+                ->setTaxType($Taxation) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
             ;
@@ -644,7 +644,7 @@ class Generator
             ->setProductName('送料')
             ->setPrice($fee)
             ->setQuantity(1)
-            ->setTaxType($Taxion) // 課税
+            ->setTaxType($Taxation) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDeliveryFee); // 送料明細
         $Shipping->addOrderItem($OrderItemDeliveryFee);
@@ -658,7 +658,7 @@ class Generator
             ->setProductName('手数料')
             ->setPrice($charge)
             ->setQuantity(1)
-            ->setTaxType($Taxion) // 課税
+            ->setTaxType($Taxation) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemCharge); // 手数料明細
         // $Shipping->addOrderItem($OrderItemCharge); // Shipping には登録しない

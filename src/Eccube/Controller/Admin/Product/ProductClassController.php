@@ -109,7 +109,7 @@ class ProductClassController extends AbstractController
             $ClassName2 = $ClassCategory2 ? $ClassCategory2->getClassName() : null;
 
             // 規格名1/2から組み合わせを生成し, DBから取得した商品規格とマージする.
-            $ProductClasses = $this->mergeProductClassess(
+            $ProductClasses = $this->mergeProductClasses(
                 $this->createProductClasses($ClassName1, $ClassName2),
                 $ProductClasses);
 
@@ -265,15 +265,15 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格の配列をマージする.
      *
-     * @param $ProductClassessForMatrix
+     * @param $ProductClassesForMatrix
      * @param $ProductClasses
      *
      * @return array|ProductClass[]
      */
-    protected function mergeProductClassess($ProductClassessForMatrix, $ProductClasses)
+    protected function mergeProductClasses($ProductClassesForMatrix, $ProductClasses)
     {
         $mergedProductClasses = [];
-        foreach ($ProductClassessForMatrix as $pcfm) {
+        foreach ($ProductClassesForMatrix as $pcfm) {
             foreach ($ProductClasses as $pc) {
                 if ($pcfm->getClassCategory1()->getId() === $pc->getClassCategory1()->getId()) {
                     $cc2fm = $pcfm->getClassCategory2();

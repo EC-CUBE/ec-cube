@@ -125,7 +125,7 @@ class ProductClassType extends AbstractType
                 $data = $form->getData();
 
                 if (empty($data['stock_unlimited']) && is_null($data['stock'])) {
-                    $form['stock_unlimited']->addError(new FormError(trans('admin.product.product_class_set_stock_quantitiy')));
+                    $form['stock_unlimited']->addError(new FormError(trans('admin.product.product_class_set_stock_quantity')));
                 }
             });
 
