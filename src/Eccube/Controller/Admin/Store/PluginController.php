@@ -24,7 +24,7 @@ use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
+use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
 use Eccube\Util\CacheUtil;
@@ -63,9 +63,9 @@ class PluginController extends AbstractController
      */
     protected $pluginApiService;
     /**
-     * @var ComposerApiService
+     * @var ComposerServiceInterface
      */
-    private $composerApiService;
+    private $composerService;
 
     /**
      * PluginController constructor.
@@ -75,17 +75,17 @@ class PluginController extends AbstractController
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginApiService $pluginApiService
      *
-     * @param ComposerApiService $composerApiService
+     * @param ComposerServiceInterface $composerService
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService, ComposerApiService $composerApiService)
+    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService, ComposerServiceInterface $composerService)
     {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->pluginApiService = $pluginApiService;
-        $this->composerApiService = $composerApiService;
+        $this->composerService = $composerService;
     }
 
     /**
@@ -504,7 +504,7 @@ class PluginController extends AbstractController
             $this->entityManager->flush();
 
             // composerの認証を更新
-            $this->composerApiService->configureRepository($this->BaseInfo);
+            $this->composerService->configureRepository($this->BaseInfo);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
         }

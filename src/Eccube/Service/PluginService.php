@@ -19,10 +19,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
-use Eccube\Exception\PluginApiException;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
@@ -84,7 +82,7 @@ class PluginService
     private $environment;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -106,7 +104,7 @@ class PluginService
      * @param EccubeConfig $eccubeConfig
      * @param ContainerInterface $container
      * @param CacheUtil $cacheUtil
-     * @param ComposerApiService $composerService
+     * @param ComposerServiceInterface $composerService
      * @param PluginApiService $pluginApiService
      */
     public function __construct(
@@ -117,7 +115,7 @@ class PluginService
         EccubeConfig $eccubeConfig,
         ContainerInterface $container,
         CacheUtil $cacheUtil,
-        ComposerApiService $composerService,
+        ComposerServiceInterface $composerService,
         PluginApiService $pluginApiService
     ) {
         $this->entityManager = $entityManager;

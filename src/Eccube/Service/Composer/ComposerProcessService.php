@@ -15,6 +15,7 @@ namespace Eccube\Service\Composer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
 use Eccube\Exception\PluginException;
 use Eccube\Service\SystemService;
 
@@ -59,7 +60,7 @@ class ComposerProcessService implements ComposerServiceInterface
      *
      * @throws PluginException
      */
-    public function execRequire($packageName)
+    public function execRequire($packageName, $output = null)
     {
         set_time_limit(0);
         $this->init();
@@ -79,7 +80,7 @@ class ComposerProcessService implements ComposerServiceInterface
      *
      * @throws PluginException
      */
-    public function execRemove($packageName)
+    public function execRemove($packageName, $output = null)
     {
         set_time_limit(0);
         $this->init();
@@ -266,26 +267,13 @@ class ComposerProcessService implements ComposerServiceInterface
         return false;
     }
 
-    /**
-     * Get version of composer
-     *
-     * @return null|string
-     */
-    public function composerVersion()
+    public function configureRepository(BaseInfo $BaseInfo)
     {
-        $this->init();
-        $command = $this->pathPHP.' '.$this->composerFile.' -V';
-
-        return exec($command);
+        // TODO: Implement configureRepository() method.
     }
 
-    /**
-     * Get mode
-     *
-     * @return string
-     */
-    public function getMode()
+    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0)
     {
-        return 'EXEC';
+        // TODO: Implement foreachRequires() method.
     }
 }
