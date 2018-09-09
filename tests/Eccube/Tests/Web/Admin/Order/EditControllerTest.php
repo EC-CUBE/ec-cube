@@ -429,4 +429,32 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->actual = $SavedOrder->getBirth();
         $this->verify('会員の誕生日が保存されている');
     }
+
+    public function testMailNoRFC()
+    {
+        $formData = $this->createFormData($this->Customer, $this->Product);
+        // RFCに準拠していないメールアドレスを設定
+        $formData['email'] = 'aa..@example.com';
+
+        unset($formData['OrderStatus']);
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_new'),
+            [
+                'order' => $formData,
+                'mode' => 'register',
+            ]
+        );
+
+        $url = $crawler->filter('a')->text();
+        $this->assertTrue($this->client->getResponse()->isRedirect($url));
+
+        $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
+        $SavedOrder = $this->orderRepository->find($savedOderId);
+
+        $this->assertNotNull($SavedOrder);
+        $this->expected = $SavedOrder->getEmail();
+        $this->actual = $formData['email'];
+        $this->verify();
+    }
 }

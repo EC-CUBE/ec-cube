@@ -39,6 +39,7 @@ use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\ItemPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
+use Eccube\Validator\EmailValidator\NoRFCEmailValidator;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -87,18 +88,29 @@ class Kernel extends BaseKernel
 
         parent::boot();
 
+        $container = $this->getContainer();
+
         // DateTime/DateTimeTzのタイムゾーンを設定.
-        UTCDateTimeType::setTimeZone($this->container->getParameter('timezone'));
-        UTCDateTimeTzType::setTimeZone($this->container->getParameter('timezone'));
-        date_default_timezone_set($this->container->getParameter('timezone'));
+        $timezone = $container->getParameter('timezone');
+        UTCDateTimeType::setTimeZone($timezone);
+        UTCDateTimeTzType::setTimeZone($timezone);
+        date_default_timezone_set($timezone);
+
+        // RFC違反のメールを送信できるよう独自のValidationを設定
+        if (!$container->getParameter('eccube_rfc_email_check')) {
+            // RFC違反のメールを許容する
+            \Swift_DependencyContainer::getInstance()
+                ->register('email.validator')
+                ->asSharedInstanceOf(NoRFCEmailValidator::class);
+        }
 
         // Activate to $app
         $app = Application::getInstance(['debug' => $this->isDebug()]);
-        $app->setParentContainer($this->container);
+        $app->setParentContainer($container);
         $app->initialize();
         $app->boot();
 
-        $this->container->set('app', $app);
+        $container->set('app', $app);
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)

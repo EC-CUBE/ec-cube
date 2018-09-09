@@ -216,4 +216,32 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         $this->assertRegExp('/@dummy.dummy/', $EditedCustomer->getEmail());
     }
+
+
+    /**
+     * testMailNoRFC
+     */
+    public function testMailNoRFC()
+    {
+        $form = $this->createFormData();
+        // RFCに準拠していないメールアドレスを設定
+        $form['email'] = 'aa..@example.com';
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()]),
+            ['admin_customer' => $form]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl(
+                'admin_customer_edit',
+                ['id' => $this->Customer->getId()]
+            )
+        ));
+        $EditedCustomer = $this->container->get(CustomerRepository::class)->find($this->Customer->getId());
+
+        $this->expected = $form['email'];
+        $this->actual = $EditedCustomer->getEmail();
+        $this->verify();
+    }
 }
