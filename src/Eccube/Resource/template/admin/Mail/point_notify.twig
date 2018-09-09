@@ -8,6 +8,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
+{% autoescape false %}
 会員ID：{{ Order.Customer.id }}
 {{ Order.name01 }} {{ Order.name02 }} 様の保有ポイントがマイナスになっています。
 
@@ -16,3 +17,4 @@ file that was distributed with this source code.
 変更されるポイント：{{ changePoint|number_format }}
 
 保有ポイント：{{ currentPoint|number_format }}
+{% endautoescape %}

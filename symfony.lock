@@ -293,9 +293,6 @@
     "sebastian/version": {
         "version": "2.0.1"
     },
-    "seld/cli-prompt": {
-        "version": "1.0.3"
-    },
     "seld/jsonlint": {
         "version": "1.6.2"
     },

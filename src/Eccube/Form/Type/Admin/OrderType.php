@@ -210,11 +210,16 @@ class OrderType extends AbstractType
             ->add('Payment', EntityType::class, [
                 'required' => false,
                 'class' => Payment::class,
-                'choice_label' => 'method',
+                'choice_label' => function (Payment $Payment) {
+                    return $Payment->isVisible()
+                        ? $Payment->getMethod()
+                        : $Payment->getMethod().trans('admin.common.hidden_label');
+                },
                 'placeholder' => false,
                 'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('o')
-                        ->orderBy('o.sort_no', 'ASC');
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.visible', 'DESC')  // 非表示は下に配置
+                        ->addOrderBy('p.sort_no', 'ASC');
                 },
                 'constraints' => [
                     new Assert\NotBlank(),

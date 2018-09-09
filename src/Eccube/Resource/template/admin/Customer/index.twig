@@ -117,7 +117,7 @@ file that was distributed with this source code.
                 <div class="row justify-content-start">
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label">{{ 'admin.customer.multi_search_label'|trans }}</label>
+                            <label class="col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.customer.multi_search_label'|trans }}">{{ 'admin.customer.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
@@ -309,10 +309,6 @@ file that was distributed with this source code.
                         {% endif %}
                     </div>
                 {% endfor %}
-
-                <div class="d-block text-center">
-                    <button class="btn btn-ec-regular" type="reset">{{ 'admin.common.search_clear'|trans }}</button>
-                </div>
             </div>
         </div>
         <div class="c-outsideBlock__contents mb-5">

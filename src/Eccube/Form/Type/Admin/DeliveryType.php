@@ -18,6 +18,7 @@ use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\SaleTypeType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -98,6 +99,12 @@ class DeliveryType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
+            ])
+            ->add('visible', ChoiceType::class, [
+                'label' => false,
+                'choices' => ['admin.common.show' => true, 'admin.common.hide' => false],
+                'required' => true,
+                'expanded' => false,
             ])
         ;
     }

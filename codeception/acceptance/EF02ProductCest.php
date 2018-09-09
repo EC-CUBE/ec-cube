@@ -71,7 +71,7 @@ class EF02ProductCest
         $listPage = new ProductListPage($I);
         // ソート条件の選択リストを変更する 価格順->新着順
         $listPage
-            ->表示件数設定(30)
+            ->表示件数設定(40)
             ->表示順設定('新着順');
 
         // 変更されたソート条件に従い、商品がソートされる
@@ -104,14 +104,14 @@ class EF02ProductCest
         // 各商品のサムネイルが表示される
         $config = Fixtures::get('test_config');
         $productNum = $config['fixture_product_num'] + 2;
-        $itemNum = ($productNum >= 15) ? 15 : $productNum;
+        $itemNum = ($productNum >= 20) ? 20 : $productNum;
         $I->assertEquals($itemNum, $listPage->一覧件数取得());
 
         // 表示件数の選択リストを変更する
-        $listPage->表示件数設定(30);
+        $listPage->表示件数設定(40);
 
         // 変更された表示件数分が1画面に表示される
-        $expected = ($productNum >= 30) ? 30 : $productNum;
+        $expected = ($productNum >= 40) ? 40 : $productNum;
         $I->assertEquals($expected, $listPage->一覧件数取得());
     }
 
