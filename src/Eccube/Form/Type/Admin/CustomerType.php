@@ -85,10 +85,6 @@ class CustomerType extends AbstractType
                     new Assert\NotBlank(),
                     // configでこの辺りは変えられる方が良さそう
                     new Assert\Email(['strict' => true]),
-                    new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
-                    ]),
                 ],
                 'attr' => [
                     'placeholder' => 'common.mail_address_sample',
