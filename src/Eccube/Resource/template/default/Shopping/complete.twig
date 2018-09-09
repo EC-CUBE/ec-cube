@@ -68,7 +68,7 @@ file that was distributed with this source code.
             <p class="ec-reportDescription">
                 {{ 'front.shopping.complete_message__body'|trans }}
                 {% if Order.id %}
-                    <br /><br /><strong>ご注文番号：{{ Order.orderNo }}</strong>
+                    <br /><br /><strong>{{ 'front.shopping.order_no'|trans }} : {{ Order.orderNo }}</strong>
                 {% endif %}
             </p>
 

@@ -149,7 +149,7 @@ file that was distributed with this source code.
                                                 {% endif %}
                                             </div>
                                             <div class="ec-cartRow__unitPrice">{{ CartItem.price|price }}</div>
-                                            <div class="ec-cartRow__sutbtotalSP">小計：{{ CartItem.total_price|price }}</div>
+                                            <div class="ec-cartRow__sutbtotalSP">{{ 'common.subtotal__with_separator'|trans }}{{ CartItem.total_price|price }}</div>
                                         </div>
                                     </li>
                                     <li class="ec-cartRow__amountColumn">

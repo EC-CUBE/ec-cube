@@ -88,7 +88,7 @@ class PointDiffProcessorTest extends EccubeTestCase
         self::assertEquals($isError, $result->hasError());
 
         if ($isError) {
-            self::assertEquals('利用ポイントが所有ポイントを上回っています', $result->getErrors()[0]->getMessage());
+            self::assertEquals('利用ポイントが所有ポイントを上回っています。', $result->getErrors()[0]->getMessage());
         }
     }
 
@@ -154,7 +154,7 @@ class PointDiffProcessorTest extends EccubeTestCase
         if ($isError) {
             $errors = $result->getErrors();
             $error = array_shift($errors); // PointDiffProcessorがsuccess, PointProcessorがerrorを返すので.
-            self::assertEquals('利用ポイントがお支払い金額を上回っています', $error->getMessage());
+            self::assertEquals('利用ポイントがお支払い金額を上回っています。', $error->getMessage());
         }
     }
 

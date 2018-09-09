@@ -483,6 +483,8 @@ if (!class_exists('\Eccube\Entity\Payment')) {
          */
         public function getMethodForAdmin()
         {
+            trigger_error('twigやコントローラで表示を制御してください.', E_USER_DEPRECATED);
+
             if ($this->isVisible()) {
                 return $this->getMethod();
             }

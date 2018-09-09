@@ -409,22 +409,23 @@ class OrderType extends AbstractType
             return;
         }
 
+        $form = $event->getForm();
+        if (!$form['OrderStatus']->isValid()) {
+            return;
+        }
         // mapped => falseで定義しているため, Orderのステータスは変更されない
         $oldStatus = $Order->getOrderStatus();
         // 変更後のステータスはFormから直接取得する.
-        $form = $event->getForm();
         $newStatus = $form['OrderStatus']->getData();
 
         // ステータスに変更があった場合のみチェックする.
-        if (!is_null($oldStatus) && !is_null($newStatus)) {
+        if ($oldStatus->getId() != $newStatus->getId()) {
             if ($oldStatus->getId() != $newStatus->getId()) {
                 if (!$this->orderStateMachine->can($Order, $newStatus)) {
                     $form['OrderStatus']->addError(
-                        new FormError(sprintf('%sから%sには変更できません', $oldStatus->getName(), $newStatus->getName())));
+                        new FormError(trans('admin.order.failed_to_change_status__short', $oldStatus->getName(), $newStatus->getName())));
                 }
             }
-        } else {
-            $form['OrderStatus']->addError(new FormError('ステータス変更できません。'));
         }
     }
 

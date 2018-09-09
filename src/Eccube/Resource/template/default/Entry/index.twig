@@ -205,7 +205,7 @@ file that was distributed with this source code.
                                 <div class="ec-checkbox{{ has_errors(form.user_policy_check) ? ' error' }}">
                                     <label>
                                         {{ form_widget(form.user_policy_check) }}
-                                        <a class="ec-link" href="{{ url('help_agreement') }}" target="_blank">{{ 'front.entry.terms'|trans }}</a>{{ 'front.entry.agree_with_terms'|trans }}
+                                        {{ 'front.entry.agree_with_terms'|trans({ '%url%': url('help_agreement') })|raw }}
                                     </label>
                                     {{ form_errors(form.user_policy_check) }}
                                 </div>

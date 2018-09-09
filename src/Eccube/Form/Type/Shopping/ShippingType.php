@@ -225,7 +225,7 @@ class ShippingType extends AbstractType
                     'DeliveryTime',
                     EntityType::class,
                     [
-                        'label' => 'お届け時間',
+                        'label' => 'front.shopping.delivery_time',
                         'class' => 'Eccube\Entity\DeliveryTime',
                         'choice_label' => 'deliveryTime',
                         'choices' => $DeliveryTimes,
