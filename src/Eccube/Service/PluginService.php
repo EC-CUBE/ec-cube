@@ -314,7 +314,7 @@ class PluginService
         $d = ($tempDir.'/'.sha1(StringUtil::random(16)));
 
         if (!mkdir($d, 0777)) {
-            throw new PluginException($php_errormsg.$d);
+            throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
         }
 
         return $d;
@@ -463,7 +463,7 @@ class PluginService
     {
         $b = @mkdir($d);
         if (!$b) {
-            throw new PluginException($php_errormsg);
+            throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
         }
     }
 

@@ -1231,6 +1231,7 @@ admin.store.plugin.install.complete: プラグインをインストールしま�
 admin.store.plugin.enable.complete: 「%plugin_name%」を有効にしました。
 admin.store.plugin.disable.complete: 「%plugin_name%」を無効にしました。
 admin.store.plugin.uninstall.complete: プラグインを削除しました。
+admin.store.plugin.mkdir.error: ディレクトリ「%dir_name%」の作成に失敗しました。
 admin.store.setting: 設定
 admin.store.setting.api_key_setting: 認証キー設定
 admin.store.setting.api_key: 認証キー
@@ -1243,6 +1244,7 @@ admin.store.setting.captcha_error: エラー
 admin.store.package.api.0.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
 admin.store.package.api.403.error: オーナーズストアの認証に失敗しました。認証キーの設定を確認してください。
 admin.store.package.api.500.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
+
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
