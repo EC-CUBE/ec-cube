@@ -7143,9 +7143,6 @@ Styleguide 16.2.5
 .ec-orderMails .ec-orderMails__body {
   display: none; }
 
-.ec-orderMails .ec-inlineBtn {
-  display: none; }
-
 /*
 注文履歴詳細 メール履歴個別
 
@@ -8920,10 +8917,6 @@ Styleguide 22.1
 
   .ec-historyListHeader .ec-historyListHeader__action a{
     font-size: 14px;
-  }
-
-  .ec-orderMails .ec-inlineBtn{
-    display: inline-block;
   }
 
   .ec-registerRole .ec-registerRole__actions{
