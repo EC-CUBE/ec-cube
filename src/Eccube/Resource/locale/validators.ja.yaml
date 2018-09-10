@@ -19,6 +19,9 @@ This value should be the user\'s current password.: 現在のパスワードが�
 Invalid credentials.: |
   ログインできませんでした。
   入力内容に誤りがないかご確認ください。
+Invalid CSRF token.: |
+  ログインできませんでした。
+  入力内容に誤りがないかご確認ください。
 
 #------------------------------------------------------------------------------------
 # EC-CUBE error message
