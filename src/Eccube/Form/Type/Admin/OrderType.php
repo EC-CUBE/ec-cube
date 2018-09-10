@@ -421,11 +421,9 @@ class OrderType extends AbstractType
 
         // ステータスに変更があった場合のみチェックする.
         if ($oldStatus->getId() != $newStatus->getId()) {
-            if ($oldStatus->getId() != $newStatus->getId()) {
-                if (!$this->orderStateMachine->can($Order, $newStatus)) {
-                    $form['OrderStatus']->addError(
-                        new FormError(trans('admin.order.failed_to_change_status__short', $oldStatus->getName(), $newStatus->getName())));
-                }
+            if (!$this->orderStateMachine->can($Order, $newStatus)) {
+                $form['OrderStatus']->addError(
+                    new FormError(trans('admin.order.failed_to_change_status__short', $oldStatus->getName(), $newStatus->getName())));
             }
         }
     }
