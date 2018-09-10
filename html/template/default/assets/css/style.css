@@ -6571,16 +6571,17 @@ Styleguide 15.1.4
   .ec-cartRow .ec-cartRow__contentColumn {
     border-bottom: 1px dotted #ccc;
     padding: 10px 0;
-    display: table-cell; }
+    display: table; }
   .ec-cartRow .ec-cartRow__img {
-    display: inline-block;
+    display: table-cell;
     width: 40%;
-    vertical-align: top; }
+    vertical-align: middle;
+    padding-right: 10px; }
   .ec-cartRow .ec-cartRow__summary {
-    display: inline-block;
+    display: table-cell;
     margin-left: 5px;
     font-weight: bold;
-    vertical-align: top;
+    vertical-align: middle;
     width: 46%; }
     .ec-cartRow .ec-cartRow__summary .ec-cartRow__name {
       margin-bottom: 5px; }
@@ -6599,6 +6600,11 @@ Styleguide 15.1.4
     .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountSP {
       display: block;
       margin-bottom: 10px; }
+    .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpDown {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: center;
+          justify-content: center; }
     .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpButton {
       margin: 0 2px;
       display: inline-block;
@@ -8833,12 +8839,19 @@ Styleguide 22.1
     height: 1em;
   }
 
+  .ec-cartRow .ec-cartRow__contentColumn{
+    display: table-cell;
+  }
+
   .ec-cartRow .ec-cartRow__img{
+    display: inline-block;
     min-width: 80px;
     max-width: 100px;
+    padding-right: 0;
   }
 
   .ec-cartRow .ec-cartRow__summary{
+    display: inline-block;
     margin-left: 20px;
     vertical-align: middle;
   }
@@ -8857,6 +8870,10 @@ Styleguide 22.1
 
   .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountSP{
     display: none;
+  }
+
+  .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpDown{
+    display: block;
   }
 
   .ec-cartRow .ec-cartRow__subtotalColumn{
