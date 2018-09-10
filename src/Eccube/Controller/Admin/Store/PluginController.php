@@ -412,7 +412,7 @@ class PluginController extends AbstractController
         }
 
         $this->pluginService->uninstall($Plugin);
-        $this->addSuccess('admin.plugin.uninstall.complete', 'admin');
+        $this->addSuccess('admin.store.plugin.uninstall.complete', 'admin');
 
         return $this->redirectToRoute('admin_store_plugin');
     }
@@ -437,19 +437,18 @@ class PluginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $tmpDir = null;
             try {
-                $service = $this->pluginService;
                 /** @var UploadedFile $formFile */
                 $formFile = $form['plugin_archive']->getData();
-                $tmpDir = $service->createTempDir();
+                $tmpDir = $this->pluginService->createTempDir();
                 // 拡張子を付けないとpharが動かないので付ける
                 $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
                 $formFile->move($tmpDir, $tmpFile);
                 $tmpPath = $tmpDir.'/'.$tmpFile;
-                $service->install($tmpPath);
+                $this->pluginService->install($tmpPath);
                 // Remove tmp file
                 $fs = new Filesystem();
                 $fs->remove($tmpDir);
-                $this->addSuccess('admin.plugin.install.complete', 'admin');
+                $this->addSuccess('admin.store.plugin.install.complete', 'admin');
 
                 return $this->redirectToRoute('admin_store_plugin');
             } catch (PluginException $e) {

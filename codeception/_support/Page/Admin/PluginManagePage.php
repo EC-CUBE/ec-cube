@@ -72,7 +72,33 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     private function ストアプラグイン_ボタンクリック($pluginCode, $label)
     {
-        $xpath = ['xpath' => '//*[@id="page_admin_store_plugin"]//table[1]/tbody//td[3]/p[contains(text(), "'.$pluginCode.'")]/../../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
+        $xpath = ['xpath' => '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "オーナーズストアのプラグイン")]/../..//table/tbody//td[3]/p[contains(text(), "'.$pluginCode.'")]/../../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
+        $this->tester->click($xpath);
+        return $this;
+    }
+
+    public function 独自プラグイン_有効化($pluginCode)
+    {
+        return $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
+    }
+
+
+    public function 独自プラグイン_無効化($pluginCode)
+    {
+        return $this->独自プラグイン_ボタンクリック($pluginCode, '無効化');
+    }
+
+    public function 独自プラグイン_削除($pluginCode)
+    {
+        $this->独自プラグイン_ボタンクリック($pluginCode, '削除');
+        $this->tester->waitForElementVisible(['css' => '#localPluginDeleteModal .modal-footer a']);
+        $this->tester->click(['css' => '#localPluginDeleteModal .modal-footer a']);
+        return $this;
+    }
+
+    private function 独自プラグイン_ボタンクリック($pluginCode, $label)
+    {
+        $xpath = ['xpath' => '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "ユーザー独自プラグイン")]/../..//table/tbody//td[3][contains(text(), "'.$pluginCode.'")]/../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
         $this->tester->click($xpath);
         return $this;
     }

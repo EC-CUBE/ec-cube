@@ -24,7 +24,7 @@
 namespace Page\Admin;
 
 
-class PluginInstallPage extends AbstractAdminPageStyleGuide
+class PluginStoreInstallPage extends AbstractAdminPageStyleGuide
 {
     public function __construct(\AcceptanceTester $I)
     {

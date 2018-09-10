@@ -25,10 +25,11 @@ use Codeception\Util\Fixtures;
 use Doctrine\ORM\EntityManager;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
+use Page\Admin\PluginLocalInstallPage;
 use Page\Admin\PluginManagePage;
 use Page\Admin\PluginSearchPage;
 
-class EA10OwnersStoreCest
+class EA10PluginCest
 {
 
     /** @var EntityManager */
@@ -49,8 +50,8 @@ class EA10OwnersStoreCest
         $this->pluginRepository = $this->em->getRepository(Plugin::class);
     }
 
-    public function インストール(\AcceptanceTester $I) {
-
+    public function installFromStore(\AcceptanceTester $I)
+    {
         /*
          * インストール
          */
@@ -131,6 +132,91 @@ class EA10OwnersStoreCest
         $this->em->refresh($Plugin);
         $Plugin = $this->pluginRepository->findByCode('SamplePayment');
         $I->assertNull($Plugin);
+    }
+
+    public function installFromLocal(\AcceptanceTester $I)
+    {
+        /*
+         * インストール
+         */
+        $ManagePage = PluginLocalInstallPage::go($I)
+            ->アップロード('SamplePayment-1.0.0-beta-1.tgz');
+
+        $I->see('プラグインをインストールしました。', PluginManagePage::完了メーッセージ);
+
+        $I->assertTrue($this->tableExists('plg_sample_payment_config'));
+        $I->assertTrue($this->columnExists('dtb_customer', 'sample_payment_cards'));
+
+        $Plugin = $this->pluginRepository->findByCode('SamplePayment');
+        $I->assertTrue($Plugin->isInitialized(), '初期化されていない');
+        $I->assertFalse($Plugin->isEnabled(), '有効化されていない');
+
+        /*
+         * 有効化
+         */
+        $ManagePage->独自プラグイン_有効化('SamplePayment');
+
+        $I->see('「EC-CUBE Payment Sample Plugin」を有効にしました。', PluginManagePage::完了メーッセージ);
+        $I->assertTrue($this->tableExists('plg_sample_payment_config'));
+        $I->assertTrue($this->columnExists('dtb_customer', 'sample_payment_cards'));
+
+        $this->em->refresh($Plugin);
+        $I->assertTrue($Plugin->isInitialized(), '初期化されている');
+        $I->assertTrue($Plugin->isEnabled(), '有効化されている');
+
+        /*
+         * 無効化
+         */
+        $ManagePage->独自プラグイン_無効化('SamplePayment');
+
+        $I->see('「EC-CUBE Payment Sample Plugin」を無効にしました。', PluginManagePage::完了メーッセージ);
+        $I->assertTrue($this->tableExists('plg_sample_payment_config'));
+        $I->assertTrue($this->columnExists('dtb_customer', 'sample_payment_cards'));
+
+        $this->em->refresh($Plugin);
+        $I->assertTrue($Plugin->isInitialized(), '初期化されている');
+        $I->assertFalse($Plugin->isEnabled(), '無効化されている');
+
+        /*
+         * 再度有効化
+        */
+        $ManagePage->独自プラグイン_有効化('SamplePayment');
+
+        $I->see('「EC-CUBE Payment Sample Plugin」を有効にしました。', PluginManagePage::完了メーッセージ);
+        $I->assertTrue($this->tableExists('plg_sample_payment_config'));
+        $I->assertTrue($this->columnExists('dtb_customer', 'sample_payment_cards'));
+
+        $this->em->refresh($Plugin);
+        $I->assertTrue($Plugin->isInitialized(), '初期化されている');
+        $I->assertTrue($Plugin->isEnabled(), '有効化されている');
+
+        /*
+         * 再度無効化
+         */
+        $ManagePage->独自プラグイン_無効化('SamplePayment');
+
+        $I->see('「EC-CUBE Payment Sample Plugin」を無効にしました。', PluginManagePage::完了メーッセージ);
+        $I->assertTrue($this->tableExists('plg_sample_payment_config'));
+        $I->assertTrue($this->columnExists('dtb_customer', 'sample_payment_cards'));
+
+        $this->em->refresh($Plugin);
+        $I->assertTrue($Plugin->isInitialized(), '初期化されている');
+        $I->assertFalse($Plugin->isEnabled(), '無効化されている');
+
+        /*
+         * 削除
+         */
+        $ManagePage->独自プラグイン_削除('SamplePayment');
+
+        $I->see('プラグインを削除しました。', PluginManagePage::完了メーッセージ);
+
+        $I->assertFalse($this->tableExists('plg_sample_payment_config'));
+        $I->assertFalse($this->columnExists('dtb_customer', 'sample_payment_cards'));
+
+        $this->em->refresh($Plugin);
+        $Plugin = $this->pluginRepository->findByCode('SamplePayment');
+        $I->assertNull($Plugin);
+
     }
 
     private function tableExists($tableName)

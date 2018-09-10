@@ -24,27 +24,23 @@
 namespace Page\Admin;
 
 
-class PluginSearchPage extends AbstractAdminPageStyleGuide
+class PluginLocalInstallPage extends AbstractAdminPageStyleGuide
 {
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);
 
-        return $page->goPage('/store/plugin/api/search', 'プラグインを探すオーナーズストア');
+        return $page->goPage('/store/plugin/install', '独自プラグインのアップロードオーナーズストア');
     }
 
     /**
-     * @param $pluginCode
-     * @return PluginStoreInstallPage
+     * @param $fileName
+     * @return PluginManagePage
      */
-    public function 入手する($pluginCode)
+    public function アップロード($fileName)
     {
-        $this->tester->click(['xpath' => '//*[@id="plugin-list"]//a[@data-code="'.$pluginCode.'"]/parent::node()/parent::node()/div[3]/form/a[contains(text(), "入手する")]']);
-        return PluginStoreInstallPage::at($this->tester);
+        $this->tester->attachFile(['id' => 'plugin_local_install_plugin_archive'], $fileName);
+        $this->tester->click(['css' => '#upload-form > div > div > div > div > div.card-body > div > div > button']);
+        return PluginManagePage::at($this->tester);
     }
 }
