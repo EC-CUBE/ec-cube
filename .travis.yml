@@ -35,11 +35,14 @@ matrix:
 ## see https://github.com/symfony/symfony/blob/e0bdc0c35e9afdb3bee8af172f90e9648c4012fc/.travis.yml#L92-L97
 before_install: &php_setup |
   phpenv config-rm xdebug.ini || true
-  pecl channel-update pecl.php.net
-  pecl config-set preferred_state beta
-  echo yes | pecl upgrade apcu
   echo "opcache.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/travis.ini
+  ## see http://www.php.net/manual/ja/opcache.installation.php#opcache.installation.recommended
+  echo "opcache.memory_consumption=128" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.interned_strings_buffer=8" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.max_accelerated_files=4000" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.revalidate_freq=60" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.fast_shutdown=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "apc.enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -54,7 +57,6 @@ eccube_setup: &eccube_setup |
 install:
   - &composer_install composer install --dev --no-interaction -o --apcu-autoloader
   - *eccube_setup
-  - php --version
 
 script:
   - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
