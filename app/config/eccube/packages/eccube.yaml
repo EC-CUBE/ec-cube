@@ -53,7 +53,7 @@ parameters:
     eccube_max_total_fee: 9999999999
     eccube_mltext_len: 1000
     eccube_mtext_len: 200
-    plugin_html_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/plugin/
+    plugin_html_realdir: '%eccube_html_dir%/plugin/'
     plugin_html_urlpath: /plugin/ # asset 使う
     plugin_realdir: '%kernel.project_dir%/app/Plugin'
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？

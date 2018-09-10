@@ -62,21 +62,21 @@ jobs:
   allow_failures:
     - env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
   include:
-    - &unit_test
-      stage: Unit Test
-      before_install:
-        - *php_setup
-        - gem install mailcatcher
-      install:
-        - *composer_install
-        - *eccube_setup
-      env: DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
-      script:
-        - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
-        - ./bin/phpunit --group cache-clear
-        - ./bin/phpunit --group cache-clear-install
-    - <<: *unit_test
-      env: DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
+#    - &unit_test
+#      stage: Unit Test
+#      before_install:
+#        - *php_setup
+#        - gem install mailcatcher
+#      install:
+#        - *composer_install
+#        - *eccube_setup
+#      env: DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
+#      script:
+#        - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
+#        - ./bin/phpunit --group cache-clear
+#        - ./bin/phpunit --group cache-clear-install
+#    - <<: *unit_test
+#      env: DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
     - &e2e_test
       stage: E2E Test
       before_install:
@@ -109,6 +109,12 @@ jobs:
         - psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
         - ./codeception.sh EA10PluginCest:installFromLocal
         - *eccube_reset
+        - psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        - ./codeception.sh EA10PluginCest:installLocalPluginWithAssets
+        - *eccube_reset
+        - psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        - ./codeception.sh EA10PluginCest:installStorePluginWithAssets
+        - *eccube_reset
         - psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
         - ./codeception.sh EA10PluginCest:installFromStore
         - *eccube_reset
@@ -123,6 +129,12 @@ jobs:
         - *eccube_reset
         - mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
         - ./codeception.sh EA10PluginCest:installFromLocal
+        - *eccube_reset
+        - mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
+        - ./codeception.sh EA10PluginCest:installLocalPluginWithAssets
+        - *eccube_reset
+        - psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        - ./codeception.sh EA10PluginCest:installStorePluginWithAssets
         - *eccube_reset
         - mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
         - ./codeception.sh EA10PluginCest:installFromStore

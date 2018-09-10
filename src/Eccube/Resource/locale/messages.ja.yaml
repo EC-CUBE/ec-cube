@@ -1233,6 +1233,8 @@ admin.store.plugin.install.failed: プラグインのインストールに失敗
 admin.store.plugin.enable.complete: 「%plugin_name%」を有効にしました。
 admin.store.plugin.disable.complete: 「%plugin_name%」を無効にしました。
 admin.store.plugin.uninstall.complete: プラグインを削除しました。
+admin.store.plugin.update.complete: 「%plugin_name%」をアップデートしました。
+admin.store.plugin.update.failed: 「%plugin_name%」のアップデートに失敗しました。
 admin.store.plugin.mkdir.error: ディレクトリ「%dir_name%」の作成に失敗しました。
 admin.store.setting: 設定
 admin.store.setting.api_key_setting: 認証キー設定

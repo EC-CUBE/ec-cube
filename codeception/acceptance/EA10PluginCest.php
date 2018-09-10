@@ -13,6 +13,7 @@
 
 use Codeception\Util\Fixtures;
 use Doctrine\ORM\EntityManager;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Page\Admin\PluginLocalInstallPage;
@@ -30,6 +31,9 @@ class EA10PluginCest
     /** @var PluginRepository */
     private $pluginRepository;
 
+    /** @var EccubeConfig */
+    private $config;
+
     public function _before(\AcceptanceTester $I)
     {
         $I->loginAsAdmin();
@@ -37,6 +41,7 @@ class EA10PluginCest
         $this->em = Fixtures::get('entityManager');
         $this->conn = $this->em->getConnection();
         $this->pluginRepository = $this->em->getRepository(Plugin::class);
+        $this->config = Fixtures::get('config');
     }
 
     public function installFromStore(\AcceptanceTester $I)
@@ -203,6 +208,76 @@ class EA10PluginCest
         $this->em->refresh($Plugin);
         $Plugin = $this->pluginRepository->findByCode('SamplePayment');
         $I->assertNull($Plugin);
+    }
+
+    public function installLocalPluginWithAssets(\AcceptanceTester $I)
+    {
+        $assetsPath = $this->config['plugin_html_realdir'].'/Assets/assets/assets.js';
+        $updatedPath = $this->config['plugin_html_realdir'].'/Assets/assets/updated.js';
+
+        $I->assertFileNotExists($assetsPath);
+        $I->assertFileNotExists($updatedPath);
+
+        $ManagePage = PluginLocalInstallPage::go($I)->アップロード('plugins/Assets-1.0.0.tgz');
+        $I->assertFileExists($assetsPath);
+        $I->assertFileNotExists($updatedPath);
+
+        $ManagePage->独自プラグイン_有効化('Assets');
+        $I->assertFileExists($assetsPath);
+        $I->assertFileNotExists($updatedPath);
+
+        $ManagePage->独自プラグイン_無効化('Assets');
+        $I->assertFileExists($assetsPath);
+        $I->assertFileNotExists($updatedPath);
+
+        $ManagePage->独自プラグイン_アップデート('Assets', 'plugins/Assets-1.0.1.tgz');
+        $I->assertFileExists($assetsPath);
+        $I->assertFileExists($updatedPath);
+
+        $ManagePage->独自プラグイン_削除('Assets');
+        $I->assertFileNotExists($assetsPath);
+        $I->assertFileNotExists($updatedPath);
+    }
+
+    public function installStorePluginWithAssets(\AcceptanceTester $I)
+    {
+        // 最初のバージョンを作成
+        copy(codecept_data_dir().'/'.'plugins/Assets-1.0.0.tgz', codecept_root_dir().'/repos/Assets-1.0.0.tgz');
+
+        $assetsPath = $this->config['plugin_html_realdir'].'/Assets/assets/assets.js';
+        $updatedPath = $this->config['plugin_html_realdir'].'/Assets/assets/updated.js';
+        $I->assertFileNotExists($assetsPath);
+        $I->assertFileNotExists($updatedPath);
+
+        $ManagePage = PluginSearchPage::go($I)
+            ->入手する('Assets')
+            ->インストール();
+        $I->assertFileNotExists($assetsPath);
+        $I->assertFileNotExists($updatedPath);
+
+        $ManagePage->ストアプラグイン_有効化('Assets');
+        $I->assertFileExists($assetsPath);
+        $I->assertFileNotExists($updatedPath);
+
+        $ManagePage->ストアプラグイン_無効化('Assets');
+        $I->assertFileExists($assetsPath);
+        $I->assertFileNotExists($updatedPath);
+
+        // 新しいバージョンを作成
+        copy(codecept_data_dir().'/'.'plugins/Assets-1.0.1.tgz', codecept_root_dir().'/repos/Assets-1.0.1.tgz');
+
+        $I->reloadPage();
+        $ManagePage->ストアプラグイン_アップデート('Assets')->アップデート();
+        $I->assertFileExists($assetsPath);
+        $I->assertFileExists($updatedPath);
+
+        $ManagePage->ストアプラグイン_無効化('Assets');
+        $I->assertFileExists($assetsPath);
+        $I->assertFileExists($updatedPath);
+
+        $ManagePage->ストアプラグイン_削除('Assets');
+        $I->assertFileNotExists($assetsPath);
+        $I->assertFileNotExists($updatedPath);
     }
 
     private function tableExists($tableName)

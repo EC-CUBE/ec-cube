@@ -213,7 +213,7 @@ class PluginController extends AbstractController
                 $this->pluginService->update($Plugin, $tmpDir.'/'.$tmpFile);
                 $fs = new Filesystem();
                 $fs->remove($tmpDir);
-                $this->addSuccess('admin.plugin.update.complete', 'admin');
+                $this->addSuccess(trans('admin.store.plugin.update.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
 
                 return $this->redirectToRoute('admin_store_plugin');
             } catch (PluginException $e) {
@@ -229,7 +229,7 @@ class PluginController extends AbstractController
                     $fs->remove($tmpDir);
                 }
                 log_error('plugin install failed.', ['original-message' => $er->getMessage()]);
-                $message = 'admin.plugin.install.fail';
+                $message = trans('admin.store.plugin.update.failed', ['%plugin_name%' => $Plugin->getName()]);
             }
         } else {
             $errors = $form->getErrors(true);
