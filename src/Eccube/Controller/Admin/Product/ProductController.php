@@ -932,10 +932,10 @@ class ProductController extends AbstractController
                 /** @var $Product \Eccube\Entity\Product */
                 $Product = $entity;
 
-                /** @var $ProductClassess \Eccube\Entity\ProductClass[] */
-                $ProductClassess = $Product->getProductClasses();
+                /** @var $ProductClasses \Eccube\Entity\ProductClass[] */
+                $ProductClasses = $Product->getProductClasses();
 
-                foreach ($ProductClassess as $ProductClass) {
+                foreach ($ProductClasses as $ProductClass) {
                     $ExportCsvRow = new ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.

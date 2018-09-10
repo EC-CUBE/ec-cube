@@ -285,7 +285,7 @@ class PointProcessorTest extends EccubeTestCase
             ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
         $TaxInclude = $this->entityManager
             ->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-        $Taxion = $this->entityManager
+        $Taxation = $this->entityManager
             ->find(TaxType::class, TaxType::TAXATION);
         $OrderItem = new OrderItem();
         $OrderItem->setProductName($DeliveryFeeType->getName())
@@ -294,7 +294,7 @@ class PointProcessorTest extends EccubeTestCase
             ->setOrderItemType($DeliveryFeeType)
             ->setOrder($Order)
             ->setTaxDisplayType($TaxInclude)
-            ->setTaxType($Taxion);
+            ->setTaxType($Taxation);
         $Order->addOrderItem($OrderItem);
 
         $purchaseFlow = new PurchaseFlow();

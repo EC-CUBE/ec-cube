@@ -81,7 +81,7 @@ $(function() {
                 <div class="card-header">
                     <div class="row">
                         <div class="col-8">
-                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.mail_destination_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_destination_info'|trans }}"><span class="card-title">{{ 'admin.order.mail_destination_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                         </div>
                         <div class="col-4 text-right"><a data-toggle="collapse" href="#mailTo" aria-expanded="false" aria-controls="mailTo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                     </div>
@@ -131,8 +131,10 @@ $(function() {
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-3">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_template'|trans }}">
+                                    <span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                </div>
+                                <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                             </div>
                             <div class="col">
                                 {{ form_widget(form.template, {'id': 'template-change'}) }}
@@ -140,7 +142,12 @@ $(function() {
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-3"><span>{{ 'admin.order.mail_subject'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                            <div class="col-3">
+                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_subject'|trans }}">
+                                    <span>{{ 'admin.order.mail_subject'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                </div>
+                                <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                            </div>
                             <div class="col">
                                 {{ form_widget(form.mail_subject) }}
                                 {{ form_errors(form.mail_subject) }}
@@ -165,7 +172,7 @@ $(function() {
                     <div class="c-conversionArea__container">
                         <div class="row justify-content-between align-items-center">
                             <div class="col-6">
-                                <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.order_list'|trans }}</span></a>
+                                <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_order_edit', { id: Order.id }) }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.order_registration'|trans }}</span></a>
                                 </div>
                             </div>
                             <div class="col-6">

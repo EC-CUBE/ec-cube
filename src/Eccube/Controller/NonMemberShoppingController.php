@@ -17,6 +17,7 @@ use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\NonMemberType;
+use Eccube\Form\Validator\Email;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
@@ -335,7 +336,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_email'],
             [
                 new Assert\NotBlank(),
-                new Assert\Email(['strict' => true]),
+                new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
             ]
         );
 

@@ -103,7 +103,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->verify();
 
         // HTMLメールテスト
-        $this->assertEquals(0, count($Message->getChildren()));
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendCustomerCompleteMail()
@@ -290,7 +290,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->verify();
 
         // HTMLメールテスト
-        $this->assertEquals(0, count($Message->getChildren()));
+        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendAdminOrderMail()

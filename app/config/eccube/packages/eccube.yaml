@@ -11,6 +11,7 @@ parameters:
     env(ECCUBE_COOKIE_LIFETIME): 0
     env(ECCUBE_GC_MAXLIFETIME): 1440
     env(ECCUBE_PACKAGE_API_URL): 'https://beta-package-api.ec-cube.net'
+    env(ECCUBE_OWNERS_STORE_URL): 'https://www.ec-cube.net'
 
     # EC-CUBE parameter
     eccube_database_url: '%env(DATABASE_URL)%'
@@ -78,7 +79,7 @@ parameters:
     eccube_csv_import_enclosure: '"'
     eccube_csv_import_escape: \
     eccube_info_url: 'https://www.ec-cube.net/info/4/'
-    eccube_owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
+    eccube_owners_store_url: '%env(ECCUBE_OWNERS_STORE_URL)%'
     eccube_official_site_url: https://www.ec-cube.net
     eccube_community_site_url: https://xoops.ec-cube.net
     eccube_document_url: http://doc4.ec-cube.net
@@ -104,6 +105,8 @@ parameters:
     eccube_forgot_mail_template_id: 6 #パスワードリセット
     eccube_reset_complete_mail_template_id: 7 #パスワードリマインダー
     eccube_shipping_notify_mail_template_id: 8 #出荷通知メール
+    # メールアドレスをRFC準拠でチェックするか true: チェックする、false: チェックしない
+    eccube_rfc_email_check: false
     eccube_package_api_url: '%env(ECCUBE_PACKAGE_API_URL)%'
     # 注文番号のフォーマット. 以下のフォーマットが利用可能です. フォーマットを空にした場合, dtb_order.idを出力します.
     # {yyyy} : 西暦(4桁)

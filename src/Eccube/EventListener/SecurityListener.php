@@ -70,7 +70,7 @@ class SecurityListener implements EventSubscriberInterface
             $this->cartService->save();
             if (count($this->cartService->getCarts()) > 1) {
                 // カートが分割されていればメッセージを表示
-                $event->getRequest()->getSession()->set(OrderHelper::SESSION_CART_DEVIDE_FLAG, true);
+                $event->getRequest()->getSession()->set(OrderHelper::SESSION_CART_DIVIDE_FLAG, true);
             }
         }
     }

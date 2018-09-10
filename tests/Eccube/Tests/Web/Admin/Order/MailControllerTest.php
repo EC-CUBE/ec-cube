@@ -139,48 +139,4 @@ class MailControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
-
-    public function testMailAll()
-    {
-        $form = $this->createFormData();
-        $crawler = $this->client->request(
-            'GET',
-            $this->generateUrl('admin_order_mail_all')
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    public function testMailAllWithComplete()
-    {
-        $this->client->enableProfiler();
-
-        $ids = [];
-        for ($i = 0; $i < 5; $i++) {
-            $Order = $this->createOrder($this->Customer);
-            $ids[] = $Order->getId();
-        }
-
-        $form = $this->createFormData();
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_order_mail_all'),
-            [
-                'admin_order_mail' => $form,
-                'mode' => 'complete',
-                'ids' => implode(',', $ids),
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_page', ['page_no' => 1])));
-
-        $mailCollector = $this->getMailCollector(false);
-        $this->assertEquals(5, $mailCollector->getMessageCount());
-
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
-
-        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
-        $this->actual = $Message->getSubject();
-        $this->verify();
-    }
 }

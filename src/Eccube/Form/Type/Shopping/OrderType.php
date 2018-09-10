@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Shopping;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
@@ -238,7 +239,7 @@ class OrderType extends AbstractType
      *
      * @param Delivery[] $Deliveries
      *
-     * @return ArrayCollection|Payment[]
+     * @return ArrayCollection
      */
     private function getPayments($Deliveries)
     {
@@ -255,7 +256,7 @@ class OrderType extends AbstractType
         }
 
         if (empty($PaymentsByDeliveries)) {
-            return [];
+            return new ArrayCollection();
         }
 
         $i = 0;
@@ -269,20 +270,20 @@ class OrderType extends AbstractType
             $i++;
         }
 
-        return $PaymentsIntersected;
+        return new ArrayCollection($PaymentsIntersected);
     }
 
     /**
      * 支払い方法の利用条件でフィルタをかける.
      *
-     * @param Payment[] $Payments
+     * @param ArrayCollection $Payments
      * @param $total
      *
      * @return Payment[]
      */
-    private function filterPayments(array $Payments, $total)
+    private function filterPayments(ArrayCollection $Payments, $total)
     {
-        return array_filter($Payments, function (Payment $Payment) use ($total) {
+        $PaymentArrays = $Payments->filter(function (Payment $Payment) use ($total) {
             $min = $Payment->getRuleMin();
             $max = $Payment->getRuleMax();
 
@@ -295,6 +296,11 @@ class OrderType extends AbstractType
             }
 
             return true;
+        })->toArray();
+        usort($PaymentArrays, function (Payment $a, Payment $b) {
+            return $a->getSortNo() < $b->getSortNo() ? 1 : -1;
         });
+
+        return $PaymentArrays;
     }
 }

@@ -3614,7 +3614,7 @@ Styleguide 7.2.1
     min-width: 16px;
     text-align: center;
     position: relative;
-    letter-spacing: initial; }
+    letter-spacing: normal; }
   .ec-topicpath .ec-topicpath__item--active {
     font-weight: bold; }
     .ec-topicpath .ec-topicpath__item--active a {
@@ -7170,12 +7170,14 @@ Styleguide 16.2.6
     display: none; }
   .ec-orderMail .ec-orderMail__time {
     margin-bottom: 4px; }
-  .ec-orderMail .ec-orderMail__link a {
-    color: #0092C4;
-    text-decoration: none;
-    cursor: pointer; }
-  .ec-orderMail .ec-orderMail__link a:hover {
-    color: #33A8D0; }
+  .ec-orderMail .ec-orderMail__link {
+    margin-bottom: 4px; }
+    .ec-orderMail .ec-orderMail__link a {
+      color: #0092C4;
+      text-decoration: none;
+      cursor: pointer; }
+    .ec-orderMail .ec-orderMail__link a:hover {
+      color: #33A8D0; }
   .ec-orderMail .ec-orderMail__close a {
     color: #0092C4;
     text-decoration: none;
@@ -8512,7 +8514,6 @@ Styleguide 22.1
   }
 
   .ec-eyecatchRole .ec-eyecatchRole__image{
-    width: 45%;
     -ms-flex-order: 2;
         order: 2;
   }

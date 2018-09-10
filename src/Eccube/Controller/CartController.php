@@ -114,7 +114,7 @@ class CartController extends AbstractController
         }
 
         // カートが分割された時のセッション情報を削除
-        $request->getSession()->remove(OrderHelper::SESSION_CART_DEVIDE_FLAG);
+        $request->getSession()->remove(OrderHelper::SESSION_CART_DIVIDE_FLAG);
 
         return [
             'totalPrice' => $totalPrice,

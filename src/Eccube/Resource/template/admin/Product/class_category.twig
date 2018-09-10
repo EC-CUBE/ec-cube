@@ -200,7 +200,7 @@ file that was distributed with this source code.
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
                                                 <a class="btn btn-ec-actionIcon mr-2 action-visible" href="{{ url('admin_product_class_category_visibility', {'class_name_id': ClassCategory.ClassName.id, 'id': ClassCategory.id}) }}"
-                                                   data-tooltip="true" data-placement="top" title="{{ ClassCategory.visible ? 'admin.product.class_category.show'|trans : 'admin.product.class_category.hide'|trans }}"
+                                                   data-tooltip="true" data-placement="top" title="{{ ClassCategory.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}"
                                                    data-confirm="false" data-method="put" {{ csrf_token_for_anchor() }} >
                                                     <i class="fa fa-toggle-{{ ClassCategory.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
@@ -219,7 +219,7 @@ file that was distributed with this source code.
                                                 {{ form_widget(forms[ClassCategory.id].name, {'attr': {'data-origin-value': forms[ClassCategory.id].name.vars.value}}) }}
                                                 {{ form_errors(forms[ClassCategory.id].name) }}
                                             </div>
-                                            <div class="col-auto align-self-center"><span>{{ 'admin.common.label.class_name'|trans }}</span></div>
+                                            <div class="col-auto align-self-center"><span>{{ 'admin.product.class_category__backend_name'|trans }}</span></div>
                                             <div class="col-auto align-items-center">
                                                 {{ form_widget(forms[ClassCategory.id].backend_name, {'attr': {'data-origin-value': forms[ClassCategory.id].backend_name.vars.value}}) }}
                                                 {{ form_errors(forms[ClassCategory.id].backend_name) }}

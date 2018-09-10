@@ -86,11 +86,11 @@ file that was distributed with this source code.
                             datasets: [
                                 {
                                     type: 'bar',
-                                    label: '{{ 'admin.home.sales_summany_amount'|trans }}',
+                                    label: '{{ 'admin.home.sales_summary_amount'|trans }}',
                                     data: prices,
                                     backgroundColor: priceBackgroundColors,
                                     borderColor: priceBorderColors,
-                                    borderWidth: 15,
+                                    borderWidth: 1,
                                     yAxisID: 'y-axis-1'
                                 }
                             ]
@@ -141,9 +141,8 @@ file that was distributed with this source code.
                     <div class="col-8 mb-4">
                         <div id="chart-statistics" class="card rounded border-0 h-100">
                             <div class="card-header">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip">
-                                    <span class="card-title">{{ 'admin.home.sales_summany_title'|trans }}</span>
-                                    <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
+                                <div class="d-inline-block">
+                                    <span class="card-title">{{ 'admin.home.sales_summary_title'|trans }}</span>
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -152,38 +151,38 @@ file that was distributed with this source code.
                                         <div class="h3">
                                             {% set amount = salesThisMonth is empty ? 0 : salesThisMonth.order_amount %}
                                             {% set count = salesThisMonth is empty ? 0 : salesThisMonth.order_count %}
-                                            {{ 'admin.home.sales_summany_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
+                                            {{ 'admin.home.sales_summary_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
                                         </div>
-                                        <small>{{ 'admin.home.sales_summany_this_month'|trans }}</small>
+                                        <small>{{ 'admin.home.sales_summary_this_month'|trans }}</small>
                                     </div>
                                     <div class="col-4 py-2 border-right">
                                         <div class="h3">
                                             {% set amount = salesToday is empty ? 0 : salesToday.order_amount %}
                                             {% set count = salesToday is empty ? 0 : salesToday.order_count %}
-                                            {{ 'admin.home.sales_summany_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
+                                            {{ 'admin.home.sales_summary_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
                                         </div>
-                                        <small>{{ 'admin.home.sales_summany_today'|trans }}</small>
+                                        <small>{{ 'admin.home.sales_summary_today'|trans }}</small>
                                     </div>
                                     <div class="col-4 py-2">
                                         <div class="h3">
                                             {% set amount = salesYesterday is empty ? 0 : salesYesterday.order_amount %}
                                             {% set count = salesYesterday is empty ? 0 : salesYesterday.order_count %}
-                                            {{ 'admin.home.sales_summany_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
+                                            {{ 'admin.home.sales_summary_value'|trans({ '%amount%': amount|price, '%count%': count|number_format }) }}
                                         </div>
-                                        <small>{{ 'admin.home.sales_summany_yesterday'|trans }}</small>
+                                        <small>{{ 'admin.home.sales_summary_yesterday'|trans }}</small>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col text-center">
                                         <div class="btn-group nav d-inline-flex" id="pills-tab" role="tablist">
                                             <a class="nav-link active btn btn-ec-tab py-2 pl-4 pr-4" id="pills-weekly-tab" data-toggle="pill" href="#pills-weekly" role="tab" aria-controls="pills-weekly" aria-selected="true">
-                                                {{ 'admin.home.sales_summany_weekly'|trans }}
+                                                {{ 'admin.home.sales_summary_weekly'|trans }}
                                             </a>
                                             <a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-monthly-tab" data-toggle="pill" href="#pills-monthly" role="tab" aria-controls="pills-monthly" aria-selected="false">
-                                                {{ 'admin.home.sales_summany_monthly'|trans }}
+                                                {{ 'admin.home.sales_summary_monthly'|trans }}
                                             </a>
                                             <a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-year-tab" data-toggle="pill" href="#pills-year" role="tab" aria-controls="pills-year" aria-selected="false">
-                                                {{ 'admin.home.sales_summany_yearly'|trans }}
+                                                {{ 'admin.home.sales_summary_yearly'|trans }}
                                             </a>
                                         </div>
                                     </div>
@@ -214,9 +213,8 @@ file that was distributed with this source code.
                     <div class="col mb-4">
                         <div id="shop-statistical" class="card rounded border-0 h-100">
                             <div class="card-header">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip">
+                                <div class="d-inline-block">
                                     <span class="card-title">{{ 'admin.home.shop_status_title'|trans }}</span>
-                                    <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
                                 </div>
                             </div>
                             <div class="card-body p-0">
@@ -271,36 +269,37 @@ file that was distributed with this source code.
                     <div class="col mb-4">
                         <div id="ec-cube-plugin" class="card rounded border-0 h-100">
                             <div class="card-header border-bottom-0">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip">
+                                <div class="d-inline-block">
                                     <span class="card-title">{{ 'admin.home.recommend_plugins_title'|trans }}</span>
                                 </div>
                             </div>
-                            <div class="card-body py-0">
+                            <div class="card-body py-0" style="max-height: 395px; overflow-y: scroll">
                                 {% for plugin in recommendedPlugins %}
                                     <div class="row py-3 border border-bottom-0 border-left-0 border-right-0">
                                         <div class="col-5 col-md-4">
-                                            <a href="{{ plugin.store_url }}" target="_blank" title="{{ plugin.name }}">
+                                            <a href="#" data-toggle="modal" data-target="#searchPluginModal-{{ plugin.id }}">
                                                 <img src="{{ plugin.image }}" class="w-100" alt="{{ plugin.name }}">
                                             </a>
                                         </div>
                                         <div class="col-7 col-md-8 pl-0">
-                                            <a href="{{ plugin.store_url }}" target="_blank">{{ plugin.name }}</a>
+                                            <a href="#" data-toggle="modal" data-target="#searchPluginModal-{{ plugin.id }}">{{ plugin.name }}</a>
                                             <p class="m-0 pt-2">
                                                 {{ plugin.short_description }}
                                             </p>
                                         </div>
                                     </div>
+                                    {{ include('@admin/Store/plugin_detail_modal.twig', {'item': plugin} ) }}
                                 {% endfor %}
                             </div>
                             <div class="card-footer">
-                                > <a href="https://www.ec-cube.net/owners/" target="_blank">{{ 'admin.home.recommend_plugins.owner_store'|trans }}</a>
+                                > <a href="{{ url('admin_store_plugin_owners_search_page') }}">{{ 'admin.home.recommend_plugins.owner_store'|trans }}</a>
                             </div>
                         </div><!-- /#ec-cube-plugin -->
                     </div>
                     <div class="col mb-4">
                         <div id="ec-cube-news" class="card rounded border-0 h-100">
                             <div class="card-header">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip">
+                                <div class="d-inline-block">
                                     <span class="card-title">{{ 'admin.home.news_title'|trans }}</span>
                                 </div>
                             </div>

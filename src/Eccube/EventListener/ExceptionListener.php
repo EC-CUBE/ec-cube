@@ -73,6 +73,13 @@ class ExceptionListener implements EventSubscriberInterface
             }
         }
 
+        log_error('システムエラーが発生しました。', [
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine(),
+            $exception->getTraceAsString()
+        ]);
+
         try {
             $file = $this->requestContext->isAdmin() ? '@admin/error.twig' : 'error.twig';
             $content = $this->twig->render($file, [
