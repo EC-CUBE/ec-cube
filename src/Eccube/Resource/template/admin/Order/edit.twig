@@ -70,7 +70,7 @@ file that was distributed with this source code.
             });
 
             // その他明細
-            $('#addOrderItemType').on('show.bs.modal', function (e) {
+            $('#addOrderItemType').on('show.bs.modal', function(e) {
                 var list = $('#searchOrderItemTypeList');
                 list.children().remove();
 
@@ -143,20 +143,20 @@ file that was distributed with this source code.
                 window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
                 return false;
             });
-            
+
             // お届け時間の初期表示
             $('#order_Shipping_Delivery').change();
 
 
             // 配送業者選択時にお届け時間を設定
             var times = {{ shippingDeliveryTimes|raw }};
-            $('#order_Shipping_Delivery').change(function(){
+            $('#order_Shipping_Delivery').change(function() {
                 var deliveryId = $(this).val();
                 var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
                 $shippingDeliveryTime.find('option').remove();
                 $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
                 if (typeof(times[deliveryId]) !== 'undefined') {
-                    for (var timeId in times[deliveryId]){
+                    for (var timeId in times[deliveryId]) {
                         timeValue = times[deliveryId][timeId];
                         $shippingDeliveryTime.append($('<option></option>')
                             .val(timeId)
@@ -440,7 +440,7 @@ file that was distributed with this source code.
                                             {% set shipping_name = shipping.full_name ~ '(' ~ shipping.full_name_kana ~ ')' ~ shipping.company_name is not null ? shipping.company_name : '' %}
                                             {% set shipping_addr = 'admin.common.postal_symbol'|trans ~ shipping.postal_code ~ ' ' ~ shipping.pref ~ shipping.addr01 ~ shipping.addr02 %}
                                             {% set shipping_date = shipping.shipping_date is not null ? shipping.shipping_date|date_day : '' %}
-                                            {{ shipping_name}} {{ shipping_addr }} {{ shipping.phone_number }} {{ shipping_date }}
+                                            {{ shipping_name }} {{ shipping_addr }} {{ shipping.phone_number }} {{ shipping_date }}
                                         </div>
                                     {% endfor %}
                                 {% else %}
@@ -449,7 +449,7 @@ file that was distributed with this source code.
                                         <div class="col-6">
                                             <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.copy_orderer'|trans }}</button>
                                             {% if Order.id is not empty %}
-                                            <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.output_delivery_note'|trans }}</a>
+                                                <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.output_delivery_note'|trans }}</a>
                                             {% endif %}
                                         </div>
                                         {% if Order.id is not empty %}
@@ -676,7 +676,7 @@ file that was distributed with this source code.
                                                     {% if OrderItem.isProduct or OrderItem.isPoint %}
                                                         {% if OrderItem.isProduct %}
                                                             <a href="{{ url('admin_product_product_edit', {id: OrderItem.ProductClass.Product.id}) }}" target="_blank">
-                                                            {{ OrderItem.product_name }}
+                                                                {{ OrderItem.product_name }}
                                                             </a>
                                                         {% else %}
                                                             {{ OrderItem.product_name }}
@@ -704,19 +704,20 @@ file that was distributed with this source code.
                                             </td>
                                             <!-- 金額 -->
                                             <td class="align-middle">
-                                                <div class="col-12">
+                                                <div class="col mt-3">
                                                     {# ポイント値引きは価格変更できない #}
                                                     {% if OrderItem.isPoint %}
-                                                        {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType, 'attr': { 'readonly': 'readonly' } }) }}
+                                                        {{ form_widget(orderItemForm.price, {'attr': { 'readonly': 'readonly' } }) }}
                                                     {% else %}
-                                                        {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType }) }}
+                                                        {{ form_widget(orderItemForm.price) }}
                                                     {% endif %}
+                                                    <div class="text-right small">({{ OrderItem.TaxDisplayType }})</div>
                                                     {{ form_errors(orderItemForm.price) }}
                                                 </div>
                                             </td>
                                             <!-- 数量 -->
                                             <td class="align-middle">
-                                                <div class="col-6">
+                                                <div class="col-12 col-xl-8">
                                                     {# 複数配送の場合は商品の個数を変更できない、ポイントの場合も個数を変更できない #}
                                                     {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
                                                         {{ form_widget(orderItemForm.quantity, { 'attr': { 'readonly': 'readonly' } }) }}
@@ -728,19 +729,19 @@ file that was distributed with this source code.
                                             </td>
                                             <!-- 税率 -->
                                             <td class="align-middle">
-                                                <div class="col-8">
-                                                    {{ OrderItem.tax_rate }}
+                                                <div class="col">
+                                                    {{ OrderItem.tax_rate }}%
                                                 </div>
                                             </td>
                                             <!-- 課税区分 -->
                                             <td class="align-middle">
-                                                <div class="col-8">
+                                                <div class="col">
                                                     {{ OrderItem.tax_type }}
                                                 </div>
                                             </td>
                                             <!-- 小計 -->
                                             <td class="align-middle">
-                                                <div class="col-8">
+                                                <div class="col">
                                                     <span>{{ OrderItem.total_price|price }}</span>
                                                 </div>
                                             </td>
