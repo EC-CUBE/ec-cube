@@ -74,8 +74,8 @@ class PluginController extends AbstractController
      * @param PluginService $pluginService
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginApiService $pluginApiService
-     *
      * @param ComposerServiceInterface $composerService
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -484,6 +484,7 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
      * @Template("@admin/Store/authentication_setting.twig")
+     *
      * @param Request $request
      *
      * @return array

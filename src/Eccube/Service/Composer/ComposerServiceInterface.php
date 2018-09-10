@@ -24,8 +24,8 @@ interface ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     *
      * @param null $output
+     *
      * @return string
      */
     public function execRequire($packageName, $output = null);
@@ -34,8 +34,8 @@ interface ComposerServiceInterface
      * Run remove command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     *
      * @param null $output
+     *
      * @return string
      */
     public function execRemove($packageName, $output = null);

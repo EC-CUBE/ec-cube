@@ -546,6 +546,7 @@ class PluginService
         }
 
         $this->pluginApiService->pluginUninstalled($plugin);
+
         return true;
     }
 

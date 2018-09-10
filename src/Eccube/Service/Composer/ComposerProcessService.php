@@ -64,7 +64,7 @@ class ComposerProcessService implements ComposerServiceInterface
     {
         return $this->runCommand([
             'eccube:composer:require',
-            $packageName
+            $packageName,
         ], $output);
     }
 
@@ -72,7 +72,7 @@ class ComposerProcessService implements ComposerServiceInterface
     {
         return $this->runCommand([
             'eccube:composer:remove',
-            $packageName
+            $packageName,
         ], $output);
     }
 
@@ -132,7 +132,8 @@ class ComposerProcessService implements ComposerServiceInterface
         $this->composerApiService->configureRepository($BaseInfo);
     }
 
-    public function execConfig($key, $value = null) {
+    public function execConfig($key, $value = null)
+    {
         return $this->composerApiService->execConfig($key, $value);
     }
 

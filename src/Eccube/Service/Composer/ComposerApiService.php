@@ -264,8 +264,8 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @param array $commands
      * @param null|OutputInterface $output
-     *
      * @param bool $init
+     *
      * @return string
      *
      * @throws PluginException
@@ -313,7 +313,9 @@ class ComposerApiService implements ComposerServiceInterface
 
     /**
      * Init composer console application
+     *
      * @param BaseInfo|null $BaseInfo
+     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -337,9 +339,9 @@ class ComposerApiService implements ComposerServiceInterface
             'url' => $url,
             'options' => [
                 'http' => [
-                    'header' => ['X-ECCUBE-KEY: '.$BaseInfo->getAuthenticationKey()]
-                ]
-            ]
+                    'header' => ['X-ECCUBE-KEY: '.$BaseInfo->getAuthenticationKey()],
+                ],
+            ],
         ]);
         $this->execConfig('repositories.eccube', [$json]);
         if (strpos($url, 'http://') === 0) {
@@ -358,6 +360,7 @@ class ComposerApiService implements ComposerServiceInterface
 
     /**
      * @param BaseInfo $BaseInfo
+     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException

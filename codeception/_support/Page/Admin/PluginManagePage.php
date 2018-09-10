@@ -1,28 +1,17 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2018 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Page\Admin;
-
 
 class PluginManagePage extends AbstractAdminPageStyleGuide
 {
@@ -42,31 +31,39 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
+     *
      * @return PluginManagePage
      */
-    public function ストアプラグイン_有効化($pluginCode) {
+    public function ストアプラグイン_有効化($pluginCode)
+    {
         return $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
     }
 
     /**
      * @param $pluginCode
+     *
      * @return PluginManagePage
      */
-    public function ストアプラグイン_無効化($pluginCode) {
+    public function ストアプラグイン_無効化($pluginCode)
+    {
         return $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
     }
 
     /**
      * @param $pluginCode
+     *
      * @return PluginManagePage
+     *
      * @throws \Exception
      */
-    public function ストアプラグイン_削除($pluginCode) {
+    public function ストアプラグイン_削除($pluginCode)
+    {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '削除');
         $this->tester->waitForElementVisible(['id' => 'officialPluginDeleteButton']);
         $this->tester->click(['id' => 'officialPluginDeleteButton']);
         $this->tester->waitForElementVisible(['css' => '#officialPluginDeleteModal > div > div > div.modal-footer > button:nth-child(3)'], 30);
         $this->tester->click(['css' => '#officialPluginDeleteModal > div > div > div.modal-footer > button:nth-child(3)']);
+
         return $this;
     }
 
@@ -74,6 +71,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     {
         $xpath = ['xpath' => '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "オーナーズストアのプラグイン")]/../..//table/tbody//td[3]/p[contains(text(), "'.$pluginCode.'")]/../../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
         $this->tester->click($xpath);
+
         return $this;
     }
 
@@ -81,7 +79,6 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     {
         return $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
     }
-
 
     public function 独自プラグイン_無効化($pluginCode)
     {
@@ -93,6 +90,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         $this->独自プラグイン_ボタンクリック($pluginCode, '削除');
         $this->tester->waitForElementVisible(['css' => '#localPluginDeleteModal .modal-footer a']);
         $this->tester->click(['css' => '#localPluginDeleteModal .modal-footer a']);
+
         return $this;
     }
 
@@ -100,6 +98,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     {
         $xpath = ['xpath' => '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "ユーザー独自プラグイン")]/../..//table/tbody//td[3][contains(text(), "'.$pluginCode.'")]/../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
         $this->tester->click($xpath);
+
         return $this;
     }
 }
