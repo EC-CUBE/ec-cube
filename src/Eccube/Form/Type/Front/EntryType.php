@@ -86,7 +86,7 @@ class EntryType extends AbstractType
                 'constraints' => [
                     new Assert\LessThanOrEqual([
                         'value' => date('Y-m-d', strtotime('-1 day')),
-                        'message' => 'form.type.select.selectis_future_or_now_date',
+                        'message' => 'form.type.select.select_is_future_or_now_date',
                     ]),
                 ],
             ])

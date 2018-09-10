@@ -462,7 +462,7 @@ class OrderPdfService extends TcpdfFpdi
             // product
             $productName = $OrderItem->getProductName();
             if (null !== $OrderItem->getProductCode()) {
-                $productName .= ' / '.$OrderItem->getProductName();
+                $productName .= ' / '.$OrderItem->getProductCode();
             }
             if ($classCategory) {
                 $productName .= ' / '.$classCategory;

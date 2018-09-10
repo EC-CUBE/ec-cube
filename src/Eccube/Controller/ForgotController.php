@@ -16,7 +16,7 @@ namespace Eccube\Controller;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ForgotType;
-use Eccube\Form\Type\Front\PassowrdResetType;
+use Eccube\Form\Type\Front\PasswordResetType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -195,7 +195,7 @@ class ForgotController extends AbstractController
         }
 
         $builder = $this->formFactory
-            ->createNamedBuilder('', PassowrdResetType::class);
+            ->createNamedBuilder('', PasswordResetType::class);
 
         $form = $builder->getForm();
         $form->handleRequest($request);

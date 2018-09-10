@@ -85,12 +85,12 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidEmail_RFC2822()
+    public function testMailNoRFC()
     {
         $this->formData['email']['first'] = 'abc..@example.com';
         $this->formData['email']['second'] = 'abc..@example.com';
         $this->form->submit($this->formData);
 
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 }

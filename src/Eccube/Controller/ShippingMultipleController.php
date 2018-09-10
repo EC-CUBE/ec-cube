@@ -168,9 +168,9 @@ class ShippingMultipleController extends AbstractShoppingController
 
             // フォームの入力から、送り先ごとに商品の数量を集計する
             $arrOrderItemTemp = [];
-            foreach ($data as $mulitples) {
-                $OrderItem = $mulitples->getData();
-                foreach ($mulitples as $items) {
+            foreach ($data as $multiples) {
+                $OrderItem = $multiples->getData();
+                foreach ($multiples as $items) {
                     foreach ($items as $item) {
                         $CustomerAddress = $item['customer_address']->getData();
                         $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
@@ -215,13 +215,13 @@ class ShippingMultipleController extends AbstractShoppingController
 
             // お届け先のリストを作成する
             $ShippingList = [];
-            foreach ($data as $mulitples) {
-                $OrderItem = $mulitples->getData();
+            foreach ($data as $multiples) {
+                $OrderItem = $multiples->getData();
                 $ProductClass = $OrderItem->getProductClass();
                 $Delivery = $OrderItem->getShipping()->getDelivery();
                 $saleTypeId = $ProductClass->getSaleType()->getId();
 
-                foreach ($mulitples as $items) {
+                foreach ($multiples as $items) {
                     foreach ($items as $item) {
                         $CustomerAddress = $item['customer_address']->getData();
                         $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
@@ -249,15 +249,15 @@ class ShippingMultipleController extends AbstractShoppingController
             $ProductOrderType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
 
             // お届け先に、配送商品の情報(OrderItem)を関連付ける
-            foreach ($data as $mulitples) {
+            foreach ($data as $multiples) {
                 /** @var OrderItem $OrderItem */
-                $OrderItem = $mulitples->getData();
+                $OrderItem = $multiples->getData();
                 $ProductClass = $OrderItem->getProductClass();
                 $Product = $OrderItem->getProduct();
                 $saleTypeId = $ProductClass->getSaleType()->getId();
                 $productClassId = $ProductClass->getId();
 
-                foreach ($mulitples as $items) {
+                foreach ($multiples as $items) {
                     foreach ($items as $item) {
                         $CustomerAddress = $item['customer_address']->getData();
                         $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();

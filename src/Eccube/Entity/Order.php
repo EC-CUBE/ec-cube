@@ -124,6 +124,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
                     $OrderItem
                     ->setProduct($ProductOrderItem->getProduct())
                     ->setProductName($ProductOrderItem->getProductName())
+                    ->setProductCode($ProductOrderItem->getProductCode())
                     ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
                     ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
                     ->setPrice($ProductOrderItem->getPrice())
