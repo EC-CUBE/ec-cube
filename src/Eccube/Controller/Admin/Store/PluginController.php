@@ -465,7 +465,7 @@ class PluginController extends AbstractController
                     $fs->remove($tmpDir);
                 }
                 log_error('plugin install failed.', ['original-message' => $er->getMessage()]);
-                $this->addError('admin.plugin.install.fail', 'admin');
+                $this->addError('admin.store.plugin.install.failed', 'admin');
             }
         } else {
             foreach ($form->getErrors(true) as $error) {
