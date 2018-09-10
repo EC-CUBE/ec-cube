@@ -60,6 +60,10 @@ class EmptyItemsValidator extends ItemHolderValidator
         }
 
         if (!$itemHolder instanceof Order) {
+            // cart内に商品がなくなった場合はカート自体を削除する
+            if (count($itemHolder->getItems()) < 1) {
+                $this->entityManager->remove($itemHolder);
+            }
             return;
         }
 
