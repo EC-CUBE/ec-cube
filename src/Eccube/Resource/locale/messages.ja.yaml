@@ -412,6 +412,7 @@ admin.common.prev: 前へ
 admin.common.next: 次へ
 admin.common.first: 最初へ
 admin.common.last: 最後へ
+admin.common.back: 戻る
 
 # 汎用ラベル, メッセージ
 admin.common.show: 表示
@@ -802,10 +803,8 @@ admin.order.mail_mail_info: メール内容
 admin.order.mail_confirm: 送信内容を確認
 admin.order.mail_template: テンプレート
 admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
-admin.order.mail_send_return: 送信内容の入力に戻る
 admin.order.mail_send: 送信
 admin.order.mail_send_complete: メールを送信しました。
-admin.order.mail_failed: 取得に失敗しました。
 admin.order.shipping_info: 出荷情報
 admin.order.delivery_date: お届け日
 admin.order.delivery_time: お届け時間
@@ -952,6 +951,7 @@ admin.content.layout_section__body_after: '<body>タグ直後'
 admin.content.layout_section__header: '#header'
 admin.content.layout_section__contents_top: '#contents_top'
 admin.content.layout_section__side_left: '#side_left'
+admin.content.layout_section__main: Main
 admin.content.layout_section__main_top: '#main_top'
 admin.content.layout_section__main_bottom: '#main_bottom'
 admin.content.layout_section__side_right: '#side_right'
@@ -1251,6 +1251,9 @@ admin.store.setting.captcha_error: エラー
 admin.store.package.api.0.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
 admin.store.package.api.403.error: オーナーズストアの認証に失敗しました。認証キーの設定を確認してください。
 admin.store.package.api.500.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
+admin.plugin.uninstall.error.not_disable: プラグインを無効にしてください。
+admin.plugin.uninstall.depend: '「%depend_name%」が「%name%」に依存しているため削除できません。'
+admin.plugin.disable.depend: '「%name%」を無効にする前に、「%depend_name%」を無効にしてください。 '
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
@@ -1542,8 +1545,8 @@ install.system_requirement: システム要件をご確認ください
 install.required_extension_disabled: '[必須] %module%拡張モジュールが有効になっていません。'
 install.required_database_extension_disabled: '[必須] pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。'
 install.recommend_extension_disabled: '[推奨] %module%拡張モジュールが有効になっていません。'
-install.mod_rewite_unknown: mod_rewrite が有効になっているか不明です。
-install.mod_rewite_disabled: '[必須] mod_rewrite が有効になっていません。'
+install.mod_rewrite_unknown: mod_rewrite が有効になっているか不明です。
+install.mod_rewrite_disabled: '[必須] mod_rewrite が有効になっていません。'
 install.member_name: 管理者
 install.member_department:
 install.shop_name: あなたの店名
