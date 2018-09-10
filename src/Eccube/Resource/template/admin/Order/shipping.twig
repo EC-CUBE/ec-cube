@@ -583,8 +583,9 @@ file that was distributed with this source code.
                                                         {{ form_errors(orderItemForm.product_name) }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        <div class="col">
+                                                        <div class="col mt-3">
                                                             {{ form_widget(orderItemForm.price, {'attr': { 'readonly': 'readonly' } }) }}
+                                                            <div class="text-right small">({{ OrderItem.TaxDisplayType }})</div>
                                                             {{ form_errors(orderItemForm.price) }}
                                                         </div>
                                                     </td>
@@ -607,7 +608,6 @@ file that was distributed with this source code.
                                                     <td class="align-middle">
                                                         <div class="col">
                                                             <span>{{ OrderItem.total_price|price }}</span>
-                                                            <div class="text-center">({{ OrderItem.TaxDisplayType }})</div>
                                                         </div>
                                                     </td>
                                                     <td class="align-middle text-right pr-3">

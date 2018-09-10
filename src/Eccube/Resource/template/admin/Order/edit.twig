@@ -704,13 +704,14 @@ file that was distributed with this source code.
                                             </td>
                                             <!-- 金額 -->
                                             <td class="align-middle">
-                                                <div class="col">
+                                                <div class="col mt-3">
                                                     {# ポイント値引きは価格変更できない #}
                                                     {% if OrderItem.isPoint %}
                                                         {{ form_widget(orderItemForm.price, {'attr': { 'readonly': 'readonly' } }) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.price) }}
                                                     {% endif %}
+                                                    <div class="text-right small">({{ OrderItem.TaxDisplayType }})</div>
                                                     {{ form_errors(orderItemForm.price) }}
                                                 </div>
                                             </td>
@@ -742,7 +743,6 @@ file that was distributed with this source code.
                                             <td class="align-middle">
                                                 <div class="col">
                                                     <span>{{ OrderItem.total_price|price }}</span>
-                                                    <div class="text-center">({{ OrderItem.TaxDisplayType }})</div>
                                                 </div>
                                             </td>
                                             <td class="align-middle text-right pr-3">
