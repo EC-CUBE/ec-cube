@@ -117,7 +117,6 @@ Styleguide 11.3.2
     display: block;
     margin-bottom: 10px;
     font-weight: bold;
-    font-family: "游ゴシック", YuGothic, "Yu Gothic";
     @include reset_link();
 
     a{
@@ -138,7 +137,6 @@ Styleguide 11.3.2
   }
   & &__copyright{
     font-size: 10px;
-    font-family: "游ゴシック", YuGothic, "Yu Gothic";
 
     @include media_desktop {
       font-size: 12px;
