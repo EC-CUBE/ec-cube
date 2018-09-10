@@ -297,11 +297,11 @@ class EA09ShippingCest
                 ->入力_CSVファイル('shipping.csv')
                 ->CSVアップロード();
 
-            $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[0]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[0]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
                     '#upload-form > div:nth-child(4)');
-            $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[1]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[1]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
                     '#upload-form > div:nth-child(5)');
-            $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[2]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[2]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
                     '#upload-form > div:nth-child(6)');
         } finally {
             if (file_exists($csvFileName)) {

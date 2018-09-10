@@ -43,8 +43,8 @@ class ExceptionListener implements EventSubscriberInterface
 
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        $title = 'システムエラーが発生しました。';
-        $message = '大変お手数ですが、サイト管理者までご連絡ください。';
+        $title = trans('exception.error_title');
+        $message = trans('exception.error_message');
         $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
 
         $exception = $event->getException();
@@ -57,16 +57,16 @@ class ExceptionListener implements EventSubscriberInterface
                 case 403:
                 case 405:
                 case 406:
-                    $title = 'アクセスできません。';
+                    $title = trans('exception.error_title_can_not_access');
                     if ($exception->getMessage()) {
                         $message = $exception->getMessage();
                     } else {
-                        $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
+                        $message = trans('exception.error_message_can_not_access');
                     }
                     break;
                 case 404:
-                    $title = 'ページがみつかりません。';
-                    $message = 'URLに間違いがないかご確認ください。';
+                    $title = trans('exception.error_title_not_found');
+                    $message = trans('exception.error_message_not_found');
                     break;
                 default:
                     break;

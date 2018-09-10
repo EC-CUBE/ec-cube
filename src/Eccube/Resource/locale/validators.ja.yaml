@@ -1,4 +1,19 @@
+#------------------------------------------------------------------------------------
+# バリデーションエラーメッセージ
+#
+# 以下のコードのようなフォームのバリデーションメッセージは, validators.ja.yamlのメッセージIDが呼ばれます。
+#
+# $builder->add('name', TextType::class, [
+#    'message' => 'form_error.kana_only'
+# ]);
+#------------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------------
 # Symfony error message
+#
+# Symfony標準のエラーメッセージを上書きします。
+# https://github.com/symfony/validator/blob/3.4/Resources/translations/validators.ja.xlf
+#------------------------------------------------------------------------------------
 This value should not be blank.: 入力されていません。
 This value should be the user\'s current password.: 現在のパスワードが正しくありません。
 Invalid credentials.: |
@@ -8,8 +23,28 @@ Invalid CSRF token.: |
   ログインできませんでした。
   入力内容に誤りがないかご確認ください。
 
+#------------------------------------------------------------------------------------
 # EC-CUBE error message
+#
+# EC-CUBEの汎用エラーメッセージです
+#------------------------------------------------------------------------------------
 Invalid twig format. {{ error }}: Twigのフォーマットが正しくありません。{{ error }}
+form_error.numeric_only: 数字で入力してください。
+form_error.kana_only: カタカナで入力してください。
+form_error.graph_only: 半角英数字で入力してください。
+form_error.not_contain_spaces: スペース、タブ、改行は含めないで下さい。
+form_error.graph_and_hyphen_only: 半角英数字かハイフンのみを入力してください。
+form_error.not_selected: 選択されていません。
+form_error.select_is_future_or_now_date: 生年月日が不正な日付です。
+form_error.float_only: 数字と小数点のみ入力できます。
+form_error.same_password: 同じパスワードを入力してください。
+form_error.same_email: 同じメールアドレスを入力してください。
+
+#------------------------------------------------------------------------------------
+# Deplicated
+#
+# 以下は非推奨のメッセージIDです。
+#------------------------------------------------------------------------------------
 errors.numeric_only: 数字で入力してください。
 errors.float_only: 数字と小数点のみ入力できます。
 errors.graph_only: 半角英数字で入力してください。

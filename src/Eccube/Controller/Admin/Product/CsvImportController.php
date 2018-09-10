@@ -555,10 +555,14 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    /**
-                     * Checking the header for the data column flexible.
-                     */
-                    $requireHeader = ['カテゴリ名'];
+                    $getId = function ($item) {
+                        return $item['id'];
+                    };
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
+                        return $value['required'];
+                    })));
+
+                    $headerByKey = array_flip(array_map($getId, $headers));
 
                     $columnHeaders = $data->getColumnHeaders();
                     if (count(array_diff($requireHeader, $columnHeaders)) > 0) {
@@ -579,27 +583,27 @@ class CsvImportController extends AbstractCsvImportController
                     foreach ($data as $row) {
                         /** @var $Category Category */
                         $Category = new Category();
-                        if (isset($row['カテゴリID']) && strlen($row['カテゴリID']) > 0) {
-                            if (!preg_match('/^\d+$/', $row['カテゴリID'])) {
+                        if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
+                            if (!preg_match('/^\d+$/', $row[$headerByKey['id']])) {
                                 $this->addErrors(($data->key() + 1).'行目のカテゴリIDが存在しません。');
 
                                 return $this->renderWithError($form, $headers);
                             }
-                            $Category = $this->categoryRepository->find($row['カテゴリID']);
+                            $Category = $this->categoryRepository->find($row[$headerByKey['id']]);
                             if (!$Category) {
                                 $this->addErrors(($data->key() + 1).'行目のカテゴリIDが存在しません。');
 
                                 return $this->renderWithError($form, $headers);
                             }
-                            if ($row['カテゴリID'] == $row['親カテゴリID']) {
+                            if ($row[$headerByKey['id']] == $row[$headerByKey['parent_category_id']]) {
                                 $this->addErrors(($data->key() + 1).'行目のカテゴリIDと親カテゴリIDが同じです。');
 
                                 return $this->renderWithError($form, $headers);
                             }
                         }
 
-                        if (isset($row['カテゴリ削除フラグ']) && StringUtil::isNotBlank($row['カテゴリ削除フラグ'])) {
-                            if (StringUtil::trimAll($row['カテゴリ削除フラグ']) == 1) {
+                        if (isset($row[$headerByKey['category_del_flg']]) && StringUtil::isNotBlank($row[$headerByKey['category_del_flg']])) {
+                            if (StringUtil::trimAll($row[$headerByKey['category_del_flg']]) == 1) {
                                 if ($Category->getId()) {
                                     log_info('カテゴリ削除開始', [$Category->getId()]);
                                     try {
@@ -618,24 +622,24 @@ class CsvImportController extends AbstractCsvImportController
                             }
                         }
 
-                        if (!isset($row['カテゴリ名']) || StringUtil::isBlank($row['カテゴリ名'])) {
+                        if (!isset($row[$headerByKey['category_name']]) || StringUtil::isBlank($row[$headerByKey['category_name']])) {
                             $this->addErrors(($data->key() + 1).'行目のカテゴリ名が設定されていません。');
 
                             return $this->renderWithError($form, $headers);
                         } else {
-                            $Category->setName(StringUtil::trimAll($row['カテゴリ名']));
+                            $Category->setName(StringUtil::trimAll($row[$headerByKey['category_name']]));
                         }
 
                         $ParentCategory = null;
-                        if (isset($row['親カテゴリID']) && StringUtil::isNotBlank($row['親カテゴリID'])) {
-                            if (!preg_match('/^\d+$/', $row['親カテゴリID'])) {
+                        if (isset($row[$headerByKey['parent_category_id']]) && StringUtil::isNotBlank($row[$headerByKey['parent_category_id']])) {
+                            if (!preg_match('/^\d+$/', $row[$headerByKey['parent_category_id']])) {
                                 $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');
 
                                 return $this->renderWithError($form, $headers);
                             }
 
                             /** @var $ParentCategory Category */
-                            $ParentCategory = $this->categoryRepository->find($row['親カテゴリID']);
+                            $ParentCategory = $this->categoryRepository->find($row[$headerByKey['parent_category_id']]);
                             if (!$ParentCategory) {
                                 $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');
 

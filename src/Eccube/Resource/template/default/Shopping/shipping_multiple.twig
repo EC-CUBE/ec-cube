@@ -66,7 +66,7 @@ $(function() {
 {% block main %}
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>お届け先の複数指定</h1>
+            <h1>{{ 'front.shopping.shipping_multiple_title'|trans }}</h1>
         </div>
     </div>
 
@@ -74,14 +74,14 @@ $(function() {
         <form id="shipping-multiple-form" method="post" action="{{ url('shopping_shipping_multiple') }}">
             {{ form_widget(form._token) }}
             <div class="ec-AddAddress__info">
-                <p>各商品のお届け先を選択してください。</p>
+                <p>{{ 'front.shopping.shipping_multiple_message'|trans }}</p>
             </div>
 
             {% for error in errors %}
                 <div class="text-danger">{{ error.message }}</div>
             {% endfor %}
 
-            <div class="ec-AddAddress__new"><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn ec-inlineBtn">{{'新規お届け先を追加する'|trans}}</a></div>
+            <div class="ec-AddAddress__new"><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn ec-inlineBtn">{{ 'front.shopping.shipping_add_new_shipping'|trans }}</a></div>
 
             {% for orderItem in OrderItems %}
                 {% set idx = loop.index0 %}
@@ -100,11 +100,11 @@ $(function() {
                             {% if orderItem.productClass.classCategory2 %}
                                 <div class="ec-AddAddress__itemtSize">{{ orderItem.productClass.classCategory2 }}</div>
                             {% endif %}
-                            <div class="ec-AddAddress__itemtPrice">小計：{{ orderItem.totalPrice|price }}</div>
+                            <div class="ec-AddAddress__itemtPrice">{{ 'common.subtotal__with_separator' }}{{ orderItem.totalPrice|price }}</div>
 
                             {% for key, value in compItemQuantities %}
                                 {% if orderItem.productClass.id == key %}
-                                    <div class="ec-AddAddress__itemtNumber" id="multiple_list__value--{{ idx }}_{{ key }}">{{'数量'|trans}}：{{ value }}</div>
+                                    <div class="ec-AddAddress__itemtNumber" id="multiple_list__value--{{ idx }}_{{ key }}">{{ 'common.quantity'|trans }}：{{ value }}</div>
                                     {% set itemvalue = value %}
                                 {% endif %}
                             {% endfor %}
@@ -116,14 +116,14 @@ $(function() {
                             <div id="item{{ idx }}-{{ loop.index0 }}" data-itemidx="{{ loop.index0 }}" class="ec-AddAddress__select shipping_item item{{ idx }}">
                                 <div id="multiple_list__shipping_address--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectAddress">
                                     <div class="ec-select">
-                                        <label>お届け先</label>
+                                        <label>{{ 'front.shopping.delivery_to'|trans }}</label>
                                         {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
                                         {{ form_errors(shipping.customer_address) }}
                                     </div>
                                 </div>
                                 <div id="multiple_list__shipping_quantity--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectNumber">
                                     <div class="ec-input">
-                                        <label>数量</label>
+                                        <label>{{ 'common.quantity'|trans }}</label>
                                         {% for key, value in compItemQuantities %}
                                             {% if orderItem.productClass.id == key %}
                                                 {% set quantity = shipping.quantity.vars.value ?: value %}
@@ -142,7 +142,7 @@ $(function() {
                     </div>
 
                     <div id="multiple_list__add_button{{ idx }}" class="ec-AddAddress__btn">
-                        <button id="button__add{{ idx }}" type="button" class="ec-inlineBtn add" data-idx="{{ idx }}">お届け先追加</button>
+                        <button id="button__add{{ idx }}" type="button" class="ec-inlineBtn add" data-idx="{{ idx }}">{{ 'front.shopping.shipping_add_new_shipping__short'|trans }}</button>
                     </div>
                 </div>
             {% endfor %}
@@ -150,8 +150,8 @@ $(function() {
             <div class="ec-AddAddress__actions">
                 <div class="ec-off4Grid">
                     <div class="ec-off4Grid__cell">
-                        <button id="button__confirm" type="submit" class="ec-blockBtn--action">選択したお届け先に送る</button>
-                        <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">戻る</a>
+                        <button id="button__confirm" type="submit" class="ec-blockBtn--action">{{ 'front.shopping.shipping_send_selected_shipping'|trans }}</button>
+                        <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">{{ 'common.back'|trans }}</a>
                     </div>
                 </div>
             </div>

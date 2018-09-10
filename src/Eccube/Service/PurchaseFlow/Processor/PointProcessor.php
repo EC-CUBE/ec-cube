@@ -90,7 +90,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
                     $overPoint = $this->pointHelper->priceToPoint($minus);
                     $usePoint = $itemHolder->getUsePoint() + $overPoint;
                     $discount = $this->pointHelper->pointToDiscount($usePoint);
-                    $result = ProcessResult::warn('利用ポイントがお支払い金額を上回っています', self::class);
+                    $result = ProcessResult::warn(trans('purchase_flow.over_payment_total'), self::class);
                 }
 
                 // 所有ポイント < 利用ポイント
@@ -99,13 +99,13 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
                     // 利用ポイントが所有ポイントを上回っていた場合は所有ポイントで上書き
                     $usePoint = $Customer->getPoint();
                     $discount = $this->pointHelper->pointToDiscount($usePoint);
-                    $result = ProcessResult::warn('利用ポイントが所有ポイントを上回っています', self::class);
+                    $result = ProcessResult::warn(trans('purchase_flow.over_customer_point'), self::class);
                 }
                 // 受注登録・編集実行時
             } else {
                 // 支払い金額 < 利用ポイントによる値引き額.
                 if ($itemHolder->getTotal() + $discount < 0) {
-                    $result = ProcessResult::error('利用ポイントがお支払い金額を上回っています', self::class);
+                    $result = ProcessResult::error(trans('purchase_flow.over_payment_total'), self::class);
                 }
             }
 
