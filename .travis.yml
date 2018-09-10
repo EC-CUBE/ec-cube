@@ -36,6 +36,7 @@ matrix:
 before_install: &php_setup |
   phpenv config-rm xdebug.ini || true
   echo "opcache.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/travis.ini
   echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "date.timezone=Asia/Tokyo" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
