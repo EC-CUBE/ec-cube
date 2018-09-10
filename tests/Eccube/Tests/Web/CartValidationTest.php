@@ -679,7 +679,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         $message = $crawler->filter('.ec-layoutRole__main')->text();
 
-        $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
+        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -706,7 +706,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         $message = $crawler->filter('.ec-layoutRole__main')->text();
 
-        $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
+        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -736,7 +736,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // check message error
         $message = $crawler->filter('.ec-layoutRole__main')->text();
-        $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
+        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -1886,7 +1886,7 @@ class CartValidationTest extends AbstractWebTestCase
         // check message error
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
-        $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
+        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -1933,7 +1933,7 @@ class CartValidationTest extends AbstractWebTestCase
         // check message error
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
-        $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
+        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -1981,7 +1981,7 @@ class CartValidationTest extends AbstractWebTestCase
         // check message error
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
-        $this->assertContains('ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。', $message);
+        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
