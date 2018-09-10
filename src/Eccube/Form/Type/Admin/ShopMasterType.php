@@ -156,7 +156,7 @@ class ShopMasterType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid',
+                        'message' => 'form_error.numeric_only',
                     ]),
                 ],
             ])
@@ -180,7 +180,7 @@ class ShopMasterType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid',
+                        'message' => 'form_error.numeric_only',
                     ]),
                     new Assert\Range([
                         'min' => 1,
@@ -193,7 +193,7 @@ class ShopMasterType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid',
+                        'message' => 'form_error.numeric_only',
                     ]),
                     new Assert\Range([
                         'min' => 1,

@@ -67,7 +67,7 @@ class ChangePasswordType extends AbstractType
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
+                        'message' => 'form_error.graph_only',
                     ]),
                 ],
             ])

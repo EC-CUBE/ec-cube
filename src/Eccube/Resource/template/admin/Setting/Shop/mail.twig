@@ -130,6 +130,7 @@ file that was distributed with this source code.
                                 <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_body'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col-10">
                                     {# タブ表示 #}
+                                    {% if id is not null %}
                                     <ul class="nav nav-tabs text-center" role="tablist">
                                         <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
                                             <a id="menu__{{ form.tpl_data.vars.id }}" href="#detail_box__tpl_data" class="nav-link active" data-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_text'|trans }}</span></a>
@@ -143,12 +144,13 @@ file that was distributed with this source code.
                                             <div class="d-inline-block">
                                                 <div class="btn-group" role="group">
                                                     <button type="button" id="preview_button" class="btn btn-block btn-ec-regular" style="display:none;" data-toggle="modal" data-target="#htmlPreviewModal">
-                                                        プレビュー
+                                                        {{ 'admin.setting.shop.mail.preview'|trans }}
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </ul>
+                                    {% endif %}
                                     <div class="tab-content">
                                         <div id="detail_box__tpl_data" class="form-group tab-pane active">
                                             {{ form_label(form.tpl_data) }}
@@ -211,7 +213,7 @@ file that was distributed with this source code.
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold">HTMLメールを確認する</h5>
+                    <h5 class="modal-title font-weight-bold">{{ 'admin.setting.shop.mail.preview'|trans }}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
