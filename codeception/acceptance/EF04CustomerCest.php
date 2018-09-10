@@ -120,7 +120,7 @@ class EF04CustomerCest
         ], ['css' => 'button.ec-blockBtn--action']);
 
         // 入力した会員情報を確認する。
-        $I->see('既に利用されているメールアドレスです', '.ec-registerRole form .ec-borderedDefs dl:nth-child(6) dd');
+        $I->see('このメールアドレスは利用できません', '.ec-registerRole form .ec-borderedDefs dl:nth-child(6) dd');
     }
 
     public function customer_会員登録異常2(\AcceptanceTester $I)
