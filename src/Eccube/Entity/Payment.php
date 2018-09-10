@@ -475,21 +475,5 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         {
             return $this->Creator;
         }
-
-        /**
-         * @return string
-         *
-         * @deprecated
-         */
-        public function getMethodForAdmin()
-        {
-            trigger_error('twigやコントローラで表示を制御してください.', E_USER_DEPRECATED);
-
-            if ($this->isVisible()) {
-                return $this->getMethod();
-            }
-
-            return $this->getMethod().'(非表示)';
-        }
     }
 }
