@@ -342,7 +342,7 @@ class ComposerApiService implements ComposerServiceInterface
             ]
         ]);
         $this->execConfig('repositories.eccube', [$json]);
-        if (strpos($url, 'http://') == 0) {
+        if (strpos($url, 'http://') === 0) {
             $this->execConfig('secure-http', ['false']);
         }
         $this->initConsole();
