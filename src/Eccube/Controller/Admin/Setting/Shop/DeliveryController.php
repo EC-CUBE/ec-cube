@@ -214,7 +214,6 @@ class DeliveryController extends AbstractController
                     }
                 }
                 foreach ($DeliveryData['DeliveryTimes'] as $DeliveryTime) {
-                    $DeliveryTime->setVisible(true);
                     $DeliveryTime->setDelivery($Delivery);
                 }
 
@@ -321,10 +320,10 @@ class DeliveryController extends AbstractController
 
         // 表示・非表示を切り替える
         if ($Delivery->isVisible()) {
-            $message = 'admin.delivery.hidden.complete';
+            $message = trans('admin.common.to_hide_complete', ['%name%' => $Delivery->getName()]);
             $Delivery->setVisible(false);
         } else {
-            $message = 'admin.delivery.visible.complete';
+            $message = trans('admin.common.to_show_complete', ['%name%' => $Delivery->getName()]);
             $Delivery->setVisible(true);
         }
         $this->entityManager->persist($Delivery);

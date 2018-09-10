@@ -331,20 +331,6 @@ class MailService
     }
 
     /**
-     * Alias of sendContactMail().
-     *
-     * @param $formData お問い合わせ内容
-     *
-     * @see sendContactMail()
-     * @deprecated since 3.0.0, to be removed in 3.1
-     * @see https://github.com/EC-CUBE/ec-cube/issues/1315
-     */
-    public function sendrContactMail($formData)
-    {
-        $this->sendContactMail($formData);
-    }
-
-    /**
      * Send order mail.
      *
      * @param \Eccube\Entity\Order $Order 受注情報
@@ -641,49 +627,6 @@ class MailService
         log_info('パスワード変更完了メール送信完了', ['count' => $count]);
 
         return $count;
-    }
-
-    /**
-     * ポイントでマイナス発生時にメール通知する。
-     *
-     * @param Order $Order
-     * @param int $currentPoint
-     * @param int $changePoint
-     */
-    public function sendPointNotifyMail(\Eccube\Entity\Order $Order, $currentPoint = 0, $changePoint = 0)
-    {
-        $body = $this->twig->render('Mail/point_notify.twig', [
-            'Order' => $Order,
-            'currentPoint' => $currentPoint,
-            'changePoint' => $changePoint,
-        ]);
-
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] ポイント通知')
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$this->BaseInfo->getEmail01()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
-
-        // HTMLテンプレートが存在する場合
-        $htmlFileName = $this->getHtmlTemplate('Mail/point_notify.twig');
-        if (!is_null($htmlFileName)) {
-            $htmlBody = $this->twig->render($htmlFileName, [
-                'Order' => $Order,
-                'currentPoint' => $currentPoint,
-                'changePoint' => $changePoint,
-            ]);
-
-            $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
-        } else {
-            $message->setBody($body);
-        }
-
-        $this->mailer->send($message);
     }
 
     /**

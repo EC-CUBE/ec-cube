@@ -36,6 +36,7 @@ use Eccube\Repository\TagRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -176,6 +177,7 @@ class CsvImportController extends AbstractCsvImportController
 
                     $headerSize = count($columnHeaders);
                     $headerByKey = array_flip(array_map($getId, $headers));
+                    $deleteImages = [];
 
                     $this->entityManager->getConfiguration()->setSQLLogger(null);
                     $this->entityManager->getConnection()->beginTransaction();
@@ -206,6 +208,25 @@ class CsvImportController extends AbstractCsvImportController
                                 $this->addErrors($message);
 
                                 return $this->renderWithError($form, $headers);
+                            }
+
+                            if (isset($row[$headerByKey['product_del_flg']])) {
+                                if (StringUtil::isNotBlank($row[$headerByKey['product_del_flg']]) && $row[$headerByKey['product_del_flg']] == (string)Constant::ENABLED) {
+                                    // 商品を物理削除
+                                    $deleteImages[] = $Product->getProductImage();
+
+                                    try {
+                                        $this->productRepository->delete($Product);
+                                        $this->entityManager->flush();
+
+                                        continue;
+
+                                    } catch (ForeignKeyConstraintViolationException $e) {
+                                        $message = trans('admin.common.csv_invalid_foreign_key', ['%line%' => $line, '%name%' => $Product->getName()]);
+                                        $this->addErrors($message);
+                                        return $this->renderWithError($form, $headers);
+                                    }
+                                }
                             }
                         }
 
@@ -487,6 +508,19 @@ class CsvImportController extends AbstractCsvImportController
                     }
                     $this->entityManager->flush();
                     $this->entityManager->getConnection()->commit();
+
+                    // 画像ファイルの削除(commit後に削除させる)
+                    foreach ($deleteImages as $images) {
+                        foreach ($images as $image) {
+                            try {
+                                $fs = new Filesystem();
+                                $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$image);
+                            } catch (\Exception $e) {
+                                // エラーが発生しても無視する
+                            }
+                        }
+                    }
+
                     log_info('商品CSV登録完了');
                     $message = 'admin.common.csv_upload_complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);

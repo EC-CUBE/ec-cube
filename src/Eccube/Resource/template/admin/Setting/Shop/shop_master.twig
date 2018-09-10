@@ -305,12 +305,14 @@ file that was distributed with this source code.
                                     <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_point_rate'|trans }}"><span>{{ 'admin.setting.shop.shop.option_point_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
-                                    <div class="input-group col-4 pl-0">
-                                        <div class="input-group-prepend">
+                                    <div class="input-group col-2 pl-0">
+                                        <div class="input-group">
                                             {{ form_widget(form.basic_point_rate) }}
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">%</span>
+                                            </div>
                                             {{ form_errors(form.basic_point_rate) }}
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -319,12 +321,11 @@ file that was distributed with this source code.
                                     <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_point_conversion_rate'|trans }}"><span>{{ 'admin.setting.shop.shop.option_point_conversion_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
-                                    <div class="input-group col-4 pl-0">
-                                        <div class="input-group-prepend">
+                                    <div class="input-group col-2 pl-0">
+                                        <div class="input-group">
                                             {{ form_widget(form.point_conversion_rate) }}
                                             {{ form_errors(form.point_conversion_rate) }}
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

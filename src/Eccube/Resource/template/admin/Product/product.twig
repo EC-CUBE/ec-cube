@@ -170,7 +170,7 @@ file that was distributed with this source code.
                 },
                 processalways: function(e, data) {
                     if (data.files.error) {
-                        alert("{{ 'admin.product.product.498'|trans }}");
+                        alert("{{ 'admin.common.upload_error'|trans }}");
                     }
                 }
             });
@@ -221,12 +221,6 @@ file that was distributed with this source code.
             };
             confirmFormChange($('#form1'), $('a[data-action="confirm"]'), $('#confirmFormChangeModal'))
         });
-
-        function fnClass(action) {
-            document.form1.action = action;
-            document.form1.submit();
-            return false;
-        }
 
     </script>
     <script>
@@ -360,8 +354,9 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-3">
                                         <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.product.image'|trans }}">
-                                            <span>{{ 'amdin.product.image'|trans }}</span>
+                                            <span>{{ 'admin.product.image'|trans }}</span>
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <br>{{ 'admin.product.image_size'|trans }}
                                         </div>
                                     </div>
                                     <div class="col mb-2">
@@ -914,7 +909,7 @@ file that was distributed with this source code.
                             <div class="row">
                                 <div class="col-8">
                                     <div class="d-inline-block" data-tooltip="true" data-placement="top"
-                                             title="{{ 'tooltip.product.shop_memo'|trans }}">
+                                         title="{{ 'tooltip.product.shop_memo'|trans }}">
                                         <span class="card-title">
                                             {{ 'admin.common.shop_memo'|trans }}
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>

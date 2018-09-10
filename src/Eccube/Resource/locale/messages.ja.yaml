@@ -74,7 +74,6 @@ common.customer_address_count_is_over: お届け先登録の上限の%eccube_del
 common.search_keyword: キーワードを入力
 common.customer_already_exists: 既に利用されているメールアドレスです
 common.member_already_exists: 既に利用されているログインIDです
-common.hidden_label: (非表示)
 
 #====================================================================================
 # フロント画面
@@ -154,11 +153,11 @@ front.entry.confirm_message: |
   よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。
 front.entry.do_register: 会員登録をする
 front.entry.complete_title: 新規会員登録(完了)
+front.entry.complete_title__temporary: 新規会員登録(仮登録完了)
 front.entry.complete_message__title: 会員登録ありがとうございます
-front.entry.complete_message__temporary: 現在仮会員の状態です。
-  ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、
-  本会員登録になった上でお買い物をお楽しみください。
-  今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.entry.complete_message__temporary: 現在、仮会員の状態です。
+  ただいま、ご入力いただいたメールアドレス宛に、ご本人様確認用のメールをお送りいたしました。
+  メール本文内のURLクリックすると、本会員登録が完了となります。
 front.entry.complete_message__activated: それではショッピングをお楽しみください。
   今後ともご愛顧賜りますようよろしくお願い申し上げます。
 
@@ -382,6 +381,8 @@ admin.common.send_complete: メールを送信しました
 admin.common.send_error: メールの送信に失敗しました
 admin.common.create_complete: 作成しました
 admin.common.system_error: システムエラーが発生しました
+admin.common.to_show_complete: 「%name%」を表示にしました。
+admin.common.to_hide_complete: 「%name%」を非表示にしました。
 
 # action系のラベル
 admin.common.save: 保存
@@ -413,6 +414,9 @@ admin.common.last: 最後へ
 # 汎用ラベル, メッセージ
 admin.common.show: 表示
 admin.common.hide: 非表示
+admin.common.hidden_label: (非表示)
+admin.common.to_show: 非表示中 | 表示にする
+admin.common.to_hide: 表示中 | 非表示にする
 admin.common.required: 必須
 admin.common.bulk_actions: 一括操作
 admin.common.select: 選択してください
@@ -445,6 +449,7 @@ admin.common.csv_invalid_not_found_target: '%line%行目の%name%「%target_name
 admin.common.csv_invalid_not_same: '%line%行目の%name1%と%name2%には同じ値を使用できません'
 admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません'
 admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
+admin.common.csv_invalid_foreign_key: '%line%行目の%name%は関連するデータがあるため削除できません'
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 admin.common.delete_modal__title: 削除します
@@ -502,16 +507,16 @@ admin.home.shop_status_title: ショップ状況
 admin.home.shop_status_out_of_stock: 在庫切れ商品数
 admin.home.shop_status_products: 取扱商品数
 admin.home.shop_status_customers: 会員数
-admin.home.sales_summany_title: 売上状況
-admin.home.sales_summany_value: '%amount% / %count% 件'
-admin.home.sales_summany_this_month: 今月の売上金額 / 売上件数
-admin.home.sales_summany_today: 今日の売上金額 / 売上件数
-admin.home.sales_summany_yesterday: 昨日の売上金額 / 売上件数
-admin.home.sales_summany_weekly: 週間
-admin.home.sales_summany_monthly: 月間
-admin.home.sales_summany_yearly: 年間
-admin.home.sales_summany_amount: 売上金額
-admin.home.sales_summany_count: 売上件数
+admin.home.sales_summary_title: 売上状況
+admin.home.sales_summary_value: '%amount% / %count% 件'
+admin.home.sales_summary_this_month: 今月の売上金額 / 売上件数
+admin.home.sales_summary_today: 今日の売上金額 / 売上件数
+admin.home.sales_summary_yesterday: 昨日の売上金額 / 売上件数
+admin.home.sales_summary_weekly: 週間
+admin.home.sales_summary_monthly: 月間
+admin.home.sales_summary_yearly: 年間
+admin.home.sales_summary_amount: 売上金額
+admin.home.sales_summary_count: 売上件数
 admin.home.recommend_plugins_title: おすすめのプラグイン
 admin.home.recommend_plugins.owner_store: オーナーズストア
 admin.home.news_title: お知らせ
@@ -570,15 +575,16 @@ admin.product.display_status__abolished: 廃止
 admin.product.permanently_delete: 削除
 admin.product.permanently_delete__confirm_title: 商品を削除します
 admin.product.permanently_delete__confirm_message: 商品を削除してよろしいですか？
-admin.product.permanently_delete__in_prograss: 削除中...
+admin.product.permanently_delete__in_progress: 削除中...
 admin.product.permanently_delete__complete_message: 商品の削除処理が完了しました
 admin.product.permanently_delete__complete: 完了
 admin.product.permanently_delete__system_error: システムエラーが発生しました
 admin.product.copy__confirm_title: 商品を複製します
 admin.product.copy__confirm_message: 商品を複製してよろしいですか？
 admin.product.name: 商品名
-amdin.product.image: 商品画像
-amdin.product.image__short: 画像
+admin.product.image: 商品画像
+admin.product.image__short: 画像
+admin.product.image_size: '推奨サイズ : 600px x 600px以上'
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
@@ -625,7 +631,7 @@ admin.product.product_class__reset_confirm_message: この商品に登録され�
   これまでの販売データには影響はありませんが、この操作は取り消すことができません。
   初期化しますか？
 admin.product.product_class__reset_confirm_excecute: 規格を初期化
-admin.product.product_class_set_stock_quantitiy: 在庫数を入力、もしくは在庫無制限を設定してください。
+admin.product.product_class_set_stock_quantity: 在庫数を入力、もしくは在庫無制限を設定してください。
 admin.product.copy_first_line: 1行目をすべての行に複製
 admin.product.procuct_class_count: '%count%件の組み合わせがあります'
 admin.product.stock_unlimited: 在庫数無制限
@@ -1051,6 +1057,7 @@ admin.setting.shop.payment.unlimited: 無制限
 admin.setting.shop.payment.payment_id: ID
 admin.setting.shop.payment.payment_name: 支払方法名
 admin.setting.shop.payment.logo_image: ロゴ画像
+admin.setting.shop.payment.logo_image_size: '推奨サイズ : 500px × 100px'
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：配送方法設定
@@ -1219,6 +1226,8 @@ admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
 admin.store.plugin.search.not_found: 検索条件に該当するデータがありませんでした。
+admin.store.plugin.installed: インストール済み
+admin.store.plugin.update: アップデート
 admin.store.setting: 設定
 admin.store.setting.api_key_setting: 認証キー設定
 admin.store.setting.api_key: 認証キー
@@ -1228,6 +1237,9 @@ admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス
 admin.store.setting.invalid_captcha: 入力された文字列が正しくありません。
 admin.store.setting.captcha_error: エラー
+admin.store.package.api.0.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
+admin.store.package.api.403.error: オーナーズストアの認証に失敗しました。認証キーの設定を確認してください。
+admin.store.package.api.500.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
@@ -1381,16 +1393,16 @@ admin.store.plugin_table_official.921: 詳細情報
 admin.store.plugin_table_official.924: 有効化
 admin.store.plugin_table_official.925: 無効化
 admin.store.plugin_table_official.923: インストールされているプラグインはありません。
-admin.store.unregisterd_plugin_table.941: プラグイン
-admin.store.unregisterd_plugin_table.942: バージョン
-admin.store.unregisterd_plugin_table.943: コード
-admin.store.unregisterd_plugin_table.944: アップデート
-admin.store.unregisterd_plugin_table.945: 設定
-admin.store.unregisterd_plugin_table.946: 不明
-admin.store.unregisterd_plugin_table.947: 不明
-admin.store.unregisterd_plugin_table.948: 詳細を表示
-admin.store.unregisterd_plugin_table.949: 不明
-admin.store.unregisterd_plugin_table.950: 設定
+admin.store.unregistered_plugin_table.941: プラグイン
+admin.store.unregistered_plugin_table.942: バージョン
+admin.store.unregistered_plugin_table.943: コード
+admin.store.unregistered_plugin_table.944: アップデート
+admin.store.unregistered_plugin_table.945: 設定
+admin.store.unregistered_plugin_table.946: 不明
+admin.store.unregistered_plugin_table.947: 不明
+admin.store.unregistered_plugin_table.948: 詳細を表示
+admin.store.unregistered_plugin_table.949: 不明
+admin.store.unregistered_plugin_table.950: 設定
 admin.store.install.label: 'プラグイン (zip、tar、tar.gz形式)'
 
 
@@ -1474,9 +1486,9 @@ tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後�
 tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
 tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
 tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に税率を設定することができるようになります。
-tooltip.setting.shop.shop.option_point_enabled: 購入金額に対するポイント付与率を編集できます。
-tooltip.setting.shop.shop.option_point_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
-tooltip.setting.shop.shop.option_point_conversion_rate: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
+tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。
+tooltip.setting.shop.shop.option_point_rate: 購入金額に対するポイント付与率を編集できます。
+tooltip.setting.shop.shop.option_point_conversion_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
 tooltip.setting.shop.payment.logo_image: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
 tooltip.setting.shop.delivery.tracking_number_url: 配送業者のお問い合わせページURLを指定します。
 tooltip.setting.shop.delivery.sale_type: この配送方法で取り扱える販売種別を指定します。
@@ -1506,8 +1518,8 @@ install.update: 更新する
 install.title: ようこそ | EC-CUBEインストール
 install.welcom: ようこそ
 install.check_permission: 権限チェック
-install.site_configration: サイトの設定
-install.database_configration: データベースの設定
+install.site_configuration: サイトの設定
+install.database_configuration: データベースの設定
 install.database_initalization: データベースの初期化
 install.install_completed: インストール完了
 install.start_eccube_installation: '<p>EC-CUBEのインストールを開始します。</p><p>あらかじめ、使用するデータベースの情報（DB名など）をご準備ください。</p>'
@@ -1528,8 +1540,8 @@ install.mail_address: メールアドレス（受注メールなどの宛先に�
 install.login_id: 管理画面ログインID（半角英数字%min%～%max%文字）
 install.login_password: 管理画面パスワード（半角英数字%min%～%max%文字）
 install.security_configuration: セキュリティの設定
-install.directry_name: 管理画面のディレクトリ名（半角英数字%min%～%max%文字）
-install.directry_name_notice: セキュリティのため推測されにくいディレクトリ名を入力して下さい
+install.directory_name: 管理画面のディレクトリ名（半角英数字%min%～%max%文字）
+install.directory_name_notice: セキュリティのため推測されにくいディレクトリ名を入力して下さい
 install.https_only: サイトへのアクセスを、SSL（https）経由に制限します
 install.https_only_notice: httpsからの接続でなければSSL制限を設定できません。
 install.ip_restriction: 管理画面へのアクセスを、以下のIPに制限します

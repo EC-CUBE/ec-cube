@@ -478,6 +478,8 @@ if (!class_exists('\Eccube\Entity\Payment')) {
 
         /**
          * @return string
+         *
+         * @deprecated
          */
         public function getMethodForAdmin()
         {

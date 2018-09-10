@@ -230,9 +230,9 @@ class ComposerProcessService implements ComposerServiceInterface
         $tmpMem = '1.5GB';
         if ($oldMemory) {
             $memory = explode('=>', $oldMemory);
-            $originGrepMemmory = trim($memory[2]);
+            $originGrepMemory = trim($memory[2]);
 
-            if ($originGrepMemmory == $tmpMem) {
+            if ($originGrepMemory == $tmpMem) {
                 $tmpMem = '1.49GB';
             }
 
@@ -240,7 +240,7 @@ class ComposerProcessService implements ComposerServiceInterface
             if ($newMemory) {
                 $newMemory = explode('=>', $newMemory);
                 $grepNewMemory = trim($newMemory[2]);
-                if ($grepNewMemory != $originGrepMemmory) {
+                if ($grepNewMemory != $originGrepMemory) {
                     return true;
                 }
             }

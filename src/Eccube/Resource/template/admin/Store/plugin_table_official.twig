@@ -55,8 +55,8 @@ $(function() {
             <thead>
             <tr>
                 <th class="border-top-0 pl-3 pt-2 pb-2">{{ 'admin.store.plugin_table_official.901'|trans }}</th>
-                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.942'|trans }}</th>
-                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.943'|trans }}</th>
+                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregistered_plugin_table.942'|trans }}</th>
+                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregistered_plugin_table.943'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.901'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table_official.905'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">&nbsp;</th>
@@ -78,7 +78,7 @@ $(function() {
                         {#{% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
                             <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal"
                                data-name="{{ Plugin.name }}"
-                               data-readme="{{ attribute(app.config[Plugin.code].const, 'readme') }}">{{ 'admin.store.unregisterd_plugin_table.948'|trans }}</a>
+                               data-readme="{{ attribute(app.config[Plugin.code].const, 'readme') }}">{{ 'admin.store.unregistered_plugin_table.948'|trans }}</a>
                         {% endif %}#}
                     </td>
                     <td class="align-middle">
@@ -92,7 +92,7 @@ $(function() {
                     </td>
                     <td class="align-middle">
                         {% if Plugin.id and pluginDetail %}
-                            {% if pluginDetail.update_status == 1 %}
+                            {% if pluginDetail.update_status == 3 %}
                                 <a href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}"
                                    class="btn btn-ec-regular">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
                                 <ul class="plugin-meta dl-horizontal">

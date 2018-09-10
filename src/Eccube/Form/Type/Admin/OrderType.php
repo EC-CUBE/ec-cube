@@ -26,6 +26,7 @@ use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Eccube\Form\Type\PriceType;
+use Eccube\Form\Validator\Email;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\OrderStateMachine;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -63,7 +64,7 @@ class OrderType extends AbstractType
     /**
      * @var OrderStatusRepository
      */
-    protected $orderStatusRepisotory;
+    protected $orderStatusRepository;
 
     /**
      * OrderType constructor.
@@ -81,7 +82,7 @@ class OrderType extends AbstractType
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
         $this->orderStateMachine = $orderStateMachine;
-        $this->orderStatusRepisotory = $orderStatusRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
     }
 
     /**
@@ -155,7 +156,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(['strict' => true]),
+                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                 ],
             ])
             ->add('phone_number', PhoneNumberType::class, [
@@ -209,11 +210,16 @@ class OrderType extends AbstractType
             ->add('Payment', EntityType::class, [
                 'required' => false,
                 'class' => Payment::class,
-                'choice_label' => 'method',
+                'choice_label' => function (Payment $Payment) {
+                    return $Payment->isVisible()
+                        ? $Payment->getMethod()
+                        : $Payment->getMethod().trans('admin.common.hidden_label');
+                },
                 'placeholder' => false,
                 'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('o')
-                        ->orderBy('o.sort_no', 'ASC');
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.visible', 'DESC')  // 非表示は下に配置
+                        ->addOrderBy('p.sort_no', 'ASC');
                 },
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -298,7 +304,7 @@ class OrderType extends AbstractType
         }
 
         /** @var ArrayCollection|OrderStatus[] $OrderStatuses */
-        $OrderStatuses = $this->orderStatusRepisotory->findBy([], ['sort_no' => 'ASC']);
+        $OrderStatuses = $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']);
         $OrderStatuses = new ArrayCollection($OrderStatuses);
 
         foreach ($OrderStatuses as $Status) {
@@ -378,7 +384,7 @@ class OrderType extends AbstractType
 
         // 新規登録時は, 新規受付ステータスで登録する.
         if (null === $Order->getOrderStatus()) {
-            $Order->setOrderStatus($this->orderStatusRepisotory->find(OrderStatus::NEW));
+            $Order->setOrderStatus($this->orderStatusRepository->find(OrderStatus::NEW));
         } else {
             // 編集時は, mapped => falseで定義しているため, フォームから変更後データを取得する.
             $form = $event->getForm();

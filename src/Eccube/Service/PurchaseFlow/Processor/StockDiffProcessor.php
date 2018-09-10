@@ -76,11 +76,11 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
                     return $quantity += $Item->getQuantity();
                 }, 0);
                 if ($stock - $toQuantity < 0) {
-                    $this->throwInvalidItemException(sprintf('%s: 在庫がたりません', $ProductClass->formatedProductName()));
+                    $this->throwInvalidItemException(sprintf('%s: 在庫がたりません', $ProductClass->formattedProductName()));
                 }
             } else {
                 if ($stock - $quantity < 0) {
-                    $this->throwInvalidItemException(sprintf('%s: 在庫がたりません', $ProductClass->formatedProductName()));
+                    $this->throwInvalidItemException(sprintf('%s: 在庫がたりません', $ProductClass->formattedProductName()));
                 }
             }
         }

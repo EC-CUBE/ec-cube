@@ -57,7 +57,7 @@ class ChangePasswordType extends AbstractType
                     'label' => 'changepassword.label.new_pass',
                 ],
                 'second_options' => [
-                    'label' => 'changepassword.label.varify_pass',
+                    'label' => 'changepassword.label.verify_pass',
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),

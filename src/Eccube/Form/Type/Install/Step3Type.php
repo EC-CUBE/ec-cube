@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Install;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -63,7 +64,7 @@ class Step3Type extends AbstractType
                 'label' => trans('install.mail_address'),
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(['strict' => true]),
+                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                 ],
             ])
             ->add('login_id', TextType::class, [
@@ -101,7 +102,7 @@ class Step3Type extends AbstractType
                 ],
             ])
             ->add('admin_dir', TextType::class, [
-                'label' => trans('install.directry_name', [
+                'label' => trans('install.directory_name', [
                     '%min%' => $this->eccubeConfig['eccube_id_min_len'],
                     '%max%' => $this->eccubeConfig['eccube_id_max_len'],
                 ]),

@@ -16,12 +16,15 @@ namespace Eccube\Service;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Plugin;
+use Eccube\Exception\PluginApiException;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\PluginRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class PluginApiService
 {
-    /**
+   /**
      * Url for Api
      *
      * @var string
@@ -44,20 +47,27 @@ class PluginApiService
     private $BaseInfo;
 
     /**
+     * @var PluginRepository
+     */
+    private $pluginRepository;
+
+    /**
      * PluginApiService constructor.
      *
      * @param EccubeConfig $eccubeConfig
      * @param RequestStack $requestStack
      * @param BaseInfoRepository $baseInfoRepository
+     * @param PluginRepository $pluginRepository
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack, BaseInfoRepository $baseInfoRepository)
+    public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack, BaseInfoRepository $baseInfoRepository, PluginRepository $pluginRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->requestStack = $requestStack;
         $this->BaseInfo = $baseInfoRepository->get();
+        $this->pluginRepository = $pluginRepository;
     }
 
     /**
@@ -83,21 +93,27 @@ class PluginApiService
     /**
      * Get master data: category
      *
-     * @return array($result, $info)
+     * @return array
      */
     public function getCategory()
     {
-        $urlCategory = $this->getApiUrl().'/category';
+        try {
+            $urlCategory = $this->getApiUrl().'/category';
 
-        return $this->getRequestApi($urlCategory);
+            return $this->requestApi($urlCategory);
+        } catch (PluginApiException $e) {
+            return [];
+        }
     }
 
     /**
      * Get plugins list
      *
-     * @param array $data
+     * @param $data
      *
-     * @return array($result, $info)
+     * @return array
+     *
+     * @throws PluginApiException
      */
     public function getPlugins($data)
     {
@@ -109,19 +125,90 @@ class PluginApiService
         $params['page'] = (isset($data['page_no']) && !empty($data['page_no'])) ? $data['page_no'] : 1;
         $params['per_page'] = (isset($data['page_count']) && !empty($data['page_count'])) ? $data['page_count'] : $this->eccubeConfig->get('eccube_default_page_count');
 
-        return $this->getRequestApi($url, $params);
+        $payload = $this->requestApi($url, $params);
+        $data = json_decode($payload, true);
+
+        if (isset($data['plugins'])) {
+            $this->buildPlugins($data['plugins']);
+        }
+
+        return $data;
     }
 
     /**
      * Get purchased plugins list
      *
-     * @return array($result, $info)
+     * @return array
+     *
+     * @throws PluginApiException
      */
     public function getPurchased()
     {
         $url = $this->getApiUrl().'/plugins/purchased';
 
-        return $this->getRequestApi($url);
+        $payload = $this->requestApi($url);
+        $plugins = json_decode($payload, true);
+
+        return $this->buildPlugins($plugins);
+    }
+
+    /**
+     * Get recommended plugins list
+     *
+     * @return array($result, $info)
+     *
+     * @throws PluginApiException
+     */
+    public function getRecommended()
+    {
+        $url = $this->getApiUrl().'/plugins/recommended';
+
+        $payload = $this->requestApi($url);
+        $plugins = json_decode($payload, true);
+
+        return $this->buildPlugins($plugins);
+    }
+
+    private function buildPlugins(&$plugins)
+    {
+        /** @var Plugin[] $pluginInstalled */
+        $pluginInstalled = $this->pluginRepository->findAll();
+        // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : not purchased
+        foreach ($plugins as &$item) {
+            // Not install/purchased
+            $item['update_status'] = 1;
+            foreach ($pluginInstalled as $plugin) {
+                if ($plugin->getSource() == $item['id']) {
+                    // Installed
+                    $item['update_status'] = 2;
+                    if ($this->isUpdate($plugin->getVersion(), $item['version'])) {
+                        // Need update
+                        $item['update_status'] = 3;
+                    }
+                }
+            }
+            if ($item['purchased'] == false && (isset($item['purchase_required']) && $item['purchase_required'] == true)) {
+                // Not purchased with paid items
+                $item['update_status'] = 4;
+            }
+
+            $this->buildInfo($item);
+        }
+
+        return $plugins;
+    }
+
+    /**
+     * Is update
+     *
+     * @param string $pluginVersion
+     * @param string $remoteVersion
+     *
+     * @return boolean
+     */
+    private function isUpdate($pluginVersion, $remoteVersion)
+    {
+        return version_compare($pluginVersion, $remoteVersion, '<');
     }
 
     /**
@@ -129,115 +216,82 @@ class PluginApiService
      *
      * @param int|string $id Id or plugin code
      *
-     * @return array [$result, $info]
+     * @return array
+     *
+     * @throws PluginApiException
      */
     public function getPlugin($id)
     {
         $url = $this->getApiUrl().'/plugin/'.$id;
 
-        return $this->getRequestApi($url);
+        $payload = $this->requestApi($url);
+        $json = json_decode($payload, true);
+
+        return $this->buildInfo($json);
     }
 
-    /**
-     * Get captcha image
-     *
-     * @return array($result, $info)
-     */
-    public function getCaptcha()
+    public function pluginInstalled(Plugin $Plugin)
     {
-        $apiUrl = $this->getApiUrl().'/captcha';
-
-        $requestApi = $this->getRequestApi($apiUrl);
-
-        return $requestApi;
+        $this->updatePluginStatus('/status/installed', $Plugin);
     }
 
-    /**
-     * Get api key from captcha image
-     *
-     * @param array $data
-     *
-     * @return array($result, $info)
-     */
-    public function postApiKey($data)
+    public function pluginEnabled(Plugin $Plugin)
     {
-        $apiUrl = $this->getApiUrl().'/api_key';
-
-        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
-        $data['eccube_url'] = $baseUrl;
-        $data['eccube_version'] = Constant::VERSION;
-
-        $requestApi = $this->postRequestApi($apiUrl, $data);
-
-        return $requestApi;
+        $this->updatePluginStatus('/status/enabled', $Plugin);
     }
 
-    /**
-     * API post
-     *
-     * @param string  $url
-     * @param array $data
-     *
-     * @return array($result, $info)
-     */
-    public function postRequestApi($url, $data = [])
+    public function pluginDisabled(Plugin $Plugin)
     {
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_POST, 1);
+        $this->updatePluginStatus('/status/disabled', $Plugin);
+    }
 
-        if (count($data) > 0) {
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    public function pluginUninstalled(Plugin $Plugin)
+    {
+        $this->updatePluginStatus('/status/uninstalled', $Plugin);
+    }
+
+    private function updatePluginStatus($url, Plugin $Plugin)
+    {
+        if ($Plugin->getSource()) {
+            try {
+                $this->requestApi($this->getApiUrl().$url, ['id' => $Plugin->getSource()], true);
+            } catch (PluginApiException $ignore) {
+            }
         }
-
-        // Todo: will implement after server worked
-        $key = null;
-        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
-        // Option array
-        $options = [
-            // HEADER
-            CURLOPT_HTTPHEADER => [
-                'X-ECCUBE-KEY: '.base64_encode($key),
-                'X-ECCUBE-URL: '.base64_encode($baseUrl),
-                'X-ECCUBE-VERSION: '.base64_encode(Constant::VERSION),
-            ],
-            CURLOPT_HTTPGET => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FAILONERROR => true,
-            CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
-        ];
-
-        // Set option value
-        curl_setopt_array($curl, $options);
-        $result = curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $message = curl_error($curl);
-        $info['message'] = $message;
-        curl_close($curl);
-
-        log_info('http get_info', $info);
-
-        return [$result, $info];
     }
 
     /**
      * API request processing
      *
-     * @param string  $url
+     * @param string $url
      * @param array $data
      *
-     * @return array($result, $info)
+     * @return array
+     *
+     * @throws PluginApiException
      */
-    public function getRequestApi($url, $data = [])
+    public function requestApi($url, $data = [], $post = false)
     {
-        if (count($data) > 0) {
+        if ($post === false && count($data) > 0) {
             $url .= '?'.http_build_query($data);
         }
 
         $curl = curl_init($url);
 
+        if ($post) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+
+            if (count($data) > 0) {
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            }
+        }
+
         $key = $this->BaseInfo->getAuthenticationKey();
-        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
+
+        $baseUrl = null;
+        if ($this->requestStack->getCurrentRequest()) {
+            $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
+        }
 
         // Option array
         $options = [
@@ -247,7 +301,7 @@ class PluginApiService
                 'X-ECCUBE-URL: '.$baseUrl,
                 'X-ECCUBE-VERSION: '.Constant::VERSION,
             ],
-            CURLOPT_HTTPGET => true,
+            CURLOPT_HTTPGET => $post === false,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FAILONERROR => true,
@@ -264,26 +318,39 @@ class PluginApiService
 
         log_info('http get_info', $info);
 
-        return [$result, $info];
+        if ($info['http_code'] !== 200) {
+            throw new PluginApiException($info);
+        }
+
+        return $result;
     }
 
     /**
-     * Get message
+     * Get plugin information
      *
-     * @param $info
+     * @param array $plugin
      *
-     * @return string
+     * @return array
      */
-    public function getResponseErrorMessage($info)
+    public function buildInfo(&$plugin)
     {
-        if (!empty($info)) {
-            $statusCode = $info['http_code'];
-            $message = $info['message'];
-            $message = $statusCode.' : '.$message;
-        } else {
-            $message = trans('ownerstore.text.error.timeout');
-        }
+        $this->supportedVersion($plugin);
 
-        return $message;
+        return $plugin;
+    }
+
+    /**
+     * Check support version
+     *
+     * @param $plugin
+     */
+    public function supportedVersion(&$plugin)
+    {
+        // Check the eccube version that the plugin supports.
+        $plugin['version_check'] = false;
+        if (in_array(Constant::VERSION, $plugin['supported_versions'])) {
+            // Match version
+            $plugin['version_check'] = true;
+        }
     }
 }

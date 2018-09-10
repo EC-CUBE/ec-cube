@@ -17,13 +17,6 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
-{% block stylesheet %}
-    <style>
-        .list-group-item:hover {
-            z-index: inherit;
-        }
-    </style>
-{% endblock stylesheet %}
 
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
@@ -192,6 +185,32 @@ file that was distributed with this source code.
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');
             });
+            // 表示・非表示の切り替え
+            $('#delivery-time-group').on('click', 'a.action-visible', function(e) {
+                e.preventDefault();
+
+                var $this = $(this);
+                var $i = $this.find('i');
+
+                if ($i.hasClass('fa-toggle-on')) {
+                    $i.addClass('fa-toggle-off');
+                    $i.removeClass('fa-toggle-on');
+                    $this.attr('data-original-title', '{{ 'admin.common.to_show'|trans }}');
+                    $this.parents('li').find('.visible').val('0');
+                } else {
+                    $i.addClass('fa-toggle-on');
+                    $i.removeClass('fa-toggle-off');
+                    $this.attr('data-original-title', '{{ 'admin.common.to_hide'|trans }}');
+                    $this.parents('li').find('.visible').val('1');
+                }
+                // ツールチップの表示を更新
+                $this.tooltip('show');
+
+
+            });
+
+            // FIXME 明細行のツールチップが表示されないため, ここでツールチップを有効にしている.
+            $('[data-tooltip="true"]').tooltip();
         });
     </script>
 {% endblock javascript %}
@@ -371,6 +390,10 @@ file that was distributed with this source code.
                     </div>
                     <div class="col-6">
                         <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                {{ form_widget(form.visible) }}
+                                {{ form_errors(form.visible) }}
+                            </div>
                             <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
                             </div>

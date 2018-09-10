@@ -3614,7 +3614,7 @@ Styleguide 7.2.1
     min-width: 16px;
     text-align: center;
     position: relative;
-    letter-spacing: initial; }
+    letter-spacing: normal; }
   .ec-topicpath .ec-topicpath__item--active {
     font-weight: bold; }
     .ec-topicpath .ec-topicpath__item--active a {
@@ -8514,7 +8514,6 @@ Styleguide 22.1
   }
 
   .ec-eyecatchRole .ec-eyecatchRole__image{
-    width: 45%;
     -ms-flex-order: 2;
         order: 2;
   }
