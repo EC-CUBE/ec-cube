@@ -1,3 +1,4 @@
+<!doctype html>
 {#
 This file is part of EC-CUBE
 
@@ -8,13 +9,12 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-<!DOCTYPE html>
 <html lang="{{ eccube_config.locale }}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ error_title }}</title>
-    <link rel="icon" href="{{ asset('img/common/favicon.ico') }}">
+    <link rel="icon" href="{{ asset('assets/img/common/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
 <body>
@@ -23,13 +23,13 @@ file that was distributed with this source code.
         <div class="ec-off4Grid">
             <div class="ec-off4Grid__cell">
                 <div style="font-size:100px;text-align:center;">
-                    <div class="ec-404Role__icon ec-icon"><img src="{{ asset('assets/icon/exclamation-pale.svg') }}" alt="">
+                    <div class="ec-404Role__icon ec-icon">
+                        <img src="{{ asset('assets/icon/exclamation-pale.svg') }}" alt="">
                     </div>
                 </div>
-                <p class="ec-404Role__title ec-reportHeading">{{ error_title }}
-                </p>
-                <p class="ec-404Role__description ec-reportDescription">{{ error_message }}
-                </p><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a>
+                <p class="ec-404Role__title ec-reportHeading">{{ error_title }}</p>
+                <p class="ec-404Role__description ec-reportDescription">{{ error_message }}</p>
+                <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a>
             </div>
         </div>
     </div>

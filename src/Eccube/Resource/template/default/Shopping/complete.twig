@@ -66,7 +66,7 @@ file that was distributed with this source code.
                 <h2>{{ 'front.shopping.complete_message__title'|trans }}</h2>
             </div>
             <p class="ec-reportDescription">
-                {{ 'front.shopping.complete_message__body'|trans }}
+                {{ 'front.shopping.complete_message__body'|trans|nl2br }}
                 {% if Order.id %}
                     <br /><br /><strong>{{ 'front.shopping.order_no'|trans }} : {{ Order.orderNo }}</strong>
                 {% endif %}
