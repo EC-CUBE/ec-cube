@@ -217,7 +217,6 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $this->assertRegExp('/@dummy.dummy/', $EditedCustomer->getEmail());
     }
 
-
     /**
      * testMailNoRFC
      */

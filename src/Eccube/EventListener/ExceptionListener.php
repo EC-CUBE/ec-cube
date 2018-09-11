@@ -77,7 +77,7 @@ class ExceptionListener implements EventSubscriberInterface
             $exception->getMessage(),
             $exception->getFile(),
             $exception->getLine(),
-            $exception->getTraceAsString()
+            $exception->getTraceAsString(),
         ]);
 
         try {

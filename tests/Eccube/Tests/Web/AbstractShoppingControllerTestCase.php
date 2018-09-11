@@ -152,8 +152,8 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         if ($doComplete) {
             $parameters = [
                 '_shopping_order' => [
-                    '_token' => 'dummy'
-                ]
+                    '_token' => 'dummy',
+                ],
             ];
         } else {
             $parameters = [
