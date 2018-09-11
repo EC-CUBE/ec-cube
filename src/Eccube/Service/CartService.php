@@ -123,11 +123,29 @@ class CartService
     }
 
     /**
+     * 現在のカートの配列を取得する.
+     *
+     * 商品明細が空のカートが存在した場合は削除する.
+     * 本サービスのインスタンスのメンバーが空の場合は、DBまたはセッションからカートを取得する
+     *
      * @return Cart[]
      */
     public function getCarts()
     {
         if (!empty($this->carts)) {
+            $cartKeys = [];
+            foreach (array_keys($this->carts) as $index) {
+                $Cart = $this->carts[$index];
+                if ($Cart->getItems()->count() > 0) {
+                    $cartKeys[] = $Cart->getCartKey();
+                } else {
+                    $this->entityManager->remove($this->carts[$index]);
+                    $this->entityManager->flush($this->carts[$index]);
+                    unset($this->carts[$index]);
+                }
+            }
+            $this->session->set('cart_keys', $cartKeys);
+
             return $this->carts;
         }
 
