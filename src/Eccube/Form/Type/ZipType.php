@@ -93,12 +93,14 @@ class ZipType extends AbstractType
         $resolver->setDefaults(array(
             'options' => array('constraints' => array(), 'attr' => array('class' => 'p-postal-code')),
             'zip01_options' => array(
+                'attr' => array('maxlength' => $this->config['zip01_len']),
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                     new Assert\Length(array('min' => $this->config['zip01_len'], 'max' => $this->config['zip01_len'])),
                 ),
             ),
             'zip02_options' => array(
+                'attr' => array('maxlength' => $this->config['zip02_len']),
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                     new Assert\Length(array('min' => $this->config['zip02_len'], 'max' => $this->config['zip02_len'])),
