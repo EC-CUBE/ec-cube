@@ -47,15 +47,11 @@ class RepeatedEmailType extends AbstractType
         $resolver->setDefaults([
             'entry_type' => EmailType::class,
             'required' => true,
-            'invalid_message' => 'form.member.email.invalid',
+            'invalid_message' => 'form_error.same_email',
             'options' => [
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
-                    new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
-                    ]),
                 ],
             ],
             'first_options' => [

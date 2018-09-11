@@ -238,23 +238,23 @@ file that was distributed with this source code.
                                                         <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
                                                     </div>
                                                     <div class="col-auto text-right">
-                                                        <a class="btn btn-ec-actionIcon action-up mr-3 {% if loop.first %} disabled {% endif %}" href=""
+                                                        <a class="btn btn-ec-actionIcon action-up mr-2 {% if loop.first %} disabled {% endif %}" href=""
                                                            data-tooltip="true" data-placement="top"
                                                            title="{{ 'admin.common.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon action-down mr-3 {% if loop.last %} disabled {% endif %}" href=""
+                                                        <a class="btn btn-ec-actionIcon action-down mr-2 {% if loop.last %} disabled {% endif %}" href=""
                                                            data-tooltip="true" data-placement="top"
                                                            title="{{ 'admin.common.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon mr-3 action-edit"
+                                                        <a class="btn btn-ec-actionIcon mr-2 action-edit"
                                                            href="{{ url('admin_product_category_edit', {id: Category.id}) }}"
                                                            data-tooltip="true" data-placement="top"
                                                            title="{{ 'admin.common.edit'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
-                                                        <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top"
+                                                        <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">
                                                             <a class="btn btn-ec-actionIcon{% if Category.Children|length > 0 or Category.hasProductCategories %} disabled{% endif %}"
                                                                data-toggle="modal" data-target="#DeleteModal"

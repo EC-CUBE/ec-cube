@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 {#
 This file is part of EC-CUBE
 
@@ -12,7 +12,6 @@ file that was distributed with this source code.
 <html lang="{{ eccube_config.locale }}">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="eccube-csrf-token" content="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
     <title>{{ BaseInfo.shop_name }}{% if subtitle is defined and subtitle is not empty %} / {{ subtitle }}{% elseif title is defined and title is not empty %} / {{ title }}{% endif %}</title>
@@ -31,15 +30,13 @@ file that was distributed with this source code.
     {% if Page.meta_tags is not empty %}
         {{ Page.meta_tags|raw }}
     {% endif %}
-    <link rel="icon" href="{{ asset('img/common/favicon.ico') }}">
+    <link rel="icon" href="{{ asset('assets/img/common/favicon.ico') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <!-- for original theme CSS -->
     {% block stylesheet %}{% endblock %}
-
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script>
         $(function() {
             $.ajaxSetup({
@@ -49,7 +46,6 @@ file that was distributed with this source code.
             });
         });
     </script>
-
     {# Layout: HEAD #}
     {% if Layout.Head %}
         {{ include('block.twig', {'Blocks': Layout.Head}) }}
@@ -146,9 +142,8 @@ file that was distributed with this source code.
 <div class="ec-blockTopBtn pagetop"></div>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
-<script src="{{ asset('assets/js/script.js') }}"></script>
-<script src="{{ asset('js/function.js') }}"></script>
-<script src="{{ asset('js/eccube.js') }}"></script>
+<script src="{{ asset('assets/js/function.js') }}"></script>
+<script src="{{ asset('assets/js/eccube.js') }}"></script>
 {% block javascript %}{% endblock %}
 {# Layout: CLOSE_BODY_BEFORE #}
 {% if Layout.CloseBodyBefore %}

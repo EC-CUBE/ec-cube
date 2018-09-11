@@ -144,7 +144,7 @@ front.contact.complete_message__body: 万一、ご確認メールが届かない
 
 front.entry.title: 新規会員登録
 front.entry.terms: 利用規約
-front.entry.agree_with_terms: に同意してお進みください # TODO 「%name%」に同意してお進みください、にしたい
+front.entry.agree_with_terms: '<a class="ec-link" href="%url%" target="_blank">利用規約</a>に同意してお進みください'
 front.entry.agree: 同意する
 front.entry.disagree: 同意しない
 front.entry.confirm_title: 新規会員登録(確認)
@@ -303,6 +303,7 @@ front.cart.delivery_fee_free__quantity: あと「<strong>%quantity%個</strong>�
 #------------------------------------------------------------------------------------
 
 front.shopping.title: ご注文手続き
+front.shopping.order_no: ご注文番号
 front.shopping.customer_info: お客様情報
 front.shopping.delivery_info: 配送情報
 front.shopping.delivery_to: お届け先
@@ -324,6 +325,7 @@ front.shopping.go_to_confirm: 確認する
 front.shopping.back_to_cart: カートに戻る
 front.shopping.shipping_title: お届け先の指定
 front.shopping.shipping_add_new_shipping: 新規お届け先を追加する
+front.shopping.shipping_add_new_shipping__short: お届け先追加
 front.shopping.shipping_unselected: お届け先を指定してください
 front.shopping.shipping_send_selected_shipping: 選択したお届け先に送る
 front.shopping.shipping_multiple_title: お届け先の複数指定
@@ -410,6 +412,7 @@ admin.common.prev: 前へ
 admin.common.next: 次へ
 admin.common.first: 最初へ
 admin.common.last: 最後へ
+admin.common.back: 戻る
 
 # 汎用ラベル, メッセージ
 admin.common.show: 表示
@@ -659,6 +662,8 @@ admin.product.tag: タグ
 admin.product.tag__product_card_title: タグ
 admin.product.select__class1: 規格1を選択してください
 admin.product.select__class2: 規格2を選択してください
+admin.product.select__can_not_select_same_class: 規格1と同じ規格は選択できません
+admin.product.unselected_class: 選択されていません
 
 # 商品CSV雛形
 admin.product.product_csv.product_id_col: 商品ID
@@ -798,10 +803,8 @@ admin.order.mail_mail_info: メール内容
 admin.order.mail_confirm: 送信内容を確認
 admin.order.mail_template: テンプレート
 admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
-admin.order.mail_send_return: 送信内容の入力に戻る
 admin.order.mail_send: 送信
 admin.order.mail_send_complete: メールを送信しました。
-admin.order.mail_failed: 取得に失敗しました。
 admin.order.shipping_info: 出荷情報
 admin.order.delivery_date: お届け日
 admin.order.delivery_time: お届け時間
@@ -863,6 +866,9 @@ admin.order.delivery_note_line3: 3行目
 admin.order.delivery_note_save_input: 入力内容を保存する
 admin.order.delivery_note_download_error: 'ダウンロードに失敗しました'
 admin.order.delivery_note_parameter_error: '出荷IDが指定されていません'
+admin.order.failed_to_change_status: '%name%: %from% から %to% にはステータス変更できません'
+admin.order.failed_to_change_status__short: '%from% から %to% にはステータス変更できません'
+admin.order.skip_change_status: '%name": ステータス変更をスキップしました'
 
 # 出荷CSV雛形
 admin.order.shipping_csv.shipping_id_col: 出荷ID
@@ -945,6 +951,7 @@ admin.content.layout_section__body_after: '<body>タグ直後'
 admin.content.layout_section__header: '#header'
 admin.content.layout_section__contents_top: '#contents_top'
 admin.content.layout_section__side_left: '#side_left'
+admin.content.layout_section__main: Main
 admin.content.layout_section__main_top: '#main_top'
 admin.content.layout_section__main_bottom: '#main_bottom'
 admin.content.layout_section__side_right: '#side_right'
@@ -970,6 +977,7 @@ admin.content.page_meta_metatag: metatag
 admin.content.page_meta_metatag_placeholder: |
   <meta property="og:title" content="ページのタイトル" />
   <meta property="og:image" content="画像のURL" />
+admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 admin.content.block_name: ブロック名
 admin.content.block__card_title: ブロック設定
 admin.content.block_file_name: ファイル名
@@ -1053,11 +1061,13 @@ admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レー�
 #------------------------------------------------------------------------------------
 
 admin.setting.shop.payment.terms_of_use: 利用条件
+admin.setting.shop.payment.terms_of_use_error: 下限・上限の値を確認してください
 admin.setting.shop.payment.unlimited: 無制限
 admin.setting.shop.payment.payment_id: ID
 admin.setting.shop.payment.payment_name: 支払方法名
 admin.setting.shop.payment.logo_image: ロゴ画像
 admin.setting.shop.payment.logo_image_size: '推奨サイズ : 500px × 100px'
+
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：配送方法設定
@@ -1093,12 +1103,13 @@ admin.setting.shop.mail.mail_subject: 件名
 admin.setting.shop.mail.mail_body: 本文
 admin.setting.shop.mail.mail_text: テキスト
 admin.setting.shop.mail.mail_html: HTML
+admin.setting.shop.mail.preview: プレビュー
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：CSV出力項目設定
 #------------------------------------------------------------------------------------
 
-admin.setting.shop.csv.csv_colmuns: CSV出力項目
+admin.setting.shop.csv.csv_columns: CSV出力項目
 admin.setting.shop.csv.csv_type: CSV種別
 admin.setting.shop.csv.non_output_colmuns: 出力しない項目
 admin.setting.shop.csv.output_colmuns: 出力する項目
@@ -1248,6 +1259,9 @@ admin.store.setting.captcha_error: エラー
 admin.store.package.api.0.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
 admin.store.package.api.403.error: オーナーズストアの認証に失敗しました。認証キーの設定を確認してください。
 admin.store.package.api.500.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
+admin.plugin.uninstall.error.not_disable: プラグインを無効にしてください。
+admin.plugin.uninstall.depend: '「%depend_name%」が「%name%」に依存しているため削除できません。'
+admin.plugin.disable.depend: '「%name%」を無効にする前に、「%depend_name%」を無効にしてください。 '
 
 
 # TODO: メッセージ精査
@@ -1540,8 +1554,8 @@ install.system_requirement: システム要件をご確認ください
 install.required_extension_disabled: '[必須] %module%拡張モジュールが有効になっていません。'
 install.required_database_extension_disabled: '[必須] pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。'
 install.recommend_extension_disabled: '[推奨] %module%拡張モジュールが有効になっていません。'
-install.mod_rewite_unknown: mod_rewrite が有効になっているか不明です。
-install.mod_rewite_disabled: '[必須] mod_rewrite が有効になっていません。'
+install.mod_rewrite_unknown: mod_rewrite が有効になっているか不明です。
+install.mod_rewrite_disabled: '[必須] mod_rewrite が有効になっていません。'
 install.member_name: 管理者
 install.member_department:
 install.shop_name: あなたの店名
@@ -1577,3 +1591,24 @@ install.completed: インストールが完了しました！
 install.access_admin_page: 管理画面にアクセスしてみましょう
 install.perform_initial_setting: 先ほど登録したログインID・パスワードで、管理画面にログインすることができます。デザインの編集や商品を登録してみましょう！
 install.go_to_admin_page: 管理画面を表示
+
+#------------------------------------------------------------------------------------
+# エラー画面
+#------------------------------------------------------------------------------------
+
+exception.error_title: システムエラーが発生しました。
+exception.error_message: 大変お手数ですが、サイト管理者までご連絡ください。
+exception.error_title_can_not_access: アクセスできません。
+exception.error_message_can_not_access: お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。
+exception.error_title_not_found: ページがみつかりません。
+exception.error_message_not_found: URLに間違いがないかご確認ください。
+
+#------------------------------------------------------------------------------------
+# PurchaseFlow
+#------------------------------------------------------------------------------------
+
+purchase_flow.delivery_fee_update: 送料が更新されました。金額をご確認ください。
+purchase_flow.charge_update: 手数料が更新されました。金額をご確認ください。
+purchase_flow.over_customer_point: 利用ポイントが所有ポイントを上回っています。
+purchase_flow.over_payment_total: 利用ポイントがお支払い金額を上回っています。
+purchase_flow.over_stock: 「%name%」の在庫が足りません。

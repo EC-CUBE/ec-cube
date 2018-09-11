@@ -331,8 +331,9 @@ file that was distributed with this source code.
                                                                 {% endfor %}
                                                             </div>
                                                             <div class="d-block p-3 border border-ec-gray border-top-0 border-left-0 border-right-0 bg-ec-lightGray">
-                                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__main'|trans }}</p>
-                                                                <div class="d-block text-center p-3"></div>
+                                                                <div class="d-block text-center p-3">
+                                                                    <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__main'|trans }}</p>
+                                                                </div>
                                                             </div>
                                                             {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_BOTTOM') %}
                                                             <div id="position_{{ target_id }}"

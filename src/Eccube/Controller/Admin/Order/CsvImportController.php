@@ -173,7 +173,11 @@ class CsvImportController extends AbstractCsvImportController
                 } else {
                     $from = $Order->getOrderStatus()->getName();
                     $to = $OrderStatus->getName();
-                    $errors[] = sprintf('%s: %s から %s へステータス変更できませんでした', $Shipping->getId(), $from, $to);
+                    $errors[] = trans('admin.order.failed_to_change_status', [
+                        '%name%' => $Shipping->getId(),
+                        '%from%' => $from,
+                        '%to%' => $to
+                    ]);
                 }
             }
         }

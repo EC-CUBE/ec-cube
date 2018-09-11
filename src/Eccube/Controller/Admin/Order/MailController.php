@@ -180,7 +180,7 @@ class MailController extends AbstractController
 
                         $this->addSuccess('admin.order.mail_send_complete', 'admin');
 
-                        return $this->redirectToRoute('admin_order_page', ['page_no' => $this->session->get('eccube.admin.order.search.page_no', 1)]);
+                        return $this->redirectToRoute('admin_order_edit', ['id' => $Order->getId()]);
                     }
                     break;
                 default:
