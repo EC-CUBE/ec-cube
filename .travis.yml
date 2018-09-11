@@ -131,6 +131,14 @@ jobs:
       - |
         ./codeception.sh --reset
         psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        ./codeception.sh EA10PluginCest:install_enable_disable_update_enable_disable_remove_local
+      - |
+        ./codeception.sh --reset
+        psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        ./codeception.sh EA10PluginCest:install_enable_disable_update_enable_disable_remove_store
+      - |
+        ./codeception.sh --reset
+        psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
         ./codeception.sh EA10PluginCest:install_assets_local
       - |
         ./codeception.sh --reset
@@ -145,7 +153,6 @@ jobs:
     script:
       - *package_api_setup
       - |
-        ./codeception.sh --reset
         mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
         ./codeception.sh EA10PluginCest:install_enable_disable_enable_disable_remove_store
       - |
@@ -168,6 +175,14 @@ jobs:
         ./codeception.sh --reset
         mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
         ./codeception.sh EA10PluginCest:install_update_remove_local
+      - |
+        ./codeception.sh --reset
+        mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
+        ./codeception.sh EA10PluginCest:install_enable_disable_update_enable_disable_remove_local
+      - |
+        ./codeception.sh --reset
+        mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
+        ./codeception.sh EA10PluginCest:install_enable_disable_update_enable_disable_remove_store
       - |
         ./codeception.sh --reset
         mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
