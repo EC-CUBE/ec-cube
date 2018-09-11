@@ -396,6 +396,7 @@ class MailService
         }
 
         $this->mailHistoryRepository->save($MailHistory);
+        $this->mailHistoryRepository->flush($MailHistory);
 
         log_info('受注メール送信完了', ['count' => $count]);
 
