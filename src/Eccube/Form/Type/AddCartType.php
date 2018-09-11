@@ -203,7 +203,7 @@ class AddCartType extends AbstractType
                 new Assert\NotBlank(),
                 new Assert\NotEqualTo([
                     'value' => '__unselected',
-                    'message' => 'form.type.select.notselect',
+                    'message' => 'form_error.not_selected',
                 ]),
             ], '[classcategory_id1]');
         }
@@ -213,7 +213,7 @@ class AddCartType extends AbstractType
                 new Assert\NotBlank(),
                 new Assert\NotEqualTo([
                     'value' => '__unselected',
-                    'message' => 'form.type.select.notselect',
+                    'message' => 'form_error.not_selected',
                 ]),
             ], '[classcategory_id2]');
         }

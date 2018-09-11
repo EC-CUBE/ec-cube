@@ -475,19 +475,5 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         {
             return $this->Creator;
         }
-
-        /**
-         * @return string
-         *
-         * @deprecated
-         */
-        public function getMethodForAdmin()
-        {
-            if ($this->isVisible()) {
-                return $this->getMethod();
-            }
-
-            return $this->getMethod().'(非表示)';
-        }
     }
 }

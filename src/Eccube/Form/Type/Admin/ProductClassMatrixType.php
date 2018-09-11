@@ -58,7 +58,7 @@ class ProductClassMatrixType extends AbstractType
                     $ClassName1 = $context->getRoot()->get('class_name1')->getData();
                     if ($ClassName1 && $ClassName2) {
                         if ($ClassName1->getId() === $ClassName2->getId()) {
-                            $context->buildViolation('規格1と同じ規格は選択できません.')
+                            $context->buildViolation(trans('admin.product.select__can_not_select_same_class'))
                                 ->atPath('class_name2')
                                 ->addViolation();
                         }
@@ -86,7 +86,7 @@ class ProductClassMatrixType extends AbstractType
                 }
 
                 if (!$hasVisible) {
-                    $form['product_classes']->addError(new FormError('選択されていません'));
+                    $form['product_classes']->addError(new FormError(trans('admin.product.unselected_class')));
                 }
             });
         }

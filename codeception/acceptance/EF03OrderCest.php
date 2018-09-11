@@ -163,10 +163,10 @@ class EF03OrderCest
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
-            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
         }
@@ -227,10 +227,10 @@ class EF03OrderCest
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, '姓03 名03 様');
-            $I->seeInLastEmailTo($email, 'お名前　：姓03 名03 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：セイ メイ 様');
+            $I->seeInLastEmailTo($email, 'お名前：姓03 名03 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：セイ メイ 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒5300001');
-            $I->seeInLastEmailTo($email, '住所　　：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
+            $I->seeInLastEmailTo($email, '住所：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
             $I->seeInLastEmailTo($email, '電話番号：111111111');
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$new_email);
         }
@@ -307,9 +307,9 @@ class EF03OrderCest
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, '姓0301 名03 様');
-            $I->seeInLastEmailTo($email, 'お名前　：姓0302 名03 様', '変更後のお届け先');
+            $I->seeInLastEmailTo($email, 'お名前：姓0302 名03 様', '変更後のお届け先');
             $I->seeInLastEmailTo($email, '郵便番号：〒5300001');
-            $I->seeInLastEmailTo($email, '住所　　：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
+            $I->seeInLastEmailTo($email, '住所：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
             $I->seeInLastEmailTo($email, '電話番号：111111111');
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$new_email);
         }
@@ -368,15 +368,15 @@ class EF03OrderCest
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
-            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
 
-            $I->seeInLastEmailTo($email, '商品名: チェリーアイスサンド');
-            $I->seeInLastEmailTo($email, '商品名: 彩のジェラートCUBE  チョコ  16mm × 16mm');
+            $I->seeInLastEmailTo($email, '商品名：チェリーアイスサンド');
+            $I->seeInLastEmailTo($email, '商品名：彩のジェラートCUBE  チョコ  16mm × 16mm');
         }
 
         // 完了画面 -> topへ
@@ -388,7 +388,7 @@ class EF03OrderCest
     {
         // チェック用変数
         // 追加するお届け作の名前
-        $nameSei = '姓0302';
+        $nameSei = 'あいおい0302';
         $nameMei = '名0302';
         // カートへ入れる商品の数
         $cart_quantity = 1;
@@ -507,14 +507,14 @@ class EF03OrderCest
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
-            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
             $I->seeInLastEmailTo($email, '◎お届け先1');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$nameSei);
+            $I->seeInLastEmailTo($email, 'お名前：'.$nameSei);
             $I->seeInLastEmailTo($email, '数量：3');
             $I->seeInLastEmailTo($email, '◎お届け先2');
             $I->seeInLastEmailTo($email, '数量：2');
@@ -583,7 +583,7 @@ class EF03OrderCest
     {
         // チェック用変数
         // 追加するお届け作の名前
-        $nameSei = '姓0302';
+        $nameSei = 'あいおい0302';
         $nameMei = '名0302';
         // カートへ入れる商品の数
         $cart_quantity = 1;
@@ -714,14 +714,14 @@ class EF03OrderCest
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
-            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
             $I->seeInLastEmailTo($email, '◎お届け先1');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$nameSei);
+            $I->seeInLastEmailTo($email, 'お名前：'.$nameSei);
             $I->seeInLastEmailTo($email, '数量：3');
             $I->seeInLastEmailTo($email, '◎お届け先2');
             $I->seeInLastEmailTo($email, '数量：2');
@@ -739,7 +739,7 @@ class EF03OrderCest
     {
         // チェック用変数
         // 追加するお届け作の名前
-        $nameSei = '姓0302';
+        $nameSei = 'あいおい0302';
         $nameMei = '名0302';
         // カートへ入れる商品の数
         $cart_quantity = 1;
@@ -874,14 +874,14 @@ class EF03OrderCest
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
-            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
             $I->seeInLastEmailTo($email, '◎お届け先');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01());
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01());
             $I->seeInLastEmailTo($email, '数量：'.($sum_quantity + $cart_quantity));
         }
 

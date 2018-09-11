@@ -16,7 +16,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
+use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\EntityProxyService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
@@ -59,7 +59,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         $prop = $rc->getProperty('composerService');
         $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->createMock(ComposerApiService::class));
+        $prop->setValue($this->service, $this->createMock(ComposerServiceInterface::class));
 
         $prop = $rc->getProperty('entityProxyService');
         $prop->setAccessible(true);
@@ -307,25 +307,27 @@ class PluginServiceTest extends AbstractServiceTestCase
 namespace Plugin\@@@@ ;
 
 use Eccube\Plugin\AbstractPluginManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 class PluginManager extends AbstractPluginManager
 {
-    public function install($plugin,$app)
+    public function install(array $meta, ContainerInterface $container)
     {
         echo "";
     }
-    public function uninstall($config,$app)
+    public function uninstall(array $meta, ContainerInterface $container)
     {
         throw new \Exception('hoge',1);
     }
-    public function enable($config,$app)
+    public function enable(array $meta, ContainerInterface $container)
     {
         throw new \Exception('hoge',1);
     }
-    public function disable($config,$app)
+    public function disable(array $meta, ContainerInterface $container)
     {
         throw new \Exception('hoge',1);
     }
-    public function update($config,$app)
+    public function update(array $meta, ContainerInterface $container)
     {
         throw new \Exception('hoge',1);
     }
@@ -372,29 +374,31 @@ EOD;
 namespace Plugin\@@@@ ;
 
 use Eccube\Plugin\AbstractPluginManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 class PluginManager extends AbstractPluginManager
 {
-    public function install($plugin,$app)
+    public function install(array $meta, ContainerInterface $container)
     {
         echo "Installed";
     }
 
-    public function uninstall($config,$app)
+    public function uninstall(array $meta, ContainerInterface $container)
     {
         echo "Uninstalled";
     }
 
-    public function enable($config,$app)
+    public function enable(array $meta, ContainerInterface $container)
     {
         echo "Enabled";
     }
 
-    public function disable($config,$app)
+    public function disable(array $meta, ContainerInterface $container)
     {
         echo "Disabled";
     }
 
-    public function update($config,$app)
+    public function update(array $meta, ContainerInterface $container)
     {
         echo "Updated";
     }

@@ -58,6 +58,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @return array
      *
      * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function execInfo($pluginName, $version)
     {
@@ -80,6 +82,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @return string
      *
      * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function execRequire($packageName, $output = null)
     {
@@ -106,6 +110,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @return string
      *
      * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function execRemove($packageName, $output = null)
     {
@@ -128,6 +134,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @param null|OutputInterface $output
      *
      * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function execUpdate($dryRun, $output = null)
     {
@@ -147,6 +155,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @param null|OutputInterface $output
      *
      * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function execInstall($dryRun, $output = null)
     {
@@ -169,6 +179,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @param int $level
      *
      * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0)
     {
@@ -200,6 +212,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @return array|mixed
      *
      * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function execConfig($key, $value = null)
     {
@@ -222,6 +236,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @return array
      *
      * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getConfig()
     {
@@ -248,10 +264,14 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @param array $commands
      * @param null|OutputInterface $output
+     * @param bool $init
      *
      * @return string
      *
      * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Exception
      */
     public function runCommand($commands, $output = null, $init = true)
     {
@@ -287,11 +307,15 @@ class ComposerApiService implements ComposerServiceInterface
         } elseif ($exitCode) {
             throw new PluginException();
         }
+
+        return null;
     }
 
     /**
      * Init composer console application
+     *
      * @param BaseInfo|null $BaseInfo
+     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -301,7 +325,10 @@ class ComposerApiService implements ComposerServiceInterface
         $BaseInfo = $BaseInfo ?: $this->baseInfoRepository->get();
 
         set_time_limit(0);
-        ini_set('memory_limit', '-1');
+
+        $composerMemory = $this->eccubeConfig['eccube_composer_memory_limit'];
+        ini_set('memory_limit', $composerMemory);
+
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
         $this->initConsole();
@@ -312,12 +339,12 @@ class ComposerApiService implements ComposerServiceInterface
             'url' => $url,
             'options' => [
                 'http' => [
-                    'header' => ['X-ECCUBE-KEY: '.$BaseInfo->getAuthenticationKey()]
-                ]
-            ]
+                    'header' => ['X-ECCUBE-KEY: '.$BaseInfo->getAuthenticationKey()],
+                ],
+            ],
         ]);
         $this->execConfig('repositories.eccube', [$json]);
-        if (strpos($url, 'http://') == 0) {
+        if (strpos($url, 'http://') === 0) {
             $this->execConfig('secure-http', ['false']);
         }
         $this->initConsole();
@@ -331,35 +358,15 @@ class ComposerApiService implements ComposerServiceInterface
         $this->consoleApplication = $consoleApplication;
     }
 
+    /**
+     * @param BaseInfo $BaseInfo
+     *
+     * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function configureRepository(BaseInfo $BaseInfo)
     {
         $this->init($BaseInfo);
-    }
-
-    /**
-     * Get version of composer
-     *
-     * @return null|string
-     *
-     * @throws PluginException
-     */
-    public function composerVersion()
-    {
-        $this->init();
-        $output = $this->runCommand([
-            '--version' => true,
-        ]);
-
-        return OutputParser::parseComposerVersion($output);
-    }
-
-    /**
-     * Get mode
-     *
-     * @return string
-     */
-    public function getMode()
-    {
-        return 'API';
     }
 }

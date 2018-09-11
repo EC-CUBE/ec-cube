@@ -69,7 +69,7 @@ class OrderHelper
      *
      * @see SecurityListener
      */
-    const SESSION_CART_DEVIDE_FLAG = 'eccube.front.cart.divide';
+    const SESSION_CART_DIVIDE_FLAG = 'eccube.front.cart.divide';
 
     /**
      * @var SessionInterface
@@ -173,7 +173,7 @@ class OrderHelper
     public function verifyCart(Cart $Cart)
     {
         if (count($Cart->getCartItems()) > 0) {
-            $divide = $this->session->get(self::SESSION_CART_DEVIDE_FLAG);
+            $divide = $this->session->get(self::SESSION_CART_DIVIDE_FLAG);
             if ($divide) {
                 log_info('ログイン時に販売種別が異なる商品がカートと結合されました。');
 

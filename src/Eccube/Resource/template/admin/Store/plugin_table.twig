@@ -8,6 +8,14 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
+<script>
+$(function() {
+    $('#localPluginDeleteModal').on('show.bs.modal', function(e) {
+        var deleteUrl = $(e.relatedTarget).data('delete-url');
+        $('div.modal-footer a', this).attr('href', deleteUrl);
+    });
+});
+</script>
 {% if Plugins|length > 0 %}
     <div class="card-body p-0">
         <table class="table table-sm">
@@ -67,42 +75,10 @@ file that was distributed with this source code.
                                         {% if Plugin.enabled == false %}
                                             <a href="#" class="btn btn-ec-actionIcon"
                                                data-toggle="modal"
-                                               data-target="#confirmModal-{{ Plugin.id }}">
+                                               data-target="#localPluginDeleteModal"
+                                               data-delete-url="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}">
                                                 <i class="fa fa-close fa-lg text-secondary" data-tooltip="true" data-placement="top" title="削除"></i>
                                             </a>
-
-                                            <div class="modal fade" id="confirmModal-{{ Plugin.id }}" tabindex="-1"
-                                                 role="dialog"
-                                                 aria-labelledby="confirmModal-{{ Plugin.id }}" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title font-weight-bold">
-                                                                {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
-                                                            <button class="close" type="button"
-                                                                    data-dismiss="modal"
-                                                                    aria-label="Close"><span aria-hidden="true">×</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body text-left">
-                                                            <p class="text-left">
-                                                                {{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn btn-ec-sub" type="button"
-                                                                    data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
-                                                            </button>
-                                                            <a href="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}"
-                                                                    {{ csrf_token_for_anchor() }}
-                                                               class="btn btn-ec-delete"
-                                                               data-confirm="false"
-                                                               data-method="delete">
-                                                                {{ 'admin.common.delete'|trans }}
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         {% endif %}
                                     </div>
                                     <div class="col-4 px-0">
@@ -144,3 +120,35 @@ file that was distributed with this source code.
         </div>
     </div>
 {% endif %}
+
+<div class="modal fade" id="localPluginDeleteModal" tabindex="-1"
+     role="dialog"
+     aria-labelledby="localPluginDeleteModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold">
+                    {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
+                <button class="close" type="button"
+                        data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                <p class="text-left">
+                    {{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ec-sub" type="button"
+                        data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
+                </button>
+                <a href="#" {{ csrf_token_for_anchor() }}
+                   class="btn btn-ec-delete"
+                   data-confirm="false"
+                   data-method="delete">
+                    {{ 'admin.common.delete'|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

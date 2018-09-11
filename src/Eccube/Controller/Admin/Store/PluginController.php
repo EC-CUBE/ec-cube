@@ -24,7 +24,7 @@ use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
+use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
 use Eccube\Util\CacheUtil;
@@ -63,9 +63,9 @@ class PluginController extends AbstractController
      */
     protected $pluginApiService;
     /**
-     * @var ComposerApiService
+     * @var ComposerServiceInterface
      */
-    private $composerApiService;
+    private $composerService;
 
     /**
      * PluginController constructor.
@@ -74,18 +74,18 @@ class PluginController extends AbstractController
      * @param PluginService $pluginService
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginApiService $pluginApiService
+     * @param ComposerServiceInterface $composerService
      *
-     * @param ComposerApiService $composerApiService
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService, ComposerApiService $composerApiService)
+    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService, ComposerServiceInterface $composerService)
     {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->pluginApiService = $pluginApiService;
-        $this->composerApiService = $composerApiService;
+        $this->composerService = $composerService;
     }
 
     /**
@@ -309,7 +309,7 @@ class PluginController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
         } else {
-            $this->addSuccess(trans('「%plugin_name%」を有効にしました。', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+            $this->addSuccess(trans('admin.store.plugin.enable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_store_plugin');
         }
@@ -369,7 +369,7 @@ class PluginController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
         } else {
-            $this->addSuccess('admin.plugin.disable.complete', 'admin');
+            $this->addSuccess(trans('admin.store.plugin.disable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_store_plugin');
         }
@@ -412,7 +412,7 @@ class PluginController extends AbstractController
         }
 
         $this->pluginService->uninstall($Plugin);
-        $this->addSuccess('admin.plugin.uninstall.complete', 'admin');
+        $this->addSuccess('admin.store.plugin.uninstall.complete', 'admin');
 
         return $this->redirectToRoute('admin_store_plugin');
     }
@@ -437,19 +437,18 @@ class PluginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $tmpDir = null;
             try {
-                $service = $this->pluginService;
                 /** @var UploadedFile $formFile */
                 $formFile = $form['plugin_archive']->getData();
-                $tmpDir = $service->createTempDir();
+                $tmpDir = $this->pluginService->createTempDir();
                 // 拡張子を付けないとpharが動かないので付ける
                 $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
                 $formFile->move($tmpDir, $tmpFile);
                 $tmpPath = $tmpDir.'/'.$tmpFile;
-                $service->install($tmpPath);
+                $this->pluginService->install($tmpPath);
                 // Remove tmp file
                 $fs = new Filesystem();
                 $fs->remove($tmpDir);
-                $this->addSuccess('admin.plugin.install.complete', 'admin');
+                $this->addSuccess('admin.store.plugin.install.complete', 'admin');
 
                 return $this->redirectToRoute('admin_store_plugin');
             } catch (PluginException $e) {
@@ -485,6 +484,7 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
      * @Template("@admin/Store/authentication_setting.twig")
+     *
      * @param Request $request
      *
      * @return array
@@ -504,7 +504,7 @@ class PluginController extends AbstractController
             $this->entityManager->flush();
 
             // composerの認証を更新
-            $this->composerApiService->configureRepository($this->BaseInfo);
+            $this->composerService->configureRepository($this->BaseInfo);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
         }

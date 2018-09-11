@@ -20,45 +20,70 @@ cache:
     - bin/.phpunit
 
 php:
+  - 7.1
   - 7.2
+
+env:
+  - DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
+  - DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
+  - DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
+
+matrix:
+  allow_failures:
+    - env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
 
 ## see https://github.com/symfony/symfony/blob/e0bdc0c35e9afdb3bee8af172f90e9648c4012fc/.travis.yml#L92-L97
 before_install: &php_setup |
   phpenv config-rm xdebug.ini || true
   echo "opcache.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  ## see http://www.php.net/manual/ja/opcache.installation.php#opcache.installation.recommended
+  echo "opcache.memory_consumption=128" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.interned_strings_buffer=8" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.max_accelerated_files=4000" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.revalidate_freq=60" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.fast_shutdown=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "apc.enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "date.timezone=Asia/Tokyo" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
-install:
-  - &composer_install composer install --dev --no-interaction -o --apcu-autoloader
-
 eccube_setup: &eccube_setup |
   echo "APP_ENV=codeception" > .env
-  bin/console doctrine:database:create
-  bin/console doctrine:schema:create
-  bin/console eccube:fixtures:load
+  bin/console doctrine:database:create --env=dev
+  bin/console doctrine:schema:create --env=dev
+  bin/console eccube:fixtures:load --env=dev
+
+eccube_reset: &eccube_reset |
+  rm -rf app/Plugin/* html
+  git checkout app/Plugin html
+  git clean -df app/proxy/entity
+  rm -rf var/cache
+  git checkout composer.json composer.lock
+  composer install --dev --no-interaction -o --apcu-autoloader
+  bin/console doctrine:schema:drop --force --full-database --env=dev
+  bin/console doctrine:schema:create --env=dev
+  bin/console eccube:fixtures:load --env=dev
+
+package_api_setup: &package_api_setup |
+  mkdir ${PWD}/repos
+  wget -O ${PWD}/repos/ProductReview-4.0.0-beta-1.tgz https://github.com/EC-CUBE/ProductReview-plugin/releases/download/4.0.0-beta-1/ProductReview-4.0.0-beta-1.tgz
+  wget -O ${PWD}/repos/SamplePayment-1.0.0-beta-1.tgz https://github.com/EC-CUBE/sample-payment-plugin/releases/download/1.0.0-beta-1/SamplePayment-1.0.0-beta-1.tgz
+  cp ${PWD}/repos/*.tgz ${PWD}/codeception/_data
+  docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+
+install:
+  - &composer_install composer install --dev --no-interaction -o --apcu-autoloader
+  - *eccube_setup
+
+script:
+  - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
+  - ./bin/phpunit --group cache-clear
+  - ./bin/phpunit --group cache-clear-install
 
 jobs:
   fast_finish: true
-  allow_failures:
-    - env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
   include:
-    - &unit_test
-      stage: Unit Test
-      before_install:
-        - *php_setup
-        - gem install mailcatcher
-      install:
-        - *composer_install
-        - *eccube_setup
-      env: DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
-      script:
-        - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
-        - ./bin/phpunit --group cache-clear
-        - ./bin/phpunit --group cache-clear-install
-    - <<: *unit_test
-      env: DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
     - &e2e_test
       stage: E2E Test
       before_install:
@@ -73,16 +98,52 @@ jobs:
       install:
         - *composer_install
         - *eccube_setup
+      php: 7.2
       env: GROUP=admin01 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
       script: ./codeception.sh -g ${GROUP}
     - <<: *e2e_test
+      php: 7.2
       env: GROUP=admin02 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
     - <<: *e2e_test
+      php: 7.2
       env: GROUP=admin03 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
     - <<: *e2e_test
+      php: 7.2
       env: GROUP=front APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+    - <<: *e2e_test
+      env: GROUP=front APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025 ECCUBE_PACKAGE_API_URL=http://localhost:8080
+      script:
+        - *package_api_setup
+        - psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        - ./codeception.sh EA10PluginCest:installFromStore
+        - *eccube_reset
+        - psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        - ./codeception.sh EA10PluginCest:installFromLocal
+        - *eccube_reset
+        - psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
+        - ./codeception.sh EA10PluginCest:installFromStore
+        - *eccube_reset
+        - psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
+        - ./codeception.sh EA10PluginCest:installFromLocal
+    - <<: *e2e_test
+      env: GROUP=front APP_ENV=codeception DATABASE_URL=mysql://root:@localhost/eccube_db DATABASE_SERVER_VERSION=5 MAILER_URL=smtp://localhost:1025 ECCUBE_PACKAGE_API_URL=http://localhost:8080
+      script:
+        - *package_api_setup
+        - mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
+        - ./codeception.sh EA10PluginCest:installFromStore
+        - *eccube_reset
+        - mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
+        - ./codeception.sh EA10PluginCest:installFromLocal
+        - *eccube_reset
+        - mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
+        - ./codeception.sh EA10PluginCest:installFromStore
+        - *eccube_reset
+        - mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
+        - ./codeception.sh EA10PluginCest:installFromLocal
+
     # - stage: Code Coverage
     #   if: type != pull_request
+    #   php: 7.2
     #   env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
     #   before_install:
     #     - *php_setup
@@ -95,6 +156,3 @@ jobs:
     #   after_success:
     #     - sed -i.bak -e 's|/usr/src/myapp/||g' coverage.clover
     #     - php vendor/bin/php-coveralls -v -x coverage.clover
-    #   after_script:
-    #     - wget https://scrutinizer-ci.com/ocular.phar
-    #     - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

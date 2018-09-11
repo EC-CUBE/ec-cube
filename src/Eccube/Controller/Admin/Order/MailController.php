@@ -180,7 +180,7 @@ class MailController extends AbstractController
 
                         $this->addSuccess('admin.order.mail_send_complete', 'admin');
 
-                        return $this->redirectToRoute('admin_order_page', ['page_no' => $this->session->get('eccube.admin.order.search.page_no', 1)]);
+                        return $this->redirectToRoute('admin_order_edit', ['id' => $Order->getId()]);
                     }
                     break;
                 default:
@@ -224,110 +224,6 @@ class MailController extends AbstractController
             'mail_subject' => $MailHistory->getMailSubject(),
             'body' => $MailHistory->getMailBody(),
             'html_body' => $MailHistory->getMailHtmlBody(),
-        ];
-    }
-
-    /**
-     * @Route("/%eccube_admin_route%/order/mail/mail_all", name="admin_order_mail_all")
-     * @Template("@admin/Order/mail_all.twig")
-     */
-    public function mailAll(Request $request)
-    {
-        $builder = $this->formFactory->createBuilder(OrderMailType::class);
-
-        $event = new EventArgs(
-            [
-                'builder' => $builder,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_INITIALIZE, $event);
-
-        $form = $builder->getForm();
-
-        $ids = '';
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-
-            $mode = $request->get('mode');
-
-            $ids = $request->get('ids');
-
-            // テンプレート変更の場合は. バリデーション前に内容差し替え.
-            if ($mode == 'change') {
-                if ($form->get('template')->isValid()) {
-                    /** @var $data \Eccube\Entity\MailTemplate */
-                    $MailTemplate = $form->get('template')->getData();
-                    $form = $builder->getForm();
-
-                    $event = new EventArgs(
-                        [
-                            'form' => $form,
-                            'MailTemplate' => $MailTemplate,
-                        ],
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_CHANGE, $event);
-
-                    $form->get('template')->setData($MailTemplate);
-                    $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
-                }
-            } else {
-                if ($form->isValid()) {
-                    $data = $form->getData();
-
-                    $ids = explode(',', $ids);
-
-                    foreach ($ids as $value) {
-                        $MailTemplate = $form->get('template')->getData();
-                        $Order = $this->orderRepository->find($value);
-                        // 本文確認用
-                        $body = $this->createBody($Order, $MailTemplate->getFileName());
-                        $data['tpl_data'] = $body;
-
-                        // メール送信
-                        $message = $this->mailService->sendAdminOrderMail($Order, $data);
-
-                        // 送信履歴を保存.
-                        $MailHistory = new MailHistory();
-                        $MailHistory
-                            ->setMailSubject($message->getSubject())
-                            ->setMailBody($message->getBody())
-                            ->setSendDate(new \DateTime())
-                            ->setOrder($Order);
-                        $this->entityManager->persist($MailHistory);
-                    }
-
-                    $this->entityManager->flush($MailHistory);
-
-                    $event = new EventArgs(
-                        [
-                            'form' => $form,
-                            'MailHistory' => $MailHistory,
-                        ],
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_COMPLETE, $event);
-
-                    return $this->redirectToRoute('admin_order_page', ['page_no' => $this->session->get('eccube.admin.order.search.page_no', 1)]);
-                }
-            }
-        } else {
-            $ids = implode(',', (array) $request->get('ids'));
-        }
-
-        // 本文確認用
-        $body = '';
-        if ($ids != '') {
-            $idArray = explode(',', $ids);
-            $Order = $this->orderRepository->find($idArray[0]);
-            $body = $this->createBody($Order);
-        }
-
-        return [
-            'form' => $form->createView(),
-            'ids' => $ids,
-            'body' => $body,
         ];
     }
 

@@ -64,7 +64,7 @@ class OrderType extends AbstractType
     /**
      * @var OrderStatusRepository
      */
-    protected $orderStatusRepisotory;
+    protected $orderStatusRepository;
 
     /**
      * OrderType constructor.
@@ -82,7 +82,7 @@ class OrderType extends AbstractType
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
         $this->orderStateMachine = $orderStateMachine;
-        $this->orderStatusRepisotory = $orderStatusRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
     }
 
     /**
@@ -195,7 +195,7 @@ class OrderType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid',
+                        'message' => 'form_error.numeric_only',
                     ]),
                 ],
             ])
@@ -304,7 +304,7 @@ class OrderType extends AbstractType
         }
 
         /** @var ArrayCollection|OrderStatus[] $OrderStatuses */
-        $OrderStatuses = $this->orderStatusRepisotory->findBy([], ['sort_no' => 'ASC']);
+        $OrderStatuses = $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']);
         $OrderStatuses = new ArrayCollection($OrderStatuses);
 
         foreach ($OrderStatuses as $Status) {
@@ -384,7 +384,7 @@ class OrderType extends AbstractType
 
         // 新規登録時は, 新規受付ステータスで登録する.
         if (null === $Order->getOrderStatus()) {
-            $Order->setOrderStatus($this->orderStatusRepisotory->find(OrderStatus::NEW));
+            $Order->setOrderStatus($this->orderStatusRepository->find(OrderStatus::NEW));
         } else {
             // 編集時は, mapped => falseで定義しているため, フォームから変更後データを取得する.
             $form = $event->getForm();
@@ -410,22 +410,21 @@ class OrderType extends AbstractType
             return;
         }
 
+        $form = $event->getForm();
+        if (!$form['OrderStatus']->isValid()) {
+            return;
+        }
         // mapped => falseで定義しているため, Orderのステータスは変更されない
         $oldStatus = $Order->getOrderStatus();
         // 変更後のステータスはFormから直接取得する.
-        $form = $event->getForm();
         $newStatus = $form['OrderStatus']->getData();
 
         // ステータスに変更があった場合のみチェックする.
-        if (!is_null($oldStatus) && !is_null($newStatus)) {
-            if ($oldStatus->getId() != $newStatus->getId()) {
-                if (!$this->orderStateMachine->can($Order, $newStatus)) {
-                    $form['OrderStatus']->addError(
-                        new FormError(sprintf('%sから%sには変更できません', $oldStatus->getName(), $newStatus->getName())));
-                }
+        if ($oldStatus->getId() != $newStatus->getId()) {
+            if (!$this->orderStateMachine->can($Order, $newStatus)) {
+                $form['OrderStatus']->addError(
+                    new FormError(trans('admin.order.failed_to_change_status__short', $oldStatus->getName(), $newStatus->getName())));
             }
-        } else {
-            $form['OrderStatus']->addError(new FormError('ステータス変更できません。'));
         }
     }
 
