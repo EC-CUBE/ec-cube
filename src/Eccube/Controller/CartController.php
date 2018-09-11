@@ -79,10 +79,8 @@ class CartController extends AbstractController
     public function index(Request $request)
     {
         // カートを取得して明細の正規化を実行
-        $this->execPurchaseFlow($this->cartService->getCarts());
-
-        // 空のカートを削除し取得し直す
         $Carts = $this->cartService->getCarts();
+        $this->execPurchaseFlow($Carts);
 
         // TODO itemHolderから取得できるように
         $least = [];
@@ -121,7 +119,8 @@ class CartController extends AbstractController
         return [
             'totalPrice' => $totalPrice,
             'totalQuantity' => $totalQuantity,
-            'Carts' => $Carts,
+            // 空のカートを削除し取得し直す
+            'Carts' => $this->cartService->getCarts(true),
             'least' => $least,
             'quantity' => $quantity,
             'is_delivery_free' => $isDeliveryFree,
@@ -162,8 +161,13 @@ class CartController extends AbstractController
 
         foreach ($flowResults as $index => $result) {
             foreach ($result->getWarning() as $warning) {
-                $cart_key = $Carts[$index]->getCartKey();
-                $this->addRequestError($warning->getMessage(), "front.cart.${cart_key}");
+                if ($Carts[$index]->getItems()->count() > 0) {
+                    $cart_key = $Carts[$index]->getCartKey();
+                    $this->addRequestError($warning->getMessage(), "front.cart.${cart_key}");
+                } else {
+                    // キーが存在しない場合はグローバルにエラーを表示する
+                    $this->addRequestError($warning->getMessage());
+                }
             }
         }
     }
