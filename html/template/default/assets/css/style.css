@@ -5886,17 +5886,15 @@ Styleguide 12.8.1
     position: absolute;
     right: 5px; }
   .ec-newsRole .ec-newsRole__newsDescription {
-    max-height: 0;
+    display: none;
+    margin: 0 0 10px;
     font-size: 12px;
     line-height: 1.2;
-    overflow: hidden;
-    transition: all .8s linear; }
+    overflow: hidden; }
     .ec-newsRole .ec-newsRole__newsDescription a {
       color: #0092C4; }
   .ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription {
-    margin: 0 0 10px;
-    max-height: 100vh;
-    transition: all .8s linear; }
+    display: block; }
   .ec-newsRole__newsItem.is_active .ec-newsRole__newsCloseBtn i {
     display: inline-block;
     transform: rotateX(180deg) translateY(2px); }
@@ -8617,12 +8615,9 @@ Styleguide 22.1
   }
 
   .ec-newsRole .ec-newsRole__newsDescription{
+    margin: 20px 0;
     font-size: 14px;
     line-height: 1.8;
-  }
-
-  .ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription{
-    margin: 20px 0;
   }
 
   .ec-searchnavRole{
