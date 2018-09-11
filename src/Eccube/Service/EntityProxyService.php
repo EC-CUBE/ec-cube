@@ -188,7 +188,7 @@ class EntityProxyService
                 $newTraitTokens,
                 [new Token(';'), new Token([T_WHITESPACE, PHP_EOL])]);
 
-            // `class X extens AbstractEntity {`の後にtraitを追加
+            // `class X extends AbstractEntity {`の後にtraitを追加
             $classTokens = $entityTokens->findSequence([[T_CLASS], [T_STRING]]);
             $classTokenEnd = $entityTokens->getNextTokenOfKind(array_keys($classTokens)[0], ['{']);
             $entityTokens->insertAt($classTokenEnd + 1, $useTraitTokens);

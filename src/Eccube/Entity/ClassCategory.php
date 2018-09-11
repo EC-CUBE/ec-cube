@@ -61,7 +61,7 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * @var int
          *
-         * @ORM\Column(name="sort_no", type="integer")
+         * @ORM\Column(name="sort_no", type="integer", options={"unsigned":true})
          */
         private $sort_no;
 

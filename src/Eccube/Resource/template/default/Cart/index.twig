@@ -149,7 +149,7 @@ file that was distributed with this source code.
                                                 {% endif %}
                                             </div>
                                             <div class="ec-cartRow__unitPrice">{{ CartItem.price|price }}</div>
-                                            <div class="ec-cartRow__sutbtotalSP">小計：{{ CartItem.total_price|price }}</div>
+                                            <div class="ec-cartRow__sutbtotalSP">{{ 'common.subtotal__with_separator'|trans }}{{ CartItem.total_price|price }}</div>
                                         </div>
                                     </li>
                                     <li class="ec-cartRow__amountColumn">
@@ -183,21 +183,21 @@ file that was distributed with this source code.
                             {% if is_delivery_free[cartKey] %}
                                 {{ 'front.cart.delivery_fee_free__now'|trans }}
                             {% else %}
-                                {{ 'front.cart.delivery_fee_free__price_and_quantity'|trans({ '%price%': least[cartKey]|price, '%quantity%': quantity[cartKey]|number_format }) }}
+                                {{ 'front.cart.delivery_fee_free__price_and_quantity'|trans({ '%price%': least[cartKey]|price, '%quantity%': quantity[cartKey]|number_format })|raw }}
                             {% endif %}
                         {% elseif BaseInfo.delivery_free_amount %}
                             <br/>
                             {% if is_delivery_free[cartKey] %}
                                 {{ 'front.cart.delivery_fee_free__now'|trans }}
                             {% else %}
-                                {{ 'front.cart.delivery_fee_free__price'|trans({ '%price%': least[cartKey]|price }) }}
+                                {{ 'front.cart.delivery_fee_free__price'|trans({ '%price%': least[cartKey]|price })|raw }}
                             {% endif %}
                         {% elseif BaseInfo.delivery_free_quantity %}
                             <br/>
                             {% if is_delivery_free[cartKey] %}
-                                {{ 'front.cart.delivery_fee_free__price'|trans() }}
+                                {{ 'front.cart.delivery_fee_free__now'|trans }}
                             {% else %}
-                                {{ 'front.cart.delivery_fee_free__quantity'|trans({ '%quantity%': quantity[cartKey]|price }) }}
+                                {{ 'front.cart.delivery_fee_free__quantity'|trans({ '%quantity%': quantity[cartKey]|number_format })|raw }}
                             {% endif %}
                         {% endif %}
                     </div>

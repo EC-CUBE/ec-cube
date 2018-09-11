@@ -137,7 +137,6 @@ class OrderController extends AbstractController
      * @param ProductStockRepository $productStockRepository
      * @param OrderRepository $orderRepository
      * @param OrderPdfRepository $orderPdfRepository
-     * @param OrderPdfService $orderPdfService
      * @param ValidatorInterface $validator
      * @param OrderStateMachine $orderStateMachine ;
      */
@@ -153,7 +152,6 @@ class OrderController extends AbstractController
         ProductStockRepository $productStockRepository,
         OrderRepository $orderRepository,
         OrderPdfRepository $orderPdfRepository,
-        OrderPdfService $orderPdfService,
         ValidatorInterface $validator,
         OrderStateMachine $orderStateMachine,
         MailService $mailService
@@ -169,7 +167,6 @@ class OrderController extends AbstractController
         $this->productStockRepository = $productStockRepository;
         $this->orderRepository = $orderRepository;
         $this->orderPdfRepository = $orderPdfRepository;
-        $this->orderPdfService = $orderPdfService;
         $this->validator = $validator;
         $this->orderStateMachine = $orderStateMachine;
         $this->mailService = $mailService;
@@ -487,7 +484,7 @@ class OrderController extends AbstractController
         try {
             if ($Order->getOrderStatus()->getId() == $OrderStatus->getId()) {
                 log_info('対応状況一括変更スキップ');
-                $result = ['message' => sprintf('%s:  ステータス変更をスキップしました', $Shipping->getId())];
+                $result = ['message' => trans('admin.order.skip_change_status', ['%name%' => $Shipping->getId()])];
             } else {
                 if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                     if ($OrderStatus->getId() == OrderStatus::DELIVERED) {
@@ -537,7 +534,11 @@ class OrderController extends AbstractController
                 } else {
                     $from = $Order->getOrderStatus()->getName();
                     $to = $OrderStatus->getName();
-                    $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
+                    $result = ['message' => trans('admin.order.failed_to_change_status', [
+                        '%name%' => $Shipping->getId(),
+                        '%from%' => $from,
+                        '%to%' => $to
+                    ])];
                 }
 
                 log_info('対応状況一括変更処理完了', [$Order->getId()]);
@@ -660,7 +661,7 @@ class OrderController extends AbstractController
      *
      * @return Response
      */
-    public function exportPdfDownload(Request $request)
+    public function exportPdfDownload(Request $request, OrderPdfService $orderPdfService)
     {
         /**
          * @var FormBuilder
@@ -683,7 +684,7 @@ class OrderController extends AbstractController
         $arrData = $form->getData();
 
         // 購入情報からPDFを作成する
-        $status = $this->orderPdfService->makePdf($arrData);
+        $status = $orderPdfService->makePdf($arrData);
 
         // 異常終了した場合の処理
         if (!$status) {
@@ -697,7 +698,7 @@ class OrderController extends AbstractController
 
         // ダウンロードする
         $response = new Response(
-            $this->orderPdfService->outputPdf(),
+            $orderPdfService->outputPdf(),
             200,
             ['content-type' => 'application/pdf']
         );
@@ -706,9 +707,9 @@ class OrderController extends AbstractController
 
         // レスポンスヘッダーにContent-Dispositionをセットし、ファイル名を指定
         if ($downloadKind == 1) {
-            $response->headers->set('Content-Disposition', 'attachment; filename="'.$this->orderPdfService->getPdfFileName().'"');
+            $response->headers->set('Content-Disposition', 'attachment; filename="'.$orderPdfService->getPdfFileName().'"');
         } else {
-            $response->headers->set('Content-Disposition', 'inline; filename="'.$this->orderPdfService->getPdfFileName().'"');
+            $response->headers->set('Content-Disposition', 'inline; filename="'.$orderPdfService->getPdfFileName().'"');
         }
 
         log_info('OrderPdf download success!', ['Order ID' => implode(',', $request->get('ids', []))]);

@@ -13,52 +13,21 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Entity\Master\ProductStatus;
-
-/**
- * ProductRepository test cases.
- *
- * @author Kentaro Ohkouchi
- */
 class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 {
-    /**
-     * @var ProductStatusRepository
-     */
-    protected $productStatusRepository;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp()
+    public function testFindWithSortedClassCategories()
     {
-        parent::setUp();
+        $Product = $this->createProduct(null, 3);
+        $Result = $this->productRepository->findWithSortedClassCategories($Product->getId());
 
-        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
-    }
+        // visible = falseも取得するため, 合計4件.
+        self::assertCount(4, $Result->getProductClasses());
 
-    public function testGetFavoriteProductQueryBuilderByCustomer()
-    {
-        $this->markTestSkipped(get_class($this).' getFavoriteProductQueryBuilderByCustomer is deprecated since 3.1');
-        $Customer = $this->createCustomer();
-        $this->entityManager->persist($Customer);
+        $this->entityManager->clear();
 
-        $this->createFavorites($Customer);
+        $Result = $this->productRepository->findWithSortedClassCategories($Product->getId());
 
-        // 3件中, 1件は非表示にしておく
-        $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
-        $Products = $this->productRepository->findAll();
-        $Products[0]->setStatus($ProductStatus);
-        $this->entityManager->flush();
-
-        $qb = $this->productRepository->getFavoriteProductQueryBuilderByCustomer($Customer);
-        $Favorites = $qb
-            ->getQuery()
-            ->getResult();
-
-        $this->expected = 2;
-        $this->actual = count($Favorites);
-        $this->verify('お気に入りの件数は'.$this->expected.'件');
+        // visible = trueのみ取得する, 合計3件.
+        self::assertCount(3, $Result->getProductClasses());
     }
 }

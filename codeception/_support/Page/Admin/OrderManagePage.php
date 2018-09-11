@@ -171,12 +171,10 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_メール通知($rowNum)
     {
-        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3.text-center > div > div:nth-child(1) > a"]);
+        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(1) > a"]);
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
-        $this->tester->wait(2);
         $this->tester->scrollTo(['id' => 'bulkChange']);
         $this->tester->click(['id' => 'bulkChange']);
-        $this->tester->wait(5);
         $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
 
         return $this;
@@ -200,10 +198,8 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3.text-center > div > div:nth-child(1) > a"]);
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
-        $this->tester->wait(2);
         $this->tester->scrollTo(['id' => 'bulkChange']);
         $this->tester->click(['id' => 'bulkChange']);
-        $this->tester->wait(5);
         $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
 
         return $this;
@@ -213,9 +209,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click(['id' => 'bulkSendMail']);
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
-        $this->tester->wait(1);
         $this->tester->click(['id' => 'bulkChange']);
-        $this->tester->wait(5);
         $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
 
         return $this;
@@ -246,11 +240,9 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click("#search_result > tbody > tr:nth-child($rowNum) a[data-type='status']");
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
-        $this->tester->wait(2);
         $this->tester->click(['id' => 'notificationMail']);
         $this->tester->scrollTo(['id' => 'bulkChange']);
         $this->tester->click(['id' => 'bulkChange']);
-        $this->tester->wait(5);
         $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
 
         return $this;
@@ -271,8 +263,10 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
         return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(4) > span");
     }
 
-    public function 件数変更($num) {
-        $this->tester->selectOption("#form_bulk > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(1) > select", '/admin/order/page/1?page_count=' . $num);
+    public function 件数変更($num)
+    {
+        $this->tester->selectOption('#form_bulk > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(1) > select', '/admin/order/page/1?page_count='.$num);
+
         return $this;
     }
 }

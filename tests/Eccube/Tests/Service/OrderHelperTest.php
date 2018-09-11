@@ -13,49 +13,60 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Entity\Cart;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
 use Eccube\Service\OrderHelper;
 use Eccube\Tests\EccubeTestCase;
 
 class OrderHelperTest extends EccubeTestCase
 {
-    /** @var OrderHelper */
-    private $helper;
+    /**
+     * @var OrderHelper
+     */
+    protected $helper;
 
     public function setUp()
     {
         parent::setUp();
+
         $this->helper = $this->container->get(OrderHelper::class);
     }
 
-    public function testConvertToCart_new_cart()
+    public function testNewInstance()
     {
-        $Order = new Order();
-        self::assertInstanceOf(Cart::class, $this->helper->convertToCart($Order));
+        $this->assertInstanceOf(OrderHelper::class, $this->helper = $this->container->get(OrderHelper::class));
     }
 
-    public function testConvertToCart()
+    /**
+     * 受注の作成日時より会員の更新日時が古い場合は注文者情報を更新しない.
+     */
+    public function testUpdateCustomerInfoOldCustomer()
     {
-        $Product = $this->createProduct('test', 1);
-        $ProductClasses = $Product->getProductClasses()->toArray();
-        $Customer = $this->createCustomer();
-        $Order = $this->createOrderWithProductClasses($Customer, $ProductClasses);
+        $Order = new Order();
+        $Order->setCreateDate((new \DateTime('today')));
 
-        /** @var OrderItem $OrderItem */
-        $OrderItem = $Order->getOrderItems()->get(0);
+        $Customer = new Customer();
+        $Customer->setUpdateDate((new \DateTime('yesterday')));
+        $Customer->setName01('hoge');
 
-        $Cart = $this->helper->convertToCart($Order);
+        $this->helper->updateCustomerInfo($Order, $Customer);
+        self::assertNull($Order->getName01());
+    }
 
-        $CartItems = $Cart->getCartItems();
-        self::assertCount(1, $CartItems);
+    /**
+     * 受注の作成日時より会員の更新日時が新しい場合は注文者情報を更新する.
+     */
+    public function testUpdateCustomerInfoNewCustomer()
+    {
+        $Order = new Order();
+        $Order->setCreateDate((new \DateTime('yesterday')));
 
-        $CartItem = $CartItems[0];
-        self::assertEquals($OrderItem->getProductClass(), $CartItem->getProductClass());
-        self::assertEquals($OrderItem->getPriceIncTax(), $CartItem->getPrice());
-        self::assertEquals($OrderItem->getQuantity(), $CartItem->getQuantity());
+        $Customer = new Customer();
+        $Customer->setUpdateDate((new \DateTime('today')));
+        $Customer->setName01('hoge');
 
-        self::assertEquals($Order->getPreOrderId(), $Cart->getPreOrderId());
+        $this->helper->updateCustomerInfo($Order, $Customer);
+        self::assertNotNull($Order->getName01());
+        self::assertSame($Order->getName01(), $Customer->getName01());
     }
 }

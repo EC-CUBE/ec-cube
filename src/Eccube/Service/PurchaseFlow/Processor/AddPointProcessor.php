@@ -13,24 +13,19 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Entity\BaseInfoRepository;
-use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
-use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Entity\ItemInterface;
+use Eccube\Entity\Order;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 加算ポイント.
  */
-class AddPointProcessor implements ItemHolderProcessor
+class AddPointProcessor extends ItemHolderPostValidator
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
     /**
      * @var BaseInfo
      */
@@ -39,47 +34,90 @@ class AddPointProcessor implements ItemHolderProcessor
     /**
      * AddPointProcessor constructor.
      *
-     * @param EntityManagerInterface $entityManager
      * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(EntityManagerInterface $entityManager, BaseInfoRepository $baseInfoRepository)
+    public function __construct(BaseInfoRepository $baseInfoRepository)
     {
-        $this->entityManager = $entityManager;
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
      * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext     $context
-     *
-     * @return ProcessResult
+     * @param PurchaseContext $context
      */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        $addPoint = 0;
-        foreach ($itemHolder->getItems() as $item) {
-            $rate = $item->getPointRate();
-            if ($rate === null) {
-                $rate = $this->BaseInfo->getBasicPointRate();
-            }
-            $addPoint += $this->priceToAddPoint($rate, $item->getPriceIncTax(), $item->getQuantity());
+        if (!$this->supports($itemHolder)) {
+            return;
         }
-        $itemHolder->setAddPoint($addPoint);
 
-        return ProcessResult::success();
+        // 付与ポイントを計算
+        $addPoint = $this->calculateAddPoint($itemHolder);
+        $itemHolder->setAddPoint($addPoint);
     }
 
     /**
-     * 単価と数量から加算ポイントに換算する.
+     * 付与ポイントを計算.
      *
-     * @param integer $pointRate ポイント付与率(%)
-     * @param integer $price 単価
-     * @param integer $quantity 数量
+     * @param ItemHolderInterface $itemHolder
      *
-     * @return double additional point
+     * @return int
      */
-    protected function priceToAddPoint($pointRate, $price, $quantity)
+    private function calculateAddPoint(ItemHolderInterface $itemHolder)
     {
-        return round($price * ($pointRate / 100)) * $quantity;
+        $basicPointRate = $this->BaseInfo->getBasicPointRate();
+
+        // 明細ごとのポイントを集計
+        $totalPoint = array_reduce($itemHolder->getItems()->toArray(),
+            function ($carry, ItemInterface $item) use ($basicPointRate) {
+                $pointRate = $item->getPointRate();
+                if ($pointRate === null) {
+                    $pointRate = $basicPointRate;
+                }
+
+                // TODO: ポイントは税抜き分しか割引されない、ポイント明細は税抜きのままでいいのか？
+                $point = 0;
+                if ($item->isPoint()) {
+                    $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+                // Only calc point on product
+                } elseif ($item->isProduct()) {
+                    // ポイント = 単価 * ポイント付与率 * 数量
+                    $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+                }
+
+                return $carry + $point;
+            }, 0);
+
+        return $totalPoint < 0 ? 0 : $totalPoint;
+    }
+
+    /**
+     * Processorが実行出来るかどうかを返す.
+     *
+     * 以下を満たす場合に実行できる.
+     *
+     * - ポイント設定が有効であること.
+     * - $itemHolderがOrderエンティティであること.
+     * - 会員のOrderであること.
+     *
+     * @param ItemHolderInterface $itemHolder
+     *
+     * @return bool
+     */
+    private function supports(ItemHolderInterface $itemHolder)
+    {
+        if (!$this->BaseInfo->isOptionPoint()) {
+            return false;
+        }
+
+        if (!$itemHolder instanceof Order) {
+            return false;
+        }
+
+        if (!$itemHolder->getCustomer()) {
+            return false;
+        }
+
+        return true;
     }
 }

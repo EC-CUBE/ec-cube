@@ -13,7 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Customer;
 
-use Eccube\Repository\CustomerAddressRepository;
+use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -21,12 +22,15 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
  */
 class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var Customer
+     */
     protected $Customer;
 
     /**
-     * @var CustomerAddressRepository
+     * @var CustomerAddress
      */
-    protected $customerAddressRepo;
+    protected $CustomerAddress;
 
     /**
      * setUp
@@ -35,7 +39,8 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->customerAddressRepo = $this->container->get(CustomerAddressRepository::class);
+        $this->CustomerAddress = $this->createCustomerAddress($this->Customer);
+        $this->entityManager->clear();
     }
 
     /**
@@ -85,6 +90,23 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $url = $crawler->filter('a')->text();
+        $this->assertTrue($this->client->getResponse()->isRedirect($url));
+    }
+
+    /**
+     * testDeliveryDelete
+     */
+    public function testDeliveryDelete()
+    {
+        $this->client->request(
+            'DELETE',
+            $this->generateUrl('admin_customer_delivery_delete', [
+                'id' => $this->Customer->getId(),
+                'did' => $this->CustomerAddress->getId(),
+            ])
+        );
+
+        $url = $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($url));
     }
 }

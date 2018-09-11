@@ -121,70 +121,88 @@ file that was distributed with this source code.
                     location.reload(true);
                 }
             });
+
+            $('.item_visual').slick({
+                dots: false,
+                arrows: false,
+                responsive: [{
+                    breakpoint: 768,
+                    settings: {
+                        dots: true
+                    }
+                }]
+            });
+
+            $('.slideThumb').on('click', function() {
+                var index = $(this).attr('data-index');
+                $('.item_visual').slick('slickGoTo', index, false);
+            })
         });
     </script>
     <script>
-        $('.add-cart').on('click', function(event) {
-            {% if form.classcategory_id1 is defined %}
-            // 規格1フォームの必須チェック
-            if ($('#classcategory_id1').val() == '__unselected' || $('#classcategory_id1').val() == '') {
-                $('#classcategory_id1')[0].setCustomValidity('{{ 'front.product.product_class_unselected'|trans }}');
-                return true;
-            } else {
-                $('#classcategory_id1')[0].setCustomValidity('');
-            }
-            {% endif %}
-
-            {% if form.classcategory_id2 is defined %}
-            // 規格2フォームの必須チェック
-            if ($('#classcategory_id2').val() == '__unselected' || $('#classcategory_id2').val() == '') {
-                $('#classcategory_id2')[0].setCustomValidity('{{ 'front.product.product_class_unselected'|trans }}');
-                return true;
-            } else {
-                $('#classcategory_id2')[0].setCustomValidity('');
-            }
-            {% endif %}
-
-            // 個数フォームのチェック
-            if ($('#quantity').val() < 1) {
-                $('#quantity')[0].setCustomValidity('{{ 'front.product.invalid_quantity'|trans }}');
-                return true;
-            } else {
-                $('#quantity')[0].setCustomValidity('');
-            }
-
-            event.preventDefault();
-            $form = $('#form1');
-            $.ajax({
-                url: $form.attr('action'),
-                type: $form.attr('method'),
-                data: $form.serialize(),
-                dataType: 'json',
-                beforeSend: function(xhr, settings) {
-                    // Buttonを無効にする
-                    $('.add-cart').prop('disabled', true);
+        $(function() {
+            $('.add-cart').on('click', function(event) {
+                {% if form.classcategory_id1 is defined %}
+                // 規格1フォームの必須チェック
+                if ($('#classcategory_id1').val() == '__unselected' || $('#classcategory_id1').val() == '') {
+                    $('#classcategory_id1')[0].setCustomValidity('{{ 'front.product.product_class_unselected'|trans }}');
+                    return true;
+                } else {
+                    $('#classcategory_id1')[0].setCustomValidity('');
                 }
-            }).done(function(data) {
-                // レスポンス内のメッセージをalertで表示
-                $.each(data.messages, function() {
-                    $('#ec-modal-header').html(this);
-                });
+                {% endif %}
 
-                $('#ec-modal-checkbox').prop('checked', true);
+                {% if form.classcategory_id2 is defined %}
+                // 規格2フォームの必須チェック
+                if ($('#classcategory_id2').val() == '__unselected' || $('#classcategory_id2').val() == '') {
+                    $('#classcategory_id2')[0].setCustomValidity('{{ 'front.product.product_class_unselected'|trans }}');
+                    return true;
+                } else {
+                    $('#classcategory_id2')[0].setCustomValidity('');
+                }
+                {% endif %}
 
-                // カートブロックを更新する
+                // 個数フォームのチェック
+                if ($('#quantity').val() < 1) {
+                    $('#quantity')[0].setCustomValidity('{{ 'front.product.invalid_quantity'|trans }}');
+                    return true;
+                } else {
+                    $('#quantity')[0].setCustomValidity('');
+                }
+
+                event.preventDefault();
+                $form = $('#form1');
                 $.ajax({
-                    url: "{{ url('block_cart') }}",
-                    type: 'GET',
-                    dataType: 'html'
-                }).done(function(html) {
-                    $('.ec-headerRole__cart').html(html);
+                    url: $form.attr('action'),
+                    type: $form.attr('method'),
+                    data: $form.serialize(),
+                    dataType: 'json',
+                    beforeSend: function(xhr, settings) {
+                        // Buttonを無効にする
+                        $('.add-cart').prop('disabled', true);
+                    }
+                }).done(function(data) {
+                    // レスポンス内のメッセージをalertで表示
+                    $.each(data.messages, function() {
+                        $('#ec-modal-header').html(this);
+                    });
+
+                    $('#ec-modal-checkbox').prop('checked', true);
+
+                    // カートブロックを更新する
+                    $.ajax({
+                        url: "{{ url('block_cart') }}",
+                        type: 'GET',
+                        dataType: 'html'
+                    }).done(function(html) {
+                        $('.ec-headerRole__cart').html(html);
+                    });
+                }).fail(function(data) {
+                    alert('{{ 'front.product.add_cart_error'|trans }}');
+                }).always(function(data) {
+                    // Buttonを有効にする
+                    $('.add-cart').prop('disabled', false);
                 });
-            }).fail(function(data) {
-                alert('カートの追加に失敗しました。');
-            }).always(function(data) {
-                // Buttonを有効にする
-                $('.add-cart').prop('disabled', false);
             });
         });
     </script>
@@ -226,7 +244,7 @@ file that was distributed with this source code.
                     {% if Product.hasProductClass -%}
                         <div class="ec-productRole__priceRegular">
                             {% if Product.getPrice01Min is not null and Product.getPrice01IncTaxMin == Product.getPrice01IncTaxMax %}
-                                <span class="ec-productRole__priceRegularPrice">{{ 'front.product.nomal_price'|trans }}：<span class="price01-default">{{ Product.getPrice01IncTaxMin|price }}</span></span>
+                                <span class="ec-productRole__priceRegularPrice">{{ 'front.product.normal_price'|trans }}：<span class="price01-default">{{ Product.getPrice01IncTaxMin|price }}</span></span>
                                 <span class="ec-productRole__priceRegularTax">{{ 'common.tax_include'|trans }}</span>
                             {% elseif Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
                                 <span class="ec-productRole__priceRegularPrice">{{ 'front.product.normal_price'|trans }}：<span class="price01-default">{{ Product.getPrice01IncTaxMin|price }}～ {{ Product.getPrice01IncTaxMax|price }}</span></span>
@@ -235,7 +253,7 @@ file that was distributed with this source code.
                         </div>
                     {% else %}
                         {% if Product.getPrice01Max is not null %}
-                            <span class="ec-productRole__priceRegularPrice">{{ 'front.product.nomal_price'|trans }}：{{ Product.getPrice01IncTaxMin|price }}</span>
+                            <span class="ec-productRole__priceRegularPrice">{{ 'front.product.normal_price'|trans }}：{{ Product.getPrice01IncTaxMin|price }}</span>
                             <span class="ec-productRole__priceRegularTax">{{ 'common.tax_include'|trans }}</span>
                         {% endif %}
                     {% endif %}
@@ -250,7 +268,7 @@ file that was distributed with this source code.
                             {% else %}
                                 <div class="ec-price">
                                     <span class="ec-price__price price02-default">{{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}</span>
-                                    <span class="ec-price__tax">{{ 'common.tax_includel'|trans }}</span>
+                                    <span class="ec-price__tax">{{ 'common.tax_include'|trans }}</span>
                                 </div>
                             {% endif %}
                         {% else %}

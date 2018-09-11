@@ -106,7 +106,7 @@ class NameType extends AbstractType
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'errors.not_contain_spaces',
+                        'message' => 'form_error.not_contain_spaces',
                     ]),
                 ],
             ],
@@ -120,7 +120,7 @@ class NameType extends AbstractType
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'errors.not_contain_spaces',
+                        'message' => 'form_error.not_contain_spaces',
                     ]),
                 ],
             ],

@@ -27,19 +27,19 @@ class TopPage extends AbstractFrontPage
 
     public function 新着情報選択($rowNum)
     {
-        $this->tester->click(['css' => "div.ec-news .ec-newsline:nth-child($rowNum) a"]);
+        $this->tester->click(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsHeading > div.ec-newsRole__newsColumn > div.ec-newsRole__newsClose > a"]);
 
         return $this;
     }
 
     public function 新着情報詳細($rowNum)
     {
-        return $this->tester->grabTextFrom(['css' => "div.ec-news .ec-newsline:nth-child($rowNum) .ec-newsline__description"]);
+        return $this->tester->grabTextFrom(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsDescription"]);
     }
 
     public function 新着情報リンククリック($rowNum)
     {
-        $this->tester->click(['css' => "div.ec-news .ec-newsline:nth-child($rowNum) .ec-newsline__description a"]);
+        $this->tester->click(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsDescription > a"]);
     }
 
     public function カテゴリ選択($categories)

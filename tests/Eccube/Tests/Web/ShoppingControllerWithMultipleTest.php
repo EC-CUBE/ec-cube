@@ -18,6 +18,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * 複数配送指定のテストケース.
@@ -117,22 +118,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $crawler = $this->scenarioConfirm($Customer);
 
         // 完了画面
-        $crawler = $this->scenarioComplete(
-            $Customer,
-            $this->generateUrl('shopping_order'),
-            [
-                // 配送先1
-                [
-                    'Delivery' => 1,
-                    'DeliveryTime' => 1,
-                ],
-                // 配送先2
-                [
-                    'Delivery' => 1,
-                    'DeliveryTime' => 1,
-                ],
-            ]
-        );
+        $crawler = $this->scenarioCheckout($Customer);
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
@@ -218,9 +204,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     ],
                 ],
                 'Payment' => 1,
+                'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),
             ],
         ]);
 
@@ -277,9 +263,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     ],
                 ],
                 'Payment' => 1,
+                'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_multiple_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),
             ],
         ]);
 
@@ -357,10 +343,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     ],
                 ],
                 'Payment' => 1,
+                'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_multiple_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
-            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
         ]);
 
         $multiForm = [
@@ -450,10 +435,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     ],
                 ],
                 'Payment' => 1,
+                'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_multiple_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
-            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
         ]);
 
         $multiForm = [
@@ -541,10 +525,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     ],
                 ],
                 'Payment' => 1,
+                'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_multiple_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
-            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
         ]);
 
         $multiForm = [
@@ -641,10 +624,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     ],
                 ],
                 'Payment' => 1,
+                'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_multiple_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
-            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
         ]);
 
         $multiForm = [
@@ -752,10 +734,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     ],
                 ],
                 'Payment' => 1,
+                'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_multiple_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
-            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
         ]);
 
         $multiForm = [
@@ -865,10 +846,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     ],
                 ],
                 'Payment' => 1,
+                'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_multiple_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
-            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
         ]);
 
         $multiForm = [
@@ -952,10 +932,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     ],
                 ],
                 'Payment' => 1,
+                'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_multiple_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
-            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
         ]);
 
         $arrCustomerAddress = $Customer->getCustomerAddresses();
@@ -1063,10 +1042,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     ],
                 ],
                 'Payment' => 1,
+                'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_multiple_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
-            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
         ]);
 
         // Before multi shipping
@@ -1276,10 +1254,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ]
         );
 
-        $this->scenarioComplete(
-            $Customer,
-            $this->generateUrl('shopping_order')
-        );
+        $this->scenarioCheckout($Customer);
 
         $BaseInfo = $this->baseInfoRepository->get();
         /** @var \Swift_Message[] $Messages */

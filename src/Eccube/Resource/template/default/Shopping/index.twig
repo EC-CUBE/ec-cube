@@ -15,86 +15,39 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         $(function() {
-
-            $('.delivery').on('change', function() {
+            var $redirectCallback = function() {
                 loadingOverlay();
-                $('#shopping_order_mode').val('delivery');
+                $('#shopping_order_redirect_to').val($(this).attr('data-path'));
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-            });
-
-            $('.payment').on('change', function() {
-                loadingOverlay();
-                $('#shopping_order_mode').val('payment');
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-            });
-
-            $('.use_point').on('blur', function() {
-                loadingOverlay();
-                $('#shopping_order_mode').val('use_point');
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-            });
-
-            $('.btn-shipping').click(function() {
-                loadingOverlay();
-                $('#shopping_order_mode').val('shipping_change');
-                $('#shopping_order_param').val($(this).data('id'));
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-            });
-
-            $('.btn-shipping-edit').click(function() {
-                loadingOverlay();
-                $('#shopping_order_mode').val('shipping_edit_change');
-                $('#shopping_order_param').val($(this).data('id'));
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-            });
-
-            $('.btn-shipping-multiple').click(function() {
-                loadingOverlay();
-                $('#shopping_order_mode').val('shipping_multiple_change');
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+            };
+            $('[data-trigger]').each(function() {
+                $(this).on($(this).attr('data-trigger'), $redirectCallback);
             });
 
             {% if is_granted('ROLE_USER') == false %}
-            var ref = [];
-            var name = [];
-            var input = [];
-            var customerin = [];
+            var edit = $('.customer-edit');
+            var hidden = $('.customer-in');
+            var form = $('.customer-form');
 
             $('#customer').click(function() {
-                // ref = $('.customer-name01');
-                var edit = $('.customer-edit');
-                var hidden = $('.customer-in');
-
                 $(edit).each(function(index) {
-                    ref[index] = $(this);
-                });
-                $(hidden).each(function(index) {
-                    customerin[index] = $(this);
-                });
-                $(ref).each(function(index) {
-                    name[index] = $(this).text();
-                });
-                $(name).each(function(index) {
-                    input[index] = $('<input id="edit' + index + '" type="text" />').val(name[index]);
-                });
-                $(input).each(function(index) {
-                    ref[index].empty().append(input[index]);
+                    var name = $(this).text();
+                    var input = $('<input id="edit' + index + '" type="text" />').val(name);
+                    $(form[index]).empty().append(input);
                 });
 
-                $('#customer').prop("disabled", true);
+                $('.non-customer-display').hide();
+                $('.non-customer-edit').show();
                 $('.mod-button').show();
             });
 
             $('#customer-ok').click(function() {
-                $(ref).each(function(index) {
-                    var nameAfter = input[index].val();
-                    ref[index].empty().text(nameAfter);
-                    customerin[index].val(nameAfter);
-                    input[index].remove();
+                $(form).each(function(index) {
+                    $(hidden[index]).val($(form[index]).children('input').val());
                 });
 
                 var postData = {};
-                $('.customer-in').each(function() {
+                $(hidden).each(function() {
                     postData[$(this).attr('name')] = $(this).val();
                 });
 
@@ -107,34 +60,32 @@ file that was distributed with this source code.
                     dataType: 'json'
                 }).done(function(data) {
                     if (data.status == 'OK') {
+                        $(form).each(function(index) {
+                            $(edit[index]).empty().text($(form[index]).children('input').val());
+                            $(form[index]).empty();
+                        });
+
                         // kana field
-                        ref[2].empty().text(data.kana01);
-                        ref[3].empty().text(data.kana02);
+                        $(edit[2]).empty().text(data.kana01);
+                        $(edit[3]).empty().text(data.kana02);
                         $('#customer-kana01').val(data.kana01);
                         $('#customer-kana02').val(data.kana02);
                     }
                 }).fail(function() {
                     alert('更新に失敗しました。入力内容を確認してください。');
-                    $(ref).each(function(index) {
-                        ref[index].empty().text(name[index]);
-                        input[index].remove();
-                    });
                 }).always(function(data) {
                     // overlayを無効
                     loadingOverlay('hide');
                 });
 
-                $('#customer').prop("disabled", false);
+                $('.non-customer-display').show();
+                $('.non-customer-edit').hide();
                 $('.mod-button').hide();
             });
 
             $('#customer-cancel').click(function() {
-                $(ref).each(function(index) {
-                    ref[index].empty().text(name[index]);
-                    input[index].remove();
-                });
-
-                $('#customer').prop("disabled", false);
+                $('.non-customer-display').show();
+                $('.non-customer-edit').hide();
                 $('.mod-button').hide();
             });
             {% endif %}
@@ -188,50 +139,14 @@ file that was distributed with this source code.
                 </li>
             </ul>
         </div>
+
+        <!-- アラートメッセージ -->
+        {{ include('Shopping/alert.twig') }}
     </div>
-
-    {# TODO エラーメッセージ #}
-    <div id="confirm_flow_box" class="row">
-        <div id="confirm_flow_box__body" class="col-md-12">
-            {% for error in app.session.flashbag.get('eccube.front.error') %}
-                <div id="confirm_flow_box__message" class="message">
-                    <p class="errormsg bg-danger">
-                        <svg class="cb cb-warning">
-                            <use xlink:href="#cb-warning"/>
-                        </svg>{{ error|trans|nl2br }}
-                    </p>
-                </div>
-            {% endfor %}
-            {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
-            {% for error in app.session.flashbag.get('eccube.front.request.error') %}
-                {% set idx = loop.index0 %}
-                {% if productStr[idx] is defined %}
-                    <div id="cart_box__message--{{ loop.index }}" class="message">
-                        <p class="errormsg bg-danger">
-                            <svg class="cb cb-warning">
-                                <use xlink:href="#cb-warning"/>
-                            </svg>
-                            {{ error|trans({'%product%':productStr[idx]})|nl2br }}
-                        </p>
-                    </div>
-                {% else %}
-                    <div id="confirm_flow_box__message--{{ loop.index }}" class="message">
-                        <p class="errormsg bg-danger">
-                            <svg class="cb cb-warning">
-                                <use xlink:href="#cb-warning"/>
-                            </svg>{{ error|trans|nl2br }}
-                        </p>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div><!-- /.col -->
-    </div><!-- /.row -->
-
 
     <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
         {{ form_widget(form._token) }}
-        {{ form_widget(form.mode) }}
-        {{ form_widget(form.param) }}
+        {{ form_widget(form.redirect_to) }}
         <div class="ec-orderRole">
             <div class="ec-orderRole__detail">
                 <div class="ec-orderAccount">
@@ -239,35 +154,124 @@ file that was distributed with this source code.
                         <h2>{{ 'front.shopping.customer_info'|trans }}</h2>
                     </div>
                     {% if is_granted('ROLE_USER') == false %}
-                        <div class="ec-orderAccount__change">
+                        <div class="ec-orderAccount__change non-customer-display">
                             <button id="customer" class="ec-inlineBtn" type="button">{{ 'common.change'|trans }}</button>
                         </div>
                     {% endif %}
-                    <div class="ec-orderAccount__account">
+                    <div class="ec-orderAccount__account non-customer-display">
                         <p class="ec-halfInput"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様</p>
                         <p class="ec-halfInput"><span class="customer-edit customer-kana01">{{ Order.kana01 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana02 }}</span></p>
+                        <p class="ec-input"><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
                         <p class="ec-zipInput">〒<span class="customer-edit customer-postal_code">{{ Order.postal_code }}</span></p>
                         <p class="ec-input"><span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
                         <p class="ec-telInput"><span class="customer-edit customer-phone_number">{{ Order.phone_number }}</span></p>
                         <p class="ec-input"><span class="customer-edit customer-email">{{ Order.email }}</span></p>
-                        <p class="ec-input"><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
                     </div>
                     {% if is_granted('ROLE_USER') == false %}
+                        <div class="ec-borderedDefs  non-customer-edit" style="display:none;">
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">{{ 'common.name'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-halfInput">
+                                        <span class="customer-form customer-name01"></span>
+                                        <span class="customer-form customer-name02"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">{{ 'common.kana'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-halfInput">
+                                        <span class="customer-form customer-kana01"></span>
+                                        <span class="customer-form customer-kana02"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label" for="nonmember_company_name">{{ 'common.company_name'|trans }}</label>
+                                </dt>
+                                <dd>
+                                    <div class="ec-halfInput">
+                                        <span class="customer-form customer-company_name"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">{{ 'common.address'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-zipInput">
+                                        <span>{{ 'common.postal_symbol'|trans }}</span>
+                                        <span class="customer-form customer-postal_code"></span>
+                                        <div class="ec-zipInputHelp">
+                                            <div class="ec-zipInputHelp__icon">
+                                                <div class="ec-icon">
+                                                    <img src="{{ asset('assets/icon/question-white.svg') }}" alt="">
+                                                </div>
+                                            </div>
+                                            <a href="http://www.post.japanpost.jp/zipcode/" target="_blank">
+                                                <span>{{ 'common.search_postal_code'|trans }}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ec-select">
+                                        <span class="customer-form customer-address_pref"></span>
+                                    </div>
+                                    <div class="ec-input">
+                                        <span class="customer-form customer-address_addr01"></span>
+                                    </div>
+                                    <div class="ec-input">
+                                        <span class="customer-form customer-address_addr02"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required" for="nonmember_phone_number">{{ 'common.phone_number'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-telInput">
+                                        <span class="customer-form customer-phone_number"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">{{ 'common.mail_address'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-input">
+                                        <span class="customer-form customer-email"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
                         <div class="mod-button" style="display:none;">
-                            <span id="customer-ok"><button type="button" class="ec-inlineBtn">OK</button></span>
+                            <span id="customer-ok"><button type="button" class="ec-inlineBtn">{{ 'common.ok'|trans }}</button></span>
                             <span id="customer-cancel"><button type="button" class="ec-inlineBtn">{{ 'common.cancel'|trans }}</button></span>
                         </div>
                         <input type="hidden" id="customer-name01" class="customer-in" name="customer_name01" value="{{ Order.name01 }}">
                         <input type="hidden" id="customer-name02" class="customer-in" name="customer_name02" value="{{ Order.name02 }}">
                         <input type="hidden" id="customer-kana01" class="customer-in" name="customer_kana01" value="{{ Order.kana01 }}">
                         <input type="hidden" id="customer-kana02" class="customer-in" name="customer_kana02" value="{{ Order.kana02 }}">
+                        <input type="hidden" id="customer-company-name" class="customer-in" name="customer_company_name" value="{{ Order.companyName }}">
                         <input type="hidden" id="customer-postal_code" class="customer-in" name="customer_postal_code" value="{{ Order.postal_code }}">
                         <input type="hidden" id="customer-pref" class="customer-in" name="customer_pref" value="{{ Order.pref }}">
                         <input type="hidden" id="customer-addr01" class="customer-in" name="customer_addr01" value="{{ Order.addr01 }}">
                         <input type="hidden" id="customer-addr02" class="customer-in" name="customer_addr02" value="{{ Order.addr02 }}">
                         <input type="hidden" id="customer-phone_number" class="customer-in" name="customer_phone_number" value="{{ Order.phone_number }}">
                         <input type="hidden" id="customer-email" class="customer-in" name="customer_email" value="{{ Order.email }}">
-                        <input type="hidden" id="customer-company-name" class="customer-in" name="customer_company_name" value="{{ Order.companyName }}">
                     {% endif %}
                 </div>
                 <div class="ec-orderDelivery">
@@ -279,15 +283,15 @@ file that was distributed with this source code.
                         <div class="ec-orderDelivery__title">{{ 'front.shopping.delivery_to'|trans }}{% if Order.multiple %}({{ loop.index }}){% endif %}
                             <div class="ec-orderDelivery__change">
                                 {% if is_granted('ROLE_USER') %}
-                                    <button class="ec-inlineBtn btn-shipping" data-id="{{ shipping.id }}">{{ 'common.change'|trans }}</button>
+                                    <button class="ec-inlineBtn" data-id="{{ shipping.id }}" data-trigger="click" data-path="{{ path('shopping_shipping', {'id': shipping.id}) }}">{{ 'common.change'|trans }}</button>
                                 {% else %}
-                                    <button class="ec-inlineBtn btn-shipping-edit" data-id="{{ shipping.id }}">{{ 'common.change'|trans }}</button>
+                                    <button class="ec-inlineBtn" data-id="{{ shipping.id }}" data-trigger="click" data-path="{{ path('shopping_shipping_edit', {'id': shipping.id}) }}">{{ 'common.change'|trans }}</button>
                                 {% endif %}
                             </div>
                         </div>
                         <div class="ec-orderDelivery__item">
                             <ul class="ec-borderedList">
-                                {% for orderItem in shipping.orderItems %}
+                                {% for orderItem in shipping.productOrderItems %}
                                     <li>
                                         <div class="ec-imageGrid">
                                             <div class="ec-imageGrid__img"><img src="{{ asset((orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product, 'save_image') }}" alt="{{ orderItem.productName }}"></div>
@@ -299,7 +303,7 @@ file that was distributed with this source code.
                                                 {% if orderItem.productClass is not null and orderItem.productClass.classCategory2 %}
                                                     <p>{{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}</p>
                                                 {% endif %}
-                                                <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>{{ 'common.subtotal__with_separator'|trans}}{{ orderItem.totalPrice|price }}</span></p>
+                                                <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>{{ 'common.subtotal__with_separator'|trans }}{{ orderItem.totalPrice|price }}</span></p>
                                             </div>
                                         </div>
                                     </li>
@@ -315,7 +319,7 @@ file that was distributed with this source code.
                             <div class="ec-selects">
                                 <div class="ec-select">
                                     <label>{{ 'front.shopping.delivery_provider'|trans }}</label>
-                                    {{ form_widget(form.Shippings[idx].Delivery, {'attr': {'class': 'delivery form-control'}}) }}
+                                    {{ form_widget(form.Shippings[idx].Delivery, { 'attr': { 'class': 'form-control', 'data-trigger': 'change' }}) }}
                                     {{ form_errors(form.Shippings[idx].Delivery) }}
                                 </div>
                                 <div class="ec-select ec-select__delivery">
@@ -324,7 +328,7 @@ file that was distributed with this source code.
                                     {{ form_errors(form.Shippings[idx].shipping_delivery_date) }}
                                 </div>
                                 <div class="ec-select ec-select__time">
-                                    <label>{{ 'front.shopping.delivery_time'|trans}}</label>
+                                    <label>{{ 'front.shopping.delivery_time'|trans }}</label>
                                     {{ form_widget(form.Shippings[idx].DeliveryTime, {'attr': {'class': 'form-control'}}) }}
                                     {{ form_errors(form.Shippings[idx].DeliveryTime) }}
                                 </div>
@@ -332,35 +336,37 @@ file that was distributed with this source code.
                         </div>
                     {% endfor %}
                     <div class="ec-orderDelivery__edit">
-                        <button type="button" class="ec-inlineBtn btn-shipping-multiple">{{ 'front.shopping.to_multiple'|trans }}</button>
+                        <button type="button" class="ec-inlineBtn" data-trigger="click" data-path="{{ path('shopping_shipping_multiple') }}">{{ 'front.shopping.to_multiple'|trans }}</button>
                     </div>
                 </div>
                 <div class="ec-orderPayment">
                     <div class="ec-rectHeading">
                         <h2>{{ 'front.shopping.payment_info'|trans }}</h2>
                     </div>
-                    <div class="ec-blockRadio">
+                    <div class="ec-radio">
                         {% for key, child in form.Payment %}
-                            {% set Payment = form.Payment.vars.choices[key].data %}
-                            <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}</label>
-                            {% if Payment.payment_image is not null %}
-                                <img src="{{ asset(Payment.payment_image, 'save_image') }}">
-                            {% endif %}
+                            <div style="display: block;">
+                                {% set Payment = form.Payment.vars.choices[key].data %}
+                                {{ form_widget(child, { 'attr': { 'data-trigger': 'change' }}) }}
+                                {% if Payment.payment_image is not null %}
+                                    <p><img src="{{ asset(Payment.payment_image, 'save_image') }}"></p>
+                                {% endif %}
+                            </div>
                         {% endfor %}
-                        {{ form_errors(form.Payment) }}
                     </div>
+                    <div class="ec-input {{ has_errors(form.Payment) ? ' error' }}">{{ form_errors(form.Payment) }}</div>
                 </div>
                 {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                     <div class="ec-orderPayment">
                         <div class="ec-rectHeading">
                             <h2>{{ 'front.shopping.point_info'|trans }}</h2>
-                            <p>{{ 'front.shopping.available_point'|trans({ '%point%': Order.Customer.Point }) }}</p>
-                            {{ form_widget(form.use_point, {'attr': {'class': 'form-control use_point'}}) }}
+                        </div>
+                        <div class="ec-input {{ has_errors(form.use_point) ? ' error' }}">
+                            <p>{{ 'front.shopping.available_point'|trans({ '%point%': Order.Customer.Point|number_format }) }}</p>
+                            {{ form_widget(form.use_point, { 'attr': { 'type': 'text', 'class': 'form-control', 'data-trigger': 'change' }}) }}
                             {{ form_errors(form.use_point) }}
                         </div>
                     </div>
-                {% else %}
-                    {{ form_widget(form.use_point, {'type': 'hidden'}) }}
                 {% endif %}
                 <div class="ec-orderConfirm">
                     <div class="ec-rectHeading">
@@ -388,9 +394,19 @@ file that was distributed with this source code.
                     </dl>
                     <dl class="ec-totalBox__spec">
                         <dt>{{ 'common.discount'|trans }}</dt>
-                        <dd>{{ (0 - Order.discount)|price}}</dd>
+                        <dd>{{ (0 - Order.discount)|price }}</dd>
                     </dl>
                     <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                    {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                        <dl class="ec-totalBox__spec">
+                            <dt>{{ 'front.shopping.use_point'|trans }}</dt>
+                            <dd>{{ Order.UsePoint|number_format }} pt</dd>
+                        </dl>
+                        <dl class="ec-totalBox__spec">
+                            <dt><span class="ec-font-bold">{{ 'front.shopping.add_point'|trans }}</span></dt>
+                            <dd><span class="ec-font-bold">{{ Order.AddPoint|number_format }} pt</span></dd>
+                        </dl>
+                    {% endif %}
                     <div class="ec-totalBox__btn">
                         <button type="submit" class="ec-blockBtn--action">{{ 'front.shopping.go_to_confirm'|trans }}</button>
                         <a href="{{ url("cart") }}" class="ec-blockBtn--cancel">{{ 'front.shopping.back_to_cart'|trans }}</a>

@@ -426,8 +426,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         }
 
         /**
-         * Set calcRule.
-         *
+         * Set roundingType.
          *
          * @return TaxRule
          */
@@ -439,7 +438,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         }
 
         /**
-         * Get calcRule.
+         * Get roundingType.
          *
          * @return \Eccube\Entity\Master\RoundingType|null
          */

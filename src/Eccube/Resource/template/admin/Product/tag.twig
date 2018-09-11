@@ -137,7 +137,7 @@ file that was distributed with this source code.
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
-                        <div class="card rounded border-0 mb-2">
+                        <div class="card rounded border-0">
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
                                     <form role="form" class="form-row" method="post" action="{{ url('admin_product_tag') }}">
@@ -153,25 +153,32 @@ file that was distributed with this source code.
                                         </div>
                                     </form>
                                 </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-auto"><strong>&nbsp;</strong></div>
+                                        <div class="col-auto"><strong>{{ 'admin.common.id'|trans }}</strong></div>
+                                        <div class="col-1"><strong>{{ 'admin.product.tag'|trans }}</strong></div>
+                                    </div>
+                                </li>
                                 {% for Tag in Tags %}
                                     <li id="ex-tag-{{ Tag.id }}" class="list-group-item sortable-item" data-id="{{ Tag.id }}"
                                         data-sort-no="{{ Tag.sortNo }}">
                                         <div class="row justify-content-around mode-view">
-                                            <div class="col-auto d-flex align-items-center"><i
-                                                        class="fa fa-bars text-ec-gray"></i></div>
+                                            <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
+                                            <div class="col-auto d-flex align-items-center">{{ Tag.id }}</div>
                                             <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a>
                                             </div>
                                             <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon mr-3 action-up{% if loop.first %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 action-up{% if loop.first %} disabled{% endif %}" href="#" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-down{% if loop.last %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 action-down{% if loop.last %} disabled{% endif %}" href="#" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 action-edit" data-tooltip="true" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                <div class="d-inline-block mr-2" data-tooltip="true"
                                                      data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                     <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
                                                        data-url="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"

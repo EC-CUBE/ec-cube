@@ -9,7 +9,6 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
-
 {% set menus = ['order', 'order_master'] %}
 
 {% block title %}{{ 'admin.order.order_list'|trans }}{% endblock %}
@@ -18,31 +17,49 @@ file that was distributed with this source code.
 {% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/tempusdominus-bootstrap-4.min.css', 'admin') }}">
+    <style type="text/css">
+        .datepicker-days th.dow:first-child,
+        .datepicker-days td:first-child {
+            color: #f00;
+        }
+
+        .datepicker-days th.dow:last-child,
+        .datepicker-days td:last-child {
+            color: #00f;
+        }
+    </style>
 {% endblock stylesheet %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
     <script>
         $(function() {
-            {# TODO: Should move js logic into .js file instead of .html file #}
-            var inputDate = document.createElement('input');
-            inputDate.setAttribute('type', 'date');
-            if (inputDate.type !== 'date') {
-                $('input[id$=_date_start]').datetimepicker({
-                    locale: 'ja',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
+            if ($('[type="date"]').prop('type') != 'date') {
+                // input type属性でdateが利用できるかどうか(カレンダー表示できないブラウザ対応)
+                $.when(
+                    $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
+                    $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
+                    $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
+                ).done(function() {
+                    $('input[id$=_date_start]').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-                $('input[id$=_date_end]').datetimepicker({
-                    locale: 'ja',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
+                    $('input[id$=_date_end]').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
                 });
             }
 
@@ -177,13 +194,13 @@ file that was distributed with this source code.
                     <div class="col-12">
                         {{ form_widget(searchForm._token) }}
                         <div>
-                            <label class="col-form-label">{{ 'admin.order.multi_search_label'|trans }}</label>
+                            <label class="col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.multi_search_label'|trans }}">{{ 'admin.order.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
-                                <p class="col-form-label">{{ 'admin.order.order_status'|trans }}</p>
+                                <label class="col-form-label"  data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.order_search_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                 <div id="admin_search_order_status">
                                     {% set statusForm = searchForm.status %}
                                     <!-- 各対応状況の件数を表示する -->
@@ -392,10 +409,6 @@ file that was distributed with this source code.
                         {% endif %}
                     </div>
                 {% endfor %}
-
-                <div class="d-block text-center">
-                    <button class="btn btn-ec-regular" type="reset">{{ 'admin.common.search_clear'|trans }}</button>
-                </div>
             </div>
             <div class="c-outsideBlock__contents">
                 <div class="row">
@@ -427,12 +440,12 @@ file that was distributed with this source code.
                             <div class="col-7">
                                 <div class="row justify-content-between">
                                     <div class="col-auto d-none btn-bulk-wrapper">
-                                        <label class="mr-2">{{ 'admin.common.bulk_actions'|trans }}</label>
+                                        <label class="mr-2" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.bulk_actions'|trans }}">{{ 'admin.common.bulk_actions'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                         <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-type="mail" data-bulk-update="true">
                                             {{ 'admin.order.send_mail'|trans }}
                                         </button>
                                         <button type="button" id="bulkExportPdf" class="btn btn-ec-regular mr-2">{{ 'admin.order.output_delivery_note_short'|trans }}</button>
-                                        <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.common.delete'|trans }}</button>
+                                        {# TODO 削除処理は将来バージョンで対応 <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.common.delete'|trans }}</button> #}
                                     </div>
                                     <div class="col d-none btn-bulk-wrapper">
                                         <div class="d-inline-block mr-2">
@@ -514,19 +527,6 @@ file that was distributed with this source code.
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {# TODO IN_PROGRESS と RETURNED の色を決める #}
-                                    {% set cssClassStatus = {
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::BACK_ORDER')): "badge-ec-red",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::CANCEL')): "badge-ec-glay",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')): "badge-ec-yellow",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::IN_PROGRESS')): "badge-ec-yellow",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::RETURNED')): "badge-ec-yellow"
-                                    } %}
                                     {% for Order in pagination %}
                                         {% for Shipping in Order.Shippings %}
                                             <tr>
@@ -544,7 +544,7 @@ file that was distributed with this source code.
                                                     {{ Order.payment_method }}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
+                                                    <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
                                                 </td>
                                                 <td class="align-middle text-right">
                                                     {{ Order.payment_total|price }}<br>
@@ -552,11 +552,11 @@ file that was distributed with this source code.
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     {% if Order.message is not empty %}
-                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_message" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.message }}" aria-describedby="tooltip819464">
+                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_message" data-tooltip="true" data-placement="top" title="" data-original-title="{{ Order.message }}" aria-describedby="tooltip819464">
                                                             <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
                                                     {% elseif Order.note is not empty %}
-                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
+                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-tooltip="true" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
                                                             <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
                                                     {% endif %}
@@ -575,7 +575,7 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                     {% if Shipping.mail_send_date %}
                                                         {% set send_mail_date = Shipping.mail_send_date|date_min %}
-                                                        <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{ 'admin.order.shipping_mail__completed'|trans({'%date%': send_mail_date}) }}"></i>
+                                                        <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-tooltip="true" data-placement="top" data-original-title="{{ 'admin.order.shipping_mail__completed'|trans({'%date%': send_mail_date}) }}"></i>
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle text-center">
@@ -592,28 +592,29 @@ file that was distributed with this source code.
                                                     {{ Shipping.name01 ~ Shipping.name02 }}<br>
                                                     {{ Shipping.Pref.name }}
                                                 </td>
-                                                <td class="align-middle pr-3 text-center">
-                                                    <div class="row justify-content-end">
-                                                        <div class="col-auto text-center">
+                                                <td class="align-middle pr-3">
+                                                    <div class="text-right">
+                                                        <div class="px-1 d-inline-block">
                                                             <a class="btn btn-ec-actionIcon confirmationModal"
                                                                data-type="mail" data-bulk-update="false"
                                                                data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
-                                                               data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}">
+                                                               data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
+                                                               data-tooltip="true" data-placement="top" title="{{ 'admin.order.shipping_mail_send'|trans }}">
                                                                 <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
-                                                        <div class="col-auto text-center">
-                                                            <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.output_delivery_note_short'|trans }}">
+                                                        <div class="px-1 d-inline-block">
+                                                            <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-tooltip="true" data-placement="top" title="{{ 'admin.order.output_delivery_note_short'|trans }}">
                                                                 <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
-                                                        <div class="col-auto text-center">
+                                                        <div class="px-1 d-inline-block">
                                                             <a class="btn btn-ec-actionIcon confirmationModal" href="javascript:;"
                                                                data-id="{{ Shipping.id }}" data-type="status" data-bulk-update="false"
                                                                data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
                                                                data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
                                                                data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
-                                                               data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
+                                                               data-tooltip="true" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
                                                                 <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
@@ -654,14 +655,14 @@ file that was distributed with this source code.
 
                 <!-- 出荷済にする確認モーダル -->
                 <div class="modal fade" id="sentUpdateModal" tabindex="-1" role="dialog" aria-labelledby="sentUpdateModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title font-weight-bold"><!--confirmationModal_js.twig--></h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body">
-                                <p class="mb-4"></p>
+                                <p class="modal-message"></p>
                                 <ul id="bulkErrors"></ul>
                                 <div id="bulk-options">
                                     <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.order.to_shipped__confirm_send_mail'|trans }}</div>

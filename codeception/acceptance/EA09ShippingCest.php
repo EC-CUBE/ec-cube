@@ -48,6 +48,7 @@ class EA09ShippingCest
         // 対応中ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $newOrders */
         $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::IN_PROGRESS);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
@@ -105,6 +106,7 @@ class EA09ShippingCest
         // 対応中ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $newOrders */
         $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::IN_PROGRESS);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
@@ -123,7 +125,7 @@ class EA09ShippingCest
         $ShippingRegisterPage = ShippingEditPage::at($I);
         $ShippingRegisterPage
             ->出荷先を追加()
-            ->商品検索('パーコレーター')
+            ->商品検索('チェリーアイスサンド')
             ->商品検索結果_選択(1);
 
         /* 正常系 */
@@ -295,12 +297,12 @@ class EA09ShippingCest
                 ->入力_CSVファイル('shipping.csv')
                 ->CSVアップロード();
 
-            $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[0]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
-                    '#upload_file_box__upload_error--1');
-            $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[1]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
-                    '#upload_file_box__upload_error--2');
-            $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[2]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
-                    '#upload_file_box__upload_error--3');
+            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[0]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+                    '#upload-form > div:nth-child(4)');
+            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[1]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+                    '#upload-form > div:nth-child(5)');
+            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[2]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+                    '#upload-form > div:nth-child(6)');
         } finally {
             if (file_exists($csvFileName)) {
                 unlink($csvFileName);

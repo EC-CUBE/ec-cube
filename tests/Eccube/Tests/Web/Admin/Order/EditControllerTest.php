@@ -252,7 +252,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $formData = $this->createFormData($Customer, $this->Product);
-        $formData['OrderStatus'] = 8; // 購入処理中で受注を登録する
+        $formData['OrderStatus'] = OrderStatus::PROCESSING; // 購入処理中で受注を登録する
         // 管理画面から受注登録
         $this->client->request(
             'POST',
@@ -428,5 +428,33 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->expected = $this->Customer->getBirth();
         $this->actual = $SavedOrder->getBirth();
         $this->verify('会員の誕生日が保存されている');
+    }
+
+    public function testMailNoRFC()
+    {
+        $formData = $this->createFormData($this->Customer, $this->Product);
+        // RFCに準拠していないメールアドレスを設定
+        $formData['email'] = 'aa..@example.com';
+
+        unset($formData['OrderStatus']);
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_new'),
+            [
+                'order' => $formData,
+                'mode' => 'register',
+            ]
+        );
+
+        $url = $crawler->filter('a')->text();
+        $this->assertTrue($this->client->getResponse()->isRedirect($url));
+
+        $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
+        $SavedOrder = $this->orderRepository->find($savedOderId);
+
+        $this->assertNotNull($SavedOrder);
+        $this->expected = $SavedOrder->getEmail();
+        $this->actual = $formData['email'];
+        $this->verify();
     }
 }

@@ -21,7 +21,6 @@ use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
@@ -498,19 +497,16 @@ class Generator
         $Product->addProductClass($ProductClass);
 
         $Categories = $this->categoryRepository->findAll();
-        $i = 0;
         foreach ($Categories as $Category) {
             $ProductCategory = new ProductCategory();
             $ProductCategory
                 ->setCategory($Category)
                 ->setProduct($Product)
                 ->setCategoryId($Category->getId())
-                ->setProductId($Product->getId())
-                ->setSortNo($i);
+                ->setProductId($Product->getId());
             $this->entityManager->persist($ProductCategory);
             $this->entityManager->flush($ProductCategory);
             $Product->addProductCategory($ProductCategory);
-            $i++;
         }
 
         $this->entityManager->flush($Product);
@@ -552,8 +548,9 @@ class Generator
             ->setNote($faker->realText())
             ->setAddPoint(0)    // TODO
             ->setUsePoint(0)    // TODO
-            ->setOrderNo(sha1(StringUtil::random()))
+            ->setOrderNo($faker->numberBetween(100, 999).'-'.$faker->numberBetween(1000000, 9999999).'-'.$faker->numberBetween(1000000, 9999999))
         ;
+
         $this->entityManager->persist($Order);
         $this->entityManager->flush($Order);
         if (!is_object($Delivery)) {
@@ -586,8 +583,6 @@ class Generator
             ->setOrder($Order)
             ->setPref($Pref)
             ->setDelivery($Delivery)
-            ->setFeeId($DeliveryFee->getId())
-            ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
 
         $Order->addShipping($Shipping);
@@ -599,7 +594,7 @@ class Generator
             $Product = $this->createProduct();
             $ProductClasses = $Product->getProductClasses();
         }
-        $Taxion = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
+        $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
         $NonTaxable = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
         $TaxExclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
         $TaxInclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
@@ -623,7 +618,7 @@ class Generator
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($quantity)
-                ->setTaxType($Taxion) // 課税
+                ->setTaxType($Taxation) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
             ;
@@ -643,14 +638,13 @@ class Generator
             $Order->addOrderItem($OrderItem);
         }
 
-        $shipment_delivery_fee = $Shipping->getShippingDeliveryFee();
         $OrderItemDeliveryFee = new OrderItem();
         $OrderItemDeliveryFee->setShipping($Shipping)
             ->setOrder($Order)
             ->setProductName('送料')
-            ->setPrice($shipment_delivery_fee)
+            ->setPrice($fee)
             ->setQuantity(1)
-            ->setTaxType($Taxion) // 課税
+            ->setTaxType($Taxation) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDeliveryFee); // 送料明細
         $Shipping->addOrderItem($OrderItemDeliveryFee);
@@ -664,7 +658,7 @@ class Generator
             ->setProductName('手数料')
             ->setPrice($charge)
             ->setQuantity(1)
-            ->setTaxType($Taxion) // 課税
+            ->setTaxType($Taxation) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemCharge); // 手数料明細
         // $Shipping->addOrderItem($OrderItemCharge); // Shipping には登録しない
@@ -767,7 +761,8 @@ class Generator
             $DeliveryTime
                 ->setDelivery($Delivery)
                 ->setDeliveryTime($faker->word)
-                ->setSortNo($i + 1);
+                ->setSortNo($i + 1)
+                ->setVisible(true);
             $this->entityManager->persist($DeliveryTime);
             $this->entityManager->flush($DeliveryTime);
             $Delivery->addDeliveryTime($DeliveryTime);
@@ -799,9 +794,8 @@ class Generator
     public function createPage()
     {
         $faker = $this->getFaker();
-        $DeviceType = $this->entityManager->find(DeviceType::class, DeviceType::DEVICE_TYPE_PC);
         /** @var Page $Page */
-        $Page = $this->pageRepository->newPage($DeviceType);
+        $Page = $this->pageRepository->newPage();
         $Page
             ->setName($faker->word)
             ->setUrl($faker->word)

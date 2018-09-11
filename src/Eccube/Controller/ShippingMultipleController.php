@@ -16,7 +16,6 @@ namespace Eccube\Controller;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -27,10 +26,9 @@ use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
-use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\ShoppingService;
+use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,9 +47,9 @@ class ShippingMultipleController extends AbstractShoppingController
     protected $orderItemTypeRepository;
 
     /**
-     * @var ShoppingService
+     * @var OrderHelper
      */
-    protected $shoppingService;
+    protected $orderHelper;
 
     /**
      * @var CartService
@@ -69,34 +67,28 @@ class ShippingMultipleController extends AbstractShoppingController
     protected $orderRepository;
 
     /**
-     * @var OrderHelper
-     */
-    protected $orderHelper;
-
-    /**
      * ShippingMultipleController constructor.
      *
      * @param PrefRepository $prefRepository
+     * @param OrderRepository $orderRepository
      * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param ShoppingService $shoppingService
-     * @param CartService $cartService ,
      * @param OrderHelper $orderHelper
+     * @param CartService $cartService
+     * @param PurchaseFlow $cartPurchaseFlow
      */
     public function __construct(
         PrefRepository $prefRepository,
         OrderRepository $orderRepository,
         OrderItemTypeRepository $orderItemTypeRepository,
-        ShoppingService $shoppingService,
-        CartService $cartService,
         OrderHelper $orderHelper,
+        CartService $cartService,
         PurchaseFlow $cartPurchaseFlow
     ) {
         $this->prefRepository = $prefRepository;
         $this->orderRepository = $orderRepository;
         $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->shoppingService = $shoppingService;
-        $this->cartService = $cartService;
         $this->orderHelper = $orderHelper;
+        $this->cartService = $cartService;
         $this->cartPurchaseFlow = $cartPurchaseFlow;
     }
 
@@ -108,18 +100,15 @@ class ShippingMultipleController extends AbstractShoppingController
      */
     public function index(Request $request)
     {
-        // カートチェック
-        $response = $this->forwardToRoute('shopping_check_to_cart');
-        if ($response->isRedirection() || $response->getContent()) {
-            return $response;
+        // ログイン状態のチェック.
+        if ($this->orderHelper->isLoginRequired()) {
+            return $this->redirectToRoute('shopping_login');
         }
 
-        /** @var \Eccube\Entity\Order $Order */
-        $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
+        // 受注の存在チェック
+        $preOrderId = $this->cartService->getPreOrderId();
+        $Order = $this->orderHelper->getPurchaseProcessingOrder($preOrderId);
         if (!$Order) {
-            log_info('購入処理中の受注情報がないため購入エラー');
-            $this->addError('front.shopping.order_error');
-
             return $this->redirectToRoute('shopping_error');
         }
 
@@ -179,9 +168,9 @@ class ShippingMultipleController extends AbstractShoppingController
 
             // フォームの入力から、送り先ごとに商品の数量を集計する
             $arrOrderItemTemp = [];
-            foreach ($data as $mulitples) {
-                $OrderItem = $mulitples->getData();
-                foreach ($mulitples as $items) {
+            foreach ($data as $multiples) {
+                $OrderItem = $multiples->getData();
+                foreach ($multiples as $items) {
                     foreach ($items as $item) {
                         $CustomerAddress = $item['customer_address']->getData();
                         $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
@@ -226,13 +215,13 @@ class ShippingMultipleController extends AbstractShoppingController
 
             // お届け先のリストを作成する
             $ShippingList = [];
-            foreach ($data as $mulitples) {
-                $OrderItem = $mulitples->getData();
+            foreach ($data as $multiples) {
+                $OrderItem = $multiples->getData();
                 $ProductClass = $OrderItem->getProductClass();
                 $Delivery = $OrderItem->getShipping()->getDelivery();
                 $saleTypeId = $ProductClass->getSaleType()->getId();
 
-                foreach ($mulitples as $items) {
+                foreach ($multiples as $items) {
                     foreach ($items as $item) {
                         $CustomerAddress = $item['customer_address']->getData();
                         $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
@@ -260,15 +249,15 @@ class ShippingMultipleController extends AbstractShoppingController
             $ProductOrderType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
 
             // お届け先に、配送商品の情報(OrderItem)を関連付ける
-            foreach ($data as $mulitples) {
+            foreach ($data as $multiples) {
                 /** @var OrderItem $OrderItem */
-                $OrderItem = $mulitples->getData();
+                $OrderItem = $multiples->getData();
                 $ProductClass = $OrderItem->getProductClass();
                 $Product = $OrderItem->getProduct();
                 $saleTypeId = $ProductClass->getSaleType()->getId();
                 $productClassId = $ProductClass->getId();
 
-                foreach ($mulitples as $items) {
+                foreach ($multiples as $items) {
                     foreach ($items as $item) {
                         $CustomerAddress = $item['customer_address']->getData();
                         $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
@@ -316,17 +305,9 @@ class ShippingMultipleController extends AbstractShoppingController
             }
 
             // 合計金額の再計算
-            $flowResult = $this->validatePurchaseFlow($Order);
-            if ($flowResult->hasWarning()) {
-                return [
-                    'form' => $form->createView(),
-                    'OrderItems' => $OrderItemsForFormBuilder,
-                    'compItemQuantities' => $ItemQuantitiesByClassId,
-                    'errors' => $errors,
-                ];
-            }
+            $flowResult = $this->executePurchaseFlow($Order, false);
             if ($flowResult->hasError()) {
-                return $this->redirectToRoute('cart');
+                return $this->redirectToRoute('shopping_error');
             }
 
             $this->entityManager->flush();
@@ -354,15 +335,17 @@ class ShippingMultipleController extends AbstractShoppingController
                 }
             }
             $Cart = $this->cartService->getCart();
-            foreach ($Cart->getCartItems() as $CartItem) {
-                $id = $CartItem->getProductClass()->getId();
-                if (isset($quantityByProductClass[$id])) {
-                    $CartItem->setQuantity($quantityByProductClass[$id]);
+            if ($Cart) {
+                foreach ($Cart->getCartItems() as $CartItem) {
+                    $id = $CartItem->getProductClass()->getId();
+                    if (isset($quantityByProductClass[$id])) {
+                        $CartItem->setQuantity($quantityByProductClass[$id]);
+                    }
                 }
-            }
 
-            $this->cartPurchaseFlow->validate($Cart, new PurchaseContext());
-            $this->cartService->save();
+                $this->cartPurchaseFlow->validate($Cart, new PurchaseContext());
+                $this->cartService->save();
+            }
 
             return $this->redirectToRoute('shopping');
         }
@@ -378,15 +361,24 @@ class ShippingMultipleController extends AbstractShoppingController
     /**
      * 複数配送設定時の新規お届け先の設定
      *
+     * 会員ログイン時は会員のお届け先に追加する
+     * 非会員時はセッションに追加する
+     *
      * @Route("/shopping/shipping_multiple_edit", name="shopping_shipping_multiple_edit")
      * @Template("Shopping/shipping_multiple_edit.twig")
      */
     public function shippingMultipleEdit(Request $request)
     {
-        // カートチェック
-        $response = $this->forwardToRoute('shopping_check_to_cart');
-        if ($response->isRedirection() || $response->getContent()) {
-            return $response;
+        // ログイン状態のチェック.
+        if ($this->orderHelper->isLoginRequired()) {
+            return $this->redirectToRoute('shopping_login');
+        }
+
+        // 受注の存在チェック
+        $preOrderId = $this->cartService->getPreOrderId();
+        $Order = $this->orderHelper->getPurchaseProcessingOrder($preOrderId);
+        if (!$Order) {
+            return $this->redirectToRoute('shopping_error');
         }
 
         /** @var Customer $Customer */
@@ -428,10 +420,10 @@ class ShippingMultipleController extends AbstractShoppingController
                 $this->entityManager->flush($CustomerAddress);
             } else {
                 // 非会員用のセッションに追加
-                $CustomerAddresses = $this->session->get($this->sessionCustomerAddressKey);
+                $CustomerAddresses = $this->session->get(OrderHelper::SESSION_NON_MEMBER_ADDRESSES);
                 $CustomerAddresses = unserialize($CustomerAddresses);
                 $CustomerAddresses[] = $CustomerAddress;
-                $this->session->set($this->sessionCustomerAddressKey, serialize($CustomerAddresses));
+                $this->session->set(OrderHelper::SESSION_NON_MEMBER_ADDRESSES, serialize($CustomerAddresses));
             }
 
             $event = new EventArgs(

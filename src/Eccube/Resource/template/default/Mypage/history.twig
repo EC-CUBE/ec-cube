@@ -14,19 +14,6 @@ file that was distributed with this source code.
 
 {% set body_class = 'mypage' %}
 
-{% block javascript %}
-    <script>
-        $(function () {
-            $(".title").on("click", function () {
-                $(this).next().slideToggle();
-            });
-            $(".close").on("click", function () {
-                $(this).parent().slideToggle();
-            });
-        });
-    </script>
-{% endblock %}
-
 {% block main %}
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
@@ -120,7 +107,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{ 'front.mypage.delivery_provider'|trans }} :</dt>
-                            <dd>{{ Shipping.shipping_delivery_name }}{{ Shipping.shipping_delivery_fee ? '( +' ~ Shipping.shipping_delivery_fee|price ~ ')' : '' }}</dd>
+                            <dd>{{ Shipping.shipping_delivery_name }}</dd>
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{ 'front.mypage.delivery_date'|trans }} :</dt>
@@ -142,7 +129,7 @@ file that was distributed with this source code.
                     <div class="ec-rectHeading">
                         <h2>{{ 'front.mypage.message'|trans }}</h2>
                     </div>
-                    <p>{{ Order.message|default('')|nl2br }}</p>
+                    <p>{{ Order.message|nl2br|default('front.mypage.message_not_found'|trans) }}</p>
                 </div>
                 <div class="ec-orderMails">
                     <div class="ec-rectHeading">
@@ -152,14 +139,11 @@ file that was distributed with this source code.
                         <div class="ec-orderMail">
                             <div class="ec-orderMail__time">{{ MailHistory.send_date|date_sec }}</div>
                             <div class="ec-orderMail__link"><a>{{ MailHistory.mail_subject }}</a></div>
-                            <pre class="ec-orderMail__body" style="display: none;">
-                                    {{ MailHistory.mail_body|nl2br }}
-                                <p class="ec-orderMail__close"><a>{{ 'common.close'|trans }}</a></p></pre>
+                            <div class="ec-orderMail__body">{{ MailHistory.mail_body|nl2br }}<p class="ec-orderMail__close"><a>{{ 'common.close'|trans }}</a></p></div>
                         </div>
                     {% else %}
                         <p class="ec-reportDescription">{{ 'front.mypage.mail_not_found'|trans }}</p>
                     {% endfor %}
-                    <a href="{{ url('mypage') }}" class="ec-inlineBtn">{{ 'common.back'|trans }}</a>
                 </div>
             </div>
             <div class="ec-orderRole__summary">
@@ -178,17 +162,18 @@ file that was distributed with this source code.
                     </dl>
                     {% if Order.discount > 0 %}
                         <dl class="ec-totalBox__spec">
-                            <dt>{{ 'common.discount'|price }}</dt>
+                            <dt>{{ 'common.discount'|trans }}</dt>
                             <dd>{{ (0 - Order.discount)|price }}</dd>
                         </dl>
                     {% endif %}
                     <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span
                                 class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span
                                 class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
-                    <a href="{{ url('mypage_order', {'order_no': Order.order_no }) }}"
+                    {% if stockOrder %}
+                        <a href="{{ url('mypage_order', {'order_no': Order.order_no }) }}"
                        class="ec-blockBtn--action load-overlay" {{ csrf_token_for_anchor() }} data-method="put"
                        data-confirm="false">{{ 'front.mypage.reorder'|trans }}</a>
-
+                    {% endif %}
                 </div>
                 {% if remessage %}
                     <p class="ec-color-accent">
@@ -196,6 +181,9 @@ file that was distributed with this source code.
                     </p>
                 {% endif %}
             </div>
+        </div>
+        <div class="ec-role">
+            <a href="{{ url('mypage') }}" class="ec-inlineBtn">{{ 'common.back'|trans }}</a>
         </div>
     </div>
 {% endblock %}

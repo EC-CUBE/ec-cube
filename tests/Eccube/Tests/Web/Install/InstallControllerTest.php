@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
- * @group cache-clear
+ * @group cache-clear-install
  */
 class InstallControllerTest extends AbstractWebTestCase
 {
