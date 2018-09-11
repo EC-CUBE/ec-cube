@@ -50,7 +50,7 @@ file that was distributed with this source code.
                                     <div class="row mb-2">
                                         <div class="col-3">
                                             <div class="d-inline-block" data-tooltip="true" data-placement="top"
-                                                 title="Tooltip">
+                                                 title="{{ 'tooltip.customer.customer_id'|trans }}">
                                                 <span>{{ 'admin.customer.customer_id'|trans }}</span>
                                                 <i class="fa fa-question-circle fa-lg ml-1"></i>
                                             </div>
@@ -259,7 +259,7 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-8">
                                         <div class="d-inline-block" data-tooltip="true" data-placement="top"
-                                             title="Tooltip">
+                                             title="{{ 'tooltip.customer.customer_address'|trans }}">
                                         <span class="card-title">
                                             {{ 'admin.customer.customer_address'|trans }}
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
@@ -282,6 +282,7 @@ file that was distributed with this source code.
                                             <th class="align-middle pt-2 pb-2">{{ 'admin.common.name'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2">{{ 'admin.common.address'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.common.phone_number'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pr-3"></th>
                                             </thead>
                                             <tbody>
                                             {% for CustomerAddress in Customer.CustomerAddresses %}
@@ -296,6 +297,40 @@ file that was distributed with this source code.
                                                     </td>
                                                     <td class="align-middle">
                                                         {{ CustomerAddress.phone_number }}
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-center" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal"
+                                                               data-target="#discontinuance-{{ CustomerAddress.id }}">
+                                                                <i class="fa fa-close text-secondary"
+                                                                   aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="modal fade" id="discontinuance-{{ CustomerAddress.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title font-weight-bold">
+                                                                            {{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body text-left">
+                                                                        <p class="text-left">
+                                                                            {{ 'admin.common.delete_modal__message'|trans({ '%name%' : 'admin.common.postal_symbol'|trans ~ CustomerAddress.postal_code ~ CustomerAddress.Pref ~ ' ' ~ CustomerAddress.name01 ~ CustomerAddress.name02 }) }}</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                                            {{ 'admin.common.cancel'|trans }}
+                                                                        </button>
+                                                                        <a href="{{ url('admin_customer_delivery_delete', {'id' : Customer.id, 'did':  CustomerAddress.id}) }}" class="btn btn-ec-delete"{{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
+                                                                            {{ 'admin.common.delete'|trans }}
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -337,7 +372,7 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-8">
                                         <div class="d-inline-block" data-tooltip="true" data-placement="top"
-                                             title="Tooltip">
+                                             title="{{ 'tooltip.customer.purchase_history'|trans }}">
                                         <span class="card-title">
                                             {{ 'admin.customer.purchase_history'|trans }}
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
@@ -409,7 +444,7 @@ file that was distributed with this source code.
                             <div class="row">
                                 <div class="col-8">
                                     <div class="d-inline-block" data-tooltip="true" data-placement="top"
-                                         title="Tooltip">
+                                         title="{{ 'tooltip.customer.shop_memo'|trans }}">
                                         <span class="card-title">{{ 'admin.common.shop_memo'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>

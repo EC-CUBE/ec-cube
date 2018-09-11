@@ -248,7 +248,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout_edit__card_title'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.layout_edit'|trans }}"><span class="card-title">{{ 'admin.content.layout_edit__card_title'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#layoutBlockEdit" aria-expanded="false" aria-controls="layoutBlockEdit"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -331,8 +331,9 @@ file that was distributed with this source code.
                                                                 {% endfor %}
                                                             </div>
                                                             <div class="d-block p-3 border border-ec-gray border-top-0 border-left-0 border-right-0 bg-ec-lightGray">
-                                                                <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__main'|trans }}</p>
-                                                                <div class="d-block text-center p-3"></div>
+                                                                <div class="d-block text-center p-3">
+                                                                    <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__main'|trans }}</p>
+                                                                </div>
                                                             </div>
                                                             {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_BOTTOM') %}
                                                             <div id="position_{{ target_id }}"

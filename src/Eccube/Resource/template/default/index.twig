@@ -90,12 +90,25 @@ file that was distributed with this source code.
     </style>
 {% endblock %}
 
+{% block javascript %}
+    <script>
+        $(function() {
+            $('.main_visual').slick({
+                dots: true,
+                arrows: false,
+                autoplay: true,
+                speed: 300
+            });
+        });
+    </script>
+{% endblock javascript %}
+
 {% block main %}
     <div class="ec-sliderRole">
         <div class="main_visual">
-            <div class="item"><img src="{{ asset('img/top/img_hero_pc01.jpg') }}"></div>
-            <div class="item"><img src="{{ asset('img/top/img_hero_pc02.jpg') }}"></div>
-            <div class="item"><img src="{{ asset('img/top/img_hero_pc03.jpg') }}"></div>
+            <div class="item"><img src="{{ asset('assets/img/top/img_hero_pc01.jpg') }}"></div>
+            <div class="item"><img src="{{ asset('assets/img/top/img_hero_pc02.jpg') }}"></div>
+            <div class="item"><img src="{{ asset('assets/img/top/img_hero_pc03.jpg') }}"></div>
         </div>
     </div>
 {% endblock %}

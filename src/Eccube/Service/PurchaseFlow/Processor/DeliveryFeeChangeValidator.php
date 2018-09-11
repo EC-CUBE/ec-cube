@@ -45,7 +45,7 @@ class DeliveryFeeChangeValidator extends ItemHolderPostValidator
         }
 
         if ($originHolder->getDeliveryFeeTotal() != $itemHolder->getDeliveryFeeTotal()) {
-            $this->throwInvalidItemException('送料が更新されました。金額をご確認ください。', null, true);
+            $this->throwInvalidItemException('purchase_flow.delivery_fee_update', null, true);
         }
     }
 }

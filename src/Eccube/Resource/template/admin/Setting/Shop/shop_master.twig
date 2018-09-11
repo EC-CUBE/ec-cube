@@ -113,42 +113,58 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.email_from'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.email_from'|trans }}"><span>{{ 'admin.setting.shop.shop.email_from'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email01) }}
                                     {{ form_errors(form.email01) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.email_for_inquiries'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.email_for_inquiries'|trans }}"><span>{{ 'admin.setting.shop.shop.email_for_inquiries'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email02) }}
                                     {{ form_errors(form.email02) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.email_reply_to'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.email_reply_to'|trans }}"><span>{{ 'admin.setting.shop.shop.email_reply_to'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email03) }}
                                     {{ form_errors(form.email03) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.email_return_path'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.email_return_path'|trans }}"><span>{{ 'admin.setting.shop.shop.email_return_path'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email04) }}
                                     {{ form_errors(form.email04) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.good_traded'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.good_traded'|trans }}"><span>{{ 'admin.setting.shop.shop.good_traded'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.good_traded) }}
                                     {{ form_errors(form.good_traded) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.message'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.message'|trans }}"><span>{{ 'admin.setting.shop.shop.message'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.message) }}
                                     {{ form_errors(form.message) }}
@@ -176,7 +192,7 @@ file that was distributed with this source code.
                         <div id="ex-shop-delivery" class="card-body">
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_delivery_fee_free_amount'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_delivery_fee_free_amount'|trans }}"><span>{{ 'admin.setting.shop.shop.option_delivery_fee_free_amount'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 mb-2">
                                     {{ form_widget(form.delivery_free_amount) }}
@@ -186,7 +202,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_delivery_fee_free_quantity'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_delivery_fee_free_quantity'|trans }}"><span>{{ 'admin.setting.shop.shop.option_delivery_fee_free_quantity'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 mb-2">
                                     {{ form_widget(form.delivery_free_quantity) }}
@@ -195,7 +211,9 @@ file that was distributed with this source code.
                                 <div class="col"></div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.option_delivery_fee_by_product'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_delivery_fee_by_product'|trans }}"><span>{{ 'admin.setting.shop.shop.option_delivery_fee_by_product'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_product_delivery_fee) }}
                                     {{ form_errors(form.option_product_delivery_fee) }}
@@ -207,28 +225,36 @@ file that was distributed with this source code.
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop.option_customer'|trans }}</span></div>
                         <div id="ex-shop-customer" class="card-body">
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.option_customer_activate'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_customer_activate'|trans }}"><span>{{ 'admin.setting.shop.shop.option_customer_activate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_customer_activate) }}
                                     {{ form_errors(form.option_customer_activate) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.option_mypage_order_status_display'|trans }}</span></div>
+                                <div class="col-3">
+                                    <span>{{ 'admin.setting.shop.shop.option_mypage_order_status_display'|trans }}</span>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_mypage_order_status_display) }}
                                     {{ form_errors(form.option_mypage_order_status_display) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.option_favorite_product'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_favorite_product'|trans }}"><span>{{ 'admin.setting.shop.shop.option_favorite_product'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_favorite_product) }}
                                     {{ form_errors(form.option_favorite_product) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.option_remember_me'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_remember_me'|trans }}"><span>{{ 'admin.setting.shop.shop.option_remember_me'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_remember_me) }}
                                     {{ form_errors(form.option_remember_me) }}
@@ -253,7 +279,7 @@ file that was distributed with this source code.
                         <div id="ex-shop-tax" class="card-body">
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_product_tax'|trans }}</span></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_product_tax'|trans }}"><span>{{ 'admin.setting.shop.shop.option_product_tax'|trans }}</span></div>
                                 </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_product_tax_rule) }}
@@ -266,7 +292,9 @@ file that was distributed with this source code.
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop.option_point'|trans }}</span></div>
                         <div id="ex-shop-point" class="card-body">
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.shop.option_point_enabled'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_point_enabled'|trans }}"><span>{{ 'admin.setting.shop.shop.option_point_enabled'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_point) }}
                                     {{ form_errors(form.option_point) }}
@@ -274,29 +302,30 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_point_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_point_rate'|trans }}"><span>{{ 'admin.setting.shop.shop.option_point_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
-                                    <div class="input-group col-4 pl-0">
-                                        <div class="input-group-prepend">
+                                    <div class="input-group col-2 pl-0">
+                                        <div class="input-group">
                                             {{ form_widget(form.basic_point_rate) }}
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">%</span>
+                                            </div>
                                             {{ form_errors(form.basic_point_rate) }}
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="Tooltip"><span>{{ 'admin.setting.shop.shop.option_point_conversion_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_point_conversion_rate'|trans }}"><span>{{ 'admin.setting.shop.shop.option_point_conversion_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
-                                    <div class="input-group col-4 pl-0">
-                                        <div class="input-group-prepend">
+                                    <div class="input-group col-2 pl-0">
+                                        <div class="input-group">
                                             {{ form_widget(form.point_conversion_rate) }}
                                             {{ form_errors(form.point_conversion_rate) }}
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

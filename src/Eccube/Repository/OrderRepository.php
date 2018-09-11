@@ -79,9 +79,9 @@ class OrderRepository extends AbstractRepository
     {
         $qb = $this->createQueryBuilder('o')
             ->select('o, s')
-            ->addSelect('oi', 'p')
+            ->addSelect('oi', 'pref')
             ->leftJoin('o.OrderItems', 'oi')
-            ->leftJoin('o.Pref', 'p')
+            ->leftJoin('o.Pref', 'pref')
             ->innerJoin('o.Shippings', 's');
 
         // order_id_start

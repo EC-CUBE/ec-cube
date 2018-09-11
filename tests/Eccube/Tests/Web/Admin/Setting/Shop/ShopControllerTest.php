@@ -13,10 +13,16 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Eccube\Entity\BaseInfo;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Tests\Repository\BaseInfoRepositoryTest;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Faker\Provider\Base;
 
 /**
  * Class ShopControllerTest
+ *
+ * @group cache-clear
  */
 class ShopControllerTest extends AbstractAdminWebTestCase
 {
@@ -102,5 +108,29 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             [true, true],
             // To do implement
         ];
+    }
+
+
+    /**
+     * testMailNoRFC
+     */
+    public function testMailNoRFC()
+    {
+        $formData = $this->createFormData();
+        // RFCに準拠していないメールアドレスを設定
+        $formData['email01'] = 'aa..@example.com';
+        $formData['email02'] = 'aa..@example.com';
+        $formData['email03'] = 'aa..@example.com';
+        $formData['email04'] = 'aa..@example.com';
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+        $BaseInfo = $this->container->get(BaseInfoRepository::class)->find(1);
+
+        $this->expected = $BaseInfo->getEmail01();
+        $this->actual = $formData['email01'];
+        $this->verify();
     }
 }

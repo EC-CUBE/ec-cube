@@ -2052,7 +2052,6 @@ Styleguide 3.1.1
 
 .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
   height: 40px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   margin-bottom: 10px; }
 
 .ec-input textarea, .ec-halfInput textarea, .ec-numberInput textarea, .ec-zipInput textarea, .ec-telInput textarea, .ec-select textarea, .ec-birth textarea {
@@ -2468,7 +2467,6 @@ Styleguide 3.1.1
 
 .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
   height: 40px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   margin-bottom: 10px; }
 
 .ec-input textarea, .ec-halfInput textarea, .ec-numberInput textarea, .ec-zipInput textarea, .ec-telInput textarea, .ec-select textarea, .ec-birth textarea {
@@ -3614,7 +3612,7 @@ Styleguide 7.2.1
     min-width: 16px;
     text-align: center;
     position: relative;
-    letter-spacing: initial; }
+    letter-spacing: normal; }
   .ec-topicpath .ec-topicpath__item--active {
     font-weight: bold; }
     .ec-topicpath .ec-topicpath__item--active a {
@@ -4287,7 +4285,6 @@ Styleguide 9.1.3
   padding-right: 16px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -4401,7 +4398,6 @@ Styleguide 11.1
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -4446,7 +4442,6 @@ Styleguide 11.1.2
   padding-right: 16px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -4568,7 +4563,6 @@ Styleguide 11.2
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -4621,7 +4615,6 @@ Styleguide 11.2
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -4715,7 +4708,6 @@ Styleguide 11.2.1
 */
 .ec-headerTitle {
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%; }
@@ -4924,7 +4916,6 @@ Styleguide 11.2.5
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -5272,8 +5263,7 @@ Styleguide 11.3.2
   .ec-footerTitle .ec-footerTitle__logo {
     display: block;
     margin-bottom: 10px;
-    font-weight: bold;
-    font-family: "游ゴシック", YuGothic, "Yu Gothic"; }
+    font-weight: bold; }
     .ec-footerTitle .ec-footerTitle__logo a {
       color: inherit;
       text-decoration: none; }
@@ -5287,8 +5277,7 @@ Styleguide 11.3.2
       -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
       text-decoration: none; }
   .ec-footerTitle .ec-footerTitle__copyright {
-    font-size: 10px;
-    font-family: "游ゴシック", YuGothic, "Yu Gothic"; }
+    font-size: 10px; }
 
 /**
 メディアクエリ
@@ -5314,7 +5303,6 @@ Styleguide 12.1
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -5349,7 +5337,6 @@ Styleguide 12.1
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -5423,8 +5410,7 @@ Styleguide 12.2
     width: 100%;
     height: 100%; }
   .ec-eyecatchRole .ec-eyecatchRole__intro {
-    color: black;
-    font-family: "游ゴシック", YuGothic, "Yu Gothic"; }
+    color: black; }
   .ec-eyecatchRole .ec-eyecatchRole__introEnTitle {
     margin-bottom: .8em;
     font-size: 16px;
@@ -5944,7 +5930,6 @@ Styleguide 13.1
     padding-right: 20px;
     box-sizing: border-box;
     font-size: 16px;
-    font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
     line-height: 1.4;
     color: #525263;
     -webkit-text-size-adjust: 100%;
@@ -6011,7 +5996,6 @@ Styleguide 13.2
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -6273,7 +6257,6 @@ Styleguide 14.1
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -6382,7 +6365,6 @@ Styleguide 15.1
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -6509,7 +6491,6 @@ Styleguide 15.1.3
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -6571,16 +6552,17 @@ Styleguide 15.1.4
   .ec-cartRow .ec-cartRow__contentColumn {
     border-bottom: 1px dotted #ccc;
     padding: 10px 0;
-    display: table-cell; }
+    display: table; }
   .ec-cartRow .ec-cartRow__img {
-    display: inline-block;
+    display: table-cell;
     width: 40%;
-    vertical-align: top; }
+    vertical-align: middle;
+    padding-right: 10px; }
   .ec-cartRow .ec-cartRow__summary {
-    display: inline-block;
+    display: table-cell;
     margin-left: 5px;
     font-weight: bold;
-    vertical-align: top;
+    vertical-align: middle;
     width: 46%; }
     .ec-cartRow .ec-cartRow__summary .ec-cartRow__name {
       margin-bottom: 5px; }
@@ -6599,6 +6581,11 @@ Styleguide 15.1.4
     .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountSP {
       display: block;
       margin-bottom: 10px; }
+    .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpDown {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: center;
+          justify-content: center; }
     .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpButton {
       margin: 0 2px;
       display: inline-block;
@@ -6761,7 +6748,6 @@ Styleguide 15.2
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7170,12 +7156,14 @@ Styleguide 16.2.6
     display: none; }
   .ec-orderMail .ec-orderMail__time {
     margin-bottom: 4px; }
-  .ec-orderMail .ec-orderMail__link a {
-    color: #0092C4;
-    text-decoration: none;
-    cursor: pointer; }
-  .ec-orderMail .ec-orderMail__link a:hover {
-    color: #33A8D0; }
+  .ec-orderMail .ec-orderMail__link {
+    margin-bottom: 4px; }
+    .ec-orderMail .ec-orderMail__link a {
+      color: #0092C4;
+      text-decoration: none;
+      cursor: pointer; }
+    .ec-orderMail .ec-orderMail__link a:hover {
+      color: #33A8D0; }
   .ec-orderMail .ec-orderMail__close a {
     color: #0092C4;
     text-decoration: none;
@@ -7266,7 +7254,6 @@ Styleguide 18.1
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7320,7 +7307,6 @@ Styleguide 19.1
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7358,7 +7344,6 @@ Styleguide 19.1
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7408,7 +7393,6 @@ Styleguide 19.2
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7443,7 +7427,6 @@ Styleguide 19.2
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7478,7 +7461,6 @@ Styleguide 19.2
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7529,7 +7511,6 @@ Styleguide 19.3
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7564,7 +7545,6 @@ Styleguide 19.3
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7599,7 +7579,6 @@ Styleguide 19.3
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7685,7 +7664,6 @@ Styleguide 20.1
 */
 .ec-404Role {
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7739,7 +7717,6 @@ Styleguide 21.1
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -7831,7 +7808,6 @@ Styleguide 22.1
   padding-right: 20px;
   box-sizing: border-box;
   font-size: 16px;
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%;
@@ -8432,7 +8408,6 @@ Styleguide 22.1
     padding-right: 20px;
     box-sizing: border-box;
     font-size: 16px;
-    font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
     line-height: 1.4;
     color: #525263;
     -webkit-text-size-adjust: 100%;
@@ -8512,7 +8487,6 @@ Styleguide 22.1
   }
 
   .ec-eyecatchRole .ec-eyecatchRole__image{
-    width: 45%;
     -ms-flex-order: 2;
         order: 2;
   }
@@ -8660,7 +8634,6 @@ Styleguide 22.1
     padding-right: 20px;
     box-sizing: border-box;
     font-size: 16px;
-    font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
     line-height: 1.4;
     color: #525263;
     -webkit-text-size-adjust: 100%;
@@ -8832,12 +8805,19 @@ Styleguide 22.1
     height: 1em;
   }
 
+  .ec-cartRow .ec-cartRow__contentColumn{
+    display: table-cell;
+  }
+
   .ec-cartRow .ec-cartRow__img{
+    display: inline-block;
     min-width: 80px;
     max-width: 100px;
+    padding-right: 0;
   }
 
   .ec-cartRow .ec-cartRow__summary{
+    display: inline-block;
     margin-left: 20px;
     vertical-align: middle;
   }
@@ -8856,6 +8836,10 @@ Styleguide 22.1
 
   .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountSP{
     display: none;
+  }
+
+  .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpDown{
+    display: block;
   }
 
   .ec-cartRow .ec-cartRow__subtotalColumn{

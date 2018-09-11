@@ -20,18 +20,33 @@ cache:
     - bin/.phpunit
 
 php:
+  - 7.1
   - 7.2
+
+env:
+  - DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
+  - DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
+  - DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
+
+matrix:
+  allow_failures:
+    - env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
 
 ## see https://github.com/symfony/symfony/blob/e0bdc0c35e9afdb3bee8af172f90e9648c4012fc/.travis.yml#L92-L97
 before_install: &php_setup |
   phpenv config-rm xdebug.ini || true
   echo "opcache.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  ## see http://www.php.net/manual/ja/opcache.installation.php#opcache.installation.recommended
+  echo "opcache.memory_consumption=128" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.interned_strings_buffer=8" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.max_accelerated_files=4000" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.revalidate_freq=60" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "opcache.fast_shutdown=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  echo "apc.enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "date.timezone=Asia/Tokyo" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-
-install:
-  - &composer_install composer install --dev --no-interaction -o --apcu-autoloader
 
 eccube_setup: &eccube_setup |
   echo "APP_ENV=codeception" > .env
@@ -39,26 +54,18 @@ eccube_setup: &eccube_setup |
   bin/console doctrine:schema:create
   bin/console eccube:fixtures:load
 
+install:
+  - &composer_install composer install --dev --no-interaction -o --apcu-autoloader
+  - *eccube_setup
+
+script:
+  - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
+  - ./bin/phpunit --group cache-clear
+  - ./bin/phpunit --group cache-clear-install
+
 jobs:
   fast_finish: true
-  allow_failures:
-    - env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
   include:
-    - &unit_test
-      stage: Unit Test
-      before_install:
-        - *php_setup
-        - gem install mailcatcher
-      install:
-        - *composer_install
-        - *eccube_setup
-      env: DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
-      script:
-        - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
-        - ./bin/phpunit --group cache-clear
-        - ./bin/phpunit --group cache-clear-install
-    - <<: *unit_test
-      env: DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
     - &e2e_test
       stage: E2E Test
       before_install:
@@ -73,16 +80,21 @@ jobs:
       install:
         - *composer_install
         - *eccube_setup
+      php: 7.2
       env: GROUP=admin01 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
       script: ./codeception.sh -g ${GROUP}
     - <<: *e2e_test
+      php: 7.2
       env: GROUP=admin02 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
     - <<: *e2e_test
+      php: 7.2
       env: GROUP=admin03 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
     - <<: *e2e_test
+      php: 7.2
       env: GROUP=front APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
     # - stage: Code Coverage
     #   if: type != pull_request
+    #   php: 7.2
     #   env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
     #   before_install:
     #     - *php_setup
@@ -95,6 +107,3 @@ jobs:
     #   after_success:
     #     - sed -i.bak -e 's|/usr/src/myapp/||g' coverage.clover
     #     - php vendor/bin/php-coveralls -v -x coverage.clover
-    #   after_script:
-    #     - wget https://scrutinizer-ci.com/ocular.phar
-    #     - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

@@ -14,19 +14,6 @@ file that was distributed with this source code.
 
 {% set body_class = 'mypage' %}
 
-{% block javascript %}
-    <script>
-        $(function () {
-            $(".title").on("click", function () {
-                $(this).next().slideToggle();
-            });
-            $(".close").on("click", function () {
-                $(this).parent().slideToggle();
-            });
-        });
-    </script>
-{% endblock %}
-
 {% block main %}
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
@@ -142,7 +129,7 @@ file that was distributed with this source code.
                     <div class="ec-rectHeading">
                         <h2>{{ 'front.mypage.message'|trans }}</h2>
                     </div>
-                    <p>{{ Order.message|default('')|nl2br }}</p>
+                    <p>{{ Order.message|nl2br|default('front.mypage.message_not_found'|trans) }}</p>
                 </div>
                 <div class="ec-orderMails">
                     <div class="ec-rectHeading">
@@ -152,9 +139,7 @@ file that was distributed with this source code.
                         <div class="ec-orderMail">
                             <div class="ec-orderMail__time">{{ MailHistory.send_date|date_sec }}</div>
                             <div class="ec-orderMail__link"><a>{{ MailHistory.mail_subject }}</a></div>
-                            <pre class="ec-orderMail__body" style="display: none;">
-                                    {{ MailHistory.mail_body|nl2br }}
-                                <p class="ec-orderMail__close"><a>{{ 'common.close'|trans }}</a></p></pre>
+                            <div class="ec-orderMail__body">{{ MailHistory.mail_body|nl2br }}<p class="ec-orderMail__close"><a>{{ 'common.close'|trans }}</a></p></div>
                         </div>
                     {% else %}
                         <p class="ec-reportDescription">{{ 'front.mypage.mail_not_found'|trans }}</p>

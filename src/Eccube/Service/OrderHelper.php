@@ -69,7 +69,7 @@ class OrderHelper
      *
      * @see SecurityListener
      */
-    const SESSION_CART_DEVIDE_FLAG = 'eccube.front.cart.divide';
+    const SESSION_CART_DIVIDE_FLAG = 'eccube.front.cart.divide';
 
     /**
      * @var SessionInterface
@@ -173,7 +173,7 @@ class OrderHelper
     public function verifyCart(Cart $Cart)
     {
         if (count($Cart->getCartItems()) > 0) {
-            $divide = $this->session->get(self::SESSION_CART_DEVIDE_FLAG);
+            $divide = $this->session->get(self::SESSION_CART_DIVIDE_FLAG);
             if ($divide) {
                 log_info('ログイン時に販売種別が異なる商品がカートと結合されました。');
 
@@ -275,6 +275,19 @@ class OrderHelper
         $this->session->remove(self::SESSION_ORDER_ID);
         $this->session->remove(self::SESSION_NON_MEMBER);
         $this->session->remove(self::SESSION_NON_MEMBER_ADDRESSES);
+    }
+
+    /**
+     * 会員情報の更新日時が受注の作成日時よりも新しければ, 受注の注文者情報を更新する.
+     *
+     * @param Order $Order
+     * @param Customer $Customer
+     */
+    public function updateCustomerInfo(Order $Order, Customer $Customer)
+    {
+        if ($Order->getCreateDate() < $Customer->getUpdateDate()) {
+            $this->setCustomer($Order, $Customer);
+        }
     }
 
     private function createPreOrderId()

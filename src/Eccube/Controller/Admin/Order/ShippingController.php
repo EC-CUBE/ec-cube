@@ -239,8 +239,8 @@ class ShippingController extends AbstractController
         $times = [];
         $deliveries = $this->deliveryRepository->findAll();
         foreach ($deliveries as $Delivery) {
-            $deliveryTiems = $Delivery->getDeliveryTimes();
-            foreach ($deliveryTiems as $DeliveryTime) {
+            $deliveryTimes = $Delivery->getDeliveryTimes();
+            foreach ($deliveryTimes as $DeliveryTime) {
                 $times[$Delivery->getId()][$DeliveryTime->getId()] = $DeliveryTime->getDeliveryTime();
             }
         }

@@ -71,7 +71,7 @@ file that was distributed with this source code.
 
                 // 削除中のUI変更処理
                 modal.find('button').attr('disabled', 'disabled');
-                $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__in_prograss'|trans }}");
+                $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__in_progress'|trans }}");
                 $('.progress', modal).show();
 
                 var checkedList = $('input[type=checkbox][data-delete-url]:checked');
@@ -197,7 +197,7 @@ file that was distributed with this source code.
 
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label">{{ 'admin.product.multi_search_label'|trans }}</label>
+                            <label class="col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.product.multi_search_label'|trans }}">{{ 'admin.product.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                             {{ form_widget(searchForm.id) }}
                             {{ form_errors(searchForm.id) }}
                         </div>
@@ -236,9 +236,8 @@ file that was distributed with this source code.
                     </div>
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label" data-tooltip="true" data-placement="top" title="Tooltip">
+                            <label class="col-form-label">
                                 {{ 'admin.common.create_date'|trans }}
-                                <i class="fa fa-question-circle fa-lg ml-1"></i>
                             </label>
                             <div class="form-row align-items-center">
                                 <div class="col">
@@ -289,9 +288,6 @@ file that was distributed with this source code.
                         {% endif %}
                     </div>
                 {% endfor %}
-                <div class="d-block text-center">
-                    <button class="btn btn-ec-regular" type="reset">{{ 'admin.common.search_clear'|trans }}</button>
-                </div>
             </div>
             <div class="c-outsideBlock__contents mb-5">
                 <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.search'|trans }}</button>
@@ -358,7 +354,7 @@ file that was distributed with this source code.
                                             <input type="checkbox" name="filter" value="open" id="trigger_check_all">
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_id__short'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'amdin.product.image__short'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.image__short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.name'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.price'|trans }}</th>

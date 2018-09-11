@@ -66,7 +66,7 @@ file that was distributed with this source code.
                 var class_category_id1 = $sele1.val();
                 var class_cateogry_id2 = $sele2.val();
                 if (class_category_id1 == '__unselected' || !class_cateogry_id2) {
-                    alert('{{'admin.order.search_product.379'|trans}}');
+                    alert('{{'admin.product.unselected_class'|trans}}');
                     return;
                 }
                 var product = productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
@@ -76,7 +76,7 @@ file that was distributed with this source code.
             } else {
                 var class_category_id1 = $sele1.val();
                 if (class_category_id1 == '__unselected') {
-                    alert('{{ 'admin.order.search_product.379'|trans }}');
+                    alert('{{ 'admin.product.unselected_class'|trans }}');
                     return;
                 }
                 var product = productsClassCategories[product_id][class_category_id1]['#'];

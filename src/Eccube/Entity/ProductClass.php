@@ -36,7 +36,7 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
          *
          * @return string
          */
-        public function formatedProductName()
+        public function formattedProductName()
         {
             $productName = $this->getProduct()->getName();
             if ($this->hasClassCategory1()) {
