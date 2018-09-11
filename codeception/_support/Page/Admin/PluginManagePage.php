@@ -36,7 +36,9 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
      */
     public function ストアプラグイン_有効化($pluginCode)
     {
-        return $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
+        $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
+        $this->tester->see('有効にしました。', self::完了メーッセージ);
+        return $this;
     }
 
     /**
@@ -46,7 +48,9 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
      */
     public function ストアプラグイン_無効化($pluginCode)
     {
-        return $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
+        $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
+        $this->tester->see('無効にしました。', self::完了メーッセージ);
+        return $this;
     }
 
     /**
@@ -92,12 +96,16 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     public function 独自プラグイン_有効化($pluginCode)
     {
-        return $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
+        $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
+        $this->tester->see('有効にしました。', self::完了メーッセージ);
+        return $this;
     }
 
     public function 独自プラグイン_無効化($pluginCode)
     {
-        return $this->独自プラグイン_ボタンクリック($pluginCode, '無効化');
+        $this->独自プラグイン_ボタンクリック($pluginCode, '無効化');
+        $this->tester->see('無効にしました。', self::完了メーッセージ);
+        return $this;
     }
 
     public function 独自プラグイン_削除($pluginCode)
