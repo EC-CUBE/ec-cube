@@ -46,7 +46,7 @@ $container->loadFromExtension('framework', [
                     'to' => (string) Status::IN_PROGRESS,
                 ],
                 'cancel' => [
-                    'from' => [(string) Status::NEW, (string) Status::IN_PROGRESS, (string) Status::PAID],
+                    'from' => [(string) Status::NEW, (string) Status::IN_PROGRESS],
                     'to' => (string) Status::CANCEL,
                 ],
                 'back_to_in_progress' => [

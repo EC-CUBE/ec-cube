@@ -64,7 +64,7 @@ class OrderStateMachineTest extends EccubeTestCase
             [OrderStatus::PAID,         OrderStatus::NEW,           false],
             [OrderStatus::PAID,         OrderStatus::PAID,          false],
             [OrderStatus::PAID,         OrderStatus::IN_PROGRESS,   true],
-            [OrderStatus::PAID,         OrderStatus::CANCEL,        true],
+            [OrderStatus::PAID,         OrderStatus::CANCEL,        false],
             [OrderStatus::PAID,         OrderStatus::DELIVERED,     true],
             [OrderStatus::PAID,         OrderStatus::RETURNED,      false],
 
