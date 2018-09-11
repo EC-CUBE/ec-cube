@@ -36,12 +36,6 @@ matrix:
 before_install: &php_setup |
   phpenv config-rm xdebug.ini || true
   echo "opcache.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  ## see http://www.php.net/manual/ja/opcache.installation.php#opcache.installation.recommended
-  echo "opcache.memory_consumption=128" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  echo "opcache.interned_strings_buffer=8" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  echo "opcache.max_accelerated_files=4000" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  echo "opcache.revalidate_freq=60" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  echo "opcache.fast_shutdown=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "apc.enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
