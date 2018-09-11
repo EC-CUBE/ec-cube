@@ -204,6 +204,68 @@ class EA10PluginCest
         $I->assertNull($Plugin);
     }
 
+    public function installRemoveFromLocal(\AcceptanceTester $I)
+    {
+        /*
+         * インストール
+         */
+        $ManagePage = PluginLocalInstallPage::go($I)
+            ->アップロード('plugins/Horizon-1.0.0.tgz');
+
+        $I->see('プラグインをインストールしました。', PluginManagePage::完了メーッセージ);
+
+        $I->assertTrue($this->tableExists('dtb_dash'));
+        $I->assertTrue($this->columnExists('dtb_cart', 'is_horizon'));
+
+        $Plugin = $this->pluginRepository->findByCode('Horizon');
+        $I->assertTrue($Plugin->isInitialized(), '初期化されていない');
+        $I->assertFalse($Plugin->isEnabled(), '有効化されていない');
+
+        /*
+         * 削除
+         */
+        $ManagePage->独自プラグイン_削除('Horizon');
+
+        $I->see('プラグインを削除しました。', PluginManagePage::完了メーッセージ);
+
+        $I->assertFalse($this->tableExists('dtb_dash'));
+        $I->assertFalse($this->columnExists('dtb_cart', 'is_horizon'));
+
+        $this->em->refresh($Plugin);
+        $Plugin = $this->pluginRepository->findByCode('Horizon');
+        $I->assertNull($Plugin);
+    }
+
+    public function installRemoveFromStore(\AcceptanceTester $I)
+    {
+        $this->publishPlugin('Horizon-1.0.0.tgz');
+        /*
+         * インストール
+         */
+        $ManagePage = PluginSearchPage::go($I)
+            ->入手する('Horizon')
+            ->インストール();
+
+        $I->assertFalse($this->tableExists('dtb_dash'));
+        $I->assertFalse($this->columnExists('dtb_cart', 'is_horizon'));
+
+        $Plugin = $this->pluginRepository->findByCode('Horizon');
+        $I->assertFalse($Plugin->isInitialized(), '初期化されていない');
+        $I->assertFalse($Plugin->isEnabled(), '有効化されていない');
+
+        /*
+         * 削除
+         */
+        $ManagePage->ストアプラグイン_削除('Horizon');
+
+        $I->assertFalse($this->tableExists('dtb_dash'));
+        $I->assertFalse($this->columnExists('dtb_cart', 'is_horizon'));
+
+        $this->em->refresh($Plugin);
+        $Plugin = $this->pluginRepository->findByCode('Horizon');
+        $I->assertNull($Plugin);
+    }
+
     public function installLocalPluginWithAssets(\AcceptanceTester $I)
     {
         $this->publishPlugin('Assets-1.0.0.tgz');

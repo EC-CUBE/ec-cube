@@ -529,7 +529,11 @@ class PluginService
         if ($plugin->isEnabled()) {
             $this->disable($plugin);
         }
-        $this->callPluginManagerMethod($config, 'uninstall');
+
+        // 初期化されていない場合はPluginManager#uninstall()は実行しない
+        if ($plugin->isInitialized()) {
+            $this->callPluginManagerMethod($config, 'uninstall');
+        }
         $this->unregisterPlugin($plugin);
 
         // スキーマを更新する
