@@ -21,7 +21,6 @@ use Eccube\Exception\PluginApiException;
 use Eccube\Form\Type\Admin\SearchPluginApiType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerProcessService;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginApiService;
@@ -30,7 +29,6 @@ use Eccube\Service\SystemService;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -76,7 +74,7 @@ class OwnerStoreController extends AbstractController
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
      * @param ComposerProcessService $composerProcessService
-     * @param ComposerApiService $composerApiService
+     * @param ComposerServiceInterface $composerService
      * @param SystemService $systemService
      * @param PluginApiService $pluginApiService
      * @param BaseInfoRepository $baseInfoRepository
@@ -88,7 +86,7 @@ class OwnerStoreController extends AbstractController
         PluginRepository $pluginRepository,
         PluginService $pluginService,
         ComposerProcessService $composerProcessService,
-        ComposerApiService $composerApiService,
+        ComposerServiceInterface $composerService,
         SystemService $systemService,
         PluginApiService $pluginApiService,
         BaseInfoRepository $baseInfoRepository
@@ -102,7 +100,7 @@ class OwnerStoreController extends AbstractController
         // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
         if ($memoryLimit == -1 or $memoryLimit >= $this->eccubeConfig['eccube_composer_memory_limit']) {
-            $this->composerService = $composerApiService;
+            $this->composerService = $composerService;
         } else {
             $this->composerService = $composerProcessService;
         }

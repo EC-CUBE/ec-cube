@@ -73,14 +73,7 @@ $(function() {
                         <span>{{ Plugin.name }}</span>
                     </td>
                     <td class="align-middle" style="width: 136px">{{ Plugin.version }}</td>
-                    <td class="align-middle"><p class="mb-0">{{ Plugin.code }}</p>
-                        {# TODO: readme of plugin #}
-                        {#{% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
-                            <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal"
-                               data-name="{{ Plugin.name }}"
-                               data-readme="{{ attribute(app.config[Plugin.code].const, 'readme') }}">{{ 'admin.store.unregistered_plugin_table.948'|trans }}</a>
-                        {% endif %}#}
-                    </td>
+                    <td class="align-middle"><p class="mb-0">{{ Plugin.code }}</p></td>
                     <td class="align-middle">
                         {% if Plugin.id %}
                             {% if Plugin.enabled %}

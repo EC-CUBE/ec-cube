@@ -15,8 +15,9 @@ namespace Eccube\Service\Composer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
 use Eccube\Exception\PluginException;
-use Eccube\Service\SystemService;
+use Eccube\Repository\BaseInfoRepository;
 
 /**
  * Class ComposerProcessService
@@ -34,64 +35,45 @@ class ComposerProcessService implements ComposerServiceInterface
     protected $entityManager;
 
     private $workingDir;
-    private $composerFile;
-    private $composerSetup;
-    private $pathPHP;
+
+    /**
+     * @var ComposerApiService
+     */
+    private $composerApiService;
+    /**
+     * @var BaseInfoRepository
+     */
+    private $baseInfoRepository;
 
     /**
      * ComposerProcessService constructor.
      *
      * @param EccubeConfig $eccubeConfig
      * @param EntityManagerInterface $entityManager
-     * @param SystemService $systemService
+     * @param ComposerApiService $composerApiService
      */
-    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, SystemService $systemService)
+    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, ComposerApiService $composerApiService, BaseInfoRepository $baseInfoRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->entityManager = $entityManager;
-        $this->pathPHP = $systemService->getPHP();
+        $this->composerApiService = $composerApiService;
+        $this->baseInfoRepository = $baseInfoRepository;
     }
 
-    /**
-     * This function to install a plugin by composer require
-     *
-     * @param string $packageName format "foo/bar foo/bar2:1.0.0"
-     *
-     * @throws PluginException
-     */
-    public function execRequire($packageName)
+    public function execRequire($packageName, $output = null)
     {
-        set_time_limit(0);
-        $this->init();
-
-        // Build command
-        $command = $this->pathPHP.' '.$this->composerFile.' require '.$packageName;
-        $command .= ' --prefer-dist --no-progress --no-suggest --no-scripts --ignore-platform-reqs --update-with-dependencies --profile --no-ansi --no-interaction -d ';
-        $command .= $this->workingDir.' 2>&1';
-        log_info($command);
-        $this->runCommand($command);
+        return $this->runCommand([
+            'eccube:composer:require',
+            $packageName,
+        ], $output);
     }
 
-    /**
-     * This function to remove a plugin by composer remove
-     *
-     * @param string $packageName format "foo/bar foo/bar2"
-     *
-     * @throws PluginException
-     */
-    public function execRemove($packageName)
+    public function execRemove($packageName, $output = null)
     {
-        set_time_limit(0);
-        $this->init();
-
-        // Build command
-        $command = $this->pathPHP.' '.$this->composerFile.' remove '.$packageName;
-        $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
-        $command .= $this->workingDir.' 2>&1';
-        log_info($command);
-
-        // Execute command
-        $this->runCommand($command);
+        return $this->runCommand([
+            'eccube:composer:remove',
+            $packageName,
+        ], $output);
     }
 
     /**
@@ -101,12 +83,17 @@ class ComposerProcessService implements ComposerServiceInterface
      *
      * @param string $command
      */
-    public function runCommand($command)
+    public function runCommand($commands, $output = null, $init = true)
     {
-        $output = [];
+        if ($init) {
+            $this->init();
+        }
+
+        $command = implode(' ', array_merge(['bin/console'], $commands));
         try {
             // Execute command
             $returnValue = -1;
+            $output = [];
             exec($command, $output, $returnValue);
 
             $outputString = implode(PHP_EOL, $output);
@@ -114,19 +101,11 @@ class ComposerProcessService implements ComposerServiceInterface
                 throw new PluginException($outputString);
             }
             log_info(PHP_EOL.$outputString.PHP_EOL);
+
+            return $outputString;
         } catch (\Exception $exception) {
             throw new PluginException($exception->getMessage());
         }
-    }
-
-    /**
-     * Set working dir
-     *
-     * @param string $workingDir
-     */
-    public function setWorkingDir($workingDir)
-    {
-        $this->workingDir = $workingDir;
     }
 
     /**
@@ -134,158 +113,37 @@ class ComposerProcessService implements ComposerServiceInterface
      *
      * @throws PluginException
      */
-    private function init()
+    private function init($BaseInfo = null)
     {
-        if (!$this->isPhpCommandLine()) {
-            throw new PluginException('Php cli not found.');
-        }
+//        /**
+//         * Mysql lock in transaction
+//         *
+//         * @see https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+//         *
+//         * @var EntityManagerInterface
+//         */
+//        $em = $this->entityManager;
+//        if ($em->getConnection()->isTransactionActive()) {
+//            $em->getConnection()->commit();
+//            $em->getConnection()->beginTransaction();
+//        }
 
-        $composerMemory = $this->eccubeConfig['eccube_composer_memory_limit'];
-        if (!$this->isSetCliMemoryLimit()) {
-            $cliMemoryLimit = $this->getCliMemoryLimit();
-            if ($cliMemoryLimit < $composerMemory && $cliMemoryLimit != -1) {
-                throw new PluginException('Not enough memory limit.');
-            }
-        }
-
-        /**
-         * Mysql lock in transaction
-         *
-         * @see https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-         *
-         * @var EntityManagerInterface
-         */
-        $em = $this->entityManager;
-        if ($em->getConnection()->isTransactionActive()) {
-            $em->getConnection()->commit();
-            $em->getConnection()->beginTransaction();
-        }
-
-        @ini_set('memory_limit', $composerMemory.'M');
-        // Config for some environment
-        putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
-        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['root_dir'];
-        $this->setupComposer();
+        $BaseInfo = $BaseInfo ?: $this->baseInfoRepository->get();
+        $this->composerApiService->configureRepository($BaseInfo);
     }
 
-    /**
-     * Check composer file and setup it
-     */
-    private function setupComposer()
+    public function execConfig($key, $value = null)
     {
-        $this->composerFile = $this->workingDir.'/composer.phar';
-        $this->composerSetup = $this->workingDir.'/composer-setup.php';
-        if (!file_exists($this->composerFile)) {
-            if (!file_exists($this->composerSetup)) {
-                $result = copy('https://getcomposer.org/installer', $this->composerSetup);
-                log_info($this->composerSetup.' : '.$result);
-            }
-            $command = $this->pathPHP.' '.$this->composerSetup;
-            $this->runCommand($command);
-
-            unlink($this->composerSetup);
-        }
+        return $this->composerApiService->execConfig($key, $value);
     }
 
-    /**
-     * Get grep memory_limit | Megabyte
-     *
-     * @return int|string
-     */
-    private function getCliMemoryLimit()
+    public function configureRepository(BaseInfo $BaseInfo)
     {
-        $grepMemory = exec($this->pathPHP.' -i | grep "memory_limit"');
-        if ($grepMemory) {
-            $grepMemory = explode('=>', $grepMemory);
-
-            // -1 unlimited
-            if (trim($grepMemory[2]) == -1) {
-                return -1;
-            }
-
-            $exp = preg_split('#(?<=\d)(?=[a-z])#i', $grepMemory[2]);
-            $memo = trim($exp[0]);
-            if ($exp[1] == 'M') {
-                return $memo;
-            } else {
-                if ($exp[1] == 'GB') {
-                    return $memo * 1024;
-                } else {
-                    return 0;
-                }
-            }
-        }
-
-        return 0;
+        return $this->composerApiService->configureRepository($BaseInfo);
     }
 
-    /**
-     * Check to set new value grep "memory_limit"
-     *
-     * @return bool
-     */
-    private function isSetCliMemoryLimit()
+    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0)
     {
-        $oldMemory = exec($this->pathPHP.' -i | grep "memory_limit"');
-        $tmpMem = '1.5GB';
-        if ($oldMemory) {
-            $memory = explode('=>', $oldMemory);
-            $originGrepMemory = trim($memory[2]);
-
-            if ($originGrepMemory == $tmpMem) {
-                $tmpMem = '1.49GB';
-            }
-
-            $newMemory = exec($this->pathPHP.' -d memory_limit='.$tmpMem.' -i | grep "memory_limit"');
-            if ($newMemory) {
-                $newMemory = explode('=>', $newMemory);
-                $grepNewMemory = trim($newMemory[2]);
-                if ($grepNewMemory != $originGrepMemory) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Check php command line
-     *
-     * @return bool
-     */
-    private function isPhpCommandLine()
-    {
-        $php = exec('which php');
-        if (null != $php) {
-            if (strpos(strtolower($php), 'php') !== false) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Get version of composer
-     *
-     * @return null|string
-     */
-    public function composerVersion()
-    {
-        $this->init();
-        $command = $this->pathPHP.' '.$this->composerFile.' -V';
-
-        return exec($command);
-    }
-
-    /**
-     * Get mode
-     *
-     * @return string
-     */
-    public function getMode()
-    {
-        return 'EXEC';
+        return $this->composerApiService->foreachRequires($packageName, $version, $callback, $typeFilter, $level);
     }
 }
