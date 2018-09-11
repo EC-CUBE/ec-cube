@@ -144,7 +144,6 @@ file that was distributed with this source code.
                     {% else %}
                         <p class="ec-reportDescription">{{ 'front.mypage.mail_not_found'|trans }}</p>
                     {% endfor %}
-                    <a href="{{ url('mypage') }}" class="ec-inlineBtn">{{ 'common.back'|trans }}</a>
                 </div>
             </div>
             <div class="ec-orderRole__summary">
@@ -181,6 +180,9 @@ file that was distributed with this source code.
                     </p>
                 {% endif %}
             </div>
+        </div>
+        <div class="ec-role">
+            <a href="{{ url('mypage') }}" class="ec-inlineBtn">{{ 'common.back'|trans }}</a>
         </div>
     </div>
 {% endblock %}

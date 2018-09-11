@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 <div class="col-sm-2 pr-2 pr-sm-3">
-    <a href="#" data-toggle="modal" data-target="#searchPluginModal-{{ item.id }}">
+    <a href="#" data-toggle="modal" data-target="#searchPluginModal-{{ item.id }}" data-code="{{ item.code }}">
         <img class="w-100 img-responsive" src="{{ item.image|default(asset('noimage_plugin_list.png', 'save_image')) }}" alt="{{ item.name }}">
     </a>
 </div>

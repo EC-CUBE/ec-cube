@@ -96,7 +96,7 @@ class PointProcessorTest extends EccubeTestCase
 
         if ($isError) {
             self::assertEquals($isError, $result->isWarning());
-            self::assertEquals('利用ポイントが所有ポイントを上回っています', $result->getMessage());
+            self::assertEquals('利用ポイントが所有ポイントを上回っています。', $result->getMessage());
         } else {
             self::assertNull($result);
         }
@@ -142,7 +142,7 @@ class PointProcessorTest extends EccubeTestCase
 
         if ($isError) {
             self::assertEquals($isError, $result->isError());
-            self::assertEquals('利用ポイントがお支払い金額を上回っています', $result->getMessage());
+            self::assertEquals('利用ポイントがお支払い金額を上回っています。', $result->getMessage());
             self::assertEquals($usePoint, $Order->getUsePoint());
         } else {
             self::assertNull($result);
@@ -178,7 +178,7 @@ class PointProcessorTest extends EccubeTestCase
 
         if ($isError) {
             self::assertEquals($isError, $result->isWarning());
-            self::assertEquals('利用ポイントがお支払い金額を上回っています', $result->getMessage());
+            self::assertEquals('利用ポイントがお支払い金額を上回っています。', $result->getMessage());
             self::assertEquals($price, $Order->getUsePoint());
         } else {
             self::assertNull($result);
@@ -285,7 +285,7 @@ class PointProcessorTest extends EccubeTestCase
             ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
         $TaxInclude = $this->entityManager
             ->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-        $Taxion = $this->entityManager
+        $Taxation = $this->entityManager
             ->find(TaxType::class, TaxType::TAXATION);
         $OrderItem = new OrderItem();
         $OrderItem->setProductName($DeliveryFeeType->getName())
@@ -294,7 +294,7 @@ class PointProcessorTest extends EccubeTestCase
             ->setOrderItemType($DeliveryFeeType)
             ->setOrder($Order)
             ->setTaxDisplayType($TaxInclude)
-            ->setTaxType($Taxion);
+            ->setTaxType($Taxation);
         $Order->addOrderItem($OrderItem);
 
         $purchaseFlow = new PurchaseFlow();

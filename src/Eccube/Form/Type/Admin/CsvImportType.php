@@ -47,10 +47,9 @@ class CsvImportType extends AbstractType
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'ファイルを選択してください。']),
+                    new Assert\NotBlank(),
                     new Assert\File([
                         'maxSize' => $this->csvMaxSize.'M',
-                        'maxSizeMessage' => 'CSVファイルは'.$this->csvMaxSize.'M以下でアップロードしてください。',
                     ]),
                 ],
             ]);

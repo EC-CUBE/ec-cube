@@ -23,7 +23,7 @@ file that was distributed with this source code.
 
     <script>
         // 商品追加
-        $('.addProduct-button').on('click', function () {
+        $('.addProduct-button').on('click', function() {
             var no = $(this).data('shipping-no');
             $collectionHolder = $('#table-form-field_' + no);
             index = $collectionHolder.find('tbody > tr').length;
@@ -31,7 +31,7 @@ file that was distributed with this source code.
         })
 
         // その他明細追加
-        $('.addOtherProduct-button').on('click', function () {
+        $('.addOtherProduct-button').on('click', function() {
             var no = $(this).data('shipping-no');
             $collectionHolder = $('#table-form-field_' + no);
             index = $collectionHolder.find('tbody > tr').length;
@@ -59,7 +59,7 @@ file that was distributed with this source code.
         });
 
         // その他明細
-        $('#addOrderItemType').on('show.bs.modal', function (e) {
+        $('#addOrderItemType').on('show.bs.modal', function(e) {
             var list = $('#searchOrderItemTypeList');
             list.children().remove();
 
@@ -103,13 +103,13 @@ file that was distributed with this source code.
         // 配送業者選択時にお届け時間を設定
         var times = {{ shippingDeliveryTimes|raw }};
 
-        $("select[id$='_Delivery']").on('change', function(){
+        $("select[id$='_Delivery']").on('change', function() {
             var deliveryId = $(this).val();
             var $shippingDeliveryTime = $(this).parents('.card-body').find("select[id$='_DeliveryTime']");
             $shippingDeliveryTime.find('option').remove();
             $shippingDeliveryTime.append($('<option></option>').val('').text(trans('admin.common.select__unspecified')));
             if (typeof(times[deliveryId]) !== 'undefined') {
-                for (var timeId in times[deliveryId]){
+                for (var timeId in times[deliveryId]) {
                     timeValue = times[deliveryId][timeId];
                     $shippingDeliveryTime.append($('<option></option>')
                         .val(timeId)
@@ -119,10 +119,10 @@ file that was distributed with this source code.
         });
 
         $('#addShipping').on('click', function() {
-          $('#form_add_shipping').val("1");
-          $("#form1").submit();
+            $('#form_add_shipping').val("1");
+            $("#form1").submit();
 
-          return false;
+            return false;
         })
 
         // 完了ボタン
@@ -137,12 +137,12 @@ file that was distributed with this source code.
         });
 
         // モーダル注意文言の削除
-        $('#bulkChange').on('click', function () {
+        $('#bulkChange').on('click', function() {
             $('.warning-message').css('display', 'none');
         })
     </script>
 
-{{ include('@admin/Order/confirmationModal_js.twig') }}
+    {{ include('@admin/Order/confirmationModal_js.twig') }}
 
 {% endblock javascript %}
 
@@ -474,11 +474,11 @@ file that was distributed with this source code.
                                                         {# 登録済みの出荷で出荷日が設定されていない場合 #}
                                                         <!-- 出荷済にするボタン -->
                                                         <button type="button" class="btn btn-ec-regular mr-2 confirmationModal" href="javascript:;"
-                                                           data-id="{{ shippingForm.vars.value.id }}" data-type="status" data-bulk-update="false"
-                                                           data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
-                                                           data-update-status-url="{{ url('admin_shipping_update_order_status', { id: shippingForm.vars.value.id}) }}"
-                                                           data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: shippingForm.vars.value.id}) }}"
-                                                           data-tooltip="true" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
+                                                                data-id="{{ shippingForm.vars.value.id }}" data-type="status" data-bulk-update="false"
+                                                                data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
+                                                                data-update-status-url="{{ url('admin_shipping_update_order_status', { id: shippingForm.vars.value.id}) }}"
+                                                                data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: shippingForm.vars.value.id}) }}"
+                                                                data-tooltip="true" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
                                                             <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                             {{ 'admin.order.to_shipped'|trans }}
                                                         </button>
@@ -568,44 +568,45 @@ file that was distributed with this source code.
                                                         </p>
                                                         <span>
                                                             {{ OrderItem.product_code }}
-                                                                {% if OrderItem.class_category_name1 is not empty %}
-                                                                    / (
-                                                                    {{ OrderItem.class_name1 }}：
-                                                                    {{ OrderItem.class_category_name1 }}
-                                                                    {% if OrderItem.class_category_name2 is not empty %}
-                                                                        /
-                                                                        {{ OrderItem.class_name2 }}：
-                                                                        {{ OrderItem.class_category_name2 }}
-                                                                    {% endif %}
-                                                                    )
+                                                            {% if OrderItem.class_category_name1 is not empty %}
+                                                                / (
+                                                                {{ OrderItem.class_name1 }}：
+                                                                {{ OrderItem.class_category_name1 }}
+                                                                {% if OrderItem.class_category_name2 is not empty %}
+                                                                    /
+                                                                    {{ OrderItem.class_name2 }}：
+                                                                    {{ OrderItem.class_category_name2 }}
                                                                 {% endif %}
+                                                                )
+                                                            {% endif %}
                                                         </span>
                                                         {{ form_errors(orderItemForm.product_name) }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        <div class="col-12">
-                                                            {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType, 'attr': { 'readonly': 'readonly' } }) }}
+                                                        <div class="col mt-3">
+                                                            {{ form_widget(orderItemForm.price, {'attr': { 'readonly': 'readonly' } }) }}
+                                                            <div class="text-right small">({{ OrderItem.TaxDisplayType }})</div>
                                                             {{ form_errors(orderItemForm.price) }}
                                                         </div>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <div class="col-6">
+                                                        <div class="col-12 col-xl-8">
                                                             {{ form_widget(orderItemForm.quantity) }}
                                                             {{ form_errors(orderItemForm.quantity) }}
                                                         </div>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <div class="col-8">
-                                                            {{ OrderItem.tax_rate }}
+                                                        <div class="col">
+                                                            {{ OrderItem.tax_rate }}%
                                                         </div>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <div class="col-8">
+                                                        <div class="col">
                                                             {{ OrderItem.tax_type }}
                                                         </div>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <div class="col-8">
+                                                        <div class="col">
                                                             <span>{{ OrderItem.total_price|price }}</span>
                                                         </div>
                                                     </td>

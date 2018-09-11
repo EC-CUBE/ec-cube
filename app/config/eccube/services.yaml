@@ -49,6 +49,12 @@ services:
         lazy: true
         public: true
 
+    Eccube\Service\Composer\ComposerProcessService:
+        lazy: true
+
+    Eccube\Service\Composer\ComposerServiceInterface:
+        factory: ['Eccube\Service\Composer\ComposerServiceFactory', createService]
+
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
     Eccube\Controller\:

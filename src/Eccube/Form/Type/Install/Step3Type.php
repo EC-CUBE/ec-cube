@@ -80,7 +80,7 @@ class Step3Type extends AbstractType
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
+                        'message' => 'form_error.graph_only',
                     ]),
                 ],
             ])
@@ -97,12 +97,12 @@ class Step3Type extends AbstractType
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
+                        'message' => 'form_error.graph_only',
                     ]),
                 ],
             ])
             ->add('admin_dir', TextType::class, [
-                'label' => trans('install.directry_name', [
+                'label' => trans('install.directory_name', [
                     '%min%' => $this->eccubeConfig['eccube_id_min_len'],
                     '%max%' => $this->eccubeConfig['eccube_id_max_len'],
                 ]),

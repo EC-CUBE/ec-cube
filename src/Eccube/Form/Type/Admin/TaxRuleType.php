@@ -51,7 +51,7 @@ class TaxRuleType extends AbstractType
                     new Assert\Range(['min' => 0]),
                     new Assert\Regex([
                         'pattern' => "/^\d+(\.\d+)?$/u",
-                        'message' => 'form.type.float.invalid',
+                        'message' => 'form_error.float_only',
                     ]),
                 ],
             ])

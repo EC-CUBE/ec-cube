@@ -28,32 +28,6 @@ $(function() {
         return false;
     });
 
-    $('#mailModal').on('show.bs.modal', function (event) {
-        var modal = $(this);
-        modal.find('.modal-body').html('');
-        modal.find('.modal-title').text($(event.relatedTarget).data('subject'));
-        $.ajax({
-            url: "{{ url('admin_order_mail_view') }}",
-            cache: false,
-            data: {
-                'id' : $(event.relatedTarget).data('id')
-            }
-        }).done(function(data){
-            modal.find('.modal-body').html(data);
-        }).fail(function(){
-            modal.find('.modal-body').text('{{ 'admin.order.mail_failed'|trans }}');
-        });
-    });
-
-    {# TODO 送信前プレビュー機能 #}
-    {# TODO 入力チェック #}
-    $('#mailConfirm').on('click', function (e) {
-        e.preventDefault();
-        $('#mode').val('confirm');
-        $('#order-mail-form').submit();
-        return false;
-    });
-
     ace.require('ace/ext/language_tools');
     var editor = ace.edit('editor');
     editor.session.setMode('ace/mode/twig');
@@ -109,8 +83,7 @@ $(function() {
                         </div>
                         <div class="row">
                             <div class="col-2"><span>{{ 'admin.order.order_status'|trans }}</span></div>
-                            {# TODO ステータスごとのCSS #}
-                            <div class="col-10"><span class="badge badge-ec-glay">{{ Order.orderStatus }}</span></div>
+                            <div class="col-10"><span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span></div>
                         </div>
                     </div>
                 </div>
@@ -134,7 +107,6 @@ $(function() {
                                 <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_template'|trans }}">
                                     <span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                 </div>
-                                <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                             </div>
                             <div class="col">
                                 {{ form_widget(form.template, {'id': 'template-change'}) }}
@@ -177,7 +149,9 @@ $(function() {
                             </div>
                             <div class="col-6">
                                 <div class="row align-items-center justify-content-end">
-                                    <div class="col-auto"><button type="button" class="btn btn-ec-conversion px-5" id="mailConfirm">{{ 'admin.order.mail_confirm'|trans }}</button></div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-ec-conversion px-5" name="mode" value="confirm">{{ 'admin.order.mail_confirm'|trans }}</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -189,19 +163,4 @@ $(function() {
     </div>
 </div>
 
-<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="mailModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.order.mail.348'|trans }}</button>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}

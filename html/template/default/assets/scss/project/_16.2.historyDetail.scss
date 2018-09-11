@@ -42,14 +42,6 @@ Styleguide 16.2.5
   & &__body{
     display: none;
   }
-  .ec-inlineBtn {
-    display: none;
-    @include media_desktop {
-      display: inline-block;
-    }
-
-  }
-
 }
 
 
@@ -104,6 +96,3 @@ Styleguide 16.2.6
     }
   }
 }
-
-
-

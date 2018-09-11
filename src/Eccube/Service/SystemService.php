@@ -15,7 +15,6 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 class SystemService
 {
@@ -67,16 +66,6 @@ class SystemService
             ->getSingleScalarResult();
 
         return $prefix.$version;
-    }
-
-    /**
-     * Get environment php command
-     *
-     * @return string
-     */
-    public function getPHP()
-    {
-        return (new PhpExecutableFinder())->find();
     }
 
     /**

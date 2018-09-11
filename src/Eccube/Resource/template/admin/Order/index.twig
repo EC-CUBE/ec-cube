@@ -592,9 +592,9 @@ file that was distributed with this source code.
                                                     {{ Shipping.name01 ~ Shipping.name02 }}<br>
                                                     {{ Shipping.Pref.name }}
                                                 </td>
-                                                <td class="align-middle pr-3 text-center">
-                                                    <div class="row justify-content-end">
-                                                        <div class="col-auto text-center">
+                                                <td class="align-middle pr-3">
+                                                    <div class="text-right">
+                                                        <div class="px-1 d-inline-block">
                                                             <a class="btn btn-ec-actionIcon confirmationModal"
                                                                data-type="mail" data-bulk-update="false"
                                                                data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
@@ -603,12 +603,12 @@ file that was distributed with this source code.
                                                                 <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
-                                                        <div class="col-auto text-center">
+                                                        <div class="px-1 d-inline-block">
                                                             <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-tooltip="true" data-placement="top" title="{{ 'admin.order.output_delivery_note_short'|trans }}">
                                                                 <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
-                                                        <div class="col-auto text-center">
+                                                        <div class="px-1 d-inline-block">
                                                             <a class="btn btn-ec-actionIcon confirmationModal" href="javascript:;"
                                                                data-id="{{ Shipping.id }}" data-type="status" data-bulk-update="false"
                                                                data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"

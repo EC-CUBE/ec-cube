@@ -388,7 +388,7 @@ class EF03OrderCest
     {
         // チェック用変数
         // 追加するお届け作の名前
-        $nameSei = '姓0302';
+        $nameSei = 'あいおい0302';
         $nameMei = '名0302';
         // カートへ入れる商品の数
         $cart_quantity = 1;
@@ -583,7 +583,7 @@ class EF03OrderCest
     {
         // チェック用変数
         // 追加するお届け作の名前
-        $nameSei = '姓0302';
+        $nameSei = 'あいおい0302';
         $nameMei = '名0302';
         // カートへ入れる商品の数
         $cart_quantity = 1;
@@ -739,7 +739,7 @@ class EF03OrderCest
     {
         // チェック用変数
         // 追加するお届け作の名前
-        $nameSei = '姓0302';
+        $nameSei = 'あいおい0302';
         $nameMei = '名0302';
         // カートへ入れる商品の数
         $cart_quantity = 1;

@@ -45,7 +45,7 @@ class PaymentChargeChangeValidator extends ItemHolderPostValidator
         }
 
         if ($originHolder->getCharge() != $itemHolder->getCharge()) {
-            $this->throwInvalidItemException('手数料が更新されました。金額をご確認ください。', null, true);
+            $this->throwInvalidItemException('purchase_flow.charge_update', null, true);
         }
     }
 }

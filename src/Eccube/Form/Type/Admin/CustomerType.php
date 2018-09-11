@@ -85,10 +85,6 @@ class CustomerType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
-                    new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
-                    ]),
                 ],
                 'attr' => [
                     'placeholder' => 'common.mail_address_sample',
@@ -110,7 +106,7 @@ class CustomerType extends AbstractType
                 'constraints' => [
                     new Assert\LessThanOrEqual([
                         'value' => date('Y-m-d', strtotime('-1 day')),
-                        'message' => 'form.type.select.selectis_future_or_now_date',
+                        'message' => 'form_error.select_is_future_or_now_date',
                     ]),
                 ],
             ])
@@ -120,7 +116,7 @@ class CustomerType extends AbstractType
                     'label' => 'member.label.pass',
                 ],
                 'second_options' => [
-                    'label' => 'member.label.varify_pass',
+                    'label' => 'member.label.verify_pass',
                 ],
             ])
             ->add('status', CustomerStatusType::class, [
@@ -137,7 +133,7 @@ class CustomerType extends AbstractType
                     'constraints' => [
                         new Assert\Regex([
                             'pattern' => "/^\d+$/u",
-                            'message' => 'form.type.numeric.invalid',
+                            'message' => 'form_error.numeric_only',
                         ]),
                     ],
                 ]

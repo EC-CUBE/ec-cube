@@ -62,26 +62,26 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
 
     public function 規格編集($rowNum)
     {
-        $this->tester->click("#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum}) > form > div:nth-child(6) > button");
+        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) > form > div:nth-child(6) > button");
 
         return $this;
     }
 
     public function 一覧_名称($rowNum)
     {
-        return "#page_admin_product_class_name > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center > a";
+        return "ul.list-group > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center > a";
     }
 
     public function 一覧_分類登録($rowNum)
     {
-        $this->tester->click("#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center > a");
+        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center > a");
 
         return $this;
     }
 
     public function 一覧_編集($rowNum)
     {
-        $this->tester->click("#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col-auto.text-right > a.btn.btn-ec-actionIcon.mr-3.action-edit");
+        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) > div > div.col-auto.text-right > a.action-edit");
 
         return $this;
     }
@@ -104,14 +104,14 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_上に($rowNum)
     {
-        $this->tester->dragAndDropBy("#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum})", 0, -60);
+        $this->tester->dragAndDropBy("ul.list-group > li:nth-child(${rowNum})", 0, -60);
 
         return $this;
     }
 
     public function 一覧_下に($rowNum)
     {
-        $this->tester->dragAndDropBy("#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum})", 0, 60);
+        $this->tester->dragAndDropBy("ul.list-group > li:nth-child(${rowNum})", 0, 60);
 
         return $this;
     }

@@ -68,7 +68,7 @@ class CsvController extends AbstractController
             'csv_type',
             \Eccube\Form\Type\Master\CsvType::class,
             [
-                'label' => 'CSV出力項目',
+                'label' => 'admin.setting.shop.csv.csv_columns',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),

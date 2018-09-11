@@ -67,7 +67,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
         // 所有ポイント < 新規利用ポイント
         $Customer = $itemHolder->getCustomer();
         if ($Customer->getPoint() < $diffUsePoint) {
-            $this->throwInvalidItemException('利用ポイントが所有ポイントを上回っています');
+            $this->throwInvalidItemException('purchase_flow.over_customer_point');
         }
     }
 

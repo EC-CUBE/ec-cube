@@ -72,7 +72,7 @@ common.signup: 新規会員登録
 common.forgot_login: ログイン情報をお忘れですか？
 common.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
 common.search_keyword: キーワードを入力
-common.customer_already_exists: 既に利用されているメールアドレスです
+common.customer_already_exists: このメールアドレスは利用できません
 common.member_already_exists: 既に利用されているログインIDです
 
 #====================================================================================
@@ -144,7 +144,7 @@ front.contact.complete_message__body: 万一、ご確認メールが届かない
 
 front.entry.title: 新規会員登録
 front.entry.terms: 利用規約
-front.entry.agree_with_terms: に同意してお進みください # TODO 「%name%」に同意してお進みください、にしたい
+front.entry.agree_with_terms: '<a class="ec-link" href="%url%" target="_blank">利用規約</a>に同意してお進みください'
 front.entry.agree: 同意する
 front.entry.disagree: 同意しない
 front.entry.confirm_title: 新規会員登録(確認)
@@ -155,11 +155,12 @@ front.entry.do_register: 会員登録をする
 front.entry.complete_title: 新規会員登録(完了)
 front.entry.complete_title__temporary: 新規会員登録(仮登録完了)
 front.entry.complete_message__title: 会員登録ありがとうございます
-front.entry.complete_message__temporary: 現在、仮会員の状態です。
-  ただいま、ご入力いただいたメールアドレス宛に、ご本人様確認用のメールをお送りいたしました。
-  メール本文内のURLクリックすると、本会員登録が完了となります。
-front.entry.complete_message__activated: それではショッピングをお楽しみください。
-  今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.entry.complete_message__temporary: |
+  現在、仮会員の状態です。ただいま、ご入力いただいたメールアドレス宛に、ご本人様確認用のメールをお送りいたしました。
+  メール本文内のURLをクリックすると、本会員登録が完了となります。
+front.entry.complete_message__activated: |
+  会員登録が完了しました。
+  それでは、ショッピングをお楽しみください。
 
 #------------------------------------------------------------------------------------
 # パスワード再発行
@@ -229,7 +230,7 @@ front.mypage.reorder_message: ※金額が変更されている商品がある�
 front.mypage.mail_not_found: メール履歴はありません。
 front.mypage.mail_list: メール配信履歴一覧
 front.mypage.customer_complete_message__title: 会員登録内容の変更が完了いたしました
-front.mypage.customer_complete_message__body: 今後ともご愛顧賜りますようよろしくお願い申し上げます。
+front.mypage.customer_complete_message__body: それでは、引き続きショッピングをお楽しみください。
 front.mypage.favorite_count: '%count%件のお気に入りがあります'
 front.mypage.favorite_not_found: お気に入りは登録されていません。
 front.mypage.customer_address_count: '%count%件のお届け先があります'
@@ -302,6 +303,7 @@ front.cart.delivery_fee_free__quantity: あと「<strong>%quantity%個</strong>�
 #------------------------------------------------------------------------------------
 
 front.shopping.title: ご注文手続き
+front.shopping.order_no: ご注文番号
 front.shopping.customer_info: お客様情報
 front.shopping.delivery_info: 配送情報
 front.shopping.delivery_to: お届け先
@@ -323,6 +325,7 @@ front.shopping.go_to_confirm: 確認する
 front.shopping.back_to_cart: カートに戻る
 front.shopping.shipping_title: お届け先の指定
 front.shopping.shipping_add_new_shipping: 新規お届け先を追加する
+front.shopping.shipping_add_new_shipping__short: お届け先追加
 front.shopping.shipping_unselected: お届け先を指定してください
 front.shopping.shipping_send_selected_shipping: 選択したお届け先に送る
 front.shopping.shipping_multiple_title: お届け先の複数指定
@@ -335,8 +338,7 @@ front.shopping.complete_title: ご注文完了
 front.shopping.complete_message__title: ご注文ありがとうございました
 front.shopping.complete_message__body: |
   ただいま、ご注文の確認メールをお送りさせていただきました。
-  万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
-  今後ともご愛顧賜りますようよろしくお願い申し上げます。
+  万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがお問い合わせくださいますようお願いいたします。
 front.shopping.continue: 購入を続ける
 front.shopping.guest_purchase_message: 会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
 front.shopping.guest_purchase: ゲスト購入
@@ -346,8 +348,8 @@ front.shopping.shipping_edit_header_customer: お届け先の追加
 front.shopping.shipping_edit_header_nonmember: お届け先の変更
 front.shopping.error: 購入エラー
 front.shopping.order_error: 購入処理でエラーが発生しました。
-front.shopping.system_error: 購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。
-front.shopping.empty_items_error: ご注文手続き中にエラーが発生しました。大変お手数ですが再度ご注文手続きをお願いします。
+front.shopping.system_error: 購入処理で予期しないエラーが発生しました。恐れ入りますがお問い合わせページよりご連絡ください。
+front.shopping.empty_items_error: ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。
 front.shopping.out_of_stock: 「%product%」の在庫が不足しております。一度に在庫数を超える購入はできません。
 front.shopping.over_sale_limit: 「%product%」は販売制限しております。一度に販売制限数を超える購入はできません。
 front.shopping.out_of_stock_zero: 「%product%」の在庫が不足しております。該当商品をカートから削除しました。
@@ -410,6 +412,7 @@ admin.common.prev: 前へ
 admin.common.next: 次へ
 admin.common.first: 最初へ
 admin.common.last: 最後へ
+admin.common.back: 戻る
 
 # 汎用ラベル, メッセージ
 admin.common.show: 表示
@@ -507,16 +510,16 @@ admin.home.shop_status_title: ショップ状況
 admin.home.shop_status_out_of_stock: 在庫切れ商品数
 admin.home.shop_status_products: 取扱商品数
 admin.home.shop_status_customers: 会員数
-admin.home.sales_summany_title: 売上状況
-admin.home.sales_summany_value: '%amount% / %count% 件'
-admin.home.sales_summany_this_month: 今月の売上金額 / 売上件数
-admin.home.sales_summany_today: 今日の売上金額 / 売上件数
-admin.home.sales_summany_yesterday: 昨日の売上金額 / 売上件数
-admin.home.sales_summany_weekly: 週間
-admin.home.sales_summany_monthly: 月間
-admin.home.sales_summany_yearly: 年間
-admin.home.sales_summany_amount: 売上金額
-admin.home.sales_summany_count: 売上件数
+admin.home.sales_summary_title: 売上状況
+admin.home.sales_summary_value: '%amount% / %count% 件'
+admin.home.sales_summary_this_month: 今月の売上金額 / 売上件数
+admin.home.sales_summary_today: 今日の売上金額 / 売上件数
+admin.home.sales_summary_yesterday: 昨日の売上金額 / 売上件数
+admin.home.sales_summary_weekly: 週間
+admin.home.sales_summary_monthly: 月間
+admin.home.sales_summary_yearly: 年間
+admin.home.sales_summary_amount: 売上金額
+admin.home.sales_summary_count: 売上件数
 admin.home.recommend_plugins_title: おすすめのプラグイン
 admin.home.recommend_plugins.owner_store: オーナーズストア
 admin.home.news_title: お知らせ
@@ -575,16 +578,16 @@ admin.product.display_status__abolished: 廃止
 admin.product.permanently_delete: 削除
 admin.product.permanently_delete__confirm_title: 商品を削除します
 admin.product.permanently_delete__confirm_message: 商品を削除してよろしいですか？
-admin.product.permanently_delete__in_prograss: 削除中...
+admin.product.permanently_delete__in_progress: 削除中...
 admin.product.permanently_delete__complete_message: 商品の削除処理が完了しました
 admin.product.permanently_delete__complete: 完了
 admin.product.permanently_delete__system_error: システムエラーが発生しました
 admin.product.copy__confirm_title: 商品を複製します
 admin.product.copy__confirm_message: 商品を複製してよろしいですか？
 admin.product.name: 商品名
-amdin.product.image: 商品画像
-amdin.product.image__short: 画像
-amdin.product.image_size: '推奨サイズ : 600px x 600px以上'
+admin.product.image: 商品画像
+admin.product.image__short: 画像
+admin.product.image_size: '推奨サイズ : 600px x 600px以上'
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
@@ -631,7 +634,7 @@ admin.product.product_class__reset_confirm_message: この商品に登録され�
   これまでの販売データには影響はありませんが、この操作は取り消すことができません。
   初期化しますか？
 admin.product.product_class__reset_confirm_excecute: 規格を初期化
-admin.product.product_class_set_stock_quantitiy: 在庫数を入力、もしくは在庫無制限を設定してください。
+admin.product.product_class_set_stock_quantity: 在庫数を入力、もしくは在庫無制限を設定してください。
 admin.product.copy_first_line: 1行目をすべての行に複製
 admin.product.procuct_class_count: '%count%件の組み合わせがあります'
 admin.product.stock_unlimited: 在庫数無制限
@@ -659,6 +662,8 @@ admin.product.tag: タグ
 admin.product.tag__product_card_title: タグ
 admin.product.select__class1: 規格1を選択してください
 admin.product.select__class2: 規格2を選択してください
+admin.product.select__can_not_select_same_class: 規格1と同じ規格は選択できません
+admin.product.unselected_class: 選択されていません
 
 # 商品CSV雛形
 admin.product.product_csv.product_id_col: 商品ID
@@ -700,7 +705,7 @@ admin.product.product_csv.stock_description: 在庫数無制限フラグが0の�
 admin.product.product_csv.stock_unlimited_col: 在庫数無制限フラグ
 admin.product.product_csv.stock_unlimited_description: '0:制限 1: 無制限を指定します。'
 admin.product.product_csv.sale_limit_col: 販売制限数
-admin.product.product_csv.sale_limit_description: 0以上の数値を設定
+admin.product.product_csv.sale_limit_description: 1以上の数値を設定
 admin.product.product_csv.normal_price_col: 通常価格
 admin.product.product_csv.normal_price_description: 0以上の数値を設定
 admin.product.product_csv.sale_price_col: 販売価格
@@ -798,10 +803,8 @@ admin.order.mail_mail_info: メール内容
 admin.order.mail_confirm: 送信内容を確認
 admin.order.mail_template: テンプレート
 admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
-admin.order.mail_send_return: 送信内容の入力に戻る
 admin.order.mail_send: 送信
 admin.order.mail_send_complete: メールを送信しました。
-admin.order.mail_failed: 取得に失敗しました。
 admin.order.shipping_info: 出荷情報
 admin.order.delivery_date: お届け日
 admin.order.delivery_time: お届け時間
@@ -863,6 +866,9 @@ admin.order.delivery_note_line3: 3行目
 admin.order.delivery_note_save_input: 入力内容を保存する
 admin.order.delivery_note_download_error: 'ダウンロードに失敗しました'
 admin.order.delivery_note_parameter_error: '出荷IDが指定されていません'
+admin.order.failed_to_change_status: '%name%: %from% から %to% にはステータス変更できません'
+admin.order.failed_to_change_status__short: '%from% から %to% にはステータス変更できません'
+admin.order.skip_change_status: '%name": ステータス変更をスキップしました'
 
 # 出荷CSV雛形
 admin.order.shipping_csv.shipping_id_col: 出荷ID
@@ -945,6 +951,7 @@ admin.content.layout_section__body_after: '<body>タグ直後'
 admin.content.layout_section__header: '#header'
 admin.content.layout_section__contents_top: '#contents_top'
 admin.content.layout_section__side_left: '#side_left'
+admin.content.layout_section__main: Main
 admin.content.layout_section__main_top: '#main_top'
 admin.content.layout_section__main_bottom: '#main_bottom'
 admin.content.layout_section__side_right: '#side_right'
@@ -970,6 +977,7 @@ admin.content.page_meta_metatag: metatag
 admin.content.page_meta_metatag_placeholder: |
   <meta property="og:title" content="ページのタイトル" />
   <meta property="og:image" content="画像のURL" />
+admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 admin.content.block_name: ブロック名
 admin.content.block__card_title: ブロック設定
 admin.content.block_file_name: ファイル名
@@ -1053,11 +1061,13 @@ admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レー�
 #------------------------------------------------------------------------------------
 
 admin.setting.shop.payment.terms_of_use: 利用条件
+admin.setting.shop.payment.terms_of_use_error: 下限・上限の値を確認してください
 admin.setting.shop.payment.unlimited: 無制限
 admin.setting.shop.payment.payment_id: ID
 admin.setting.shop.payment.payment_name: 支払方法名
 admin.setting.shop.payment.logo_image: ロゴ画像
 admin.setting.shop.payment.logo_image_size: '推奨サイズ : 500px × 100px'
+
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：配送方法設定
@@ -1093,12 +1103,13 @@ admin.setting.shop.mail.mail_subject: 件名
 admin.setting.shop.mail.mail_body: 本文
 admin.setting.shop.mail.mail_text: テキスト
 admin.setting.shop.mail.mail_html: HTML
+admin.setting.shop.mail.preview: プレビュー
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：CSV出力項目設定
 #------------------------------------------------------------------------------------
 
-admin.setting.shop.csv.csv_colmuns: CSV出力項目
+admin.setting.shop.csv.csv_columns: CSV出力項目
 admin.setting.shop.csv.csv_type: CSV種別
 admin.setting.shop.csv.non_output_colmuns: 出力しない項目
 admin.setting.shop.csv.output_colmuns: 出力する項目
@@ -1158,7 +1169,7 @@ admin.setting.system.security.admin_url_changed: 管理画面のURLを変更し�
 admin.setting.system.security.ip_limit: IP制限
 admin.setting.system.security.ip_limit_description: |
   管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
-  アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。
+  アクセスを許可するIPアドレスを1行ずつ入力してください。何も入力しない場合は全てを許可します。
 admin.setting.system.security.ip_limit_sample: |
   127.0.0.1
   192.0.2.1
@@ -1228,6 +1239,11 @@ admin.store.plugin.plugin_list: プラグイン一覧
 admin.store.plugin.search.not_found: 検索条件に該当するデータがありませんでした。
 admin.store.plugin.installed: インストール済み
 admin.store.plugin.update: アップデート
+admin.store.plugin.install.complete: プラグインをインストールしました。
+admin.store.plugin.enable.complete: 「%plugin_name%」を有効にしました。
+admin.store.plugin.disable.complete: 「%plugin_name%」を無効にしました。
+admin.store.plugin.uninstall.complete: プラグインを削除しました。
+admin.store.plugin.mkdir.error: ディレクトリ「%dir_name%」の作成に失敗しました。
 admin.store.setting: 設定
 admin.store.setting.api_key_setting: 認証キー設定
 admin.store.setting.api_key: 認証キー
@@ -1240,6 +1256,10 @@ admin.store.setting.captcha_error: エラー
 admin.store.package.api.0.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
 admin.store.package.api.403.error: オーナーズストアの認証に失敗しました。認証キーの設定を確認してください。
 admin.store.package.api.500.error: オーナーズストアとの通信に失敗しました。時間を置いてもう一度お試しください。
+admin.plugin.uninstall.error.not_disable: プラグインを無効にしてください。
+admin.plugin.uninstall.depend: '「%depend_name%」が「%name%」に依存しているため削除できません。'
+admin.plugin.disable.depend: '「%name%」を無効にする前に、「%depend_name%」を無効にしてください。 '
+
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する
@@ -1393,16 +1413,16 @@ admin.store.plugin_table_official.921: 詳細情報
 admin.store.plugin_table_official.924: 有効化
 admin.store.plugin_table_official.925: 無効化
 admin.store.plugin_table_official.923: インストールされているプラグインはありません。
-admin.store.unregisterd_plugin_table.941: プラグイン
-admin.store.unregisterd_plugin_table.942: バージョン
-admin.store.unregisterd_plugin_table.943: コード
-admin.store.unregisterd_plugin_table.944: アップデート
-admin.store.unregisterd_plugin_table.945: 設定
-admin.store.unregisterd_plugin_table.946: 不明
-admin.store.unregisterd_plugin_table.947: 不明
-admin.store.unregisterd_plugin_table.948: 詳細を表示
-admin.store.unregisterd_plugin_table.949: 不明
-admin.store.unregisterd_plugin_table.950: 設定
+admin.store.unregistered_plugin_table.941: プラグイン
+admin.store.unregistered_plugin_table.942: バージョン
+admin.store.unregistered_plugin_table.943: コード
+admin.store.unregistered_plugin_table.944: アップデート
+admin.store.unregistered_plugin_table.945: 設定
+admin.store.unregistered_plugin_table.946: 不明
+admin.store.unregistered_plugin_table.947: 不明
+admin.store.unregistered_plugin_table.948: 詳細を表示
+admin.store.unregistered_plugin_table.949: 不明
+admin.store.unregistered_plugin_table.950: 設定
 admin.store.install.label: 'プラグイン (zip、tar、tar.gz形式)'
 
 
@@ -1518,8 +1538,8 @@ install.update: 更新する
 install.title: ようこそ | EC-CUBEインストール
 install.welcom: ようこそ
 install.check_permission: 権限チェック
-install.site_configration: サイトの設定
-install.database_configration: データベースの設定
+install.site_configuration: サイトの設定
+install.database_configuration: データベースの設定
 install.database_initalization: データベースの初期化
 install.install_completed: インストール完了
 install.start_eccube_installation: '<p>EC-CUBEのインストールを開始します。</p><p>あらかじめ、使用するデータベースの情報（DB名など）をご準備ください。</p>'
@@ -1531,8 +1551,8 @@ install.system_requirement: システム要件をご確認ください
 install.required_extension_disabled: '[必須] %module%拡張モジュールが有効になっていません。'
 install.required_database_extension_disabled: '[必須] pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。'
 install.recommend_extension_disabled: '[推奨] %module%拡張モジュールが有効になっていません。'
-install.mod_rewite_unknown: mod_rewrite が有効になっているか不明です。
-install.mod_rewite_disabled: '[必須] mod_rewrite が有効になっていません。'
+install.mod_rewrite_unknown: mod_rewrite が有効になっているか不明です。
+install.mod_rewrite_disabled: '[必須] mod_rewrite が有効になっていません。'
 install.member_name: 管理者
 install.member_department:
 install.shop_name: あなたの店名
@@ -1540,8 +1560,8 @@ install.mail_address: メールアドレス（受注メールなどの宛先に�
 install.login_id: 管理画面ログインID（半角英数字%min%～%max%文字）
 install.login_password: 管理画面パスワード（半角英数字%min%～%max%文字）
 install.security_configuration: セキュリティの設定
-install.directry_name: 管理画面のディレクトリ名（半角英数字%min%～%max%文字）
-install.directry_name_notice: セキュリティのため推測されにくいディレクトリ名を入力して下さい
+install.directory_name: 管理画面のディレクトリ名（半角英数字%min%～%max%文字）
+install.directory_name_notice: セキュリティのため推測されにくいディレクトリ名を入力して下さい
 install.https_only: サイトへのアクセスを、SSL（https）経由に制限します
 install.https_only_notice: httpsからの接続でなければSSL制限を設定できません。
 install.ip_restriction: 管理画面へのアクセスを、以下のIPに制限します
@@ -1568,3 +1588,24 @@ install.completed: インストールが完了しました！
 install.access_admin_page: 管理画面にアクセスしてみましょう
 install.perform_initial_setting: 先ほど登録したログインID・パスワードで、管理画面にログインすることができます。デザインの編集や商品を登録してみましょう！
 install.go_to_admin_page: 管理画面を表示
+
+#------------------------------------------------------------------------------------
+# エラー画面
+#------------------------------------------------------------------------------------
+
+exception.error_title: システムエラーが発生しました。
+exception.error_message: 大変お手数ですが、サイト管理者までご連絡ください。
+exception.error_title_can_not_access: アクセスできません。
+exception.error_message_can_not_access: お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。
+exception.error_title_not_found: ページがみつかりません。
+exception.error_message_not_found: URLに間違いがないかご確認ください。
+
+#------------------------------------------------------------------------------------
+# PurchaseFlow
+#------------------------------------------------------------------------------------
+
+purchase_flow.delivery_fee_update: 送料が更新されました。金額をご確認ください。
+purchase_flow.charge_update: 手数料が更新されました。金額をご確認ください。
+purchase_flow.over_customer_point: 利用ポイントが所有ポイントを上回っています。
+purchase_flow.over_payment_total: 利用ポイントがお支払い金額を上回っています。
+purchase_flow.over_stock: 「%name%」の在庫が足りません。

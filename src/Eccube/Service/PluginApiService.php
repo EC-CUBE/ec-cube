@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class PluginApiService
 {
-   /**
+    /**
      * Url for Api
      *
      * @var string

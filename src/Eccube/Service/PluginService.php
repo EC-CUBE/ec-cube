@@ -19,10 +19,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
-use Eccube\Exception\PluginApiException;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
@@ -84,7 +82,7 @@ class PluginService
     private $environment;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -106,7 +104,7 @@ class PluginService
      * @param EccubeConfig $eccubeConfig
      * @param ContainerInterface $container
      * @param CacheUtil $cacheUtil
-     * @param ComposerApiService $composerService
+     * @param ComposerServiceInterface $composerService
      * @param PluginApiService $pluginApiService
      */
     public function __construct(
@@ -117,7 +115,7 @@ class PluginService
         EccubeConfig $eccubeConfig,
         ContainerInterface $container,
         CacheUtil $cacheUtil,
-        ComposerApiService $composerService,
+        ComposerServiceInterface $composerService,
         PluginApiService $pluginApiService
     ) {
         $this->entityManager = $entityManager;
@@ -316,7 +314,7 @@ class PluginService
         $d = ($tempDir.'/'.sha1(StringUtil::random(16)));
 
         if (!mkdir($d, 0777)) {
-            throw new PluginException($php_errormsg.$d);
+            throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
         }
 
         return $d;
@@ -465,7 +463,7 @@ class PluginService
     {
         $b = @mkdir($d);
         if (!$b) {
-            throw new PluginException($php_errormsg);
+            throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
         }
     }
 
@@ -548,6 +546,7 @@ class PluginService
         }
 
         $this->pluginApiService->pluginUninstalled($plugin);
+
         return true;
     }
 

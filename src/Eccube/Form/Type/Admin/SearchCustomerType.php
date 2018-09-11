@@ -131,7 +131,7 @@ class SearchCustomerType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^[\d-]+$/u",
-                        'message' => 'form.type.admin.nottelstyle',
+                        'message' => 'form_error.graph_and_hyphen_only',
                     ]),
                 ],
             ])
