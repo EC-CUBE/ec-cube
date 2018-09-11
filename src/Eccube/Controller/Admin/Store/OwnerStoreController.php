@@ -235,7 +235,7 @@ class OwnerStoreController extends AbstractController
             return [
                 'item' => $item,
                 'requires' => $requires,
-                'is_update' => $request->get('is_update', false),
+                'is_update' => false,
             ];
         } catch (PluginApiException $e) {
             $this->addError($e->getMessage(), 'admin');

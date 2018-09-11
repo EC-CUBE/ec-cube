@@ -46,7 +46,7 @@ class EA10PluginCest
         FileSystem::doEmptyDir('repos');
     }
 
-    public function installFromStore(\AcceptanceTester $I)
+    public function install_enable_disable_enable_disable_remove_store(\AcceptanceTester $I)
     {
         $this->publishPlugin('Horizon-1.0.0.tgz');
         /*
@@ -124,7 +124,7 @@ class EA10PluginCest
         $I->assertNull($Plugin);
     }
 
-    public function installFromLocal(\AcceptanceTester $I)
+    public function install_enable_disable_enable_disable_remove_local(\AcceptanceTester $I)
     {
         /*
          * インストール
@@ -204,7 +204,7 @@ class EA10PluginCest
         $I->assertNull($Plugin);
     }
 
-    public function installRemoveFromLocal(\AcceptanceTester $I)
+    public function install_remove_local(\AcceptanceTester $I)
     {
         /*
          * インストール
@@ -236,7 +236,7 @@ class EA10PluginCest
         $I->assertNull($Plugin);
     }
 
-    public function installRemoveFromStore(\AcceptanceTester $I)
+    public function install_remove_store(\AcceptanceTester $I)
     {
         $this->publishPlugin('Horizon-1.0.0.tgz');
         /*
@@ -266,7 +266,79 @@ class EA10PluginCest
         $I->assertNull($Plugin);
     }
 
-    public function installLocalPluginWithAssets(\AcceptanceTester $I)
+    public function install_update_remove_store(\AcceptanceTester $I)
+    {
+        // 最初のバージョンを作成
+        $this->publishPlugin('Horizon-1.0.0.tgz');
+
+        /*
+         * インストール
+         */
+        $ManagePage = PluginSearchPage::go($I)
+            ->入手する('Horizon')
+            ->インストール();
+
+        $Plugin = $this->pluginRepository->findByCode('Horizon');
+        $I->assertFalse($Plugin->isInitialized());
+        $I->assertFalse($Plugin->isEnabled());
+
+        // 新しいバージョンを作成
+        $this->publishPlugin('Horizon-1.0.1.tgz');
+
+        /*
+         * アップデート
+         */
+        $I->reloadPage();
+        $ManagePage->ストアプラグイン_アップデート('Horizon')->アップデート();
+
+        $this->em->refresh($Plugin);
+        $I->assertFalse($Plugin->isInitialized());
+        $I->assertFalse($Plugin->isEnabled());
+
+        /*
+         * 削除
+         */
+        $ManagePage->ストアプラグイン_削除('Horizon');
+
+        $this->em->refresh($Plugin);
+        $Plugin = $this->pluginRepository->findByCode('Horizon');
+        $I->assertNull($Plugin);
+    }
+
+
+
+    public function install_update_remove_local(\AcceptanceTester $I)
+    {
+        /*
+         * インストール
+         */
+        $ManagePage = PluginLocalInstallPage::go($I)
+            ->アップロード('plugins/Horizon-1.0.0.tgz');
+
+        $Plugin = $this->pluginRepository->findByCode('Horizon');
+        $I->assertTrue($Plugin->isInitialized());
+        $I->assertFalse($Plugin->isEnabled());
+
+        /*
+         * アップデート
+         */
+        $ManagePage->独自プラグイン_アップデート('Horizon', 'plugins/Horizon-1.0.1.tgz');
+
+        $this->em->refresh($Plugin);
+        $I->assertTrue($Plugin->isInitialized());
+        $I->assertFalse($Plugin->isEnabled());
+
+        /*
+         * 削除
+         */
+        $ManagePage->独自プラグイン_削除('Horizon');
+
+        $this->em->refresh($Plugin);
+        $Plugin = $this->pluginRepository->findByCode('Horizon');
+        $I->assertNull($Plugin);
+    }
+
+    public function install_assets_local(\AcceptanceTester $I)
     {
         $this->publishPlugin('Assets-1.0.0.tgz');
 
@@ -297,7 +369,7 @@ class EA10PluginCest
         $I->assertFileNotExists($updatedPath);
     }
 
-    public function installStorePluginWithAssets(\AcceptanceTester $I)
+    public function install_assets_store(\AcceptanceTester $I)
     {
         // 最初のバージョンを作成
         $this->publishPlugin('Assets-1.0.0.tgz');
