@@ -100,7 +100,7 @@ $(function() {
                             {% if orderItem.productClass.classCategory2 %}
                                 <div class="ec-AddAddress__itemtSize">{{ orderItem.productClass.classCategory2 }}</div>
                             {% endif %}
-                            <div class="ec-AddAddress__itemtPrice">{{ 'common.subtotal__with_separator' }}{{ orderItem.totalPrice|price }}</div>
+                            <div class="ec-AddAddress__itemtPrice">{{ 'common.subtotal__with_separator'|trans }}{{ orderItem.totalPrice|price }}</div>
 
                             {% for key, value in compItemQuantities %}
                                 {% if orderItem.productClass.id == key %}
