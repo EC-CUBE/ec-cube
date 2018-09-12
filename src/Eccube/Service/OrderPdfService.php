@@ -13,7 +13,6 @@
 
 namespace Eccube\Service;
 
-use Eccube\Application;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\OrderItem;
@@ -44,7 +43,7 @@ class OrderPdfService extends TcpdfFpdi
     protected $taxRuleService;
 
     /**
-     * @var Application
+     * @var EccubeConfig
      */
     private $eccubeConfig;
 
@@ -126,7 +125,7 @@ class OrderPdfService extends TcpdfFpdi
 
         // 購入詳細情報の設定を行う
         // 動的に入れ替えることはない
-        $this->labelCell[] = '商品名 / 商品コード / [ 規格 ]';
+        $this->labelCell[] = '商品名 / 商品コード';
         $this->labelCell[] = '数量';
         $this->labelCell[] = '単価';
         $this->labelCell[] = '金額(税込)';
@@ -182,10 +181,6 @@ class OrderPdfService extends TcpdfFpdi
         // 空文字列の場合のデフォルトメッセージを設定する
         $this->setDefaultData($formData);
 
-        // テンプレートファイルを読み込む
-        $userPath = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/nouhinsyo1.pdf';
-        $this->setSourceFile($userPath);
-
         foreach ($ids as $id) {
             $this->lastOrderId = $id;
 
@@ -196,6 +191,16 @@ class OrderPdfService extends TcpdfFpdi
                 // 出荷情報の取得ができなかった場合
                 continue;
             }
+
+            // テンプレートファイルを読み込む
+            $Order = $Shipping->getOrder();
+            if ($Order->isMultiple()) {
+                // 複数配送の時は読み込むテンプレートファイルを変更する
+                $userPath = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/nouhinsyo_multiple.pdf';
+            } else {
+                $userPath = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/nouhinsyo.pdf';
+            }
+            $this->setSourceFile($userPath);
 
             // PDFにページを追加する
             $this->addPdfPage();
@@ -387,12 +392,13 @@ class OrderPdfService extends TcpdfFpdi
         $Order = $Shipping->getOrder();
 
         // 購入者都道府県+住所1
-        $text = $Order->getPref().$Order->getAddr01();
+        // $text = $Order->getPref().$Order->getAddr01();
+        $text = $Shipping->getPref().$Shipping->getAddr01();
         $this->lfText(27, 47, $text, 10);
-        $this->lfText(27, 51, $Order->getAddr02(), 10); //購入者住所2
+        $this->lfText(27, 51, $Shipping->getAddr02(), 10); //購入者住所2
 
         // 購入者氏名
-        $text = $Order->getName01().'　'.$Order->getName02().'　様';
+        $text = $Shipping->getName01().'　'.$Shipping->getName02().'　様';
         $this->lfText(27, 59, $text, 11);
 
         // =========================================
@@ -408,16 +414,18 @@ class OrderPdfService extends TcpdfFpdi
 
         $this->lfText(25, 125, $orderDate, 10);
         //注文番号
-        $this->lfText(25, 135, $Order->getId(), 10);
+        $this->lfText(25, 135, $Order->getOrderNo(), 10);
 
         // 総合計金額
-        $this->SetFont(self::FONT_SJIS, 'B', 15);
-        $paymentTotalText = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
+        if (!$Order->isMultiple()) {
+            $this->SetFont(self::FONT_SJIS, 'B', 15);
+            $paymentTotalText = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
 
-        $this->setBasePosition(120, 95.5);
-        $this->Cell(5, 7, '', 0, 0, '', 0, '');
-        $this->Cell(67, 8, $paymentTotalText, 0, 2, 'R', 0, '');
-        $this->Cell(0, 45, '', 0, 2, '', 0, '');
+            $this->setBasePosition(120, 95.5);
+            $this->Cell(5, 7, '', 0, 0, '', 0, '');
+            $this->Cell(67, 8, $paymentTotalText, 0, 2, 'R', 0, '');
+            $this->Cell(0, 45, '', 0, 2, '', 0, '');
+        }
 
         // フォント情報の復元
         $this->restoreFont();
@@ -452,7 +460,14 @@ class OrderPdfService extends TcpdfFpdi
             }
 
             // product
-            $arrOrder[$i][0] = sprintf('%s / %s / %s', $OrderItem->getProductName(), $OrderItem->getProductCode(), $classCategory);
+            $productName = $OrderItem->getProductName();
+            if (null !== $OrderItem->getProductCode()) {
+                $productName .= ' / '.$OrderItem->getProductCode();
+            }
+            if ($classCategory) {
+                $productName .= ' / '.$classCategory;
+            }
+            $arrOrder[$i][0] = $productName;
             // 購入数量
             $arrOrder[$i][1] = number_format($OrderItem->getQuantity());
             // 税込金額（単価）
@@ -465,43 +480,45 @@ class OrderPdfService extends TcpdfFpdi
 
         $Order = $Shipping->getOrder();
 
-        // =========================================
-        // 小計
-        // =========================================
-        $arrOrder[$i][0] = '';
-        $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '';
-        $arrOrder[$i][3] = '';
+        if (!$Order->isMultiple()) {
+            // =========================================
+            // 小計
+            // =========================================
+            $arrOrder[$i][0] = '';
+            $arrOrder[$i][1] = '';
+            $arrOrder[$i][2] = '';
+            $arrOrder[$i][3] = '';
 
-        ++$i;
-        $arrOrder[$i][0] = '';
-        $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '商品合計';
-        $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getSubtotal());
+            ++$i;
+            $arrOrder[$i][0] = '';
+            $arrOrder[$i][1] = '';
+            $arrOrder[$i][2] = '商品合計';
+            $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getSubtotal());
 
-        ++$i;
-        $arrOrder[$i][0] = '';
-        $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '送料';
-        $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getDeliveryFeeTotal());
+            ++$i;
+            $arrOrder[$i][0] = '';
+            $arrOrder[$i][1] = '';
+            $arrOrder[$i][2] = '送料';
+            $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getDeliveryFeeTotal());
 
-        ++$i;
-        $arrOrder[$i][0] = '';
-        $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '手数料';
-        $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getCharge());
+            ++$i;
+            $arrOrder[$i][0] = '';
+            $arrOrder[$i][1] = '';
+            $arrOrder[$i][2] = '手数料';
+            $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getCharge());
 
-        ++$i;
-        $arrOrder[$i][0] = '';
-        $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '値引き';
-        $arrOrder[$i][3] = '- '.$this->eccubeExtension->getPriceFilter($Order->getDiscount());
+            ++$i;
+            $arrOrder[$i][0] = '';
+            $arrOrder[$i][1] = '';
+            $arrOrder[$i][2] = '値引き';
+            $arrOrder[$i][3] = '- '.$this->eccubeExtension->getPriceFilter($Order->getDiscount());
 
-        ++$i;
-        $arrOrder[$i][0] = '';
-        $arrOrder[$i][1] = '';
-        $arrOrder[$i][2] = '請求金額';
-        $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
+            ++$i;
+            $arrOrder[$i][0] = '';
+            $arrOrder[$i][1] = '';
+            $arrOrder[$i][2] = '請求金額';
+            $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
+        }
 
         // PDFに設定する
         $this->setFancyTable($this->labelCell, $arrOrder, $this->widthCell);

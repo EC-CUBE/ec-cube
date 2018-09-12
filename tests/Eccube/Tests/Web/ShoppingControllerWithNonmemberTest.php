@@ -92,8 +92,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
 
-        $this->client->enableProfiler();
-        $this->scenarioComplete(null, $this->generateUrl('shopping_checkout'));
+        $this->scenarioCheckout();
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $mailCollector = $this->getMailCollector(false);

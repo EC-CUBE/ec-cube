@@ -81,8 +81,8 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $configs = $container->resolveEnvPlaceholders($configs, true);
 
         // doctrine bundleのconfigurationで設定値を正規化する.
-        $configration = new DoctrineBundleConfiguration($container->getParameter('kernel.debug'));
-        $config = $this->processConfiguration($configration, $configs);
+        $configuration = new DoctrineBundleConfiguration($container->getParameter('kernel.debug'));
+        $config = $this->processConfiguration($configuration, $configs);
 
         // prependのタイミングではコンテナのインスタンスは利用できない.
         // 直接dbalのconnectionを生成し, dbアクセスを行う.

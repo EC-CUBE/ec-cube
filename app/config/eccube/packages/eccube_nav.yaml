@@ -129,23 +129,23 @@ parameters:
             icon: fa-plug
             children:
                 plugin:
-                    name: admin.nav.store.plugin
+                    name: admin.store.plugin
                     children:
                         plugin_owners_search:
-                            name: admin.nav.store.plugin.plugin_owners_install
+                            name: admin.store.plugin.plugin_owners_install
                             url: admin_store_plugin_owners_search
                         plugin_list:
-                            name: admin.nav.store.plugin.plugin_list
+                            name: admin.store.plugin.plugin_list
                             url: admin_store_plugin
                 template:
-                    name: admin.nav.store.template
+                    name: admin.store.template
                     children:
                         template_list:
-                            name: admin.nav.store.template.template_list
+                            name: admin.store.template.template_list
                             url: admin_store_template
                         template_install:
-                            name: admin.nav.store.template.template_install
+                            name: admin.store.template.template_install
                             url: admin_store_template_install
                 authentication_setting:
-                    name: admin.nav.store.authentication_setting
+                    name: admin.store.setting
                     url: admin_store_authentication_setting

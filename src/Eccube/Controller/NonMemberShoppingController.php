@@ -17,6 +17,7 @@ use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\NonMemberType;
+use Eccube\Form\Validator\Email;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
@@ -252,7 +253,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Length(['max' => $this->eccubeConfig['eccube_name_len']]),
                 new Assert\Regex(
-                    ['pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace']
+                    ['pattern' => '/^[^\s ]+$/u', 'message' => 'form_error.not_contain_spaces']
                 ),
             ]
         );
@@ -263,7 +264,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Length(['max' => $this->eccubeConfig['eccube_name_len']]),
                 new Assert\Regex(
-                    ['pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace']
+                    ['pattern' => '/^[^\s ]+$/u', 'message' => 'form_error.not_contain_spaces']
                 ),
             ]
         );
@@ -297,7 +298,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_phone_number'],
             [
                 new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
+                new Assert\Type(['type' => 'numeric', 'message' => 'form_error.numeric_only']),
                 new Assert\Length(
                     ['max' => $this->eccubeConfig['eccube_tel_len_max']]
                 ),
@@ -308,7 +309,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_postal_code'],
             [
                 new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
+                new Assert\Type(['type' => 'numeric', 'message' => 'form_error.numeric_only']),
                 new Assert\Length(
                     ['max' => $this->eccubeConfig['eccube_postal_code']]
                 ),
@@ -335,7 +336,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_email'],
             [
                 new Assert\NotBlank(),
-                new Assert\Email(['strict' => true]),
+                new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
             ]
         );
 

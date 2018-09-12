@@ -108,7 +108,7 @@ if ($allOrderCount < $config['fixture_order_num']) {
         $Delivery = $Deliveries[$faker->numberBetween(0, count($Deliveries) - 1)];
         $Product = $Products[$faker->numberBetween(0, count($Products) - 1)];
         $charge = $faker->randomNumber(4);
-        $discount = $faker->randomNumber(4);
+        $discount = $faker->numberBetween(0, $charge);
 
         $orderCountPerCustomer = $entityManager->getRepository('Eccube\Entity\Order')
             ->createQueryBuilder('o')
@@ -343,12 +343,11 @@ Fixtures::add('findCustomers', $findCustomers);
 /* 新着情報を検索するクロージャ */
 Fixtures::add('findNews', function () use ($entityManager) {
     return $entityManager->getRepository(\Eccube\Entity\News::class)
-        ->findBy(['visible' => true], ['publish_date' => 'DESC']);
+        ->findBy(['visible' => true], ['publish_date' => 'DESC', 'id' => 'DESC']);
 });
 
-
-/** 新着情報を登録するクロージャ */
-Fixtures::add('createNews', function($publishDate, $title, $description, $url = null) use ($entityManager) {
+/* 新着情報を登録するクロージャ */
+Fixtures::add('createNews', function ($publishDate, $title, $description, $url = null) use ($entityManager) {
     $News = new \Eccube\Entity\News();
     $News->setPublishDate($publishDate);
     $News->setTitle($title);

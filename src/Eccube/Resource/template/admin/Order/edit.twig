@@ -70,7 +70,7 @@ file that was distributed with this source code.
             });
 
             // その他明細
-            $('#addOrderItemType').on('show.bs.modal', function (e) {
+            $('#addOrderItemType').on('show.bs.modal', function(e) {
                 var list = $('#searchOrderItemTypeList');
                 list.children().remove();
 
@@ -171,13 +171,13 @@ file that was distributed with this source code.
 
             // 配送業者選択時にお届け時間を設定
             var times = {{ shippingDeliveryTimes|raw }};
-            $('#order_Shipping_Delivery').change(function(){
+            $('#order_Shipping_Delivery').change(function() {
                 var deliveryId = $(this).val();
                 var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
                 $shippingDeliveryTime.find('option').remove();
                 $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
                 if (typeof(times[deliveryId]) !== 'undefined') {
-                    for (var timeId in times[deliveryId]){
+                    for (var timeId in times[deliveryId]) {
                         timeValue = times[deliveryId][timeId];
                         $shippingDeliveryTime.append($('<option></option>')
                             .val(timeId)
@@ -186,6 +186,31 @@ file that was distributed with this source code.
                 }
             });
         });
+
+        {# ポイント機能が有効かつ会員の場合のみポイントの割引金額を変更する #}
+        {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+            // 再計算時のポイントの割引金額の更新
+            function updatePointItem() {
+                // ポイント換算レート
+                var pointConversionRate = {{ BaseInfo.point_conversion_rate }};
+                // 利用ポイント
+                var usePoint = $('#order_use_point').val();
+
+                // 利用ポイントが数値以外の時は割引金額を更新しない
+                if (isNaN(usePoint)) return;
+
+                // 割引金額を計算
+                var discountPrice = (-1) * pointConversionRate * usePoint;
+
+                // ポイント明細の金額の要素を取得
+                var $pointPrice = $('.pointPrice');
+
+                // ポイント明細の金額の要素がある場合はポイントの更新
+                if ($pointPrice.length) {
+                    $pointPrice.val(discountPrice);
+                }
+            }
+        {% endif %}
     </script>
 {% endblock javascript %}
 
@@ -221,7 +246,7 @@ file that was distributed with this source code.
             </div>
         </div>
     </div>
-    <form name="form1" id="form1" method="post" action="?">
+    <form name="form1" id="form1" method="post" action="?"{% if BaseInfo.isOptionPoint and Order.Customer is not null %} onsubmit="updatePointItem()"{% endif %}>
         <input type="hidden" name="mode" value="">
         <input type="hidden" name="modal" value="">
         {{ form_widget(form._token) }}
@@ -233,7 +258,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.order_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.order_info'|trans }}"><span class="card-title">{{ 'admin.order.order_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderOverview" aria-expanded="false" aria-controls="orderOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -243,11 +268,11 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <div class="col-3">{{ 'admin.order.order_no'|trans }}</div>
+                                            <div class="col-3" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.order_no'|trans }}">{{ 'admin.order.order_no'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                             <div class="col">{{ Order.order_no }}</div>
                                         </div>
                                         <div class="row mb-3 form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
+                                            <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.order_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                             <div class="col">
                                                 {% if Order.id is not empty %}
                                                     {{ form_widget(form.OrderStatus) }}
@@ -325,7 +350,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-2">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.orderer'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block"><span class="card-title">{{ 'admin.order.orderer'|trans }}</span></div>
                                 </div>
                                 <div class="col">{% if id %}<span class="mr-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.full_name }} ({{ Order.full_name_kana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
                                 <div class="col-1 text-right"><a class="d-block" data-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo"><i class="fa {{ id ? 'fa-angle-down' : 'fa-angle-up' }} fa-lg"></i></a></div>
@@ -360,7 +385,7 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row">
-                                            <label class="col-3">{{ 'admin.customer.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
+                                            <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.customer_id'|trans }}">{{ 'admin.customer.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                             <div class="col">
                                                 <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
                                                 {{ form_widget(form.Customer) }}
@@ -468,7 +493,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.shipping_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.shipping_info'|trans }}"><span class="card-title">{{ 'admin.order.shipping_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#shippingInfo" aria-expanded="false" aria-controls="shippingInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -488,7 +513,7 @@ file that was distributed with this source code.
                                             {% set shipping_name = shipping.full_name ~ '(' ~ shipping.full_name_kana ~ ')' ~ shipping.company_name is not null ? shipping.company_name : '' %}
                                             {% set shipping_addr = 'admin.common.postal_symbol'|trans ~ shipping.postal_code ~ ' ' ~ shipping.pref ~ shipping.addr01 ~ shipping.addr02 %}
                                             {% set shipping_date = shipping.shipping_date is not null ? shipping.shipping_date|date_day : '' %}
-                                            {{ shipping_name}} {{ shipping_addr }} {{ shipping.phone_number }} {{ shipping_date }}
+                                            {{ shipping_name }} {{ shipping_addr }} {{ shipping.phone_number }} {{ shipping_date }}
                                         </div>
                                     {% endfor %}
                                 {% else %}
@@ -497,7 +522,7 @@ file that was distributed with this source code.
                                         <div class="col-6">
                                             <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.copy_orderer'|trans }}</button>
                                             {% if Order.id is not empty %}
-                                            <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.output_delivery_note'|trans }}</a>
+                                                <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.output_delivery_note'|trans }}</a>
                                             {% endif %}
                                         </div>
                                         {% if Order.id is not empty %}
@@ -593,21 +618,21 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-6">
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.order.tracking_number'|trans }}</label>
+                                                <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.shipping_info.tracking_number'|trans }}">{{ 'admin.order.tracking_number'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.tracking_number) }}
                                                     {{ form_errors(form.Shipping.tracking_number) }}
                                                 </div>
                                             </div>
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.order.delivery_provider'|trans }}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
+                                                <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.shipping_info.delivery_provider'|trans }}">{{ 'admin.order.delivery_provider'|trans }}<span class="badge badge-primary ml-1"></span><i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.Delivery) }}
                                                     {{ form_errors(form.Shipping.Delivery) }}
                                                 </div>
                                             </div>
                                             <div class="row mb-3 form-group">
-                                                <label class="col-3 col-form-label">{{ 'admin.order.shop_memo_for_shipped'|trans }}</label>
+                                                <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.shipping_info.shop_memo'|trans }}">{{ 'admin.order.shop_memo_for_shipped'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.note) }}
                                                     {{ form_errors(form.Shipping.note) }}
@@ -639,7 +664,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.product_info'|trans }}"><span class="card-title">{{ 'admin.order.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderItem" aria-expanded="false" aria-controls="orderItem"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -725,7 +750,7 @@ file that was distributed with this source code.
                                                     {% if OrderItem.isProduct or OrderItem.isPoint %}
                                                         {% if OrderItem.isProduct %}
                                                             <a href="{{ url('admin_product_product_edit', {id: OrderItem.ProductClass.Product.id}) }}" target="_blank">
-                                                            {{ OrderItem.product_name }}
+                                                                {{ OrderItem.product_name }}
                                                             </a>
                                                         {% else %}
                                                             {{ OrderItem.product_name }}
@@ -753,19 +778,20 @@ file that was distributed with this source code.
                                             </td>
                                             <!-- 金額 -->
                                             <td class="align-middle">
-                                                <div class="col-12">
+                                                <div class="col mt-3">
                                                     {# ポイント値引きは価格変更できない #}
                                                     {% if OrderItem.isPoint %}
-                                                        {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType, 'attr': { 'readonly': 'readonly' } }) }}
+                                                        {{ form_widget(orderItemForm.price, {'attr': { 'readonly': 'readonly', 'class': 'pointPrice' } }) }}
                                                     {% else %}
-                                                        {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType }) }}
+                                                        {{ form_widget(orderItemForm.price) }}
                                                     {% endif %}
+                                                    <div class="text-right small">({{ OrderItem.TaxDisplayType }})</div>
                                                     {{ form_errors(orderItemForm.price) }}
                                                 </div>
                                             </td>
                                             <!-- 数量 -->
                                             <td class="align-middle">
-                                                <div class="col-6">
+                                                <div class="col-12 col-xl-8">
                                                     {# 複数配送の場合は商品の個数を変更できない、ポイントの場合も個数を変更できない #}
                                                     {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
                                                         {{ form_widget(orderItemForm.quantity, { 'attr': { 'readonly': 'readonly' } }) }}
@@ -777,19 +803,19 @@ file that was distributed with this source code.
                                             </td>
                                             <!-- 税率 -->
                                             <td class="align-middle">
-                                                <div class="col-8">
-                                                    {{ OrderItem.tax_rate }}
+                                                <div class="col">
+                                                    {{ OrderItem.tax_rate }}%
                                                 </div>
                                             </td>
                                             <!-- 課税区分 -->
                                             <td class="align-middle">
-                                                <div class="col-8">
+                                                <div class="col">
                                                     {{ OrderItem.tax_type }}
                                                 </div>
                                             </td>
                                             <!-- 小計 -->
                                             <td class="align-middle">
-                                                <div class="col-8">
+                                                <div class="col">
                                                     <span>{{ OrderItem.total_price|price }}</span>
                                                 </div>
                                             </td>
@@ -798,7 +824,7 @@ file that was distributed with this source code.
                                                     {# 複数配送の場合は商品を削除できない #}
                                                     {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
                                                         <div class="col-auto text-center">
-                                                            <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                            <div class="d-inline-block mr-3" data-tooltip="true"
                                                                  data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon disabled">
                                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
@@ -807,7 +833,7 @@ file that was distributed with this source code.
                                                         </div>
                                                     {% else %}
                                                         <div class="col-auto text-center">
-                                                            <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                            <div class="d-inline-block mr-3" data-tooltip="true"
                                                                  data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}">
                                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
@@ -876,7 +902,12 @@ file that was distributed with this source code.
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.use_point'|trans }}</span></div>
                                     <div class="col-2 text-right">
                                         <span class="h4 align-middle font-weight-normal">
-                                            {{ form_widget(form.use_point) }}
+                                            {# ポイント機能が有効かつ会員の場合のみポイントを編集可能とする #}
+                                            {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                                                {{ form_widget(form.use_point) }}
+                                            {% else %}
+                                                {{ form_widget(form.use_point, {'attr': { 'readonly': 'readonly' } }) }}
+                                            {% endif %}
                                             {{ form_errors(form.use_point) }}
                                         </span>
                                     </div>
@@ -901,7 +932,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.shop_memo'|trans }}"><span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea" aria-expanded="false" aria-controls="freeArea"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -917,7 +948,9 @@ file that was distributed with this source code.
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-8"><span class="card-title">{{ 'admin.order.mail_history'|trans }}</span></div>
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_history'|trans }}"><span class="card-title">{{ 'admin.order.mail_history'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    </div>
                                     <div class="col-4 text-right"><a data-toggle="collapse" href="#mailHistory" aria-expanded="false" aria-controls="mailHistory"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>
                             </div>
@@ -934,8 +967,9 @@ file that was distributed with this source code.
                                         {% for MailHistory in Order.MailHistories %}
                                             <tr>
                                                 <td class="pl-3">{{ MailHistory.send_date|date_min }}</td>
-                                                <td class="pr-3"><a class="text-primary" data-toggle="modal" data-target="#mail2">{{ MailHistory.mail_subject }}</a>
-                                                    <div class="modal fade" id="mail2" tabindex="-1" role="dialog" aria-labelledby="mail2" aria-hidden="true">
+                                                <td class="pr-3">
+                                                    <a class="text-primary" data-toggle="modal" data-target="#mail2-{{ loop.index }}">{{ MailHistory.mail_subject }}</a>
+                                                    <div class="modal fade" id="mail2-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="mail2-{{ loop.index }}" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">

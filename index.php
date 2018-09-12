@@ -25,6 +25,10 @@ if (!isset($_SERVER['APP_ENV'])) {
 
     if (file_exists(__DIR__.'/.env')) {
         (new Dotenv(__DIR__))->overload();
+
+        if (strpos(getenv('DATABASE_URL'), 'sqlite') !== false && !extension_loaded('pdo_sqlite')) {
+            (new Dotenv(__DIR__, '.env.install'))->overload();
+        }
     } else {
         (new Dotenv(__DIR__, '.env.install'))->overload();
     }

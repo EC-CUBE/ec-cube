@@ -12,10 +12,20 @@ file that was distributed with this source code.
 
 {% set menus = ['store', 'template', 'template_list'] %}
 
-{% block title %}{{'admin.store.template.924'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.store.template.925'|trans}}{% endblock %}
+{% block title %}{{ 'admin.store.template.template_list'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.store'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            $('#form1').on('submit', function () {
+                $('#form_selected').val($('input[name=template]:checked').val());
+            });
+        });
+    </script>
+{% endblock javascript %}
 
 {% block main %}
     <form name="form1" id="form1" method="post" action="{{ url('admin_store_template') }}">
@@ -28,14 +38,14 @@ file that was distributed with this source code.
                         <a class="btn btn-ec-regular" href="{{ url('admin_store_template_install') }}">{{ 'admin.common.create__new'|trans }}</a>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span class="">{{'admin.store.template.926'|trans}}</span></div>
+                        <div class="card-header"><span class="card-title">{{ 'admin.store.template.template_list'|trans }}</span></div>
                         <div class="card-body p-0">
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th class="border-top-0 align-middle text-center">{{'admin.store.template.927'|trans}}</th>
-                                    <th class="border-top-0 align-middle text-center">{{'admin.store.template.928'|trans}}</th>
-                                    <th class="border-top-0 align-middle text-center">{{'admin.store.template.929'|trans}}</th>
+                                    <th class="border-top-0 align-middle text-center">{{ 'admin.store.template.select'|trans }}</th>
+                                    <th class="border-top-0 align-middle text-center">{{ 'admin.store.template.template_name'|trans }}</th>
+                                    <th class="border-top-0 align-middle text-center">{{ 'admin.store.template.save_path'|trans }}</th>
                                     <th class="border-top-0"></th>
                                 </tr>
                                 </thead>
@@ -75,7 +85,7 @@ file that was distributed with this source code.
                                                                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                                 </div>
                                                                 <div class="modal-body text-left">
-                                                                    <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': Template.code }) }}</p>
+                                                                    <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': Template.name }) }}</p>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
@@ -100,7 +110,7 @@ file that was distributed with this source code.
             </div>
         </div>
 
-        <div class="c-conversionArea" id="aside_column">
+        <div class="c-conversionArea">
             <div class="c-conversionArea__container">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
@@ -110,9 +120,7 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="button"
-                                        onclick="$('#form_selected').val($('input[name=template]:checked').val());document.form1.submit(); return false;"
-                                >{{ 'admin.common.registration'|trans }}</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
                             </div>
                         </div>
                     </div>

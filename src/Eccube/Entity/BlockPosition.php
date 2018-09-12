@@ -30,15 +30,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         /**
          * @var int
          *
-         * @ORM\Column(name="page_id", type="integer", options={"unsigned":true}, nullable=true)
-         *
-         * @deprecated
-         */
-        private $page_id;
-
-        /**
-         * @var int
-         *
          * @ORM\Column(name="section", type="integer", options={"unsigned":true})
          * @ORM\Id
          * @ORM\GeneratedValue(strategy="NONE")
@@ -71,15 +62,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         private $block_row;
 
         /**
-         * @var int
-         *
-         * @ORM\Column(name="anywhere", type="smallint", options={"default":0})
-         *
-         * @deprecated
-         */
-        private $anywhere = 0;
-
-        /**
          * @var \Eccube\Entity\Block
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Block", inversedBy="BlockPositions")
@@ -90,18 +72,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         private $Block;
 
         /**
-         * @var \Eccube\Entity\PageLayout
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="BlockPositions")
-         * @ORM\JoinColumns({
-         *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
-         * })
-         *
-         * @deprecated
-         */
-        private $Page;
-
-        /**
          * @var \Eccube\Entity\Layout
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="BlockPositions")
@@ -110,34 +80,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
          * })
          */
         private $Layout;
-
-        /**
-         * Set pageId.
-         *
-         * @param int $pageId
-         *
-         * @return BlockPosition
-         *
-         * @deprecated
-         */
-        public function setPageId($pageId)
-        {
-            $this->page_id = $pageId;
-
-            return $this;
-        }
-
-        /**
-         * Get pageId.
-         *
-         * @return int
-         *
-         * @deprecated
-         */
-        public function getPageId()
-        {
-            return $this->page_id;
-        }
 
         /**
          * Set section.
@@ -236,34 +178,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         }
 
         /**
-         * Set anywhere.
-         *
-         * @param int $anywhere
-         *
-         * @return BlockPosition
-         *
-         * @deprecated
-         */
-        public function setAnywhere($anywhere)
-        {
-            $this->anywhere = $anywhere;
-
-            return $this;
-        }
-
-        /**
-         * Get anywhere.
-         *
-         * @return int
-         *
-         * @deprecated
-         */
-        public function getAnywhere()
-        {
-            return $this->anywhere;
-        }
-
-        /**
          * Set block.
          *
          * @param \Eccube\Entity\Block|null $block
@@ -309,34 +223,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         public function getLayout()
         {
             return $this->Layout;
-        }
-
-        /**
-         * Set pageLayout.
-         *
-         * @param \Eccube\Entity\Page|null $Page
-         *
-         * @return BlockPosition
-         *
-         * @deprecated
-         */
-        public function setPage(\Eccube\Entity\Page $Page = null)
-        {
-            $this->Page = $Page;
-
-            return $this;
-        }
-
-        /**
-         * Get pageLayout.
-         *
-         * @return PageLayout
-         *
-         * @deprecated
-         */
-        public function getPage()
-        {
-            return $this->Page;
         }
     }
 }

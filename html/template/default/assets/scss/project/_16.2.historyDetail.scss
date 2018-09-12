@@ -42,14 +42,6 @@ Styleguide 16.2.5
   & &__body{
     display: none;
   }
-  .ec-inlineBtn {
-    display: none;
-    @include media_desktop {
-      display: inline-block;
-    }
-
-  }
-
 }
 
 
@@ -91,6 +83,7 @@ Styleguide 16.2.6
     a:hover {
       color: #33A8D0;
     }
+    margin-bottom: 4px;
   }
   & &__close{
     a {
@@ -103,6 +96,3 @@ Styleguide 16.2.6
     }
   }
 }
-
-
-

@@ -87,13 +87,18 @@ class TaxProcessor implements ItemHolderPreprocessor
                 $item->setRoundingType(null);
                 $item->setTaxRuleId(null);
 
-                return;
+                continue;
             }
 
             if ($item->getTaxRuleId()) {
                 $TaxRule = $this->taxRuleRepository->find($item->getTaxRuleId());
             } else {
                 $TaxRule = $this->taxRuleRepository->getByRule($item->getProduct(), $item->getProductClass());
+            }
+
+            // $TaxRuleを取得出来ない場合は基本税率設定を使用.
+            if (null === $TaxRule) {
+                $TaxRule = $this->taxRuleRepository->getByRule();
             }
 
             // 税込表示の場合は, priceが税込金額のため割り戻す.

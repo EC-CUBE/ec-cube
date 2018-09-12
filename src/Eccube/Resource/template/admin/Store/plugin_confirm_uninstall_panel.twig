@@ -32,7 +32,7 @@ file that was distributed with this source code.
     <div class="plugin-content-bottom">
         <dl class="plugin-meta dl-horizontal">
             <dt class="plugin-price">価格</dt><dd>{{ item.price|price }}</dd>
-            <dt class="plugin-dowload">DL数</dt><dd>{{ item.download_number }}</dd>
+            <dt class="plugin-download">DL数</dt><dd>{{ item.download_number }}</dd>
             <dt class="plugin-version">プラグインバージョン</dt><dd>{{ item.version }}</dd>
             <dt class="plugin-update">最終更新日</dt><dd>{{ item.last_update_date|time_ago }}</dd>
             <dt class="plugin-eccubeversion">EC-CUBE対応バージョン</dt><dd>{% for version in item.eccube_version %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>

@@ -174,4 +174,19 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->client->request('GET', $this->generateUrl('contact_complete'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    public function testMailNoRFC()
+    {
+        $formData = $this->createFormData();
+        // RFCに準拠していないメールアドレスを設定
+        $formData['email'] = 'aa..@example.com';
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('contact'),
+            ['contact' => $formData,
+                'mode' => 'complete', ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
+    }
 }

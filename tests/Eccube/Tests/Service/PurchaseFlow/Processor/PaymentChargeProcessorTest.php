@@ -58,6 +58,7 @@ class PaymentChargePreprocessorTest extends EccubeTestCase
         $OrderItemType = new OrderItemType();
         $OrderItemType->setId(OrderItemType::CHARGE);
         $ChargeItem->setOrderItemType($OrderItemType);
+        $ChargeItem->setProcessorName(PaymentChargePreprocessor::class);
         $Order->addItem($ChargeItem);
 
         $processor->process($Order, new PurchaseContext());

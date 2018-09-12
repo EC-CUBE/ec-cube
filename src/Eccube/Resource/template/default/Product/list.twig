@@ -14,75 +14,76 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        // 並び順を変更
-        function fnChangeOrderBy(orderby) {
-            eccube.setValue('orderby', orderby);
-            eccube.setValue('pageno', 1);
-            eccube.submitForm();
-        }
-
-        // 表示件数を変更
-        function fnChangeDispNumber(dispNumber) {
-            eccube.setValue('disp_number', dispNumber);
-            eccube.setValue('pageno', 1);
-            eccube.submitForm();
-        }
-
-        // 商品表示BOXの高さを揃える
-        $(window).load(function() {
-            $('.product_item').matchHeight();
-        });
-
         eccube.productsClassCategories = {
             {% for Product in pagination %}
             "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product)|raw }}{% if loop.last == false %}, {% endif %}
             {% endfor %}
         };
 
+        $(function() {
 
-        $('.add-cart').on('click', function(e) {
-            e.preventDefault();
-            var $form = $(this).parents('li').find('form');
+            // 表示件数を変更
+            $('.disp-number').change(function() {
+                var dispNumber = $(this).val();
+                $('#disp_number').val(dispNumber);
+                $('#pageno').val(1);
+                $("#form1").submit();
+            });
 
-            // 個数フォームのチェック
-            var $quantity = $form.parent().find('.quantity');
-            if ($quantity.val() < 1) {
-                $quantity[0].setCustomValidity("{{ 'front.product.invalid_quantity'|trans }}");
-                return true;
-            } else {
-                $quantity[0].setCustomValidity("");
-            }
+            // 並び順を変更
+            $('.order-by').change(function() {
+                var orderBy = $(this).val();
+                $('#orderby').val(orderBy);
+                $('#pageno').val(1);
+                $("#form1").submit();
+            });
 
-            $.ajax({
-                url: $form.attr('action'),
-                type: $form.attr('method'),
-                data: $form.serialize(),
-                dataType: 'json',
-                beforeSend: function(xhr, settings) {
-                    // Buttonを無効にする
-                    $('.add-cart').prop('disabled', true);
+            $('.add-cart').on('click', function(e) {
+                var $form = $(this).parents('li').find('form');
+
+                // 個数フォームのチェック
+                var $quantity = $form.parent().find('.quantity');
+                if ($quantity.val() < 1) {
+                    $quantity[0].setCustomValidity('{{ 'front.product.invalid_quantity'|trans }}');
+                    setTimeout(function() {
+                        loadingOverlay('hide');
+                    }, 100);
+                    return true;
+                } else {
+                    $quantity[0].setCustomValidity('');
                 }
-            }).done(function(data) {
-                // レスポンス内のメッセージをalertで表示
-                $.each(data.messages, function() {
-                    $('#ec-modal-header').html(this);
-                });
-
-                $('#ec-modal-checkbox').prop('checked', true);
-
-                // カートブロックを更新する
+                e.preventDefault();
                 $.ajax({
-                    url: '{{ url('block_cart') }}',
-                    type: 'GET',
-                    dataType: 'html'
-                }).done(function(html) {
-                    $('.ec-headerRole__cart').html(html);
+                    url: $form.attr('action'),
+                    type: $form.attr('method'),
+                    data: $form.serialize(),
+                    dataType: 'json',
+                    beforeSend: function(xhr, settings) {
+                        // Buttonを無効にする
+                        $('.add-cart').prop('disabled', true);
+                    }
+                }).done(function(data) {
+                    // レスポンス内のメッセージをalertで表示
+                    $.each(data.messages, function() {
+                        $('#ec-modal-header').html(this);
+                    });
+
+                    $('#ec-modal-checkbox').prop('checked', true);
+
+                    // カートブロックを更新する
+                    $.ajax({
+                        url: '{{ url('block_cart') }}',
+                        type: 'GET',
+                        dataType: 'html'
+                    }).done(function(html) {
+                        $('.ec-headerRole__cart').html(html);
+                    });
+                }).fail(function(data) {
+                    alert('{{ 'front.product.add_cart_error'|trans }}');
+                }).always(function(data) {
+                    // Buttonを有効にする
+                    $('.add-cart').prop('disabled', false);
                 });
-            }).fail(function(data) {
-                alert('{{ 'front.product.add_cart_error'|trans }}');
-            }).always(function(data) {
-                // Buttonを有効にする
-                $('.add-cart').prop('disabled', false);
             });
         });
     </script>
@@ -114,7 +115,7 @@ file that was distributed with this source code.
                             </li>
                         {% endfor %}
                     {% endif %}
-                    {% if search_form.vars.value.name %}
+                    {% if search_form.vars.value and search_form.vars.value.name %}
                         <li class="ec-topicpath__item">{{ 'front.product.search_result__keyword'|trans({ '%name%': search_form.vars.value.name }) }}</li>
                     {% endif %}
                 </ol>
@@ -130,8 +131,8 @@ file that was distributed with this source code.
                 {% if pagination.totalItemCount > 0 %}
                     <div class="ec-searchnavRole__actions">
                         <div class="ec-select">
-                            {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
-                            {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
+                            {{ form_widget(disp_number_form, {'id': '', 'attr': {'class': 'disp-number'}}) }}
+                            {{ form_widget(order_by_form, {'id': '', 'attr': {'class': 'order-by'}}) }}
                         </div>
                     </div>
                 {% endif %}
@@ -147,13 +148,6 @@ file that was distributed with this source code.
                                     <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
                                 </p>
                                 <p>{{ Product.name }}</p>
-                                {% if Product.Tags %}
-                                    <ul class="ec-productRole ec-productRole__tags">
-                                        {% for Tag in Product.Tags %}
-                                            <li class="ec-productRole__tag tag_{{ Tag.id }}">{{ Tag }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
                                 {% if Product.description_list %}
                                     <p>{{ Product.description_list|raw|nl2br }}</p>
                                 {% endif %}

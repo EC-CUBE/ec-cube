@@ -126,39 +126,3 @@ Styleguide 8.1.2
   }
 }
 
-
-/*
-バナー
-
-バナー形式でお知ら情報を伝える際の背景つきボックスです。
-
-ex [トップページ　バナー部分](http://demo3.ec-cube.net/)
-
-Markup:
-include /assets/tmpl/elements/8.1.info.pug
-+ec-banner
-
-Styleguide 8.1.3
-*/
-.ec-banner{
-  padding: 16px;
-  margin-bottom: 16px;
-  background: #F8F8F8;
-  text-align: center;
-  font-weight: bold;
-  border: 1px solid #ccc;
-  @include media_desktop {
-    margin-left: 3%;
-    margin-bottom: 16px;
-  }
-  & &__intro {
-    color: #DE5D50;
-    font-size: 20px;
-    font-weight: bold;
-  }
-  & &__title {
-    color: #DE5D50;
-    font-size: 32px;
-    font-weight: bold;
-  }
-}

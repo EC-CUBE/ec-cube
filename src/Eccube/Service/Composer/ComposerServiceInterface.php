@@ -13,6 +13,8 @@
 
 namespace Eccube\Service\Composer;
 
+use Eccube\Entity\BaseInfo;
+
 /**
  * Interface ComposerServiceInterface
  */
@@ -22,40 +24,25 @@ interface ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @param null $output
      *
-     * @throws \Eccube\Exception\PluginException
+     * @return string
      */
-    public function execRequire($packageName);
+    public function execRequire($packageName, $output = null);
 
     /**
      * Run remove command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @param null $output
      *
-     * @throws \Eccube\Exception\PluginException
+     * @return string
      */
-    public function execRemove($packageName);
+    public function execRemove($packageName, $output = null);
 
-    /**
-     * Run composer command
-     *
-     * @param array|string $commands
-     *
-     * @return string|mixed
-     */
-    public function runCommand($commands);
+    public function execConfig($key, $value = null);
 
-    /**
-     * Get version of composer
-     *
-     * @return null|string
-     */
-    public function composerVersion();
+    public function configureRepository(BaseInfo $BaseInfo);
 
-    /**
-     * Get mode
-     *
-     * @return mixed|string
-     */
-    public function getMode();
+    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0);
 }

@@ -20,7 +20,10 @@ file that was distributed with this source code.
     <div class="c-outsideBlock">
         <div class="c-outsideBlock__contents">
             <div class="card rounded border-0 mb-4">
-                <div class="card-header"><span class="card-title">{{ 'admin.setting.system.log_display'|trans }}</span>
+                <div class="card-header">
+                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.log_display'|trans }}">
+                        <span class="card-title">{{ 'admin.setting.system.log_display'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form name="form1" id="form1" method="post">

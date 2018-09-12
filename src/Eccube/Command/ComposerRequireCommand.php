@@ -42,6 +42,10 @@ class ComposerRequireCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->composerService->execRequire($input->getArgument('package'), $output);
+        $packageName = $input->getArgument('package');
+        if ($input->getArgument('version')) {
+            $packageName .= ':'.$input->getArgument('version');
+        }
+        $this->composerService->execRequire($packageName, $output);
     }
 }

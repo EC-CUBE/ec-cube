@@ -13,13 +13,14 @@
 
 namespace Eccube\Controller\Admin\Store;
 
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\PageMax;
 use Eccube\Entity\Plugin;
+use Eccube\Exception\PluginApiException;
 use Eccube\Form\Type\Admin\SearchPluginApiType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerProcessService;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginApiService;
@@ -28,9 +29,7 @@ use Eccube\Service\SystemService;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -66,33 +65,42 @@ class OwnerStoreController extends AbstractController
 
     private static $vendorName = 'ec-cube';
 
+    /** @var BaseInfo */
+    private $BaseInfo;
+
     /**
      * OwnerStoreController constructor.
      *
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
      * @param ComposerProcessService $composerProcessService
-     * @param ComposerApiService $composerApiService
+     * @param ComposerServiceInterface $composerService
      * @param SystemService $systemService
      * @param PluginApiService $pluginApiService
+     * @param BaseInfoRepository $baseInfoRepository
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function __construct(
         PluginRepository $pluginRepository,
         PluginService $pluginService,
         ComposerProcessService $composerProcessService,
-        ComposerApiService $composerApiService,
+        ComposerServiceInterface $composerService,
         SystemService $systemService,
-        PluginApiService $pluginApiService
+        PluginApiService $pluginApiService,
+        BaseInfoRepository $baseInfoRepository
     ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->systemService = $systemService;
         $this->pluginApiService = $pluginApiService;
+        $this->BaseInfo = $baseInfoRepository->get();
 
         // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
         if ($memoryLimit == -1 or $memoryLimit >= $this->eccubeConfig['eccube_composer_memory_limit']) {
-            $this->composerService = $composerApiService;
+            $this->composerService = $composerService;
         } else {
             $this->composerService = $composerProcessService;
         }
@@ -113,13 +121,16 @@ class OwnerStoreController extends AbstractController
      */
     public function search(Request $request, $page_no = null, Paginator $paginator)
     {
+        if (empty($this->BaseInfo->getAuthenticationKey())) {
+            $this->addWarning('認証キーを設定してください。', 'admin');
+
+            return $this->redirectToRoute('admin_store_authentication_setting');
+        }
+
         // Acquire downloadable plug-in information from owners store
-        $items = [];
-        $message = '';
-        $total = 0;
         $category = [];
 
-        list($json, $info) = $this->pluginApiService->getCategory();
+        $json = $this->pluginApiService->getCategory();
         if (!empty($json)) {
             $data = json_decode($json, true);
             $category = array_column($data, 'name', 'id');
@@ -174,52 +185,16 @@ class OwnerStoreController extends AbstractController
         // Owner's store communication
         $searchData['page_no'] = $page_no;
         $searchData['page_count'] = $pageCount;
-        list($json, $info) = $this->pluginApiService->getPlugins($searchData);
-        if (empty($json)) {
-            $message = $this->pluginApiService->getResponseErrorMessage($info);
-        } else {
-            $data = json_decode($json, true);
+
+        $total = 0;
+        $items = [];
+
+        try {
+            $data = $this->pluginApiService->getPlugins($searchData);
             $total = $data['total'];
-            if (isset($data['plugins']) && count($data['plugins']) > 0) {
-                // Check plugin installed
-                $pluginInstalled = $this->pluginRepository->findAll();
-                // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : not purchased
-                foreach ($data['plugins'] as $item) {
-                    // Not install/purchased
-                    $item['update_status'] = 1;
-                    /** @var Plugin $plugin */
-                    foreach ($pluginInstalled as $plugin) {
-                        if ($plugin->getSource() == $item['id']) {
-                            // Installed
-                            $item['update_status'] = 2;
-                            if ($this->pluginService->isUpdate($plugin->getVersion(), $item['version'])) {
-                                // Need update
-                                $item['update_status'] = 3;
-                            }
-                        }
-                    }
-                    if ($item['purchased'] == false && (isset($item['purchase_required']) && $item['purchase_required'] == true)) {
-                        // Not purchased with paid items
-                        $item['update_status'] = 4;
-                    }
-
-                    $item = $this->pluginService->buildInfo($item);
-                    $items[] = $item;
-                }
-
-                // Todo: news api will remove this?
-                // Promotion item
-//                $i = 0;
-//                foreach ($items as $item) {
-//                    if ($item['promotion'] == 1) {
-//                        $promotionItems[] = $item;
-//                        unset($items[$i]);
-//                    }
-//                    $i++;
-//                }
-            } else {
-                $message = trans('ownerstore.text.error.ec_cube_error');
-            }
+            $items = $data['plugins'];
+        } catch (PluginApiException $e) {
+            $this->addError($e->getMessage(), 'admin');
         }
 
         // The usage is set because `$items` are already paged.
@@ -234,7 +209,6 @@ class OwnerStoreController extends AbstractController
             'total' => $total,
             'searchForm' => $searchForm->createView(),
             'page_no' => $page_no,
-            'message' => $message,
             'Categories' => $category,
         ];
     }
@@ -246,138 +220,75 @@ class OwnerStoreController extends AbstractController
      * @Template("@admin/Store/plugin_confirm.twig")
      *
      * @param Request $request
-     * @param string $id
      *
      * @return array
+     *
+     * @throws \Eccube\Exception\PluginException
      */
     public function doConfirm(Request $request, $id)
     {
-        list($json) = $this->pluginApiService->getPlugin($id);
-        $plugin = [];
-        if ($json) {
-            $data = json_decode($json, true);
-            $plugin = $this->pluginService->buildInfo($data);
+        try {
+            $item = $this->pluginApiService->getPlugin($id);
+            // Todo: need define item's dependency mechanism
+            $requires = $this->pluginService->getPluginRequired($item);
+
+            return [
+                'item' => $item,
+                'requires' => $requires,
+                'is_update' => $request->get('is_update', false),
+            ];
+        } catch (PluginApiException $e) {
+            $this->addError($e->getMessage(), 'admin');
+
+            return $this->redirectToRoute('admin_store_authentication_setting');
         }
-
-        if (empty($plugin)) {
-            throw new NotFoundHttpException();
-        }
-
-        // Todo: need define plugin's dependency mechanism
-//        $requires = $this->pluginService->getPluginRequired($plugin);
-
-        return [
-            'item' => $plugin,
-            'requires' => [],
-            'is_update' => $request->get('is_update', false),
-        ];
     }
 
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/install", name="admin_store_plugin_api_install")
+     * @Route("/install", name="admin_store_plugin_api_install", methods={"POST"})
      *
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiInstall(Request $request)
     {
+        $this->isTokenValid();
+
         $pluginCode = $request->get('pluginCode');
-        $eccubeVersion = $request->get('eccubeVersion');
-        $version = $request->get('version');
 
-        // Check plugin code
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
-        list($json) = $this->getRequestApi($url);
-        $existFlg = false;
-        $data = json_decode($json, true);
-        if (isset($data['item']) && !empty($data['item'])) {
-            $existFlg = $this->pluginService->checkPluginExist($data['item'], $pluginCode);
-        }
-        if ($existFlg === false) {
-            log_info(sprintf('%s plugin not found!', $pluginCode));
-            $this->addError('admin.plugin.not.found', 'admin');
-
-            return $this->redirectToRoute('admin_store_plugin_owners_search');
-        }
-
-        $items = $data['item'];
-        $plugin = $this->pluginService->buildInfo($items);
-        $dependents[] = $plugin;
-        $dependents = $this->pluginService->getPluginRequired($plugin);
-        // Unset first param
-        unset($dependents[0]);
-        $dependentModifier = [];
-        $packageNames = '';
-        if (!empty($dependents)) {
-            foreach ($dependents as $key => $item) {
-                $pluginItem = [
-                    'product_code' => $item['product_code'],
-                    'version' => $item['version'],
-                ];
-                array_push($dependentModifier, $pluginItem);
-                // Re-format plugin code
-                $dependents[$key]['product_code'] = self::$vendorName.'/'.$item['product_code'];
-            }
-            $packages = array_column($dependents, 'version', 'product_code');
-            $packageNames = $this->pluginService->parseToComposerCommand($packages);
-        }
-        $packageNames .= ' '.self::$vendorName.'/'.$pluginCode.':'.$version;
-        $data = [
-            'code' => $pluginCode,
-            'version' => $version,
-            'core_version' => $eccubeVersion,
-            'php_version' => phpversion(),
-            'db_version' => $this->systemService->getDbversion(),
-            'os' => php_uname('s').' '.php_uname('r').' '.php_uname('v'),
-            'host' => $request->getHost(),
-            'web_server' => $request->server->get('SERVER_SOFTWARE'),
-            'composer_version' => $this->composerService->composerVersion(),
-            'composer_execute_mode' => $this->composerService->getMode(),
-            'dependents' => json_encode($dependentModifier),
-        ];
-
+        $log = null;
         try {
-            $this->composerService->execRequire($packageNames);
-            // Do report to package repo
-            $url = $this->eccubeConfig['eccube_package_repo_url'].'/report';
-            $this->postRequestApi($url, $data);
-            $this->addSuccess('admin.plugin.install.complete', 'admin');
+            $log = $this->composerService->execRequire('ec-cube/'.$pluginCode);
 
-            return $this->redirectToRoute('admin_store_plugin');
-        } catch (\Exception $exception) {
-            log_info($exception);
+            return $this->json(['success' => true, 'log' => $log]);
+        } catch (\Exception $e) {
+            $log = $e->getMessage();
+            log_error($e);
         }
 
-        // Do report to package repo
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/report/fail';
-        $this->postRequestApi($url, $data);
-        $this->addError('admin.plugin.install.fail', 'admin');
-
-        return $this->redirectToRoute('admin_store_plugin_owners_search');
+        return $this->json(['success' => false, 'log' => $log], 500);
     }
 
     /**
-     * Do confirm page
+     * New ways to remove plugin: using composer command
      *
-     * @Route("/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
-     * @Template("@admin/Store/plugin_confirm_uninstall.twig")
+     * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall", methods={"DELETE"})
      *
      * @param Plugin $Plugin
      *
-     * @return array|RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function deleteConfirm(Plugin $Plugin)
+    public function apiUninstall(Plugin $Plugin)
     {
-        // Owner's store communication
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
-        list($json, $info) = $this->getRequestApi($url);
-        $data = json_decode($json, true);
-        $items = $data['item'];
+        $this->isTokenValid();
 
-        // The plugin depends on it
+        if ($Plugin->isEnabled()) {
+            return $this->json(['success' => false, 'message' => trans('admin.plugin.uninstall.error.not_disable')], 400);
+        }
+
         $pluginCode = $Plugin->getCode();
         $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
 
@@ -388,86 +299,125 @@ class OwnerStoreController extends AbstractController
                 $dependName = $DependPlugin->getName();
             }
             $message = trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-            $this->addError($message, 'admin');
 
-            return $this->redirectToRoute('admin_store_plugin');
-        }
-
-        // Check plugin in api
-        $pluginSource = $Plugin->getSource();
-        $index = array_search($pluginSource, array_column($items, 'product_id'));
-        if ($index === false) {
-            throw new NotFoundHttpException();
-        }
-
-        // Build info
-        $pluginCode = $Plugin->getCode();
-        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
-        $plugin['id'] = $Plugin->getId();
-
-        return [
-            'item' => $plugin,
-        ];
-    }
-
-    /**
-     * New ways to remove plugin: using composer command
-     *
-     * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall", methods={"DELETE"})
-     *
-     * @param Plugin $Plugin
-     *
-     * @return RedirectResponse
-     */
-    public function apiUninstall(Plugin $Plugin)
-    {
-        $this->isTokenValid();
-
-        if ($Plugin->isEnabled()) {
-            $this->addError('admin.plugin.uninstall.error.not_disable', 'admin');
-
-            return $this->redirectToRoute('admin_store_plugin');
+            return $this->json(['success' => false, 'message' => $message], 400);
         }
 
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
         try {
-            $this->composerService->execRemove($packageName);
-            $this->addSuccess('admin.plugin.uninstall.complete', 'admin');
-        } catch (\Exception $exception) {
-            log_info($exception);
-            $this->addError('admin.plugin.uninstall.error', 'admin');
-        }
+            $log = $this->composerService->execRemove($packageName);
 
-        return $this->redirectToRoute('admin_store_plugin');
+            return $this->json(['success' => false, 'log' => $log]);
+        } catch (\Exception $e) {
+            log_error($e);
+
+            return $this->json(['success' => false, 'log' => $e->getMessage()], 500);
+        }
     }
 
     /**
      * オーナーズブラグインインストール、アップデート
      *
-     * @Route("/upgrade/{pluginCode}/{version}", name="admin_store_plugin_api_upgrade", methods={"PUT"})
+     * @Route("/upgrade", name="admin_store_plugin_api_upgrade", methods={"POST"})
      *
-     * @param string $pluginCode
-     * @param string $version
+     * @param Request $request
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUpgrade($pluginCode, $version)
+    public function apiUpgrade(Request $request)
     {
         $this->isTokenValid();
-        // Run install plugin
-        $this->forward($this->generateUrl('admin_store_plugin_api_install', ['pluginCode' => $pluginCode, 'eccubeVersion' => Constant::VERSION, 'version' => $version]));
 
-        if ($this->session->getFlashBag()->has('eccube.admin.error')) {
-            $this->session->getFlashBag()->clear();
-            $this->addError('admin.plugin.update.error', 'admin');
+        $pluginCode = $request->get('pluginCode');
+        $version = $request->get('version');
 
-            return $this->redirectToRoute('admin_store_plugin');
+        $log = null;
+        try {
+            $log = $this->composerService->execRequire('ec-cube/'.$pluginCode.':'.$version);
+
+            return $this->json(['success' => true, 'log' => $log]);
+        } catch (\Exception $e) {
+            $log = $e->getMessage();
+            log_error($e);
         }
-        $this->session->getFlashBag()->clear();
-        $this->addSuccess('admin.plugin.update.complete', 'admin');
 
-        return $this->redirectToRoute('admin_store_plugin');
+        return $this->json(['success' => false, 'log' => $log], 500);
+    }
+
+    /**
+     * オーナーズブラグインインストール、スキーマ更新
+     *
+     * @Route("/schema_update", name="admin_store_plugin_api_schema_update", methods={"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function apiSchemaUpdate(Request $request)
+    {
+        $this->isTokenValid();
+
+        $pluginCode = $request->get('pluginCode');
+
+        try {
+            $Plugin = $this->pluginRepository->findByCode($pluginCode);
+
+            if (!$Plugin) {
+                throw new NotFoundHttpException();
+            }
+
+            $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($Plugin->getCode()));
+
+            ob_start();
+            $this->pluginService->generateProxyAndUpdateSchema($Plugin, $config);
+            $log = ob_get_clean();
+            ob_end_flush();
+
+            return $this->json(['success' => true, 'log' => $log]);
+        } catch (\Exception $e) {
+            $log = $e->getMessage();
+            log_error($e);
+
+            return $this->json(['success' => false, 'log' => $log], 500);
+        }
+    }
+
+    /**
+     * オーナーズブラグインインストール、更新処理
+     *
+     * @Route("/update", name="admin_store_plugin_api_update", methods={"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function apiUpdate(Request $request)
+    {
+        $this->isTokenValid();
+
+        $pluginCode = $request->get('pluginCode');
+
+        $log = null;
+        try {
+            $Plugin = $this->pluginRepository->findByCode($pluginCode);
+            if (!$Plugin) {
+                throw new NotFoundHttpException();
+            }
+
+            $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($Plugin->getCode()));
+            ob_start();
+            $this->pluginService->updatePlugin($Plugin, $config);
+            $log = ob_get_clean();
+            ob_end_flush();
+
+            return $this->json(['success' => true, 'log' => $log]);
+        } catch (\Exception $e) {
+            $log = $e->getMessage();
+            log_error($e);
+        }
+
+        return $this->json(['success' => false, 'log' => $log], 500);
     }
 
     /**
@@ -476,77 +426,25 @@ class OwnerStoreController extends AbstractController
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     * @param Plugin $plugin
-     *
-     * @return Response
-     */
-    public function doUpdateConfirm(Plugin $plugin)
-    {
-        $source = $plugin->getSource();
-
-        return $this->forwardToRoute('admin_store_plugin_install_confirm', ['id' => $source, 'is_update' => true]);
-    }
-
-    /**
-     * API request processing
-     *
-     * @param string $url
+     * @param Plugin $Plugin
      *
      * @return array
-     *
-     * @deprecated since release, please preference PluginApiService
      */
-    private function getRequestApi($url)
+    public function doUpdateConfirm(Plugin $Plugin)
     {
-        $curl = curl_init($url);
+        try {
+            $item = $this->pluginApiService->getPlugin($Plugin->getSource());
 
-        // Option array
-        $options = [
-            // HEADER
-            CURLOPT_HTTPGET => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FAILONERROR => true,
-            CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
-        ];
+            return [
+                'item' => $item,
+                'requires' => [],
+                'is_update' => true,
+                'Plugin' => $Plugin,
+            ];
+        } catch (PluginApiException $e) {
+            $this->addError($e->getMessage(), 'admin');
 
-        // Set option value
-        curl_setopt_array($curl, $options);
-        $result = curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $message = curl_error($curl);
-        $info['message'] = $message;
-        curl_close($curl);
-
-        log_info('http get_info', $info);
-
-        return [$result, $info];
-    }
-
-    /**
-     * API post request processing
-     *
-     * @param string $url
-     * @param array $data
-     *
-     * @return array
-     *
-     * @deprecated since release, please preference PluginApiService
-     */
-    private function postRequestApi($url, $data)
-    {
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        $result = curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $message = curl_error($curl);
-        $info['message'] = $message;
-        curl_close($curl);
-        log_info('http post_info', $info);
-
-        return [$result, $info];
+            return $this->redirectToRoute('admin_store_authentication_setting');
+        }
     }
 }

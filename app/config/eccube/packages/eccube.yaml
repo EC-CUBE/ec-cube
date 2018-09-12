@@ -10,6 +10,8 @@ parameters:
     env(ECCUBE_COOKIE_PATH): '/'
     env(ECCUBE_COOKIE_LIFETIME): 0
     env(ECCUBE_GC_MAXLIFETIME): 1440
+    env(ECCUBE_PACKAGE_API_URL): 'https://beta-package-api.ec-cube.net'
+    env(ECCUBE_OWNERS_STORE_URL): 'https://www.ec-cube.net'
 
     # EC-CUBE parameter
     eccube_database_url: '%env(DATABASE_URL)%'
@@ -51,7 +53,7 @@ parameters:
     eccube_max_total_fee: 9999999999
     eccube_mltext_len: 1000
     eccube_mtext_len: 200
-    plugin_html_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/plugin/
+    plugin_html_realdir: '%eccube_html_dir%/plugin/'
     plugin_html_urlpath: /plugin/ # asset 使う
     plugin_realdir: '%kernel.project_dir%/app/Plugin'
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
@@ -77,7 +79,7 @@ parameters:
     eccube_csv_import_enclosure: '"'
     eccube_csv_import_escape: \
     eccube_info_url: 'https://www.ec-cube.net/info/4/'
-    eccube_owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
+    eccube_owners_store_url: '%env(ECCUBE_OWNERS_STORE_URL)%'
     eccube_official_site_url: https://www.ec-cube.net
     eccube_community_site_url: https://xoops.ec-cube.net
     eccube_document_url: http://doc4.ec-cube.net
@@ -94,7 +96,7 @@ parameters:
     eccube_postal_code: 8
     eccube_password_min_len: 8
     eccube_password_max_len: 32
-    eccube_composer_memory_limit: 1536
+    eccube_composer_memory_limit: 1536M
     eccube_order_mail_template_id: 1 #注文受付メール
     eccube_entry_confirm_mail_template_id: 2 #会員仮登録メール
     eccube_entry_complete_mail_template_id: 3 #会員本登録メール
@@ -103,7 +105,9 @@ parameters:
     eccube_forgot_mail_template_id: 6 #パスワードリセット
     eccube_reset_complete_mail_template_id: 7 #パスワードリマインダー
     eccube_shipping_notify_mail_template_id: 8 #出荷通知メール
-    eccube_package_repo_url: null
+    # メールアドレスをRFC準拠でチェックするか true: チェックする、false: チェックしない
+    eccube_rfc_email_check: false
+    eccube_package_api_url: '%env(ECCUBE_PACKAGE_API_URL)%'
     # 注文番号のフォーマット. 以下のフォーマットが利用可能です. フォーマットを空にした場合, dtb_order.idを出力します.
     # {yyyy} : 西暦(4桁)
     # {yy}: 西暦(2桁)
@@ -114,3 +118,4 @@ parameters:
     # {random_alnum,桁数} : ランダムな半角英数大文字を桁数分作成
     eccube_order_no_format: ''
     eccube_order_pdf_message_len: 30
+    eccube_news_start_year: 2000

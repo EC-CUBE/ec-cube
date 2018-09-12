@@ -37,7 +37,6 @@ Styleguide 3.1.1
   @include form-controls;
   input{
     height: 40px;
-    font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
     margin-bottom: 10px;
     @include media_desktop {
       margin-bottom: 16px;

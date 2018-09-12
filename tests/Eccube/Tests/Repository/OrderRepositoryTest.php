@@ -89,28 +89,6 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->assertEquals(1, $this->Order->getShippings()->count());
     }
 
-    public function testGetExistsOrdersByCustomer()
-    {
-        $Order2 = $this->createOrder($this->Customer);
-        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::PROCESSING);
-
-        $this->orderRepository->changeStatus($Order2->getId(), $Status);
-
-        $this->actual = $Order2;
-        $this->expected = $this->orderRepository->getExistsOrdersByCustomer($this->Customer);
-        $this->verify();
-    }
-
-    public function testGetExistsOrdersByCustomerWithNull()
-    {
-        $Order2 = $this->createOrder($this->Customer);
-        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
-
-        $this->orderRepository->changeStatus($Order2->getId(), $Status);
-
-        $this->assertNull($this->orderRepository->getExistsOrdersByCustomer($this->Customer));
-    }
-
     public function testUpdateOrderSummary()
     {
         $Customer = $this->createCustomer();

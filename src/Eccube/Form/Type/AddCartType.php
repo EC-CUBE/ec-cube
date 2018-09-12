@@ -83,7 +83,7 @@ class AddCartType extends AbstractType
                 $builder
                     ->create('ProductClass', HiddenType::class, [
                         'data_class' => null,
-                        'data' => count($ProductClasses) === 1 ? $ProductClasses->first() : null,
+                        'data' => $Product->hasProductClass() ?  null : $ProductClasses->first(),
                         'constraints' => [
                             new Assert\NotBlank(),
                         ],
@@ -203,7 +203,7 @@ class AddCartType extends AbstractType
                 new Assert\NotBlank(),
                 new Assert\NotEqualTo([
                     'value' => '__unselected',
-                    'message' => 'form.type.select.notselect',
+                    'message' => 'form_error.not_selected',
                 ]),
             ], '[classcategory_id1]');
         }
@@ -213,7 +213,7 @@ class AddCartType extends AbstractType
                 new Assert\NotBlank(),
                 new Assert\NotEqualTo([
                     'value' => '__unselected',
-                    'message' => 'form.type.select.notselect',
+                    'message' => 'form_error.not_selected',
                 ]),
             ], '[classcategory_id2]');
         }

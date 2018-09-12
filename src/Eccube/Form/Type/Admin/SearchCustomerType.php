@@ -102,6 +102,11 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_birth_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('birth_end', BirthdayType::class, [
                 'label' => 'admin.common.birth_day__end',
@@ -110,6 +115,11 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_birth_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('pref', PrefType::class, [
                 'label' => 'admin.common.pref',
@@ -121,7 +131,7 @@ class SearchCustomerType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^[\d-]+$/u",
-                        'message' => 'form.type.admin.nottelstyle',
+                        'message' => 'form_error.graph_and_hyphen_only',
                     ]),
                 ],
             ])
@@ -167,6 +177,11 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_create_date_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('create_date_end', DateType::class, [
                 'label' => 'admin.common.create_date__end',
@@ -175,6 +190,11 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_create_date_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('update_date_start', DateType::class, [
                 'label' => 'admin.common.update_date__start',
@@ -183,6 +203,11 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_update_date_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('update_date_end', DateType::class, [
                 'label' => 'admin.common.update_date__end',
@@ -191,6 +216,11 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_update_date_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('last_buy_start', DateType::class, [
                 'label' => 'admin.order.last_buy_date__start',
@@ -199,6 +229,11 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_last_buy_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('last_buy_end', DateType::class, [
                 'label' => 'admin.order.last_buy_date__end',
@@ -207,6 +242,11 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_last_buy_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
         ;
     }

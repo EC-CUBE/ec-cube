@@ -79,9 +79,9 @@ class OrderRepository extends AbstractRepository
     {
         $qb = $this->createQueryBuilder('o')
             ->select('o, s')
-            ->addSelect('oi', 'p')
+            ->addSelect('oi', 'pref')
             ->leftJoin('o.OrderItems', 'oi')
-            ->leftJoin('o.Pref', 'p')
+            ->leftJoin('o.Pref', 'pref')
             ->innerJoin('o.Shippings', 's');
 
         // order_id_start
@@ -324,55 +324,6 @@ class OrderRepository extends AbstractRepository
         $qb->addOrderBy('o.id', 'DESC');
 
         return $this->queries->customize(QueryKey::ORDER_SEARCH_BY_CUSTOMER, $qb, ['customer' => $Customer]);
-    }
-
-    /**
-     * 会員の合計購入金額を取得、回数を取得
-     *
-     * @param  \Eccube\Entity\Customer $Customer
-     * @param  array $OrderStatuses
-     *
-     * @return array
-     */
-    public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
-    {
-        $result = $this->createQueryBuilder('o')
-            ->select('COUNT(o.id) AS buy_times, SUM(o.total) AS buy_total, MAX(o.id) AS order_id')
-            ->where('o.Customer = :Customer')
-            ->andWhere('o.OrderStatus in (:OrderStatuses)')
-            ->setParameter('Customer', $Customer)
-            ->setParameter('OrderStatuses', $OrderStatuses)
-            ->groupBy('o.Customer')
-            ->getQuery()
-            ->getResult();
-
-        return $result;
-    }
-
-    /**
-     * 会員が保持する最新の購入処理中の Order を取得する.
-     *
-     * @param Customer
-     *
-     * @return Order
-     */
-    public function getExistsOrdersByCustomer(\Eccube\Entity\Customer $Customer)
-    {
-        $qb = $this->createQueryBuilder('o');
-        $Order = $qb
-            ->select('o')
-            ->where('o.Customer = :Customer')
-            ->setParameter('Customer', $Customer)
-            ->orderBy('o.id', 'DESC')
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
-
-        if ($Order && $Order->getOrderStatus()->getId() == OrderStatus::PROCESSING) {
-            return $Order;
-        }
-
-        return null;
     }
 
     /**

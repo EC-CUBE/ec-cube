@@ -81,12 +81,12 @@ class ShoppingController extends AbstractShoppingController
      * カート情報から受注データを生成し, `pre_order_id`でカートと受注の紐付けを行う.
      * 既に受注が生成されている場合(pre_order_idで取得できる場合)は, 受注の生成を行わずに画面を表示する.
      *
-     * purchaseFlowの集計処理実行後, warning/errorがあればカートに戻す.
+     * purchaseFlowの集計処理実行後, warningがある場合はカートど同期をとるため, カートのPurchaseFlowを実行する.
      *
      * @Route("/shopping", name="shopping")
      * @Template("Shopping/index.twig")
      */
-    public function index()
+    public function index(PurchaseFlow $cartPurchaseFlow)
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -110,14 +110,27 @@ class ShoppingController extends AbstractShoppingController
 
         // 集計処理.
         log_info('[注文手続] 集計処理を開始します.', [$Order->getId()]);
-        $flowResult = $this->validatePurchaseFlow($Order);
+        $flowResult = $this->executePurchaseFlow($Order, false);
         $this->entityManager->flush();
 
-        if ($flowResult->hasWarning() || $flowResult->hasError()) {
-            log_info('[注文手続] WarningもしくはErrorが発生したためカート画面へ遷移します.',
-                [$flowResult->getWarning(), $flowResult->getErrors()]);
+        if ($flowResult->hasError()) {
+            log_info('[注文手続] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
 
-            return $this->redirectToRoute('cart');
+            return $this->redirectToRoute('shopping_error');
+        }
+
+        if ($flowResult->hasWarning()) {
+            log_info('[注文手続] Warningが発生しました.', [$flowResult->getWarning()]);
+
+            // 受注明細と同期をとるため, CartPurchaseFlowを実行する
+            $cartPurchaseFlow->validate($Cart, new PurchaseContext());
+            $this->cartService->save();
+        }
+
+        // マイページで会員情報が更新されていれば, Orderの注文者情報も更新する.
+        if ($Customer->getId()) {
+            $this->orderHelper->updateCustomerInfo($Order, $Customer);
+            $this->entityManager->flush();
         }
 
         $form = $this->createForm(OrderType::class, $Order);
@@ -170,14 +183,11 @@ class ShoppingController extends AbstractShoppingController
 
         if ($form->isSubmitted() && $form->isValid()) {
             log_info('[リダイレクト] 集計処理を開始します.', [$Order->getId()]);
-            $flowResult = $this->validatePurchaseFlow($Order);
+            $response = $this->executePurchaseFlow($Order);
             $this->entityManager->flush();
 
-            if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                log_info('[リダイレクト] WarningもしくはErrorが発生したためカート画面へ遷移します.',
-                    [$flowResult->getWarning(), $flowResult->getErrors()]);
-
-                return $this->redirectToRoute('shopping_error');
+            if ($response) {
+                return $response;
             }
 
             $redirectTo = $form['redirect_to']->getData();
@@ -249,14 +259,11 @@ class ShoppingController extends AbstractShoppingController
 
         if ($form->isSubmitted() && $form->isValid()) {
             log_info('[注文確認] 集計処理を開始します.', [$Order->getId()]);
-            $flowResult = $this->validatePurchaseFlow($Order);
+            $response = $this->executePurchaseFlow($Order);
             $this->entityManager->flush();
 
-            if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                log_info('[注文確認] WarningもしくはErrorが発生したためカート画面へ遷移します.',
-                    [$flowResult->getWarning(), $flowResult->getErrors()]);
-
-                return $this->redirectToRoute('shopping_error');
+            if ($response) {
+                return $response;
             }
 
             log_info('[注文確認] PaymentMethod::verifyを実行します.', [$Order->getPayment()->getMethodClass()]);
@@ -298,7 +305,7 @@ class ShoppingController extends AbstractShoppingController
         log_info('[注文確認] フォームエラーのため, 注文手続画面を表示します.', [$Order->getId()]);
 
         // FIXME @Templateの差し替え.
-        $request->attributes->set('_template', new Template(['template' => 'shopping/index.twig']));
+        $request->attributes->set('_template', new Template(['template' => 'Shopping/index.twig']));
 
         return [
             'form' => $form->createView(),
@@ -333,7 +340,10 @@ class ShoppingController extends AbstractShoppingController
         }
 
         // フォームの生成.
-        $form = $this->createForm(OrderType::class, $Order);
+        $form = $this->createForm(OrderType::class, $Order, [
+            // 確認画面から注文処理へ遷移する場合は, Orderエンティティで値を引き回すためフォーム項目の定義をスキップする.
+            'skip_add_form' => true,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -344,14 +354,11 @@ class ShoppingController extends AbstractShoppingController
                  * 集計処理
                  */
                 log_info('[注文処理] 集計処理を開始します.', [$Order->getId()]);
-                $flowResult = $this->validatePurchaseFlow($Order);
+                $response = $this->executePurchaseFlow($Order);
                 $this->entityManager->flush();
 
-                if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                    log_info('[注文処理] WarningもしくはErrorが発生したためカート画面へ遷移します.',
-                        [$flowResult->getWarning(), $flowResult->getErrors()]);
-
-                    return $this->redirectToRoute('shopping_error');
+                if ($response) {
+                    return $response;
                 }
 
                 log_info('[注文処理] PaymentMethodを取得します.', [$Order->getPayment()->getMethodClass()]);
@@ -387,7 +394,7 @@ class ShoppingController extends AbstractShoppingController
 
                 return $this->redirectToRoute('shopping_error');
             } catch (\Exception $e) {
-                log_error('[注文確認] 予期しないエラーが発生しました.', [$e->getMessage()]);
+                log_error('[注文処理] 予期しないエラーが発生しました.', [$e->getMessage()]);
 
                 $this->entityManager->rollback();
 
@@ -406,6 +413,7 @@ class ShoppingController extends AbstractShoppingController
             // メール送信
             log_info('[注文処理] 注文メールの送信を行います.', [$Order->getId()]);
             $this->mailService->sendOrderMail($Order);
+            $this->entityManager->flush();
 
             log_info('[注文処理] 注文処理が完了しました. 購入完了画面へ遷移します.', [$Order->getId()]);
 
@@ -509,11 +517,11 @@ class ShoppingController extends AbstractShoppingController
             $Shipping->setFromCustomerAddress($CustomerAddress);
 
             // 合計金額の再計算
-            $flowResult = $this->validatePurchaseFlow($Order);
+            $response = $this->executePurchaseFlow($Order);
             $this->entityManager->flush();
 
-            if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                return $this->redirectToRoute('shopping_error');
+            if ($response) {
+                return $response;
             }
 
             $event = new EventArgs(
@@ -540,7 +548,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * お届け先の新規作成または編集画面.
      *
-     * 会員時は新しいお届け先を作成する.
+     * 会員時は新しいお届け先を作成し, 作成したお届け先を選択状態にして注文手続き画面へ遷移する.
      * 非会員時は選択されたお届け先の編集を行う.
      *
      * @Route("/shopping/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id" = "\d+"})
@@ -599,10 +607,11 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // 合計金額の再計算
-            $flowResult = $this->validatePurchaseFlow($Order);
+            $response = $this->executePurchaseFlow($Order);
             $this->entityManager->flush();
-            if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                return $this->redirectToRoute('shopping_error');
+
+            if ($response) {
+                return $response;
             }
 
             $event = new EventArgs(
@@ -676,6 +685,7 @@ class ShoppingController extends AbstractShoppingController
         $Cart = $this->cartService->getCart();
         if (null !== $Cart) {
             $cartPurchaseFlow->validate($Cart, new PurchaseContext());
+            $this->cartService->setPreOrderId(null);
             $this->cartService->save();
         }
 

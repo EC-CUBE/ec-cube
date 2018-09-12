@@ -46,6 +46,15 @@ file that was distributed with this source code.
                                 <div class="note_box">
                                     <p>{{ 'install.database_skip_notice'|trans }}</p>
                                     {{ form_widget(form.no_update) }}
+
+                                    {% for error in app.session.flashbag.get('eccube.front.error')  %}
+                                        <div class="message">
+                                            <p class="errormsg bg-danger">
+                                                <span class="initialism form-error-icon badge badge-danger">ERROR</span>
+                                                <span class="form-error-message">{{ error|trans|nl2br }}</span>
+                                            </p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
 
                                 <ul class="btn_area">
