@@ -264,7 +264,8 @@ class PluginController extends AbstractController
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => true]);
             } else {
-                $this->addError('admin.plugin.already.enable', 'admin');
+                $this->addError(trans('admin.store.plugin.already.enabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+                return $this->redirectToRoute('admin_store_plugin');
             }
         } else {
             // ストアからインストールしたプラグインは依存プラグインが有効化されているかを確認
