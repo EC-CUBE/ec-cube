@@ -46,7 +46,7 @@ class EA10PluginCest
         FileSystem::doEmptyDir('repos');
     }
 
-    public function install_enable_disable_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_enable_disable_enable_disable_remove_store(\AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -57,7 +57,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function install_enable_disable_enable_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_enable_disable_enable_disable_remove_local(\AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -68,103 +68,102 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function install_remove_local(\AcceptanceTester $I)
+    public function test_install_remove_local(\AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
             ->削除();
     }
 
-    public function install_remove_store(\AcceptanceTester $I)
+    public function test_install_remove_store(\AcceptanceTester $I)
     {
         Horizon_Store::start($I)
-            ->インストール()
-            ->削除();
+            ->インストール();
     }
 
-    public function install_update_remove_store(\AcceptanceTester $I)
-    {
-        Horizon_Store::start($I)
-            ->インストール()
-            ->アップデート()
-            ->削除();
-    }
-
-
-
-    public function install_update_remove_local(\AcceptanceTester $I)
-    {
-        Horizon_Local::start($I)
-            ->インストール()
-            ->アップデート()
-            ->削除();
-    }
-
-    public function install_enable_disable_update_enable_disable_remove_local(\AcceptanceTester $I)
-    {
-        Horizon_Local::start($I)
-            ->インストール()
-            ->有効化()
-            ->無効化()
-            ->アップデート()
-            ->有効化()
-            ->無効化()
-            ->削除();
-    }
-
-    public function install_enable_disable_update_enable_disable_remove_store(\AcceptanceTester $I)
-    {
-        Horizon_Store::start($I)
-            ->インストール()
-            ->有効化()
-            ->無効化()
-            ->アップデート()
-            ->有効化()
-            ->無効化()
-            ->削除();
-    }
-
-    public function install_enable_update_disable_remove_store(\AcceptanceTester $I)
-    {
-        Horizon_Store::start($I)
-            ->インストール()
-            ->有効化()
-            ->アップデート()
-            ->無効化()
-            ->削除();
-    }
-
-    public function install_enable_update_disable_remove_local(\AcceptanceTester $I)
-    {
-        Horizon_Local::start($I)
-            ->インストール()
-            ->有効化()
-            ->アップデート()
-            ->無効化()
-            ->削除();
-    }
-
-    public function install_update_enable_disable_remove_local(\AcceptanceTester $I)
-    {
-        Horizon_Local::start($I)
-            ->インストール()
-            ->アップデート()
-            ->有効化()
-            ->無効化()
-            ->削除();
-    }
-
-    public function install_update_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_update_remove_store(\AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
             ->アップデート()
+            ->削除();
+    }
+
+
+
+    public function test_install_update_remove_local(\AcceptanceTester $I)
+    {
+        Horizon_Local::start($I)
+            ->インストール()
+            ->アップデート()
+            ->削除();
+    }
+
+    public function test_install_enable_disable_update_enable_disable_remove_local(\AcceptanceTester $I)
+    {
+        Horizon_Local::start($I)
+            ->インストール()
+            ->有効化()
+            ->無効化()
+            ->アップデート()
             ->有効化()
             ->無効化()
             ->削除();
     }
 
-    public function install_enable_enable(\AcceptanceTester $I)
+    public function test_install_enable_disable_update_enable_disable_remove_store(\AcceptanceTester $I)
+    {
+        Horizon_Store::start($I)
+            ->インストール()
+            ->有効化()
+            ->無効化()
+            ->アップデート()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
+    public function test_install_enable_update_disable_remove_store(\AcceptanceTester $I)
+    {
+        Horizon_Store::start($I)
+            ->インストール()
+            ->有効化()
+            ->アップデート()
+            ->無効化()
+            ->削除();
+    }
+
+    public function test_install_enable_update_disable_remove_local(\AcceptanceTester $I)
+    {
+        Horizon_Local::start($I)
+            ->インストール()
+            ->有効化()
+            ->アップデート()
+            ->無効化()
+            ->削除();
+    }
+
+    public function test_install_update_enable_disable_remove_local(\AcceptanceTester $I)
+    {
+        Horizon_Local::start($I)
+            ->インストール()
+            ->アップデート()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
+    public function test_install_update_enable_disable_remove_store(\AcceptanceTester $I)
+    {
+        Horizon_Store::start($I)
+            ->インストール()
+            ->アップデート()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
+    public function test_install_enable_enable(\AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -174,7 +173,7 @@ class EA10PluginCest
             ->既に有効なものを有効化();
     }
 
-    public function install_disable_disable(\AcceptanceTester $I)
+    public function test_install_disable_disable(\AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -185,7 +184,7 @@ class EA10PluginCest
             ->既に無効なものを無効化();
     }
 
-    public function install_assets_local(\AcceptanceTester $I)
+    public function test_install_assets_local(\AcceptanceTester $I)
     {
         $this->publishPlugin('Assets-1.0.0.tgz');
 
@@ -216,7 +215,7 @@ class EA10PluginCest
         $I->assertFileNotExists($updatedPath);
     }
 
-    public function install_assets_store(\AcceptanceTester $I)
+    public function test_install_assets_store(\AcceptanceTester $I)
     {
         // 最初のバージョンを作成
         $this->publishPlugin('Assets-1.0.0.tgz');
@@ -253,19 +252,45 @@ class EA10PluginCest
         $I->assertFileNotExists($updatedPath);
     }
 
+    public function test_extend_same_table_store(\AcceptanceTester $I)
+    {
+        $Horizon = Horizon_Store::start($I);
+        $Boomerang = Boomerang_Store::start($I);
+
+        $Horizon->インストール()->有効化();
+        $Boomerang->インストール()->有効化();
+
+        $Horizon->tableExists();
+        $Horizon->columnExists();
+    }
+
+    public function test_extend_same_table_local(\AcceptanceTester $I)
+    {
+        $Horizon = Horizon_Local::start($I);
+        $Boomerang = Boomerang_Local::start($I);
+
+        $Horizon->インストール()->有効化();
+        $Boomerang->インストール()->有効化();
+
+        $Horizon->tableExists();
+        $Horizon->columnExists();
+    }
+
+    public function test_extend_same_table_crossed_local(\AcceptanceTester $I)
+    {
+        $Horizon = Horizon_Local::start($I);
+        $Boomerang = Boomerang_Local::start($I);
+
+        $Horizon->インストール()->有効化()->無効化();
+        $Boomerang->インストール()->有効化();
+
+        $Horizon->tableExists();
+        $Horizon->columnExists();
+    }
+
     private function publishPlugin($fileName)
     {
         copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);
-    }
-
-    private function tableExists($tableName)
-    {
-        return $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}';")->fetch()['count'] > 0;
-    }
-
-    private function columnExists($tableName, $columnName)
-    {
-        return $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}' AND column_name = '${columnName}';")->fetch()['count'] == 1;
     }
 }
 
@@ -291,9 +316,10 @@ abstract class Abstract_Plugin
 
     protected $column;
 
-    /**
-     * Abstract_Plugin constructor.
-     */
+    protected $traitTarget;
+
+    protected $trait;
+
     public function __construct(\AcceptanceTester $I)
     {
         $this->I = $I;
@@ -303,37 +329,56 @@ abstract class Abstract_Plugin
         $this->config = Fixtures::get('config');
     }
 
-    protected function tableExists()
+    public function tableExists()
     {
         if ($this->table) {
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$this->table."';")->fetch()['count'] > 0;
-            $this->I->assertTrue($exists, 'テーブルがあるはず');
+            $this->I->assertTrue($exists, 'テーブルがあるはず '.$this->table);
         }
     }
 
-    protected function tableNotExists()
+    public function tableNotExists()
     {
         if ($this->table) {
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$this->table."';")->fetch()['count'] > 0;
-            $this->I->assertFalse($exists, 'テーブルがないはず');
+            $this->I->assertFalse($exists, 'テーブルがないはず '.$this->table);
         }
     }
 
-    protected function columnExists()
+    public function columnExists()
     {
         if ($this->column) {
             list($tableName, $columnName) = explode('.', $this->column);
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}' AND column_name = '${columnName}';")->fetch()['count'] == 1;
-            $this->I->assertTrue($exists, 'カラムがあるはず');
+            $this->I->assertTrue($exists, 'カラムがあるはず '.$this->column);
         }
     }
 
-    protected function columnNotExists()
+    public function columnNotExists()
     {
         if ($this->column) {
             list($tableName, $columnName) = explode('.', $this->column);
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}' AND column_name = '${columnName}';")->fetch()['count'] == 1;
-            $this->I->assertFalse($exists, 'カラムがないはず');
+            $this->I->assertFalse($exists, 'カラムがないはず '.$this->column);
+        }
+    }
+
+    public function traitExists()
+    {
+        if ($this->trait) {
+            $this->I->assertContains($this->trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$this->traitTarget.'.php'), 'Traitがあるはず');
+        }
+    }
+
+    public function traitNotExists()
+    {
+        if ($this->trait) {
+            $file = $this->config['kernel.project_dir'].'/app/proxy/entity/'.$this->traitTarget.'.php';
+            if (file_exists($file)) {
+                $this->I->assertNotContains($this->trait, file_get_contents($file), 'Traitがないはず');
+            } else {
+                $this->I->assertTrue(true, 'Traitがないはず');
+            }
         }
     }
 
@@ -369,11 +414,11 @@ class Store_Plugin extends Abstract_Plugin
     {
         parent::__construct($I);
         $this->code = $code;
+        $this->publishPlugin($this->code.'-1.0.0.tgz');
     }
 
     public function インストール()
     {
-        $this->publishPlugin($this->code.'-1.0.0.tgz');
         /*
          * インストール
          */
@@ -383,6 +428,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->tableNotExists();
         $this->columnNotExists();
+
+        $this->traitNotExists();
 
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていない');
@@ -397,6 +444,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->tableExists();
         $this->columnExists();
+
+        $this->traitExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -413,6 +462,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->tableExists();
         $this->columnExists();
+
+        $this->traitExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -432,6 +483,8 @@ class Store_Plugin extends Abstract_Plugin
         $this->tableExists();
         $this->columnExists();
 
+        $this->traitNotExists();
+
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
@@ -447,6 +500,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->tableExists();
         $this->columnExists();
+
+        $this->traitNotExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -464,6 +519,8 @@ class Store_Plugin extends Abstract_Plugin
         $this->tableNotExists();
         $this->columnNotExists();
 
+        $this->traitNotExists();
+
         $this->em->refresh($this->Plugin);
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertNull($this->Plugin, '削除されている');
@@ -478,8 +535,17 @@ class Store_Plugin extends Abstract_Plugin
         $this->I->reloadPage();
         $this->ManagePage->ストアプラグイン_アップデート($this->code)->アップデート();
 
-        $this->em->refresh($this->Plugin);
+        if ($this->initialized) {
+            $this->tableExists();
+            $this->columnExists();
+            $this->traitExists();
+        } else {
+            $this->tableNotExists();
+            $this->columnNotExists();
+            $this->traitNotExists();
+        }
 
+        $this->em->refresh($this->Plugin);
         $this->I->assertEquals($this->initialized, $this->Plugin->isInitialized(), '初期化');
         $this->I->assertEquals($this->enabled, $this->Plugin->isEnabled(), '有効/無効');
 
@@ -522,6 +588,8 @@ class Local_Plugin extends Abstract_Plugin
         $this->tableExists();
         $this->columnExists();
 
+        $this->traitNotExists();
+
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されていない');
         $this->I->assertFalse($this->Plugin->isEnabled(), '有効化されていない');
@@ -535,6 +603,8 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->tableExists();
         $this->columnExists();
+
+        $this->traitExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -550,6 +620,8 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->tableExists();
         $this->columnExists();
+
+        $this->traitNotExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -569,6 +641,8 @@ class Local_Plugin extends Abstract_Plugin
         $this->tableNotExists();
         $this->columnNotExists();
 
+        $this->traitNotExists();
+
         $this->em->refresh($this->Plugin);
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertNull($this->Plugin, '削除されている');
@@ -579,6 +653,11 @@ class Local_Plugin extends Abstract_Plugin
     public function アップデート()
     {
         $this->ManagePage->独自プラグイン_アップデート($this->code, 'plugins/'.$this->code.'-1.0.1.tgz');
+
+        $this->tableExists();
+        $this->columnExists();
+
+        $this->traitExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -595,6 +674,8 @@ class Horizon_Local extends Local_Plugin
         parent::__construct($I, 'Horizon');
         $this->table = 'dtb_dash';
         $this->column = 'dtb_cart.is_horizon';
+        $this->trait = '\Plugin\Horizon\Entity\CartTrait';
+        $this->traitTarget = 'Cart';
     }
 
     public static function start(AcceptanceTester $I)
@@ -610,6 +691,40 @@ class Horizon_Store extends Store_Plugin
         parent::__construct($I, 'Horizon');
         $this->table = 'dtb_dash';
         $this->column = 'dtb_cart.is_horizon';
+        $this->trait = '\Plugin\Horizon\Entity\CartTrait';
+        $this->traitTarget = 'Cart';
+    }
+
+    public static function start(AcceptanceTester $I)
+    {
+        return new self($I);
+    }
+}
+
+class Boomerang_Store extends Store_Plugin
+{
+    public function __construct(AcceptanceTester $I)
+    {
+        parent::__construct($I, 'Boomerang');
+        $this->column = 'dtb_cart.is_boomerang';
+        $this->trait = '\Plugin\Boomerang\Entity\CartTrait';
+        $this->traitTarget = 'Cart';
+    }
+
+    public static function start(AcceptanceTester $I)
+    {
+        return new self($I);
+    }
+}
+
+class Boomerang_Local extends Local_Plugin
+{
+    public function __construct(AcceptanceTester $I)
+    {
+        parent::__construct($I, 'Boomerang');
+        $this->column = 'dtb_cart.is_boomerang';
+        $this->trait = '\Plugin\Boomerang\Entity\CartTrait';
+        $this->traitTarget = 'Cart';
     }
 
     public static function start(AcceptanceTester $I)

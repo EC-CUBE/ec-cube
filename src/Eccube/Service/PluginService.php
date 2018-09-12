@@ -588,7 +588,7 @@ class PluginService
 
         $enabledPluginCodes = array_map(
             function ($p) { return $p->getCode(); },
-            $this->pluginRepository->findAllEnabled()
+            $temporary ? $this->pluginRepository->findAll() : $this->pluginRepository->findAllEnabled()
         );
 
         $excludes = [];
