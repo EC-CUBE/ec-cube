@@ -286,6 +286,11 @@ abstract class Abstract_Plugin
     /** @var EccubeConfig */
     protected $config;
 
+
+    protected $table;
+
+    protected $column;
+
     /**
      * Abstract_Plugin constructor.
      */
@@ -298,14 +303,38 @@ abstract class Abstract_Plugin
         $this->config = Fixtures::get('config');
     }
 
-    protected function tableExists($tableName)
+    protected function tableExists()
     {
-        return $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}';")->fetch()['count'] > 0;
+        if ($this->table) {
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$this->table."';")->fetch()['count'] > 0;
+            $this->I->assertTrue($exists, 'テーブルがあるはず');
+        }
     }
 
-    protected function columnExists($tableName, $columnName)
+    protected function tableNotExists()
     {
-        return $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}' AND column_name = '${columnName}';")->fetch()['count'] == 1;
+        if ($this->table) {
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$this->table."';")->fetch()['count'] > 0;
+            $this->I->assertFalse($exists, 'テーブルがないはず');
+        }
+    }
+
+    protected function columnExists()
+    {
+        if ($this->column) {
+            list($tableName, $columnName) = explode('.', $this->column);
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}' AND column_name = '${columnName}';")->fetch()['count'] == 1;
+            $this->I->assertTrue($exists, 'カラムがあるはず');
+        }
+    }
+
+    protected function columnNotExists()
+    {
+        if ($this->column) {
+            list($tableName, $columnName) = explode('.', $this->column);
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}' AND column_name = '${columnName}';")->fetch()['count'] == 1;
+            $this->I->assertFalse($exists, 'カラムがないはず');
+        }
     }
 
     public function 新しいタブで開く()
@@ -322,7 +351,7 @@ abstract class Abstract_Plugin
     }
 }
 
-class Horizon_Store extends Abstract_Plugin
+class Store_Plugin extends Abstract_Plugin
 {
     /** @var PluginManagePage */
     private $ManagePage;
@@ -334,30 +363,28 @@ class Horizon_Store extends Abstract_Plugin
 
     private $enabled = false;
 
-    public static function start(AcceptanceTester $I)
-    {
-        return new Horizon_Store($I);
-    }
+    private $code;
 
-    public function __construct(AcceptanceTester $I)
+    public function __construct(AcceptanceTester $I, $code)
     {
         parent::__construct($I);
+        $this->code = $code;
     }
 
     public function インストール()
     {
-        $this->publishPlugin('Horizon-1.0.0.tgz');
+        $this->publishPlugin($this->code.'-1.0.0.tgz');
         /*
          * インストール
          */
         $this->ManagePage = PluginSearchPage::go($this->I)
-            ->入手する('Horizon')
+            ->入手する($this->code)
             ->インストール();
 
-        $this->I->assertFalse($this->tableExists('dtb_dash'), 'テーブルがない');
-        $this->I->assertFalse($this->columnExists('dtb_cart', 'is_horizon'), 'カラムがない');
+        $this->tableNotExists();
+        $this->columnNotExists();
 
-        $this->Plugin = $this->pluginRepository->findByCode('Horizon');
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていない');
         $this->I->assertFalse($this->Plugin->isEnabled(), '有効化されていない');
 
@@ -366,10 +393,10 @@ class Horizon_Store extends Abstract_Plugin
 
     public function 有効化()
     {
-        $this->ManagePage->ストアプラグイン_有効化('Horizon');
+        $this->ManagePage->ストアプラグイン_有効化($this->code);
 
-        $this->I->assertTrue($this->tableExists('dtb_dash'), 'テーブルがある');
-        $this->I->assertTrue($this->columnExists('dtb_cart', 'is_horizon'), 'カラムがある');
+        $this->tableExists();
+        $this->columnExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -382,10 +409,10 @@ class Horizon_Store extends Abstract_Plugin
 
     public function 既に有効なものを有効化()
     {
-        $this->ManagePage->ストアプラグイン_有効化('Horizon', '「ホライゾン」は既に有効です。');
+        $this->ManagePage->ストアプラグイン_有効化($this->code, '既に有効です。');
 
-        $this->I->assertTrue($this->tableExists('dtb_dash'), 'テーブルがある');
-        $this->I->assertTrue($this->columnExists('dtb_cart', 'is_horizon'), 'カラムがある');
+        $this->tableExists();
+        $this->columnExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -400,10 +427,10 @@ class Horizon_Store extends Abstract_Plugin
 
     public function 無効化()
     {
-        $this->ManagePage->ストアプラグイン_無効化('Horizon');
+        $this->ManagePage->ストアプラグイン_無効化($this->code);
 
-        $this->I->assertTrue($this->tableExists('dtb_dash'), 'テーブルがある');
-        $this->I->assertTrue($this->columnExists('dtb_cart', 'is_horizon'), 'カラムがある');
+        $this->tableExists();
+        $this->columnExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -416,10 +443,10 @@ class Horizon_Store extends Abstract_Plugin
 
     public function 既に無効なものを無効化()
     {
-        $this->ManagePage->ストアプラグイン_無効化('Horizon', '「ホライゾン」は既に無効です。');
+        $this->ManagePage->ストアプラグイン_無効化($this->code, '既に無効です。');
 
-        $this->I->assertTrue($this->tableExists('dtb_dash'), 'テーブルがある');
-        $this->I->assertTrue($this->columnExists('dtb_cart', 'is_horizon'), 'カラムがある');
+        $this->tableExists();
+        $this->columnExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -432,13 +459,13 @@ class Horizon_Store extends Abstract_Plugin
 
     public function 削除()
     {
-        $this->ManagePage->ストアプラグイン_削除('Horizon');
+        $this->ManagePage->ストアプラグイン_削除($this->code);
 
-        $this->I->assertFalse($this->tableExists('dtb_dash'), 'テーブルが消えている');
-        $this->I->assertFalse($this->columnExists('dtb_cart', 'is_horizon'), 'カラムが消えている');
+        $this->tableNotExists();
+        $this->columnNotExists();
 
         $this->em->refresh($this->Plugin);
-        $this->Plugin = $this->pluginRepository->findByCode('Horizon');
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertNull($this->Plugin, '削除されている');
 
         return $this;
@@ -446,10 +473,10 @@ class Horizon_Store extends Abstract_Plugin
 
     public function アップデート()
     {
-        $this->publishPlugin('Horizon-1.0.1.tgz');
+        $this->publishPlugin($this->code.'-1.0.1.tgz');
 
         $this->I->reloadPage();
-        $this->ManagePage->ストアプラグイン_アップデート('Horizon')->アップデート();
+        $this->ManagePage->ストアプラグイン_アップデート($this->code)->アップデート();
 
         $this->em->refresh($this->Plugin);
 
@@ -466,7 +493,7 @@ class Horizon_Store extends Abstract_Plugin
     }
 }
 
-class Horizon_Local extends Abstract_Plugin
+class Local_Plugin extends Abstract_Plugin
 {
     /** @var PluginManagePage */
     private $ManagePage;
@@ -476,27 +503,26 @@ class Horizon_Local extends Abstract_Plugin
 
     private $enabled = false;
 
-    public static function start(AcceptanceTester $I)
-    {
-        return new Horizon_Local($I);
-    }
+    /** @var string */
+    private $code;
 
-    public function __construct(AcceptanceTester $I)
+    public function __construct(AcceptanceTester $I, $code)
     {
         parent::__construct($I);
+        $this->code = $code;
     }
 
     public function インストール()
     {
         $this->ManagePage = PluginLocalInstallPage::go($this->I)
-            ->アップロード('plugins/Horizon-1.0.0.tgz');
+            ->アップロード('plugins/'.$this->code.'-1.0.0.tgz');
 
         $this->I->see('プラグインをインストールしました。', PluginManagePage::完了メーッセージ);
 
-        $this->I->assertTrue($this->tableExists('dtb_dash'), 'テーブルがある');
-        $this->I->assertTrue($this->columnExists('dtb_cart', 'is_horizon'), 'カラムがある');
+        $this->tableExists();
+        $this->columnExists();
 
-        $this->Plugin = $this->pluginRepository->findByCode('Horizon');
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されていない');
         $this->I->assertFalse($this->Plugin->isEnabled(), '有効化されていない');
 
@@ -505,10 +531,10 @@ class Horizon_Local extends Abstract_Plugin
 
     public function 有効化()
     {
-        $this->ManagePage->独自プラグイン_有効化('Horizon');
+        $this->ManagePage->独自プラグイン_有効化($this->code);
 
-        $this->I->assertTrue($this->tableExists('dtb_dash'), 'テーブルがある');
-        $this->I->assertTrue($this->columnExists('dtb_cart', 'is_horizon'), 'カラムがある');
+        $this->tableExists();
+        $this->columnExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -520,10 +546,10 @@ class Horizon_Local extends Abstract_Plugin
 
     public function 無効化()
     {
-        $this->ManagePage->独自プラグイン_無効化('Horizon');
+        $this->ManagePage->独自プラグイン_無効化($this->code);
 
-        $this->I->assertTrue($this->tableExists('dtb_dash'), 'テーブルがある');
-        $this->I->assertTrue($this->columnExists('dtb_cart', 'is_horizon'), 'カラムがある');
+        $this->tableExists();
+        $this->columnExists();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
@@ -536,15 +562,15 @@ class Horizon_Local extends Abstract_Plugin
 
     public function 削除()
     {
-        $this->ManagePage->独自プラグイン_削除('Horizon');
+        $this->ManagePage->独自プラグイン_削除($this->code);
 
         $this->I->see('プラグインを削除しました。', PluginManagePage::完了メーッセージ);
 
-        $this->I->assertFalse($this->tableExists('dtb_dash'), 'テーブルが削除されている');
-        $this->I->assertFalse($this->columnExists('dtb_cart', 'is_horizon'), 'カラムが削除されている');
+        $this->tableNotExists();
+        $this->columnNotExists();
 
         $this->em->refresh($this->Plugin);
-        $this->Plugin = $this->pluginRepository->findByCode('Horizon');
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertNull($this->Plugin, '削除されている');
 
         return $this;
@@ -552,12 +578,42 @@ class Horizon_Local extends Abstract_Plugin
 
     public function アップデート()
     {
-        $this->ManagePage->独自プラグイン_アップデート('Horizon', 'plugins/Horizon-1.0.1.tgz');
+        $this->ManagePage->独自プラグイン_アップデート($this->code, 'plugins/'.$this->code.'-1.0.1.tgz');
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertEquals($this->enabled, $this->Plugin->isEnabled(), '有効/無効');
 
         return $this;
+    }
+}
+
+class Horizon_Local extends Local_Plugin
+{
+    public function __construct(AcceptanceTester $I)
+    {
+        parent::__construct($I, 'Horizon');
+        $this->table = 'dtb_dash';
+        $this->column = 'dtb_cart.is_horizon';
+    }
+
+    public static function start(AcceptanceTester $I)
+    {
+        return new self($I);
+    }
+}
+
+class Horizon_Store extends Store_Plugin
+{
+    public function __construct(AcceptanceTester $I)
+    {
+        parent::__construct($I, 'Horizon');
+        $this->table = 'dtb_dash';
+        $this->column = 'dtb_cart.is_horizon';
+    }
+
+    public static function start(AcceptanceTester $I)
+    {
+        return new self($I);
     }
 }
