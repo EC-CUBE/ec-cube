@@ -15,9 +15,14 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\Master\OrderItemTypeRepository;
+use Eccube\Service\PurchaseFlow\Processor\AddPointProcessor;
 use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -28,6 +33,9 @@ class PointProcessorTest extends EccubeTestCase
     /** @var PointProcessor */
     private $processor;
 
+    /** @var AddPointProcessor */
+    private $addPointProcessor;
+
     /** @var BaseInfo */
     private $BaseInfo;
 
@@ -35,15 +43,20 @@ class PointProcessorTest extends EccubeTestCase
     {
         parent::setUp();
         $this->processor = $this->container->get(PointProcessor::class);
+        $this->addPointProcessor = $this->container->get(AddPointProcessor::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
-    public function testUsePoint()
+    public function testUsePointA()
     {
+        $Customer = new Customer();
+        $Customer->setPoint(1000);
         $Order = new Order();
-        $Order->setCustomer(new Customer());
+        $Order->setTotal(1000);
+        $Order->setCustomer($Customer);
         $Order->setUsePoint(100);
-        $this->processor->process($Order, new PurchaseContext());
+        $this->processor->removeDiscountItem($Order, new PurchaseContext(null, $Customer));
+        $this->processor->addDiscountItem($Order, new PurchaseContext(null, $Customer));
 
         /** @var OrderItem $OrderItem */
         $OrderItem = $Order->getOrderItems()->filter(
@@ -63,7 +76,7 @@ class PointProcessorTest extends EccubeTestCase
      * @param $customerPoint int 保有ポイント
      * @param $isError boolean エラーかどうか
      */
-    public function testUsePointOverCustomerPoint($usePoint, $customerPoint, $isError)
+    public function testUsePointOverCustomerPointShoppingFlow($usePoint, $customerPoint, $isError)
     {
         $Customer = new Customer();
         $Customer->setPoint($customerPoint);
@@ -71,18 +84,21 @@ class PointProcessorTest extends EccubeTestCase
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
         $Order = new Order();
+        $Order->setTotal(1000);
         $Order->setCustomer($Customer);
         $Order->setUsePoint($usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
 
-        $purchaseFlow = new PurchaseFlow();
-        $purchaseFlow->addItemHolderValidator($this->processor);
-        $result = $purchaseFlow->validate($Order, new PurchaseContext(null, $Customer));
-
-        self::assertEquals($isError, $result->hasError());
+        $context = new PurchaseContext(null, $Customer);
+        $context->setFlowType(PurchaseContext::SHOPPING_FLOW);
+        $this->processor->removeDiscountItem($Order, $context);
+        $result = $this->processor->addDiscountItem($Order, $context);
 
         if ($isError) {
-            self::assertEquals('利用ポイントが所有ポイントを上回っています.', $result->getErrors()[0]->getMessage());
+            self::assertEquals($isError, $result->isWarning());
+            self::assertEquals('利用ポイントが所有ポイントを上回っています。', $result->getMessage());
+        } else {
+            self::assertNull($result);
         }
     }
 
@@ -114,21 +130,58 @@ class PointProcessorTest extends EccubeTestCase
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
         $Order = new Order();
+        $Order->setTotal(100);
         $Order->setCustomer($Customer);
         $Order->setUsePoint($usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
-        $purchaseFlow = new PurchaseFlow();
-        $purchaseFlow->addItemHolderPreprocessor($this->processor); // Preprocessorでポイント明細を作成してtotalを計算し直す必要がある
-        $purchaseFlow->addItemHolderValidator($this->processor);
-        $result = $purchaseFlow->validate($Order, new PurchaseContext(null, $Customer));
-
-        self::assertEquals($isError, $result->hasError());
+        $context = new PurchaseContext(null, $Customer);
+        $context->setFlowType(PurchaseContext::ORDER_FLOW);
+        $this->processor->removeDiscountItem($Order, $context);
+        $result = $this->processor->addDiscountItem($Order, $context);
 
         if ($isError) {
-            self::assertEquals('利用ポイントがお支払い金額を上回っています.', $result->getErrors()[0]->getMessage());
+            self::assertEquals($isError, $result->isError());
+            self::assertEquals('利用ポイントがお支払い金額を上回っています。', $result->getMessage());
+            self::assertEquals($usePoint, $Order->getUsePoint());
+        } else {
+            self::assertNull($result);
+            self::assertEquals($usePoint, $Order->getUsePoint());
+        }
+    }
+
+    /**
+     * @dataProvider usePointOverPriceProvider
+     *
+     * @param $usePoint int 利用ポイント
+     * @param $isError boolean エラーかどうか
+     */
+    public function testUsePointOverPriceShoppingFlow($usePoint, $isError)
+    {
+        $price = 100; // 商品の値段
+
+        $Customer = new Customer();
+        $Customer->setPoint(10000);
+
+        /* @var ProductClass $ProductClass */
+        $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
+        $Order = new Order();
+        $Order->setTotal(100);
+        $Order->setCustomer($Customer);
+        $Order->setUsePoint($usePoint);
+        $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
+
+        $context = new PurchaseContext(null, $Customer);
+        $context->setFlowType(PurchaseContext::SHOPPING_FLOW);
+        $this->processor->removeDiscountItem($Order, $context);
+        $result = $this->processor->addDiscountItem($Order, $context);
+
+        if ($isError) {
+            self::assertEquals($isError, $result->isWarning());
+            self::assertEquals('利用ポイントがお支払い金額を上回っています。', $result->getMessage());
             self::assertEquals($price, $Order->getUsePoint());
         } else {
+            self::assertNull($result);
             self::assertEquals($usePoint, $Order->getUsePoint());
         }
     }
@@ -188,7 +241,8 @@ class PointProcessorTest extends EccubeTestCase
         $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
         $purchaseFlow = new PurchaseFlow();
-        $purchaseFlow->addItemHolderPreprocessor($this->processor);
+        $purchaseFlow->addDiscountProcessor($this->processor);
+        $purchaseFlow->addItemHolderPostValidator($this->addPointProcessor);
 
         $context = new PurchaseContext(null, $Customer);
         $purchaseFlow->validate($Order, $context);
@@ -205,6 +259,59 @@ class PointProcessorTest extends EccubeTestCase
             [1000, 0, 10],
             [1000, 100, 9],
             [1000, 200, 8],
+        ];
+    }
+
+    /**
+     * @dataProvider useAddPointExcludeShippingFeeProvider
+     *
+     * @param $price int 商品の値段
+     * @param $deliveryFee int
+     * @param $addPoint int 期待する付与ポイント
+     */
+    public function testAddPointExcludeShippingFee($price, $deliveryFee, $addPoint)
+    {
+        $Customer = new Customer();
+        $Customer->setPoint(1000);
+
+        /* @var ProductClass $ProductClass */
+        $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
+        $Order = new Order();
+        $Order->setCustomer($Customer);
+        $Order->setUsePoint(0);
+        $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
+        // add shipping fee
+        $DeliveryFeeType = $this->entityManager
+            ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
+        $TaxInclude = $this->entityManager
+            ->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+        $Taxation = $this->entityManager
+            ->find(TaxType::class, TaxType::TAXATION);
+        $OrderItem = new OrderItem();
+        $OrderItem->setProductName($DeliveryFeeType->getName())
+            ->setPrice($deliveryFee)
+            ->setQuantity(1)
+            ->setOrderItemType($DeliveryFeeType)
+            ->setOrder($Order)
+            ->setTaxDisplayType($TaxInclude)
+            ->setTaxType($Taxation);
+        $Order->addOrderItem($OrderItem);
+
+        $purchaseFlow = new PurchaseFlow();
+        $purchaseFlow->addItemHolderPostValidator($this->addPointProcessor);
+
+        $context = new PurchaseContext(null, $Customer);
+        $purchaseFlow->validate($Order, $context);
+
+        self::assertEquals($addPoint, $Order->getAddPoint());
+    }
+
+    public function useAddPointExcludeShippingFeeProvider()
+    {
+        return [
+            [200, 200, 2],
+            [400, 0, 4],
+            [100, 20000, 1],
         ];
     }
 
@@ -235,7 +342,7 @@ class PointProcessorTest extends EccubeTestCase
         $Order->addOrderItem($this->newOrderItem($ProductClass, $productPrice, 1));
 
         $purchaseFlow = new PurchaseFlow();
-        $purchaseFlow->addItemHolderPreprocessor($this->processor);
+        $purchaseFlow->addDiscountProcessor($this->processor);
         $purchaseFlow->addPurchaseProcessor($this->processor);
 
         $context = new PurchaseContext(null, $Customer);
@@ -286,7 +393,7 @@ class PointProcessorTest extends EccubeTestCase
         $Order->addOrderItem($this->newOrderItem($ProductClass, $ProductPrice, 1));
 
         $purchaseFlow = new PurchaseFlow();
-        $purchaseFlow->addItemHolderPreprocessor($this->processor);
+        $purchaseFlow->addItemHolderPostValidator($this->addPointProcessor);
 
         $context = new PurchaseContext(null, $Customer);
         $purchaseFlow->validate($Order, $context);
@@ -309,6 +416,8 @@ class PointProcessorTest extends EccubeTestCase
         $OrderItem->setProductClass($ProductClass);
         $OrderItem->setPrice($price);
         $OrderItem->setQuantity($quantity);
+        $ProductType = $this->container->get(OrderItemTypeRepository::class)->find(OrderItemType::PRODUCT);
+        $OrderItem->setOrderItemType($ProductType);
 
         return $OrderItem;
     }

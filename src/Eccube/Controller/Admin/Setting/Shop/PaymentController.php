@@ -82,9 +82,17 @@ class PaymentController extends AbstractController
     public function edit(Request $request, Payment $Payment = null)
     {
         if (is_null($Payment)) {
-            // FIXME
-            $Payment = $this->paymentRepository
-                ->findOrCreate(0);
+            $Payment = $this->paymentRepository->findOneBy([], ['sort_no' => 'DESC']);
+            $sortNo = 1;
+            if ($Payment) {
+                $sortNo = $Payment->getSortNo() + 1;
+            }
+
+            $Payment = new \Eccube\Entity\Payment();
+            $Payment
+                ->setSortNo($sortNo)
+                ->setFixed(true)
+                ->setVisible(true);
         }
 
         $builder = $this->formFactory
@@ -101,11 +109,11 @@ class PaymentController extends AbstractController
 
         $form = $builder->getForm();
 
-        $form->setData($Payment);
-        $form->handleRequest($request);
-
         // 既に画像保存されてる場合は取得する
         $oldPaymentImage = $Payment->getPaymentImage();
+
+        $form->setData($Payment);
+        $form->handleRequest($request);
 
         // 登録ボタン押下
         if ($form->isSubmitted() && $form->isValid()) {
@@ -217,11 +225,11 @@ class PaymentController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.delete_complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->entityManager->rollback();
 
-            $message = trans('admin.delete_error_foreign_key', ['%name%' => $TargetPayment->getMethod()]);
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $TargetPayment->getMethod()]);
             $this->addError($message, 'admin');
         }
 
@@ -240,9 +248,9 @@ class PaymentController extends AbstractController
         $this->entityManager->flush();
 
         if ($Payment->isVisible()) {
-            $this->addSuccess('admin.payment.visible.complete', 'admin');
+            $this->addSuccess(trans('admin.common.to_show_complete', ['%name%' => $Payment->getMethod()]), 'admin');
         } else {
-            $this->addSuccess('admin.payment.invisible.complete', 'admin');
+            $this->addSuccess(trans('admin.common.to_hide_complete', ['%name%' => $Payment->getMethod()]), 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_shop_payment');

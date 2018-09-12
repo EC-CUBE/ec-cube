@@ -111,12 +111,16 @@ class CsvImportController extends AbstractCsvImportController
         $csvColumns = $csv->getColumnHeaders();
         if (count(array_diff($requiredColumns, $csvColumns)) > 0) {
             $errors[] = trans('admin.common.csv_invalid_format');
+
+            return;
         }
 
         // 行数の確認
         $size = count($csv);
         if ($size < 1) {
             $errors[] = trans('admin.common.csv_invalid_format');
+
+            return;
         }
 
         $columnNames = array_combine(array_keys($columnConfig), array_column($columnConfig, 'name'));
@@ -169,7 +173,11 @@ class CsvImportController extends AbstractCsvImportController
                 } else {
                     $from = $Order->getOrderStatus()->getName();
                     $to = $OrderStatus->getName();
-                    $errors[] = sprintf('%s: %s から %s へステータス変更できませんでした', $Shipping->getId(), $from, $to);
+                    $errors[] = trans('admin.order.failed_to_change_status', [
+                        '%name%' => $Shipping->getId(),
+                        '%from%' => $from,
+                        '%to%' => $to
+                    ]);
                 }
             }
         }
@@ -203,7 +211,7 @@ class CsvImportController extends AbstractCsvImportController
             'shipping_date' => [
                 'name' => trans('admin.order.shipping_csv.shipping_date_col'),
                 'description' => trans('admin.order.shipping_csv.shipping_date_description'),
-                'required' => false,
+                'required' => true,
             ],
         ];
     }

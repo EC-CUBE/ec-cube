@@ -76,7 +76,7 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
         }
 
         foreach ($itemHolder->getItems() as $item) {
-            if ($item->isCharge()) {
+            if ($item->getProcessorName() == PaymentChargePreprocessor::class) {
                 $item->setPrice($itemHolder->getPayment()->getCharge());
 
                 return;
@@ -96,7 +96,7 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
         /** @var Order $itemHolder */
         $OrderItemType = $this->orderItemTypeRepository->find(OrderItemType::CHARGE);
         $TaxDisplayType = $this->taxDisplayTypeRepository->find(TaxDisplayType::INCLUDED);
-        $Taxion = $this->taxTypeRepository->find(TaxType::TAXATION);
+        $Taxation = $this->taxTypeRepository->find(TaxType::TAXATION);
         $item = new OrderItem();
         $item->setProductName($OrderItemType->getName())
             ->setQuantity(1)
@@ -104,7 +104,8 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
             ->setOrderItemType($OrderItemType)
             ->setOrder($itemHolder)
             ->setTaxDisplayType($TaxDisplayType)
-            ->setTaxType($Taxion);
+            ->setTaxType($Taxation)
+            ->setProcessorName(PaymentChargePreprocessor::class);
         $itemHolder->addItem($item);
     }
 }

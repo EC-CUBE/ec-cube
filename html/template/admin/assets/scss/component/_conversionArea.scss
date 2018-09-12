@@ -41,7 +41,11 @@ Styleguide 5.0
   text-align: right;
   z-index: 100;
 
-  @include media_mainNav {
+  @include media_middle {
+    width: calc(100% - 160px);
+  }
+
+  @include media_small {
     width: 100%;
   }
 

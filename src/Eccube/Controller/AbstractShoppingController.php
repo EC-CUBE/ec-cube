@@ -26,26 +26,6 @@ class AbstractShoppingController extends AbstractController
     protected $purchaseFlow;
 
     /**
-     * @var PurchaseContext
-     */
-    protected $purchaseContext;
-
-    /**
-     * @var string 非会員用セッションキー
-     */
-    protected $sessionKey = 'eccube.front.shopping.nonmember';
-
-    /**
-     * @var string 非会員用セッションキー
-     */
-    protected $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
-
-    /**
-     * @var string 受注IDキー
-     */
-    protected $sessionOrderKey = 'eccube.front.shopping.order.id';
-
-    /**
      * @param PurchaseFlow $shoppingPurchaseFlow
      * @required
      */
@@ -56,20 +36,35 @@ class AbstractShoppingController extends AbstractController
 
     /**
      * @param ItemHolderInterface $itemHolder
+     * @param bool $returnResponse レスポンスを返すかどうか. falseの場合はPurchaseFlowResultを返す.
      *
-     * @return PurchaseFlowResult
+     * @return PurchaseFlowResult|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    protected function validatePurchaseFlow(ItemHolderInterface $itemHolder)
+    protected function executePurchaseFlow(ItemHolderInterface $itemHolder, $returnResponse = true)
     {
         /** @var PurchaseFlowResult $flowResult */
-        $flowResult = $this->purchaseFlow->validate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
+        $flowResult = $this->purchaseFlow->validate($itemHolder, new PurchaseContext(clone $itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
-            $this->addRequestError($warning);
+            $this->addWarning($warning->getMessage());
         }
         foreach ($flowResult->getErrors() as $error) {
-            $this->addRequestError($error);
+            $this->addError($error->getMessage());
         }
 
-        return $flowResult;
+        if (!$returnResponse) {
+            return $flowResult;
+        }
+
+        if ($flowResult->hasError()) {
+            log_info('Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
+
+            return $this->redirectToRoute('shopping_error');
+        }
+
+        if ($flowResult->hasWarning()) {
+            log_info('Warningが発生したため注文手続き画面へ遷移します.', [$flowResult->getWarning()]);
+
+            return $this->redirectToRoute('shopping');
+        }
     }
 }

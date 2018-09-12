@@ -45,23 +45,17 @@ class PluginInstallCommand extends Command
             if ($this->pluginService->install($path)) {
                 $io->success('Installed.');
 
-                return;
+                return 0;
             }
         }
 
         // 設置済ファイルからインストール
         if ($code) {
-            $pluginDir = $this->pluginService->calcPluginDir($code);
-            $this->pluginService->checkPluginArchiveContent($pluginDir);
-            $config = $this->pluginService->readYml($pluginDir.'/config.yml');
-            $event = $this->pluginService->readYml($pluginDir.'/event.yml');
-            $this->pluginService->checkSamePlugin($config['code']);
-            $this->pluginService->postInstall($config, $event, false);
-
+            $this->pluginService->installWithCode($code);
             $this->clearCache($io);
             $io->success('Installed.');
 
-            return;
+            return 0;
         }
 
         $io->error('path or code is required.');

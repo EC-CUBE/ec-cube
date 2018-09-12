@@ -18,7 +18,6 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Entity\Master\OrderStatus;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -172,12 +171,12 @@ class CustomerRepository extends AbstractRepository
         }
 
         // buy_times
-        if (!empty($searchData['buy_times_start']) && $searchData['buy_times_start']) {
+        if (isset($searchData['buy_times_start']) && StringUtil::isNotBlank($searchData['buy_times_start'])) {
             $qb
                 ->andWhere('c.buy_times >= :buy_times_start')
                 ->setParameter('buy_times_start', $searchData['buy_times_start']);
         }
-        if (!empty($searchData['buy_times_end']) && $searchData['buy_times_end']) {
+        if (isset($searchData['buy_times_end']) && StringUtil::isNotBlank($searchData['buy_times_end'])) {
             $qb
                 ->andWhere('c.buy_times <= :buy_times_end')
                 ->setParameter('buy_times_end', $searchData['buy_times_end']);
@@ -342,59 +341,6 @@ class CustomerRepository extends AbstractRepository
     public function getResetPassword()
     {
         return StringUtil::random(8);
-    }
-
-    /**
-     * 会員の初回購入時間、購入時間、購入回数、購入金額を更新する
-     *
-     * @param Customer $Customer
-     * @param null $isNewOrder
-     */
-    public function updateBuyData(Customer $Customer, $isNewOrder = null)
-    {
-        // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
-
-        $arr = [
-            OrderStatus::NEW,
-            OrderStatus::PAY_WAIT,
-            OrderStatus::BACK_ORDER,
-            OrderStatus::DELIVERED,
-            OrderStatus::PAID,
-        ];
-
-        $result = $this->orderRepository->getCustomerCount($Customer, $arr);
-
-        if (!empty($result)) {
-            $data = $result[0];
-
-            $now = new \DateTime();
-
-            $firstBuyDate = $Customer->getFirstBuyDate();
-            if (empty($firstBuyDate)) {
-                $Customer->setFirstBuyDate($now);
-            }
-
-            if ($isNewOrder) {
-                $Customer->setLastBuyDate($now);
-            } else {
-                $Order = $this->orderRepository->find($data['order_id']);
-                if ($Order) {
-                    $Customer->setLastBuyDate($Order->getOrderDate());
-                }
-            }
-
-            $Customer->setBuyTimes($data['buy_times']);
-            $Customer->setBuyTotal($data['buy_total']);
-        } else {
-            // 受注データが存在しなければ初期化
-            $Customer->setFirstBuyDate(null);
-            $Customer->setLastBuyDate(null);
-            $Customer->setBuyTimes(0);
-            $Customer->setBuyTotal(0);
-        }
-
-        $this->entityManager->persist($Customer);
-        $this->entityManager->flush();
     }
 
     /**

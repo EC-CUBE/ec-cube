@@ -13,9 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
-use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
@@ -58,11 +56,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
     {
         $redirectUrl = $this->generateUrl('admin_content_page');
 
-        $DeviceType = $this->container->get(DeviceTypeRepository::class)
-            ->find(DeviceType::DEVICE_TYPE_PC);
-
         $Page = new Page();
-        $Page->setDeviceType($DeviceType);
         $Page->setEditType(Page::EDIT_TYPE_USER);
         $Page->setUrl('hogehoge');
         $this->entityManager->persist($Page);

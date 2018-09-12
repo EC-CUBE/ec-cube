@@ -60,35 +60,10 @@ file that was distributed with this source code.
     </div>
 </div>
 
-    <form id="shopping-form" method="post" action="{{ url('shopping_order') }}">
+    <form id="shopping-form" method="post" action="{{ url('shopping_checkout') }}">
     {{ form_widget(form._token) }}
-    {{ form_widget(form.mode) }}
-    {{ form_widget(form.param) }}
     <div class="ec-orderRole">
         <div class="ec-orderRole__detail">
-            <div class="ec-orderOrder">
-                <ul class="ec-borderedList">
-                    {% for orderDetail in Order.orderItems %}
-                    <li>
-                        <div class="ec-imageGrid">
-                            <div class="ec-imageGrid__img">
-                                <img src="{{ asset((orderDetail.product is null ? null : orderDetail.product.MainListImage)|no_image_product, 'save_image') }}">
-                            </div>
-                            <div class="ec-imageGrid__content">
-                                <p>{{ orderDetail.productName }}</p>
-                                {% if orderDetail.productClass is not null and orderDetail.productClass.classCategory1 %}
-                                    <p>{{ orderDetail.productClass.classCategory1.className.name }}：{{ orderDetail.productClass.classCategory1 }}</p>
-                                {% endif %}
-                                {% if orderDetail.productClass is not null and orderDetail.productClass.classCategory2 %}
-                                    <p>{{ orderDetail.productClass.classCategory2.className.name }}：{{ orderDetail.productClass.classCategory2 }}</p>
-                                {% endif %}
-                                <p>{{ orderDetail.priceIncTax|price }} × {{ orderDetail.quantity|number_format }}<span class="ec-imageGrid__contentTotal">{{ 'common.subtotal__with_separator'|trans }}{{ orderDetail.totalPrice|price }}</span></p>
-                            </div>
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
             <div class="ec-orderAccount">
                 <div class="ec-rectHeading">
                     <h2>{{ 'front.shopping.customer_info'|trans }}</h2>
@@ -96,11 +71,11 @@ file that was distributed with this source code.
                 <div class="ec-orderAccount__account">
                     <p class="ec-halfInput">{{ Order.name01 }} {{ Order.name02 }}</span> 様</p>
                     <p class="ec-halfInput">{{ Order.kana01 }}</span> {{ Order.kana02 }}</p>
+                    <p class="ec-input">{{ Order.companyName }}</span></p>
                     <p class="ec-zipInput">{{ 'common.postal_symbol'|trans }}{{ Order.postal_code }}</p>
                     <p class="ec-input">{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</p>
                     <p class="ec-telInput">{{ Order.phone_number }}</span></p>
                     <p class="ec-input">{{ Order.email }}</span></p>
-                    <p class="ec-input">{{ Order.companyName }}</span></p>
                 </div>
             </div>
             <div class="ec-orderDelivery">
@@ -111,7 +86,7 @@ file that was distributed with this source code.
                     {% set idx = loop.index0 %}
                     <div class="ec-orderDelivery__item">
                         <ul class="ec-borderedList">
-                            {% for orderItem in shipping.orderItems %}
+                            {% for orderItem in shipping.productOrderItems %}
                             <li>
                                 <div class="ec-imageGrid">
                                     <div class="ec-imageGrid__img"><img src="{{ asset((orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product, 'save_image') }}" alt="{{ orderItem.productName }}"></div>
@@ -139,18 +114,19 @@ file that was distributed with this source code.
                         <div class="ec-selects">
                             <div class="ec-select">
                                 <label>{{ 'front.shopping.delivery_provider'|trans }}</label>
-                                {{ Order.Shippings[idx].Delivery }}
-                                {{ form_widget(form.Shippings[idx].Delivery, {'type': 'hidden'}) }}
+                                {% set delivery_fee = 0 %}
+                                {% for item in shipping.order_items if item.isDeliveryFee %}
+                                    {% set delivery_fee = item.total_price %}
+                                {% endfor %}
+                                {{ Order.Shippings[idx].Delivery }}({{ delivery_fee|price }})
                             </div>
                             <div class="ec-select ec-select__delivery">
                                 <label>{{ 'front.shopping.delivery_date'|trans }}</label>
                                 {{ Order.Shippings[idx].shipping_delivery_date? Order.Shippings[idx].shipping_delivery_date|date_day_with_weekday : 'common.select__unspecified'|trans }}
-                                {{ form_widget(form.Shippings[idx].shipping_delivery_date, {'type': 'hidden'}) }}
                             </div>
                             <div class="ec-select ec-select__time">
                                 <label>{{ 'front.shopping.delivery_time'|trans }}</label>
                                 {{ Order.Shippings[idx].shipping_delivery_time?: 'common.select__unspecified'|trans }}
-                                {{ form_widget(form.Shippings[idx].DeliveryTime, {'type': 'hidden'}) }}
                             </div>
                         </div>
                     </div>
@@ -161,18 +137,29 @@ file that was distributed with this source code.
                     <h2>{{ 'front.shopping.payment_info'|trans }}</h2>
                 </div>
                 <div class="ec-blockRadio">
-                    {{ Order.Payment }}
-                    {{ form_widget(form.Payment, {'type': 'hidden'}) }}
+                    {% set charge = 0 %}
+                    {% for item in Order.order_items if item.isCharge %}
+                        {% set charge = item.total_price %}
+                    {% endfor %}
+                    {{ Order.Payment }}({{ charge|price }})
                 </div>
             </div>
-
+            {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+            <div class="ec-orderPayment">
+                <div class="ec-rectHeading">
+                    <h2>{{ 'front.shopping.point_info'|trans }}</h2>
+                </div>
+                <div class="ec-blockRadio">
+                    {{ Order.use_point|number_format }} pt
+                </div>
+            </div>
+            {% endif %}
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">
                     <h2>{{ 'front.shopping.message_info'|trans }}</h2>
                 </div>
                 <div class="ec-input">
                     {{ Order.message|nl2br }}
-                    {{ form_widget(form.message, {'type': 'hidden'}) }}
                 </div>
             </div>
         </div>
@@ -197,20 +184,12 @@ file that was distributed with this source code.
                 <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
                 {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                     <dl class="ec-totalBox__spec">
-                        <dt>{{ 'front.shopping.prev_point'|trans }}</dt>
-                        <dd>{{ Order.Customer.Point|number_format }} pt</dd>
-                    </dl>
-                    <dl class="ec-totalBox__spec">
                         <dt>{{ 'front.shopping.use_point'|trans }}</dt>
                         <dd>{{ Order.UsePoint|number_format }} pt</dd>
                     </dl>
                     <dl class="ec-totalBox__spec">
-                        <dt>{{ 'front.shopping.add_point'|trans }}</dt>
-                        <dd>{{ Order.AddPoint|number_format }} pt</dd>
-                    </dl>
-                    <dl class="ec-totalBox__spec">
-                        <dt>{{ 'front.shopping.next_point'|trans }}</dt>
-                        <dd>{{ (Order.Customer.Point - Order.UsePoint + Order.AddPoint)|number_format }} pt</dd>
+                        <dt><span class="ec-font-bold">{{ 'front.shopping.add_point'|trans }}</span></dt>
+                        <dd><span class="ec-font-bold">{{ Order.AddPoint|number_format }} pt</span></dd>
                     </dl>
                 {% endif %}
                 <div class="ec-totalBox__btn">

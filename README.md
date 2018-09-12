@@ -1,9 +1,8 @@
 # EC-CUBE 4.0-beta
 
-[![Build Status](https://travis-ci.com/EC-CUBE/ec-cube.svg?branch=4.0)](https://travis-ci.org/EC-CUBE/ec-cube)
+[![Build Status](https://travis-ci.com/EC-CUBE/ec-cube.svg?branch=4.0)](https://travis-ci.com/EC-CUBE/ec-cube)
 [![Build status](https://ci.appveyor.com/api/projects/status/lg3uh1539cwln2g6/branch/4.0?svg=true)](https://ci.appveyor.com/project/ECCUBE/ec-cube/branch/4.0)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/quality-score.png?b=4.0)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=4.0)
-[![Code Coverage](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/coverage.png?b=4.0)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=4.0)
 [![Coverage Status](https://coveralls.io/repos/github/EC-CUBE/ec-cube/badge.svg?branch=4.0)](https://coveralls.io/github/EC-CUBE/ec-cube?branch=4.0)
 
 [![Slack](http://img.shields.io/badge/slack-join%5fchat-brightgreen.svg?style=flat)](https://ec-cube.slack.com/messages)
@@ -22,7 +21,7 @@
 
 ### EC-CUBE 4.0のインストール方法
 
-開発ドキュメントの [インストール方法](http://doc3n.ec-cube.net/quickstart_install) の手順に従ってインストールしてください。
+開発ドキュメントの [インストール方法](http://doc4.ec-cube.net/quickstart_install) の手順に従ってインストールしてください。
 
 ### CSS の編集・ビルド方法
 
@@ -44,11 +43,11 @@ npm run build # Sass のビルド
 * PostgreSQL 9.2.1   
 * ブラウザー：Google Chrome  
 
-詳しくは開発ドキュメントの [システム要件](http://doc3n.ec-cube.net/quickstart_requirement) をご確認ください。
+詳しくは開発ドキュメントの [システム要件](http://doc4.ec-cube.net/quickstart_requirement) をご確認ください。
 
 ## ドキュメント
 
-### [EC-CUBE 4.0 開発ドキュメント@doc3n.ec-cube.net](http://doc3n.ec-cube.net/)
+### [EC-CUBE 4.0 開発ドキュメント@doc4.ec-cube.net](http://doc4.ec-cube.net/)
 
 
 EC-CUBE 4.0 の仕様や手順、開発Tipsに関するドキュメントを掲載しています。  

@@ -18,61 +18,92 @@ file that was distributed with this source code.
 {% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/tempusdominus-bootstrap-4.min.css', 'admin') }}">
+    <style type="text/css">
+        .datepicker-days th.dow:first-child,
+        .datepicker-days td:first-child {
+            color: #f00;
+        }
+
+        .datepicker-days th.dow:last-child,
+        .datepicker-days td:last-child {
+            color: #00f;
+        }
+    </style>
 {% endblock stylesheet %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
     <script>
         $(function() {
+            if ($('[type="date"]').prop('type') != 'date') {
+                // input type属性でdateが利用できるかどうか(カレンダー表示できないブラウザ対応)
+                $.when(
+                    $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
+                    $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
+                    $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
+                ).done(function() {
+                    $('input[id$=_date_start]').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-            var inputDate = document.createElement('input');
-            inputDate.setAttribute('type', 'date');
-            if (inputDate.type !== 'date') {
-                $('input[id$=_date_start]').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
+                    $('input[id$=_date_end]').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-                $('input[id$=_date_end]').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
+                    $('#admin_search_customer_birth_start').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-                $('#admin_search_customer_birth_start').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
+                    $('#admin_search_customer_birth_end').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-                $('#admin_search_customer_birth_end').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
+                    $('#admin_search_customer_last_buy_start').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-                $('#admin_search_customer_last_buy_start').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
-
-                $('#admin_search_customer_last_buy_end').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
+                    $('#admin_search_customer_last_buy_end').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
                 });
             }
+
         });
 
     </script>
@@ -86,7 +117,7 @@ file that was distributed with this source code.
                 <div class="row justify-content-start">
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label">{{ 'admin.customer.multi_search_label'|trans }}</label>
+                            <label class="col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.customer.multi_search_label'|trans }}">{{ 'admin.customer.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
@@ -278,10 +309,6 @@ file that was distributed with this source code.
                         {% endif %}
                     </div>
                 {% endfor %}
-
-                <div class="d-block text-center">
-                    <button class="btn btn-ec-regular" type="reset">{{ 'admin.common.search_clear'|trans }}</button>
-                </div>
             </div>
         </div>
         <div class="c-outsideBlock__contents mb-5">
@@ -342,9 +369,9 @@ file that was distributed with this source code.
                                             <td class="align-middle">{{ Customer.email }}</td>
                                             <td class="align-middle"></td>
                                             <td class="align-middle pr-3">
-                                                <div class="row justify-content-end">
+                                                <div class="text-right">
                                                     {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
-                                                        <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.customer.resend'|trans }}">
+                                                        <div class="px-1 d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.customer.resend'|trans }}">
                                                             <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
                                                                 <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
@@ -372,7 +399,7 @@ file that was distributed with this source code.
                                                             </div>
                                                         </div>
                                                     {% endif %}
-                                                    <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                    <div class="px-1 d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                         <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance-{{ Customer.id }}">
                                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
@@ -402,7 +429,7 @@ file that was distributed with this source code.
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><!-- /.justify-content-end -->
+                                                </div><!-- /.text-right -->
                                             </td>
                                         </tr>
                                     {% endfor %}

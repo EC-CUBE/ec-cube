@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityRepository;
 use Eccube\Entity\ClassName;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -34,6 +35,10 @@ class ProductClassMatrixType extends AbstractType
         $builder
             ->add('class_name1', EntityType::class, [
                 'class' => ClassName::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cn')
+                        ->orderBy('cn.sort_no', 'DESC');
+                },
                 'placeholder' => 'admin.product.select__class1',
                 'constraints' => [
                     new NotBlank(),
@@ -41,6 +46,10 @@ class ProductClassMatrixType extends AbstractType
             ])
             ->add('class_name2', EntityType::class, [
                 'class' => ClassName::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cn')
+                        ->orderBy('cn.sort_no', 'DESC');
+                },
                 'placeholder' => 'admin.product.select__class2',
                 'constraints' => new Callback(function (
                     ClassName $ClassName2 = null,
@@ -49,7 +58,7 @@ class ProductClassMatrixType extends AbstractType
                     $ClassName1 = $context->getRoot()->get('class_name1')->getData();
                     if ($ClassName1 && $ClassName2) {
                         if ($ClassName1->getId() === $ClassName2->getId()) {
-                            $context->buildViolation('規格1と同じ規格は選択できません.')
+                            $context->buildViolation(trans('admin.product.select__can_not_select_same_class'))
                                 ->atPath('class_name2')
                                 ->addViolation();
                         }
@@ -77,7 +86,7 @@ class ProductClassMatrixType extends AbstractType
                 }
 
                 if (!$hasVisible) {
-                    $form['product_classes']->addError(new FormError('選択されていません'));
+                    $form['product_classes']->addError(new FormError(trans('admin.product.unselected_class')));
                 }
             });
         }

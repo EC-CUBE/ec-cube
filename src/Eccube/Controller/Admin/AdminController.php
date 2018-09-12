@@ -24,6 +24,7 @@ use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Exception\PluginApiException;
 use Eccube\Form\Type\Admin\ChangePasswordType;
 use Eccube\Form\Type\Admin\LoginType;
 use Eccube\Repository\CustomerRepository;
@@ -31,6 +32,7 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Service\PluginApiService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -80,10 +82,13 @@ class AdminController extends AbstractController
      */
     protected $productRepository;
 
+    /** @var PluginApiService */
+    protected $pluginApiService;
+
     /**
      * @var array 売り上げ状況用受注状況
      */
-    private $excludes = [OrderStatus::PROCESSING, OrderStatus::CANCEL, OrderStatus::PENDING];
+    private $excludes = [OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED];
 
     /**
      * AdminController constructor.
@@ -96,6 +101,7 @@ class AdminController extends AbstractController
      * @param OrderStatusRepository $orderStatusRepository
      * @param CustomerRepository $custmerRepository
      * @param ProductRepository $productRepository
+     * @param PluginApiService $pluginApiService
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -105,7 +111,8 @@ class AdminController extends AbstractController
         OrderRepository $orderRepository,
         OrderStatusRepository $orderStatusRepository,
         CustomerRepository $custmerRepository,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        PluginApiService $pluginApiService
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->helper = $helper;
@@ -115,6 +122,7 @@ class AdminController extends AbstractController
         $this->orderStatusRepository = $orderStatusRepository;
         $this->customerRepository = $custmerRepository;
         $this->productRepository = $productRepository;
+        $this->pluginApiService = $pluginApiService;
     }
 
     /**
@@ -165,10 +173,11 @@ class AdminController extends AbstractController
          * 受注状況.
          */
         $excludes = [];
-        $excludes[] = OrderStatus::PENDING;
-        $excludes[] = OrderStatus::PROCESSING;
         $excludes[] = OrderStatus::CANCEL;
         $excludes[] = OrderStatus::DELIVERED;
+        $excludes[] = OrderStatus::PENDING;
+        $excludes[] = OrderStatus::PROCESSING;
+        $excludes[] = OrderStatus::RETURNED;
 
         $event = new EventArgs(
             [
@@ -235,6 +244,13 @@ class AdminController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
 
+        // 推奨プラグイン
+        $recommendedPlugins = [];
+        try {
+            $recommendedPlugins = $this->pluginApiService->getRecommended();
+        } catch (PluginApiException $ignore) {
+        }
+
         return [
             'Orders' => $Orders,
             'OrderStatuses' => $OrderStatuses,
@@ -244,6 +260,7 @@ class AdminController extends AbstractController
             'countNonStockProducts' => $countNonStockProducts,
             'countProducts' => $countProducts,
             'countCustomers' => $countCustomers,
+            'recommendedPlugins' => $recommendedPlugins,
         ];
     }
 

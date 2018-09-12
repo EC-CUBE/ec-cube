@@ -58,7 +58,7 @@ class AuthorityRoleType extends AbstractType
                 $denyUrl = $form['deny_url']->getData();
 
                 if (!$Authority && !empty($denyUrl)) {
-                    $form['Authority']->addError(new FormError(trans('admin.setting.system.authority.authority_not_selected:')));
+                    $form['Authority']->addError(new FormError(trans('admin.setting.system.authority.authority_not_selected')));
                 } elseif ($Authority && empty($denyUrl)) {
                     $form['deny_url']->addError(new FormError(trans('admin.setting.system.authority.deny_url_is_empty')));
                 }

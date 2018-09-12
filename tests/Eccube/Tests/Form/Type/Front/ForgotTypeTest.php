@@ -40,16 +40,16 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
                     'login_email' => 'example',
                 ],
             ],
-            [
-                'data' => [
-                    'login_email' => 'a..a@aa',
-                ],
-            ],
-            [
-                'data' => [
-                    'login_email' => 'aa.@aa',
-                ],
-            ],
+            // [
+            //     'data' => [
+            //         'login_email' => 'a..a@aa',
+            //     ],
+            // ],
+            // [
+            //     'data' => [
+            //         'login_email' => 'aa.@aa',
+            //     ],
+            // ],
             [
                 'data' => [
                     'login_email' => 'aa@adf@a.com',
@@ -86,4 +86,13 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
+
+    public function testMailNoRFC()
+    {
+        $this->formData['login_email'] = 'aa..@example.com';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
 }

@@ -222,6 +222,13 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         private $currency_code;
 
         /**
+         * @var string|null
+         *
+         * @ORM\Column(name="processor_name", type="string", nullable=true)
+         */
+        private $processor_name;
+
+        /**
          * @var \Eccube\Entity\Order
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="OrderItems")
@@ -591,6 +598,30 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         public function setCurrencyCode($currencyCode = null)
         {
             $this->currency_code = $currencyCode;
+
+            return $this;
+        }
+
+        /**
+         * Get processorName.
+         *
+         * @return string
+         */
+        public function getProcessorName()
+        {
+            return $this->processor_name;
+        }
+
+        /**
+         * Set processorName.
+         *
+         * @param string|null $processorName
+         *
+         * @return $this
+         */
+        public function setProcessorName($processorName = null)
+        {
+            $this->processor_name = $processorName;
 
             return $this;
         }

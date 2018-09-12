@@ -18,31 +18,50 @@ file that was distributed with this source code.
 {% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/tempusdominus-bootstrap-4.min.css', 'admin') }}">
+    <style type="text/css">
+        .datepicker-days th.dow:first-child,
+        .datepicker-days td:first-child {
+            color: #f00;
+        }
+
+        .datepicker-days th.dow:last-child,
+        .datepicker-days td:last-child {
+            color: #00f;
+        }
+    </style>
 {% endblock stylesheet %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
     <script>
         $(function() {
 
-            var inputDate = document.createElement('input');
-            inputDate.setAttribute('type', 'date');
-            if (inputDate.type !== 'date') {
-                $('input[id$=_date_start]').datetimepicker({
-                    locale: 'ja',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
-                });
+            if ($('[type="date"]').prop('type') != 'date') {
+                // input type属性でdateが利用できるかどうか(カレンダー表示できないブラウザ対応)
+                $.when(
+                    $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
+                    $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
+                    $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
+                ).done(function() {
+                    $('input[id$=_date_start]').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
 
-                $('input[id$=_date_end]').datetimepicker({
-                    locale: 'ja',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    showTodayButton: true
+                    $('input[id$=_date_end]').datetimepicker({
+                        locale: '{{ eccube_config.locale }}',
+                        format: 'YYYY-MM-DD',
+                        useCurrent: false,
+                        buttons: {
+                            showToday: true,
+                            showClose: true
+                        }
+                    });
                 });
             }
 
@@ -52,7 +71,7 @@ file that was distributed with this source code.
 
                 // 削除中のUI変更処理
                 modal.find('button').attr('disabled', 'disabled');
-                $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__in_prograss'|trans }}");
+                $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__in_progress'|trans }}");
                 $('.progress', modal).show();
 
                 var checkedList = $('input[type=checkbox][data-delete-url]:checked');
@@ -178,7 +197,7 @@ file that was distributed with this source code.
 
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label">{{ 'admin.product.multi_search_label'|trans }}</label>
+                            <label class="col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.product.multi_search_label'|trans }}">{{ 'admin.product.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                             {{ form_widget(searchForm.id) }}
                             {{ form_errors(searchForm.id) }}
                         </div>
@@ -217,9 +236,8 @@ file that was distributed with this source code.
                     </div>
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                            <label class="col-form-label">
                                 {{ 'admin.common.create_date'|trans }}
-                                <i class="fa fa-question-circle fa-lg ml-1"></i>
                             </label>
                             <div class="form-row align-items-center">
                                 <div class="col">
@@ -270,9 +288,6 @@ file that was distributed with this source code.
                         {% endif %}
                     </div>
                 {% endfor %}
-                <div class="d-block text-center">
-                    <button class="btn btn-ec-regular" type="reset">{{ 'admin.common.search_clear'|trans }}</button>
-                </div>
             </div>
             <div class="c-outsideBlock__contents mb-5">
                 <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.search'|trans }}</button>
@@ -339,7 +354,7 @@ file that was distributed with this source code.
                                             <input type="checkbox" name="filter" value="open" id="trigger_check_all">
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_id__short'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'amdin.product.image__short'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.image__short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.name'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.price'|trans }}</th>
@@ -405,15 +420,15 @@ file that was distributed with this source code.
                                                 {{ Product.update_date|date_min }}
                                             </td>
                                             <td class="align-middle pr-3" colspan="3">
-                                                <div class="row">
-                                                    <div class="col text-center" data-toggle="tooltip"
+                                                <div class="text-right">
+                                                    <div class="px-1 d-inline-block text-center" data-tooltip="true"
                                                          data-placement="top"
                                                          title="{{ 'admin.common.display'|trans }}"><a class="btn btn-ec-actionIcon"
-                                                                                                              href="{{ url('product_detail', {id:Product.id}) }}"
-                                                                                                              target="_blank"><i
+                                                                                                       href="{{ url('product_detail', {id:Product.id}) }}"
+                                                                                                       target="_blank"><i
                                                                     class="fa fa-eye fa-lg text-secondary"
                                                                     aria-hidden="true"></i></a></div>
-                                                    <div class="col text-center" data-toggle="tooltip"
+                                                    <div class="px-1 d-inline-block text-center" data-tooltip="true"
                                                          data-placement="top"
                                                          title="{{ 'admin.common.copy'|trans }}">
                                                         <a href="#" class="btn btn-ec-actionIcon"

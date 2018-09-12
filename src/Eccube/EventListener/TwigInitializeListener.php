@@ -16,10 +16,14 @@ namespace Eccube\EventListener;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
+use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Member;
+use Eccube\Entity\Page;
+use Eccube\Entity\PageLayout;
 use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
@@ -27,10 +31,16 @@ use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 class TwigInitializeListener implements EventSubscriberInterface
 {
+    /**
+     * @var bool 初期化済かどうか.
+     */
+    protected $initialized = false;
+
     /**
      * @var Environment
      */
@@ -72,6 +82,16 @@ class TwigInitializeListener implements EventSubscriberInterface
     private $mobileDetector;
 
     /**
+     * @var UrlGeneratorInterface
+     */
+    private $router;
+
+    /**
+     * @var LayoutRepository
+     */
+    private $layoutRepository;
+
+    /**
      * TwigInitializeListener constructor.
      *
      * @param Environment $twig
@@ -82,6 +102,8 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @param EccubeConfig $eccubeConfig
      * @param Context $context
      * @param MobileDetector $mobileDetector
+     * @param UrlGeneratorInterface $router
+     * @param LayoutRepository $layoutRepository
      */
     public function __construct(
         Environment $twig,
@@ -91,7 +113,9 @@ class TwigInitializeListener implements EventSubscriberInterface
         AuthorityRoleRepository $authorityRoleRepository,
         EccubeConfig $eccubeConfig,
         Context $context,
-        MobileDetector $mobileDetector
+        MobileDetector $mobileDetector,
+        UrlGeneratorInterface $router,
+        LayoutRepository $layoutRepository
     ) {
         $this->twig = $twig;
         $this->baseInfoRepository = $baseInfoRepository;
@@ -101,6 +125,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->eccubeConfig = $eccubeConfig;
         $this->requestContext = $context;
         $this->mobileDetector = $mobileDetector;
+        $this->router = $router;
+        $this->layoutRepository = $layoutRepository;
     }
 
     /**
@@ -111,20 +137,19 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $globals = $this->twig->getGlobals();
-        if (array_key_exists('BaseInfo', $globals) && $globals['BaseInfo'] === null) {
-            $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
-        }
-
-        if (!$event->isMasterRequest()) {
+        if ($this->initialized) {
             return;
         }
+
+        $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
 
         if ($this->requestContext->isAdmin()) {
             $this->setAdminGlobals($event);
         } else {
-            $this->setFrontVaribales($event);
+            $this->setFrontVariables($event);
         }
+
+        $this->initialized = true;
     }
 
     /**
@@ -132,7 +157,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function setFrontVaribales(GetResponseEvent $event)
+    public function setFrontVariables(GetResponseEvent $event)
     {
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
         $attributes = $event->getRequest()->attributes;
@@ -146,20 +171,45 @@ class TwigInitializeListener implements EventSubscriberInterface
         if ($this->mobileDetector->isMobile()) {
             $type = DeviceType::DEVICE_TYPE_MB;
         }
-        $DeviceType = $this->deviceTypeRepository->find($type);
 
-        try {
-            $Page = $this->pageRepository->getByUrl($DeviceType, $route);
-        } catch (NoResultException $e) {
-            try {
-                log_info('fallback to PC layout');
-                $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
-                $Page = $this->pageRepository->getByUrl($DeviceType, $route);
-            } catch (NoResultException $e) {
-                $Page = $this->pageRepository->newPage($DeviceType);
+        // URLからPageを取得
+        /** @var Page $Page */
+        $Page = $this->pageRepository->findOneBy(['url' => $route]);
+
+        // 該当するPageがない場合は空のページをセット
+        if (!$Page) {
+            $Page = $this->pageRepository->newPage();
+        }
+
+        /** @var PageLayout[] $PageLayouts */
+        $PageLayouts = $Page->getPageLayouts();
+
+        // Pageに紐づくLayoutからDeviceTypeが一致するLayoutを探す
+        $Layout = null;
+        foreach ($PageLayouts as $PageLayout) {
+            if ($PageLayout->getDeviceTypeId() == $type) {
+                $Layout = $PageLayout->getLayout();
+                break;
             }
         }
 
+        // Pageに紐づくLayoutにDeviceTypeが一致するLayoutがない場合はPCのレイアウトを探す
+        if (!$Layout) {
+            log_info('fallback to PC layout');
+            foreach ($PageLayouts as $PageLayout) {
+                if ($PageLayout->getDeviceTypeId() == DeviceType::DEVICE_TYPE_PC) {
+                    $Layout = $PageLayout->getLayout();
+                    break;
+                }
+            }
+        }
+
+        // Layoutのデータがない場合は空のLayoutをセット
+        if (!$Layout) {
+            $Layout = new Layout();
+        }
+
+        $this->twig->addGlobal('Layout', $Layout);
         $this->twig->addGlobal('Page', $Page);
         $this->twig->addGlobal('title', $Page->getName());
     }
@@ -174,15 +224,53 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('menus', $menus);
 
         // メニューの権限制御.
+        $eccubeNav = $this->eccubeConfig['eccube_nav'];
+
         $Member = $this->requestContext->getCurrentUser();
-        $AuthorityRoles = [];
         if ($Member instanceof Member) {
-            $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $this->requestContext->getCurrentUser()->getAuthority()]);
+            $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $Member->getAuthority()]);
+            $baseUrl = $event->getRequest()->getBaseUrl().'/'.$this->eccubeConfig['eccube_admin_route'];
+            $eccubeNav = $this->getDisplayEccubeNav($eccubeNav, $AuthorityRoles, $baseUrl);
         }
-        $roles = array_map(function (AuthorityRole $AuthorityRole) use ($event) {
-            return $event->getRequest()->getBaseUrl().'/'.$this->eccubeConfig['eccube_admin_route'].$AuthorityRole->getDenyUrl();
-        }, $AuthorityRoles);
-        $this->twig->addGlobal('AuthorityRoles', $roles);
+        $this->twig->addGlobal('eccubeNav', $eccubeNav);
+    }
+
+    /**
+     * URLに対する権限有無チェックして表示するNavを返す
+     *
+     * @param array $parentNav
+     * @param AuthorityRole[] $AuthorityRoles
+     * @param string $baseUrl
+     *
+     * @return array
+     */
+    private function getDisplayEccubeNav($parentNav, $AuthorityRoles, $baseUrl)
+    {
+        foreach ($parentNav as $key => $childNav) {
+            if (array_key_exists('children', $childNav) && count($childNav['children']) > 0) {
+                // 子のメニューがある場合は子の権限チェック
+                $parentNav[$key]['children'] = $this->getDisplayEccubeNav($childNav['children'], $AuthorityRoles, $baseUrl);
+
+                if (count($parentNav[$key]['children']) <= 0) {
+                    // 子が存在しない場合は配列から削除
+                    unset($parentNav[$key]);
+                }
+            } elseif (array_key_exists('url', $childNav)) {
+                // 子のメニューがなく、URLが設定されている場合は権限があるURLか確認
+                $param = array_key_exists('param', $childNav) ? $childNav['param'] : [];
+                $url = $this->router->generate($childNav['url'], $param);
+                foreach ($AuthorityRoles as $AuthorityRole) {
+                    $denyUrl = str_replace('/', '\/', $baseUrl.$AuthorityRole->getDenyUrl());
+                    if (preg_match("/^({$denyUrl})/i", $url)) {
+                        // 権限がないURLの場合は配列から削除
+                        unset($parentNav[$key]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $parentNav;
     }
 
     /**

@@ -124,6 +124,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
                     $OrderItem
                     ->setProduct($ProductOrderItem->getProduct())
                     ->setProductName($ProductOrderItem->getProductName())
+                    ->setProductCode($ProductOrderItem->getProductCode())
                     ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
                     ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
                     ->setPrice($ProductOrderItem->getPrice())
@@ -184,14 +185,14 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="name01", type="string", length=255, nullable=true)
+         * @ORM\Column(name="name01", type="string", length=255)
          */
         private $name01;
 
         /**
          * @var string|null
          *
-         * @ORM\Column(name="name02", type="string", length=255, nullable=true)
+         * @ORM\Column(name="name02", type="string", length=255)
          */
         private $name02;
 
@@ -476,6 +477,8 @@ if (!class_exists('\Eccube\Entity\Order')) {
         private $DeviceType;
 
         /**
+         * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
+         *
          * @var \Eccube\Entity\Master\CustomerOrderStatus
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
@@ -484,6 +487,18 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * })
          */
         private $CustomerOrderStatus;
+
+        /**
+         * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
+         *
+         * @var \Eccube\Entity\Master\OrderStatusColor
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
+         * })
+         */
+        private $OrderStatusColor;
 
         /**
          * @var \Eccube\Entity\Master\OrderStatus
@@ -520,11 +535,29 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function __clone()
         {
+            $OriginOrderItems = $this->OrderItems;
             $OrderItems = new ArrayCollection();
             foreach ($this->OrderItems as $OrderItem) {
                 $OrderItems->add(clone $OrderItem);
             }
             $this->OrderItems = $OrderItems;
+
+//            // ShippingとOrderItemが循環参照するため, 手動でヒモ付を変更する.
+//            $Shippings = new ArrayCollection();
+//            foreach ($this->Shippings as $Shipping) {
+//                $CloneShipping = clone $Shipping;
+//                foreach ($OriginOrderItems as $OrderItem) {
+//                    //$CloneShipping->removeOrderItem($OrderItem);
+//                }
+//                foreach ($this->OrderItems as $OrderItem) {
+//                    if ($OrderItem->getShipping() && $OrderItem->getShipping()->getId() == $Shipping->getId()) {
+//                        $OrderItem->setShipping($CloneShipping);
+//                    }
+//                    $CloneShipping->addOrderItem($OrderItem);
+//                }
+//                $Shippings->add($CloneShipping);
+//            }
+//            $this->Shippings = $Shippings;
         }
 
         /**
@@ -1599,9 +1632,33 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
+         * Set orderStatusColor.
+         *
+         * @param \Eccube\Entity\Master\OrderStatusColor|null $orderStatusColor
+         *
+         * @return Order
+         */
+        public function setOrderStatusColor(\Eccube\Entity\Master\OrderStatusColor $orderStatusColor = null)
+        {
+            $this->OrderStatusColor = $orderStatusColor;
+
+            return $this;
+        }
+
+        /**
+         * Get orderStatusColor.
+         *
+         * @return \Eccube\Entity\Master\OrderStatusColor|null
+         */
+        public function getOrderStatusColor()
+        {
+            return $this->OrderStatusColor;
+        }
+
+        /**
          * Set orderStatus.
          *
-         * @param \Eccube\Entity\Master\OrderStatus|null $orderStatus
+         * @param \Eccube\Entity\Master\OrderStatus|null|object $orderStatus
          *
          * @return Order
          */

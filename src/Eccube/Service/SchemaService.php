@@ -45,7 +45,7 @@ class SchemaService
             $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
             $drivers = $chain->getDrivers();
             foreach ($drivers as $namespace => $oldDriver) {
-                if ('Eccube\Entity' === $namespace) {
+                if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
                     $newDriver = new ReloadSafeAnnotationDriver(
                         new AnnotationReader(),
                         $oldDriver->getPaths()

@@ -203,18 +203,15 @@ class MainEditType extends AbstractType
                 /** @var Page $Page */
                 $Page = $event->getData();
 
+                // urlの重複チェック
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(p)')
                     ->from('Eccube\\Entity\\Page', 'p')
                     ->where('p.url = :url')
-                    ->andWhere('p.DeviceType = :DeviceType')
-                    ->setParameter('url', $Page->getUrl())
-                    ->setParameter('DeviceType', $Page->getDeviceType());
+                    ->setParameter('url', $Page->getUrl());
 
-                if (null === $Page->getId()) {
-                    $qb
-                        ->andWhere('p.id IS NOT NULL');
-                } else {
+                // 更新の場合は自身のデータを重複チェックから除外する
+                if (!is_null($Page->getId())) {
                     $qb
                         ->andWhere('p.id <> :page_id')
                         ->setParameter('page_id', $Page->getId());
@@ -223,6 +220,27 @@ class MainEditType extends AbstractType
                 $count = $qb->getQuery()->getSingleScalarResult();
                 if ($count > 0) {
                     $form['url']->addError(new FormError(trans('admin.content.page_url_exists')));
+                }
+
+                // ファイルの重複チェック
+                $qb = $this->entityManager->createQueryBuilder();
+                $qb->select('count(p)')
+                    ->from('Eccube\\Entity\\Page', 'p')
+                    ->where('p.file_name = :file_name')
+                    ->andWhere('p.edit_type = :edit_type')
+                    ->setParameter('file_name', $Page->getFileName())
+                    ->setParameter('edit_type', $Page->getEditType());
+
+                // 更新の場合は自身のデータを重複チェックから除外する
+                if (!is_null($Page->getId())) {
+                    $qb
+                        ->andWhere('p.id <> :page_id')
+                        ->setParameter('page_id', $Page->getId());
+                }
+
+                $count = $qb->getQuery()->getSingleScalarResult();
+                if ($count > 0) {
+                    $form['file_name']->addError(new FormError(trans('admin.content.page_file_name_exists')));
                 }
             });
     }

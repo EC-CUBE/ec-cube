@@ -35,7 +35,7 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         /**
          * @var integer
          *
-         * @ORM\Column(name="id", type="bigint", options={"unsigned":true})
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
          * @ORM\Id
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
@@ -296,6 +296,14 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         public function addItem(ItemInterface $item)
         {
             $this->CartItems->add($item);
+        }
+
+        /**
+         * @param ItemInterface $item
+         */
+        public function removeItem(ItemInterface $item)
+        {
+            $this->CartItems->removeElement($item);
         }
 
         /**

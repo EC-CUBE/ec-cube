@@ -181,7 +181,7 @@ file that was distributed with this source code.
             <div id="ex-primaryCol" class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
-                        <div class="card rounded border-0 mb-2">
+                        <div class="card rounded border-0">
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
                                     <form role="form" name="form1" id="form1" method="post"
@@ -220,35 +220,41 @@ file that was distributed with this source code.
                                         {% endif %}
                                     </form>
                                 </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-auto"><strong>&nbsp;</strong></div>
+                                        <div class="col-auto"><strong>{{ 'admin.common.id'|trans }}</strong></div>
+                                        <div class="col-2"><strong>{{ 'admin.product.category'|trans }}</strong></div>
+                                    </div>
+                                </li>
                                 {% if Categories|length > 0 %}
                                     {% for Category in Categories %}
                                         <li id="ex-category-{{ Category.id }}" class="list-group-item sortable-item" data-id="{{ Category.id }}" data-sort-no="{{ Category.sort_no }}">
                                             {% if Category.id != TargetCategory.id %}
                                                 <div class="row justify-content-around mode-view">
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <i class="fa fa-bars text-ec-gray"></i>
-                                                    </div>
+                                                    <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
+                                                    <div class="col-auto d-flex align-items-center">{{ Category.id }}</div>
                                                     <div class="col d-flex align-items-center">
                                                         <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
                                                     </div>
                                                     <div class="col-auto text-right">
-                                                        <a class="btn btn-ec-actionIcon action-up mr-3 {% if loop.first %} disabled {% endif %}" href=""
-                                                           data-toggle="tooltip" data-placement="top"
+                                                        <a class="btn btn-ec-actionIcon action-up mr-2 {% if loop.first %} disabled {% endif %}" href=""
+                                                           data-tooltip="true" data-placement="top"
                                                            title="{{ 'admin.common.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon action-down mr-3 {% if loop.last %} disabled {% endif %}" href=""
-                                                           data-toggle="tooltip" data-placement="top"
+                                                        <a class="btn btn-ec-actionIcon action-down mr-2 {% if loop.last %} disabled {% endif %}" href=""
+                                                           data-tooltip="true" data-placement="top"
                                                            title="{{ 'admin.common.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon mr-3 action-edit"
+                                                        <a class="btn btn-ec-actionIcon mr-2 action-edit"
                                                            href="{{ url('admin_product_category_edit', {id: Category.id}) }}"
-                                                           data-toggle="tooltip" data-placement="top"
+                                                           data-tooltip="true" data-placement="top"
                                                            title="{{ 'admin.common.edit'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
-                                                        <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top"
+                                                        <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">
                                                             <a class="btn btn-ec-actionIcon{% if Category.Children|length > 0 or Category.hasProductCategories %} disabled{% endif %}"
                                                                data-toggle="modal" data-target="#DeleteModal"

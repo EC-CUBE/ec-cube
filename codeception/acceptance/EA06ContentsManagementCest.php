@@ -58,7 +58,7 @@ class EA06ContentsManagementCest
         $NewsListPage = NewsManagePage::at($I);
         $I->see('保存しました', NewsManagePage::$登録完了メッセージ);
 
-        $NewsListPage->一覧_編集(1);
+        $NewsListPage->一覧_編集(2);
 
         NewsEditPage::of($I)
             ->入力_タイトル('news_title2')
@@ -66,18 +66,16 @@ class EA06ContentsManagementCest
 
         $NewsListPage = NewsManagePage::at($I);
         $I->see('新着情報を保存しました。', NewsManagePage::$登録完了メッセージ);
-        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(1));
-
-        $NewsListPage->一覧_下へ(1);
         $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(2));
 
-        $NewsListPage->一覧_上へ(1);
-        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(1));
+        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(2));
 
-        $NewsListPage->一覧_削除(1);
-        $I->acceptPopup();
+        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(2));
 
-        $I->assertNotEquals('news_title2', $NewsListPage->一覧_タイトル(1));
+        $NewsListPage->一覧_削除(2);
+        $NewsListPage->ポップアップを受け入れます(2);
+
+        $I->assertNotEquals('news_title2', $NewsListPage->一覧_タイトル(2));
     }
 
     /**
@@ -168,14 +166,14 @@ class EA06ContentsManagementCest
 
         $I->see('保存しました', LayoutEditPage::$登録完了メッセージ);
         $I->amOnPage('/user_data/'.$page);
-        $I->see('新着情報', '.ec-news');
+        $I->see('新着情報', '.ec-newsRole');
 
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
         LayoutEditPage::at($I)
-            ->ブロックを移動('カゴの中', '#position_2')
+            ->ブロックを移動('カート', '#position_2')
             ->登録();
         LayoutEditPage::at($I)
-            ->ブロックを移動('ログインナビ', '#position_2')
+            ->ブロックを移動('ログインナビ(共通)', '#position_2')
             ->登録();
         LayoutEditPage::at($I)
             ->ブロックを移動('商品検索', '#position_2')
@@ -215,7 +213,7 @@ class EA06ContentsManagementCest
         LayoutManagePage::go($I)->レイアウト編集($layoutName);
         $items = $I->grabMultiple(LayoutEditPage::$未使用ブロックアイテム);
         LayoutEditPage::at($I)
-            ->検索ブロック名('ギャラリー');
+            ->検索ブロック名('トピック');
 
         $I->seeNumberOfElements(LayoutEditPage::$未使用ブロックアイテム, 1);
 

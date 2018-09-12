@@ -24,6 +24,7 @@ use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
+use Eccube\Repository\Master\ProductListMaxRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -68,6 +69,11 @@ class ProductController extends AbstractController
      */
     protected $helper;
 
+    /**
+     * @var ProductListMaxRepository
+     */
+    protected $productListMaxRepository;
+
     private $title = '';
 
     /**
@@ -79,6 +85,7 @@ class ProductController extends AbstractController
      * @param ProductRepository $productRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param AuthenticationUtils $helper
+     * @param ProductListMaxRepository $productListMaxRepository
      */
     public function __construct(
         PurchaseFlow $cartPurchaseFlow,
@@ -86,7 +93,8 @@ class ProductController extends AbstractController
         CartService $cartService,
         ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
-        AuthenticationUtils $helper
+        AuthenticationUtils $helper,
+        ProductListMaxRepository $productListMaxRepository
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
@@ -94,6 +102,7 @@ class ProductController extends AbstractController
         $this->productRepository = $productRepository;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->helper = $helper;
+        $this->productListMaxRepository = $productListMaxRepository;
     }
 
     /**
@@ -105,9 +114,9 @@ class ProductController extends AbstractController
     public function index(Request $request, Paginator $paginator)
     {
         // Doctrine SQLFilter
-        // if ($this->BaseInfo->isOptionNostockHidden()) {
-        //     $this->entityManager->getFilters()->enable('option_nostock_hidden');
-        // }
+        if ($this->BaseInfo->isOptionNostockHidden()) {
+            $this->entityManager->getFilters()->enable('option_nostock_hidden');
+        }
 
         // handleRequestは空のqueryの場合は無視するため
         if ($request->getMethod() === 'GET') {
@@ -117,8 +126,7 @@ class ProductController extends AbstractController
         // searchForm
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $this->formFactory->createNamedBuilder('', SearchProductType::class);
-        $builder->setAttribute('freeze', true);
-        $builder->setAttribute('freeze_display_text', false);
+
         if ($request->getMethod() === 'GET') {
             $builder->setMethod('GET');
         }
@@ -153,7 +161,7 @@ class ProductController extends AbstractController
         $pagination = $paginator->paginate(
             $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
-            $searchData['disp_number']->getId()
+            !empty($searchData['disp_number']) ? $searchData['disp_number']->getId() : $this->productListMaxRepository->findOneBy([], ['sort_no' => 'ASC'])->getId()
         );
 
         // addCart form

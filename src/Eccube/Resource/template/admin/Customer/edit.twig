@@ -49,8 +49,8 @@ file that was distributed with this source code.
                                 {% if Customer.id %}
                                     <div class="row mb-2">
                                         <div class="col-3">
-                                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                                 title="Tooltip">
+                                            <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                                 title="{{ 'tooltip.customer.customer_id'|trans }}">
                                                 <span>{{ 'admin.customer.customer_id'|trans }}</span>
                                                 <i class="fa fa-question-circle fa-lg ml-1"></i>
                                             </div>
@@ -73,8 +73,14 @@ file that was distributed with this source code.
                                             <div class="col">
                                                 {{ form_widget(form.name.name02) }}
                                             </div>
-                                            {{ form_errors(form.name.name01) }}
-                                            {{ form_errors(form.name.name02) }}
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_errors(form.name.name01) }}
+                                            </div>
+                                            <div class="col">
+                                                {{ form_errors(form.name.name02) }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -91,8 +97,14 @@ file that was distributed with this source code.
                                             <div class="col">
                                                 {{ form_widget(form.kana.kana02) }}
                                             </div>
-                                            {{ form_errors(form.kana.kana01) }}
-                                            {{ form_errors(form.kana.kana02) }}
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_errors(form.kana.kana01) }}
+                                            </div>
+                                            <div class="col">
+                                                {{ form_errors(form.kana.kana02) }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -115,16 +127,20 @@ file that was distributed with this source code.
                                                 <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.common.postal_symbol'|trans }}</span></div>
                                                 <div class="col-2">
                                                     {{ form_widget(form.postal_code) }}
-                                                </div>
 
-                                                {{ form_errors(form.postal_code) }}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    {{ form_errors(form.postal_code) }}
+                                                </div>
                                             </div>
                                         </div>
-
                                         <div class="mb-3">
                                             <div class="row justify-content-start">
                                                 <div class="col-auto">
                                                     {{ form_widget(form.address.pref) }}
+                                                    {{ form_errors(form.address.pref) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -242,8 +258,8 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                             title="Tooltip">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                             title="{{ 'tooltip.customer.customer_address'|trans }}">
                                         <span class="card-title">
                                             {{ 'admin.customer.customer_address'|trans }}
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
@@ -266,6 +282,7 @@ file that was distributed with this source code.
                                             <th class="align-middle pt-2 pb-2">{{ 'admin.common.name'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2">{{ 'admin.common.address'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.common.phone_number'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pr-3"></th>
                                             </thead>
                                             <tbody>
                                             {% for CustomerAddress in Customer.CustomerAddresses %}
@@ -280,6 +297,40 @@ file that was distributed with this source code.
                                                     </td>
                                                     <td class="align-middle">
                                                         {{ CustomerAddress.phone_number }}
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-center" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal"
+                                                               data-target="#discontinuance-{{ CustomerAddress.id }}">
+                                                                <i class="fa fa-close text-secondary"
+                                                                   aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="modal fade" id="discontinuance-{{ CustomerAddress.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title font-weight-bold">
+                                                                            {{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body text-left">
+                                                                        <p class="text-left">
+                                                                            {{ 'admin.common.delete_modal__message'|trans({ '%name%' : 'admin.common.postal_symbol'|trans ~ CustomerAddress.postal_code ~ CustomerAddress.Pref ~ ' ' ~ CustomerAddress.name01 ~ CustomerAddress.name02 }) }}</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                                            {{ 'admin.common.cancel'|trans }}
+                                                                        </button>
+                                                                        <a href="{{ url('admin_customer_delivery_delete', {'id' : Customer.id, 'did':  CustomerAddress.id}) }}" class="btn btn-ec-delete"{{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
+                                                                            {{ 'admin.common.delete'|trans }}
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -320,8 +371,8 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                             title="Tooltip">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                             title="{{ 'tooltip.customer.purchase_history'|trans }}">
                                         <span class="card-title">
                                             {{ 'admin.customer.purchase_history'|trans }}
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
@@ -341,8 +392,6 @@ file that was distributed with this source code.
                                     {# TODO IN_PROGRESS と RETURNED の色を決める #}
                                     {% set cssClassStatus = {
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::BACK_ORDER')): "badge-ec-red",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::CANCEL')): "badge-ec-glay",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
@@ -394,8 +443,8 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                         title="Tooltip">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                         title="{{ 'tooltip.customer.shop_memo'|trans }}">
                                         <span class="card-title">{{ 'admin.common.shop_memo'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
