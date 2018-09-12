@@ -5199,7 +5199,7 @@ Styleguide 11.3
 */
 .ec-footerRole {
   border-top: 1px solid #7d7d7d;
-  margin-top: 100px;
+  margin-top: 30px;
   background: black; }
 
 /*
@@ -5854,6 +5854,8 @@ Styleguide 12.8.1
       border-bottom: 1px solid #ccc; }
     .ec-newsRole .ec-newsRole__newsItem:last-of-type {
       margin-bottom: 20px; }
+  .ec-newsRole .ec-newsRole__newsHeading {
+    cursor: pointer; }
   .ec-newsRole .ec-newsRole__newsDate {
     display: block;
     margin: 15px 0 5px;
@@ -5866,10 +5868,10 @@ Styleguide 12.8.1
     display: inline-block;
     margin-bottom: 10px;
     width: 90%;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     color: #7D7D7D;
-    line-height: 1.2; }
+    line-height: 1.6; }
   .ec-newsRole .ec-newsRole__newsClose {
     display: inline-block;
     width: 10%;
@@ -5887,17 +5889,15 @@ Styleguide 12.8.1
     position: absolute;
     right: 5px; }
   .ec-newsRole .ec-newsRole__newsDescription {
-    max-height: 0;
-    font-size: 12px;
-    line-height: 1.2;
-    overflow: hidden;
-    transition: all .8s linear; }
+    display: none;
+    margin: 0 0 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow: hidden; }
     .ec-newsRole .ec-newsRole__newsDescription a {
       color: #0092C4; }
   .ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription {
-    margin: 0 0 10px;
-    max-height: 100vh;
-    transition: all .8s linear; }
+    margin: 0 0 10px; }
   .ec-newsRole__newsItem.is_active .ec-newsRole__newsCloseBtn i {
     display: inline-block;
     transform: rotateX(180deg) translateY(2px); }
@@ -8398,6 +8398,7 @@ Styleguide 22.1
 
   .ec-footerRole{
     padding-top: 40px;
+    margin-top: 100px;
   }
 
   .ec-footerRole .ec-footerRole__inner{
@@ -8582,11 +8583,11 @@ Styleguide 22.1
 
   .ec-newsRole .ec-newsRole__news{
     border: 16px solid #F8F8F8;
-    padding: 20px 30px 30px;
+    padding: 20px 30px;
   }
 
   .ec-newsRole .ec-newsRole__newsItem:last-of-type{
-    margin-bottom: 10px;
+    margin-bottom: 0;
   }
 
   .ec-newsRole .ec-newsRole__newsItem{
@@ -8613,17 +8614,16 @@ Styleguide 22.1
 
   .ec-newsRole .ec-newsRole__newsTitle{
     margin-bottom: 0;
-    font-size: 14px;
     line-height: 1.8;
   }
 
   .ec-newsRole .ec-newsRole__newsDescription{
-    font-size: 14px;
+    margin: 20px 0 0;
     line-height: 1.8;
   }
 
   .ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription{
-    margin: 20px 0;
+    margin: 20px 0 0;
   }
 
   .ec-searchnavRole{
