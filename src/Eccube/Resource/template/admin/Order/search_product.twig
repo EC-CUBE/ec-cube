@@ -90,7 +90,7 @@ file that was distributed with this source code.
         index++;
         var newForm = prototype.replace(/__name__/g, index);
         $collectionHolder.children('tbody').append(newForm);
-        var $lastRow = $collectionHolder.children('tbody').children('tr').last;
+        var $lastRow = $collectionHolder.children('tbody').children('tr').last();
 
         $($lastRow).find(formIdPrefix + index + '_ProductClass').val(product_class_id);
         $($lastRow).find(formIdPrefix + index + '_price').val(price);
