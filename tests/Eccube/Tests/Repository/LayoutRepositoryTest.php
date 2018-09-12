@@ -13,18 +13,49 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Layout;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\LayoutRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Tests\EccubeTestCase;
 
+/**
+ * LayoutRepository test cases.
+ */
 class LayoutRepositoryTest extends EccubeTestCase
 {
-    /** @var LayoutRepository */
+    /**
+     * @var  DeviceType
+     */
+    protected $DeviceType;
+
+    /**
+     * @var  string
+     */
+    private $layout_id;
+
+    /**
+     * @var  LayoutRepository
+     */
     protected $layoutRepository;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
         $this->layoutRepository = $this->container->get(LayoutRepository::class);
+        $this->DeviceType = $this->container->get(DeviceTypeRepository::class)
+            ->find(DeviceType::DEVICE_TYPE_PC);
+
+        $Layout = new Layout();
+        $Layout
+            ->setName('テスト用レイアウト')
+            ->setDeviceType($this->DeviceType);
+        $this->entityManager->persist($Layout);
+        $this->entityManager->flush(); // ここで flush しないと, MySQL で ID が取得できない
+        $this->layout_id = $Layout->getId();
     }
 
     public function testGet()

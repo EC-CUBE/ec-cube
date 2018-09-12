@@ -191,12 +191,11 @@ class EA06ContentsManagementCest
                 ['xpath' => "//*[@id='block-source-code']//div[contains(text(), 'file that was distributed with this source code.')]"]
             );
 
-        $I->getScenario()->incomplete('未実装：プレビューは未実装');
-
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
-        // LayoutEditPage::at($I)
-        //     ->ブロックを移動('新着情報', '#position_0')
-        //     ->プレビュー();
+        LayoutEditPage::at($I)
+            ->ブロックを移動('カゴの中', '#position_0')
+            ->選択_プレビューページ('商品一覧')
+            ->プレビュー();
 
         $I->switchToNewWindow();
 

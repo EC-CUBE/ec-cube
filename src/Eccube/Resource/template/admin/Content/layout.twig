@@ -180,6 +180,22 @@ file that was distributed with this source code.
             });
         };
 
+        // プレビューボタンクリック時
+        {% if Layout.id -%}
+        $('#preview-button').on('click', function(){
+            var page_id = $('#{{ form.Page.vars.id }}').val();
+            if (!page_id) {
+                alert("{{ 'admin.content.layout_preview_select_page'|trans }}");
+                return false;
+            }
+
+                $('#form1').attr('action', "{{ url('admin_content_layout_preview', {id: Layout.id}) }}");
+            $('#form1').attr('target', '_blank');
+            $('#form1').submit();
+            return false;
+        });
+        {% endif %}
+
         // searchWordの実行
         $('#search-block').on('input', searchWord);
     </script>
@@ -418,6 +434,20 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <div class="col-3 p-2">
+                                        {% if Layout.id and form.Page.vars.choices|length > 0 -%}
+                                        <div id="preview-block" class="d-block border border-ec-gray">
+                                            <div class="card-body">
+                                                <div class="d-block text-center">
+                                                    {{ form_widget(form.Page) }}
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="d-block text-center">
+                                                    <button id="preview-button" class="btn btn-block btn-ec-regular">{{ 'admin.content.layout_preview'|trans }}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
                                         <div id="unused-block" class="d-block border border-ec-gray">
                                             {% set unused_target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_UNUSED') %}
                                             <div id="position_{{ unused_target_id }}" class="d-block p-3 ui-sortable">
