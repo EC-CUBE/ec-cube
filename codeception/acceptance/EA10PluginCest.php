@@ -529,6 +529,8 @@ class Horizon_Local extends Abstract_Plugin
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
 
+        $this->enabled = false;
+
         return $this;
     }
 
