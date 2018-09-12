@@ -147,7 +147,7 @@ class LayoutController extends AbstractController
      * @Route("/%eccube_admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit")
      * @Template("@admin/Content/layout.twig")
      */
-    public function edit(Request $request, $id = null, $origId = null)
+    public function edit(Request $request, $id = null, $previewPageId = null)
     {
         if (is_null($id)) {
             $Layout = new Layout();
@@ -194,7 +194,7 @@ class LayoutController extends AbstractController
             if ($this->isPreview) {
                 // プレビューする画面を取得
                 try {
-                    $Page = $this->pageRepository->find($origId);
+                    $Page = $this->pageRepository->find($previewPageId);
                 } catch (NoResultException $e) {
                     throw new NotFoundHttpException();
                 }
