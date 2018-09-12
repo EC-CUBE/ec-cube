@@ -118,3 +118,4 @@ parameters:
     # {random_alnum,桁数} : ランダムな半角英数大文字を桁数分作成
     eccube_order_no_format: ''
     eccube_order_pdf_message_len: 30
+    eccube_news_start_year: 2000
