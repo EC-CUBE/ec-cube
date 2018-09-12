@@ -907,21 +907,26 @@ class InstallController extends AbstractController
      */
     protected function sendAppData($params, EntityManager $em)
     {
-        $query = http_build_query($this->createAppData($params, $em));
-        $header = [
-            'Content-Type: application/x-www-form-urlencoded',
-            'Content-Length: '.strlen($query),
-        ];
-        $context = stream_context_create(
-            [
-                'http' => [
-                    'method' => 'POST',
-                    'header' => $header,
-                    'content' => $query,
-                ],
-            ]
-        );
-        file_get_contents('http://www.ec-cube.net/mall/use_site.php', false, $context);
+        try {
+            $query = http_build_query($this->createAppData($params, $em));
+            $header = [
+                'Content-Type: application/x-www-form-urlencoded',
+                'Content-Length: '.strlen($query),
+            ];
+            $context = stream_context_create(
+                [
+                    'http' => [
+                        'method' => 'POST',
+                        'header' => $header,
+                        'content' => $query,
+                    ],
+                ]
+            );
+            file_get_contents('http://www.ec-cube.net/mall/use_site.php', false, $context);
+        } catch (\Exception $e) {
+            // 送信に失敗してもインストールは継続できるようにする
+            log_error($e->getMessage());
+        }
 
         return $this;
     }
