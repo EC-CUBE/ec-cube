@@ -60,7 +60,7 @@ class BlockPositionRepository extends AbstractRepository
                 continue;
             }
             // 未使用ブロックはinsertしない
-            if ($data['section_'.$i] == \Eccube\Entity\Page::TARGET_ID_UNUSED) {
+            if ($data['section_'.$i] == \Eccube\Entity\Layout::TARGET_ID_UNUSED) {
                 continue;
             }
             $Block = $this->blockRepository->find($data['block_id_'.$i]);

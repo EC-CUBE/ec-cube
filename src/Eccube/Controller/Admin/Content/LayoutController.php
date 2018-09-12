@@ -34,7 +34,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment as Twig;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-// todo プレビュー実装
 class LayoutController extends AbstractController
 {
     const DUMMY_BLOCK_ID = 9999999999;
@@ -153,9 +152,8 @@ class LayoutController extends AbstractController
         if (is_null($id)) {
             $Layout = new Layout();
         } else {
-            try {
-                $Layout = $this->layoutRepository->get($this->isPreview ? 0 : $id);
-            } catch (NoResultException $e) {
+            $Layout = $this->layoutRepository->get($this->isPreview ? 0 : $id);
+            if (is_null($Layout)) {
                 throw new NotFoundHttpException();
             }
         }
@@ -215,36 +213,12 @@ class LayoutController extends AbstractController
                 }
 
                 return $this->redirectToRoute('user_data', ['route' => $Page->getUrl(), 'preview' => 1]);
-            } else {
-                // ブロックの個数分登録を行う.
-                $max = count($Blocks) + count($UnusedBlocks);
-                for ($i = 0; $i < $max; $i++) {
-                    // block_idが取得できない場合はinsertしない
-                    if (!isset($data['block_id_'.$i])) {
-                        continue;
-                    }
-                    // 未使用ブロックはinsertしない
-                    if ($data['section_'.$i] == Layout::TARGET_ID_UNUSED) {
-                        continue;
-                    }
-                    $Block = $this->blockRepository->find($data['block_id_'.$i]);
-                    $BlockPosition = new BlockPosition();
-                    $BlockPosition
-                      ->setBlockId($data['block_id_'.$i])
-                      ->setLayoutId($Layout->getId())
-                      ->setBlockRow($data['block_row_'.$i])
-                      ->setSection($data['section_'.$i])
-                      ->setBlock($Block)
-                      ->setLayout($Layout);
-                    $Layout->addBlockPosition($BlockPosition);
-                    $this->entityManager->persist($BlockPosition);
-                    $this->entityManager->flush($BlockPosition);
-                }
-
-                $this->addSuccess('admin.common.save_complete', 'admin');
-
-                return $this->redirectToRoute('admin_content_layout_edit', ['id' => $Layout->getId()]);
             }
+
+            $this->addSuccess('admin.common.save_complete', 'admin');
+
+            return $this->redirectToRoute('admin_content_layout_edit', ['id' => $Layout->getId()]);
+
         }
 
         return [

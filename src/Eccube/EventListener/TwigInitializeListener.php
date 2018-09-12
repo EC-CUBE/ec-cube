@@ -223,8 +223,8 @@ class TwigInitializeListener implements EventSubscriberInterface
             }
         }
 
+        // 管理者ログインしている場合にページレイアウトのプレビューが可能
         if ($request->get('preview')) {
-            // 管理者ログインしている場合にページレイアウトのプレビューが可能
             $is_admin = $request->getSession()->has('_security_admin');
             if ($is_admin) {
                 $Page->getPageLayouts()->clear();
@@ -233,10 +233,10 @@ class TwigInitializeListener implements EventSubscriberInterface
                     $Page->addPageLayout($PageLayout);
                 }
 
-                $Page->getBlockPositions()->clear();
+                $Layout->getBlockPositions()->clear();
                 $BlockPositions = $this->blockPositionRepository->findBy(['layout_id' => 0]);
                 foreach ($BlockPositions as $BlockPosition) {
-                    $Page->addBlockPosition($BlockPosition);
+                    $Layout->addBlockPosition($BlockPosition);
                 }
             }
         }

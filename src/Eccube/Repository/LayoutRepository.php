@@ -43,7 +43,7 @@ class LayoutRepository extends AbstractRepository
                 ->getQuery()
                 ->getSingleResult();
         } catch (NoResultException $e) {
-            return $e;
+            return null;
         }
 
         return $Layout;
