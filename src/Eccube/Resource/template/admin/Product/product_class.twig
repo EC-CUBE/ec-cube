@@ -226,7 +226,6 @@ file that was distributed with this source code.
                                value="{{ form.class_name1.vars.value }}">
                         <input type="hidden" name="{{ form.class_name2.vars.full_name }}"
                                value="{{ form.class_name2.vars.value }}">
-
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row justify-content-between">
@@ -238,8 +237,10 @@ file that was distributed with this source code.
                                         {{ form_errors(form.product_classes) }}
                                     </div>
                                     <div class="col-4 text-right">
-                                        <button id="copy" class="btn btn-ec-regular"><i
-                                                    class="fa fa-files-o mr-1"></i><span>{{ 'admin.product.copy_first_line'|trans }}</span></button>
+                                        <button type="button" id="copy" class="btn btn-ec-regular">
+                                            <i class="fa fa-files-o mr-1"></i>
+                                            <span>{{ 'admin.product.copy_first_line'|trans }}</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -365,13 +366,15 @@ file that was distributed with this source code.
                                     <div class="col-6">
                                         <div class="c-conversionArea__leftBlockItem">
                                             {% if return_product %}
-                                                <a class="c-beseLink" href="{{ url(return_product, {'id': Product.id}) }}"><i
-                                                            class="fa fa-backward"
-                                                            aria-hidden="true"></i><span>{{ 'admin.product.product_registration'|trans }}</span></a>
+                                                <a class="c-beseLink" href="{{ url(return_product, {'id': Product.id}) }}">
+                                                    <i class="fa fa-backward" aria-hidden="true"></i>
+                                                    <span>{{ 'admin.product.product_registration'|trans }}</span>
+                                                </a>
                                             {% else %}
-                                                <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}"><i
-                                                            class="fa fa-backward"
-                                                            aria-hidden="true"></i><span>{{ 'admin.product.product_list'|trans }}</span></a>
+                                                <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}">
+                                                    <i class="fa fa-backward" aria-hidden="true"></i>
+                                                    <span>{{ 'admin.product.product_list'|trans }}</span>
+                                                </a>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -396,13 +399,15 @@ file that was distributed with this source code.
                                 <div class="col-6">
                                     <div class="c-conversionArea__leftBlockItem">
                                         {% if return_product %}
-                                            <a class="c-beseLink" href="{{ url(return_product, {'id': Product.id}) }}"><i
-                                                        class="fa fa-backward"
-                                                        aria-hidden="true"></i><span>{{ 'admin.product.product_registration'|trans }}</span></a>
+                                            <a class="c-beseLink" href="{{ url(return_product, {'id': Product.id}) }}">
+                                                <i class="fa fa-backward" aria-hidden="true"></i>
+                                                <span>{{ 'admin.product.product_registration'|trans }}</span>
+                                            </a>
                                         {% else %}
-                                            <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}"><i
-                                                        class="fa fa-backward"
-                                                        aria-hidden="true"></i><span>{{ 'admin.product.product_list'|trans }}</span></a>
+                                            <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}">
+                                                <i class="fa fa-backward" aria-hidden="true"></i>
+                                                <span>{{ 'admin.product.product_list'|trans }}</span>
+                                            </a>
                                         {% endif %}
                                     </div>
                                 </div>

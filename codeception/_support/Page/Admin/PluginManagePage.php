@@ -36,7 +36,9 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
      */
     public function ストアプラグイン_有効化($pluginCode)
     {
-        return $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
+        $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
+        $this->tester->see('有効にしました。', self::完了メーッセージ);
+        return $this;
     }
 
     /**
@@ -46,7 +48,9 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
      */
     public function ストアプラグイン_無効化($pluginCode)
     {
-        return $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
+        $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
+        $this->tester->see('無効にしました。', self::完了メーッセージ);
+        return $this;
     }
 
     /**
@@ -67,22 +71,41 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    /**
+     * @param $pluginCode
+     * @return PluginStoreUpgradePage
+     */
+    public function ストアプラグイン_アップデート($pluginCode)
+    {
+        $this->tester->click(['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[5]/a']);
+        return PluginStoreUpgradePage::at($this->tester);
+    }
+
     private function ストアプラグイン_ボタンクリック($pluginCode, $label)
     {
-        $xpath = ['xpath' => '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "オーナーズストアのプラグイン")]/../..//table/tbody//td[3]/p[contains(text(), "'.$pluginCode.'")]/../../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
+        $xpath = ['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
         $this->tester->click($xpath);
 
         return $this;
     }
 
+    private function ストアプラグイン_セレクタ($pluginCode)
+    {
+        return '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "オーナーズストアのプラグイン")]/../..//table/tbody//td[3]/p[contains(text(), "'.$pluginCode.'")]';
+    }
+
     public function 独自プラグイン_有効化($pluginCode)
     {
-        return $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
+        $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
+        $this->tester->see('有効にしました。', self::完了メーッセージ);
+        return $this;
     }
 
     public function 独自プラグイン_無効化($pluginCode)
     {
-        return $this->独自プラグイン_ボタンクリック($pluginCode, '無効化');
+        $this->独自プラグイン_ボタンクリック($pluginCode, '無効化');
+        $this->tester->see('無効にしました。', self::完了メーッセージ);
+        return $this;
     }
 
     public function 独自プラグイン_削除($pluginCode)
@@ -94,11 +117,24 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 独自プラグイン_アップデート($pluginCode, $fileName)
+    {
+        $this->tester->attachFile(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//input[@type="file"]'], $fileName);
+        $this->tester->click(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//button']);
+        $this->tester->see('アップデートしました。', self::完了メーッセージ);
+        return $this;
+    }
+
     private function 独自プラグイン_ボタンクリック($pluginCode, $label)
     {
-        $xpath = ['xpath' => '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "ユーザー独自プラグイン")]/../..//table/tbody//td[3][contains(text(), "'.$pluginCode.'")]/../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
+        $xpath = ['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
         $this->tester->click($xpath);
 
         return $this;
+    }
+
+    private function 独自プラグイン_セレクタ($pluginCode)
+    {
+        return '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "ユーザー独自プラグイン")]/../..//table/tbody//td[3][contains(text(), "'.$pluginCode.'")]/';
     }
 }
