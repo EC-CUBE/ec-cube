@@ -1244,6 +1244,7 @@ admin.store.plugin.install.failed: プラグインのインストールに失敗
 admin.store.plugin.enable.complete: 「%plugin_name%」を有効にしました。
 admin.store.plugin.already.enabled: 「%plugin_name%」は既に有効です。
 admin.store.plugin.disable.complete: 「%plugin_name%」を無効にしました。
+admin.store.plugin.already.disabled: 「%plugin_name%」は既に無効です。
 admin.store.plugin.uninstall.complete: プラグインを削除しました。
 admin.store.plugin.update.complete: 「%plugin_name%」をアップデートしました。
 admin.store.plugin.update.failed: 「%plugin_name%」のアップデートに失敗しました。

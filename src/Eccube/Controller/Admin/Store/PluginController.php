@@ -359,7 +359,7 @@ class PluginController extends AbstractController
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => true, 'log' => $log]);
             } else {
-                $this->addError('admin.plugin.already.disable', 'admin');
+                $this->addError(trans('admin.store.plugin.already.disabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
 
                 return $this->redirectToRoute('admin_store_plugin');
             }

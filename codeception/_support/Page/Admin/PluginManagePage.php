@@ -45,12 +45,13 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     /**
      * @param $pluginCode
      *
+     * @param string $message
      * @return PluginManagePage
      */
-    public function ストアプラグイン_無効化($pluginCode)
+    public function ストアプラグイン_無効化($pluginCode, $message = '無効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
-        $this->tester->see('無効にしました。', self::完了メーッセージ);
+        $this->tester->see($message, self::完了メーッセージ);
         return $this;
     }
 

@@ -46,16 +46,6 @@ class EA10PluginCest
         FileSystem::doEmptyDir('repos');
     }
 
-    public function install_enable_enable(\AcceptanceTester $I)
-    {
-        Horizon_Store::start($I)
-            ->インストール()
-            ->新しいタブで開く()
-            ->有効化()
-            ->前のタブに戻る()
-            ->既に有効なものを有効化();
-    }
-
     public function install_enable_disable_enable_disable_remove_store(\AcceptanceTester $I)
     {
         Horizon_Store::start($I)
@@ -172,6 +162,27 @@ class EA10PluginCest
             ->有効化()
             ->無効化()
             ->削除();
+    }
+
+    public function install_enable_enable(\AcceptanceTester $I)
+    {
+        Horizon_Store::start($I)
+            ->インストール()
+            ->新しいタブで開く()
+            ->有効化()
+            ->前のタブに戻る()
+            ->既に有効なものを有効化();
+    }
+
+    public function install_disable_disable(\AcceptanceTester $I)
+    {
+        Horizon_Store::start($I)
+            ->インストール()
+            ->有効化()
+            ->新しいタブで開く()
+            ->無効化()
+            ->前のタブに戻る()
+            ->既に無効なものを無効化();
     }
 
     public function install_assets_local(\AcceptanceTester $I)
@@ -390,6 +401,20 @@ class Horizon_Store extends Abstract_Plugin
     public function 無効化()
     {
         $this->ManagePage->ストアプラグイン_無効化('Horizon');
+
+        $this->I->assertTrue($this->tableExists('dtb_dash'), 'テーブルがある');
+        $this->I->assertTrue($this->columnExists('dtb_cart', 'is_horizon'), 'カラムがある');
+
+        $this->em->refresh($this->Plugin);
+        $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
+        $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
+
+        return $this;
+    }
+
+    public function 既に無効なものを無効化()
+    {
+        $this->ManagePage->ストアプラグイン_無効化('Horizon', '「ホライゾン」は既に無効です。');
 
         $this->I->assertTrue($this->tableExists('dtb_dash'), 'テーブルがある');
         $this->I->assertTrue($this->columnExists('dtb_cart', 'is_horizon'), 'カラムがある');
