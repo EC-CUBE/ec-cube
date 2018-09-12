@@ -440,13 +440,11 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="col-3 p-2">
                                         {% if Layout.id and form.Page.vars.choices|length > 0 -%}
-                                        <div id="preview-block" class="d-block border border-ec-gray">
+                                        <div id="preview-block" class="d-block border border-ec-gray mb-4">
                                             <div class="card-body">
-                                                <div class="d-block text-center">
+                                                <div class="d-block text-center mb-3">
                                                     {{ form_widget(form.Page) }}
                                                 </div>
-                                            </div>
-                                            <div class="card-body">
                                                 <div class="d-block text-center">
                                                     <a id="preview-button" class="btn btn-block btn-ec-regular">{{ 'admin.content.layout_preview'|trans }}</a>
                                                 </div>
