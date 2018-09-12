@@ -148,13 +148,6 @@ file that was distributed with this source code.
                                     <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
                                 </p>
                                 <p>{{ Product.name }}</p>
-                                {% if Product.Tags %}
-                                    <ul class="ec-productRole ec-productRole__tags">
-                                        {% for Tag in Product.Tags %}
-                                            <li class="ec-productRole__tag tag_{{ Tag.id }}">{{ Tag }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
                                 {% if Product.description_list %}
                                     <p>{{ Product.description_list|raw|nl2br }}</p>
                                 {% endif %}
