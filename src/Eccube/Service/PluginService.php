@@ -177,11 +177,10 @@ class PluginService
             //FIXME: how to working with ComposerProcessService or ComposerApiService ?
 //                $this->composerService->execRequire($package);
 //            }
-
+            // リソースファイルをコピー
+            $this->copyAssets($config['code']);
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $source);
-            // リソースファイルをコピー
-            $this->copyAssets($pluginBaseDir, $config['code']);
         } catch (PluginException $e) {
             $this->deleteDirs([$tmp, $pluginBaseDir]);
             throw $e;
@@ -223,6 +222,7 @@ class PluginService
         }
 
         $this->checkSamePlugin($config['code']);
+        $this->copyAssets($config['code']);
         $this->postInstall($config, $config['source']);
     }
 
@@ -681,6 +681,7 @@ class PluginService
                 $this->composerService->execRequire($package);
             }
 
+            $this->copyAssets($plugin->getCode());
             $this->updatePlugin($plugin, $config); // dbにプラグイン登録
         } catch (PluginException $e) {
             $this->deleteDirs([$tmp]);
@@ -712,6 +713,7 @@ class PluginService
 
             $em->persist($plugin);
             $this->callPluginManagerMethod($meta, 'update');
+            $this->copyAssets($plugin->getCode());
             $em->flush();
             $em->getConnection()->commit();
         } catch (\Exception $e) {
@@ -868,12 +870,11 @@ class PluginService
      * [プラグインコード]/Resource/assets
      * 配下に置かれているファイルが所定の位置へコピーされる
      *
-     * @param string $pluginBaseDir
      * @param $pluginCode
      */
-    public function copyAssets($pluginBaseDir, $pluginCode)
+    public function copyAssets($pluginCode)
     {
-        $assetsDir = $pluginBaseDir.'/Resource/assets';
+        $assetsDir = $this->calcPluginDir($pluginCode).'/Resource/assets';
 
         // プラグインにリソースファイルがあれば所定の位置へコピー
         if (file_exists($assetsDir)) {
@@ -889,7 +890,7 @@ class PluginService
      */
     public function removeAssets($pluginCode)
     {
-        $assetsDir = $this->projectRoot.'/app/Plugin/'.$pluginCode;
+        $assetsDir = $this->eccubeConfig['plugin_html_realdir'].$pluginCode.'/assets';
 
         // コピーされているリソースファイルがあれば削除
         if (file_exists($assetsDir)) {

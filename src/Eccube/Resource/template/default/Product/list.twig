@@ -115,7 +115,7 @@ file that was distributed with this source code.
                             </li>
                         {% endfor %}
                     {% endif %}
-                    {% if search_form.vars.value.name %}
+                    {% if search_form.vars.value and search_form.vars.value.name %}
                         <li class="ec-topicpath__item">{{ 'front.product.search_result__keyword'|trans({ '%name%': search_form.vars.value.name }) }}</li>
                     {% endif %}
                 </ol>
