@@ -336,6 +336,8 @@ class Horizon_Store extends Abstract_Plugin
 
     private $initialized = false;
 
+    private $enabled = false;
+
     public static function start(AcceptanceTester $I)
     {
         return new Horizon_Store($I);
@@ -378,6 +380,7 @@ class Horizon_Store extends Abstract_Plugin
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
 
         $this->initialized = true;
+        $this->enabled = true;
         return $this;
     }
 
@@ -393,6 +396,7 @@ class Horizon_Store extends Abstract_Plugin
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
 
         $this->initialized = true;
+        $this->enabled = true;
 
 
         return $this;
@@ -409,6 +413,8 @@ class Horizon_Store extends Abstract_Plugin
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
 
+        $this->enabled = false;
+
         return $this;
     }
 
@@ -422,6 +428,8 @@ class Horizon_Store extends Abstract_Plugin
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
+
+        $this->enabled = false;
 
         return $this;
     }
@@ -449,13 +457,8 @@ class Horizon_Store extends Abstract_Plugin
 
         $this->em->refresh($this->Plugin);
 
-        if ($this->initialized) {
-            $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
-            $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
-        } else {
-            $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていない');
-            $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
-        }
+        $this->I->assertEquals($this->initialized, $this->Plugin->isInitialized(), '初期化');
+        $this->I->assertEquals($this->enabled, $this->Plugin->isEnabled(), '有効/無効');
 
         return $this;
     }
@@ -555,12 +558,7 @@ class Horizon_Local extends Abstract_Plugin
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
-
-        if ($this->enabled) {
-            $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
-        } else {
-            $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
-        }
+        $this->I->assertEquals($this->enabled, $this->Plugin->isEnabled(), '有効/無効');
 
         return $this;
     }
