@@ -248,10 +248,6 @@ class EA10PluginCest
         $I->assertFileExists($assetsPath);
         $I->assertFileExists($updatedPath);
 
-        $ManagePage->ストアプラグイン_無効化('Assets');
-        $I->assertFileExists($assetsPath);
-        $I->assertFileExists($updatedPath);
-
         $ManagePage->ストアプラグイン_削除('Assets');
         $I->assertFileNotExists($assetsPath);
         $I->assertFileNotExists($updatedPath);
