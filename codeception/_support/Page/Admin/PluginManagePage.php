@@ -15,7 +15,7 @@ namespace Page\Admin;
 
 class PluginManagePage extends AbstractAdminPageStyleGuide
 {
-    const 完了メーッセージ = '#page_admin_store_plugin > div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
+    const 完了メーッセージ = '#page_admin_store_plugin > div.c-container > div.c-contentsArea > div.alert.alert-dismissible.fade.show.m-3 > span';
 
     public function __construct(\AcceptanceTester $I)
     {
@@ -32,12 +32,13 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     /**
      * @param $pluginCode
      *
+     * @param string $message
      * @return PluginManagePage
      */
-    public function ストアプラグイン_有効化($pluginCode)
+    public function ストアプラグイン_有効化($pluginCode, $message = '有効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
-        $this->tester->see('有効にしました。', self::完了メーッセージ);
+        $this->tester->see($message, self::完了メーッセージ);
         return $this;
     }
 
@@ -89,7 +90,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    private function ストアプラグイン_セレクタ($pluginCode)
+    public function ストアプラグイン_セレクタ($pluginCode)
     {
         return '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "オーナーズストアのプラグイン")]/../..//table/tbody//td[3]/p[contains(text(), "'.$pluginCode.'")]';
     }
