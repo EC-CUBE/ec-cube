@@ -189,9 +189,14 @@ file that was distributed with this source code.
                 return false;
             }
 
-                $('#form1').attr('action', "{{ url('admin_content_layout_preview', {id: Layout.id}) }}");
+            $('#form1').attr('action', "{{ url('admin_content_layout_preview', {id: Layout.id}) }}");
             $('#form1').attr('target', '_blank');
             $('#form1').submit();
+
+            // submit後に元に戻す
+            $('#form1').attr('action', "{{ url('admin_content_layout_edit', {id: Layout.id}) }}");
+            $('#form1').attr('target', '_self');
+
             return false;
         });
         {% endif %}
@@ -443,7 +448,7 @@ file that was distributed with this source code.
                                             </div>
                                             <div class="card-body">
                                                 <div class="d-block text-center">
-                                                    <button id="preview-button" class="btn btn-block btn-ec-regular">{{ 'admin.content.layout_preview'|trans }}</button>
+                                                    <a id="preview-button" class="btn btn-block btn-ec-regular">{{ 'admin.content.layout_preview'|trans }}</a>
                                                 </div>
                                             </div>
                                         </div>
