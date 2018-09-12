@@ -369,9 +369,9 @@ file that was distributed with this source code.
                                             <td class="align-middle">{{ Customer.email }}</td>
                                             <td class="align-middle"></td>
                                             <td class="align-middle pr-3">
-                                                <div class="row justify-content-end">
+                                                <div class="text-right">
                                                     {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
-                                                        <div class="col-auto text-center" data-tooltip="true" data-placement="top" title="{{ 'admin.customer.resend'|trans }}">
+                                                        <div class="px-1 d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.customer.resend'|trans }}">
                                                             <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
                                                                 <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
@@ -399,7 +399,7 @@ file that was distributed with this source code.
                                                             </div>
                                                         </div>
                                                     {% endif %}
-                                                    <div class="col-auto text-center" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                    <div class="px-1 d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                         <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance-{{ Customer.id }}">
                                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
@@ -429,7 +429,7 @@ file that was distributed with this source code.
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><!-- /.justify-content-end -->
+                                                </div><!-- /.text-right -->
                                             </td>
                                         </tr>
                                     {% endfor %}

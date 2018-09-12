@@ -129,18 +129,18 @@ file that was distributed with this source code.
                                                         </a>
                                                     </div>
                                                     <div class="col-auto text-right">
-                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                                        <a href="#" class="btn btn-ec-actionIcon mr-2 action-up {% if loop.first %}disabled{% endif %}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                        <a href="#" class="btn btn-ec-actionIcon mr-2 action-down {% if loop.last %}disabled{% endif %}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon mr-3 action-visible" href="{{ url('admin_setting_shop_delivery_visibility', {'id': Delivery.id }) }}"
+                                                        <a class="btn btn-ec-actionIcon mr-2 action-visible" href="{{ url('admin_setting_shop_delivery_visibility', {'id': Delivery.id }) }}"
                                                            data-tooltip="true" data-placement="top" title="{{ Delivery.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}"
                                                            data-confirm="false" data-method="put" {{ csrf_token_for_anchor() }} >
                                                             <i class="fa fa-toggle-{{ Delivery.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
-                                                        <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top"
+                                                        <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">
                                                             <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
                                                                data-url="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}"

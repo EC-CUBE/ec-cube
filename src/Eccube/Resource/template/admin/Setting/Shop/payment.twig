@@ -173,18 +173,18 @@ file that was distributed with this source code.
                                         </span>
                                         </div>
                                         <div class="col-3 text-right">
-                                            <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-2 action-up{{ loop.first ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                 <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                             </a>
-                                            <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-2 action-down{{ loop.last ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                 <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                             </a>
-                                            <a class="btn btn-ec-actionIcon mr-3 action-visible" href="{{ url('admin_setting_shop_payment_visible', {'id': Payment.id }) }}"
+                                            <a class="btn btn-ec-actionIcon mr-2 action-visible" href="{{ url('admin_setting_shop_payment_visible', {'id': Payment.id }) }}"
                                                data-tooltip="true" data-placement="top" title="{{ Payment.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}"
                                                data-confirm="false" data-method="put" {{ csrf_token_for_anchor() }} >
                                                 <i class="fa fa-toggle-{{ Payment.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
                                             </a>
-                                            <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top"
+                                            <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top"
                                                  title="{{ 'admin.common.delete'|trans }}">
                                                 <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
                                                    data-url="{{ url('admin_setting_shop_payment_delete', {'id' : Payment.id}) }}"
