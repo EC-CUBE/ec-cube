@@ -13,6 +13,8 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Entity\News;
@@ -71,17 +73,19 @@ class NewsRepository extends AbstractRepository
     }
 
     /**
-     * @return mixed
+     * @return News[]|ArrayCollection
      */
     public function getList()
     {
-        $qb = $this->createQueryBuilder('n');
-        $qb->where('n.publish_date <= :date')
-            ->andWhere('n.visible = TRUE')
-            ->setParameter('date', new \DateTime())
-            ->orderBy('n.publish_date', 'DESC')
-            ->addOrderBy('n.id', 'DESC');
+        // second level cacheを効かせるためfindByで取得
+        $Results = $this->findBy(['visible' => true], ['publish_date' => 'DESC', 'id' => 'DESC']);
 
-        return $qb->getQuery()->getResult();
+        // 公開日時前のNewsをフィルター
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->lte('publish_date', new \DateTime()));
+
+        $News = new ArrayCollection($Results);
+
+        return $News->matching($criteria);
     }
 }

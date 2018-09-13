@@ -21,6 +21,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\BlockType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -80,7 +81,7 @@ class BlockController extends AbstractController
      * @Route("/%eccube_admin_route%/content/block/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_block_edit")
      * @Template("@admin/Content/block_edit.twig")
      */
-    public function edit(Request $request, $id = null, Environment $twig, FileSystem $fs)
+    public function edit(Request $request, $id = null, Environment $twig, FileSystem $fs, CacheUtil $cacheUtil)
     {
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -153,9 +154,9 @@ class BlockController extends AbstractController
                 }
             }
 
-            // twigキャッシュの削除
-            $cacheDir = $this->getParameter('kernel.cache_dir').'/twig';
-            $fs->remove($cacheDir);
+            // キャッシュの削除
+            $cacheUtil->clearTwigCache();
+            $cacheUtil->clearDoctrineCache();
 
             $event = new EventArgs(
                 [
@@ -181,7 +182,7 @@ class BlockController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Block $Block, Filesystem $fs)
+    public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -210,9 +211,9 @@ class BlockController extends AbstractController
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
-            // twigキャッシュの削除
-            $cacheDir = $this->getParameter('kernel.cache_dir').'/twig';
-            $fs->remove($cacheDir);
+            // キャッシュの削除
+            $cacheUtil->clearTwigCache();
+            $cacheUtil->clearDoctrineCache();
         }
 
         return $this->redirectToRoute('admin_content_block');
