@@ -366,12 +366,12 @@ file that was distributed with this source code.
                                     <div class="col-6">
                                         <div class="c-conversionArea__leftBlockItem">
                                             {% if return_product_list %}
-                                                <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}">
+                                                <a class="c-baseLink" href="{{ url('admin_product', {'resume': 1}) }}">
                                                     <i class="fa fa-backward" aria-hidden="true"></i>
                                                     <span>{{ 'admin.product.product_list'|trans }}</span>
                                                 </a>
                                             {% else %}
-                                                <a class="c-beseLink" href="{{ url('admin_product_product_edit', {'id': Product.id}) }}">
+                                                <a class="c-baseLink" href="{{ url('admin_product_product_edit', {'id': Product.id}) }}">
                                                     <i class="fa fa-backward" aria-hidden="true"></i>
                                                     <span>{{ 'admin.product.product_registration'|trans }}</span>
                                                 </a>
@@ -399,12 +399,12 @@ file that was distributed with this source code.
                                 <div class="col-6">
                                     <div class="c-conversionArea__leftBlockItem">
                                         {% if return_product_list %}
-                                            <a class="c-beseLink" href="{{ url('admin_product', {'resume': 1}) }}">
+                                            <a class="c-baseLink" href="{{ url('admin_product', {'resume': 1}) }}">
                                                 <i class="fa fa-backward" aria-hidden="true"></i>
                                                 <span>{{ 'admin.product.product_list'|trans }}</span>
                                             </a>
                                         {% else %}
-                                            <a class="c-beseLink" href="{{ url('admin_product_product_edit', {'id': Product.id}) }}">
+                                            <a class="c-baseLink" href="{{ url('admin_product_product_edit', {'id': Product.id}) }}">
                                                 <i class="fa fa-backward" aria-hidden="true"></i>
                                                 <span>{{ 'admin.product.product_registration'|trans }}</span>
                                             </a>
