@@ -392,7 +392,7 @@ class ProductController extends AbstractController
                 if ($this->BaseInfo->isOptionProductTaxRule() && $ProductClass->getTaxRule()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
-                $ProductStock = $ProductClasses[0]->getProductStock();
+                $ProductStock = $ProductClass->getProductStock();
             }
         }
 
