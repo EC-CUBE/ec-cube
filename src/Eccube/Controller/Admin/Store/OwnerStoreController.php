@@ -264,6 +264,8 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid();
 
+        $this->cacheUtil->clearCache();
+
         $pluginCode = $request->get('pluginCode');
 
         $log = null;
@@ -276,7 +278,6 @@ class OwnerStoreController extends AbstractController
             log_error($e);
         }
 
-        $this->cacheUtil->clearCache();
         return $this->json(['success' => false, 'log' => $log], 500);
     }
 
@@ -292,6 +293,8 @@ class OwnerStoreController extends AbstractController
     public function apiUninstall(Plugin $Plugin)
     {
         $this->isTokenValid();
+
+        $this->cacheUtil->clearCache();
 
         if ($Plugin->isEnabled()) {
             return $this->json(['success' => false, 'message' => trans('admin.plugin.uninstall.error.not_disable')], 400);
@@ -316,7 +319,6 @@ class OwnerStoreController extends AbstractController
 
         try {
             $log = $this->composerService->execRemove($packageName);
-            $this->cacheUtil->clearCache();
 
             return $this->json(['success' => false, 'log' => $log]);
         } catch (\Exception $e) {
@@ -339,14 +341,14 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid();
 
+        $this->cacheUtil->clearCache();
+
         $pluginCode = $request->get('pluginCode');
         $version = $request->get('version');
 
         $log = null;
         try {
             $log = $this->composerService->execRequire('ec-cube/'.$pluginCode.':'.$version);
-
-            $this->cacheUtil->clearCache();
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
             $log = $e->getMessage();
@@ -368,6 +370,8 @@ class OwnerStoreController extends AbstractController
     public function apiSchemaUpdate(Request $request)
     {
         $this->isTokenValid();
+
+        $this->cacheUtil->clearCache();
 
         $pluginCode = $request->get('pluginCode');
 
@@ -394,7 +398,6 @@ class OwnerStoreController extends AbstractController
             $log = ob_get_clean();
             ob_end_flush();
 
-            $this->cacheUtil->clearCache();
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
             $log = $e->getMessage();
@@ -417,6 +420,8 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid();
 
+        $this->cacheUtil->clearCache();
+
         $pluginCode = $request->get('pluginCode');
 
         $log = null;
@@ -432,7 +437,6 @@ class OwnerStoreController extends AbstractController
             $log = ob_get_clean();
             ob_end_flush();
 
-            $this->cacheUtil->clearCache();
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
             $log = $e->getMessage();

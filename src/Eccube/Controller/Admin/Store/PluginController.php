@@ -258,6 +258,8 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid();
 
+        $cacheUtil->clearCache();
+
         $log = null;
 
         if ($Plugin->isEnabled()) {
@@ -309,8 +311,6 @@ class PluginController extends AbstractController
             }
         }
 
-        $cacheUtil->clearCache();
-
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
         } else {
@@ -334,6 +334,8 @@ class PluginController extends AbstractController
     public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
+
+        $cacheUtil->clearCache();
 
         $log = null;
         if ($Plugin->isEnabled()) {
@@ -371,8 +373,6 @@ class PluginController extends AbstractController
                 return $this->redirectToRoute('admin_store_plugin');
             }
         }
-
-        $cacheUtil->clearCache();
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
@@ -499,6 +499,7 @@ class PluginController extends AbstractController
      */
     public function authenticationSetting(Request $request, CacheUtil $cacheUtil)
     {
+
         $builder = $this->formFactory
             ->createBuilder(AuthenticationType::class, $this->BaseInfo);
 
@@ -513,9 +514,8 @@ class PluginController extends AbstractController
 
             // composerの認証を更新
             $this->composerService->configureRepository($this->BaseInfo);
-
-            $cacheUtil->clearCache();
             $this->addSuccess('admin.common.save_complete', 'admin');
+            $cacheUtil->clearCache();
         }
 
         return [
