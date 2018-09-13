@@ -26,6 +26,7 @@ use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -371,6 +372,15 @@ class OwnerStoreController extends AbstractController
 
             ob_start();
             $this->pluginService->generateProxyAndUpdateSchema($Plugin, $config);
+
+            // 初期化されていなければインストール処理を実行する
+            if (!$Plugin->isInitialized()) {
+                $this->pluginService->callPluginManagerMethod($config, 'install');
+                $Plugin->setInitialized(true);
+                $this->entityManager->persist($Plugin);
+                $this->entityManager->flush();
+            }
+
             $log = ob_get_clean();
             ob_end_flush();
 

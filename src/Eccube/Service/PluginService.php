@@ -716,7 +716,10 @@ class PluginService
                 ->setName($meta['name']);
 
             $em->persist($plugin);
-            $this->callPluginManagerMethod($meta, 'update');
+
+            if ($plugin->isInitialized()) {
+                $this->callPluginManagerMethod($meta, 'update');
+            }
             $this->copyAssets($plugin->getCode());
             $em->flush();
             $em->getConnection()->commit();
