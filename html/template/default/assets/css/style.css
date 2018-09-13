@@ -6066,7 +6066,7 @@ Styleguide 13.2.1
       max-height: 100%; }
     .ec-shelfGrid .ec-shelfGrid__item .ec-productRole__btn {
       margin-top: auto;
-      padding-top: 1em; }
+      margin-bottom: 15px; }
   .ec-shelfGrid .ec-shelfGrid__item:nth-child(odd) {
     padding-right: 8px; }
   .ec-shelfGrid .ec-shelfGrid__item:nth-child(even) {
