@@ -93,6 +93,13 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         private $delivery_fee_total;
 
         /**
+         * @var int|null
+         *
+         * @ORM\Column(name="sort_no", type="smallint", nullable=true, options={"unsigned":true})
+         */
+        private $sort_no;
+
+        /**
          * @var \DateTime
          *
          * @ORM\Column(name="create_date", type="datetimetz")
@@ -348,6 +355,30 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         public function setCustomer(Customer $Customer = null)
         {
             $this->Customer = $Customer;
+        }
+
+        /**
+         * Set sortNo.
+         *
+         * @param int|null $sortNo
+         *
+         * @return Cart
+         */
+        public function setSortNo($sortNo = null)
+        {
+            $this->sort_no = $sortNo;
+
+            return $this;
+        }
+
+        /**
+         * Get sortNo.
+         *
+         * @return int|null
+         */
+        public function getSortNo()
+        {
+            return $this->sort_no;
         }
 
         /**
