@@ -513,7 +513,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->entityManager->flush();
 
         // Paymentの検索リストを作成
-        $Payments = array_filter($Payments, function ($Payment) use($searchPaymentNos){
+        $Payments = array_filter($Payments, function ($Payment) use ($searchPaymentNos) {
             return in_array($Payment->getId(), $searchPaymentNos);
         });
 
@@ -538,8 +538,8 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     {
         return [
             [[1], 1],
-            [[1,2], 2],
-            [[2,3], 1],
+            [[1, 2], 2],
+            [[2, 3], 1],
             [[3], 0],
         ];
     }

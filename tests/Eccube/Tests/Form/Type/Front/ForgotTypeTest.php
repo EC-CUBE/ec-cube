@@ -94,5 +94,4 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
-
 }
