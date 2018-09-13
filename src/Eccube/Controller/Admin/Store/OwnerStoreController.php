@@ -69,6 +69,9 @@ class OwnerStoreController extends AbstractController
     /** @var BaseInfo */
     private $BaseInfo;
 
+    /** @var CacheUtil */
+    private $cacheUtil;
+
     /**
      * OwnerStoreController constructor.
      *
@@ -79,6 +82,7 @@ class OwnerStoreController extends AbstractController
      * @param SystemService $systemService
      * @param PluginApiService $pluginApiService
      * @param BaseInfoRepository $baseInfoRepository
+     * @param CacheUtil $cacheUtil
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -90,13 +94,15 @@ class OwnerStoreController extends AbstractController
         ComposerServiceInterface $composerService,
         SystemService $systemService,
         PluginApiService $pluginApiService,
-        BaseInfoRepository $baseInfoRepository
+        BaseInfoRepository $baseInfoRepository,
+        CacheUtil $cacheUtil
     ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->systemService = $systemService;
         $this->pluginApiService = $pluginApiService;
         $this->BaseInfo = $baseInfoRepository->get();
+        $this->cacheUtil = $cacheUtil;
 
         // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
@@ -270,6 +276,7 @@ class OwnerStoreController extends AbstractController
             log_error($e);
         }
 
+        $this->cacheUtil->clearCache();
         return $this->json(['success' => false, 'log' => $log], 500);
     }
 
@@ -306,8 +313,10 @@ class OwnerStoreController extends AbstractController
 
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
+
         try {
             $log = $this->composerService->execRemove($packageName);
+            $this->cacheUtil->clearCache();
 
             return $this->json(['success' => false, 'log' => $log]);
         } catch (\Exception $e) {
@@ -337,6 +346,7 @@ class OwnerStoreController extends AbstractController
         try {
             $log = $this->composerService->execRequire('ec-cube/'.$pluginCode.':'.$version);
 
+            $this->cacheUtil->clearCache();
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
             $log = $e->getMessage();
@@ -384,6 +394,7 @@ class OwnerStoreController extends AbstractController
             $log = ob_get_clean();
             ob_end_flush();
 
+            $this->cacheUtil->clearCache();
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
             $log = $e->getMessage();
@@ -421,6 +432,7 @@ class OwnerStoreController extends AbstractController
             $log = ob_get_clean();
             ob_end_flush();
 
+            $this->cacheUtil->clearCache();
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
             $log = $e->getMessage();
