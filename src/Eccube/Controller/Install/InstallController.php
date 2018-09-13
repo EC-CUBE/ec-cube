@@ -922,7 +922,7 @@ class InstallController extends AbstractController
                     ],
                 ]
             );
-            file_get_contents('http://www.ec-cube.net/mall/use_site.php', false, $context);
+            file_get_contents('https://www.ec-cube.net/mall/use_site.php', false, $context);
         } catch (\Exception $e) {
             // 送信に失敗してもインストールは継続できるようにする
             log_error($e->getMessage());
