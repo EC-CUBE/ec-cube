@@ -89,7 +89,6 @@ class EF01TopCest
         $I->assertContains('コメント1', $topPage->新着情報詳細(1));
 
         // 「詳しくはこちら」リンクを押下する
-        $I->assertContains('詳しくはこちら', $topPage->新着情報詳細(1));
         $topPage->新着情報リンククリック(1);
         $I->amOnUrl($News->getUrl());
 
