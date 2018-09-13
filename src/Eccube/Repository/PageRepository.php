@@ -67,6 +67,31 @@ class PageRepository extends AbstractRepository
     }
 
     /**
+     * @param $route
+     * @return Page
+     */
+    public function getPageByRoute($route)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        try {
+            $Page = $qb
+                ->select(['p', 'pl', 'l'])
+                ->leftJoin('p.PageLayouts', 'pl')
+                ->leftJoin('pl.Layout', 'l')
+                ->where('p.url = :url')
+                ->setParameter('url', $route)
+                ->getQuery()
+                ->useResultCache(true, $this->getCacheLifetime())
+                ->getSingleResult();
+        } catch (\Exception $e) {
+            return $this->newPage();
+        }
+
+        return $Page;
+    }
+
+    /**
      * @param string $url
      *
      * @return Page
