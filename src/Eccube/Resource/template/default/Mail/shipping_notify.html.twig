@@ -33,6 +33,15 @@ file that was distributed with this source code.
                             {{ BaseInfo.shop_name }}でございます。<br/>
                             お客さまがご注文された以下の商品を発送いたしました。商品の到着まで、今しばらくお待ちください。<br/>
                             <br/>
+                            {% if Shipping.tracking_number %}
+                                <hr style="border-top: 3px double #8c8b8b;">
+                                お問い合わせ番号：{{ Shipping.tracking_number }}
+                                {% if Shipping.Delivery.confirm_url %}
+                                    <br/>
+                                    お問い合わせURL：{{ Shipping.Delivery.confirm_url }}
+                                {% endif %}
+                                <br/>
+                            {% endif %}
                             <hr style="border-top: 3px double #8c8b8b;">
                             　ご注文商品明細<br/>
                             <hr style="border-top: 3px double #8c8b8b;">

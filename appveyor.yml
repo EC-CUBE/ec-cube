@@ -43,7 +43,7 @@ install:
   #- cinst mysql
   #- SET PATH=C:\tools\mysql\current\bin\;%PATH%
   # Set PHP.
-  - cinst php --version 7.2.8 --allow-empty-checksums
+  - cinst php --version 7.2.9 --allow-empty-checksums
   - SET PATH=C:\tools\php72\;%PATH%
   - copy C:\tools\php72\php.ini-production C:\tools\php72\php.ini
   - echo date.timezone="Asia/Tokyo" >> C:\tools\php72\php.ini

@@ -24,9 +24,9 @@ file that was distributed with this source code.
         </div>
         <div class="ec-mypageRole">
             {% if Customer.CustomerAddresses|length > 0 %}
-                <p class="ec-para-nomal">{{ 'front.mypage.customer_address_count'|trans({'%count%':Customer.CustomerAddresses|length}) }}</p>
+                <p class="ec-para-normal">{{ 'front.mypage.customer_address_count'|trans({'%count%':Customer.CustomerAddresses|length}) }}</p>
             {% else %}
-                <p class="ec-para-nomal">{{ 'front.mypage.customer_address_not_found'|trans }}</p>
+                <p class="ec-para-normal">{{ 'front.mypage.customer_address_not_found'|trans }}</p>
             {% endif %}
         </div>
         <div class="ec-mypageRole">
