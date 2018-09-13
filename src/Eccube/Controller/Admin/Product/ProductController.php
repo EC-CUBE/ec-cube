@@ -312,6 +312,7 @@ class ProductController extends AbstractController
 
         $images = $request->files->get('admin_product');
 
+        $allowExtensions = array('gif', 'jpg', 'jpeg', 'png');
         $files = [];
         if (count($images) > 0) {
             foreach ($images as $img) {
@@ -322,7 +323,12 @@ class ProductController extends AbstractController
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
+                    // 拡張子
                     $extension = $image->getClientOriginalExtension();
+                    if (!in_array($extension, $allowExtensions)) {
+                        throw new UnsupportedMediaTypeHttpException();
+                    }
+
                     $filename = date('mdHis').uniqid('_').'.'.$extension;
                     $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
                     $files[] = $filename;
