@@ -233,6 +233,9 @@ class OrderType extends AbstractType
             ])
             ->add('OrderItemsErrors', TextType::class, [
                 'mapped' => false,
+            ])
+            ->add('return_link', HiddenType::class, [
+                'mapped' => false,
             ]);
 
         $builder

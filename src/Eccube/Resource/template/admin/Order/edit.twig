@@ -147,6 +147,27 @@ file that was distributed with this source code.
             // お届け時間の初期表示
             $('#order_Shipping_Delivery').change();
 
+            var confirmFormChange = function(form, target, modal) {
+                var returnLink = form.find('input[type="hidden"][name*="return_link"]'),
+                    saveBtn = modal.find('a[data-action="save"]'),
+                    cancelBtn = modal.find('a[data-action="cancel"]');
+                modal.on('hidden.bs.modal', function() {
+                    returnLink.val('');
+                });
+                saveBtn.on('click', function() {
+                    returnLink.val($(this).data('return-link'));
+                    $('#form1').append('<input type="hidden" name="mode" value="register">');
+                    form.submit();
+                });
+                target.on('click', function() {
+                    modal.find('.modal-body .screen-name').text($(this).attr('title'));
+                    modal.modal('show');
+                    saveBtn.data('return-link', $(this).attr('href'));
+                    cancelBtn.attr('href', $(this).attr('href'));
+                    return false;
+                });
+            };
+            confirmFormChange($('#form1'), $('a[data-action="confirm"]'), $('#confirmFormChangeModal'))
 
             // 配送業者選択時にお届け時間を設定
             var times = {{ shippingDeliveryTimes|raw }};
@@ -200,10 +221,36 @@ file that was distributed with this source code.
         constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING'), constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')] -%}
         {% set action_disabled = true %}
     {%- endif %}
+    <!-- 移動確認モーダル-->
+    <div class="modal fade" id="confirmFormChangeModal" tabindex="-1" role="dialog"
+         aria-labelledby="confirmFormChangeModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ 'admin.common.move_to_confirm_title'|trans }}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="screen-name"></p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-ec-conversion" data-action="save" href="javascript:void(0)">
+                        {{ 'admin.common.move_to_confirm_save_and_move'|trans }}
+                    </a>
+                    <a class="btn btn-ec-sub" data-action="cancel" href="javascript:void(0)">
+                        {{ 'admin.common.move_to_confirm_move_only'|trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     <form name="form1" id="form1" method="post" action="?"{% if BaseInfo.isOptionPoint and Order.Customer is not null %} onsubmit="updatePointItem()"{% endif %}>
         <input type="hidden" name="mode" value="">
         <input type="hidden" name="modal" value="">
         {{ form_widget(form._token) }}
+        {{ form_widget(form.return_link) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
@@ -456,7 +503,8 @@ file that was distributed with this source code.
                                 {% if Order.isMultiple %}
                                     {# 複数配送の場合は配送先の表示のみ #}
                                     <div class="mb-3">
-                                        <a id="shipping-add" class="btn btn-ec-regular" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit_multiple_shipping'|trans }}</a>
+                                        <a id="shipping-add" class="btn btn-ec-regular" data-action="confirm" title="{{ 'admin.common.move_to_confirm_message'|trans({'%name%' : 'admin.order.shipping_registration'|trans
+                                           }) }}" href="{{ path("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit_multiple_shipping'|trans }}</a>
                                         <span class="ml-3">{{ 'admin.order.edit_multiple_shipping_description'|trans }}</span>
                                     </div>
                                     {% for shipping in Order.Shippings %}
@@ -479,7 +527,8 @@ file that was distributed with this source code.
                                         </div>
                                         {% if Order.id is not empty %}
                                             <div class="col-6 text-right">
-                                                <a id="shipping-add" class="btn btn-ec-regular w-25" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.add_shipping'|trans }}</a>
+                                                <a id="shipping-add" class="btn btn-ec-regular w-25" data-action="confirm" title="{{ 'admin.common.move_to_confirm_message'|trans({'%name%' : 'admin.order.shipping_registration'|trans
+                                           }) }}" href="{{ path("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.add_shipping'|trans }}</a>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -948,7 +997,9 @@ file that was distributed with this source code.
                                         </tbody>
                                     </table>
                                     <div class="text-center">
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_order_mail', { id : Order.id }) }}">{{ 'admin.order.mail_create'|trans }}</a>
+                                        <a class="btn btn-ec-regular" data-action="confirm" title="{{ 'admin.common.move_to_confirm_message'|trans({
+                                               '%name%' : 'admin.order.mail'|trans
+                                           }) }}" href="{{ path('admin_order_mail', { id : Order.id }) }}">{{ 'admin.order.mail_create'|trans }}</a>
                                     </div>
                                 </div>
                             </div>

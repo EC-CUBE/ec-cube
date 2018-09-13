@@ -457,6 +457,10 @@ admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロ�
 admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 admin.common.delete_modal__title: 削除します
 admin.common.delete_modal__message: 'この操作はあとから取り消すことができません。「%name%」を削除してよろしいですか？'
+admin.common.move_to_confirm_title: ページを移動します
+admin.common.move_to_confirm_message: '%name%に移動します。編集内容を保存してから移動しますか？'
+admin.common.move_to_confirm_move_only: 保存せずに移動
+admin.common.move_to_confirm_save_and_move: 保存して移動
 
 
 # エンティティに関連するラベル
@@ -617,10 +621,6 @@ admin.product.move_to_category: カテゴリの追加・編集
 admin.product.move_to_tag: タグの追加・編集
 admin.product.move_to_product_class: 商品規格の編集
 admin.product.move_to_product_class__confirm_title: '「%name%」の商品規格'
-admin.product.move_to_confirm_title: ページを移動します
-admin.product.move_to_confirm_message: '%name%に移動します。商品情報を保存してから移動しますか？'
-admin.product.move_to_confirm_move_only: 保存せずに移動
-admin.product.move_to_confirm_save_and_move: 保存して移動
 admin.product.multi_search_label: 商品名・商品ID・商品コード
 admin.product.product_class: 商品規格
 admin.product.product_class__short: 規格
