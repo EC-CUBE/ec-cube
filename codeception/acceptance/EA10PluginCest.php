@@ -322,10 +322,10 @@ class EA10PluginCest
     public function test_dependency_each_install_plugin(\AcceptanceTester $I)
     {
         Horizon_Store::start($I)
-            ->インストール();
+            ->インストール()->有効化();
 
-//        Emperor_Store::start($I)
-//            ->インストール();
+        Emperor_Store::start($I)
+            ->インストール()->有効化();
     }
 
     public function test_dependency_plugin(\AcceptanceTester $I)
@@ -737,6 +737,7 @@ class Horizon_Store extends Store_Plugin
         $result = new self($I);
         if ($dependency) {
             $result->ManagePage = $dependency->ManagePage;
+            $result->Plugin = $result->pluginRepository->findByCode($result->code);
         }
         return $result;
     }
@@ -750,9 +751,7 @@ class Emperor_Store extends Store_Plugin
         $this->publishPlugin('Horizon-1.0.0.tgz');
         $this->tables[] = 'dtb_foo';
         $this->columns[] = 'dtb_cart.foo_id';
-        $this->columns[] = 'dtb_dash.is_emperor';
         $this->traits['\Plugin\Emperor\Entity\CartTrait'] = 'Cart';
-        $this->traits['\Plugin\Emperor\Entity\DashTrait'] = 'Dash';
     }
 
     public static function start(AcceptanceTester $I)
