@@ -938,6 +938,9 @@ admin.content.layout_drag_and_drop_message: ブロックをドラッグ＆ドロ
 admin.content.layout_up: 上に移動
 admin.content.layout_down: 下に移動
 admin.content.layout_move_to: セクションに移動
+admin.content.layout_preview: プレビュー
+admin.content.layout_preview__select_page: ページを選択してください
+admin.content.layout_preview_select_page: プレビューするページを選択してください
 admin.content.layout_preview_code: コードプレビュー
 admin.content.layout_preview_code__confirm_title: ブロックのコードプレビュー
 admin.content.layout_preview_code__confirm_message: 編集が必要な場合はブロック編集画面から編集してください（この時レイアウト設定は保存されません）
