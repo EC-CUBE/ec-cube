@@ -60,7 +60,7 @@ class TopPage extends AbstractFrontPage
     public function 検索($keyword = null)
     {
         if ($keyword) {
-            $this->tester->fillField(['id' => 'name'], $keyword);
+            $this->tester->fillField(['class' => 'search-name'], $keyword);
         }
         $this->tester->click('button.ec-headerSearch__keywordBtn');
 
