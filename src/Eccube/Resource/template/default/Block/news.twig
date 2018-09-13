@@ -77,9 +77,7 @@ file that was distributed with this source code.
                         {{ News.description|raw|nl2br }}
                         {% if News.url %}
                             <br>
-                            <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>
-                                {{ 'front.block.news.see_details'|trans }}
-                            </a>
+                            <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>{{ 'front.block.news.see_details'|trans }}</a>
                         {% endif %}
                     </div>
                 </div>

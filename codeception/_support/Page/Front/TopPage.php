@@ -27,7 +27,7 @@ class TopPage extends AbstractFrontPage
 
     public function 新着情報選択($rowNum)
     {
-        $this->tester->click(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsHeading > div.ec-newsRole__newsColumn > div.ec-newsRole__newsClose > a"]);
+        $this->tester->click(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsHeading"]);
 
         return $this;
     }
