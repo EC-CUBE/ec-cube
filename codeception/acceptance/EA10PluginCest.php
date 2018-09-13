@@ -319,6 +319,27 @@ class EA10PluginCest
         $Boomerang->検証()->無効化()->削除();
     }
 
+    public function test_dependency_each_install_plugin(\AcceptanceTester $I)
+    {
+        Horizon_Store::start($I)
+            ->インストール();
+
+//        Emperor_Store::start($I)
+//            ->インストール();
+    }
+
+    public function test_dependency_plugin(\AcceptanceTester $I)
+    {
+        $Emperor = Emperor_Store::start($I)
+            ->インストール()
+            ->依存より先に有効化();
+
+        Horizon_Store::start($I, $Emperor)
+            ->有効化();
+
+        $Emperor->有効化();
+    }
+
     private function publishPlugin($fileName)
     {
         copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);
@@ -452,12 +473,12 @@ abstract class Abstract_Plugin
 class Store_Plugin extends Abstract_Plugin
 {
     /** @var PluginManagePage */
-    private $ManagePage;
+    protected $ManagePage;
 
     /** @var Plugin */
-    private $Plugin;
+    protected $Plugin;
 
-    private $code;
+    protected $code;
 
     public function __construct(AcceptanceTester $I, $code)
     {
@@ -580,7 +601,7 @@ class Store_Plugin extends Abstract_Plugin
         return $this;
     }
 
-    private function publishPlugin($fileName)
+    protected function publishPlugin($fileName)
     {
         $published = copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);
         $this->I->assertTrue($published, "公開できた ${fileName}");
@@ -709,9 +730,44 @@ class Horizon_Store extends Store_Plugin
         $this->traits['\Plugin\Horizon\Entity\CartTrait'] = 'Cart';
     }
 
+    public static function start(AcceptanceTester $I, Store_Plugin $dependency = null)
+    {
+        $result = new self($I);
+        if ($dependency) {
+            $result->ManagePage = $dependency->ManagePage;
+        }
+        return $result;
+    }
+}
+
+class Emperor_Store extends Store_Plugin
+{
+    public function __construct(AcceptanceTester $I)
+    {
+        parent::__construct($I, 'Emperor');
+        $this->publishPlugin('Horizon-1.0.0.tgz');
+        $this->tables[] = 'dtb_foo';
+        $this->columns[] = 'dtb_cart.foo_id';
+        $this->columns[] = 'dtb_dash.is_emperor';
+        $this->traits['\Plugin\Emperor\Entity\CartTrait'] = 'Cart';
+        $this->traits['\Plugin\Emperor\Entity\DashTrait'] = 'Dash';
+    }
+
     public static function start(AcceptanceTester $I)
     {
         return new self($I);
+    }
+
+    public function 依存より先に有効化()
+    {
+        $this->ManagePage->ストアプラグイン_有効化($this->code, '「ホライゾン」を先に有効化してください。');
+
+        $this->検証();
+
+        $this->em->refresh($this->Plugin);
+        $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていないはず');
+        $this->I->assertFalse($this->Plugin->isEnabled(), '有効化されていないはず');
+        return $this;
     }
 }
 
