@@ -398,7 +398,7 @@ file that was distributed with this source code.
                                                             data-product-id="{{ Product.id }}"
                                                             data-message="{{ 'admin.product.move_to_product_class__confirm_title'|trans({'%name%': Product.name}) }}"
                                                             data-class-load="{{ url('admin_product_classes_load', { 'id' : Product.id }) }}"
-                                                            data-class-url="{{ url('admin_product_product_class', { 'id' : Product.id }) }}">
+                                                            data-class-url="{{ url('admin_product_product_class', { 'id' : Product.id, 'return_product_list' : true }) }}">
                                                         {{ 'admin.product.product_class__confirm'|trans }}
                                                     </button>
                                                 {% else %}
