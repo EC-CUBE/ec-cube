@@ -15,8 +15,8 @@ namespace Page\Front;
 
 class TopPage extends AbstractFrontPage
 {
-    public static $検索_カテゴリ選択 = ['id' => 'category_id'];
-    public static $検索_キーワード = ['id' => 'name'];
+    public static $検索_カテゴリ選択 = ['class' => 'category_id'];
+    public static $検索_キーワード = ['class' => 'search-name'];
 
     public static function go(\AcceptanceTester $I)
     {
