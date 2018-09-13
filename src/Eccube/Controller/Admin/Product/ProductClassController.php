@@ -126,8 +126,8 @@ class ProductClassController extends AbstractController
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
-                if ($request->get('return')) {
-                    return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return' => $request->get('return')]);
+                if ($request->get('return_product_list')) {
+                    return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
                 }
 
                 return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
@@ -163,8 +163,8 @@ class ProductClassController extends AbstractController
 
                         $this->addSuccess('admin.common.save_complete', 'admin');
 
-                        if ($request->get('return')) {
-                            return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return' => $request->get('return')]);
+                        if ($request->get('return_product_list')) {
+                            return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
                         }
 
                         return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
@@ -179,7 +179,7 @@ class ProductClassController extends AbstractController
             'clearForm' => $this->createForm(FormType::class)->createView(),
             'ClassName1' => $ClassName1,
             'ClassName2' => $ClassName2,
-            'return_product' => $request->get('return'),
+            'return_product_list' => $request->get('return_product_list') ? true : false,
         ];
     }
 
@@ -218,8 +218,8 @@ class ProductClassController extends AbstractController
             $this->addSuccess('admin.product.reset_complete', 'admin');
         }
 
-        if ($request->get('return')) {
-            return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return' => $request->get('return')]);
+        if ($request->get('return_product_list')) {
+            return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
         }
 
         return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
