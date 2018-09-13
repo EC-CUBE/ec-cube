@@ -294,15 +294,19 @@ class PluginController extends AbstractController
                 }
             }
 
-            ob_start();
 
-            if (!$Plugin->isInitialized()) {
-                $this->pluginService->installWithCode($Plugin->getCode());
+            try {
+                ob_start();
+
+                if (!$Plugin->isInitialized()) {
+                    $this->pluginService->installWithCode($Plugin->getCode());
+                }
+
+                $this->pluginService->enable($Plugin);
+            } finally {
+                $log = ob_get_clean();
+                ob_end_flush();
             }
-
-            $this->pluginService->enable($Plugin);
-            $log = ob_get_clean();
-            ob_end_flush();
         }
 
         $cacheUtil->clearCache();
@@ -351,10 +355,13 @@ class PluginController extends AbstractController
                 }
             }
 
-            ob_start();
-            $this->pluginService->disable($Plugin);
-            $log = ob_get_clean();
-            ob_end_flush();
+            try {
+                ob_start();
+                $this->pluginService->disable($Plugin);
+            } finally {
+                $log = ob_get_clean();
+                ob_end_flush();
+            }
         } else {
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => true, 'log' => $log]);
