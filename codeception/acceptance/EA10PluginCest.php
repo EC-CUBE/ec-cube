@@ -262,6 +262,14 @@ class EA10PluginCest
 
         $Horizon->tableExists();
         $Horizon->columnExists();
+
+        $Horizon->無効化()->削除();
+
+        $Boomerang->tableExists();
+        $Boomerang->columnExists();
+        $Boomerang->traitExists();
+
+        $Boomerang->無効化()->削除();
     }
 
     public function test_extend_same_table_local(\AcceptanceTester $I)
@@ -311,6 +319,11 @@ abstract class Abstract_Plugin
     /** @var EccubeConfig */
     protected $config;
 
+    protected $initialized = false;
+
+    protected $enabled = false;
+
+    protected $removed = false;
 
     protected $table;
 
@@ -394,6 +407,23 @@ abstract class Abstract_Plugin
         $this->I->switchToPreviousTab();
         return $this;
     }
+
+    public function 検証()
+    {
+        if ($this->initialized) {
+            $this->tableExists();
+            $this->columnExists();
+        } else {
+            $this->tableNotExists();
+            $this->columnNotExists();
+        }
+
+        if ($this->enabled) {
+            $this->traitExists();
+        } else {
+            $this->traitNotExists();
+        }
+    }
 }
 
 class Store_Plugin extends Abstract_Plugin
@@ -403,10 +433,6 @@ class Store_Plugin extends Abstract_Plugin
 
     /** @var Plugin */
     private $Plugin;
-
-    private $initialized = false;
-
-    private $enabled = false;
 
     private $code;
 
@@ -426,10 +452,7 @@ class Store_Plugin extends Abstract_Plugin
             ->入手する($this->code)
             ->インストール();
 
-        $this->tableNotExists();
-        $this->columnNotExists();
-
-        $this->traitNotExists();
+        $this->検証();
 
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていない');
@@ -442,17 +465,14 @@ class Store_Plugin extends Abstract_Plugin
     {
         $this->ManagePage->ストアプラグイン_有効化($this->code);
 
-        $this->tableExists();
-        $this->columnExists();
+        $this->initialized = true;
+        $this->enabled = true;
 
-        $this->traitExists();
+        $this->検証();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
-
-        $this->initialized = true;
-        $this->enabled = true;
         return $this;
     }
 
@@ -460,17 +480,14 @@ class Store_Plugin extends Abstract_Plugin
     {
         $this->ManagePage->ストアプラグイン_有効化($this->code, '既に有効です。');
 
-        $this->tableExists();
-        $this->columnExists();
+        $this->initialized = true;
+        $this->enabled = true;
 
-        $this->traitExists();
+        $this->検証();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
-
-        $this->initialized = true;
-        $this->enabled = true;
 
 
         return $this;
@@ -480,16 +497,13 @@ class Store_Plugin extends Abstract_Plugin
     {
         $this->ManagePage->ストアプラグイン_無効化($this->code);
 
-        $this->tableExists();
-        $this->columnExists();
+        $this->enabled = false;
 
-        $this->traitNotExists();
+        $this->検証();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
-
-        $this->enabled = false;
 
         return $this;
     }
@@ -498,16 +512,13 @@ class Store_Plugin extends Abstract_Plugin
     {
         $this->ManagePage->ストアプラグイン_無効化($this->code, '既に無効です。');
 
-        $this->tableExists();
-        $this->columnExists();
+        $this->enabled = false;
 
-        $this->traitNotExists();
+        $this->検証();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
-
-        $this->enabled = false;
 
         return $this;
     }
@@ -516,10 +527,10 @@ class Store_Plugin extends Abstract_Plugin
     {
         $this->ManagePage->ストアプラグイン_削除($this->code);
 
-        $this->tableNotExists();
-        $this->columnNotExists();
+        $this->initialized = false;
+        $this->enabled = false;
 
-        $this->traitNotExists();
+        $this->検証();
 
         $this->em->refresh($this->Plugin);
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
@@ -535,15 +546,7 @@ class Store_Plugin extends Abstract_Plugin
         $this->I->reloadPage();
         $this->ManagePage->ストアプラグイン_アップデート($this->code)->アップデート();
 
-        if ($this->initialized) {
-            $this->tableExists();
-            $this->columnExists();
-            $this->traitExists();
-        } else {
-            $this->tableNotExists();
-            $this->columnNotExists();
-            $this->traitNotExists();
-        }
+        $this->検証();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertEquals($this->initialized, $this->Plugin->isInitialized(), '初期化');
@@ -567,8 +570,6 @@ class Local_Plugin extends Abstract_Plugin
     /** @var Plugin */
     private $Plugin;
 
-    private $enabled = false;
-
     /** @var string */
     private $code;
 
@@ -583,12 +584,11 @@ class Local_Plugin extends Abstract_Plugin
         $this->ManagePage = PluginLocalInstallPage::go($this->I)
             ->アップロード('plugins/'.$this->code.'-1.0.0.tgz');
 
+        $this->initialized = true;
+
         $this->I->see('プラグインをインストールしました。', PluginManagePage::完了メーッセージ);
 
-        $this->tableExists();
-        $this->columnExists();
-
-        $this->traitNotExists();
+        $this->検証();
 
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されていない');
@@ -601,16 +601,13 @@ class Local_Plugin extends Abstract_Plugin
     {
         $this->ManagePage->独自プラグイン_有効化($this->code);
 
-        $this->tableExists();
-        $this->columnExists();
+        $this->enabled = true;
 
-        $this->traitExists();
+        $this->検証();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
-
-        $this->enabled = true;
         return $this;
     }
 
@@ -618,16 +615,13 @@ class Local_Plugin extends Abstract_Plugin
     {
         $this->ManagePage->独自プラグイン_無効化($this->code);
 
-        $this->tableExists();
-        $this->columnExists();
+        $this->enabled = false;
 
-        $this->traitNotExists();
+        $this->検証();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
-
-        $this->enabled = false;
 
         return $this;
     }
@@ -636,12 +630,12 @@ class Local_Plugin extends Abstract_Plugin
     {
         $this->ManagePage->独自プラグイン_削除($this->code);
 
+        $this->initialized = false;
+        $this->enabled = false;
+
         $this->I->see('プラグインを削除しました。', PluginManagePage::完了メーッセージ);
 
-        $this->tableNotExists();
-        $this->columnNotExists();
-
-        $this->traitNotExists();
+        $this->検証();
 
         $this->em->refresh($this->Plugin);
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
@@ -654,10 +648,7 @@ class Local_Plugin extends Abstract_Plugin
     {
         $this->ManagePage->独自プラグイン_アップデート($this->code, 'plugins/'.$this->code.'-1.0.1.tgz');
 
-        $this->tableExists();
-        $this->columnExists();
-
-        $this->traitExists();
+        $this->検証();
 
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
