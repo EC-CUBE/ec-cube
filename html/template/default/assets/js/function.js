@@ -82,10 +82,6 @@ $(function() {
         $('.ec-cartNaviNull').toggleClass('is-active')
     });
 
-    $('.ec-newsRole__newsCloseBtn').on('click', function() {
-        $(this).parents('.ec-newsRole__newsItem').toggleClass('is_active')
-    });
-
     $('.ec-orderMail__link').on('click', function() {
         $(this).siblings('.ec-orderMail__body').slideToggle();
     });

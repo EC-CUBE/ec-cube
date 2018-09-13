@@ -15,11 +15,12 @@ Styleguide 11.3
 */
 .ec-footerRole{
   border-top: 1px solid #7d7d7d;
-  margin-top: 100px;
+  margin-top: 30px;
   background: black;
 
   @include media_desktop(){
     padding-top: 40px;
+    margin-top: 100px;
   }
   & &__inner{
     @include media_desktop {
