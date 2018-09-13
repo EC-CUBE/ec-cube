@@ -564,7 +564,8 @@ Styleguide 11.2.5
 .ec-itemNav__nav li ul li ul:before {
   @include media_desktop {
     content: "\f054";
-    font-family: FontAwesome;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     font-size: 12px;
     color: white;
     position: absolute;
