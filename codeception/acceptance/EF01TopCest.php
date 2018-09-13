@@ -84,6 +84,7 @@ class EF01TopCest
         // 各新着情報の箇所を押下する
         // Knowhow: javascriptでclick eventハンドリングしている場合はclick('表示文字列')では探せない
         $topPage->新着情報選択(1);
+        $I->wait(1);
 
         // 押下された新着情報のセクションが広がり、詳細情報、リンクが表示される
         $I->assertContains('コメント1', $topPage->新着情報詳細(1));
