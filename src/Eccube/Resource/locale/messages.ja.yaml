@@ -975,8 +975,14 @@ admin.content.page_meta_keyword: keyword
 admin.content.page_meta_robot: robot
 admin.content.page_meta_metatag: metatag
 admin.content.page_meta_metatag_placeholder: |
-  <meta property="og:title" content="ページのタイトル" />
-  <meta property="og:image" content="画像のURL" />
+  商品詳細ページでの記載例
+    <meta property="og:type" content="og:product" />
+    <meta property="og:title" content="{{ Product.name }}" />
+    <meta property="og:image" content="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" />
+    <meta property="og:description" content="{{ Product.description_list|striptags }}" />
+    <meta property="og:url" content="{{ url('product_detail', {'id': Product.id}) }}" />
+    <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
+    <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
 admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 admin.content.block_name: ブロック名
 admin.content.block__card_title: ブロック設定
@@ -1494,6 +1500,7 @@ tooltip.content.page_file_name: ページの内容を記述したtwigテンプ�
 tooltip.content.page_source_code: テンプレートファイルを編集します。twigで記述します。
 tooltip.content.page_layout: このページに適用するレイアウトを選択します。
 tooltip.content.page_meta: ページのMETAタグの内容を指定できます。
+tooltip.content.page_meta_tags: 自由にMETAタグを追加できます。twig内で利用されている変数も利用できます。
 tooltip.content.block_name: ブロックの管理用名称です。
 tooltip.content.block_file_name: このブロックの内容を記述したtwigテンプレートファイルの名前です。管理画面ではあとから変更できません。
 tooltip.content.block_source_code: テンプレートファイルを編集します。twigで記述します。

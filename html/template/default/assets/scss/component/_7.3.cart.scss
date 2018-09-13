@@ -199,6 +199,8 @@ Styleguide 7.3.5
   .ec-cartNavi__icon {
     &:before {
       content: "\f00d";
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
     }
   }
   .ec-cartNavi__badge{
