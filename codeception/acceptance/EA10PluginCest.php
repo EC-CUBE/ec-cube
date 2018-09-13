@@ -46,6 +46,24 @@ class EA10PluginCest
         FileSystem::doEmptyDir('repos');
     }
 
+    public function test_install_enable_disable_remove_store(\AcceptanceTester $I)
+    {
+        Horizon_Store::start($I)
+            ->インストール()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
+    public function test_install_enable_disable_remove_local(\AcceptanceTester $I)
+    {
+        Horizon_Store::start($I)
+            ->インストール()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
     public function test_install_enable_disable_enable_disable_remove_store(\AcceptanceTester $I)
     {
         Horizon_Store::start($I)
@@ -78,7 +96,8 @@ class EA10PluginCest
     public function test_install_remove_store(\AcceptanceTester $I)
     {
         Horizon_Store::start($I)
-            ->インストール();
+            ->インストール()
+            ->削除();
     }
 
     public function test_install_update_remove_store(\AcceptanceTester $I)
@@ -260,16 +279,8 @@ class EA10PluginCest
         $Horizon->インストール()->有効化();
         $Boomerang->インストール()->有効化();
 
-        $Horizon->tableExists();
-        $Horizon->columnExists();
-
-        $Horizon->無効化()->削除();
-
-        $Boomerang->tableExists();
-        $Boomerang->columnExists();
-        $Boomerang->traitExists();
-
-        $Boomerang->無効化()->削除();
+        $Horizon->検証()->無効化()->削除();
+        $Boomerang->検証()->無効化()->削除();
     }
 
     public function test_extend_same_table_local(\AcceptanceTester $I)
@@ -280,8 +291,8 @@ class EA10PluginCest
         $Horizon->インストール()->有効化();
         $Boomerang->インストール()->有効化();
 
-        $Horizon->tableExists();
-        $Horizon->columnExists();
+        $Horizon->検証()->無効化()->削除();
+        $Boomerang->検証()->無効化()->削除();
     }
 
     public function test_extend_same_table_crossed_local(\AcceptanceTester $I)
@@ -292,8 +303,8 @@ class EA10PluginCest
         $Horizon->インストール()->有効化()->無効化();
         $Boomerang->インストール()->有効化();
 
-        $Horizon->tableExists();
-        $Horizon->columnExists();
+        $Horizon->検証()->削除();
+        $Boomerang->検証()->無効化()->削除();
     }
 
     private function publishPlugin($fileName)
@@ -423,6 +434,8 @@ abstract class Abstract_Plugin
         } else {
             $this->traitNotExists();
         }
+
+        return $this;
     }
 }
 
@@ -545,6 +558,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->I->reloadPage();
         $this->ManagePage->ストアプラグイン_アップデート($this->code)->アップデート();
+
+        $this->initialized = true;
 
         $this->検証();
 
