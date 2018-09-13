@@ -29,6 +29,8 @@ class TopPage extends AbstractFrontPage
     {
         $this->tester->click(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsHeading"]);
 
+        $this->tester->scrollTo(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsHeading"], 0, 200);
+
         return $this;
     }
 
