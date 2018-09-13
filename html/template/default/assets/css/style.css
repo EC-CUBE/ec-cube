@@ -830,15 +830,15 @@ Styleguide 1.2.9
 /*
 テキスト下部のスペース
 
-テキストの下に余白を追加することができます。 .ec-para-nomalで16pxの余白をつけることができます。
+テキストの下に余白を追加することができます。 .ec-para-normalで16pxの余白をつけることができます。
 
 Markup:
-p.ec-para-nomal 万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
-p.ec-para-nomal 万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
+p.ec-para-normal 万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
+p.ec-para-normal 万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。
 
 Styleguide 1.2.10
 */
-.ec-para-nomal {
+.ec-para-normal {
   margin-bottom: 16px; }
 
 /**
@@ -4529,7 +4529,7 @@ include /assets/tmpl/elements/11.4.categoryNavi.pug
   +e.header
     +ec-headerRole
     +ec-headerNaviRole
-    +ec-cateoryNaviRole
+    +ec-categoryNaviRole
 
 Styleguide 11.2
 */
@@ -4905,13 +4905,13 @@ include /assets/tmpl/elements/11.4.categoryNavi.pug
 +ec-itemNav
 
 sg-wrapper:
-<div class="ec-cateoryNaviRole" style="padding-bottom:150px;">
+<div class="ec-categoryNaviRole" style="padding-bottom:150px;">
   <sg-wrapper-content/>
 </div>
 
 Styleguide 11.2.5
 */
-.ec-cateoryNaviRole {
+.ec-categoryNaviRole {
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
@@ -4923,23 +4923,23 @@ Styleguide 11.2.5
   width: 100%;
   max-width: 1130px;
   display: none; }
-  .ec-cateoryNaviRole:after {
+  .ec-categoryNaviRole:after {
     content: " ";
     display: table; }
-  .ec-cateoryNaviRole:after {
+  .ec-categoryNaviRole:after {
     clear: both; }
-  .ec-cateoryNaviRole textarea {
+  .ec-categoryNaviRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-cateoryNaviRole img {
+  .ec-categoryNaviRole img {
     max-width: 100%; }
-  .ec-cateoryNaviRole html {
+  .ec-categoryNaviRole html {
     box-sizing: border-box; }
-  .ec-cateoryNaviRole *,
-  .ec-cateoryNaviRole *:before,
-  .ec-cateoryNaviRole *:after {
+  .ec-categoryNaviRole *,
+  .ec-categoryNaviRole *:before,
+  .ec-categoryNaviRole *:after {
     box-sizing: inherit; }
-  .ec-cateoryNaviRole img {
+  .ec-categoryNaviRole img {
     width: 100%; }
 
 .ec-itemNav {
@@ -5138,7 +5138,7 @@ Styleguide 11.2.6
   position: fixed;
   width: 100%;
   height: 100vh;
-  top: 0px;
+  top: 0;
   left: 0;
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -6869,7 +6869,7 @@ Styleguide 15.2.3
   border-top: 1px dotted #ccc; }
 
 .ec-orderDelivery .ec-orderDelivery__address {
-  margin: 10px 0px 18px; }
+  margin: 10px 0 18px; }
   .ec-orderDelivery .ec-orderDelivery__address p {
     margin: 0; }
 
@@ -8310,17 +8310,17 @@ Styleguide 22.1
     border-bottom-right-radius: 50px;
   }
 
-  .ec-cateoryNaviRole{
+  .ec-categoryNaviRole{
     display: block;
     width: 100%;
   }
 
-  .ec-cateoryNaviRole a{
+  .ec-categoryNaviRole a{
     color: inherit;
     text-decoration: none;
   }
 
-  .ec-cateoryNaviRole a:hover{
+  .ec-categoryNaviRole a:hover{
     text-decoration: none;
   }
 
@@ -8345,7 +8345,6 @@ Styleguide 22.1
   }
 
   .ec-itemNav__nav li ul li{
-    height: 55px;
     overflow: hidden;
     height: 0;
   }
