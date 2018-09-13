@@ -490,7 +490,7 @@ class PluginController extends AbstractController
      *
      * @return array
      */
-    public function authenticationSetting(Request $request)
+    public function authenticationSetting(Request $request, CacheUtil $cacheUtil)
     {
         $builder = $this->formFactory
             ->createBuilder(AuthenticationType::class, $this->BaseInfo);
@@ -507,6 +507,7 @@ class PluginController extends AbstractController
             // composerの認証を更新
             $this->composerService->configureRepository($this->BaseInfo);
 
+            $cacheUtil->clearCache();
             $this->addSuccess('admin.common.save_complete', 'admin');
         }
 
