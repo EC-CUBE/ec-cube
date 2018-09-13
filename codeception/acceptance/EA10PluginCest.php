@@ -348,13 +348,11 @@ abstract class Abstract_Plugin
 
     protected $removed = false;
 
-    protected $table;
+    protected $tables = [];
 
-    protected $column;
+    protected $columns = [];
 
-    protected $traitTarget;
-
-    protected $trait;
+    protected $traits = [];
 
     public function __construct(\AcceptanceTester $I)
     {
@@ -367,51 +365,51 @@ abstract class Abstract_Plugin
 
     public function tableExists()
     {
-        if ($this->table) {
-            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$this->table."';")->fetch()['count'] > 0;
-            $this->I->assertTrue($exists, 'テーブルがあるはず '.$this->table);
+        foreach ($this->tables as $table) {
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$table."';")->fetch()['count'] > 0;
+            $this->I->assertTrue($exists, 'テーブルがあるはず '.$table);
         }
     }
 
     public function tableNotExists()
     {
-        if ($this->table) {
-            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$this->table."';")->fetch()['count'] > 0;
-            $this->I->assertFalse($exists, 'テーブルがないはず '.$this->table);
+        foreach ($this->tables as $table) {
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$table."';")->fetch()['count'] > 0;
+            $this->I->assertFalse($exists, 'テーブルがないはず '.$table);
         }
     }
 
     public function columnExists()
     {
-        if ($this->column) {
-            list($tableName, $columnName) = explode('.', $this->column);
+        foreach ($this->columns as $column) {
+            list($tableName, $columnName) = explode('.', $column);
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}' AND column_name = '${columnName}';")->fetch()['count'] == 1;
-            $this->I->assertTrue($exists, 'カラムがあるはず '.$this->column);
+            $this->I->assertTrue($exists, 'カラムがあるはず '.$column);
         }
     }
 
     public function columnNotExists()
     {
-        if ($this->column) {
-            list($tableName, $columnName) = explode('.', $this->column);
+        foreach ($this->columns as $column) {
+            list($tableName, $columnName) = explode('.', $column);
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}' AND column_name = '${columnName}';")->fetch()['count'] == 1;
-            $this->I->assertFalse($exists, 'カラムがないはず '.$this->column);
+            $this->I->assertFalse($exists, 'カラムがないはず '.$column);
         }
     }
 
     public function traitExists()
     {
-        if ($this->trait) {
-            $this->I->assertContains($this->trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$this->traitTarget.'.php'), 'Traitがあるはず');
+        foreach ($this->traits as $trait => $target) {
+            $this->I->assertContains($trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php'), 'Traitがあるはず '.$trait);
         }
     }
 
     public function traitNotExists()
     {
-        if ($this->trait) {
-            $file = $this->config['kernel.project_dir'].'/app/proxy/entity/'.$this->traitTarget.'.php';
+        foreach ($this->traits as $trait => $target) {
+            $file = $this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php';
             if (file_exists($file)) {
-                $this->I->assertNotContains($this->trait, file_get_contents($file), 'Traitがないはず');
+                $this->I->assertNotContains($trait, file_get_contents($file), 'Traitがないはず '.$trait);
             } else {
                 $this->I->assertTrue(true, 'Traitがないはず');
             }
@@ -690,10 +688,9 @@ class Horizon_Local extends Local_Plugin
     public function __construct(AcceptanceTester $I)
     {
         parent::__construct($I, 'Horizon');
-        $this->table = 'dtb_dash';
-        $this->column = 'dtb_cart.is_horizon';
-        $this->trait = '\Plugin\Horizon\Entity\CartTrait';
-        $this->traitTarget = 'Cart';
+        $this->tables[] = 'dtb_dash';
+        $this->columns[] = 'dtb_cart.is_horizon';
+        $this->traits['\Plugin\Horizon\Entity\CartTrait'] = 'Cart';
     }
 
     public static function start(AcceptanceTester $I)
@@ -707,10 +704,9 @@ class Horizon_Store extends Store_Plugin
     public function __construct(AcceptanceTester $I)
     {
         parent::__construct($I, 'Horizon');
-        $this->table = 'dtb_dash';
-        $this->column = 'dtb_cart.is_horizon';
-        $this->trait = '\Plugin\Horizon\Entity\CartTrait';
-        $this->traitTarget = 'Cart';
+        $this->tables[] = 'dtb_dash';
+        $this->columns[] = 'dtb_cart.is_horizon';
+        $this->traits['\Plugin\Horizon\Entity\CartTrait'] = 'Cart';
     }
 
     public static function start(AcceptanceTester $I)
@@ -724,9 +720,8 @@ class Boomerang_Store extends Store_Plugin
     public function __construct(AcceptanceTester $I)
     {
         parent::__construct($I, 'Boomerang');
-        $this->column = 'dtb_cart.is_boomerang';
-        $this->trait = '\Plugin\Boomerang\Entity\CartTrait';
-        $this->traitTarget = 'Cart';
+        $this->columns[] = 'dtb_cart.is_boomerang';
+        $this->traits['\Plugin\Boomerang\Entity\CartTrait'] = 'Cart';
     }
 
     public static function start(AcceptanceTester $I)
@@ -740,9 +735,8 @@ class Boomerang_Local extends Local_Plugin
     public function __construct(AcceptanceTester $I)
     {
         parent::__construct($I, 'Boomerang');
-        $this->column = 'dtb_cart.is_boomerang';
-        $this->trait = '\Plugin\Boomerang\Entity\CartTrait';
-        $this->traitTarget = 'Cart';
+        $this->columns[] = 'dtb_cart.is_boomerang';
+        $this->traits['\Plugin\Boomerang\Entity\CartTrait'] = 'Cart';
     }
 
     public static function start(AcceptanceTester $I)
