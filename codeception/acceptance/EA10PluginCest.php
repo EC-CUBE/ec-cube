@@ -295,6 +295,18 @@ class EA10PluginCest
         $Boomerang->検証()->無効化()->削除();
     }
 
+    public function test_extend_same_table_crossed_store(\AcceptanceTester $I)
+    {
+        $Horizon = Horizon_Store::start($I);
+        $Boomerang = Boomerang_Store::start($I);
+
+        $Horizon->インストール()->有効化()->無効化();
+        $Boomerang->インストール()->有効化();
+
+        $Horizon->検証()->削除();
+        $Boomerang->検証()->無効化()->削除();
+    }
+
     public function test_extend_same_table_crossed_local(\AcceptanceTester $I)
     {
         $Horizon = Horizon_Local::start($I);
