@@ -719,6 +719,7 @@ class MailService
         return $this->twig->render($fileName, [
             'Shipping' => $Shipping,
             'ShippingItems' => $ShippingItems,
+            'Order' => $Order,
         ]);
     }
 

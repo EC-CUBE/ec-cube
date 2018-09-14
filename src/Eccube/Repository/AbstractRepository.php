@@ -46,8 +46,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     protected function getCacheLifetime()
     {
-        // $options = $this->eccubeConfig['doctrine_cache'];
-        // return $options['result_cache']['lifetime'];
-        return 0; // FIXME
+        return 3600; // TODO 設定に切り出すほどでもないので一旦固定で.
     }
 }

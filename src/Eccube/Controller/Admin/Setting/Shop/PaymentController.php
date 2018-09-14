@@ -168,6 +168,7 @@ class PaymentController extends AbstractController
         }
 
         $images = $request->files->get('payment_register');
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
         $filename = null;
         if (isset($images['payment_image_file'])) {
             $image = $images['payment_image_file'];
@@ -178,7 +179,12 @@ class PaymentController extends AbstractController
                 throw new UnsupportedMediaTypeHttpException();
             }
 
-            $extension = $image->guessExtension();
+            // 拡張子
+            $extension = $image->getClientOriginalExtension();
+            if (!in_array($extension, $allowExtensions)) {
+                throw new UnsupportedMediaTypeHttpException();
+            }
+
             $filename = date('mdHis').uniqid('_').'.'.$extension;
             $image->move($this->getParameter('eccube_temp_image_dir'), $filename);
         }

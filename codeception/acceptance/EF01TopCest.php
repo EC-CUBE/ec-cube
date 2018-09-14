@@ -41,7 +41,7 @@ class EF01TopCest
         // カテゴリ名（カテゴリ検索用）が表示されている
         $categories = Fixtures::get('categories');
         foreach ($categories as $category) {
-            $I->see($category->getName(), '#searchform #category_id option');
+            $I->see($category->getName(), '.searchform .category_id option');
         }
 
         //管理側のコンテンツ管理（新着情報管理）に設定されている情報が、順位順に表示されている
@@ -84,12 +84,12 @@ class EF01TopCest
         // 各新着情報の箇所を押下する
         // Knowhow: javascriptでclick eventハンドリングしている場合はclick('表示文字列')では探せない
         $topPage->新着情報選択(1);
+        $I->wait(1);
 
         // 押下された新着情報のセクションが広がり、詳細情報、リンクが表示される
         $I->assertContains('コメント1', $topPage->新着情報詳細(1));
 
         // 「詳しくはこちら」リンクを押下する
-        $I->assertContains('詳しくはこちら', $topPage->新着情報詳細(1));
         $topPage->新着情報リンククリック(1);
         $I->amOnUrl($News->getUrl());
 
@@ -131,7 +131,7 @@ class EF01TopCest
         $topPage = TopPage::go($I);
 
         // カテゴリを選択する
-        $I->selectOption(['id' => 'category_id'], 'フルーツ');
+        $I->selectOption(['class' => 'category_id'], 'フルーツ');
 
         // 虫眼鏡ボタンを押下する
         $topPage->検索();
@@ -150,7 +150,7 @@ class EF01TopCest
         $topPage = TopPage::go($I);
 
         // キーワードを入力する
-        $I->fillField(['id' => 'name'], 'ジェラート');
+        $I->fillField(['class' => 'search-name'], 'ジェラート');
 
         // 虫眼鏡ボタンを押下する
         $topPage->検索();

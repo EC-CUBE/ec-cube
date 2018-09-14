@@ -19,6 +19,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\NewsType;
 use Eccube\Repository\NewsRepository;
+use Eccube\Util\CacheUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,7 +91,7 @@ class NewsController extends AbstractController
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function edit(Request $request, $id = null)
+    public function edit(Request $request, $id = null, CacheUtil $cacheUtil)
     {
         if ($id) {
             $News = $this->newsRepository->find($id);
@@ -134,6 +135,9 @@ class NewsController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
+            // キャッシュの削除
+            $cacheUtil->clearDoctrineCache();
+
             return $this->redirectToRoute('admin_content_news_edit', ['id' => $News->getId()]);
         }
 
@@ -153,7 +157,7 @@ class NewsController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete(Request $request, News $News)
+    public function delete(Request $request, News $News, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -168,6 +172,10 @@ class NewsController extends AbstractController
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
             log_info('新着情報削除完了', [$News->getId()]);
+
+            // キャッシュの削除
+            $cacheUtil->clearDoctrineCache();
+
         } catch (\Exception $e) {
             $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $News->getTitle()]);
             $this->addError($message, 'admin');

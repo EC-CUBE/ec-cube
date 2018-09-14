@@ -15,7 +15,7 @@ Markup:
     .row.justify-content-between.align-items-center
       .col-6
         +e.leftBlockItem
-          a(href="").c-beseLink
+          a(href="").c-baseLink
             i.fa.fa-backward(aria-hidden="true")
             span 商品マスター
       .col-6
@@ -91,14 +91,14 @@ Styleguide 5.0
 
 Markup:
 div(style="background:#333; padding:20px;")
-  a(href="").c-beseLink
+  a(href="").c-baseLink
     i.fa.fa-backward
     span 商品マスター
 
 
 Styleguide 5.1
 */
-.c-beseLink {
+.c-baseLink {
   display: inline-block;
   font-size: 16px;
   color: $white;

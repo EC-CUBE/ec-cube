@@ -8,6 +8,9 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
+{% set Carts = get_all_carts() %}
+{% set totalPrice = get_carts_total_price() %}
+{% set totalQuantity = get_carts_total_quantity() %}
 <div class="ec-cartNaviWrap">
     <div class="ec-cartNavi">
         <i class="ec-cartNavi__icon fas fa-shopping-cart">

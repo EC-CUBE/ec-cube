@@ -44,6 +44,11 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         const TARGET_ID_CLOSE_BODY_BEFORE = 12;
 
         /**
+         * プレビュー用レイアウト
+         */
+        const DEFAULT_LAYOUT_PREVIEW_PAGE = 0;
+
+        /**
          * トップページ用レイアウト
          */
         const DEFAULT_LAYOUT_TOP_PAGE = 1;
@@ -63,7 +68,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
 
         public function isDefault()
         {
-            return in_array($this->id, [self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE]);
+            return in_array($this->id, [self::DEFAULT_LAYOUT_PREVIEW_PAGE, self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE]);
         }
 
         /**

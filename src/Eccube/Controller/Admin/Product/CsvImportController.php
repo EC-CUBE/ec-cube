@@ -34,6 +34,7 @@ use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Service\CsvImportService;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -105,6 +106,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param ProductRepository $productRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param ValidatorInterface $validator
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -211,7 +213,7 @@ class CsvImportController extends AbstractCsvImportController
                             }
 
                             if (isset($row[$headerByKey['product_del_flg']])) {
-                                if (StringUtil::isNotBlank($row[$headerByKey['product_del_flg']]) && $row[$headerByKey['product_del_flg']] == (string)Constant::ENABLED) {
+                                if (StringUtil::isNotBlank($row[$headerByKey['product_del_flg']]) && $row[$headerByKey['product_del_flg']] == (string) Constant::ENABLED) {
                                     // 商品を物理削除
                                     $deleteImages[] = $Product->getProductImage();
 
@@ -220,10 +222,10 @@ class CsvImportController extends AbstractCsvImportController
                                         $this->entityManager->flush();
 
                                         continue;
-
                                     } catch (ForeignKeyConstraintViolationException $e) {
                                         $message = trans('admin.common.csv_invalid_foreign_key', ['%line%' => $line, '%name%' => $Product->getName()]);
                                         $this->addErrors($message);
+
                                         return $this->renderWithError($form, $headers);
                                     }
                                 }
@@ -537,7 +539,7 @@ class CsvImportController extends AbstractCsvImportController
      * @Route("/%eccube_admin_route%/product/category_csv_upload", name="admin_product_category_csv_import")
      * @Template("@admin/Product/csv_category.twig")
      */
-    public function csvCategory(Request $request)
+    public function csvCategory(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
@@ -682,6 +684,8 @@ class CsvImportController extends AbstractCsvImportController
                     log_info('カテゴリCSV登録完了');
                     $message = 'admin.common.csv_upload_complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
+
+                    $cacheUtil->clearDoctrineCache();
                 }
             }
         }

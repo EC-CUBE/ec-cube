@@ -123,11 +123,33 @@ class CartService
     }
 
     /**
+     * 現在のカートの配列を取得する.
+     *
+     * 本サービスのインスタンスのメンバーが空の場合は、DBまたはセッションからカートを取得する
+     *
+     * @param bool $empty_delete true の場合、商品明細が空のカートが存在した場合は削除する
+     *
      * @return Cart[]
      */
-    public function getCarts()
+    public function getCarts($empty_delete = false)
     {
-        if (!empty($this->carts)) {
+        if (null !== $this->carts) {
+            if ($empty_delete) {
+                $cartKeys = [];
+                foreach (array_keys($this->carts) as $index) {
+                    $Cart = $this->carts[$index];
+                    if ($Cart->getItems()->count() > 0) {
+                        $cartKeys[] = $Cart->getCartKey();
+                    } else {
+                        $this->entityManager->remove($this->carts[$index]);
+                        $this->entityManager->flush($this->carts[$index]);
+                        unset($this->carts[$index]);
+                    }
+                }
+
+                $this->session->set('cart_keys', $cartKeys);
+            }
+
             return $this->carts;
         }
 
@@ -158,6 +180,10 @@ class CartService
     public function getSessionCarts()
     {
         $cartKeys = $this->session->get('cart_keys', []);
+
+        if (empty($cartKeys)) {
+            return [];
+        }
 
         return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
     }

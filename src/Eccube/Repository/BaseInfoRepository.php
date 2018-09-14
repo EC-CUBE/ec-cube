@@ -15,7 +15,6 @@ namespace Eccube\Repository;
 
 use Eccube\Entity\BaseInfo;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * BaseInfoRepository
@@ -26,42 +25,28 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class BaseInfoRepository extends AbstractRepository
 {
     /**
-     * @var  KernelInterface
-     */
-    protected $kernel;
-
-    /**
      * BaseInfoRepository constructor.
      *
      * @param RegistryInterface $registry
-     * @param KernelInterface $kernel
      */
-    public function __construct(RegistryInterface $registry, KernelInterface $kernel)
+    public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, BaseInfo::class);
-        $this->kernel = $kernel;
     }
 
     /**
      * @param int $id
      *
      * @return BaseInfo
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function get($id = 1)
     {
-        $qb = $this->createQueryBuilder('e')
-            ->where('e.id = :id')
-            ->setParameter('id', $id);
+        $BaseInfo = $this->find($id);
 
-        if (!$this->kernel->isDebug()) {
-            $qb->setCacheable(true);
+        if (null === $BaseInfo) {
+            throw new \Exception('BaseInfo not found. id = '. $id);
         }
 
-        return $qb->getQuery()
-            ->useResultCache(true, $this->getCacheLifetime())
-            ->getSingleResult();
+        return $this->find($id);
     }
 }

@@ -27,7 +27,7 @@ file that was distributed with this source code.
                 <form method="post" action="{{ url('contact') }}" class="h-adr" novalidate>
                     <span class="p-country-name" style="display:none;">Japan</span>
                     {{ form_widget(form._token) }}
-                    <p class="ec-para-nomal">{{ 'front.contact.inquiry_notice'|trans|nl2br }}</p>
+                    <p class="ec-para-normal">{{ 'front.contact.inquiry_notice'|trans|nl2br }}</p>
                     <div class="ec-borderedDefs">
                         <dl>
                             <dt>
@@ -132,7 +132,7 @@ file that was distributed with this source code.
                                         {{ form_label(f) }}
                                     </dt>
                                     <dd>
-                                        <div class="ec-select{{ has_errors(f) ? ' error' }}">
+                                        <div class="{{ f.vars.eccube_form_options.style_class }}{{ has_errors(f) ? ' error' }}">
                                             {{ form_widget(f) }}
                                             {{ form_errors(f) }}
                                         </div>

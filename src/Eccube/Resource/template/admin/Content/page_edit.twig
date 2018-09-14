@@ -250,9 +250,14 @@ file that was distributed with this source code.
                                 </div>
                                 <!-- metatag -->
                                 <div class="row">
-                                    <div class="col-2"><span>{{ 'admin.content.page_meta_metatag'|trans }}</span></div>
+                                    <div class="col-2">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_meta_tags'|trans }}">
+                                            <span>{{ 'admin.content.page_meta_metatag'|trans }}</span>
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                    </div>
                                     <div class="col-10">
-                                        {{ form_widget(form.meta_tags, { attr : { placeholder : 'admin.content.page_meta_metatag_placeholder'|trans }}) }}
+                                        {{ form_widget(form.meta_tags, { attr : { placeholder : 'admin.content.page_meta_metatag_placeholder'|trans, rows : '10' }}) }}
                                         {{ form_errors(form.meta_tags) }}
                                     </div>
                                 </div>
@@ -267,7 +272,7 @@ file that was distributed with this source code.
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            <a class="c-beseLink" href="{{ url('admin_content_page') }}">
+                            <a class="c-baseLink" href="{{ url('admin_content_page') }}">
                                 <i class="fa fa-backward" aria-hidden="true"></i>
                                 <span>{{ 'admin.content.page_management'|trans }}</span>
                             </a>

@@ -535,7 +535,7 @@ EOL;
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            <a class="c-beseLink"
+                            <a class="c-baseLink"
                                href="{{ url('admin_store_plugin') }}">
                                 <i class="fa fa-backward" aria-hidden="true"></i>
                                 <span>プラグイン一覧</span>

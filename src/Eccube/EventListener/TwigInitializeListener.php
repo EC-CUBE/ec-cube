@@ -26,6 +26,8 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Repository\PageLayoutRepository;
+use Eccube\Repository\BlockPositionRepository;
 use Eccube\Request\Context;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -60,6 +62,16 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @var PageRepository
      */
     protected $pageRepository;
+
+    /**
+     * @var PageLayoutRepository
+     */
+    protected $pageLayoutRepository;
+
+    /**
+     * @var BlockPositionRepository
+     */
+    protected $blockPositionRepository;
 
     /**
      * @var Context
@@ -97,6 +109,8 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @param Environment $twig
      * @param BaseInfoRepository $baseInfoRepository
      * @param PageRepository $pageRepository
+     * @param PageLayoutRepository $pageLayoutRepository
+     * @param BlockPositionRepository $blockPositionRepository
      * @param DeviceTypeRepository $deviceTypeRepository
      * @param AuthorityRoleRepository $authorityRoleRepository
      * @param EccubeConfig $eccubeConfig
@@ -109,6 +123,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         Environment $twig,
         BaseInfoRepository $baseInfoRepository,
         PageRepository $pageRepository,
+        PageLayoutRepository $pageLayoutRepository,
+        BlockPositionRepository $blockPositionRepository,
         DeviceTypeRepository $deviceTypeRepository,
         AuthorityRoleRepository $authorityRoleRepository,
         EccubeConfig $eccubeConfig,
@@ -120,6 +136,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig = $twig;
         $this->baseInfoRepository = $baseInfoRepository;
         $this->pageRepository = $pageRepository;
+        $this->pageLayoutRepository = $pageLayoutRepository;
+        $this->blockPositionRepository = $blockPositionRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
         $this->authorityRoleRepository = $authorityRoleRepository;
         $this->eccubeConfig = $eccubeConfig;
@@ -159,8 +177,9 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function setFrontVariables(GetResponseEvent $event)
     {
+        $request = $event->getRequest();
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
-        $attributes = $event->getRequest()->attributes;
+        $attributes = $request->attributes;
         $route = $attributes->get('_route');
         if ($route == 'user_data') {
             $routeParams = $attributes->get('_route_params', []);
@@ -174,12 +193,7 @@ class TwigInitializeListener implements EventSubscriberInterface
 
         // URLからPageを取得
         /** @var Page $Page */
-        $Page = $this->pageRepository->findOneBy(['url' => $route]);
-
-        // 該当するPageがない場合は空のページをセット
-        if (!$Page) {
-            $Page = $this->pageRepository->newPage();
-        }
+        $Page = $this->pageRepository->getPageByRoute($route);
 
         /** @var PageLayout[] $PageLayouts */
         $PageLayouts = $Page->getPageLayouts();
@@ -204,8 +218,25 @@ class TwigInitializeListener implements EventSubscriberInterface
             }
         }
 
-        // Layoutのデータがない場合は空のLayoutをセット
-        if (!$Layout) {
+        // 管理者ログインしている場合にページレイアウトのプレビューが可能
+        if ($request->get('preview')) {
+            $is_admin = $request->getSession()->has('_security_admin');
+            if ($is_admin) {
+                $Layout = $this->layoutRepository->get(Layout::DEFAULT_LAYOUT_PREVIEW_PAGE);
+
+                $this->twig->addGlobal('Layout', $Layout);
+                $this->twig->addGlobal('Page', $Page);
+                $this->twig->addGlobal('title', $Page->getName());
+
+                return;
+            }
+        }
+
+        if ($Layout) {
+            // lazy loadを制御するため, Layoutを取得しなおす.
+            $Layout = $this->layoutRepository->get($Layout->getId());
+        } else {
+            // Layoutのデータがない場合は空のLayoutをセット
             $Layout = new Layout();
         }
 

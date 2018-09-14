@@ -132,8 +132,11 @@ class Kernel extends BaseKernel
     {
         $container = $this->getContainer();
 
+        $scheme = ['https', 'http'];
         $forceSSL = $container->getParameter('eccube_force_ssl');
-        $scheme = $forceSSL ? 'https' : 'http';
+        if ($forceSSL) {
+            $scheme = 'https';
+        }
         $routes->setSchemes($scheme);
 
         $confDir = $this->getProjectDir().'/app/config/eccube';

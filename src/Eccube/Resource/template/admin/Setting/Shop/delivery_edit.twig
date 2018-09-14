@@ -27,7 +27,11 @@ file that was distributed with this source code.
         $(function() {
             $('#set_fee_all').on('click', function() {
                 var fee = $('#{{ form.free_all.vars.id }}').val();
-                $('input[name$="[fee]"]').val(fee);
+                if ($.isNumeric(fee)) {
+                    $('input[name$="[fee]"]').val(fee);
+                    return;
+                }
+                alert("{{ 'admin.setting.shop.delivery.fee.invalid'|trans }}");
             });
         });
     </script>
@@ -327,6 +331,7 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-3">
                                             {{ form_widget(form.free_all) }}
+                                            {{ form_errors(form.free_all) }}
                                         </div>
                                         <div class="col-auto">
                                             <button id="set_fee_all" class="btn btn-ec-regular" type="button">{{ 'admin.setting.shop.delivery.apply_to_pref__button'|trans }}</button>
@@ -343,6 +348,7 @@ file that was distributed with this source code.
                                                 </div>
                                                 <div class="col pl-0">
                                                     {{ form_widget(child.fee) }}
+                                                    {{ form_errors(child.fee) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -383,7 +389,7 @@ file that was distributed with this source code.
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            <a class="c-beseLink" href="{{ url('admin_setting_shop_delivery') }}">
+                            <a class="c-baseLink" href="{{ url('admin_setting_shop_delivery') }}">
                                 <i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.setting.shop.delivery_list'|trans }}</span>
                             </a>
                         </div>

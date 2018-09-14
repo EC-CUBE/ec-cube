@@ -36,14 +36,14 @@ file that was distributed with this source code.
 ************************************************
 　ご注文者情報
 ************************************************
-お名前：{{ Shipping.name01 }} {{ Shipping.name02 }} 様
-お名前(カナ)：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
-{% if Shipping.company_name %}
-会社名：{{ Shipping.company_name }}
+お名前：{{ Order.name01 }} {{ Order.name02 }} 様
+お名前(カナ)：{{ Order.kana01 }} {{ Order.kana02 }} 様
+{% if Order.company_name %}
+会社名：{{ Order.company_name }}
 {% endif %}
-郵便番号：〒{{ Shipping.postal_code }}
-住所：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
-電話番号：{{ Shipping.phone_number }}
+郵便番号：〒{{ Order.postal_code }}
+住所：{{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
+電話番号：{{ Order.phone_number }}
 
 ************************************************
 　配送情報

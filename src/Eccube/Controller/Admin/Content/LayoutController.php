@@ -15,25 +15,26 @@ namespace Eccube\Controller\Admin\Content;
 
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
-use Eccube\Form\Type\Master\DeviceTypeType;
+use Eccube\Form\Type\Admin\LayoutType;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Repository\BlockRepository;
+use Eccube\Repository\BlockPositionRepository;
 use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\PageLayoutRepository;
+use Eccube\Repository\PageRepository;
+use Eccube\Repository\ProductRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Twig\Environment as Twig;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
-// todo プレビュー実装
 class LayoutController extends AbstractController
 {
     const DUMMY_BLOCK_ID = 9999999999;
@@ -42,6 +43,10 @@ class LayoutController extends AbstractController
      * @var BlockRepository
      */
     protected $blockRepository;
+    /**
+     * @var BlockPositionRepository
+     */
+    protected $blockPositionRepository;
 
     /**
      * @var LayoutRepository
@@ -54,17 +59,44 @@ class LayoutController extends AbstractController
     protected $pageLayoutRepository;
 
     /**
+     * @var PageRepository
+     */
+    protected $pageRepository;
+
+    /**
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
+    /**
+     * @var boolean
+     */
+    protected $isPreview = false;
+
+    /**
      * LayoutController constructor.
      *
      * @param BlockRepository $blockRepository
      * @param LayoutRepository $layoutRepository
      * @param PageLayoutRepository $pageLayoutRepository
+     * @param pageRepository $pageRepository
+     * @param ProductRepository $productRepository
+     * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository)
+    public function __construct(BlockRepository $blockRepository, BlockPositionRepository $blockPositionRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository, PageRepository $pageRepository, ProductRepository $productRepository, DeviceTypeRepository $deviceTypeRepository)
     {
         $this->blockRepository = $blockRepository;
+        $this->blockPositionRepository = $blockPositionRepository;
         $this->layoutRepository = $layoutRepository;
         $this->pageLayoutRepository = $pageLayoutRepository;
+        $this->pageRepository = $pageRepository;
+        $this->productRepository = $productRepository;
+        $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
     /**
@@ -73,7 +105,13 @@ class LayoutController extends AbstractController
      */
     public function index()
     {
-        $Layouts = $this->layoutRepository->findBy([], ['DeviceType' => 'DESC', 'id' => 'ASC']);
+        $qb = $this->layoutRepository->createQueryBuilder('l');
+        $Layouts = $qb->where('l.id != :DefaultLayoutPreviewPage')
+                    ->orderBy('l.DeviceType', 'DESC')
+                    ->addOrderBy('l.id', 'ASC')
+                    ->setParameter('DefaultLayoutPreviewPage', Layout::DEFAULT_LAYOUT_PREVIEW_PAGE)
+                    ->getQuery()
+                    ->getResult();
 
         return [
             'Layouts' => $Layouts,
@@ -87,7 +125,7 @@ class LayoutController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function delete(Layout $Layout)
+    public function delete(Layout $Layout, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -103,6 +141,9 @@ class LayoutController extends AbstractController
 
         $this->addSuccess('admin.common.delete_complete', 'admin');
 
+        // キャッシュの削除
+        $cacheUtil->clearDoctrineCache();
+
         return $this->redirectToRoute('admin_content_layout');
     }
 
@@ -111,63 +152,26 @@ class LayoutController extends AbstractController
      * @Route("/%eccube_admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit")
      * @Template("@admin/Content/layout.twig")
      */
-    public function edit(Request $request, $id = null)
+    public function edit(Request $request, $id = null, $previewPageId = null, CacheUtil $cacheUtil)
     {
         if (is_null($id)) {
             $Layout = new Layout();
         } else {
-            // todo レポジトリへ移動
-            try {
-                $Layout = $this->layoutRepository->createQueryBuilder('l')
-                    ->select('l, bp, b')
-                    ->leftJoin('l.BlockPositions', 'bp')
-                    ->leftJoin('bp.Block', 'b')
-                    ->where('l.id = :layout_id')
-                    ->orderBy('bp.block_row', 'ASC')
-                    ->setParameter('layout_id', $id)
-                    ->getQuery()
-                    ->getSingleResult();
-            } catch (NoResultException $e) {
+            $Layout = $this->layoutRepository->get($this->isPreview ? 0 : $id);
+            if (is_null($Layout)) {
                 throw new NotFoundHttpException();
             }
         }
 
-        // todo レポジトリへ移動
         // 未使用ブロックの取得
         $Blocks = $Layout->getBlocks();
         if (empty($Blocks)) {
             $UnusedBlocks = $this->blockRepository->findAll();
         } else {
-            $UnusedBlocks = $this->blockRepository
-                ->createQueryBuilder('b')
-                ->select('b')
-                ->where('b not in (:blocks)')
-                ->setParameter('blocks', $Blocks)
-                ->getQuery()
-                ->getResult();
+            $UnusedBlocks = $this->blockRepository->getUnusedBlocks($Blocks);
         }
 
-        $builder = $this->formFactory->createBuilder(FormType::class, $Layout);
-        $builder
-            ->add(
-                'name',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                    'required' => false,
-                ]
-            )->add(
-                'DeviceType',
-                DeviceTypeType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                    'required' => false,
-                ]
-            );
+        $builder = $this->formFactory->createBuilder(LayoutType::class, $Layout, ['layout_id' => $id]);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -188,29 +192,35 @@ class LayoutController extends AbstractController
             }
 
             // ブロックの個数分登録を行う.
-            $max = count($Blocks) + count($UnusedBlocks);
             $data = $request->request->all();
-            for ($i = 0; $i < $max; $i++) {
-                // block_idが取得できない場合はinsertしない
-                if (!isset($data['block_id_'.$i])) {
-                    continue;
+            $this->blockPositionRepository->register($data, $Blocks, $UnusedBlocks, $Layout);
+
+            // キャッシュの削除
+            $cacheUtil->clearDoctrineCache();
+
+            // プレビューモード
+            if ($this->isPreview) {
+                // プレビューする画面を取得
+                try {
+                    $Page = $this->pageRepository->find($previewPageId);
+                } catch (NoResultException $e) {
+                    throw new NotFoundHttpException();
                 }
-                // 未使用ブロックはinsertしない
-                if ($data['section_'.$i] == Layout::TARGET_ID_UNUSED) {
-                    continue;
+
+                if ($Page->getEditType() == \Eccube\Entity\Page::EDIT_TYPE_DEFAULT) {
+                    if ($Page->getUrl() === 'product_detail') {
+                        $product = $this->productRepository->findOneBy(['Status' => ProductStatus::DISPLAY_SHOW]);
+                        if (is_null($product)) {
+                            throw new NotFoundHttpException();
+                        }
+
+                        return $this->redirectToRoute($Page->getUrl(), ['preview' => 1, 'id' => $product->getId()]);
+                    } else {
+                        return $this->redirectToRoute($Page->getUrl(), ['preview' => 1]);
+                    }
                 }
-                $Block = $this->blockRepository->find($data['block_id_'.$i]);
-                $BlockPosition = new BlockPosition();
-                $BlockPosition
-                    ->setBlockId($data['block_id_'.$i])
-                    ->setLayoutId($Layout->getId())
-                    ->setBlockRow($data['block_row_'.$i])
-                    ->setSection($data['section_'.$i])
-                    ->setBlock($Block)
-                    ->setLayout($Layout);
-                $Layout->addBlockPosition($BlockPosition);
-                $this->entityManager->persist($BlockPosition);
-                $this->entityManager->flush($BlockPosition);
+
+                return $this->redirectToRoute('user_data', ['route' => $Page->getUrl(), 'preview' => 1]);
             }
 
             $this->addSuccess('admin.common.save_complete', 'admin');
@@ -259,5 +269,16 @@ class LayoutController extends AbstractController
             'id' => $Block->getId(),
             'source' => $source,
         ]);
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/content/layout/{id}/preview", requirements={"id" = "\d+"}, name="admin_content_layout_preview")
+     */
+    public function preview(Request $request, $id, CacheUtil $cacheUtil)
+    {
+        $form = $request->get('admin_layout');
+        $this->isPreview = true;
+
+        return $this->edit($request, $id, $form['Page'], $cacheUtil);
     }
 }

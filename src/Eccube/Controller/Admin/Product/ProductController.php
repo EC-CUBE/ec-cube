@@ -312,6 +312,7 @@ class ProductController extends AbstractController
 
         $images = $request->files->get('admin_product');
 
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
         $files = [];
         if (count($images) > 0) {
             foreach ($images as $img) {
@@ -322,7 +323,12 @@ class ProductController extends AbstractController
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
+                    // 拡張子
                     $extension = $image->getClientOriginalExtension();
+                    if (!in_array($extension, $allowExtensions)) {
+                        throw new UnsupportedMediaTypeHttpException();
+                    }
+
                     $filename = date('mdHis').uniqid('_').'.'.$extension;
                     $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
                     $files[] = $filename;
@@ -386,7 +392,7 @@ class ProductController extends AbstractController
                 if ($this->BaseInfo->isOptionProductTaxRule() && $ProductClass->getTaxRule()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
-                $ProductStock = $ProductClasses[0]->getProductStock();
+                $ProductStock = $ProductClass->getProductStock();
             }
         }
 
