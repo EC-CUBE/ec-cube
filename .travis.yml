@@ -21,11 +21,11 @@ cache:
 
 php:
   - 7.1
-#  - 7.2
+  - 7.2
 
 env:
-#  - DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
-#  - DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
+  - DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
+  - DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
   - DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
 
 matrix:
@@ -95,12 +95,12 @@ jobs:
       - *eccube_setup
     env: GROUP=admin01 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
     script: ./codeception.sh -g ${GROUP}
-#  - <<: *e2e_test
-#    env: GROUP=admin02 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
-#  - <<: *e2e_test
-#    env: GROUP=admin03 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
-#  - <<: *e2e_test
-#    env: GROUP=front APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+  - <<: *e2e_test
+    env: GROUP=admin02 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+  - <<: *e2e_test
+    env: GROUP=admin03 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+  - <<: *e2e_test
+    env: GROUP=front APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
   - <<: *e2e_test
     env: APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025 ECCUBE_PACKAGE_API_URL=http://localhost:8080 NO_FIXTURES=1
     script:
@@ -347,11 +347,14 @@ jobs:
         ./codeception.sh --reset
         mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
         ./codeception.sh EA10PluginCest:test_dependency_plugin
+#      - |
+#        ./codeception.sh --reset
+#        mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
+#        ./codeception.sh EA10PluginCest:test_dependency_plugin_update
       - |
         ./codeception.sh --reset
-        mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
-        ./codeception.sh EA10PluginCest:test_dependency_plugin_update
-
+        mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
+        ./codeception.sh EA10PluginCest:install_enable_disable_enable_disable_remove_store
 
   # - stage: Code Coverage
   #   if: type != pull_request
