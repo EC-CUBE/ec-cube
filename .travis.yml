@@ -57,9 +57,9 @@ install:
   - *eccube_setup
 
 script:
-  - ./bin/phpunit --exclude-group cache-clear,cache-clear-install --testdox
-  - ./bin/phpunit --group cache-clear --testdox
-  - ./bin/phpunit --group cache-clear-install --testdox
+  - ./bin/phpunit --exclude-group cache-clear,cache-clear-install
+  - ./bin/phpunit --group cache-clear
+  - ./bin/phpunit --group cache-clear-install
 
 jobs:
   fast_finish: true
