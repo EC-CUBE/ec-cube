@@ -516,6 +516,8 @@ class PluginController extends AbstractController
             $this->composerService->configureRepository($this->BaseInfo);
             $this->addSuccess('admin.common.save_complete', 'admin');
             $cacheUtil->clearCache();
+
+            return $this->redirectToRoute('admin_store_authentication_setting');
         }
 
         return [
