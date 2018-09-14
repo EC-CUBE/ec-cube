@@ -54,14 +54,14 @@ file that was distributed with this source code.
                             <hr style="border-top: 3px double #8c8b8b;">
                             　ご注文者情報<br/>
                             <hr style="border-top: 3px double #8c8b8b;">
-                            お名前：{{ Shipping.name01 }} {{ Shipping.name02 }} 様<br/>
-                            お名前(カナ)：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様<br/>
-                            {% if Shipping.company_name %}
-                                会社名：{{ Shipping.company_name }}<br/>
+                            お名前：{{ Order.name01 }} {{ Order.name02 }} 様<br/>
+                            お名前(カナ)：{{ Order.kana01 }} {{ Order.kana02 }} 様<br/>
+                            {% if Order.company_name %}
+                                会社名：{{ Order.company_name }}<br/>
                             {% endif %}
-                            郵便番号：〒{{ Shipping.postal_code }}<br/>
-                            住所：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br/>
-                            電話番号：{{ Shipping.phone_number }}<br/>
+                            郵便番号：〒{{ Order.postal_code }}<br/>
+                            住所：{{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}<br/>
+                            電話番号：{{ Order.phone_number }}<br/>
                             <br/>
                             <hr style="border-top: 3px double #8c8b8b;">
                             　配送情報<br/>
