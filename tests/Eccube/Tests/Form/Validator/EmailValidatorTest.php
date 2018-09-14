@@ -66,5 +66,3 @@ class EmailValidatorTest extends AbstractTypeTestCase
         ];
     }
 }
-
-

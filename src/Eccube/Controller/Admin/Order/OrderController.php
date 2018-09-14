@@ -537,7 +537,7 @@ class OrderController extends AbstractController
                     $result = ['message' => trans('admin.order.failed_to_change_status', [
                         '%name%' => $Shipping->getId(),
                         '%from%' => $from,
-                        '%to%' => $to
+                        '%to%' => $to,
                     ])];
                 }
 

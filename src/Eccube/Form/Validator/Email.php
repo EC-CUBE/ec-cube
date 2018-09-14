@@ -16,7 +16,6 @@ namespace Eccube\Form\Validator;
 /**
  * @Annotation
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
- *
  */
 class Email extends \Symfony\Component\Validator\Constraints\Email
 {

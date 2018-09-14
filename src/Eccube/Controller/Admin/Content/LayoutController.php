@@ -218,7 +218,6 @@ class LayoutController extends AbstractController
             $this->addSuccess('admin.common.save_complete', 'admin');
 
             return $this->redirectToRoute('admin_content_layout_edit', ['id' => $Layout->getId()]);
-
         }
 
         return [

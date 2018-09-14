@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\EccubeTestCase;

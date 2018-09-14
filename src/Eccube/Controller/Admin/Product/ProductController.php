@@ -312,7 +312,7 @@ class ProductController extends AbstractController
 
         $images = $request->files->get('admin_product');
 
-        $allowExtensions = array('gif', 'jpg', 'jpeg', 'png');
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
         $files = [];
         if (count($images) > 0) {
             foreach ($images as $img) {

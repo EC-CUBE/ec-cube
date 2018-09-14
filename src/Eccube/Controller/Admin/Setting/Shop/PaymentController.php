@@ -168,7 +168,7 @@ class PaymentController extends AbstractController
         }
 
         $images = $request->files->get('payment_register');
-        $allowExtensions = array('gif', 'jpg', 'jpeg', 'png');
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
         $filename = null;
         if (isset($images['payment_image_file'])) {
             $image = $images['payment_image_file'];
