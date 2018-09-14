@@ -34,6 +34,7 @@ use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Service\CsvImportService;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -537,7 +538,7 @@ class CsvImportController extends AbstractCsvImportController
      * @Route("/%eccube_admin_route%/product/category_csv_upload", name="admin_product_category_csv_import")
      * @Template("@admin/Product/csv_category.twig")
      */
-    public function csvCategory(Request $request)
+    public function csvCategory(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
@@ -682,6 +683,8 @@ class CsvImportController extends AbstractCsvImportController
                     log_info('カテゴリCSV登録完了');
                     $message = 'admin.common.csv_upload_complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
+
+                    $cacheUtil->clearDoctrineCache();
                 }
             }
         }

@@ -252,7 +252,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/category/sort_no/move", name="admin_product_category_sort_no_move", methods={"POST"})
      */
-    public function moveSortNo(Request $request)
+    public function moveSortNo(Request $request, CacheUtil $cacheUtil)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -268,6 +268,8 @@ class CategoryController extends AbstractController
                 $this->entityManager->persist($Category);
             }
             $this->entityManager->flush();
+
+            $cacheUtil->clearDoctrineCache();
 
             return new Response('Successful');
         }
