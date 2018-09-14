@@ -352,7 +352,7 @@ class EA10PluginCest
         $Emperor->インストール()->有効化();
     }
 
-    public function test_dependency_plugin(\AcceptanceTester $I)
+    public function test_dependency_plugin_install(\AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Emperor = Emperor_Store::start($I, $Horizon);

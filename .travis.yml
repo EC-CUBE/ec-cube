@@ -219,7 +219,7 @@ jobs:
       - |
         ./codeception.sh --reset
         psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
-        ./codeception.sh EA10PluginCest:test_dependency_plugin
+        ./codeception.sh EA10PluginCest:test_dependency_plugin_install
       - |
         ./codeception.sh --reset
         psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
@@ -346,7 +346,7 @@ jobs:
       - |
         ./codeception.sh --reset
         mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
-        ./codeception.sh EA10PluginCest:test_dependency_plugin
+        ./codeception.sh EA10PluginCest:test_dependency_plugin_install
 #      - |
 #        ./codeception.sh --reset
 #        mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test';"
