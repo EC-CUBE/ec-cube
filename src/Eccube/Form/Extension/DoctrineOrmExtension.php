@@ -103,6 +103,10 @@ class DoctrineOrmExtension extends AbstractTypeExtension
             $options['form_theme'] = null;
         }
 
+        if (!array_key_exists('style_class', $options)) {
+            $options['style_class'] = 'ec-select';
+        }
+
         $view->vars['eccube_form_options'] = $options;
     }
 
@@ -113,6 +117,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
             [
                 'auto_render' => false,
                 'form_theme' => null,
+                'style_class' => 'ec-select',
             ]
         );
     }
