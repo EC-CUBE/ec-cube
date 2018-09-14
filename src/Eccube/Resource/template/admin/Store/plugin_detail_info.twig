@@ -15,8 +15,6 @@ file that was distributed with this source code.
     <li class="row"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin.detail.support'|trans }}</span>{% for version in item.supported_versions %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</li>
     <li class="row"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin.detail.public_date'|trans }}</span>{{ item.publish_date|date_day }}</li>
     <li class="row"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin.detail.update_date'|trans }}</span>{{ item.update_date|date_day }}</li>
-    {% set size = (item.size / 1024)|round(0, 'ceil')|number_format %}
-    <li class="row"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin.detail.size'|trans }}</span>{{ 'admin.store.plugin.detail.size.format'|trans({'%size%' : size}) }}</li>
     <li class="row"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin.detail.license'|trans }}</span>{{ item.license }}</li>
     <li class="row"><span class="font-weight-bold col-7 col-sm-6 pl-0">{{ 'admin.store.plugin.detail.develop'|trans }}</span>
         {% if item.author is not empty %}
