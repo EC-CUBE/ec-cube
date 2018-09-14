@@ -186,7 +186,7 @@ class FileController extends AbstractController
                     return $app->sendFile($file)->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
                 } else {
                     return $app->sendFile($file, 200, array(
-                        "Content-Type" => "aplication/octet-stream;",
+                        "Content-Type" => "application/octet-stream;",
                         "Content-Disposition" => "attachment; filename*=UTF-8\'\'".rawurlencode($this->convertStrFromServer($pathParts['basename']))
                     ));
                 }
