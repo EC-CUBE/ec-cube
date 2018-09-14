@@ -106,9 +106,10 @@ class LayoutController extends AbstractController
     public function index()
     {
         $qb = $this->layoutRepository->createQueryBuilder('l');
-        $Layouts = $qb->where('l.id != 0')
+        $Layouts = $qb->where('l.id != :DefaultLayoutPreviewPage')
                     ->orderBy('l.DeviceType', 'DESC')
                     ->addOrderBy('l.id', 'ASC')
+                    ->setParameter('DefaultLayoutPreviewPage', Layout::DEFAULT_LAYOUT_PREVIEW_PAGE)
                     ->getQuery()
                     ->getResult();
 

@@ -162,8 +162,10 @@ class MainEditType extends AbstractType
                     $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
                     return $er->createQueryBuilder('l')
-                        ->where('l.DeviceType = :DeviceType')
+                        ->where('l.id != :DefaultLayoutPreviewPage')
+                        ->andWhere('l.DeviceType = :DeviceType')
                         ->setParameter('DeviceType', $DeviceType)
+                        ->setParameter('DefaultLayoutPreviewPage', Layout::DEFAULT_LAYOUT_PREVIEW_PAGE)
                         ->orderBy('l.id', 'DESC');
                 },
             ])
@@ -176,8 +178,10 @@ class MainEditType extends AbstractType
                     $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_MB);
 
                     return $er->createQueryBuilder('l')
-                        ->where('l.DeviceType = :DeviceType')
+                        ->where('l.id != :DefaultLayoutPreviewPage')
+                        ->andWhere('l.DeviceType = :DeviceType')
                         ->setParameter('DeviceType', $DeviceType)
+                        ->setParameter('DefaultLayoutPreviewPage', Layout::DEFAULT_LAYOUT_PREVIEW_PAGE)
                         ->orderBy('l.id', 'DESC');
                 },
             ])
