@@ -272,7 +272,7 @@ class PluginService
         }
     }
 
-    public function generateProxyAndUpdateSchema(Plugin $plugin, $config)
+    public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false)
     {
         if ($plugin->isEnabled()) {
             $generatedFiles = $this->regenerateProxy($plugin, false);
@@ -284,19 +284,21 @@ class PluginService
             @mkdir($tmpProxyOutputDir);
 
             try {
-                // プラグインmetadata定義を追加
-                $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
-                if (file_exists($entityDir)) {
-                    $ormConfig = $this->entityManager->getConfiguration();
-                    $chain = $ormConfig->getMetadataDriverImpl();
-                    $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
-                    $namespace = 'Plugin\\'.$config['code'].'\\Entity';
-                    $chain->addDriver($driver, $namespace);
-                    $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+                if (!$uninstall) {
+                    // プラグインmetadata定義を追加
+                    $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+                    if (file_exists($entityDir)) {
+                        $ormConfig = $this->entityManager->getConfiguration();
+                        $chain = $ormConfig->getMetadataDriverImpl();
+                        $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
+                        $namespace = 'Plugin\\'.$config['code'].'\\Entity';
+                        $chain->addDriver($driver, $namespace);
+                        $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+                    }
                 }
 
                 // 一時的に利用するProxyを生成してからスキーマを更新する
-                $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
+                $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir, $uninstall);
                 $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
             } finally {
                 foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
@@ -537,8 +539,7 @@ class PluginService
         $this->unregisterPlugin($plugin);
 
         // スキーマを更新する
-        //FIXME: Update schema before no affect
-        $this->schemaService->updateSchema([], $this->projectRoot.'/app/proxy/entity');
+        $this->generateProxyAndUpdateSchema($plugin, $config, true);
 
         // プラグインのネームスペースに含まれるEntityのテーブルを削除する
         $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
@@ -576,10 +577,11 @@ class PluginService
      * @param Plugin $plugin プラグイン
      * @param boolean $temporary プラグインが無効状態でも一時的に生成するかどうか
      * @param string|null $outputDir 出力先
+     * @param bool $uninstall プラグイン削除の場合はtrue
      *
      * @return array 生成されたファイルのパス
      */
-    private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null)
+    private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null, $uninstall = false)
     {
         if (is_null($outputDir)) {
             $outputDir = $this->projectRoot.'/app/proxy/entity';
@@ -592,11 +594,11 @@ class PluginService
         );
 
         $excludes = [];
-        if ($temporary || $plugin->isEnabled()) {
+        if (!$uninstall && ($temporary || $plugin->isEnabled())) {
             $enabledPluginCodes[] = $plugin->getCode();
         } else {
             $index = array_search($plugin->getCode(), $enabledPluginCodes);
-            if ($index >= 0) {
+            if ($index !== false && $index >= 0) {
                 array_splice($enabledPluginCodes, $index, 1);
                 $excludes = [$this->projectRoot.'/app/Plugin/'.$plugin->getCode().'/Entity'];
             }
