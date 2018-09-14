@@ -41,7 +41,7 @@ class EF01TopCest
         // カテゴリ名（カテゴリ検索用）が表示されている
         $categories = Fixtures::get('categories');
         foreach ($categories as $category) {
-            $I->see($category->getName(), '#searchform #category_id option');
+            $I->see($category->getName(), '.searchform .category_id option');
         }
 
         //管理側のコンテンツ管理（新着情報管理）に設定されている情報が、順位順に表示されている
@@ -131,7 +131,7 @@ class EF01TopCest
         $topPage = TopPage::go($I);
 
         // カテゴリを選択する
-        $I->selectOption(['id' => 'category_id'], 'フルーツ');
+        $I->selectOption(['class' => 'category_id'], 'フルーツ');
 
         // 虫眼鏡ボタンを押下する
         $topPage->検索();
@@ -150,7 +150,7 @@ class EF01TopCest
         $topPage = TopPage::go($I);
 
         // キーワードを入力する
-        $I->fillField(['id' => 'name'], 'ジェラート');
+        $I->fillField(['class' => 'search-name'], 'ジェラート');
 
         // 虫眼鏡ボタンを押下する
         $topPage->検索();
