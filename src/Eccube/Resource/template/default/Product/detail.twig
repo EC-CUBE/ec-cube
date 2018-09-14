@@ -372,8 +372,9 @@ file that was distributed with this source code.
             </div>
         </div>
         {% if Product.freearea %}
-            {# <div class="ec-productRole__description">{{ include(template_from_string(Product.freearea)) }}
-            </div> #}
+             <div class="ec-productRole__description">
+                 {{ include(template_from_string(Product.freearea)) }}
+            </div>
         {% endif %}
     </div>
 {% endblock %}
