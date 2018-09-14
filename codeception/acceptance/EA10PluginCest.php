@@ -321,23 +321,50 @@ class EA10PluginCest
 
     public function test_dependency_each_install_plugin(\AcceptanceTester $I)
     {
-        Horizon_Store::start($I)
-            ->インストール()->有効化();
+        $Horizon = Horizon_Store::start($I);
+        $Emperor = Emperor_Store::start($I);
 
-        Emperor_Store::start($I)
-            ->インストール()->有効化();
+        $Horizon->インストール()->有効化();
+        $Emperor->インストール()->有効化();
     }
 
     public function test_dependency_plugin(\AcceptanceTester $I)
     {
-        $Emperor = Emperor_Store::start($I)
-            ->インストール()
+        $Horizon = Horizon_Store::start($I);
+        $Emperor = Emperor_Store::start($I, $Horizon);
+
+        $Emperor->インストール()
             ->依存より先に有効化();
 
-        Horizon_Store::start($I, $Emperor)
-            ->有効化();
+        $Horizon->有効化();
 
         $Emperor->有効化();
+
+        $Horizon->依存されているのが有効なのに無効化();
+        $Emperor->無効化();
+        $Horizon->無効化();
+
+        $Horizon->依存されているのが削除されていないのに削除();
+        $Emperor->削除();
+        $Horizon->削除();
+    }
+
+    public function test_dependency_plugin_update(\AcceptanceTester $I)
+    {
+        $Horizon = Horizon_Store::start($I);
+        $Emperor = Emperor_Store::start($I, $Horizon);
+
+        $Emperor->インストール();
+
+        $Horizon->検証()
+            ->有効化();
+
+        $Emperor
+            ->有効化()
+            ->無効化()
+            ->アップデート();
+
+        $Horizon->検証();
     }
 
     private function publishPlugin($fileName)
@@ -480,11 +507,19 @@ class Store_Plugin extends Abstract_Plugin
 
     protected $code;
 
-    public function __construct(AcceptanceTester $I, $code)
+    /** @var Store_Plugin */
+    protected $dependency;
+
+    public function __construct(AcceptanceTester $I, $code, Store_Plugin $dependency = null)
     {
         parent::__construct($I);
         $this->code = $code;
         $this->publishPlugin($this->code.'-1.0.0.tgz');
+        if ($dependency) {
+            $this->dependency = $dependency;
+            $this->ManagePage = $dependency->ManagePage;
+            $this->Plugin = $this->pluginRepository->findByCode($code);
+        }
     }
 
     public function インストール()
@@ -502,6 +537,11 @@ class Store_Plugin extends Abstract_Plugin
         $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていない');
         $this->I->assertFalse($this->Plugin->isEnabled(), '有効化されていない');
 
+        if ($this->dependency) {
+            $this->dependency->ManagePage = $this->ManagePage;
+            $this->dependency->Plugin = $this->pluginRepository->findByCode($this->dependency->code);
+        }
+
         return $this;
     }
 
@@ -517,6 +557,7 @@ class Store_Plugin extends Abstract_Plugin
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
+
         return $this;
     }
 
@@ -732,32 +773,63 @@ class Horizon_Store extends Store_Plugin
         $this->traits['\Plugin\Horizon\Entity\CartTrait'] = 'Cart';
     }
 
-    public static function start(AcceptanceTester $I, Store_Plugin $dependency = null)
+    public static function start(AcceptanceTester $I)
     {
         $result = new self($I);
-        if ($dependency) {
-            $result->ManagePage = $dependency->ManagePage;
-            $result->Plugin = $result->pluginRepository->findByCode($result->code);
-        }
         return $result;
     }
+
+    public function 依存されているのが有効なのに無効化()
+    {
+        $this->ManagePage->ストアプラグイン_無効化($this->code, '「ホライゾン」を無効にする前に、「エンペラー」を無効にしてください。');
+
+        $this->検証();
+
+        $this->em->refresh($this->Plugin);
+        $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されているはず');
+        $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されているはず');
+        return $this;
+    }
+
+    public function 依存されているのが削除されていないのに削除()
+    {
+        $this->ManagePage->ストアプラグイン_削除($this->code, '「エンペラー」が「ホライゾン」に依存しているため削除できません。');
+
+        $this->検証();
+
+        $this->em->refresh($this->Plugin);
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
+        $this->I->assertNotNull($this->Plugin, '削除されていない');
+
+        return $this;
+    }
+
 }
 
 class Emperor_Store extends Store_Plugin
 {
-    public function __construct(AcceptanceTester $I)
+    public function __construct(AcceptanceTester $I, Store_Plugin $dependency = null)
     {
-        parent::__construct($I, 'Emperor');
+        parent::__construct($I, 'Emperor', $dependency);
         $this->publishPlugin('Horizon-1.0.0.tgz');
         $this->tables[] = 'dtb_foo';
         $this->columns[] = 'dtb_cart.foo_id';
         $this->traits['\Plugin\Emperor\Entity\CartTrait'] = 'Cart';
     }
 
-    public static function start(AcceptanceTester $I)
+    public static function start(AcceptanceTester $I, Store_Plugin $dependency = null)
     {
-        return new self($I);
+        return new self($I, $dependency);
     }
+
+    public function アップデート()
+    {
+        $this->tables = ['dtb_bar'];
+        $this->columns = ['dtb_cart.bar_id'];
+        $this->traits['\Plugin\Emperor\Entity\Cart2Trait'] = 'Cart';
+        return parent::アップデート();
+    }
+
 
     public function 依存より先に有効化()
     {

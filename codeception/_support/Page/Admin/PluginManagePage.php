@@ -57,18 +57,19 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
+     * @param string $message
      *
      * @return PluginManagePage
      *
      * @throws \Exception
      */
-    public function ストアプラグイン_削除($pluginCode)
+    public function ストアプラグイン_削除($pluginCode, $message = '削除が完了しました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '削除');
         $this->tester->waitForElementVisible(['id' => 'officialPluginDeleteButton']);
         $this->tester->click(['id' => 'officialPluginDeleteButton']);
         $this->tester->waitForElementVisible(['css' => '#officialPluginDeleteModal > div > div > div.modal-footer > button:nth-child(3)'], 30);
-        $this->tester->see('削除が完了しました。', ['css' => '#officialPluginDeleteModal > div > div > div.modal-body.text-left > p']);
+        $this->tester->see($message, ['css' => '#officialPluginDeleteModal > div > div > div.modal-body.text-left > p']);
         $this->tester->click(['css' => '#officialPluginDeleteModal > div > div > div.modal-footer > button:nth-child(3)']);
 
         return $this;
@@ -80,6 +81,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
      */
     public function ストアプラグイン_アップデート($pluginCode)
     {
+        echo $this->tester->grabTextFrom(['xpath' => '//*[@id="page_admin_store_plugin"]']);
         $this->tester->click(['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[5]/a']);
         return PluginStoreUpgradePage::at($this->tester);
     }
