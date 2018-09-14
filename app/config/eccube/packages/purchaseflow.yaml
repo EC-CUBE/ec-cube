@@ -147,6 +147,8 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'  # 加算ポイントの計算
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'  # 支払金額のマイナスチェック
+
 
     eccube.purchase.flow.order.purchase:
         class: Doctrine\Common\Collections\ArrayCollection
