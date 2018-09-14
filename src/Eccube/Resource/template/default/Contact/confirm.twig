@@ -97,7 +97,7 @@ file that was distributed with this source code.
                                         {{ form_label(f) }}
                                     </dt>
                                     <dd>
-                                        <div class="ec-select{{ has_errors(f) ? ' error' }}">
+                                        <div class="{{ f.vars.eccube_form_options.style_class }}{{ has_errors(f) ? ' error' }}">
                                             {{ f.vars.data }}
                                             {{ form_widget(f, { type: 'hidden'}) }}
                                         </div>

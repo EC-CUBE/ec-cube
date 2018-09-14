@@ -41,4 +41,9 @@ final class FormAppend implements Annotation
      * @var array
      */
     public $options;
+
+    /**
+     * @var string
+     */
+    public $style_class;
 }
