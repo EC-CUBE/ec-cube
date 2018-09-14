@@ -524,7 +524,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 [
                     'Delivery' => $Delivery->getId(),
                     'DeliveryTime' => null,
-                ]
+                ],
             ]
         );
 

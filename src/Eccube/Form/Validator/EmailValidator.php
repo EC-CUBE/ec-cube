@@ -108,5 +108,4 @@ class EmailValidator extends ConstraintValidator
     {
         return '' !== $host && ($this->checkMX($host) || (checkdnsrr($host, 'A') || checkdnsrr($host, 'AAAA')));
     }
-
 }

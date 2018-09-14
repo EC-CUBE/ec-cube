@@ -176,7 +176,7 @@ class CsvImportController extends AbstractCsvImportController
                     $errors[] = trans('admin.order.failed_to_change_status', [
                         '%name%' => $Shipping->getId(),
                         '%from%' => $from,
-                        '%to%' => $to
+                        '%to%' => $to,
                     ]);
                 }
             }

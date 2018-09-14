@@ -13,11 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Eccube\Entity\BaseInfo;
 use Eccube\Repository\BaseInfoRepository;
-use Eccube\Tests\Repository\BaseInfoRepositoryTest;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Faker\Provider\Base;
 
 /**
  * Class ShopControllerTest
@@ -109,7 +106,6 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             // To do implement
         ];
     }
-
 
     /**
      * testMailNoRFC

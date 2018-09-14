@@ -105,6 +105,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param ProductRepository $productRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param ValidatorInterface $validator
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -211,7 +212,7 @@ class CsvImportController extends AbstractCsvImportController
                             }
 
                             if (isset($row[$headerByKey['product_del_flg']])) {
-                                if (StringUtil::isNotBlank($row[$headerByKey['product_del_flg']]) && $row[$headerByKey['product_del_flg']] == (string)Constant::ENABLED) {
+                                if (StringUtil::isNotBlank($row[$headerByKey['product_del_flg']]) && $row[$headerByKey['product_del_flg']] == (string) Constant::ENABLED) {
                                     // 商品を物理削除
                                     $deleteImages[] = $Product->getProductImage();
 
@@ -220,10 +221,10 @@ class CsvImportController extends AbstractCsvImportController
                                         $this->entityManager->flush();
 
                                         continue;
-
                                     } catch (ForeignKeyConstraintViolationException $e) {
                                         $message = trans('admin.common.csv_invalid_foreign_key', ['%line%' => $line, '%name%' => $Product->getName()]);
                                         $this->addErrors($message);
+
                                         return $this->renderWithError($form, $headers);
                                     }
                                 }

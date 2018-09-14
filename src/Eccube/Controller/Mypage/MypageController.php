@@ -216,7 +216,7 @@ class MypageController extends AbstractController
 
         return [
             'Order' => $Order,
-            'stockOrder' => $stockOrder
+            'stockOrder' => $stockOrder,
         ];
     }
 
