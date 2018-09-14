@@ -24,6 +24,7 @@ if (!class_exists('\Eccube\Entity\News')) {
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
      * @ORM\HasLifecycleCallbacks()
      * @ORM\Entity(repositoryClass="Eccube\Repository\NewsRepository")
+     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
     class News extends AbstractEntity
     {

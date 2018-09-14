@@ -133,7 +133,7 @@ class CartService
      */
     public function getCarts($empty_delete = false)
     {
-        if (!empty($this->carts)) {
+        if (null !== $this->carts) {
             if ($empty_delete) {
                 $cartKeys = [];
                 foreach (array_keys($this->carts) as $index) {
@@ -180,6 +180,10 @@ class CartService
     public function getSessionCarts()
     {
         $cartKeys = $this->session->get('cart_keys', []);
+
+        if (empty($cartKeys)) {
+            return [];
+        }
 
         return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
     }

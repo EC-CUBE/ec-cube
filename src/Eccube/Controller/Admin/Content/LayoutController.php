@@ -25,6 +25,7 @@ use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -123,7 +124,7 @@ class LayoutController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function delete(Layout $Layout)
+    public function delete(Layout $Layout, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -139,6 +140,9 @@ class LayoutController extends AbstractController
 
         $this->addSuccess('admin.common.delete_complete', 'admin');
 
+        // キャッシュの削除
+        $cacheUtil->clearDoctrineCache();
+
         return $this->redirectToRoute('admin_content_layout');
     }
 
@@ -147,7 +151,7 @@ class LayoutController extends AbstractController
      * @Route("/%eccube_admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit")
      * @Template("@admin/Content/layout.twig")
      */
-    public function edit(Request $request, $id = null, $previewPageId = null)
+    public function edit(Request $request, $id = null, $previewPageId = null, CacheUtil $cacheUtil)
     {
         if (is_null($id)) {
             $Layout = new Layout();
@@ -189,6 +193,9 @@ class LayoutController extends AbstractController
             // ブロックの個数分登録を行う.
             $data = $request->request->all();
             $this->blockPositionRepository->register($data, $Blocks, $UnusedBlocks, $Layout);
+
+            // キャッシュの削除
+            $cacheUtil->clearDoctrineCache();
 
             // プレビューモード
             if ($this->isPreview) {
@@ -266,11 +273,11 @@ class LayoutController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/content/layout/{id}/preview", requirements={"id" = "\d+"}, name="admin_content_layout_preview")
      */
-    public function preview(Request $request, $id)
+    public function preview(Request $request, $id, CacheUtil $cacheUtil)
     {
         $form = $request->get('admin_layout');
         $this->isPreview = true;
 
-        return $this->edit($request, $id, $form['Page']);
+        return $this->edit($request, $id, $form['Page'], $cacheUtil);
     }
 }

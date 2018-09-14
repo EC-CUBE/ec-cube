@@ -193,12 +193,7 @@ class TwigInitializeListener implements EventSubscriberInterface
 
         // URLからPageを取得
         /** @var Page $Page */
-        $Page = $this->pageRepository->findOneBy(['url' => $route]);
-
-        // 該当するPageがない場合は空のページをセット
-        if (!$Page) {
-            $Page = $this->pageRepository->newPage();
-        }
+        $Page = $this->pageRepository->getPageByRoute($route);
 
         /** @var PageLayout[] $PageLayouts */
         $PageLayouts = $Page->getPageLayouts();
@@ -227,22 +222,21 @@ class TwigInitializeListener implements EventSubscriberInterface
         if ($request->get('preview')) {
             $is_admin = $request->getSession()->has('_security_admin');
             if ($is_admin) {
-                $Page->getPageLayouts()->clear();
-                $PageLayouts = $this->pageLayoutRepository->findBy(['layout_id' => 0]);
-                foreach ($PageLayouts as $PageLayout) {
-                    $Page->addPageLayout($PageLayout);
-                }
+                $Layout = $this->layoutRepository->get(Layout::DEFAULT_LAYOUT_PREVIEW_PAGE);
 
-                $Layout->getBlockPositions()->clear();
-                $BlockPositions = $this->blockPositionRepository->findBy(['layout_id' => 0]);
-                foreach ($BlockPositions as $BlockPosition) {
-                    $Layout->addBlockPosition($BlockPosition);
-                }
+                $this->twig->addGlobal('Layout', $Layout);
+                $this->twig->addGlobal('Page', $Page);
+                $this->twig->addGlobal('title', $Page->getName());
+
+                return;
             }
         }
 
-        // Layoutのデータがない場合は空のLayoutをセット
-        if (!$Layout) {
+        if ($Layout) {
+            // lazy loadを制御するため, Layoutを取得しなおす.
+            $Layout = $this->layoutRepository->get($Layout->getId());
+        } else {
+            // Layoutのデータがない場合は空のLayoutをセット
             $Layout = new Layout();
         }
 

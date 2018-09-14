@@ -13,8 +13,8 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Entity\Layout;
 use Doctrine\ORM\NoResultException;
+use Eccube\Entity\Layout;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -30,18 +30,20 @@ class LayoutRepository extends AbstractRepository
         parent::__construct($registry, Layout::class);
     }
 
-    public function get($layout_id)
+    public function get($id)
     {
         try {
             $Layout = $this->createQueryBuilder('l')
                 ->select('l, bp, b')
                 ->leftJoin('l.BlockPositions', 'bp')
                 ->leftJoin('bp.Block', 'b')
-                ->where('l.id = :layout_id')
+                ->where('l.id = :id')
                 ->orderBy('bp.block_row', 'ASC')
-                ->setParameter('layout_id', $layout_id)
+                ->setParameter('id', $id)
                 ->getQuery()
+                ->useResultCache(true, $this->getCacheLifetime())
                 ->getSingleResult();
+
         } catch (NoResultException $e) {
             return null;
         }
