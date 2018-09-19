@@ -14,6 +14,7 @@
 namespace Eccube\EventListener;
 
 use Doctrine\Dbal\Connection;
+use Doctrine\DBAL\TransactionIsolationLevel;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -80,6 +81,7 @@ class TransactionListener implements EventSubscriberInterface
             $Connection->connect();
         }
         $Connection->setAutoCommit(false);
+        $Connection->setTransactionIsolation(TransactionIsolationLevel::READ_COMMITTED);
         $this->em->beginTransaction();
         log_debug('Begin Transaction.');
     }

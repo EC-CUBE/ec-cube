@@ -85,6 +85,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
                 $productStock = $item->getProductClass()->getProductStock();
                 // 在庫に対してロックを実行
                 $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
+                $this->entityManager->refresh($productStock);
                 $stock = $callback($productStock->getStock(), $item->getQuantity());
                 $productStock->setStock($stock);
                 $item->getProductClass()->setStock($stock);
