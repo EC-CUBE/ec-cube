@@ -52,6 +52,7 @@ security:
                 username_parameter: 'login_email'
                 password_parameter: 'login_pass'
                 use_forward: true
+                success_handler: eccube.security.success_handler
                 failure_handler: eccube.security.failure_handler
             logout:
                 path: logout

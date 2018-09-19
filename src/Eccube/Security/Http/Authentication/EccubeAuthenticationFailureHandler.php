@@ -24,10 +24,7 @@ class EccubeAuthenticationFailureHandler extends DefaultAuthenticationFailureHan
 {
 
     /**
-     * @param Request $request
-     * @param AuthenticationException $exception
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {

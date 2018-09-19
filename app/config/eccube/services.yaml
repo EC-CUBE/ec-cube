@@ -90,6 +90,9 @@ services:
         tags:
           - { name: 'data_collector', template: '@toolbar/eccube.html.twig', id: 'eccube_core', priority: -512 }
 
+    eccube.security.success_handler:
+        class: Eccube\Security\Http\Authentication\EccubeAuthenticationSuccessHandler
+
     eccube.security.failure_handler:
         class: Eccube\Security\Http\Authentication\EccubeAuthenticationFailureHandler
 
