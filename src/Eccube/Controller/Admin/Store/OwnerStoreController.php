@@ -26,6 +26,7 @@ use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -68,6 +69,9 @@ class OwnerStoreController extends AbstractController
     /** @var BaseInfo */
     private $BaseInfo;
 
+    /** @var CacheUtil */
+    private $cacheUtil;
+
     /**
      * OwnerStoreController constructor.
      *
@@ -78,6 +82,7 @@ class OwnerStoreController extends AbstractController
      * @param SystemService $systemService
      * @param PluginApiService $pluginApiService
      * @param BaseInfoRepository $baseInfoRepository
+     * @param CacheUtil $cacheUtil
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -89,13 +94,15 @@ class OwnerStoreController extends AbstractController
         ComposerServiceInterface $composerService,
         SystemService $systemService,
         PluginApiService $pluginApiService,
-        BaseInfoRepository $baseInfoRepository
+        BaseInfoRepository $baseInfoRepository,
+        CacheUtil $cacheUtil
     ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->systemService = $systemService;
         $this->pluginApiService = $pluginApiService;
         $this->BaseInfo = $baseInfoRepository->get();
+        $this->cacheUtil = $cacheUtil;
 
         // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
@@ -235,7 +242,7 @@ class OwnerStoreController extends AbstractController
             return [
                 'item' => $item,
                 'requires' => $requires,
-                'is_update' => $request->get('is_update', false),
+                'is_update' => false,
             ];
         } catch (PluginApiException $e) {
             $this->addError($e->getMessage(), 'admin');
@@ -256,6 +263,8 @@ class OwnerStoreController extends AbstractController
     public function apiInstall(Request $request)
     {
         $this->isTokenValid();
+
+        $this->cacheUtil->clearCache();
 
         $pluginCode = $request->get('pluginCode');
 
@@ -285,6 +294,8 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid();
 
+        $this->cacheUtil->clearCache();
+
         if ($Plugin->isEnabled()) {
             return $this->json(['success' => false, 'message' => trans('admin.plugin.uninstall.error.not_disable')], 400);
         }
@@ -305,6 +316,7 @@ class OwnerStoreController extends AbstractController
 
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
+
         try {
             $log = $this->composerService->execRemove($packageName);
 
@@ -329,13 +341,14 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid();
 
+        $this->cacheUtil->clearCache();
+
         $pluginCode = $request->get('pluginCode');
         $version = $request->get('version');
 
         $log = null;
         try {
             $log = $this->composerService->execRequire('ec-cube/'.$pluginCode.':'.$version);
-
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
             $log = $e->getMessage();
@@ -358,6 +371,8 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid();
 
+        $this->cacheUtil->clearCache();
+
         $pluginCode = $request->get('pluginCode');
 
         try {
@@ -371,6 +386,15 @@ class OwnerStoreController extends AbstractController
 
             ob_start();
             $this->pluginService->generateProxyAndUpdateSchema($Plugin, $config);
+
+            // 初期化されていなければインストール処理を実行する
+            if (!$Plugin->isInitialized()) {
+                $this->pluginService->callPluginManagerMethod($config, 'install');
+                $Plugin->setInitialized(true);
+                $this->entityManager->persist($Plugin);
+                $this->entityManager->flush();
+            }
+
             $log = ob_get_clean();
             ob_end_flush();
 
@@ -395,6 +419,8 @@ class OwnerStoreController extends AbstractController
     public function apiUpdate(Request $request)
     {
         $this->isTokenValid();
+
+        $this->cacheUtil->clearCache();
 
         $pluginCode = $request->get('pluginCode');
 
