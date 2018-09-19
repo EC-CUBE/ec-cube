@@ -92,10 +92,13 @@ class ProductRepository extends AbstractRepository
      * @param array $ids Product in ids
      * @param string $indexBy The index for the from.
      *
-     * @return ArrayCollection
+     * @return ArrayCollection|array
      */
     public function findProductsWithSortedClassCategories(array $ids, $indexBy = null)
     {
+        if (count($ids) < 1) {
+            return [];
+        }
         $qb = $this->createQueryBuilder('p', $indexBy);
         $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt', 'tr', 'ps'])
             ->innerJoin('p.ProductClasses', 'pc')
