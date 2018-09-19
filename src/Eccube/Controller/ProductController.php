@@ -164,6 +164,12 @@ class ProductController extends AbstractController
             !empty($searchData['disp_number']) ? $searchData['disp_number']->getId() : $this->productListMaxRepository->findOneBy([], ['sort_no' => 'ASC'])->getId()
         );
 
+        $ids = [];
+        foreach ($pagination as $Product) {
+            $ids[] = $Product->getId();
+        }
+        $ProductsAndClassCategories = $this->productRepository->findProductsWithSortedClassCategories($ids, 'p.id');
+
         // addCart form
         $forms = [];
         foreach ($pagination as $Product) {
@@ -173,7 +179,7 @@ class ProductController extends AbstractController
                 AddCartType::class,
                 null,
                 [
-                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId()),
+                    'product' => $ProductsAndClassCategories[$Product->getId()],
                     'allow_extra_fields' => true,
                 ]
             );
