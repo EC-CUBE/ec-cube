@@ -982,11 +982,13 @@ admin.content.page_meta_metatag_placeholder: |
   商品詳細ページでの記載例
     <meta property="og:type" content="og:product" />
     <meta property="og:title" content="{{ Product.name }}" />
-    <meta property="og:image" content="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" />
+    <meta property="og:image" content="{{ url('homepage') }}{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" />
     <meta property="og:description" content="{{ Product.description_list|striptags }}" />
     <meta property="og:url" content="{{ url('product_detail', {'id': Product.id}) }}" />
     <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
     <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
+    <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
+    <meta property="product:retailer_title" content="{{ Product.name }}"/>
 admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 admin.content.block_name: ブロック名
 admin.content.block__card_title: ブロック設定
