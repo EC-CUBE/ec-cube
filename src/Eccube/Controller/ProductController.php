@@ -29,6 +29,7 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -158,11 +159,18 @@ class ProductController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_SEARCH, $event);
         $searchData = $event->getArgument('searchData');
 
+        /** @var SlidingPagination $pagination */
         $pagination = $paginator->paginate(
             $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
             !empty($searchData['disp_number']) ? $searchData['disp_number']->getId() : $this->productListMaxRepository->findOneBy([], ['sort_no' => 'ASC'])->getId()
         );
+
+        $ids = [];
+        foreach ($pagination as $Product) {
+            $ids[] = $Product->getId();
+        }
+        $ProductsAndClassCategories = $this->productRepository->findProductsWithSortedClassCategories($ids, 'p.id');
 
         // addCart form
         $forms = [];
@@ -173,7 +181,7 @@ class ProductController extends AbstractController
                 AddCartType::class,
                 null,
                 [
-                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId()),
+                    'product' => $ProductsAndClassCategories[$Product->getId()],
                     'allow_extra_fields' => true,
                 ]
             );
