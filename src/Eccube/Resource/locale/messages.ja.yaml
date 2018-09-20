@@ -74,6 +74,7 @@ common.customer_address_count_is_over: お届け先登録の上限の%eccube_del
 common.search_keyword: キーワードを入力
 common.customer_already_exists: このメールアドレスは利用できません
 common.member_already_exists: 既に利用されているログインIDです
+common.pagetop: ページトップへ
 
 #====================================================================================
 # フロント画面
