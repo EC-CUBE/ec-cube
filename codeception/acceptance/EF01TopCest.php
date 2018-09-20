@@ -29,6 +29,17 @@ class EF01TopCest
     {
     }
 
+    private function clearDoctrineCache()
+    {
+        // APP_ENV=prodで実行した際は, 直接データを投入しても反映されないため,
+        // キャッシュを削除して表示できるようにする
+        $fs = new Symfony\Component\Filesystem\Filesystem();
+        $cacheDir = __DIR__.'/../../var/cache/prod/pools';
+        if ($fs->exists($cacheDir)) {
+            $fs->remove($cacheDir);
+        }
+    }
+
     public function topページ_初期表示(\AcceptanceTester $I)
     {
         $I->wantTo('EF0101-UC01-T01 TOPページ 初期表示');
@@ -52,6 +63,8 @@ class EF01TopCest
         $createNews = Fixtures::get('createNews');
         $News1 = $createNews($minus1, 'タイトル1', 'コメント1');
         $News2 = $createNews($minus2, 'タイトル2', 'コメント2');
+
+        $this->clearDoctrineCache();
 
         $I->reloadPage();
 
@@ -78,6 +91,8 @@ class EF01TopCest
 
         $createNews = Fixtures::get('createNews');
         $News = $createNews(new \DateTime(), 'タイトル1', 'コメント1', 'https://www.ec-cube.net');
+
+        $this->clearDoctrineCache();
 
         $topPage = TopPage::go($I);
 
