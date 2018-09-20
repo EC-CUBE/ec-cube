@@ -39,7 +39,7 @@ EOF
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
-        $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv');
+        $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv/'.env('ECCUBE_LOCALE', 'ja'));
         $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);
