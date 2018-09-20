@@ -40,6 +40,7 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -354,7 +355,7 @@ class ProductController extends AbstractController
      * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
      * @Template("@admin/Product/product.twig")
      */
-    public function edit(Request $request, $id = null, RouterInterface $router)
+    public function edit(Request $request, $id = null, RouterInterface $router, CacheUtil $cacheUtil)
     {
         $has_class = false;
         if (is_null($id)) {
@@ -620,6 +621,8 @@ class ProductController extends AbstractController
                     }
                 }
 
+                $cacheUtil->clearDoctrineCache();
+
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
             }
         }
@@ -668,7 +671,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id = null)
+    public function delete(Request $request, $id = null, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
         $session = $request->getSession();
@@ -728,6 +731,9 @@ class ProductController extends AbstractController
 
                     $success = true;
                     $message = trans('admin.common.delete_complete');
+
+                    $cacheUtil->clearDoctrineCache();
+
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
                     $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);
@@ -1015,7 +1021,7 @@ class ProductController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus)
+    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -1039,6 +1045,7 @@ class ProductController extends AbstractController
                     '%status%' => $ProductStatus->getName(),
                 ]);
                 $this->addSuccess($msg, 'admin');
+                $cacheUtil->clearDoctrineCache();
             }
         } catch (\Exception $e) {
             $this->addError($e->getMessage(), 'admin');

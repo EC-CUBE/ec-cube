@@ -119,3 +119,5 @@ parameters:
     eccube_order_no_format: ''
     eccube_order_pdf_message_len: 30
     eccube_news_start_year: 2000
+    eccube_result_cache_lifetime: 3600 # doctrineのresult cacheのlifetime.
+    eccube_result_cache_lifetime_short: 10  # doctrineのresult cacheのlifetime. 商品一覧画面など長期間キャッシュできない箇所で使用する.
