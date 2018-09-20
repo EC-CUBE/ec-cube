@@ -27,7 +27,7 @@ class EccubeAuthenticationFailureHandler extends DefaultAuthenticationFailureHan
         $response = parent::onAuthenticationFailure($request, $exception);
         $location = $response->headers->get('location');
         if (null !== $location && preg_match('/^https?:\\\\/i', $location)) {
-            $response->headers->set('location', $request->getUriForPath('/'));
+            return $this->httpUtils->createRedirectResponse($request, '/');
         }
 
         return $response;

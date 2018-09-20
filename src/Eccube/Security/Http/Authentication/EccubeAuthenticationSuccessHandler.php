@@ -27,7 +27,7 @@ class EccubeAuthenticationSuccessHandler extends DefaultAuthenticationSuccessHan
         $response = parent::onAuthenticationSuccess($request, $token);
         $location = $response->headers->get('location');
         if (null !== $location && preg_match('/^https?:\\\\/i', $location)) {
-            $response->headers->set('location', $request->getUriForPath('/'));
+            return $this->httpUtils->createRedirectResponse($request, '/');
         }
 
         return $response;
