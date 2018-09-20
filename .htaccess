@@ -10,12 +10,14 @@ DirectoryIndex index.php index.html .ht
     allow from all
 </Files>
 
-# クリックジャッキング対策
-Header always set X-Frame-Options SAMEORIGIN
+<IfModule mod_headers.c>
+    # クリックジャッキング対策
+    Header always set X-Frame-Options SAMEORIGIN
 
-# XSS対策
-Header set X-XSS-Protection "1; mode=block"
-Header set X-Content-Type-Options nosniff
+    # XSS対策
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Content-Type-Options nosniff
+</IfModule>
 
 <IfModule mod_rewrite.c>
     #403 Forbidden対応方法
@@ -24,7 +26,7 @@ Header set X-Content-Type-Options nosniff
     #Options +FollowSymLinks +SymLinksIfOwnerMatch
 
     RewriteEngine On
-    
+
     # Authorization ヘッダが取得できない環境への対応
     RewriteCond %{HTTP:Authorization} ^(.*)
     RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
