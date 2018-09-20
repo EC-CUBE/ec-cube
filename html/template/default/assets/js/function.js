@@ -197,7 +197,7 @@ $(function() {
         var $this = $(this);
         var data = $this.data();
         if (data.confirm != false) {
-            if (!confirm(data.message ? data.message : '削除してもよろしいですか?')) {
+            if (!confirm(data.message ? data.message : eccube_lang.delete_confirm_message )) {
                 return false;
             }
         }
