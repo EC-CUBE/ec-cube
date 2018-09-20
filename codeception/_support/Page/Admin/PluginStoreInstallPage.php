@@ -32,13 +32,13 @@ class PluginStoreInstallPage extends AbstractAdminPageStyleGuide
      *
      * @throws \Exception
      */
-    public function インストール()
+    public function インストール($message = 'インストールが完了しました。')
     {
         $this->tester->click(['css' => '#plugin-list > div.card-body > div:nth-child(2) > div > button.btn.btn-primary']);
         $this->tester->waitForElementVisible(['id' => 'installBtn']);
         $this->tester->click(['id' => 'installBtn']);
         $this->tester->waitForElementVisible(['css' => '#installModal > div > div > div.modal-footer > a'], 60);
-        $this->tester->see('インストールが完了しました。', ['css' => '#installModal > div > div > div.modal-body > p']);
+        $this->tester->see($message, ['css' => '#installModal > div > div > div.modal-body > p']);
         $this->tester->click(['css' => '#installModal > div > div > div.modal-footer > a']);
 
         return PluginManagePage::at($this->tester);
