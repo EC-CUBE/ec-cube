@@ -185,10 +185,11 @@ class PluginController extends AbstractController
      *
      * @param Request $request
      * @param Plugin $Plugin
+     * @param CacheUtil $cacheUtil
      *
      * @return RedirectResponse
      */
-    public function update(Request $request, Plugin $Plugin)
+    public function update(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory
             ->createNamedBuilder(
@@ -206,6 +207,7 @@ class PluginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $tmpDir = null;
             try {
+                $cacheUtil->clearCache();
                 $formFile = $form['plugin_archive']->getData();
                 $tmpDir = $this->pluginService->createTempDir();
                 $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
@@ -389,12 +391,13 @@ class PluginController extends AbstractController
      * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall", methods={"DELETE"})
      *
      * @param Plugin $Plugin
+     * @param CacheUtil $cacheUtil
      *
      * @return RedirectResponse
      *
      * @throws \Exception
      */
-    public function uninstall(Plugin $Plugin)
+    public function uninstall(Plugin $Plugin, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -419,6 +422,8 @@ class PluginController extends AbstractController
             return $this->redirectToRoute('admin_store_plugin');
         }
 
+        $cacheUtil->clearCache();
+
         $this->pluginService->uninstall($Plugin);
         $this->addSuccess('admin.store.plugin.uninstall.complete', 'admin');
 
@@ -432,10 +437,11 @@ class PluginController extends AbstractController
      * @Template("@admin/Store/plugin_install.twig")
      *
      * @param Request $request
+     * @param CacheUtil $cacheUtil
      *
      * @return array|RedirectResponse
      */
-    public function install(Request $request)
+    public function install(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
@@ -445,6 +451,9 @@ class PluginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $tmpDir = null;
             try {
+
+                $cacheUtil->clearCache();
+
                 /** @var UploadedFile $formFile */
                 $formFile = $form['plugin_archive']->getData();
                 $tmpDir = $this->pluginService->createTempDir();
