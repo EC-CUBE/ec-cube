@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 <ul class="list-inline">
     {% for child in form.children if child.vars.name != '_token' and child.vars.data is not empty %}
-        <li class="list-inline-item"><span class="font-weight-bold">{{ child.vars.label|trans }}:</span>
+        <li class="list-inline-item"><span class="font-weight-bold">{{ child.vars.label|trans }}:&nbsp;</span>
             {%- if child.vars.data is iterable -%}
                 {%- for value in child.vars.value -%}
                     {# ChoiceType -> multiple:true #}
@@ -19,7 +19,7 @@ file that was distributed with this source code.
                             {{ choice.label|trans }}
                         {%- endif %}
                     {%- endfor -%}
-                    {{ not loop.last ? ',' }}
+                    {{ not loop.last ? ',&nbsp;' }}
                 {%- endfor -%}
             {%- elseif php_is_a(child.vars.data, '\DateTime') -%}
                 {{ child.vars.data|date_day }}
