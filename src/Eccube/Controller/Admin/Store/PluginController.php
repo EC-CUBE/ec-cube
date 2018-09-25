@@ -364,7 +364,9 @@ class PluginController extends AbstractController
                 $this->pluginService->disable($Plugin);
             } finally {
                 $log = ob_get_clean();
-                ob_end_flush();
+                while (ob_get_level() > 0) {
+                    ob_end_flush();
+                }
             }
         } else {
             if ($request->isXmlHttpRequest()) {
