@@ -26,6 +26,7 @@ use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
+use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,7 +86,7 @@ class ProductClassController extends AbstractController
      * @Route("/%eccube_admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
      * @Template("@admin/Product/product_class.twig")
      */
-    public function index(Request $request, $id)
+    public function index(Request $request, $id, CacheUtil $cacheUtil)
     {
         $Product = $this->findProduct($id);
         if (!$Product) {
@@ -126,6 +127,8 @@ class ProductClassController extends AbstractController
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
+                $cacheUtil->clearDoctrineCache();
+
                 if ($request->get('return_product_list')) {
                     return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
                 }
@@ -163,6 +166,8 @@ class ProductClassController extends AbstractController
 
                         $this->addSuccess('admin.common.save_complete', 'admin');
 
+                        $cacheUtil->clearDoctrineCache();
+
                         if ($request->get('return_product_list')) {
                             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
                         }
@@ -188,7 +193,7 @@ class ProductClassController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/product/product/class/{id}/clear", requirements={"id" = "\d+"}, name="admin_product_product_class_clear")
      */
-    public function clearProductClasses(Request $request, Product $Product)
+    public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil)
     {
         if (!$Product->hasProductClass()) {
             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
@@ -216,6 +221,8 @@ class ProductClassController extends AbstractController
             $this->entityManager->flush();
 
             $this->addSuccess('admin.product.reset_complete', 'admin');
+
+            $cacheUtil->clearDoctrineCache();
         }
 
         if ($request->get('return_product_list')) {

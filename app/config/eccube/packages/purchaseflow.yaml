@@ -101,6 +101,7 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
+                - '@Eccube\Service\PurchaseFlow\Processor\PreOrderIdValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\CustomerPurchaseInfoProcessor'

@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Product;
@@ -83,6 +84,43 @@ class ProductRepository extends AbstractRepository
             ->getSingleResult();
 
         return $product;
+    }
+
+    /**
+     * Find the Products with sorted ClassCategories.
+     *
+     * @param array $ids Product in ids
+     * @param string $indexBy The index for the from.
+     *
+     * @return ArrayCollection|array
+     */
+    public function findProductsWithSortedClassCategories(array $ids, $indexBy = null)
+    {
+        if (count($ids) < 1) {
+            return [];
+        }
+        $qb = $this->createQueryBuilder('p', $indexBy);
+        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt', 'tr', 'ps'])
+            ->innerJoin('p.ProductClasses', 'pc')
+            // XXX Joined 'TaxRule' and 'ProductStock' to prevent lazy loading
+            ->leftJoin('pc.TaxRule', 'tr')
+            ->innerJoin('pc.ProductStock', 'ps')
+            ->leftJoin('pc.ClassCategory1', 'cc1')
+            ->leftJoin('pc.ClassCategory2', 'cc2')
+            ->leftJoin('p.ProductImage', 'pi')
+            ->leftJoin('p.ProductTag', 'pt')
+            ->where($qb->expr()->in('p.id', $ids))
+            ->andWhere('pc.visible = :visible')
+            ->setParameter('visible', true)
+            ->orderBy('cc1.sort_no', 'DESC')
+            ->addOrderBy('cc2.sort_no', 'DESC');
+
+        $products = $qb
+            ->getQuery()
+            ->useResultCache(true, $this->eccubeConfig['eccube_result_cache_lifetime_short'])
+            ->getResult();
+
+        return $products;
     }
 
     /**

@@ -391,6 +391,19 @@ class EA10PluginCest
         $Horizon->検証();
     }
 
+    public function test_install_error(\AcceptanceTester $I)
+    {
+        $this->publishPlugin('InstallError.tgz');
+        $Horizon = Horizon_Store::start($I);
+
+        PluginSearchPage::go($I)
+            ->入手する('InstallError')
+            ->インストール('システムエラーが発生しました。');
+
+        // エラー後に他のプラグインがインストールできる
+        $Horizon->インストール();
+    }
+
     private function publishPlugin($fileName)
     {
         copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);

@@ -138,7 +138,7 @@ class CsvImportController extends AbstractCsvImportController
      * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import")
      * @Template("@admin/Product/csv_product.twig")
      */
-    public function csvProduct(Request $request)
+    public function csvProduct(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
         $headers = $this->getProductCsvHeader();
@@ -526,6 +526,8 @@ class CsvImportController extends AbstractCsvImportController
                     log_info('商品CSV登録完了');
                     $message = 'admin.common.csv_upload_complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
+
+                    $cacheUtil->clearDoctrineCache();
                 }
             }
         }

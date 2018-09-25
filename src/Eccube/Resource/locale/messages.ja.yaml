@@ -74,6 +74,8 @@ common.customer_address_count_is_over: お届け先登録の上限の%eccube_del
 common.search_keyword: キーワードを入力
 common.customer_already_exists: このメールアドレスは利用できません
 common.member_already_exists: 既に利用されているログインIDです
+common.delete_confirm: 削除してもよろしいですか?
+common.pagetop: ページトップへ
 
 #====================================================================================
 # フロント画面
@@ -981,11 +983,13 @@ admin.content.page_meta_metatag_placeholder: |
   商品詳細ページでの記載例
     <meta property="og:type" content="og:product" />
     <meta property="og:title" content="{{ Product.name }}" />
-    <meta property="og:image" content="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" />
+    <meta property="og:image" content="{{ url('homepage') }}{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" />
     <meta property="og:description" content="{{ Product.description_list|striptags }}" />
     <meta property="og:url" content="{{ url('product_detail', {'id': Product.id}) }}" />
     <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
     <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
+    <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
+    <meta property="product:retailer_title" content="{{ Product.name }}"/>
 admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 admin.content.block_name: ブロック名
 admin.content.block__card_title: ブロック設定
