@@ -1,0 +1,204 @@
+id,csv_type_id,creator_id,entity_name,field_name,reference_field_name,disp_name,sort_no,enabled,create_date,update_date,discriminator_type
+1,1,,Eccube\\Entity\\Product,id,,Product ID,1,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+2,1,,Eccube\\Entity\\Product,Status,id,Display Status (ID),2,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+3,1,,Eccube\\Entity\\Product,Status,name,Display Status (Name),3,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+4,1,,Eccube\\Entity\\Product,name,,Product Name,4,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+5,1,,Eccube\\Entity\\Product,note,,Store Staff Notes,5,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+6,1,,Eccube\\Entity\\Product,description_list,,Product Descriptions (All),6,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+7,1,,Eccube\\Entity\\Product,description_detail,,Product Descriptions (Details),7,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+8,1,,Eccube\\Entity\\Product,search_word,,Search Words,8,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+9,1,,Eccube\\Entity\\Product,free_area,,Miscellaneous,9,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+10,1,,Eccube\\Entity\\ProductClass,id,,Product Option ID,10,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+11,1,,Eccube\\Entity\\ProductClass,SaleType,id,Sales Type (ID),11,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+12,1,,Eccube\\Entity\\ProductClass,SaleType,name,Sales Type (Name),12,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+13,1,,Eccube\\Entity\\ProductClass,ClassCategory1,id,Option Group 1 (ID),13,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+14,1,,Eccube\\Entity\\ProductClass,ClassCategory1,name,Option Group 1 (Name),14,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+15,1,,Eccube\\Entity\\ProductClass,ClassCategory2,id,Option Group 2 (ID),15,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+16,1,,Eccube\\Entity\\ProductClass,ClassCategory2,name,Option Group 2 (Name),16,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+17,1,,Eccube\\Entity\\ProductClass,DeliveryDuration,id,Estimated Shipping Date (ID),17,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+18,1,,Eccube\\Entity\\ProductClass,DeliveryDuration,name,Estimated Shipping Date (Name),18,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+19,1,,Eccube\\Entity\\ProductClass,code,,Product Code,19,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+20,1,,Eccube\\Entity\\ProductClass,stock,,Stock Qty,20,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+21,1,,Eccube\\Entity\\ProductClass,stock_unlimited,,Unlimited Stock Flag,21,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+22,1,,Eccube\\Entity\\ProductClass,sale_limit,,Max Sales Qty,22,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+23,1,,Eccube\\Entity\\ProductClass,price01,,Regular Price,23,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+24,1,,Eccube\\Entity\\ProductClass,price02,,Selling Price,24,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+25,1,,Eccube\\Entity\\ProductClass,delivery_fee,,Shipping Charge,25,0,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+26,1,,Eccube\\Entity\\Product,ProductImage,file_name,Product Image,26,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+27,1,,Eccube\\Entity\\Product,ProductCategories,category_id,Product Category (ID),27,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+28,1,,Eccube\\Entity\\Product,ProductCategories,Category,Product Category (Name),28,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+29,1,,Eccube\\Entity\\Product,ProductTag,tag_id,Tag (ID),29,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+30,1,,Eccube\\Entity\\Product,ProductTag,Tag,Tag (Name),30,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+31,2,,Eccube\\Entity\\Customer,id,,Customer ID,1,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+32,2,,Eccube\\Entity\\Customer,name01,,Your Name (Last),2,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+33,2,,Eccube\\Entity\\Customer,name02,,Your Name (First),3,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+34,2,,Eccube\\Entity\\Customer,kana01,,Your Name (Last / Phonetic),4,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+35,2,,Eccube\\Entity\\Customer,kana02,,Your Name (First / Phonetic),5,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+36,2,,Eccube\\Entity\\Customer,company_name,,Company Name,6,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+37,2,,Eccube\\Entity\\Customer,postal_code,,Postal Code,7,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+38,2,,Eccube\\Entity\\Customer,Pref,id,Prefecture (ID),9,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+39,2,,Eccube\\Entity\\Customer,Pref,name,Prefecture (Name),10,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+40,2,,Eccube\\Entity\\Customer,addr01,,Address 1,11,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+41,2,,Eccube\\Entity\\Customer,addr02,,Address 2,12,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+42,2,,Eccube\\Entity\\Customer,email,,Email,13,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+43,2,,Eccube\\Entity\\Customer,phone_number,,Phone,14,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+44,2,,Eccube\\Entity\\Customer,Sex,id,Gender (ID),20,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+45,2,,Eccube\\Entity\\Customer,Sex,name,Gender (Name),21,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+46,2,,Eccube\\Entity\\Customer,Job,id,Occupation (ID),22,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+47,2,,Eccube\\Entity\\Customer,Job,name,Occupation (Name),23,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+48,2,,Eccube\\Entity\\Customer,birth,,Date of Birth,24,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+49,2,,Eccube\\Entity\\Customer,first_buy_date,,First purchased on,25,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+50,2,,Eccube\\Entity\\Customer,last_buy_date,,Last purchased on,26,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+51,2,,Eccube\\Entity\\Customer,buy_times,,No. of purchase,27,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+52,2,,Eccube\\Entity\\Customer,note,,Store Staff Notes,28,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+53,2,,Eccube\\Entity\\Customer,Status,id,Customer Status (ID),29,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+54,2,,Eccube\\Entity\\Customer,Status,name,Customer Status (Name),30,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+55,2,,Eccube\\Entity\\Customer,create_date,,Registered on,31,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+56,2,,Eccube\\Entity\\Customer,update_date,,Updated on,32,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+57,3,,Eccube\\Entity\\Order,id,,Order ID,1,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+58,3,,Eccube\\Entity\\Order,order_no,,Order No.,2,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+59,3,,Eccube\\Entity\\Order,Customer,id,Customer ID,3,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+60,3,,Eccube\\Entity\\Order,name01,,Your Name (Last),4,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+61,3,,Eccube\\Entity\\Order,name02,,Your Name (First),5,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+62,3,,Eccube\\Entity\\Order,kana01,,Your Name (Last / Phonetic),6,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+63,3,,Eccube\\Entity\\Order,kana02,,Your Name (First / Phonetic),7,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+64,3,,Eccube\\Entity\\Order,company_name,,Company Name,8,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+65,3,,Eccube\\Entity\\Order,postal_code,,Postal Code,9,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+66,3,,Eccube\\Entity\\Order,Pref,id,Prefecture (ID),10,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+67,3,,Eccube\\Entity\\Order,Pref,name,Prefecture (Name),11,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+68,3,,Eccube\\Entity\\Order,addr01,,Address 1,12,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+69,3,,Eccube\\Entity\\Order,addr02,,Address 2,13,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+70,3,,Eccube\\Entity\\Order,email,,Email,14,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+71,3,,Eccube\\Entity\\Order,phone_number,,Phone,15,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+72,3,,Eccube\\Entity\\Order,Sex,id,Gender (ID),16,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+73,3,,Eccube\\Entity\\Order,Sex,name,Gender (Name),17,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+74,3,,Eccube\\Entity\\Order,Job,id,Occupation (ID),18,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+75,3,,Eccube\\Entity\\Order,Job,name,Occupation (Name),19,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+76,3,,Eccube\\Entity\\Order,birth,,Date of Birth,20,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+77,3,,Eccube\\Entity\\Order,note,,Store Staff Notes,21,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+78,3,,Eccube\\Entity\\Order,subtotal,,Subtotal,22,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+79,3,,Eccube\\Entity\\Order,discount,,Discount,23,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+80,3,,Eccube\\Entity\\Order,delivery_fee_total,,Shipping Charge,24,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+81,3,,Eccube\\Entity\\Order,tax,,Tax,25,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+82,3,,Eccube\\Entity\\Order,total,,Total,26,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+83,3,,Eccube\\Entity\\Order,payment_total,,Amount Due,27,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+84,3,,Eccube\\Entity\\Order,OrderStatus,id,Order Status (ID),28,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+85,3,,Eccube\\Entity\\Order,OrderStatus,name,Order Status (Name),29,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+86,3,,Eccube\\Entity\\Order,Payment,id,Payment Method (ID),30,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+87,3,,Eccube\\Entity\\Order,payment_method,,Payment Method (Name),31,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+88,3,,Eccube\\Entity\\Order,order_date,,Order Date,32,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+89,3,,Eccube\\Entity\\Order,payment_date,,Payment Date,33,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+90,3,,Eccube\\Entity\\OrderItem,id,,Order Detail ID,34,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+91,3,,Eccube\\Entity\\OrderItem,Product,id,Product ID,35,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+92,3,,Eccube\\Entity\\OrderItem,ProductClass,id,Option Group ID,36,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+93,3,,Eccube\\Entity\\OrderItem,product_name,,Product Name,37,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+94,3,,Eccube\\Entity\\OrderItem,product_code,,Product Code,38,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+95,3,,Eccube\\Entity\\OrderItem,class_name1,,Option 1,39,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+96,3,,Eccube\\Entity\\OrderItem,class_name2,,Option 2,40,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+97,3,,Eccube\\Entity\\OrderItem,class_category_name1,,Option Group 1,41,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+98,3,,Eccube\\Entity\\OrderItem,class_category_name2,,Option Group 2,42,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+99,3,,Eccube\\Entity\\OrderItem,price,,Price,43,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+100,3,,Eccube\\Entity\\OrderItem,quantity,,Qty,44,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+101,3,,Eccube\\Entity\\OrderItem,tax_rate,,Tax,45,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+102,3,,Eccube\\Entity\\OrderItem,tax_rule,,Tax Rate Rule (ID),46,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+103,3,,Eccube\\Entity\\OrderItem,OrderItemType,id,Item Type (ID),47,1,2018-07-23 09:00:00,2018-07-23 09:00:00,csv
+104,3,,Eccube\\Entity\\OrderItem,OrderItemType,name,Item Type (Name),48,1,2018-07-23 09:00:00,2018-07-23 09:00:00,csv
+105,3,,Eccube\\Entity\\Shipping,id,,Delivery ID,49,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+106,3,,Eccube\\Entity\\Shipping,name01,,Recipient Name (First),50,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+107,3,,Eccube\\Entity\\Shipping,name02,,Recipient Name (Last),51,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+108,3,,Eccube\\Entity\\Shipping,kana01,,Recipient Name (First / Phonetic),52,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+109,3,,Eccube\\Entity\\Shipping,kana02,,Recipient Name (Last / Phonetic),53,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+110,3,,Eccube\\Entity\\Shipping,company_name,,Recipient Company Name,54,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+111,3,,Eccube\\Entity\\Shipping,postal_code,,Recipient Postal Code,55,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+112,3,,Eccube\\Entity\\Shipping,Pref,id,Recipient Prefecture (ID),56,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+113,3,,Eccube\\Entity\\Shipping,Pref,name,Recipient Prefecture (Name),57,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+114,3,,Eccube\\Entity\\Shipping,addr01,,Recipient Address 1,58,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+115,3,,Eccube\\Entity\\Shipping,addr02,,Recipient Address 2,59,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+116,3,,Eccube\\Entity\\Shipping,phone_number,,Recipient Phone,60,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+117,3,,Eccube\\Entity\\Shipping,Delivery,id,Delivery Company (ID),61,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+118,3,,Eccube\\Entity\\Shipping,shipping_delivery_name,,Delivery Company (Name),62,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+119,3,,Eccube\\Entity\\Shipping,DeliveryTime,id,Delivery Time ID,63,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+120,3,,Eccube\\Entity\\Shipping,shipping_delivery_time,,Delivery Time (Name),64,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+121,3,,Eccube\\Entity\\Shipping,shipping_delivery_date,,Preferred Delivery Date,65,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+122,3,,Eccube\\Entity\\Shipping,DeliveryFee,id,Shipping Charge ID,66,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+123,3,,Eccube\\Entity\\Shipping,shipping_delivery_fee,,Shipping Charge,67,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+124,3,,Eccube\\Entity\\Shipping,shipping_date,,Shipping Date,68,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+125,3,,Eccube\\Entity\\Shipping,tracking_number,,Tracking No. ,69,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+126,3,,Eccube\\Entity\\Shipping,note,,Delivery Notes,70,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+127,3,,Eccube\\Entity\\Shipping,mail_send_date,,Shipping notice sent on,71,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+128,4,,Eccube\\Entity\\Order,id,,Order ID,1,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+129,4,,Eccube\\Entity\\Order,order_no,,Order No.,2,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+130,4,,Eccube\\Entity\\Order,Customer,id,Member ID,3,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+131,4,,Eccube\\Entity\\Order,name01,,Your Name (Last),4,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+132,4,,Eccube\\Entity\\Order,name02,,Your Name (First),5,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+133,4,,Eccube\\Entity\\Order,kana01,,Your Name (Last / Phonetic),6,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+134,4,,Eccube\\Entity\\Order,kana02,,Your Name (First / Phonetic),7,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+135,4,,Eccube\\Entity\\Order,company_name,,Company Name,8,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+136,4,,Eccube\\Entity\\Order,postal_code,,Postal Code,9,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+137,4,,Eccube\\Entity\\Order,Pref,id,Prefecture (ID),10,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+138,4,,Eccube\\Entity\\Order,Pref,name,Prefecture (Name),11,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+139,4,,Eccube\\Entity\\Order,addr01,,Address 1,12,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+140,4,,Eccube\\Entity\\Order,addr02,,Address 2,13,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+141,4,,Eccube\\Entity\\Order,email,,Email,14,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+142,4,,Eccube\\Entity\\Order,phone_number,,Phone,15,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+143,4,,Eccube\\Entity\\Order,Sex,id,Gender (ID),16,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+144,4,,Eccube\\Entity\\Order,Sex,name,Gender (Name),17,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+145,4,,Eccube\\Entity\\Order,Job,id,Occupation (ID),18,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+146,4,,Eccube\\Entity\\Order,Job,name,Occupation (Name),19,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+147,4,,Eccube\\Entity\\Order,birth,,Date of Birth,20,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+148,4,,Eccube\\Entity\\Order,note,,Store Staff Notes,21,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+149,4,,Eccube\\Entity\\Order,subtotal,,Subtotal,22,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+150,4,,Eccube\\Entity\\Order,discount,,Discount,23,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+151,4,,Eccube\\Entity\\Order,delivery_fee_total,,Shipping Charge,24,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+152,4,,Eccube\\Entity\\Order,tax,,Tax,25,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+153,4,,Eccube\\Entity\\Order,total,,Total,26,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+154,4,,Eccube\\Entity\\Order,payment_total,,Amount Due,27,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+155,4,,Eccube\\Entity\\Order,OrderStatus,id,Order Status (ID),28,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+156,4,,Eccube\\Entity\\Order,OrderStatus,name,Order Status (Name),29,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+157,4,,Eccube\\Entity\\Order,Payment,id,Payment Method (ID),30,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+158,4,,Eccube\\Entity\\Order,payment_method,,Payment Method (Name),31,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+159,4,,Eccube\\Entity\\Order,order_date,,Order Date,32,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+160,4,,Eccube\\Entity\\Order,payment_date,,Payment Date,33,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+161,4,,Eccube\\Entity\\OrderItem,id,,Order Detail ID,34,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+162,4,,Eccube\\Entity\\OrderItem,Product,id,Product ID,35,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+163,4,,Eccube\\Entity\\OrderItem,ProductClass,id,Option Group ID,36,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+164,4,,Eccube\\Entity\\OrderItem,product_name,,Product Name,37,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+165,4,,Eccube\\Entity\\OrderItem,product_code,,Product Code,38,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+166,4,,Eccube\\Entity\\OrderItem,class_name1,,Option Name 1,39,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+167,4,,Eccube\\Entity\\OrderItem,class_name2,,Oprion Name 2,40,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+168,4,,Eccube\\Entity\\OrderItem,class_category_name1,,Option Group Name 1,41,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+169,4,,Eccube\\Entity\\OrderItem,class_category_name2,,Option Group Name 2,42,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+170,4,,Eccube\\Entity\\OrderItem,price,,Price,43,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+171,4,,Eccube\\Entity\\OrderItem,quantity,,Qty,44,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+172,4,,Eccube\\Entity\\OrderItem,tax_rate,,Tax Rate,45,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+173,4,,Eccube\\Entity\\OrderItem,tax_rule,,Tax Rate Rule (ID),46,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+174,4,,Eccube\\Entity\\OrderItem,OrderItemType,id,Item Type (ID),47,1,2018-07-23 09:00:00,2018-07-23 09:00:00,csv
+175,4,,Eccube\\Entity\\OrderItem,OrderItemType,name,Item Type (Name),48,1,2018-07-23 09:00:00,2018-07-23 09:00:00,csv
+176,4,,Eccube\\Entity\\Shipping,id,,Delivery ID,49,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+177,4,,Eccube\\Entity\\Shipping,name01,,Recipient Name (First),50,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+178,4,,Eccube\\Entity\\Shipping,name02,,Recipient Name (Last),51,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+179,4,,Eccube\\Entity\\Shipping,kana01,,Recipient Name (First / Phonetic),52,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+180,4,,Eccube\\Entity\\Shipping,kana02,,Recipient Name (Last / Phonetic),53,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+181,4,,Eccube\\Entity\\Shipping,company_name,,Recipient Company Name,54,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+182,4,,Eccube\\Entity\\Shipping,postal_code,,Recipient Postal Code,55,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+183,4,,Eccube\\Entity\\Shipping,Pref,id,Recipient Prefecture (ID),56,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+184,4,,Eccube\\Entity\\Shipping,Pref,name,Recipient Prefecture (Name),57,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+185,4,,Eccube\\Entity\\Shipping,addr01,,Recipient Address 1,58,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+186,4,,Eccube\\Entity\\Shipping,addr02,,Recipient Address 2,59,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+187,4,,Eccube\\Entity\\Shipping,phone_number,,Recipient Phone,60,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+188,4,,Eccube\\Entity\\Shipping,Delivery,id,Delivery Company (ID),61,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+189,4,,Eccube\\Entity\\Shipping,shipping_delivery_name,,Delivery Company (Name),62,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+190,4,,Eccube\\Entity\\Shipping,DeliveryTime,id,Delivery Time (ID),63,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+191,4,,Eccube\\Entity\\Shipping,shipping_delivery_time,,Delivery Time (Name),64,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+192,4,,Eccube\\Entity\\Shipping,shipping_delivery_date,,Preferred Delivery Date,65,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+193,4,,Eccube\\Entity\\Shipping,DeliveryFee,id,Shipping Charge ID,66,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+194,4,,Eccube\\Entity\\Shipping,shipping_delivery_fee,,Shipping Charge,67,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+195,4,,Eccube\\Entity\\Shipping,shipping_date,,Shipping Date,68,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+196,4,,Eccube\\Entity\\Shipping,tracking_number,,Tracking No. ,69,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+197,4,,Eccube\\Entity\\Shipping,note,,Delivery Notes,70,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+198,4,,Eccube\\Entity\\Shipping,mail_send_date,,Shipping notice sent on,71,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+199,5,,Eccube\\Entity\\Category,id,,Category ID,1,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+200,5,,Eccube\\Entity\\Category,sort_no,,Display Priority,2,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+201,5,,Eccube\\Entity\\Category,name,,Category Name,3,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+202,5,,Eccube\\Entity\\Category,Parent,id,Parent Category ID,4,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+203,5,,Eccube\\Entity\\Category,level,,Level,5,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv

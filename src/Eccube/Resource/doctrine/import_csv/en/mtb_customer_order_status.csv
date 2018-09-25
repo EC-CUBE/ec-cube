@@ -1,0 +1,9 @@
+id,name,sort_no,discriminator_type
+1,Received Order,0,customerorderstatus
+3,Canceled Order,4,customerorderstatus
+4,Received Order,3,customerorderstatus
+5,Shipped Order,6,customerorderstatus
+6,Received Order,2,customerorderstatus
+7,Received Order,1,customerorderstatus
+8,Incomplete Order,5,customerorderstatus
+9,Returned Order,7,customerorderstatus

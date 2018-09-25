@@ -1,0 +1,4 @@
+id,name,sort_no,discriminator_type
+1,Round off,0,roundingtype
+2,Round up,1,roundingtype
+3,Round down,2,roundingtype

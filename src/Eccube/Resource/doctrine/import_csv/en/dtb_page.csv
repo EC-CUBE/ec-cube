@@ -1,0 +1,41 @@
+id,page_name,url,file_name,edit_type,author,description,keyword,create_date,update_date,meta_robots,master_page_id,discriminator_type
+0,Preview,preview,,1,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+1,Home,homepage,index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+2,All Products,product_list,Product/list,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+3,Product Details,product_detail,Product/detail,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+4,My Account,mypage,Mypage/index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+5,My Account / Edit Customer Info (Form),mypage_change,Mypage/change,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+6,My Account / Edit Customer Info (Thank-you),mypage_change_complete,Mypage/change_complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+9,My Account / Favorites,mypage_favorite,Mypage/favorite,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+10,My Account / Purchase Histofy Details,mypage_history,Mypage/history,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+11,My Account / Sign In,mypage_login,Mypage/login,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+12,My Account / Membership Cancellation (Form),mypage_withdraw,Mypage/withdraw,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+14,About Us,help_about,Help/about,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+13,My Account / Membership Cancellation (Thank-you),mypage_withdraw_complete,Mypage/withdraw_complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+15,Items in your cart,cart,Cart/index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+16,Inquiry (Form),contact,Contact/index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+17,Inquiry (Thank-you),contact_complete,Contact/complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+18,Registration (Form),entry,Entry/index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+20,Registration (Thank-you),entry_complete,Entry/complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+21,Shipping & Returns,help_tradelaw,Help/tradelaw,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+22,Regular Customer Registration (Thank-you),entry_activate,Entry/activate,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+24,Shopping / Delivery Address,shopping_shipping,Shopping/shipping,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+28,Shopping / Thank you for your order,shopping_complete,Shopping/complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+29,Privacy Policy,help_privacy,Help/privacy,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+30,Sign in for shopping,shopping_login,Shopping/login,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+31,Non-Customer Purchase History Record,shopping_nonmember,Shopping/nonmember,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+32,Shopping / Add a Delivery Address,shopping_shipping_edit,Shopping/shipping_edit,2,,,,2017-03-07 01:15:02,2017-03-07 01:15:02,noindex,,page
+33,Shopping / Multiple Delivery Addresses (Add Delivery Address),shopping_shipping_multiple_edit,Shopping/shipping_multiple_edit,2,,,,2017-03-07 01:15:02,2017-03-07 01:15:02,noindex,,page
+34,Shopping / Checkout Error,shopping_error,Shopping/shopping_error,2,,,,2017-03-07 01:15:02,2017-03-07 01:15:02,noindex,,page
+35,Shopping Guide,help_guide,Help/guide,2,,,,2017-03-07 01:15:02,2017-03-07 01:15:02,,,page
+36,Password Reset (Form),forgot,Forgot/index,2,,,,2017-03-07 01:15:02,2017-03-07 01:15:02,,,page
+37,Password Reset (Thank-you),forgot_complete,Forgot/complete,2,,,,2017-03-07 01:15:02,2017-03-07 01:15:02,noindex,,page
+38,Password Reset (Enter New Password),forgot_reset,Forgot/reset,2,,,,2017-03-07 01:15:02,2017-03-07 01:15:05,noindex,,page
+19,Terms & Conditions,help_agreement,Help/agreement,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page
+25,Shopping / Select multiple delivery addresses,shopping_shipping_multiple,Shopping/shipping_multiple,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+23,Shopping,shopping,Shopping/index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+7,My Account / All Delivery Addresses,mypage_delivery,Mypage/delivery,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+8,My Account / Add a Delivery Address,mypage_delivery_new,Mypage/delivery_edit,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page
+42,Shopping / Change Delivery Address,shopping_shipping_edit_change,Shopping/index,2,,,,2017-03-07 01:15:03,2017-03-07 01:15:03,noindex,,page
+44,My Account / Edit Delivery Address,mypage_delivery_edit,Mypage/delivery_edit,2,,,,2017-03-07 01:15:05,2017-03-07 01:15:05,noindex,8,page
+45,Shopping / Review,shopping_confirm,Shopping/confirm,2,,,,2017-03-07 01:15:03,2017-03-07 01:15:03,noindex,,page

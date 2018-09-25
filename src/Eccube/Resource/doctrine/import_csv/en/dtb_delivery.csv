@@ -1,0 +1,3 @@
+id,creator_id,sale_type_id,name,service_name,description,confirm_url,sort_no,visible,create_date,update_date,discriminator_type
+1,,1,Sample Company,Sample Company,,,1,1,2017-03-07 10:14:52,2017-03-07 10:14:52,delivery
+2,,2,Sample Delivery,Sample Delivery,,,2,1,2017-03-07 10:14:52,2017-03-07 10:14:52,delivery

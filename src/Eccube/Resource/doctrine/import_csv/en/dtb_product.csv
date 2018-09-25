@@ -1,0 +1,3 @@
+id,creator_id,product_status_id,name,note,description_list,description_detail,search_word,free_area,create_date,update_date,discriminator_type
+1,,1,Colorful Gelato CUBE,,,CUBE gelatos are good even in winter. The popular chocolate flavor has its sweet chocolate flagrance. It's our long seller because of its modest sweetness and good size for Japanese.  The first-class vanilla flavor is a favorite gift.,,,2018-09-28 10:14:52,2018-09-28 10:14:52,product
+2,,1,Cherry Icecream Sandwich,,,Hokkaido-made cherry ice cream is sandwiched with crispy cookies. Easy to bring many because of its cubical shape. Comes in a free solid box only available now.,,,2018-09-28 10:14:52,2018-09-28 10:14:52,product

@@ -1,0 +1,15 @@
+id,device_type_id,block_name,file_name,create_date,update_date,use_controller,deletable,discriminator_type
+1,10,Cart,cart,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+2,10,Category,category,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+3,10,Category Navigations (PC),category_nav_pc,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+4,10,Category Navigations (SP),category_nav_sp,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+5,10,New Items,eyecatch,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+6,10,Footer,footer,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+7,10,"Header (Product Search, Login Menu, Cart)",header,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+8,10,Sign-In Navitations (Common),login,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+9,10,Sign-In Navitations (SP),login_sp,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+10,10,Logos,logo,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+11,10,New Items,new_item,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+12,10,News,news,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+13,10,Product Search,search_product,2017-03-07 10:14:52,2017-03-07 10:14:52,1,0,block
+14,10,Featured,topic,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block

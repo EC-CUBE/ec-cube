@@ -1,0 +1,9 @@
+id,creator_id,name,file_name,mail_subject,create_date,update_date,discriminator_type
+1,,Order Receipt,Mail/order.twig,Thank you for your order!,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate
+2,,Temporary Registration,Mail/entry_confirm.twig,Member registration confirmation,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate
+3,,Regular Registration,Mail/entry_complete.twig,Your registration has been completed,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate
+4,,Membership Cancelation,Mail/customer_withdraw_mail.twig,Membership cancelation completed,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate
+5,,Inquiry Receipt,Mail/contact_mail.twig,Thank you for your inqury,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate
+6,,Password Reset,Mail/forgot_mail.twig,Reset your password,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate
+7,,Password Reminder,Mail/reset_complete_mail.twig,Your password has been changed,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate
+8,,Shipping Notice,Mail/shipping_notify.twig,Your order has been shipped,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate

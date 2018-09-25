@@ -1,0 +1,5 @@
+id,creator_id,payment_method,charge,rule_max,sort_no,fixed,visible,create_date,update_date,payment_image,rule_min,method_class,discriminator_type
+1,,Postal Transfer,0,,4,1,1,2017-03-07 10:14:52,2017-03-07 10:14:52,,0,Eccube\Service\Payment\Method\Cash,payment
+2,,Registerd Mail for Cash,0,,3,1,1,2017-03-07 10:14:52,2017-03-07 10:14:52,,0,Eccube\Service\Payment\Method\Cash,payment
+3,,Bank Transfer,0,,2,1,1,2017-03-07 10:14:52,2017-03-07 10:14:52,,0,Eccube\Service\Payment\Method\Cash,payment
+4,,Cash on Delivery,0,,1,1,1,2017-03-07 10:14:52,2017-03-07 10:14:52,,0,Eccube\Service\Payment\Method\Cash,payment

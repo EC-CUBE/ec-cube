@@ -1,0 +1,1 @@
+id,customer_id,country_id,pref_id,sex_id,job_id,payment_id,device_type_id,pre_order_id,order_no,message,name01,name02,kana01,kana02,company_name,email,phone_number,postal_code,addr01,addr02,birth,subtotal,discount,delivery_fee_total,charge,tax,total,payment_total,payment_method,note,create_date,update_date,order_date,payment_date,order_status_id,discriminator_type

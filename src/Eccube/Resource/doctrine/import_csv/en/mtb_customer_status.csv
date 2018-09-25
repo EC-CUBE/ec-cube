@@ -1,0 +1,4 @@
+id,name,sort_no,discriminator_type
+1,Temporary Customer,0,customerstatus
+2,Regular Customer,1,customerstatus
+3,Terminated Member,2,customerstatus
