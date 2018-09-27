@@ -35,10 +35,10 @@ common.shop_name: 店名
 common.address: 住所
 common.pref: 都道府県
 common.postal_symbol: 〒
-common.postal_code_sample: 例：5530003
+common.postal_code_sample: 例：5300001
 common.search_postal_code: 郵便番号検索
-common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
-common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
+common.address_sample_01: 市区町村名(例：大阪市北区)
+common.address_sample_02: 番地・ビル名(例：西梅田1丁目6-8)
 common.phone_number: 電話番号
 common.phone_number_sample: 例：11122223333
 common.mail_address: メールアドレス
@@ -476,9 +476,9 @@ admin.common.company_name_kana: 会社名(カナ)
 admin.common.address: 住所
 admin.common.pref: 都道府県
 admin.common.postal_symbol: 〒
-admin.common.postal_code_sample: 例：5530003
-admin.common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
-admin.common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
+admin.common.postal_code_sample: 例：5300001
+admin.common.address_sample_01: 市区町村名(例：大阪市北区)
+admin.common.address_sample_02: 番地・ビル名(例：西梅田1丁目6-8)
 admin.common.phone_number: 電話番号
 admin.common.mail_address: メールアドレス
 admin.common.password: パスワード
