@@ -460,7 +460,7 @@ class InstallController extends AbstractController
 
     protected function removeSessionData(SessionInterface $session)
     {
-        $session->remove('eccube.session.install');
+        $session->clear();
     }
 
     protected function setSessionData(SessionInterface $session, $data = [])
