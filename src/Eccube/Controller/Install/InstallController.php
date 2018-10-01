@@ -517,6 +517,9 @@ class InstallController extends AbstractController
     {
         if (strpos($params['url'], 'mysql') !== false) {
             $params['charset'] = 'utf8';
+            $params['defaultTableOptions'] = [
+                'collate' => 'utf8_general_ci'
+            ];
         }
 
         Type::overrideType('datetime', UTCDateTimeType::class);
