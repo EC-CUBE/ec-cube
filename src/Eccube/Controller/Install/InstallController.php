@@ -27,6 +27,8 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
@@ -515,9 +517,20 @@ class InstallController extends AbstractController
     {
         if (strpos($params['url'], 'mysql') !== false) {
             $params['charset'] = 'utf8';
+            $params['defaultTableOptions'] = [
+                'collate' => 'utf8_general_ci'
+            ];
         }
+
+        Type::overrideType('datetime', UTCDateTimeType::class);
+        Type::overrideType('datetimetz', UTCDateTimeTzType::class);
+
         $conn = DriverManager::getConnection($params);
         $conn->ping();
+
+        $platform = $conn->getDatabasePlatform();
+        $platform->markDoctrineTypeCommented('datetime');
+        $platform->markDoctrineTypeCommented('datetimetz');
 
         return $conn;
     }
