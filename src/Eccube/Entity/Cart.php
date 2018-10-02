@@ -44,8 +44,7 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="cart_key", type="string", options={"unsigned":true}, nullable=true)
-         * @ORM\GeneratedValue(strategy="IDENTITY")
+         * @ORM\Column(name="cart_key", type="string", nullable=true)
          */
         private $cart_key;
 
