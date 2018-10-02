@@ -614,10 +614,11 @@ class PluginService
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $config = $this->readConfig($pluginDir);
             $em->getConnection()->beginTransaction();
-            $plugin->setEnabled($enable ? true : false);
-            $em->persist($plugin);
 
             $this->callPluginManagerMethod($config, $enable ? 'enable' : 'disable');
+
+            $plugin->setEnabled($enable ? true : false);
+            $em->persist($plugin);
 
             // Proxyだけ再生成してスキーマは更新しない
             $this->regenerateProxy($plugin, false);
