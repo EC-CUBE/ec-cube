@@ -446,6 +446,7 @@ if (!class_exists('\Eccube\Entity\Cart')) {
 
         /**
          * {@inheritdoc}
+         * @deprecated
          */
         public function setTax($total)
         {
