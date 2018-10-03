@@ -291,6 +291,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * @var string
          *
          * @ORM\Column(name="tax", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
+         * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
         private $tax = 0;
 
@@ -1008,6 +1009,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * @param string $tax
          *
          * @return Order
+         * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
         public function setTax($tax)
         {
@@ -1020,6 +1022,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * Get tax.
          *
          * @return string
+         * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
         public function getTax()
         {
