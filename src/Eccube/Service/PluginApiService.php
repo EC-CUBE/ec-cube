@@ -306,6 +306,7 @@ class PluginApiService
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FAILONERROR => true,
             CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
+            CURLOPT_TIMEOUT_MS => 5000,
         ];
 
         // Set option value
