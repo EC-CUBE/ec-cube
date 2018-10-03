@@ -154,7 +154,6 @@ class ShoppingService
             $preOrderId = sha1(Str::random(32));
             $Order = $this->app['eccube.repository.order']->findOneBy(array(
                 'pre_order_id' => $preOrderId,
-                'OrderStatus' => $this->app['config']['order_processing'],
             ));
         } while ($Order);
 
