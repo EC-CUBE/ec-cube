@@ -22,7 +22,12 @@ if (!class_exists('\Eccube\Entity\Cart')) {
     /**
      * Cart
      *
-     * @ORM\Table(name="dtb_cart", indexes={@ORM\Index(name="dtb_cart_pre_order_id_idx", columns={"pre_order_id"}), @ORM\Index(name="dtb_cart_update_date_idx", columns={"update_date"})})
+     * @ORM\Table(name="dtb_cart", indexes={
+     *     @ORM\Index(name="dtb_cart_update_date_idx", columns={"update_date"})
+     *  },
+     *  uniqueConstraints={
+     *     @ORM\UniqueConstraint(name="dtb_cart_pre_order_id_idx", columns={"pre_order_id"})
+     *  }))
      * @ORM\InheritanceType("SINGLE_TABLE")
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
      * @ORM\HasLifecycleCallbacks()

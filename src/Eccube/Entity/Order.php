@@ -24,12 +24,14 @@ if (!class_exists('\Eccube\Entity\Order')) {
      * Order
      *
      * @ORM\Table(name="dtb_order", indexes={
-     *     @ORM\Index(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"}),
      *     @ORM\Index(name="dtb_order_email_idx", columns={"email"}),
      *     @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}),
      *     @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}),
      *     @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"}),
      *     @ORM\Index(name="dtb_order_order_no_idx", columns={"order_no"})
+     *  },
+     *  uniqueConstraints={
+     *     @ORM\UniqueConstraint(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"})
      *  })
      * @ORM\InheritanceType("SINGLE_TABLE")
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
