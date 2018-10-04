@@ -252,8 +252,8 @@ class EA09ShippingCest
         $Customer = (Fixtures::get('createCustomer'))();
         /* @var Order[] $Orders */
         $Orders = (Fixtures::get('createOrders'))($Customer, 3);
-        // 決済処理中に更新しておく
-        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::PENDING);
+        // キャンセルに更新しておく
+        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::CANCEL);
         foreach ($Orders as $newOrder) {
             $newOrder->setOrderStatus($Status);
         }
