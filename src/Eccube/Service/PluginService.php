@@ -169,14 +169,6 @@ class PluginService
             // 問題なければ本当のplugindirへ
             $this->unpackPluginArchive($path, $pluginBaseDir);
 
-            // Check dependent plugin
-            // Don't install ec-cube library
-//            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
-//            if (!empty($dependents)) {
-//                $package = $this->parseToComposerCommand($dependents);
-            //FIXME: how to working with ComposerProcessService or ComposerApiService ?
-//                $this->composerService->execRequire($package);
-//            }
             // リソースファイルをコピー
             $this->copyAssets($config['code']);
             // プラグイン配置後に実施する処理
@@ -622,10 +614,11 @@ class PluginService
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $config = $this->readConfig($pluginDir);
             $em->getConnection()->beginTransaction();
-            $plugin->setEnabled($enable ? true : false);
-            $em->persist($plugin);
 
             $this->callPluginManagerMethod($config, $enable ? 'enable' : 'disable');
+
+            $plugin->setEnabled($enable ? true : false);
+            $em->persist($plugin);
 
             // Proxyだけ再生成してスキーマは更新しない
             $this->regenerateProxy($plugin, false);
@@ -676,16 +669,7 @@ class PluginService
 
             $pluginBaseDir = $this->calcPluginDir($config['code']);
             $this->deleteFile($tmp); // テンポラリのファイルを削除
-
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
-
-            // Check dependent plugin
-            // Don't install ec-cube library
-            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
-            if (!empty($dependents)) {
-                $package = $this->parseToComposerCommand($dependents);
-                $this->composerService->execRequire($package);
-            }
 
             $this->copyAssets($plugin->getCode());
             $this->updatePlugin($plugin, $config); // dbにプラグイン登録

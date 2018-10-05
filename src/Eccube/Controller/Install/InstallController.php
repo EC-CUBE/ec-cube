@@ -27,6 +27,8 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
@@ -432,6 +434,7 @@ class InstallController extends AbstractController
             'ECCUBE_ADMIN_ALLOW_HOSTS' => $this->convertAdminAllowHosts($sessionData['admin_allow_hosts']),
             'ECCUBE_FORCE_SSL' => $forceSSL,
             'ECCUBE_ADMIN_ROUTE' => isset($sessionData['admin_dir']) ? $sessionData['admin_dir'] : 'admin',
+            'ECCUBE_COOKIE_PATH' => $request->getBasePath() ? $request->getBasePath() : '/',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);
@@ -459,7 +462,7 @@ class InstallController extends AbstractController
 
     protected function removeSessionData(SessionInterface $session)
     {
-        $session->remove('eccube.session.install');
+        $session->clear();
     }
 
     protected function setSessionData(SessionInterface $session, $data = [])
@@ -514,9 +517,20 @@ class InstallController extends AbstractController
     {
         if (strpos($params['url'], 'mysql') !== false) {
             $params['charset'] = 'utf8';
+            $params['defaultTableOptions'] = [
+                'collate' => 'utf8_general_ci'
+            ];
         }
+
+        Type::overrideType('datetime', UTCDateTimeType::class);
+        Type::overrideType('datetimetz', UTCDateTimeTzType::class);
+
         $conn = DriverManager::getConnection($params);
         $conn->ping();
+
+        $platform = $conn->getDatabasePlatform();
+        $platform->markDoctrineTypeCommented('datetime');
+        $platform->markDoctrineTypeCommented('datetimetz');
 
         return $conn;
     }

@@ -132,12 +132,9 @@ class OrderRepository extends AbstractRepository
         }
 
         if (!$filterStatus) {
-            // 購入処理中は検索対象から除外
-            $OrderStatuses = $this->getEntityManager()
-                ->getRepository('Eccube\Entity\Master\OrderStatus')
-                ->findNotContainsBy(['id' => OrderStatus::PROCESSING]);
-            $qb->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
-                ->setParameter('status', $OrderStatuses);
+            // 購入処理中, 決済処理中は検索対象から除外
+            $qb->andWhere($qb->expr()->notIn('o.OrderStatus', ':status'))
+                ->setParameter('status', [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         }
 
         // company_name

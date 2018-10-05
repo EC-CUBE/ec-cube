@@ -31,7 +31,7 @@ framework:
         save_image:
           base_path: '/html/upload/save_image'
         plugin:
-          base_path: '/html/template/plugin'
+          base_path: '/html/plugin'
         install:
           base_path: '/html/template/install'
         temp_image:
