@@ -463,7 +463,7 @@ class ProductController extends AbstractController
             if (empty($errorMessages)) {
                 // エラーが発生していない場合
                 $done = true;
-                array_push($messages, 'カートに追加しました。');
+                array_push($messages, trans('front.product.add_cart_complete'));
             } else {
                 // エラーが発生している場合
                 $done = false;
