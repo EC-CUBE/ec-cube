@@ -10,7 +10,7 @@ parameters:
     env(ECCUBE_COOKIE_PATH): '/'
     env(ECCUBE_COOKIE_LIFETIME): 0
     env(ECCUBE_GC_MAXLIFETIME): 1440
-    env(ECCUBE_PACKAGE_API_URL): 'https://beta-package-api.ec-cube.net'
+    env(ECCUBE_PACKAGE_API_URL): 'https://package-api.ec-cube.net'
     env(ECCUBE_OWNERS_STORE_URL): 'https://www.ec-cube.net'
 
     # EC-CUBE parameter
