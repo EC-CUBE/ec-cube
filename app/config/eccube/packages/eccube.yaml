@@ -56,6 +56,7 @@ parameters:
     plugin_html_realdir: '%eccube_html_dir%/plugin/'
     plugin_html_urlpath: /plugin/ # asset 使う
     plugin_realdir: '%kernel.project_dir%/app/Plugin'
+    plugin_data_realdir: '%kernel.project_dir%/app/PluginData'
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
     eccube_price_len: 8                                                    # 最大値で制御したい
     eccube_search_pmax: 10
