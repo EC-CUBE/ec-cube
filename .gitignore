@@ -12,6 +12,8 @@ composer.phar
 /app/Plugin/*
 !/app/Plugin/.gitkeep
 !/app/Plugin/ExamplePlugin
+/app/PluginData/*
+!/app/PluginData/.gitkeep
 /app/template/*
 !/app/template/admin
 !/app/template/default
