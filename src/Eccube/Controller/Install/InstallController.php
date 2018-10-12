@@ -777,8 +777,13 @@ class InstallController extends AbstractController
 
     protected function importCsv(EntityManager $em)
     {
+        // for full locale code cases
+        $locale = env('ECCUBE_LOCALE', 'ja_JP');
+        $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+        $localeDir = $formatter->getLocale();
+
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
-        $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv/'.env('ECCUBE_LOCALE', 'ja'));
+        $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv/'.$localeDir);
         $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);

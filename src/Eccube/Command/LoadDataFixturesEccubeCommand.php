@@ -38,8 +38,14 @@ EOF
     {
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
+
+        // for full locale code cases
+        $locale = env('ECCUBE_LOCALE', 'ja_JP');
+        $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+        $localeDir = $formatter->getLocale();
+
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
-        $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv/'.env('ECCUBE_LOCALE', 'ja'));
+        $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv/'.$localeDir);
         $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);

@@ -20,6 +20,7 @@ use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Intl\Intl;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -342,15 +343,18 @@ class EccubeExtension extends AbstractExtension
     }
 
     /**
-     * getCurrencySymbol
+     * Get currency symbol
      *
-     * @return string
+     * @param null $currency
+     * @return bool|string
      */
-    public function getCurrencySymbol()
+    public function getCurrencySymbol($currency = null)
     {
-        $locale = $this->eccubeConfig['locale'];
-        $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+        if (is_null($currency)) {
+            $currency = $this->eccubeConfig->get('currency');
+        }
+        $symbol = Intl::getCurrencyBundle()->getCurrencySymbol($currency);
 
-        return $formatter->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
+        return $symbol;
     }
 }
