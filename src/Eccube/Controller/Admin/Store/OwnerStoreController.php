@@ -129,7 +129,7 @@ class OwnerStoreController extends AbstractController
     public function search(Request $request, $page_no = null, Paginator $paginator)
     {
         if (empty($this->BaseInfo->getAuthenticationKey())) {
-            $this->addWarning('認証キーを設定してください。', 'admin');
+            $this->addWarning('admin.store.plugin.search.not_auth', 'admin');
 
             return $this->redirectToRoute('admin_store_authentication_setting');
         }

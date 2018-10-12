@@ -69,7 +69,7 @@ EOF
             'sort_no' => 1,
             'update_date' => new \DateTime(),
             'create_date' => new \DateTime(),
-            'name' => '管理者',
+            'name' => trans('install.member_name'),
             'department' => 'EC-CUBE SHOP',
             'discriminator_type' => 'member',
         ], [

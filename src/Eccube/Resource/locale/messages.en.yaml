@@ -66,6 +66,7 @@ common.point: Points
 common.enabled: Enabled
 common.disabled: Disabled
 common.user_name: '%last_name% %first_name%'
+common.user_name.honor: '(Mr/Ms)'
 common.login: Sign in
 common.remember_me: Remember me
 common.signup: Sign up
@@ -109,11 +110,11 @@ front.block.new_item.title__en: NEW ITEMS
 front.block.new_item.title__ja: New Items
 front.block.new_item.more: More
 front.block.new_item.item_1_name: "Colorful Gelato: 'CUBE'"
-front.block.new_item.item_1_price: ￥1,200 (tax incl.)
+front.block.new_item.item_1_price: $1,200 (tax incl.)
 front.block.new_item.item_2_name: Cherry Ice Cream Sandwiches
-front.block.new_item.item_2_price: ￥800 (tax incl.)
+front.block.new_item.item_2_price: $800 (tax incl.)
 front.block.new_item.item_3_name: "Colorful Gelato: 'CUBE' NEO"
-front.block.new_item.item_3_price: ￥600 (tax incl.)
+front.block.new_item.item_3_price: $600 (tax incl.)
 front.block.news.title__en: WHAT'S NEW
 front.block.news.title__ja: What's New
 front.block.news.read_more: More
@@ -883,7 +884,7 @@ admin.order.shipping_csv.shipping_id_description: ''
 admin.order.shipping_csv.tracking_number_col: Tracking No.
 admin.order.shipping_csv.tracking_number_description: ''
 admin.order.shipping_csv.shipping_date_col: Shipping Date
-admin.order.shipping_csv.shipping_date_description: Enter the shipping date in the format of YYYY-MM-DD
+admin.order.shipping_csv.shipping_date_description: Enter the shipping date in the format of MM/DD/YYYY
 
 #------------------------------------------------------------------------------------
 # Customer
@@ -1245,6 +1246,7 @@ admin.store.plugin: Plugins
 admin.store.plugin.plugin_owners_install: Search Plugins
 admin.store.plugin.plugin_list: All Plugins
 admin.store.plugin.search.not_found: No matches found for your search.
+admin.store.plugin.search.not_auth: Please set the authentication key.
 admin.store.plugin.installed: Installed
 admin.store.plugin.update: Update
 admin.store.plugin.install.complete: A plugin has been installed.

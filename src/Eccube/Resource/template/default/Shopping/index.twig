@@ -159,7 +159,7 @@ file that was distributed with this source code.
                         </div>
                     {% endif %}
                     <div class="ec-orderAccount__account non-customer-display">
-                        <p class="ec-halfInput"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様</p>
+                        <p class="ec-halfInput"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> {{'common.user_name.honor'|trans}}</p>
                         <p class="ec-halfInput"><span class="customer-edit customer-kana01">{{ Order.kana01 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana02 }}</span></p>
                         <p class="ec-input"><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
                         <p class="ec-zipInput">〒<span class="customer-edit customer-postal_code">{{ Order.postal_code }}</span></p>
@@ -311,7 +311,7 @@ file that was distributed with this source code.
                             </ul>
                         </div>
                         <div class="ec-orderDelivery__address">
-                            <p>{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}) 様</p>
+                            <p>{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}) {{'common.user_name.honor'|trans}}</p>
                             <p>{{ 'common.postal_symbol'|trans }}{{ shipping.postal_code }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
                             <p>{{ shipping.phone_number }}</p>
                         </div>

@@ -32,7 +32,7 @@ file that was distributed with this source code.
                 tooltips: {
                     callbacks: {
                         label: function(tooltipItem, data) {
-                            return '¥' + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            return '{{ currency_symbol() }}' + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                         }
                     }
                 },
@@ -45,7 +45,7 @@ file that was distributed with this source code.
                                 beginAtZero: true,
                                 callback: function(label, index, labels) {
                                     if (Math.floor(label) === label) {
-                                        return '¥' + label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                        return '{{ currency_symbol() }}' + label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                                     }
                                 }
                             }

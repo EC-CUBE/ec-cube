@@ -61,6 +61,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
             new TwigFunction('product', [$this, 'getProduct']),
             new TwigFunction('php_*', [$this, 'getPhpFunctions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new TwigFunction('currency_symbol', [$this, 'getCurrencySymbol']),
         ];
     }
 
@@ -338,5 +339,18 @@ class EccubeExtension extends AbstractExtension
         $html .= '></i>';
 
         return $html;
+    }
+
+    /**
+     * getCurrencySymbol
+     *
+     * @return string
+     */
+    public function getCurrencySymbol()
+    {
+        $locale = $this->eccubeConfig['locale'];
+        $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+
+        return $formatter->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
     }
 }
