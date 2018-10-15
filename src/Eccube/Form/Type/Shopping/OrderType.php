@@ -159,7 +159,7 @@ class OrderType extends AbstractType
             }
 
             $Payments = $this->getPayments($Deliveries);
-            $Payments = $this->filterPayments($Payments, $Order->getSubtotal());
+            $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal());
 
             $form = $event->getForm();
             $this->addPaymentForm($form, $Payments);
