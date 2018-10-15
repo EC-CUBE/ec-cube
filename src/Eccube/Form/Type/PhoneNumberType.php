@@ -81,6 +81,7 @@ class PhoneNumberType extends AbstractType
             'constraints' => $constraints,
             'attr' => [
                 'placeholder' => 'common.phone_number_sample',
+                'maxlength' => $eccubeConfig['eccube_tel_len_max'],
             ],
             'trim' => true,
         ]);
