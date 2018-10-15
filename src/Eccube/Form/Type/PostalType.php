@@ -81,6 +81,7 @@ class PostalType extends AbstractType
             'attr' => [
                 'class' => 'p-postal-code',
                 'placeholder' => 'common.postal_code_sample',
+                'maxlength' => $eccubeConfig['eccube_postal_code'],
             ],
             'trim' => true,
         ]);
