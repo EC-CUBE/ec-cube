@@ -612,7 +612,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 'Shippings' => [
                     0 => [
                         'Delivery' => $Delivery->getId(),
-                        'DeliveryTime' => $Delivery->getDeliveryTimes()->first()->getId(),
+                        'DeliveryTime' => null,
                     ],
                 ],
                 'Payment' => $COD2->getId(),
@@ -633,7 +633,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 'Shippings' => [
                     0 => [
                         'Delivery' => $Delivery->getId(),
-                        'DeliveryTime' => $Delivery->getDeliveryTimes()->first()->getId(),
+                        'DeliveryTime' => null,
                     ],
                 ],
                 'Payment' => $COD2->getId(),
