@@ -575,7 +575,7 @@ class InstallController extends AbstractController
                 if (isset($params['database_user'])) {
                     $url .= $params['database_user'];
                     if (isset($params['database_password'])) {
-                        $url .= ':'.$params['database_password'];
+                        $url .= ':'.urlencode($params['database_password']);
                     }
                     $url .= '@';
                 }
