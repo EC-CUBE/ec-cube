@@ -579,6 +579,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     /**
      * Check can use point when has payment limit
+     *
+     * https://github.com/EC-CUBE/ec-cube/issues/3916
      */
     public function testPaymentLimitAndPointCombination()
     {
@@ -586,8 +588,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $Customer->setPoint(99999);
         $this->entityManager->flush($Customer);
 
-        $price = 40000;
-        $pointUse = 40000;
+        $price = 27777;
+        $pointUse = 27777;
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->container->get(ProductClassRepository::class)->find(1);
         $ProductClass->setPrice02($price);
