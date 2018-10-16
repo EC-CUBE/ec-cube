@@ -779,8 +779,9 @@ class InstallController extends AbstractController
     {
         // for full locale code cases
         $locale = env('ECCUBE_LOCALE', 'ja_JP');
-        $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
-        $localeDir = $formatter->getLocale(\Locale::ACTUAL_LOCALE);
+        $locale = str_replace('_', '-', $locale);
+        $locales = \Locale::parseLocale($locale);
+        $localeDir = is_null($locales) ? 'ja' : $locales['language'];
 
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
         $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv/'.$localeDir);
