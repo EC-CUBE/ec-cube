@@ -85,7 +85,7 @@ jobs:
       - *php_setup
       - export DISPLAY=:99.0
       - sh -e /etc/init.d/xvfb start
-      - wget -c -nc --retry-connrefused --tries=0 http://chromedriver.storage.googleapis.com/2.37/chromedriver_linux64.zip
+      - wget -c -nc --retry-connrefused --tries=0 http://chromedriver.storage.googleapis.com/2.43/chromedriver_linux64.zip
       - unzip -o -q chromedriver_linux64.zip
       - sudo mv -f ./chromedriver /usr/local/bin/
       - sudo chmod +x /usr/local/bin/chromedriver
