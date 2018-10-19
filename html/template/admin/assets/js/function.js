@@ -117,7 +117,7 @@ var toggleBtnBulk = function(checkboxSelector, btnSelector) {
 /////////// 2重submit制御.
 
 if (typeof Ladda !== 'undefined') {
-    Ladda.bind('button[type=submit]');
+    Ladda.bind('button[type=submit]', {timeout: 2000});
 }
 
 // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
