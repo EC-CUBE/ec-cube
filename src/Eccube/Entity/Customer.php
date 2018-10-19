@@ -330,7 +330,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         {
             $metadata->addConstraint(new UniqueEntity([
             'fields' => 'email',
-            'message' => trans('common.customer_already_exists'),
+            'message' => 'form.type.customer_already_exists',
             'repositoryMethod' => 'getNonWithdrawingCustomers',
         ]));
         }
