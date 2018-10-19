@@ -17,35 +17,10 @@ file that was distributed with this source code.
 
 {% block javascript %}
 <script>
-    var searchWord = function(){
-        var searchText = $(this).val(), // 検索ボックスに入力された値
-            targetText;
-
-        // 検索ボックスに値が入っていない場合
-        if (searchText == '') {
-            // 全て表示する
-            $('table.table tbody tr').show();
-            return;
-        }
-
-        // 検索ボックスに値が入ってる場合
-        // 表示を全て空にする
-        $('table.table tbody tr').hide();
-
-        // 検索ワードが（子を含めて）含まれる要素のみ表示
-        $('table.table tbody tr').each(function() {
-            targetText = $(this).find('td a').text();
-
-            // 検索対象となるリストに入力された文字列が存在するかどうかを判断
-            if (targetText.indexOf(searchText) != -1) {
-                // 存在する場合はそのリストのテキストを用意した配列に格納
-                $(this).show();
-            }
-        });
-    };
-
     // searchWordの実行
-    $('#search-page').on('input', searchWord);
+    $('#search-page').on('input', function () {
+        searchWord($(this).val(), $('table.table tbody tr'));
+    });
 </script>
 {% endblock javascript %}
 

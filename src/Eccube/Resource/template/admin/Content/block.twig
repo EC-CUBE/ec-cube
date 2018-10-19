@@ -25,35 +25,10 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        var searchWord = function () {
-            var searchText = $(this).val(), // 検索ボックスに入力された値
-                targetText;
-
-            // 検索ボックスに値が入っていない場合
-            if (searchText == '') {
-                // 全て表示する
-                $('.list-group li').show();
-                return;
-            }
-
-            // 検索ボックスに値が入ってる場合
-            // 表示を全て空にする
-            $('.list-group li').hide();
-
-            // 検索ワードが（子を含めて）含まれる要素のみ表示
-            $('.list-group li').each(function () {
-                targetText = $(this).find('> div.row > div > a').text();
-
-                // 検索対象となるリストに入力された文字列が存在するかどうかを判断
-                if (targetText.indexOf(searchText) != -1) {
-                    // 存在する場合はそのリストのテキストを用意した配列に格納
-                    $(this).show();
-                }
-            });
-        };
-
         // searchWordの実行
-        $('#search-block').on('input', searchWord);
+        $('#search-block').on('input', function () {
+            searchWord($(this).val(), $(".list-group li"));
+        });
     </script>
 {% endblock javascript %}
 
