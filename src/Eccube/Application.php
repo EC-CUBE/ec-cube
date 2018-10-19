@@ -613,6 +613,7 @@ class Application extends ApplicationTrait
             return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
         });
 
+        $app = $this;
         $app['security.authentication.success_handler.admin'] = $app->share(function ($app) {
             $handler = new \Eccube\Security\Http\Authentication\EccubeAuthenticationSuccessHandler(
                 $app['security.http_utils'],
