@@ -69,7 +69,7 @@ file that was distributed with this source code.
                     <h2>{{ 'front.shopping.customer_info'|trans }}</h2>
                 </div>
                 <div class="ec-orderAccount__account">
-                    <p class="ec-halfInput">{{ Order.name01 }} {{ Order.name02 }}</span> 様</p>
+                    <p class="ec-halfInput">{{ 'common.name.prefix'|trans }}{{ Order.name01 }} {{ Order.name02 }}</span>{{ 'common.name.suffix'|trans }}</p>
                     <p class="ec-halfInput">{{ Order.kana01 }}</span> {{ Order.kana02 }}</p>
                     <p class="ec-input">{{ Order.companyName }}</span></p>
                     <p class="ec-zipInput">{{ 'common.postal_symbol'|trans }}{{ Order.postal_code }}</p>
@@ -106,7 +106,7 @@ file that was distributed with this source code.
                         </ul>
                     </div>
                     <div class="ec-orderDelivery__address">
-                        <p>{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}) 様</p>
+                        <p>{{ 'common.name.prefix'|trans }}{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}){{ 'common.name.suffix'|trans }}</p>
                         <p>{{ 'common.postal_symbol'|trans }}{{ shipping.postal_code }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
                         <p>{{ shipping.phone_number }}</p>
                     </div>

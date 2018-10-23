@@ -76,6 +76,8 @@ common.customer_already_exists: This email is already registered.
 common.member_already_exists: This ID is already registered.
 common.delete_confirm: Are you sure you want to delete that?
 common.pagetop: Page top
+common.name.prefix: ''
+common.name.suffix: ''
 
 #====================================================================================
 # Store Front

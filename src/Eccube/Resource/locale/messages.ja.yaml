@@ -76,6 +76,8 @@ common.customer_already_exists: このメールアドレスは利用できませ
 common.member_already_exists: 既に利用されているログインIDです
 common.delete_confirm: 削除してもよろしいですか?
 common.pagetop: ページトップへ
+common.name.prefix: ''
+common.name.suffix: ' 様'
 
 #====================================================================================
 # フロント画面
