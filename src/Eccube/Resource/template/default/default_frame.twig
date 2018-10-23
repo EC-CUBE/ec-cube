@@ -77,7 +77,7 @@ file that was distributed with this source code.
     <div class="ec-layoutRole__contents">
         {# Layout: SIDE_LEFT #}
         {% if Layout.SideLeft %}
-            <div class="ec-ec-layoutRole__left">
+            <div class="ec-layoutRole__left">
                 {{ include('block.twig', {'Blocks': Layout.SideLeft}) }}
             </div>
         {% endif %}
@@ -110,7 +110,7 @@ file that was distributed with this source code.
 
         {# Layout: SIDE_RIGHT #}
         {% if Layout.SideRight %}
-            <div class="ec-layoutRole__mainRight">
+            <div class="ec-layoutRole__right">
                 {{ include('block.twig', {'Blocks': Layout.SideRight}) }}
             </div>
         {% endif %}

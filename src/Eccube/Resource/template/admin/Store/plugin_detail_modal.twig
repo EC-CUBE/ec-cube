@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <form action="{{ eccube_config.eccube_owners_store_url }}/products/detail.php?product_id={{ item.id }}" method="post" target="_blank">
+                <form action="{{ eccube_config.eccube_owners_store_url }}/gateway/purchase/?product_id={{ item.id }}" method="post" target="_blank">
                 <button type="button" class="btn btn-ec-sub" data-dismiss="modal">{{ 'admin.store.plugin_owners_search.modal.cancel'|trans }}</button>
                 {% if item.update_status == 1 %}
                     <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">

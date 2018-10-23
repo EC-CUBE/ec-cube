@@ -396,7 +396,9 @@ class OwnerStoreController extends AbstractController
             }
 
             $log = ob_get_clean();
-            ob_end_flush();
+            while (ob_get_level() > 0) {
+                ob_end_flush();
+            }
 
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
@@ -435,7 +437,9 @@ class OwnerStoreController extends AbstractController
             ob_start();
             $this->pluginService->updatePlugin($Plugin, $config);
             $log = ob_get_clean();
-            ob_end_flush();
+            while (ob_get_level() > 0) {
+                ob_end_flush();
+            }
 
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {

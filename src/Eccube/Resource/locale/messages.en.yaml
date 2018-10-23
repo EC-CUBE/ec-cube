@@ -16,7 +16,7 @@ common.delete: Delete
 common.ok: OK
 common.cancel: Cancel
 common.go_to_top: Back to Home
-common.go_to_cart: Go to Cart
+common.go_to_cart: Proceed to Cart
 common.go_to_confirm: Review
 common.go_to_next: Next
 common.move_to_page_top: Page top
@@ -24,8 +24,8 @@ common.prev: Previous
 common.next: Next
 common.first: First
 common.last: Last
-common.name: Your Name
-common.kana: Your Name (Phonetic)
+common.name: Name
+common.kana: Name (Phonetic)
 common.first_name: First Name
 common.last_name: Last Name
 common.first_name_kana: First Name (Phonetic)
@@ -37,8 +37,8 @@ common.pref: Prefecture
 common.postal_symbol: Postal Code
 common.postal_code_sample: e.g. 5530003
 common.search_postal_code: Address Search
-common.address_sample_01: City, ward, town (e.g. Fukushima-ku, Osaka)
-common.address_sample_02: Street, room number (e.g. ABC Apt. 201, 8-3-15 Fukushima)
+common.address_sample_01: City, ward, town (e.g. Osaka-shi, Fukushima-ku)
+common.address_sample_02: Street, room number (e.g. Fukushima 8-3-15, ABC Apt. 201)
 common.phone_number: Phone
 common.phone_number_sample: e.g. 11122223333
 common.mail_address: Email
@@ -71,10 +71,10 @@ common.remember_me: Remember me
 common.signup: Sign up
 common.forgot_login: Unable to sign in?
 common.customer_address_count_is_over: You already have max number of addresses (%eccube_deliv_addr_max% items). If you want to add a new one, please delete or overwrite the item(s) you have on the list.
-common.search_keyword: Enter keyword
+common.search_keyword: Enter keywords
 common.customer_already_exists: This email is already registered.
 common.member_already_exists: This ID is already registered.
-common.delete_confirm: Are you sure you want to delete that?
+common.delete_confirm: Do you want to continue?
 common.pagetop: Page top
 common.name.prefix: ''
 common.name.suffix: ''
@@ -87,7 +87,7 @@ common.name.suffix: ''
 # Block
 #------------------------------------------------------------------------------------
 
-front.block.cart.go_to_cart: Go to cart
+front.block.cart.go_to_cart: Proceed to Cart
 front.block.cart.no_item: Your cart is empty.
 front.block.footer.about_us: About Us
 front.block.footer.privacy_policy: Privacy Policy
@@ -125,8 +125,8 @@ front.block.login.mypage: My Account
 front.block.login.favorite: Favorites
 front.block.login.login: Sign in
 front.block.login.logout: Sign out
-front.block.login.to_cart: Go to cart
-front.block.login.to_home: Back to home
+front.block.login.to_cart: Proceed to Cart
+front.block.login.to_home: Back to Home
 
 
 #------------------------------------------------------------------------------------
@@ -156,14 +156,14 @@ front.entry.confirm_message: |
  Review your entry.
  If all looks fine, press 'Sign up'.
 front.entry.do_register: Sign up
-front.entry.complete_title: Sign up completed
-front.entry.complete_title__temporary: Sign up (Temporary)
-front.entry.complete_message__title: Thank you for your registration.
+front.entry.complete_title: Sign-up completed
+front.entry.complete_title__temporary: Temporary sign-up completed
+front.entry.complete_message__title: Thank you for signing up.
 front.entry.complete_message__temporary: |
- You have been registered as a temprary member. We have sent a verification email to your email address.
- Please complete the registration by clicking on the URL in the body of the email.
+ You have been signed up as a temporary customer. We have sent a verification email to your email address.
+ Please complete your sign-up by clicking on the URL in the email.
 front.entry.complete_message__activated: |
- Your registration is completed.
+ Your sign-up is completed.
  Enjoy your shopping!
 
 #------------------------------------------------------------------------------------
@@ -233,16 +233,16 @@ front.mypage.message: Contact Us
 front.mypage.reorder_message: '*Please note that the price has been changed when you place your order again.'
 front.mypage.mail_not_found: No email found.
 front.mypage.mail_list: Email History
-front.mypage.customer_complete_message__title: Member information has been updated
+front.mypage.customer_complete_message__title: Customer information has been updated
 front.mypage.customer_complete_message__body: Please continue your shopping!
-front.mypage.favorite_count: '%count% items are found in Favorites'
+front.mypage.favorite_count: '%count% item(s) found in Favorites'
 front.mypage.favorite_not_found: No item found in Favorites.
 front.mypage.customer_address_count: '%count% items are registered in Delivery Addresses'
 front.mypage.customer_address_not_found: No address is found.
 front.mypage.add_customer_address: 'Add a New Address'
 front.mypage.withdraw_message__title: Make sure before you cancel your membership
-front.mypage.withdraw_message__body: Please note that all information in Order History and Delivery Addresses etc. are deleted upon cancellation of your membership.
-front.mypage.withdraw_execute_message__title: Are you sure to cancel your membship?
+front.mypage.withdraw_message__body: Please note that all information in Order History and Delivery Addresses etc. will be deleted upon cancellation of your membership.
+front.mypage.withdraw_execute_message__title: Are you sure to cancel your membership?
 front.mypage.withdraw_confirm: Cancel Membership
 front.mypage.withdraw_cancel: No, I do not
 front.mypage.withdraw_execute: Yes, I do
@@ -261,8 +261,8 @@ front.product.all_products: All Products
 
 front.product.search__category_not_found: No category is found
 front.product.search__product_not_found: No product is found
-front.product.search_result__keyword: Search results for ''%name%''
-front.product.search_result__detail: '<span class="ec-font-bold">%count% items</span><span>are found</span>'
+front.product.search_result__keyword:  Search results for ''%name%''
+front.product.search_result__detail: '<span class="ec-font-bold">%count% item(s)</span><span> found</span>'
 front.product.add_cart: Add to Cart
 front.product.add_cart_complete: The item has been added to the cart.
 front.product.add_cart_error: You have failed to add the item to the cart.
@@ -273,7 +273,7 @@ front.product.out_of_stock_label: (Out of stock)
 front.product.added_to_favorite: The item is already in the Favorites.
 front.product.normal_price: Regular Price
 front.product.sale_price: Selling Price
-front.product.code: Product Code
+front.product.code: SKU
 front.product.related_category: Related Category
 front.product.continue: Continue Shopping
 front.product.invalid_quantity: Please enter more than 1.
@@ -291,11 +291,11 @@ front.cart.nav__confirm: Review
 front.cart.nav__complete: Order Placed
 front.cart.total_price: 'Total: <strong>%price%</strong>'
 front.cart.divide_cart: Some item(s) in the cart can not be purchased in this order.
-front.cart.delete:
+front.cart.delete: ''
 front.cart.delete__confirm: Are you sure to delete this item from the cart?
-front.cart.product: Item
+front.cart.product: Items
 front.cart.checkout: Proceed to Checkout
-front.cart.continue: Coutinue shopping
+front.cart.continue: Continue shopping
 front.cart.no_items: Your cart is empty.
 front.cart.delivery_fee_free__now: Shipping charge is waived.
 front.cart.delivery_fee_free__price_and_quantity: <strong class="ec-color-red">Free shipping</strong> with the purchase of <strong>%price%</strong>, or <strong>%quantity% item(s)</strong>.
@@ -323,18 +323,18 @@ front.shopping.prev_point: Points before This Order
 front.shopping.next_point: Points after This Order
 front.shopping.add_point: Points Earned
 front.shopping.use_point: Points Used
-front.shopping.message_info: Contact Us
-front.shopping.message_placeholder: Please enter your inquiry here (Max. 3,000 chars)
+front.shopping.message_info: Message to Store
+front.shopping.message_placeholder: Please enter your message here (Max. 3,000 chars)
 front.shopping.go_to_confirm: Review
 front.shopping.back_to_cart: Go Back to Cart
 front.shopping.shipping_title: Select a Delivery Address
 front.shopping.shipping_add_new_shipping: Add a New Delivery Address
 front.shopping.shipping_add_new_shipping__short: Add an Address
-front.shopping.shipping_unselected: Please select an delivery address.
+front.shopping.shipping_unselected: Please select a delivery address.
 front.shopping.shipping_send_selected_shipping: Deliver to the selected address
 front.shopping.shipping_multiple_title: Deliver to Multiple Addresses
-front.shopping.shipping_multiple_message: Please select an delivery address for each item.
-front.shppping.shipping_multiple_add_shipping: Please select an delivery address for each item.
+front.shopping.shipping_multiple_message: Please select a delivery address for each item.
+front.shppping.shipping_multiple_add_shipping: Please select a delivery address for each item.
 front.shopping.confirm_title: Review Your Order
 front.shopping.checkout: Place an Order
 front.shopping.back_to_order: Go back to Checkout
@@ -348,23 +348,23 @@ front.shopping.guest_purchase_message: Please proceed from here if you want to c
 front.shopping.guest_purchase: Guest Purchase
 front.shopping.nonmember: Enter Customer Information
 front.shopping.shipping_edit_title_nomember: Purchase / Change of Delivery Address
-front.shopping.shipping_edit_header_customer: Add an Delivery Address
-front.shopping.shipping_edit_header_nonmember: Change an Delivery Address
+front.shopping.shipping_edit_header_customer: Add Delivery Address
+front.shopping.shipping_edit_header_nonmember: Change Delivery Address
 front.shopping.error: Error in the checkout
 front.shopping.order_error: An error occurred during the checkout process.
-front.shopping.system_error: Sorry, we have faced an unexpected error during the checkout process. Please contact us from the inqury form. We are sorry for the inconvenience.
+front.shopping.system_error: Sorry, we have faced an unexpected error during the checkout process. Please contact us from the inquiry form. We are sorry for the inconvenience.
 front.shopping.empty_items_error: Sorry, the checkout process have not completed in good order. Please place an order once again. We are sorry for the inconvenience.
 front.shopping.out_of_stock: Sorry, there is no enough stock for %product%. You are not able to purchase more than the stock quantity.
 front.shopping.over_sale_limit: Sorry, we are limiting the sales of %product%. You are not able to purchase more than the max. purchase quantity.
 front.shopping.out_of_stock_zero: Sorry, we do not have enough stock for %product%. We have deleted this item from the cart.
 front.shopping.over_price_limit: Sorry, the quantity exceeds the max. purchase amount. Please reduce the purchase quantity.
-front.shopping.in_preparation: Sorry, %product% is not ready for shipment. Please contact us from the inquiry form. We are sorry for the inconvenince.
+front.shopping.in_preparation: Sorry, %product% is not ready for shipment. Please contact us from the inquiry form. We are sorry for the inconvenience.
 front.shopping.not_purchase: Sorry, your order includes item(s) currently unavailable. It has been deleted from your cart.
 front.shopping.price_changed: The selling price of %product% has been changed.
 front.shopping.payment_total_invalid: The total amount is invalid.
 front.shopping.different_payment_methods: Sorry, your order includes items with different purchase methods, which are unable to be processed in one order.
 front.shopping.payment_method_unselected: Please select the payment method.
-front.shopping.payment_method_not_fount: Sorry, you have no payment options. If you have selected multiple delivery methods, please select a sigle one.
+front.shopping.payment_method_not_fount: Sorry, you have no payment options. If you have selected multiple delivery methods, you can only select the same payment option for them all.
 
 #====================================================================================
 # Admin Console
@@ -393,7 +393,7 @@ admin.common.to_hide_complete: %name% is hidden
 # action labels
 admin.common.save: Save
 admin.common.registration: Register
-admin.common.registration__new: New Registration
+admin.common.registration__new: Create new
 admin.common.edit: Edit
 admin.common.copy: Duplicate
 admin.common.display: Display
@@ -433,7 +433,7 @@ admin.common.separator__range: '-'
 admin.common.separator__colon: ':'
 admin.common.count: '%count% items'
 admin.common.search_detail: Advanced Search
-admin.common.search_result: 'Search Results: %count% items are found.'
+admin.common.search_result: 'Search Results: %count% item(s) found.'
 admin.common.search_invalid_condition: Error found in the search condition(s)
 admin.common.search_no_result: Sorry, no data matches your search condition(s)
 admin.common.search_try_change_condition: Please change the search condition(s) and try again.
@@ -452,7 +452,7 @@ admin.common.csv_invalid_greater_than_zero: '%name% should be more than 0 in the
 admin.common.csv_invalid_format_line: 'CSV format unmatches in the line %line%'
 admin.common.csv_invalid_date_format: 'Unmatched date format in %name% in the line %line%'
 admin.common.csv_invalid_not_found: '%name% is empty in the line %line%'
-admin.common.csv_invalid_not_found_target: '「%target_name%」is emply in %name% in the line %line%'
+admin.common.csv_invalid_not_found_target: '"%target_name%" is empty in %name% in the line %line%'
 admin.common.csv_invalid_not_same: 'You are not allowed to enter the same value in %name1% and %name2% in the line %line%'
 admin.common.csv_invalid_can_not: '%name% is invalid in the line %line%'
 admin.common.csv_invalid_image: 'Your are not allowed to use "/" or "../" as suffix in %name% in the %line%'
@@ -461,12 +461,16 @@ admin.common.drag_and_drop_description: You can change the order of the items by
 admin.common.drag_and_drop_image_description: Drag & drop the images or
 admin.common.delete_modal__title: Delete
 admin.common.delete_modal__message: You can not revert this action. Are you sure to delete ''%name%''?
+admin.common.move_to_confirm_title: Move to another page
+admin.common.move_to_confirm_message: 'Will move to %name% Setting page. Do you want to save current editing?'
+admin.common.move_to_confirm_move_only: Move
+admin.common.move_to_confirm_save_and_move: Save & Move
 
 
 # Labels related to entity
 admin.common.id: ID
-admin.common.name: Your Name
-admin.common.kana: Your Name (Phonetic)
+admin.common.name: Name
+admin.common.kana: Name (Phonetic)
 admin.common.first_name: First Name
 admin.common.last_name: Last Name
 admin.common.company_name: Company Name
@@ -487,7 +491,7 @@ admin.common.birth_day: Date of birth
 admin.common.birth_day__start: Date of Birth (Start)
 admin.common.birth_day__end: Date of Birth (End)
 admin.common.point: Points
-admin.common.shop_memo: Notes for store staff
+admin.common.shop_memo: Notes (Store Use)
 admin.common.create_date: Registration Date
 admin.common.create_date__start: Registration Date (Start)
 admin.common.create_date__end: Registration Date (Date)
@@ -497,8 +501,8 @@ admin.common.update_date__end: Date of Updating (End)
 admin.common.last_update_date: Last updated
 admin.common.last_updater: Last updated by
 admin.common.device_type: Type of Device
-admin.common.authority: Authorizations
-admin.common.payment_method: Authorization Method
+admin.common.authority: Role
+admin.common.payment_method: Payment Method
 admin.common.charge: Charge
 #------------------------------------------------------------------------------------
 # Home
@@ -543,7 +547,6 @@ admin.change_password.current_password: Current Password
 admin.change_password.new_password: New Password
 admin.change_password.new_password_confirm: Re-enter New Password
 admin.change_password.password_changed: Your password has been changed
-
 admin.error.go_to_login: Go Back to Login
 
 #------------------------------------------------------------------------------------
@@ -604,9 +607,9 @@ admin.product.stock__short: Stock
 admin.product.stock__in_stock: Available
 admin.product.stock__out_of_stock: Unavailable
 admin.product.search_word: Search Keywords
-admin.product.product_code: Product Code
-admin.product.product_code__short: Code
-admin.product.product_name_and_code: Product Name / Product ID
+admin.product.product_code: SKU
+admin.product.product_code__short: SKU
+admin.product.product_name_and_code: Product Name / SKU
 admin.product.sale_limit: Max Order Qty
 admin.product.delivery_duration: Estimated Shipping Date
 admin.product.delivery_fee: Shipping Charge
@@ -616,7 +619,7 @@ admin.product.free_area__card_title: Miscellaneous
 admin.product.delete_flag: Product Deletion Flag
 admin.product.search_category: Category Search
 admin.product.save_tag: Tags
-admin.product.create_date__card_title: Date of Registration / Update
+admin.product.create_date__card_title: Update
 admin.product.move_to_category: Add / Edit a Category
 admin.product.move_to_tag: Add / Edit a Tag
 admin.product.move_to_product_class: Edit an Option
@@ -625,12 +628,12 @@ admin.product.move_to_confirm_title: Leaving this page
 admin.product.move_to_confirm_message: 'You are moving to %name%. Do you want to save the product information before leaving?'
 admin.product.move_to_confirm_move_only: Do not save and leave
 admin.product.move_to_confirm_save_and_move: Save and leave
-admin.product.multi_search_label: Product Name / Product ID / Product Code
+admin.product.multi_search_label: Product Name / Product ID / SKU
 admin.product.product_class: Product Options
 admin.product.product_class__short: Options
 admin.product.product_class__create: Register a Product Option
 admin.product.product_class__confirm: Confirm a Product Option
-admin.product.product_class__confirm_of_product: Confirm the option of this product
+admin.product.product_class__confirm_of_product: Edit the option of this product
 admin.product.product_class__card_title: Product Option Info
 admin.product.product_class__reset: Reset a Product Option
 admin.product.product_class__reset_confirm_title: Reset the option of this product
@@ -651,7 +654,7 @@ admin.product.class_category: Option Groups
 admin.product.class_category__backend_name: Alias
 admin.product.class_category__card_title: Option Info
 admin.product.class_category_name: Option Groups
-admin.product.class_category_name__short: Group Names
+admin.product.class_category_name__short: Group Name
 admin.product.class_category1: Option Group 1
 admin.product.class_category1__short: Option 1
 admin.product.class_category2: Option Group 2
@@ -704,7 +707,7 @@ admin.product.product_csv.class_category2_col: Option Group 2(ID)
 admin.product.product_csv.class_category2_description: ''
 admin.product.product_csv.delivery_duration_col: Estimated Shipping Date (ID)
 admin.product.product_csv.delivery_duration_description: ''
-admin.product.product_csv.product_code_col: Product Code
+admin.product.product_csv.product_code_col: SKU
 admin.product.product_csv.product_code_description: ''
 admin.product.product_csv.stock_col: Stock Qty
 admin.product.product_csv.stock_description: If the unlimited stock flag is set to 0, please set the value more than 0.
@@ -719,9 +722,9 @@ admin.product.product_csv.sale_price_description: Set the value more than 0
 admin.product.product_csv.delivery_fee_col: Shipping Charge
 admin.product.product_csv.delivery_fee_description: If the shipping charge is set per product, set the value more than 0
 
-# Categpru CSV Templates
+# Category CSV Templates
 admin.product.category_csv.category_id_col: Category ID
-admin.product.category_csv.category_id_description: For a new category registration, please leave it empty. To update the registered category, please speficy the category ID.
+admin.product.category_csv.category_id_description: For a new category registration, please leave it empty. To update the registered category, please specify the category ID.
 admin.product.category_csv.category_name_col: Category Name
 admin.product.category_csv.category_name_description: ''
 admin.product.category_csv.parent_category_id_col: Parent Category ID
@@ -742,10 +745,10 @@ admin.order.shipping_csv_upload: Upload Shipping CSV
 admin.order.mail: Email Notifications
 
 # flash Message
-admin.order.shipping_save_message: Shipping related information has been changed. If the shipping charge will also change, please update it from 'Orders' manually.
+admin.order.shipping_save_message: Shipping related information has been changed. If the shipping charge also changes, please update it from 'Orders' manually.
 
 # Labels / Messages
-admin.order.multi_search_label: Order No. / Your Name / Company Name / Email / Phone
+admin.order.multi_search_label: Order No. / Name / Company Name / Email / Phone
 admin.order.order_info: Order Info
 admin.order.order_date: Order Date
 admin.order.order_date__start: Order Date (Start)
@@ -777,7 +780,7 @@ admin.order.order_item_type: Item Type
 admin.order.add_product_item: Add a Product
 admin.order.add_other_item: Add Other Items
 admin.order.update_calculation_results: Update the Caltulation
-admin.order.amount: Amount
+admin.order.amount: Price
 admin.order.quantity: Qty
 admin.order.tax_rate: Tax
 admin.order.tax_type: Tax Type
@@ -797,7 +800,7 @@ admin.order.purchase_count: Repeat Purchase
 admin.order.purchase_count__start: Number of Repeat Purchase (Start)
 admin.order.purchase_count__end: Number of Repeat Purchase (End)
 admin.order.tracking_number: Tracking No.
-admin.order.tracking_number_error: Only Roman alphabets, numbers and hypens are accepted for tracking numbers.
+admin.order.tracking_number_error: Only Roman alphabets, numbers and hyphens are accepted for tracking numbers.
 admin.order.mail_purchase_product_count: 'and %count% other items'
 admin.order.mail_history: Email History
 admin.order.mail_send_date: Sending Date
@@ -847,10 +850,10 @@ admin.order.unshipped: Unshipped
 admin.order.delete__confirm_title: Deleting Order Info
 admin.order.delete__confirm_message: Are you sure to delete the order information?
 admin.order.delete_item__confirm_message: 'The item will be deleted from the order. Are you sure to delete %name%？'
-admin.order.change_payment_method_message: If the shipping chage will also change on changing the payment method, please update it manually.
+admin.order.change_payment_method_message: If the payment charge changes, please update it manually.
 admin.order.non_member: Non-Member
-admin.order.search_from_customer: Search /Enter from Members
-admin.order.search_customer_title: Search Members
+admin.order.search_from_customer: Search by Customer
+admin.order.search_customer_title: Search Customers
 admin.order.product_info: Product Info
 admin.order.edit_multiple_shipping: Edit Delivery Address
 admin.order.edit_multiple_shipping_description: If you selected multiple delivery addresses, you can edit each of them from the this button.
@@ -885,7 +888,7 @@ admin.order.shipping_csv.shipping_date_col: Shipping Date
 admin.order.shipping_csv.shipping_date_description: Enter the shipping date in the format of YYYY-MM-DD
 
 #------------------------------------------------------------------------------------
-# Member
+# Customer
 #------------------------------------------------------------------------------------
 
 # Menu Items
@@ -905,17 +908,17 @@ admin.customer.customer_address__add: Add a Delivery Address
 admin.customer.customer_address_count_is_over: You have already reached the max number (%eccube_deliv_addr_max%) of delivery addresses. If you want to add more, either delete or overwrite a registered address.
 admin.customer.customer_address_id: Delivery Address ID
 admin.customer.customer_address_info: Delivery Address Info
-admin.customer.multi_search_label: Memver ID / Email / Your Name
-admin.customer.customer_status: Member Type
+admin.customer.multi_search_label: Customer ID / Email / Name
+admin.customer.customer_status: Customer Type
 admin.customer.birth_month: Month of Birth
-admin.customer.resend: Resend Temporary Member Email
-admin.customer.resend_confirm_title: Resending the temporary member email.
-admin.customer.resend_confirm_message: Are you sure to resend the temporary registration email?
-admin.customer.no_customer_address: No delivery address is found for this member
-admin.customer.no_purchase_history: No purchase history is found for this member
+admin.customer.resend: Resend Temporary Sign-up Email
+admin.customer.resend_confirm_title: Resending the temporary sign-up email.
+admin.customer.resend_confirm_message: Are you sure to resend the temporary sign-up email?
+admin.customer.no_customer_address: No delivery address is found for this customer
+admin.customer.no_purchase_history: No purchase history is found for this customer
 
 #------------------------------------------------------------------------------------
-# Contens Management
+# Contents Management
 #------------------------------------------------------------------------------------
 
 # Menu Items
@@ -928,9 +931,9 @@ admin.content.block_management: Blocks
 admin.content.cache_management: Caches
 
 # Labels / Messages
-admin.content.file.add_file__card_title: Add a File / Directory
-admin.content.file.add_file: Add a File
-admin.content.file.add_directory: Add a Directory
+admin.content.file.add_file__card_title: Add File / Directory
+admin.content.file.add_file: Add File
+admin.content.file.add_directory: Add Directory
 admin.content.file.directory_name: Folder Name
 admin.content.file.file_list__card_title: Files in This Directory
 admin.content.file.updated: Update
@@ -992,7 +995,7 @@ admin.content.block_source_code: Codes
 admin.content.cache__card_title: Caches
 admin.content.cache_message: If you replaced the Twig file on the production server with FTP etc, the UI will not be updated unless you delete the Twig cache.
 admin.content.cache_delete: Delete Cache
-admin.content.news.publish_date: Publishing Date
+admin.content.news.publish_date: Published on
 admin.content.news.display_status: Display Status
 admin.content.news.display_status__show: Displayed
 admin.content.news.display_status__hide: Hidden
@@ -1020,9 +1023,9 @@ admin.setting.shop.tax_setting: Taxes
 admin.setting.shop.mail_setting: Emails
 admin.setting.shop.csv_setting: CSV Outputs
 admin.setting.system: System Settings
-admin.setting.system.member_management: Members
+admin.setting.system.member_management: Users
 admin.setting.system.member_password_change: Passwords
-admin.setting.system.authority_management: Authorizations
+admin.setting.system.authority_management: Permission
 admin.setting.system.security_management: Security
 admin.setting.system.log_display: Logs
 admin.setting.system.master_data_management: Master Data
@@ -1048,8 +1051,8 @@ admin.setting.shop.shop.option_delivery_fee: Shipping Charge
 admin.setting.shop.shop.option_delivery_fee_free_amount: Free Shipping (Amount)
 admin.setting.shop.shop.option_delivery_fee_free_quantity: Free Shipping (Qty)
 admin.setting.shop.shop.option_delivery_fee_by_product: Shipping Charge by Product
-admin.setting.shop.shop.option_customer: Member Settings
-admin.setting.shop.shop.option_customer_activate: Temporary Members
+admin.setting.shop.shop.option_customer: Customer Settings
+admin.setting.shop.shop.option_customer_activate: Temporary Customers
 admin.setting.shop.shop.option_mypage_order_status_display: Display order status in My Accounts
 admin.setting.shop.shop.option_favorite_product: Favorites
 admin.setting.shop.shop.option_remember_me: Auto Sign-in
@@ -1067,7 +1070,7 @@ admin.setting.shop.shop.option_point_conversion_rate: Point Conversion Rate
 #------------------------------------------------------------------------------------
 
 admin.setting.shop.payment.terms_of_use: Amounts
-admin.setting.shop.payment.terms_of_use_error: Please check the minimum and maximun amounts.
+admin.setting.shop.payment.terms_of_use_error: Please check the minimum and maximum amounts.
 admin.setting.shop.payment.unlimited: Any Amounts
 admin.setting.shop.payment.payment_id: ID
 admin.setting.shop.payment.payment_name: Payment Method Name
@@ -1135,33 +1138,33 @@ admin.setting.shop.csv.how_to_use: |
  To select multiple items, hold Ctrl (Windows) or Command (Mac) and select. Or hold Shift to select a range of items.
 
 #------------------------------------------------------------------------------------
-# Settings : Members : Change Password
+# Settings : Customers : Change Password
 #------------------------------------------------------------------------------------
 
-admin.setting.system.member.member_registration: Sign ups
+admin.setting.system.member.member_registration: User Setting
 admin.setting.system.member.name: Name
-admin.setting.system.member.department: 所属
+admin.setting.system.member.department: Organization
 admin.setting.system.member.login_id: ID
 admin.setting.system.member.password: Password
 admin.setting.system.member.password_confirm: Re-enter Password
-admin.setting.system.member.work: Active
-admin.setting.system.member.delete__confirm_title: Delete Member
-admin.setting.system.member.delete__confirm_message: Are you sure to delete this member?
+admin.setting.system.member.work: Status
+admin.setting.system.member.delete__confirm_title: Delete a user
+admin.setting.system.member.delete__confirm_message: Are you sure to delete this user?
 admin.setting.system.member.work_can_not_change: You are not allowed to change to ''Inactive''.
 
 #------------------------------------------------------------------------------------
 # Settings : System : Authorizations
 #------------------------------------------------------------------------------------
 
-admin.setting.system.authority__card_title: Authorizations
+admin.setting.system.authority__card_title: Permission
 admin.setting.system.authority.description: |
- Please enter the URL after %url% into the Blocked URL fileld.
- The URL will be blocked, if it matches the URL entered into the Blocked URL field (left-hand match).'
+ Please enter the URL after %url% into the [Blocked URL] field.
+ The URL will be blocked, if it matches the URL entered there (left-hand match).'
 admin.setting.system.authority.example: 'e.g. /setting <span class="text-danger">: / (slash) is required.</span>'
-admin.setting.system.authority.authority: Authorizations
+admin.setting.system.authority.authority: Role
 admin.setting.system.authority.deny_url: Blocked URL
 admin.setting.system.authority.add_row: Add Rows
-admin.setting.system.authority.authority_not_selected: Authorization is not selected.
+admin.setting.system.authority.authority_not_selected: User role is not selected.
 admin.setting.system.authority.deny_url_is_empty: Blocked URL is empty.
 admin.setting.system.authority.deny_url_is_invalid: /(slash) is required.
 
@@ -1222,7 +1225,7 @@ admin.setting.system.system.php_info: PHP Info
 # Owners' Store
 #------------------------------------------------------------------------------------
 
-admin.store: Owners' Store
+admin.store: Owner's Store
 admin.store.template: Templates
 admin.store.template.template_list: All Templates
 admin.store.template.template_install: Uploads
@@ -1231,7 +1234,7 @@ admin.store.template.select: Select
 admin.store.template.save_path: Save to
 admin.store.template.download: Download
 admin.store.template.upload_new_template: Upload New Templates
-admin.store.template.template_name: Templace Name
+admin.store.template.template_name: Template Name
 admin.store.template.template_code: Template Code
 admin.store.template.template_file: Template File
 admin.store.template.file_format: 'File format: zip,tar,tar.gz'
@@ -1240,7 +1243,7 @@ admin.store.template.delete_error__current_template: You are not allowed to dele
 admin.store.template.template_code_already_exists: This template code is already used.
 admin.store.template.upload_failed: Failed to upload
 admin.store.template.invalid_upload_file: Wrong extension of the file
-admin.store.plugin: Plugin
+admin.store.plugin: Plugins
 admin.store.plugin.plugin_owners_install: Search Plugins
 admin.store.plugin.plugin_list: All Plugins
 admin.store.plugin.search.not_found: No matches found for your search.
@@ -1258,9 +1261,9 @@ admin.store.setting.get_api_key: Obtain an API authentication key
 admin.store.setting.captcha_message: Please enter the letters displayed.
 admin.store.setting.php_path_setting: Set PHP Path
 admin.store.setting.php_path: PHP Path
-admin.store.setting.invalid_captcha: 入力された文字列が正しくありません。
+admin.store.setting.invalid_captcha: Invaild input
 admin.store.setting.captcha_error: Error
-admin.store.package.api.0.error: Failed to communicate with Owners' Store. Pleae wait for a while and try again.
+admin.store.package.api.0.error: Failed to communicate with Owners' Store. Please wait for a while and try again.
 admin.store.package.api.403.error: Owners' Store failed to authenticate. Please confirm the authentication key settings.
 admin.store.package.api.500.error: Failed to communicate with Owners' Store. Please wait for a while and try again.
 admin.plugin.uninstall.error.not_disable: Please disable the plugin.
@@ -1272,21 +1275,21 @@ admin.plugin.disable.depend: 'Please disable %depend_name% before disabling %nam
 # TODO: Verify Message
 admin.store.plugin.popup.delete.confirm.title: Confirm the deletion of the plugin
 admin.store.plugin.popup.delete.confirm.message: Are you sure to delete this plugin?
-admin.store.authentication_setting.803: Owners' Store
+admin.store.authentication_setting.803: Owner's Store
 admin.store.authentication_setting.804: Set a plugin authentication key
 admin.store.authentication_setting.805: Set a authentication key
 admin.store.authentication_setting.806: Authentication Key
-admin.store.authentication_setting.807: '*Authentication keys are available at <a target="_blank" href="owners_store_url">EC-CUBE Owners'' Store</a>.'
+admin.store.authentication_setting.807: '*Authentication keys are available at <a target="_blank" href="owners_store_url">EC-CUBE Owner''s Store</a>.'
 admin.store.authentication_setting.808: Settings
 admin.store.plugin.809: All installed plugins
-admin.store.plugin.810: Owners' Store
-admin.store.plugin.811: Add New from Owners'' Store
-admin.store.plugin.812: Plugins at Owners'' Store
+admin.store.plugin.810: Owner's Store
+admin.store.plugin.811: Add New from Owner's Store
+admin.store.plugin.812: Plugins at Owner's Store
 admin.store.plugin.813: Upload New
 admin.store.plugin.814: Original Plugins by Users
 admin.store.plugin.815: Unregistered Plugins
 admin.store.plugin.816: Plugin Name
-admin.store.plugin.help: Sorry, failed to obtain detailed information due to the connection issues to the Owners'' Store.
+admin.store.plugin.help: Sorry, failed to obtain detailed information due to the connection issues to the Owner''s Store.
 admin.store.plugin.install: Install
 admin.store.plugin.upgrade: Update
 admin.store.plugin.price: Selling Price
@@ -1301,16 +1304,16 @@ admin.store.plugin.detail.license: License
 admin.store.plugin.detail.develop: Developed by
 admin.store.plugin_confirm.title.upgrade: Updates
 admin.store.plugin_confirm.title: Installation Confirmation
-admin.store.plugin_confirm.subtitle: Owners'' Store
+admin.store.plugin_confirm.subtitle: Owner's Store
 admin.store.plugin_confirm.header: We are going to install the following plugins.
 admin.store.plugin_confirm.header.upgrade: The following plugins will be updated to the latest versions.
 admin.store.plugin_confirm.require.header: %name% requires following additional plugins. They will also be installed.
-admin.store.plugin_confirm_uninstall.823: Owners'' Store
+admin.store.plugin_confirm_uninstall.823: Owner's Store
 admin.store.plugin_confirm_uninstall.824: Delete Plugins
 admin.store.plugin_confirm_uninstall.825: The following plugins will be deleted.
 admin.store.plugin_confirm_uninstall.826: Delete
-admin.store.plugin_confirm_uninstall.827: Go Back
-admin.store.plugin_handler.828: Owners'' Store
+admin.store.plugin_confirm_uninstall.827: Go back
+admin.store.plugin_handler.828: Owner's Store
 admin.store.plugin_handler.829: Advanced Settings
 admin.store.plugin_handler.830: Plugins
 admin.store.plugin_handler.831: Handler Name
@@ -1320,7 +1323,7 @@ admin.store.plugin_handler.834: Up
 admin.store.plugin_handler.835: Down
 admin.store.plugin_handler.836: Manage Plugin Handlers
 admin.store.plugin_handler.837: No data found for your search.
-admin.store.plugin_install.838: Owners'' Store
+admin.store.plugin_install.838: Owner's Store
 admin.store.plugin_install.839: Upload Plugins
 admin.store.plugin_install.840: New Plugin Uploads
 admin.store.plugin_install.841: Plugins<br>(zip、tar、tar.gz形式)
@@ -1337,7 +1340,7 @@ admin.store.plugin_owners_confirm.849: Lisence
 admin.store.plugin_owners_confirm.850: 'This plugin does not support EC-CUBE %version%. It may not work properly.'
 admin.store.plugin_owners_confirm.851: 'This requires %dependency% to work with. It will also be installed.'
 admin.store.plugin_owners_confirm.852: '<strong>Developed by</strong> : '
-admin.store.plugin_owners_install.853: Owners'' Store
+admin.store.plugin_owners_install.853: Owner's Store
 admin.store.plugin_owners_install.854: Purchased Plugins
 admin.store.plugin_owners_install.855: All Plugins
 admin.store.plugin_owners_install.856: Please set an authentication key
@@ -1375,10 +1378,10 @@ admin.store.plugin_owners_search.modal.header: Product Details
 admin.store.plugin_owners_search.modal.contact: Document Request / Inquiry
 admin.store.plugin_owners_search.modal.manual: Download User Guide
 admin.store.plugin_owners_search.modal.note: 'This plugin does not support EC-CUBE %version%. It may not work properly.'
-admin.store.plugin_owners_search.modal.cancel: Go Back to All
+admin.store.plugin_owners_search.modal.cancel: Go back to All
 admin.store.plugin_owners_search.modal.submit: Comfirm Installation
 admin.store.plugin_owners_search.modal.dependency: 'This requires %dependency% to work with. It will also be installed.'
-admin.store.plugin_search.884: Owners'' Store.
+admin.store.plugin_search.884: Owner's Store.
 admin.store.plugin_search.885: Find Plugins
 admin.store.plugin_search.886: Search Results
 admin.store.plugin_table.887: Plugin Name
@@ -1416,7 +1419,7 @@ admin.store.plugin_table_official.916: Update
 admin.store.plugin_table_official.917: 'Plugin Version: %version%'
 admin.store.plugin_table_official.918: 'Supported EC-CUBE Version: %versions%'
 admin.store.plugin_table_official.919: 'Updated on: %update_date%'
-admin.store.plugin_table_official.920: There is no plugin to be updated
+admin.store.plugin_table_official.920: No updates available
 admin.store.plugin_table_official.921: Detailed Info
 admin.store.plugin_table_official.924: Enable
 admin.store.plugin_table_official.925: Disable
@@ -1452,27 +1455,27 @@ tooltip.product.product_id: The product ID is generated automatically.
 tooltip.product.sale_type: This will be used to specify sales types for different products such as physical products or digital products to download. The sales types can be edited at mtb_sale_type under [Master Data].
 tooltip.product.image: You can register multiple product images by drag & drop.
 tooltip.product.description_detail: These are product descriptions on each product page. HTML tags are accepted.
-tooltip.product.description_list: These are product descriptions on product list page. If left emply, users will see no product descriptions on All Products page.
+tooltip.product.description_list: These are product descriptions on All Products page. If left empty, users will see no product descriptions there.
 tooltip.product.normal_price: If you have a special selling price, you can display regular price together.
 tooltip.product.search_word: These are keywords to be used for in-site search.
-tooltip.product.product_code: You can set your own product codes.
+tooltip.product.product_code: You can set your own product code.
 tooltip.product.sale_limit: This will limit the number of products shoppers can purchase at a time.
 tooltip.product.delivery_duration: You can register estimated shipping date per product.
-tooltip.product.product_class: You can review and change the option(s) set to this product.
+tooltip.product.product_class: You can review and manage the option(s) set to this product.
 tooltip.product.free_area: The entry will be displayed on the product page. The placement varies according to the design templates.
-tooltip.product.shop_memo: This is the notes for store. This will not be displayed on the storefront.
+tooltip.product.shop_memo: Notes for store use. This will not be displayed on the storefront.
 tooltip.product.backend_name: 'You can register an alias for administrator (e.g. Option Name: Size - Alias: Size (Clothing) or Size (Shoes) etc. It will not be displayed on the storefront.'
 tooltip.product.csv_upload: Bulk product registration is available with a CSV template.
 tooltip.product.csv_format: You can create a CSV data easily with templates available for downloads.
 tooltip.category.csv_upload: Bulk category registration is available with a CSV template.
-tooltip.category.csv_format: You can create a CSV data template available for downloads.
+tooltip.category.csv_format: You can create a CSV data easily with templates available for downloads.
 tooltip.order.multi_search_label: You can filter the list with keywords. For detailed search options, please go to [Advanced Search].
-tooltip.order.order_search_status: You can filter the list by order status. The (number) shows how may orders to handle.
+tooltip.order.order_search_status: You can filter the list by order status. The (number) indicates how may orders to be followed up on each status.
 tooltip.order.bulk_actions: Bulk processing is applied to the checked orders. Please be careful when you apply it.
-tooltip.order.order_info: Here is the general information for orders.
-tooltip.order.order_no: Order No. is automatically given upon placing the order.
-tooltip.order.order_status: 受注の対応状況を変更できます。ただし、新規受注登録の場合は対応状況の。また、1受注で出荷先が複数ある場合は、全て出荷されると対応状況が「出荷済」となります。
-tooltip.order.customer_id: Member IDs which are altomatically given.
+tooltip.order.order_info: General information of orders.
+tooltip.order.order_no: Order No. is automatically generated upon placing the order.
+tooltip.order.order_status: 受注の対応状況を変更できます。ただし新規受注登録以外。また、1受注で出荷先が複数ある場合は全て出荷されると対応状況が「出荷済」となります。
+tooltip.order.customer_id: Customer IDs which are automatically generated.
 tooltip.order.shipping_info: Displaying the delivery information. You can add delivery addresses too. If you have multiple delivery addresses within a order, you can check the delivery address details at [Edit Delivery Address].
 tooltip.order.shipping_info.tracking_number: If you have a tracking number (delivery slip number), you can enter from here. You can also bulk-input from All Orders.
 tooltip.order.shipping_info.delivery_provider: You can change delivery companies or delivery methods here. Please note the shipping charge may be updated if you change any of them.
@@ -1485,21 +1488,21 @@ tooltip.order.mail_template: You can select an email template.
 tooltip.order.mail_subject: You can change the email title.
 tooltip.shipping.csv_upload: You can bulk-register shipping information with a CSV template.
 tooltip.shipping.csv_format: You can easily create CSV data in specified format with downloadable templates.
-tooltip.customer.multi_search_label: You can filter the list with keywords. To further refine your search, use ''Advanced Search''.
-tooltip.customer.customer_id: Auto-generated member IDs.
-tooltip.customer.customer_address: The delivery address registered by this member. You can add a new address from this page as well.
-tooltip.customer.purchase_history: Order history of this member is displayed here.
+tooltip.customer.multi_search_label: You can filter the list with keywords. To further refine your search, use [Advanced Search].
+tooltip.customer.customer_id: Auto-generated Customer IDs.
+tooltip.customer.customer_address: The delivery address registered by this customer. You can add a new address from this page as well.
+tooltip.customer.purchase_history: Order history of this customer is displayed here.
 tooltip.customer.shop_memo: Notes for store use. This will not be displayed on the storefront.
 tooltip.content.news.url: If there is a page which provides the details of this news, enter its URL. You can also enter external URLs.
 tooltip.content.news.body: You can use HTML tags.
 tooltip.content.layout_edit: You can drag & drop blocks for each template sections.
 tooltip.content.page_file_name: This is the name of a twig template file which has the page contents.
-tooltip.content.page_source_code: Editing the template file. Coding with twig.
+tooltip.content.page_source_code: Editing the template file. Coding has to be with twig.
 tooltip.content.page_layout: Selecting the layouts to be applied to this page.
 tooltip.content.page_meta: You can enter the META tag contents of the page.
-tooltip.content.block_name: This is a name of a block for management.
+tooltip.content.block_name: This is a name of a block for management use.
 tooltip.content.block_file_name: This is the name of the twig template file which has this block contents. You can not change it later in the Admin Console.
-tooltip.content.block_source_code: Editing the template file. Coding with twig.
+tooltip.content.block_source_code: Editing the template file. Coding has to be with twig.
 tooltip.setting.shop.shop.email_from: This will be the From address when you send emails from your store to your customers.
 tooltip.setting.shop.shop.email_for_inquiries: This is the email address by which you will receive the notice when someone submits an inquiry from the inquiry form.
 tooltip.setting.shop.shop.email_reply_to: This is the email address by which you will receive reply emails.
@@ -1509,31 +1512,31 @@ tooltip.setting.shop.shop.message: This will be displayed on storefront. The pla
 tooltip.setting.shop.shop.option_delivery_fee_free_amount: Shipping charge will be waived if a customer purchases more than this amount.
 tooltip.setting.shop.shop.option_delivery_fee_free_quantity: Shipping charge will be waived if a customer purchases more than this quantity.
 tooltip.setting.shop.shop.option_delivery_fee_by_product: If turned on, you can set shipping charge per product.
-tooltip.setting.shop.shop.option_customer_activate: This will register a customer as a temporary member untill email verification is completed, after which s/he will be registered as a regular member.
-tooltip.setting.shop.shop.option_favorite_product: This allow users to save their favorite products as Favorites.
-tooltip.setting.shop.shop.option_remember_me: Allow members to automatically sign in for certain period of time.
+tooltip.setting.shop.shop.option_customer_activate: This will register a customer as a temporary customer until email verification is completed, after which s/he will be registered as a regular customer.
+tooltip.setting.shop.shop.option_favorite_product: This allows users to save their favorite products as Favorites.
+tooltip.setting.shop.shop.option_remember_me: Allow customers to automatically sign in for certain period of time.
 tooltip.setting.shop.shop.option_product_tax: If turned on, you can set the tax rate per product.
 tooltip.setting.shop.shop.option_point_enabled: If turned on, the point system is enabled.
 tooltip.setting.shop.shop.option_point_rate: You can change the point return rate by purchase amount.
 tooltip.setting.shop.shop.option_point_conversion_rate: Conversion rate per 1 point. E.g. If you set ''1'', the point becomes available to shoppers with the rate of 1 point = 1 yen.
 tooltip.setting.shop.payment.logo_image: You can upload the payment option icons displayed in the payment methods during the checkout process. If not registered, the payment methods will be displayed w/o images.
-tooltip.setting.shop.delivery.tracking_number_url: Specify the inquiry page URL of delivery companies.
+tooltip.setting.shop.delivery.tracking_number_url: Enter the URL of the shipping tracker of the delivery company.
 tooltip.setting.shop.delivery.sale_type: Specify the sales type(s) available for this delivery method.
 tooltip.setting.shop.delivery.apply_to_pref: The same shipping charge can be applied to all prefectures. You can later change the shipping rate for each prefecture one by one.
-tooltip.setting.shop.delivery.shop_memo: This is a note for store owners''. It is not displayed on the storefront.
+tooltip.setting.shop.delivery.shop_memo: This is a note for store Owner''s. It is not displayed on the storefront.
 tooltip.setting.shop.tax_setting: You can set the tax rates applicable to all products. The general tax rate can be overwritten if you enter a new rate.
-tooltip.setting.shop.mail.mail_template: Please select an existing email template. Here are the contents.
+tooltip.setting.shop.mail.mail_template: Please select an existing email template. Contents are displayed in the text field below.
 tooltip.setting.shop.csv.csv_columns: You can output various data in CSV format. You can specify the items for CSV output.
 tooltip.setting.shop.csv.csv_type: Specify the CSV file type.
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
-tooltip.setting.system.member.work: You can set members to inactive temporarily. If they are no longer necessary, please delete from All Members.
+tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
 tooltip.setting.system.security.ip_limit: Restricting IP addresses which are allowed to sign in to the Admin Console.
 tooltip.setting.system.security.force_ssl: Restricting the access to the storefront and Admin Console to via SSL(https).
 tooltip.setting.system.log_display: Here you can check logs such as access logs and error logs etc.
 tooltip.setting.system.master_data_management: Manage all Master Data here.
-tooltip.setting.system.system_info: Here is EC-CUBE related system environment information.
-tooltip.setting.system.system.php_info: Here are EC-CUBE related PHP details.
+tooltip.setting.system.system_info: System environment information relevant to EC-CUBE.
+tooltip.setting.system.system.php_info: PHP details relevant to EC-CUBE.
 
 #====================================================================================
 # Installation
@@ -1571,7 +1574,7 @@ install.directory_name: Admin Console Directory Name (alphanumeric %min% - %max%
 install.directory_name_notice: To ensure the security, please enter a directory name hard to guess.
 install.https_only: Restricting the access to the site to via SSL(https) only.
 install.https_only_notice: Only the https access is allowed to set SSL restrictions.
-install.ip_restriction: Rectricting the access to the Admin Console to the following IP addresses.
+install.ip_restriction: Restricting the access to the Admin Console to the following IP addresses.
 install.ip_is_invalid: '%ip% is not an IPv4 address'
 install.mail_configuration: Email Settings
 install.smtp_host: SMTP Host
