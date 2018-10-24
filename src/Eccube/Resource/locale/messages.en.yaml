@@ -947,6 +947,9 @@ admin.content.layout_drag_and_drop_message: Drag & Drop a Block
 admin.content.layout_up: Move up
 admin.content.layout_down: Move Down
 admin.content.layout_move_to: Move to Section
+admin.content.layout_preview: Preview
+admin.content.layout_preview__select_page: Please select a page
+admin.content.layout_preview_select_page: Please select a page for preview
 admin.content.layout_preview_code: Preview Codes
 admin.content.layout_preview_code__confirm_title: Preview Block Codes
 admin.content.layout_preview_code__confirm_message: 'To edit, please go to ''Edit Block'' (Note: The layout setting is not saved).'
