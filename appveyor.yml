@@ -10,8 +10,6 @@ cache:
   - '%LOCALAPPDATA%\Composer\files'
   - vendor
   - bin\.phpunit
-  - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 # Fix line endings in Windows. (runs before repo cloning)
 init:
@@ -33,7 +31,7 @@ services:
 # Install scripts. (runs after repo cloning)
 install:
   # see https://github.com/phpmd/phpmd/blob/master/appveyor.yml#L10-L13
-  - cinst -y OpenSSL.Light
+  - cinst -y OpenSSL.Light --version 1.1.1
   - SET PATH=C:\Program Files\OpenSSL;%PATH%
   - sc config wuauserv start= auto
   - net start wuauserv
@@ -43,7 +41,7 @@ install:
   #- cinst mysql
   #- SET PATH=C:\tools\mysql\current\bin\;%PATH%
   # Set PHP.
-  - cinst php --version 7.2.9 --allow-empty-checksums
+  - cinst php --version 7.2.10 --allow-empty-checksums
   - SET PATH=C:\tools\php72\;%PATH%
   - copy C:\tools\php72\php.ini-production C:\tools\php72\php.ini
   - echo date.timezone="Asia/Tokyo" >> C:\tools\php72\php.ini
