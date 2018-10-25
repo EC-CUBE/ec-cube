@@ -870,7 +870,7 @@ admin.order.delivery_note_download_error: 'ダウンロードに失敗しまし�
 admin.order.delivery_note_parameter_error: '出荷IDが指定されていません'
 admin.order.failed_to_change_status: '%name%: %from% から %to% にはステータス変更できません'
 admin.order.failed_to_change_status__short: '%from% から %to% にはステータス変更できません'
-admin.order.skip_change_status: '%name": ステータス変更をスキップしました'
+admin.order.skip_change_status: '%name%: ステータス変更をスキップしました'
 
 # 出荷CSV雛形
 admin.order.shipping_csv.shipping_id_col: 出荷ID
