@@ -10,8 +10,6 @@ cache:
   - '%LOCALAPPDATA%\Composer\files'
   - vendor
   - bin\.phpunit
-  - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 # Fix line endings in Windows. (runs before repo cloning)
 init:
