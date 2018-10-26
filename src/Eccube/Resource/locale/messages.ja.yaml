@@ -1483,7 +1483,7 @@ tooltip.order.order_search_status: 受注の対応状況による絞り込み検
 tooltip.order.bulk_actions: チェックを入れた受注に対して、一括処理を行います。充分に確認をしてから実行してください。
 tooltip.order.order_info: 受注（注文）の基本情報です。
 tooltip.order.order_no: 注文時に自動で採番される管理番号です。
-tooltip.order.order_status: 受注の対応状況を変更できます。ただし、新規受注登録の場合は対応状況の。また、1受注で出荷先が複数ある場合は、全て出荷されると対応状況が「出荷済」となります。
+tooltip.order.order_status: 新規受注登録以外は受注の対応状況を変更できます。1受注で出荷先が複数ある場合は、全て出荷されると対応状況が「出荷済」となります。
 tooltip.order.customer_id: 自動的に採番される会員のIDです。
 tooltip.order.shipping_info: 出荷先情報を表示します。出荷先の追加も可能です。1受注で複数の出荷先がある場合は「お届け先を編集」から出荷先詳細情報が確認できます。
 tooltip.order.shipping_info.tracking_number: お問い合せ番号（出荷伝票番号）がある場合、こちらから入力できます。受注一覧からまとめて入力することも可能です。
