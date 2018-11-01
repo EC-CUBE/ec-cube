@@ -29,8 +29,8 @@ abstract class AbstractPluginManager
      * このメソッドは主にデータの更新に使用する.
      *
      * 引数 $version で指定したバージョンまでマイグレーションする.
-     * null 又は 'last' を渡すと最新バージョンまでマイグレートする.
-     * 0 又は 'first' を渡すと最初に戻る。
+     * null を渡すと最新バージョンまでマイグレートする.
+     * 0 を渡すと最初に戻る。
      *
      * @param Connection $connection Doctrine Connection
      * @param string $pluginCode プラグインコード
