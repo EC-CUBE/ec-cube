@@ -33,7 +33,7 @@ services:
 install:
   - cp phpunit.xml.dist phpunit.xml
   # see https://github.com/phpmd/phpmd/blob/master/appveyor.yml#L10-L13
-  - cinst -y OpenSSL.Light
+  - cinst -y OpenSSL.Light --version 1.1.1
   - SET PATH=C:\Program Files\OpenSSL;%PATH%
   - sc config wuauserv start= auto
   - net start wuauserv
