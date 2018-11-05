@@ -1,5 +1,5 @@
 {
-  "name": "Eccube/MigrationSample",
+  "name": "ec-cube/MigrationSample",
   "version": "1.0.0",
   "description": "マイグレーションのサンプルプラグイン",
   "type": "eccube-plugin",
