@@ -1,0 +1,12 @@
+{
+  "name": "ec-cube/MigrationSample",
+  "version": "1.0.0",
+  "description": "マイグレーションのサンプルプラグイン",
+  "type": "eccube-plugin",
+  "require": {
+    "ec-cube/plugin-installer": "~0.0.6"
+  },
+  "extra": {
+    "code": "MigrationSample"
+  }
+}

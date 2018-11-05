@@ -71,7 +71,7 @@ services:
 
     Plugin\:
         resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
+        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,DoctrineMigrations}'
 
     Customize\:
         resource: '../../../app/Customize/*'
