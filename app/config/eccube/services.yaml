@@ -45,7 +45,7 @@ services:
         lazy: true
         public: true
 
-    Ecccube\Service\CartService:
+    Eccube\Service\CartService:
         lazy: true
 
     Eccube\Service\SystemService:
