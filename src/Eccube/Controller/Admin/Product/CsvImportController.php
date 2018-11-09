@@ -818,7 +818,7 @@ class CsvImportController extends AbstractCsvImportController
                 if (preg_match('/^\d+$/', $category)) {
                     $Category = $this->categoryRepository->find($category);
                     if (!$Category) {
-                        $message = trans('admin.common.csv_invalid_not_found.target', [
+                        $message = trans('admin.common.csv_invalid_not_found_target', [
                             '%line%' => $line,
                             '%name%' => $headerByKey['product_category'],
                             '%target_name%' => $category,
@@ -843,16 +843,8 @@ class CsvImportController extends AbstractCsvImportController
                             $categoriesIdList[$Category->getId()] = true;
                         }
                     }
-
-                    if (!isset($categoriesIdList[$Category->getId()])) {
-                        $ProductCategory = $this->makeProductCategory($Product, $Category, $sortNo);
-                        $sortNo++;
-                        $this->entityManager->persist($ProductCategory);
-                        $Product->addProductCategory($ProductCategory);
-                        $categoriesIdList[$Category->getId()] = true;
-                    }
                 } else {
-                    $message = trans('admin.common.csv_invalid_not_found.target', [
+                    $message = trans('admin.common.csv_invalid_not_found_target', [
                         '%line%' => $line,
                         '%name%' => $headerByKey['product_category'],
                         '%target_name%' => $category,
