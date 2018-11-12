@@ -19,6 +19,9 @@ file that was distributed with this source code.
                 loadingOverlay();
                 $('#shopping_order_redirect_to').val($(this).attr('data-path'));
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+                setTimeout(function () {
+                    loadingOverlay("hide");
+                }, 2000);
             };
             $('[data-trigger]').each(function() {
                 $(this).on($(this).attr('data-trigger'), $redirectCallback);

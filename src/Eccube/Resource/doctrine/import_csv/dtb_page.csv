@@ -36,6 +36,6 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 "23","商品購入","shopping","Shopping/index","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page"
 "7","MYページ/お届け先一覧","mypage_delivery","Mypage/delivery","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page"
 "8","MYページ/お届け先追加","mypage_delivery_new","Mypage/delivery_edit","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page"
-"42","商品購入/お届け先変更","shopping_shipping_edit_change","Shopping/index","2",,,,"2017-03-07 01:15:03","2017-03-07 01:15:03","noindex",,"page"
+"42","商品購入/遷移","shopping_redirect_to","Shopping/index","2",,,,"2017-03-07 01:15:03","2017-03-07 01:15:03","noindex",,"page"
 "44","MYページ/お届け先編集","mypage_delivery_edit","Mypage/delivery_edit","2",,,,"2017-03-07 01:15:05","2017-03-07 01:15:05","noindex",8,"page"
 "45","商品購入/ご注文確認","shopping_confirm","Shopping/confirm","2",,,,"2017-03-07 01:15:03","2017-03-07 01:15:03","noindex",,"page"
