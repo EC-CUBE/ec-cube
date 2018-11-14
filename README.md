@@ -1,10 +1,10 @@
-# EC-CUBE 3.x
+# EC-CUBE 3.1.x
 
-[![Build Status](https://travis-ci.com/EC-CUBE/ec-cube.svg?branch=master)](https://travis-ci.com/EC-CUBE/ec-cube)
-[![Build status](https://ci.appveyor.com/api/projects/status/lg3uh1539cwln2g6?svg=true)](https://ci.appveyor.com/project/ECCUBE/ec-cube)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/EC-CUBE/ec-cube/badge.svg?branch=master)](https://coveralls.io/github/EC-CUBE/ec-cube?branch=master)
+[![Build Status](https://travis-ci.com/EC-CUBE/ec-cube.svg?branch=3.1)](https://travis-ci.com/EC-CUBE/ec-cube)
+[![Build status](https://ci.appveyor.com/api/projects/status/lg3uh1539cwln2g6/branch/3.1?svg=true)](https://ci.appveyor.com/project/ECCUBE/ec-cube)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/quality-score.png?b=3.1)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=3.1)
+[![Code Coverage](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/coverage.png?b=3.1)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=3.1)
+[![Coverage Status](https://coveralls.io/repos/github/EC-CUBE/ec-cube/badge.svg?branch=3.1)](https://coveralls.io/github/EC-CUBE/ec-cube?branch=3.1)
 
 [![Slack](https://slackin-eccube.herokuapp.com/badge.svg)](https://www.ec-cube.net/rd.php?aid=join-slack)
 
