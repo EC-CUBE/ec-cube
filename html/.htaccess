@@ -21,3 +21,18 @@ allow from all
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
+
+# 管理画面へのBasic認証サンプル
+#
+# Satisfy Any
+#
+# AuthType Basic
+# AuthName "Please enter username and password"
+# AuthUserFile /path/to/.htpasswd
+# AuthGroupFile /dev/null
+# require valid-user
+#
+# SetEnvIf Request_URI "^/admin" admin_path  # ^/adminは, 管理画面URLに応じて変更してください
+# Order Allow,Deny
+# Allow from all
+# Deny from env=admin_path

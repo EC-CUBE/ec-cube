@@ -319,7 +319,7 @@ class Application extends ApplicationTrait
             if ($app->isAdminRequest()) {
                 // IP制限チェック
                 $allowHost = $app['config']['admin_allow_host'];
-                if (count($allowHost) > 0) {
+                if (is_array($allowHost) && count($allowHost) > 0) {
                     if (array_search($app['request']->getClientIp(), $allowHost) === false) {
                         throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
                     }
