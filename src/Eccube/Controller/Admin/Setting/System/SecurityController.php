@@ -46,9 +46,6 @@ class SecurityController extends AbstractController
     public function index(Request $request, CacheUtil $cacheUtil)
     {
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
-        if ($adminRoute === 'admin') {
-            $this->addWarning('adminは危険です', 'admin');
-        }
 
         $builder = $this->formFactory->createBuilder(SecurityType::class);
         $form = $builder->getForm();
@@ -98,6 +95,9 @@ class SecurityController extends AbstractController
             $cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_setting_system_security');
+        }
+        if ($adminRoute === 'admin') {
+            $this->addWarning('管理画面URLは、セキュリティのため推測されにくいものを設定してください。', 'admin');
         }
 
         return [

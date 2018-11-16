@@ -170,8 +170,9 @@ class AdminController extends AbstractController
     public function index(Request $request)
     {
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
+        $is_danger_admin_url = false;
         if ($adminRoute === 'admin') {
-            $this->addWarning('adminは危険です', 'admin');
+            $is_danger_admin_url = true;
         }
         /**
          * 受注状況.
@@ -265,6 +266,7 @@ class AdminController extends AbstractController
             'countProducts' => $countProducts,
             'countCustomers' => $countCustomers,
             'recommendedPlugins' => $recommendedPlugins,
+            'is_danger_admin_url' => $is_danger_admin_url,
         ];
     }
 

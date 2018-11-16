@@ -109,6 +109,15 @@ file that was distributed with this source code.
 {% endblock javascript %}
 
 {% block main %}
+    {% if is_danger_admin_url %}
+    <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-warning fa-lg mr-2"></i>
+        <span class="font-weight-bold">管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="/admin/setting/system/security">セキュリティ管理</a>」から設定できます。</span>
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endif %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
