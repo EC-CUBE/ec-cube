@@ -112,7 +112,7 @@ file that was distributed with this source code.
     {% if is_danger_admin_url %}
     <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
         <i class="fa fa-warning fa-lg mr-2"></i>
-        <span class="font-weight-bold">管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="{{ url('admin_setting_system_security') }}">セキュリティ管理</a>」から設定できます。</span>
+        <span class="font-weight-bold">{{ 'admin.common.admin.url.warning'|trans({ '%url%': url('admin_setting_system_security') })|raw }}</span>
         <button class="close" type="button" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">×</span>
         </button>

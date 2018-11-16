@@ -58,7 +58,7 @@ DirectoryIndex index.php index.html .ht
 #     AuthGroupFile /dev/null
 #     require valid-user
 #
-#     SetEnvIf Request_URI "^/admin" admin_path
+#     SetEnvIf Request_URI "^/admin" admin_path  # ^/adminは, 管理画面URLに応じて変更してください
 # <RequireAll>
 #     Require all granted
 #     Require not env admin_path
