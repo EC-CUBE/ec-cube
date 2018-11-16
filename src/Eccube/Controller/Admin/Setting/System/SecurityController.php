@@ -98,7 +98,7 @@ class SecurityController extends AbstractController
         // 管理画面URLがadminの場合アラートを表示する。
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
         if ($adminRoute === 'admin') {
-            $this->addWarning('admin.setting.system.security.admin.url.warning', 'admin');
+            $this->addWarning('admin.setting.system.security.admin_url_warning', 'admin');
         }
 
         return [
