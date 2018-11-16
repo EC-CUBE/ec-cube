@@ -100,6 +100,7 @@ class Step3Type extends AbstractType
                         'max' => $this->app['config']['id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/\A\w+\z/')),
+                    new Assert\NotEqualTo(array('value' => 'admin', 'message' => 'ディレクトリ名に「admin」を使用することはできません。')),
                 ),
             ))
             ->add('admin_force_ssl', 'checkbox', array(

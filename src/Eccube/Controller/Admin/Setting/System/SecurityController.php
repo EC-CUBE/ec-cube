@@ -123,10 +123,15 @@ class SecurityController extends AbstractController
             // セキュリティ情報の取得
             $form->get('admin_route_dir')->setData($app['config']['admin_route']);
             $allowHost = $app['config']['admin_allow_host'];
-            if (count($allowHost) > 0) {
+            if (is_array($allowHost) && count($allowHost) > 0) {
                 $form->get('admin_allow_host')->setData(Str::convertLineFeed(implode("\n", $allowHost)));
             }
             $form->get('force_ssl')->setData((bool)$app['config']['force_ssl']);
+        }
+
+        // 管理画面URLのチェック
+        if (isset($app['config']['admin_route']) && $app['config']['admin_route'] == 'admin') {
+            $app->addWarning('admin.system.security.admin.url.warning', 'admin');
         }
 
         return $app->render('Setting/System/security.twig', array(
