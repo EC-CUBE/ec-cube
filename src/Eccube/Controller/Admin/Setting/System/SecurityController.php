@@ -96,6 +96,7 @@ class SecurityController extends AbstractController
 
             return $this->redirectToRoute('admin_setting_system_security');
         }
+
         if ($adminRoute === 'admin') {
             $this->addWarning('管理画面URLは、セキュリティのため推測されにくいものを設定してください。', 'admin');
         }

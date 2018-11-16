@@ -54,13 +54,10 @@ DirectoryIndex index.php index.html .ht
 # 
 # Satisfy Any
 #
+# <Location /admin>
 # AuthType Basic
 # AuthName "Please enter username and password"
 # AuthUserFile /path/to/.htpasswd
 # AuthGroupFile /dev/null
 # require valid-user
-#
-# SetEnvIf Request_URI "^/admin" admin_path
-# Order Allow,Deny
-# Allow from all
-# Deny from env=admin_path
+# </Location>
