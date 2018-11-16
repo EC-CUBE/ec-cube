@@ -129,6 +129,11 @@ class SecurityController extends AbstractController
             $form->get('force_ssl')->setData((bool)$app['config']['force_ssl']);
         }
 
+        // 管理画面URLのチェック
+        if (isset($app['config']['admin_route']) && $app['config']['admin_route'] == 'admin') {
+            $app->addWarning('admin.system.security.admin.url.warning', 'admin');
+        }
+
         return $app->render('Setting/System/security.twig', array(
             'form' => $form->createView(),
         ));

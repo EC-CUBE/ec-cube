@@ -79,6 +79,12 @@ class AdminController extends AbstractController
             }
         }
 
+        $is_danger_admin_url = false;
+        // 管理画面URLのチェック
+        if (isset($app['config']['admin_route']) && $app['config']['admin_route'] == 'admin') {
+            $is_danger_admin_url = true;
+        }
+
         // 受注マスター検索用フォーム
         $searchOrderBuilder = $app['form.factory']
             ->createBuilder('admin_search_order');
@@ -188,6 +194,7 @@ class AdminController extends AbstractController
             'salesYesterday' => $salesYesterday,
             'countNonStockProducts' => $countNonStockProducts,
             'countCustomers' => $countCustomers,
+            'is_danger_admin_url' => $is_danger_admin_url,
         ));
     }
 
