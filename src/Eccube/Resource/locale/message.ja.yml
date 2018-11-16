@@ -182,6 +182,7 @@ admin.content.cache.save.complete: キャッシュを削除しました。
 
 admin.system.security.save.complete: セキュリティ設定を保存しました。
 admin.system.security.route.dir.complete: 管理画面のURLを変更しましたので再ログインをしてください。
+admin.system.security.admin.url.warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
 
 admin.system.authority.save.complete: 権限設定を保存しました。
 
