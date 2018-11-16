@@ -52,12 +52,14 @@ DirectoryIndex index.php index.html .ht
 
 # 管理画面へのBasic認証サンプル
 # 
-# Satisfy Any
+#     AuthType Basic
+#     AuthName "Please enter username and password"
+#     AuthUserFile /path/to/.htpasswd
+#     AuthGroupFile /dev/null
+#     require valid-user
 #
-# <Location /admin>
-# AuthType Basic
-# AuthName "Please enter username and password"
-# AuthUserFile /path/to/.htpasswd
-# AuthGroupFile /dev/null
-# require valid-user
-# </Location>
+#     SetEnvIf Request_URI "^/admin" admin_path
+# <RequireAll>
+#     Require all granted
+#     Require not env admin_path
+# </RequireAll>#
