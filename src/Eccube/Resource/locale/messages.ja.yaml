@@ -1566,7 +1566,7 @@ install.start_eccube_installation: '<p>EC-CUBEのインストールを開始し�
 install.cooperation_of_providing_information: 'EC-CUBEのシステム向上・デバッグのため、サイト情報の提供にご協力おねがいいたします。<br>目的以外で利用することはございません。<br><span class="small">（サイト情報：お店のURL、PHPバージョン、DBバージョン）</span>'
 install.accept_infomation_provision: 送信を承諾する
 install.permission_is_valid: アクセス権限は正常です
-install.permission_is_invalid: 以下のディレクトリのアクセス制限を変更してください。
+install.permission_is_invalid: 以下のファイルまたはディレクトリに書き込み権限を付与してください。
 install.system_requirement: システム要件をご確認ください
 install.required_extension_disabled: '[必須] %module%拡張モジュールが有効になっていません。'
 install.required_database_extension_disabled: '[必須] pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。'
