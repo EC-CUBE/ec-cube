@@ -109,6 +109,15 @@ file that was distributed with this source code.
 {% endblock javascript %}
 
 {% block main %}
+    {% if is_danger_admin_url %}
+    <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-warning fa-lg mr-2"></i>
+        <span class="font-weight-bold">{{ 'admin.common.admin_url_warning'|trans({ '%url%': url('admin_setting_system_security') })|raw }}</span>
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endif %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
