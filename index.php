@@ -62,9 +62,9 @@ if (file_exists(__DIR__.'/.maintenance')) {
     $adminPath = env('ECCUBE_ADMIN_ROUTE');
     $adminPath = '/'.\trim($adminPath, '/').'/';
     if (\strpos($pathInfo, $adminPath) !== 0) {
-        // TODO
-        // テンプレートパス, URLのベースパスをmaintenance.phpに渡す必要がある
-        // 多言語化は対応しない
+        $templateCode = env('ECCUBE_TEMPLATE_CODE');
+        $baseUrl = \rawurldecode($request->getBaseUrl());
+
         header('HTTP/1.1 503 Service Temporarily Unavailable');
         require __DIR__.'/maintenance.php';
         return;
