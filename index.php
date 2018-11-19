@@ -63,9 +63,9 @@ if (file_exists(__DIR__.'/.maintenance')) {
     $adminPath = '/'.\trim($adminPath, '/').'/';
     if (\strpos($pathInfo, $adminPath) !== 0) {
         // TODO
-        // 503でレスポンスを返す
         // テンプレートパス, URLのベースパスをmaintenance.phpに渡す必要がある
         // 多言語化は対応しない
+        header('HTTP/1.1 503 Service Temporarily Unavailable');
         require __DIR__.'/maintenance.php';
         return;
     }
