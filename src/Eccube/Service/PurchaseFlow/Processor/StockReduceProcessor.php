@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductStock;
+use Eccube\Exception\ShoppingException;
 use Eccube\Repository\ProductStockRepository;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -86,9 +87,13 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
                 // 在庫に対してロックを実行
                 $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
                 $this->entityManager->refresh($productStock);
+                $ProductClass = $item->getProductClass();
                 $stock = $callback($productStock->getStock(), $item->getQuantity());
+                if ($stock < 0) {
+                    throw new ShoppingException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
+                }
                 $productStock->setStock($stock);
-                $item->getProductClass()->setStock($stock);
+                $ProductClass->setStock($stock);
             }
         }
     }
