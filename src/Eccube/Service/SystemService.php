@@ -122,9 +122,9 @@ class SystemService
         $isMaintenanceMode = $this->isMaintenanceMode();
         $path = $this->container->getParameter('eccube_content_maintenance_file_path');
 
-        if ($isEnable && $isMaintenanceMode == false) {
+        if ($isEnable && $isMaintenanceMode === false) {
             touch($path);
-        } elseif ($isEnable == false && $isMaintenanceMode) {
+        } elseif ($isEnable === false && $isMaintenanceMode) {
             unlink($path);
         }
 
