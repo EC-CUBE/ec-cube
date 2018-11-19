@@ -53,8 +53,25 @@ if ($trustedHosts) {
     Request::setTrustedHosts(explode(',', $trustedHosts));
 }
 
-$kernel = new Kernel($env, $debug);
 $request = Request::createFromGlobals();
+
+if (file_exists(__DIR__.'/.maintenance')) {
+    $pathInfo = \rawurldecode($request->getPathInfo());
+    // TODO
+    // コマンドインストール時に、.envにECCUBE_ADMIN_ROUTEは書き出されないため、コマンド側の修正必要
+    $adminPath = env('ECCUBE_ADMIN_ROUTE');
+    $adminPath = '/'.\trim($adminPath, '/').'/';
+    if (\strpos($pathInfo, $adminPath) !== 0) {
+        // TODO
+        // 503でレスポンスを返す
+        // テンプレートパス, URLのベースパスをmaintenance.phpに渡す必要がある
+        // 多言語化は対応しない
+        require __DIR__.'/maintenance.php';
+        return;
+    }
+}
+
+$kernel = new Kernel($env, $debug);
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
