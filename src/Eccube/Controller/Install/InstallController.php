@@ -301,7 +301,7 @@ class InstallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($data['database'] === 'pdo_sqlite') {
-                $data['database_name'] = '/%kernel.project_dir%/var/eccube.db';
+                $data['database_name'] = '/var/eccube.db';
             }
 
             $this->setSessionData($this->session, $data);
@@ -344,8 +344,6 @@ class InstallController extends AbstractController
             $noUpdate = $form['no_update']->getData();
 
             $url = $this->createDatabaseUrl($sessionData);
-            // for sqlite, resolve %kernel.project_dir% paramter.
-            $url = $this->container->getParameterBag()->resolveValue($url);
 
             try {
                 $conn = $this->createConnection(['url' => $url]);
@@ -575,7 +573,7 @@ class InstallController extends AbstractController
                 if (isset($params['database_user'])) {
                     $url .= $params['database_user'];
                     if (isset($params['database_password'])) {
-                        $url .= ':'.urlencode($params['database_password']);
+                        $url .= ':'.\rawurlencode($params['database_password']);
                     }
                     $url .= '@';
                 }
