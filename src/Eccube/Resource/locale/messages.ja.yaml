@@ -1631,3 +1631,9 @@ purchase_flow.charge_update: 手数料が更新されました。金額をご確
 purchase_flow.over_customer_point: 利用ポイントが所有ポイントを上回っています。
 purchase_flow.over_payment_total: 利用ポイントがお支払い金額を上回っています。
 purchase_flow.over_stock: 「%name%」の在庫が足りません。
+
+#------------------------------------------------------------------------------------
+# Command
+#------------------------------------------------------------------------------------
+
+command.composer_require_already_installed.not_supported_plugin: %name% %plugin_version% は EC-CUBE %eccube_version% には対応していません。続行しますか？
