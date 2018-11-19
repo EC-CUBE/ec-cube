@@ -119,6 +119,8 @@ class InstallerCommand extends Command
             'DATABASE_SERVER_VERSION' => $serverVersion,
             'MAILER_URL' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $authMagic,
+            'ECCUBE_ADMIN_ROUTE' => 'admin',
+            'ECCUBE_TEMPLATE_CODE' => 'default',
         ];
 
         $envDir = $this->container->getParameter('kernel.project_dir');

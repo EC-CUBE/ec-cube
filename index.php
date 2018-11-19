@@ -57,8 +57,6 @@ $request = Request::createFromGlobals();
 
 if (file_exists(__DIR__.'/.maintenance')) {
     $pathInfo = \rawurldecode($request->getPathInfo());
-    // TODO
-    // コマンドインストール時に、.envにECCUBE_ADMIN_ROUTEは書き出されないため、コマンド側の修正必要
     $adminPath = env('ECCUBE_ADMIN_ROUTE');
     $adminPath = '/'.\trim($adminPath, '/').'/';
     if (\strpos($pathInfo, $adminPath) !== 0) {

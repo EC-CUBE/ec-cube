@@ -439,6 +439,7 @@ class InstallController extends AbstractController
             'ECCUBE_FORCE_SSL' => $forceSSL,
             'ECCUBE_ADMIN_ROUTE' => isset($sessionData['admin_dir']) ? $sessionData['admin_dir'] : 'admin',
             'ECCUBE_COOKIE_PATH' => $request->getBasePath() ? $request->getBasePath() : '/',
+            'ECCUBE_TEMPLATE_CODE' => 'default',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);
