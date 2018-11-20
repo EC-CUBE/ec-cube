@@ -18,7 +18,9 @@ Header set X-XSS-Protection "1; mode=block"
 Header set X-Content-Type-Options nosniff
 
 # デフォルトテンプレートの状態で 2M 以上となるため
-php_value upload_max_filesize 5M
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 5M
+</IfModule>
 
 <IfModule mod_rewrite.c>
     #403 Forbidden対応方法
