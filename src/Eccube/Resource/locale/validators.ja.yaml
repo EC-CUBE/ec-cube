@@ -40,6 +40,8 @@ form_error.float_only: 数字と小数点のみ入力できます。
 form_error.same_password: 同じパスワードを入力してください。
 form_error.same_email: 同じメールアドレスを入力してください。
 form_error.admin_is_not_available: ディレクトリ名に「admin」を使用することはできません。
+form_error.member_already_exists: 既に利用されているログインIDです
+form_error.customer_already_exists:  このメールアドレスは利用できません
 
 #------------------------------------------------------------------------------------
 # Deplicated
@@ -57,7 +59,6 @@ errors.graph_and_hyphen: 半角英数字かハイフンのみを入力してく�
 form.type.graph.invalid: 半角英数字で入力してください。
 form.type.name.firstname.nothasspace: お名前(名)にスペース、タブ、改行は含めないで下さい。
 form.type.name.lastname.nothasspace: お名前(性)にスペース、タブ、改行は含めないで下さい。
-form.type.customer_already_exists: このメールアドレスは利用できません
 form.type.customer.password.too_short: パスワードが短すぎます。{{ limit }}文字以上でなければなりません。
 form.type.customer.password.too_long: パスワードが長すぎます。{{ limit }}文字以内でなければなりません。
 form.type.customer.company.nothasspace: 会社名にスペース、タブ、改行は含めないで下さい。
