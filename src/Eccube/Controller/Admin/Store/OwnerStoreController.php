@@ -31,6 +31,8 @@ use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -260,8 +262,16 @@ class OwnerStoreController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiInstall(Request $request)
+    public function apiInstall(Request $request, EventDispatcherInterface $dispatcher)
     {
+        // .maintenanceファイルを設置
+        $this->systemService->switchMaintenance(true);
+
+        // TERMINATE時のイベントを設定
+        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+            // .maintenanceファイルを削除
+            $this->systemService->switchMaintenance();
+        });
         $this->isTokenValid();
 
         $this->cacheUtil->clearCache();
@@ -290,8 +300,17 @@ class OwnerStoreController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUninstall(Plugin $Plugin)
+    public function apiUninstall(Plugin $Plugin, EventDispatcherInterface $dispatcher)
     {
+        // .maintenanceファイルを設置
+        $this->systemService->switchMaintenance(true);
+
+        // TERMINATE時のイベントを設定
+        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+            // .maintenanceファイルを削除
+            $this->systemService->switchMaintenance();
+        });
+
         $this->isTokenValid();
 
         $this->cacheUtil->clearCache();
@@ -337,8 +356,17 @@ class OwnerStoreController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUpgrade(Request $request)
+    public function apiUpgrade(Request $request, EventDispatcherInterface $dispatcher)
     {
+        // .maintenanceファイルを設置
+        $this->systemService->switchMaintenance(true);
+
+        // TERMINATE時のイベントを設定
+        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+            // .maintenanceファイルを削除
+            $this->systemService->switchMaintenance();
+        });
+        
         $this->isTokenValid();
 
         $this->cacheUtil->clearCache();

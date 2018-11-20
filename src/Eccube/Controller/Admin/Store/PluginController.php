@@ -436,17 +436,8 @@ class PluginController extends AbstractController
      *
      * @throws \Exception
      */
-    public function uninstall(Plugin $Plugin, CacheUtil $cacheUtil, EventDispatcherInterface $dispatcher)
+    public function uninstall(Plugin $Plugin, CacheUtil $cacheUtil)
     {
-        die();
-        // .maintenanceファイルを設置
-        $this->systemService->switchMaintenance(true);
-
-        // TERMINATE時のイベントを設定
-        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-            // .maintenanceファイルを削除
-            $this->systemService->switchMaintenance();
-        });
 
         $this->isTokenValid();
 
