@@ -60,6 +60,7 @@ if (file_exists(__DIR__.'/.maintenance')) {
     $adminPath = env('ECCUBE_ADMIN_ROUTE');
     $adminPath = '/'.\trim($adminPath, '/').'/';
     if (\strpos($pathInfo, $adminPath) !== 0) {
+        $locale = env('ECCUBE_LOCALE');
         $templateCode = env('ECCUBE_TEMPLATE_CODE');
         $baseUrl = \rawurldecode($request->getBaseUrl());
 
