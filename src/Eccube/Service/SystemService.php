@@ -19,6 +19,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SystemService
 {
+    const AUTO_MAINTENANCE = 'auto_maintenance';
+    const AUTO_MAINTENANCE_UPDATE = 'auto_maintenance_update';
+
     /**
      * @var EntityManagerInterface
      */
@@ -117,17 +120,19 @@ class SystemService
      *
      * @param Bool $isEnable
      */
-    public function switchMaintenance($isEnable = false)
+    public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE)
     {
         $isMaintenanceMode = $this->isMaintenanceMode();
         $path = $this->container->getParameter('eccube_content_maintenance_file_path');
 
         if ($isEnable && $isMaintenanceMode === false) {
-            touch($path);
+            file_put_contents($path, $mode);
         } elseif ($isEnable === false && $isMaintenanceMode) {
-            unlink($path);
+            $contents = file_get_contents($path);
+            if ($contents == $mode) {
+                unlink($path);
+            }
         }
-
     }
 
     /**

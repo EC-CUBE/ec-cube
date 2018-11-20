@@ -275,14 +275,20 @@ class PluginController extends AbstractController
      */
     public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request, EventDispatcherInterface $dispatcher)
     {
-        // .maintenanceファイルを設置
-        $this->systemService->switchMaintenance(true);
-
-        // TERMINATE時のイベントを設定
-        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+        if (!$request->query->has('maintenance_mode')) {
+            $this->systemService->switchMaintenance(true);
+            // TERMINATE時のイベントを設定
+            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
             // .maintenanceファイルを削除
             $this->systemService->switchMaintenance();
-        });
+            });
+        } else {
+            // TERMINATE時のイベントを設定
+            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+            // .maintenanceファイルを削除
+            $this->systemService->switchMaintenance(false,SystemService::AUTO_MAINTENANCE_UPDATE);
+            });
+        }
 
         $this->isTokenValid();
 
@@ -363,14 +369,18 @@ class PluginController extends AbstractController
      */
     public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil, EventDispatcherInterface $dispatcher)
     {
-        // .maintenanceファイルを設置
-        $this->systemService->switchMaintenance(true);
-
-        // TERMINATE時のイベントを設定
-        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-            // .maintenanceファイルを削除
-            $this->systemService->switchMaintenance();
-        });
+        $mentenance_mode = $request->query->get('maintenance_mode');
+        if (SystemService::AUTO_MAINTENANCE_UPDATE == $mentenance_mode) {
+            // .maintenanceファイルを設置
+            $this->systemService->switchMaintenance(true, SystemService::AUTO_MAINTENANCE_UPDATE);
+        } else {
+            $this->systemService->switchMaintenance(true);
+            // TERMINATE時のイベントを設定
+            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+                // .maintenanceファイルを削除
+                $this->systemService->switchMaintenance();
+            });
+        }
 
         $this->isTokenValid();
 
