@@ -54,7 +54,7 @@ class MaintenanceController extends AbstractController
 
             $this->addSuccess(($isMaintenace) ? 'admin.content.maintenance_switch__on_message' : 'admin.content.maintenance_switch__off_message', 'admin');
 
-            $this->redirectToRoute('admin_content_maintenance');
+            return $this->redirectToRoute('admin_content_maintenance');
         }
 
         return [
