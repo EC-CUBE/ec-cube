@@ -38,8 +38,15 @@ EOF
     {
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
+
+        // for full locale code cases
+        $locale = env('ECCUBE_LOCALE', 'ja_JP');
+        $locale = str_replace('_', '-', $locale);
+        $locales = \Locale::parseLocale($locale);
+        $localeDir = is_null($locales) ? 'ja' : $locales['language'];
+
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
-        $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv/'.env('ECCUBE_LOCALE', 'ja'));
+        $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv/'.$localeDir);
         $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);
@@ -69,7 +76,7 @@ EOF
             'sort_no' => 1,
             'update_date' => new \DateTime(),
             'create_date' => new \DateTime(),
-            'name' => '管理者',
+            'name' => trans('install.member_name'),
             'department' => 'EC-CUBE SHOP',
             'discriminator_type' => 'member',
         ], [
