@@ -62,7 +62,7 @@ if (file_exists(__DIR__.'/.maintenance')) {
     if (\strpos($pathInfo, $adminPath) !== 0) {
         $locale = env('ECCUBE_LOCALE');
         $templateCode = env('ECCUBE_TEMPLATE_CODE');
-        $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()));
+        $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
 
         header('HTTP/1.1 503 Service Temporarily Unavailable');
         require __DIR__.'/maintenance.php';
