@@ -117,7 +117,7 @@ var toggleBtnBulk = function(checkboxSelector, btnSelector) {
 /////////// 2重submit制御.
 
 if (typeof Ladda !== 'undefined') {
-    Ladda.bind('button[type=submit]');
+    Ladda.bind('button[type=submit]', {timeout: 2000});
 }
 
 // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
@@ -183,3 +183,28 @@ $(window).on('load', function() {
         icon.addClass('fa-angle-up');
     }
 });
+
+var searchWord = function (searchText, el) {
+    var targetText;
+
+    // 検索ボックスに値が入っていない場合
+    if (searchText == '') {
+        // 全て表示する
+        el.show();
+        return;
+    }
+
+    // 検索ボックスに値が入ってる場合
+    // 表示を全て空にする
+    el.hide();
+
+    // 検索ワードが（子を含めて）含まれる要素のみ表示
+    el.each(function () {
+        targetText = $(this).text();
+        // 検索対象となるリストに入力された文字列が存在するかどうかを判断
+        if (targetText.toLowerCase().indexOf(searchText.toLowerCase()) != -1) {
+            // 存在する場合はそのリストのテキストを用意した配列に格納
+            $(this).show();
+        }
+    });
+};

@@ -113,6 +113,7 @@ class Step3Type extends AbstractType
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
                     ]),
                     new Assert\Regex(['pattern' => '/\A\w+\z/']),
+                    new Assert\NotEqualTo(['value' => 'admin', 'message' => 'form_error.admin_is_not_available']),
                 ],
             ])
             ->add('admin_force_ssl', CheckboxType::class, [

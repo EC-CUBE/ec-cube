@@ -39,6 +39,7 @@ form_error.select_is_future_or_now_date: 生年月日が不正な日付です。
 form_error.float_only: 数字と小数点のみ入力できます。
 form_error.same_password: 同じパスワードを入力してください。
 form_error.same_email: 同じメールアドレスを入力してください。
+form_error.admin_is_not_available: ディレクトリ名に「admin」を使用することはできません。
 
 #------------------------------------------------------------------------------------
 # Deplicated

@@ -45,7 +45,7 @@ services:
         lazy: true
         public: true
 
-    Ecccube\Service\CartService:
+    Eccube\Service\CartService:
         lazy: true
 
     Eccube\Service\SystemService:
@@ -71,7 +71,7 @@ services:
 
     Plugin\:
         resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
+        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,DoctrineMigrations}'
 
     Customize\:
         resource: '../../../app/Customize/*'

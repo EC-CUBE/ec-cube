@@ -466,6 +466,7 @@ admin.common.move_to_confirm_title: ページを移動します
 admin.common.move_to_confirm_message: '%name%に移動します。編集内容を保存してから移動しますか？'
 admin.common.move_to_confirm_move_only: 保存せずに移動
 admin.common.move_to_confirm_save_and_move: 保存して移動
+admin.common.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。
 
 
 # エンティティに関連するラベル
@@ -873,7 +874,7 @@ admin.order.delivery_note_download_error: 'ダウンロードに失敗しまし�
 admin.order.delivery_note_parameter_error: '出荷IDが指定されていません'
 admin.order.failed_to_change_status: '%name%: %from% から %to% にはステータス変更できません'
 admin.order.failed_to_change_status__short: '%from% から %to% にはステータス変更できません'
-admin.order.skip_change_status: '%name": ステータス変更をスキップしました'
+admin.order.skip_change_status: '%name%: ステータス変更をスキップしました'
 
 # 出荷CSV雛形
 admin.order.shipping_csv.shipping_id_col: 出荷ID
@@ -1194,6 +1195,7 @@ admin.setting.system.security.force_ssl: SSLを強制
 admin.setting.system.security.force_ssl_description: httpsからの接続でなければSSL制限を設定できません。
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
 admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
+admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：ログ表示
@@ -1487,7 +1489,7 @@ tooltip.order.order_search_status: 受注の対応状況による絞り込み検
 tooltip.order.bulk_actions: チェックを入れた受注に対して、一括処理を行います。充分に確認をしてから実行してください。
 tooltip.order.order_info: 受注（注文）の基本情報です。
 tooltip.order.order_no: 注文時に自動で採番される管理番号です。
-tooltip.order.order_status: 受注の対応状況を変更できます。ただし、新規受注登録の場合は対応状況の。また、1受注で出荷先が複数ある場合は、全て出荷されると対応状況が「出荷済」となります。
+tooltip.order.order_status: 新規受注登録以外は受注の対応状況を変更できます。1受注で出荷先が複数ある場合は、全て出荷されると対応状況が「出荷済」となります。
 tooltip.order.customer_id: 自動的に採番される会員のIDです。
 tooltip.order.shipping_info: 出荷先情報を表示します。出荷先の追加も可能です。1受注で複数の出荷先がある場合は「お届け先を編集」から出荷先詳細情報が確認できます。
 tooltip.order.shipping_info.tracking_number: お問い合せ番号（出荷伝票番号）がある場合、こちらから入力できます。受注一覧からまとめて入力することも可能です。
@@ -1570,7 +1572,7 @@ install.start_eccube_installation: '<p>EC-CUBEのインストールを開始し�
 install.cooperation_of_providing_information: 'EC-CUBEのシステム向上・デバッグのため、サイト情報の提供にご協力おねがいいたします。<br>目的以外で利用することはございません。<br><span class="small">（サイト情報：お店のURL、PHPバージョン、DBバージョン）</span>'
 install.accept_infomation_provision: 送信を承諾する
 install.permission_is_valid: アクセス権限は正常です
-install.permission_is_invalid: 以下のディレクトリのアクセス制限を変更してください。
+install.permission_is_invalid: 以下のファイルまたはディレクトリに書き込み権限を付与してください。
 install.system_requirement: システム要件をご確認ください
 install.required_extension_disabled: '[必須] %module%拡張モジュールが有効になっていません。'
 install.required_database_extension_disabled: '[必須] pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。'

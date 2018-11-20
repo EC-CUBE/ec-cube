@@ -73,12 +73,6 @@ class InstallController extends AbstractController
         'mcrypt',
     ];
 
-    protected $writableDirs = [
-        'app',
-        'html',
-        'var',
-    ];
-
     /**
      * @var PasswordEncoder
      */
@@ -159,7 +153,7 @@ class InstallController extends AbstractController
     }
 
     /**
-     * ディレクトリの書き込み権限をチェック.
+     * ディレクトリとファイルの書き込み権限をチェック.
      *
      * @Route("/install/step2", name="install_step2")
      * @Template("step2.twig")
@@ -172,20 +166,30 @@ class InstallController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $protectedDirs = [];
-        foreach ($this->writableDirs as $writableDir) {
-            $targetDirs = Finder::create()
-                ->in($this->getParameter('kernel.project_dir').'/'.$writableDir)
-                ->directories();
-            foreach ($targetDirs as $targetDir) {
-                if (!is_writable($targetDir->getRealPath())) {
-                    $protectedDirs[] = $targetDir;
-                }
+        $noWritePermissions = [];
+
+        // ディレクトリの書き込み権限をチェック
+        $targetDirs = Finder::create()
+            ->in($this->getParameter('kernel.project_dir'))
+            ->directories();
+        foreach ($targetDirs as $targetDir) {
+            if (!is_writable($targetDir->getRealPath())) {
+                $noWritePermissions[] = $targetDir;
+            }
+        }
+
+        // ファイルの書き込み権限をチェック
+        $targetFiles = Finder::create()
+            ->in($this->getParameter('kernel.project_dir'))
+            ->files();
+        foreach ($targetFiles as $targetFile) {
+            if (!is_writable($targetFile->getRealPath())) {
+                $noWritePermissions[] = $targetFile;
             }
         }
 
         return [
-            'protectedDirs' => $protectedDirs,
+            'noWritePermissions' => $noWritePermissions,
         ];
     }
 

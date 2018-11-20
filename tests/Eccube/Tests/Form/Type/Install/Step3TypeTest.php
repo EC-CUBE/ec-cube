@@ -256,4 +256,11 @@ class Step3TypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
+
+    public function testInValid_AdminDir()
+    {
+        $this->formData['admin_dir'] = 'admin';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
 }
