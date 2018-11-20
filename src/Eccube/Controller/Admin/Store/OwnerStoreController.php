@@ -264,6 +264,8 @@ class OwnerStoreController extends AbstractController
      */
     public function apiInstall(Request $request, EventDispatcherInterface $dispatcher)
     {
+        $this->isTokenValid();
+
         // .maintenanceファイルを設置
         $this->systemService->switchMaintenance(true);
 
@@ -272,7 +274,6 @@ class OwnerStoreController extends AbstractController
             // .maintenanceファイルを削除
             $this->systemService->switchMaintenance();
         });
-        $this->isTokenValid();
 
         $this->cacheUtil->clearCache();
 
@@ -302,6 +303,8 @@ class OwnerStoreController extends AbstractController
      */
     public function apiUninstall(Plugin $Plugin, EventDispatcherInterface $dispatcher)
     {
+        $this->isTokenValid();
+
         // .maintenanceファイルを設置
         $this->systemService->switchMaintenance(true);
 
@@ -310,8 +313,6 @@ class OwnerStoreController extends AbstractController
             // .maintenanceファイルを削除
             $this->systemService->switchMaintenance();
         });
-
-        $this->isTokenValid();
 
         $this->cacheUtil->clearCache();
 
@@ -358,6 +359,8 @@ class OwnerStoreController extends AbstractController
      */
     public function apiUpgrade(Request $request, EventDispatcherInterface $dispatcher)
     {
+        $this->isTokenValid();
+
         // .maintenanceファイルを設置
         $this->systemService->switchMaintenance(true);
 
@@ -367,8 +370,6 @@ class OwnerStoreController extends AbstractController
             $this->systemService->switchMaintenance();
         });
         
-        $this->isTokenValid();
-
         $this->cacheUtil->clearCache();
 
         $pluginCode = $request->get('pluginCode');

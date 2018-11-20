@@ -275,22 +275,24 @@ class PluginController extends AbstractController
      */
     public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request, EventDispatcherInterface $dispatcher)
     {
+        $this->isTokenValid();
+
+        // QueryString maintenance_modeがない場合
         if (!$request->query->has('maintenance_mode')) {
-            $this->systemService->switchMaintenance(true);
+            // プラグイン管理の有効ボタンを押したとき
+            $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
             // TERMINATE時のイベントを設定
             $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-            // .maintenanceファイルを削除
-            $this->systemService->switchMaintenance();
+            $this->systemService->switchMaintenance(); // auto_maintenanceと設定されたファイルを削除
             });
         } else {
+            // プラグイン管理のアップデートを実行したとき
             // TERMINATE時のイベントを設定
             $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-            // .maintenanceファイルを削除
-            $this->systemService->switchMaintenance(false,SystemService::AUTO_MAINTENANCE_UPDATE);
+                // auto_maintenance_updateと設定されたファイルを削除
+                $this->systemService->switchMaintenance(false,SystemService::AUTO_MAINTENANCE_UPDATE);
             });
         }
-
-        $this->isTokenValid();
 
         $cacheUtil->clearCache();
 
@@ -369,20 +371,22 @@ class PluginController extends AbstractController
      */
     public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil, EventDispatcherInterface $dispatcher)
     {
+        $this->isTokenValid();
+
+        // QueryString maintenance_modeであるか確認
         $mentenance_mode = $request->query->get('maintenance_mode');
+
+        // プラグイン管理でアップデートが実行されたとき
         if (SystemService::AUTO_MAINTENANCE_UPDATE == $mentenance_mode) {
-            // .maintenanceファイルを設置
-            $this->systemService->switchMaintenance(true, SystemService::AUTO_MAINTENANCE_UPDATE);
+            $this->systemService->switchMaintenance(true, SystemService::AUTO_MAINTENANCE_UPDATE); // auto_maintenance_updateと設定されたファイルを生成
         } else {
-            $this->systemService->switchMaintenance(true);
+            // プラグイン管理で無効ボタンを押したとき
+            $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
             // TERMINATE時のイベントを設定
             $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-                // .maintenanceファイルを削除
-                $this->systemService->switchMaintenance();
+                $this->systemService->switchMaintenance();// auto_maintenanceと設定されたファイルを削除
             });
         }
-
-        $this->isTokenValid();
 
         $cacheUtil->clearCache();
 
@@ -448,7 +452,6 @@ class PluginController extends AbstractController
      */
     public function uninstall(Plugin $Plugin, CacheUtil $cacheUtil)
     {
-
         $this->isTokenValid();
 
         if ($Plugin->isEnabled()) {
