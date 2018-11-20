@@ -1,0 +1,4 @@
+doctrine_migrations:
+    dir_name: "%kernel.project_dir%/app/DoctrineMigrations"
+    namespace: DoctrineMigrations
+    organize_migrations: false

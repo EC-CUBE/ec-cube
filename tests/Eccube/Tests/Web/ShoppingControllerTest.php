@@ -14,13 +14,16 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Delivery;
+use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\Fixture\Generator;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -572,6 +575,81 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->expected = $Delivery->getName();
         $this->actual = $Shipping->getShippingDeliveryName();
         $this->verify();
+    }
+
+    /**
+     * Check can use point when has payment limit
+     *
+     * https://github.com/EC-CUBE/ec-cube/issues/3916
+     */
+    public function testPaymentLimitAndPointCombination()
+    {
+        $Customer = $this->createCustomer();
+        $Customer->setPoint(99999);
+        $this->entityManager->flush($Customer);
+
+        $price = 27777;
+        $pointUse = 27777;
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $this->container->get(ProductClassRepository::class)->find(1);
+        $ProductClass->setPrice02($price);
+        $this->entityManager->flush($ProductClass);
+
+        $Delivery = $this->container->get(Generator::class)->createDelivery();
+        $Delivery->setSaleType($ProductClass->getSaleType());
+        $this->entityManager->flush($Delivery);
+
+        $COD1 = $this->container->get(Generator::class)->createPayment($Delivery, 'COD1', 0, 0, 30000);
+        $COD2 = $this->container->get(Generator::class)->createPayment($Delivery, 'COD2', 0, 30001, 300000);
+
+        // カート画面
+        $this->scenarioCartIn($Customer, 1);
+
+        // 確認画面
+        $this->scenarioConfirm($Customer);
+
+        // without use point with payment: COD2
+        $this->scenarioRedirectTo($Customer, [
+            '_shopping_order' => [
+                'Shippings' => [
+                    0 => [
+                        'Delivery' => $Delivery->getId(),
+                        'DeliveryTime' => null,
+                    ],
+                ],
+                'Payment' => $COD2->getId(),
+                'use_point' => 0,
+                'message' => $this->getFaker()->realText(),
+                '_token' => 'dummy',
+            ],
+        ]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
+        $crawler = $this->client->followRedirect();
+        $html = $crawler->filter('body')->html();
+        $this->assertNotContains($COD1->getMethod(), $html);
+        $this->assertContains($COD2->getMethod(), $html);
+
+        // use point with payment: COD1
+        $this->scenarioRedirectTo($Customer, [
+            '_shopping_order' => [
+                'Shippings' => [
+                    0 => [
+                        'Delivery' => $Delivery->getId(),
+                        'DeliveryTime' => null,
+                    ],
+                ],
+                'Payment' => $COD2->getId(),
+                'use_point' => $pointUse,
+                'message' => $this->getFaker()->realText(),
+                '_token' => 'dummy',
+            ],
+        ]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
+        $crawler = $this->client->followRedirect();
+
+        $html = $crawler->filter('body')->html();
+        $this->assertContains($COD1->getMethod(), $html);
+        $this->assertNotContains($COD2->getMethod(), $html);
     }
 
     /**

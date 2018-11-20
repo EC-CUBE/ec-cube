@@ -22,12 +22,14 @@ use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
 class PageController extends AbstractController
@@ -89,7 +91,7 @@ class PageController extends AbstractController
      * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
      * @Template("@admin/Content/page_edit.twig")
      */
-    public function edit(Request $request, $id = null, Environment $twig, Router $router)
+    public function edit(Request $request, $id = null, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil)
     {
         if (null === $id) {
             $Page = $this->pageRepository->newPage();
@@ -222,9 +224,9 @@ class PageController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            // twig キャッシュの削除.
-            $cacheDir = $this->getParameter('kernel.cache_dir').'/twig';
-            $fs->remove($cacheDir);
+            // キャッシュの削除
+            $cacheUtil->clearTwigCache();
+            $cacheUtil->clearDoctrineCache();
 
             return $this->redirectToRoute('admin_content_page_edit', ['id' => $Page->getId()]);
         }
@@ -251,7 +253,7 @@ class PageController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id = null)
+    public function delete(Request $request, $id = null, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -286,6 +288,10 @@ class PageController extends AbstractController
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE, $event);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
+
+            // キャッシュの削除
+            $cacheUtil->clearTwigCache();
+            $cacheUtil->clearDoctrineCache();
         }
 
         return $this->redirectToRoute('admin_content_page');

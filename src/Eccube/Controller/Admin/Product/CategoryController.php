@@ -21,6 +21,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CategoryType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,7 +62,7 @@ class CategoryController extends AbstractController
      * @Route("/%eccube_admin_route%/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit")
      * @Template("@admin/Product/category.twig")
      */
-    public function index(Request $request, $parent_id = null, $id = null)
+    public function index(Request $request, $parent_id = null, $id = null, CacheUtil $cacheUtil)
     {
         if ($parent_id) {
             /** @var Category $Parent */
@@ -137,6 +138,9 @@ class CategoryController extends AbstractController
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
+
+                $cacheUtil->clearDoctrineCache();
+
                 if ($Parent) {
                     return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
                 } else {
@@ -161,6 +165,8 @@ class CategoryController extends AbstractController
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
                     $this->addSuccess('admin.common.save_complete', 'admin');
+
+                    $cacheUtil->clearDoctrineCache();
 
                     if ($Parent) {
                         return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
@@ -198,7 +204,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/category/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_category_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -226,6 +232,9 @@ class CategoryController extends AbstractController
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
             log_info('カテゴリ削除完了', [$id]);
+
+            $cacheUtil->clearDoctrineCache();
+
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
 
@@ -243,7 +252,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/category/sort_no/move", name="admin_product_category_sort_no_move", methods={"POST"})
      */
-    public function moveSortNo(Request $request)
+    public function moveSortNo(Request $request, CacheUtil $cacheUtil)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -259,6 +268,8 @@ class CategoryController extends AbstractController
                 $this->entityManager->persist($Category);
             }
             $this->entityManager->flush();
+
+            $cacheUtil->clearDoctrineCache();
 
             return new Response('Successful');
         }

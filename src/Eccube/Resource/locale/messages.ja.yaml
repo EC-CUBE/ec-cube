@@ -35,10 +35,10 @@ common.shop_name: 店名
 common.address: 住所
 common.pref: 都道府県
 common.postal_symbol: 〒
-common.postal_code_sample: 例：5530003
+common.postal_code_sample: 例：5300001
 common.search_postal_code: 郵便番号検索
-common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
-common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
+common.address_sample_01: 市区町村名(例：大阪市北区)
+common.address_sample_02: 番地・ビル名(例：西梅田1丁目6-8)
 common.phone_number: 電話番号
 common.phone_number_sample: 例：11122223333
 common.mail_address: メールアドレス
@@ -74,6 +74,8 @@ common.customer_address_count_is_over: お届け先登録の上限の%eccube_del
 common.search_keyword: キーワードを入力
 common.customer_already_exists: このメールアドレスは利用できません
 common.member_already_exists: 既に利用されているログインIDです
+common.delete_confirm: 削除してもよろしいですか?
+common.pagetop: ページトップへ
 
 #====================================================================================
 # フロント画面
@@ -461,6 +463,7 @@ admin.common.move_to_confirm_title: ページを移動します
 admin.common.move_to_confirm_message: '%name%に移動します。編集内容を保存してから移動しますか？'
 admin.common.move_to_confirm_move_only: 保存せずに移動
 admin.common.move_to_confirm_save_and_move: 保存して移動
+admin.common.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。
 
 
 # エンティティに関連するラベル
@@ -474,9 +477,9 @@ admin.common.company_name_kana: 会社名(カナ)
 admin.common.address: 住所
 admin.common.pref: 都道府県
 admin.common.postal_symbol: 〒
-admin.common.postal_code_sample: 例：5530003
-admin.common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
-admin.common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
+admin.common.postal_code_sample: 例：5300001
+admin.common.address_sample_01: 市区町村名(例：大阪市北区)
+admin.common.address_sample_02: 番地・ビル名(例：西梅田1丁目6-8)
 admin.common.phone_number: 電話番号
 admin.common.mail_address: メールアドレス
 admin.common.password: パスワード
@@ -868,7 +871,7 @@ admin.order.delivery_note_download_error: 'ダウンロードに失敗しまし�
 admin.order.delivery_note_parameter_error: '出荷IDが指定されていません'
 admin.order.failed_to_change_status: '%name%: %from% から %to% にはステータス変更できません'
 admin.order.failed_to_change_status__short: '%from% から %to% にはステータス変更できません'
-admin.order.skip_change_status: '%name": ステータス変更をスキップしました'
+admin.order.skip_change_status: '%name%: ステータス変更をスキップしました'
 
 # 出荷CSV雛形
 admin.order.shipping_csv.shipping_id_col: 出荷ID
@@ -981,11 +984,13 @@ admin.content.page_meta_metatag_placeholder: |
   商品詳細ページでの記載例
     <meta property="og:type" content="og:product" />
     <meta property="og:title" content="{{ Product.name }}" />
-    <meta property="og:image" content="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" />
+    <meta property="og:image" content="{{ url('homepage') }}{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" />
     <meta property="og:description" content="{{ Product.description_list|striptags }}" />
     <meta property="og:url" content="{{ url('product_detail', {'id': Product.id}) }}" />
     <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
     <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
+    <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
+    <meta property="product:retailer_title" content="{{ Product.name }}"/>
 admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 admin.content.block_name: ブロック名
 admin.content.block__card_title: ブロック設定
@@ -1187,6 +1192,7 @@ admin.setting.system.security.force_ssl: SSLを強制
 admin.setting.system.security.force_ssl_description: httpsからの接続でなければSSL制限を設定できません。
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
 admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
+admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：ログ表示
@@ -1252,7 +1258,9 @@ admin.store.plugin.update: アップデート
 admin.store.plugin.install.complete: プラグインをインストールしました。
 admin.store.plugin.install.failed: プラグインのインストールに失敗しました。
 admin.store.plugin.enable.complete: 「%plugin_name%」を有効にしました。
+admin.store.plugin.already.enabled: 「%plugin_name%」は既に有効です。
 admin.store.plugin.disable.complete: 「%plugin_name%」を無効にしました。
+admin.store.plugin.already.disabled: 「%plugin_name%」は既に無効です。
 admin.store.plugin.uninstall.complete: プラグインを削除しました。
 admin.store.plugin.update.complete: 「%plugin_name%」をアップデートしました。
 admin.store.plugin.update.failed: 「%plugin_name%」のアップデートに失敗しました。
@@ -1477,7 +1485,7 @@ tooltip.order.order_search_status: 受注の対応状況による絞り込み検
 tooltip.order.bulk_actions: チェックを入れた受注に対して、一括処理を行います。充分に確認をしてから実行してください。
 tooltip.order.order_info: 受注（注文）の基本情報です。
 tooltip.order.order_no: 注文時に自動で採番される管理番号です。
-tooltip.order.order_status: 受注の対応状況を変更できます。ただし、新規受注登録の場合は対応状況の。また、1受注で出荷先が複数ある場合は、全て出荷されると対応状況が「出荷済」となります。
+tooltip.order.order_status: 新規受注登録以外は受注の対応状況を変更できます。1受注で出荷先が複数ある場合は、全て出荷されると対応状況が「出荷済」となります。
 tooltip.order.customer_id: 自動的に採番される会員のIDです。
 tooltip.order.shipping_info: 出荷先情報を表示します。出荷先の追加も可能です。1受注で複数の出荷先がある場合は「お届け先を編集」から出荷先詳細情報が確認できます。
 tooltip.order.shipping_info.tracking_number: お問い合せ番号（出荷伝票番号）がある場合、こちらから入力できます。受注一覧からまとめて入力することも可能です。
@@ -1560,7 +1568,7 @@ install.start_eccube_installation: '<p>EC-CUBEのインストールを開始し�
 install.cooperation_of_providing_information: 'EC-CUBEのシステム向上・デバッグのため、サイト情報の提供にご協力おねがいいたします。<br>目的以外で利用することはございません。<br><span class="small">（サイト情報：お店のURL、PHPバージョン、DBバージョン）</span>'
 install.accept_infomation_provision: 送信を承諾する
 install.permission_is_valid: アクセス権限は正常です
-install.permission_is_invalid: 以下のディレクトリのアクセス制限を変更してください。
+install.permission_is_invalid: 以下のファイルまたはディレクトリに書き込み権限を付与してください。
 install.system_requirement: システム要件をご確認ください
 install.required_extension_disabled: '[必須] %module%拡張モジュールが有効になっていません。'
 install.required_database_extension_disabled: '[必須] pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。'

@@ -61,80 +61,86 @@ $progress = (function () {
     };
 })();
 
-$num = $entityManager->getRepository('Eccube\Entity\Customer')
-    ->createQueryBuilder('o')
-    ->select('count(o.id)')
-    ->getQuery()
-    ->getSingleScalarResult();
-if ($num < $config['fixture_customer_num']) {
-    $num = $config['fixture_customer_num'] - $num;
-    for ($i = 0; $i < $num; $i++) {
-        $email = microtime(true).'.'.$faker->safeEmail;
+
+if (!getenv('NO_FIXTURES')) {
+
+    $num = $entityManager->getRepository('Eccube\Entity\Customer')
+        ->createQueryBuilder('o')
+        ->select('count(o.id)')
+        ->getQuery()
+        ->getSingleScalarResult();
+
+    if ($num < $config['fixture_customer_num']) {
+        $num = $config['fixture_customer_num'] - $num;
+        for ($i = 0; $i < $num; $i++) {
+            $email = microtime(true).'.'.$faker->safeEmail;
+            $progress('Generating Customers');
+            $customer = createCustomer($container, $email);
+        }
         $progress('Generating Customers');
-        $customer = createCustomer($container, $email);
+        createCustomer($container, null, false); // non-active member
     }
-    $progress('Generating Customers');
-    createCustomer($container, null, false); // non-active member
-}
 
-$num = $entityManager->getRepository('Eccube\Entity\Product')
-    ->createQueryBuilder('o')
-    ->select('count(o.id)')
-    ->getQuery()
-    ->getSingleScalarResult();
-// 受注生成件数 + 初期データの商品が生成されているはず
-if ($num < ($config['fixture_product_num'] + 2)) {
-    // 規格なしも含め $config['fixture_product_num'] の分だけ生成する
-    for ($i = 0; $i < $config['fixture_product_num'] - 1; $i++) {
+    $num = $entityManager->getRepository('Eccube\Entity\Product')
+        ->createQueryBuilder('o')
+        ->select('count(o.id)')
+        ->getQuery()
+        ->getSingleScalarResult();
+    // 受注生成件数 + 初期データの商品が生成されているはず
+    if ($num < ($config['fixture_product_num'] + 2)) {
+        // 規格なしも含め $config['fixture_product_num'] の分だけ生成する
+        for ($i = 0; $i < $config['fixture_product_num'] - 1; $i++) {
+            $progress('Generating Products');
+            createProduct($container);
+        }
         $progress('Generating Products');
-        createProduct($container);
+        createProduct($container, '規格なし商品', 0);
     }
-    $progress('Generating Products');
-    createProduct($container, '規格なし商品', 0);
-}
 
-$Customers = $entityManager->getRepository('Eccube\Entity\Customer')->findAll();
-$Products = $entityManager->getRepository('Eccube\Entity\Product')->findAll();
-$Deliveries = $entityManager->getRepository('Eccube\Entity\Delivery')->findAll();
+    $Customers = $entityManager->getRepository('Eccube\Entity\Customer')->findAll();
+    $Products = $entityManager->getRepository('Eccube\Entity\Product')->findAll();
+    $Deliveries = $entityManager->getRepository('Eccube\Entity\Delivery')->findAll();
 
-$allOrderCount = $entityManager->getRepository('Eccube\Entity\Order')
-    ->createQueryBuilder('o')
-    ->select('count(o.id)')
-    ->getQuery()
-    ->getSingleScalarResult();
+    $allOrderCount = $entityManager->getRepository('Eccube\Entity\Order')
+        ->createQueryBuilder('o')
+        ->select('count(o.id)')
+        ->getQuery()
+        ->getSingleScalarResult();
 
-if ($allOrderCount < $config['fixture_order_num']) {
-    foreach ($Customers as $Customer) {
-        $Delivery = $Deliveries[$faker->numberBetween(0, count($Deliveries) - 1)];
-        $Product = $Products[$faker->numberBetween(0, count($Products) - 1)];
-        $charge = $faker->randomNumber(4);
-        $discount = $faker->numberBetween(0, $charge);
+    if ($allOrderCount < $config['fixture_order_num']) {
+        foreach ($Customers as $Customer) {
+            $Delivery = $Deliveries[$faker->numberBetween(0, count($Deliveries) - 1)];
+            $Product = $Products[$faker->numberBetween(0, count($Products) - 1)];
+            $charge = $faker->randomNumber(4);
+            $discount = $faker->numberBetween(0, $charge);
 
-        $orderCountPerCustomer = $entityManager->getRepository('Eccube\Entity\Order')
-            ->createQueryBuilder('o')
-            ->select('count(o.id)')
-            ->where('o.Customer = :Customer')
-            ->setParameter('Customer', $Customer)
-            ->getQuery()
-            ->getSingleScalarResult();
-        $randomOrderStatus = [
-            OrderStatus::NEW,
-            OrderStatus::CANCEL,
-            OrderStatus::IN_PROGRESS,
-            OrderStatus::DELIVERED,
-            OrderStatus::PAID,
-            OrderStatus::PENDING,
-            OrderStatus::PROCESSING,
-            OrderStatus::RETURNED,
-        ];
-        for ($i = $orderCountPerCustomer; $i < $config['fixture_order_num'] / count($Customers); $i++) {
-            $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->randomElement($randomOrderStatus));
-            $OrderDate = $faker->dateTimeThisYear();
-            $progress('Generating Orders');
-            createOrder($container, $Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount, $Status, $OrderDate);
+            $orderCountPerCustomer = $entityManager->getRepository('Eccube\Entity\Order')
+                ->createQueryBuilder('o')
+                ->select('count(o.id)')
+                ->where('o.Customer = :Customer')
+                ->setParameter('Customer', $Customer)
+                ->getQuery()
+                ->getSingleScalarResult();
+            $randomOrderStatus = [
+                OrderStatus::NEW,
+                OrderStatus::CANCEL,
+                OrderStatus::IN_PROGRESS,
+                OrderStatus::DELIVERED,
+                OrderStatus::PAID,
+                OrderStatus::PENDING,
+                OrderStatus::PROCESSING,
+                OrderStatus::RETURNED,
+            ];
+            for ($i = $orderCountPerCustomer; $i < $config['fixture_order_num'] / count($Customers); $i++) {
+                $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->randomElement($randomOrderStatus));
+                $OrderDate = $faker->dateTimeThisYear();
+                $progress('Generating Orders');
+                createOrder($container, $Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount, $Status, $OrderDate);
+            }
         }
     }
 }
+
 
 function createCustomer($container, $email = null, $active = true)
 {

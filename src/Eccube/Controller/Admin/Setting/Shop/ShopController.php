@@ -96,7 +96,8 @@ class ShopController extends AbstractController
                 $event
             );
 
-            $cacheUtil->clearCache();
+            // キャッシュの削除
+            $cacheUtil->clearDoctrineCache();
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 

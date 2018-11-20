@@ -169,14 +169,6 @@ class PluginService
             // 問題なければ本当のplugindirへ
             $this->unpackPluginArchive($path, $pluginBaseDir);
 
-            // Check dependent plugin
-            // Don't install ec-cube library
-//            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
-//            if (!empty($dependents)) {
-//                $package = $this->parseToComposerCommand($dependents);
-            //FIXME: how to working with ComposerProcessService or ComposerApiService ?
-//                $this->composerService->execRequire($package);
-//            }
             // リソースファイルをコピー
             $this->copyAssets($config['code']);
             // プラグイン配置後に実施する処理
@@ -272,7 +264,7 @@ class PluginService
         }
     }
 
-    public function generateProxyAndUpdateSchema(Plugin $plugin, $config)
+    public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false)
     {
         if ($plugin->isEnabled()) {
             $generatedFiles = $this->regenerateProxy($plugin, false);
@@ -284,19 +276,21 @@ class PluginService
             @mkdir($tmpProxyOutputDir);
 
             try {
-                // プラグインmetadata定義を追加
-                $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
-                if (file_exists($entityDir)) {
-                    $ormConfig = $this->entityManager->getConfiguration();
-                    $chain = $ormConfig->getMetadataDriverImpl();
-                    $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
-                    $namespace = 'Plugin\\'.$config['code'].'\\Entity';
-                    $chain->addDriver($driver, $namespace);
-                    $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+                if (!$uninstall) {
+                    // プラグインmetadata定義を追加
+                    $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+                    if (file_exists($entityDir)) {
+                        $ormConfig = $this->entityManager->getConfiguration();
+                        $chain = $ormConfig->getMetadataDriverImpl();
+                        $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
+                        $namespace = 'Plugin\\'.$config['code'].'\\Entity';
+                        $chain->addDriver($driver, $namespace);
+                        $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+                    }
                 }
 
                 // 一時的に利用するProxyを生成してからスキーマを更新する
-                $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
+                $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir, $uninstall);
                 $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
             } finally {
                 foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
@@ -529,12 +523,15 @@ class PluginService
         if ($plugin->isEnabled()) {
             $this->disable($plugin);
         }
-        $this->callPluginManagerMethod($config, 'uninstall');
+
+        // 初期化されていない場合はPluginManager#uninstall()は実行しない
+        if ($plugin->isInitialized()) {
+            $this->callPluginManagerMethod($config, 'uninstall');
+        }
         $this->unregisterPlugin($plugin);
 
         // スキーマを更新する
-        //FIXME: Update schema before no affect
-        $this->schemaService->updateSchema([], $this->projectRoot.'/app/proxy/entity');
+        $this->generateProxyAndUpdateSchema($plugin, $config, true);
 
         // プラグインのネームスペースに含まれるEntityのテーブルを削除する
         $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
@@ -572,10 +569,11 @@ class PluginService
      * @param Plugin $plugin プラグイン
      * @param boolean $temporary プラグインが無効状態でも一時的に生成するかどうか
      * @param string|null $outputDir 出力先
+     * @param bool $uninstall プラグイン削除の場合はtrue
      *
      * @return array 生成されたファイルのパス
      */
-    private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null)
+    private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null, $uninstall = false)
     {
         if (is_null($outputDir)) {
             $outputDir = $this->projectRoot.'/app/proxy/entity';
@@ -584,15 +582,15 @@ class PluginService
 
         $enabledPluginCodes = array_map(
             function ($p) { return $p->getCode(); },
-            $this->pluginRepository->findAllEnabled()
+            $temporary ? $this->pluginRepository->findAll() : $this->pluginRepository->findAllEnabled()
         );
 
         $excludes = [];
-        if ($temporary || $plugin->isEnabled()) {
+        if (!$uninstall && ($temporary || $plugin->isEnabled())) {
             $enabledPluginCodes[] = $plugin->getCode();
         } else {
             $index = array_search($plugin->getCode(), $enabledPluginCodes);
-            if ($index >= 0) {
+            if ($index !== false && $index >= 0) {
                 array_splice($enabledPluginCodes, $index, 1);
                 $excludes = [$this->projectRoot.'/app/Plugin/'.$plugin->getCode().'/Entity'];
             }
@@ -616,10 +614,11 @@ class PluginService
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $config = $this->readConfig($pluginDir);
             $em->getConnection()->beginTransaction();
-            $plugin->setEnabled($enable ? true : false);
-            $em->persist($plugin);
 
             $this->callPluginManagerMethod($config, $enable ? 'enable' : 'disable');
+
+            $plugin->setEnabled($enable ? true : false);
+            $em->persist($plugin);
 
             // Proxyだけ再生成してスキーマは更新しない
             $this->regenerateProxy($plugin, false);
@@ -670,16 +669,7 @@ class PluginService
 
             $pluginBaseDir = $this->calcPluginDir($config['code']);
             $this->deleteFile($tmp); // テンポラリのファイルを削除
-
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
-
-            // Check dependent plugin
-            // Don't install ec-cube library
-            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
-            if (!empty($dependents)) {
-                $package = $this->parseToComposerCommand($dependents);
-                $this->composerService->execRequire($package);
-            }
 
             $this->copyAssets($plugin->getCode());
             $this->updatePlugin($plugin, $config); // dbにプラグイン登録
@@ -712,7 +702,10 @@ class PluginService
                 ->setName($meta['name']);
 
             $em->persist($plugin);
-            $this->callPluginManagerMethod($meta, 'update');
+
+            if ($plugin->isInitialized()) {
+                $this->callPluginManagerMethod($meta, 'update');
+            }
             $this->copyAssets($plugin->getCode());
             $em->flush();
             $em->getConnection()->commit();

@@ -34,6 +34,7 @@ use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Service\CsvImportService;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -137,7 +138,7 @@ class CsvImportController extends AbstractCsvImportController
      * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import")
      * @Template("@admin/Product/csv_product.twig")
      */
-    public function csvProduct(Request $request)
+    public function csvProduct(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
         $headers = $this->getProductCsvHeader();
@@ -525,6 +526,8 @@ class CsvImportController extends AbstractCsvImportController
                     log_info('商品CSV登録完了');
                     $message = 'admin.common.csv_upload_complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
+
+                    $cacheUtil->clearDoctrineCache();
                 }
             }
         }
@@ -538,7 +541,7 @@ class CsvImportController extends AbstractCsvImportController
      * @Route("/%eccube_admin_route%/product/category_csv_upload", name="admin_product_category_csv_import")
      * @Template("@admin/Product/csv_category.twig")
      */
-    public function csvCategory(Request $request)
+    public function csvCategory(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
@@ -683,6 +686,8 @@ class CsvImportController extends AbstractCsvImportController
                     log_info('カテゴリCSV登録完了');
                     $message = 'admin.common.csv_upload_complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
+
+                    $cacheUtil->clearDoctrineCache();
                 }
             }
         }
@@ -813,7 +818,7 @@ class CsvImportController extends AbstractCsvImportController
                 if (preg_match('/^\d+$/', $category)) {
                     $Category = $this->categoryRepository->find($category);
                     if (!$Category) {
-                        $message = trans('admin.common.csv_invalid_not_found.target', [
+                        $message = trans('admin.common.csv_invalid_not_found_target', [
                             '%line%' => $line,
                             '%name%' => $headerByKey['product_category'],
                             '%target_name%' => $category,
@@ -838,16 +843,8 @@ class CsvImportController extends AbstractCsvImportController
                             $categoriesIdList[$Category->getId()] = true;
                         }
                     }
-
-                    if (!isset($categoriesIdList[$Category->getId()])) {
-                        $ProductCategory = $this->makeProductCategory($Product, $Category, $sortNo);
-                        $sortNo++;
-                        $this->entityManager->persist($ProductCategory);
-                        $Product->addProductCategory($ProductCategory);
-                        $categoriesIdList[$Category->getId()] = true;
-                    }
                 } else {
-                    $message = trans('admin.common.csv_invalid_not_found.target', [
+                    $message = trans('admin.common.csv_invalid_not_found_target', [
                         '%line%' => $line,
                         '%name%' => $headerByKey['product_category'],
                         '%target_name%' => $category,

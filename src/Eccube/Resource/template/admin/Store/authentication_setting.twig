@@ -34,6 +34,10 @@ file that was distributed with this source code.
         $('#captcha_image').attr('src', "{{ eccube_config.eccube_package_api_url }}/captcha" + '?' + new Date().getTime())
     }
 
+    $('#captcha').on('show.bs.modal', function() {
+        refreshCaptchaImage();
+    });
+
     $('#generate_key').on('click', function() {
         $.ajax({
             type: 'POST',
@@ -98,25 +102,6 @@ file that was distributed with this source code.
                         </div>
                     </div>
 
-                    <div class="card rounded border-0 mb-4">
-                        <div class="card-header">
-                            <h5 class="box-title">{{'admin.store.setting.php_path_setting'|trans}}</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-3">
-                                    <div class="d-inline-block">
-                                        <span>{{ form.php_path.vars.label|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg" data-tooltip="true" data-placement="top" title="Tooltip"></i>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    {{ form_widget(form.php_path) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->
@@ -152,7 +137,8 @@ file that was distributed with this source code.
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                     </div>
                     <div class="modal-body text-left">
-                        <img id="captcha_image" class="mb-2" src="{{ eccube_config.eccube_package_api_url }}/captcha">
+                        <p>新しい認証キーを発行します。既に認証キーがある場合は、発行せずに既存のキーを設定してください。</p>
+                        <img id="captcha_image" class="mb-2" src="#">
                         <button id="captcha-refresh" type="button" class="btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                         <input type="text" id="captcha_text" value="" class="form-control" placeholder="{{ 'admin.store.setting.captcha_message'|trans }}"/>
                         <span id="captcha_error" class="invalid-feedback" style="display: none">

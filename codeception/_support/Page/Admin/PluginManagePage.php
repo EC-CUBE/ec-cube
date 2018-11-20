@@ -15,7 +15,7 @@ namespace Page\Admin;
 
 class PluginManagePage extends AbstractAdminPageStyleGuide
 {
-    const 完了メーッセージ = '#page_admin_store_plugin > div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
+    const 完了メーッセージ = '#page_admin_store_plugin > div.c-container > div.c-contentsArea > div.alert.alert-dismissible.fade.show.m-3 > span';
 
     public function __construct(\AcceptanceTester $I)
     {
@@ -32,42 +32,44 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     /**
      * @param $pluginCode
      *
+     * @param string $message
      * @return PluginManagePage
      */
-    public function ストアプラグイン_有効化($pluginCode)
+    public function ストアプラグイン_有効化($pluginCode, $message = '有効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
-        $this->tester->see('有効にしました。', self::完了メーッセージ);
-
+        $this->tester->see($message, self::完了メーッセージ);
         return $this;
     }
 
     /**
      * @param $pluginCode
      *
+     * @param string $message
      * @return PluginManagePage
      */
-    public function ストアプラグイン_無効化($pluginCode)
+    public function ストアプラグイン_無効化($pluginCode, $message = '無効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
-        $this->tester->see('無効にしました。', self::完了メーッセージ);
-
+        $this->tester->see($message, self::完了メーッセージ);
         return $this;
     }
 
     /**
      * @param $pluginCode
+     * @param string $message
      *
      * @return PluginManagePage
      *
      * @throws \Exception
      */
-    public function ストアプラグイン_削除($pluginCode)
+    public function ストアプラグイン_削除($pluginCode, $message = '削除が完了しました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '削除');
         $this->tester->waitForElementVisible(['id' => 'officialPluginDeleteButton']);
         $this->tester->click(['id' => 'officialPluginDeleteButton']);
         $this->tester->waitForElementVisible(['css' => '#officialPluginDeleteModal > div > div > div.modal-footer > button:nth-child(3)'], 30);
+        $this->tester->see($message, ['css' => '#officialPluginDeleteModal > div > div > div.modal-body.text-left > p']);
         $this->tester->click(['css' => '#officialPluginDeleteModal > div > div > div.modal-footer > button:nth-child(3)']);
 
         return $this;
@@ -75,13 +77,12 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     *
      * @return PluginStoreUpgradePage
      */
     public function ストアプラグイン_アップデート($pluginCode)
     {
+        echo $this->tester->grabTextFrom(['xpath' => '//*[@id="page_admin_store_plugin"]']);
         $this->tester->click(['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[5]/a']);
-
         return PluginStoreUpgradePage::at($this->tester);
     }
 
@@ -93,7 +94,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    private function ストアプラグイン_セレクタ($pluginCode)
+    public function ストアプラグイン_セレクタ($pluginCode)
     {
         return '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "オーナーズストアのプラグイン")]/../..//table/tbody//td[3]/p[contains(text(), "'.$pluginCode.'")]';
     }
@@ -102,7 +103,6 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
         $this->tester->see('有効にしました。', self::完了メーッセージ);
-
         return $this;
     }
 
@@ -110,7 +110,6 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '無効化');
         $this->tester->see('無効にしました。', self::完了メーッセージ);
-
         return $this;
     }
 
@@ -128,7 +127,6 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         $this->tester->attachFile(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//input[@type="file"]'], $fileName);
         $this->tester->click(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//button']);
         $this->tester->see('アップデートしました。', self::完了メーッセージ);
-
         return $this;
     }
 

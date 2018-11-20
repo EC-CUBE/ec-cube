@@ -1805,8 +1805,6 @@ Styleguide 2.3.1
   opacity: 0.8;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   background-color: #9da3a9; }
-  .ec-blockTopBtn:after {
-    content: "ページトップへ"; }
 
 /**
 メディアクエリ

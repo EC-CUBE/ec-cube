@@ -19,6 +19,9 @@ file that was distributed with this source code.
                 loadingOverlay();
                 $('#shopping_order_redirect_to').val($(this).attr('data-path'));
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+                setTimeout(function () {
+                    loadingOverlay("hide");
+                }, 2000);
             };
             $('[data-trigger]').each(function() {
                 $(this).on($(this).attr('data-trigger'), $redirectCallback);
@@ -218,7 +221,7 @@ file that was distributed with this source code.
                                                     <img src="{{ asset('assets/icon/question-white.svg') }}" alt="">
                                                 </div>
                                             </div>
-                                            <a href="http://www.post.japanpost.jp/zipcode/" target="_blank">
+                                            <a href="https://www.post.japanpost.jp/zipcode/" target="_blank">
                                                 <span>{{ 'common.search_postal_code'|trans }}</span>
                                             </a>
                                         </div>

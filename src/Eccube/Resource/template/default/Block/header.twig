@@ -14,7 +14,7 @@ file that was distributed with this source code.
             {{ render(path('block_search_product')) }}
         </div>
         <div class="ec-headerRole__navSP">
-            {{ render(url('block_cart_sp')) }}
+            {{ include('Block/nav_sp.twig') }}
         </div>
     </div>
     <div class="ec-headerNaviRole__right">
@@ -22,7 +22,7 @@ file that was distributed with this source code.
             {{ include('Block/login.twig') }}
         </div>
         <div class="ec-headerRole__cart">
-            {{ render(url('block_cart')) }}
+            {{ include('Block/cart.twig') }}
         </div>
     </div>
 </div>

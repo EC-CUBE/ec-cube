@@ -185,10 +185,11 @@ class PluginController extends AbstractController
      *
      * @param Request $request
      * @param Plugin $Plugin
+     * @param CacheUtil $cacheUtil
      *
      * @return RedirectResponse
      */
-    public function update(Request $request, Plugin $Plugin)
+    public function update(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory
             ->createNamedBuilder(
@@ -206,6 +207,7 @@ class PluginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $tmpDir = null;
             try {
+                $cacheUtil->clearCache();
                 $formFile = $form['plugin_archive']->getData();
                 $tmpDir = $this->pluginService->createTempDir();
                 $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
@@ -258,13 +260,16 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid();
 
+        $cacheUtil->clearCache();
+
         $log = null;
 
         if ($Plugin->isEnabled()) {
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => true]);
             } else {
-                $this->addError('admin.plugin.already.enable', 'admin');
+                $this->addError(trans('admin.store.plugin.already.enabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+                return $this->redirectToRoute('admin_store_plugin');
             }
         } else {
             // ストアからインストールしたプラグインは依存プラグインが有効化されているかを確認
@@ -293,18 +298,22 @@ class PluginController extends AbstractController
                 }
             }
 
-            ob_start();
 
-            if (!$Plugin->isInitialized()) {
-                $this->pluginService->installWithCode($Plugin->getCode());
+            try {
+                ob_start();
+
+                if (!$Plugin->isInitialized()) {
+                    $this->pluginService->installWithCode($Plugin->getCode());
+                }
+
+                $this->pluginService->enable($Plugin);
+            } finally {
+                $log = ob_get_clean();
+                while (ob_get_level() > 0) {
+                    ob_end_flush();
+                }
             }
-
-            $this->pluginService->enable($Plugin);
-            $log = ob_get_clean();
-            ob_end_flush();
         }
-
-        $cacheUtil->clearCache();
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
@@ -330,6 +339,8 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid();
 
+        $cacheUtil->clearCache();
+
         $log = null;
         if ($Plugin->isEnabled()) {
             $dependents = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
@@ -350,21 +361,24 @@ class PluginController extends AbstractController
                 }
             }
 
-            ob_start();
-            $this->pluginService->disable($Plugin);
-            $log = ob_get_clean();
-            ob_end_flush();
+            try {
+                ob_start();
+                $this->pluginService->disable($Plugin);
+            } finally {
+                $log = ob_get_clean();
+                while (ob_get_level() > 0) {
+                    ob_end_flush();
+                }
+            }
         } else {
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => true, 'log' => $log]);
             } else {
-                $this->addError('admin.plugin.already.disable', 'admin');
+                $this->addError(trans('admin.store.plugin.already.disabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
 
                 return $this->redirectToRoute('admin_store_plugin');
             }
         }
-
-        $cacheUtil->clearCache();
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
@@ -381,12 +395,13 @@ class PluginController extends AbstractController
      * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall", methods={"DELETE"})
      *
      * @param Plugin $Plugin
+     * @param CacheUtil $cacheUtil
      *
      * @return RedirectResponse
      *
      * @throws \Exception
      */
-    public function uninstall(Plugin $Plugin)
+    public function uninstall(Plugin $Plugin, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -411,6 +426,8 @@ class PluginController extends AbstractController
             return $this->redirectToRoute('admin_store_plugin');
         }
 
+        $cacheUtil->clearCache();
+
         $this->pluginService->uninstall($Plugin);
         $this->addSuccess('admin.store.plugin.uninstall.complete', 'admin');
 
@@ -424,10 +441,11 @@ class PluginController extends AbstractController
      * @Template("@admin/Store/plugin_install.twig")
      *
      * @param Request $request
+     * @param CacheUtil $cacheUtil
      *
      * @return array|RedirectResponse
      */
-    public function install(Request $request)
+    public function install(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
@@ -437,6 +455,9 @@ class PluginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $tmpDir = null;
             try {
+
+                $cacheUtil->clearCache();
+
                 /** @var UploadedFile $formFile */
                 $formFile = $form['plugin_archive']->getData();
                 $tmpDir = $this->pluginService->createTempDir();
@@ -489,8 +510,9 @@ class PluginController extends AbstractController
      *
      * @return array
      */
-    public function authenticationSetting(Request $request)
+    public function authenticationSetting(Request $request, CacheUtil $cacheUtil)
     {
+
         $builder = $this->formFactory
             ->createBuilder(AuthenticationType::class, $this->BaseInfo);
 
@@ -505,8 +527,10 @@ class PluginController extends AbstractController
 
             // composerの認証を更新
             $this->composerService->configureRepository($this->BaseInfo);
-
             $this->addSuccess('admin.common.save_complete', 'admin');
+            $cacheUtil->clearCache();
+
+            return $this->redirectToRoute('admin_store_authentication_setting');
         }
 
         return [

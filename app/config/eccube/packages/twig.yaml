@@ -10,6 +10,7 @@ twig:
       '%eccube_theme_admin_default_dir%': admin
       '%eccube_theme_user_data_dir%': user_data
       '%eccube_theme_src_dir%/toolbar': toolbar
+      '%eccube_theme_src_dir%/common': common
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes: ['bootstrap_4_layout.html.twig']

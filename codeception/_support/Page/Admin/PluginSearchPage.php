@@ -34,7 +34,7 @@ class PluginSearchPage extends AbstractAdminPageStyleGuide
      */
     public function 入手する($pluginCode)
     {
-        $this->tester->click(['xpath' => '//*[@id="plugin-list"]//a[@data-code="'.$pluginCode.'"]/parent::node()/parent::node()/div[3]/form/a[contains(text(), "入手する")]']);
+        $this->tester->click(['xpath' => '//*[@id="plugin-list"]//a[@data-code="'.$pluginCode.'"]/../../div[3]/form/a[contains(text(), "入手する")]']);
 
         return PluginStoreInstallPage::at($this->tester);
     }

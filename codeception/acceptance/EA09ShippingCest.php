@@ -252,8 +252,8 @@ class EA09ShippingCest
         $Customer = (Fixtures::get('createCustomer'))();
         /* @var Order[] $Orders */
         $Orders = (Fixtures::get('createOrders'))($Customer, 3);
-        // 決済処理中に更新しておく
-        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::PENDING);
+        // キャンセルに更新しておく
+        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::CANCEL);
         foreach ($Orders as $newOrder) {
             $newOrder->setOrderStatus($Status);
         }
@@ -297,11 +297,11 @@ class EA09ShippingCest
                 ->入力_CSVファイル('shipping.csv')
                 ->CSVアップロード();
 
-            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[0]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[0]->getShippings()[0]->getId(), '注文取消し', '発送済み'),
                     '#upload-form > div:nth-child(4)');
-            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[1]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[1]->getShippings()[0]->getId(), '注文取消し', '発送済み'),
                     '#upload-form > div:nth-child(5)');
-            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[2]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+            $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[2]->getShippings()[0]->getId(), '注文取消し', '発送済み'),
                     '#upload-form > div:nth-child(6)');
         } finally {
             if (file_exists($csvFileName)) {

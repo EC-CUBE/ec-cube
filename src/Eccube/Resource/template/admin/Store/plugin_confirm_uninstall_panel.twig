@@ -36,7 +36,6 @@ file that was distributed with this source code.
             <dt class="plugin-version">プラグインバージョン</dt><dd>{{ item.version }}</dd>
             <dt class="plugin-update">最終更新日</dt><dd>{{ item.last_update_date|time_ago }}</dd>
             <dt class="plugin-eccubeversion">EC-CUBE対応バージョン</dt><dd>{% for version in item.eccube_version %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>
-            <dt class="plugin-size">ファイルサイズ</dt><dd>約 {{ (item.file_size / 1024)|round(0, 'ceil')|number_format }} KB</dd>
             <dt class="plugin-licence">ライセンス</dt><dd>{{ item.licence }}</dd>
         </dl>
         {% if is_supported_eccube_version == 0 %}

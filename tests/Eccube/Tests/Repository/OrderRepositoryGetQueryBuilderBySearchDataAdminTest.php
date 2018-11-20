@@ -160,6 +160,22 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->verify();
     }
 
+    public function testOrderIdEnd2()
+    {
+        $this->Order->setOrderStatus($this->orderStatusRepo->find(OrderStatus::PENDING));
+        $this->entityManager->flush();
+
+        $this->searchData = [
+            'order_id_end' => $this->Order->getId(),
+        ];
+        $this->scenario();
+
+        // $this->Order は決済処理中なので 0 件になる
+        $this->expected = 0;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
     public function testStatus()
     {
         $NewStatus = $this->orderStatusRepo->find(OrderStatus::NEW);

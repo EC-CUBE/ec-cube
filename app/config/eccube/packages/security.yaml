@@ -32,6 +32,8 @@ security:
                 username_parameter: 'login_id'
                 password_parameter: 'password'
                 use_forward: true
+                success_handler: eccube.security.success_handler
+                failure_handler: eccube.security.failure_handler
             logout:
                 path: admin_logout
                 target: admin_login
@@ -52,6 +54,8 @@ security:
                 username_parameter: 'login_email'
                 password_parameter: 'login_pass'
                 use_forward: true
+                success_handler: eccube.security.success_handler
+                failure_handler: eccube.security.failure_handler
             logout:
                 path: logout
                 target: homepage

@@ -299,7 +299,6 @@ class OrderHelper
             $Order = $this->orderRepository->findOneBy(
                 [
                     'pre_order_id' => $preOrderId,
-                    'OrderStatus' => OrderStatus::PROCESSING,
                 ]
             );
         } while ($Order);

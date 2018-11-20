@@ -72,7 +72,7 @@ file that was distributed with this source code.
 
 {% block main %}
     <form id="csv-form" method="post" action="{{ url('admin_setting_shop_csv', {'id': id}) }}">
-        {{ form_widget(form._token) }}
+        <input type="hidden" name="_token" value="{{ csrf_token('_token') }}">
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">

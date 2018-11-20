@@ -20,11 +20,7 @@ $(function() {
         var footer = $('div.modal-footer', modal).hide();
         var message = $('div.modal-body p', modal).text('「' + currentPlugin.name + ' (' + currentPlugin.version + ')」を削除中。この処理には数分かかる場合があります。画面をリロードせずにこのままお待ち下さい。')
         var progress = $('div.progress', modal).show();
-        var url = '{{ url('admin_store_plugin_api_uninstall', {id:0}) }}'.replace(
-            /(.*\/)(0)(\/.*)/,
-            function(all, pre, id, rest) { return pre + currentPlugin.id + rest }
-        );
-        $.ajax({url: url, type: 'delete'}).then(
+        $.ajax({url: currentPlugin['deleteUrl'], type: 'delete'}).then(
             function(data) {
                 message.text('削除が完了しました。');
                 $('#deleteLog').text(data.log);
@@ -115,6 +111,7 @@ $(function() {
                                                data-toggle="modal"
                                                data-target="#officialPluginDeleteModal"
                                                data-id="{{ Plugin.id }}"
+                                               data-delete-url="{{ url('admin_store_plugin_api_uninstall', { id: Plugin.id }) }}"
                                                data-name="{{ Plugin.name }}"
                                                data-version="{{ Plugin.version }}"
                                                class="btn btn-ec-actionIcon">

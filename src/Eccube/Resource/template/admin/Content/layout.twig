@@ -153,33 +153,6 @@ file that was distributed with this source code.
         });
     </script>
     <script>
-        var searchWord = function(){
-            var searchText = $(this).val(), // 検索ボックスに入力された値
-                targetText;
-
-            // 検索ボックスに値が入っていない場合
-            if (searchText == '') {
-                // 全て表示する
-                $('#unused-block .sort').show();
-                return;
-            }
-
-            // 検索ボックスに値が入ってる場合
-            // 表示を全て空にする
-            $('#unused-block .sort').hide();
-
-            // 検索ワードが（子を含めて）含まれる要素のみ表示
-            $('#unused-block .sort').each(function() {
-                targetText = $(this).find('.col span').text();
-
-                // 検索対象となるリストに入力された文字列が存在するかどうかを判断
-                if (targetText.indexOf(searchText) != -1) {
-                    // 存在する場合はそのリストのテキストを用意した配列に格納
-                    $(this).show();
-                }
-            });
-        };
-
         // プレビューボタンクリック時
         {% if Layout.id -%}
         $('#preview-button').on('click', function(){
@@ -202,7 +175,9 @@ file that was distributed with this source code.
         {% endif %}
 
         // searchWordの実行
-        $('#search-block').on('input', searchWord);
+        $('#search-block').on('input', function () {
+            searchWord($(this).val(), $('#unused-block .sort'));
+        });
     </script>
 {% endblock javascript %}
 

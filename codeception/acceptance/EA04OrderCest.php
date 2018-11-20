@@ -43,7 +43,7 @@ class EA04OrderCest
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         });
         OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
@@ -61,7 +61,7 @@ class EA04OrderCest
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         });
         $OrderListPage = OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
@@ -79,7 +79,7 @@ class EA04OrderCest
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         });
         $OrderListPage = OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
@@ -98,7 +98,7 @@ class EA04OrderCest
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         });
         $OrderListPage = OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
@@ -116,7 +116,7 @@ class EA04OrderCest
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         });
         $OrderListPage = OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
@@ -201,7 +201,7 @@ class EA04OrderCest
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         });
 
         $OrderListPage = OrderManagePage::go($I)->検索();
@@ -292,7 +292,7 @@ class EA04OrderCest
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         });
         $OrderListPage = OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
@@ -315,7 +315,7 @@ class EA04OrderCest
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         });
         $OrderListPage = OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);

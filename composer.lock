@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be9b818e31e4a5a8103c8c6adeb5ad3c",
+    "content-hash": "e867176693ba830891afc916449023df",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1646,16 +1646,16 @@
         },
         {
             "name": "ec-cube/plugin-installer",
-            "version": "0.0.5",
+            "version": "0.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EC-CUBE/eccube-plugin-installer.git",
-                "reference": "e44bf4412d67424440469493d4c9af108b56027e"
+                "reference": "3d93bd691c03d22977d971c27160f426ed27b2c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EC-CUBE/eccube-plugin-installer/zipball/e44bf4412d67424440469493d4c9af108b56027e",
-                "reference": "e44bf4412d67424440469493d4c9af108b56027e",
+                "url": "https://api.github.com/repos/EC-CUBE/eccube-plugin-installer/zipball/3d93bd691c03d22977d971c27160f426ed27b2c8",
+                "reference": "3d93bd691c03d22977d971c27160f426ed27b2c8",
                 "shasum": ""
             },
             "require": {
@@ -1675,7 +1675,7 @@
                 "MIT"
             ],
             "description": "EC-CUBE plugin installer.",
-            "time": "2018-08-31T00:29:56+00:00"
+            "time": "2018-09-19T09:30:27+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -5020,6 +5020,7 @@
             ],
             "description": "Enforces Long Term Supported versions of Symfony components",
             "homepage": "https://symfony.com",
+            "abandoned": "symfony/flex",
             "time": "2017-10-19T02:02:36+00:00"
         },
         {

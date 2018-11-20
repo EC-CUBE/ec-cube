@@ -45,6 +45,9 @@ services:
         lazy: true
         public: true
 
+    Eccube\Service\CartService:
+        lazy: true
+
     Eccube\Service\SystemService:
         lazy: true
         public: true
@@ -68,7 +71,7 @@ services:
 
     Plugin\:
         resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
+        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,DoctrineMigrations}'
 
     Customize\:
         resource: '../../../app/Customize/*'
@@ -86,6 +89,12 @@ services:
         class: Eccube\DataCollector\EccubeDataCollector
         tags:
           - { name: 'data_collector', template: '@toolbar/eccube.html.twig', id: 'eccube_core', priority: -512 }
+
+    eccube.security.success_handler:
+        class: Eccube\Security\Http\Authentication\EccubeAuthenticationSuccessHandler
+
+    eccube.security.failure_handler:
+        class: Eccube\Security\Http\Authentication\EccubeAuthenticationFailureHandler
 
     # Autowiring can't guess the constructor arguments that are not type-hinted with
     # classes (e.g. container parameters) so you must define those arguments explicitly
