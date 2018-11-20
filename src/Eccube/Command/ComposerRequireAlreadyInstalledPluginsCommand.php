@@ -13,6 +13,7 @@
 
 namespace Eccube\Command;
 
+use Doctrine\Common\Collections\Criteria;
 use Eccube\Common\Constant;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
@@ -69,7 +70,11 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
         $packageNames = [];
         $unSupportedPlugins = [];
 
-        $Plugins = $this->pluginRepository->findAll();
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->neq('source', null))
+            ->orderBy(['code' => 'ASC']);
+        $Plugins = $this->pluginRepository->matching($criteria);
+
         foreach ($Plugins as $Plugin) {
             $packageNames[] = 'ec-cube/'.$Plugin->getCode().':'.$Plugin->getVersion();
             $data = $this->pluginApiService->getPlugin($Plugin->getCode());
