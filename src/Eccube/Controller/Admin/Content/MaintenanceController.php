@@ -36,7 +36,7 @@ class MaintenanceController extends AbstractController
      * メンテナンス管理ページを表示
      *
      * @Route("/%eccube_admin_route%/content/maintenance", name="admin_content_maintenance")
-     * @Template("@admin/Content/maintenance.twig")*
+     * @Template("@admin/Content/maintenance.twig")
      */
     public function index(Request $request)
     {
@@ -53,6 +53,8 @@ class MaintenanceController extends AbstractController
             $isMaintenace = $this->systemService->isMaintenanceMode();
 
             $this->addSuccess(($isMaintenace) ? 'admin.content.maintenance_switch__on_message' : 'admin.content.maintenance_switch__off_message', 'admin');
+
+            $this->redirectToRoute('admin_content_maintenance');
         }
 
         return [

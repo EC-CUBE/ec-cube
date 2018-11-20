@@ -1013,8 +1013,8 @@ admin.content.maintenance__card_title: メンテナンスモード
 admin.content.maintenance_message: |
   メンテナンスモードを有効にすると、SHOPの機能を一時的に停止し、管理画面のみアクセス可能な状態となります。
   ※プラグインのインストール/有効/無効/削除時には、自動的にメンテナンスモードに切り替わります。
-admin.content.maintenance_switch__on: 有効
-admin.content.maintenance_switch__off: 無効
+admin.content.maintenance_switch__on: 有効にする
+admin.content.maintenance_switch__off: 無効にする
 admin.content.maintenance_switch__on_message: メンテナンスモードを有効にしました。
 admin.content.maintenance_switch__off_message: メンテナンスモードを無効にしました。
 
