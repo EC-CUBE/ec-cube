@@ -76,7 +76,7 @@ class InstallerCommand extends Command
         // DATABASE_URL
         $databaseUrl = $this->container->getParameter('eccube_database_url');
         if (empty($databaseUrl)) {
-            $databaseUrl = 'sqlite:///%kernel.project_dir%/var/eccube.db';
+            $databaseUrl = 'sqlite:///var/eccube.db';
         }
         $databaseUrl = $this->io->ask('Database Url', $databaseUrl);
 
