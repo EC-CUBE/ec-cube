@@ -67,18 +67,18 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $packageNames = [];
-        $notSupportedPluigns = [];
+        $unSupportedPlugins = [];
 
         $Plugins = $this->pluginRepository->findAll();
         foreach ($Plugins as $Plugin) {
             $packageNames[] = 'ec-cube/'.$Plugin->getCode().':'.$Plugin->getVersion();
             $data = $this->pluginApiService->getPlugin($Plugin->getCode());
             if (isset($data['version_check']) && !$data['version_check']) {
-                $notSupportedPluigns[] = $Plugin;
+                $unSupportedPlugins[] = $Plugin;
             }
         }
 
-        foreach ($notSupportedPluigns as $Plugin) {
+        foreach ($unSupportedPlugins as $Plugin) {
             $message = trans('command.composer_require_already_installed.not_supported_plugin', [
                 '%name%' => $Plugin->getName(),
                 '%plugin_version%' => $Plugin->getVersion(),
