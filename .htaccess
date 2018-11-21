@@ -19,6 +19,11 @@ DirectoryIndex index.php index.html .ht
     Header set X-Content-Type-Options nosniff
 </IfModule>
 
+# デフォルトテンプレートの状態で 2M 以上となるため
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 5M
+</IfModule>
+
 <IfModule mod_rewrite.c>
     #403 Forbidden対応方法
     #ページアクセスできない時シンボリックリンクが有効になっていない可能性あります、
