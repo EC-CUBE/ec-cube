@@ -53,6 +53,8 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
          * Is Enable
          *
          * @return bool
+         *
+         * @deprecated
          */
         public function isEnable()
         {
