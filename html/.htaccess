@@ -22,7 +22,7 @@ allow from all
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
-# 管理画面へのBasic認証サンプル
+# 管理画面へのBasic認証サンプル(※Apache2.2用)
 #
 # Satisfy Any
 #
