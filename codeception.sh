@@ -4,6 +4,9 @@ if [[ $1 == '--reset' ]]; then
     rm -rf app/Plugin/* html
     git checkout app/Plugin html
     git clean -df app/proxy/entity
+    if [[ -f ".maintenance" ]]; then
+        rm .maintenance
+    fi
     rm -rf var/cache
     git checkout composer.json composer.lock
     composer install --dev --no-interaction -o --apcu-autoloader
