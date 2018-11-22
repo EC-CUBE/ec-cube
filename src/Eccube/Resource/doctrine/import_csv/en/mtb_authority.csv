@@ -1,0 +1,3 @@
+id,name,sort_no,discriminator_type
+0,System Admin,0,authority
+1,Store Owner,1,authority

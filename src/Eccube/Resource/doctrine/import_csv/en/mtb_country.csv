@@ -1,0 +1,250 @@
+id,name,sort_no,discriminator_type
+352,Iceland,1,country
+372,Ireland,2,country
+31,Azerbaijan,3,country
+4,Afghanistan,4,country
+840,United States of America,5,country
+850,US Virgin Islands,6,country
+16,American Samoa,7,country
+784,United Arab Emirates,8,country
+12,Algeria,9,country
+32,Argentina,10,country
+533,Aruba,11,country
+8,Albania,12,country
+51,Armenia,13,country
+660,Anguilla,14,country
+24,Angola,15,country
+28,Antigua and Barbuda,16,country
+20,Andorra,17,country
+887,Yemen,18,country
+826,England,19,country
+86,British Indian Ocean Territory,20,country
+92,British Virgin Islands,21,country
+376,Israel,22,country
+380,Italy,23,country
+368,Iraq,24,country
+364,Iran | Islamic Republic of Iran,25,country
+356,India,26,country
+360,Indonesia,27,country
+876,Wallis and Futuna,28,country
+800,Uganda,29,country
+804,Ukraine,30,country
+860,Uzbekistan,31,country
+858,Uruguay,32,country
+218,Ecuador,33,country
+818,Egypt,34,country
+233,Estonia,35,country
+231,Ethiopia,36,country
+232,Eritrea,37,country
+222,El Salvador,38,country
+36,Australia,39,country
+40,Austria,40,country
+248,Orlando Islands,41,country
+512,Oman,42,country
+528,Netherlands,43,country
+288,Ghana,44,country
+132,Cabo Verde,45,country
+831,Guernsey,46,country
+328,Guyana,47,country
+398,Kazakhstan,48,country
+634,Qatar,49,country
+581,United States Minor Outlying Islands,50,country
+124,Canada,51,country
+266,Gabon,52,country
+120,Cameroon,53,country
+270,Gambia,54,country
+116,Cambodia,55,country
+580,Northern Mariana Islands,56,country
+324,Guinea,57,country
+624,Guinea-Bissau,58,country
+196,Cyprus,59,country
+192,Cuba,60,country
+531,Curaçao | Curaçao,61,country
+300,Greece,62,country
+296,Kiribati,63,country
+417,Kyrgyzstan,64,country
+320,Guatemala,65,country
+312,Guadeloupe,66,country
+316,Guam,67,country
+414,Kuwait,68,country
+184,Cook Islands,69,country
+304,Greenland,70,country
+162,Christmas Island (Australia) | Christmas Island,71,country
+268,Georgia,72,country
+308,Grenada,73,country
+191,Croatia,74,country
+136,Cayman Islands,75,country
+404,Kenya,76,country
+384,Cote d'Ivoire,77,country
+166,Cocos Islands | Cocos (Keeling) Islands,78,country
+188,Costa Rica,79,country
+174,Comoros,80,country
+170,Columbia,81,country
+178,Republic of Congo,82,country
+180,Democratic Republic of the Congo,83,country
+682,Saudi Arabia,84,country
+239,South Georgia and the South Sandwich Islands,85,country
+882,Samoa,86,country
+678,Sao Tome and Principe,87,country
+652,Saint Barthelemy | Saint Barthelemy,88,country
+894,Zambia,89,country
+666,Saint Pierre and Miquelon Island,90,country
+674,San Marino,91,country
+663,Saint Martin (West Indies) | Saint Martin (French territory),92,country
+694,Sierra Leone,93,country
+262,Djibouti,94,country
+292,Gibraltar,95,country
+832,Jersey,96,country
+388,Jamaica,97,country
+760,Syria | Syria / Arab Republic,98,country
+702,Singapore,99,country
+534,Sint Maarten | Sint Maarten (Netherlands territory),100,country
+716,Zimbabwe,101,country
+756,Switzerland,102,country
+752,Sweden,103,country
+729,Sudan,104,country
+744,Svalbard and Jan Mayen Island,105,country
+724,Spain,106,country
+740,Suriname,107,country
+144,Sri Lanka,108,country
+703,Slovakia,109,country
+705,Slovenia,110,country
+748,Swaziland,111,country
+690,Seychelles,112,country
+226,Equatorial Guinea,113,country
+686,Senegal,114,country
+688,Serbia,115,country
+659,Saint Kitts and Nevis,116,country
+670,Saint Vincent and the Grenadines | Saint Vincent and the Grenadines,117,country
+426,Lesotho,246,country
+654,St. Helena Ascension and Tristan da Cunha,118,country
+662,Saint Lucia,119,country
+706,Somalia,120,country
+90,Solomon Islands,121,country
+796,Turks & Caicos Islands,122,country
+764,Thailand Kingdom | Thailand,123,country
+410,South Korea,124,country
+158,Taiwan,125,country
+762,Tajikistan,126,country
+834,Tanzania,127,country
+203,Czech,128,country
+148,Chad,129,country
+140,Central African Republic,130,country
+156,People's Republic of China | China,131,country
+788,Tunisia,132,country
+408,Democratic People's Republic of Korea,133,country
+152,Chile,134,country
+798,Tuvalu,135,country
+208,Denmark,136,country
+276,Germany,137,country
+768,Togo,138,country
+772,Tokelau,139,country
+214,Dominican Republic,140,country
+212,Dominica country,141,country
+780,Republic of Trinidad and Tobago,142,country
+795,Turkmenistan,143,country
+792,Turkey,144,country
+776,Tonga,145,country
+566,Nigeria,146,country
+520,Nauru,147,country
+516,Namibia,148,country
+10,Antarctic,149,country
+570,Niue,150,country
+558,Nicaragua,151,country
+562,Niger,152,country
+392,Japan,153,country
+732,Western Sahara,154,country
+540,New Caledonia,155,country
+554,New Zealand,156,country
+524,Nepal,157,country
+574,Norfolk Island,158,country
+578,Norway,159,country
+334,Heard Island and Mcdonald Islands,160,country
+48,Bahrain,161,country
+332,Haiti,162,country
+586,Pakistan,163,country
+336,Vatican City | Vatican City State,164,country
+591,Panama,165,country
+548,Vanuatu,166,country
+44,The Bahamas,167,country
+598,Papua New Guinea,168,country
+60,Bermuda Islands | Bermuda,169,country
+585,Palau,170,country
+600,Paraguay,171,country
+52,Barbados,172,country
+275,Palestine,173,country
+348,Hungary,174,country
+50,Bangladesh,175,country
+626,East Timor,176,country
+612,Pitcairn Islands | Pitcairn,177,country
+242,Fiji,178,country
+608,Philippines,179,country
+246,Finland,180,country
+64,Bhutan,181,country
+74,Bouvet Island,182,country
+630,Puerto Rico,183,country
+234,Faroe Islands,184,country
+238,Falkland Islands | Falkland (Malvinas) Islands,185,country
+76,Brazil,186,country
+250,France,187,country
+254,French Guiana,188,country
+258,French Polynesia,189,country
+260,French Southern and Antarctic Region,190,country
+100,Bulgaria,191,country
+854,Burkina Faso,192,country
+96,Brunei | Brunei Darussalam,193,country
+108,Burundi,194,country
+704,Vietnam,195,country
+204,Benin,196,country
+862,Venezuela | Venezuela / Bolivar Republic,197,country
+112,Belarus,198,country
+84,Belize,199,country
+604,Peru,200,country
+56,Belgium,201,country
+616,Poland,202,country
+70,Bosnia-Herzegovina,203,country
+72,Botswana,204,country
+535,"BES Islands | Bonaire, Sint-Eustatius and Mackerel",205,country
+68,Bolivia | Bolivia Multi Ethnic Countries,206,country
+620,Portugal,207,country
+344,Hong Kong,208,country
+340,Honduras,209,country
+584,Marshall Islands,210,country
+446,Macau,211,country
+807,Macedonia Republic | Macedonia Former Yugoslav Republic,212,country
+450,Madagascar,213,country
+175,Mayotte,214,country
+454,Malawi,215,country
+466,Mali Republic | Mali,216,country
+470,Malta,217,country
+474,Martinique,218,country
+458,Malaysia,219,country
+833,Isle of Man,220,country
+583,Federated States of Micronesia,221,country
+710,South Africa Republic | South Africa,222,country
+728,South Sudan,223,country
+104,Myanmar,224,country
+484,Mexico,225,country
+480,Mauritius,226,country
+478,Mauritania,227,country
+508,Mozambique,228,country
+492,Monaco,229,country
+462,Maldives,230,country
+498,Moldova | Moldova Republic,231,country
+504,Morocco,232,country
+496,Mongolia country | Mongolia,233,country
+499,Montenegro,234,country
+500,Montserrat,235,country
+400,Jordan,236,country
+418,Laos | Lao People's Democratic Republic,237,country
+428,Latvia,238,country
+440,Lithuania,239,country
+434,Libya,240,country
+438,Liechtenstein,241,country
+430,Liberia,242,country
+642,Romania,243,country
+442,Luxembourg,244,country
+646,Rwanda,245,country
+422,Lebanon,247,country
+638,Reunion,248,country
+643,Russia | Russian Federation,249,country

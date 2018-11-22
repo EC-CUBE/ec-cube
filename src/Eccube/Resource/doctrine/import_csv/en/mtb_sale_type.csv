@@ -1,0 +1,3 @@
+id,name,sort_no,discriminator_type
+1,Sales Type A,0,saletype
+2,Sales Type B,1,saletype

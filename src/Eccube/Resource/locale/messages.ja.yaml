@@ -66,6 +66,7 @@ common.point: ポイント
 common.enabled: 有効
 common.disabled: 無効
 common.user_name: '%last_name% %first_name% 様'
+common.user_name.honor: '様'
 common.login: ログイン
 common.remember_me: 次回から自動的にログインする
 common.signup: 新規会員登録
@@ -74,6 +75,8 @@ common.customer_address_count_is_over: お届け先登録の上限の%eccube_del
 common.search_keyword: キーワードを入力
 common.delete_confirm: 削除してもよろしいですか?
 common.pagetop: ページトップへ
+common.name.prefix: ''
+common.name.suffix: ' 様'
 
 #====================================================================================
 # フロント画面
@@ -1251,6 +1254,7 @@ admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
 admin.store.plugin.search.not_found: 検索条件に該当するデータがありませんでした。
+admin.store.plugin.search.not_auth: 認証キーを設定してください。
 admin.store.plugin.installed: インストール済み
 admin.store.plugin.update: アップデート
 admin.store.plugin.install.complete: プラグインをインストールしました。
