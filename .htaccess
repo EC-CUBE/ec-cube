@@ -1,6 +1,6 @@
 DirectoryIndex index.php index.html .ht
 
-<FilesMatch "^composer|^COPYING|^\.env|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml)$">
+<FilesMatch "^composer|^COPYING|^\.env|^\.maintenance|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml)$">
     order allow,deny
     deny from all
 </FilesMatch>
@@ -17,6 +17,11 @@ DirectoryIndex index.php index.html .ht
     # XSS対策
     Header set X-XSS-Protection "1; mode=block"
     Header set X-Content-Type-Options nosniff
+</IfModule>
+
+# デフォルトテンプレートの状態で 2M 以上となるため
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 5M
 </IfModule>
 
 <IfModule mod_rewrite.c>
@@ -49,3 +54,17 @@ DirectoryIndex index.php index.html .ht
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
+
+# 管理画面へのBasic認証サンプル
+# 
+#     AuthType Basic
+#     AuthName "Please enter username and password"
+#     AuthUserFile /path/to/.htpasswd
+#     AuthGroupFile /dev/null
+#     require valid-user
+#
+#     SetEnvIf Request_URI "^/admin" admin_path  # ^/adminは, 管理画面URLに応じて変更してください
+# <RequireAll>
+#     Require all granted
+#     Require not env admin_path
+# </RequireAll>#

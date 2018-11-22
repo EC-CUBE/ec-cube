@@ -1,0 +1,1 @@
+id,customer_status_id,sex_id,job_id,country_id,pref_id,name01,name02,kana01,kana02,company_name,postal_code,addr01,addr02,email,phone_number,birth,password,salt,secret_key,first_buy_date,last_buy_date,buy_times,buy_total,note,reset_key,reset_expire,create_date,update_date,discriminator_type

@@ -1,0 +1,9 @@
+id,name,sort_no,display_order_count,discriminator_type
+1,New,0,1,orderstatus
+3,Canceled,3,0,orderstatus
+4,In progress,2,1,orderstatus
+5,Shipped,4,0,orderstatus
+6,Paid,1,1,orderstatus
+7,Payment ongoing,6,0,orderstatus
+8,Purchase ongoing,5,0,orderstatus
+9,Returned,7,0,orderstatus

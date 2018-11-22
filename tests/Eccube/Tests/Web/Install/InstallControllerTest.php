@@ -85,7 +85,7 @@ class InstallControllerTest extends AbstractWebTestCase
     public function testStep2()
     {
         $this->actual = $this->controller->step2($this->request);
-        $this->assertArrayHasKey('protectedDirs', $this->actual);
+        $this->assertArrayHasKey('noWritePermissions', $this->actual);
     }
 
     public function testStep3()

@@ -1,0 +1,4 @@
+id,device_type_id,layout_name,create_date,update_date,discriminator_type
+"0","10","For Preview","2017-03-07 10:14:52","2017-03-07 10:14:52","layout"
+1,10,Home Layout,2017-03-07 10:14:52,2017-03-07 10:14:52,layout
+2,10,Subpage Layout,2017-03-07 10:14:52,2017-03-07 10:14:52,layout

@@ -1,0 +1,7 @@
+id,name,sort_no,discriminator_type
+1,Products,0,orderitemtype
+2,Shipping Charge,1,orderitemtype
+3,Payment Charge,2,orderitemtype
+4,Discount,3,orderitemtype
+5,Tax,4,orderitemtype
+6,Points,5,orderitemtype
