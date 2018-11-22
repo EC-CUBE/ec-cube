@@ -15,22 +15,35 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SystemService
 {
+    const AUTO_MAINTENANCE = 'auto_maintenance';
+    const AUTO_MAINTENANCE_UPDATE = 'auto_maintenance_update';
+
     /**
      * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * SystemService constructor.
      *
      * @param EntityManagerInterface $entityManager
+     * @param ContainerInterface $container
      */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ContainerInterface $container
+    ) {
         $this->entityManager = $entityManager;
+        $this->container = $container;
     }
 
     /**
@@ -101,4 +114,40 @@ class SystemService
 
         return ($memoryLimit == 0) ? 0 : ($memoryLimit / 1024) / 1024;
     }
+
+    /**
+     *　メンテナンスモードを切り替える
+     *
+     * - $isEnable = true の場合, $mode の文字列が記載された .maintenance ファイルを生成する
+     * - $isEnable = false の場合, $mode の文字列が記載された .maintenance ファイルを削除する
+     *
+     * @param bool $isEnable
+     * @param string $mode
+     */
+    public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE)
+    {
+        $isMaintenanceMode = $this->isMaintenanceMode();
+        $path = $this->container->getParameter('eccube_content_maintenance_file_path');
+
+        if ($isEnable && $isMaintenanceMode === false) {
+            file_put_contents($path, $mode);
+        } elseif ($isEnable === false && $isMaintenanceMode) {
+            $contents = file_get_contents($path);
+            if ($contents == $mode) {
+                unlink($path);
+            }
+        }
+    }
+
+    /**
+     *　メンテナンスモードの状態を判定する
+     *
+     * @return Bool
+     */
+    public function isMaintenanceMode()
+    {
+        // .maintenanceが存在しているかチェック
+        return file_exists($this->container->getParameter('eccube_content_maintenance_file_path'));
+    }
+
 }

@@ -1,0 +1,55 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['content', 'maintenance'] %}
+
+
+{% block title %}{{ 'admin.content.maintenance_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
+
+{% block main %}
+    <form method="post" action="{{ url('admin_content_maintenance') }}">
+        {{ form_widget(form._token) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col"><span class="card-title">{{ 'admin.content.maintenance__card_title'|trans }}</span></div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-auto">
+                                    <span>{{ 'admin.content.maintenance_message'|trans|nl2br }}</span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-auto">
+                                    {% if isMaintenance %}
+                                    <input type="hidden" name="maintenance" value="off">
+                                    <button type="submit" class="btn btn-ec-conversion">{{ 'admin.content.maintenance_switch__off'|trans }}</button>
+                                    {% else %}
+                                    <input type="hidden" name="maintenance" value="on">
+                                    <button type="submit" class="btn btn-ec-conversion">{{ 'admin.content.maintenance_switch__on'|trans }}</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+

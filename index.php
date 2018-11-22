@@ -57,7 +57,7 @@ $request = Request::createFromGlobals();
 
 if (file_exists(__DIR__.'/.maintenance')) {
     $pathInfo = \rawurldecode($request->getPathInfo());
-    $adminPath = env('ECCUBE_ADMIN_ROUTE');
+    $adminPath = env('ECCUBE_ADMIN_ROUTE', 'admin');
     $adminPath = '/'.\trim($adminPath, '/').'/';
     if (\strpos($pathInfo, $adminPath) !== 0) {
         $locale = env('ECCUBE_LOCALE');

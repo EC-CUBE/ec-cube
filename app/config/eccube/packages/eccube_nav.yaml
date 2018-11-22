@@ -70,6 +70,9 @@ parameters:
                 cache:
                     name: admin.content.cache_management
                     url: admin_content_cache
+                maintenance:
+                    name: admin.content.maintenance_management
+                    url: admin_content_maintenance
         setting:
             name: admin.setting
             icon: fa-cog

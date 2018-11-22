@@ -924,6 +924,7 @@ admin.content.layout_management: レイアウト管理
 admin.content.page_management: ページ管理
 admin.content.block_management: ブロック管理
 admin.content.cache_management: キャッシュ管理
+admin.content.maintenance_management: メンテナンス管理
 
 # ラベル/メッセージ
 admin.content.file.add_file__card_title: ファイル・フォルダを追加
@@ -1010,6 +1011,14 @@ admin.content.news.url: URL
 admin.content.news.body: 本文
 admin.content.news.news_registration: 新着情報登録
 admin.content.news.new_window: 別ウィンドウで開く
+admin.content.maintenance__card_title: メンテナンスモード
+admin.content.maintenance_message: |
+  メンテナンスモードを有効にすると、SHOPの機能を一時的に停止し、管理画面のみアクセス可能な状態となります。
+  ※プラグインのインストール/有効/無効/削除時には、自動的にメンテナンスモードに切り替わります。
+admin.content.maintenance_switch__on: 有効にする
+admin.content.maintenance_switch__off: 無効にする
+admin.content.maintenance_switch__on_message: メンテナンスモードを有効にしました。
+admin.content.maintenance_switch__off_message: メンテナンスモードを無効にしました。
 
 #------------------------------------------------------------------------------------
 # 設定

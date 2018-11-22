@@ -26,6 +26,7 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Eccube\Service\SystemService;
 
 class PluginService
 {
@@ -95,6 +96,11 @@ class PluginService
     private $pluginApiService;
 
     /**
+     * @var SystemService
+     */
+    private $systemService;
+
+    /**
      * PluginService constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -116,7 +122,8 @@ class PluginService
         ContainerInterface $container,
         CacheUtil $cacheUtil,
         ComposerServiceInterface $composerService,
-        PluginApiService $pluginApiService
+        PluginApiService $pluginApiService,
+        SystemService $systemService
     ) {
         $this->entityManager = $entityManager;
         $this->pluginRepository = $pluginRepository;
@@ -129,6 +136,7 @@ class PluginService
         $this->cacheUtil = $cacheUtil;
         $this->composerService = $composerService;
         $this->pluginApiService = $pluginApiService;
+        $this->systemService = $systemService;
     }
 
     /**

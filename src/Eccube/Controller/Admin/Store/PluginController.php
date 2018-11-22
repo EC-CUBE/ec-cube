@@ -27,19 +27,23 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
+use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 
 class PluginController extends AbstractController
 {
@@ -62,10 +66,16 @@ class PluginController extends AbstractController
      * @var PluginApiService
      */
     protected $pluginApiService;
+
     /**
      * @var ComposerServiceInterface
      */
     private $composerService;
+
+    /**
+     * @var SystemService
+     */
+    private $systemService;
 
     /**
      * PluginController constructor.
@@ -79,13 +89,20 @@ class PluginController extends AbstractController
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, BaseInfoRepository $baseInfoRepository, PluginApiService $pluginApiService, ComposerServiceInterface $composerService)
-    {
+    public function __construct(
+        PluginRepository $pluginRepository,
+        PluginService $pluginService,
+        BaseInfoRepository $baseInfoRepository,
+        PluginApiService $pluginApiService,
+        ComposerServiceInterface $composerService,
+        SystemService $systemService
+    ){
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->pluginApiService = $pluginApiService;
         $this->composerService = $composerService;
+        $this->systemService = $systemService;
     }
 
     /**
@@ -256,9 +273,26 @@ class PluginController extends AbstractController
      *
      * @throws PluginException
      */
-    public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request)
+    public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request, EventDispatcherInterface $dispatcher)
     {
         $this->isTokenValid();
+
+        // QueryString maintenance_modeがない場合
+        if (!$request->query->has('maintenance_mode')) {
+            // プラグイン管理の有効ボタンを押したとき
+            $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
+            // TERMINATE時のイベントを設定
+            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+            $this->systemService->switchMaintenance(); // auto_maintenanceと設定されたファイルを削除
+            });
+        } else {
+            // プラグイン管理のアップデートを実行したとき
+            // TERMINATE時のイベントを設定
+            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+                // auto_maintenance_updateと設定されたファイルを削除
+                $this->systemService->switchMaintenance(false,SystemService::AUTO_MAINTENANCE_UPDATE);
+            });
+        }
 
         $cacheUtil->clearCache();
 
@@ -335,9 +369,24 @@ class PluginController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse
      */
-    public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
+    public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil, EventDispatcherInterface $dispatcher)
     {
         $this->isTokenValid();
+
+        // QueryString maintenance_modeであるか確認
+        $mentenance_mode = $request->query->get('maintenance_mode');
+
+        // プラグイン管理でアップデートが実行されたとき
+        if (SystemService::AUTO_MAINTENANCE_UPDATE == $mentenance_mode) {
+            $this->systemService->switchMaintenance(true, SystemService::AUTO_MAINTENANCE_UPDATE); // auto_maintenance_updateと設定されたファイルを生成
+        } else {
+            // プラグイン管理で無効ボタンを押したとき
+            $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
+            // TERMINATE時のイベントを設定
+            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+                $this->systemService->switchMaintenance();// auto_maintenanceと設定されたファイルを削除
+            });
+        }
 
         $cacheUtil->clearCache();
 
