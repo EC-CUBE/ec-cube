@@ -357,19 +357,10 @@ class OwnerStoreController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUpgrade(Request $request, EventDispatcherInterface $dispatcher)
+    public function apiUpgrade(Request $request)
     {
         $this->isTokenValid();
 
-        // .maintenanceファイルを設置
-        $this->systemService->switchMaintenance(true);
-
-        // TERMINATE時のイベントを設定
-        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-            // .maintenanceファイルを削除
-            $this->systemService->switchMaintenance();
-        });
-        
         $this->cacheUtil->clearCache();
 
         $pluginCode = $request->get('pluginCode');
@@ -447,9 +438,15 @@ class OwnerStoreController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUpdate(Request $request)
+    public function apiUpdate(Request $request, EventDispatcherInterface $dispatcher)
     {
         $this->isTokenValid();
+
+        // TERMINATE時のイベントを設定
+        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+            // .maintenanceファイルを削除
+            $this->systemService->switchMaintenance(false, SystemService::AUTO_MAINTENANCE_UPDATE);
+        });
 
         $this->cacheUtil->clearCache();
 
