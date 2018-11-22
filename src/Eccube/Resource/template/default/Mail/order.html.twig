@@ -106,7 +106,7 @@ file that was distributed with this source code.
                                 {% endfor %}
                             {% endfor %}
                             {% if Order.complete_mail_message is not empty %}
-                                {{ Order.complete_mail_message }}<br/>
+                                {{ Order.complete_mail_message|nl2br }}<br/>
                             {% endif %}
                             <hr style="border-top: 2px dotted #8c8b8b;">
                             このメッセージはお客様へのお知らせ専用ですので、<br/>

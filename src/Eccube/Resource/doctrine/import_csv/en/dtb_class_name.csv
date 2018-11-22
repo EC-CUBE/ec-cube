@@ -1,0 +1,3 @@
+id,creator_id,backend_name,name,sort_no,create_date,update_date,discriminator_type
+1,,Flavors for CUBE,Flavor,1,2017-03-07 10:14:52,2017-03-07 10:14:52,classname
+2,,Sizes for CUBE,Size,2,2017-03-07 10:14:52,2017-03-07 10:14:52,classname

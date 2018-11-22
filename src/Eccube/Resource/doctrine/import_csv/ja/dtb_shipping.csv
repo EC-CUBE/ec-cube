@@ -1,0 +1,1 @@
+id,country_id,pref_id,delivery_id,time_id,name01,name02,kana01,kana02,company_name,phone_number,postal_code,addr01,addr02,delivery_name,delivery_time,delivery_date,shipping_date,sort_no,create_date,update_date,discriminator_type

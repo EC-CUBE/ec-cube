@@ -1,0 +1,7 @@
+id,product_id,creator_id,file_name,sort_no,create_date,discriminator_type
+"1","1",,"cube-1.png","1","2017-03-07 10:14:52","productimage"
+"2","1",,"cube-2.png","2","2017-03-07 10:14:52","productimage"
+"3","1",,"cube-3.png","3","2017-03-07 10:14:52","productimage"
+"4","2",,"sand-1.png","1","2017-03-07 10:14:52","productimage"
+"5","2",,"sand-2.png","2","2017-03-07 10:14:52","productimage"
+"6","2",,"sand-3.png","3","2017-03-07 10:14:52","productimage"

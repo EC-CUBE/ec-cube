@@ -66,16 +66,17 @@ common.point: ポイント
 common.enabled: 有効
 common.disabled: 無効
 common.user_name: '%last_name% %first_name% 様'
+common.user_name.honor: '様'
 common.login: ログイン
 common.remember_me: 次回から自動的にログインする
 common.signup: 新規会員登録
 common.forgot_login: ログイン情報をお忘れですか？
 common.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
 common.search_keyword: キーワードを入力
-common.customer_already_exists: このメールアドレスは利用できません
-common.member_already_exists: 既に利用されているログインIDです
 common.delete_confirm: 削除してもよろしいですか?
 common.pagetop: ページトップへ
+common.name.prefix: ''
+common.name.suffix: ' 様'
 
 #====================================================================================
 # フロント画面
@@ -463,6 +464,7 @@ admin.common.move_to_confirm_title: ページを移動します
 admin.common.move_to_confirm_message: '%name%に移動します。編集内容を保存してから移動しますか？'
 admin.common.move_to_confirm_move_only: 保存せずに移動
 admin.common.move_to_confirm_save_and_move: 保存して移動
+admin.common.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。
 
 
 # エンティティに関連するラベル
@@ -1200,6 +1202,7 @@ admin.setting.system.security.force_ssl: SSLを強制
 admin.setting.system.security.force_ssl_description: httpsからの接続でなければSSL制限を設定できません。
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
 admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
+admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：ログ表示
@@ -1260,6 +1263,7 @@ admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
 admin.store.plugin.search.not_found: 検索条件に該当するデータがありませんでした。
+admin.store.plugin.search.not_auth: 認証キーを設定してください。
 admin.store.plugin.installed: インストール済み
 admin.store.plugin.update: アップデート
 admin.store.plugin.install.complete: プラグインをインストールしました。
@@ -1383,7 +1387,7 @@ admin.store.plugin_owners_search.form.sort.new: 新着順
 admin.store.plugin_owners_search.form.sort.price: 価格が低い順
 admin.store.plugin_owners_search.form.sort.dl: DL
 admin.store.plugin_owners_search.search_button: 検索
-admin.store.plugin_owners_search.search_results: 検索結果（%number%／%total%ページ）
+admin.store.plugin_owners_search.search_results: 検索結果（%number%／%total%件）
 admin.store.plugin_owners_search.latest: 最新バージョン：
 admin.store.plugin_owners_search.dl: DL数
 admin.store.plugin_owners_search.support: 対応バージョン
@@ -1575,7 +1579,7 @@ install.start_eccube_installation: '<p>EC-CUBEのインストールを開始し�
 install.cooperation_of_providing_information: 'EC-CUBEのシステム向上・デバッグのため、サイト情報の提供にご協力おねがいいたします。<br>目的以外で利用することはございません。<br><span class="small">（サイト情報：お店のURL、PHPバージョン、DBバージョン）</span>'
 install.accept_infomation_provision: 送信を承諾する
 install.permission_is_valid: アクセス権限は正常です
-install.permission_is_invalid: 以下のディレクトリのアクセス制限を変更してください。
+install.permission_is_invalid: 以下のファイルまたはディレクトリに書き込み権限を付与してください。
 install.system_requirement: システム要件をご確認ください
 install.required_extension_disabled: '[必須] %module%拡張モジュールが有効になっていません。'
 install.required_database_extension_disabled: '[必須] pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。'
@@ -1638,3 +1642,9 @@ purchase_flow.charge_update: 手数料が更新されました。金額をご確
 purchase_flow.over_customer_point: 利用ポイントが所有ポイントを上回っています。
 purchase_flow.over_payment_total: 利用ポイントがお支払い金額を上回っています。
 purchase_flow.over_stock: 「%name%」の在庫が足りません。
+
+#------------------------------------------------------------------------------------
+# Command
+#------------------------------------------------------------------------------------
+
+command.composer_require_already_installed.not_supported_plugin: %name% %plugin_version% は EC-CUBE %eccube_version% には対応していません。続行しますか？

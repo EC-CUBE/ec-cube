@@ -76,7 +76,7 @@ class InstallerCommand extends Command
         // DATABASE_URL
         $databaseUrl = $this->container->getParameter('eccube_database_url');
         if (empty($databaseUrl)) {
-            $databaseUrl = 'sqlite:///%kernel.project_dir%/var/eccube.db';
+            $databaseUrl = 'sqlite:///var/eccube.db';
         }
         $databaseUrl = $this->io->ask('Database Url', $databaseUrl);
 
@@ -119,6 +119,9 @@ class InstallerCommand extends Command
             'DATABASE_SERVER_VERSION' => $serverVersion,
             'MAILER_URL' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $authMagic,
+            'ECCUBE_ADMIN_ROUTE' => 'admin',
+            'ECCUBE_TEMPLATE_CODE' => 'default',
+            'ECCUBE_LOCALE' => 'ja',
         ];
 
         $envDir = $this->container->getParameter('kernel.project_dir');

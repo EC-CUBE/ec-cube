@@ -73,12 +73,6 @@ class InstallController extends AbstractController
         'mcrypt',
     ];
 
-    protected $writableDirs = [
-        'app',
-        'html',
-        'var',
-    ];
-
     /**
      * @var PasswordEncoder
      */
@@ -159,7 +153,7 @@ class InstallController extends AbstractController
     }
 
     /**
-     * ディレクトリの書き込み権限をチェック.
+     * ディレクトリとファイルの書き込み権限をチェック.
      *
      * @Route("/install/step2", name="install_step2")
      * @Template("step2.twig")
@@ -172,20 +166,30 @@ class InstallController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $protectedDirs = [];
-        foreach ($this->writableDirs as $writableDir) {
-            $targetDirs = Finder::create()
-                ->in($this->getParameter('kernel.project_dir').'/'.$writableDir)
-                ->directories();
-            foreach ($targetDirs as $targetDir) {
-                if (!is_writable($targetDir->getRealPath())) {
-                    $protectedDirs[] = $targetDir;
-                }
+        $noWritePermissions = [];
+
+        // ディレクトリの書き込み権限をチェック
+        $targetDirs = Finder::create()
+            ->in($this->getParameter('kernel.project_dir'))
+            ->directories();
+        foreach ($targetDirs as $targetDir) {
+            if (!is_writable($targetDir->getRealPath())) {
+                $noWritePermissions[] = $targetDir;
+            }
+        }
+
+        // ファイルの書き込み権限をチェック
+        $targetFiles = Finder::create()
+            ->in($this->getParameter('kernel.project_dir'))
+            ->files();
+        foreach ($targetFiles as $targetFile) {
+            if (!is_writable($targetFile->getRealPath())) {
+                $noWritePermissions[] = $targetFile;
             }
         }
 
         return [
-            'protectedDirs' => $protectedDirs,
+            'noWritePermissions' => $noWritePermissions,
         ];
     }
 
@@ -301,7 +305,7 @@ class InstallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($data['database'] === 'pdo_sqlite') {
-                $data['database_name'] = '/%kernel.project_dir%/var/eccube.db';
+                $data['database_name'] = '/var/eccube.db';
             }
 
             $this->setSessionData($this->session, $data);
@@ -344,8 +348,6 @@ class InstallController extends AbstractController
             $noUpdate = $form['no_update']->getData();
 
             $url = $this->createDatabaseUrl($sessionData);
-            // for sqlite, resolve %kernel.project_dir% paramter.
-            $url = $this->container->getParameterBag()->resolveValue($url);
 
             try {
                 $conn = $this->createConnection(['url' => $url]);
@@ -435,6 +437,8 @@ class InstallController extends AbstractController
             'ECCUBE_FORCE_SSL' => $forceSSL,
             'ECCUBE_ADMIN_ROUTE' => isset($sessionData['admin_dir']) ? $sessionData['admin_dir'] : 'admin',
             'ECCUBE_COOKIE_PATH' => $request->getBasePath() ? $request->getBasePath() : '/',
+            'ECCUBE_TEMPLATE_CODE' => 'default',
+            'ECCUBE_LOCALE' => 'ja',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);
@@ -575,7 +579,7 @@ class InstallController extends AbstractController
                 if (isset($params['database_user'])) {
                     $url .= $params['database_user'];
                     if (isset($params['database_password'])) {
-                        $url .= ':'.$params['database_password'];
+                        $url .= ':'.\rawurlencode($params['database_password']);
                     }
                     $url .= '@';
                 }
@@ -777,8 +781,14 @@ class InstallController extends AbstractController
 
     protected function importCsv(EntityManager $em)
     {
+        // for full locale code cases
+        $locale = env('ECCUBE_LOCALE', 'ja_JP');
+        $locale = str_replace('_', '-', $locale);
+        $locales = \Locale::parseLocale($locale);
+        $localeDir = is_null($locales) ? 'ja' : $locales['language'];
+
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
-        $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv');
+        $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv/'.$localeDir);
         $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);

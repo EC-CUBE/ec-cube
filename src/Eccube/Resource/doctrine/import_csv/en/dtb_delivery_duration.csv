@@ -1,0 +1,10 @@
+id,name,duration,sort_no,discriminator_type
+1,Same day,0,0,deliveryduration
+2,1-2 days,1,1,deliveryduration
+3,3-4 days,3,2,deliveryduration
+4,More than 1 week later,7,3,deliveryduration
+5,More than 2 weeks later,14,4,deliveryduration
+6,More than 3 weeks later,21,5,deliveryduration
+7,More than 1 month later,30,6,deliveryduration
+8,More than 2 months later,60,7,deliveryduration
+9,Back order (Delivered once available),-1,8,deliveryduration

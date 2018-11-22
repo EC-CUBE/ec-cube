@@ -1,0 +1,8 @@
+product_id,category_id,discriminator_type
+"1","1","productcategory"
+"1","2","productcategory"
+"1","3","productcategory"
+"1","4","productcategory"
+"2","2","productcategory"
+"2","5","productcategory"
+"2","6","productcategory"

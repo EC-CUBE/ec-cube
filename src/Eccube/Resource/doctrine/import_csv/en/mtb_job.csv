@@ -1,0 +1,19 @@
+id,name,sort_no,discriminator_type
+1,Government Staff,0,job
+2,Consultant,1,job
+3,Engineer (IT),2,job
+4,Engineer (Non-IT),3,job
+5,Financial,4,job
+6,Doctor,5,job
+7,Lawyer,6,job
+8,Administration/HR/Clerical,7,job
+9,Sales,8,job
+10,R&D,9,job
+11,PR,10,job
+12,Planning/Marketing,11,job
+13,Design,12,job
+14,Business Owner / Board Member,13,job
+15,Publisher / Mass Media,14,job
+16,Student / Part-timer,15,job
+17,Homemaker,16,job
+18,Other,17,job
