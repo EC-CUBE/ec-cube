@@ -25,10 +25,16 @@ file that was distributed with this source code.
         <div class="col-auto col-md-5 col-lg-6">
             <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">{{ 'admin.store.plugin.price'|trans }} </span> {{ item.price|price }}<small> ({{ 'common.tax_include'|trans }})</small></p>
         </div>
-        <div class="col-auto col-md-7 col-lg-6">
+        <div class="col-auto col-md-7 col-lg-2">
+            {% if not item.price %}
             <dl class="text-dark">
                 <dd class="d-inline-block"><span class="pr-1 font-weight-bold">{{'admin.store.plugin_owners_search.dl'|trans}}</span> {{ item.downloads|number_format }}</dd>
-                <dd class="d-inline-block ml-5"><span class="pr-1 font-weight-bold">{{ 'admin.store.plugin_owners_search.support'|trans }}</span> {% for version in item.supported_versions %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>
+            </dl>
+            {% endif %}
+        </div>
+        <div class="col-auto col-md-7 col-lg-4">
+            <dl class="text-dark">
+                <dd class="d-inline-block ml-4"><span class="pr-1 font-weight-bold">{{ 'admin.store.plugin_owners_search.support'|trans }}</span> {% for version in item.supported_versions %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>
             </dl>
         </div>
     </div>

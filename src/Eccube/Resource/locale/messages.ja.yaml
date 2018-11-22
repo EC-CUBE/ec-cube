@@ -1378,7 +1378,7 @@ admin.store.plugin_owners_search.form.sort.new: 新着順
 admin.store.plugin_owners_search.form.sort.price: 価格が低い順
 admin.store.plugin_owners_search.form.sort.dl: DL
 admin.store.plugin_owners_search.search_button: 検索
-admin.store.plugin_owners_search.search_results: 検索結果（%number%／%total%ページ）
+admin.store.plugin_owners_search.search_results: 検索結果（%number%／%total%件）
 admin.store.plugin_owners_search.latest: 最新バージョン：
 admin.store.plugin_owners_search.dl: DL数
 admin.store.plugin_owners_search.support: 対応バージョン

@@ -34,12 +34,12 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
+                        {% set version_check = item.version_check  %}
+                        {% if version_check == 0 %}
                         <div class="alert alert-danger border border-danger">
-                            {% set version_check = item.version_check  %}
-                            {% if version_check == 0 %}
                                 <p class="text-danger mb-1">{{ 'admin.store.plugin_owners_search.modal.note'|trans({"%version%": constant('Eccube\\Common\\Constant::VERSION') }) }}</p>
-                            {% endif %}
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <hr>
