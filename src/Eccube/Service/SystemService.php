@@ -118,7 +118,11 @@ class SystemService
     /**
      *　メンテナンスモードを切り替える
      *
-     * @param Bool $isEnable
+     * - $isEnable = true の場合, $mode の文字列が記載された .maintenance ファイルを生成する
+     * - $isEnable = false の場合, $mode の文字列が記載された .maintenance ファイルを削除する
+     *
+     * @param bool $isEnable
+     * @param string $mode
      */
     public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE)
     {
