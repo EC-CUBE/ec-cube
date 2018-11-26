@@ -613,6 +613,46 @@ class Application extends ApplicationTrait
             return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
         });
 
+        $app = $this;
+        $app['security.authentication.success_handler.admin'] = $app->share(function ($app) {
+            $handler = new \Eccube\Security\Http\Authentication\EccubeAuthenticationSuccessHandler(
+                $app['security.http_utils'],
+                $app['security.firewalls']['admin']['form']
+            );
+
+            $handler->setProviderKey('admin');
+
+            return $handler;
+        });
+
+        $app['security.authentication.failure_handler.admin'] = $app->share(function ($app) {
+            return new \Eccube\Security\Http\Authentication\EccubeAuthenticationFailureHandler(
+                $app,
+                $app['security.http_utils'],
+                $app['security.firewalls']['admin']['form'],
+                $app['logger']
+            );
+        });
+
+        $app['security.authentication.success_handler.customer'] = $app->share(function ($app) {
+            $handler = new \Eccube\Security\Http\Authentication\EccubeAuthenticationSuccessHandler(
+                $app['security.http_utils'],
+                $app['security.firewalls']['customer']['form']
+            );
+
+            $handler->setProviderKey('customer');
+
+            return $handler;
+        });
+
+        $app['security.authentication.failure_handler.customer'] = $app->share(function ($app) {
+            return new \Eccube\Security\Http\Authentication\EccubeAuthenticationFailureHandler(
+                $app,
+                $app['security.http_utils'],
+                $app['security.firewalls']['customer']['form'],
+                $app['logger']
+            );
+        });
     }
 
     /**
