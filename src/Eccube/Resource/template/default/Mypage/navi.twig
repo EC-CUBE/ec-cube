@@ -32,7 +32,7 @@ file that was distributed with this source code.
 
 <div class="ec-welcomeMsg">
     {{ 'front.mypage.welcome'|trans({ '%last_name%': app.user.name01, '%first_name%': app.user.name02 }) }}
-    {% if BaseInfo.option_point  %}
+    {% if BaseInfo.option_point %}
         {{ 'front.mypage.welcome__point'|trans({ '%point%': app.user.point|number_format}) }}
     {% endif %}
 </div>
