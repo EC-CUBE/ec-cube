@@ -25,7 +25,16 @@ class SystemService implements EventSubscriberInterface
     const AUTO_MAINTENANCE = 'auto_maintenance';
     const AUTO_MAINTENANCE_UPDATE = 'auto_maintenance_update';
 
+    /**
+     * メンテナンスモードを無効にする場合はtrue
+     * @var bool
+     */
     private $disableMaintenanceAfterResponse = false;
+
+    /**
+     * メンテナンスモードの識別子
+     * @var string
+     */
     private $maintenanceMode = null;
 
     /**
@@ -145,6 +154,11 @@ class SystemService implements EventSubscriberInterface
         }
     }
 
+    /**
+     * KernelEvents::TERMINATE で設定されるEvent
+     *
+     * @param PostResponseEvent $event
+     */
     public function disableMaintenanceEvent(PostResponseEvent $event)
     {
         if ($this->disableMaintenanceAfterResponse) {
@@ -152,6 +166,12 @@ class SystemService implements EventSubscriberInterface
         }
     }
 
+    /**
+     * メンテナンスモードを解除する
+     *
+     * KernelEvents::TERMINATE で解除のEventを設定し、メンテナンスモードを解除する
+     * @param string $mode
+     */
     public function disableMaintenance($mode = self::AUTO_MAINTENANCE)
     {
         $this->disableMaintenanceAfterResponse = true;
