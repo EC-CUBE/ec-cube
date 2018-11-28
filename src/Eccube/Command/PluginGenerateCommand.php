@@ -179,6 +179,9 @@ class PluginGenerateCommand extends Command
   "version": "$version",
   "description": "$name",
   "type": "eccube-plugin",
+  "require": {
+    "ec-cube/plugin-installer": "~0.0.6"
+  },
   "extra": {
     "code": "$code"
   }
