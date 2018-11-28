@@ -14,13 +14,19 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 
-class SystemService
+class SystemService implements EventSubscriberInterface
 {
     const AUTO_MAINTENANCE = 'auto_maintenance';
     const AUTO_MAINTENANCE_UPDATE = 'auto_maintenance_update';
+
+    private $disableMaintenanceAfterResponse = false;
+    private $maintenanceMode = null;
 
     /**
      * @var EntityManagerInterface
@@ -139,6 +145,19 @@ class SystemService
         }
     }
 
+    public function disableMaintenanceEvent(PostResponseEvent $event)
+    {
+        if ($this->disableMaintenanceAfterResponse) {
+            $this->switchMaintenance(false, $this->maintenanceMode);
+        }
+    }
+
+    public function disableMaintenance($mode = self::AUTO_MAINTENANCE)
+    {
+        $this->disableMaintenanceAfterResponse = true;
+        $this->maintenanceMode = $mode;
+    }
+
     /**
      *　メンテナンスモードの状態を判定する
      *
@@ -150,4 +169,11 @@ class SystemService
         return file_exists($this->container->getParameter('eccube_content_maintenance_file_path'));
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [KernelEvents::TERMINATE => 'disableMaintenanceEvent'];
+    }
 }
