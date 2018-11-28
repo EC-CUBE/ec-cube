@@ -48,7 +48,7 @@ class MaintenanceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->systemService->switchMaintenance(($request->request->get('maintenance') == "on"), null);
+            $this->systemService->switchMaintenance(($request->request->get('maintenance') == "on"), null, true);
 
             $isMaintenance = $this->systemService->isMaintenanceMode();
 

@@ -120,11 +120,13 @@ class SystemService
      *
      * - $isEnable = true の場合, $mode の文字列が記載された .maintenance ファイルを生成する
      * - $isEnable = false の場合, $mode の文字列が記載された .maintenance ファイルを削除する
+     * - $isEnable = false かつ $force = true の場合は $mode に関わらず .maintenance ファイルを削除する
      *
      * @param bool $isEnable
      * @param string $mode
+     * @param bool $force
      */
-    public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE)
+    public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE, $force = false)
     {
         $isMaintenanceMode = $this->isMaintenanceMode();
         $path = $this->container->getParameter('eccube_content_maintenance_file_path');
@@ -133,7 +135,7 @@ class SystemService
             file_put_contents($path, $mode);
         } elseif ($isEnable === false && $isMaintenanceMode) {
             $contents = file_get_contents($path);
-            if ($contents == $mode) {
+            if ($contents == $mode || $force == true) {
                 unlink($path);
             }
         }
