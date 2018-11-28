@@ -40,7 +40,7 @@ class MaintenanceController extends AbstractController
      */
     public function index(Request $request)
     {
-        $isMaintenace = $this->systemService->isMaintenanceMode();
+        $isMaintenance = $this->systemService->isMaintenanceMode();
 
         $builder = $this->formFactory->createBuilder(FormType::class);
         $form = $builder->getForm();
@@ -50,16 +50,16 @@ class MaintenanceController extends AbstractController
 
             $this->systemService->switchMaintenance(($request->request->get('maintenance') == "on"), null);
 
-            $isMaintenace = $this->systemService->isMaintenanceMode();
+            $isMaintenance = $this->systemService->isMaintenanceMode();
 
-            $this->addSuccess(($isMaintenace) ? 'admin.content.maintenance_switch__on_message' : 'admin.content.maintenance_switch__off_message', 'admin');
+            $this->addSuccess(($isMaintenance) ? 'admin.content.maintenance_switch__on_message' : 'admin.content.maintenance_switch__off_message', 'admin');
 
             return $this->redirectToRoute('admin_content_maintenance');
         }
 
         return [
             'form' => $form->createView(),
-            'isMaintenance' => $isMaintenace,
+            'isMaintenance' => $isMaintenance,
         ];
     }
 
