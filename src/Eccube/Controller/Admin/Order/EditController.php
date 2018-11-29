@@ -33,6 +33,7 @@ use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Util\Str;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -657,10 +658,12 @@ class EditController extends AbstractController
 
     protected function newOrder(Application $app)
     {
+        $preOrderId = sha1(Str::random(32));
         $Order = new \Eccube\Entity\Order();
         $Shipping = new \Eccube\Entity\Shipping();
         $Shipping->setDelFlg(0);
         $Order->addShipping($Shipping);
+        $Order->setPreOrderId($preOrderId);
         $Shipping->setOrder($Order);
 
         // device type
