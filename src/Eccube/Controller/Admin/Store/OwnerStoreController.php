@@ -31,8 +31,6 @@ use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -262,7 +260,7 @@ class OwnerStoreController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiInstall(Request $request, EventDispatcherInterface $dispatcher)
+    public function apiInstall(Request $request)
     {
         $this->isTokenValid();
 
@@ -270,10 +268,7 @@ class OwnerStoreController extends AbstractController
         $this->systemService->switchMaintenance(true);
 
         // TERMINATE時のイベントを設定
-        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-            // .maintenanceファイルを削除
-            $this->systemService->switchMaintenance();
-        });
+        $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
 
         $this->cacheUtil->clearCache();
 
@@ -301,7 +296,7 @@ class OwnerStoreController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUninstall(Plugin $Plugin, EventDispatcherInterface $dispatcher)
+    public function apiUninstall(Plugin $Plugin)
     {
         $this->isTokenValid();
 
@@ -309,10 +304,7 @@ class OwnerStoreController extends AbstractController
         $this->systemService->switchMaintenance(true);
 
         // TERMINATE時のイベントを設定
-        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-            // .maintenanceファイルを削除
-            $this->systemService->switchMaintenance();
-        });
+        $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
 
         $this->cacheUtil->clearCache();
 
@@ -438,15 +430,12 @@ class OwnerStoreController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUpdate(Request $request, EventDispatcherInterface $dispatcher)
+    public function apiUpdate(Request $request)
     {
         $this->isTokenValid();
 
         // TERMINATE時のイベントを設定
-        $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-            // .maintenanceファイルを削除
-            $this->systemService->switchMaintenance(false, SystemService::AUTO_MAINTENANCE_UPDATE);
-        });
+        $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE_UPDATE);
 
         $this->cacheUtil->clearCache();
 

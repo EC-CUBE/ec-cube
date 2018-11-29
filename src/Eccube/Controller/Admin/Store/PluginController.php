@@ -32,18 +32,15 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-
 
 class PluginController extends AbstractController
 {
@@ -273,27 +270,20 @@ class PluginController extends AbstractController
      *
      * @throws PluginException
      */
-    public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request, EventDispatcherInterface $dispatcher)
+    public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request)
     {
         $this->isTokenValid();
-
         // QueryString maintenance_modeがない場合
         if (!$request->query->has('maintenance_mode')) {
             // プラグイン管理の有効ボタンを押したとき
             $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
             // TERMINATE時のイベントを設定
-            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-            $this->systemService->switchMaintenance(); // auto_maintenanceと設定されたファイルを削除
-            });
+            $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
         } else {
             // プラグイン管理のアップデートを実行したとき
             // TERMINATE時のイベントを設定
-            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-                // auto_maintenance_updateと設定されたファイルを削除
-                $this->systemService->switchMaintenance(false,SystemService::AUTO_MAINTENANCE_UPDATE);
-            });
+            $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE_UPDATE);
         }
-
         $cacheUtil->clearCache();
 
         $log = null;
@@ -369,7 +359,7 @@ class PluginController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse
      */
-    public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil, EventDispatcherInterface $dispatcher)
+    public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -383,9 +373,7 @@ class PluginController extends AbstractController
             // プラグイン管理で無効ボタンを押したとき
             $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
             // TERMINATE時のイベントを設定
-            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-                $this->systemService->switchMaintenance();// auto_maintenanceと設定されたファイルを削除
-            });
+            $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
         }
 
         $cacheUtil->clearCache();
