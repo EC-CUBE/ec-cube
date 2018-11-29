@@ -180,7 +180,7 @@ class PluginGenerateCommand extends Command
   "description": "$name",
   "type": "eccube-plugin",
   "require": {
-    "ec-cube/plugin-installer": "~0.0.6"
+    "ec-cube/plugin-installer": "~0.0.7"
   },
   "extra": {
     "code": "$code"
