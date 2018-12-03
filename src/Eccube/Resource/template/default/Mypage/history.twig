@@ -73,7 +73,7 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="ec-imageGrid__content">
                                         <p>
-                                            {% if orderItem.Product is not null and orderItem.Product.enable %}
+                                            {% if orderItem.Product is not null and orderItem.Product.Status.id == constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_SHOW') %}
                                                 <a href="{{ url('product_detail', {'id': orderItem.Product.id}) }}">{{ orderItem.productName }}</a>
                                             {% else %}
                                                 {{ orderItem.productName }}
