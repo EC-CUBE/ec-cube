@@ -16,6 +16,7 @@ namespace Eccube\Command;
 use Doctrine\ORM\EntityManager;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
 use Symfony\Component\Console\Command\Command;
@@ -42,12 +43,18 @@ class GenerateDummyDataCommand extends Command
      */
     protected $deliveryRepository;
 
-    public function __construct(Generator $generator = null, EntityManager $entityManager = null, DeliveryRepository $deliveryRepository = null)
+    /**
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    public function __construct(Generator $generator = null, EntityManager $entityManager = null, DeliveryRepository $deliveryRepository = null, ProductRepository $productRepository = null)
     {
         parent::__construct();
         $this->generator = $generator;
         $this->entityManager = $entityManager;
         $this->deliveryRepository = $deliveryRepository;
+        $this->productRepository = $productRepository;
     }
 
     protected function configure()
@@ -145,7 +152,13 @@ EOF
         ];
         foreach ($Customers as $Customer) {
             $Delivery = $Deliveries[$faker->numberBetween(0, count($Deliveries) - 1)];
-            $Product = $Products[$faker->numberBetween(0, $numberOfProducts - 1)];
+            if (count($Products) > 0) {
+                $Product = $Products[$faker->numberBetween(0, count($Products) - 1)];
+            } else {
+                $orderBy = ['ASC', 'DESC'];
+                $orderByKey = $faker->numberBetween(0, 1);
+                $Product = $this->productRepository->findOneBy([], ['id' => $orderBy[$orderByKey]]);
+            }
             $charge = $faker->randomNumber(4);
             $discount = $faker->randomNumber(4);
             for ($i = 0; $i < $numberOfOrder; $i++) {
