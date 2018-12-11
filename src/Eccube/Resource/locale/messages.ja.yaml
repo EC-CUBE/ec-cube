@@ -547,7 +547,6 @@ admin.change_password.current_password: 現在のパスワード
 admin.change_password.new_password: 新しいパスワード
 admin.change_password.new_password_confirm: 新しいパスワード(確認)
 admin.change_password.password_changed: パスワードを更新しました
-
 admin.error.go_to_login: ログイン画面へ
 
 #------------------------------------------------------------------------------------
@@ -634,7 +633,8 @@ admin.product.product_class__confirm_of_product: この商品の規格を確認
 admin.product.product_class__card_title: 商品規格情報
 admin.product.product_class__reset: 商品規格の初期化
 admin.product.product_class__reset_confirm_title: この商品の規格を初期化します
-admin.product.product_class__reset_confirm_message: この商品に登録された規格を初期化します。
+admin.product.product_class__reset_confirm_message: |
+  この商品に登録された規格を初期化します。
   これまでの販売データには影響はありませんが、この操作は取り消すことができません。
   初期化しますか？
 admin.product.product_class__reset_confirm_excecute: 規格を初期化
@@ -657,7 +657,8 @@ admin.product.class_category2: 規格分類2
 admin.product.class_category2__short: 規格2
 admin.product.category: カテゴリ
 admin.product.category__product_card_title: カテゴリ
-admin.product.category_id: カテゴリID
+admin.product.category_id: |
+  カテゴリID
   既存カテゴリの更新はカテゴリIDを設定
 admin.product.category_name: カテゴリ名
 admin.product.parent_category_id: 親カテゴリID
@@ -1107,7 +1108,7 @@ admin.setting.shop.delivery.delivery_time_setting: お届け時間設定
 admin.setting.shop.delivery.delivery_fee_by_pref: 都道府県別送料設定
 admin.setting.shop.delivery.apply_to_pref__title: 全国一律に設定
 admin.setting.shop.delivery.apply_to_pref__button: 各都道府県に適用
-admin.setting.shop.delivery.fee.invalid: 有効な値ではありません。
+admin.setting.shop.delivery.fee.invalid: 数字で入力してください。
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：税率設定
@@ -1173,8 +1174,9 @@ admin.setting.system.member.work_can_not_change: 非稼働に変更すること�
 #------------------------------------------------------------------------------------
 
 admin.setting.system.authority__card_title: 権限設定
-admin.setting.system.authority.description: '%url%以降からのURLを拒否URLに入力してください。
-  拒否URL以降がアクセス拒否されます。(URLは前方一致)'
+admin.setting.system.authority.description: |
+  %url%以降からのURLを拒否URLに入力してください。
+  拒否URL以降がアクセス拒否されます。(URLは前方一致)
 admin.setting.system.authority.example: '例) /setting <span class="text-danger">「/」を必ず記入してください</span>'
 admin.setting.system.authority.authority: 権限
 admin.setting.system.authority.deny_url: 拒否URL
@@ -1456,7 +1458,6 @@ admin.store.unregistered_plugin_table.948: 詳細を表示
 admin.store.unregistered_plugin_table.949: 不明
 admin.store.unregistered_plugin_table.950: 設定
 admin.store.install.label: 'プラグイン (zip、tar、tar.gz形式)'
-
 
 
 #------------------------------------------------------------------------------------
