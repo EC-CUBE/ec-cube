@@ -346,6 +346,7 @@ class EccubeExtension extends AbstractExtension
      * Get currency symbol
      *
      * @param null $currency
+     *
      * @return bool|string
      */
     public function getCurrencySymbol($currency = null)

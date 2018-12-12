@@ -14,7 +14,6 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
-use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +27,8 @@ class MaintenanceController extends AbstractController
      */
     protected $systemService;
 
-    public function __construct(SystemService $systemService) {
+    public function __construct(SystemService $systemService)
+    {
         $this->systemService = $systemService;
     }
 

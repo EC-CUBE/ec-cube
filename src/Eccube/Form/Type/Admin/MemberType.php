@@ -93,7 +93,7 @@ class MemberType extends AbstractType
                 ],
                 'second_options' => [
                     'label' => 'admin.setting.system.member.password',
-                ]
+                ],
             ])
             ->add('Authority', EntityType::class, [
                 'class' => 'Eccube\Entity\Master\Authority',

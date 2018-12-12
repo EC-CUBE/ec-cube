@@ -234,7 +234,6 @@ class CategoryController extends AbstractController
             log_info('カテゴリ削除完了', [$id]);
 
             $cacheUtil->clearDoctrineCache();
-
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
 

@@ -33,7 +33,6 @@ class EntityUtil
      * @return bool エンティティが削除済みの場合 true
      *
      * @see https://github.com/EC-CUBE/ec-cube/pull/602#issuecomment-125431246
-     *
      * @deprecated
      */
     public static function isEmpty($entity)
@@ -62,12 +61,12 @@ class EntityUtil
      * @return bool
      *
      * @see EntityUtil::isEmpty()
-     *
      * @deprecated
      */
     public static function isNotEmpty($entity)
     {
         @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
+
         return !self::isEmpty($entity);
     }
 
