@@ -274,9 +274,16 @@ class PluginService
 
     public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false)
     {
+        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) {
+            $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory);
+        }, $plugin, $config, $uninstall);
+    }
+
+    public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false)
+    {
         if ($plugin->isEnabled()) {
             $generatedFiles = $this->regenerateProxy($plugin, false);
-            $this->schemaService->updateSchema($generatedFiles, $this->projectRoot.'/app/proxy/entity');
+            $callback($generatedFiles, $this->projectRoot.'/app/proxy/entity');
         } else {
             // Proxyのクラスをロードせずにスキーマを更新するために、
             // インストール時には一時的なディレクトリにProxyを生成する
@@ -299,7 +306,7 @@ class PluginService
 
                 // 一時的に利用するProxyを生成してからスキーマを更新する
                 $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir, $uninstall);
-                $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
+                $callback($generatedFiles, $tmpProxyOutputDir);
             } finally {
                 foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
                     unlink($f);
