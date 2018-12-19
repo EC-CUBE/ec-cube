@@ -53,24 +53,8 @@ if ($trustedHosts) {
     Request::setTrustedHosts(explode(',', $trustedHosts));
 }
 
-$request = Request::createFromGlobals();
-
-if (file_exists(__DIR__.'/.maintenance')) {
-    $pathInfo = \rawurldecode($request->getPathInfo());
-    $adminPath = env('ECCUBE_ADMIN_ROUTE', 'admin');
-    $adminPath = '/'.\trim($adminPath, '/').'/';
-    if (\strpos($pathInfo, $adminPath) !== 0) {
-        $locale = env('ECCUBE_LOCALE');
-        $templateCode = env('ECCUBE_TEMPLATE_CODE');
-        $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
-
-        header('HTTP/1.1 503 Service Temporarily Unavailable');
-        require __DIR__.'/maintenance.php';
-        return;
-    }
-}
-
 $kernel = new Kernel($env, $debug);
+$request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
