@@ -15,6 +15,7 @@ namespace Eccube\EventListener;
 
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -32,6 +33,11 @@ class MaintenanceListener implements EventSubscriberInterface
     protected $session;
 
     /**
+     * @var \Twig_Environment
+     */
+    protected $twig;
+
+    /**
      * @var SystemService
      */
     protected $systemService;
@@ -40,11 +46,13 @@ class MaintenanceListener implements EventSubscriberInterface
      * MaintenanceListener constructor.
      *
      * @param SessionInterface $session
+     * @param \Twig_Environment $twig
      * @param SystemService $systemService
      */
-    public function __construct(SessionInterface $session, SystemService $systemService)
+    public function __construct(SessionInterface $session, \Twig_Environment $twig, SystemService $systemService)
     {
         $this->session = $session;
+        $this->twig = $twig;
         $this->systemService = $systemService;
     }
 
@@ -61,28 +69,25 @@ class MaintenanceListener implements EventSubscriberInterface
         }
 
         $isMaintenance = $this->systemService->isMaintenanceMode();
+        if (!$isMaintenance) {
+            return;
+        }
 
-        if ($isMaintenance) {
+        // メンテナンス中であればメンテナンス画面を表示させるが、管理者としてログインされていればフロント画面を表示させる
+        $is_admin = $this->session->has('_security_admin');
+        if (!$is_admin) {
+            $request = $event->getRequest();
 
-            // メンテナンス中であればメンテナンス画面を表示させるが、管理者としてログインされていればフロント画面を表示させる
-            $is_admin = $this->session->has('_security_admin');
-            if (!$is_admin) {
-                $request = $event->getRequest();
-
-                $pathInfo = \rawurldecode($request->getPathInfo());
-                $adminPath = env('ECCUBE_ADMIN_ROUTE', 'admin');
-                $adminPath = '/'.\trim($adminPath, '/').'/';
-                if (\strpos($pathInfo, $adminPath) !== 0) {
-                    $locale = env('ECCUBE_LOCALE');
-                    $templateCode = env('ECCUBE_TEMPLATE_CODE');
-                    $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
-
-                    header('HTTP/1.1 503 Service Temporarily Unavailable');
-                    require __DIR__.'/../../../maintenance.php';
-                    exit;
-                }
-
+            $pathInfo = \rawurldecode($request->getPathInfo());
+            $adminPath = env('ECCUBE_ADMIN_ROUTE', 'admin');
+            $adminPath = '/'.\trim($adminPath, '/').'/';
+            if (\strpos($pathInfo, $adminPath) !== 0) {
+                $twig = $this->twig->render('maintenance.twig');
+                $response = new Response($twig, Response::HTTP_SERVICE_UNAVAILABLE);
+                $event->setResponse($response);
+                $event->stopPropagation();
             }
+
         }
 
     }
