@@ -272,23 +272,35 @@ class PluginService
         }
     }
 
-    public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false)
+    public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true)
     {
-        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) {
-            $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory);
+        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode) {
+            $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
         }, $plugin, $config, $uninstall);
     }
 
-    public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false)
+    public function generateProxyAndCreateSchema(Plugin $plugin, $config)
+    {
+        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) {
+            $this->schemaService->createSchema($generatedFiles, $proxiesDirectory);
+        }, $plugin, $config);
+    }
+
+    public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false, $tmpProxyOutputDir = null)
     {
         if ($plugin->isEnabled()) {
             $generatedFiles = $this->regenerateProxy($plugin, false);
-            $callback($generatedFiles, $this->projectRoot.'/app/proxy/entity');
+
+            call_user_func($callback, $generatedFiles, $this->projectRoot.'/app/proxy/entity');
         } else {
             // Proxyのクラスをロードせずにスキーマを更新するために、
             // インストール時には一時的なディレクトリにProxyを生成する
-            $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
-            @mkdir($tmpProxyOutputDir);
+            $createOutputDir = false;
+            if (is_null($tmpProxyOutputDir)) {
+                $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
+                @mkdir($tmpProxyOutputDir);
+                $createOutputDir = true;
+            }
 
             try {
                 if (!$uninstall) {
@@ -306,12 +318,15 @@ class PluginService
 
                 // 一時的に利用するProxyを生成してからスキーマを更新する
                 $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir, $uninstall);
-                $callback($generatedFiles, $tmpProxyOutputDir);
+
+                call_user_func($callback, $generatedFiles, $tmpProxyOutputDir);
             } finally {
-                foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
-                    unlink($f);
+                if ($createOutputDir) {
+                    foreach (glob("${tmpProxyOutputDir}/*") as $f) {
+                        unlink($f);
+                    }
+                    rmdir($tmpProxyOutputDir);
                 }
-                rmdir($tmpProxyOutputDir);
             }
         }
     }
