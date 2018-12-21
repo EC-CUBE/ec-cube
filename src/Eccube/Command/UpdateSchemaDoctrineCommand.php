@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Command\Proxy\DoctrineCommandHelper;
 use Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand as BaseUpdateSchemaDoctrineCommand;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand;
+use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
@@ -56,8 +57,10 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
         parent::configure();
 
         $this
-            ->setName('doctrine:schema:update')
-            ->addOption('em', null, InputOption::VALUE_OPTIONAL, 'The entity manager to use for this command');
+            ->setName('eccube:schema:update')
+            ->setAliases(['doctrine:schema:update'])
+            ->addOption('em', null, InputOption::VALUE_OPTIONAL, 'The entity manager to use for this command')
+            ->addOption('no-proxy', null, InputOption::VALUE_NONE, 'Does not use the proxy class and behaves the same as the original doctrine:schema:update command');
     }
 
     /**
@@ -66,10 +69,20 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         DoctrineCommandHelper::setApplicationEntityManager($this->getApplication(), $input->getOption('em'));
+        $noProxy = true === $input->getOption('no-proxy');
+        $dumpSql = true === $input->getOption('dump-sql');
+        $force = true === $input->getOption('force');
+
+        if ($noProxy || $dumpSql === false && $force === false) {
+            return parent::execute($input, $output);
+        }
+
         $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
-        $outputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
+        $tmpMetaDataOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
+
         $generateAllFiles = [];
         try {
+            // Generate proxy files of plugins
             $Plugins = $this->pluginRepository->findAll();
             foreach ($Plugins as $Plugin) {
                 $config = ['code' => $Plugin->getCode()];
@@ -80,26 +93,32 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
 
             $result = null;
             $command = $this;
-            $this->schemaService->executeCallback(function ($schemaTool, $metaData) use ($command, $input, $output, &$result) {
+
+            // Generate Doctrine metadata and execute schema command
+            $this->schemaService->executeCallback(function (SchemaTool $schemaTool, array $metaData) use ($command, $input, $output, &$result) {
                 $ui = new SymfonyStyle($input, $output);
-                $result = $command->executeSchemaCommand($input, $output, $schemaTool, $metaData, $ui);
-            }, $generateAllFiles, $tmpProxyOutputDir, $outputDir);
+                if (empty($metaData)) {
+                    $ui->success('No Metadata Classes to process.');
+                    $result = 0;
+                } else {
+                    $result = $command->executeSchemaCommand($input, $output, $schemaTool, $metaData, $ui);
+                }
+            }, $generateAllFiles, $tmpProxyOutputDir, $tmpMetaDataOutputDir);
 
             return $result;
         } finally {
-            if (file_exists($outputDir)) {
-                foreach (glob("${outputDir}/*") as $f) {
-                    unlink($f);
-                }
-                rmdir($outputDir);
-            }
+            $this->removeOutputDir($tmpMetaDataOutputDir);
+            $this->removeOutputDir($tmpProxyOutputDir);
+        }
+    }
 
-            if (file_exists($tmpProxyOutputDir)) {
-                foreach (glob("${tmpProxyOutputDir}/*") as $f) {
-                    unlink($f);
-                }
-                rmdir($tmpProxyOutputDir);
+    protected function removeOutputDir($outputDir)
+    {
+        if (file_exists($outputDir)) {
+            foreach (glob("${outputDir}/*") as $f) {
+                unlink($f);
             }
+            rmdir($outputDir);
         }
     }
 }
