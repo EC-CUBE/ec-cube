@@ -36,6 +36,18 @@ class SchemaService
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * Doctrine Metadata を生成してコールバック関数を実行する.
+     *
+     * コールバック関数は主に SchemaTool が利用されます.
+     * Metadata を出力する一時ディレクトリを指定しない場合は内部で生成し, コールバック関数実行後に削除されます.
+     *
+     * @param callable $callback Metadata を生成した後に実行されるコールバック関数
+     * @param array $generatedFiles Proxy ファイルパスの配列
+     * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
+     * @param bool $saveMode UpdateSchema を即時実行する場合 true
+     * @param string $outputDir Metadata の出力先ディレクトリ
+     */
     public function executeCallback(callable $callback, $generatedFiles, $proxiesDirectory, $outputDir = null)
     {
         $createOutputDir = false;
@@ -50,6 +62,7 @@ class SchemaService
             $drivers = $chain->getDrivers();
             foreach ($drivers as $namespace => $oldDriver) {
                 if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
+                    // Setup to AnnotationDriver
                     $newDriver = new ReloadSafeAnnotationDriver(
                         new AnnotationReader(),
                         $oldDriver->getPaths()
@@ -77,17 +90,17 @@ class SchemaService
         }
     }
 
+    /**
+     * Doctrine Metadata を生成して UpdateSchema を実行する.
+     *
+     * @param array $generatedFiles Proxy ファイルパスの配列
+     * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
+     * @param bool $saveMode UpdateSchema を即時実行する場合 true
+     */
     public function updateSchema($generatedFiles, $proxiesDirectory, $saveMode = false)
     {
-        $this->executeCallback(function (SchemaTool $tool, $metaData) use ($saveMode) {
+        $this->executeCallback(function (SchemaTool $tool, array $metaData) use ($saveMode) {
             $tool->updateSchema($metaData, $saveMode);
-        }, $generatedFiles, $proxiesDirectory);
-    }
-
-    public function createSchema($generatedFiles, $proxiesDirectory)
-    {
-        $this->executeCallback(function (SchemaTool $tool, $metaData) {
-            $tool->createSchema($metaData);
         }, $generatedFiles, $proxiesDirectory);
     }
 

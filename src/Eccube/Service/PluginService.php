@@ -272,6 +272,14 @@ class PluginService
         }
     }
 
+    /**
+     * プラグインの Proxy ファイルを生成して UpdateSchema を実行する.
+     *
+     * @param Plugin $plugin プラグインオブジェクト
+     * @param array $config プラグインの composer.json の配列
+     * @param bool $uninstall アンインストールする場合は true
+     * @param bool $saveMode SQL を即時実行する場合は true
+     */
     public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true)
     {
         $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode) {
@@ -279,13 +287,18 @@ class PluginService
         }, $plugin, $config, $uninstall);
     }
 
-    public function generateProxyAndCreateSchema(Plugin $plugin, $config)
-    {
-        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) {
-            $this->schemaService->createSchema($generatedFiles, $proxiesDirectory);
-        }, $plugin, $config);
-    }
-
+    /**
+     * プラグインの Proxy ファイルを生成してコールバック関数を実行する.
+     *
+     * コールバック関数は主に SchemaTool が利用されます.
+     * Proxy ファイルを出力する一時ディレクトリを指定しない場合は内部で生成し, コールバック関数実行後に削除されます.
+     *
+     * @param callable $callback Proxy ファイルを生成した後に実行されるコールバック関数
+     * @param Plugin $plugin プラグインオブジェクト
+     * @param array $config プラグインの composer.json の配列
+     * @param bool $uninstall アンインストールする場合は true
+     * @param string $tmpProxyOutputDir Proxy ファイルを出力する一時ディレクトリ
+     */
     public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false, $tmpProxyOutputDir = null)
     {
         if ($plugin->isEnabled()) {
