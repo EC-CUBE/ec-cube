@@ -55,7 +55,7 @@ file that was distributed with this source code.
                                 <br/>
                             {% endfor %}
                             <hr style="border-top: 2px dashed #8c8b8b;">
-                            小　計：{{ Order.subtotal|price }}{% if Order.tax > 0 %}(うち消費税 {{ Order.tax|price }}){% endif %}<br/>
+                            小　計：{{ Order.subtotal|price }}<br/>
                             <br/>
                             手数料：{{ Order.charge|price }}<br/>
                             送　料：{{ Order.delivery_fee_total|price }}<br/>

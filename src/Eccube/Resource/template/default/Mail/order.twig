@@ -40,7 +40,7 @@ file that was distributed with this source code.
 {% endfor %}
 
 -------------------------------------------------
-小　計：{{ Order.subtotal|price }}{% if Order.tax > 0 %}(うち消費税 {{ Order.tax|price }}){% endif %}
+小　計：{{ Order.subtotal|price }}
 
 手数料：{{ Order.charge|price }}
 送　料：{{ Order.delivery_fee_total|price}}
