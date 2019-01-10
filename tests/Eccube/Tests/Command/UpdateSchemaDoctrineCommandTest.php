@@ -52,6 +52,19 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->schemaService = $this->container->get(SchemaService::class);
     }
 
+    public function tearDown()
+    {
+        $schema = $this->getSchemaManager();
+        $columns = $schema->listTableColumns('dtb_customer');
+        foreach ($columns as $column) {
+            if ($column->getName() == 'test_update_schema_command') {
+                $conn = $this->entityManager->getConnection();
+                $conn->executeUpdate('ALTER TABLE dtb_customer DROP test_update_schema_command');
+            }
+        }
+        parent::tearDown();
+    }
+
     public function testHelpWithOriginalDoctrineCommand()
     {
         $tester = $this->getCommandTester(self::NAME);
@@ -79,7 +92,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertContains('eccube:schema:update --dump-sql', $display);
     }
 
-    public function testInstallPlugin()
+    public function testInstallPluginWithNoProxy()
     {
         $commandTester = $this->getCommandTester(self::NAME);
 
@@ -97,7 +110,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertContains(
             'ALTER TABLE dtb_customer DROP test_update_schema_command',
             $display,
-            '--no-proxy では proxy を認識しない'
+            '--no-proxy is do not use proxy'
         );
 
         /** @var AbstractSchemaManager $schema */
@@ -109,6 +122,193 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         }), 'test_update_schema_command is exists');
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->pluginService->uninstall($pluginA);
+
+        $this->entityManager->detach($pluginA);
+
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->assertNull($pluginA);
+    }
+
+    public function testInstallPluginWithProxy()
+    {
+        $commandTester = $this->getCommandTester(self::NAME);
+
+        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        $this->pluginService->install($fileA);
+
+        $commandTester->execute(
+            [
+                'command' => self::NAME,
+                '--dump-sql' => true
+            ]
+        );
+        $display = $commandTester->getDisplay();
+        $this->assertContains('[OK] Nothing to update', $display, 'Use proxy');
+
+        /** @var AbstractSchemaManager $schema */
+        $schema = $this->getSchemaManager();
+        $columns = $schema->listTableColumns('dtb_customer');
+
+        $this->assertCount(1, array_filter($columns, function (Column $column) {
+            return $column->getName() == 'test_update_schema_command';
+        }), 'test_update_schema_command is exists');
+
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->pluginService->uninstall($pluginA);
+
+        $this->entityManager->detach($pluginA);
+
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->assertNull($pluginA);
+    }
+
+    public function testEnablePluginWithNoProxy()
+    {
+        $commandTester = $this->getCommandTester(self::NAME);
+
+        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        $this->pluginService->install($fileA);
+
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->pluginService->enable($pluginA);
+
+        $commandTester->execute(
+            [
+                'command' => self::NAME,
+                '--no-proxy' => true,
+                '--dump-sql' => true
+            ]
+        );
+        $display = $commandTester->getDisplay();
+        $this->assertContains(
+            'ALTER TABLE dtb_customer DROP test_update_schema_command',
+            $display,
+            '--no-proxy is do not use proxy'
+        );
+
+        /** @var AbstractSchemaManager $schema */
+        $schema = $this->getSchemaManager();
+        $columns = $schema->listTableColumns('dtb_customer');
+
+        $this->assertCount(1, array_filter($columns, function (Column $column) {
+            return $column->getName() == 'test_update_schema_command';
+        }), 'test_update_schema_command is exists');
+
+        $this->pluginService->disable($pluginA);
+        $this->pluginService->uninstall($pluginA);
+
+        $this->entityManager->detach($pluginA);
+
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->assertNull($pluginA);
+    }
+
+    public function testEnablePluginWithProxy()
+    {
+        $commandTester = $this->getCommandTester(self::NAME);
+
+        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        $this->pluginService->install($fileA);
+
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->pluginService->enable($pluginA);
+        $commandTester->execute(
+            [
+                'command' => self::NAME,
+                '--dump-sql' => true
+            ]
+        );
+        $display = $commandTester->getDisplay();
+        $this->assertContains('[OK] Nothing to update', $display, 'Use proxy');
+
+        /** @var AbstractSchemaManager $schema */
+        $schema = $this->getSchemaManager();
+        $columns = $schema->listTableColumns('dtb_customer');
+
+        $this->assertCount(1, array_filter($columns, function (Column $column) {
+            return $column->getName() == 'test_update_schema_command';
+        }), 'test_update_schema_command is exists');
+
+        $this->pluginService->disable($pluginA);
+        $this->pluginService->uninstall($pluginA);
+
+        $this->entityManager->detach($pluginA);
+
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->assertNull($pluginA);
+    }
+
+    public function testDisablePluginWithNoProxy()
+    {
+        $commandTester = $this->getCommandTester(self::NAME);
+
+        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        $this->pluginService->install($fileA);
+
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->pluginService->enable($pluginA);
+
+        $this->pluginService->disable($pluginA);
+
+        $commandTester->execute(
+            [
+                'command' => self::NAME,
+                '--no-proxy' => true,
+                '--dump-sql' => true
+            ]
+        );
+        $display = $commandTester->getDisplay();
+        $this->assertContains(
+            'ALTER TABLE dtb_customer DROP test_update_schema_command',
+            $display,
+            '--no-proxy is do not use proxy'
+        );
+
+        /** @var AbstractSchemaManager $schema */
+        $schema = $this->getSchemaManager();
+        $columns = $schema->listTableColumns('dtb_customer');
+
+        $this->assertCount(1, array_filter($columns, function (Column $column) {
+            return $column->getName() == 'test_update_schema_command';
+        }), 'test_update_schema_command is exists');
+
+        $this->pluginService->uninstall($pluginA);
+
+        $this->entityManager->detach($pluginA);
+
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->assertNull($pluginA);
+    }
+
+    public function testDisablePluginWithProxy()
+    {
+        $commandTester = $this->getCommandTester(self::NAME);
+
+        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        $this->pluginService->install($fileA);
+
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
+        $this->pluginService->enable($pluginA);
+        $this->pluginService->disable($pluginA);
+
+        $commandTester->execute(
+            [
+                'command' => self::NAME,
+                '--dump-sql' => true
+            ]
+        );
+        $display = $commandTester->getDisplay();
+        $this->assertContains('[OK] Nothing to update', $display, 'Use proxy');
+
+        /** @var AbstractSchemaManager $schema */
+        $schema = $this->getSchemaManager();
+        $columns = $schema->listTableColumns('dtb_customer');
+
+        $this->assertCount(1, array_filter($columns, function (Column $column) {
+            return $column->getName() == 'test_update_schema_command';
+        }), 'test_update_schema_command is exists');
+
         $this->pluginService->uninstall($pluginA);
 
         $this->entityManager->detach($pluginA);
@@ -132,44 +332,6 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $application = new Application($kernel);
         $application->add($command);
         return new CommandTester($application->find($name));
-    }
-
-    /**
-     * @return KernelInterface
-     */
-    private function getKernel()
-    {
-        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')->getMock();
-        $container
-            ->expects($this->atLeastOnce())
-            ->method('has')
-            ->will($this->returnCallback(function ($id) {
-                if ('console.command_loader' === $id) {
-                    return false;
-                }
-
-                return true;
-            }))
-        ;
-        $container
-            ->expects($this->any())
-            ->method('get')
-            ->with('doctrine')
-            ->willReturn($this->container->get('doctrine'));
-
-        $kernel = $this->getMockBuilder(KernelInterface::class)->getMock();
-        $kernel
-            ->expects($this->any())
-            ->method('getContainer')
-            ->willReturn($container)
-        ;
-        $kernel
-            ->expects($this->once())
-            ->method('getBundles')
-            ->willReturn(array())
-        ;
-
-        return $kernel;
     }
 
     /**

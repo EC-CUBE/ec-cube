@@ -302,9 +302,9 @@ class PluginService
     public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false, $tmpProxyOutputDir = null)
     {
         if ($plugin->isEnabled()) {
-            $generatedFiles = $this->regenerateProxy($plugin, false);
+            $generatedFiles = $this->regenerateProxy($plugin, false, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot.'/app/proxy/entity');
 
-            call_user_func($callback, $generatedFiles, $this->projectRoot.'/app/proxy/entity');
+            call_user_func($callback, $generatedFiles, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot.'/app/proxy/entity');
         } else {
             // Proxyのクラスをロードせずにスキーマを更新するために、
             // インストール時には一時的なディレクトリにProxyを生成する

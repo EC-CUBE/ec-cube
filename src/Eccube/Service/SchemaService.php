@@ -52,7 +52,7 @@ class SchemaService
     {
         $createOutputDir = false;
         if (is_null($outputDir)) {
-            $outputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
+            $outputDir = sys_get_temp_dir().'/metadata_'.StringUtil::random(12);
             mkdir($outputDir);
             $createOutputDir = true;
         }

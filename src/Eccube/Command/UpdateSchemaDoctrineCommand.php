@@ -78,7 +78,7 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
         }
 
         $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
-        $tmpMetaDataOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
+        $tmpMetaDataOutputDir = sys_get_temp_dir().'/metadata_'.StringUtil::random(12);
 
         $generateAllFiles = [];
         try {
