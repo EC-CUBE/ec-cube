@@ -51,7 +51,7 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             //.envファイルが存在しないときに設定は失敗する
-            if( file_exists('.env') === false) {
+            if (file_exists($this->getParameter('kernel.project_dir').'/.env') === false) {
                 $this->addError('admin.common.save_error', 'admin');
                 return $this->redirectToRoute('admin_setting_system_security');
             }
@@ -108,8 +108,8 @@ class SecurityController extends AbstractController
         }
 
         // .envファイルが存在しない場合警告を出す。
-        if (file_exists('.env') === false) {
-            $this->addDanger('admin.setting.system.security.not_found_env_file', 'admin');
+        if (file_exists($this->getParameter('kernel.project_dir').'/.env') === false) {
+            $this->addWarning('admin.setting.system.security.not_found_env_file', 'admin');
         }
 
         return [
