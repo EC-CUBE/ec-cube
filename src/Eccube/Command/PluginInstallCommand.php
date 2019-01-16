@@ -30,6 +30,7 @@ class PluginInstallCommand extends Command
         $this
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
+            ->addOption('with-composer')
             ->setDescription('Install plugin from local.');
     }
 
@@ -39,10 +40,14 @@ class PluginInstallCommand extends Command
 
         $path = $input->getOption('path');
         $code = $input->getOption('code');
+        $composer = $input->getOption('with-composer');
 
         // アーカイブからインストール
         if ($path) {
             if ($this->pluginService->install($path)) {
+                if ($composer) {
+                    $this->pluginService->installComposer($code);
+                }
                 $io->success('Installed.');
 
                 return 0;
@@ -52,11 +57,15 @@ class PluginInstallCommand extends Command
         // 設置済ファイルからインストール
         if ($code) {
             $this->pluginService->installWithCode($code);
+            if ($composer) {
+                $this->pluginService->installComposer($code);
+            }
             $this->clearCache($io);
             $io->success('Installed.');
 
             return 0;
         }
+
 
         $io->error('path or code is required.');
     }

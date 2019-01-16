@@ -936,4 +936,19 @@ class PluginService
 
         return false;
     }
+
+    public function installComposer($code) {
+
+        $pluginDir = $this->calcPluginDir($code);
+        $this->checkPluginArchiveContent($pluginDir);
+        $config = $this->readConfig($pluginDir);
+
+        // Check dependent plugin
+        // Don't install ec-cube library
+        $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
+        if (!empty($dependents)) {
+            $package = $this->parseToComposerCommand($dependents);
+            $this->composerService->execRequire($package);
+        }
+    }
 }
