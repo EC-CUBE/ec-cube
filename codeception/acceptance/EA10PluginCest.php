@@ -108,8 +108,6 @@ class EA10PluginCest
             ->削除();
     }
 
-
-
     public function test_install_update_remove_local(\AcceptanceTester $I)
     {
         Horizon_Local::start($I)
@@ -505,12 +503,14 @@ abstract class Abstract_Plugin
     {
         $this->I->executeJS("window.open(location.href, 'other')");
         $this->I->switchToWindow('other');
+
         return $this;
     }
 
     public function 前のタブに戻る()
     {
         $this->I->switchToPreviousTab();
+
         return $this;
     }
 
@@ -610,7 +610,6 @@ class Store_Plugin extends Abstract_Plugin
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
-
 
         return $this;
     }
@@ -732,6 +731,7 @@ class Local_Plugin extends Abstract_Plugin
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
+
         return $this;
     }
 
@@ -813,6 +813,7 @@ class Horizon_Store extends Store_Plugin
     public static function start(AcceptanceTester $I)
     {
         $result = new self($I);
+
         return $result;
     }
 
@@ -825,6 +826,7 @@ class Horizon_Store extends Store_Plugin
         $this->em->refresh($this->Plugin);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されているはず');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されているはず');
+
         return $this;
     }
 
@@ -840,7 +842,6 @@ class Horizon_Store extends Store_Plugin
 
         return $this;
     }
-
 }
 
 class Emperor_Store extends Store_Plugin
@@ -864,9 +865,9 @@ class Emperor_Store extends Store_Plugin
         $this->tables = ['dtb_bar'];
         $this->columns = ['dtb_cart.bar_id'];
         $this->traits['\Plugin\Emperor\Entity\Cart2Trait'] = 'Cart';
+
         return parent::アップデート();
     }
-
 
     public function 依存より先に有効化()
     {
@@ -877,6 +878,7 @@ class Emperor_Store extends Store_Plugin
         $this->em->refresh($this->Plugin);
         $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていないはず');
         $this->I->assertFalse($this->Plugin->isEnabled(), '有効化されていないはず');
+
         return $this;
     }
 }

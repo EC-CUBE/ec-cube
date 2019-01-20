@@ -103,7 +103,9 @@ class CacheUtil implements EventSubscriberInterface
      * APP_ENV=prodの場合のみ実行されます.
      *
      * @param null $env
+     *
      * @return string
+     *
      * @throws \Exception
      */
     public function clearDoctrineCache()

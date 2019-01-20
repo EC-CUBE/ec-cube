@@ -733,7 +733,6 @@ class ProductController extends AbstractController
                     $message = trans('admin.common.delete_complete');
 
                     $cacheUtil->clearDoctrineCache();
-
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
                     $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);

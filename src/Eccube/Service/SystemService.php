@@ -27,12 +27,14 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * メンテナンスモードを無効にする場合はtrue
+     *
      * @var bool
      */
     private $disableMaintenanceAfterResponse = false;
 
     /**
      * メンテナンスモードの識別子
+     *
      * @var string
      */
     private $maintenanceMode = null;
@@ -170,6 +172,7 @@ class SystemService implements EventSubscriberInterface
      * メンテナンスモードを解除する
      *
      * KernelEvents::TERMINATE で解除のEventを設定し、メンテナンスモードを解除する
+     *
      * @param string $mode
      */
     public function disableMaintenance($mode = self::AUTO_MAINTENANCE)
@@ -181,7 +184,7 @@ class SystemService implements EventSubscriberInterface
     /**
      *　メンテナンスモードの状態を判定する
      *
-     * @return Bool
+     * @return bool
      */
     public function isMaintenanceMode()
     {

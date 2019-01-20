@@ -68,6 +68,7 @@ class PageRepository extends AbstractRepository
 
     /**
      * @param $route
+     *
      * @return Page
      */
     public function getPageByRoute($route)

@@ -175,7 +175,6 @@ class NewsController extends AbstractController
 
             // キャッシュの削除
             $cacheUtil->clearDoctrineCache();
-
         } catch (\Exception $e) {
             $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $News->getTitle()]);
             $this->addError($message, 'admin');
