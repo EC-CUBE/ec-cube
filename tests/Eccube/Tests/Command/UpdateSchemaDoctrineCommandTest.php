@@ -47,6 +47,12 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
+        $conn = $this->entityManager->getConnection();
+        // https://github.com/dmaicher/doctrine-test-bundle#troubleshooting
+        if ('mysql' === $conn->getDatabasePlatform()->getName()) {
+            $this->markTestSkipped('does not support of mysql.');
+        }
+
         $this->pluginRepository = $this->container->get(PluginRepository::class);
         $this->pluginService = $this->container->get(PluginService::class);
         $this->schemaService = $this->container->get(SchemaService::class);
@@ -67,6 +73,8 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     public function testHelpWithOriginalDoctrineCommand()
     {
+        $this->addTestColumn();
+
         $tester = $this->getCommandTester(self::NAME);
         $tester->execute(
             ['command' => self::NAME]
@@ -79,11 +87,13 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     public function testHelpWithNoProxy()
     {
+        $this->addTestColumn();
+
         $tester = $this->getCommandTester(self::NAME);
         $tester->execute(
             [
                 'command' => self::NAME,
-                '--no-proxy'
+                '--no-proxy' => true
             ]
         );
         $display = $tester->getDisplay();
@@ -424,5 +434,17 @@ EOT
         ];
 
         return $jsonPHP;
+    }
+
+    private function addTestColumn()
+    {
+        $schema = $this->getSchemaManager();
+        $columns = $schema->listTableColumns('dtb_customer');
+        if (empty(array_filter($columns, function ($column) {
+            return $column->getName() == 'test_update_schema_command';
+        }))) {
+            $conn = $this->entityManager->getConnection();
+            $conn->executeUpdate('ALTER TABLE dtb_customer ADD test_update_schema_command text');
+        }
     }
 }
