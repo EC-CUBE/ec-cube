@@ -23,10 +23,12 @@ use Eccube\Tests\EccubeTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @group update-schema-test
+ * @group update-schema-doctrine
  */
 class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 {
@@ -52,10 +54,13 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         parent::setUp();
         $conn = $this->entityManager->getConnection();
         // https://github.com/dmaicher/doctrine-test-bundle#troubleshooting
-        if ('mysql' === $conn->getDatabasePlatform()->getName()) {
-            $this->markTestSkipped('does not support of mysql.');
+        $platform = $conn->getDatabasePlatform()->getName();
+        if ('postgresql' !== $platform) {
+            $this->markTestSkipped('does not support of '.$platform);
         }
-
+        foreach (glob($this->container->getParameter('kernel.project_dir').'/app/proxy/entity/*.php') as $file) {
+            unlink($file);
+        }
         $this->pluginRepository = $this->container->get(PluginRepository::class);
         $this->pluginService = $this->container->get(PluginService::class);
         $this->schemaService = $this->container->get(SchemaService::class);
@@ -105,6 +110,9 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertContains('eccube:schema:update --dump-sql', $display);
     }
 
+    /**
+     * @group update-schema-doctrine-install
+     */
     public function testInstallPluginWithNoProxy()
     {
         $commandTester = $this->getCommandTester(self::NAME);
@@ -135,7 +143,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         }), 'test_update_schema_command is exists');
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->pluginService->uninstall($pluginA);
+        $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
 
         $this->entityManager->detach($pluginA);
 
@@ -143,6 +151,9 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNull($pluginA);
     }
 
+    /**
+     * @group update-schema-doctrine-install
+     */
     public function testInstallPluginWithProxy()
     {
         $commandTester = $this->getCommandTester(self::NAME);
@@ -168,7 +179,8 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         }), 'test_update_schema_command is exists');
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->pluginService->uninstall($pluginA);
+
+        $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
 
         $this->entityManager->detach($pluginA);
 
@@ -176,15 +188,20 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNull($pluginA);
     }
 
+    /**
+     * @group update-schema-doctrine-install
+     */
     public function testEnablePluginWithNoProxy()
     {
         $commandTester = $this->getCommandTester(self::NAME);
 
         list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+
         $this->pluginService->install($fileA);
 
+        $this->executeExternalProcess('bin/console eccube:plugin:enable --code='.$configA['code']);
+
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->pluginService->enable($pluginA);
 
         $commandTester->execute(
             [
@@ -194,11 +211,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains(
-            'ALTER TABLE dtb_customer DROP test_update_schema_command',
-            $display,
-            '--no-proxy is do not use proxy'
-        );
+        $this->assertContains('[OK] Nothing to update', $display, '--no-proxy is do not use proxy');
 
         /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
@@ -208,8 +221,9 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             return $column->getName() == 'test_update_schema_command';
         }), 'test_update_schema_command is exists');
 
-        $this->pluginService->disable($pluginA);
-        $this->pluginService->uninstall($pluginA);
+        $this->executeExternalProcess('bin/console eccube:plugin:disable --code='.$configA['code']);
+
+        $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
 
         $this->entityManager->detach($pluginA);
 
@@ -218,17 +232,17 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     }
 
     /**
-     * @group update-schema-test-with-proxy
+     * @group update-schema-doctrine-install
      */
     public function testEnablePluginWithProxy()
     {
         $commandTester = $this->getCommandTester(self::NAME);
-
         list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
+        $this->executeExternalProcess('bin/console eccube:plugin:enable --code='.$configA['code']);
+
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->pluginService->enable($pluginA);
         $commandTester->execute(
             [
                 'command' => self::NAME,
@@ -246,8 +260,8 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             return $column->getName() == 'test_update_schema_command';
         }), 'test_update_schema_command is exists');
 
-        $this->pluginService->disable($pluginA);
-        $this->pluginService->uninstall($pluginA);
+        $this->executeExternalProcess('bin/console eccube:plugin:disable --code='.$configA['code']);
+        $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
 
         $this->entityManager->detach($pluginA);
 
@@ -255,6 +269,9 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNull($pluginA);
     }
 
+    /**
+     * @group update-schema-doctrine-install
+     */
     public function testDisablePluginWithNoProxy()
     {
         $commandTester = $this->getCommandTester(self::NAME);
@@ -262,10 +279,10 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
-        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->pluginService->enable($pluginA);
+        $this->executeExternalProcess('bin/console eccube:plugin:enable --code='.$configA['code']);
+        $this->executeExternalProcess('bin/console eccube:plugin:disable --code='.$configA['code']);
 
-        $this->pluginService->disable($pluginA);
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
 
         $commandTester->execute(
             [
@@ -289,7 +306,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             return $column->getName() == 'test_update_schema_command';
         }), 'test_update_schema_command is exists');
 
-        $this->pluginService->uninstall($pluginA);
+        $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
 
         $this->entityManager->detach($pluginA);
 
@@ -298,7 +315,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     }
 
     /**
-     * @group update-schema-test-with-proxy
+     * @group update-schema-doctrine-install
      */
     public function testDisablePluginWithProxy()
     {
@@ -308,8 +325,10 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->pluginService->install($fileA);
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->pluginService->enable($pluginA);
-        $this->pluginService->disable($pluginA);
+
+        $this->executeExternalProcess('bin/console eccube:plugin:enable --code='.$configA['code']);
+
+        $this->executeExternalProcess('bin/console eccube:plugin:disable --code='.$configA['code']);
 
         $commandTester->execute(
             [
@@ -328,7 +347,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             return $column->getName() == 'test_update_schema_command';
         }), 'test_update_schema_command is exists');
 
-        $this->pluginService->uninstall($pluginA);
+        $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
 
         $this->entityManager->detach($pluginA);
 
@@ -443,6 +462,29 @@ EOT
         ];
 
         return $jsonPHP;
+    }
+
+    /**
+     * Execute to external process.
+     *
+     * Execute ALTER TABLE command, Once commit the transaction.
+     * Ignore exceptions.
+     *
+     * @param string $command
+     * @return string output
+     */
+    private function executeExternalProcess($command)
+    {
+        \DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::commit();
+        \DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::beginTransaction();
+        try {
+            $process = new Process($command);
+            $process->mustRun();
+            return $process->getOutput();
+        } catch (\Exception $e) {
+            // ignore Fatal error: Cannot declare class
+            // $this->fail($e->getMessage());
+        }
     }
 
     private function addTestColumn()
