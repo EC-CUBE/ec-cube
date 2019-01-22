@@ -217,6 +217,9 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNull($pluginA);
     }
 
+    /**
+     * @group update-schema-test-with-proxy
+     */
     public function testEnablePluginWithProxy()
     {
         $commandTester = $this->getCommandTester(self::NAME);
@@ -294,6 +297,9 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNull($pluginA);
     }
 
+    /**
+     * @group update-schema-test-with-proxy
+     */
     public function testDisablePluginWithProxy()
     {
         $commandTester = $this->getCommandTester(self::NAME);

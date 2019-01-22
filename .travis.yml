@@ -60,7 +60,8 @@ script:
   - ./bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-test
   - ./bin/phpunit --group cache-clear
   - ./bin/phpunit --group cache-clear-install
-  - ./bin/phpunit --group update-schema-test
+  - ./bin/phpunit --group update-schema-test --exclude-group update-schema-test-with-proxy
+  - ./bin/phpunit --group update-schema-test-with-proxy
 
 jobs:
   fast_finish: true
