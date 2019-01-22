@@ -25,6 +25,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * @group update-schema-test
+ */
 class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 {
     /**
