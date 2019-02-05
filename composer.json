@@ -48,7 +48,8 @@
         "psr/simple-cache": "^1.0",
         "sensio/framework-extra-bundle": "^5.1",
         "sensio/generator-bundle": "^3.1",
-        "setasign/fpdi-tcpdf": "^2.0",
+        "setasign/fpdi": "^2.2",
+        "setasign/fpdi-tcpdf": "^2.2",
         "suncat/mobile-detect-bundle": "^1.1",
         "swiftmailer/swiftmailer": "^6.1",
         "symfony/asset": "^3.4",
@@ -100,6 +101,7 @@
         "symfony/web-server-bundle": "^3.4",
         "symfony/workflow": "^3.4",
         "symfony/yaml": "^3.4",
+        "tecnickcom/tcpdf": "^6.2",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.4",
         "vlucas/phpdotenv": "v2.4.0"
