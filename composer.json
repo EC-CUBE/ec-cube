@@ -107,7 +107,7 @@
     "require-dev": {
         "bheller/images-generator": "^1.0",
         "captbaritone/mailcatcher-codeception-module": "^1.2",
-        "codeception/codeception": "^2.4",
+        "codeception/codeception": "~2.4.5",
         "dama/doctrine-test-bundle": "^4.0",
         "easycorp/easy-log-handler": "^1.0",
         "fzaninotto/faker": "^1.7",
