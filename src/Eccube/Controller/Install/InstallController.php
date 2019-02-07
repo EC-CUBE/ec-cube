@@ -38,6 +38,7 @@ use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -186,6 +187,15 @@ class InstallController extends AbstractController
             if (!is_writable($targetFile->getRealPath())) {
                 $noWritePermissions[] = $targetFile;
             }
+        }
+
+        $faviconPath = '/assets/img/common/favicon.ico';
+        if (!file_exists($this->getParameter('eccube_html_dir').'/user_data'.$faviconPath)) {
+            $file = new Filesystem();
+            $file->copy(
+                $this->getParameter('eccube_html_front_dir').$faviconPath,
+                $this->getParameter('eccube_html_dir').'/user_data'.$faviconPath
+            );
         }
 
         return [
