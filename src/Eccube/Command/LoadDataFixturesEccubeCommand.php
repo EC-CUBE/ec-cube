@@ -17,6 +17,7 @@ use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
@@ -103,6 +104,16 @@ EOF
         ], [
             'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
         ]);
+
+        $faviconPath = '/assets/img/common/favicon.ico';
+        if (!file_exists($this->getContainer()->getParameter('eccube_html_dir').'/user_data'.$faviconPath)) {
+            $file = new Filesystem();
+            $file->copy(
+                $this->getContainer()->getParameter('eccube_html_front_dir').$faviconPath,
+                $this->getContainer()->getParameter('eccube_html_dir').'/user_data'.$faviconPath
+            );
+        }
+
         $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', 'Finished Successful!'));
     }
 }
