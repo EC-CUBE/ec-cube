@@ -40,6 +40,16 @@ class InstallControllerTest extends AbstractWebTestCase
     protected $request;
 
     /**
+     * @var string
+     */
+    protected $envFile;
+
+    /**
+     * @var string
+     */
+    protected $envFileBackup;
+
+    /**
      * @var Session
      */
     protected $session;
@@ -48,9 +58,10 @@ class InstallControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
 
-        $envFile = $this->container->getParameter('kernel.project_dir').'/.env';
-        if (file_exists($envFile)) {
-            unlink($envFile);
+        $this->envFile = $this->container->getParameter('kernel.project_dir').'/.env';
+        $this->envFileBackup = $this->envFile.'.'.date('YmdHis');
+        if (file_exists($this->envFile)) {
+            rename($this->envFile, $this->envFileBackup);
         }
 
         $formFactory = $this->container->get('form.factory');
@@ -68,6 +79,14 @@ class InstallControllerTest extends AbstractWebTestCase
         $propContainer->setValue($this->controller, $this->container);
 
         $this->request = $this->createMock(Request::class);
+    }
+
+    public function tearDown()
+    {
+        if (file_exists($this->envFileBackup)) {
+            rename($this->envFileBackup, $this->envFile);
+        }
+        parent::tearDown();
     }
 
     public function testIndex()
