@@ -86,6 +86,8 @@ class InstallControllerTest extends AbstractWebTestCase
     {
         $this->actual = $this->controller->step2($this->request);
         $this->assertArrayHasKey('noWritePermissions', $this->actual);
+
+        $this->assertFileExists($this->container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
     }
 
     public function testStep3()
