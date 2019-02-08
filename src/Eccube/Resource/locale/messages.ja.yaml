@@ -1205,6 +1205,7 @@ admin.setting.system.security.force_ssl_description: httpsからの接続でな�
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
 admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
 admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
+admin.setting.system.security.not_found_env_file: .envファイルが見つかりません。.envを利用していない場合はセキュリティ設定を管理画面から変更できません。
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：ログ表示

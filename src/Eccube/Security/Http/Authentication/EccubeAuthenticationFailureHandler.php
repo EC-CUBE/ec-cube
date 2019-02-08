@@ -32,5 +32,4 @@ class EccubeAuthenticationFailureHandler extends DefaultAuthenticationFailureHan
 
         return $response;
     }
-
 }
