@@ -96,7 +96,7 @@ file that was distributed with this source code.
             var hideThumbnail = function() {
                 if ($("#thumb div").length > 0) {
                     $("#icon_no_image").css("display", "none");
-                    $('#message').text("{{ 'admin.common.drag_and_drop_description'|trans }}")
+                    $('#message').html("{{ 'admin.common.drag_and_drop_description'|trans }}");
                 } else {
                     $("#icon_no_image").css("display", "");
                     $('#message').empty();

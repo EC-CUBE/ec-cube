@@ -31,27 +31,29 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     *
      * @param string $message
+     *
      * @return PluginManagePage
      */
     public function ストアプラグイン_有効化($pluginCode, $message = '有効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
         $this->tester->see($message, self::完了メーッセージ);
+
         return $this;
     }
 
     /**
      * @param $pluginCode
-     *
      * @param string $message
+     *
      * @return PluginManagePage
      */
     public function ストアプラグイン_無効化($pluginCode, $message = '無効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
         $this->tester->see($message, self::完了メーッセージ);
+
         return $this;
     }
 
@@ -77,12 +79,14 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
+     *
      * @return PluginStoreUpgradePage
      */
     public function ストアプラグイン_アップデート($pluginCode)
     {
         echo $this->tester->grabTextFrom(['xpath' => '//*[@id="page_admin_store_plugin"]']);
         $this->tester->click(['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[5]/a']);
+
         return PluginStoreUpgradePage::at($this->tester);
     }
 
@@ -103,6 +107,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
         $this->tester->see('有効にしました。', self::完了メーッセージ);
+
         return $this;
     }
 
@@ -110,6 +115,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '無効化');
         $this->tester->see('無効にしました。', self::完了メーッセージ);
+
         return $this;
     }
 
@@ -127,6 +133,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         $this->tester->attachFile(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//input[@type="file"]'], $fileName);
         $this->tester->click(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//button']);
         $this->tester->see('アップデートしました。', self::完了メーッセージ);
+
         return $this;
     }
 

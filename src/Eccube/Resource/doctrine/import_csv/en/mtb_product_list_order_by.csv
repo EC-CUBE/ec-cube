@@ -1,0 +1,4 @@
+id,name,sort_no,discriminator_type
+1,Lowest,0,productlistorderby
+2,Latest,2,productlistorderby
+3,Highest,1,productlistorderby

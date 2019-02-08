@@ -44,7 +44,7 @@ class BaseInfoRepository extends AbstractRepository
         $BaseInfo = $this->find($id);
 
         if (null === $BaseInfo) {
-            throw new \Exception('BaseInfo not found. id = '. $id);
+            throw new \Exception('BaseInfo not found. id = '.$id);
         }
 
         return $this->find($id);

@@ -14,23 +14,53 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 
-class SystemService
+class SystemService implements EventSubscriberInterface
 {
+    const AUTO_MAINTENANCE = 'auto_maintenance';
+    const AUTO_MAINTENANCE_UPDATE = 'auto_maintenance_update';
+
+    /**
+     * メンテナンスモードを無効にする場合はtrue
+     *
+     * @var bool
+     */
+    private $disableMaintenanceAfterResponse = false;
+
+    /**
+     * メンテナンスモードの識別子
+     *
+     * @var string
+     */
+    private $maintenanceMode = null;
+
     /**
      * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * SystemService constructor.
      *
      * @param EntityManagerInterface $entityManager
+     * @param ContainerInterface $container
      */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ContainerInterface $container
+    ) {
         $this->entityManager = $entityManager;
+        $this->container = $container;
     }
 
     /**
@@ -100,5 +130,73 @@ class SystemService
         }
 
         return ($memoryLimit == 0) ? 0 : ($memoryLimit / 1024) / 1024;
+    }
+
+    /**
+     *　メンテナンスモードを切り替える
+     *
+     * - $isEnable = true の場合, $mode の文字列が記載された .maintenance ファイルを生成する
+     * - $isEnable = false の場合, $mode の文字列が記載された .maintenance ファイルを削除する
+     *
+     * @param bool $isEnable
+     * @param string $mode
+     */
+    public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE)
+    {
+        $isMaintenanceMode = $this->isMaintenanceMode();
+        $path = $this->container->getParameter('eccube_content_maintenance_file_path');
+
+        if ($isEnable && $isMaintenanceMode === false) {
+            file_put_contents($path, $mode);
+        } elseif ($isEnable === false && $isMaintenanceMode) {
+            $contents = file_get_contents($path);
+            if ($contents == $mode) {
+                unlink($path);
+            }
+        }
+    }
+
+    /**
+     * KernelEvents::TERMINATE で設定されるEvent
+     *
+     * @param PostResponseEvent $event
+     */
+    public function disableMaintenanceEvent(PostResponseEvent $event)
+    {
+        if ($this->disableMaintenanceAfterResponse) {
+            $this->switchMaintenance(false, $this->maintenanceMode);
+        }
+    }
+
+    /**
+     * メンテナンスモードを解除する
+     *
+     * KernelEvents::TERMINATE で解除のEventを設定し、メンテナンスモードを解除する
+     *
+     * @param string $mode
+     */
+    public function disableMaintenance($mode = self::AUTO_MAINTENANCE)
+    {
+        $this->disableMaintenanceAfterResponse = true;
+        $this->maintenanceMode = $mode;
+    }
+
+    /**
+     *　メンテナンスモードの状態を判定する
+     *
+     * @return bool
+     */
+    public function isMaintenanceMode()
+    {
+        // .maintenanceが存在しているかチェック
+        return file_exists($this->container->getParameter('eccube_content_maintenance_file_path'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [KernelEvents::TERMINATE => 'disableMaintenanceEvent'];
     }
 }

@@ -17,9 +17,9 @@ use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\SecurityType;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SecurityController extends AbstractController
@@ -50,6 +50,13 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //.envファイルが存在しないときに設定は失敗する
+            if (file_exists($this->getParameter('kernel.project_dir').'/.env') === false) {
+                $this->addError('admin.common.save_error', 'admin');
+
+                return $this->redirectToRoute('admin_setting_system_security');
+            }
+
             $data = $form->getData();
             $envFile = $this->getParameter('kernel.project_dir').'/.env';
             $env = file_get_contents($envFile);
@@ -99,6 +106,11 @@ class SecurityController extends AbstractController
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
         if ($adminRoute === 'admin') {
             $this->addWarning('admin.setting.system.security.admin_url_warning', 'admin');
+        }
+
+        // .envファイルが存在しない場合警告を出す。
+        if (file_exists($this->getParameter('kernel.project_dir').'/.env') === false) {
+            $this->addWarning('admin.setting.system.security.not_found_env_file', 'admin');
         }
 
         return [

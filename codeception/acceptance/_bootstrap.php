@@ -61,9 +61,7 @@ $progress = (function () {
     };
 })();
 
-
 if (!getenv('NO_FIXTURES')) {
-
     $num = $entityManager->getRepository('Eccube\Entity\Customer')
         ->createQueryBuilder('o')
         ->select('count(o.id)')
@@ -140,7 +138,6 @@ if (!getenv('NO_FIXTURES')) {
         }
     }
 }
-
 
 function createCustomer($container, $email = null, $active = true)
 {

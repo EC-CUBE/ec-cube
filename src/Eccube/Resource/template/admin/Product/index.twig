@@ -479,11 +479,11 @@ file that was distributed with this source code.
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="row justify-content-md-center mb-4">
-                                {% if pagination.totalItemCount > 0 %}
+                            {% if pagination.totalItemCount > 0 %}
+                                <div class="row justify-content-md-center mb-4 pb-4">
                                     {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_product_page' } %}
-                                {% endif %}
-                            </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </form>
                 {% elseif has_errors %}

@@ -17,6 +17,7 @@ use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
@@ -38,8 +39,15 @@ EOF
     {
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
+
+        // for full locale code cases
+        $locale = env('ECCUBE_LOCALE', 'ja_JP');
+        $locale = str_replace('_', '-', $locale);
+        $locales = \Locale::parseLocale($locale);
+        $localeDir = is_null($locales) ? 'ja' : $locales['language'];
+
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
-        $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv');
+        $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv/'.$localeDir);
         $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);
@@ -69,7 +77,7 @@ EOF
             'sort_no' => 1,
             'update_date' => new \DateTime(),
             'create_date' => new \DateTime(),
-            'name' => '管理者',
+            'name' => trans('install.member_name'),
             'department' => 'EC-CUBE SHOP',
             'discriminator_type' => 'member',
         ], [
@@ -96,6 +104,16 @@ EOF
         ], [
             'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
         ]);
+
+        $faviconPath = '/assets/img/common/favicon.ico';
+        if (!file_exists($this->getContainer()->getParameter('eccube_html_dir').'/user_data'.$faviconPath)) {
+            $file = new Filesystem();
+            $file->copy(
+                $this->getContainer()->getParameter('eccube_html_front_dir').$faviconPath,
+                $this->getContainer()->getParameter('eccube_html_dir').'/user_data'.$faviconPath
+            );
+        }
+
         $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', 'Finished Successful!'));
     }
 }

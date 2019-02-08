@@ -238,7 +238,7 @@ class ProductController extends AbstractController
                 $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
                 // セッション中の検索条件, ページ番号を初期化.
-                $this->session->set('eccube.admin.product.search', $searchData);
+                $this->session->set('eccube.admin.product.search', $viewData);
                 $this->session->set('eccube.admin.product.search.page_no', $page_no);
             }
         }
@@ -733,7 +733,6 @@ class ProductController extends AbstractController
                     $message = trans('admin.common.delete_complete');
 
                     $cacheUtil->clearDoctrineCache();
-
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
                     $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);

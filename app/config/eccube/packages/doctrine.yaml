@@ -16,7 +16,7 @@ doctrine:
           collate: 'utf8_general_ci'
 
         # With Symfony 3.3, remove the `resolve:` prefix
-        url: '%env(resolve:DATABASE_URL)%'
+        url: '%env(DATABASE_URL)%'
 
         # types
         types:

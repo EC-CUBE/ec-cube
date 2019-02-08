@@ -193,8 +193,8 @@ $(function() {
                                 <button class="btn btn-ec-sub" type="button" onclick="return window.history.back()">{{ 'admin.common.cancel'|trans }}</button>
                                 {% if is_update %}
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#installModal" data-mode="upgrade"
-                                            data-enable-url="{{ url('admin_store_plugin_enable', { id: Plugin.id }) }}"
-                                            data-disable-url="{{ url('admin_store_plugin_disable', { id: Plugin.id }) }}">{{ 'admin.store.plugin.upgrade'|trans }}</button>
+                                            data-enable-url="{{ url('admin_store_plugin_enable', { id: Plugin.id , maintenance_mode: constant('Eccube\\Service\\SystemService::AUTO_MAINTENANCE_UPDATE')}) }}"
+                                            data-disable-url="{{ url('admin_store_plugin_disable', { id: Plugin.id , maintenance_mode: constant('Eccube\\Service\\SystemService::AUTO_MAINTENANCE_UPDATE')}) }}">{{ 'admin.store.plugin.upgrade'|trans }}</button>
                                 {% else %}
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#installModal" data-mode="install">{{ 'admin.store.plugin.install'|trans }}</button>
                                 {% endif %}
