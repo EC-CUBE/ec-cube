@@ -302,7 +302,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', json_encode($config));
         $tar->addFromString('Entity/HogeTrait.php', <<< EOT
 <?php
 
