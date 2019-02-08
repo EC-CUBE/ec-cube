@@ -97,6 +97,11 @@ class EA06ContentsManagementCest
         $UploadedFile = $I->getLastDownloadFile('/^upload\.txt$/');
         $I->assertEquals('This is uploaded file.', file_get_contents($UploadedFile));
 
+        $FileManagePage->一覧_パスをコピー(2);
+        $I->wait(5);
+        $returnText = $I->grabValueFrom("#fileList table > tbody > tr:nth-child(2) > td:nth-child(4) span.copy-file-path input.form-control");
+        $I->assertEquals('/html/user_data/upload.txt', $returnText);
+
         $FileManagePage->一覧_表示(2);
         $I->switchToNewWindow();
         $I->see('This is uploaded file.');
