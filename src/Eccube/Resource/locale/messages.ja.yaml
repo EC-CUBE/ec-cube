@@ -395,6 +395,8 @@ admin.common.registration__new: 新規登録
 admin.common.edit: 編集
 admin.common.copy: 複製
 admin.common.display: 表示
+admin.common.copy_path: パスをコピー
+admin.common.copy_path_complete: パスをコピーしました
 admin.common.delete: 削除
 admin.common.cancel: キャンセル
 admin.common.search: 検索
