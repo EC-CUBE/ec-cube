@@ -190,7 +190,7 @@ file that was distributed with this source code.
                                                 <td class="align-middle">
                                                     <span class="updated">{{ file.file_time|date_sec }} {{ 'admin.content.file.updated'|trans }}</span>
                                                     {% if file.is_dir == false %}
-                                                        <span class="copy-file-path"><input type="text"  class="form-control" value="{{asset('', 'user_data')}}{{ file.file_path }}"></span>
+                                                        <span class="copy-file-path"><input type="text"  class="form-control" value="{{asset('', 'user_data')}}{{ file.file_path|slice(1) }}"></span>
                                                     {% endif %}
                                                 </td>
                                                 {% if file.is_dir %}
