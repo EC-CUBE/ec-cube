@@ -37,6 +37,7 @@ security:
             logout:
                 path: admin_logout
                 target: admin_login
+                invalidate_session: false
         customer:
             pattern: ^/
             anonymous: true
@@ -59,6 +60,7 @@ security:
             logout:
                 path: logout
                 target: homepage
+                invalidate_session: false
 
     access_decision_manager:
         strategy: unanimous
