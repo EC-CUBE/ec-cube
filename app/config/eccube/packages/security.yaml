@@ -61,6 +61,7 @@ security:
                 path: logout
                 target: homepage
                 invalidate_session: false
+                handlers: [eccube.security.logout_handler]
 
     access_decision_manager:
         strategy: unanimous
