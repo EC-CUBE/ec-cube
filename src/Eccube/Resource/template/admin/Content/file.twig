@@ -51,8 +51,8 @@ file that was distributed with this source code.
 
 
             $('.action-copy').on('click',function(){
-            	updated = $(this).parents('tr').find('.updated');
-            	copy_file_path = $(this).parents('tr').find('.copy-file-path');
+            	var updated = $(this).parents('tr').find('.updated');
+            	var copy_file_path = $(this).parents('tr').find('.copy-file-path');
             	if ($(updated).is(':visible')) {
             	    $('.updated').each(function() {
             	        $(this).show();
