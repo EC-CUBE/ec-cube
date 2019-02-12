@@ -53,6 +53,11 @@ class InstallControllerTest extends AbstractWebTestCase
             unlink($envFile);
         }
 
+        $favicon = $this->container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
+        if (file_exists($favicon)) {
+            unlink($favicon);
+        }
+
         $formFactory = $this->container->get('form.factory');
         $encoder = $this->container->get(PasswordEncoder::class);
         $cacheUtil = $this->container->get(CacheUtil::class);
@@ -86,6 +91,8 @@ class InstallControllerTest extends AbstractWebTestCase
     {
         $this->actual = $this->controller->step2($this->request);
         $this->assertArrayHasKey('noWritePermissions', $this->actual);
+
+        $this->assertFileExists($this->container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
     }
 
     public function testStep3()
