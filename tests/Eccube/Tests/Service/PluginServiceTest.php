@@ -557,10 +557,8 @@ EOD;
             'version' => $config['version'],
             'type' => 'eccube-plugin',
             'require' => [
-                'ec-cube/plugin-installer' => '*',
-                'composer/installers' => '*',
-                'composer/semver' => '*',
-            ],
+                'ec-cube/plugin-installer' => '*'
+                 ],
             'extra' => [
                 'code' => $config['code'],
             ],
