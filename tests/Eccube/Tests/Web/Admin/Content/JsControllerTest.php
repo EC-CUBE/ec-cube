@@ -100,7 +100,7 @@ __JS_CONTENTS__;
     }
 
 
-    public function test_routing_AdminContentCss_deleted()
+    public function test_routing_AdminContentJs_deleted()
     {
         if (file_exists($this->dir.self::JS_FILE)) {
             unlink($this->dir.self::JS_FILE);
