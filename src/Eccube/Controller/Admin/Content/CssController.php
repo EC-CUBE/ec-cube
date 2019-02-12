@@ -49,6 +49,7 @@ class CssController extends AbstractController
             try {
                 $fs->dumpFile($cssPath, $form->get('css')->getData());
                 $this->addSuccess('admin.common.save_complete', 'admin');
+                return $this->redirectToRoute('admin_content_css');
             } catch (IOException $e) {
                 $message = trans('admin.common.save_error');
                 $this->addError($message, 'admin');
