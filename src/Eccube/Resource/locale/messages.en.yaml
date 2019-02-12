@@ -924,6 +924,7 @@ admin.content.file_management: Files
 admin.content.layout_management: Layouts
 admin.content.page_management: Pages
 admin.content.block_management: Blocks
+admin.content.js_management: Javascript
 admin.content.cache_management: Caches
 admin.content.maintenance_management: Maintenances
 
