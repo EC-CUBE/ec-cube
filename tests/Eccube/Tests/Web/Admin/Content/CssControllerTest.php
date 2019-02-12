@@ -98,4 +98,33 @@ __CSS_CONTENTS__;
         $this->client->submit($form);
         $this->assertFalse($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
     }
+
+
+    public function test_routing_AdminContentCss_deleted()
+    {
+        if (file_exists($this->dir.self::CSS_FILE)) {
+            unlink($this->dir.self::CSS_FILE);
+        }
+
+        $css = <<<__CSS_CONTENTS__
+.title {
+    font-size: 1px;
+}
+__CSS_CONTENTS__;
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_content_css'),
+            ['form' =>
+             [
+                 'css' => $css
+             ]
+            ]
+        );
+        $form = $crawler->selectButton('登録')->form();
+        $form["form[css]"] = $css;
+        $this->client->submit($form);
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
+        $contents = file_get_contents($this->dir.self::CSS_FILE);
+        $this->assertEquals($css, $contents);
+    }
 }
