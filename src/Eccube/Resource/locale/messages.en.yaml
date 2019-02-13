@@ -923,6 +923,7 @@ admin.content.news_management: What's New
 admin.content.file_management: Files
 admin.content.layout_management: Layouts
 admin.content.page_management: Pages
+admin.content.css_management: CSS
 admin.content.block_management: Blocks
 admin.content.cache_management: Caches
 admin.content.maintenance_management: Maintenances
@@ -995,6 +996,7 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
     <meta property="product:retailer_title" content="{{ Product.name }}"/>
 admin.content.page_file_name_exists: Data with the same file name already exists. Please enter a different one.
+admin.content.css__card_title: CSS Settings
 admin.content.block_name: Block Name
 admin.content.block__card_title: Block Settings
 admin.content.block_file_name: File Name
@@ -1525,6 +1527,7 @@ tooltip.content.page_source_code: Editing the template file. Coding has to be wi
 tooltip.content.page_layout: Selecting the layouts to be applied to this page.
 tooltip.content.page_meta: You can enter the META tag contents of the page.
 tooltip.content.page_meta_tags: You can add META tag freely. You can also use variables used within twig.
+tooltip.content.css_source_code: Editing the CSS file. Coding has to be with CSS.
 tooltip.content.block_name: This is a name of a block for management use.
 tooltip.content.block_file_name: This is the name of the twig template file which has this block contents. You can not change it later in the Admin Console.
 tooltip.content.block_source_code: Editing the template file. Coding has to be with twig.
