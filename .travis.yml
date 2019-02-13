@@ -372,8 +372,8 @@ jobs:
     # codeceptionのbootstrapでデータ投入を行っているので、本来は不要だけどコマンドラインからのインストールを実行させる
     env: GROUP=installer APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
     script:
-    - echo "APP_ENV=install" >> .env
-    - ./codeception.sh -g ${GROUP}
+      - echo "APP_ENV=install" >> .env
+      - ./codeception.sh -g ${GROUP}
 
   # - stage: Code Coverage
   #   if: type != pull_request
