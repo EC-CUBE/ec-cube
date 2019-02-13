@@ -926,7 +926,7 @@ admin.content.file_management: ファイル管理
 admin.content.layout_management: レイアウト管理
 admin.content.page_management: ページ管理
 admin.content.css_management: CSS管理
-admin.content.js_management: JS管理
+admin.content.js_management: JavaScript管理
 admin.content.block_management: ブロック管理
 admin.content.cache_management: キャッシュ管理
 admin.content.maintenance_management: メンテナンス管理
@@ -1000,7 +1000,7 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:retailer_title" content="{{ Product.name }}"/>
 admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 admin.content.css__card_title: CSS設定
-admin.content.js__card_title: JS設定
+admin.content.js__card_title: JavaScript設定
 admin.content.block_name: ブロック名
 admin.content.block__card_title: ブロック設定
 admin.content.block_file_name: ファイル名
@@ -1532,7 +1532,7 @@ tooltip.content.page_layout: このページに適用するレイアウトを選
 tooltip.content.page_meta: ページのMETAタグの内容を指定できます。
 tooltip.content.page_meta_tags: 自由にMETAタグを追加できます。twig内で利用されている変数も利用できます。
 tooltip.content.css_source_code: カスタマイズ用CSSファイルを編集します。CSSで記述します。
-tooltip.content.js_source_code: カスタマイズ用Javascriptファイルを編集します。Javascriptで記述します。
+tooltip.content.js_source_code: カスタマイズ用JavaScriptファイルを編集します。JavaScriptで記述します。
 tooltip.content.block_name: ブロックの管理用名称です。
 tooltip.content.block_file_name: このブロックの内容を記述したtwigテンプレートファイルの名前です。管理画面ではあとから変更できません。
 tooltip.content.block_source_code: テンプレートファイルを編集します。twigで記述します。
