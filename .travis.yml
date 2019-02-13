@@ -384,3 +384,7 @@ jobs:
   #   after_script:
   #     - wget https://scrutinizer-ci.com/ocular.phar
   #     - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+  # インストーラのテスト
+  - <<: *e2e_test
+    env: GROUP=installer APP_ENV=install DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
