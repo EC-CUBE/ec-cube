@@ -77,6 +77,13 @@ class FileManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 一覧_パスをコピー($rowNum)
+    {
+        $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(5) a.action-copy");
+
+        return $this;
+    }
+
     public function 一覧_ファイル名_クリック($rowNum)
     {
         $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(2) a");

@@ -77,6 +77,9 @@ __CSS_CONTENTS__;
 
     public function test_routing_AdminContentCss_edit_failure()
     {
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            $this->markTestSkipped('Nothing support for Windows');
+        }
         chmod($this->dir, 0400);
 
         $css = <<<__CSS_CONTENTS__
