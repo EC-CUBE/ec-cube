@@ -20,4 +20,11 @@ class TopControllerTest extends AbstractWebTestCase
         $this->client->request('GET', $this->generateUrl('homepage'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    public function testCheckFavicon()
+    {
+        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $node = $crawler->filter('link[rel=icon]');
+        $this->assertEquals('/html/user_data/assets/img/common/favicon.ico', $node->attr('href'));
+    }
 }
