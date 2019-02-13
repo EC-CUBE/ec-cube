@@ -17,6 +17,14 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+    <style>
+        .copy-file-path {
+            display: none;
+        }
+    </style>
+{% endblock stylesheet %}
+
 {% block javascript %}
     <script src="{{ asset('assets/js/file_manager.js', 'admin') }}"></script>
     <script>
@@ -40,9 +48,50 @@ file that was distributed with this source code.
                 $li.appendTo($node);
                 if (i < total - 1) $node.append($delimiter);
             }
+
+
+            $('.action-copy').on('click',function(){
+            	var updated = $(this).parents('tr').find('.updated');
+            	var copy_file_path = $(this).parents('tr').find('.copy-file-path');
+            	if ($(updated).is(':visible')) {
+            	    $('.updated').each(function() {
+            	        $(this).show();
+            	    });
+            	    $('.copy-file-path').each(function() {
+            	        $(this).hide();
+            	    });
+            	    $('.action-copy').each(function() {
+            	        $(this).attr('title', '{{ 'admin.common.copy_path'|trans }}');
+            	        $(this).tooltip('_fixTitle');
+            	    });
+
+               	    $(updated).hide();
+            	    $(copy_file_path).show();
+            	    $(copy_file_path).find('input:first').focus();
+            	} else {
+            	    $(updated).show();
+            	    $(copy_file_path).hide();
+            	}
+
+            });
+
+            $('.copy-file-path input').focus(function(){
+                $(this).select();
+                if (document.execCommand('copy')) {
+                    var action_copy = $(this).parents('tr').find('.action-copy');
+                    setTimeout(function() {
+                        action_copy.attr('title', '{{ 'admin.common.copy_path_complete'|trans }}');
+                        action_copy.tooltip('_fixTitle');
+                        action_copy.tooltip('show');
+                     }, 100);
+                }
+            });
         });
 
+
         eccube.fileManager.viewFileTree('directory_userdata', arrTree, '{{ tpl_now_dir }}', 'tree_select_file', 'tree_status', 'move');
+
+
     </script>
 {% endblock javascript %}
 {% block main %}
@@ -139,7 +188,10 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle">
-                                                    {{ file.file_time|date_sec }} {{ 'admin.content.file.updated'|trans }}
+                                                    <span class="updated">{{ file.file_time|date_sec }} {{ 'admin.content.file.updated'|trans }}</span>
+                                                    {% if file.is_dir == false %}
+                                                        <span class="copy-file-path"><input type="text"  class="form-control" value="{{asset('', 'user_data')}}{{ file.file_path|slice(1) }}"></span>
+                                                    {% endif %}
                                                 </td>
                                                 {% if file.is_dir %}
                                                     <td class="align-middle pr-3">
@@ -176,6 +228,11 @@ file that was distributed with this source code.
                                                 {% else %}
                                                     <td class="align-middle pr-3">
                                                         <div class="text-right">
+                                                            <div class="px-1 d-inline-block">
+                                                                <a class="btn btn-ec-actionIcon action-copy" data-tooltip="true" data-placement="top" title="{{ 'admin.common.copy_path'|trans }}">
+                                                                    <i class="fas fa-copy fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
                                                             <div class="px-1 d-inline-block">
                                                                 <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank" class="btn btn-ec-actionIcon action-view" data-tooltip="true" data-placement="top" title="{{ 'admin.common.display'|trans }}">
                                                                     <i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i>
