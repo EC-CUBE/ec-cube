@@ -367,6 +367,14 @@ jobs:
         mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
         ./codeception.sh EA10PluginCest:install_enable_disable_enable_disable_remove_store
 
+  # インストーラのテスト
+  - <<: *e2e_test
+    # codeceptionのbootstrapでデータ投入を行っているので、本来は不要だけどコマンドラインからのインストールを実行させる
+    env: GROUP=installer APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+    script:
+    - echo "APP_ENV=install" >> .env
+    - ./codeception.sh -g ${GROUP}
+
   # - stage: Code Coverage
   #   if: type != pull_request
   #   env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
@@ -384,7 +392,3 @@ jobs:
   #   after_script:
   #     - wget https://scrutinizer-ci.com/ocular.phar
   #     - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
-
-  # インストーラのテスト
-  - <<: *e2e_test
-    env: GROUP=installer APP_ENV=install DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
