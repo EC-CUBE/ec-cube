@@ -396,6 +396,8 @@ admin.common.registration__new: Create new
 admin.common.edit: Edit
 admin.common.copy: Duplicate
 admin.common.display: Display
+admin.common.copy_path: Copy a path
+admin.common.copy_path_complete: Copied path
 admin.common.delete: Delete
 admin.common.cancel: Cancel
 admin.common.search: Search
