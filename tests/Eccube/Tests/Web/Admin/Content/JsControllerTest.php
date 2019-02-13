@@ -77,6 +77,9 @@ __JS_CONTENTS__;
 
     public function test_routing_AdminContentJs_edit_failure()
     {
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            $this->markTestSkipped('Nothing support for Windows');
+        }
         chmod($this->dir, 0400);
 
         $js = <<<__JS_CONTENTS__
