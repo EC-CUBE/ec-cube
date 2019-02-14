@@ -13,6 +13,8 @@
 
 namespace Eccube\DependencyInjection\Compiler;
 
+use Eccube\Service\Cart\CartItemAllocator;
+use Eccube\Service\Cart\CartItemComparator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -45,7 +47,7 @@ class PluginPass implements CompilerPassInterface
 
         $definitions = $container->getDefinitions();
 
-        foreach ($definitions as $definition) {
+        foreach ($definitions as $id => $definition) {
             $class = $definition->getClass();
 
             foreach ($plugins as $plugin) {
@@ -59,6 +61,14 @@ class PluginPass implements CompilerPassInterface
                             continue;
                         }
                         $definition->clearTag($tag);
+                    }
+
+                    if (is_subclass_of($class, CartItemAllocator::class)) {
+                        $container->removeDefinition($id);
+                    }
+
+                    if (is_subclass_of($class, CartItemComparator::class)) {
+                        $container->removeDefinition($id);
                     }
                 }
             }
