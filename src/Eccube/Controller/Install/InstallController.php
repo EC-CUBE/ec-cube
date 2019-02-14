@@ -206,23 +206,11 @@ class InstallController extends AbstractController
             }
         }
 
-        // 対象ディレクトリ配下のディレクトリの書き込み権限をチェック
-        $targetDirs = Finder::create()
-            ->in($eccubeDirs)
-            ->directories();
-        foreach ($targetDirs as $targetDir) {
-            if (!is_writable($targetDir->getRealPath())) {
-                $noWritePermissions[] = $targetDir;
-            }
-        }
-
-        // 対象ディレクトリ配下のファイルの書き込み権限をチェック
-        $targetFiles = Finder::create()
-            ->in($eccubeDirs)
-            ->files();
-        foreach ($targetFiles as $targetFile) {
-            if (!is_writable($targetFile->getRealPath())) {
-                $noWritePermissions[] = $targetFile;
+        // 対象ディレクトリ配下のディレクトリ・ファイルの書き込み権限をチェック
+        $finder = Finder::create()->in($eccubeDirs);
+        foreach ($finder as $file) {
+            if (!is_writable($file->getRealPath())) {
+                $noWritePermissions[] = $file;
             }
         }
 
