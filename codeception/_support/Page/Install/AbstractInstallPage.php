@@ -11,10 +11,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Page\Front;
+namespace Page\Install;
 
 use Page\AbstractPage;
 
-abstract class AbstractFrontPage extends AbstractPage
+abstract class AbstractInstallPage extends AbstractPage
 {
 }

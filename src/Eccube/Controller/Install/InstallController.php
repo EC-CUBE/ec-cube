@@ -74,6 +74,21 @@ class InstallController extends AbstractController
         'mcrypt',
     ];
 
+    protected $eccubeDirs = [
+        'app/Plugin',
+        'app/PluginData',
+        'app/proxy',
+        'app/template',
+        'html',
+        'var',
+        'vendor',
+    ];
+
+    protected $eccubeFiles = [
+        'composer.json',
+        'composer.lock',
+    ];
+
     /**
      * @var PasswordEncoder
      */
@@ -169,23 +184,40 @@ class InstallController extends AbstractController
 
         $noWritePermissions = [];
 
-        // ディレクトリの書き込み権限をチェック
-        $targetDirs = Finder::create()
-            ->in($this->getParameter('kernel.project_dir'))
-            ->directories();
-        foreach ($targetDirs as $targetDir) {
-            if (!is_writable($targetDir->getRealPath())) {
-                $noWritePermissions[] = $targetDir;
+        $projectDir = $this->getParameter('kernel.project_dir');
+
+        $eccubeDirs = array_map(function ($dir) use ($projectDir) {
+            return $projectDir.'/'.$dir;
+        }, $this->eccubeDirs);
+
+        $eccubeFiles = array_map(function ($file) use ($projectDir) {
+            return $projectDir.'/'.$file;
+        }, $this->eccubeFiles);
+
+        // ルートディレクトリの書き込み権限をチェック
+        if (!is_writable($projectDir)) {
+            $noWritePermissions[] = $projectDir;
+        }
+
+        // 対象ディレクトリの書き込み権限をチェック
+        foreach ($eccubeDirs as $dir) {
+            if (!is_writable($dir)) {
+                $noWritePermissions[] = $dir;
             }
         }
 
-        // ファイルの書き込み権限をチェック
-        $targetFiles = Finder::create()
-            ->in($this->getParameter('kernel.project_dir'))
-            ->files();
-        foreach ($targetFiles as $targetFile) {
-            if (!is_writable($targetFile->getRealPath())) {
-                $noWritePermissions[] = $targetFile;
+        // 対象ディレクトリ配下のディレクトリ・ファイルの書き込み権限をチェック
+        $finder = Finder::create()->in($eccubeDirs);
+        foreach ($finder as $file) {
+            if (!is_writable($file->getRealPath())) {
+                $noWritePermissions[] = $file;
+            }
+        }
+
+        // composer.json, composer.lockの書き込み権限をチェック
+        foreach ($eccubeFiles as $file) {
+            if (!is_writable($file)) {
+                $noWritePermissions[] = $file;
             }
         }
 
