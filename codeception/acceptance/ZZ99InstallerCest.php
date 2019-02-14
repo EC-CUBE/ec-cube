@@ -50,8 +50,10 @@ class ZZ99InstallerCest
         $I->see('権限チェック', InstallPage::$STEP2_タイトル);
         $I->see('アクセス権限は正常です', InstallPage::$STEP2_テキストエリア);
 
+        $rootDir = __DIR__.'/../../';
+
         foreach ($this->writableFiles as $file) {
-            $path = __DIR__.'/../../'.$file;
+            $path = $rootDir.$file;
             $origin = octdec(substr(sprintf('%o', fileperms($path)), -4));
 
             // 書き込み権限を外す
@@ -65,5 +67,21 @@ class ZZ99InstallerCest
             // 権限を戻す.
             chmod($path, $origin);
         }
+
+        // 対象外のディレクトリ・ファイルの確認
+        $externalDir = $rootDir.'externalDir';
+        mkdir($externalDir, 0555, true);
+
+        $externalFile = $rootDir.'externalFile.txt';
+        touch($externalFile);
+        chmod($externalFile, 0555);
+
+        $page->step2_リロード();
+        $I->see('アクセス権限は正常です', InstallPage::$STEP2_テキストエリア);
+
+        chmod($externalDir, 0777);
+        chmod($externalFile, 0777);
+        rmdir($externalDir);
+        unlink($externalFile);
     }
 }
