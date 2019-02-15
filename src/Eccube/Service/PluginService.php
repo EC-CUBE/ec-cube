@@ -925,7 +925,7 @@ class PluginService
      */
     public function removeAssets($pluginCode)
     {
-        $assetsDir = $this->eccubeConfig['plugin_html_realdir'].$pluginCode.'/assets';
+        $assetsDir = $this->eccubeConfig['plugin_html_realdir'].$pluginCode;
 
         // コピーされているリソースファイルがあれば削除
         if (file_exists($assetsDir)) {
