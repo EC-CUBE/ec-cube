@@ -96,8 +96,11 @@ services:
     eccube.security.failure_handler:
         class: Eccube\Security\Http\Authentication\EccubeAuthenticationFailureHandler
 
-    eccube.security.logout_handler:
-        class: Eccube\Security\Http\Logout\LogoutHandler
+    eccube.security.admin.logout_handler:
+        class: Eccube\Security\Http\Logout\AdminLogoutHandler
+        
+    eccube.security.customer.logout_handler:
+        class: Eccube\Security\Http\Logout\CustomerLogoutHandler
 
     # Autowiring can't guess the constructor arguments that are not type-hinted with
     # classes (e.g. container parameters) so you must define those arguments explicitly

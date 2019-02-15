@@ -38,6 +38,7 @@ security:
                 path: admin_logout
                 target: admin_login
                 invalidate_session: false
+                handlers: [eccube.security.admin.logout_handler]
         customer:
             pattern: ^/
             anonymous: true
@@ -61,7 +62,7 @@ security:
                 path: logout
                 target: homepage
                 invalidate_session: false
-                handlers: [eccube.security.logout_handler]
+                handlers: [eccube.security.customer.logout_handler]
 
     access_decision_manager:
         strategy: unanimous

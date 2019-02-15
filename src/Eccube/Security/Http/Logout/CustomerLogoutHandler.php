@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class LogoutHandler implements LogoutHandlerInterface{
+class CustomerLogoutHandler implements LogoutHandlerInterface{
 
     private $session;
     
@@ -19,8 +19,14 @@ class LogoutHandler implements LogoutHandlerInterface{
     
     public function logout(Request $request, Response $response, TokenInterface $token)
     {
-        if($this->session->has('cart_keys')) {
-            $this->session->remove('cart_keys');
+        if($sessions = $this->session->all()) {
+            unset($sessions["_security_admin"]);
+            
+            foreach ($sessions as $key => $value) {
+                if($this->session->has($key)) {
+                    $this->session->remove($key);
+                }
+            }
         }
     }
 
