@@ -218,6 +218,7 @@ class ProductClassController extends AbstractController
                 }
             }
 
+            $Product->setUpdateDate(new \DateTime());
             $this->entityManager->flush();
 
             $this->addSuccess('admin.product.reset_complete', 'admin');
@@ -397,6 +398,7 @@ class ProductClassController extends AbstractController
         ]);
         $DefaultProductClass->setVisible(false);
 
+        $Product->setUpdateDate(new \DateTime());
         $this->entityManager->flush();
     }
 
