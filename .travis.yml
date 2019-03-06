@@ -96,7 +96,7 @@ jobs:
       - unzip -o -q chromedriver_linux64.zip
       - sudo mv -f ./chromedriver /usr/local/bin/
       - sudo chmod +x /usr/local/bin/chromedriver
-      - gem install mailcatcher
+      - gem install mailcatcher -v "0.6.5"
     install:
       - *composer_install
       - *eccube_setup
