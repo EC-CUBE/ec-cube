@@ -68,7 +68,7 @@ class SecurityType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                     new Assert\Regex([
-                        'pattern' => '/^[0-9a-zA-Z]+$/',
+                        'pattern' => '/\A\w+\z/',
                     ]),
                 ],
                 'data' => $this->eccubeConfig->get('eccube_admin_route'),
