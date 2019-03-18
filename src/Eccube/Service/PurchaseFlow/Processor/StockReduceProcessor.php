@@ -14,9 +14,11 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\DBAL\LockMode;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductStock;
+use Eccube\Exception\ShoppingException;
 use Eccube\Repository\ProductStockRepository;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -31,13 +33,20 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     protected $productStockRepository;
 
     /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
+    /**
      * StockReduceProcessor constructor.
      *
      * @param ProductStockRepository $productStockRepository
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(ProductStockRepository $productStockRepository)
+    public function __construct(ProductStockRepository $productStockRepository, EntityManagerInterface $entityManager)
     {
         $this->productStockRepository = $productStockRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -73,15 +82,18 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
             if (!$item->getProductClass()->isStockUnlimited()) {
                 // 在庫チェックあり
-                // 在庫に対してロック(select ... for update)を実行
                 /* @var ProductStock $productStock */
-                $productStock = $this->productStockRepository->find(
-                    $item->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
-                );
-
+                $productStock = $item->getProductClass()->getProductStock();
+                // 在庫に対してロックを実行
+                $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
+                $this->entityManager->refresh($productStock);
+                $ProductClass = $item->getProductClass();
                 $stock = $callback($productStock->getStock(), $item->getQuantity());
+                if ($stock < 0) {
+                    throw new ShoppingException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
+                }
                 $productStock->setStock($stock);
-                $item->getProductClass()->setStock($stock);
+                $ProductClass->setStock($stock);
             }
         }
     }

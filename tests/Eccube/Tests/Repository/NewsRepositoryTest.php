@@ -43,7 +43,7 @@ class NewsRepositoryTest extends EccubeTestCase
                 ->setDescription($faker->realText())
                 ->setUrl($faker->url)
                 ->setLinkMethod(1)
-                ->setSortNo($i)
+                ->setVisible(true)
                 ->setPublishDate(new \DateTime());
             $this->entityManager->persist($News);
         }
@@ -59,95 +59,29 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->entityManager->flush();
     }
 
-    public function testUp()
-    {
-        /** @var News $News */
-        $News = $this->newsRepo->findOneBy(
-            ['title' => 'news-1']
-        );
-        $this->assertNotNull($News);
-        $this->assertEquals(1, $News->getSortNo());
-
-        // sortNo up 1 => 2
-        $this->newsRepo->up($News);
-
-        $this->expected = 2;
-        $this->actual = $News->getSortNo();
-        $this->verify('sort_no は '.$this->expected.'ではありません');
-    }
-
-    public function testUpWithException()
-    {
-        $this->expectException(\Exception::class);
-        /** @var News $News */
-        $News = $this->newsRepo->findOneBy(
-            ['title' => 'news-2']
-        );
-
-        $this->newsRepo->up($News);
-        $this->fail();
-    }
-
-    public function testDown()
-    {
-        /** @var News $News */
-        $News = $this->newsRepo->findOneBy(
-            ['title' => 'news-1']
-        );
-        $this->assertNotNull($News);
-        $this->assertEquals(1, $News->getSortNo());
-
-        // sortNo down 1 => 0
-        $this->newsRepo->down($News);
-
-        $this->expected = 0;
-        $this->actual = $News->getSortNo();
-        $this->verify('sort_no は '.$this->expected.'ではありません');
-    }
-
-    public function testDownWithException()
-    {
-        $this->expectException(\Exception::class);
-        $News = $this->newsRepo->findOneBy(
-            ['title' => 'news-0']
-        );
-
-        $this->newsRepo->down($News);
-    }
-
     public function testSave()
     {
+        $dateTime = new \DateTime();
         $faker = $this->getFaker();
+        $url = $faker->url;
+        $title = $faker->text();
         $News = new News();
         $News
-            ->setTitle('news-10')
+            ->setPublishDate($dateTime)
+            ->setTitle($title)
             ->setDescription($faker->realText())
-            ->setUrl($faker->url)
+            ->setUrl($url)
+            ->setVisible(true)
             ->setLinkMethod(1);
 
         $this->newsRepo->save($News);
 
-        $this->expected = 3;
-        $this->actual = $News->getSortNo();
-        $this->verify('sort_no は'.$this->expected.'ではありません');
-    }
-
-    public function testSaveWithSortNoNull()
-    {
-        $this->removeNews();    // 一旦全件削除
-        $faker = $this->getFaker();
-        $News = new News();
-        $News
-            ->setTitle('news-10')
-            ->setDescription($faker->realText())
-            ->setUrl($faker->url)
-            ->setLinkMethod(1);
-
-        $this->newsRepo->save($News);
-
-        $this->expected = 1;
-        $this->actual = $News->getSortNo();
-        $this->verify('sort_no は'.$this->expected.'ではありません');
+        // verify
+        /** @var News $new */
+        $new = $this->newsRepo->findOneBy(['title' => $title, 'url' => $url]);
+        $this->actual = $new->getPublishDate();
+        $this->expected = $dateTime;
+        $this->verify();
     }
 
     public function testDelete()

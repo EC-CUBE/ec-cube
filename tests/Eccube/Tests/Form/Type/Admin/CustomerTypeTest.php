@@ -170,7 +170,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['email'] = 'abc..@example.com';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
     public function testValidJob_Blank()

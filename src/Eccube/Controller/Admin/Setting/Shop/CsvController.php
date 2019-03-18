@@ -68,7 +68,7 @@ class CsvController extends AbstractController
             'csv_type',
             \Eccube\Form\Type\Master\CsvType::class,
             [
-                'label' => 'CSV出力項目',
+                'label' => 'admin.setting.shop.csv.csv_columns',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -125,7 +125,8 @@ class CsvController extends AbstractController
 
         $form = $builder->getForm();
 
-        if ('POST' === $request->getMethod()) {
+        // csv_output/csv_not_outputのチェックに引っかかるため, tokenチェックは個別に行う
+        if ('POST' === $request->getMethod() && $this->isTokenValid()) {
             $data = $request->get('form');
             if (isset($data['csv_not_output'])) {
                 $Csvs = $data['csv_not_output'];

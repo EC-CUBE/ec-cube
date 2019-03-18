@@ -1,6 +1,6 @@
 {
-    "name": "EC-CUBE3",
-    "description": "EC-CUBE 3.n on Heroku",
+    "name": "EC-CUBE4",
+    "description": "EC-CUBE 4 on Heroku",
     "website": "https://github.com/EC-CUBE/ec-cube",
     "repository": "https://github.com/EC-CUBE/ec-cube",
     "keywords": ["php", "ec", "e-commerce", "ec-cube"],

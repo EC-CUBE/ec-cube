@@ -72,10 +72,6 @@ class CategoryRepository extends AbstractRepository
      */
     public function getList(Category $Parent = null, $flat = false)
     {
-        // TODO::doctrine_cache is not implement
-        // $options = $this->eccubeConfig['doctrine_cache'];
-        // $lifetime = $options['result_cache']['lifetime'];
-
         $qb = $this->createQueryBuilder('c1')
             ->select('c1, c2, c3, c4, c5')
             ->leftJoin('c1.Children', 'c2')
@@ -94,7 +90,7 @@ class CategoryRepository extends AbstractRepository
             $qb->where('c1.Parent IS NULL');
         }
         $Categories = $qb->getQuery()
-            // ->useResultCache(true, $lifetime) TODO::doctrine_cache is not implement
+            ->useResultCache(true, $this->getCacheLifetime())
             ->getResult();
 
         if ($flat) {

@@ -39,7 +39,7 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="deny_url", type="string", length=255)
+         * @ORM\Column(name="deny_url", type="string", length=4000)
          */
         private $deny_url;
 

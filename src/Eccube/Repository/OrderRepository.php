@@ -71,179 +71,6 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * @param array $searchData
-     *
-     * @return QueryBuilder
-     */
-    public function getQueryBuilderBySearchData($searchData)
-    {
-        $qb = $this->createQueryBuilder('o');
-
-        $joinedCustomer = false;
-
-        // order_id_start
-        if (isset($searchData['order_id_start']) && StringUtil::isNotBlank($searchData['order_id_start'])) {
-            $qb
-                ->andWhere('o.id >= :order_id_start')
-                ->setParameter('order_id_start', $searchData['order_id_start']);
-        }
-
-        // order_id_end
-        if (isset($searchData['order_id_end']) && StringUtil::isNotBlank($searchData['order_id_end'])) {
-            $qb
-                ->andWhere('o.id <= :order_id_end')
-                ->setParameter('order_id_end', $searchData['order_id_end']);
-        }
-
-        // status
-        if (!empty($searchData['status']) && $searchData['status']) {
-            $qb
-                ->andWhere('o.OrderStatus = :status')
-                ->setParameter('status', $searchData['status']);
-        }
-
-        // name
-        if (isset($searchData['name']) && StringUtil::isNotBlank($searchData['name'])) {
-            $qb
-                ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
-                ->setParameter('name', '%'.$searchData['name'].'%');
-        }
-
-        // kana
-        if (isset($searchData['kana']) && StringUtil::isNotBlank($searchData['kana'])) {
-            $qb
-                ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
-                ->setParameter('kana', '%'.$searchData['kana'].'%');
-        }
-
-        // email
-        if (isset($searchData['email']) && StringUtil::isNotBlank($searchData['email'])) {
-            $qb
-                ->andWhere('o.email = :email')
-                ->setParameter('email', $searchData['email']);
-        }
-
-        // tel
-        if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
-            $qb
-                ->andWhere('o.phone_number = :phone_number')
-                ->setParameter('phone_number', $searchData['phone_number']);
-        }
-
-        // birth
-        if (!empty($searchData['birth_start']) && $searchData['birth_start']) {
-            if (!$joinedCustomer) {
-                $qb->leftJoin('o.Customer', 'c');
-                $joinedCustomer = true;
-            }
-
-            $date = $searchData['birth_start'];
-            $qb
-                ->andWhere('c.birth >= :birth_start')
-                ->setParameter('birth_start', $date);
-        }
-        if (!empty($searchData['birth_end']) && $searchData['birth_end']) {
-            if (!$joinedCustomer) {
-                $qb->leftJoin('o.Customer', 'c');
-                $joinedCustomer = true;
-            }
-
-            $date = clone $searchData['birth_end'];
-            $date = $date
-                ->modify('+1 days');
-            $qb
-                ->andWhere('c.birth < :birth_end')
-                ->setParameter('birth_end', $date);
-        }
-
-        // sex
-        if (!empty($searchData['sex']) && count($searchData['sex']) > 0) {
-            if (!$joinedCustomer) {
-                $qb->leftJoin('o.Customer', 'c');
-                $joinedCustomer = true;
-            }
-
-            $sexs = [];
-            foreach ($searchData['sex'] as $sex) {
-                $sexs[] = $sex->getId();
-            }
-
-            $qb
-                ->andWhere($qb->expr()->in('c.Sex', ':sexs'))
-                ->setParameter('sexs', $sexs);
-        }
-
-        // payment
-        if (!empty($searchData['payment']) && count($searchData['payment'])) {
-            $payments = [];
-            foreach ($searchData['payment'] as $payment) {
-                $payments[] = $payment->getId();
-            }
-            $qb
-                ->leftJoin('o.Payment', 'p')
-                ->andWhere($qb->expr()->in('p.id', ':payments'))
-                ->setParameter('payments', $payments);
-        }
-
-        // oreder_date
-        if (!empty($searchData['order_date_start']) && $searchData['order_date_start']) {
-            $date = $searchData['order_date_start'];
-            $qb
-                ->andWhere('o.create_date >= :order_date_start')
-                ->setParameter('order_date_start', $date);
-        }
-        if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
-            $date = clone $searchData['order_date_end'];
-            $date = $date
-                ->modify('+1 days');
-            $qb
-                ->andWhere('o.create_date < :order_date_end')
-                ->setParameter('order_date_end', $date);
-        }
-
-        // create_date
-        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
-            $date = $searchData['update_date_start'];
-            $qb
-                ->andWhere('o.update_date >= :update_date_start')
-                ->setParameter('update_date_start', $date);
-        }
-        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
-            $date = clone $searchData['update_date_end'];
-            $date = $date
-                ->modify('+1 days');
-            $qb
-                ->andWhere('o.update_date < :update_date_end')
-                ->setParameter('update_date_end', $date);
-        }
-
-        // payment_total
-        if (isset($searchData['payment_total_start']) && StringUtil::isNotBlank($searchData['payment_total_start'])) {
-            $qb
-                ->andWhere('o.payment_total >= :payment_total_start')
-                ->setParameter('payment_total_start', $searchData['payment_total_start']);
-        }
-        if (isset($searchData['payment_total_end']) && StringUtil::isNotBlank($searchData['payment_total_end'])) {
-            $qb
-                ->andWhere('o.payment_total <= :payment_total_end')
-                ->setParameter('payment_total_end', $searchData['payment_total_end']);
-        }
-
-        // buy_product_name
-        if (isset($searchData['buy_product_name']) && StringUtil::isNotBlank($searchData['buy_product_name'])) {
-            $qb
-                ->leftJoin('o.OrderItems', 'oi')
-                ->andWhere('oi.product_name LIKE :buy_product_name')
-                ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
-        }
-
-        // Order By
-        $qb->addOrderBy('o.update_date', 'DESC');
-
-        return $this->queries->customize(QueryKey::ORDER_SEARCH, $qb, $searchData);
-    }
-
-    /**
      * @param  array        $searchData
      *
      * @return QueryBuilder
@@ -252,9 +79,9 @@ class OrderRepository extends AbstractRepository
     {
         $qb = $this->createQueryBuilder('o')
             ->select('o, s')
-            ->addSelect('oi', 'p')
+            ->addSelect('oi', 'pref')
             ->leftJoin('o.OrderItems', 'oi')
-            ->leftJoin('o.Pref', 'p')
+            ->leftJoin('o.Pref', 'pref')
             ->innerJoin('o.Shippings', 's');
 
         // order_id_start
@@ -305,12 +132,9 @@ class OrderRepository extends AbstractRepository
         }
 
         if (!$filterStatus) {
-            // 購入処理中は検索対象から除外
-            $OrderStatuses = $this->getEntityManager()
-                ->getRepository('Eccube\Entity\Master\OrderStatus')
-                ->findNotContainsBy(['id' => OrderStatus::PROCESSING]);
-            $qb->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
-                ->setParameter('status', $OrderStatuses);
+            // 購入処理中, 決済処理中は検索対象から除外
+            $qb->andWhere($qb->expr()->notIn('o.OrderStatus', ':status'))
+                ->setParameter('status', [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         }
 
         // company_name
@@ -497,55 +321,6 @@ class OrderRepository extends AbstractRepository
         $qb->addOrderBy('o.id', 'DESC');
 
         return $this->queries->customize(QueryKey::ORDER_SEARCH_BY_CUSTOMER, $qb, ['customer' => $Customer]);
-    }
-
-    /**
-     * 会員の合計購入金額を取得、回数を取得
-     *
-     * @param  \Eccube\Entity\Customer $Customer
-     * @param  array $OrderStatuses
-     *
-     * @return array
-     */
-    public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
-    {
-        $result = $this->createQueryBuilder('o')
-            ->select('COUNT(o.id) AS buy_times, SUM(o.total) AS buy_total, MAX(o.id) AS order_id')
-            ->where('o.Customer = :Customer')
-            ->andWhere('o.OrderStatus in (:OrderStatuses)')
-            ->setParameter('Customer', $Customer)
-            ->setParameter('OrderStatuses', $OrderStatuses)
-            ->groupBy('o.Customer')
-            ->getQuery()
-            ->getResult();
-
-        return $result;
-    }
-
-    /**
-     * 会員が保持する最新の購入処理中の Order を取得する.
-     *
-     * @param Customer
-     *
-     * @return Order
-     */
-    public function getExistsOrdersByCustomer(\Eccube\Entity\Customer $Customer)
-    {
-        $qb = $this->createQueryBuilder('o');
-        $Order = $qb
-            ->select('o')
-            ->where('o.Customer = :Customer')
-            ->setParameter('Customer', $Customer)
-            ->orderBy('o.id', 'DESC')
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
-
-        if ($Order && $Order->getOrderStatus()->getId() == OrderStatus::PROCESSING) {
-            return $Order;
-        }
-
-        return null;
     }
 
     /**

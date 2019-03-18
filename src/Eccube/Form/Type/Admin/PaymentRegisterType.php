@@ -68,7 +68,7 @@ class PaymentRegisterType extends AbstractType
                     // )),
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid',
+                        'message' => 'form_error.numeric_only',
                     ]),
                 ],
             ])
@@ -97,7 +97,7 @@ class PaymentRegisterType extends AbstractType
                 $ruleMax = $form['rule_max']->getData();
                 $ruleMin = $form['rule_min']->getData();
                 if (!empty($ruleMin) && !empty($ruleMax) && $ruleMax < $ruleMin) {
-                    $message = trans('paymentregistertype.validate.rule', ['%price%' => $ruleMax]);
+                    $message = trans('admin.setting.shop.payment.terms_of_use_error', ['%price%' => $ruleMax]);
                     $form['rule_min']->addError(new FormError($message));
                 }
             });

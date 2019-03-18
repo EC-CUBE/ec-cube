@@ -16,6 +16,7 @@ namespace Eccube\Controller\Admin\Customer;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
@@ -55,14 +56,19 @@ class CustomerDeliveryEditController extends AbstractController
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException();
             }
+            $CustomerAddress = new CustomerAddress();
+            $CustomerAddress->setCustomer($Customer);
         } else {
-            $CustomerAddress = $this->customerAddressRepository->find($did);
-            if (is_null($CustomerAddress) || $CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
+            $CustomerAddress = $this->customerAddressRepository->findOneBy(
+                [
+                    'id' => $did,
+                    'Customer' => $Customer,
+                ]
+            );
+            if (!$CustomerAddress) {
                 throw new NotFoundHttpException();
             }
         }
-
-        $CustomerAddress = $this->customerAddressRepository->findOrCreateByCustomerAndId($Customer, $did);
 
         $builder = $this->formFactory
             ->createBuilder(CustomerAddressType::class, $CustomerAddress);

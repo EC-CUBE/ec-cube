@@ -23,6 +23,7 @@ use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
+use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -83,12 +84,7 @@ class CustomerType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    // configでこの辺りは変えられる方が良さそう
-                    new Assert\Email(['strict' => true]),
-                    new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
-                    ]),
+                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
                 ],
                 'attr' => [
                     'placeholder' => 'common.mail_address_sample',
@@ -110,7 +106,7 @@ class CustomerType extends AbstractType
                 'constraints' => [
                     new Assert\LessThanOrEqual([
                         'value' => date('Y-m-d', strtotime('-1 day')),
-                        'message' => 'form.type.select.selectis_future_or_now_date',
+                        'message' => 'form_error.select_is_future_or_now_date',
                     ]),
                 ],
             ])
@@ -120,7 +116,7 @@ class CustomerType extends AbstractType
                     'label' => 'member.label.pass',
                 ],
                 'second_options' => [
-                    'label' => 'member.label.varify_pass',
+                    'label' => 'member.label.verify_pass',
                 ],
             ])
             ->add('status', CustomerStatusType::class, [
@@ -137,7 +133,7 @@ class CustomerType extends AbstractType
                     'constraints' => [
                         new Assert\Regex([
                             'pattern' => "/^\d+$/u",
-                            'message' => 'form.type.numeric.invalid',
+                            'message' => 'form_error.numeric_only',
                         ]),
                     ],
                 ]

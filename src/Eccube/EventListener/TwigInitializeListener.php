@@ -16,12 +16,18 @@ namespace Eccube\EventListener;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
+use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Member;
+use Eccube\Entity\Page;
+use Eccube\Entity\PageLayout;
 use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Repository\PageLayoutRepository;
+use Eccube\Repository\BlockPositionRepository;
 use Eccube\Request\Context;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -32,6 +38,11 @@ use Twig\Environment;
 
 class TwigInitializeListener implements EventSubscriberInterface
 {
+    /**
+     * @var bool 初期化済かどうか.
+     */
+    protected $initialized = false;
+
     /**
      * @var Environment
      */
@@ -51,6 +62,16 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @var PageRepository
      */
     protected $pageRepository;
+
+    /**
+     * @var PageLayoutRepository
+     */
+    protected $pageLayoutRepository;
+
+    /**
+     * @var BlockPositionRepository
+     */
+    protected $blockPositionRepository;
 
     /**
      * @var Context
@@ -78,38 +99,52 @@ class TwigInitializeListener implements EventSubscriberInterface
     private $router;
 
     /**
+     * @var LayoutRepository
+     */
+    private $layoutRepository;
+
+    /**
      * TwigInitializeListener constructor.
      *
      * @param Environment $twig
      * @param BaseInfoRepository $baseInfoRepository
      * @param PageRepository $pageRepository
+     * @param PageLayoutRepository $pageLayoutRepository
+     * @param BlockPositionRepository $blockPositionRepository
      * @param DeviceTypeRepository $deviceTypeRepository
      * @param AuthorityRoleRepository $authorityRoleRepository
      * @param EccubeConfig $eccubeConfig
      * @param Context $context
      * @param MobileDetector $mobileDetector
      * @param UrlGeneratorInterface $router
+     * @param LayoutRepository $layoutRepository
      */
     public function __construct(
         Environment $twig,
         BaseInfoRepository $baseInfoRepository,
         PageRepository $pageRepository,
+        PageLayoutRepository $pageLayoutRepository,
+        BlockPositionRepository $blockPositionRepository,
         DeviceTypeRepository $deviceTypeRepository,
         AuthorityRoleRepository $authorityRoleRepository,
         EccubeConfig $eccubeConfig,
         Context $context,
         MobileDetector $mobileDetector,
-        UrlGeneratorInterface $router
+        UrlGeneratorInterface $router,
+        LayoutRepository $layoutRepository
     ) {
         $this->twig = $twig;
         $this->baseInfoRepository = $baseInfoRepository;
         $this->pageRepository = $pageRepository;
+        $this->pageLayoutRepository = $pageLayoutRepository;
+        $this->blockPositionRepository = $blockPositionRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
         $this->authorityRoleRepository = $authorityRoleRepository;
         $this->eccubeConfig = $eccubeConfig;
         $this->requestContext = $context;
         $this->mobileDetector = $mobileDetector;
         $this->router = $router;
+        $this->layoutRepository = $layoutRepository;
     }
 
     /**
@@ -120,20 +155,19 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $globals = $this->twig->getGlobals();
-        if (array_key_exists('BaseInfo', $globals) && $globals['BaseInfo'] === null) {
-            $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
-        }
-
-        if (!$event->isMasterRequest()) {
+        if ($this->initialized) {
             return;
         }
+
+        $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
 
         if ($this->requestContext->isAdmin()) {
             $this->setAdminGlobals($event);
         } else {
-            $this->setFrontVaribales($event);
+            $this->setFrontVariables($event);
         }
+
+        $this->initialized = true;
     }
 
     /**
@@ -141,10 +175,11 @@ class TwigInitializeListener implements EventSubscriberInterface
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function setFrontVaribales(GetResponseEvent $event)
+    public function setFrontVariables(GetResponseEvent $event)
     {
+        $request = $event->getRequest();
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
-        $attributes = $event->getRequest()->attributes;
+        $attributes = $request->attributes;
         $route = $attributes->get('_route');
         if ($route == 'user_data') {
             $routeParams = $attributes->get('_route_params', []);
@@ -155,20 +190,57 @@ class TwigInitializeListener implements EventSubscriberInterface
         if ($this->mobileDetector->isMobile()) {
             $type = DeviceType::DEVICE_TYPE_MB;
         }
-        $DeviceType = $this->deviceTypeRepository->find($type);
 
-        try {
-            $Page = $this->pageRepository->getByUrl($DeviceType, $route);
-        } catch (NoResultException $e) {
-            try {
-                log_info('fallback to PC layout');
-                $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
-                $Page = $this->pageRepository->getByUrl($DeviceType, $route);
-            } catch (NoResultException $e) {
-                $Page = $this->pageRepository->newPage($DeviceType);
+        // URLからPageを取得
+        /** @var Page $Page */
+        $Page = $this->pageRepository->getPageByRoute($route);
+
+        /** @var PageLayout[] $PageLayouts */
+        $PageLayouts = $Page->getPageLayouts();
+
+        // Pageに紐づくLayoutからDeviceTypeが一致するLayoutを探す
+        $Layout = null;
+        foreach ($PageLayouts as $PageLayout) {
+            if ($PageLayout->getDeviceTypeId() == $type) {
+                $Layout = $PageLayout->getLayout();
+                break;
             }
         }
 
+        // Pageに紐づくLayoutにDeviceTypeが一致するLayoutがない場合はPCのレイアウトを探す
+        if (!$Layout) {
+            log_info('fallback to PC layout');
+            foreach ($PageLayouts as $PageLayout) {
+                if ($PageLayout->getDeviceTypeId() == DeviceType::DEVICE_TYPE_PC) {
+                    $Layout = $PageLayout->getLayout();
+                    break;
+                }
+            }
+        }
+
+        // 管理者ログインしている場合にページレイアウトのプレビューが可能
+        if ($request->get('preview')) {
+            $is_admin = $request->getSession()->has('_security_admin');
+            if ($is_admin) {
+                $Layout = $this->layoutRepository->get(Layout::DEFAULT_LAYOUT_PREVIEW_PAGE);
+
+                $this->twig->addGlobal('Layout', $Layout);
+                $this->twig->addGlobal('Page', $Page);
+                $this->twig->addGlobal('title', $Page->getName());
+
+                return;
+            }
+        }
+
+        if ($Layout) {
+            // lazy loadを制御するため, Layoutを取得しなおす.
+            $Layout = $this->layoutRepository->get($Layout->getId());
+        } else {
+            // Layoutのデータがない場合は空のLayoutをセット
+            $Layout = new Layout();
+        }
+
+        $this->twig->addGlobal('Layout', $Layout);
         $this->twig->addGlobal('Page', $Page);
         $this->twig->addGlobal('title', $Page->getName());
     }
@@ -188,7 +260,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $Member = $this->requestContext->getCurrentUser();
         if ($Member instanceof Member) {
             $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $Member->getAuthority()]);
-            $baseUrl = $event->getRequest()->getBaseUrl() . '/' . $this->eccubeConfig['eccube_admin_route'];
+            $baseUrl = $event->getRequest()->getBaseUrl().'/'.$this->eccubeConfig['eccube_admin_route'];
             $eccubeNav = $this->getDisplayEccubeNav($eccubeNav, $AuthorityRoles, $baseUrl);
         }
         $this->twig->addGlobal('eccubeNav', $eccubeNav);
@@ -219,7 +291,7 @@ class TwigInitializeListener implements EventSubscriberInterface
                 $param = array_key_exists('param', $childNav) ? $childNav['param'] : [];
                 $url = $this->router->generate($childNav['url'], $param);
                 foreach ($AuthorityRoles as $AuthorityRole) {
-                    $denyUrl = str_replace('/', '\/', $baseUrl . $AuthorityRole->getDenyUrl());
+                    $denyUrl = str_replace('/', '\/', $baseUrl.$AuthorityRole->getDenyUrl());
                     if (preg_match("/^({$denyUrl})/i", $url)) {
                         // 権限がないURLの場合は配列から削除
                         unset($parentNav[$key]);

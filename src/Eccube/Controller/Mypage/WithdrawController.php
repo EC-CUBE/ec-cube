@@ -18,7 +18,9 @@ use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\Master\CustomerStatusRepository;
+use Eccube\Service\CartService;
 use Eccube\Service\MailService;
+use Eccube\Service\OrderHelper;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,14 +45,37 @@ class WithdrawController extends AbstractController
      */
     protected $tokenStorage;
 
+    /**
+     * @var CartService
+     */
+    private $cartService;
+
+    /**
+     * @var OrderHelper
+     */
+    private $orderHelper;
+
+    /**
+     * WithdrawController constructor.
+     *
+     * @param MailService $mailService
+     * @param CustomerStatusRepository $customerStatusRepository
+     * @param TokenStorageInterface $tokenStorage
+     * @param CartService $cartService
+     * @param OrderHelper $orderHelper
+     */
     public function __construct(
         MailService $mailService,
         CustomerStatusRepository $customerStatusRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        CartService $cartService,
+        OrderHelper $orderHelper
     ) {
         $this->mailService = $mailService;
         $this->customerStatusRepository = $customerStatusRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->cartService = $cartService;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -113,6 +138,10 @@ class WithdrawController extends AbstractController
 
                     // メール送信
                     $this->mailService->sendCustomerWithdrawMail($Customer, $email);
+
+                    // カートと受注のセッションを削除
+                    $this->cartService->clear();
+                    $this->orderHelper->removeSession();
 
                     // ログアウト
                     $this->tokenStorage->setToken(null);

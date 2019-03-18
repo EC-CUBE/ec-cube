@@ -13,30 +13,8 @@
 
 namespace Page\Front;
 
-class AbstractFrontPage
+use Page\AbstractPage;
+
+abstract class AbstractFrontPage extends AbstractPage
 {
-    /** @var \AcceptanceTester $tester */
-    protected $tester;
-
-    /**
-     * AbstractAdminPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        $this->tester = $I;
-    }
-
-    /**
-     * ページに移動。
-     *
-     * @param $url string URL
-     *
-     * @return $this
-     */
-    protected function goPage($url)
-    {
-        $this->tester->amOnPage('/'.$url);
-
-        return $this;
-    }
 }

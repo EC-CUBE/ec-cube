@@ -1,0 +1,1 @@
+id,customer_id,country_id,pref_id,name01,name02,kana01,kana02,company_name,postal_code,addr01,addr02,phone_number,create_date,update_date,discriminator_type

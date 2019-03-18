@@ -23,7 +23,7 @@ class PaymentResult
     /**
      * @var array
      */
-    private $errors;
+    private $errors = [];
 
     /**
      * @var boolean
@@ -70,7 +70,7 @@ class PaymentResult
      */
     public function getErrors()
     {
-        return [];
+        return $this->errors;
     }
 
     /**

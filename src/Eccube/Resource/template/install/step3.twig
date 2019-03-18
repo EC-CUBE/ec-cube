@@ -35,7 +35,7 @@ file that was distributed with this source code.
         <div class="main_inner">
             <div class="main_content">
                 <div class="page-header">
-                    <h1>{{ 'install.site_configration'|trans }}</h1>
+                    <h1>{{ 'install.site_configuration'|trans }}</h1>
                 </div>
                 <div class="container-fluid">
                     <div class="row">
@@ -48,7 +48,7 @@ file that was distributed with this source code.
                                 {{ form_row(form.login_pass) }}
 
                                 <h2>{{ 'install.security_configuration'|trans}}</h2>
-                                {{ form_row(form.admin_dir , {attr : { placeholder: 'install.directry_name_notice'|trans }}) }}
+                                {{ form_row(form.admin_dir , {attr : { placeholder: 'install.directory_name_notice'|trans }}) }}
                                 {% if request.secure %}
                                     {{ form_row(form.admin_force_ssl) }}
                                 {% else %}

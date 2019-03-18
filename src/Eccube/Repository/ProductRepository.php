@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Product;
@@ -65,24 +66,61 @@ class ProductRepository extends AbstractRepository
     public function findWithSortedClassCategories($productId)
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'ps', 'pt'])
+        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt'])
             ->innerJoin('p.ProductClasses', 'pc')
             ->leftJoin('pc.ClassCategory1', 'cc1')
             ->leftJoin('pc.ClassCategory2', 'cc2')
             ->leftJoin('p.ProductImage', 'pi')
-            ->innerJoin('pc.ProductStock', 'ps')
             ->leftJoin('p.ProductTag', 'pt')
             ->where('p.id = :id')
+            ->andWhere('pc.visible = :visible')
+            ->setParameter('id', $productId)
+            ->setParameter('visible', true)
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
+
         $product = $qb
-            ->setParameters([
-                'id' => $productId,
-            ])
             ->getQuery()
             ->getSingleResult();
 
         return $product;
+    }
+
+    /**
+     * Find the Products with sorted ClassCategories.
+     *
+     * @param array $ids Product in ids
+     * @param string $indexBy The index for the from.
+     *
+     * @return ArrayCollection|array
+     */
+    public function findProductsWithSortedClassCategories(array $ids, $indexBy = null)
+    {
+        if (count($ids) < 1) {
+            return [];
+        }
+        $qb = $this->createQueryBuilder('p', $indexBy);
+        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt', 'tr', 'ps'])
+            ->innerJoin('p.ProductClasses', 'pc')
+            // XXX Joined 'TaxRule' and 'ProductStock' to prevent lazy loading
+            ->leftJoin('pc.TaxRule', 'tr')
+            ->innerJoin('pc.ProductStock', 'ps')
+            ->leftJoin('pc.ClassCategory1', 'cc1')
+            ->leftJoin('pc.ClassCategory2', 'cc2')
+            ->leftJoin('p.ProductImage', 'pi')
+            ->leftJoin('p.ProductTag', 'pt')
+            ->where($qb->expr()->in('p.id', $ids))
+            ->andWhere('pc.visible = :visible')
+            ->setParameter('visible', true)
+            ->orderBy('cc1.sort_no', 'DESC')
+            ->addOrderBy('cc2.sort_no', 'DESC');
+
+        $products = $qb
+            ->getQuery()
+            ->useResultCache(true, $this->eccubeConfig['eccube_result_cache_lifetime_short'])
+            ->getResult();
+
+        return $products;
     }
 
     /**
@@ -298,29 +336,5 @@ class ProductRepository extends AbstractRepository
             ->orderBy('p.update_date', 'DESC');
 
         return $this->queries->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
-    }
-
-    /**
-     * get query builder.
-     *
-     * @param $Customer
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     *
-     * @see CustomerFavoriteProductRepository::getQueryBuilderByCustomer()
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function getFavoriteProductQueryBuilderByCustomer($Customer)
-    {
-        $qb = $this->createQueryBuilder('p')
-            ->innerJoin('p.CustomerFavoriteProducts', 'cfp')
-            ->where('cfp.Customer = :Customer AND p.Status = 1')
-            ->setParameter('Customer', $Customer);
-
-        // Order By
-        // XXX Paginater を使用した場合に PostgreSQL で正しくソートできない
-        $qb->addOrderBy('cfp.create_date', 'DESC');
-
-        return $this->queries->customize(QueryKey::PRODUCT_GET_FAVORITE, $qb, ['customer' => $Customer]);
     }
 }

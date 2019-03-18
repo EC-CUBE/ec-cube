@@ -16,9 +16,11 @@ namespace Eccube\Twig\Extension;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Intl\Intl;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -37,6 +39,7 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * EccubeExtension constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      * @param ProductRepository $productRepository
      */
@@ -59,6 +62,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
             new TwigFunction('product', [$this, 'getProduct']),
             new TwigFunction('php_*', [$this, 'getPhpFunctions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new TwigFunction('currency_symbol', [$this, 'getCurrencySymbol']),
         ];
     }
 
@@ -113,7 +117,7 @@ class EccubeExtension extends AbstractExtension
      */
     public function getNoImageProduct($image)
     {
-        return empty($image) ? 'no_image_product.jpg' : $image;
+        return empty($image) ? 'no_image_product.png' : $image;
     }
 
     /**
@@ -249,6 +253,10 @@ class EccubeExtension extends AbstractExtension
             ],
         ];
         foreach ($Product->getProductClasses() as $ProductClass) {
+            /** @var ProductClass $ProductClass */
+            if (!$ProductClass->isVisible()) {
+                continue;
+            }
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
@@ -332,5 +340,22 @@ class EccubeExtension extends AbstractExtension
         $html .= '></i>';
 
         return $html;
+    }
+
+    /**
+     * Get currency symbol
+     *
+     * @param null $currency
+     *
+     * @return bool|string
+     */
+    public function getCurrencySymbol($currency = null)
+    {
+        if (is_null($currency)) {
+            $currency = $this->eccubeConfig->get('currency');
+        }
+        $symbol = Intl::getCurrencyBundle()->getCurrencySymbol($currency);
+
+        return $symbol;
     }
 }

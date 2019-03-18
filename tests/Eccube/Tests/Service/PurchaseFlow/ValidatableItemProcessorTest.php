@@ -28,7 +28,8 @@ class ValidatableItemProcessorTest extends EccubeTestCase
      *      エラーなら明細丸め処理 ＆ カート画面にエラー表示¨
      *      正常時は丸め処理しない
      * 購入の場合
-     *      エラーなら購入エラーで終了
+     *      Warningなら明細丸め処理 ＆ 注文手続き画面にエラー表示
+     *      Errorなら購入エラーで終了
      *      正常時は丸め処理しない
      */
     public function testValidateCartSuccess()
@@ -67,7 +68,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $item = new OrderItem();
 
         $result = $validator->execute($item, new PurchaseContext());
-        self::assertFalse($validator->handleCalled);
+        self::assertTrue($validator->handleCalled);
         self::assertTrue($result->isWarning());
     }
 }

@@ -32,6 +32,8 @@ security:
                 username_parameter: 'login_id'
                 password_parameter: 'password'
                 use_forward: true
+                success_handler: eccube.security.success_handler
+                failure_handler: eccube.security.failure_handler
             logout:
                 path: admin_logout
                 target: admin_login
@@ -52,19 +54,11 @@ security:
                 username_parameter: 'login_email'
                 password_parameter: 'login_pass'
                 use_forward: true
+                success_handler: eccube.security.success_handler
+                failure_handler: eccube.security.failure_handler
             logout:
                 path: logout
                 target: homepage
-
-    access_control:
-        # this is a catch-all for the admin area
-        # additional security lives in the controllers
-        - { path: '^/%eccube_admin_route%/login', roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: "@=container.getParameter('eccube_force_ssl') ? 'https' : 'http'" }
-        - { path: '^/%eccube_admin_route%/', roles: ROLE_ADMIN, requires_channel: "@=container.getParameter('eccube_force_ssl') ? 'https' : 'http'"  }
-        - { path: ^/mypage/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: "@=container.getParameter('eccube_force_ssl') ? 'https' : 'http'" }
-        - { path: ^/mypage/withdraw_complete, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: "@=container.getParameter('eccube_force_ssl') ? 'https' : 'http'" }
-        - { path: ^/mypage/change, roles: IS_AUTHENTICATED_FULLY, requires_channel: "@=container.getParameter('eccube_force_ssl') ? 'https' : 'http'" }
-        - { path: ^/mypage/, roles: ROLE_USER, requires_channel: "@=container.getParameter('eccube_force_ssl') ? 'https' : 'http'" }
 
     access_decision_manager:
         strategy: unanimous

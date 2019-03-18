@@ -82,7 +82,66 @@ class CacheUtil implements EventSubscriberInterface
 
         $console->run($input, $output);
 
+        if (function_exists('opcache_reset')) {
+            opcache_reset();
+        }
+
+        if (function_exists('apc_clear_cache')) {
+            apc_clear_cache('user');
+            apc_clear_cache();
+        }
+
+        if (function_exists('wincache_ucache_clear')) {
+            wincache_ucache_clear();
+        }
+
         return $output->fetch();
+    }
+
+    /**
+     * Doctrineのキャッシュを削除します.
+     * APP_ENV=prodの場合のみ実行されます.
+     *
+     * @param null $env
+     *
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function clearDoctrineCache()
+    {
+        if ($this->kernel->getEnvironment() !== 'prod') {
+            return;
+        }
+        $console = new Application($this->kernel);
+        $console->setAutoExit(false);
+
+        $command = [
+            'command' => 'cache:pool:clear',
+            'pools' => ['doctrine.app_cache_pool'],
+            '--no-ansi' => true,
+        ];
+
+        $input = new ArrayInput($command);
+
+        $output = new BufferedOutput(
+            OutputInterface::VERBOSITY_DEBUG,
+            true
+        );
+
+        $console->run($input, $output);
+
+        return $output->fetch();
+    }
+
+    /**
+     * Twigキャッシュを削除します.
+     */
+    public function clearTwigCache()
+    {
+        $cacheDir = $this->kernel->getCacheDir().'/twig';
+        $fs = new Filesystem();
+        $fs->remove($cacheDir);
     }
 
     /**

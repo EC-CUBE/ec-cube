@@ -32,6 +32,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Eccube\Service\CartService;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EntryController extends AbstractController
 {
@@ -182,7 +183,7 @@ class EntryController extends AbstractController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
 
-                    $activateUrl = $this->generateUrl('entry_activate', ['secret_key' => $Customer->getSecretKey()]);
+                    $activateUrl = $this->generateUrl('entry_activate', ['secret_key' => $Customer->getSecretKey()], UrlGeneratorInterface::ABSOLUTE_URL);
 
                     $activateFlg = $this->BaseInfo->isOptionCustomerActivate();
 

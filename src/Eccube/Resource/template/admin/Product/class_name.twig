@@ -145,7 +145,7 @@ file that was distributed with this source code.
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
-                        <div class="card rounded border-0 mb-2">
+                        <div class="card rounded border-0">
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
                                     <form role="form" class="form-row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_name') }}">
@@ -155,7 +155,10 @@ file that was distributed with this source code.
                                             {{ form_widget(form.name) }}
                                             {{ form_errors(form.name) }}
                                         </div>
-                                        <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name__backend_name'|trans }}</span></div>
+                                        <div class="col-auto align-self-center" data-tooltip="true" data-placement="top" title="{{ 'tooltip.product.backend_name'|trans }}">
+                                            <span>{{ 'admin.product.class_name__backend_name'|trans }}</span>
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
                                         <div class="col-3">
                                             {{ form_widget(form.backend_name) }}
                                             {{ form_errors(form.backend_name) }}
@@ -165,24 +168,32 @@ file that was distributed with this source code.
                                         </div>
                                     </form>
                                 </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-auto"><strong>&nbsp;</strong></div>
+                                        <div class="col-auto"><strong>{{ 'admin.common.id'|trans }}</strong></div>
+                                        <div class="col-1"><strong>{{ 'admin.product.class_management'|trans }}</strong></div>
+                                    </div>
+                                </li>
                                 {% for ClassName in ClassNames %}
                                     <li id="ex-class_name-{{ ClassName.id }}" class="list-group-item sortable-item" data-class-name-id="{{ ClassName.id }}" data-sort-no="{{ ClassName.sortNo }}">
                                         <div class="row justify-content-around mode-view">
                                             <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
+                                            <div class="col-auto d-flex align-items-center">{{ ClassName.id }}</div>
                                             <div class="col d-flex align-items-center">
                                                 <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.name }}［{{ 'admin.product.class_name__backend_name'|trans }}{{ 'admin.common.separator__colon'|trans }}{{ ClassName.backend_name }}］ ({{ ClassName.ClassCategories|length }})</a>
                                             </div>
                                             <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon mr-3 up {% if loop.first %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 up {% if loop.first %}disabled{% endif %}" href="" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 down {% if loop.last %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 down {% if loop.last %}disabled{% endif %}" href="" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 action-edit" data-tooltip="true" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <div class="d-inline-block mr-3" data-toggle="tooltip"
+                                                <div class="d-inline-block mr-2" data-tooltip="true"
                                                      data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                     {% set classCategories = ClassName.ClassCategories|length %}
                                                     <a class="btn btn-ec-actionIcon{% if classCategories > 0 %} disabled{% endif %}"

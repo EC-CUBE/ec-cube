@@ -24,12 +24,14 @@ if (!class_exists('\Eccube\Entity\Order')) {
      * Order
      *
      * @ORM\Table(name="dtb_order", indexes={
-     *     @ORM\Index(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"}),
      *     @ORM\Index(name="dtb_order_email_idx", columns={"email"}),
      *     @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}),
      *     @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}),
      *     @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"}),
      *     @ORM\Index(name="dtb_order_order_no_idx", columns={"order_no"})
+     *  },
+     *  uniqueConstraints={
+     *     @ORM\UniqueConstraint(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"})
      *  })
      * @ORM\InheritanceType("SINGLE_TABLE")
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
@@ -124,6 +126,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
                     $OrderItem
                     ->setProduct($ProductOrderItem->getProduct())
                     ->setProductName($ProductOrderItem->getProductName())
+                    ->setProductCode($ProductOrderItem->getProductCode())
                     ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
                     ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
                     ->setPrice($ProductOrderItem->getPrice())
@@ -184,14 +187,14 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="name01", type="string", length=255, nullable=true)
+         * @ORM\Column(name="name01", type="string", length=255)
          */
         private $name01;
 
         /**
          * @var string|null
          *
-         * @ORM\Column(name="name02", type="string", length=255, nullable=true)
+         * @ORM\Column(name="name02", type="string", length=255)
          */
         private $name02;
 
@@ -290,6 +293,8 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * @var string
          *
          * @ORM\Column(name="tax", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
+         *
+         * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
         private $tax = 0;
 
@@ -477,6 +482,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
+         *
          * @var \Eccube\Entity\Master\CustomerOrderStatus
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
@@ -488,6 +494,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
+         *
          * @var \Eccube\Entity\Master\OrderStatusColor
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
@@ -532,11 +539,29 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function __clone()
         {
+            $OriginOrderItems = $this->OrderItems;
             $OrderItems = new ArrayCollection();
             foreach ($this->OrderItems as $OrderItem) {
                 $OrderItems->add(clone $OrderItem);
             }
             $this->OrderItems = $OrderItems;
+
+//            // ShippingとOrderItemが循環参照するため, 手動でヒモ付を変更する.
+//            $Shippings = new ArrayCollection();
+//            foreach ($this->Shippings as $Shipping) {
+//                $CloneShipping = clone $Shipping;
+//                foreach ($OriginOrderItems as $OrderItem) {
+//                    //$CloneShipping->removeOrderItem($OrderItem);
+//                }
+//                foreach ($this->OrderItems as $OrderItem) {
+//                    if ($OrderItem->getShipping() && $OrderItem->getShipping()->getId() == $Shipping->getId()) {
+//                        $OrderItem->setShipping($CloneShipping);
+//                    }
+//                    $CloneShipping->addOrderItem($OrderItem);
+//                }
+//                $Shippings->add($CloneShipping);
+//            }
+//            $this->Shippings = $Shippings;
         }
 
         /**
@@ -987,6 +1012,8 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * @param string $tax
          *
          * @return Order
+         *
+         * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
         public function setTax($tax)
         {
@@ -999,6 +1026,8 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * Get tax.
          *
          * @return string
+         *
+         * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
         public function getTax()
         {
@@ -1637,7 +1666,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set orderStatus.
          *
-         * @param \Eccube\Entity\Master\OrderStatus|null $orderStatus
+         * @param \Eccube\Entity\Master\OrderStatus|null|object $orderStatus
          *
          * @return Order
          */

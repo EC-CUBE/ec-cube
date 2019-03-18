@@ -35,38 +35,6 @@ class CustomerAddressRepository extends AbstractRepository
     }
 
     /**
-     * @deprecated 呼び出し元で制御する
-     *
-     * @param \Eccube\Entity\Customer $Customer
-     * @param null $id
-     *
-     * @return \Eccube\Entity\CustomerAddress|mixed
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function findOrCreateByCustomerAndId(\Eccube\Entity\Customer $Customer, $id = null)
-    {
-        if (!$id) {
-            $CustomerAddress = new \Eccube\Entity\CustomerAddress();
-            $CustomerAddress->setCustomer($Customer);
-        } else {
-            $qb = $this->createQueryBuilder('od')
-                ->andWhere('od.Customer = :Customer AND od.id = :id')
-                ->setParameters([
-                    'Customer' => $Customer,
-                    'id' => $id,
-                ]);
-
-            $CustomerAddress = $qb
-                ->getQuery()
-                ->getSingleResult();
-        }
-
-        return $CustomerAddress;
-    }
-
-    /**
      * お届け先を削除します.
      *
      * @param \Eccube\Entity\CustomerAddress $CustomerAddress

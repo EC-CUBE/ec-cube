@@ -14,7 +14,6 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\Delivery;
-use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Payment;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -29,41 +28,6 @@ class DeliveryRepository extends AbstractRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Delivery::class);
-    }
-
-    /**
-     * @deprecated 呼び出し元で制御する
-     *
-     * @param $id
-     *
-     * @return Delivery|null|object
-     */
-    public function findOrCreate($id)
-    {
-        if ($id == 0) {
-            $em = $this->getEntityManager();
-
-            $SaleType = $em
-                ->getRepository(SaleType::class)
-                ->findOneBy([], ['sort_no' => 'DESC']);
-
-            $Delivery = $this->findOneBy([], ['sort_no' => 'DESC']);
-
-            $sortNo = 1;
-            if ($Delivery) {
-                $sortNo = $Delivery->getSortNo() + 1;
-            }
-
-            $Delivery = new Delivery();
-            $Delivery
-                ->setSortNo($sortNo)
-                ->setVisible(true)
-                ->setSaleType($SaleType);
-        } else {
-            $Delivery = $this->find($id);
-        }
-
-        return $Delivery;
     }
 
     /**

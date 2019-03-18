@@ -26,6 +26,7 @@ use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
+use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,7 +86,7 @@ class ProductClassController extends AbstractController
      * @Route("/%eccube_admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
      * @Template("@admin/Product/product_class.twig")
      */
-    public function index(Request $request, $id)
+    public function index(Request $request, $id, CacheUtil $cacheUtil)
     {
         $Product = $this->findProduct($id);
         if (!$Product) {
@@ -109,7 +110,7 @@ class ProductClassController extends AbstractController
             $ClassName2 = $ClassCategory2 ? $ClassCategory2->getClassName() : null;
 
             // 規格名1/2から組み合わせを生成し, DBから取得した商品規格とマージする.
-            $ProductClasses = $this->mergeProductClassess(
+            $ProductClasses = $this->mergeProductClasses(
                 $this->createProductClasses($ClassName1, $ClassName2),
                 $ProductClasses);
 
@@ -126,8 +127,10 @@ class ProductClassController extends AbstractController
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
-                if ($request->get('return')) {
-                    return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return' => $request->get('return')]);
+                $cacheUtil->clearDoctrineCache();
+
+                if ($request->get('return_product_list')) {
+                    return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
                 }
 
                 return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
@@ -163,8 +166,10 @@ class ProductClassController extends AbstractController
 
                         $this->addSuccess('admin.common.save_complete', 'admin');
 
-                        if ($request->get('return')) {
-                            return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return' => $request->get('return')]);
+                        $cacheUtil->clearDoctrineCache();
+
+                        if ($request->get('return_product_list')) {
+                            return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
                         }
 
                         return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
@@ -179,7 +184,7 @@ class ProductClassController extends AbstractController
             'clearForm' => $this->createForm(FormType::class)->createView(),
             'ClassName1' => $ClassName1,
             'ClassName2' => $ClassName2,
-            'return_product' => $request->get('return'),
+            'return_product_list' => $request->get('return_product_list') ? true : false,
         ];
     }
 
@@ -188,7 +193,7 @@ class ProductClassController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/product/product/class/{id}/clear", requirements={"id" = "\d+"}, name="admin_product_product_class_clear")
      */
-    public function clearProductClasses(Request $request, Product $Product)
+    public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil)
     {
         if (!$Product->hasProductClass()) {
             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
@@ -216,10 +221,12 @@ class ProductClassController extends AbstractController
             $this->entityManager->flush();
 
             $this->addSuccess('admin.product.reset_complete', 'admin');
+
+            $cacheUtil->clearDoctrineCache();
         }
 
-        if ($request->get('return')) {
-            return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return' => $request->get('return')]);
+        if ($request->get('return_product_list')) {
+            return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
         }
 
         return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
@@ -265,15 +272,15 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格の配列をマージする.
      *
-     * @param $ProductClassessForMatrix
+     * @param $ProductClassesForMatrix
      * @param $ProductClasses
      *
      * @return array|ProductClass[]
      */
-    protected function mergeProductClassess($ProductClassessForMatrix, $ProductClasses)
+    protected function mergeProductClasses($ProductClassesForMatrix, $ProductClasses)
     {
         $mergedProductClasses = [];
-        foreach ($ProductClassessForMatrix as $pcfm) {
+        foreach ($ProductClassesForMatrix as $pcfm) {
             foreach ($ProductClasses as $pc) {
                 if ($pcfm->getClassCategory1()->getId() === $pc->getClassCategory1()->getId()) {
                     $cc2fm = $pcfm->getClassCategory2();

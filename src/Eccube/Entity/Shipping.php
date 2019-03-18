@@ -71,14 +71,14 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="kana01", type="string", length=255)
+         * @ORM\Column(name="kana01", type="string", length=255, nullable=true)
          */
         private $kana01;
 
         /**
          * @var string
          *
-         * @ORM\Column(name="kana02", type="string", length=255)
+         * @ORM\Column(name="kana02", type="string", length=255, nullable=true)
          */
         private $kana02;
 
@@ -132,13 +132,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         private $time_id;
 
         /**
-         * @var int
-         *
-         * @ORM\Column(name="fee_id", type="integer", options={"unsigned":true}, nullable=true)
-         */
-        private $fee_id;
-
-        /**
          * @var string|null
          *
          * @ORM\Column(name="delivery_time", type="string", length=255, nullable=true)
@@ -153,13 +146,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          * @ORM\Column(name="delivery_date", type="datetimetz", nullable=true)
          */
         private $shipping_delivery_date;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="delivery_fee", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
-         */
-        private $shipping_delivery_fee = 0;
 
         /**
          * 出荷日
@@ -627,30 +613,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         }
 
         /**
-         * Set shippingDeliveryFee.
-         *
-         * @param string|null $shippingDeliveryFee
-         *
-         * @return Shipping
-         */
-        public function setShippingDeliveryFee($shippingDeliveryFee = null)
-        {
-            $this->shipping_delivery_fee = $shippingDeliveryFee;
-
-            return $this;
-        }
-
-        /**
-         * Get shippingDeliveryFee.
-         *
-         * @return string|null
-         */
-        public function getShippingDeliveryFee()
-        {
-            return $this->shipping_delivery_fee;
-        }
-
-        /**
          * Set shippingDate.
          *
          * @param \DateTime|null $shippingDate
@@ -1018,30 +980,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         public function getTimeId()
         {
             return $this->time_id;
-        }
-
-        /**
-         * Set feeId
-         *
-         * @param integer $feeId
-         *
-         * @return Shipping
-         */
-        public function setFeeId($feeId)
-        {
-            $this->fee_id = $feeId;
-
-            return $this;
-        }
-
-        /**
-         * Get feeId
-         *
-         * @return integer
-         */
-        public function getFeeId()
-        {
-            return $this->fee_id;
         }
 
         /**

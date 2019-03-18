@@ -66,6 +66,27 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
         protected $sort_no;
 
         /**
+         * @var boolean
+         *
+         * @ORM\Column(name="visible", type="boolean", options={"default":true})
+         */
+        private $visible;
+
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
+
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="update_date", type="datetimetz")
+         */
+        private $update_date;
+
+        /**
          * Get id.
          *
          * @return int
@@ -145,6 +166,78 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
         public function getSortNo()
         {
             return $this->sort_no;
+        }
+
+        /**
+         * Set visible
+         *
+         * @param boolean $visible
+         *
+         * @return DeliveryTime
+         */
+        public function setVisible($visible)
+        {
+            $this->visible = $visible;
+
+            return $this;
+        }
+
+        /**
+         * Is the visibility visible?
+         *
+         * @return boolean
+         */
+        public function isVisible()
+        {
+            return $this->visible;
+        }
+
+        /**
+         * Set createDate.
+         *
+         * @param \DateTime $createDate
+         *
+         * @return DeliveryTime
+         */
+        public function setCreateDate($createDate)
+        {
+            $this->create_date = $createDate;
+
+            return $this;
+        }
+
+        /**
+         * Get createDate.
+         *
+         * @return \DateTime
+         */
+        public function getCreateDate()
+        {
+            return $this->create_date;
+        }
+
+        /**
+         * Set updateDate.
+         *
+         * @param \DateTime $updateDate
+         *
+         * @return DeliveryTime
+         */
+        public function setUpdateDate($updateDate)
+        {
+            $this->update_date = $updateDate;
+
+            return $this;
+        }
+
+        /**
+         * Get updateDate.
+         *
+         * @return \DateTime
+         */
+        public function getUpdateDate()
+        {
+            return $this->update_date;
         }
     }
 }

@@ -1,0 +1,4 @@
+id,name,sort_no,discriminator_type
+1,New Items,1,tag
+2,Our Picks,2,tag
+3,Limited Items,3,tag

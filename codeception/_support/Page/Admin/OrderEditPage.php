@@ -201,8 +201,9 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     public function お届け先の追加()
     {
         $this->tester->scrollTo(['css' => '#form1'], 0, 200);
-        $this->tester->wait(5);
         $this->tester->click('#shipping-add');
+        $this->tester->waitForElementVisible('#confirmFormChangeModal');
+        $this->tester->click(['css' => '#confirmFormChangeModal > div > div > div.modal-footer > a.btn.btn-ec-conversion']);
 
         return $this;
     }

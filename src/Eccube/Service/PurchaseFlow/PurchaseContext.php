@@ -25,6 +25,14 @@ class PurchaseContext extends \SplObjectStorage
 
     private $originHolder;
 
+    private $flowType;
+
+    const ORDER_FLOW = 'order';
+
+    const SHOPPING_FLOW = 'shopping';
+
+    const CART_FLOW = 'cart';
+
     public function __construct(ItemHolderInterface $originHolder = null, Customer $user = null)
     {
         $this->originHolder = $originHolder;
@@ -49,5 +57,25 @@ class PurchaseContext extends \SplObjectStorage
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function setFlowType($flowType)
+    {
+        $this->flowType = $flowType;
+    }
+
+    public function isOrderFlow()
+    {
+        return $this->flowType === self::ORDER_FLOW;
+    }
+
+    public function isShoppingFlow()
+    {
+        return $this->flowType === self::SHOPPING_FLOW;
+    }
+
+    public function isCartFlow()
+    {
+        return $this->flowType === self::CART_FLOW;
     }
 }

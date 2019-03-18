@@ -40,6 +40,7 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -237,7 +238,7 @@ class ProductController extends AbstractController
                 $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
                 // セッション中の検索条件, ページ番号を初期化.
-                $this->session->set('eccube.admin.product.search', $searchData);
+                $this->session->set('eccube.admin.product.search', $viewData);
                 $this->session->set('eccube.admin.product.search.page_no', $page_no);
             }
         }
@@ -312,6 +313,7 @@ class ProductController extends AbstractController
 
         $images = $request->files->get('admin_product');
 
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
         $files = [];
         if (count($images) > 0) {
             foreach ($images as $img) {
@@ -322,7 +324,12 @@ class ProductController extends AbstractController
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
+                    // 拡張子
                     $extension = $image->getClientOriginalExtension();
+                    if (!in_array($extension, $allowExtensions)) {
+                        throw new UnsupportedMediaTypeHttpException();
+                    }
+
                     $filename = date('mdHis').uniqid('_').'.'.$extension;
                     $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
                     $files[] = $filename;
@@ -348,7 +355,7 @@ class ProductController extends AbstractController
      * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
      * @Template("@admin/Product/product.twig")
      */
-    public function edit(Request $request, $id = null, RouterInterface $router)
+    public function edit(Request $request, $id = null, RouterInterface $router, CacheUtil $cacheUtil)
     {
         $has_class = false;
         if (is_null($id)) {
@@ -386,7 +393,7 @@ class ProductController extends AbstractController
                 if ($this->BaseInfo->isOptionProductTaxRule() && $ProductClass->getTaxRule()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
-                $ProductStock = $ProductClasses[0]->getProductStock();
+                $ProductStock = $ProductClass->getProductStock();
             }
         }
 
@@ -599,6 +606,8 @@ class ProductController extends AbstractController
                 if ($returnLink = $form->get('return_link')->getData()) {
                     try {
                         // $returnLinkはpathの形式で渡される. pathが存在するかをルータでチェックする.
+                        $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
+                        $returnLink = preg_replace($pattern, '', $returnLink);
                         $result = $router->match($returnLink);
                         // パラメータのみ抽出
                         $params = array_filter($result, function ($key) {
@@ -612,6 +621,8 @@ class ProductController extends AbstractController
                         log_warning('URLの形式が不正です。');
                     }
                 }
+
+                $cacheUtil->clearDoctrineCache();
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
             }
@@ -661,7 +672,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id = null)
+    public function delete(Request $request, $id = null, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
         $session = $request->getSession();
@@ -721,6 +732,8 @@ class ProductController extends AbstractController
 
                     $success = true;
                     $message = trans('admin.common.delete_complete');
+
+                    $cacheUtil->clearDoctrineCache();
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
                     $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);
@@ -931,10 +944,10 @@ class ProductController extends AbstractController
                 /** @var $Product \Eccube\Entity\Product */
                 $Product = $entity;
 
-                /** @var $ProductClassess \Eccube\Entity\ProductClass[] */
-                $ProductClassess = $Product->getProductClasses();
+                /** @var $ProductClasses \Eccube\Entity\ProductClass[] */
+                $ProductClasses = $Product->getProductClasses();
 
-                foreach ($ProductClassess as $ProductClass) {
+                foreach ($ProductClasses as $ProductClass) {
                     $ExportCsvRow = new ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
@@ -994,7 +1007,6 @@ class ProductController extends AbstractController
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
-        $ProductCategory->setSortNo($count);
 
         return $ProductCategory;
     }
@@ -1009,7 +1021,7 @@ class ProductController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus)
+    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -1033,6 +1045,7 @@ class ProductController extends AbstractController
                     '%status%' => $ProductStatus->getName(),
                 ]);
                 $this->addSuccess($msg, 'admin');
+                $cacheUtil->clearDoctrineCache();
             }
         } catch (\Exception $e) {
             $this->addError($e->getMessage(), 'admin');

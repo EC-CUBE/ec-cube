@@ -12,11 +12,11 @@ file that was distributed with this source code.
     <table class="table table-sm">
         <thead>
         <tr>
-            <th class="border-top-0 pl-3 pt-2 pb-2">{{'admin.store.unregisterd_plugin_table.941'|trans}}</th>
-            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregisterd_plugin_table.942'|trans}}</th>
-            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregisterd_plugin_table.943'|trans}}</th>
-            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregisterd_plugin_table.944'|trans}}</th>
-            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregisterd_plugin_table.945'|trans}}</th>
+            <th class="border-top-0 pl-3 pt-2 pb-2">{{'admin.store.unregistered_plugin_table.941'|trans}}</th>
+            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregistered_plugin_table.942'|trans}}</th>
+            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregistered_plugin_table.943'|trans}}</th>
+            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregistered_plugin_table.944'|trans}}</th>
+            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregistered_plugin_table.945'|trans}}</th>
         </tr>
         </thead>
         <tbody>
@@ -29,13 +29,13 @@ file that was distributed with this source code.
                         </td>
                     {% else %}
                         <td class="align-middle pl-3">
-                            <strong>{{'admin.store.unregisterd_plugin_table.946'|trans}}</strong>
+                            <strong>{{'admin.store.unregistered_plugin_table.946'|trans}}</strong>
                         </td>
                     {% endif %}
                     {% if Plugin.version is defined %}
                         <td class="align-middle">{{ Plugin.version }}</td>
                     {% else %}
-                        <td class="align-middle">{{'admin.store.unregisterd_plugin_table.947'|trans}}</td>
+                        <td class="align-middle">{{'admin.store.unregistered_plugin_table.947'|trans}}</td>
                     {% endif %}
                     {% if Plugin.code is defined %}
                         <td class="align-middle"><p>{{ Plugin.code }}</p>
@@ -44,14 +44,14 @@ file that was distributed with this source code.
                             {% endif %}
                         </td>
                     {% else %}
-                        <td class="align-middle">{{'admin.store.unregisterd_plugin_table.949'|trans}}</td>
+                        <td class="align-middle">{{'admin.store.unregistered_plugin_table.949'|trans}}</td>
                     {% endif %}
                     <td class="align-middle">
                         &nbsp;-&nbsp;
                     </td>
                     <td class="align-middle">
-                        {% if unregisterdPluginsConfigPages[Plugin.code] is defined %}
-                            <a href='{{ unregisterdPluginsConfigPages[Plugin.code]}}'>{{'admin.store.unregisterd_plugin_table.950'|trans}}</a>
+                        {% if unregisteredPluginsConfigPages[Plugin.code] is defined %}
+                            <a href='{{ unregisteredPluginsConfigPages[Plugin.code]}}'>{{'admin.store.unregistered_plugin_table.950'|trans}}</a>
                         {% else %}
                             &nbsp;-&nbsp;
                         {% endif %}

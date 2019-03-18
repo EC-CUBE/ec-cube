@@ -104,9 +104,16 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 選択_プレビューページ($value)
+    {
+        $this->tester->selectOption(['id' => 'admin_layout_Page'], $value);
+
+        return $this;
+    }
+
     public function プレビュー()
     {
-        $this->tester->click('#preview_box__preview_button > button');
+        $this->tester->click('#preview-button');
 
         return $this;
     }

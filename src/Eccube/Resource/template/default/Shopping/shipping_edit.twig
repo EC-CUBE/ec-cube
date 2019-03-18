@@ -61,7 +61,7 @@ file that was distributed with this source code.
                                 </dt>
                                 <dd>
                                     <div class="ec-halfInput{{ has_errors(form.kana.kana01, form.kana.kana02) ? ' error'}}">
-                                        {{ form_widget(form.kana.kana01, { 'attr': { 'placeholder': 'common.first_name_kana' }}) }}
+                                        {{ form_widget(form.kana.kana01, { 'attr': { 'placeholder': 'common.last_name_kana' }}) }}
                                         {{ form_widget(form.kana.kana02, { 'attr': { 'placeholder': 'common.first_name_kana' }}) }}
                                         {{ form_errors(form.kana.kana01) }}
                                         {{ form_errors(form.kana.kana02) }}
@@ -91,7 +91,7 @@ file that was distributed with this source code.
                                                 <div class="ec-icon"><img
                                                             src="{{ asset('assets/icon/question-white.svg') }}" alt="">
                                                 </div>
-                                            </div><a href="http://www.post.japanpost.jp/zipcode/" target="_blank"><span>{{ 'common.search_postal_code'|trans }}</span></a>
+                                            </div><a href="https://www.post.japanpost.jp/zipcode/" target="_blank"><span>{{ 'common.search_postal_code'|trans }}</span></a>
                                         </div>
                                         {{ form_errors(form.postal_code) }}
                                     </div>
@@ -132,7 +132,7 @@ file that was distributed with this source code.
                                             {{ form_label(f) }}
                                         </dt>
                                         <dd>
-                                            <div class="ec-select{{ has_errors(f) ? ' error' }}">
+                                            <div class="{{ f.vars.eccube_form_options.style_class }}{{ has_errors(f) ? ' error' }}">
                                                 {{ form_widget(f) }}
                                                 {{ form_errors(f) }}
                                             </div>
@@ -145,7 +145,11 @@ file that was distributed with this source code.
                             <div class="ec-off4Grid">
                                 <div class="ec-off4Grid__cell">
                                     <button type="submit" class="ec-blockBtn--action">{{ 'common.registration'|trans }}</button>
-                                    <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
+                                    {% if is_granted('ROLE_USER') %}
+                                    <a href="{{ url('shopping_shipping', { 'id': shippingId }) }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
+                                    {% else %}
+                                        <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

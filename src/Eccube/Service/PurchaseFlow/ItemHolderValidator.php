@@ -33,9 +33,11 @@ abstract class ItemHolderValidator
         try {
             $this->validate($itemHolder, $context);
 
-            return ProcessResult::success();
+            return ProcessResult::success(null, static::class);
         } catch (InvalidItemException $e) {
-            return $e->isWarning() ? ProcessResult::warn($e->getMessage()) : ProcessResult::error($e->getMessage());
+            return $e->isWarning()
+                ? ProcessResult::warn($e->getMessage(), static::class)
+                : ProcessResult::error($e->getMessage(), static::class);
         }
     }
 

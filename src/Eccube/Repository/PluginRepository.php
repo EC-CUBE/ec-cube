@@ -35,7 +35,7 @@ class PluginRepository extends AbstractRepository
     }
 
     /**
-     * @param $code プラグインコード
+     * @param $code string プラグインコード
      *
      * @return Plugin
      */

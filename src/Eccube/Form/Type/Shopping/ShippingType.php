@@ -14,6 +14,8 @@
 namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Delivery;
+use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -195,6 +197,7 @@ class ShippingType extends AbstractType
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
+                /** @var Shipping $Shipping */
                 $Shipping = $event->getData();
                 if (is_null($Shipping) || !$Shipping->getId()) {
                     return;
@@ -205,6 +208,10 @@ class ShippingType extends AbstractType
                 $Delivery = $Shipping->getDelivery();
                 if ($Delivery) {
                     $DeliveryTimes = $Delivery->getDeliveryTimes();
+                    $DeliveryTimes = $DeliveryTimes->filter(function (DeliveryTime $DeliveryTime) {
+                        return $DeliveryTime->isVisible();
+                    });
+
                     foreach ($DeliveryTimes as $deliveryTime) {
                         if ($deliveryTime->getId() == $Shipping->getTimeId()) {
                             $ShippingDeliveryTime = $deliveryTime;
@@ -218,7 +225,7 @@ class ShippingType extends AbstractType
                     'DeliveryTime',
                     EntityType::class,
                     [
-                        'label' => 'お届け時間',
+                        'label' => 'front.shopping.delivery_time',
                         'class' => 'Eccube\Entity\DeliveryTime',
                         'choice_label' => 'deliveryTime',
                         'choices' => $DeliveryTimes,
@@ -232,10 +239,18 @@ class ShippingType extends AbstractType
         );
 
         // POSTされないデータをエンティティにセットする.
-        // TODO Calculatorで行うのが適切.
+        // TODO PurchaseFlow で行うのが適切.
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            /** @var Shipping $Shipping */
             $Shipping = $event->getData();
             $form = $event->getForm();
+            /** @var Delivery $Delivery */
+            $Delivery = $form['Delivery']->getData();
+            if ($Delivery) {
+                $Shipping->setShippingDeliveryName($Delivery->getName());
+            } else {
+                $Shipping->setShippingDeliveryName(null);
+            }
             $DeliveryDate = $form['shipping_delivery_date']->getData();
             if ($DeliveryDate) {
                 $Shipping->setShippingDeliveryDate(new \DateTime($DeliveryDate));

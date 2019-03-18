@@ -24,6 +24,7 @@ use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Exception\PluginApiException;
 use Eccube\Form\Type\Admin\ChangePasswordType;
 use Eccube\Form\Type\Admin\LoginType;
 use Eccube\Repository\CustomerRepository;
@@ -168,6 +169,11 @@ class AdminController extends AbstractController
      */
     public function index(Request $request)
     {
+        $adminRoute = $this->eccubeConfig['eccube_admin_route'];
+        $is_danger_admin_url = false;
+        if ($adminRoute === 'admin') {
+            $is_danger_admin_url = true;
+        }
         /**
          * 受注状況.
          */
@@ -244,9 +250,11 @@ class AdminController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
 
         // 推奨プラグイン
-        $url = $this->eccubeConfig['eccube_package_repo_url'].'/plugins/recommended';
-        list($json, $info) = $this->pluginApiService->getRequestApi($url);
-        $recommendedPlugins = json_decode($json, true);
+        $recommendedPlugins = [];
+        try {
+            $recommendedPlugins = $this->pluginApiService->getRecommended();
+        } catch (PluginApiException $ignore) {
+        }
 
         return [
             'Orders' => $Orders,
@@ -258,6 +266,7 @@ class AdminController extends AbstractController
             'countProducts' => $countProducts,
             'countCustomers' => $countCustomers,
             'recommendedPlugins' => $recommendedPlugins,
+            'is_danger_admin_url' => $is_danger_admin_url,
         ];
     }
 

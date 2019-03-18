@@ -23,35 +23,51 @@ class ProcessResult
 
     protected $message;
 
+    protected $class;
+
     /**
      * @param string $type
      * @param string|null $message
+     * @param string|null $class 呼び出し元クラス
      */
-    private function __construct($type, $message)
+    private function __construct($type, string $message = null, $class = null)
     {
         $this->type = $type;
         $this->message = $message;
+        $this->class = $class;
     }
 
     /**
-     * @param string $message
+     * @param string|null $message
+     * @param string|null $class
+     *
+     * @return ProcessResult
      */
-    public static function warn($message)
+    public static function warn($message = null, $class = null)
     {
-        return new self(self::WARNING, $message);
+        return new self(self::WARNING, $message, $class);
     }
 
     /**
-     * @param string $message
+     * @param string|null $message
+     * @param string|null $class
+     *
+     * @return ProcessResult
      */
-    public static function error($message)
+    public static function error($message = null, $class = null)
     {
-        return new self(self::ERROR, $message);
+        return new self(self::ERROR, $message, $class);
     }
 
-    public static function success()
+    /**
+     * @param string|null $message
+     * @param string|null $class
+     *
+     * @return ProcessResult
+     */
+    public static function success($message = null, $class = null)
     {
-        return new self(self::SUCCESS, null);
+        return new self(self::SUCCESS, $message, $class);
     }
 
     public function isError()

@@ -1,0 +1,34 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+<div class="ec-topicRole">
+    <div class="ec-role">
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">{{ 'front.block.topic.topic__en'|trans }}</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">{{ 'front.block.topic.topic__ja'|trans }}</span>
+        </div>
+        <div class="ec-topicRole__list">
+            <div class="ec-topicRole__listItem">
+                <a href="{{ url('product_list') }}?category_id=1">
+                    <img src="{{ asset('assets/img/top/img_bnr01.jpg') }}">
+                </a>
+                <p class="ec-topicRole__listItemTitle">{{ 'front.block.topic.title__gelato'|trans }}</p>
+            </div>
+            <div class="ec-topicRole__listItem">
+                <a href="{{ url('product_list') }}?category_id=5">
+                    <img src="{{ asset('assets/img/top/img_bnr02.jpg') }}">
+                </a>
+                <p class="ec-topicRole__listItemTitle">{{ 'front.block.topic.title__ice'|trans }}</p>
+            </div>
+        </div>
+    </div>
+</div>

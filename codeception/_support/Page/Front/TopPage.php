@@ -15,8 +15,8 @@ namespace Page\Front;
 
 class TopPage extends AbstractFrontPage
 {
-    public static $検索_カテゴリ選択 = ['id' => 'category_id'];
-    public static $検索_キーワード = ['id' => 'name'];
+    public static $検索_カテゴリ選択 = ['class' => 'category_id'];
+    public static $検索_キーワード = ['class' => 'search-name'];
 
     public static function go(\AcceptanceTester $I)
     {
@@ -27,19 +27,21 @@ class TopPage extends AbstractFrontPage
 
     public function 新着情報選択($rowNum)
     {
-        $this->tester->click(['css' => "div.ec-news .ec-newsline:nth-child($rowNum) a"]);
+        $this->tester->click(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsHeading"]);
+
+        $this->tester->scrollTo(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsHeading"], 0, 200);
 
         return $this;
     }
 
     public function 新着情報詳細($rowNum)
     {
-        return $this->tester->grabTextFrom(['css' => "div.ec-news .ec-newsline:nth-child($rowNum) .ec-newsline__description"]);
+        return $this->tester->grabTextFrom(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsDescription"]);
     }
 
     public function 新着情報リンククリック($rowNum)
     {
-        $this->tester->click(['css' => "div.ec-news .ec-newsline:nth-child($rowNum) .ec-newsline__description a"]);
+        $this->tester->click(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsDescription > a"]);
     }
 
     public function カテゴリ選択($categories)
@@ -58,7 +60,7 @@ class TopPage extends AbstractFrontPage
     public function 検索($keyword = null)
     {
         if ($keyword) {
-            $this->tester->fillField(['id' => 'name'], $keyword);
+            $this->tester->fillField(['class' => 'search-name'], $keyword);
         }
         $this->tester->click('button.ec-headerSearch__keywordBtn');
 

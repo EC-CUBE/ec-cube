@@ -1,0 +1,72 @@
+#------------------------------------------------------------------------------------
+# Validation error message
+#
+# Such a validation message of the following codes for form calls a message ID in validators.en.yaml.
+#
+# $builder->add('name', TextType::class, [
+#    'message' => 'form_error.kana_only'
+# ]);
+#------------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------------
+# Symfony error message
+#
+# Overwriting standardized Symfony error messages.
+# https://github.com/symfony/validator/blob/3.4/Resources/translations/validators.ja.xlf
+#------------------------------------------------------------------------------------
+This value should not be blank.: No value found.
+This value should be the user\'s current password.: Wrong password.
+Invalid credentials.: |
+  Failed to sign in.
+  Please make sure if the credentials are correct.
+Invalid CSRF token.: |
+  Failed to sign in.
+  Please make sure if the credentials are correct.
+
+#------------------------------------------------------------------------------------
+# EC-CUBE error message
+#
+# Generic error messages for EC-CUBE
+#------------------------------------------------------------------------------------
+Invalid twig format. {{ error }}: Invalid Twig format. {{ error }}
+form_error.numeric_only: Entry must be numbers.
+form_error.kana_only: Entry must be Kana.
+form_error.graph_only: Entry must be alphanumeric characters.
+form_error.not_contain_spaces: Do not include spaces, tabs and line breaks.
+form_error.graph_and_hyphen_only: Entry must be alphanumeric characters or hyphens.
+form_error.not_selected: Not selected.
+form_error.select_is_future_or_now_date: Invalid Date of Birth.
+form_error.float_only: Entry must be numbers and decimal points.
+form_error.same_password: Please enter the same password.
+form_error.same_email: Please enter the same email address.
+form_error.admin_is_not_available: Do not use "admin" as the directory name.
+form_error.member_already_exists: This ID is already registered.
+form_error.customer_already_exists:  This email address can not be used.
+
+#------------------------------------------------------------------------------------
+# Deplicated
+#
+# The following messge IDs are NOT recommended.
+#------------------------------------------------------------------------------------
+errors.numeric_only: Entry must be numbers.
+errors.float_only: Entry must be numbers and decimal points.
+errors.graph_only: Entry must be alphanumeric characters.
+errors.kana_only: Entry must be Kana.
+errors.not_contain_spaces: Do not include spaces, tabs and line breaks.
+errors.not_selected: Not selected.
+errors.graph_and_hyphen: Entry must be alphanumeric characters or hyphens.
+
+form.type.graph.invalid: Entry must be alphanumeric characters.
+form.type.name.firstname.nothasspace: Do not include spaces, tabs and line breaks for Your Name (First).
+form.type.name.lastname.nothasspace: Do not include spaces, tabs and line breaks for Your Name (Last).
+form.type.customer.password.too_short: Password is too short. It must be more than {{ limit }} digits.
+form.type.customer.password.too_long: Password is too long. It must be more than {{ limit }} digits.
+form.type.customer.company.nothasspace: Do not include spaces, tabs and line breaks for Company Name.
+form.type.admin.nottelstyle: TEL must be numbers or hyphens.
+form.type.admin.notkanastyle: Your Name (Kana) entry must be Kana.
+form.type.select.notselect: The field is empty.
+form.type.select.classcategory: Item is not selected.
+form.type.add.quantity: Please enter more than 1.
+form.type.select.select_is_future_or_now_date: Invalid Date of Birth.
+form.type.admin.nottrackingnumberstyle: Tracking No. entry must be alphanumeric chars and hypens.
+form.type.float.invalid: Only numbers and decimal points are accepted.

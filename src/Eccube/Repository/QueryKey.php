@@ -17,11 +17,9 @@ final class QueryKey
 {
     const PRODUCT_SEARCH = 'Product.getQueryBuilderBySearchData';
     const PRODUCT_SEARCH_ADMIN = 'Product.getQueryBuilderBySearchDataForAdmin';
-    const PRODUCT_GET_FAVORITE = 'Product.getFavoriteProductQueryBuilderByCustomer';
 
     const CUSTOMER_SEARCH = 'Customer.getQueryBuilderBySearchData';
 
-    const ORDER_SEARCH = 'Order.getQueryBuilderBySearchData';
     const ORDER_SEARCH_ADMIN = 'Order.getQueryBuilderBySearchDataForAdmin';
     const ORDER_SEARCH_BY_CUSTOMER = 'Order.getQueryBuilderByCustomer';
 }

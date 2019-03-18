@@ -119,8 +119,6 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     public function testChangeTemplate()
     {
-        $this->markTestIncomplete();
-
         // テンプレートをアップロード
         $this->scenarioUpload();
         $this->verifyUpload();
@@ -164,7 +162,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     public function testDownload()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete("See: \Eccube\Controller\Admin\Store\TemplateController::L151");
 
         // テンプレートをアップロード
         $this->scenarioUpload();

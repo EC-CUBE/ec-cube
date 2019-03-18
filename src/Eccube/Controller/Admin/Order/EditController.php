@@ -46,6 +46,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -167,7 +168,7 @@ class EditController extends AbstractController
      * @Route("/%eccube_admin_route%/order/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit")
      * @Template("@admin/Order/edit.twig")
      */
-    public function index(Request $request, $id = null)
+    public function index(Request $request, $id = null, RouterInterface $router)
     {
         $TargetOrder = null;
         $OriginOrder = null;
@@ -301,6 +302,25 @@ class EditController extends AbstractController
 
                         log_info('受注登録完了', [$TargetOrder->getId()]);
 
+                        if ($returnLink = $form->get('return_link')->getData()) {
+                            try {
+                                // $returnLinkはpathの形式で渡される. pathが存在するかをルータでチェックする.
+                                $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
+                                $returnLink = preg_replace($pattern, '', $returnLink);
+                                $result = $router->match($returnLink);
+                                // パラメータのみ抽出
+                                $params = array_filter($result, function ($key) {
+                                    return 0 !== \strpos($key, '_');
+                                }, ARRAY_FILTER_USE_KEY);
+
+                                // pathからurlを再構築してリダイレクト.
+                                return $this->redirectToRoute($result['_route'], $params);
+                            } catch (\Exception $e) {
+                                // マッチしない場合はログ出力してスキップ.
+                                log_warning('URLの形式が不正です。');
+                            }
+                        }
+
                         return $this->redirectToRoute('admin_order_edit', ['id' => $TargetOrder->getId()]);
                     }
 
@@ -346,8 +366,8 @@ class EditController extends AbstractController
         $times = [];
         $deliveries = $this->deliveryRepository->findAll();
         foreach ($deliveries as $Delivery) {
-            $deliveryTiems = $Delivery->getDeliveryTimes();
-            foreach ($deliveryTiems as $DeliveryTime) {
+            $deliveryTimes = $Delivery->getDeliveryTimes();
+            foreach ($deliveryTimes as $DeliveryTime) {
                 $times[$Delivery->getId()][$DeliveryTime->getId()] = $DeliveryTime->getDeliveryTime();
             }
         }

@@ -33,9 +33,9 @@ if (!class_exists('\Eccube\Entity\Member')) {
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {
             $metadata->addConstraint(new UniqueEntity([
-            'fields' => 'login_id',
-            'message' => 'common.member_already_exists',
-        ]));
+                'fields' => 'login_id',
+                'message' => 'form_error.member_already_exists',
+            ]));
         }
 
         /**
@@ -109,7 +109,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="salt", type="string", length=255)
+         * @ORM\Column(name="salt", type="string", length=255, nullable=true)
          */
         private $salt;
 

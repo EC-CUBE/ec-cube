@@ -119,7 +119,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="password", type="string", length=255, nullable=true)
+         * @ORM\Column(name="password", type="string", length=255)
          */
         private $password;
 
@@ -329,10 +329,10 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {
             $metadata->addConstraint(new UniqueEntity([
-            'fields' => 'email',
-            'message' => 'common.customer_already_exists',
-            'repositoryMethod' => 'getNonWithdrawingCustomers',
-        ]));
+                'fields' => 'email',
+                'message' => 'form_error.customer_already_exists',
+                'repositoryMethod' => 'getNonWithdrawingCustomers',
+            ]));
         }
 
         /**

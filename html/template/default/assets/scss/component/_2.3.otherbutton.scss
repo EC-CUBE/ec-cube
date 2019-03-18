@@ -29,6 +29,7 @@ Markup:
 Styleguide 2.3.1
 */
 .ec-blockTopBtn{
+  display: none;
   position: fixed;
   width:120px;
   height: 40px;
@@ -43,9 +44,5 @@ Styleguide 2.3.1
   @include media_desktop {
     right:30px;
     bottom: 30px;
-  }
-
-  &:after{
-    content: "ページトップへ";
   }
 }

@@ -1,0 +1,3 @@
+id,delivery_id,delivery_time,sort_no,create_date,update_date,visible,discriminator_type
+"1","1","午前","1","2017-03-07 10:14:52","2017-03-07 10:14:52","1","deliverytime"
+"2","1","午後","2","2017-03-07 10:14:52","2017-03-07 10:14:52","1","deliverytime"

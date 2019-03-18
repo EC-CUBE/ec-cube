@@ -23,18 +23,18 @@ file that was distributed with this source code.
                     <div class="row">
                         <div class="col-md-12">
                             <textarea class="form-control disp_area" name="disp_area">
-                                {% if protectedDirs|length == 0 %}
-                                    &gt;&gt;○：{{ 'install.permission_is_valid'|trans }}
-                                {% else %}
-                                    {{ 'install.permission_is_invalid'|trans }}
-                                    {% for dir in protectedDirs %}
-                                        &gt;&gt;☓：{{ dir }}
-                                    {% endfor %}
-                                {% endif %}
+{% if noWritePermissions|length == 0 %}
+&gt;&gt;○：{{ 'install.permission_is_valid'|trans }}
+{% else %}
+{{ 'install.permission_is_invalid'|trans }}
+{% for noWritePermission in noWritePermissions %}
+&gt;&gt;☓：{{ noWritePermission }}
+{% endfor %}
+{% endif %}
                             </textarea>
                             <ul class="btn_area">
                                 <li>
-                                    {% if protectedDirs|length > 0 %}
+                                    {% if noWritePermissions|length > 0 %}
                                         <a href="{{ path('install_step2') }}" class="btn btn-primary btn-block btn-lg">{{ 'install.update'|trans }}</a>
                                     {% else %}
                                         <a href="{{ path('install_step3') }}" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</a>

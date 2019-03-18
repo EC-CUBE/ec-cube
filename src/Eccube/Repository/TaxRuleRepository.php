@@ -249,42 +249,6 @@ class TaxRuleRepository extends AbstractRepository
     }
 
     /**
-     * getById
-     *
-     * @deprecated Use TaxRuleRepository::find()
-     *
-     * @param  int   $id
-     *
-     * @return array
-     */
-    public function getById($id)
-    {
-        $criteria = [
-            'id' => $id,
-        ];
-
-        return $this->findOneBy($criteria);
-    }
-
-    /**
-     * getByTime
-     *
-     * @deprecated Use magic finder methods. TaxRuleRepository::findOneByApplyDate()
-     *
-     * @param  string $applyDate
-     *
-     * @return mixed
-     */
-    public function getByTime($applyDate)
-    {
-        $criteria = [
-            'apply_date' => $applyDate,
-        ];
-
-        return $this->findOneBy($criteria);
-    }
-
-    /**
      * 税規約の削除.
      *
      * @param  int|\Eccube\Entity\TaxRule $TaxRule 税規約

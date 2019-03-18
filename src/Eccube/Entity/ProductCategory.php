@@ -46,13 +46,6 @@ if (!class_exists('\Eccube\Entity\ProductCategory')) {
         private $category_id;
 
         /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-         */
-        private $sort_no;
-
-        /**
          * @var \Eccube\Entity\Product
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductCategories")
@@ -118,30 +111,6 @@ if (!class_exists('\Eccube\Entity\ProductCategory')) {
         public function getCategoryId()
         {
             return $this->category_id;
-        }
-
-        /**
-         * Set sortNo.
-         *
-         * @param int $sortNo
-         *
-         * @return ProductCategory
-         */
-        public function setSortNo($sortNo)
-        {
-            $this->sort_no = $sortNo;
-
-            return $this;
-        }
-
-        /**
-         * Get sortNo.
-         *
-         * @return int
-         */
-        public function getSortNo()
-        {
-            return $this->sort_no;
         }
 
         /**

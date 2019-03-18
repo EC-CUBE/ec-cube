@@ -61,6 +61,26 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
                 'cookie_secure' => $forceSSL,
             ],
         ]);
+
+        // SSL強制時は, httpsのみにアクセス制限する
+        $accessControl = [
+          ['path' => '^/%eccube_admin_route%/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+          ['path' => '^/%eccube_admin_route%/', 'roles' => 'ROLE_ADMIN'],
+          ['path' => '^/mypage/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+          ['path' => '^/mypage/withdraw_complete', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+          ['path' => '^/mypage/change', 'roles' => 'IS_AUTHENTICATED_FULLY'],
+          ['path' => '^/mypage/', 'roles' => 'ROLE_USER'],
+        ];
+        if ($forceSSL) {
+            foreach ($accessControl as &$control) {
+                $control['requires_channel'] = 'https';
+            }
+        }
+
+        // security.ymlでは制御できないため, ここで定義する.
+        $container->prependExtensionConfig('security', [
+          'access_control' => $accessControl,
+        ]);
     }
 
     protected function configurePlugins(ContainerBuilder $container)
@@ -81,12 +101,15 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $configs = $container->resolveEnvPlaceholders($configs, true);
 
         // doctrine bundleのconfigurationで設定値を正規化する.
-        $configration = new DoctrineBundleConfiguration($container->getParameter('kernel.debug'));
-        $config = $this->processConfiguration($configration, $configs);
+        $configuration = new DoctrineBundleConfiguration($container->getParameter('kernel.debug'));
+        $config = $this->processConfiguration($configuration, $configs);
 
         // prependのタイミングではコンテナのインスタンスは利用できない.
         // 直接dbalのconnectionを生成し, dbアクセスを行う.
         $params = $config['dbal']['connections'][$config['dbal']['default_connection']];
+        // ContainerInterface::resolveEnvPlaceholders() で取得した DATABASE_URL は
+        // % がエスケープされているため、環境変数から取得し直す
+        $params['url'] = env('DATABASE_URL');
         $conn = DriverManager::getConnection($params);
 
         if (!$this->isConnected($conn)) {

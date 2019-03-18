@@ -71,7 +71,7 @@ class Application extends \Pimple
     }
 
     /**
-     * Initialize to Applicaiton.
+     * Initialize to Application.
      */
     public function initialize()
     {

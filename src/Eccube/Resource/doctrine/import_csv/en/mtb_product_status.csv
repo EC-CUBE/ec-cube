@@ -1,0 +1,4 @@
+id,name,sort_no,discriminator_type
+1,Displayed,0,productstatus
+2,Hidden,1,productstatus
+3,Discontinued,2,productstatus

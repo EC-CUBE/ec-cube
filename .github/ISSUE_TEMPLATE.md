@@ -8,8 +8,8 @@
 
 
 ### 環境 (environment)
-+ EC-CUBE: 3.x.x
-+ PHP: x.x.x
++ EC-CUBE: 4.0.x
++ PHP: 7.x.x
 + DB:
   - PostgreSQL x.x.x 
   - MySQL x.x.x

@@ -1,0 +1,55 @@
+@import "../mixins/btn";
+@import "../mixins/media";
+
+/*
+ボタン
+
+トップページで使用されているボタンのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.3
+*/
+
+/*
+通常ボタン
+
+インラインの要素としてボタンを定義出来ます。
+
+Markup:
+.ec-inlineBtn--top more
+
+Styleguide 12.3.1
+*/
+.ec-inlineBtn--top{
+  @include _btn(white, black, black);
+}
+
+/*
+ロングボタン（全幅）
+
+ロングタイプのボタンです。
+
+Markup:
+.ec-blockBtn--top 商品一覧へ
+
+Styleguide 2.1.2
+*/
+.ec-blockBtn--top{
+  @include _btn(white, black, black);
+  display: block;
+  height:56px;
+  line-height:56px;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  @include media_desktop {
+    max-width: 260px;
+  }
+}

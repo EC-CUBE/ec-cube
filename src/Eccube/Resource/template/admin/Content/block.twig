@@ -25,35 +25,10 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        var searchWord = function () {
-            var searchText = $(this).val(), // 検索ボックスに入力された値
-                targetText;
-
-            // 検索ボックスに値が入っていない場合
-            if (searchText == '') {
-                // 全て表示する
-                $('.list-group li').show();
-                return;
-            }
-
-            // 検索ボックスに値が入ってる場合
-            // 表示を全て空にする
-            $('.list-group li').hide();
-
-            // 検索ワードが（子を含めて）含まれる要素のみ表示
-            $('.list-group li').each(function () {
-                targetText = $(this).find('> div.row > div > a').text();
-
-                // 検索対象となるリストに入力された文字列が存在するかどうかを判断
-                if (targetText.indexOf(searchText) != -1) {
-                    // 存在する場合はそのリストのテキストを用意した配列に格納
-                    $(this).show();
-                }
-            });
-        };
-
         // searchWordの実行
-        $('#search-block').on('input', searchWord);
+        $('#search-block').on('input', function () {
+            searchWord($(this).val(), $(".list-group li"));
+        });
     </script>
 {% endblock javascript %}
 
@@ -94,14 +69,14 @@ file that was distributed with this source code.
                                                 <div class="row">
                                                     <div class="col-6 text-right">
                                                         <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}"
-                                                           class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
+                                                           class="btn btn-ec-actionIcon mr-3" data-tooltip="true"
                                                            data-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
                                                     </div>
                                                     {% if Block.deletable %}
                                                         <div class="col-6">
-                                                            <div class="d-inline-block mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                            <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <a href="#" data-toggle="modal" data-target="#confirmModal-{{ Block.id }}" class="btn btn-ec-actionIcon">
                                                                     <i class="fa fa-close fa-lg text-secondary"></i>
                                                                 </a>

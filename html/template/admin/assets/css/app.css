@@ -48,8 +48,7 @@ Styleguide 1.0
 
 画面上部に固定表示されます。ロゴ・店舗名（および店舗ページへのリンク）・ユーザメニューが含まれます。<br>
 <br>
-デバイスサイズが1280px以下になると、メインナビを出現させるためのバーガーメニューが出現します。<br>
-デバイスサイズが1024px以下になると、表示領域の確保のためロゴが非表示となります。<br>
+デバイスサイズが767px以下になると、メインナビを出現させるためのバーガーメニューが出現し、表示領域の確保のためロゴが非表示となります。<br>
 <br>
 ユーザメニューのフキダシはBootstrapにて実装しております。詳細はBootstrapの<a href="https://getbootstrap.com/docs/4.0/components/popovers/" target="_blank">popvers</a>ページをご確認下さい。
 
@@ -166,7 +165,7 @@ Styleguide 2.0
 メインナビエリア
 
 画面左に固定表示されます。<br>
-デバイスサイズが1280px以下になった時、非表示になります。ヘッダーバー内のバーガーメニューを押下することで`.c-mainNavArea`に`.is-active`が付与され表示されます。<br>
+デバイスサイズが767px以下になった時、非表示になります。ヘッダーバー内のバーガーメニューを押下することで`.c-mainNavArea`に`.is-active`が付与され表示されます。<br>
 <br>
 下層メニューの展開はBootstrapにて実装しております。詳細はBootstrapの<a href="https://getbootstrap.com/docs/4.0/components/collapse/" target="_blank">Collapse</a>ページをご確認下さい。
 
@@ -269,8 +268,9 @@ Styleguide 3.0
   position: fixed;
   top: 0;
   left: 0;
-  overflow-y: scroll;
-  z-index: 500; }
+  overflow-y: auto;
+  z-index: 500;
+  transition: width 0.3s ease; }
   .c-mainNavArea ul {
     padding-left: 0; }
   .c-mainNavArea__nav {
@@ -282,7 +282,7 @@ Styleguide 3.0
     font-size: 14px; }
   .c-mainNavArea__navItem li a {
     display: block;
-    padding: 10px 40px;
+    padding: 10px 30px 10px 40px;
     text-align: left;
     color: inherit;
     font-size: inherit;
@@ -293,6 +293,8 @@ Styleguide 3.0
   .c-mainNavArea__navItem li a.is-active {
     background: #54687A;
     color: #fff; }
+  .c-mainNavArea__navItem li ul li a {
+    padding: 10px 30px 10px 50px; }
   .c-mainNavArea__navItemTitle {
     transform: translateX(0);
     display: block;
@@ -329,6 +331,7 @@ Styleguide 3.0
     display: none; }
   .c-mainNavArea__navItemSubTitle {
     display: block;
+    background: #fafbfc;
     border-bottom: 1px solid #d6d9e0;
     padding: 10px 35px;
     font-size: 16px;
@@ -365,8 +368,8 @@ Styleguide 3.0
 /*
 カーテン
 
-デバイスサイズが1280px以下時、メインナビエリアが出現した際にナビ以外の操作を抑制するために表示されます。`is-active`が付与されることで表示状態になります。<br>
-ナビナビエリアやカーテン部分をクリックした時、デバイスサイズが1280pxより上回る時は非表示なります。
+デバイスサイズが767px以下時、メインナビエリアが出現した際にナビ以外の操作を抑制するために表示されます。`is-active`が付与されることで表示状態になります。<br>
+ナビナビエリアやカーテン部分をクリックした時、デバイスサイズが768pxより上回る時は非表示なります。
 
 Markup:
 <!-- imgはスタイルガイドにおけるサンプル表示の都合上記述しています。-->
@@ -556,7 +559,7 @@ Markup:
     .row.justify-content-between.align-items-center
       .col-6
         +e.leftBlockItem
-          a(href="").c-beseLink
+          a(href="").c-baseLink
             i.fa.fa-backward(aria-hidden="true")
             span 商品マスター
       .col-6
@@ -618,23 +621,23 @@ Styleguide 5.0
 
 Markup:
 div(style="background:#333; padding:20px;")
-  a(href="").c-beseLink
+  a(href="").c-baseLink
     i.fa.fa-backward
     span 商品マスター
 
 
 Styleguide 5.1
 */
-.c-beseLink {
+.c-baseLink {
   display: inline-block;
   font-size: 16px;
   color: #fff; }
-  .c-beseLink:hover {
+  .c-baseLink:hover {
     color: #fff;
     opacity: .5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     text-decoration: none; }
-  .c-beseLink i {
+  .c-baseLink i {
     display: inline-block;
     margin-right: 10px; }
 
@@ -669,8 +672,8 @@ p 項目の内容はドラッグ＆ドロップで変更可能です。
 
 .c-form__fileUploadThumbnail {
   display: inline-block;
-  width: 70px;
-  height: 70px;
+  width: 170px;
+  height: 170px;
   background-color: #f5f6f8;
   background-image: url("../../img/moc.png");
   background-position: center;
@@ -962,107 +965,6 @@ Styleguide 7.2
   margin-left: 30px; }
 
 /*
-グラフ
-
-トップページに表示されるグラフのコンポーネントです。
-
-Markup:
-<div>
-  <div class="c-graf--week">
-    <div class="c-graf--week__container">
-      <div class="c-graf--week__labelVertical">
-        <div class="c-graf__label">100,000</div>
-        <div class="c-graf__label">90,000</div>
-        <div class="c-graf__label">80,000</div>
-        <div class="c-graf__label">70,000</div>
-        <div class="c-graf__label">60,000</div>
-        <div class="c-graf__label">50,000</div>
-        <div class="c-graf__label">40,000</div>
-        <div class="c-graf__label">30,000</div>
-        <div class="c-graf__label">20,000</div>
-        <div class="c-graf__label">10,000</div>
-        <div class="c-graf__label">0</div>
-      </div>
-      <div class="c-graf--week__graph">
-        <hr style="top: 26px;">
-        <hr style="top: 52px;">
-        <hr style="top: 78px;">
-        <hr style="top: 104px;">
-        <hr style="top: 130px;">
-        <hr style="top: 156px;">
-        <hr style="top: 182px;">
-        <hr style="top: 208px;">
-        <hr style="top: 234px;">
-        <hr style="top: 260px;">
-        <div class="c-graf__bar" data-toggle="tooltip" data-placement="top" title="" style="height: 165px; margin-top: 96px;" data-original-title="Tooltip"></div>
-        <div class="c-graf__bar" data-toggle="tooltip" data-placement="top" title="" style="height: 82px; margin-top: 179px;" data-original-title="Tooltip"></div>
-        <div class="c-graf__bar" data-toggle="tooltip" data-placement="top" title="" style="height: 200px; margin-top: 61px;" data-original-title="Tooltip"></div>
-        <div class="c-graf__bar" data-toggle="tooltip" data-placement="top" title="" style="height: 166px; margin-top: 95px;" data-original-title="Tooltip"></div>
-        <div class="c-graf__bar" data-toggle="tooltip" data-placement="top" title="" style="height: 165px; margin-top: 96px;" data-original-title="Tooltip"></div>
-        <div class="c-graf__bar" data-toggle="tooltip" data-placement="top" title="" style="height: 82px; margin-top: 179px;" data-original-title="Tooltip"></div>
-        <div class="c-graf__bar" data-toggle="tooltip" data-placement="top" title="" style="height: 200px; margin-top: 61px;" data-original-title="Tooltip"></div>
-      </div>
-    </div>
-    <div class="c-graf--week__labelHorizontal">
-      <div class="c-graf__label">月</div>
-      <div class="c-graf__label">火</div>
-      <div class="c-graf__label">水</div>
-      <div class="c-graf__label">木</div>
-      <div class="c-graf__label">金</div>
-      <div class="c-graf__label">土</div>
-      <div class="c-graf__label">日</div>
-    </div>
-  </div>
-</div>
-
-Styleguide 10.0
-*/
-.c-graf--week {
-  overflow: hidden;
-  width: 100%; }
-  .c-graf--week .c-graf--week__container {
-    display: -ms-flexbox;
-    display: flex;
-    width: 100%; }
-  .c-graf--week .c-graf--week__labelVertical .c-graf__label {
-    font-size: 12px;
-    line-height: 26px;
-    text-align: right;
-    padding-right: 10px; }
-  .c-graf--week .c-graf--week__graph {
-    height: 261px;
-    width: 100%;
-    border: 1px solid #F0F0F0;
-    position: relative;
-    margin-top: 13px; }
-  .c-graf--week hr {
-    border: none;
-    position: absolute;
-    width: 100%;
-    height: 1px;
-    margin: 0 auto;
-    background: #F0F0F0; }
-  .c-graf--week .c-graf__bar {
-    float: left;
-    text-align: center;
-    position: relative;
-    margin-left: calc((100% - 200px) / 7);
-    width: 25px;
-    background-color: #437EC4;
-    transition: all .3s ease; }
-  .c-graf--week .c-graf--week__labelHorizontal {
-    margin-left: 60px;
-    width: calc( 100% - 60px);
-    display: -ms-flexbox;
-    display: flex; }
-    .c-graf--week .c-graf--week__labelHorizontal .c-graf__label {
-      font-size: 12px;
-      margin-left: calc((100% - 200px) / 7);
-      width: 25px;
-      text-align: center;
-      padding-top: 6px; }
-
-/*
 トグルスイッチ
 
 ２要素の選択を行うコンポーネントです。クリックすることで切り替えを行うことが出来ます。
@@ -1134,11 +1036,9 @@ Font Awesome v4.7.0 で利用可能なフォント群については、<a href="
 Styleguide 11.0
 */
 
-@media only screen and (max-width: 1024px){
+@media only screen and (max-width: 767px){
   .c-headerBar__logo{
-    display: none; } }
-
-@media only screen and (max-width: 1280px){
+    display: none; }
   .c-headerBar__toggleBtn{
     display: table-cell; }
   .c-mainNavArea{
@@ -1146,8 +1046,35 @@ Styleguide 11.0
     width: 0;
     height: 0;
     opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    transition: left 0.2s , opacity 0.1s 0.2s, width 0.1s 0.3s, height 0.3s; }
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; }
+  .c-contentsArea{
+    margin-left: 0; }
+  .c-conversionArea{
+    width: 100%; } }
+
+@media only screen and (min-width: 768px) and (max-width: 1279px){
+  .c-mainNavArea{
+    width: 160px; }
+  .c-mainNavArea__navItem ul{
+    font-size: 13px; }
+  .c-mainNavArea__navItem li a{
+    padding: 10px 0 10px 25px; }
+  .c-mainNavArea__navItem li ul li a{
+    padding: 10px 0 10px 30px; }
+  .c-mainNavArea__navItemTitle{
+    font-size: 14px; }
+  .c-mainNavArea__navItemTitle:after{
+    right: 5px; }
+  .c-mainNavArea__navItemTitle i{
+    right: 1px; }
+  .c-mainNavArea__navItemSubTitle:after{
+    right: 5px; }
+  .c-contentsArea{
+    margin-left: 160px; }
+  .c-conversionArea{
+    width: calc(100% - 160px); } }
+
+@media only screen and (max-width: 1280px){
   .c-curtain.is-active{
     display: block;
     width: 100%;
@@ -1156,10 +1083,6 @@ Styleguide 11.0
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     background: rgba(0, 0, 0, 0.6);
     z-index: 300;
-    position: fixed; }
-  .c-contentsArea{
-    margin-left: 0; }
-  .c-conversionArea{
-    width: 100%; } }
+    position: fixed; } }
 
 /*# sourceMappingURL=maps/app.css.map */

@@ -1,0 +1,9 @@
+id,creator_id,name,file_name,mail_subject,create_date,update_date,discriminator_type
+"1",,"注文受付メール","Mail/order.twig","ご注文ありがとうございます","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
+"2",,"会員仮登録メール","Mail/entry_confirm.twig","会員登録のご確認","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
+"3",,"会員本登録メール","Mail/entry_complete.twig","会員登録が完了しました。","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
+"4",,"会員退会メール","Mail/customer_withdraw_mail.twig","退会手続きのご完了","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
+"5",,"問合受付メール","Mail/contact_mail.twig","お問い合わせを受け付けました。","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
+"6",,"パスワードリセット","Mail/forgot_mail.twig","パスワード変更のご確認","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
+"7",,"パスワードリマインダー","Mail/reset_complete_mail.twig","パスワード変更のお知らせ","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
+"8",,"出荷通知メール","Mail/shipping_notify.twig","商品出荷のお知らせ","2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"

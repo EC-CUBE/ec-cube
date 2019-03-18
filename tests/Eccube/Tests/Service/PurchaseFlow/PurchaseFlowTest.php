@@ -18,15 +18,15 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
-use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
-use Eccube\Service\PurchaseFlow\ItemPreprocessor;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
+use Eccube\Service\PurchaseFlow\ItemHolderValidator;
+use Eccube\Service\PurchaseFlow\ItemPreprocessor;
+use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
-use Eccube\Service\PurchaseFlow\ItemHolderValidator;
-use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Tests\EccubeTestCase;
 
 class PurchaseFlowTest extends EccubeTestCase
@@ -90,7 +90,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
-        $expected->addProcessResult(ProcessResult::error('error 1'));
+        $expected->addProcessResult(ProcessResult::error('error 1', PurchaseFlowTest_FailItemHolderValidator::class));
         self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
@@ -102,8 +102,8 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder->addOrderItem(new OrderItem());
 
         $expected = new PurchaseFlowResult($itemHolder);
-        $expected->addProcessResult(ProcessResult::warn('error 1'));
-        $expected->addProcessResult(ProcessResult::warn('error 2'));
+        $expected->addProcessResult(ProcessResult::warn('error 1', PurchaseFlowTest_FailValidator::class));
+        $expected->addProcessResult(ProcessResult::warn('error 2', PurchaseFlowTest_FailValidator::class));
         self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
@@ -116,11 +116,38 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder->addOrderItem(new OrderItem());
 
         $expected = new PurchaseFlowResult($itemHolder);
-        $expected->addProcessResult(ProcessResult::warn('error 1'));
-        $expected->addProcessResult(ProcessResult::warn('error 2'));
-        $expected->addProcessResult(ProcessResult::warn('error 1'));
-        $expected->addProcessResult(ProcessResult::warn('error 2'));
+        $expected->addProcessResult(ProcessResult::warn('error 1', PurchaseFlowTest_FailValidator::class));
+        $expected->addProcessResult(ProcessResult::warn('error 2', PurchaseFlowTest_FailValidator::class));
+        $expected->addProcessResult(ProcessResult::warn('error 1', PurchaseFlowTest_FailValidator::class));
+        $expected->addProcessResult(ProcessResult::warn('error 2', PurchaseFlowTest_FailValidator::class));
         self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
+    }
+
+    /**
+     * @dataProvider flowTypeProvider
+     *
+     * @param $flow
+     * @param $message
+     */
+    public function testFlowType($flow, $message)
+    {
+        $this->flow->addItemHolderValidator(new PurchaseFlowTest_FlowTypeValidator());
+        $itemHolder = new Order();
+        $itemHolder->addOrderItem(new OrderItem());
+
+        $expected = new PurchaseFlowResult($itemHolder);
+        $expected->addProcessResult(ProcessResult::error($message, PurchaseFlowTest_FlowTypeValidator::class));
+        $this->flow->setFlowType($flow);
+        self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
+    }
+
+    public function flowTypeProvider()
+    {
+        return [
+            ['cart', 'Cart Flow'],
+            ['shopping', 'Shopping Flow'],
+            ['order', 'Order Flow'],
+        ];
     }
 }
 
@@ -176,5 +203,21 @@ class PurchaseFlowTest_FailItemHolderValidator extends ItemHolderValidator
     {
         // TODO ItemHolerValidateException が必要か検討
         throw new InvalidItemException($this->errorMessage);
+    }
+}
+
+class PurchaseFlowTest_FlowTypeValidator extends ItemHolderValidator
+{
+    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
+    {
+        if ($context->isCartFlow()) {
+            throw new InvalidItemException('Cart Flow');
+        }
+        if ($context->isShoppingFlow()) {
+            throw new InvalidItemException('Shopping Flow');
+        }
+        if ($context->isOrderFlow()) {
+            throw new InvalidItemException('Order Flow');
+        }
     }
 }

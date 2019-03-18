@@ -23,7 +23,7 @@ class CustomerAddressAddPage extends AbstractFrontPage
     public static function at($I)
     {
         $page = new self($I);
-        $page->tester->see('お届け先の追加', 'div.ec-layoutRole__main h1');
+        $page->tester->see('お届け先の追加', 'div.ec-pageHeader h1');
 
         return $page;
     }
@@ -93,6 +93,6 @@ class CustomerAddressAddPage extends AbstractFrontPage
 
     public function 登録する()
     {
-        $this->tester->click('#detail_box__insert_button > button');
+        $this->tester->click('div.ec-registerRole button.ec-blockBtn--action');
     }
 }

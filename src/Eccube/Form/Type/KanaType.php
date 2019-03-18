@@ -59,7 +59,7 @@ class KanaType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
-                        'message' => trans('form.type.notkanastyle'),
+                        'message' => 'form_error.kana_only',
                     ]),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_kana_len'],
@@ -73,7 +73,7 @@ class KanaType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
-                        'message' => trans('form.type.notkanastyle'),
+                        'message' => 'form_error.kana_only',
                     ]),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_kana_len'],

@@ -28,22 +28,4 @@ class MailTemplateRepository extends AbstractRepository
     {
         parent::__construct($registry, MailTemplate::class);
     }
-
-    /**
-     * @deprecated 呼び出し元で制御する
-     *
-     * @param $id
-     *
-     * @return MailTemplate|null|object
-     */
-    public function findOrCreate($id)
-    {
-        if ($id == 0) {
-            $MailTemplate = new MailTemplate();
-        } else {
-            $MailTemplate = $this->find($id);
-        }
-
-        return $MailTemplate;
-    }
 }

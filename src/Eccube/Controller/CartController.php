@@ -23,6 +23,7 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
+use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -113,12 +114,13 @@ class CartController extends AbstractController
         }
 
         // カートが分割された時のセッション情報を削除
-        $request->getSession()->remove('cart.divide');
+        $request->getSession()->remove(OrderHelper::SESSION_CART_DIVIDE_FLAG);
 
         return [
             'totalPrice' => $totalPrice,
             'totalQuantity' => $totalQuantity,
-            'Carts' => $Carts,
+            // 空のカートを削除し取得し直す
+            'Carts' => $this->cartService->getCarts(true),
             'least' => $least,
             'quantity' => $quantity,
             'is_delivery_free' => $isDeliveryFree,
@@ -159,8 +161,13 @@ class CartController extends AbstractController
 
         foreach ($flowResults as $index => $result) {
             foreach ($result->getWarning() as $warning) {
-                $cart_key = $Carts[$index]->getCartKey();
-                $this->addRequestError($warning->getMessage(), "front.cart.${cart_key}");
+                if ($Carts[$index]->getItems()->count() > 0) {
+                    $cart_key = $Carts[$index]->getCartKey();
+                    $this->addRequestError($warning->getMessage(), "front.cart.${cart_key}");
+                } else {
+                    // キーが存在しない場合はグローバルにエラーを表示する
+                    $this->addRequestError($warning->getMessage());
+                }
             }
         }
     }
@@ -226,7 +233,7 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "[a-zA-Z0-9]+[_]\d+"})
+     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "[a-zA-Z0-9]+[_][\x20-\x7E]+"})
      */
     public function buystep(Request $request, $cart_key)
     {

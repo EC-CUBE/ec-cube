@@ -23,7 +23,10 @@ file that was distributed with this source code.
                 <form id="form1" name="form1" method="post" action="{{ url('admin_setting_system_masterdata') }}">
                     {{ form_widget(form._token) }}
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>{{ 'admin.setting.system.master_data_management'|trans }}</span></div>
+                        <div class="card-header">
+                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.master_data_management'|trans }}">
+                                <span>{{ 'admin.setting.system.master_data_management'|trans }}</span></div><i class="fa fa-question-circle fa-lg ml-1"></i>
+                            </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3">
@@ -56,7 +59,7 @@ file that was distributed with this source code.
                                             {{ 'admin.setting.system.master_data.id'|trans }}
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">
-                                            {{ 'admin.setting.system.master_data.id'|trans }}
+                                            {{ 'admin.setting.system.master_data.name'|trans }}
                                         </th>
                                     </tr>
                                     </thead>

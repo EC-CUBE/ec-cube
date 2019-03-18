@@ -75,11 +75,6 @@ class CartService
     protected $cartItemAllocator;
 
     /**
-     * @var OrderHelper
-     */
-    protected $orderHelper;
-
-    /**
      * @var OrderRepository
      */
     protected $orderRepository;
@@ -102,7 +97,6 @@ class CartService
      * @param ProductClassRepository $productClassRepository
      * @param CartItemComparator $cartItemComparator
      * @param CartItemAllocator $cartItemAllocator
-     * @param OrderHelper $orderHelper
      * @param TokenStorageInterface $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
@@ -113,7 +107,6 @@ class CartService
         CartRepository $cartRepository,
         CartItemComparator $cartItemComparator,
         CartItemAllocator $cartItemAllocator,
-        OrderHelper $orderHelper,
         OrderRepository $orderRepository,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
@@ -124,15 +117,39 @@ class CartService
         $this->cartRepository = $cartRepository;
         $this->cartItemComparator = $cartItemComparator;
         $this->cartItemAllocator = $cartItemAllocator;
-        $this->orderHelper = $orderHelper;
         $this->orderRepository = $orderRepository;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    public function getCarts()
+    /**
+     * 現在のカートの配列を取得する.
+     *
+     * 本サービスのインスタンスのメンバーが空の場合は、DBまたはセッションからカートを取得する
+     *
+     * @param bool $empty_delete true の場合、商品明細が空のカートが存在した場合は削除する
+     *
+     * @return Cart[]
+     */
+    public function getCarts($empty_delete = false)
     {
-        if (!empty($this->carts)) {
+        if (null !== $this->carts) {
+            if ($empty_delete) {
+                $cartKeys = [];
+                foreach (array_keys($this->carts) as $index) {
+                    $Cart = $this->carts[$index];
+                    if ($Cart->getItems()->count() > 0) {
+                        $cartKeys[] = $Cart->getCartKey();
+                    } else {
+                        $this->entityManager->remove($this->carts[$index]);
+                        $this->entityManager->flush($this->carts[$index]);
+                        unset($this->carts[$index]);
+                    }
+                }
+
+                $this->session->set('cart_keys', $cartKeys);
+            }
+
             return $this->carts;
         }
 
@@ -164,6 +181,10 @@ class CartService
     {
         $cartKeys = $this->session->get('cart_keys', []);
 
+        if (empty($cartKeys)) {
+            return [];
+        }
+
         return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
     }
 
@@ -186,7 +207,7 @@ class CartService
     }
 
     /**
-     * @return ItemHolderInterface|Cart
+     * @return Cart|null
      */
     public function getCart()
     {
@@ -206,7 +227,7 @@ class CartService
                 }
             }
         } else {
-            $Cart = current($Carts);
+            $Cart = $Carts[0];
         }
 
         return $Cart;
@@ -403,11 +424,16 @@ class CartService
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getPreOrderId()
     {
-        return $this->getCart()->getPreOrderId();
+        $Cart = $this->getCart();
+        if (!empty($Cart)) {
+            return $Cart->getPreOrderId();
+        }
+
+        return null;
     }
 
     /**

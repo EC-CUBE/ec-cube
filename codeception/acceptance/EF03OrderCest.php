@@ -56,7 +56,7 @@ class EF03OrderCest
             ->お買い物を続ける();
 
         // トップページ
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_一覧からカートに入れる(\AcceptanceTester $I)
@@ -64,16 +64,16 @@ class EF03OrderCest
         $I->wantTo('EF0301-UC01-T02 カート 買い物を続ける');
 
         $ProductListPage = TopPage::go($I)
-            ->検索('ディナーフォーク');
+            ->検索('彩のジェラートCUBE');
 
         $CartPage = $ProductListPage
-            ->カートに入れる(1, 1, [3 => 'プラチナ'], [6 => '150cm'])
+            ->カートに入れる(1, 1, [3 => 'チョコ'], [6 => '16mm × 16mm'])
             ->カートへ進む();
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertContains('ディナーフォーク', $CartPage->商品名(1));
-        $I->assertContains('プラチナ', $CartPage->商品名(1));
-        $I->assertContains('150cm', $CartPage->商品名(1));
+        $I->assertContains('彩のジェラートCUBE', $CartPage->商品名(1));
+        $I->assertContains('チョコ', $CartPage->商品名(1));
+        $I->assertContains('16mm × 16mm', $CartPage->商品名(1));
         $I->assertEquals(1, $CartPage->商品数量(1));
     }
 
@@ -163,17 +163,17 @@ class EF03OrderCest
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
-            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
         }
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_ゲスト購入(\AcceptanceTester $I)
@@ -227,17 +227,17 @@ class EF03OrderCest
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, '姓03 名03 様');
-            $I->seeInLastEmailTo($email, 'お名前　：姓03 名03 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：セイ メイ 様');
+            $I->seeInLastEmailTo($email, 'お名前：姓03 名03 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：セイ メイ 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒5300001');
-            $I->seeInLastEmailTo($email, '住所　　：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
+            $I->seeInLastEmailTo($email, '住所：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
             $I->seeInLastEmailTo($email, '電話番号：111111111');
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$new_email);
         }
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_ゲスト購入情報変更(\AcceptanceTester $I)
@@ -307,16 +307,16 @@ class EF03OrderCest
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, '姓0301 名03 様');
-            $I->seeInLastEmailTo($email, 'お名前　：姓0302 名03 様', '変更後のお届け先');
+            $I->seeInLastEmailTo($email, 'お名前：姓0302 名03 様', '変更後のお届け先');
             $I->seeInLastEmailTo($email, '郵便番号：〒5300001');
-            $I->seeInLastEmailTo($email, '住所　　：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
+            $I->seeInLastEmailTo($email, '住所：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
             $I->seeInLastEmailTo($email, '電話番号：111111111');
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$new_email);
         }
 
         // topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     /**
@@ -346,9 +346,9 @@ class EF03OrderCest
         ShoppingPage::at($I)->確認する();
         $I->logoutAsMember();
 
-        // 商品詳細フォーク カートへ
+        // 商品詳細ジェラート カートへ
         ProductDetailPage::go($I, 1)
-            ->規格選択(['プラチナ', '150cm'])
+            ->規格選択(['チョコ', '16mm × 16mm'])
             ->カートに入れる(1)
             ->カートへ進む();
 
@@ -368,27 +368,27 @@ class EF03OrderCest
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
-            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
 
-            $I->seeInLastEmailTo($email, '商品名: パーコレーター');
-            $I->seeInLastEmailTo($email, '商品名: ディナーフォーク  プラチナ  150cm');
+            $I->seeInLastEmailTo($email, '商品名：チェリーアイスサンド');
+            $I->seeInLastEmailTo($email, '商品名：彩のジェラートCUBE  チョコ  16mm × 16mm');
         }
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_ログインユーザ購入複数配送(\AcceptanceTester $I)
     {
         // チェック用変数
         // 追加するお届け作の名前
-        $nameSei = '姓0302';
+        $nameSei = 'あいおい0302';
         $nameMei = '名0302';
         // カートへ入れる商品の数
         $cart_quantity = 1;
@@ -507,14 +507,14 @@ class EF03OrderCest
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
-            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
             $I->seeInLastEmailTo($email, '◎お届け先1');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$nameSei);
+            $I->seeInLastEmailTo($email, 'お名前：'.$nameSei);
             $I->seeInLastEmailTo($email, '数量：3');
             $I->seeInLastEmailTo($email, '◎お届け先2');
             $I->seeInLastEmailTo($email, '数量：2');
@@ -522,7 +522,7 @@ class EF03OrderCest
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_ログイン後に複数カートになればカートに戻す(\AcceptanceTester $I)
@@ -583,7 +583,7 @@ class EF03OrderCest
     {
         // チェック用変数
         // 追加するお届け作の名前
-        $nameSei = '姓0302';
+        $nameSei = 'あいおい0302';
         $nameMei = '名0302';
         // カートへ入れる商品の数
         $cart_quantity = 1;
@@ -714,14 +714,14 @@ class EF03OrderCest
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
-            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
             $I->seeInLastEmailTo($email, '◎お届け先1');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$nameSei);
+            $I->seeInLastEmailTo($email, 'お名前：'.$nameSei);
             $I->seeInLastEmailTo($email, '数量：3');
             $I->seeInLastEmailTo($email, '◎お届け先2');
             $I->seeInLastEmailTo($email, '数量：2');
@@ -729,7 +729,7 @@ class EF03OrderCest
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     /**
@@ -739,7 +739,7 @@ class EF03OrderCest
     {
         // チェック用変数
         // 追加するお届け作の名前
-        $nameSei = '姓0302';
+        $nameSei = 'あいおい0302';
         $nameMei = '名0302';
         // カートへ入れる商品の数
         $cart_quantity = 1;
@@ -874,20 +874,20 @@ class EF03OrderCest
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
-            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(カナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
             $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
-            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '住所：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
             $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
             $I->seeInLastEmailTo($email, '◎お届け先');
-            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01());
+            $I->seeInLastEmailTo($email, 'お名前：'.$customer->getName01());
             $I->seeInLastEmailTo($email, '数量：'.($sum_quantity + $cart_quantity));
         }
 
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
-        $I->see('新着情報', '.ec-news__title');
+        $I->see('新着情報', '.ec-secHeading__ja');
     }
 
     public function order_複数配送設定画面での販売制限エラー(\AcceptanceTester $I)
@@ -912,9 +912,9 @@ class EF03OrderCest
             ->入力_数量('0', '0', 100)
             ->選択したお届け先に送る();
 
-        MultipleShippingPage::at($I);
+        ShoppingPage::at($I);
 
-        $I->see('選択された商品(パーコレーター)は販売制限しております。', 'p.errormsg');
+        $I->see('「チェリーアイスサンド」の在庫が不足しております。一度に在庫数を超える購入はできません。', 'div:nth-child(2) > div > div.ec-alert-warning__text');
     }
 
     public function order_複数ブラウザでログインしてカートに追加する(\AcceptanceTester $I)
@@ -945,7 +945,7 @@ class EF03OrderCest
             ->カートへ進む();
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertEquals('パーコレーター', $CartPage->商品名(1));
+        $I->assertEquals('チェリーアイスサンド', $CartPage->商品名(1));
 
         /*
          * ブラウザ2にのカートにも反映されている
@@ -955,7 +955,7 @@ class EF03OrderCest
         $CartPage = CartPage::go($I);
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertEquals('パーコレーター', $CartPage->商品名(1));
+        $I->assertEquals('チェリーアイスサンド', $CartPage->商品名(1));
     }
 
     public function order_複数ブラウザ_片方でログインしてカートに追加しもう一方にログインして別の商品を追加する(\AcceptanceTester $I)
@@ -981,18 +981,18 @@ class EF03OrderCest
             ->カートへ進む();
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertContains('パーコレーター', $CartPage->商品名(1));
+        $I->assertContains('チェリーアイスサンド', $CartPage->商品名(1));
 
         /*
          * ブラウザ2で未ログインのまま別の商品を入れる
          */
         $I->loadSessionSnapshot('not_login');
         $CartPage = ProductDetailPage::go($I, 1)
-            ->カートに入れる(1, ['1' => '金'], ['4' => '120mm'])
+            ->カートに入れる(1, ['1' => 'バニラ'], ['4' => '64cm × 64cm'])
             ->カートへ進む();
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertContains('ディナーフォーク', $CartPage->商品名(1));
+        $I->assertContains('彩のジェラートCUBE', $CartPage->商品名(1));
 
         /*
          * ブラウザ2でログインするとブラウザ1のカートとマージされている
@@ -1002,8 +1002,8 @@ class EF03OrderCest
         $CartPage = CartPage::go($I);
         $I->assertEquals(2, $CartPage->明細数());
         $itemNames = $I->grabMultiple(['css' => '.ec-cartRow__name a']);
-        $I->assertContains('ディナーフォーク', $itemNames);
-        $I->assertContains('パーコレーター', $itemNames);
+        $I->assertContains('彩のジェラートCUBE', $itemNames);
+        $I->assertContains('チェリーアイスサンド', $itemNames);
 
         /*
          * ブラウザ1のカートもマージされている
@@ -1013,7 +1013,7 @@ class EF03OrderCest
         $CartPage = CartPage::go($I);
         $I->assertEquals(2, $CartPage->明細数());
         $itemNames = $I->grabMultiple(['css' => '.ec-cartRow__name a']);
-        $I->assertContains('ディナーフォーク', $itemNames);
-        $I->assertContains('パーコレーター', $itemNames);
+        $I->assertContains('彩のジェラートCUBE', $itemNames);
+        $I->assertContains('チェリーアイスサンド', $itemNames);
     }
 }

@@ -1,0 +1,116 @@
+{#
+    This file is part of EC-CUBE
+    Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+    http://www.lockon.co.jp/
+    For the full copyright and license information, please view the LICENSE
+    file that was distributed with this source code.
+    #}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['content', 'js'] %}
+
+{% block title %}{{ 'admin.content.js_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
+
+{% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
+    <script>
+        ace.require('ace/ext/language_tools');
+        var editor = ace.edit('editor');
+        editor.session.setMode('ace/mode/javascript');
+        editor.setTheme('ace/theme/tomorrow');
+        editor.setValue('{{ form.js.vars.value|escape('js') }}');
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true,
+            showInvisibles: true
+        });
+        var $save_button = $('#save-button');
+        editor.getSession().on("changeAnnotation", function(){
+            var annot = editor.getSession().getAnnotations();
+            for (var key in annot){
+                if (annot.hasOwnProperty(key)) {
+                    console.log(annot[key]);
+                    if (annot[key].type && annot[key].type == 'error') {
+                        $save_button.prop('disabled', true);
+                        break;
+                    } else {
+                        $save_button.prop('disabled', false);
+                    }
+                }
+            }
+            if (typeof(annot) == 'object' && annot.length < 1) {
+                $save_button.prop('disabled', false);
+            }
+        });
+        $('#content_js_form').on('submit', function(elem) {
+            $('#form_js').val(editor.getValue());
+        });
+    </script>
+{% endblock %}
+{% block main %}
+    <form id="content_js_form" method="post" action="{{ url('admin_content_js') }}">
+        {{ form_widget(form._token) }}
+
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <!-- ページ設定 -->
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8"><span class="card-title">{{ 'admin.content.js__card_title'|trans }}</span></div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#pageDetail" aria-expanded="false" aria-controls="pageDetail">
+                                        <i class="fa fa-angle-up fa-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="pageDetail">
+                            <div class="card-body">
+                                <!-- コード -->
+                                <div class="row mb-2">
+                                    <div class="col-2">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.js_source_code'|trans }}">
+                                            <span>{{ 'admin.content.page_source_code'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                    </div>
+                                    <div class="col-10">
+                                        <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.js) ? ' is-invalid' }}"></div>
+                                        <div style="display: none">{{ form_widget(form.js) }}</div>
+                                        {{ form_errors(form.js) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
+                            <a class="c-baseLink" href="{{ url('admin_content_page') }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i>
+                                <span>{{ 'admin.content.js_management'|trans }}</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button id="save-button" class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

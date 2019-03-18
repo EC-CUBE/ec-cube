@@ -19,6 +19,7 @@ use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Repository\OrderPdfRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
 use Symfony\Component\DomCrawler\Crawler;
@@ -35,11 +36,15 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     /** @var OrderRepository */
     protected $orderRepo;
 
+    /** @var OrderPdfRepository */
+    protected $orderPdfRepository;
+
     public function setUp()
     {
         parent::setUp();
         $this->orderStatusRepo = $this->container->get(OrderStatusRepository::class);
         $this->orderRepo = $this->container->get(OrderRepository::class);
+        $this->orderPdfRepository = $this->container->get(OrderPdfRepository::class);
     }
 
     /**
@@ -342,6 +347,63 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->actual = $client->getResponse()->headers->get('Content-Type');
         $this->expected = 'application/pdf';
         $this->verify();
+    }
+
+    /**
+     * Render order pdf download.
+     */
+    public function testDownloadWithPreviousInputSuccessWithWeb()
+    {
+        $Order = $this->createOrderForSearch();
+        $Shippings = $Order->getShippings();
+        $shippingId = $Shippings[0]->getId();
+
+        /**
+         * @var Client
+         */
+        $client = $this->client;
+
+        $adminTest = $this->createMember();
+        $this->loginTo($adminTest);
+
+        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+            [
+                '_token' => 'dummy',
+                'ids' => [$shippingId],
+            ]
+        );
+
+        /**
+         * @var \Symfony\Component\DomCrawler\Form
+         */
+        $form = $this->getForm($crawler);
+        // fields set to empty.
+        $form->setValues([
+            'order_pdf[title]' => '',
+            'order_pdf[message1]' => '',
+            'order_pdf[message2]' => '',
+            'order_pdf[message3]' => '',
+            'order_pdf[note1]' => '',
+            'order_pdf[note2]' => '',
+            'order_pdf[note3]' => '',
+            'order_pdf[default]' => '1',
+        ]);
+
+        $client->submit($form);
+
+        $this->actual = $client->getResponse()->headers->get('Content-Type');
+        $this->expected = 'application/pdf';
+        $this->verify();
+
+        $OrderPdf = $this->orderPdfRepository->find($adminTest->getId());
+
+        $this->assertNull($OrderPdf->getTitle());
+        $this->assertNull($OrderPdf->getMessage1());
+        $this->assertNull($OrderPdf->getMessage2());
+        $this->assertNull($OrderPdf->getMessage3());
+        $this->assertNull($OrderPdf->getNote1());
+        $this->assertNull($OrderPdf->getNote2());
+        $this->assertNull($OrderPdf->getNote3());
     }
 
     /**

@@ -126,6 +126,6 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
 
     public static function XPathでタグを取得する($textEl)
     {
-        return '//*[@id="page_admin_product_category"]/div[1]/div[3]/div[3]/div[1]/div/div/div/div/ul/li/div/div[2]/a[contains(text(), "'.$textEl.'")]';
+        return '//*[@id="page_admin_product_category"]/div[1]/div[3]/div[3]/div[1]/div/div/div/div/ul/li/div/div[3]/a[contains(text(), "'.$textEl.'")]';
     }
 }

@@ -8,7 +8,8 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-　※本メールは自動配信メールです。
+{% autoescape false %}
+※本メールは自動配信メールです。
 
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 　※本メールは、
@@ -19,11 +20,10 @@ file that was distributed with this source code.
 　ご連絡いただければ幸いです。
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-パスワードを変更するには下記URLにアクセスしてください。
-※入力されたお客様の情報はSSL暗号化通信により保護されます。
-※URLの有効期限は{{ expire }}分以内です。有効期限を過ぎますとURLは無効となりますので、その場合、もう一度最初から手続きを行ってください。
+パスワードを変更するには下記URLにアクセスし、パスワードの再設定を行ってください。
 
 {{ reset_url }}
 
-上記URLにてパスワードを変更が完了いたしましたら
-改めてご登録内容のご確認メールをお送り致します。
+※URLの有効期限は{{ expire }}分以内です。有効期限を過ぎますとURLは無効となりますので、その場合、もう一度最初から手続きを行ってください。
+
+{% endautoescape %}

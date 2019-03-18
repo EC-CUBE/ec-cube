@@ -79,20 +79,30 @@ class DeliveryController extends AbstractController
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException();
             }
+            $CustomerAddress = new CustomerAddress();
+            $CustomerAddress->setCustomer($Customer);
+        } else {
+            $CustomerAddress = $this->customerAddressRepository->findOneBy(
+                [
+                    'id' => $id,
+                    'Customer' => $Customer,
+                ]
+            );
+            if (!$CustomerAddress) {
+                throw new NotFoundHttpException();
+            }
         }
-
-        $CustomerAddress = $this->customerAddressRepository->findOrCreateByCustomerAndId($Customer, $id);
 
         $parentPage = $request->get('parent_page', null);
 
         // 正しい遷移かをチェック
-        $allowdParents = [
+        $allowedParents = [
             $this->generateUrl('mypage_delivery'),
             $this->generateUrl('shopping_redirect_to'),
         ];
 
         // 遷移が正しくない場合、デフォルトであるマイページの配送先追加の画面を設定する
-        if (!in_array($parentPage, $allowdParents)) {
+        if (!in_array($parentPage, $allowedParents)) {
             // @deprecated 使用されていないコード
             $parentPage = $this->generateUrl('mypage_delivery');
         }

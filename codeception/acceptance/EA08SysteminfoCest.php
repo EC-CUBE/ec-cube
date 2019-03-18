@@ -40,8 +40,8 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/system');
         $I->see('システム情報システム設定', '.c-pageTitle__titles');
 
-        $I->see('システム情報', 'div.c-contentsArea__cols > div > div:nth-child(1) > div > div.card-header > div > div.col-8 > span');
-        $I->see('PHP情報', '#php_info_box__header .card-title');
+        $I->see('システム情報', '#server_info_box__header > div > span');
+        $I->see('PHP情報', '#php_info_box__header > div > span');
     }
 
     public function systeminfo_メンバー管理表示(\AcceptanceTester $I)
@@ -255,7 +255,7 @@ class EA08SysteminfoCest
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
         $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
-        $I->see('セキュリティ設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea div.c-contentsArea__primaryCol > div.c-primaryCol > div:nth-child(1) > div.card-header > div > div.col-8 > div');
+        $I->see('セキュリティ設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea > form > div > div.c-contentsArea__primaryCol > div > div > div.card-header > div > div.col-8 > span');
     }
 
     public function systeminfo_セキュリティ管理ディレクトリ名(\AcceptanceTester $I)

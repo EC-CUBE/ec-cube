@@ -72,6 +72,12 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
         private $source;
 
         /**
+         * @var boolean
+         * @ORM\Column(name="initialized", type="boolean", options={"default":false})
+         */
+        private $initialized = false;
+
+        /**
          * @var \DateTime
          *
          * @ORM\Column(name="create_date", type="datetimetz")
@@ -213,6 +219,30 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
         public function getSource()
         {
             return $this->source;
+        }
+
+        /**
+         * Get initialized.
+         *
+         * @return bool
+         */
+        public function isInitialized(): bool
+        {
+            return $this->initialized;
+        }
+
+        /**
+         * Set initialized.
+         *
+         * @param bool $initialized
+         *
+         * @return Plugin
+         */
+        public function setInitialized(bool $initialized)
+        {
+            $this->initialized = $initialized;
+
+            return $this;
         }
 
         /**

@@ -22,7 +22,12 @@ if (!class_exists('\Eccube\Entity\Cart')) {
     /**
      * Cart
      *
-     * @ORM\Table(name="dtb_cart", indexes={@ORM\Index(name="dtb_cart_pre_order_id_idx", columns={"pre_order_id"}), @ORM\Index(name="dtb_cart_update_date_idx", columns={"update_date"})})
+     * @ORM\Table(name="dtb_cart", indexes={
+     *     @ORM\Index(name="dtb_cart_update_date_idx", columns={"update_date"})
+     *  },
+     *  uniqueConstraints={
+     *     @ORM\UniqueConstraint(name="dtb_cart_pre_order_id_idx", columns={"pre_order_id"})
+     *  }))
      * @ORM\InheritanceType("SINGLE_TABLE")
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
      * @ORM\HasLifecycleCallbacks()
@@ -35,7 +40,7 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         /**
          * @var integer
          *
-         * @ORM\Column(name="id", type="bigint", options={"unsigned":true})
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
          * @ORM\Id
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
@@ -44,8 +49,7 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="cart_key", type="string", options={"unsigned":true}, nullable=true)
-         * @ORM\GeneratedValue(strategy="IDENTITY")
+         * @ORM\Column(name="cart_key", type="string", nullable=true)
          */
         private $cart_key;
 
@@ -91,6 +95,13 @@ if (!class_exists('\Eccube\Entity\Cart')) {
          * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $delivery_fee_total;
+
+        /**
+         * @var int|null
+         *
+         * @ORM\Column(name="sort_no", type="smallint", nullable=true, options={"unsigned":true})
+         */
+        private $sort_no;
 
         /**
          * @var \DateTime
@@ -299,6 +310,14 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         }
 
         /**
+         * @param ItemInterface $item
+         */
+        public function removeItem(ItemInterface $item)
+        {
+            $this->CartItems->removeElement($item);
+        }
+
+        /**
          * 個数の合計を返します。
          *
          * @return integer
@@ -340,6 +359,30 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         public function setCustomer(Customer $Customer = null)
         {
             $this->Customer = $Customer;
+        }
+
+        /**
+         * Set sortNo.
+         *
+         * @param int|null $sortNo
+         *
+         * @return Cart
+         */
+        public function setSortNo($sortNo = null)
+        {
+            $this->sort_no = $sortNo;
+
+            return $this;
+        }
+
+        /**
+         * Get sortNo.
+         *
+         * @return int|null
+         */
+        public function getSortNo()
+        {
+            return $this->sort_no;
         }
 
         /**
@@ -408,6 +451,8 @@ if (!class_exists('\Eccube\Entity\Cart')) {
 
         /**
          * {@inheritdoc}
+         *
+         * @deprecated
          */
         public function setTax($total)
         {

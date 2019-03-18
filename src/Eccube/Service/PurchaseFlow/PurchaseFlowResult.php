@@ -24,7 +24,7 @@ class PurchaseFlowResult
     private $processResults = [];
 
     /**
-     * PurcahseFlowResult constructor.
+     * PurchaseFlowResult constructor.
      *
      * @param ItemHolderInterface $itemHolder
      */

@@ -16,6 +16,9 @@ namespace Eccube\Tests\Web\Admin\Store;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group cache-clear
+ */
 class PluginControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAuthentication()

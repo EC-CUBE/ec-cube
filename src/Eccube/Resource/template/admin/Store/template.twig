@@ -12,85 +12,120 @@ file that was distributed with this source code.
 
 {% set menus = ['store', 'template', 'template_list'] %}
 
-{% block title %}{{'admin.store.template.924'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.store.template.925'|trans}}{% endblock %}
+{% block title %}{{ 'admin.store.template.template_list'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.store'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+    <script>
+        $(function () {
+            $('#form1').on('submit', function () {
+                $('#form_selected').val($('input[name=template]:checked').val());
+            });
+        });
+    </script>
+{% endblock javascript %}
+
 {% block main %}
-    <div class="row" id="aside_wrap">
-        <form name="form1" id="form1" method="post" action="{{ url('admin_store_template') }}">
+    <form name="form1" id="form1" method="post" action="{{ url('admin_store_template') }}">
         {{ form_widget(form._token) }}
         {{ form_widget(form.selected) }}
-        <div class="col-md-9">
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">{{'admin.store.template.926'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="table_list">
-                        <div class="table-responsive with-border">
-                            <table class="table table-striped">
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="d-block mb-3">
+                        <a class="btn btn-ec-regular" href="{{ url('admin_store_template_install') }}">{{ 'admin.common.create__new'|trans }}</a>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span class="card-title">{{ 'admin.store.template.template_list'|trans }}</span></div>
+                        <div class="card-body p-0">
+                            <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>{{'admin.store.template.927'|trans}}</th>
-                                    <th>{{'admin.store.template.928'|trans}}</th>
-                                    <th>{{'admin.store.template.929'|trans}}</th>
-                                    <th></th>
+                                    <th class="border-top-0 align-middle text-center">{{ 'admin.store.template.select'|trans }}</th>
+                                    <th class="border-top-0 align-middle text-center">{{ 'admin.store.template.template_name'|trans }}</th>
+                                    <th class="border-top-0 align-middle text-center">{{ 'admin.store.template.save_path'|trans }}</th>
+                                    <th class="border-top-0"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for Template in Templates %}
-                                <tr>
-                                    <td>
-                                        <input type="radio" name="template" value="{{ Template.id }}" {% if eccube_config.eccube_theme_code == Template.code %}checked="checked"{% endif %}/>
-                                    </td>
-                                    <td>{{ Template.name }}</td>
-                                    <td>
-                                        <ul>
-                                            <li>app/template/{{Template.code }}</li>
-                                            <li>html/template/{{ Template.code }}</li>
-                                        </ul>
-                                    </td>
-                                    <td class="icon_edit">
-                                        <div class="dropdown">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li><a href="{{ url('admin_store_template_download', { 'id' : Template.id }) }}" >{{'admin.store.template.930'|trans}}</a></li>
-                                                {% if Template.default_template %}
-                                                    <li>
-                                                        <a>{{'admin.store.template.931'|trans}}</a>
-                                                    </li>
-                                                {% else %}
-                                                        <li><a href="{{ url('admin_store_template_delete', { 'id': Template.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.store.template.932'|trans}}">{{'admin.common.delete'|trans}}</a></li>
-                                                {% endif %}
+                                    <tr>
+                                        <td class="align-middle text-center">
+                                            <input type="radio" name="template" value="{{ Template.id }}" {% if eccube_config.eccube_theme_code == Template.code %}checked="checked"{% endif %}/>
+                                        </td>
+                                        <td class="align-middle text-center">{{ Template.name }}</td>
+                                        <td class="align-middle text-center">
+                                            <ul>
+                                                <li>app/template/{{Template.code }}</li>
+                                                <li>html/template/{{ Template.code }}</li>
                                             </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td class="align-middle text-center icon_edit">
+                                            <div class="row justify-content-end">
+                                                <div class="col-auto text-center">
+                                                    <a href="{{ url('admin_store_template_download', { 'id' : Template.id }) }}"
+                                                       class="btn btn-ec-actionIcon action-download" data-toggle="tooltip" data-placement="top"
+                                                       title="{{ 'admin.common.download'|trans }}">
+                                                        <i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-auto text-center">
+                                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                        <a class="btn btn-ec-actionIcon action-delete {% if Template.default_template or eccube_config.eccube_theme_code == Template.code %}disabled{% endif %}"
+                                                           data-toggle="modal" data-target="#confirmModal-{{ loop.index }}">
+                                                            <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                    </div>
+                                                    <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                </div>
+                                                                <div class="modal-body text-left">
+                                                                    <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': Template.name }) }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                    <a class="btn btn-ec-delete" data-confirm="false"
+                                                                       href="{{ url('admin_store_template_delete', { 'id': Template.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                                        {{ 'admin.common.delete'|trans }}
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div><!-- /.box -->
+            </div>
         </div>
-        <div class="col-md-3" id="aside_column">
-            <div id="common_box" class="col_inner">
-                <div class="box no-header">
-                    <div class="box-body">
-                        <div class="row text-center">
-                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg"
-                                        onclick="$('#form_selected').val($('input[name=template]:checked').val());document.form1.submit(); return false;">{{'admin.store.template.933'|trans}}</button>
+
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
                             </div>
                         </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
+                    </div>
+                </div>
             </div>
-        </div><!-- /.col -->
-        </form>
-    </div>
-
+        </div>
+    </form>
 {% endblock %}

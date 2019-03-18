@@ -14,6 +14,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\Shipping;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -44,10 +45,13 @@ class StockMultipleValidator extends ItemHolderValidator
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $OrderItemsByProductClass = [];
-        foreach ($itemHolder->getItems() as $Item) {
-            if ($Item->isProduct()) {
-                $id = $Item->getProductClass()->getId();
-                $OrderItemsByProductClass[$id][] = $Item;
+        /** @var Shipping $Shipping */
+        foreach ($itemHolder->getShippings() as $Shipping) {
+            foreach ($Shipping->getOrderItems() as $Item) {
+                if ($Item->isProduct()) {
+                    $id = $Item->getProductClass()->getId();
+                    $OrderItemsByProductClass[$id][] = $Item;
+                }
             }
         }
 
@@ -58,15 +62,25 @@ class StockMultipleValidator extends ItemHolderValidator
                 continue;
             }
             $stock = $ProductClass->getStock();
+
             if ($stock == 0) {
+                foreach ($Items as $Item) {
+                    $Item->setQuantity(0);
+                }
                 $this->throwInvalidItemException('front.shopping.out_of_stock_zero', $ProductClass, true);
             }
-            $total = 0;
+            $isOver = false;
             foreach ($Items as $Item) {
-                $total += $Item->getQuantity();
-                if ($stock < $total) {
-                    $this->throwInvalidItemException('front.shopping.out_of_stock', $ProductClass, true);
+                if ($stock - $Item->getQuantity() >= 0) {
+                    $stock = $stock - $Item->getQuantity();
+                } else {
+                    $Item->setQuantity($stock);
+                    $stock = 0;
+                    $isOver = true;
                 }
+            }
+            if ($isOver) {
+                $this->throwInvalidItemException('front.shopping.out_of_stock', $ProductClass, true);
             }
         }
     }

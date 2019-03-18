@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Front;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -50,7 +51,7 @@ class ForgotType extends AbstractType
             ],
             'constraints' => [
                 new Assert\NotBlank(),
-                new Assert\Email(['strict' => true]),
+                new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
             ],
         ]);
     }

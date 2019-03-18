@@ -14,6 +14,8 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
+use Eccube\Service\OrderHelper;
 
 /**
  * Class ShoppingControllerWithNonmemberTest
@@ -41,10 +43,13 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testIndexWithCartNotFound()
     {
-        $client = $this->createClient();
-        $client->request('GET', '/shopping');
+        // お客様情報を入力済の状態にするため, セッションにエンティティをセット.
+        $session = $this->container->get('session');
+        $session->set(OrderHelper::SESSION_NON_MEMBER, new Customer());
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $this->client->request('GET', '/shopping');
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     /**
@@ -87,8 +92,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
 
-        $this->client->enableProfiler();
-        $this->scenarioComplete(null, $this->generateUrl('shopping_order'));
+        $this->scenarioCheckout();
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $mailCollector = $this->getMailCollector(false);

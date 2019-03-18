@@ -25,6 +25,10 @@ if (!isset($_SERVER['APP_ENV'])) {
 
     if (file_exists(__DIR__.'/.env')) {
         (new Dotenv(__DIR__))->overload();
+
+        if (strpos(getenv('DATABASE_URL'), 'sqlite') !== false && !extension_loaded('pdo_sqlite')) {
+            (new Dotenv(__DIR__, '.env.install'))->overload();
+        }
     } else {
         (new Dotenv(__DIR__, '.env.install'))->overload();
     }
@@ -49,8 +53,24 @@ if ($trustedHosts) {
     Request::setTrustedHosts(explode(',', $trustedHosts));
 }
 
-$kernel = new Kernel($env, $debug);
 $request = Request::createFromGlobals();
+
+if (file_exists(__DIR__.'/.maintenance')) {
+    $pathInfo = \rawurldecode($request->getPathInfo());
+    $adminPath = env('ECCUBE_ADMIN_ROUTE', 'admin');
+    $adminPath = '/'.\trim($adminPath, '/').'/';
+    if (\strpos($pathInfo, $adminPath) !== 0) {
+        $locale = env('ECCUBE_LOCALE');
+        $templateCode = env('ECCUBE_TEMPLATE_CODE');
+        $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
+
+        header('HTTP/1.1 503 Service Temporarily Unavailable');
+        require __DIR__.'/maintenance.php';
+        return;
+    }
+}
+
+$kernel = new Kernel($env, $debug);
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);

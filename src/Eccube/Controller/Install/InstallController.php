@@ -13,6 +13,9 @@
 
 namespace Eccube\Controller\Install;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\CachedReader;
+use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
@@ -24,6 +27,9 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
+use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
@@ -32,6 +38,7 @@ use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -67,10 +74,19 @@ class InstallController extends AbstractController
         'mcrypt',
     ];
 
-    protected $writableDirs = [
-        'app',
+    protected $eccubeDirs = [
+        'app/Plugin',
+        'app/PluginData',
+        'app/proxy',
+        'app/template',
         'html',
         'var',
+        'vendor',
+    ];
+
+    protected $eccubeFiles = [
+        'composer.json',
+        'composer.lock',
     ];
 
     /**
@@ -92,6 +108,7 @@ class InstallController extends AbstractController
     /**
      * 最初からやり直す場合、SESSION情報をクリア.
      *
+     * @Route("/", name="homepage")
      * @Route("/install", name="install")
      *
      * @Template("index.twig")
@@ -152,7 +169,7 @@ class InstallController extends AbstractController
     }
 
     /**
-     * ディレクトリの書き込み権限をチェック.
+     * ディレクトリとファイルの書き込み権限をチェック.
      *
      * @Route("/install/step2", name="install_step2")
      * @Template("step2.twig")
@@ -165,20 +182,56 @@ class InstallController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $protectedDirs = [];
-        foreach ($this->writableDirs as $writableDir) {
-            $targetDirs = Finder::create()
-                ->in($this->getParameter('kernel.project_dir').'/'.$writableDir)
-                ->directories();
-            foreach ($targetDirs as $targetDir) {
-                if (!is_writable($targetDir->getRealPath())) {
-                    $protectedDirs[] = $targetDir;
-                }
+        $noWritePermissions = [];
+
+        $projectDir = $this->getParameter('kernel.project_dir');
+
+        $eccubeDirs = array_map(function ($dir) use ($projectDir) {
+            return $projectDir.'/'.$dir;
+        }, $this->eccubeDirs);
+
+        $eccubeFiles = array_map(function ($file) use ($projectDir) {
+            return $projectDir.'/'.$file;
+        }, $this->eccubeFiles);
+
+        // ルートディレクトリの書き込み権限をチェック
+        if (!is_writable($projectDir)) {
+            $noWritePermissions[] = $projectDir;
+        }
+
+        // 対象ディレクトリの書き込み権限をチェック
+        foreach ($eccubeDirs as $dir) {
+            if (!is_writable($dir)) {
+                $noWritePermissions[] = $dir;
             }
         }
 
+        // 対象ディレクトリ配下のディレクトリ・ファイルの書き込み権限をチェック
+        $finder = Finder::create()->in($eccubeDirs);
+        foreach ($finder as $file) {
+            if (!is_writable($file->getRealPath())) {
+                $noWritePermissions[] = $file;
+            }
+        }
+
+        // composer.json, composer.lockの書き込み権限をチェック
+        foreach ($eccubeFiles as $file) {
+            if (!is_writable($file)) {
+                $noWritePermissions[] = $file;
+            }
+        }
+
+        $faviconPath = '/assets/img/common/favicon.ico';
+        if (!file_exists($this->getParameter('eccube_html_dir').'/user_data'.$faviconPath)) {
+            $file = new Filesystem();
+            $file->copy(
+                $this->getParameter('eccube_html_front_dir').$faviconPath,
+                $this->getParameter('eccube_html_dir').'/user_data'.$faviconPath
+            );
+        }
+
         return [
-            'protectedDirs' => $protectedDirs,
+            'noWritePermissions' => $noWritePermissions,
         ];
     }
 
@@ -294,7 +347,7 @@ class InstallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($data['database'] === 'pdo_sqlite') {
-                $data['database_name'] = '/%kernel.project_dir%/var/eccube.db';
+                $data['database_name'] = '/var/eccube.db';
             }
 
             $this->setSessionData($this->session, $data);
@@ -337,33 +390,40 @@ class InstallController extends AbstractController
             $noUpdate = $form['no_update']->getData();
 
             $url = $this->createDatabaseUrl($sessionData);
-            // for sqlite, resolve %kernel.project_dir% paramter.
-            $url = $this->container->getParameterBag()->resolveValue($url);
 
-            $conn = $this->createConnection(['url' => $url]);
-            $em = $this->createEntityManager($conn);
-            $migration = $this->createMigration($conn);
+            try {
+                $conn = $this->createConnection(['url' => $url]);
+                $em = $this->createEntityManager($conn);
+                $migration = $this->createMigration($conn);
 
-            if ($noUpdate) {
-                $this->update($conn, [
-                    'auth_magic' => $sessionData['authmagic'],
-                    'login_id' => $sessionData['login_id'],
-                    'login_pass' => $sessionData['login_pass'],
-                    'shop_name' => $sessionData['shop_name'],
-                    'email' => $sessionData['email'],
-                ]);
-            } else {
-                $this->dropTables($em);
-                $this->createTables($em);
-                $this->importCsv($em);
-                $this->migrate($migration);
-                $this->insert($conn, [
-                    'auth_magic' => $sessionData['authmagic'],
-                    'login_id' => $sessionData['login_id'],
-                    'login_pass' => $sessionData['login_pass'],
-                    'shop_name' => $sessionData['shop_name'],
-                    'email' => $sessionData['email'],
-                ]);
+                if ($noUpdate) {
+                    $this->update($conn, [
+                        'auth_magic' => $sessionData['authmagic'],
+                        'login_id' => $sessionData['login_id'],
+                        'login_pass' => $sessionData['login_pass'],
+                        'shop_name' => $sessionData['shop_name'],
+                        'email' => $sessionData['email'],
+                    ]);
+                } else {
+                    $this->dropTables($em);
+                    $this->createTables($em);
+                    $this->importCsv($em);
+                    $this->migrate($migration);
+                    $this->insert($conn, [
+                        'auth_magic' => $sessionData['authmagic'],
+                        'login_id' => $sessionData['login_id'],
+                        'login_pass' => $sessionData['login_pass'],
+                        'shop_name' => $sessionData['shop_name'],
+                        'email' => $sessionData['email'],
+                    ]);
+                }
+            } catch (\Exception $e) {
+                log_error($e->getMessage());
+                $this->addError($e->getMessage());
+
+                return [
+                    'form' => $form->createView(),
+                ];
             }
 
             if (isset($sessionData['agree']) && $sessionData['agree']) {
@@ -418,6 +478,9 @@ class InstallController extends AbstractController
             'ECCUBE_ADMIN_ALLOW_HOSTS' => $this->convertAdminAllowHosts($sessionData['admin_allow_hosts']),
             'ECCUBE_FORCE_SSL' => $forceSSL,
             'ECCUBE_ADMIN_ROUTE' => isset($sessionData['admin_dir']) ? $sessionData['admin_dir'] : 'admin',
+            'ECCUBE_COOKIE_PATH' => $request->getBasePath() ? $request->getBasePath() : '/',
+            'ECCUBE_TEMPLATE_CODE' => 'default',
+            'ECCUBE_LOCALE' => 'ja',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);
@@ -445,7 +508,7 @@ class InstallController extends AbstractController
 
     protected function removeSessionData(SessionInterface $session)
     {
-        $session->remove('eccube.session.install');
+        $session->clear();
     }
 
     protected function setSessionData(SessionInterface $session, $data = [])
@@ -498,8 +561,22 @@ class InstallController extends AbstractController
 
     protected function createConnection(array $params)
     {
+        if (strpos($params['url'], 'mysql') !== false) {
+            $params['charset'] = 'utf8';
+            $params['defaultTableOptions'] = [
+                'collate' => 'utf8_general_ci',
+            ];
+        }
+
+        Type::overrideType('datetime', UTCDateTimeType::class);
+        Type::overrideType('datetimetz', UTCDateTimeTzType::class);
+
         $conn = DriverManager::getConnection($params);
         $conn->ping();
+
+        $platform = $conn->getDatabasePlatform();
+        $platform->markDoctrineTypeCommented('datetime');
+        $platform->markDoctrineTypeCommented('datetimetz');
 
         return $conn;
     }
@@ -510,7 +587,11 @@ class InstallController extends AbstractController
             $this->getParameter('kernel.project_dir').'/src/Eccube/Entity',
             $this->getParameter('kernel.project_dir').'/app/Customize/Entity',
         ];
-        $config = Setup::createAnnotationMetadataConfiguration($paths, true, null, null, false);
+        $config = Setup::createConfiguration(true);
+        $driver = new AnnotationDriver(new CachedReader(new AnnotationReader(), new ArrayCache()), $paths);
+        $driver->setTraitProxiesDirectory($this->getParameter('kernel.project_dir').'/app/proxy/entity');
+        $config->setMetadataDriverImpl($driver);
+
         $em = EntityManager::create($conn, $config);
 
         return $em;
@@ -540,7 +621,7 @@ class InstallController extends AbstractController
                 if (isset($params['database_user'])) {
                     $url .= $params['database_user'];
                     if (isset($params['database_password'])) {
-                        $url .= ':'.$params['database_password'];
+                        $url .= ':'.\rawurlencode($params['database_password']);
                     }
                     $url .= '@';
                 }
@@ -742,8 +823,14 @@ class InstallController extends AbstractController
 
     protected function importCsv(EntityManager $em)
     {
+        // for full locale code cases
+        $locale = env('ECCUBE_LOCALE', 'ja_JP');
+        $locale = str_replace('_', '-', $locale);
+        $locales = \Locale::parseLocale($locale);
+        $localeDir = is_null($locales) ? 'ja' : $locales['language'];
+
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
-        $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv');
+        $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv/'.$localeDir);
         $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);
@@ -823,7 +910,7 @@ class InstallController extends AbstractController
                 ]);
             } else {
                 // 新しい管理者IDが入力されたらinsert
-                $sth = $conn->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
+                $sth = $conn->prepare("INSERT INTO dtb_member (login_id, password, salt, work_id, authority_id, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password , :salt , '1', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
                 $sth->execute([
                     ':login_id' => $data['login_id'],
                     ':password' => $password,
@@ -886,21 +973,26 @@ class InstallController extends AbstractController
      */
     protected function sendAppData($params, EntityManager $em)
     {
-        $query = http_build_query($this->createAppData($params, $em));
-        $header = [
-            'Content-Type: application/x-www-form-urlencoded',
-            'Content-Length: '.strlen($query),
-        ];
-        $context = stream_context_create(
-            [
-                'http' => [
-                    'method' => 'POST',
-                    'header' => $header,
-                    'content' => $query,
-                ],
-            ]
-        );
-        file_get_contents('http://www.ec-cube.net/mall/use_site.php', false, $context);
+        try {
+            $query = http_build_query($this->createAppData($params, $em));
+            $header = [
+                'Content-Type: application/x-www-form-urlencoded',
+                'Content-Length: '.strlen($query),
+            ];
+            $context = stream_context_create(
+                [
+                    'http' => [
+                        'method' => 'POST',
+                        'header' => $header,
+                        'content' => $query,
+                    ],
+                ]
+            );
+            file_get_contents('https://www.ec-cube.net/mall/use_site.php', false, $context);
+        } catch (\Exception $e) {
+            // 送信に失敗してもインストールは継続できるようにする
+            log_error($e->getMessage());
+        }
 
         return $this;
     }

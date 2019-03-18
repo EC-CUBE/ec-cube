@@ -89,7 +89,7 @@ class TemplateController extends AbstractController
 
             file_put_contents($envFile, $env);
 
-            $this->addSuccess('admin.content.template.save.complete', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
 
             $cacheUtil->clearCache();
 
@@ -177,14 +177,14 @@ class TemplateController extends AbstractController
 
         // デフォルトテンプレート
         if ($Template->isDefaultTemplate()) {
-            $this->addError('admin.content.template.delete.default.error', 'admin');
+            $this->addError('admin.store.template.delete_error_default__template', 'admin');
 
             return $this->redirectToRoute('admin_store_template');
         }
 
         // 設定中のテンプレート
         if ($this->eccubeConfig['eccube.theme'] === $Template->getCode()) {
-            $this->addError('admin.content.template.delete.current.error', 'admin');
+            $this->addError('admin.store.template.delete_error__current_template', 'admin');
 
             return $this->redirectToRoute('admin_store_template');
         }
@@ -202,7 +202,7 @@ class TemplateController extends AbstractController
         $this->entityManager->remove($Template);
         $this->entityManager->flush();
 
-        $this->addSuccess('admin.content.template.delete.complete', 'admin');
+        $this->addSuccess('admin.common.delete_complete', 'admin');
 
         return $this->redirectToRoute('admin_store_template');
     }
@@ -232,7 +232,7 @@ class TemplateController extends AbstractController
 
             // テンプレートコードの重複チェック.
             if ($TemplateExists) {
-                $form['code']->addError(new FormError(trans('template.text.error.code_not_available')));
+                $form['code']->addError(new FormError(trans('admin.store.template.template_code_already_exists')));
 
                 return [
                     'form' => $form->createView(),
@@ -269,7 +269,7 @@ class TemplateController extends AbstractController
                     $phar->extractTo($tmpDir, null, true);
                 }
             } catch (\Exception $e) {
-                $form['file']->addError(new FormError(trans('template.text.error.upload_failuer')));
+                $form['file']->addError(new FormError(trans('admin.common.upload_error')));
 
                 return [
                     'form' => $form->createView(),
@@ -302,7 +302,7 @@ class TemplateController extends AbstractController
             $this->entityManager->persist($Template);
             $this->entityManager->flush();
 
-            $this->addSuccess('admin.content.template.add.complete', 'admin');
+            $this->addSuccess('admin.common.upload_complete', 'admin');
 
             return $this->redirectToRoute('admin_store_template');
         }

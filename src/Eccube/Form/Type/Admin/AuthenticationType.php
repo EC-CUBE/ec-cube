@@ -46,7 +46,7 @@ class AuthenticationType extends AbstractType
         $builder->add(
             'authentication_key', TextType::class,
             [
-                'label' => 'plugin.label.auth_key',
+                'label' => 'admin.store.setting.api_key',
                 'required' => false,
                 'constraints' => [
                     new Assert\Regex(['pattern' => '/^[0-9a-zA-Z]+$/']),
@@ -54,7 +54,7 @@ class AuthenticationType extends AbstractType
             ])
             ->add('php_path', TextType::class,
                 [
-                    'label' => 'admin.store.authentication_setting.php_path.label',
+                    'label' => 'admin.store.setting.php_path',
                     'required' => false,
                     'constraints' => [
                         new Assert\Length([

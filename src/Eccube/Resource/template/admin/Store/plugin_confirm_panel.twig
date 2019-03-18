@@ -27,17 +27,16 @@ file that was distributed with this source code.
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="alert alert-danger border border-danger">
-                {% set version_check = item.version_check  %}
-                {% if version_check == false %}
+    {% set version_check = item.version_check  %}
+    {% if version_check == false %}
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger border border-danger">
                     <p class="text-danger mb-0">
                         {{ 'admin.store.plugin_owners_search.modal.note'|trans({'%version%': constant('Eccube\\Common\\Constant::VERSION')}) }}
                     </p>
-                {% endif %}
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 </div>

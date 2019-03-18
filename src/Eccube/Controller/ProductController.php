@@ -24,10 +24,12 @@ use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
+use Eccube\Repository\Master\ProductListMaxRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -68,6 +70,11 @@ class ProductController extends AbstractController
      */
     protected $helper;
 
+    /**
+     * @var ProductListMaxRepository
+     */
+    protected $productListMaxRepository;
+
     private $title = '';
 
     /**
@@ -79,6 +86,7 @@ class ProductController extends AbstractController
      * @param ProductRepository $productRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param AuthenticationUtils $helper
+     * @param ProductListMaxRepository $productListMaxRepository
      */
     public function __construct(
         PurchaseFlow $cartPurchaseFlow,
@@ -86,7 +94,8 @@ class ProductController extends AbstractController
         CartService $cartService,
         ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
-        AuthenticationUtils $helper
+        AuthenticationUtils $helper,
+        ProductListMaxRepository $productListMaxRepository
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
@@ -94,6 +103,7 @@ class ProductController extends AbstractController
         $this->productRepository = $productRepository;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->helper = $helper;
+        $this->productListMaxRepository = $productListMaxRepository;
     }
 
     /**
@@ -105,9 +115,9 @@ class ProductController extends AbstractController
     public function index(Request $request, Paginator $paginator)
     {
         // Doctrine SQLFilter
-        // if ($this->BaseInfo->isOptionNostockHidden()) {
-        //     $this->entityManager->getFilters()->enable('option_nostock_hidden');
-        // }
+        if ($this->BaseInfo->isOptionNostockHidden()) {
+            $this->entityManager->getFilters()->enable('option_nostock_hidden');
+        }
 
         // handleRequestは空のqueryの場合は無視するため
         if ($request->getMethod() === 'GET') {
@@ -149,11 +159,21 @@ class ProductController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_SEARCH, $event);
         $searchData = $event->getArgument('searchData');
 
+        $query = $qb->getQuery()
+            ->useResultCache(true, $this->eccubeConfig['eccube_result_cache_lifetime_short']);
+
+        /** @var SlidingPagination $pagination */
         $pagination = $paginator->paginate(
-            $qb,
+            $query,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
-            $searchData['disp_number']->getId()
+            !empty($searchData['disp_number']) ? $searchData['disp_number']->getId() : $this->productListMaxRepository->findOneBy([], ['sort_no' => 'ASC'])->getId()
         );
+
+        $ids = [];
+        foreach ($pagination as $Product) {
+            $ids[] = $Product->getId();
+        }
+        $ProductsAndClassCategories = $this->productRepository->findProductsWithSortedClassCategories($ids, 'p.id');
 
         // addCart form
         $forms = [];
@@ -164,7 +184,7 @@ class ProductController extends AbstractController
                 AddCartType::class,
                 null,
                 [
-                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId()),
+                    'product' => $ProductsAndClassCategories[$Product->getId()],
                     'allow_extra_fields' => true,
                 ]
             );
@@ -443,7 +463,7 @@ class ProductController extends AbstractController
             if (empty($errorMessages)) {
                 // エラーが発生していない場合
                 $done = true;
-                array_push($messages, 'カートに追加しました。');
+                array_push($messages, trans('front.product.add_cart_complete'));
             } else {
                 // エラーが発生している場合
                 $done = false;

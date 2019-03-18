@@ -13,15 +13,14 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
 
 class StockMultipleValidatorTest extends EccubeTestCase
 {
@@ -64,20 +63,11 @@ class StockMultipleValidatorTest extends EccubeTestCase
 
         $this->validator = $this->container->get(StockMultipleValidator::class);
         $this->Product = $this->createProduct('テスト商品', 1);
-        $this->ProductClass = $this->Product->getProductClasses()[0];
-        $ItemType = new OrderItemType();
-        $ItemType->setId(OrderItemType::PRODUCT);
-        $this->OrderItem1 = new OrderItem();
-        $this->OrderItem1->setQuantity(1);
-        $this->OrderItem1->setProductClass($this->ProductClass);
-        $this->OrderItem1->setOrderItemType($ItemType);
-        $this->OrderItem2 = new OrderItem();
-        $this->OrderItem2->setQuantity(1);
-        $this->OrderItem2->setProductClass($this->ProductClass);
-        $this->OrderItem2->setOrderItemType($ItemType);
-        $this->Order = new Order();
-        $this->Order->addOrderItem($this->OrderItem1);
-        $this->Order->addOrderItem($this->OrderItem2);
+        $this->ProductClass = $this->Product->getProductClasses()->first();
+        $this->Order = $this->createOrderWithProductClasses($this->createCustomer(),
+            [$this->ProductClass, $this->ProductClass]);
+        $this->OrderItem1 = $this->Order->getProductOrderItems()[0];
+        $this->OrderItem2 = $this->Order->getProductOrderItems()[1];
     }
 
     public function testInstance()

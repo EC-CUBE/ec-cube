@@ -94,18 +94,18 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testProductClassSortByRank()
     {
         /* @var $ClassCategory \Eccube\Entity\ClassCategory */
-        //set 金 rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '金']);
+        //set チョコ rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'チョコ']);
         $ClassCategory->setSortNo(3);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set 銀 rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '銀']);
+        //set 抹茶 rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '抹茶']);
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set プラチナ rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'プラチナ']);
+        //set バニラ rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'バニラ']);
         $ClassCategory->setSortNo(1);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
@@ -113,8 +113,8 @@ class ProductControllerTest extends AbstractWebTestCase
         $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => '1']));
         $this->assertTrue($client->getResponse()->isSuccessful());
         $classCategory = $crawler->filter('#classcategory_id1')->text();
-        //選択してください, 金, 銀, プラチナ sort by rank setup above.
-        $this->expected = '選択してください金銀プラチナ';
+        //選択してください, チョコ, 抹茶, バニラ sort by rank setup above.
+        $this->expected = '選択してくださいチョコ抹茶バニラ';
         $this->actual = $classCategory;
         $this->verify();
     }

@@ -15,23 +15,23 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 
 /**
  * 合計金額のマイナスチェック.
  */
-class PaymentTotalNegativeValidator extends ItemHolderValidator
+class PaymentTotalNegativeValidator extends ItemHolderPostValidator
 {
     /**
-     * @param ItemHolderInterface $item
+     * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      *
      * @throws InvalidItemException
      */
-    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if ($item->getTotal() < 0) {
+        if ($itemHolder->getTotal() < 0) {
             $this->throwInvalidItemException(trans('front.shopping.payment_total_invalid'));
         }
     }

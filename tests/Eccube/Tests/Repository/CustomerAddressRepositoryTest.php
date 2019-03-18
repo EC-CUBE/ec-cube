@@ -29,63 +29,29 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
     /**
      * @var CustomerAddressRepository
      */
-    protected $customerAddress;
+    protected $customerAddressRepository;
 
     public function setUp()
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->customerAddress = $this->container->get(CustomerAddressRepository::class);
+        $this->customerAddressRepository = $this->container->get(CustomerAddressRepository::class);
     }
 
-    public function testFindOrCreateByCustomerAndId()
+    public function testDelete()
     {
-        $CustomerAddress = $this->customerAddress->findOrCreateByCustomerAndId($this->Customer, null);
-        $this->assertNotNull($CustomerAddress);
-
         $faker = $this->getFaker();
-
-        $CustomerAddress
+        $CustomerAddress = new CustomerAddress();
+        $CustomerAddress->setCustomer($this->Customer)
             ->setName01($faker->lastName)
             ->setName02($faker->firstName);
         $this->entityManager->persist($CustomerAddress);
         $this->entityManager->flush();
 
         $id = $CustomerAddress->getId();
-        $this->assertNotNull($id);
+        $this->customerAddressRepository->delete($CustomerAddress);
 
-        $ExistsCustomerAddress = $this->customerAddress->findOrCreateByCustomerAndId($this->Customer, $id);
-        $this->assertNotNull($ExistsCustomerAddress);
-
-        $this->expected = $id;
-        $this->actual = $ExistsCustomerAddress->getId();
-        $this->verify('ID は'.$this->expected.'ではありません');
-        $this->assertSame($this->Customer, $ExistsCustomerAddress->getCustomer());
-    }
-
-    public function testFindOrCreateByCustomerAndIdWithException()
-    {
-        try {
-            $this->customerAddress->findOrCreateByCustomerAndId($this->Customer, 9999);
-            $this->fail();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            $this->expected = 'No result was found for query although at least one row was expected.';
-            $this->actual = $e->getMessage();
-            $this->verify();
-        }
-    }
-
-    public function testDelete()
-    {
-        $CustomerAddress = new CustomerAddress();
-        $CustomerAddress->setCustomer($this->Customer);
-        $this->entityManager->persist($CustomerAddress);
-        $this->entityManager->flush();
-
-        $id = $CustomerAddress->getId();
-        $this->customerAddress->delete($CustomerAddress);
-
-        $CustomerAddress = $this->customerAddress->find($id);
+        $CustomerAddress = $this->customerAddressRepository->find($id);
         $this->assertNull($CustomerAddress);
     }
 }

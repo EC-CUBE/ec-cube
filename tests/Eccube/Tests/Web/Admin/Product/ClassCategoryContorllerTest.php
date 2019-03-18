@@ -129,7 +129,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertContains($editName, $crawler->filter('ul.sortable-container li:nth-child(2)')->text());
+        $this->assertContains($editName, $crawler->filter('ul.sortable-container li:nth-child(3)')->text());
     }
 
     public function testRoutingAdminProductClassCategoryDelete()
@@ -202,20 +202,20 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
     public function testClassCategorySortByRank()
     {
         /* @var $ClassCategory \Eccube\Entity\ClassCategory */
-        //set 金 rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '金']);
+        //set チョコ rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'チョコ']);
         $testData[$ClassCategory->getId()] = 1;
         $ClassCategory->setSortNo(3);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set 銀 rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '銀']);
+        //set 抹茶 rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '抹茶']);
         $testData[$ClassCategory->getId()] = 3;
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set プラチナ rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'プラチナ']);
+        //set バニラ rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'バニラ']);
         $testData[$ClassCategory->getId()] = 2;
         $ClassCategory->setSortNo(1);
         $this->entityManager->persist($ClassCategory);
@@ -231,15 +231,15 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         /** @var Crawler $crawler */
         $crawler = $client->request('GET', $this->generateUrl('admin_product_class_category', ['class_name_id' => 1]));
 
-        //金, 銀, プラチナ sort by rank setup above.
-        $this->expected = '銀';
-        $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(2)')->text();
-        $this->assertContains($this->expected, $this->actual);
-        $this->expected = 'プラチナ';
+        //チョコ, 抹茶, バニラ sort by rank setup above.
+        $this->expected = '抹茶';
         $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(3)')->text();
         $this->assertContains($this->expected, $this->actual);
-        $this->expected = '金';
+        $this->expected = 'バニラ';
         $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(4)')->text();
+        $this->assertContains($this->expected, $this->actual);
+        $this->expected = 'チョコ';
+        $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(5)')->text();
         $this->assertContains($this->expected, $this->actual);
     }
 

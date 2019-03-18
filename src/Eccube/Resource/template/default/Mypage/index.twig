@@ -24,7 +24,7 @@ file that was distributed with this source code.
         </div>
         <div class="ec-mypageRole">
             {% if pagination.totalItemCount > 0 %}
-                <p class="ec-para-nomal">{{ 'front.mypage.history_count'|trans({'%count%':pagination.totalItemCount}) }}</p>
+                <p class="ec-para-normal">{{ 'front.mypage.history_count'|trans({'%count%':pagination.totalItemCount}) }}</p>
                 {% for Order in pagination %}
                     <div class="ec-historyRole">
                         <div class="ec-historyRole__contents">
@@ -78,7 +78,7 @@ file that was distributed with this source code.
                     {% include "pager.twig" with {'pages': pagination.paginationData} %}
                 </div>
             {% else %}
-                <p class="ec-para-nomal">{{ 'front.mypage.history_not_found'|trans }}</p>
+                <p class="ec-para-normal">{{ 'front.mypage.history_not_found'|trans }}</p>
             {% endif %}
         </div>
     </div>

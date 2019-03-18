@@ -1,0 +1,4 @@
+id,name,sort_no,discriminator_type
+20,20 items,0,productlistmax
+40,40 items,1,productlistmax
+60,60 items,2,productlistmax

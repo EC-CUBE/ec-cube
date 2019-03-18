@@ -14,7 +14,6 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
 use Eccube\Event\EccubeEvents;
@@ -23,12 +22,13 @@ use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
 class PageController extends AbstractController
@@ -70,14 +70,10 @@ class PageController extends AbstractController
      */
     public function index(Request $request)
     {
-        $DeviceType = $this->deviceTypeRepository
-            ->find(DeviceType::DEVICE_TYPE_PC);
-
-        $Pages = $this->pageRepository->getPageList($DeviceType);
+        $Pages = $this->pageRepository->getPageList();
 
         $event = new EventArgs(
             [
-                'DeviceType' => $DeviceType,
                 'Pages' => $Pages,
             ],
             $request
@@ -94,13 +90,13 @@ class PageController extends AbstractController
      * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
      * @Template("@admin/Content/page_edit.twig")
      */
-    public function edit(Request $request, $id = null, Environment $twig, Router $router)
+    public function edit(Request $request, $id = null, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil)
     {
-        $DeviceType = $this->deviceTypeRepository
-            ->find(DeviceType::DEVICE_TYPE_PC);
-
-        $Page = $this->pageRepository
-            ->findOrCreate($id, $DeviceType);
+        if (null === $id) {
+            $Page = $this->pageRepository->newPage();
+        } else {
+            $Page = $this->pageRepository->find($id);
+        }
 
         $isUserDataPage = true;
 
@@ -110,7 +106,6 @@ class PageController extends AbstractController
         $event = new EventArgs(
             [
                 'builder' => $builder,
-                'DeviceType' => $DeviceType,
                 'Page' => $Page,
             ],
             $request
@@ -228,9 +223,9 @@ class PageController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            // twig キャッシュの削除.
-            $cacheDir = $this->getParameter('kernel.cache_dir').'/twig';
-            $fs->remove($cacheDir);
+            // キャッシュの削除
+            $cacheUtil->clearTwigCache();
+            $cacheUtil->clearDoctrineCache();
 
             return $this->redirectToRoute('admin_content_page_edit', ['id' => $Page->getId()]);
         }
@@ -257,17 +252,13 @@ class PageController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id = null)
+    public function delete(Request $request, $id = null, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
-
-        $DeviceType = $this->deviceTypeRepository
-            ->find(DeviceType::DEVICE_TYPE_PC);
 
         $Page = $this->pageRepository
             ->findOneBy([
                 'id' => $id,
-                'DeviceType' => $DeviceType,
             ]);
 
         if (!$Page) {
@@ -289,7 +280,6 @@ class PageController extends AbstractController
 
             $event = new EventArgs(
                 [
-                    'DeviceType' => $DeviceType,
                     'Page' => $Page,
                 ],
                 $request
@@ -297,6 +287,10 @@ class PageController extends AbstractController
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE, $event);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
+
+            // キャッシュの削除
+            $cacheUtil->clearTwigCache();
+            $cacheUtil->clearDoctrineCache();
         }
 
         return $this->redirectToRoute('admin_content_page');

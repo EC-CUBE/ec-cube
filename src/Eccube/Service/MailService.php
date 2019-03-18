@@ -331,20 +331,6 @@ class MailService
     }
 
     /**
-     * Alias of sendContactMail().
-     *
-     * @param $formData お問い合わせ内容
-     *
-     * @see sendContactMail()
-     * @deprecated since 3.0.0, to be removed in 3.1
-     * @see https://github.com/EC-CUBE/ec-cube/issues/1315
-     */
-    public function sendrContactMail($formData)
-    {
-        $this->sendContactMail($formData);
-    }
-
-    /**
      * Send order mail.
      *
      * @param \Eccube\Entity\Order $Order 受注情報
@@ -396,6 +382,20 @@ class MailService
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_ORDER, $event);
 
         $count = $this->mailer->send($message);
+
+        $MailHistory = new MailHistory();
+        $MailHistory->setMailSubject($message->getSubject())
+            ->setMailBody($message->getBody())
+            ->setOrder($Order)
+            ->setSendDate(new \DateTime());
+
+        // HTML用メールの設定
+        $multipart = $message->getChildren();
+        if (count($multipart) > 0) {
+            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+        }
+
+        $this->mailHistoryRepository->save($MailHistory);
 
         log_info('受注メール送信完了', ['count' => $count]);
 
@@ -486,16 +486,8 @@ class MailService
             ->setTo([$Order->getEmail()])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
-
-        if (is_null($formData['html_tpl_data'])) {
-            $message->setBody($formData['tpl_data']);
-        } else {
-            $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($formData['tpl_data'], 'text/plain')
-                ->addPart($formData['html_tpl_data'], 'text/html');
-        }
+            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBody($formData['tpl_data']);
 
         $event = new EventArgs(
             [
@@ -638,49 +630,6 @@ class MailService
     }
 
     /**
-     * ポイントでマイナス発生時にメール通知する。
-     *
-     * @param Order $Order
-     * @param int $currentPoint
-     * @param int $changePoint
-     */
-    public function sendPointNotifyMail(\Eccube\Entity\Order $Order, $currentPoint = 0, $changePoint = 0)
-    {
-        $body = $this->twig->render('Mail/point_notify.twig', [
-            'Order' => $Order,
-            'currentPoint' => $currentPoint,
-            'changePoint' => $changePoint,
-        ]);
-
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] ポイント通知')
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$this->BaseInfo->getEmail01()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
-
-        // HTMLテンプレートが存在する場合
-        $htmlFileName = $this->getHtmlTemplate('Mail/point_notify.twig');
-        if (!is_null($htmlFileName)) {
-            $htmlBody = $this->twig->render($htmlFileName, [
-                'Order' => $Order,
-                'currentPoint' => $currentPoint,
-                'changePoint' => $changePoint,
-            ]);
-
-            $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
-        } else {
-            $message->setBody($body);
-        }
-
-        $this->mailer->send($message);
-    }
-
-    /**
      * 発送通知メールを送信する.
      * 発送通知メールは受注ごとに送られる
      *
@@ -770,6 +719,7 @@ class MailService
         return $this->twig->render($fileName, [
             'Shipping' => $Shipping,
             'ShippingItems' => $ShippingItems,
+            'Order' => $Order,
         ]);
     }
 

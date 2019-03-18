@@ -37,7 +37,6 @@ Styleguide 3.1.1
   @include form-controls;
   input{
     height: 40px;
-    font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
     margin-bottom: 10px;
     @include media_desktop {
       margin-bottom: 16px;
@@ -168,9 +167,9 @@ Styleguide 3.1.4
   display: inline-block;
   input{
     display: inline-block;
-		text-align: left;
+        text-align: left;
     width: auto;
-		max-width: 8em;
+        max-width: 8em;
     font-size: 16px;
   }
   span{
@@ -233,9 +232,9 @@ Styleguide 3.1.5
 */
 .ec-telInput{
   @extend .ec-input;
-	input {
-		max-width: 10em;
-		text-align: left;
-	}
+  input {
+    max-width: 10em;
+    text-align: left;
+  }
 }
 

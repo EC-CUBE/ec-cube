@@ -339,6 +339,15 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $rUrl = $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
+        // 編集前の更新日時を取得
+        /** @var Product $PreProduct */
+        $PreProduct = $this->productRepository->findOneBy(['id' => $Product->getId()]);
+        $PreUpdateDate = $PreProduct->getUpdateDate();
+        $preTimestamp = $PreUpdateDate->getTimestamp();
+
+        // タイムスタンプが変わっていることを確認するために3秒待って更新
+        sleep(3);
+
         $formData['return_link'] = $this->generateUrl('admin_product_category');
         $this->client->request(
             'POST',
@@ -351,6 +360,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->expected = $formData['name'];
         $this->actual = $EditedProduct->getName();
         $this->verify();
+
+        // 商品の更新日時が更新されているか確認
+        /** @var \DateTime $EditedUpdateDate */
+        $EditedUpdateDate = $EditedProduct->getUpdateDate();
+        $editedTimestamp = $EditedUpdateDate->getTimestamp();
+
+        $this->assertNotSame($preTimestamp, $editedTimestamp);
     }
 
     public function testDisplayProduct()

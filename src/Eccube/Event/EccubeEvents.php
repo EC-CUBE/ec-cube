@@ -16,7 +16,7 @@ namespace Eccube\Event;
 final class EccubeEvents
 {
     /**
-     * Admin/AdminContoller
+     * Admin/AdminController
      */
     // login
     const ADMIN_ADMIM_LOGIN_INITIALIZE = 'admin.admin.login.initialize';
@@ -232,7 +232,7 @@ final class EccubeEvents
      */
     // csvProduct
 
-    // csvCatgory
+    // csvCategory
 
     // csvTemplate
 
@@ -302,6 +302,8 @@ final class EccubeEvents
     // index
     const ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE = 'admin.setting.shop.mail.index.initialize';
     const ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE = 'admin.setting.shop.mail.index.complete';
+    // preview
+    const ADMIN_SETTING_SHOP_MAIL_PREVIEW_COMPLETE = 'admin.setting.shop.mail.preview.complete';
 
     /**
      * Admin/Setting/Shop/PaymentController
@@ -581,10 +583,4 @@ final class EccubeEvents
     const MAIL_ADMIN_ORDER = 'mail.admin.order';
     const MAIL_PASSWORD_RESET = 'mail.password.reset';
     const MAIL_PASSWORD_RESET_COMPLETE = 'mail.password.reset.complete';
-
-    /**
-     * ShoppingService
-     */
-    const SERVICE_SHOPPING_ORDER_STATUS = 'service.shopping.order.status';
-    const SERVICE_SHOPPING_NOTIFY_COMPLETE = 'service.shopping.notify.complete';
 }

@@ -98,6 +98,11 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_create_date_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('create_date_end', DateType::class, [
                 'label' => 'admin.common.create_date__end',
@@ -106,6 +111,11 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_create_date_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('update_date_start', DateType::class, [
                 'label' => 'admin.common.update_date__start',
@@ -114,6 +124,11 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_update_date_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
             ->add('update_date_end', DateType::class, [
                 'label' => 'admin.common.update_date__end',
@@ -122,6 +137,11 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_update_date_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
             ])
         ;
     }

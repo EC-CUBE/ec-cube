@@ -82,7 +82,7 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * @var boolean
          *
-         * @ORM\Column(name="visible", type="boolean", options={"unsigned":true,"default":true})
+         * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
         private $visible = true;
 

@@ -47,21 +47,19 @@ class RepeatedPasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'entry_type' => TextType::class, // type password だと入力欄を空にされてしまうので、widgetで対応
+            'invalid_message' => 'form_error.same_password',
             'required' => true,
             'error_bubbling' => false,
-            'invalid_message' => 'form.member.password.invalid',
             'options' => [
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_password_min_len'],
                         'max' => $this->eccubeConfig['eccube_password_max_len'],
-                        'minMessage' => trans('form.type.customer.password.too_short', ['%limit%' => $this->eccubeConfig['eccube_password_min_len']]),
-                        'maxMessage' => trans('form.type.customer.password.too_long', ['%limit%' => $this->eccubeConfig['eccube_password_max_len']]),
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
+                        'message' => 'form_error.graph_only',
                     ]),
                 ],
             ],

@@ -15,13 +15,13 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 
 /**
  * 購入金額上限チェック.
  */
-class PaymentTotalLimitValidator extends ItemHolderValidator
+class PaymentTotalLimitValidator extends ItemHolderPostValidator
 {
     /**
      * @var int
@@ -39,14 +39,14 @@ class PaymentTotalLimitValidator extends ItemHolderValidator
     }
 
     /**
-     * @param ItemHolderInterface $item
+     * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
-    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        $totalPrice = $item->getTotal();
+        $totalPrice = $itemHolder->getTotal();
         if ($totalPrice > $this->maxTotalFee) {
             $this->throwInvalidItemException('front.shopping.over_price_limit');
         }

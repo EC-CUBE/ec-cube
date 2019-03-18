@@ -83,25 +83,16 @@ class MemberType extends AbstractType
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
+                        'message' => 'form_error.graph_only',
                     ]),
                 ],
             ])
             ->add('password', RepeatedPasswordType::class, [
-                // 'type' => 'password',
                 'first_options' => [
                     'label' => 'admin.setting.system.member.password',
                 ],
                 'second_options' => [
                     'label' => 'admin.setting.system.member.password',
-                ],
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length([
-                        'min' => $this->eccubeConfig['eccube_id_min_len'],
-                        'max' => $this->eccubeConfig['eccube_id_max_len'],
-                    ]),
-                    new Assert\Regex(['pattern' => '/^[[:graph:][:space:]]+$/i']),
                 ],
             ])
             ->add('Authority', EntityType::class, [

@@ -113,7 +113,7 @@ class PluginGenerateCommand extends Command
         $this->createDirectories($pluginDir);
         $this->createConfig($pluginDir, $name, $code, $version);
         $this->createEvent($pluginDir, $code);
-        $this->createMessages($pluginDir, $code);
+        $this->createMessages($pluginDir);
         $this->createNav($pluginDir, $code);
         $this->createTwigBlock($pluginDir, $code);
         $this->createConfigController($pluginDir, $code);
@@ -174,12 +174,21 @@ class PluginGenerateCommand extends Command
     protected function createConfig($pluginDir, $name, $code, $version)
     {
         $source = <<<EOL
-name: $name
-code: $code
-version: $version
+{
+  "name": "ec-cube/$code",
+  "version": "$version",
+  "description": "$name",
+  "type": "eccube-plugin",
+  "require": {
+    "ec-cube/plugin-installer": "~0.0.7"
+  },
+  "extra": {
+    "code": "$code"
+  }
+}
 EOL;
 
-        $this->fs->dumpFile($pluginDir.'/config.yml', $source);
+        $this->fs->dumpFile($pluginDir.'/composer.json', $source);
     }
 
     /**
@@ -287,9 +296,9 @@ namespace Plugin\\${code}\\Controller\\Admin;
 use Eccube\\Controller\\AbstractController;
 use Plugin\\${code}\\Form\\Type\\Admin\\ConfigType;
 use Plugin\\${code}\\Repository\\ConfigRepository;
-use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Route;
 use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Template;
 use Symfony\\Component\\HttpFoundation\\Request;
+use Symfony\\Component\\Routing\\Annotation\\Route;
 
 class ConfigController extends AbstractController
 {
@@ -307,8 +316,9 @@ class ConfigController extends AbstractController
     {
         \$this->configRepository = \$configRepository;
     }
+
     /**
-     * @Route("/%eccube_admin_route%/${snakecased}/config", name="plugin_${code}_config")
+     * @Route("/%eccube_admin_route%/${snakecased}/config", name="${snakecased}_admin_config")
      * @Template("@${code}/admin/config.twig")
      */
     public function index(Request \$request)
@@ -323,7 +333,7 @@ class ConfigController extends AbstractController
             \$this->entityManager->flush(\$Config);
             \$this->addSuccess('登録しました。', 'admin');
 
-            return \$this->redirectToRoute('plugin_${code}_config');
+            return \$this->redirectToRoute('${snakecased}_admin_config');
         }
 
         return [
@@ -331,6 +341,7 @@ class ConfigController extends AbstractController
         ];
     }
 }
+
 EOL;
 
         $this->fs->dumpFile($pluginDir.'/Controller/Admin/ConfigController.php', $source);
@@ -394,6 +405,7 @@ class Config
         return \$this;
     }
 }
+
 EOL;
 
         $this->fs->dumpFile($pluginDir.'/Entity/Config.php', $source);
@@ -406,7 +418,6 @@ namespace Plugin\\${code}\\Repository;
 use Eccube\\Repository\\AbstractRepository;
 use Plugin\\${code}\\Entity\\Config;
 use Symfony\\Bridge\\Doctrine\\RegistryInterface;
-use Symfony\\Component\\HttpKernel\\KernelInterface;
 
 /**
  * ConfigRepository
@@ -428,6 +439,7 @@ class ConfigRepository extends AbstractRepository
 
     /**
      * @param int \$id
+     *
      * @return null|Config
      */
     public function get(\$id = 1)
@@ -463,7 +475,7 @@ class ConfigType extends AbstractType
         \$builder->add('name', TextType::class, [
             'constraints' => [
                 new NotBlank(),
-                new Length(['max' => 255]),                
+                new Length(['max' => 255]),
             ],
         ]);
     }
@@ -484,7 +496,7 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/Form/Type/Admin/ConfigType.php', $source);
 
         $source = <<<EOL
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
@@ -526,7 +538,7 @@ EOL;
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            <a class="c-beseLink"
+                            <a class="c-baseLink"
                                href="{{ url('admin_store_plugin') }}">
                                 <i class="fa fa-backward" aria-hidden="true"></i>
                                 <span>プラグイン一覧</span>
@@ -546,6 +558,7 @@ EOL;
         </div>
     </form>
 {% endblock %}
+
 EOL;
         $this->fs->dumpFile($pluginDir.'/Resource/template/admin/config.twig', $source);
     }
