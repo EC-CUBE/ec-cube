@@ -15,7 +15,18 @@
 {% block title %}{{ 'admin.content.css_management'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .ui-resizable-se {
+            right: -3px;
+            bottom: -3px;
+        }
+    </style>
+{% endblock %}
+
 {% block javascript %}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
     <script>
@@ -30,6 +41,13 @@
             enableLiveAutocompletion: true,
             showInvisibles: true
         });
+
+        $("#editor").resizable({
+            resize: function (event, ui) {
+                editor.resize();
+            }
+        });
+
         var $save_button = $('#save-button');
         editor.getSession().on("changeAnnotation", function(){
             var annot = editor.getSession().getAnnotations();
