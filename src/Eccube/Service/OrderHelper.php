@@ -290,7 +290,7 @@ class OrderHelper
         }
     }
 
-    private function createPreOrderId()
+    public function createPreOrderId()
     {
         // ランダムなpre_order_idを作成
         do {
