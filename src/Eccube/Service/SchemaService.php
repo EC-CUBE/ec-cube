@@ -85,7 +85,7 @@ class SchemaService
         } finally {
             if ($createOutputDir) {
                 $files = Finder::create()
-                    ->in($createOutputDir)
+                    ->in($outputDir)
                     ->files();
                 $f = new Filesystem();
                 $f->remove($files);
