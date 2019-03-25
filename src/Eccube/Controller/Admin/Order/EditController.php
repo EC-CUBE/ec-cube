@@ -658,7 +658,7 @@ class EditController extends AbstractController
 
     protected function newOrder(Application $app)
     {
-        // ランダムなpre_order_idを作成
+        // ユニークでランダムなpre_order_idを作成
         do {
             $preOrderId = sha1(Str::random(32));
             $Order = $app['eccube.repository.order']->findOneBy(array(
