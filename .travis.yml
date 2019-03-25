@@ -67,6 +67,7 @@ script:
   - ./bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
   - ./bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
   - ./bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
+  - ./bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
 
 jobs:
   fast_finish: true

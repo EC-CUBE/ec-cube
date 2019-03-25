@@ -546,9 +546,16 @@ EOD;
 
     /**
      * Test Entity and Trait
+     * @group update-schema-doctrine
+     * @group update-schema-doctrine-install
      */
     public function testCreateEntityAndTrait()
     {
+        $conn = $this->entityManager->getConnection();
+        $platform = $conn->getDatabasePlatform()->getName();
+        if ('postgresql' !== $platform) {
+            $this->markTestSkipped('does not support of '.$platform);
+        }
 
         $this->service = $this->container->get(PluginService::class);
         $rc = new \ReflectionClass($this->service);
