@@ -277,6 +277,20 @@ file that was distributed with this source code.
                                                     <div class="col-auto align-items-center">
                                                         <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.common.cancel'|trans }}</button>
                                                     </div>
+                                                    {# エンティティ拡張の自動出力 #}
+                                                    {% for f in forms[Category.id] if f.vars.eccube_form_options.auto_render %}
+                                                    <div class="col-auto align-items-center" style="width:90%; padding-top: 10px;">
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                                <span>{{ f.vars.label|trans }}</span>
+                                                            </div>
+                                                            <div class="col-9">
+                                                                {{ form_widget(f) }}
+                                                                {{ form_errors(f) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
                                                 </form>
                                             {% endif %}
                                         </li>

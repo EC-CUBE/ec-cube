@@ -73,6 +73,7 @@ interface ItemHolderInterface
      * 税額合計を設定します。
      *
      * @param $total|int
+     *
      * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
      */
     public function setTax($total);

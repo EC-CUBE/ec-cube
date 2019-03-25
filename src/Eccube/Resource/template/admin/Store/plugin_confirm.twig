@@ -155,6 +155,9 @@ $(function() {
             if (res.responseJSON) {
                 log(res.responseJSON.log);
             }
+            if (res.responseText) {
+                log(res.responseText);
+            }
         }).always(function() {
             statusBar.hide();
             $('#installLogPane').show();

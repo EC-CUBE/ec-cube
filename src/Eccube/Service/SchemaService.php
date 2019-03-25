@@ -36,16 +36,33 @@ class SchemaService
         $this->entityManager = $entityManager;
     }
 
-    public function updateSchema($generatedFiles, $proxiesDirectory)
+    /**
+     * Doctrine Metadata を生成してコールバック関数を実行する.
+     *
+     * コールバック関数は主に SchemaTool が利用されます.
+     * Metadata を出力する一時ディレクトリを指定しない場合は内部で生成し, コールバック関数実行後に削除されます.
+     *
+     * @param callable $callback Metadata を生成した後に実行されるコールバック関数
+     * @param array $generatedFiles Proxy ファイルパスの配列
+     * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
+     * @param bool $saveMode UpdateSchema を即時実行する場合 true
+     * @param string $outputDir Metadata の出力先ディレクトリ
+     */
+    public function executeCallback(callable $callback, $generatedFiles, $proxiesDirectory, $outputDir = null)
     {
-        $outputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
-        mkdir($outputDir);
+        $createOutputDir = false;
+        if (is_null($outputDir)) {
+            $outputDir = sys_get_temp_dir().'/metadata_'.StringUtil::random(12);
+            mkdir($outputDir);
+            $createOutputDir = true;
+        }
 
         try {
             $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
             $drivers = $chain->getDrivers();
             foreach ($drivers as $namespace => $oldDriver) {
                 if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
+                    // Setup to AnnotationDriver
                     $newDriver = new ReloadSafeAnnotationDriver(
                         new AnnotationReader(),
                         $oldDriver->getPaths()
@@ -61,13 +78,30 @@ class SchemaService
 
             $tool = new SchemaTool($this->entityManager);
             $metaData = $this->entityManager->getMetadataFactory()->getAllMetadata();
-            $tool->updateSchema($metaData, true);
+
+            call_user_func($callback, $tool, $metaData);
         } finally {
-            foreach (glob("${outputDir}/*") as  $f) {
-                unlink($f);
+            if ($createOutputDir) {
+                foreach (glob("${outputDir}/*") as $f) {
+                    unlink($f);
+                }
+                rmdir($outputDir);
             }
-            rmdir($outputDir);
         }
+    }
+
+    /**
+     * Doctrine Metadata を生成して UpdateSchema を実行する.
+     *
+     * @param array $generatedFiles Proxy ファイルパスの配列
+     * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
+     * @param bool $saveMode UpdateSchema を即時実行する場合 true
+     */
+    public function updateSchema($generatedFiles, $proxiesDirectory, $saveMode = false)
+    {
+        $this->executeCallback(function (SchemaTool $tool, array $metaData) use ($saveMode) {
+            $tool->updateSchema($metaData, $saveMode);
+        }, $generatedFiles, $proxiesDirectory);
     }
 
     /**

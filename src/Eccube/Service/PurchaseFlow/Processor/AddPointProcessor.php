@@ -83,6 +83,8 @@ class AddPointProcessor extends ItemHolderPostValidator
                 } elseif ($item->isProduct()) {
                     // ポイント = 単価 * ポイント付与率 * 数量
                     $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+                } elseif($item->isDiscount()) {
+                    $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
                 }
 
                 return $carry + $point;

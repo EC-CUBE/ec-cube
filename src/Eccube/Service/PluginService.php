@@ -26,7 +26,6 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Eccube\Service\SystemService;
 
 class PluginService
 {
@@ -272,16 +271,48 @@ class PluginService
         }
     }
 
-    public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false)
+    /**
+     * プラグインの Proxy ファイルを生成して UpdateSchema を実行する.
+     *
+     * @param Plugin $plugin プラグインオブジェクト
+     * @param array $config プラグインの composer.json の配列
+     * @param bool $uninstall アンインストールする場合は true
+     * @param bool $saveMode SQL を即時実行する場合は true
+     */
+    public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true)
+    {
+        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode) {
+            $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
+        }, $plugin, $config, $uninstall);
+    }
+
+    /**
+     * プラグインの Proxy ファイルを生成してコールバック関数を実行する.
+     *
+     * コールバック関数は主に SchemaTool が利用されます.
+     * Proxy ファイルを出力する一時ディレクトリを指定しない場合は内部で生成し, コールバック関数実行後に削除されます.
+     *
+     * @param callable $callback Proxy ファイルを生成した後に実行されるコールバック関数
+     * @param Plugin $plugin プラグインオブジェクト
+     * @param array $config プラグインの composer.json の配列
+     * @param bool $uninstall アンインストールする場合は true
+     * @param string $tmpProxyOutputDir Proxy ファイルを出力する一時ディレクトリ
+     */
+    public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false, $tmpProxyOutputDir = null)
     {
         if ($plugin->isEnabled()) {
-            $generatedFiles = $this->regenerateProxy($plugin, false);
-            $this->schemaService->updateSchema($generatedFiles, $this->projectRoot.'/app/proxy/entity');
+            $generatedFiles = $this->regenerateProxy($plugin, false, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot.'/app/proxy/entity');
+
+            call_user_func($callback, $generatedFiles, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot.'/app/proxy/entity');
         } else {
             // Proxyのクラスをロードせずにスキーマを更新するために、
             // インストール時には一時的なディレクトリにProxyを生成する
-            $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
-            @mkdir($tmpProxyOutputDir);
+            $createOutputDir = false;
+            if (is_null($tmpProxyOutputDir)) {
+                $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
+                @mkdir($tmpProxyOutputDir);
+                $createOutputDir = true;
+            }
 
             try {
                 if (!$uninstall) {
@@ -299,12 +330,15 @@ class PluginService
 
                 // 一時的に利用するProxyを生成してからスキーマを更新する
                 $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir, $uninstall);
-                $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
+
+                call_user_func($callback, $generatedFiles, $tmpProxyOutputDir);
             } finally {
-                foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
-                    unlink($f);
+                if ($createOutputDir) {
+                    foreach (glob("${tmpProxyOutputDir}/*") as $f) {
+                        unlink($f);
+                    }
+                    rmdir($tmpProxyOutputDir);
                 }
-                rmdir($tmpProxyOutputDir);
             }
         }
     }
@@ -891,7 +925,7 @@ class PluginService
      */
     public function removeAssets($pluginCode)
     {
-        $assetsDir = $this->eccubeConfig['plugin_html_realdir'].$pluginCode.'/assets';
+        $assetsDir = $this->eccubeConfig['plugin_html_realdir'].$pluginCode;
 
         // コピーされているリソースファイルがあれば削除
         if (file_exists($assetsDir)) {

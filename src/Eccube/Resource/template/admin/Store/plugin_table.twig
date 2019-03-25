@@ -69,41 +69,43 @@ $(function() {
                             {% endif %}
                         </td>
                         <td class="align-middle">
-                            <div class="col-12 col-xs-11 col-md-10 col-lg-8 pull-right text-center">
+                            <div class="col-12 col-xs-11 col-md-12 col-lg-12 pull-right text-center">
                                 <div class="row">
-                                    <div class="col-4 px-0">
                                         {% if Plugin.enabled == false %}
+                                        <div class="col-6 px-0">
                                             <a href="#" class="btn btn-ec-actionIcon"
                                                data-toggle="modal"
                                                data-target="#localPluginDeleteModal"
                                                data-delete-url="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}">
                                                 <i class="fa fa-close fa-lg text-secondary" data-tooltip="true" data-placement="top" title="削除"></i>
                                             </a>
+                                        </div>
                                         {% endif %}
-                                    </div>
-                                    <div class="col-4 px-0">
                                         {% if Plugin.enabled %}
+                                        <div class="col-6 px-0">
                                             <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
                                                data-method="post" data-confirm="false">
                                                 <i class="fa fa-pause fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.store.plugin_table.903'|trans }}"></i>
                                             </a>
+                                        </div>
                                         {% else %}
+                                        <div class="col-6 px-0">
                                             <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
                                                data-method="post" data-confirm="false">
                                                 <i class="fa fa-play fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.store.plugin_table.902'|trans }}"></i>
                                             </a>
+                                        </div>
                                         {% endif %}
-                                    </div>
-                                    <div class="col-4 pl-0">
                                         {% if configPages[Plugin.code] is defined %}
+                                        <div class="col-6 px-0">
                                             <a href='{{ configPages[Plugin.code] }}'
                                                class="btn btn-ec-actionIcon">
                                                 <i class="fa fa-cog fa-lg text-secondary" data-tooltip="true"
                                                    data-placement="top" title="{{ 'admin.store.plugin_table.891'|trans }}"></i></a>
+                                        </div>
                                         {% endif %}
-                                    </div>
                                 </div>
                             </div>
                         </td>

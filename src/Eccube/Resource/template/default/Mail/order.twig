@@ -34,13 +34,13 @@ file that was distributed with this source code.
 {% for OrderItem in Order.MergedProductOrderItems %}
 商品コード：{{ OrderItem.product_code }}
 商品名：{{ OrderItem.product_name }}  {{ OrderItem.classcategory_name1 }}  {{ OrderItem.classcategory_name2 }}
-単価：{{ OrderItem.total_price|price }}
+小計：{{ OrderItem.total_price|price }}
 数量：{{ OrderItem.quantity|number_format }}
 
 {% endfor %}
 
 -------------------------------------------------
-小　計：{{ Order.subtotal|price }}{% if Order.tax > 0 %}(うち消費税 {{ Order.tax|price }}){% endif %}
+小　計：{{ Order.subtotal|price }}
 
 手数料：{{ Order.charge|price }}
 送　料：{{ Order.delivery_fee_total|price}}

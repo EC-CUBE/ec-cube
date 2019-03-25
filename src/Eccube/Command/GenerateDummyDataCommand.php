@@ -119,7 +119,7 @@ EOF
         for ($i = 0; $i < $numberOfProducts; $i++) {
             // @see https://github.com/fzaninotto/Faker/issues/1125#issuecomment-268676186
             gc_collect_cycles();
-            
+
             $Product = $this->generator->createProduct(null, 3, $notImage ? null : $imageType);
             switch ($output->getVerbosity()) {
                 case OutputInterface::VERBOSITY_QUIET:

@@ -14,20 +14,10 @@
 namespace Page\Admin;
 
 use Codeception\Util\Fixtures;
+use Page\AbstractPage;
 
-abstract class AbstractAdminPage
+abstract class AbstractAdminPage extends AbstractPage
 {
-    /** @var \AcceptanceTester $tester */
-    protected $tester;
-
-    /**
-     * AbstractAdminPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        $this->tester = $I;
-    }
-
     /**
      * ページに移動。
      *
@@ -36,12 +26,16 @@ abstract class AbstractAdminPage
      *
      * @return $this
      */
-    protected function goPage($url, $pageTitle)
+    protected function goPage($url, $pageTitle = '')
     {
         $config = Fixtures::get('config');
         $this->tester->amOnPage('/'.$config['eccube_admin_route'].$url);
 
-        return $this->atPage($pageTitle);
+        if ($pageTitle) {
+            return $this->atPage($pageTitle);
+        }
+
+        return $this;
     }
 
     /**

@@ -35,6 +35,7 @@ use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -118,6 +119,11 @@ class EditController extends AbstractController
     protected $orderStatusRepository;
 
     /**
+     * @var OrderHelper
+     */
+    private $orderHelper;
+
+    /**
      * EditController constructor.
      *
      * @param TaxRuleService $taxRuleService
@@ -130,6 +136,10 @@ class EditController extends AbstractController
      * @param PurchaseFlow $orderPurchaseFlow
      * @param OrderRepository $orderRepository
      * @param OrderNoProcessor $orderNoProcessor
+     * @param OrderItemTypeRepository $orderItemTypeRepository
+     * @param OrderStatusRepository $orderStatusRepository
+     * @param OrderStateMachine $orderStateMachine
+     * @param OrderHelper $orderHelper
      */
     public function __construct(
         TaxRuleService $taxRuleService,
@@ -144,7 +154,8 @@ class EditController extends AbstractController
         OrderNoProcessor $orderNoProcessor,
         OrderItemTypeRepository $orderItemTypeRepository,
         OrderStatusRepository $orderStatusRepository,
-        OrderStateMachine $orderStateMachine
+        OrderStateMachine $orderStateMachine,
+        OrderHelper $orderHelper
     ) {
         $this->taxRuleService = $taxRuleService;
         $this->deviceTypeRepository = $deviceTypeRepository;
@@ -159,6 +170,7 @@ class EditController extends AbstractController
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->orderStateMachine = $orderStateMachine;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -177,6 +189,9 @@ class EditController extends AbstractController
             // 空のエンティティを作成.
             $TargetOrder = new Order();
             $TargetOrder->addShipping((new Shipping())->setOrder($TargetOrder));
+
+            $preOrderId = $this->orderHelper->createPreOrderId();
+            $TargetOrder->setPreOrderId($preOrderId);
         } else {
             $TargetOrder = $this->orderRepository->find($id);
             if (null === $TargetOrder) {

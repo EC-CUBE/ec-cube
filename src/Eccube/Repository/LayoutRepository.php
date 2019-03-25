@@ -43,7 +43,6 @@ class LayoutRepository extends AbstractRepository
                 ->getQuery()
                 ->useResultCache(true, $this->getCacheLifetime())
                 ->getSingleResult();
-
         } catch (NoResultException $e) {
             return null;
         }

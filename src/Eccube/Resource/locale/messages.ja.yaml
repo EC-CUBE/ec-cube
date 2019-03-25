@@ -396,6 +396,8 @@ admin.common.registration__new: 新規登録
 admin.common.edit: 編集
 admin.common.copy: 複製
 admin.common.display: 表示
+admin.common.copy_path: パスをコピー
+admin.common.copy_path_complete: パスをコピーしました
 admin.common.delete: 削除
 admin.common.cancel: キャンセル
 admin.common.search: 検索
@@ -923,6 +925,8 @@ admin.content.news_management: 新着情報管理
 admin.content.file_management: ファイル管理
 admin.content.layout_management: レイアウト管理
 admin.content.page_management: ページ管理
+admin.content.css_management: CSS管理
+admin.content.js_management: JavaScript管理
 admin.content.block_management: ブロック管理
 admin.content.cache_management: キャッシュ管理
 admin.content.maintenance_management: メンテナンス管理
@@ -995,6 +999,8 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
     <meta property="product:retailer_title" content="{{ Product.name }}"/>
 admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
+admin.content.css__card_title: CSS設定
+admin.content.js__card_title: JavaScript設定
 admin.content.block_name: ブロック名
 admin.content.block__card_title: ブロック設定
 admin.content.block_file_name: ファイル名
@@ -1205,6 +1211,7 @@ admin.setting.system.security.force_ssl_description: httpsからの接続でな�
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
 admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
 admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
+admin.setting.system.security.not_found_env_file: .envファイルが見つかりません。.envを利用していない場合はセキュリティ設定を管理画面から変更できません。
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：ログ表示
@@ -1524,6 +1531,8 @@ tooltip.content.page_source_code: テンプレートファイルを編集しま�
 tooltip.content.page_layout: このページに適用するレイアウトを選択します。
 tooltip.content.page_meta: ページのMETAタグの内容を指定できます。
 tooltip.content.page_meta_tags: 自由にMETAタグを追加できます。twig内で利用されている変数も利用できます。
+tooltip.content.css_source_code: カスタマイズ用CSSファイルを編集します。CSSで記述します。
+tooltip.content.js_source_code: カスタマイズ用JavaScriptファイルを編集します。JavaScriptで記述します。
 tooltip.content.block_name: ブロックの管理用名称です。
 tooltip.content.block_file_name: このブロックの内容を記述したtwigテンプレートファイルの名前です。管理画面ではあとから変更できません。
 tooltip.content.block_source_code: テンプレートファイルを編集します。twigで記述します。

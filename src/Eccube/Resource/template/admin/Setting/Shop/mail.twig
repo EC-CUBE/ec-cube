@@ -17,7 +17,18 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .ui-resizable-se {
+            right: -3px;
+            bottom: -3px;
+        }
+    </style>
+{% endblock %}
+
 {% block javascript %}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
     <script>
@@ -56,6 +67,18 @@ file that was distributed with this source code.
                 });
             {% endif %}
 
+            $("#editor").resizable({
+                resize: function (event, ui) {
+                    editor.resize();
+                }
+            });
+
+            $("#html_editor").resizable({
+                resize: function (event, ui) {
+                    editor.resize();
+                }
+            });
+
             $('#form1').on('submit', function() {
                 $('#mail_tpl_data').val(editor.getValue());
                 {% if form.html_tpl_data.vars.value %}
@@ -68,7 +91,7 @@ file that was distributed with this source code.
                 var html = $('#viewEmail');
                 html.children().remove();
 
-                // HTMLを読み込んでモーダルに表示    
+                // HTMLを読み込んでモーダルに表示
                 $.ajax({
                     type: 'POST',
                     dataType: 'html',
@@ -218,7 +241,7 @@ file that was distributed with this source code.
                 </div>
                 <div class="modal-body">
                     <div class="bg-light p-4 bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
-                        
+
                     </div>
                 </div>
                 <div class="modal-footer">

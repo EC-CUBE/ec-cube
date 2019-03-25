@@ -30,6 +30,8 @@ composer.phar
 !/html/template/default
 !/html/template/install
 /html/user_data/*
+!/html/user_data/assets/css/customize.css
+!/html/user_data/assets/js/customize.js
 !/html/user_data/.gitkeep
 /src/Eccube/Resource/config/*.dist.php
 /tests/tmp/*

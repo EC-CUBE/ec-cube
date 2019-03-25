@@ -21,6 +21,8 @@ use Page\Admin\NewsEditPage;
 use Page\Admin\NewsManagePage;
 use Page\Admin\PageEditPage;
 use Page\Admin\PageManagePage;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @group admin
@@ -86,42 +88,61 @@ class EA06ContentsManagementCest
     {
         $I->wantTo('EA0602-UC01-T01(& UC01-T02/UC01-T03/UC01-T04/UC01-T05/UC01-T06/UC01-T07) ファイル管理');
 
-        /** @var FileManagePage $FileManagePage */
-        $FileManagePage = FileManagePage::go($I)
-            ->入力_ファイル('upload.txt')
-            ->アップロード();
+        $backupDir = sys_get_temp_dir().'/'.random_int(0, 1000);
+        $user_data = __DIR__.'/../../html/user_data';
+        $fs = new Filesystem();
+        $fs->mkdir($backupDir);
+        $fs->mirror($user_data, $backupDir);
+        try {
+            $files = Finder::create()
+                ->ignoreDotFiles(false)
+                ->in($user_data);
+            $fs->remove($files);
 
-        $I->see('upload.txt', $FileManagePage->ファイル名(2));
+            /** @var FileManagePage $FileManagePage */
+            $FileManagePage = FileManagePage::go($I)
+                ->入力_ファイル('upload.txt')
+                ->アップロード();
 
-        $FileManagePage->一覧_ダウンロード(2);
-        $UploadedFile = $I->getLastDownloadFile('/^upload\.txt$/');
-        $I->assertEquals('This is uploaded file.', file_get_contents($UploadedFile));
+            $I->see('upload.txt', $FileManagePage->ファイル名(1));
 
-        $FileManagePage->一覧_表示(2);
-        $I->switchToNewWindow();
-        $I->see('This is uploaded file.');
+            $FileManagePage->一覧_ダウンロード(1);
+            $UploadedFile = $I->getLastDownloadFile('/^upload\.txt$/');
+            $I->assertEquals('This is uploaded file.', file_get_contents($UploadedFile));
 
-        FileManagePage::go($I)
-            ->一覧_削除(2)
-            ->一覧_削除_accept(2);
-        $I->dontSee('upload.txt', $FileManagePage->ファイル名(2));
+            $FileManagePage->一覧_パスをコピー(1);
+            $I->wait(5);
+            $returnText = $I->grabValueFrom("#fileList table > tbody > tr:nth-child(1) > td:nth-child(4) span.copy-file-path input.form-control");
+            $I->assertEquals('/html/user_data/upload.txt', $returnText);
 
-        $FileManagePage = FileManagePage::go($I)
-            ->入力_フォルダ名('folder1')
-            ->フォルダ作成();
+            $FileManagePage->一覧_表示(1);
+            $I->switchToNewWindow();
+            $I->see('This is uploaded file.');
 
-        $I->see('folder1', $FileManagePage->ファイル名(1));
+            FileManagePage::go($I)
+                ->一覧_削除(1)
+                ->一覧_削除_accept(1);
+            $I->dontSee('upload.txt', $FileManagePage->ファイル名(1));
 
-        $FileManagePage->一覧_ファイル名_クリック(1);
-        $I->see('folder1', $FileManagePage->パンくず(2));
+            $FileManagePage = FileManagePage::go($I)
+                ->入力_フォルダ名('folder1')
+                ->フォルダ作成();
 
-        $config = Fixtures::get('config');
-        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/file_manager');
-        $I->see('ファイル管理コンテンツ管理', '.c-pageTitle');
+            $I->see('folder1', $FileManagePage->ファイル名(1));
 
-        FileManagePage::go($I)
-            ->一覧_削除(1)
-            ->一覧_削除_accept(1);
+            $FileManagePage->一覧_ファイル名_クリック(1);
+            $I->see('folder1', $FileManagePage->パンくず(2));
+
+            $config = Fixtures::get('config');
+            $I->amOnPage('/'.$config['eccube_admin_route'].'/content/file_manager');
+            $I->see('ファイル管理コンテンツ管理', '.c-pageTitle');
+
+            FileManagePage::go($I)
+                ->一覧_削除(1)
+                ->一覧_削除_accept(1);
+        } finally {
+            $fs->mirror($backupDir, $user_data);
+        }
     }
 
     public function contentsmanagement_ページ管理(\AcceptanceTester $I)

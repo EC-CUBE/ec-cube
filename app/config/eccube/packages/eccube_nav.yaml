@@ -64,6 +64,12 @@ parameters:
                 page:
                     name: admin.content.page_management
                     url: admin_content_page
+                css:
+                    name: admin.content.css_management
+                    url: admin_content_css
+                js:
+                    name: admin.content.js_management
+                    url: admin_content_js
                 block:
                     name: admin.content.block_management
                     url: admin_content_block

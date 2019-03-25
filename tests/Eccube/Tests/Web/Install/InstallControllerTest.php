@@ -40,6 +40,16 @@ class InstallControllerTest extends AbstractWebTestCase
     protected $request;
 
     /**
+     * @var string
+     */
+    protected $envFile;
+
+    /**
+     * @var string
+     */
+    protected $envFileBackup;
+
+    /**
      * @var Session
      */
     protected $session;
@@ -48,9 +58,15 @@ class InstallControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
 
-        $envFile = $this->container->getParameter('kernel.project_dir').'/.env';
-        if (file_exists($envFile)) {
-            unlink($envFile);
+        $this->envFile = $this->container->getParameter('kernel.project_dir').'/.env';
+        $this->envFileBackup = $this->envFile.'.'.date('YmdHis');
+        if (file_exists($this->envFile)) {
+            rename($this->envFile, $this->envFileBackup);
+        }
+
+        $favicon = $this->container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
+        if (file_exists($favicon)) {
+            unlink($favicon);
         }
 
         $formFactory = $this->container->get('form.factory');
@@ -70,6 +86,14 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->request = $this->createMock(Request::class);
     }
 
+    public function tearDown()
+    {
+        if (file_exists($this->envFileBackup)) {
+            rename($this->envFileBackup, $this->envFile);
+        }
+        parent::tearDown();
+    }
+
     public function testIndex()
     {
         $this->assertInstanceOf(RedirectResponse::class, $this->controller->index($this->request));
@@ -86,6 +110,8 @@ class InstallControllerTest extends AbstractWebTestCase
     {
         $this->actual = $this->controller->step2($this->request);
         $this->assertArrayHasKey('noWritePermissions', $this->actual);
+
+        $this->assertFileExists($this->container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
     }
 
     public function testStep3()

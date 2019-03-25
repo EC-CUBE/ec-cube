@@ -16,6 +16,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
@@ -27,6 +28,10 @@ class EditControllerTest extends AbstractEditControllerTestCase
     protected $Order;
     protected $Product;
     protected $cartService;
+
+    /**
+     * @var OrderRepository
+     */
     protected $orderRepository;
 
     public function setUp()
@@ -62,6 +67,11 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $url = $crawler->filter('a')->text();
         $this->assertTrue($this->client->getResponse()->isRedirect($url));
+
+        // pre_order_id がセットされているか確認
+        /** @var Order[] $Orders */
+        $Orders = $this->orderRepository->findBy([], ['create_date' => 'DESC']);
+        $this->assertNotNull($Orders[0]->getPreOrderId());
     }
 
     public function testRoutingAdminOrderEdit()

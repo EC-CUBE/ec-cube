@@ -542,6 +542,19 @@ EOD;
         $this->assertEquals(trim($expected2), $actual2);
     }
 
+    public function testRemoveAssets()
+    {
+        $code = 'remove_assets_dir';
+        $dir = $this->eccubeConfig['plugin_html_realdir'].$code;
+        mkdir($dir, 0777, true);
+
+        $this->assertFileExists($dir);
+
+        $this->service->removeAssets($code);
+
+        $this->assertFileNotExists($dir);
+    }
+
     /**
      * @param $config
      *
@@ -557,10 +570,8 @@ EOD;
             'version' => $config['version'],
             'type' => 'eccube-plugin',
             'require' => [
-                'ec-cube/plugin-installer' => '*',
-                'composer/installers' => '*',
-                'composer/semver' => '*',
-            ],
+                'ec-cube/plugin-installer' => '*'
+                 ],
             'extra' => [
                 'code' => $config['code'],
             ],

@@ -396,6 +396,8 @@ admin.common.registration__new: Create new
 admin.common.edit: Edit
 admin.common.copy: Duplicate
 admin.common.display: Display
+admin.common.copy_path: Copy a path
+admin.common.copy_path_complete: Copied path
 admin.common.delete: Delete
 admin.common.cancel: Cancel
 admin.common.search: Search
@@ -923,7 +925,9 @@ admin.content.news_management: What's New
 admin.content.file_management: Files
 admin.content.layout_management: Layouts
 admin.content.page_management: Pages
+admin.content.css_management: CSS
 admin.content.block_management: Blocks
+admin.content.js_management: JavaScript
 admin.content.cache_management: Caches
 admin.content.maintenance_management: Maintenances
 
@@ -995,10 +999,12 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
     <meta property="product:retailer_title" content="{{ Product.name }}"/>
 admin.content.page_file_name_exists: Data with the same file name already exists. Please enter a different one.
+admin.content.css__card_title: CSS Settings
 admin.content.block_name: Block Name
 admin.content.block__card_title: Block Settings
 admin.content.block_file_name: File Name
 admin.content.block_file_name_exists: Data with the same file name already exists. Please enter a different one.
+admin.content.js__card_title: JavaScript Settings
 admin.content.block_source_code: Codes
 admin.content.cache__card_title: Caches
 admin.content.cache_message: If you replaced the Twig file on the production server with FTP etc, the UI will not be updated unless you delete the Twig cache.
@@ -1205,6 +1211,7 @@ admin.setting.system.security.force_ssl_description: Only https access is allowe
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip% is not an IPv4 address.'
 admin.setting.system.security.ip_limit_invalid_https: 'http is not allowed to do this setting.'
 admin.setting.system.security.admin_url_warning: Please set the Admin Console URL that is hard to guess for security.
+admin.setting.system.security.not_found_env_file: .env file not found. If you do not use the .env file you can not change security config in Admin Console.
 
 #------------------------------------------------------------------------------------
 # Settings : System : Logs
@@ -1524,6 +1531,8 @@ tooltip.content.page_source_code: Editing the template file. Coding has to be wi
 tooltip.content.page_layout: Selecting the layouts to be applied to this page.
 tooltip.content.page_meta: You can enter the META tag contents of the page.
 tooltip.content.page_meta_tags: You can add META tag freely. You can also use variables used within twig.
+tooltip.content.js_source_code: Editing the JavaScript file. Coding has to be with JavaScript.
+tooltip.content.css_source_code: Editing the CSS file. Coding has to be with CSS.
 tooltip.content.block_name: This is a name of a block for management use.
 tooltip.content.block_file_name: This is the name of the twig template file which has this block contents. You can not change it later in the Admin Console.
 tooltip.content.block_source_code: Editing the template file. Coding has to be with twig.

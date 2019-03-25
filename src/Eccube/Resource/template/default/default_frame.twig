@@ -30,7 +30,7 @@ file that was distributed with this source code.
     {% if Page.meta_tags is not empty %}
         {{ include(template_from_string(Page.meta_tags)) }}
     {% endif %}
-    <link rel="icon" href="{{ asset('assets/img/common/favicon.ico') }}">
+    <link rel="icon" href="{{ asset('assets/img/common/favicon.ico', 'user_data') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
@@ -52,6 +52,7 @@ file that was distributed with this source code.
     {% endif %}
     {# プラグイン用styleseetやmetatagなど #}
     {% if plugin_assets is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_assets }) }}{% endif %}
+    <link rel="stylesheet" href="{{ asset('assets/css/customize.css', 'user_data') }}">
 </head>
 <body id="page_{{ app.request.get('_route') }}" class="{{ body_class|default('other_page') }}">
 {# Layout: BODY_AFTER #}
@@ -154,5 +155,6 @@ file that was distributed with this source code.
 {% if plugin_snippets is defined %}
     {{ include('snippet.twig', { snippets: plugin_snippets }) }}
 {% endif %}
+    <script src="{{ asset('assets/js/customize.js', 'user_data') }}"></script>
 </body>
 </html>

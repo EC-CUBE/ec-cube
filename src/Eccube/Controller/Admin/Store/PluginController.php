@@ -93,7 +93,7 @@ class PluginController extends AbstractController
         PluginApiService $pluginApiService,
         ComposerServiceInterface $composerService,
         SystemService $systemService
-    ){
+    ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->BaseInfo = $baseInfoRepository->get();
@@ -293,6 +293,7 @@ class PluginController extends AbstractController
                 return $this->json(['success' => true]);
             } else {
                 $this->addError(trans('admin.store.plugin.already.enabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
                 return $this->redirectToRoute('admin_store_plugin');
             }
         } else {
@@ -321,7 +322,6 @@ class PluginController extends AbstractController
                     }
                 }
             }
-
 
             try {
                 ob_start();
@@ -492,7 +492,6 @@ class PluginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $tmpDir = null;
             try {
-
                 $cacheUtil->clearCache();
 
                 /** @var UploadedFile $formFile */
@@ -549,7 +548,6 @@ class PluginController extends AbstractController
      */
     public function authenticationSetting(Request $request, CacheUtil $cacheUtil)
     {
-
         $builder = $this->formFactory
             ->createBuilder(AuthenticationType::class, $this->BaseInfo);
 

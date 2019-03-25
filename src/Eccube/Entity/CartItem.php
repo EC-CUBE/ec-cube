@@ -85,6 +85,14 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         }
 
         /**
+         * @return int
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
+        
+        /**
          * @param  integer  $price
          *
          * @return CartItem

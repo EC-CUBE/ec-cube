@@ -587,6 +587,7 @@ class ProductController extends AbstractController
                     $this->entityManager->persist($ProductTag);
                 }
 
+                $Product->setUpdateDate(new \DateTime());
                 $this->entityManager->flush();
 
                 log_info('商品登録完了', [$id]);
@@ -733,7 +734,6 @@ class ProductController extends AbstractController
                     $message = trans('admin.common.delete_complete');
 
                     $cacheUtil->clearDoctrineCache();
-
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
                     $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);

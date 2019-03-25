@@ -24,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-
 class ComposerRequireAlreadyInstalledPluginsCommand extends Command
 {
     protected static $defaultName = 'eccube:composer:require-already-installed';
@@ -87,7 +86,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
             $message = trans('command.composer_require_already_installed.not_supported_plugin', [
                 '%name%' => $Plugin->getName(),
                 '%plugin_version%' => $Plugin->getVersion(),
-                '%eccube_version%' => Constant::VERSION
+                '%eccube_version%' => Constant::VERSION,
             ]);
             $question = new ConfirmationQuestion($message);
             if (!$this->io->askQuestion($question)) {

@@ -77,4 +77,30 @@ class SecurityTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
+
+    /**
+     * @dataProvider adminRouteDirParams
+     */
+    public function testAdminRouteDir($rootDir, $valid)
+    {
+        $this->formData['admin_route_dir'] = $rootDir;
+        $this->form->submit($this->formData);
+        $this->assertEquals($valid, $this->form->isValid());
+    }
+
+    public function adminRouteDirParams()
+    {
+        return [
+            ['admin', true],
+            ['ADMIN', true],
+            ['12345', true],
+            ['adminADMIN123', true],
+            ['admin_admin', true],
+            ['/admin', false],
+            ['admin/', false],
+            ['admin/route', false],
+            ['admin&', false],
+            ['admin?', false],
+        ];
+    }
 }
