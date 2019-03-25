@@ -239,7 +239,10 @@ class PluginService
     {
         // dbにプラグイン登録
 
-        $this->entityManager->getConnection()->beginTransaction();
+        $isTransaction = $this->entityManager->getConnection()->isTransactionActive();
+        if (!$isTransaction) {
+            $this->entityManager->getConnection()->beginTransaction();
+        }
 
         try {
             $Plugin = $this->pluginRepository->findByCode($config['code']);
@@ -264,10 +267,13 @@ class PluginService
             $this->entityManager->persist($Plugin);
             $this->entityManager->flush();
 
-            $this->entityManager->flush();
-            $this->entityManager->getConnection()->commit();
+            if (!$isTransaction) {
+                $this->entityManager->getConnection()->commit();
+            }
         } catch (\Exception $e) {
-            $this->entityManager->getConnection()->rollback();
+            if (!$isTransaction) {
+                $this->entityManager->getConnection()->rollback();
+            }
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -657,7 +663,10 @@ class PluginService
         try {
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $config = $this->readConfig($pluginDir);
-            $em->getConnection()->beginTransaction();
+            $isTransaction = $em->getConnection()->isTransactionActive();
+            if (!$isTransaction) {
+                $em->getConnection()->beginTransaction();
+            }
 
             $this->callPluginManagerMethod($config, $enable ? 'enable' : 'disable');
 
@@ -668,7 +677,9 @@ class PluginService
             $this->regenerateProxy($plugin, false);
 
             $em->flush();
-            $em->getConnection()->commit();
+            if (!$isTransaction) {
+                $em->getConnection()->commit();
+            }
 
             if ($enable) {
                 $this->pluginApiService->pluginEnabled($plugin);
@@ -676,7 +687,9 @@ class PluginService
                 $this->pluginApiService->pluginDisabled($plugin);
             }
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
+            if (!$isTransaction) {
+                $em->getConnection()->rollback();
+            }
             throw $e;
         }
 
@@ -740,8 +753,11 @@ class PluginService
     public function updatePlugin(Plugin $plugin, $meta)
     {
         $em = $this->entityManager;
+        $isTransaction = $this->entityManager->getConnection()->isTransactionActive();
         try {
-            $em->getConnection()->beginTransaction();
+            if (!$isTransaction) {
+                $em->getConnection()->beginTransaction();
+            }
             $plugin->setVersion($meta['version'])
                 ->setName($meta['name']);
 
@@ -752,9 +768,13 @@ class PluginService
             }
             $this->copyAssets($plugin->getCode());
             $em->flush();
-            $em->getConnection()->commit();
+            if (!$isTransaction) {
+                $em->getConnection()->commit();
+            }
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
+            if (!$isTransaction) {
+                $em->getConnection()->rollback();
+            }
             throw $e;
         }
     }
