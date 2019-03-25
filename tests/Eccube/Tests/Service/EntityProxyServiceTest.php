@@ -18,6 +18,8 @@ use Eccube\Service\EntityProxyService;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Filesystem\Filesystem;
 
 class EntityProxyServiceTest extends EccubeTestCase
 {
@@ -50,10 +52,11 @@ class EntityProxyServiceTest extends EccubeTestCase
      */
     public function tearDown()
     {
-        foreach (glob($this->tempOutputDir.'/*') as $file) {
-            unlink($file);
-        }
-        rmdir($this->tempOutputDir);
+        $files = Finder::create()
+            ->in($this->tempOutputDir)
+            ->files();
+        $f = new Filesystem();
+        $f->remove($files);
 
         parent::tearDown();
     }
@@ -62,7 +65,7 @@ class EntityProxyServiceTest extends EccubeTestCase
     {
         $this->entityProxyService->generate([__DIR__], [], $this->tempOutputDir);
 
-        $generatedFile = $this->tempOutputDir.'/Product.php';
+        $generatedFile = $this->tempOutputDir.'/src/Eccube/Entity/Product.php';
         self::assertTrue(file_exists($generatedFile));
 
         // Traitのuse句があるかどうか
@@ -85,7 +88,7 @@ class EntityProxyServiceTest extends EccubeTestCase
     {
         $this->entityProxyService->generate([__DIR__], [], $this->tempOutputDir);
 
-        $generatedFile = $this->tempOutputDir.'/Product.php';
+        $generatedFile = $this->tempOutputDir.'/src/Eccube/Entity/Product.php';
         self::assertTrue(file_exists($generatedFile));
 
         $tokens = Tokens::fromCode(file_get_contents($generatedFile));
