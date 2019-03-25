@@ -273,8 +273,12 @@ class Kernel extends BaseKernel
 
     protected function loadEntityProxies()
     {
-        foreach (glob(__DIR__.'/../../app/proxy/entity/*.php') as $file) {
-            require_once $file;
+        $files = Finder::create()
+            ->in(__DIR__.'/../../app/proxy/entity/')
+            ->name('*.php')
+            ->files();
+        foreach ($files as $file) {
+            require_once $file->getRealPath();
         }
     }
 }
