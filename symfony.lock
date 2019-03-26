@@ -260,6 +260,9 @@
     "psr/simple-cache": {
         "version": "1.0.0"
     },
+    "ralouphie/getallheaders": {
+        "version": "2.0.5"
+    },
     "sebastian/code-unit-reverse-lookup": {
         "version": "1.0.1"
     },
