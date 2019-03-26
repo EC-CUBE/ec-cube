@@ -82,6 +82,8 @@ class EntityProxyService
 
             if (strpos($fileName, 'app/proxy/entity') === false) {
                 $this->removeClassExistsBlock($entityTokens); // remove class_exists block
+            } else {
+                $fileName = str_replace('/app/proxy/entity', '', $fileName);
             }
 
             if (isset($removeTrails[$targetEntity])) {
@@ -103,11 +105,9 @@ class EntityProxyService
             $file = ltrim(str_replace($projectDir, '', $fileName), '/');
             $code = $entityTokens->generateCode();
             $generatedFiles[] = $outputFile = $outputDir.'/'.$file;
-            // Exclude output to app/proxy/entity/app/proxy/entity
-            if (strpos($outputFile, 'app/proxy/entity/app/proxy/entity') === false) {
-                file_put_contents($outputFile, $code);
-                $output->writeln('gen -> '.$outputFile);
-            }
+
+            file_put_contents($outputFile, $code);
+            $output->writeln('gen -> '.$outputFile);
         }
 
         return $generatedFiles;
