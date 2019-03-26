@@ -103,8 +103,11 @@ class EntityProxyService
             $file = ltrim(str_replace($projectDir, '', $fileName), '/');
             $code = $entityTokens->generateCode();
             $generatedFiles[] = $outputFile = $outputDir.'/'.$file;
-            file_put_contents($outputFile, $code);
-            $output->writeln('gen -> '.$outputFile);
+            // Exclude output to app/proxy/entity/app/proxy/entity
+            if (strpos($outputFile, 'app/proxy/entity/app/proxy/entity') === false) {
+                file_put_contents($outputFile, $code);
+                $output->writeln('gen -> '.$outputFile);
+            }
         }
 
         return $generatedFiles;
