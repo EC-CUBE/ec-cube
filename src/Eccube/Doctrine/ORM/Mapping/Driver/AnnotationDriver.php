@@ -76,6 +76,7 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
                     $sourceFile = str_replace('\\', '/', $sourceFile);
                     $projectDir = str_replace('\\', '/', $projectDir);
                 }
+                // Replace /path/to/ec-cube to proxies path
                 $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename($sourceFile);
                 if (file_exists($proxyFile)) {
                     require_once $proxyFile;

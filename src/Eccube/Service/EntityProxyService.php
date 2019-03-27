@@ -83,6 +83,7 @@ class EntityProxyService
             if (strpos($fileName, 'app/proxy/entity') === false) {
                 $this->removeClassExistsBlock($entityTokens); // remove class_exists block
             } else {
+                // Remove to duplicate path of /app/proxy/entity
                 $fileName = str_replace('/app/proxy/entity', '', $fileName);
             }
 
@@ -97,6 +98,7 @@ class EntityProxyService
             }
             $projectDir = str_replace('\\', '/', $this->container->getParameter('kernel.project_dir'));
 
+            // baseDir e.g. /src/Eccube/Entity and /app/Plugin/PluginCode/Entity
             $baseDir = str_replace($projectDir, '', str_replace($baseName, '', $fileName));
             if (!file_exists($outputDir.$baseDir)) {
                 mkdir($outputDir.$baseDir, 0777, true);
