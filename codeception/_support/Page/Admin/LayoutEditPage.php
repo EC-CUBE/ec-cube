@@ -124,4 +124,11 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
 
         return $this;
     }
+
+    public function レイアウト名($value)
+    {
+        $this->tester->fillField(['css' => '#admin_layout_name'], $value);
+
+        return $this;
+    }
 }

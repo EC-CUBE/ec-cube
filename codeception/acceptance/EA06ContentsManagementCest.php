@@ -225,6 +225,25 @@ class EA06ContentsManagementCest
         $I->see('削除しました', PageEditPage::$登録完了メッセージ);
     }
 
+    public function contentsmanagement_レイアウト管理(\AcceptanceTester $I)
+    {
+        // レイアウト名を未入力で登録
+        LayoutManagePage::go($I)->新規登録();
+        LayoutEditPage::at($I)
+            ->登録();
+
+        // html5のバリデーションエラーで画面遷移しないはず
+        $I->seeInCurrentUrl('/admin/content/layout/new');
+        $I->cantSee('入力されていません。');
+
+        // レイアウト名を入力して登録
+        LayoutEditPage::at($I)
+            ->レイアウト名('あたらしいレイアウト')
+            ->登録();
+
+        $I->see('保存しました');
+    }
+
     public function contentsmanagement_検索未使用ブロック(\AcceptanceTester $I)
     {
         $I->wantTo('EA0603-UC01-T06 検索未使用ブロック');
