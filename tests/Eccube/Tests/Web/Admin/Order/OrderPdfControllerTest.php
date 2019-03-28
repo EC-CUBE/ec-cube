@@ -395,7 +395,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->expected = 'application/pdf';
         $this->verify();
 
-        $OrderPdf = $this->orderPdfRepository->find($adminTest->getId());
+        $OrderPdf = current($this->orderPdfRepository->findAll());
 
         $this->assertNull($OrderPdf->getTitle());
         $this->assertNull($OrderPdf->getMessage1());
