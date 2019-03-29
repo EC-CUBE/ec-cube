@@ -95,7 +95,9 @@ class ProductController
         $pagination = $app['paginator']()->paginate(
             $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
-            !empty($searchData['disp_number']) ? $searchData['disp_number']->getId() : 15
+            !empty($searchData['disp_number'])
+                ? $searchData['disp_number']->getId()
+                : $app['eccube.repository.master.product_list_max']->findOneBy(array(), array('id' => 'ASC'))->getId()
         );
 
         // addCart form
