@@ -75,7 +75,10 @@ class Cache
                 $filesystem->remove($finder);
             }
             // プラグインキャッシュファイルの削除
-            $app->removePluginConfigCache();
+            $pluginCacheFile = $app['config']['plugin_temp_realdir'].'/config_cache.php';
+            if (file_exists($pluginCacheFile)) {
+                unlink($pluginCacheFile);
+            }
         }
 
         if (function_exists('opcache_reset')) {
