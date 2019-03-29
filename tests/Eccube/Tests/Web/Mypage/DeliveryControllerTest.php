@@ -136,6 +136,23 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
+    public function testEditWithNotFoundAddress()
+    {
+        $this->logIn($this->Customer);
+        $client = $this->client;
+
+        try {
+            $crawler = $client->request(
+                'GET',
+                $this->app->path('mypage_delivery_edit', array('id' => 999999))
+            );
+            $this->fail();
+        } catch (\Exception $e) {
+            $this->assertInstanceOf('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException', $e);
+            $this->assertSame('お届け先が見つかりません。', $e->getMessage());
+        }
+    }
+
     public function testEditWithPost()
     {
         $this->logIn($this->Customer);
