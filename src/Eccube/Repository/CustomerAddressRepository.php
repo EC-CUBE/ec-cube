@@ -25,8 +25,6 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NoResultException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * CustomerAddressRepository
@@ -51,20 +49,16 @@ class CustomerAddressRepository extends EntityRepository
                 ->setCustomer($Customer)
                 ->setDelFlg(0);
         } else {
-            try {
-                $qb = $this->createQueryBuilder('od')
-                    ->andWhere('od.Customer = :Customer AND od.id = :id')
-                    ->setParameters(array(
-                        'Customer' => $Customer,
-                        'id' => $id,
-                    ));
+            $qb = $this->createQueryBuilder('od')
+                ->andWhere('od.Customer = :Customer AND od.id = :id')
+                ->setParameters(array(
+                    'Customer' => $Customer,
+                    'id' => $id,
+                ));
 
-                $CustomerAddress = $qb
-                    ->getQuery()
-                    ->getSingleResult();
-            } catch (NoResultException $e) {
-                throw new NotFoundHttpException();
-            }
+            $CustomerAddress = $qb
+                ->getQuery()
+                ->getSingleResult();
         }
 
         return $CustomerAddress;
