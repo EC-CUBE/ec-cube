@@ -172,7 +172,17 @@ file that was distributed with this source code.
                                                     {% if file.is_dir %}
                                                         <i class="fa fa-folder-o fa-2x"></i>
                                                     {% else %}
-                                                        <div class="d-inline-block p-3 bg-light">{{ file.extension|file_ext_icon({class: "fa-2x"}) }} </div>
+                                                        {% if file.extension|file_ext_icon({}, true) == 'fa-file-image-o' %}
+                                                            <div class="d-inline-block p-3 bg-light"
+                                                                 style="background: no-repeat center center;
+                                                                    background-image: url('{{ asset('', 'user_data') }}{{ file.file_path|slice(1) }}');
+                                                                    background-size: contain; width: 49px; height: 57px;">
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="d-inline-block p-3 bg-light">
+                                                                {{ file.extension|file_ext_icon({class: "fa-2x"}) }}
+                                                            </div>
+                                                        {% endif %}
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle">
