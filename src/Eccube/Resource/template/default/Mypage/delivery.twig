@@ -37,7 +37,7 @@ file that was distributed with this source code.
                             {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
                                 <a class="ec-inlineBtn" href="{{ url('mypage_delivery_new') }}">{{ 'front.mypage.add_customer_address'|trans }}</a>
                             {% else %}
-                                <span class="ec-errorMessage">{{ 'common.customer_address_count_is_over'|trans({ '%eccube_deliv_addr_max%': eccube_config.eccube_deliv_addr_max }) }}</span>
+                                <span class="ec-errorMessage">{{ 'common.customer_address_count_is_over'|trans({ '%count%': eccube_config.eccube_deliv_addr_max }) }}</span>
                             {% endif %}
                         </div>
                     </div>
