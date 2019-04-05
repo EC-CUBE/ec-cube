@@ -299,16 +299,15 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $shippingId = $Shippings[0]->getId();
 
         /**
-         * @var Client
-         */
-        $client = $this->client;
-
-        /**
          * @var Generator
          */
         $faker = $this->getFaker();
         $adminTest = $this->createMember();
-        $this->loginTo($adminTest);
+
+        /**
+         * @var Client
+         */
+        $client = $this->loginTo($adminTest);
         $OrderPdf = new OrderPdf();
 
         $OrderPdf->setMemberId($adminTest->getId())
