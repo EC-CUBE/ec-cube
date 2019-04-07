@@ -176,4 +176,40 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
     }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/4127
+     */
+    public function testDeliveryCountOver()
+    {
+        $this->logInTo($this->Customer);
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('mypage_delivery')
+        );
+
+        // お届け先上限のエラーがないことを確認.
+        $this->assertCount(0, $crawler->filter('span.ec-errorMessage'));
+
+        // お届け先上限まで登録
+        $max = $this->container->getParameter('eccube_deliv_addr_max');
+        for ($i = 0; $i < $max; $i++) {
+            $this->createCustomerAddress($this->Customer);
+        }
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('mypage_delivery')
+        );
+
+        // お届け先上限のエラーメッセージが表示されることを確認
+        $errorMessage = $crawler->filter('span.ec-errorMessage');
+
+        $this->assertCount(1, $errorMessage);
+        $this->assertSame(
+            sprintf('お届け先登録の上限の%s件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。', $max),
+            $errorMessage->text()
+        );
+    }
 }
