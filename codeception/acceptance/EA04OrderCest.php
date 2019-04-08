@@ -438,6 +438,7 @@ class EA04OrderCest
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::NEW)
             ->出荷済にする(1);
 
+        $I->wait(5);
         $I->seeEmailCount(2);
         $I->seeInLastEmailSubjectTo('admin@example.com', '[EC-CUBE SHOP] 商品出荷のお知らせ');
 
