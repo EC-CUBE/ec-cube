@@ -97,7 +97,8 @@ jobs:
       - unzip -o -q chromedriver_linux64.zip
       - sudo mv -f ./chromedriver /usr/local/bin/
       - sudo chmod +x /usr/local/bin/chromedriver
-      - gem install mailcatcher -v "0.6.5"
+      - docker pull schickling/mailcatcher
+      - docker run -d -p 1080:1080 -p 1025:1025 --name mailcatcher schickling/mailcatcher
     install:
       - *composer_install
       - *eccube_setup
