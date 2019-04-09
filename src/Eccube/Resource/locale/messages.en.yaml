@@ -71,7 +71,7 @@ common.login: Sign in
 common.remember_me: Remember me
 common.signup: Sign up
 common.forgot_login: Unable to sign in?
-common.customer_address_count_is_over: You already have max number of addresses (%eccube_deliv_addr_max% items). If you want to add a new one, please delete or overwrite the item(s) you have on the list.
+common.customer_address_count_is_over: You already have max number of addresses (%count% items). If you want to add a new one, please delete or overwrite the item(s) you have on the list.
 common.search_keyword: Enter keywords
 common.delete_confirm: Do you want to continue?
 common.pagetop: Page top
