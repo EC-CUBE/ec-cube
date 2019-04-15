@@ -53,7 +53,7 @@ env:
 
 install:
   - gem install mime-types -v 2.99.1
-  - gem install mailcatcher
+  - gem install mailcatcher -v "0.6.5"
 
 before_script:
   - CODENAME=$(lsb_release -c -s)
