@@ -39,4 +39,9 @@ class LayoutManagePage extends AbstractAdminPageStyleGuide
         $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/span"]);
         $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/ul/li[2]/span"]);
     }
+
+    public function 新規登録()
+    {
+        $this->tester->click(['xpath' => "//*[@id=\"page_admin_content_layout\"]/div[1]/div[3]/div[2]/div/div/div[1]/a"]);
+    }
 }

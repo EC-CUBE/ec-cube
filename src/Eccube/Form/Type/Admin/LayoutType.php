@@ -43,7 +43,6 @@ class LayoutType extends AbstractType
                     'constraints' => [
                         new Assert\NotBlank(),
                     ],
-                    'required' => false,
                 ]
             )->add(
                 'DeviceType',
