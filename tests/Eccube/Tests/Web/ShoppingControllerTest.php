@@ -161,7 +161,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->scenarioConfirm($Customer);
 
         // お届け先指定画面
-        $token = $this->getCsrfToken('_shopping_order');
         $this->scenarioRedirectTo($Customer, [
             '_shopping_order' => [
                 'Shippings' => [
@@ -173,7 +172,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 'Payment' => 1,
                 'use_point' => 0,
                 'message' => $this->getFaker()->realText(),
-                '_token' => $token,
+                '_token' => 'dummy',
             ],
         ]);
 
@@ -230,7 +229,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->scenarioConfirm($Customer);
 
         // 支払い方法選択
-        $token = $this->getCsrfToken('_shopping_order');
         $this->scenarioRedirectTo($Customer, [
             '_shopping_order' => [
                 'Shippings' => [
@@ -242,7 +240,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 'Payment' => 1,
                 'use_point' => 0,
                 'message' => $this->getFaker()->realText(),
-                '_token' => $token,
+                '_token' => 'dummy',
             ],
         ]);
 
@@ -380,7 +378,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $this->scenarioConfirm($Customer);
 
         // お届け先指定画面
-        $token = $this->getCsrfToken('_shopping_order');
         $shippingId = $crawler->filter('div.ec-orderDelivery__change > button')->attr('data-id');
         $this->scenarioRedirectTo($Customer, [
             '_shopping_order' => [
@@ -394,7 +391,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 'use_point' => 0,
                 'message' => $this->getFaker()->realText(),
                 'redirect_to' => $this->generateUrl('shopping_shipping', ['id' => $shippingId], UrlGeneratorInterface::ABSOLUTE_PATH),
-                '_token' => $token,
+                '_token' => 'dummy',
             ],
         ]);
 
