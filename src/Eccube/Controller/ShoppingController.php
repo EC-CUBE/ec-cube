@@ -710,7 +710,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return PaymentMethodInterface
      */
-    private function createPaymentMethod(Order $Order, FormInterface $form)
+    public function createPaymentMethod(Order $Order, FormInterface $form)
     {
         $PaymentMethod = $this->container->get($Order->getPayment()->getMethodClass());
         $PaymentMethod->setOrder($Order);

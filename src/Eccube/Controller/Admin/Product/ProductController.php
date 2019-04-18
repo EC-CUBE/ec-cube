@@ -1000,7 +1000,7 @@ class ProductController extends AbstractController
      *
      * @return \Eccube\Entity\ProductCategory
      */
-    private function createProductCategory($Product, $Category, $count)
+    protected function createProductCategory($Product, $Category, $count)
     {
         $ProductCategory = new ProductCategory();
         $ProductCategory->setProduct($Product);

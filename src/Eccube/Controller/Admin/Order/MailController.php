@@ -227,7 +227,7 @@ class MailController extends AbstractController
         ];
     }
 
-    private function createBody($Order, $twig = 'Mail/order.twig')
+    protected function createBody($Order, $twig = 'Mail/order.twig')
     {
         return $this->renderView($twig, [
             'Order' => $Order,

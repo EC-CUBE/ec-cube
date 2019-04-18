@@ -275,7 +275,7 @@ class FileController extends AbstractController
         }
     }
 
-    private function getTreeToArray($tree)
+    protected function getTreeToArray($tree)
     {
         $arrTree = [];
         foreach ($tree as $key => $val) {
@@ -292,7 +292,7 @@ class FileController extends AbstractController
         return $arrTree;
     }
 
-    private function getPathsToArray($tree)
+    protected function getPathsToArray($tree)
     {
         $paths = [];
         foreach ($tree as $val) {
@@ -306,7 +306,7 @@ class FileController extends AbstractController
      * @param string $topDir
      * @param Request $request
      */
-    private function getTree($topDir, $request)
+    protected function getTree($topDir, $request)
     {
         $finder = Finder::create()->in($topDir)
             ->directories()
@@ -345,7 +345,7 @@ class FileController extends AbstractController
     /**
      * @param string $nowDir
      */
-    private function getFileList($nowDir)
+    protected function getFileList($nowDir)
     {
         $topDir = $this->getuserDataDir();
         $filter = function (\SplFileInfo $file) use ($topDir) {
@@ -432,7 +432,7 @@ class FileController extends AbstractController
     /**
      * @return string
      */
-    private function convertStrFromServer($target)
+    protected function convertStrFromServer($target)
     {
         if ($this->encode == self::SJIS) {
             return mb_convert_encoding($target, self::UTF, self::SJIS);
@@ -441,7 +441,7 @@ class FileController extends AbstractController
         return $target;
     }
 
-    private function convertStrToServer($target)
+    protected function convertStrToServer($target)
     {
         if ($this->encode == self::SJIS) {
             return mb_convert_encoding($target, self::SJIS, self::UTF);
@@ -450,12 +450,12 @@ class FileController extends AbstractController
         return $target;
     }
 
-    private function getUserDataDir($nowDir = null)
+    protected function getUserDataDir($nowDir = null)
     {
         return rtrim($this->getParameter('kernel.project_dir').'/html/user_data'.$nowDir, '/');
     }
 
-    private function getJailDir($path)
+    protected function getJailDir($path)
     {
         $realpath = realpath($path);
         $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
