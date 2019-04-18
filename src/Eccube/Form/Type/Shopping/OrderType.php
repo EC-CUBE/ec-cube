@@ -190,7 +190,7 @@ class OrderType extends AbstractType
         return '_shopping_order';
     }
 
-    private function addPaymentForm(FormInterface $form, array $choices, Payment $data = null)
+    protected function addPaymentForm(FormInterface $form, array $choices, Payment $data = null)
     {
         $message = trans('front.shopping.payment_method_unselected');
 
@@ -220,7 +220,7 @@ class OrderType extends AbstractType
      *
      * @return Delivery[]
      */
-    private function getDeliveries(Order $Order)
+    protected function getDeliveries(Order $Order)
     {
         $Deliveries = [];
         foreach ($Order->getShippings() as $Shipping) {
@@ -241,7 +241,7 @@ class OrderType extends AbstractType
      *
      * @return ArrayCollection
      */
-    private function getPayments($Deliveries)
+    protected function getPayments($Deliveries)
     {
         $PaymentsByDeliveries = [];
         foreach ($Deliveries as $Delivery) {
@@ -281,7 +281,7 @@ class OrderType extends AbstractType
      *
      * @return Payment[]
      */
-    private function filterPayments(ArrayCollection $Payments, $total)
+    protected function filterPayments(ArrayCollection $Payments, $total)
     {
         $PaymentArrays = $Payments->filter(function (Payment $Payment) use ($total) {
             $min = $Payment->getRuleMin();
