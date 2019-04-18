@@ -16,6 +16,8 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Entity\Payment;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PaymentControllerTest extends AbstractAdminWebTestCase
 {
@@ -25,6 +27,11 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     protected $paymentRepository;
 
     /**
+     * @var string
+     */
+    protected $imageDir;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
@@ -32,6 +39,19 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
 
         $this->paymentRepository = $this->container->get(PaymentRepository::class);
+        $this->imageDir = sys_get_temp_dir().'/'.sha1(mt_rand());
+        $fs = new Filesystem();
+        $fs->mkdir($this->imageDir);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        $fs = new Filesystem();
+        $fs->remove($this->imageDir);
+        parent::tearDown();
     }
 
     public function testRouting()
@@ -141,12 +161,53 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     {
         $formData = $this->createFormData();
 
+        copy(
+            __DIR__.'/../../../../../../../html/upload/save_image/sand-1.png',
+            $this->imageDir.'/sand-1.png'
+        );
+        $image = new UploadedFile(
+            $this->imageDir.'/sand-1.png',
+            'sand-1.png',
+            'image/png',
+            null, null, true
+        );
         $this->client->request('POST',
             $this->generateUrl('admin_payment_image_add'),
             [
                 'payment_register' => $formData,
             ],
-            [],
+            [
+                'payment_register' => ['payment_image_file' => $image]
+            ],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testAddImageWithUppercaseSuffix()
+    {
+        $formData = $this->createFormData();
+        copy(
+            __DIR__.'/../../../../../../../html/upload/save_image/sand-1.png',
+            $this->imageDir.'/sand-1.PNG'
+        );
+        $image = new UploadedFile(
+            $this->imageDir.'/sand-1.PNG',
+            'sand-1.PNG',
+            'image/png',
+            null, null, true
+        );
+
+        $this->client->request('POST',
+            $this->generateUrl('admin_payment_image_add'),
+            [
+                'payment_register' => $formData,
+            ],
+            [
+                'payment_register' => ['payment_image_file' => $image]
+            ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
@@ -168,24 +229,34 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(400, $this->client->getResponse()->getStatusCode());
     }
 
-    //    public function testAddImage_MineNotSupported()
-    //    {
-    //        $formData = $this->createFormData();
-    //
-    //        $formData['payment_image'] = 'abc.avi';
-    //        $formData['payment_image_file'] = 'abc.avi';
-    //
-    //        $this->client->request('POST',
-    //            $this->app->url('admin_payment_image_add'),
-    //            array(
-    //                'payment_register' => $formData
-    //            ),
-    //            array(),
-    //            array(
-    //                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-    //            )
-    //        );
-    //    }
+    public function testAddImage_MineNotSupported()
+    {
+        $formData = $this->createFormData();
+        copy(
+            __DIR__.'/../../../../../../Fixtures/categories.csv',
+            $this->imageDir.'/categories.png'
+        );
+        $image = new UploadedFile(
+            $this->imageDir.'/categories.png',
+            'categories.png',
+            'image/png',
+            null, null, true
+        );
+
+        $crawler = $this->client->request('POST',
+           $this->generateUrl('admin_payment_image_add'),
+           [
+               'payment_register' => $formData,
+           ],
+           [
+               'payment_register' => ['payment_image_file' => $image]
+           ],
+           [
+               'HTTP_X-Requested-With' => 'XMLHttpRequest',
+           ]
+        );
+        $this->assertFalse($this->client->getResponse()->isSuccessful());
+    }
 
     public function testMoveSortNo()
     {

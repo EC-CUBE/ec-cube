@@ -181,7 +181,7 @@ class PaymentController extends AbstractController
 
             // 拡張子
             $extension = $image->getClientOriginalExtension();
-            if (!in_array($extension, $allowExtensions)) {
+            if (!in_array(strtolower($extension), $allowExtensions)) {
                 throw new UnsupportedMediaTypeHttpException();
             }
 

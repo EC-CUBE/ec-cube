@@ -158,6 +158,16 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * アップロード(大文字の拡張子)
+     */
+    public function testUploadWithUppercaseSuffix()
+    {
+        // テンプレートをアップロード
+        $this->scenarioUpload(true);
+        $this->verifyUpload();
+    }
+
+    /**
      * ダウンロード
      */
     public function testDownload()
@@ -200,10 +210,10 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         self::assertFalse(file_exists($this->container->getParameter('kernel.project_dir').'/app/template/'.$code));
     }
 
-    protected function scenarioUpload()
+    protected function scenarioUpload($uppercase = false)
     {
         $formData = $this->createFormData();
-        $fileData = $this->createFileData();
+        $fileData = $this->createFileData($uppercase);
 
         return $this->client->request(
             'POST',
@@ -231,8 +241,17 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    protected function createFileData()
+    protected function createFileData($uppercase = false)
     {
+        if ($uppercase) {
+            $file = $this->dir.'/template.ZIP';
+            $zip = new \ZipArchive();
+            $zip->open($file, \ZipArchive::CREATE);
+            $zip->addEmptyDir('app');
+            $zip->addEmptyDir('html');
+            $zip->close();
+            $this->file = new UploadedFile($file, 'dummy.ZIP', 'application/zip');
+        }
         return [
             'file' => $this->file,
         ];
