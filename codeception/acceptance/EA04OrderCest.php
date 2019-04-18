@@ -348,42 +348,47 @@ class EA04OrderCest
         // 新規受付ステータスをキャンセルに変更する
         $entityManager = Fixtures::get('entityManager');
         $findOrders = Fixtures::get('findOrders');
-        $NewOrders = array_filter($findOrders(), function ($Order) {
+        $ExistsNewOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
         });
         $CancelStatus = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::CANCEL);
-        foreach ($NewOrders as $newOrder) {
-            $newOrder->setOrderStatus($CancelStatus);
+        foreach ($ExistsNewOrders as $ExistsNewOrder) {
+            $ExistsNewOrder->setOrderStatus($CancelStatus);
         }
         $entityManager->flush();
 
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 2, []);
+        $NewOrders = $createOrders($createCustomer(), 2, []);
         $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::NEW);
-        foreach ($newOrders as $newOrder) {
-            $newOrder->setOrderStatus($Status);
+        foreach ($NewOrders as $NewOrder) {
+            $NewOrder->setOrderStatus($Status);
         }
         $entityManager->flush();
 
+        // 検索し直す
         $NewOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
         });
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::NEW);
+        $I->comment('新規受付の受注を検索します。想定値: '.count($NewOrders).'件');
         $I->see('検索結果：'.count($NewOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         $DeliveredOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == OrderStatus::DELIVERED;
         });
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::DELIVERED);
+        $I->comment('発送済みの受注を検索します。想定値: '.count($DeliveredOrders).'件');
         $I->see('検索結果：'.count($DeliveredOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
+        $I->comment('受注ステータスを新規受付から発送済みに変更します');
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::NEW)
             ->一覧_全選択()
             ->受注ステータス変更('発送済み');
 
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::DELIVERED);
+        $I->comment('発送済みに変更した件数を確認します。新規受付: '.count($NewOrders).'件 +  発送済み: '.count($DeliveredOrders).'件');
         $I->see('検索結果：'.(count($DeliveredOrders) + count($NewOrders)).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
     }
 
@@ -396,22 +401,22 @@ class EA04OrderCest
         // 新規受付ステータスをキャンセルに変更する
         $entityManager = Fixtures::get('entityManager');
         $findOrders = Fixtures::get('findOrders');
-        $NewOrders = array_filter($findOrders(), function ($Order) {
+        $ExistsNewOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
         });
         $CancelStatus = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::CANCEL);
-        foreach ($NewOrders as $newOrder) {
-            $newOrder->setOrderStatus($CancelStatus);
+        foreach ($ExistsNewOrders as $ExistsNewOrder) {
+            $ExistsNewOrder->setOrderStatus($CancelStatus);
         }
         $entityManager->flush();
 
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 2, []);
+        $NewOrders = $createOrders($createCustomer(), 2, []);
         $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::NEW);
-        foreach ($newOrders as $newOrder) {
-            $newOrder->setOrderStatus($Status);
+        foreach ($NewOrders as $NewOrder) {
+            $NewOrder->setOrderStatus($Status);
         }
         $entityManager->flush();
 
@@ -419,17 +424,21 @@ class EA04OrderCest
             return $Order->getOrderStatus()->getId() == OrderStatus::DELIVERED;
         });
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::DELIVERED);
+        $I->comment('発送済みの受注を検索します。想定値: '.count($DeliveredOrders).'件');
         $I->see('検索結果：'.count($DeliveredOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         $NewOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
         });
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::NEW);
+        $I->comment('新規受付の受注を検索します。想定値: '.count($NewOrders).'件');
         $I->see('検索結果：'.count($NewOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
+        $I->comment('出荷済みに変更します');
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::NEW)
             ->出荷済にする(1);
 
+        $I->wait(5);
         $I->seeEmailCount(2);
         $I->seeInLastEmailSubjectTo('admin@example.com', '[EC-CUBE SHOP] 商品出荷のお知らせ');
 
