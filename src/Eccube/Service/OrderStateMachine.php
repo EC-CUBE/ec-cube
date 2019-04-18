@@ -223,7 +223,7 @@ class OrderStateMachine implements EventSubscriberInterface
         $Order->setOrderStatus($CompletedOrderStatus);
     }
 
-    private function newContext(Order $Order)
+    protected function newContext(Order $Order)
     {
         return new OrderStateMachineContext((string) $Order->getOrderStatus()->getId(), $Order);
     }

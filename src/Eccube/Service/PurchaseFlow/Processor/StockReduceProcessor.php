@@ -71,7 +71,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
         });
     }
 
-    private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback)
+    protected function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback)
     {
         // Order以外の場合は何もしない
         if (!$itemHolder instanceof Order) {

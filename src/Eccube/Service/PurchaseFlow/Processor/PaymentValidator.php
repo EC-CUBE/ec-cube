@@ -78,7 +78,7 @@ class PaymentValidator extends ItemHolderValidator
         }
     }
 
-    private function getDeliveries(SaleType $SaleType)
+    protected function getDeliveries(SaleType $SaleType)
     {
         $Deliveries = $this->deliveryRepository->findBy(
             [
@@ -95,7 +95,7 @@ class PaymentValidator extends ItemHolderValidator
      *
      * @return ArrayCollection|Payment[]
      */
-    private function getPayments($Deliveries)
+    protected function getPayments($Deliveries)
     {
         $Payments = new ArrayCollection();
         foreach ($Deliveries as $Delivery) {

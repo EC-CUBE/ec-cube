@@ -84,7 +84,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
         $this->saveDeliveryFeeItem($itemHolder);
     }
 
-    private function removeDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    protected function removeDeliveryFeeItem(ItemHolderInterface $itemHolder)
     {
         foreach ($itemHolder->getShippings() as $Shipping) {
             foreach ($Shipping->getOrderItems() as $item) {
@@ -102,7 +102,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      *
      * @throws \Doctrine\ORM\NoResultException
      */
-    private function saveDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    protected function saveDeliveryFeeItem(ItemHolderInterface $itemHolder)
     {
         $DeliveryFeeType = $this->entityManager
             ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);

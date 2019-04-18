@@ -173,7 +173,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      *
      * @return bool
      */
-    private function supports(ItemHolderInterface $itemHolder)
+    protected function supports(ItemHolderInterface $itemHolder)
     {
         if (!$this->pointHelper->isPointEnabled()) {
             return false;

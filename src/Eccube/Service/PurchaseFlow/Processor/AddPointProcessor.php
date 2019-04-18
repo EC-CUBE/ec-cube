@@ -63,7 +63,7 @@ class AddPointProcessor extends ItemHolderPostValidator
      *
      * @return int
      */
-    private function calculateAddPoint(ItemHolderInterface $itemHolder)
+    protected function calculateAddPoint(ItemHolderInterface $itemHolder)
     {
         $basicPointRate = $this->BaseInfo->getBasicPointRate();
 
@@ -106,7 +106,7 @@ class AddPointProcessor extends ItemHolderPostValidator
      *
      * @return bool
      */
-    private function supports(ItemHolderInterface $itemHolder)
+    protected function supports(ItemHolderInterface $itemHolder)
     {
         if (!$this->BaseInfo->isOptionPoint()) {
             return false;

@@ -132,7 +132,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @return bool
      */
-    private function supports(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function supports(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->pointHelper->isPointEnabled()) {
             return false;
