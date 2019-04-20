@@ -68,7 +68,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             'DELETE',
             $this->generateUrl('admin_content_file_delete').'?select_file='.$this->getJailDir($filepath)
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file', array('tree_select_file' => dirname($this->getJailDir($filepath))))));
         $this->assertFalse(file_exists($filepath));
     }
 
