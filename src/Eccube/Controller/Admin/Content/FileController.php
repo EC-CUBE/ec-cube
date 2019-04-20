@@ -198,7 +198,8 @@ class FileController extends AbstractController
             }
         }
 
-        return $this->redirectToRoute('admin_content_file');
+        // 削除実行時のカレントディレクトリを表示させる
+        return $this->redirectToRoute('admin_content_file', array('tree_select_file' => dirname($selectFile)));
     }
 
     /**
