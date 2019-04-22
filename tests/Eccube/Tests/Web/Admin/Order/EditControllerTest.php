@@ -467,4 +467,64 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->actual = $formData['email'];
         $this->verify();
     }
+
+    /**
+     * お届け時間の指定を「指定なし」に変更できるかのテスト
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4143
+     */
+    public function testUpdateShippingDeliveryTimeToNoneSpecified()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($this->Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush($Order);
+
+        $formData = $this->createFormData($this->Customer, $this->Product);
+        // まず、1:午前をセット
+        $formData['Shipping']['DeliveryTime'] = 1;
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
+            [
+                'order' => $formData,
+                'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
+
+        $EditedOrder = $this->orderRepository->find($Order->getId());
+        $EditedShipping = $EditedOrder->getShippings()[0];
+
+        $this->expected = 1;
+        $this->actual = $EditedShipping->getTimeId();
+        $this->verify();
+        $this->expected = '午前';
+        $this->actual = $EditedShipping->getShippingDeliveryTime();
+        $this->verify();
+
+
+        $formDataForEdit = $this->createFormDataForEdit($EditedOrder);
+        // 「指定なし」に変更
+        $formDataForEdit['Shipping']['DeliveryTime'] = null;
+
+        // 管理画面で受注編集する
+        $this->client->request(
+            'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
+            'order' => $formDataForEdit,
+            'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
+
+        $EditedOrderafterEdit = $this->orderRepository->find($Order->getId());
+        $EditedShippingafterEdit = $EditedOrderafterEdit->getShippings()[0];
+
+        $this->expected = null;
+        $this->actual = $EditedShippingafterEdit->getTimeId();
+        $this->verify();
+        $this->expected = null;
+        $this->actual = $EditedShippingafterEdit->getShippingDeliveryTime();
+        $this->verify();
+    }
 }
