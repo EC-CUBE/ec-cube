@@ -18,6 +18,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\TaxRuleService;
@@ -481,8 +482,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->entityManager->flush($Order);
 
         $formData = $this->createFormData($this->Customer, $this->Product);
-        // まず、1:午前をセット
-        $formData['Shipping']['DeliveryTime'] = 1;
+        // まずお届け時間に何か指定する(便宜上、最初に取得できたのものを利用)
+        $Delivery = $this->container->get(DeliveryRepository::class)->find($formData['Shipping']['Delivery']);
+        $DeliveryTime = $Delivery->getDeliveryTimes()[0];
+        $delivery_time_id = $DeliveryTime->getId();
+        $delivery_time = $DeliveryTime->getDeliveryTime();
+        $formData['Shipping']['DeliveryTime'] = $delivery_time_id;
+
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
@@ -496,10 +502,10 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $EditedOrder = $this->orderRepository->find($Order->getId());
         $EditedShipping = $EditedOrder->getShippings()[0];
 
-        $this->expected = 1;
+        $this->expected = $delivery_time_id;
         $this->actual = $EditedShipping->getTimeId();
         $this->verify();
-        $this->expected = '午前';
+        $this->expected = $delivery_time;
         $this->actual = $EditedShipping->getShippingDeliveryTime();
         $this->verify();
 
