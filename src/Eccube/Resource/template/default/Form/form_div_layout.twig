@@ -71,7 +71,7 @@ file that was distributed with this source code.
 {%- endblock checkbox_widget -%}
 
 {%- block widget_attributes -%}
-    {%- if id %} id="{{ id }}"{% endif -%}
+    {%- if id %} id="{{ id }}" {% endif -%}
     name="{{ full_name }}"
     {%- if disabled %} disabled="disabled"{% endif -%}
     {%- if required %} required="required"{% endif -%}
