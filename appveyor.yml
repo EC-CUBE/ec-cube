@@ -4,6 +4,8 @@
 # Set build version format here instead of in the admin panel.
 version: 3.x-{build}
 
+image: Visual Studio 2017
+
 clone_folder: c:\projects\ec-cube
 
 cache:
@@ -21,6 +23,9 @@ environment:
     DBPASS: "Password12!"
     DBUSER: "root"
     BASE_DIR: "C:/projects/ec-cube"
+    MAIL_BACKEND: "smtp"
+    MAIL_HOST: "127.0.0.1"
+    MAIL_PORT: "1025"
 
   matrix:
   - db: mysql
@@ -31,6 +36,8 @@ services:
 
 # Install scripts. (runs after repo cloning)
 install:
+  - docker pull nanasess/mailcatcher:windowsservercore
+  - docker run -d -p 1080:1080 -p 1025:1025 --name mailcatcher nanasess/mailcatcher:windowsservercore
   - cp phpunit.xml.dist phpunit.xml
   # see https://github.com/phpmd/phpmd/blob/master/appveyor.yml#L10-L13
   - cinst -y OpenSSL.Light --version 1.1.1
