@@ -482,7 +482,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->entityManager->flush($Order);
 
         $formData = $this->createFormData($this->Customer, $this->Product);
-        // まずお届け時間に何か指定する(便宜上、最初に取得できたのものを利用)
+        // まずお届け時間に何か指定する(便宜上、最初に取得できたものを利用)
         $Delivery = $this->container->get(DeliveryRepository::class)->find($formData['Shipping']['Delivery']);
         $DeliveryTime = $Delivery->getDeliveryTimes()[0];
         $delivery_time_id = $DeliveryTime->getId();
