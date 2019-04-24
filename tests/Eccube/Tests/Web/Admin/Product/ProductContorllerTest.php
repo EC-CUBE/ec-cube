@@ -25,6 +25,8 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Entity\Product;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
@@ -50,6 +52,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     protected $productStatusRepository;
 
     /**
+     * @var string
+     */
+    protected $imageDir;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
@@ -65,6 +72,20 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         for ($i = 0; $i < 10; $i++) {
             $this->createProduct();
         }
+
+        $this->imageDir = sys_get_temp_dir().'/'.sha1(mt_rand());
+        $fs = new Filesystem();
+        $fs->mkdir($this->imageDir);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        $fs = new Filesystem();
+        $fs->remove($this->imageDir);
+        parent::tearDown();
     }
 
     public function createFormData()
@@ -779,6 +800,107 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testAddImage()
+    {
+        $formData = $this->createFormData();
+
+        copy(
+            __DIR__.'/../../../../../../html/upload/save_image/sand-1.png',
+            $this->imageDir.'/sand-1.png'
+        );
+        $image = new UploadedFile(
+            $this->imageDir.'/sand-1.png',
+            'sand-1.png',
+            'image/png',
+            null, null, true
+        );
+        $this->client->request('POST',
+            $this->generateUrl('admin_product_image_add'),
+            [
+                'admin_product' => $formData,
+            ],
+            [
+                'admin_product' => ['product_image' => [$image]]
+            ],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testAddImageWithUppercaseSuffix()
+    {
+        $formData = $this->createFormData();
+        copy(
+            __DIR__.'/../../../../../../html/upload/save_image/sand-1.png',
+            $this->imageDir.'/sand-1.PNG'
+        );
+        $image = new UploadedFile(
+            $this->imageDir.'/sand-1.PNG',
+            'sand-1.PNG',
+            'image/png',
+            null, null, true
+        );
+
+        $this->client->request('POST',
+            $this->generateUrl('admin_product_image_add'),
+            [
+                'admin_product' => $formData,
+            ],
+            [
+                'admin_product' => ['product_image' => [$image]]
+            ],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testAddImage_NotAjax()
+    {
+        $formData = $this->createFormData();
+
+        $this->client->request('POST',
+            $this->generateUrl('admin_product_image_add'),
+            [
+                'admin_product' => $formData,
+            ],
+            []
+        );
+        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testAddImage_MineNotSupported()
+    {
+        $formData = $this->createFormData();
+        copy(
+            __DIR__.'/../../../../../Fixtures/categories.csv',
+            $this->imageDir.'/categories.png'
+        );
+        $image = new UploadedFile(
+            $this->imageDir.'/categories.png',
+            'categories.png',
+            'image/png',
+            null, null, true
+        );
+
+        $crawler = $this->client->request('POST',
+           $this->generateUrl('admin_product_image_add'),
+            [
+                'admin_product' => $formData,
+            ],
+            [
+                'admin_product' => ['product_image' => [$image]]
+            ],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $this->assertFalse($this->client->getResponse()->isSuccessful());
     }
 
     /**
