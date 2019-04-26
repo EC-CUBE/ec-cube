@@ -41,6 +41,8 @@ class CacheTest extends \PHPUnit_Framework_TestCase
                 file_put_contents($this->app['config']['root_dir'].'/app/cache/'.$dir.'/'.$i, 'test');
             }
         }
+
+        $this->app['config']['plugin_temp_realdir'] = $this->app['config']['root_dir'].'/app/cache/plugin';
     }
 
     public function testClearAll()
@@ -77,5 +79,17 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertTrue($this->root->hasChild('app/cache/.gitkeep'), '.gitkeep は存在するはず');
         $this->assertTrue($this->root->hasChild('app/cache/.dummykeep'), '.dummykeep は存在するはず');
+    }
+
+    public function testClearPluginCache()
+    {
+        mkdir($this->app['config']['plugin_temp_realdir'], 0777, true);
+        file_put_contents($this->app['config']['plugin_temp_realdir'].'/config_cache.php', '<?php return array();');
+
+        $this->assertTrue(file_exists($this->app['config']['plugin_temp_realdir'].'/config_cache.php'));
+
+        Cache::clear($this->app, false);
+
+        $this->assertFalse(file_exists($this->app['config']['plugin_temp_realdir'].'/config_cache.php'));
     }
 }
