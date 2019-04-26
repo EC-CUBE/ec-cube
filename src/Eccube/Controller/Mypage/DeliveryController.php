@@ -70,7 +70,11 @@ class DeliveryController extends AbstractController
             }
         }
 
-        $CustomerAddress = $app['eccube.repository.customer_address']->findOrCreateByCustomerAndId($Customer, $id);
+        try {
+            $CustomerAddress = $app['eccube.repository.customer_address']->findOrCreateByCustomerAndId($Customer, $id);
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException('お届け先が見つかりません。', $e);
+        }
 
         $parentPage = $request->get('parent_page', null);
 
