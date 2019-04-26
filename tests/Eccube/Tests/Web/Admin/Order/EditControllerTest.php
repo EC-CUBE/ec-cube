@@ -18,6 +18,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\TaxRuleService;
@@ -465,6 +466,71 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertNotNull($SavedOrder);
         $this->expected = $SavedOrder->getEmail();
         $this->actual = $formData['email'];
+        $this->verify();
+    }
+
+    /**
+     * お届け時間の指定を「指定なし」に変更できるかのテスト
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4143
+     */
+    public function testUpdateShippingDeliveryTimeToNoneSpecified()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($this->Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush($Order);
+
+        $formData = $this->createFormData($this->Customer, $this->Product);
+        // まずお届け時間に何か指定する(便宜上、最初に取得できたものを利用)
+        $Delivery = $this->container->get(DeliveryRepository::class)->find($formData['Shipping']['Delivery']);
+        $DeliveryTime = $Delivery->getDeliveryTimes()[0];
+        $delivery_time_id = $DeliveryTime->getId();
+        $delivery_time = $DeliveryTime->getDeliveryTime();
+        $formData['Shipping']['DeliveryTime'] = $delivery_time_id;
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
+            [
+                'order' => $formData,
+                'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
+
+        $EditedOrder = $this->orderRepository->find($Order->getId());
+        $EditedShipping = $EditedOrder->getShippings()[0];
+
+        $this->expected = $delivery_time_id;
+        $this->actual = $EditedShipping->getTimeId();
+        $this->verify();
+        $this->expected = $delivery_time;
+        $this->actual = $EditedShipping->getShippingDeliveryTime();
+        $this->verify();
+
+
+        $formDataForEdit = $this->createFormDataForEdit($EditedOrder);
+        // 「指定なし」に変更
+        $formDataForEdit['Shipping']['DeliveryTime'] = null;
+
+        // 管理画面で受注編集する
+        $this->client->request(
+            'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
+            'order' => $formDataForEdit,
+            'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
+
+        $EditedOrderafterEdit = $this->orderRepository->find($Order->getId());
+        $EditedShippingafterEdit = $EditedOrderafterEdit->getShippings()[0];
+
+        $this->expected = null;
+        $this->actual = $EditedShippingafterEdit->getTimeId();
+        $this->verify();
+        $this->expected = null;
+        $this->actual = $EditedShippingafterEdit->getShippingDeliveryTime();
         $this->verify();
     }
 }

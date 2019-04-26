@@ -297,6 +297,9 @@ class ShippingType extends AbstractType
                 if ($DeliveryTime) {
                     $Shipping->setShippingDeliveryTime($DeliveryTime->getDeliveryTime());
                     $Shipping->setTimeId($DeliveryTime->getId());
+                } else {
+                    $Shipping->setShippingDeliveryTime(null);
+                    $Shipping->setTimeId(null);
                 }
             })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
