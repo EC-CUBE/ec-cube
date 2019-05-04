@@ -75,7 +75,6 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'  # 税額の計算(商品明細に対して税額計算)
-                - '@Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor'

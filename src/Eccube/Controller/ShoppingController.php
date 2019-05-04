@@ -29,6 +29,7 @@ use Eccube\Service\MailService;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\Payment\PaymentMethodInterface;
+use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -60,16 +61,23 @@ class ShoppingController extends AbstractShoppingController
      */
     protected $orderRepository;
 
+    /**
+     * @var OrderNoProcessor
+     */
+    protected $orderNoProcessor;
+
     public function __construct(
         CartService $cartService,
         MailService $mailService,
         OrderRepository $orderRepository,
-        OrderHelper $orderHelper
+        OrderHelper $orderHelper,
+        OrderNoProcessor $orderNoProcessor
     ) {
         $this->cartService = $cartService;
         $this->mailService = $mailService;
         $this->orderRepository = $orderRepository;
         $this->orderHelper = $orderHelper;
+        $this->orderNoProcessor = $orderNoProcessor;
     }
 
     /**
@@ -356,6 +364,9 @@ class ShoppingController extends AbstractShoppingController
                 log_info('[注文処理] 集計処理を開始します.', [$Order->getId()]);
                 $response = $this->executePurchaseFlow($Order);
                 $this->entityManager->flush();
+
+                // 新規登録時はflushしてから採番
+                $this->orderNoProcessor->process($Order, new PurchaseContext($Order, $Order->getCustomer()));
 
                 if ($response) {
                     return $response;
