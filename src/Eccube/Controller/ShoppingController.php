@@ -1046,10 +1046,7 @@ class ShoppingController extends AbstractController
             }
 
             // 非会員用セッションを作成
-            $nonMember = array();
-            $nonMember['customer'] = $Customer;
-            $nonMember['pref'] = $Customer->getPref()->getId();
-            $app['session']->set($this->sessionKey, $nonMember);
+            $app['eccube.service.shopping']->setNonMember($this->sessionKey, $Customer);
 
             $customerAddresses = array();
             $customerAddresses[] = $CustomerAddress;
