@@ -389,7 +389,7 @@ class PluginService
                         }
                         // updateで追加されたハンドラかどうか調べる
                         $peh = $rep->findBy(array('del_flg' => Constant::DISABLED,
-                            'plugin_id' => $plugin->getId(),
+                            'Plugin' => $plugin->getId(),
                             'event' => $event,
                             'handler' => $handler[0],
                             'handler_type' => $handler[1],));
@@ -409,7 +409,7 @@ class PluginService
                 }
 
                 # アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
-                foreach ($rep->findBy(array('del_flg' => Constant::DISABLED, 'plugin_id' => $plugin->getId())) as $peh) {
+                foreach ($rep->findBy(array('del_flg' => Constant::DISABLED, 'Plugin' => $plugin->getId())) as $peh) {
                     if (!isset($event_yml[$peh->getEvent()])) {
                         $em->remove($peh);
                         $em->flush();
