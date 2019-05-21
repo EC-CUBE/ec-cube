@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Entity\CustomerAddress;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -86,14 +87,21 @@ class ShippingMultipleItemType extends AbstractType
                     // 非会員の場合、セッションに設定されたCustomerAddressを設定
                     if ($app['session']->has('eccube.front.shopping.nonmember.customeraddress')) {
                         $customerAddresses = $app['session']->get('eccube.front.shopping.nonmember.customeraddress');
-                        $customerAddresses = unserialize($customerAddresses);
+                        $customerAddresses = json_decode($customerAddresses, true);
 
                         $addresses = array();
-                        $i = 0;
                         /** @var \Eccube\Entity\CustomerAddress $CustomerAddress */
                         foreach ($customerAddresses as $CustomerAddress) {
-                            $addresses[$i] = $CustomerAddress->getShippingMultipleDefaultName();
-                            $i++;
+
+                            $CustomerAddressArray = (array) $CustomerAddress;
+                            $CustomerAddressArray['Pref'] = (array) $CustomerAddressArray['Pref'];
+
+                            $CustomerAddressObj = new CustomerAddress();
+                            $CustomerAddressObj->setPropertiesFromArray($CustomerAddressArray);
+                            $CustomerAddressObj->setCustomer($app['eccube.service.shopping']->getNonMember('eccube.front.shopping.nonmember'));
+                            $CustomerAddressObj->setPref($app['eccube.repository.master.pref']->find($CustomerAddressArray['Pref']['id']));
+
+                            $addresses[] = $CustomerAddressObj->getShippingMultipleDefaultName();
                         }
                         $form->add('customer_address', 'choice', array(
                             'choices' => $addresses,
