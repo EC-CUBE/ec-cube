@@ -1424,17 +1424,17 @@ class ShoppingController extends AbstractController
             return $CustomerAddressData;
         } else {
             $cusAddId = $CustomerAddressData;
+
             $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
             $customerAddresses = json_decode($customerAddresses, true);
-            $CustomerAddress = $customerAddresses[$cusAddId];
-            $pref = $app['eccube.repository.master.pref']->find($CustomerAddress['Pref']['id']);
 
-            $CustomerAddressObj = new CustomerAddress();
-            $CustomerAddressObj->setPropertiesFromArray($CustomerAddress);
+            $customerAddressArray = $customerAddresses[$cusAddId];
 
-            $CustomerAddressObj->setPref($pref);
+            $CustomerAddress = new CustomerAddress();
+            $CustomerAddress->setPropertiesFromArray($customerAddressArray);
+            $CustomerAddress->setPref($app['eccube.repository.master.pref']->find($customerAddressArray['Pref']['id']));
 
-            return $CustomerAddressObj;
+            return $CustomerAddress;
         }
     }
 
@@ -1475,16 +1475,14 @@ class ShoppingController extends AbstractController
 
             log_info('非会員お届け先追加処理開始');
 
+            $customerAddressArray = $CustomerAddress->toArray();
+            $customerAddressArray['Customer'] = $CustomerAddress->getCustomer()->toArray();
+            $customerAddressArray['Pref'] = $CustomerAddress->getPref()->toArray();
+
             // 非会員用のセッションに追加
-            $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
+            $customerAddresses = json_decode($app['session']->get($this->sessionCustomerAddressKey), true);
+            $customerAddresses[] = $customerAddressArray;
 
-            $customerAddresses = json_decode($customerAddresses, true);
-
-            $CustomerAddressArray = $CustomerAddress->toArray();
-            $CustomerAddressArray['Customer'] = $CustomerAddress->getCustomer()->toArray();
-            $CustomerAddressArray['Pref'] = $CustomerAddress->getPref()->toArray();
-
-            $customerAddresses[] = $CustomerAddressArray;
             $app['session']->set($this->sessionCustomerAddressKey, json_encode($customerAddresses));
 
             $event = new EventArgs(

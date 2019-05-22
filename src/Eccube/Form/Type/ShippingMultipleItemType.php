@@ -90,18 +90,18 @@ class ShippingMultipleItemType extends AbstractType
                         $customerAddresses = json_decode($customerAddresses, true);
 
                         $addresses = array();
-                        /** @var \Eccube\Entity\CustomerAddress $CustomerAddress */
-                        foreach ($customerAddresses as $CustomerAddress) {
+                        /** @var \Eccube\Entity\CustomerAddress $value */
+                        foreach ($customerAddresses as $value) {
 
-                            $CustomerAddressArray = (array) $CustomerAddress;
-                            $CustomerAddressArray['Pref'] = (array) $CustomerAddressArray['Pref'];
+                            $customerAddressArray = (array) $value;
+                            $customerAddressArray['Pref'] = (array) $customerAddressArray['Pref'];
 
-                            $CustomerAddressObj = new CustomerAddress();
-                            $CustomerAddressObj->setPropertiesFromArray($CustomerAddressArray);
-                            $CustomerAddressObj->setCustomer($app['eccube.service.shopping']->getNonMember('eccube.front.shopping.nonmember'));
-                            $CustomerAddressObj->setPref($app['eccube.repository.master.pref']->find($CustomerAddressArray['Pref']['id']));
+                            $CustomerAddress = new CustomerAddress();
+                            $CustomerAddress->setPropertiesFromArray($customerAddressArray);
+                            $CustomerAddress->setCustomer($app['eccube.service.shopping']->getNonMember('eccube.front.shopping.nonmember'));
+                            $CustomerAddress->setPref($app['eccube.repository.master.pref']->find($customerAddressArray['Pref']['id']));
 
-                            $addresses[] = $CustomerAddressObj->getShippingMultipleDefaultName();
+                            $addresses[] = $CustomerAddress->getShippingMultipleDefaultName();
                         }
                         $form->add('customer_address', 'choice', array(
                             'choices' => $addresses,
