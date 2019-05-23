@@ -1048,9 +1048,14 @@ class ShoppingController extends AbstractController
             // 非会員用セッションを作成
             $app['eccube.service.shopping']->setNonMember($this->sessionKey, $Customer);
 
-            $customerAddresses = array();
-            $customerAddresses[] = $CustomerAddress;
-            $app['session']->set($this->sessionCustomerAddressKey, serialize($customerAddresses));
+            $CustomerAddressArray = $CustomerAddress->toArray();
+            $CustomerAddressArray['Customer'] = $CustomerAddress->getCustomer()->toArray();
+            $CustomerAddressArray['Pref'] = $CustomerAddress->getPref()->toArray();
+
+            $CustomerAddressesArray = array();
+            $CustomerAddressesArray[] = $CustomerAddressArray;
+
+            $app['session']->set($this->sessionCustomerAddressKey, json_encode($CustomerAddressesArray));
 
             $event = new EventArgs(
                 array(
@@ -1419,12 +1424,15 @@ class ShoppingController extends AbstractController
             return $CustomerAddressData;
         } else {
             $cusAddId = $CustomerAddressData;
-            $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
-            $customerAddresses = unserialize($customerAddresses);
 
-            $CustomerAddress = $customerAddresses[$cusAddId];
-            $pref = $app['eccube.repository.master.pref']->find($CustomerAddress->getPref()->getId());
-            $CustomerAddress->setPref($pref);
+            $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
+            $customerAddresses = json_decode($customerAddresses, true);
+
+            $customerAddressArray = $customerAddresses[$cusAddId];
+
+            $CustomerAddress = new CustomerAddress();
+            $CustomerAddress->setPropertiesFromArray($customerAddressArray);
+            $CustomerAddress->setPref($app['eccube.repository.master.pref']->find($customerAddressArray['Pref']['id']));
 
             return $CustomerAddress;
         }
@@ -1467,11 +1475,15 @@ class ShoppingController extends AbstractController
 
             log_info('非会員お届け先追加処理開始');
 
+            $customerAddressArray = $CustomerAddress->toArray();
+            $customerAddressArray['Customer'] = $CustomerAddress->getCustomer()->toArray();
+            $customerAddressArray['Pref'] = $CustomerAddress->getPref()->toArray();
+
             // 非会員用のセッションに追加
-            $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
-            $customerAddresses = unserialize($customerAddresses);
-            $customerAddresses[] = $CustomerAddress;
-            $app['session']->set($this->sessionCustomerAddressKey, serialize($customerAddresses));
+            $customerAddresses = json_decode($app['session']->get($this->sessionCustomerAddressKey), true);
+            $customerAddresses[] = $customerAddressArray;
+
+            $app['session']->set($this->sessionCustomerAddressKey, json_encode($customerAddresses));
 
             $event = new EventArgs(
                 array(
