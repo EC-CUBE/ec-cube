@@ -307,7 +307,7 @@ class CsvImportController extends AbstractCsvImportController
                             // 規格分類1(ID)がセットされていると規格なし商品、規格あり商品を作成
                             $ProductClassOrg = $this->createProductClass($row, $Product, $data, $headerByKey);
                             if ($this->BaseInfo->isOptionProductDeliveryFee()) {
-                                if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isBlank($row[$headerByKey['delivery_fee']])) {
+                                if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
                                     $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
                                     $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(['value' => 0]));
                                     if ($errors->count() === 0) {
@@ -401,7 +401,6 @@ class CsvImportController extends AbstractCsvImportController
                                     $this->updateProductClass($row, $Product, $pc, $data, $headerByKey);
 
                                     if ($this->BaseInfo->isOptionProductDeliveryFee()) {
-                                        $headerByKey['delivery_fee'] = trans('csvimport.label.delivery_fee');
                                         if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
                                             $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
                                             $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(['value' => 0]));
