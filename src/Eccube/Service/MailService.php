@@ -197,7 +197,11 @@ class MailService
     {
         log_info('お問い合わせ受付メール送信開始');
 
+        $MailTemplate = $this->app['eccube.repository.mail_template']->find(5);
+        
         $body = $this->app->renderView('Mail/contact_mail.twig', array(
+            'header' => $MailTemplate->getHeader(),
+            'footer' => $MailTemplate->getFooter(),
             'data' => $formData,
             'BaseInfo' => $this->BaseInfo,
         ));
