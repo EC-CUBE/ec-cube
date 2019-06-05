@@ -21,7 +21,7 @@ DirectoryIndex index.php index.html .ht
 
 # デフォルトテンプレートの状態で 2M 以上となるため
 <IfModule mod_php7.c>
-    php_value upload_max_filesize 5M
+    php_value upload_max_filesize 10M
 </IfModule>
 
 <IfModule mod_rewrite.c>
