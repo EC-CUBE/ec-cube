@@ -19,9 +19,9 @@ DirectoryIndex index.php index.html .ht
     Header set X-Content-Type-Options nosniff
 </IfModule>
 
-# デフォルトテンプレートの状態で 2M 以上となるため
+# デザインテンプレートを適用するため10Mで設定 
 <IfModule mod_php7.c>
-    php_value upload_max_filesize 5M
+    php_value upload_max_filesize 10M
 </IfModule>
 
 <IfModule mod_rewrite.c>
