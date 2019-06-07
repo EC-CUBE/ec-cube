@@ -1024,14 +1024,17 @@ class CsvImportController extends AbstractCsvImportController
             $this->addErrors($message);
         }
 
-        if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
-            $delivery_fee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
-            $errors = $this->validator->validate($delivery_fee, new GreaterThanOrEqual(['value' => 0]));
-            if ($errors->count() === 0) {
-                $ProductClass->setDeliveryFee($delivery_fee);
-            } else {
-                $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['delivery_fee']]);
-                $this->addErrors($message);
+        if ($this->BaseInfo->isOptionProductDeliveryFee()) {
+            if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
+                $delivery_fee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
+                $errors = $this->validator->validate($delivery_fee, new GreaterThanOrEqual(['value' => 0]));
+                if ($errors->count() === 0) {
+                    $ProductClass->setDeliveryFee($delivery_fee);
+                } else {
+                    $message = trans('admin.common.csv_invalid_greater_than_zero',
+                        ['%line%' => $line, '%name%' => $headerByKey['delivery_fee']]);
+                    $this->addErrors($message);
+                }
             }
         }
 
