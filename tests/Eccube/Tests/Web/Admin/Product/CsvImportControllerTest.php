@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Product;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ProductRepository;
@@ -671,6 +672,41 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->scenario();
 
         $this->assertRegexp("/$expectedMessage/u", $crawler->filter('form#upload-form')->text());
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/4177
+     *
+     * @dataProvider dataDeliveryFeeProvider
+     */
+    public function testImportDeliveryFee($optionDeliveryFee, $expected)
+    {
+        /** @var BaseInfo $BaseInfo */
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $BaseInfo->setOptionProductDeliveryFee($optionDeliveryFee);
+        $this->entityManager->flush($BaseInfo);
+        $this->entityManager->clear();
+
+        $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '送料'];
+        $csv[] = [1, '送料更新用', 1, 1, 1, 5000];
+        $this->filepath = $this->createCsvFromArray($csv);
+
+        $crawler = $this->scenario();
+        $this->assertRegexp('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
+
+        $Product = $this->productRepo->findOneBy(['name' => '送料更新用']);
+        $ProductClass = $Product->getProductClasses()[0];
+        $this->expected = $expected;
+        $this->actual = $ProductClass->getDeliveryFee();
+        $this->verify();
+    }
+
+    public function dataDeliveryFeeProvider()
+    {
+        return [
+            [true, 5000],   // 送料オプション有効時は更新
+            [false, null],  // 送料オプション無効時はスキップ
+        ];
     }
 
     /**
