@@ -1025,6 +1025,12 @@ class InstallController extends AbstractController
         $version = $em->createNativeQuery($sql, $rsm)
             ->getSingleScalarResult();
 
+        // postgresのバージョンが10の場合、末尾に不要な文字列が入るため削除
+        if ($platform === 'postgresql') {
+            preg_match('/\A([\d+\.]+)/', $version, $matches);
+            $version = $matches[1];
+        }
+
         return $version;
     }
 
