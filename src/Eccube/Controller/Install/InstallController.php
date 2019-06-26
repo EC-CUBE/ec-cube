@@ -1017,7 +1017,7 @@ class InstallController extends AbstractController
                 $sql = 'SELECT version() AS server_version';
                 break;
 
-            case 'pgsql':
+            case 'postgresql':
             default:
                 $sql = 'SHOW server_version';
         }

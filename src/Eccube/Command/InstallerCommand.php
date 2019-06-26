@@ -13,6 +13,7 @@
 
 namespace Eccube\Command;
 
+use Doctrine\DBAL\DriverManager;
 use Dotenv\Dotenv;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Console\Command\Command;
@@ -81,11 +82,7 @@ class InstallerCommand extends Command
         $databaseUrl = $this->io->ask('Database Url', $databaseUrl);
 
         // DATABASE_SERVER_VERSION
-        $databaseName = $this->getDatabaseName($databaseUrl);
-        $serverVersion = $this->io->ask('Database Server version', 'auto');
-        if ('auto' === $serverVersion) {
-            $serverVersion = $this->getDatabaseServerVersion($databaseName);
-        }
+        $serverVersion = $this->getDatabaseServerVersion($databaseUrl);
 
         // MAILER_URL
         $mailerUrl = $this->container->getParameter('eccube_mailer_url');
@@ -200,18 +197,35 @@ class InstallerCommand extends Command
         throw new \LogicException(sprintf('Database Url %s is invalid.', $databaseUrl));
     }
 
-    protected function getDatabaseServerVersion($databaseName)
+    protected function getDatabaseServerVersion($databaseUrl)
     {
-        $versions = [
-            'sqlite' => 3,
-            'postgres' => 9,
-            'mysql' => 5,
-        ];
+        try {
+            $conn = DriverManager::getConnection([
+                'url' => $databaseUrl,
+            ]);
+        } catch (\Exception $e) {
+            throw new \LogicException(sprintf('Database Url %s is invalid.', $databaseUrl));
+        }
+        $platform = $conn->getDatabasePlatform()->getName();
+        switch ($platform) {
+            case 'sqlite':
+                $sql = 'SELECT sqlite_version() AS server_version';
+                break;
+            case 'mysql':
+                $sql = 'SELECT version() AS server_version';
+                break;
+            case 'postgresql':
+            default:
+                $sql = 'SHOW server_version';
+        }
+        $stmt = $conn->executeQuery($sql);
+        $version = $stmt->fetchColumn();
 
-        if (!isset($versions[$databaseName])) {
-            throw new \LogicException(sprintf('Database Name %s is invalid.', $databaseName));
+        if ($platform === 'postgresql') {
+            preg_match('/\A([\d+\.]+)/', $version, $matches);
+            $version = $matches[1];
         }
 
-        return $versions[$databaseName];
+        return $version;
     }
 }
