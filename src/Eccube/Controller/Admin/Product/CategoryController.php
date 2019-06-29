@@ -155,7 +155,7 @@ class CategoryController extends AbstractController
 
                     $event = new EventArgs(
                         [
-                            'form' => $form,
+                            'form' => $editForm,
                             'Parent' => $Parent,
                             'TargetCategory' => $editForm->getData(),
                         ],
