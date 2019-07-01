@@ -1243,7 +1243,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @return array
      */
-    private function getProductCsvHeader()
+    protected function getProductCsvHeader()
     {
         return [
             trans('admin.product.product_csv.product_id_col') => [
@@ -1367,7 +1367,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * カテゴリCSVヘッダー定義
      */
-    private function getCategoryCsvHeader()
+    protected function getCategoryCsvHeader()
     {
         return [
             trans('admin.product.category_csv.category_id_col') => [

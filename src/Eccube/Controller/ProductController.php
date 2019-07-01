@@ -488,7 +488,7 @@ class ProductController extends AbstractController
      *
      * @return str
      */
-    private function getPageTitle($searchData)
+    protected function getPageTitle($searchData)
     {
         if (isset($searchData['name']) && !empty($searchData['name'])) {
             return trans('front.product.search_result');
@@ -506,7 +506,7 @@ class ProductController extends AbstractController
      *
      * @return boolean 閲覧可能な場合はtrue
      */
-    private function checkVisibility(Product $Product)
+    protected function checkVisibility(Product $Product)
     {
         $is_admin = $this->session->has('_security_admin');
 
