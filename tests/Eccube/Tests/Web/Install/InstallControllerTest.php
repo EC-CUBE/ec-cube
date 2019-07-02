@@ -407,7 +407,7 @@ class InstallControllerTest extends AbstractWebTestCase
     public function testDatabaseVersion()
     {
         $version = $this->controller->getDatabaseVersion($this->entityManager);
-        $this->assertRegExp('/[0-9.]+/', $version);
+        $this->assertRegExp('/\A([\d+\.]+)/', $version);
     }
 
     public function testCreateAppData()
