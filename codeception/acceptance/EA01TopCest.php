@@ -83,7 +83,8 @@ class EA01TopCest
         $I->switchToIFrame('information');
         $I->click(['css' => '.news_area .link_list .tableish a:nth-child(1)']);
         $I->switchToNewWindow();
-        $I->assertRegExp('/^https?:\/\/www.ec-cube.net\/.*$/', $I->executeJS('return location.href'), '公式サイトが開く');
+        #$I->assertRegExp('/^https?:\/\/www.ec-cube.net\/.*$/', $I->executeJS('return location.href'), '公式サイトが開く');
+        $I->assertRegExp('/^https?:\/\/eccubeday2019.peatix.com\/.*$/', $I->executeJS('return location.href'), 'eccubeday2019のpeatixが開く');
         $I->switchToWindow();
 
         // ショップ情報の在庫切れ商品をクリックすると商品管理ページに遷移することを確認
