@@ -46,6 +46,7 @@ RUN cp -rp /tmp/vendor ${APACHE_DOCUMENT_ROOT}/vendor \
 
 WORKDIR ${APACHE_DOCUMENT_ROOT}
 RUN chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT}
+RUN chown www-data:www-data /var/www
 
 USER www-data
 RUN composer dumpautoload -o --apcu --no-dev
