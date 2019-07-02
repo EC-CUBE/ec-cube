@@ -50,6 +50,10 @@ RUN chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT}
 USER www-data
 RUN composer dumpautoload -o --apcu --no-dev
 
+RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/.env ]; then \
+        cp -p .env.dist .env \
+        ; fi
+
 RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/var/eccube.db ]; then \
         composer run-script installer-scripts && composer run-script auto-scripts \
         ; fi
