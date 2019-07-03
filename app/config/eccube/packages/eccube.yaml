@@ -59,7 +59,7 @@ parameters:
     plugin_data_realdir: '%kernel.project_dir%/app/PluginData'
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
     eccube_price_len: 8                                                    # 最大値で制御したい
-    eccube_search_pmax: 10
+    eccube_search_pmax: 12
     eccube_stext_len: 255
     eccube_sltext_len: 500
     eccube_smtext_len: 100
