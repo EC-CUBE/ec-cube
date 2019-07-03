@@ -384,7 +384,7 @@ class OrderController extends AbstractController
      *
      * @return StreamedResponse
      */
-    private function exportCsv(Request $request, $csvTypeId, $fileName)
+    protected function exportCsv(Request $request, $csvTypeId, $fileName)
     {
         // タイムアウトを無効にする.
         set_time_limit(0);

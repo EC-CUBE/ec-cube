@@ -306,7 +306,7 @@ class OrderHelper
         return $preOrderId;
     }
 
-    private function setCustomer(Order $Order, Customer $Customer)
+    protected function setCustomer(Order $Order, Customer $Customer)
     {
         if ($Customer->getId()) {
             $Order->setCustomer($Customer);
@@ -328,7 +328,7 @@ class OrderHelper
      *
      * @return OrderItem[]
      */
-    private function createOrderItemsFromCartItems($CartItems)
+    protected function createOrderItemsFromCartItems($CartItems)
     {
         $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
 
@@ -369,7 +369,7 @@ class OrderHelper
      *
      * @return Shipping
      */
-    private function createShippingFromCustomer(Customer $Customer)
+    protected function createShippingFromCustomer(Customer $Customer)
     {
         $Shipping = new Shipping();
         $Shipping
@@ -390,7 +390,7 @@ class OrderHelper
     /**
      * @param Shipping $Shipping
      */
-    private function setDefaultDelivery(Shipping $Shipping)
+    protected function setDefaultDelivery(Shipping $Shipping)
     {
         // 配送商品に含まれる販売種別を抽出.
         $OrderItems = $Shipping->getOrderItems();
@@ -414,7 +414,7 @@ class OrderHelper
     /**
      * @param Order $Order
      */
-    private function setDefaultPayment(Order $Order)
+    protected function setDefaultPayment(Order $Order)
     {
         $OrderItems = $Order->getOrderItems();
 
@@ -450,7 +450,7 @@ class OrderHelper
      * @param Shipping $Shipping
      * @param array $OrderItems
      */
-    private function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
+    protected function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
     {
         foreach ($OrderItems as $OrderItem) {
             $Shipping->addOrderItem($OrderItem);
