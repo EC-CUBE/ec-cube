@@ -125,6 +125,15 @@ EOF
             );
         }
 
+        $logoPath = '/assets/pdf/logo.png';
+        if (!file_exists($this->container->getParameter('eccube_html_dir').'/user_data'.$logoPath)) {
+            $file = new Filesystem();
+            $file->copy(
+                $this->container->getParameter('eccube_html_admin_dir').$logoPath,
+                $this->container->getParameter('eccube_html_dir').'/user_data'.$logoPath
+            );
+        }
+
         $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', 'Finished Successful!'));
     }
 }

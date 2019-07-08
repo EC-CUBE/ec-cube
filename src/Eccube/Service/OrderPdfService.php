@@ -306,8 +306,13 @@ class OrderPdfService extends TcpdfFpdi
             $this->lfText(125, 75, $text, 8); // Email
         }
 
-        // ロゴ画像(app配下のロゴ画像を優先して読み込む)
-        $logoFile = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/logo.png';
+        // user_dataにlogo.pngが配置されている場合は優先的に読み込む
+        $logoFile = $this->eccubeConfig->get('eccube_html_dir').'/'.$this->eccubeConfig->get('eccube_user_data_route').'/assets/pdf/logo.png';
+
+        if (!file_exists($logoFile)) {
+            $logoFile = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/logo.png';
+        }
+
         $this->Image($logoFile, 124, 46, 40);
     }
 
