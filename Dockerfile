@@ -32,6 +32,11 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 RUN a2enmod rewrite
 RUN a2enmod headers
 
+# Use the default production configuration
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+# Override with custom configuration settings
+COPY dockerbuild/php.ini $PHP_INI_DIR/conf.d/
+
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/bin/composer
 
 COPY composer.json /tmp/composer.json
