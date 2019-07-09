@@ -307,7 +307,7 @@ class OrderPdfService extends TcpdfFpdi
         }
 
         // user_dataにlogo.pngが配置されている場合は優先的に読み込む
-        $logoFile = $this->eccubeConfig->get('eccube_html_dir').'/'.$this->eccubeConfig->get('eccube_user_data_route').'/assets/pdf/logo.png';
+        $logoFile = $this->eccubeConfig->get('eccube_html_dir').'/user_data/assets/pdf/logo.png';
 
         if (!file_exists($logoFile)) {
             $logoFile = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/logo.png';
