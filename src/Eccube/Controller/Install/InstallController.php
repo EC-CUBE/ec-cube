@@ -230,6 +230,15 @@ class InstallController extends AbstractController
             );
         }
 
+        $logoPath = '/assets/pdf/logo.png';
+        if (!file_exists($this->getParameter('eccube_html_dir').'/user_data'.$logoPath)) {
+            $file = new Filesystem();
+            $file->copy(
+                $this->getParameter('eccube_html_admin_dir').$logoPath,
+                $this->getParameter('eccube_html_dir').'/user_data'.$logoPath
+            );
+        }
+
         return [
             'noWritePermissions' => $noWritePermissions,
         ];
