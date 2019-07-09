@@ -5420,7 +5420,7 @@ Styleguide 12.2
     margin-bottom: .8em;
     font-size: 24px;
     font-weight: bold; }
-  .ec-eyecatchRole .ec-eyecatchRole__introDescriptiron {
+  .ec-eyecatchRole .ec-eyecatchRole__introDescription {
     margin-bottom: 20px;
     font-size: 16px;
     line-height: 2; }
@@ -8505,7 +8505,7 @@ Styleguide 22.1
     font-size: 26px;
   }
 
-  .ec-eyecatchRole .ec-eyecatchRole__introDescriptiron{
+  .ec-eyecatchRole .ec-eyecatchRole__introDescription{
     margin-bottom: 30px;
   }
 
