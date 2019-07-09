@@ -287,7 +287,15 @@ class CsvImportController extends AbstractCsvImportController
 
                         if (isset($row[$headerByKey['description_detail']])) {
                             if (StringUtil::isNotBlank($row[$headerByKey['description_detail']])) {
-                                $Product->setDescriptionDetail(StringUtil::trimAll($row[$headerByKey['description_detail']]));
+                                if (mb_strlen($row[$headerByKey['description_detail']]) >= 4000) {
+                                    $message = trans('admin.common.csv_invalid_description_detail_upper_limit', ['%line%' => $line, '%name%' => $headerByKey['description_detail']]);
+                                    $this->addErrors($message);
+
+                                    return $this->renderWithError($form, $headers);
+
+                                } else {
+                                    $Product->setDescriptionDetail(StringUtil::trimAll($row[$headerByKey['description_detail']]));
+                                }
                             } else {
                                 $Product->setDescriptionDetail(null);
                             }

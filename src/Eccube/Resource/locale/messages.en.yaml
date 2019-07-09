@@ -462,6 +462,7 @@ admin.common.csv_invalid_not_same: 'You are not allowed to enter the same value 
 admin.common.csv_invalid_can_not: '%name% is invalid in the line %line%'
 admin.common.csv_invalid_image: 'Your are not allowed to use "/" or "../" as suffix in %name% in the %line%'
 admin.common.csv_invalid_foreign_key: 'You are unable to delete %name% in the line %line% because it has related data'
+admin.common.csv_invalid_description_detail_upper_limit: '%name% should be less than 4000 characters in the line %line%.'
 admin.common.drag_and_drop_description: You can change the order of the items by drag & drop.
 admin.common.drag_and_drop_image_description: Drag & drop the images or
 admin.common.delete_modal__title: Delete
