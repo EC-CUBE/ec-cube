@@ -97,10 +97,7 @@ class MemberRepositoryTest extends EccubeTestCase
         }
         $this->app['orm.em']->flush();
 
-        $this->actual = 1;
-
-        $this->expected = count($this->app['eccube.repository.member']->loadUserByUsername('admin'));
-        $this->verify();
+        $this->assertInstanceOf('Eccube\Entity\Member', $this->app['eccube.repository.member']->loadUserByUsername('admin'));
     }
 
     public function testRefreshUser()
