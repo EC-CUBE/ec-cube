@@ -90,7 +90,7 @@ class SearchCustomerType extends AbstractType
                 'multiple' => true,
             ])
             ->add('birth_month', ChoiceType::class, [
-                'label' => 'admin.common.birth_month',
+                'label' => 'admin.customer.birth_month',
                 'placeholder' => 'admin.common.select',
                 'required' => false,
                 'choices' => array_combine($months, $months),
