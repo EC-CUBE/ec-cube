@@ -392,8 +392,11 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
                 'admin_system_masterdata_edit' => $editForm,
             ]
         );
-        $html = $crawler->html();
-        $this->assertContains('保存しました。', $html);
+        // message check
+        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.common.save_complete';
+        $this->verify();
 
         /** @var OrderStatus $actual */
         $actual = $this->entityManager->getRepository(OrderStatus::class)->find($id);
