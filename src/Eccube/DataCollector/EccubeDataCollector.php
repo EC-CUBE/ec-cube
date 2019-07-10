@@ -138,7 +138,7 @@ class EccubeDataCollector extends DataCollector
                     $Plugin->setName($code);
                     $Plugin->setEnabled(false);
                 }
-                $this->data['plugins'][$code] = $Plugin;
+                $this->data['plugins'][$code] = $Plugin->toArray();
             }
         } catch (\Exception $exception) {
         }
