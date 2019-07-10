@@ -51,7 +51,7 @@ class OrderStatus extends \Eccube\Entity\Master\AbstractMasterEntity
      *
      * @ORM\Column(name="display_order_count", type="boolean", options={"default":false})
      */
-    private $display_order_count;
+    private $display_order_count = false;
 
     /**
      * @return bool
