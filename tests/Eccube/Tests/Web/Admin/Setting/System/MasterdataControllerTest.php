@@ -370,7 +370,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * Add new name test
+     * 受注ステータスが追加できない不具合の修正
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/4035
      */
