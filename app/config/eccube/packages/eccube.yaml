@@ -12,6 +12,7 @@ parameters:
     env(ECCUBE_GC_MAXLIFETIME): 1440
     env(ECCUBE_PACKAGE_API_URL): 'https://package-api.ec-cube.net'
     env(ECCUBE_OWNERS_STORE_URL): 'https://www.ec-cube.net'
+    env(ECCUBE_MAINTENANCE_FILE_PATH): '%kernel.project_dir%/.maintenance'
 
     # EC-CUBE parameter
     eccube_database_url: '%env(DATABASE_URL)%'
@@ -122,4 +123,4 @@ parameters:
     eccube_news_start_year: 2000
     eccube_result_cache_lifetime: 3600 # doctrineのresult cacheのlifetime.
     eccube_result_cache_lifetime_short: 10  # doctrineのresult cacheのlifetime. 商品一覧画面など長期間キャッシュできない箇所で使用する.
-    eccube_content_maintenance_file_path: '%kernel.project_dir%/.maintenance'
+    eccube_content_maintenance_file_path: '%env(ECCUBE_MAINTENANCE_FILE_PATH)%'
