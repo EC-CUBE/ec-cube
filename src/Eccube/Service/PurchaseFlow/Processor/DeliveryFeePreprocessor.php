@@ -148,4 +148,9 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
             $Shipping->addOrderItem($OrderItem);
         }
     }
+
+    public function __toString()
+    {
+        return get_class($this);
+    }
 }

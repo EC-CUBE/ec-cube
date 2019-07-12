@@ -189,4 +189,9 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
 
         return true;
     }
+
+    public function __toString()
+    {
+        return get_class($this);
+    }
 }

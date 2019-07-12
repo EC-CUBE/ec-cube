@@ -71,4 +71,9 @@ class DeliveryFeeFreePreprocessor implements ItemHolderPreprocessor
             }
         }
     }
+
+    public function __toString()
+    {
+        return get_class($this);
+    }
 }

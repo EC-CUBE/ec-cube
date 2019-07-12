@@ -371,4 +371,45 @@ class PurchaseFlow
         $this->calculateTax($itemHolder);
         $this->calculateTotal($itemHolder);
     }
+
+    /**
+     * PurchaseFlow をツリー表示します.
+     *
+     * @return string
+     */
+    public function dump()
+    {
+        $flows =[
+            0 => $this->flowType.' flow',
+            'ItemValidator' => $this->itemValidators->toArray(),
+            'ItemHolderValidator' => $this->itemHolderValidators->toArray(),
+            'ItemPreprocessor' => $this->itemPreprocessors->toArray(),
+            'ItemHolderPreprocessor' => $this->itemHolderPreprocessors->toArray(),
+            'DiscountProcessor' => $this->discountProcessors->toArray(),
+            'ItemHolderPostValidator' => $this->itemHolderPostValidators->toArray()
+        ];
+        $tree  = new \RecursiveTreeIterator(new \RecursiveArrayIterator($flows));
+        $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_RIGHT, ' ');
+        $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_LAST, '　');
+        $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_HAS_NEXT, '│');
+        $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_END_HAS_NEXT, '├');
+        $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_END_LAST, '└');
+        $out = '';
+        foreach ($tree as $key => $value) {
+            if (is_numeric($key)) {
+                $out .= $value.PHP_EOL;
+            } else {
+                $out .= $key.PHP_EOL;
+            }
+        }
+        return $out;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->dump();
+    }
 }

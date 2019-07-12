@@ -179,4 +179,9 @@ class TaxProcessor implements ItemHolderPreprocessor
                 return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
         }
     }
+
+    public function __toString()
+    {
+        return get_class($this);
+    }
 }
