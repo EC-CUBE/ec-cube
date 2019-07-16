@@ -243,7 +243,7 @@ class CustomerController extends AbstractController
         try {
             $this->entityManager->remove($Customer);
             $this->entityManager->flush($Customer);
-            $this->addSuccess('admin.customer.delete.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
             log_error('会員削除失敗', [$e], 'admin');
 
