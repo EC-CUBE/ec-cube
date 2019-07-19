@@ -282,9 +282,6 @@ class PluginService
      */
     public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true)
     {
-        // キャッシュしたメタデータを利用しないようにキャッシュドライバを外しておく
-        $this->entityManager->getMetadataFactory()->setCacheDriver(null);
-
         $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode) {
             $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
         }, $plugin, $config, $uninstall);
@@ -750,7 +747,7 @@ class PluginService
 
             $em->persist($plugin);
 
-            $this->generateProxyAndUpdateSchema($plugin, $meta);
+            $this->generateProxyAndUpdateSchema($plugin, $config);
 
             if ($plugin->isInitialized()) {
                 $this->callPluginManagerMethod($meta, 'update');
