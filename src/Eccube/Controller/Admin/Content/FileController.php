@@ -55,7 +55,12 @@ class FileController extends AbstractController
     public function index(Request $request)
     {
         $form = $this->formFactory->createBuilder(FormType::class)
-            ->add('file', FileType::class)
+            ->add('file', FileType::class, [
+                'multiple' => true,
+                'attr' => [
+                    'multiple' => 'multiple'
+                ],
+            ])
             ->add('create_file', TextType::class)
             ->getForm();
 
@@ -132,7 +137,12 @@ class FileController extends AbstractController
     public function create(Request $request)
     {
         $form = $this->formFactory->createBuilder(FormType::class)
-            ->add('file', FileType::class)
+            ->add('file', FileType::class, [
+                'multiple' => true,
+                'attr' => [
+                    'multiple' => 'multiple'
+                ],
+            ])
             ->add('create_file', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -238,6 +248,7 @@ class FileController extends AbstractController
     {
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class, [
+                'multiple' => true,
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'admin.common.file_select_empty',
@@ -263,16 +274,20 @@ class FileController extends AbstractController
 
         if (!$this->checkDir($nowDir, $topDir)) {
             $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
-
             return;
         }
-
-        $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
-        try {
-            $data['file']->move($nowDir, $filename);
+        $isUploaded = false;
+        foreach ($data['file'] as $file) {
+            $filename = $this->convertStrToServer($file->getClientOriginalName());
+            try {
+                $file->move($nowDir, $filename);
+                $isUploaded = true;
+            } catch (FileException $e) {
+                $this->errors[] = ['message' => $e->getMessage()];
+            }
+        }
+        if ($isUploaded) {
             $this->addSuccess('admin.common.upload_complete', 'admin');
-        } catch (FileException $e) {
-            $this->errors[] = ['message' => $e->getMessage()];
         }
     }
 
