@@ -90,12 +90,17 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                         continue 2;
                     }
                 }
+
+                $projectDir = realpath(__DIR__.'/../../../../../../');
                 if ('\\' === DIRECTORY_SEPARATOR) {
                     $path = str_replace('\\', '/', $path);
                     $this->trait_proxies_directory = str_replace('\\', '/', $this->trait_proxies_directory);
                     $sourceFile = str_replace('\\', '/', $sourceFile);
+                    $projectDir = str_replace('\\', '/', $projectDir);
                 }
-                $proxyFile = str_replace($path, $this->trait_proxies_directory, $sourceFile);
+
+                // Replace /path/to/ec-cube to proxies path
+                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename($sourceFile);
                 if (file_exists($proxyFile)) {
                     $sourceFile = $proxyFile;
                 }

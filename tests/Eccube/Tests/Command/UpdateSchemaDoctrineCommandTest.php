@@ -22,6 +22,8 @@ use Eccube\Service\SchemaService;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
@@ -58,9 +60,12 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         if ('postgresql' !== $platform) {
             $this->markTestSkipped('does not support of '.$platform);
         }
-        foreach (glob($this->container->getParameter('kernel.project_dir').'/app/proxy/entity/*.php') as $file) {
-            unlink($file);
-        }
+        $files = Finder::create()
+            ->in($this->container->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->files();
+        $f = new Filesystem();
+        $f->remove($files);
+
         $this->pluginRepository = $this->container->get(PluginRepository::class);
         $this->pluginService = $this->container->get(PluginService::class);
         $this->schemaService = $this->container->get(SchemaService::class);
