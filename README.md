@@ -1,4 +1,4 @@
-# EC-CUBE 3.1.x
+# EC-CUBE 3.1.x (unstable)
 
 [![Build Status](https://travis-ci.com/EC-CUBE/ec-cube.svg?branch=3.1)](https://travis-ci.com/EC-CUBE/ec-cube)
 [![Build status](https://ci.appveyor.com/api/projects/status/lg3uh1539cwln2g6/branch/3.1?svg=true)](https://ci.appveyor.com/project/ECCUBE/ec-cube)
@@ -11,6 +11,13 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
+
+EC-CUBE 3.1.xは、まだリリースされていないunstable版です。  
+EC-CUBE 3.0系をベースにして、後方互換性の無い内容も含めた変更が取り込まれています。
+
+安定版のEC-CUBE 3.0系は、[3.0ブランチ](https://github.com/EC-CUBE/ec-cube/tree/3.0)を参照してください。
+
+---
 
 + 本ドキュメントはEC-CUBEの開発者を主要な対象者としております。  
 + パッケージ版をご利用の方は[EC-CUBEオフィシャルサイト](http://www.ec-cube.net)をご確認ください。  
