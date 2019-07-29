@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -366,6 +367,42 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->actual = array_shift($outPut);
         $this->expected = 'admin.common.save_complete';
         $this->verify();
+    }
+
+    /**
+     * 受注ステータスが追加できない不具合の修正
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4035
+     */
+    public function testNewOrderStatus()
+    {
+        $entityName = 'Eccube-Entity-Master-OrderStatus';
+        $formData = $this->createFormData($entityName);
+        $editForm = $this->createFormDataEdit($entityName);
+        $id = 999;
+        $status = '新ステータス';
+        $editForm['data'][$id]['id'] = $id;
+        $editForm['data'][$id]['name'] = $status;
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_setting_system_masterdata_edit'),
+            [
+                'admin_system_masterdata' => $formData,
+                'admin_system_masterdata_edit' => $editForm,
+            ]
+        );
+        // message check
+        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.common.save_complete';
+        $this->verify();
+
+        /** @var OrderStatus $actual */
+        $actual = $this->entityManager->getRepository(OrderStatus::class)->find($id);
+        $this->assertNotNull($actual);
+        $this->assertSame($status, $actual->getName());
+        $this->assertFalse($actual->isDisplayOrderCount());
     }
 
     /**

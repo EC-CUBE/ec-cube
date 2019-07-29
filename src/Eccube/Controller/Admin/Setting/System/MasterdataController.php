@@ -132,7 +132,6 @@ class MasterdataController extends AbstractController
                 $data = $form2->getData();
 
                 $entityName = str_replace('-', '\\', $data['masterdata_name']);
-                $entity = new $entityName();
                 $sortNo = 0;
                 $ids = array_filter(array_map(
                     function ($v) {
@@ -141,12 +140,18 @@ class MasterdataController extends AbstractController
                     $data['data']
                 ));
 
+                $repository = $this->entityManager->getRepository($entityName);
+
                 foreach ($data['data'] as $key => $value) {
                     if ($value['id'] !== null && $value['name'] !== null) {
+                        $entity = $repository->find($value['id']);
+                        if ($entity === null) {
+                            $entity = new $entityName();
+                        }
                         $entity->setId($value['id']);
                         $entity->setName($value['name']);
                         $entity->setSortNo($sortNo++);
-                        $this->entityManager->merge($entity);
+                        $this->entityManager->persist($entity);
                     } elseif (!in_array($key, $ids)) {
                         // remove
                         $delKey = $this->entityManager->getRepository($entityName)->find($key);
