@@ -4972,7 +4972,7 @@ Styleguide 11.2.5
   border-bottom: 1px solid #E8E8E8;
   margin: 0;
   padding: 16px;
-  height: 55px;
+  height: auto;
   color: #2e3233;
   font-size: 16px;
   font-weight: bold;
@@ -5001,7 +5001,7 @@ Styleguide 11.2.5
 
 .ec-itemNav__nav li ul li a {
   border-bottom: 1px solid #E8E8E8;
-  padding: 16px;
+  padding: 16px 22px 16px 16px;
   font-size: 16px;
   font-weight: bold;
   color: white;
@@ -8351,7 +8351,7 @@ Styleguide 22.1
 
   .ec-itemNav__nav > li:hover > ul > li{
     overflow: visible;
-    height: 55px;
+    height: auto;
   }
 
   .ec-itemNav__nav li ul li ul:before{
@@ -8368,7 +8368,7 @@ Styleguide 22.1
 
   .ec-itemNav__nav li ul li:hover > ul > li{
     overflow: visible;
-    height: 55px;
+    height: auto;
     width: auto;
   }
 
