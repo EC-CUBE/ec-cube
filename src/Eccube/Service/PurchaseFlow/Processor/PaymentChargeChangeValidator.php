@@ -48,9 +48,4 @@ class PaymentChargeChangeValidator extends ItemHolderPostValidator
             $this->throwInvalidItemException('purchase_flow.charge_update', null, true);
         }
     }
-
-    public function __toString()
-    {
-        return get_class($this);
-    }
 }

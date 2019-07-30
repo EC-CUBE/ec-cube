@@ -51,9 +51,4 @@ class PaymentTotalLimitValidator extends ItemHolderPostValidator
             $this->throwInvalidItemException('front.shopping.over_price_limit');
         }
     }
-
-    public function __toString()
-    {
-        return get_class($this);
-    }
 }

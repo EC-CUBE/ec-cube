@@ -108,9 +108,4 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
             ->setProcessorName(PaymentChargePreprocessor::class);
         $itemHolder->addItem($item);
     }
-
-    public function __toString()
-    {
-        return get_class($this);
-    }
 }

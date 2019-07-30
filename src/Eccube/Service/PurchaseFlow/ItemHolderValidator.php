@@ -52,9 +52,4 @@ abstract class ItemHolderValidator
     protected function handle(ItemHolderInterface $itemHolder)
     {
     }
-
-    public function __toString()
-    {
-        return get_class($this);
-    }
 }

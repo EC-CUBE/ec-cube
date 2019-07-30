@@ -58,9 +58,4 @@ abstract class ItemValidator
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
     }
-
-    public function __toString()
-    {
-        return get_class($this);
-    }
 }

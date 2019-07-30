@@ -48,9 +48,4 @@ class DeliveryFeeChangeValidator extends ItemHolderPostValidator
             $this->throwInvalidItemException('purchase_flow.delivery_fee_update', null, true);
         }
     }
-
-    public function __toString()
-    {
-        return get_class($this);
-    }
 }

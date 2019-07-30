@@ -122,9 +122,4 @@ class AddPointProcessor extends ItemHolderPostValidator
 
         return true;
     }
-
-    public function __toString()
-    {
-        return get_class($this);
-    }
 }
