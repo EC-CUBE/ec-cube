@@ -513,7 +513,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductTag", mappedBy="Product")
+         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductTag", mappedBy="Product", cascade={"remove"})
          */
         private $ProductTag;
 
