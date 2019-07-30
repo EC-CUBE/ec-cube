@@ -538,13 +538,29 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     {
         // GIVE
         $this->BaseInfo->setOptionProductTaxRule(true);
+
+        $member = $this->createMember();
+        $product = $this->createProduct();
+        // class 1
+        $className1 = $this->createClassName($member);
+        $classCate1 = $this->createClassCategory($member, $className1);
+        // class 2
+        $className2 = $this->createClassName($member);
+        $classCate2 = $this->createClassCategory($member, $className2);
+        $this->createClassCategory($member, $className2);
+        $this->createClassCategory($member, $className2);
+        $this->createClassCategory($member, $className2);
+
+        // create product class
+        $this->createProductClass($member, $product, $classCate1, $classCate2);
+
         $TaxRule = $this->taxRuleRepository->newTaxRule();
         $TaxRule->setApplyDate(new \DateTime('-1 days'))
             ->setRoundingType($this->entityManager->find(RoundingType::class, RoundingType::CEIL));
         $this->entityManager->persist($TaxRule);
         $this->entityManager->flush($TaxRule);
 
-        $id = 1;
+        $id = $product->getId();
 
         // WHEN
         // select class name
@@ -571,11 +587,11 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->assertContains('保存しました', $htmlMessage);
         // check database
         $product = $this->productRepository->find($id);
-        /* @var TaxRule $taxRule */
-        $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
+        /* @var ProductTaxRule $taxRule */
+        $ProductTaxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
 
         $this->expected = RoundingType::CEIL;
-        $this->actual = $taxRule->getRoundingType()->getId();
+        $this->actual = $ProductTaxRule->getRoundingType()->getId();
         $this->verify();
     }
 
