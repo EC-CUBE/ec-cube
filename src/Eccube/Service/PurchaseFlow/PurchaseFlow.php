@@ -379,14 +379,17 @@ class PurchaseFlow
      */
     public function dump()
     {
-        $flows =[
+        $callback = function ($processor) {
+            return get_class($processor);
+        };
+        $flows = [
             0 => $this->flowType.' flow',
-            'ItemValidator' => $this->itemValidators->toArray(),
-            'ItemHolderValidator' => $this->itemHolderValidators->toArray(),
-            'ItemPreprocessor' => $this->itemPreprocessors->toArray(),
-            'ItemHolderPreprocessor' => $this->itemHolderPreprocessors->toArray(),
-            'DiscountProcessor' => $this->discountProcessors->toArray(),
-            'ItemHolderPostValidator' => $this->itemHolderPostValidators->toArray()
+            'ItemValidator' => array_map($callback, $this->itemValidators->toArray()),
+            'ItemHolderValidator' => array_map($callback, $this->itemHolderValidators->toArray()),
+            'ItemPreprocessor' => array_map($callback, $this->itemPreprocessors->toArray()),
+            'ItemHolderPreprocessor' => array_map($callback, $this->itemHolderPreprocessors->toArray()),
+            'DiscountProcessor' => array_map($callback, $this->discountProcessors->toArray()),
+            'ItemHolderPostValidator' => array_map($callback, $this->itemHolderPostValidators->toArray())
         ];
         $tree  = new \RecursiveTreeIterator(new \RecursiveArrayIterator($flows));
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_RIGHT, ' ');
