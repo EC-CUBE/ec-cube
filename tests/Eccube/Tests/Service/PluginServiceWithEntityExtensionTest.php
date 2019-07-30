@@ -78,9 +78,12 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
             $this->deleteFile($dir);
         }
 
-        foreach (glob($this->container->getParameter('kernel.project_dir').'/app/proxy/entity/*.php') as $file) {
-            unlink($file);
-        }
+        $files = Finder::create()
+            ->in($this->container->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->files();
+        $f = new Filesystem();
+        $f->remove($files);
+
         parent::tearDown();
     }
 

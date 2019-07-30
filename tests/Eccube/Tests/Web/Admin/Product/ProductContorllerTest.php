@@ -16,11 +16,14 @@ namespace Eccube\Tests\Web\Admin\Product;
 use Eccube\Common\Constant;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductTag;
+use Eccube\Entity\Tag;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
 use Eccube\Repository\ProductRepository;
+use Eccube\Repository\ProductTagRepository;
 use Eccube\Entity\BaseInfo;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
@@ -36,6 +39,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     protected $productRepository;
 
+    /**
+     * @var ProductTagRepository
+     */
+    protected $productTagRepository;
     /**
      * @var BaseInfo
      */
@@ -67,6 +74,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->baseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
         $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
+        $this->productTagRepository = $this->container->get(ProductTagRepository::class);
 
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {
@@ -426,10 +434,26 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDelete()
     {
         $Product = $this->createProduct();
+
+        $Tag = new Tag();
+        $Tag->setName('Tag-102')->setSortNo(999);
+        $this->entityManager->persist($Tag);
+
+        $ProductTag = new ProductTag();
+        $ProductTag->setProduct($Product);
+        $ProductTag->setTag($Tag);
+        $this->entityManager->persist($ProductTag);
+
+        $Product->addProductTag($ProductTag);
+        $this->entityManager->persist($Product);
+        $this->entityManager->flush();
+
         $params = [
             'id' => $Product->getId(),
             Constant::TOKEN_NAME => 'dummy',
         ];
+
+        $productTagId = $Product->getProductTag()->first()->getId();
 
         $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
 
@@ -438,6 +462,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
         $this->assertNull($this->productRepository->find($params['id']));
+
+        $this->assertNull($this->productTagRepository->find($productTagId));
     }
 
     public function testCopy()

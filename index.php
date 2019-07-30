@@ -55,7 +55,9 @@ if ($trustedHosts) {
 
 $request = Request::createFromGlobals();
 
-if (file_exists(__DIR__.'/.maintenance')) {
+$maintenanceFile = env('ECCUBE_MAINTENANCE_FILE_PATH', __DIR__.'/.maintenance');
+
+if (file_exists($maintenanceFile)) {
     $pathInfo = \rawurldecode($request->getPathInfo());
     $adminPath = env('ECCUBE_ADMIN_ROUTE', 'admin');
     $adminPath = '/'.\trim($adminPath, '/').'/';

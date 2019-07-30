@@ -84,9 +84,11 @@ class PluginServiceTest extends AbstractServiceTestCase
             $this->deleteFile($dir);
         }
 
-        foreach (glob($this->container->getParameter('kernel.project_dir').'/app/proxy/entity/*.php') as $file) {
-            unlink($file);
-        }
+        $files = Finder::create()
+            ->in($this->container->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->files();
+        $f = new Filesystem();
+        $f->remove($files);
 
         $this->deleteAllRows(['dtb_plugin']);
 
@@ -540,6 +542,183 @@ EOD;
             $expected2 .= $packages.':'.$version.' ';
         }
         $this->assertEquals(trim($expected2), $actual2);
+    }
+
+    /**
+     * Test Entity and Trait
+     * @group update-schema-doctrine
+     * @group update-schema-doctrine-install
+     */
+    public function testCreateEntityAndTrait()
+    {
+        $conn = $this->entityManager->getConnection();
+        $platform = $conn->getDatabasePlatform()->getName();
+        if ('postgresql' !== $platform) {
+            $this->markTestSkipped('does not support of '.$platform);
+        }
+
+        $this->service = $this->container->get(PluginService::class);
+        $rc = new \ReflectionClass($this->service);
+
+        $prop = $rc->getProperty('schemaService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, $this->container->get(SchemaService::class));
+
+        $prop = $rc->getProperty('composerService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, $this->container->get(ComposerServiceInterface::class));
+
+        $prop = $rc->getProperty('entityProxyService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, $this->container->get(EntityProxyService::class));
+
+        $faker = $this->getFaker();
+        // インストールするプラグインを作成する
+        $tmpname = 'dummy'.$faker->word;
+        $config = [
+            'version' => $tmpname,
+            'description' => $tmpname,
+            'extra' => [
+                'code' => $tmpname,
+            ],
+        ];
+
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('composer.json', json_encode($config));
+        $dummyManager = <<<'EOD'
+<?php
+namespace Plugin\@@@@ ;
+
+use Eccube\Plugin\AbstractPluginManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+class PluginManager extends AbstractPluginManager
+{
+    public function install(array $meta, ContainerInterface $container)
+    {
+        echo "Installed";
+    }
+
+    public function uninstall(array $meta, ContainerInterface $container)
+    {
+        echo "Uninstalled";
+    }
+
+    public function enable(array $meta, ContainerInterface $container)
+    {
+        echo "Enabled";
+    }
+
+    public function disable(array $meta, ContainerInterface $container)
+    {
+        echo "Disabled";
+    }
+
+    public function update(array $meta, ContainerInterface $container)
+    {
+        echo "Updated";
+    }
+}
+
+EOD;
+        $dummyManager = str_replace('@@@@', $tmpname, $dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $tar->addFromString('PluginManager.php', $dummyManager);
+
+        $dummyEntity = <<<'EOD'
+<?php
+namespace Plugin\@@@@\Entity;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Blocknn
+ *
+ * @ORM\Table(name="plg_@@@@")
+ * @ORM\Entity(repositoryClass="Plugin\@@@@\Repository\BlockRepository")
+ */
+if (!class_exists('\Plugin\@@@@\Entity\Block')) {
+class Block
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+}
+EOD;
+        $dummyEntity = str_replace('@@@@', $tmpname, $dummyEntity); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $tar->addFromString('Entity/Block.php', $dummyEntity);
+
+        $dummyTrait = <<<'EOD'
+<?php
+namespace Plugin\@@@@\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Eccube\Annotation as Eccube;
+
+/**
+ * @Eccube\EntityExtension("Plugin\@@@@\Entity\Block")
+ */
+trait BlockTrait {
+
+    /**
+     * @ORM\Column(name="sample", type="boolean", options={"default":false})
+     */
+    public $sample;
+}
+EOD;
+        $dummyTrait = str_replace('@@@@', $tmpname, $dummyTrait); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $tar->addFromString('Entity/BlockTrait.php', $dummyEntity);
+
+        // インストールできるか、インストーラが呼ばれるか
+        ob_start();
+        $this->assertTrue($this->service->install($tmpfile));
+
+        $this->assertRegexp('/Installed/', ob_get_contents());
+        ob_end_clean();
+        $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/Entity/Block.php");
+        $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/Entity/BlockTrait.php");
+
+        $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));
+
+        ob_start();
+        $this->service->enable($plugin);
+        $this->assertRegexp('/Enabled/', ob_get_contents());
+        ob_end_clean();
+
+        // check to Entity and Trait
+        $clazz = '\\Plugin\\'.$tmpname.'\\Entity\\Block';
+        $Block = new $clazz();
+        $Block->sample = true;
+        $this->entityManager->persist($Block);
+        $this->entityManager->flush($Block);
+        $this->assertTrue($this->entityManager->find($clazz, 1)->sample);
+
+        ob_start();
+        $this->service->disable($plugin);
+        $this->assertRegexp('/Disabled/', ob_get_contents());
+        ob_end_clean();
+
+        // アンインストールできるか、アンインストーラが呼ばれるか
+        ob_start();
+        $this->service->disable($plugin);
+        $this->assertTrue($this->service->uninstall($plugin));
+        $this->assertRegexp('/DisabledUninstalled/', ob_get_contents());
+        ob_end_clean();
     }
 
     public function testRemoveAssets()

@@ -17,6 +17,8 @@ composer.phar
 /app/template/*
 !/app/template/admin
 !/app/template/default
+/app/proxy/entity/*
+!/app/proxy/entity/.gitkeep
 /html/plugin/*
 !/html/plugin/.gitkeep
 /html/install/temp/*

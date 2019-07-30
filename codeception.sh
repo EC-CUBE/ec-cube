@@ -3,7 +3,7 @@
 if [[ $1 == '--reset' ]]; then
     rm -rf app/Plugin/* html
     git checkout app/Plugin html
-    git clean -df app/proxy/entity
+    find app/proxy/entity -name '*.php' -delete
     if [[ -f ".maintenance" ]]; then
         rm .maintenance
     fi
