@@ -60,6 +60,14 @@ Styleguide 12.2
       font-size: 26px;
     }
   }
+  & &__introDescriptiron {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 2;
+    @include media_desktop {
+      margin-bottom: 30px;
+    }
+  }
   & &__introDescription {
     margin-bottom: 20px;
     font-size: 16px;
@@ -68,5 +76,4 @@ Styleguide 12.2
       margin-bottom: 30px;
     }
   }
-
 }
