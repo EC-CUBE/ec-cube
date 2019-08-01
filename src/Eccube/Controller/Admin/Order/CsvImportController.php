@@ -149,7 +149,7 @@ class CsvImportController extends AbstractCsvImportController
                 // 日付フォーマットが異なる場合はエラー
                 $shippingDate = \DateTime::createFromFormat('Y-m-d', $row[$columnNames['shipping_date']]);
                 if ($shippingDate === false) {
-                    $errors[] = trans('admin.common.csv_invalid_date_format', ['%line%' => $line + 1, '%name%' => $columnNames['id']]);
+                    $errors[] = trans('admin.common.csv_invalid_date_format', ['%line%' => $line + 1, '%name%' => $columnNames['shipping_date']]);
                     continue;
                 }
 

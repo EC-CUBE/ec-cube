@@ -107,7 +107,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
                 [
                     '出荷ID,出荷日,お問い合わせ番号',
                     '{id},2018/01/23,1234',
-                ], '2行目出荷IDの日付フォーマットが異なります',
+                ], '2行目の出荷日の日付フォーマットが異なります',
             ],
         ];
     }
