@@ -384,12 +384,12 @@ class PurchaseFlow
         };
         $flows = [
             0 => $this->flowType.' flow',
-            'ItemValidator' => array_map($callback, $this->itemValidators->toArray()),
-            'ItemHolderValidator' => array_map($callback, $this->itemHolderValidators->toArray()),
-            'ItemPreprocessor' => array_map($callback, $this->itemPreprocessors->toArray()),
-            'ItemHolderPreprocessor' => array_map($callback, $this->itemHolderPreprocessors->toArray()),
-            'DiscountProcessor' => array_map($callback, $this->discountProcessors->toArray()),
-            'ItemHolderPostValidator' => array_map($callback, $this->itemHolderPostValidators->toArray())
+            'ItemValidator' => $this->itemValidators->map($callback)->toArray(),
+            'ItemHolderValidator' => $this->itemHolderValidators->map($callback)->toArray(),
+            'ItemPreprocessor' => $this->itemPreprocessors->map($callback)->toArray(),
+            'ItemHolderPreprocessor' => $this->itemHolderPreprocessors->map($callback)->toArray(),
+            'DiscountProcessor' => $this->discountProcessors->map($callback)->toArray(),
+            'ItemHolderPostValidator' => $this->itemHolderPostValidators->map($callback)->toArray()
         ];
         $tree  = new \RecursiveTreeIterator(new \RecursiveArrayIterator($flows));
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_RIGHT, ' ');
