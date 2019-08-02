@@ -276,18 +276,27 @@ class FileController extends AbstractController
             $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
             return;
         }
-        $isUploaded = false;
+
+        $uploadCount = count($data['file']);
+        $successCount = 0;
+
         foreach ($data['file'] as $file) {
             $filename = $this->convertStrToServer($file->getClientOriginalName());
             try {
                 $file->move($nowDir, $filename);
-                $isUploaded = true;
+                $successCount ++;
             } catch (FileException $e) {
-                $this->errors[] = ['message' => $e->getMessage()];
+                $this->errors[] = ['message' => trans('admin.content.file.upload_error', [
+                    '%file_name%' => $filename,
+                    '%error%' => $e->getMessage()
+                ])];
             }
         }
-        if ($isUploaded) {
-            $this->addSuccess('admin.common.upload_complete', 'admin');
+        if ($successCount > 0) {
+            $this->addSuccess(trans('admin.content.file.upload_complete', [
+                '%success%' => $successCount,
+                '%count%' => $uploadCount
+            ]), 'admin');
         }
     }
 

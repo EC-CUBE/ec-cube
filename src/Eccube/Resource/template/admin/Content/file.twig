@@ -112,7 +112,7 @@ file that was distributed with this source code.
                     <div class="card-header"><span class="card-title">{{ 'admin.content.file.add_file__card_title'|trans }}</span></div>
                     <div class="card-body">
                         <div id="upload_box__file" class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.content.file.add_file'|trans }}</span></div>
+                            <div class="col-2" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.file.upload_file'|trans }}"><span>{{ 'admin.content.file.add_file'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                             <div class="col mb-3">
                                 <div class="mb-2">
                                     {{ form_widget(form.file) }}{# TODO input type="file" の装飾 #}

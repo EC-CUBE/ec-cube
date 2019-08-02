@@ -939,6 +939,8 @@ admin.content.file.directory_name: フォルダ名
 admin.content.file.file_list__card_title: このフォルダ内のファイル
 admin.content.file.updated: 更新
 admin.content.file.directory_tree: フォルダ構成
+admin.content.file.upload_complete: %success%件のファイルをアップロードしました。(%success%/%count%)
+admin.content.file.upload_error: %file_name% のアップロードに失敗しました。(%error%)
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
@@ -1525,6 +1527,7 @@ tooltip.customer.purchase_history: この会員が注文をした履歴が表示
 tooltip.customer.shop_memo: 店舗用のメモ欄です。フロント側には表示されません。
 tooltip.content.news.url: この新着情報の詳細な内容を記したウェブページある場合、URLを入力します。外部サイトのURLなどを利用することもできます。
 tooltip.content.news.body: HTMLタグが利用可能です。
+tooltip.content.file.upload_file: ファイルの追加は複数ファイルを選択してアップロードできます。
 tooltip.content.layout_edit: テンプレートのセクションごとにブロックをドラッグ＆ドロップで配置することができます。
 tooltip.content.page_file_name: ページの内容を記述したtwigテンプレートファイルの名前です。
 tooltip.content.page_source_code: テンプレートファイルを編集します。twigで記述します。
