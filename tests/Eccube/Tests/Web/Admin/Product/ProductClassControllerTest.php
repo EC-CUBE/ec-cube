@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\TaxRule;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductRepository;
@@ -527,6 +528,71 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findBy(['Product' => $product]);
         $this->assertCount(0, $taxRule);
+    }
+
+    /**
+     * 個別税率設定をした場合に現在適用されている丸め規則が設定される
+     * @see https://github.com/EC-CUBE/ec-cube/issues/2114
+     */
+    public function testProductClassEditWhenProductTaxRuleEnableAndCurrentRoundingType()
+    {
+        // GIVE
+        $this->BaseInfo->setOptionProductTaxRule(true);
+
+        $member = $this->createMember();
+        $product = $this->createProduct();
+        // class 1
+        $className1 = $this->createClassName($member);
+        $classCate1 = $this->createClassCategory($member, $className1);
+        // class 2
+        $className2 = $this->createClassName($member);
+        $classCate2 = $this->createClassCategory($member, $className2);
+        $this->createClassCategory($member, $className2);
+        $this->createClassCategory($member, $className2);
+        $this->createClassCategory($member, $className2);
+
+        // create product class
+        $this->createProductClass($member, $product, $classCate1, $classCate2);
+
+        $TaxRule = $this->taxRuleRepository->newTaxRule();
+        $TaxRule->setApplyDate(new \DateTime('-1 days'))
+            ->setRoundingType($this->entityManager->find(RoundingType::class, RoundingType::CEIL));
+        $this->entityManager->persist($TaxRule);
+        $this->entityManager->flush($TaxRule);
+
+        $id = $product->getId();
+
+        // WHEN
+        // select class name
+        /* @var Crawler $crawler */
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_product_class', ['id' => $id])
+        );
+
+        // edit class category with tax
+        /* @var Form $form */
+        $form = $crawler->selectButton('登録')->form();
+        $form['product_class_matrix[product_classes][2][checked]']->tick();
+        $form['product_class_matrix[product_classes][2][stock]'] = 1;
+        $form['product_class_matrix[product_classes][2][price02]'] = 1;
+        $form['product_class_matrix[product_classes][2][tax_rate]'] = $this->faker->randomNumber(2);
+        $this->client->submit($form);
+
+        // THEN
+        // check submit
+
+        $crawler = $this->client->followRedirect();
+        $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
+        $this->assertContains('保存しました', $htmlMessage);
+        // check database
+        $product = $this->productRepository->find($id);
+        /* @var ProductTaxRule $taxRule */
+        $ProductTaxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
+
+        $this->expected = RoundingType::CEIL;
+        $this->actual = $ProductTaxRule->getRoundingType()->getId();
+        $this->verify();
     }
 
     protected function enableProductTaxRule()

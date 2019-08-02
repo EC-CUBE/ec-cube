@@ -367,16 +367,11 @@ class ProductClassController extends AbstractController
                     if ($TaxRule) {
                         $TaxRule->setTaxRate($rate);
                     } else {
-                        // 初期税率設定の計算方法を設定する
-                        $RoundingType = $this->taxRuleRepository->find(TaxRule::DEFAULT_TAX_RULE_ID)
-                            ->getRoundingType();
-
-                        $TaxRule = new TaxRule();
+                        // 現在の税率設定の計算方法を設定する
+                        $TaxRule = $this->taxRuleRepository->newTaxRule();
                         $TaxRule->setProduct($Product);
                         $TaxRule->setProductClass($pc);
                         $TaxRule->setTaxRate($rate);
-                        $TaxRule->setRoundingType($RoundingType);
-                        $TaxRule->setTaxAdjust(0);
                         $TaxRule->setApplyDate(new \DateTime());
                         $this->entityManager->persist($TaxRule);
                     }
