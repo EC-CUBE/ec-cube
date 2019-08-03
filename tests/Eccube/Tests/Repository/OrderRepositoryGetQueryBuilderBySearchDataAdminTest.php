@@ -135,30 +135,22 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testMultiWithNo()
     {
-        $this->entityManager->flush();
-
         $this->searchData = [
             'multi' => $this->Order2->getOrderNo(),
         ];
         $this->scenario();
 
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
+        $this->assertCount(1, $this->Results);
     }
 
     public function testMultiWithEmail()
     {
-        $this->entityManager->flush();
-
         $this->searchData = [
             'multi' => 'test@example.com',
         ];
         $this->scenario();
 
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
+        $this->assertCount(1, $this->Results);
     }
 
 
@@ -180,9 +172,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         ];
         $this->scenario();
 
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
+        $this->assertCount(1, $this->Results);
     }
 
 
