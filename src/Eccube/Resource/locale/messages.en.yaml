@@ -1285,10 +1285,12 @@ admin.store.plugin.uninstall.complete: The plugin has been deleted.
 admin.store.plugin.update.complete: %plugin_name% has been updated.
 admin.store.plugin.update.failed: Failed to update %plugin_name% .
 admin.store.plugin.mkdir.error: Failed to creat a directory '%dir_name%'.
-admin.store.setting: Settings
+admin.store.setting: Authentication Key Settings
 admin.store.setting.api_key_setting: Set API authentication Key
+admin.store.setting.api_key_setting_info: Please set the authentication key.
 admin.store.setting.api_key: API Authentication Key
 admin.store.setting.get_api_key: Obtain an API authentication key
+admin.store.setting.get_api_key_info: Issue a new authentication key
 admin.store.setting.captcha_message: Please enter the letters displayed.
 admin.store.setting.php_path_setting: Set PHP Path
 admin.store.setting.php_path: PHP Path
