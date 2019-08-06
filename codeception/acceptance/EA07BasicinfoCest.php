@@ -287,7 +287,7 @@ class EA07BasicinfoCest
         $I->expect('認証キーの入力を行います。');
         $I->fillField(['id' => 'admin_authentication_authentication_key'], '1111111111111111111111111111111111111111');
 
-        $I->expect('認証キーの登録ボタンのクリックします。');
+        $I->expect('認証キーの登録ボタンをクリックします。');
         $I->click(['css' => '.btn-ec-conversion']);
         $I->see('保存しました');
     }
