@@ -118,6 +118,9 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
          * @var \Doctrine\Common\Collections\Collection
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\DeliveryTime", mappedBy="Delivery", cascade={"persist","remove"})
+         * @ORM\OrderBy({
+         *     "sort_no"="ASC"
+         * })
          */
         private $DeliveryTimes;
 
