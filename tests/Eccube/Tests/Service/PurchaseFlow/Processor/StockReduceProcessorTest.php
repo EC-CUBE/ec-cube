@@ -55,26 +55,27 @@ class StockReduceProcessorTest extends EccubeTestCase
 
     public function testRollback()
     {
-        // 在庫7の商品
-        /* @var ProductClass $ProductClass */
-        $ProductClass = $this->createProduct('test', 1)->getProductClasses()[0];
+        $Product = $this->createProduct('test', 2);
+        $ProductClasses = $Product->getProductClasses();
+
+        // 在庫3の商品
+        $ProductClass = $ProductClasses->first();
         $ProductClass->setStockUnlimited(false);
-        $ProductClass->setStock(7);
-        $ProductClass->getProductStock()->setStock(7);
+        $ProductClass->setStock(3);
+        $ProductClass->getProductStock()->setStock(3);
 
-        // 数量3の受注
+        // 同一商品で複数の明細がある受注を作成
         $Customer = $this->createCustomer();
-        $Order = $this->createOrderWithProductClasses($Customer, [$ProductClass]);
-        $OrderItem = $Order->getProductOrderItems()[0];
-        $OrderItem->setQuantity(3);
+        $Order = $this->createOrderWithProductClasses($Customer, [$ProductClass, $ProductClass]);
 
-        $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush();
+        // 数量の合計が3の受注
+        $Order->getOrderItems()[0]->setQuantity(1);
+        $Order->getOrderItems()[1]->setQuantity(2);
 
         $this->processor->rollback($Order, new PurchaseContext());
 
         // 在庫が戻っている
-        $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
-        self::assertEquals(10, $ProductClass->getStock());
+        self::assertEquals(6, $ProductClass->getStock());
+        self::assertEquals(6, $ProductClass->getProductStock()->getStock());
     }
 }
