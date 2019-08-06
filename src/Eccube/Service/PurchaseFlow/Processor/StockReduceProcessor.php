@@ -17,6 +17,7 @@ use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
 use Eccube\Exception\ShoppingException;
 use Eccube\Repository\ProductStockRepository;
@@ -78,6 +79,8 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
             return;
         }
 
+        $productClasses = [];
+
         foreach ($itemHolder->getProductOrderItems() as $item) {
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
             if (!$item->getProductClass()->isStockUnlimited()) {
@@ -88,13 +91,22 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
                 $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
                 $this->entityManager->refresh($productStock);
                 $ProductClass = $item->getProductClass();
-                $stock = $callback($productStock->getStock(), $item->getQuantity());
-                if ($stock < 0) {
-                    throw new ShoppingException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
+                if (!array_key_exists($ProductClass->getId(), $productClasses)) {
+                    $productClasses[$ProductClass->getId()] = 0;
                 }
-                $productStock->setStock($stock);
-                $ProductClass->setStock($stock);
+                $productClasses[$ProductClass->getId()] += (int) $item->getQuantity();
             }
+        }
+
+        foreach ($productClasses as $productClassId => $quantity) {
+            $ProductClass = $this->entityManager->find(ProductClass::class, $productClassId);
+            $productStock = $ProductClass->getProductStock();
+            $stock = $callback($productStock->getStock(), $quantity);
+            if ($stock < 0) {
+                throw new ShoppingException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
+            }
+            $productStock->setStock($stock);
+            $ProductClass->setStock($stock);
         }
     }
 }
