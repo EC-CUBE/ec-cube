@@ -939,6 +939,8 @@ admin.content.file.directory_name: Folder Name
 admin.content.file.file_list__card_title: Files in This Directory
 admin.content.file.updated: Update
 admin.content.file.directory_tree: Directories
+admin.content.file.upload_complete: %success% file upload completed. (%success%/%count%)
+admin.content.file.upload_error: Failed to upload %file_name%. (%error%)
 admin.content.layout_delete: Delete Layouts
 admin.content.layout_no_page: Page not registered
 admin.content.layout__card_title: Layout Overview
@@ -1527,6 +1529,7 @@ tooltip.customer.purchase_history: Order history of this customer is displayed h
 tooltip.customer.shop_memo: Notes for store use. This will not be displayed on the storefront.
 tooltip.content.news.url: If there is a page which provides the details of this news, enter its URL. You can also enter external URLs.
 tooltip.content.news.body: You can use HTML tags.
+tooltip.content.file.upload_file: You can select multiple files and upload files.
 tooltip.content.layout_edit: You can drag & drop blocks for each template sections.
 tooltip.content.page_file_name: This is the name of a twig template file which has the page contents.
 tooltip.content.page_source_code: Editing the template file. Coding has to be with twig.
