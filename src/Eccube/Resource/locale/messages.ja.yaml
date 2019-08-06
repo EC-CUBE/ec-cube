@@ -1285,10 +1285,12 @@ admin.store.plugin.uninstall.complete: プラグインを削除しました。
 admin.store.plugin.update.complete: 「%plugin_name%」をアップデートしました。
 admin.store.plugin.update.failed: 「%plugin_name%」のアップデートに失敗しました。
 admin.store.plugin.mkdir.error: ディレクトリ「%dir_name%」の作成に失敗しました。
-admin.store.setting: 設定
+admin.store.setting: 認証キー設定
 admin.store.setting.api_key_setting: 認証キー設定
+admin.store.setting.api_key_setting_info: 認証キーをお持ちの場合は入力後、「登録」ボタンを押して下さい。
 admin.store.setting.api_key: 認証キー
-admin.store.setting.get_api_key: 認証キー取得
+admin.store.setting.get_api_key: 認証キー新規発行
+admin.store.setting.get_api_key_info: 認証キーの新規発行と登録を行います。
 admin.store.setting.captcha_message: 画像に表示されている文字を入力してください。
 admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス

@@ -19,6 +19,7 @@ use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
+use Codeception\Util\Fixtures;
 
 /**
  * @group admin
@@ -269,5 +270,25 @@ class EA07BasicinfoCest
             ->設定();
 
         $I->see('保存しました', CsvSettingsPage::$登録完了メッセージ);
+    }
+
+    /**
+     * EA10PluginCestではテストが失敗するため、ここでテストを行う
+     */
+    public function basicinfo_認証キー設定(\AcceptanceTester $I)
+    {
+        $config = Fixtures::get('config');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/store/plugin/authentication_setting');
+
+        // 認証キーの新規発行については、認証キーの発行数が増加する為省略(以下は一度実行済み)
+        // $I->expect('認証キーの新規発行ボタンのクリックします。');
+        // $I->click('認証キー新規発行');
+
+        $I->expect('認証キーの入力を行います。');
+        $I->fillField(['id' => 'admin_authentication_authentication_key'], '1111111111111111111111111111111111111111');
+
+        $I->expect('認証キーの登録ボタンをクリックします。');
+        $I->click(['css' => '.btn-ec-conversion']);
+        $I->see('保存しました');
     }
 }
