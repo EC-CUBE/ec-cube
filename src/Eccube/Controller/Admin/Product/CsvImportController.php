@@ -287,7 +287,7 @@ class CsvImportController extends AbstractCsvImportController
 
                         if (isset($row[$headerByKey['description_detail']])) {
                             if (StringUtil::isNotBlank($row[$headerByKey['description_detail']])) {
-                                if (mb_strlen($row[$headerByKey['description_detail']]) >= 4000) {
+                                if (mb_strlen($row[$headerByKey['description_detail']]) >= $this->eccubeConfig['eccube_ltext_len']) {
                                     $message = trans('admin.common.csv_invalid_description_detail_upper_limit', [
                                         '%line%' => $line,
                                         '%name%' => $headerByKey['description_detail'],
