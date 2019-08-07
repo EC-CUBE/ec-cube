@@ -15,6 +15,8 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\PessimisticLockException;
+use Doctrine\ORM\OptimisticLockException;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
@@ -55,8 +57,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
      */
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        // 在庫を減らす
-        $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
+        $this->setStockForEachProductClass($itemHolder, function ($currentStock, $itemQuantity) {
             return $currentStock - $itemQuantity;
         });
     }
@@ -66,19 +67,47 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        // 在庫を戻す
-        $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
+        $this->setStockForEachProductClass($itemHolder, function ($currentStock, $itemQuantity) {
             return $currentStock + $itemQuantity;
         });
     }
 
-    private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback)
+    /**
+     * @param ItemHolderInterface $itemHolder
+     * @param callable $callback
+     * @throws OptimisticLockException
+     * @throws PessimisticLockException
+     * @throws ShoppingException
+     */
+    private function setStockForEachProductClass(ItemHolderInterface $itemHolder, callable $callback)
     {
         // Order以外の場合は何もしない
         if (!$itemHolder instanceof Order) {
             return;
         }
 
+        $productClasses = $this->createProductClassesForEachId($itemHolder);
+
+        foreach ($productClasses as $productClassId => $quantity) {
+            $ProductClass = $this->entityManager->find(ProductClass::class, $productClassId);
+            $productStock = $ProductClass->getProductStock();
+            $stock = $callback($productStock->getStock(), $quantity);
+            if ($stock < 0) {
+                throw new ShoppingException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
+            }
+            $productStock->setStock($stock);
+            $ProductClass->setStock($stock);
+        }
+    }
+
+    /**
+     * @param ItemHolderInterface $itemHolder
+     * @return array
+     * @throws OptimisticLockException
+     * @throws PessimisticLockException
+     */
+    private function createProductClassesForEachId(ItemHolderInterface $itemHolder)
+    {
         $productClasses = [];
 
         foreach ($itemHolder->getProductOrderItems() as $item) {
@@ -98,15 +127,6 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
             }
         }
 
-        foreach ($productClasses as $productClassId => $quantity) {
-            $ProductClass = $this->entityManager->find(ProductClass::class, $productClassId);
-            $productStock = $ProductClass->getProductStock();
-            $stock = $callback($productStock->getStock(), $quantity);
-            if ($stock < 0) {
-                throw new ShoppingException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
-            }
-            $productStock->setStock($stock);
-            $ProductClass->setStock($stock);
-        }
+        return $productClasses;
     }
 }
