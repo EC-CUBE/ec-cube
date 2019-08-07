@@ -170,6 +170,14 @@ class EA06ContentsManagementCest
 
         /* 編集 */
         PageManagePage::go($I)->ページ編集($page);
+
+        /* metaを入力 */
+        PageEditPage::at($I)->入力_metatag();
+
+        /* popup確認 */
+        $I->seeInPopup('metatagに「商品詳細ページでの記載例」を追記しました。');
+        $I->acceptPopup();
+
         PageEditPage::at($I)
             ->入力_内容("{% extends 'default_frame.twig' %}")
             ->登録();

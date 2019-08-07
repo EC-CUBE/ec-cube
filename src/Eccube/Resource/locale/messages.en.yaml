@@ -987,8 +987,9 @@ admin.content.page_meta_description: description
 admin.content.page_meta_keyword: keyword
 admin.content.page_meta_robot: robot
 admin.content.page_meta_metatag: metatag
+admin.content.page_meta_metatag_placeholder_annotation: |
+ Description example on the product details page.
 admin.content.page_meta_metatag_placeholder: |
-  商品詳細ページでの記載例
     <meta property="og:type" content="og:product" />
     <meta property="og:title" content="{{ Product.name }}" />
     <meta property="og:image" content="{{ url('homepage') }}{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" />
@@ -1531,6 +1532,8 @@ tooltip.content.page_source_code: Editing the template file. Coding has to be wi
 tooltip.content.page_layout: Selecting the layouts to be applied to this page.
 tooltip.content.page_meta: You can enter the META tag contents of the page.
 tooltip.content.page_meta_tags: You can add META tag freely. You can also use variables used within twig.
+tooltip.content.page_meta_tag_insert: Enter the settings for the product detail page.
+tooltip.content.page_meta_tag_insert_complate: Entered a settings for the product detail page.
 tooltip.content.js_source_code: Editing the JavaScript file. Coding has to be with JavaScript.
 tooltip.content.css_source_code: Editing the CSS file. Coding has to be with CSS.
 tooltip.content.block_name: This is a name of a block for management use.

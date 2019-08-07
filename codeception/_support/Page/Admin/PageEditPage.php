@@ -55,6 +55,12 @@ class PageEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_metatag()
+    {
+        $this->tester->scrollTo(['xpath' => '//*[@id="pageMeta"]/div/div[5]/div[1]/div[2]/i'],  '0', '0');
+        $this->tester->click(['xpath' => '//*[@id="pageMeta"]/div/div[5]/div[1]/div[2]/i']);
+    }
+
     public function 入力_内容($value)
     {
         $value = preg_replace("/([^\\\])'/", "$1\\'", $value);

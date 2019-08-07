@@ -60,6 +60,15 @@ file that was distributed with this source code.
         $('#content_page_form').on('submit', function(elem) {
             $('#main_edit_tpl_data').val(editor.getValue());
         });
+
+        $('.meta-insert').on('click',function(){
+            metaTags = $('#main_edit_meta_tags').val();
+            $('#main_edit_meta_tags').val(metaTags + $('.meta-insert').data('meta'));
+
+            alert('{{ 'tooltip.content.page_meta_tag_insert_complate'|trans }}');
+        });
+
+
     </script>
 {% endblock %}
 
@@ -272,9 +281,12 @@ file that was distributed with this source code.
                                             <span>{{ 'admin.content.page_meta_metatag'|trans }}</span>
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
+                                        <div class="btn btn-ec-actionIcon d-inline-block meta-insert" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_meta_tag_insert'|trans }}" data-meta="{{ 'admin.content.page_meta_metatag_placeholder'|trans }}">
+                                            <i class="fa fa-copy fa-lg text-secondary"></i>
+                                        </div>
                                     </div>
                                     <div class="col-10">
-                                        {{ form_widget(form.meta_tags, { attr : { placeholder : 'admin.content.page_meta_metatag_placeholder'|trans, rows : '10' }}) }}
+                                        {{ form_widget(form.meta_tags, { attr : { placeholder : 'admin.content.page_meta_metatag_placeholder_annotation'|trans~'admin.content.page_meta_metatag_placeholder'|trans, rows : '10' }}) }}
                                         {{ form_errors(form.meta_tags) }}
                                     </div>
                                 </div>
