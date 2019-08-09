@@ -135,17 +135,47 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testMultiWithNo()
     {
-        $this->entityManager->flush();
-
         $this->searchData = [
             'multi' => $this->Order2->getOrderNo(),
         ];
         $this->scenario();
 
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
+        $this->assertCount(1, $this->Results);
     }
+
+    public function testMultiWithEmail()
+    {
+        $this->searchData = [
+            'multi' => 'test@example.com',
+        ];
+        $this->scenario();
+
+        $this->assertCount(1, $this->Results);
+    }
+
+
+    public function testMultiWithPhoneNumber()
+    {
+        /** @var Order[] $Orders */
+        $Orders = $this->orderRepo->findAll();
+        // 全受注の Phone Number を変更しておく
+        foreach ($Orders as $Order) {
+            $Order->setPhoneNumber('9876543210');
+        }
+
+        // 1受注のみ検索対象とする
+        $this->Order1->setPhoneNumber('0123456789');
+        $this->entityManager->flush();
+
+        $this->searchData = [
+            'multi' => '0123456789',
+        ];
+        $this->scenario();
+
+        $this->assertCount(1, $this->Results);
+    }
+
+
 
     public function testOrderIdEnd()
     {
