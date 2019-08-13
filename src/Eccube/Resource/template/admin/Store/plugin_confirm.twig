@@ -141,10 +141,13 @@ $(function() {
 
         d.done(function() {
             $('div.progress-bar', progress).css('width', '100%');
-            message.text('インストールが完了しました。');
+
+            var message_text = 'インストールが完了しました。\n';
             {% if is_update and Plugin.enabled %}
-                message.text('プラグイン一覧より有効化を行って下さい。');
+                message_text += + 'プラグイン一覧より有効化を行って下さい。';
             {% endif %}
+            message.text(message_text);
+
         }).fail(function(res) {
             message.text('システムエラーが発生しました。');
             if (res.responseJSON) {
