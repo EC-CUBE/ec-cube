@@ -150,6 +150,9 @@ $(function() {
         d.done(function() {
             $('div.progress-bar', progress).css('width', '100%');
             message.text('インストールが完了しました。');
+            {% if is_update and Plugin.enabled %}
+                message.text('プラグイン一覧より有効化を行って下さい。');
+            {% endif %}
         }).fail(function(res) {
             message.text('システムエラーが発生しました。');
             if (res.responseJSON) {
