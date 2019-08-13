@@ -142,9 +142,9 @@ $(function() {
         d.done(function() {
             $('div.progress-bar', progress).css('width', '100%');
 
-            var message_text = 'インストールが完了しました。\n';
+            var message_text = 'インストールが完了しました。';
             {% if is_update and Plugin.enabled %}
-                message_text += + 'プラグイン一覧より有効化を行って下さい。';
+                message_text += 'プラグイン一覧より有効化を行って下さい。';
             {% endif %}
             message.text(message_text);
 
