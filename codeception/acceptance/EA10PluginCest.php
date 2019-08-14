@@ -666,6 +666,7 @@ class Store_Plugin extends Abstract_Plugin
         $this->ManagePage->ストアプラグイン_アップデート($this->code)->アップデート();
 
         $this->initialized = true;
+        $this->enabled = false;
 
         $this->検証();
 
