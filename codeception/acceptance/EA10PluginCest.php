@@ -771,8 +771,6 @@ class Local_Plugin extends Abstract_Plugin
     {
         $this->ManagePage->独自プラグイン_アップデート($this->code, 'plugins/'.$this->code.'-1.0.1.tgz');
 
-        $this->enabled = false;
-
         $this->検証();
 
         $this->em->refresh($this->Plugin);
