@@ -149,12 +149,13 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_update_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_enable_update_disable_local(\AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
             ->有効化()
             ->アップデート()
+            ->無効化()
             ->削除();
     }
 
