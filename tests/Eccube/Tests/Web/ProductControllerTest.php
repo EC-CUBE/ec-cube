@@ -19,6 +19,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProductControllerTest extends AbstractWebTestCase
 {
@@ -199,6 +200,54 @@ class ProductControllerTest extends AbstractWebTestCase
         // Case 4: after add favorite when 商品在庫>0
         $html = $crawler->filter('div.ec-productRole__profile')->html();
         $this->assertContains('カートに入れる', $html);
+        $this->assertContains('お気に入りに追加済です', $html);
+    }
+
+
+    /**
+     * 商品詳細 → ログイン画面 → お気に入り追加 → 商品詳細(お気に入り登録済み)
+     */
+    public function testProductFavoriteAddThroughLogin()
+    {
+        // お気に入り商品機能を有効化
+        $BaseInfo = $this->baseInfoRepository->get();
+        $BaseInfo->setOptionFavoriteProduct(true);
+        $Product = $this->createProduct();
+        $id = $Product->getId();
+
+        $user = $this->createCustomer();
+
+        /** @var $client Client */
+        $client = $this->client;
+
+        /** @var $crawler Crawler */
+        $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => $id]));
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        // お気に入りに追加をクリック
+        $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
+        $client->submit($favoriteForm);
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_login')));
+
+        // ログインフォームへメールアドレス・パスワードを入力
+        $crawler = $client->followRedirect();
+        $loginForm = $crawler->selectButton('ログイン')->form();
+        $loginForm['login_email'] = $user->getEmail();
+        $loginForm['login_pass'] = 'password';
+
+        // ログインをクリック
+        $client->submit($loginForm);
+
+        // ログイン実行後、お気に入り追加へリダイレクト
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL)));
+        $crawler = $client->followRedirect();
+
+        // お気に入り追加実行後、商品詳細ページへリダイレクト
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('product_detail', ['id' => $Product->getId()])));
+        $crawler = $client->followRedirect();
+
+        $html = $crawler->filter('div.ec-productRole__profile')->html();
         $this->assertContains('お気に入りに追加済です', $html);
     }
 }
