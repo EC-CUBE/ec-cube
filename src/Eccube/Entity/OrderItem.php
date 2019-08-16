@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\TaxType;
 
 if (!class_exists('\Eccube\Entity\OrderItem')) {
     /**
@@ -556,6 +555,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
 
         /**
          * Set taxRuleId.
+         * @deprecated 税率設定は受注作成時に決定するため廃止予定
          *
          * @param int|null $taxRuleId
          *
@@ -570,6 +570,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
 
         /**
          * Get taxRuleId.
+         * @deprecated 税率設定は受注作成時に決定するため廃止予定
          *
          * @return int|null
          */
