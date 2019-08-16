@@ -207,6 +207,13 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         private $tax_rate = 0;
 
         /**
+         * @var string
+         *
+         * @ORM\Column(name="tax_adjust", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+         */
+        private $tax_adjust = 0;
+
+        /**
          * @var int|null
          *
          * @ORM\Column(name="tax_rule_id", type="smallint", nullable=true, options={"unsigned":true})
@@ -551,6 +558,30 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         public function getTaxRate()
         {
             return $this->tax_rate;
+        }
+
+        /**
+         * Set taxAdjust.
+         *
+         * @param string $tax_adjust
+         *
+         * @return OrderItem
+         */
+        public function setTaxAdjust($tax_adjust)
+        {
+            $this->tax_adjust = $tax_adjust;
+
+            return $this;
+        }
+
+        /**
+         * Get taxAdjust.
+         *
+         * @return string
+         */
+        public function getTaxAdjust()
+        {
+            return $this->tax_adjust;
         }
 
         /**
