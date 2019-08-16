@@ -1291,6 +1291,7 @@ admin.store.setting: Authentication Key Settings
 admin.store.setting.api_key_setting: Set API authentication Key
 admin.store.setting.api_key_setting_info: Please set the authentication key.
 admin.store.setting.api_key: API Authentication Key
+admin.store.setting.api_key_tooltip: This key is required for installing purchased plug-ins, etc.
 admin.store.setting.get_api_key: Obtain an API authentication key
 admin.store.setting.get_api_key_info: Issue a new authentication key
 admin.store.setting.captcha_message: Please enter the letters displayed.
