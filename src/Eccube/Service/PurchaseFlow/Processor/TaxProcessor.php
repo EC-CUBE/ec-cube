@@ -86,7 +86,6 @@ class TaxProcessor implements ItemHolderPreprocessor
                 $item->setTax(0);
                 $item->setTaxRate(0);
                 $item->setRoundingType(null);
-                $item->setTaxRuleId(null);
 
                 continue;
             }

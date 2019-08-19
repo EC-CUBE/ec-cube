@@ -803,8 +803,14 @@ file that was distributed with this source code.
                                             </td>
                                             <!-- 税率 -->
                                             <td class="align-middle">
-                                                <div class="col">
-                                                    {{ OrderItem.tax_rate }}%
+                                                <div class="col-12 col-xl-8">
+                                                    {# 複数配送の場合は商品の税率を変更できない、ポイントの場合も税率を変更できない #}
+                                                    {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
+                                                        {{ form_widget(orderItemForm.tax_rate, { 'attr': { 'readonly': 'readonly' } }) }}
+                                                    {% else %}
+                                                        {{ form_widget(orderItemForm.tax_rate) }}
+                                                    {% endif %}
+                                                    {{ form_errors(orderItemForm.tax_rate) }}
                                                 </div>
                                             </td>
                                             <!-- 課税区分 -->
