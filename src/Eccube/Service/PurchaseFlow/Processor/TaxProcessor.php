@@ -92,7 +92,7 @@ class TaxProcessor implements ItemHolderPreprocessor
 
             // 税率が設定されていない場合は税率を明細にコピーする
             if ($item->getRoundingType() === null) {
-                $TaxRule = $item->getOrderItemType()->getId() == OrderItemType::PRODUCT
+                $TaxRule = $item->getOrderItemType()->isProduct()
                     ? $this->taxRuleRepository->getByRule($item->getProduct(), $item->getProductClass())
                     : $this->taxRuleRepository->getByRule();
 
