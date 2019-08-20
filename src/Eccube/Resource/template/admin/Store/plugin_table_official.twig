@@ -99,6 +99,8 @@ $(function() {
                             {% else %}
                                 <p class="mb-0">{{ 'admin.store.plugin_table_official.920'|trans }}。</p>
                             {% endif %}
+                        {% else %}
+                            <a href="{{ url('admin_store_plugin_install_confirm', {'id': Plugin.source}) }}" class="btn btn-ec-regular">{{ 'admin.store.plugin.install'|trans }}</a>
                         {% endif %}
                     </td>
                     <td class="align-middle">
