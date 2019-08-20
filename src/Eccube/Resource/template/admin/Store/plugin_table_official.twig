@@ -80,7 +80,8 @@ $(function() {
                         {% endif %}
                     </td>
                     <td class="align-middle">
-                        {% if Plugin.id and pluginDetail %}
+                        {% if pluginDetail %}
+                            {% if Plugin.id %}
                             {% if pluginDetail.update_status == 3 %}
                                 <a href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}"
                                    class="btn btn-ec-regular">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
@@ -99,8 +100,9 @@ $(function() {
                             {% else %}
                                 <p class="mb-0">{{ 'admin.store.plugin_table_official.920'|trans }}。</p>
                             {% endif %}
-                        {% else %}
-                            <a href="{{ url('admin_store_plugin_install_confirm', {'id': Plugin.source}) }}" class="btn btn-ec-regular">{{ 'admin.store.plugin.install'|trans }}</a>
+                            {% else %}
+                                <a href="{{ url('admin_store_plugin_install_confirm', {'id': Plugin.source}) }}" class="btn btn-ec-regular">{{ 'admin.store.plugin.install'|trans }}</a>
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td class="align-middle">
