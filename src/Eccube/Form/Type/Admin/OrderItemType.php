@@ -215,6 +215,11 @@ class OrderItemType extends AbstractType
                             $OrderItem->setClassCategoryName2($ClassCategory2->getName());
                         }
                     }
+                    if (null === $OrderItem->getRoundingType()) {
+                        $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
+                        $OrderItem->setRoundingType($TaxRule->getRoundingType())
+                            ->setTaxAdjust($TaxRule->getTaxAdjust());
+                    }
                     break;
 
                 default:
