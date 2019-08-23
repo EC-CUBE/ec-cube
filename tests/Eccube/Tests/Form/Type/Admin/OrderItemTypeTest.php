@@ -27,6 +27,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'quantity' => '10000',
         'product_name' => 'name1',
         'order_item_type' => '1',
+        'tax_rate' => '8',
     ];
 
     public function setUp()
@@ -114,38 +115,6 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     {
         $this->markTestIncomplete('testInvalidQuantity_HasMinus is not implemented.');
         $this->formData['quantity'] = '-123456';
-
-        $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTaxRate_Blank()
-    {
-        $this->formData['tax_rate'] = '';
-
-        $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTaxRate_OverMaxLength()
-    {
-        $this->formData['tax_rate'] = '12345678910'; // Max 9
-
-        $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTaxRate_NotNumeric()
-    {
-        $this->formData['tax_rate'] = 'abcde';
-
-        $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTaxRate_HasMinus()
-    {
-        $this->formData['tax_rate'] = '-12345';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

@@ -128,7 +128,6 @@ class PointHelper
             ->setQuantity(1)
             ->setTax(0)
             ->setTaxRate(0)
-            ->setTaxRuleId(null)
             ->setRoundingType(null)
             ->setOrderItemType($DiscountType)
             ->setTaxDisplayType($TaxInclude)

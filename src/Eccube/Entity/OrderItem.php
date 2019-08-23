@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\TaxType;
 
 if (!class_exists('\Eccube\Entity\OrderItem')) {
     /**
@@ -206,6 +205,13 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          * @ORM\Column(name="tax_rate", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */
         private $tax_rate = 0;
+
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="tax_adjust", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+         */
+        private $tax_adjust = 0;
 
         /**
          * @var int|null
@@ -555,7 +561,32 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         }
 
         /**
+         * Set taxAdjust.
+         *
+         * @param string $tax_adjust
+         *
+         * @return OrderItem
+         */
+        public function setTaxAdjust($tax_adjust)
+        {
+            $this->tax_adjust = $tax_adjust;
+
+            return $this;
+        }
+
+        /**
+         * Get taxAdjust.
+         *
+         * @return string
+         */
+        public function getTaxAdjust()
+        {
+            return $this->tax_adjust;
+        }
+
+        /**
          * Set taxRuleId.
+         * @deprecated 税率設定は受注作成時に決定するため廃止予定
          *
          * @param int|null $taxRuleId
          *
@@ -570,6 +601,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
 
         /**
          * Get taxRuleId.
+         * @deprecated 税率設定は受注作成時に決定するため廃止予定
          *
          * @return int|null
          */
