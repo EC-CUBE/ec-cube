@@ -13,9 +13,13 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
-use Eccube\Repository\ShippingRepository;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
+use Eccube\Repository\ShippingRepository;
 
 class ShippingControllerTest extends AbstractEditControllerTestCase
 {
@@ -221,5 +225,62 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         $Messages = $this->getMailCollector(false)->getMessages();
         self::assertEquals(1, count($Messages));
+    }
+
+    /**
+     * 発送管理で追加した商品明細の税額が計算されている
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4193
+     */
+    public function testCalculateTax()
+    {
+
+        /** @var Product $Product */
+        $Product = $this->createProduct('test', 2);
+        /** @var ProductClass $ProductClass1 */
+        $ProductClass1 = $Product->getProductClasses()[0];
+        $ProductClass1->setPrice02(1000);
+        /** @var ProductClass $ProductClass2 */
+        $ProductClass2 = $Product->getProductClasses()[1];
+        $ProductClass2->setPrice02(2000);
+
+        $this->entityManager->persist($Product);
+        $this->entityManager->persist($ProductClass1);
+        $this->entityManager->persist($ProductClass2);
+        $this->entityManager->flush();
+
+        /** @var Customer $Customer */
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrderWithProductClasses($Customer, [$ProductClass1]);
+        $Shipping = $Order->getShippings()->first();
+        $this->entityManager->persist($Order);
+
+        $shippingFormData = $this->createShippingFormDataForEdit($Shipping);
+        $shippingFormData['OrderItems'][] = [
+            'ProductClass' => $ProductClass2->getId(),
+            'price' => $ProductClass2->getPrice02(),
+            'quantity' => '1',
+            'product_name' => $Product->getName(),
+            'order_item_type' => OrderItemType::PRODUCT,
+        ];
+
+        $formData['shippings'] = [$shippingFormData];
+        $formData['_token'] = 'dummy';
+        $formData['add_shipping'] = '';
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
+            [
+                'form' => $formData,
+                'mode' => 'register',
+            ]
+        );
+
+        // 税額が計算されている
+        /** @var Order $Order */
+        $Order = $this->entityManager->find(Order::class, $Order->getId());
+        self::assertEquals(80, $Order->getProductOrderItems()[0]->getTax());
+        self::assertEquals(160, $Order->getProductOrderItems()[1]->getTax());
     }
 }
