@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
@@ -41,6 +42,97 @@ if (!class_exists('\Eccube\Entity\Order')) {
     class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
     {
         use NameTrait, PointTrait;
+
+        /**
+         * 課税対象の明細を返す.
+         *
+         * @return array
+         */
+        public function getTaxableItems()
+        {
+            $Items = [];
+
+            foreach ($this->OrderItems as $Item) {
+                if ($Item->getTaxType()->getId() == TaxType::TAXATION) {
+                    $Items[] = $Item;
+                }
+            }
+
+            return $Items;
+        }
+
+        /**
+         * 課税対象の明細の合計金額を返す.
+         * 商品合計 + 送料 + 手数料 + 値引き(課税).
+         */
+        public function getTaxableTotal()
+        {
+            $total = 0;
+
+            foreach ($this->getTaxableItems() as $Item) {
+                $total += $Item->getTotalPrice();
+            }
+
+            return $total;
+        }
+
+        /**
+         * 課税対象の明細の合計金額を、税率ごとに集計する.
+         *
+         * @return array
+         */
+        public function getTaxableTotalByTaxRate()
+        {
+            $total = [];
+
+            foreach ($this->getTaxableItems() as $Item) {
+                    $totalPrice = $Item->getTotalPrice();
+                    $taxRate = $Item->getTaxRate();
+                    $total[$taxRate] = isset($total[$taxRate])
+                        ? $total[$taxRate] + $totalPrice
+                        : $totalPrice;
+            }
+
+            krsort($total);
+
+            return $total;
+        }
+
+        /**
+         * 課税対象の値引き明細を返す.
+         *
+         * @return array
+         */
+        public function getTaxableDiscountItems()
+        {
+            return array_filter($this->getTaxableItems(), function(OrderItem $Item) {
+                return $Item->isDiscount();
+            });
+        }
+
+        /**
+         * 課税対象の値引き金額合計を返す.
+         *
+         * @return mixed
+         */
+        public function getTaxableDiscount()
+        {
+            return array_reduce($this->getTaxableDiscountItems(), function ($sum, OrderItem $Item) {
+                return $sum += $Item->getTotalPrice();
+            }, 0);
+        }
+
+        /**
+         * 非課税・不課税の値引き明細を返す.
+         *
+         * @return array
+         */
+        public function getTaxFreeDiscountItems()
+        {
+            return array_filter($this->OrderItems->toArray(), function(OrderItem $Item) {
+                return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION);
+            });
+        }
 
         /**
          * 複数配送かどうかの判定を行う.
