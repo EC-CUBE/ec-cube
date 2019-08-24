@@ -59,6 +59,10 @@ common.subtotal: Subtotal
 common.subtotal__with_separator: 'Subtotal:'
 common.total: Total
 common.total__with_separator: 'Total:'
+common.payment_total: 'Payment Total'
+common.reduced_tax_rate_symbol: '*'
+common.reduced_tax_rate_messeage: '* is subject to reduced tax rate.'
+common.tax_rate_target: '%rate% %'
 common.delivery_fee: Shipping Charge
 common.charge: Charges
 common.discount: Discount
