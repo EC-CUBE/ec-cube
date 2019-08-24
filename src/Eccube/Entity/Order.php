@@ -215,6 +215,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
                 } else {
                     // 新規規格の商品は新しく追加する
                     $OrderItem = new OrderItem();
+                    $OrderItem->setOrder($ProductOrderItem->getOrder());
                     $OrderItem
                     ->setProduct($ProductOrderItem->getProduct())
                     ->setProductName($ProductOrderItem->getProductName())
@@ -223,6 +224,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
                     ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
                     ->setPrice($ProductOrderItem->getPrice())
                     ->setTax($ProductOrderItem->getTax())
+                    ->setTaxRate($ProductOrderItem->getTaxRate())
                     ->setQuantity($ProductOrderItem->getQuantity());
                     $orderItemArray[$productClassId] = $OrderItem;
                 }
