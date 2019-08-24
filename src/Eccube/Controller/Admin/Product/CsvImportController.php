@@ -269,34 +269,44 @@ class CsvImportController extends AbstractCsvImportController
                             $Product->setName(StringUtil::trimAll($row[$headerByKey['name']]));
                         }
 
-                        if (isset($row[$headerByKey['note']]) && StringUtil::isNotBlank($row[$headerByKey['note']])) {
-                            $Product->setNote(StringUtil::trimAll($row[$headerByKey['note']]));
-                        } else {
-                            $Product->setNote(null);
+                        if (isset($row[$headerByKey['note']])) {
+                            if (StringUtil::isNotBlank($row[$headerByKey['note']])) {
+                                $Product->setNote(StringUtil::trimAll($row[$headerByKey['note']]));
+                            } else {
+                                $Product->setNote(null);
+                            }
                         }
 
-                        if (isset($row[$headerByKey['description_list']]) && StringUtil::isNotBlank($row[$headerByKey['description_list']])) {
-                            $Product->setDescriptionList(StringUtil::trimAll($row[$headerByKey['description_list']]));
-                        } else {
-                            $Product->setDescriptionList(null);
+                        if (isset($row[$headerByKey['description_list']])) {
+                            if (StringUtil::isNotBlank($row[$headerByKey['description_list']])) {
+                                $Product->setDescriptionList(StringUtil::trimAll($row[$headerByKey['description_list']]));
+                            } else {
+                                $Product->setDescriptionList(null);
+                            }
                         }
 
-                        if (isset($row[$headerByKey['description_detail']]) && StringUtil::isNotBlank($row[$headerByKey['description_detail']])) {
-                            $Product->setDescriptionDetail(StringUtil::trimAll($row[$headerByKey['description_detail']]));
-                        } else {
-                            $Product->setDescriptionDetail(null);
+                        if (isset($row[$headerByKey['description_detail']])) {
+                            if (StringUtil::isNotBlank($row[$headerByKey['description_detail']])) {
+                                $Product->setDescriptionDetail(StringUtil::trimAll($row[$headerByKey['description_detail']]));
+                            } else {
+                                $Product->setDescriptionDetail(null);
+                            }
                         }
 
-                        if (isset($row[$headerByKey['search_word']]) && StringUtil::isNotBlank($row[$headerByKey['search_word']])) {
-                            $Product->setSearchWord(StringUtil::trimAll($row[$headerByKey['search_word']]));
-                        } else {
-                            $Product->setSearchWord(null);
+                        if (isset($row[$headerByKey['search_word']])) {
+                            if (StringUtil::isNotBlank($row[$headerByKey['search_word']])) {
+                                $Product->setSearchWord(StringUtil::trimAll($row[$headerByKey['search_word']]));
+                            } else {
+                                $Product->setSearchWord(null);
+                            }
                         }
 
-                        if (isset($row[$headerByKey['free_area']]) && StringUtil::isNotBlank($row[$headerByKey['free_area']])) {
-                            $Product->setFreeArea(StringUtil::trimAll($row[$headerByKey['free_area']]));
-                        } else {
-                            $Product->setFreeArea(null);
+                        if (isset($row[$headerByKey['free_area']])) {
+                            if (StringUtil::isNotBlank($row[$headerByKey['free_area']])) {
+                                $Product->setFreeArea(StringUtil::trimAll($row[$headerByKey['free_area']]));
+                            } else {
+                                $Product->setFreeArea(null);
+                            }
                         }
 
                         // 商品画像登録
@@ -844,7 +854,10 @@ class CsvImportController extends AbstractCsvImportController
      */
     protected function createProductImage($row, Product $Product, $data, $headerByKey)
     {
-        if (isset($row[$headerByKey['product_image']]) && StringUtil::isNotBlank($row[$headerByKey['product_image']])) {
+        if (!isset($row[$headerByKey['product_image']])) {
+             return;
+        }
+        if (StringUtil::isNotBlank($row[$headerByKey['product_image']])) {
             // 画像の削除
             $ProductImages = $Product->getProductImage();
             foreach ($ProductImages as $ProductImage) {
@@ -892,6 +905,9 @@ class CsvImportController extends AbstractCsvImportController
      */
     protected function createProductCategory($row, Product $Product, $data, $headerByKey)
     {
+        if (!isset($row[$headerByKey['product_category']])) {
+            return;
+        }
         // カテゴリの削除
         $ProductCategories = $Product->getProductCategories();
         foreach ($ProductCategories as $ProductCategory) {
@@ -900,7 +916,7 @@ class CsvImportController extends AbstractCsvImportController
             $this->entityManager->flush();
         }
 
-        if (isset($row[$headerByKey['product_category']]) && StringUtil::isNotBlank($row[$headerByKey['product_category']])) {
+        if (StringUtil::isNotBlank($row[$headerByKey['product_category']])) {
             // カテゴリの登録
             $categories = explode(',', $row[$headerByKey['product_category']]);
             $sortNo = 1;
@@ -956,6 +972,9 @@ class CsvImportController extends AbstractCsvImportController
      */
     protected function createProductTag($row, Product $Product, $data, $headerByKey)
     {
+        if (!isset($row[$headerByKey['product_tag']])) {
+            return;
+        }
         // タグの削除
         $ProductTags = $Product->getProductTag();
         foreach ($ProductTags as $ProductTag) {
@@ -963,7 +982,7 @@ class CsvImportController extends AbstractCsvImportController
             $this->entityManager->remove($ProductTag);
         }
 
-        if (isset($row[$headerByKey['product_tag']]) && StringUtil::isNotBlank($row[$headerByKey['product_tag']])) {
+        if (StringUtil::isNotBlank($row[$headerByKey['product_tag']])) {
             // タグの登録
             $tags = explode(',', $row[$headerByKey['product_tag']]);
             foreach ($tags as $tag_id) {
