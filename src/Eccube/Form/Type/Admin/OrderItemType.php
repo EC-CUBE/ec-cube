@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderItemType as OrderItemTypeMaster;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer;
@@ -221,8 +222,25 @@ class OrderItemType extends AbstractType
                             ->setTaxAdjust($TaxRule->getTaxAdjust());
                     }
                     break;
-
                 default:
+            }
+            // 明細のバリデーションエラー時に、税種別がセットされないためここで補完する.
+            switch ($OrderItemType->getId()) {
+                case OrderItemTypeMaster::POINT:
+                    if (!$OrderItem->getTaxType()) {
+                        $TaxType = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
+                        $OrderItem->setTaxType($TaxType);
+                    }
+                    break;
+                case OrderItemTypeMaster::PRODUCT:
+                case OrderItemTypeMaster::DISCOUNT:
+                case OrderItemTypeMaster::DELIVERY_FEE:
+                case OrderItemTypeMaster::CHARGE:
+                default:
+                    if (!$OrderItem->getTaxType()) {
+                        $TaxType = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
+                        $OrderItem->setTaxType($TaxType);
+                    }
                     break;
             }
         });
