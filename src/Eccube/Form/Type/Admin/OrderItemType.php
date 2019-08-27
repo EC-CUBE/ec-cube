@@ -238,7 +238,7 @@ class OrderItemType extends AbstractType
                 case OrderItemTypeMaster::CHARGE:
                 default:
                     if (!$OrderItem->getTaxType()) {
-                        $TaxType = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
+                        $TaxType = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
                         $OrderItem->setTaxType($TaxType);
                     }
                     break;
