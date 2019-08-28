@@ -32,7 +32,7 @@ final class Version20190821081036 extends AbstractMigration
             return;
         }
 
-        $this->addSql("INSERT INTO dtb_csv (id, csv_type_id, creator_id, entity_name, field_name, reference_field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type) VALUES (204, 1, null , 'Eccube\\\\Entity\\\\ProductClass', 'TaxRule', 'tax_rate', '税率', 31, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,'csv')");
+        $this->addSql("INSERT INTO dtb_csv (id, csv_type_id, creator_id, entity_name, field_name, reference_field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type) VALUES (204, 1, null , 'Eccube\\\\Entity\\\\ProductClass', 'TaxRule', 'tax_rate', '税率', 31, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,'csv')");
     }
 
     public function down(Schema $schema) : void
