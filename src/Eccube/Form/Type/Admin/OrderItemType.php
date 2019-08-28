@@ -223,6 +223,12 @@ class OrderItemType extends AbstractType
                     }
                     break;
                 default:
+                    if (null === $OrderItem->getRoundingType()) {
+                        $TaxRule = $this->taxRuleRepository->getByRule();
+                        $OrderItem->setRoundingType($TaxRule->getRoundingType())
+                            ->setTaxAdjust($TaxRule->getTaxAdjust());
+                    }
+
             }
             // 明細のバリデーションエラー時に、税種別がセットされないためここで補完する.
             switch ($OrderItemType->getId()) {
