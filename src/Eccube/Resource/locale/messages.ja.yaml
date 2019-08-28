@@ -62,7 +62,7 @@ common.total__with_separator: 合計：
 common.payment_total: お支払い合計
 common.reduced_tax_rate_symbol: ※
 common.reduced_tax_rate_messeage: ※ は軽減税率対象商品です。
-common.tax_rate_target: '%rate% %対象'
+common.tax_rate_target: '税率 %rate% %対象'
 common.delivery_fee: 送料
 common.charge: 手数料
 common.discount: 値引き

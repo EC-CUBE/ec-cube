@@ -184,7 +184,7 @@ file that was distributed with this source code.
                 </dl>
                 <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.taxable_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
                 {% for rate, total in Order.taxable_total_by_tax_rate %}
-                    <dl class="ec-totalBox__spec">
+                    <dl class="ec-totalBox__taxRate">
                         <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
                         <dd>{{ total|price }}</dd>
                     </dl>
@@ -196,8 +196,10 @@ file that was distributed with this source code.
                         <dd>{{ item.total_price|price }}</dd>
                     </dl>
                 {% endfor %}
-                <div class="ec-totalBox__total">{{ 'common.payment_total'|trans }}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                <div class="ec-totalBox__paymentTotal">{{ 'common.payment_total'|trans }}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                <!-- ポイント -->
                 {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                <div class="ec-totalBox__pointBlock">
                     <dl class="ec-totalBox__spec">
                         <dt>{{ 'front.shopping.use_point'|trans }}</dt>
                         <dd>{{ Order.UsePoint|number_format }} pt</dd>
@@ -206,6 +208,7 @@ file that was distributed with this source code.
                         <dt><span class="ec-font-bold">{{ 'front.shopping.add_point'|trans }}</span></dt>
                         <dd><span class="ec-font-bold">{{ Order.AddPoint|number_format }} pt</span></dd>
                     </dl>
+                </div>
                 {% endif %}
                 <div class="ec-totalBox__btn">
                     <button type="submit" class="ec-blockBtn--action">{{ 'front.shopping.checkout'|trans }}</button>
