@@ -45,6 +45,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * 課税対象の明細を返す.
+         * 税率が0より大きい明細を返す.
          *
          * @return array
          */
@@ -53,7 +54,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
             $Items = [];
 
             foreach ($this->OrderItems as $Item) {
-                if ($Item->getTaxType()->getId() == TaxType::TAXATION) {
+                if ($Item->getTaxRate() > 0) {
                     $Items[] = $Item;
                 }
             }
@@ -125,12 +126,15 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * 非課税・不課税の値引き明細を返す.
          *
+         * - ポイント明細
+         * - 値引き明細のうち、税率が0で設定されているもの
+         *
          * @return array
          */
         public function getTaxFreeDiscountItems()
         {
             return array_filter($this->OrderItems->toArray(), function(OrderItem $Item) {
-                return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION);
+                return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxRate() == 0);
             });
         }
 
