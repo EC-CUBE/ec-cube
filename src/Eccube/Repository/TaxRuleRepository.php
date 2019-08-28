@@ -199,7 +199,7 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // ProductClass
-        if ($ProductClass && $productClassId > 0) {
+        if ($ProductClass && '0' !== $productClassId) {
             $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
             $parameters['ProductClass'] = $ProductClass;
         } else {
