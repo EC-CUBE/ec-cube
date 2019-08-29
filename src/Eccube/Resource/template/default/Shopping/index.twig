@@ -396,7 +396,7 @@ file that was distributed with this source code.
                         <dt>{{ 'common.delivery_fee'|trans }}</dt>
                         <dd>{{ Order.deliveryFeeTotal|price }}</dd>
                     </dl>
-                    {% if Order.taxable_discount > 0 %}
+                    {% if Order.taxable_discount < 0 %}
                     <dl class="ec-totalBox__spec">
                         <dt>{{ 'common.discount'|trans }}</dt>
                         <dd>{{ Order.taxable_discount|price }}</dd>

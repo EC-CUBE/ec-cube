@@ -1045,6 +1045,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Get discount.
          *
+         * @deprecated 4.0.3 から値引きは課税値引きと 非課税・不課税の値引きの2種に分かれる. 課税値引きについてはgetTaxableDiscountを利用してください.
          * @return string
          */
         public function getDiscount()
