@@ -161,6 +161,11 @@ class OrderItemType extends AbstractType
                     $this->entityManager,
                     OrderItemTypeMaster::class
                 )))
+            ->add($builder->create('tax_type', HiddenType::class)
+                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                    $this->entityManager,
+                    TaxType::class
+                )))
             ->add($builder->create('ProductClass', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->entityManager,
@@ -180,6 +185,13 @@ class OrderItemType extends AbstractType
                     $Product = $ProductClass->getProduct();
                     $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
                 } else {
+                    if ($orderItemTypeId == OrderItemTypeMaster::DISCOUNT && $OrderItem['tax_type'] == TaxType::NON_TAXABLE) {
+                        $OrderItem['tax_rate'] = '0';
+                        $event->setData($OrderItem);
+
+                        return;
+                    }
+
                     $TaxRule = $this->taxRuleRepository->getByRule();
                 }
 
@@ -228,26 +240,6 @@ class OrderItemType extends AbstractType
                         $OrderItem->setRoundingType($TaxRule->getRoundingType())
                             ->setTaxAdjust($TaxRule->getTaxAdjust());
                     }
-
-            }
-            // 明細のバリデーションエラー時に、税種別がセットされないためここで補完する.
-            switch ($OrderItemType->getId()) {
-                case OrderItemTypeMaster::POINT:
-                    if (!$OrderItem->getTaxType()) {
-                        $TaxType = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
-                        $OrderItem->setTaxType($TaxType);
-                    }
-                    break;
-                case OrderItemTypeMaster::PRODUCT:
-                case OrderItemTypeMaster::DISCOUNT:
-                case OrderItemTypeMaster::DELIVERY_FEE:
-                case OrderItemTypeMaster::CHARGE:
-                default:
-                    if (!$OrderItem->getTaxType()) {
-                        $TaxType = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
-                        $OrderItem->setTaxType($TaxType);
-                    }
-                    break;
             }
         });
 
