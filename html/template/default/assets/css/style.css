@@ -4048,7 +4048,6 @@ Styleguide 7.3.8
     font-size: 14px;
     font-weight: bold; }
   .ec-totalBox .ec-totalBox__paymentTotal {
-    border-top: 1px dotted #ccc;
     padding: 8px 0;
     text-align: right;
     font-size: 14px;
@@ -4081,7 +4080,7 @@ Styleguide 7.3.8
       .ec-totalBox .ec-totalBox__taxRate dd:after {
         content: " ]"; }
   .ec-totalBox .ec-totalBox__pointBlock {
-    padding: 18px 20px;
+    padding: 18px 20px 10px;
     margin-bottom: 10px;
     background: #fff; }
   .ec-totalBox .ec-totalBox__btn {
@@ -4093,8 +4092,9 @@ Styleguide 7.3.8
       text-decoration: none; }
     .ec-totalBox .ec-totalBox__btn .ec-blockBtn--action {
       font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 10px; }
+      font-weight: bold; }
+    .ec-totalBox .ec-totalBox__btn .ec-blockBtn--cancel {
+      margin-top: 8px; }
 
 /**
 メディアクエリ

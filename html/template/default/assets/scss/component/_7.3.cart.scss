@@ -469,7 +469,6 @@ Styleguide 7.3.8
     font-weight:bold;
   }
   & &__paymentTotal{
-    border-top: 1px dotted #ccc;
     padding: 8px 0;
     text-align: right;
     font-size: 14px;
@@ -521,7 +520,7 @@ Styleguide 7.3.8
     } 
   }
   & &__pointBlock{
-    padding: 18px 20px;
+    padding: 18px 20px 10px;
     margin-bottom: 10px;
     background: #fff;
   }
@@ -531,7 +530,9 @@ Styleguide 7.3.8
     .ec-blockBtn--action {
       font-size: 16px;
       font-weight: bold;
-      margin-bottom: 10px;
+    }
+    .ec-blockBtn--cancel {
+      margin-top: 8px;   
     }
   }
 }
