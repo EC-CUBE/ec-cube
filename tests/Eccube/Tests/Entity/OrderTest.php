@@ -201,7 +201,7 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableDiscountItems()
     {
         $Order = $this->createTestOrder();
-        self::assertCount(6, $Order->getTaxableItems());
+        self::assertCount(2, $Order->getTaxableDiscountItems());
     }
 
     public function testGetTaxableDiscount()
