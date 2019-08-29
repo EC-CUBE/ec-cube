@@ -4029,18 +4029,15 @@ Styleguide 7.3.8
   padding: 16px;
   margin-bottom: 16px; }
   .ec-totalBox .ec-totalBox__spec {
-    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: space-between;
+    -ms-flex-pack: space-between;
     margin-bottom: 8px; }
     .ec-totalBox .ec-totalBox__spec dt {
       font-weight: normal;
-      position: relative;
-      top: 0;
-      left: 0;
       text-align: left; }
     .ec-totalBox .ec-totalBox__spec dd {
-      position: absolute;
-      top: 0;
-      right: 0;
       text-align: right; }
     .ec-totalBox .ec-totalBox__spec .ec-totalBox .ec-totalBox__spec__specTotal {
       color: #DE5D50; }
@@ -4050,15 +4047,42 @@ Styleguide 7.3.8
     text-align: right;
     font-size: 14px;
     font-weight: bold; }
+  .ec-totalBox .ec-totalBox__paymentTotal {
+    padding: 8px 0;
+    text-align: right;
+    font-size: 14px;
+    font-weight: bold; }
+    .ec-totalBox .ec-totalBox__paymentTotal .ec-totalBox__price,
+    .ec-totalBox .ec-totalBox__paymentTotal .ec-totalBox__taxLabel {
+      color: #DE5D50; }
   .ec-totalBox .ec-totalBox__price {
     margin-left: 16px;
     font-size: 16px;
-    font-weight: bold;
-    color: #DE5D50; }
+    font-weight: bold; }
   .ec-totalBox .ec-totalBox__taxLabel {
     margin-left: 8px;
-    color: #DE5D50;
     font-size: 12px; }
+  .ec-totalBox .ec-totalBox__taxRate {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+    font-size: 10px; }
+    .ec-totalBox .ec-totalBox__taxRate dt {
+      font-weight: normal;
+      text-align: left;
+      margin-right: 8px; }
+      .ec-totalBox .ec-totalBox__taxRate dt:before {
+        content: "[ "; }
+    .ec-totalBox .ec-totalBox__taxRate dd {
+      text-align: right; }
+      .ec-totalBox .ec-totalBox__taxRate dd:after {
+        content: " ]"; }
+  .ec-totalBox .ec-totalBox__pointBlock {
+    padding: 18px 20px 10px;
+    margin-bottom: 10px;
+    background: #fff; }
   .ec-totalBox .ec-totalBox__btn {
     color: #fff; }
     .ec-totalBox .ec-totalBox__btn a {
@@ -4069,6 +4093,8 @@ Styleguide 7.3.8
     .ec-totalBox .ec-totalBox__btn .ec-blockBtn--action {
       font-size: 16px;
       font-weight: bold; }
+    .ec-totalBox .ec-totalBox__btn .ec-blockBtn--cancel {
+      margin-top: 8px; }
 
 /**
 メディアクエリ
@@ -8149,6 +8175,10 @@ Styleguide 22.1
 
   .ec-totalBox .ec-totalBox__taxLabel{
     font-size: 14px;
+  }
+
+  .ec-totalBox .ec-totalBox__taxRate{
+    font-size: 12px;
   }
 
   .ec-news{

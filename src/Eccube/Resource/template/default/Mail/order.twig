@@ -44,7 +44,9 @@ file that was distributed with this source code.
 小　計：{{ Order.subtotal|price }}
 手数料：{{ Order.charge|price }}
 送　料：{{ Order.delivery_fee_total|price}}
+{% if Order.taxable_discount < 0 %}
 値引き：{{ Order.taxable_discount|price }}
+{% endif %}
 -------------------------------------------------
 合　計：{{ Order.taxable_total|price }}
     {% for rate, total in Order.taxable_total_by_tax_rate %}
