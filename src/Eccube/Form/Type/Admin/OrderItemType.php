@@ -184,6 +184,11 @@ class OrderItemType extends AbstractType
                     $ProductClass = $this->productClassRepository->find($OrderItem['ProductClass']);
                     $Product = $ProductClass->getProduct();
                     $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
+
+                    if (StringUtil::isBlank($OrderItem['tax_type'])) {
+                        $OrderItem['tax_type'] = TaxType::TAXATION;
+                    }
+
                 } else {
                     if ($orderItemTypeId == OrderItemTypeMaster::DISCOUNT && $OrderItem['tax_type'] == TaxType::NON_TAXABLE) {
                         $OrderItem['tax_rate'] = '0';
