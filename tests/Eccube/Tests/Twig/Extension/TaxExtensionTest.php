@@ -38,8 +38,6 @@ class TaxExtensionTest extends EccubeTestCase
 
     public function testIsReducedTaxRate()
     {
-        self::assertFalse($this->taxExtension->isReducedTaxRate(null));
-
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 

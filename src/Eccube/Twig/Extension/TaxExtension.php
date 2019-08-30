@@ -13,18 +13,9 @@
 
 namespace Eccube\Twig\Extension;
 
-use Eccube\Common\EccubeConfig;
-use Eccube\Entity\Master\ProductStatus;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
-use Eccube\Entity\TaxRule;
-use Eccube\Repository\ProductRepository;
+use Eccube\Entity\OrderItem;
 use Eccube\Repository\TaxRuleRepository;
-use Eccube\Util\StringUtil;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Intl\Intl;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class TaxExtension extends AbstractExtension
@@ -60,15 +51,11 @@ class TaxExtension extends AbstractExtension
      *
      * 受注作成時点での標準税率と比較し, 異なれば軽減税率として判定する.
      *
-     * @param null $OrderItem
+     * @param OrderItem $OrderItem
      * @return bool
      */
-    public function isReducedTaxRate($OrderItem = null)
+    public function isReducedTaxRate(OrderItem $OrderItem)
     {
-        if (null === $OrderItem) {
-            return false;
-        }
-
         $Order = $OrderItem->getOrder();
 
         $qb = $this->taxRuleRepository->createQueryBuilder('t');

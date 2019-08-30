@@ -14,6 +14,7 @@
 namespace Eccube\Service;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 
@@ -55,7 +56,11 @@ class TaxRuleService
          */
         /* @var $TaxRule \Eccube\Entity\TaxRule */
         if ($this->BaseInfo->isOptionProductTaxRule() && $productClass) {
-            $TaxRule = $productClass->getTaxRule() ?: $this->taxRuleRepository->getByRule(null, null, $pref, $country);
+            if ($productClass instanceof ProductClass) {
+                $TaxRule = $productClass->getTaxRule() ?: $this->taxRuleRepository->getByRule(null, null, $pref, $country);
+            } else {
+                $TaxRule = $this->taxRuleRepository->getByRule($product, $productClass, $pref, $country);
+            }
         } else {
             $TaxRule = $this->taxRuleRepository->getByRule(null, null, $pref, $country);
         }

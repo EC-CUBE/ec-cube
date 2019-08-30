@@ -243,7 +243,7 @@ class ShippingController extends AbstractController
             }
 
             if (!$flowResult->hasError() && $request->get('mode') == 'register') {
-                log_info('出荷登録開始', [$TargetShipping->getId()]);
+                log_info('出荷登録開始', [$Order->getId()]);
 
                 try {
                     $this->purchaseFlow->prepare($Order, $purchaseContext);
