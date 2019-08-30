@@ -185,7 +185,7 @@ class OrderItemType extends AbstractType
                     $Product = $ProductClass->getProduct();
                     $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
 
-                    if (StringUtil::isBlank($OrderItem['tax_type'])) {
+                    if (!isset($OrderItem['tax_type']) || StringUtil::isBlank($OrderItem['tax_type'])) {
                         $OrderItem['tax_type'] = TaxType::TAXATION;
                     }
 
