@@ -182,7 +182,7 @@ class OrderTest extends EccubeTestCase
         self::assertCount(6, $Order->getTaxableItems());
         /** @var OrderItem $Item */
         foreach ($Order->getTaxableItems() as $Item) {
-            self::assertGreaterThan(0, $Item->getTaxRate());
+            self::assertSame(TaxType::TAXATION, $Item->getTaxType()->getId());
         }
     }
 
@@ -213,10 +213,10 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxFreeDiscountItems()
     {
         $Order = $this->createTestOrder();
-        self::assertCount(3, $Order->getTaxFreeDiscountItems());
+        self::assertCount(2, $Order->getTaxFreeDiscountItems());
         /** @var OrderItem $Item */
         foreach ($Order->getTaxFreeDiscountItems() as $Item) {
-            self::assertSame(0, $Item->getTaxRate());
+            self::assertNotSame(TaxType::TAXATION, $Item->getTaxType()->getId());
         }
     }
 
@@ -229,7 +229,7 @@ class OrderTest extends EccubeTestCase
         $ProductItem = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
         $DiscountItem = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
 
-        // 非課税・不課税をのぞいて、税率ごとに金額を集計する
+        // 非課税・不課税を覗いて、税率ごとに金額を集計する
         $data = [
             [$Taxation, 10, 100, 10, 1, $ProductItem],    // 商品明細
             [$Taxation, 10, 200, 20, 1, $ProductItem],    // 商品明細
@@ -237,7 +237,6 @@ class OrderTest extends EccubeTestCase
             [$Taxation, 8, 200, 16, 1, $ProductItem],     // 商品明細
             [$Taxation, 10, -100, -10, 1, $DiscountItem],  // 課税値引き
             [$Taxation, 8, -100, -8, 1, $DiscountItem],    // 課税値引き
-            [$Taxation, 0, -100, 0, 1, $DiscountItem],    // 課税であっても、税率が0%の値引きは非課税・不課税と同様に扱う
             [$NonTaxable, 0, -10, 0, 1, $DiscountItem],    // 不課税明細、 集計対象外
             [$TaxExempt, 0, -10, 0, 1, $DiscountItem],     // 非課税明細、集計対象外
         ];
