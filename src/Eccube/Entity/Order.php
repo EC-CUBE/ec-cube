@@ -244,8 +244,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         {
             @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
 
-            return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
-//        return $this->getSubtotal() + $this->getCharge() - $this->getDiscount();
+            return $this->getPaymentTotal();
         }
 
         /**
