@@ -19,6 +19,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -661,27 +662,21 @@ class EditController extends AbstractController
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search order item type start.');
 
-            $criteria = Criteria::create();
-            $criteria
-                ->where($criteria->expr()->andX(
-                    $criteria->expr()->neq('id', OrderItemType::PRODUCT),
-                    $criteria->expr()->neq('id', OrderItemType::TAX),
-                    $criteria->expr()->neq('id', OrderItemType::POINT)
-                ))
-                ->orderBy(['sort_no' => 'ASC']);
+            $Charge = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
+            $DeliveryFee = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
+            $Discount = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
 
-            $OrderItemTypes = $this->orderItemTypeRepository->matching($criteria);
+            $NonTaxable = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
+            $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
 
-            $forms = [];
-            foreach ($OrderItemTypes as $OrderItemType) {
-                /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-                $builder = $this->formFactory->createBuilder();
-                $form = $builder->getForm();
-                $forms[$OrderItemType->getId()] = $form->createView();
-            }
+            $OrderItemTypes = [
+                ['OrderItemType' => $Charge, 'TaxType' => $Taxation],
+                ['OrderItemType' => $DeliveryFee, 'TaxType' => $Taxation],
+                ['OrderItemType' => $Discount, 'TaxType' => $Taxation],
+                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable]
+            ];
 
             return [
-                'forms' => $forms,
                 'OrderItemTypes' => $OrderItemTypes,
             ];
         }
