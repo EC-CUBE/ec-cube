@@ -16,6 +16,7 @@ namespace Eccube\Tests\Entity;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
@@ -173,5 +174,85 @@ class OrderTest extends EccubeTestCase
         $this->expected = $quantity * $times;
         $this->actual = $OrderItem->getQuantity();
         $this->verify();
+    }
+
+    public function testGetTaxableItems()
+    {
+        $Order = $this->createTestOrder();
+        self::assertCount(6, $Order->getTaxableItems());
+        /** @var OrderItem $Item */
+        foreach ($Order->getTaxableItems() as $Item) {
+            self::assertSame(TaxType::TAXATION, $Item->getTaxType()->getId());
+        }
+    }
+
+    public function testGetTaxableTotal()
+    {
+        $Order = $this->createTestOrder();
+        self::assertSame(436, $Order->getTaxableTotal());
+    }
+
+    public function testGetTaxableTotalByTaxRate()
+    {
+        $Order = $this->createTestOrder();
+        self::assertArraySubset([10 => 220, 8 => 216,], $Order->getTaxableTotalByTaxRate());
+    }
+
+    public function testGetTaxableDiscountItems()
+    {
+        $Order = $this->createTestOrder();
+        self::assertCount(2, $Order->getTaxableDiscountItems());
+    }
+
+    public function testGetTaxableDiscount()
+    {
+        $Order = $this->createTestOrder();
+        self::assertSame(-218, $Order->getTaxableDiscount());
+    }
+
+    public function testGetTaxFreeDiscountItems()
+    {
+        $Order = $this->createTestOrder();
+        self::assertCount(2, $Order->getTaxFreeDiscountItems());
+        /** @var OrderItem $Item */
+        foreach ($Order->getTaxFreeDiscountItems() as $Item) {
+            self::assertNotSame(TaxType::TAXATION, $Item->getTaxType()->getId());
+        }
+    }
+
+    protected function createTestOrder()
+    {
+        $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
+        $NonTaxable = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
+        $TaxExempt = $this->entityManager->find(TaxType::class, TaxType::TAX_EXEMPT);
+
+        $ProductItem = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
+        $DiscountItem = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
+
+        // 非課税・不課税を覗いて、税率ごとに金額を集計する
+        $data = [
+            [$Taxation, 10, 100, 10, 1, $ProductItem],    // 商品明細
+            [$Taxation, 10, 200, 20, 1, $ProductItem],    // 商品明細
+            [$Taxation, 8, 100, 8, 1, $ProductItem],      // 商品明細
+            [$Taxation, 8, 200, 16, 1, $ProductItem],     // 商品明細
+            [$Taxation, 10, -100, -10, 1, $DiscountItem],  // 課税値引き
+            [$Taxation, 8, -100, -8, 1, $DiscountItem],    // 課税値引き
+            [$NonTaxable, 0, -10, 0, 1, $DiscountItem],    // 不課税明細、 集計対象外
+            [$TaxExempt, 0, -10, 0, 1, $DiscountItem],     // 非課税明細、集計対象外
+        ];
+
+        $Order = new Order();
+        foreach ($data as $row) {
+            $OrderItem = new OrderItem();
+            $OrderItem->setTaxType($row[0]);
+            $OrderItem->setTaxRate($row[1]);
+            $OrderItem->setPrice($row[2]);
+            $OrderItem->setTax($row[3]);
+            $OrderItem->setQuantity($row[4]);
+            $OrderItem->setOrderItemType($row[5]);
+            $Order->addOrderItem($OrderItem);
+        }
+
+        return $Order;
     }
 }

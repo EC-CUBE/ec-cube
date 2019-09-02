@@ -91,7 +91,7 @@ file that was distributed with this source code.
                                 <div class="ec-imageGrid">
                                     <div class="ec-imageGrid__img"><img src="{{ asset((orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product, 'save_image') }}" alt="{{ orderItem.productName }}"></div>
                                     <div class="ec-imageGrid__content">
-                                        <p>{{ orderItem.productName }}</p>
+                                        <p>{{ orderItem.productName }}{% if is_reduced_tax_rate(orderItem) %}{{ 'common.reduced_tax_rate_symbol'|trans }}{% endif %}</p>
                                         {% if orderItem.productClass is not null and orderItem.productClass.classCategory1 %}
                                             <p>{{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}</p>
                                         {% endif %}
@@ -104,6 +104,7 @@ file that was distributed with this source code.
                             </li>
                             {% endfor %}
                         </ul>
+                        <p>{{ 'common.reduced_tax_rate_messeage'|trans }}</p>
                     </div>
                     <div class="ec-orderDelivery__address">
                         <p>{{ 'common.name.prefix'|trans }}{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}){{ 'common.name.suffix'|trans }}</p>
@@ -177,12 +178,29 @@ file that was distributed with this source code.
                     <dt>{{ 'common.delivery_fee'|trans }}</dt>
                     <dd>{{ Order.deliveryFeeTotal|price }}</dd>
                 </dl>
+                {% if Order.taxable_discount < 0 %}
                 <dl class="ec-totalBox__spec">
                     <dt>{{ 'common.discount'|trans }}</dt>
-                    <dd>{{ (0 - Order.discount)|price}}</dd>
+                    <dd>{{ Order.taxable_discount|price }}</dd>
                 </dl>
-                <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                {% endif %}
+                <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.taxable_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                {% for rate, total in Order.taxable_total_by_tax_rate %}
+                    <dl class="ec-totalBox__taxRate">
+                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
+                        <dd>{{ total|price }}</dd>
+                    </dl>
+                {% endfor %}
+                {% for item in Order.tax_free_discount_items %}
+                    {% if loop.first %}<div class="ec-totalBox__total"></div>{% endif %}
+                    <dl class="ec-totalBox__spec">
+                        <dt>{{ item.product_name }}</dt>
+                        <dd>{{ item.total_price|price }}</dd>
+                    </dl>
+                {% endfor %}
+                <div class="ec-totalBox__paymentTotal">{{ 'common.payment_total'|trans }}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
                 {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                <div class="ec-totalBox__pointBlock">
                     <dl class="ec-totalBox__spec">
                         <dt>{{ 'front.shopping.use_point'|trans }}</dt>
                         <dd>{{ Order.UsePoint|number_format }} pt</dd>
@@ -191,6 +209,7 @@ file that was distributed with this source code.
                         <dt><span class="ec-font-bold">{{ 'front.shopping.add_point'|trans }}</span></dt>
                         <dd><span class="ec-font-bold">{{ Order.AddPoint|number_format }} pt</span></dd>
                     </dl>
+                </div>
                 {% endif %}
                 <div class="ec-totalBox__btn">
                     <button type="submit" class="ec-blockBtn--action">{{ 'front.shopping.checkout'|trans }}</button>

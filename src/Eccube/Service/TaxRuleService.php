@@ -13,18 +13,27 @@
 
 namespace Eccube\Service;
 
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\ProductClass;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 
 class TaxRuleService
 {
     /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
+
+    /**
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
 
-    public function __construct(TaxRuleRepository $taxRuleRepository)
+    public function __construct(TaxRuleRepository $taxRuleRepository, BaseInfoRepository $baseInfoRepository)
     {
         $this->taxRuleRepository = $taxRuleRepository;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -40,8 +49,21 @@ class TaxRuleService
      */
     public function getTax($price, $product = null, $productClass = null, $pref = null, $country = null)
     {
+        /*
+         * 商品別税率が有効で商品別税率が設定されている場合は商品別税率
+         * 商品別税率が有効で商品別税率が設定されていない場合は基本税率
+         * 商品別税率が無効の場合は基本税率
+         */
         /* @var $TaxRule \Eccube\Entity\TaxRule */
-        $TaxRule = $this->taxRuleRepository->getByRule($product, $productClass, $pref, $country);
+        if ($this->BaseInfo->isOptionProductTaxRule() && $productClass) {
+            if ($productClass instanceof ProductClass) {
+                $TaxRule = $productClass->getTaxRule() ?: $this->taxRuleRepository->getByRule(null, null, $pref, $country);
+            } else {
+                $TaxRule = $this->taxRuleRepository->getByRule($product, $productClass, $pref, $country);
+            }
+        } else {
+            $TaxRule = $this->taxRuleRepository->getByRule(null, null, $pref, $country);
+        }
 
         return $this->calcTax($price, $TaxRule->getTaxRate(), $TaxRule->getRoundingType()->getId(), $TaxRule->getTaxAdjust());
     }

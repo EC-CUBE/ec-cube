@@ -59,6 +59,10 @@ common.subtotal: 小計
 common.subtotal__with_separator: 小計：
 common.total: 合計
 common.total__with_separator: 合計：
+common.payment_total: お支払い合計
+common.reduced_tax_rate_symbol: ※
+common.reduced_tax_rate_messeage: ※ は軽減税率対象商品です。
+common.tax_rate_target: '税率 %rate% %対象'
 common.delivery_fee: 送料
 common.charge: 手数料
 common.discount: 値引き
@@ -719,6 +723,8 @@ admin.product.product_csv.sale_price_col: 販売価格
 admin.product.product_csv.sale_price_description: 0以上の数値を設定
 admin.product.product_csv.delivery_fee_col: 送料
 admin.product.product_csv.delivery_fee_description: 商品ごとの送料設定が有効の場合、0以上の数値を設定
+admin.product.product_csv.tax_rate_col: 税率
+admin.product.product_csv.tax_rate_description: 商品別税率機能設定が有効の場合、0以上の数値を設定
 
 # カテゴリCSV雛形
 admin.product.category_csv.category_id_col: カテゴリID

@@ -743,6 +743,7 @@ file that was distributed with this source code.
                                             {# hidden values #}
                                             {{ form_widget(orderItemForm.ProductClass) }}
                                             {{ form_widget(orderItemForm.order_item_type) }}
+                                            {{ form_widget(orderItemForm.tax_type) }}
                                             <!-- 商品名 -->
                                             <td class="align-middle w-25 pl-3">
                                                 <p class="mb-0 font-weight-bold">
@@ -803,8 +804,14 @@ file that was distributed with this source code.
                                             </td>
                                             <!-- 税率 -->
                                             <td class="align-middle">
-                                                <div class="col">
-                                                    {{ OrderItem.tax_rate }}%
+                                                <div class="col-12 col-xl-8">
+                                                    {# 複数配送・ポイント明細・不課税明細は商品の税率を変更できない #}
+                                                    {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint or OrderItem.TaxType.id == constant('Eccube\\Entity\\Master\\TaxType::NON_TAXABLE') %}
+                                                        {{ form_widget(orderItemForm.tax_rate, { 'attr': { 'readonly': 'readonly' } }) }}
+                                                    {% else %}
+                                                        {{ form_widget(orderItemForm.tax_rate) }}
+                                                    {% endif %}
+                                                    {{ form_errors(orderItemForm.tax_rate) }}
                                                 </div>
                                             </td>
                                             <!-- 課税区分 -->
@@ -873,21 +880,46 @@ file that was distributed with this source code.
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.subtotal'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.subtotal|price }}</span></div>
                                 </div>
-                                <!-- 内値引き -->
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.discount'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">{{ (0 - Order.discount)|price }}</span></div>
-                                </div>
-                                <!-- 内送料 -->
+                                <!-- 送料 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.delivery_fee'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.delivery_fee_total|price }}</span></div>
                                 </div>
-                                <!-- 内手数料 -->
+                                <!-- 手数料 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.common.charge'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.charge|price }}</span></div>
                                 </div>
+                                <!-- 値引き -->
+                                <div class="row justify-content-end mb-3">
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.discount'|trans }}</span></div>
+                                    <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">{{ Order.taxable_discount|price }}</span></div>
+                                </div>
+                                <hr>
+                                <!-- 合計 -->
+                                <div class="row justify-content-end mb-3">
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.total'|trans }}</span></div>
+                                    <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.taxable_total|price }}</span></div>
+                                </div>
+                                {% for rate, total in Order.taxable_total_by_tax_rate %}
+                                    <div class="row justify-content-end mb-3">
+                                        <div class="col-auto"><span class="align-middle">{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</span></div>
+                                        <div class="col-2 text-right"><span class="align-middle font-weight-normal">{{ total|price }}</span></div>
+                                    </div>
+                                {% endfor %}
+                                <hr>
+                                {% for item in Order.tax_free_discount_items %}
+                                <div class="row justify-content-end mb-3">
+                                    <div class="col-auto"><span class="align-middle">{{ item.product_name }}</span></div>
+                                    <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">{{ item.total_price|price }}</span></div>
+                                </div>
+                                {% endfor %}
+                                <!-- お支払い合計 -->
+                                <div class="row justify-content-end mb-3">
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.payment_total'|trans }}</span></div>
+                                    <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.payment_total|price }}</span></div>
+                                </div>
+                                <hr>
                                 <!-- 加算ポイント -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.add_point'|trans }}</span></div>
@@ -911,18 +943,6 @@ file that was distributed with this source code.
                                             {{ form_errors(form.use_point) }}
                                         </span>
                                     </div>
-                                </div>
-
-                                <hr>
-                                <!-- 小計 -->
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.total'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.total|price }}</span></div>
-                                </div>
-                                <!-- 合計 -->
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.payment_total'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.payment_total|price }}</span></div>
                                 </div>
                             </div>
                         </div>

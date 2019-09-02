@@ -59,6 +59,10 @@ common.subtotal: Subtotal
 common.subtotal__with_separator: 'Subtotal:'
 common.total: Total
 common.total__with_separator: 'Total:'
+common.payment_total: 'Payment Total'
+common.reduced_tax_rate_symbol: '*'
+common.reduced_tax_rate_messeage: '* is subject to reduced tax rate.'
+common.tax_rate_target: '%rate% %'
 common.delivery_fee: Shipping Charge
 common.charge: Charges
 common.discount: Discount
@@ -719,6 +723,8 @@ admin.product.product_csv.sale_price_col: Selling Price
 admin.product.product_csv.sale_price_description: Set the value more than 0
 admin.product.product_csv.delivery_fee_col: Shipping Charge
 admin.product.product_csv.delivery_fee_description: If the shipping charge is set per product, set the value more than 0
+admin.product.product_csv.tax_rate_col: Tax Rate
+admin.product.product_csv.tax_rate_description: If the Tax Rate is set per product, set the value more than 0
 
 # Category CSV Templates
 admin.product.category_csv.category_id_col: Category ID

@@ -35,12 +35,13 @@ file that was distributed with this source code.
                             <hr style="border-top: 3px double #8c8b8b;">
                             　ご請求金額<br/>
                             <hr style="border-top: 3px double #8c8b8b;">
-                            ご注文日時：{{ Order.create_date|date_sec }}<br/>
+                            ご注文日時：{{ Order.order_date|date_sec }}<br/>
                             ご注文番号：{{ Order.order_no }}<br/>
                             お支払い合計：{{ Order.payment_total|price }}<br/>
                             お支払い方法：{{ Order.payment_method }}<br/>
                             {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
-                            ご利用ポイント：{{ Order.usePoint }} pt<br/>
+                            ご利用ポイント：{{ Order.usePoint|number_format }} pt<br/>
+                            加算ポイント：{{ Order.addPoint|number_format }} pt<br/>
                             {% endif %}
                             お問い合わせ：{{ Order.message }}<br/>
                             <br/>
@@ -49,21 +50,30 @@ file that was distributed with this source code.
                             <hr style="border-top: 3px double #8c8b8b;">
                             {% for OrderItem in Order.MergedProductOrderItems %}
                                 商品コード：{{ OrderItem.product_code }}<br/>
-                                商品名：{{ OrderItem.product_name }}  {{ OrderItem.classcategory_name1 }}  {{ OrderItem.classcategory_name2 }}<br/>
+                                商品名：{{ OrderItem.product_name }}  {{ OrderItem.classcategory_name1 }}  {{ OrderItem.classcategory_name2 }} {{ is_reduced_tax_rate(OrderItem) ? '※' }}<br/>
                                 単価：{{ OrderItem.price_inctax|price }}<br/>
                                 数量：{{ OrderItem.quantity|number_format }}<br/>
                                 <br/>
                             {% endfor %}
+                            ※は軽減税率対象商品です。
                             <hr style="border-top: 2px dashed #8c8b8b;">
                             小　計：{{ Order.subtotal|price }}<br/>
-                            <br/>
                             手数料：{{ Order.charge|price }}<br/>
                             送　料：{{ Order.delivery_fee_total|price }}<br/>
-                            {% if Order.discount > 0 %}
-                                値引き：{{ (0 - Order.discount)|price }}<br/>
+                            {% if Order.taxable_discount < 0 %}
+                            値引き：{{ Order.taxable_discount|price }}<br/>
                             {% endif %}
                             <hr style="border-top: 1px dotted #8c8b8b;">
-                            合　計：{{ Order.payment_total|price }}<br/>
+                            合　計：{{ Order.taxable_total|price }}<br/>
+                            {% for rate, total in Order.taxable_total_by_tax_rate %}
+                                ({{ rate }} %対象：{{ total|price }})<br/>
+                            {% endfor %}
+                            {% for item in Order.tax_free_discount_items %}
+                                <hr style="border-top: 1px dotted #8c8b8b;">
+                                {{ item.product_name }}：{{ item.total_price|price }}<br/>
+                            {% endfor %}
+                            <hr style="border-top: 1px dotted #8c8b8b;">
+                            お支払い合計：{{ Order.payment_total|price }}
                             <br/>
                             <hr style="border-top: 3px double #8c8b8b;">
                             ご注文者情報<br/>

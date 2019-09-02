@@ -33,6 +33,7 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
@@ -83,6 +84,11 @@ class CsvImportController extends AbstractCsvImportController
     protected $productRepository;
 
     /**
+     * @var TaxRuleRepository
+     */
+    private $taxRuleRepository;
+
+    /**
      * @var BaseInfo
      */
     protected $BaseInfo;
@@ -104,6 +110,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param ClassCategoryRepository $classCategoryRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param ProductRepository $productRepository
+     * @param TaxRuleRepository $taxRuleRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param ValidatorInterface $validator
      *
@@ -118,6 +125,7 @@ class CsvImportController extends AbstractCsvImportController
         ClassCategoryRepository $classCategoryRepository,
         ProductStatusRepository $productStatusRepository,
         ProductRepository $productRepository,
+        TaxRuleRepository $taxRuleRepository,
         BaseInfoRepository $baseInfoRepository,
         ValidatorInterface $validator
     ) {
@@ -128,6 +136,7 @@ class CsvImportController extends AbstractCsvImportController
         $this->classCategoryRepository = $classCategoryRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->productRepository = $productRepository;
+        $this->taxRuleRepository = $taxRuleRepository;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->validator = $validator;
     }
@@ -137,6 +146,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import")
      * @Template("@admin/Product/csv_product.twig")
+     * @throws \Doctrine\ORM\NoResultException
      */
     public function csvProduct(Request $request, CacheUtil $cacheUtil)
     {
@@ -329,6 +339,37 @@ class CsvImportController extends AbstractCsvImportController
                                 }
                             }
 
+                            // 商品別税率機能が有効の場合に税率を更新
+                            if ($this->BaseInfo->isOptionProductTaxRule()) {
+                                if (isset($row[$headerByKey['tax_rate']]) && StringUtil::isNotBlank($row[$headerByKey['tax_rate']])) {
+                                    $taxRate = $row[$headerByKey['tax_rate']];
+                                    $errors = $this->validator->validate($taxRate, new GreaterThanOrEqual(['value' => 0]));
+                                    if ($errors->count() === 0) {
+                                        if ($ProductClassOrg->getTaxRule()) {
+                                            // 商品別税率の設定があれば税率を更新
+                                            $ProductClassOrg->getTaxRule()->setTaxRate($taxRate);
+                                        } else {
+                                            // 商品別税率の設定がなければ新規作成
+                                            $TaxRule = $this->taxRuleRepository->newTaxRule();
+                                            $TaxRule->setTaxRate($taxRate);
+                                            $TaxRule->setApplyDate(new \DateTime());
+                                            $TaxRule->setProduct($Product);
+                                            $TaxRule->setProductClass($ProductClassOrg);
+                                            $ProductClassOrg->setTaxRule($TaxRule);
+                                        }
+                                    } else {
+                                        $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['tax_rate']]);
+                                        $this->addErrors($message);
+                                    }
+                                } else {
+                                    // 税率の入力がなければ税率の設定を削除
+                                    if ($ProductClassOrg->getTaxRule()) {
+                                        $this->taxRuleRepository->delete($ProductClassOrg->getTaxRule());
+                                        $ProductClassOrg->setTaxRule(null);
+                                    }
+                                }
+                            }
+
                             if (isset($row[$headerByKey['class_category1']]) && StringUtil::isNotBlank($row[$headerByKey['class_category1']])) {
                                 if (isset($row[$headerByKey['class_category2']]) && $row[$headerByKey['class_category1']] == $row[$headerByKey['class_category2']]) {
                                     $message = trans('admin.common.csv_invalid_not_same', [
@@ -422,6 +463,38 @@ class CsvImportController extends AbstractCsvImportController
                                             }
                                         }
                                     }
+
+                                    // 商品別税率機能が有効の場合に税率を更新
+                                    if ($this->BaseInfo->isOptionProductTaxRule()) {
+                                        if (isset($row[$headerByKey['tax_rate']]) && StringUtil::isNotBlank($row[$headerByKey['tax_rate']])) {
+                                            $taxRate = $row[$headerByKey['tax_rate']];
+                                            $errors = $this->validator->validate($taxRate, new GreaterThanOrEqual(['value' => 0]));
+                                            if ($errors->count() === 0) {
+                                                if ($pc->getTaxRule()) {
+                                                    // 商品別税率の設定があれば税率を更新
+                                                    $pc->getTaxRule()->setTaxRate($taxRate);
+                                                } else {
+                                                    // 商品別税率の設定がなければ新規作成
+                                                    $TaxRule = $this->taxRuleRepository->newTaxRule();
+                                                    $TaxRule->setTaxRate($taxRate);
+                                                    $TaxRule->setApplyDate(new \DateTime());
+                                                    $TaxRule->setProduct($Product);
+                                                    $TaxRule->setProductClass($pc);
+                                                    $pc->setTaxRule($TaxRule);
+                                                }
+                                            } else {
+                                                $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['tax_rate']]);
+                                                $this->addErrors($message);
+                                            }
+                                        } else {
+                                            // 税率の入力がなければ税率の設定を削除
+                                            if ($pc->getTaxRule()) {
+                                                $this->taxRuleRepository->delete($pc->getTaxRule());
+                                                $pc->setTaxRule(null);
+                                            }
+                                        }
+                                    }
+
                                     $flag = true;
                                     break;
                                 }
@@ -508,6 +581,26 @@ class CsvImportController extends AbstractCsvImportController
                                             }
                                         }
                                     }
+
+                                    // 商品別税率機能が有効の場合に税率を更新
+                                    if ($this->BaseInfo->isOptionProductTaxRule()) {
+                                        if (isset($row[$headerByKey['tax_rate']]) && StringUtil::isNotBlank($row[$headerByKey['tax_rate']])) {
+                                            $taxRate = $row[$headerByKey['tax_rate']];
+                                            $errors = $this->validator->validate($taxRate, new GreaterThanOrEqual(['value' => 0]));
+                                            if ($errors->count() === 0) {
+                                                $TaxRule = $this->taxRuleRepository->newTaxRule();
+                                                $TaxRule->setTaxRate($taxRate);
+                                                $TaxRule->setApplyDate(new \DateTime());
+                                                $TaxRule->setProduct($Product);
+                                                $TaxRule->setProductClass($ProductClass);
+                                                $ProductClass->setTaxRule($TaxRule);
+                                            } else {
+                                                $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['tax_rate']]);
+                                                $this->addErrors($message);
+                                            }
+                                        }
+                                    }
+
                                     $Product->addProductClass($ProductClass);
                                 }
                             }
@@ -1378,6 +1471,11 @@ class CsvImportController extends AbstractCsvImportController
             trans('admin.product.product_csv.delivery_fee_col') => [
                 'id' => 'delivery_fee',
                 'description' => 'admin.product.product_csv.delivery_fee_description',
+                'required' => false,
+            ],
+            trans('admin.product.product_csv.tax_rate_col') => [
+                'id' => 'tax_rate',
+                'description' => 'admin.product.product_csv.tax_rate_description',
                 'required' => false,
             ],
         ];

@@ -45,6 +45,9 @@ services:
         lazy: true
         public: true
 
+    Eccube\Repository\TaxRuleRepository:
+        lazy: true
+
     Eccube\Service\CartService:
         lazy: true
 

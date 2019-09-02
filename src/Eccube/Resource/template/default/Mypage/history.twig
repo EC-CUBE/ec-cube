@@ -45,11 +45,11 @@ file that was distributed with this source code.
                     {% if BaseInfo.isOptionPoint %}
                         <div class="ec-definitions">
                             <dt>{{ 'front.mypage.use_point'|trans }}</dt>
-                            <dd>{{ Order.usePoint }} pt</dd>
+                            <dd>{{ Order.usePoint|number_format }} pt</dd>
                         </div>
                         <div class="ec-definitions">
                             <dt>{{ 'front.mypage.add_point'|trans }}</dt>
-                            <dd>{{ Order.addPoint }} pt</dd>
+                            <dd>{{ Order.addPoint|number_format }} pt</dd>
                         </div>
                     {% endif %}
 
@@ -77,7 +77,7 @@ file that was distributed with this source code.
                                                 <a href="{{ url('product_detail', {'id': orderItem.Product.id}) }}">{{ orderItem.productName }}</a>
                                             {% else %}
                                                 {{ orderItem.productName }}
-                                            {% endif %} ×{{ orderItem.quantity }}
+                                            {% endif %} ×{{ orderItem.quantity }} {{ is_reduced_tax_rate(orderItem) ? 'common.reduced_tax_rate_symbol'|trans }}
                                         </p>
                                         {% if orderItem.ProductClass is not null %}
                                             {% if orderItem.ProductClass.ClassCategory1 is not null %}
@@ -99,6 +99,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                         {% endfor %}
+                        <p>{{ 'common.reduced_tax_rate_messeage'|trans }}</p>
                         <div class="ec-orderDelivery__address">
                             <p>{{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
                                 ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})</p>
@@ -160,13 +161,29 @@ file that was distributed with this source code.
                         <dt>{{ 'common.delivery_fee'|trans }}</dt>
                         <dd>{{ Order.delivery_fee_total|price }}</dd>
                     </dl>
-                    {% if Order.discount > 0 %}
-                        <dl class="ec-totalBox__spec">
-                            <dt>{{ 'common.discount'|trans }}</dt>
-                            <dd>{{ (0 - Order.discount)|price }}</dd>
-                        </dl>
+                    {% if Order.taxable_discount < 0 %}
+                    <dl class="ec-totalBox__spec">
+                        <dt>{{ 'common.discount'|trans }}</dt>
+                        <dd>{{ Order.taxable_discount|price }}</dd>
+                    </dl>
                     {% endif %}
                     <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span
+                                class="ec-totalBox__price">{{ Order.taxable_total|price }}</span><span
+                                class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                    {% for rate, total in Order.taxable_total_by_tax_rate %}
+                    <dl class="ec-totalBox__taxRate">
+                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
+                        <dd>{{ total|price }}</dd>
+                    </dl>
+                    {% endfor %}
+                    {% for item in Order.tax_free_discount_items %}
+                        {% if loop.first %}<div class="ec-totalBox__total"></div>{% endif %}
+                        <dl class="ec-totalBox__spec">
+                            <dt>{{ item.product_name }}</dt>
+                            <dd>{{ item.total_price|price }}</dd>
+                        </dl>
+                    {% endfor %}
+                    <div class="ec-totalBox__paymentTotal">{{ 'common.total'|trans }}<span
                                 class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span
                                 class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
                     {% if stockOrder %}
