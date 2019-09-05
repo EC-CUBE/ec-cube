@@ -1,0 +1,29 @@
+name: CI/CD for EC-CUBE
+on: [push, pull_request]
+jobs:
+  run:
+    name: Run
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php: [7.1, 7.2, 7.3]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Setup PHPUnit
+      uses: nanasess/setup-php@master
+      with:
+        php-version: ${{ matrix.php}}
+    - name: Setup Composer
+      run: php -r "readfile('http://getcomposer.org/installer');" | php
+    - name: Install to Composer
+      run: php composer.phar install --dev --no-interaction -o
+    - name: Setup to EC-CUBE
+      run: |
+        bin/console doctrine:database:create
+        bin/console doctrine:schema:create
+        bin/console eccube:fixtures:load
+    - name: Run to PHPUnit
+      run: bin/phpunit --exclude-group cache-clear
+
