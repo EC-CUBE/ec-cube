@@ -82,6 +82,11 @@ class TaxRuleRepository extends EntityRepository
             $Pref = $Customer->getPref();
             $Country = $Customer->getCountry();
         }
+        // Product が null の場合は正常に税率取得できないため, Product を取得し直す
+        if ($ProductClass instanceof \Eccube\Entity\ProductClass && $Product === null) {
+            $this->getEntityManager()->refresh($ProductClass);
+            $Product = $ProductClass->getProduct();
+        }
 
         // 商品単位税率設定がOFFの場合
         /** @var $BaseInfo \Eccube\Entity\BaseInfo */
