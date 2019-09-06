@@ -305,4 +305,38 @@ class TaxRuleRepositoryTest extends EccubeTestCase
             }
         }
     }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/2251
+     * @see https://github.com/EC-CUBE/ec-cube/pull/4310
+     */
+    public function testGetByRuleWithProductIsNull()
+    {
+        $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
+        $this->app['orm.em']->flush();
+        $oneDayBefore = new \DateTime('-1 days');
+
+        $ProductClasses = $this->Product->getProductClasses();
+        $ProductClass = $ProductClasses[1];
+        $this->TaxRule2
+            ->setApplyDate($oneDayBefore)
+            ->setProduct($ProductClass->getProduct())
+            ->setProductClass($ProductClass);
+        $this->TaxRule3
+            ->setApplyDate($oneDayBefore);
+
+        $this->app['orm.em']->flush();
+
+        $this->app['eccube.repository.tax_rule']->clearCache();
+        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(
+            null,               // Product
+            $ProductClass,      // ProductClass
+            null,               // Pref
+            null                // Country
+        );
+
+        $this->expected = $this->TaxRule2->getId();
+        $this->actual = $TaxRule->getId();
+        $this->verify('Product に null が設定されていても対象の ProductClass の税率が取得できる');
+    }
 }
