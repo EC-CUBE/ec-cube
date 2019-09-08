@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Eccube\Util\CacheUtil;
 
 class ExceptionListener implements EventSubscriberInterface
 {
@@ -31,14 +32,20 @@ class ExceptionListener implements EventSubscriberInterface
      * @var Context
      */
     protected $requestContext;
+    
+    /**
+     * @var CacheUtil
+     */
+    private $cacheUtil;
 
     /**
      * ExceptionListener constructor.
      */
-    public function __construct(\Twig_Environment $twig, Context $requestContext)
+    public function __construct(\Twig_Environment $twig, Context $requestContext, CacheUtil $cacheUtil)
     {
         $this->twig = $twig;
         $this->requestContext = $requestContext;
+        $this->cacheUtil = $cacheUtil;
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event)
@@ -91,6 +98,8 @@ class ExceptionListener implements EventSubscriberInterface
         }
 
         $event->setResponse(Response::create($content, $statusCode));
+        
+        $this->cacheUtil->clearCache();
     }
 
     /**
