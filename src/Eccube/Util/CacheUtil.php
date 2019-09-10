@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -54,7 +54,7 @@ class CacheUtil implements EventSubscriberInterface
         $this->clearCacheAfterResponse = $env;
     }
 
-    public function forceClearCache(PostResponseEvent $event)
+    public function forceClearCache(FinishRequestEvent $event)
     {
         if ($this->clearCacheAfterResponse === false) {
             return;
@@ -212,6 +212,6 @@ class CacheUtil implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [KernelEvents::TERMINATE => 'forceClearCache'];
+        return [KernelEvents::FINISH_REQUEST => 'forceClearCache'];
     }
 }
