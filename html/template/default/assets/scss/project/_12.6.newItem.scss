@@ -38,6 +38,11 @@ Styleguide 12.6.1
     width: 48%;
     height: auto;
 
+    &:not(:first-child){
+      a {
+        color: black;
+      }
+    }
 
     @include media_desktop {
       margin-bottom: 15px;
@@ -63,7 +68,6 @@ Styleguide 12.6.1
     margin: 8px 0;
     font-size: 14px;
     font-weight: bold;
-    color: black;
 
     @include media_desktop {
       margin: 20px 0 10px;
@@ -72,8 +76,6 @@ Styleguide 12.6.1
 
   & &__listItemPrice {
     font-size: 12px;
-    color: black;
-
   }
 
 }
