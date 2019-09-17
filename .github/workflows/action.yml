@@ -16,9 +16,9 @@ jobs:
       with:
         php-version: ${{ matrix.php}}
     - name: Setup Composer
-      run: php -r "readfile('http://getcomposer.org/installer');" | php
+      uses: nanasess/composer-installer-action@master
     - name: Install to Composer
-      run: php composer.phar install --dev --no-interaction -o
+      run: composer install --dev --no-interaction -o
     - name: Setup to EC-CUBE
       run: |
         bin/console doctrine:database:create
