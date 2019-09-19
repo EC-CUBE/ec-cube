@@ -13,6 +13,7 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
@@ -87,6 +88,46 @@ class TaxProcessorTest extends EccubeTestCase
 
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
+
+        self::assertEquals(1, count($ProductOrderItems));
+        self::assertEquals(1080, $ProductOrderItems[0]->getTotalPrice());
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4330
+     */
+    public function testProductTaxRule()
+    {
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $BaseInfo->setOptionProductTaxRule(true);
+
+        $this->TaxRule->setTaxRate(10);
+
+        /** @var RoundingType $RoundingType */
+        $RoundingType = $this->entityManager->find(RoundingType::class, RoundingType::ROUND);
+        // 商品別税率を設定し, 受注を生成
+        $TaxRule = new TaxRule();
+        $TaxRule->setTaxRate(8)
+            ->setApplyDate(new \DateTime('-3 days'))
+            ->setRoundingType($RoundingType)
+            ->setProduct($this->Product)
+            ->setProductClass($this->ProductClass)
+        ;
+        $this->entityManager->persist($TaxRule);
+        $this->entityManager->flush();
+        $this->entityManager->refresh($this->TaxRule);
+
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrderWithProductClasses($Customer, $this->Product->getProductClasses()->toArray());
+        $Order->getProductOrderItems()[0]
+            ->setRoundingType(null)
+            ->setQuantity(1);
+        $this->entityManager->flush();
+
+        $this->processor->process($Order, new PurchaseContext());
+
+        /** @var OrderItem[] $ProductOrderItems */
+        $ProductOrderItems = $Order->getProductOrderItems();
 
         self::assertEquals(1, count($ProductOrderItems));
         self::assertEquals(1080, $ProductOrderItems[0]->getTotalPrice());
