@@ -11,15 +11,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Service\PurchaseFlow\Processor;
+namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
+use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\Processor\TaxProcessor;
 use Eccube\Tests\EccubeTestCase;
 
 class TaxProcessorTest extends EccubeTestCase
@@ -27,7 +30,7 @@ class TaxProcessorTest extends EccubeTestCase
     /** @var TaxProcessor */
     private $processor;
 
-    /** @var  */
+    /** @var Order  */
     private $Order;
 
     /** @var Product */
@@ -36,13 +39,18 @@ class TaxProcessorTest extends EccubeTestCase
     /** @var ProductClass */
     private $ProductClass;
 
+    /** @var TaxRule */
     private $TaxRule;
+
+    /** @var TaxRuleRepository */
+    private $taxRuleRepository;
 
     public function setUp()
     {
         parent::setUp();
 
         $this->processor = $this->container->get(TaxProcessor::class);
+        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
 
         /** @var RoundingType $RoundingType */
         $RoundingType = $this->entityManager->find(RoundingType::class, RoundingType::ROUND);
@@ -116,6 +124,12 @@ class TaxProcessorTest extends EccubeTestCase
         $this->entityManager->persist($TaxRule);
         $this->entityManager->flush();
         $this->entityManager->refresh($this->TaxRule);
+        $this->entityManager->refresh($TaxRule);
+
+        $this->taxRuleRepository->clearCache();
+        $actual = $this->taxRuleRepository->getByRule($this->Product, $this->ProductClass);
+        self::assertEquals($TaxRule, $actual);
+
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrderWithProductClasses($Customer, $this->Product->getProductClasses()->toArray());
