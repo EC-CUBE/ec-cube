@@ -769,7 +769,7 @@ Styleguide 1.2.7
   font-weight: bold; }
 
 .ec-price .ec-price__tax {
-  font-size: 10px; }
+  font-size: 12px; }
 
 /*
 テキストの位置
@@ -4703,6 +4703,7 @@ Styleguide 11.2
 
 .ec-headerNavSP {
   display: block;
+  cursor: pointer;
   border-radius: 50%;
   box-sizing: border-box;
   padding: 10px;
@@ -5134,6 +5135,7 @@ Styleguide 11.2.6
 
 .ec-drawerRoleClose {
   display: none;
+  cursor: pointer;
   border-radius: 50%;
   box-sizing: border-box;
   padding: 10px;
@@ -6332,7 +6334,7 @@ Styleguide 14.1
     padding-top: 14px; }
   .ec-productRole .ec-productRole__priceRegularTax {
     margin-left: 5px;
-    font-size: 12px; }
+    font-size: 10px; }
   .ec-productRole .ec-productRole__price {
     color: #DE5D50;
     font-size: 28px;

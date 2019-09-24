@@ -153,6 +153,7 @@ Styleguide 11.2
 
 .ec-headerNavSP {
   display: block;
+  cursor: pointer;
   //display: inline-block;
   border-radius: 50%;
   box-sizing: border-box;
@@ -714,6 +715,7 @@ Styleguide 11.2.6
 
 .ec-drawerRoleClose {
   display: none;
+  cursor: pointer;
   border-radius: 50%;
   box-sizing: border-box;
   padding: 10px;
