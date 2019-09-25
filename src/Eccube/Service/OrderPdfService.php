@@ -302,7 +302,7 @@ class OrderPdfService extends TcpdfFpdi
         $this->lfText(125, 60, $this->baseInfoRepository->getShopName(), 8, 'B');
 
         // 都道府県+所在地
-        $text = $this->baseInfoRepository->getAddr01();
+        $text = $this->baseInfoRepository->getPref().$this->baseInfoRepository->getAddr01();
         $this->lfText(125, 65, $text, 8);
         $this->lfText(125, 69, $this->baseInfoRepository->getAddr02(), 8);
 
