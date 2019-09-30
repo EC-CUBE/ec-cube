@@ -15,7 +15,7 @@ jobs:
         db: [ mysql, pgsql, sqlite3 ]
         include:
           - db: mysql
-            database_url: mysql://root:@localhost:3307/cube4_dev
+            database_url: mysql://root:root@localhost/cube4_dev
             database_server_version: 5
           - db: pgsql
             database_url: postgres://postgres:password@localhost:5432/cube4_dev
@@ -31,16 +31,6 @@ jobs:
       uses: nanasess/setup-php@master
       with:
         php-version: ${{ matrix.php }}
-
-    - name: Setup MySQL
-      if: matrix.db == 'mysql'
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        host port: '3307'
-        container port: '3306'
-        mysql version: '5.7'
-        mysql database: 'myapp_test'
-        mysql root password: 'password'
 
     - name: Setup PostgreSQL
       if: matrix.db == 'pgsql'
@@ -124,7 +114,7 @@ jobs:
         cd .github/actions/setup-codeception
         npm install
         npm run build
-    
+
     - name: Setup PHP
       uses: nanasess/setup-php@master
       with:
