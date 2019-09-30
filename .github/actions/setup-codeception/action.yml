@@ -1,0 +1,7 @@
+name: 'setup-codeception'
+description: 'Setup codeception'
+author: 'ec-cube'
+runs:
+  using: 'node12'
+  main: 'lib/setup-codeception.js'
+
