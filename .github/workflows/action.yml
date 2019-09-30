@@ -1,22 +1,61 @@
 name: CI/CD for EC-CUBE
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  release:
+    types: [ published ]
 jobs:
-  run:
-    name: Run
+  run-to-phpunit:
+    name: Run to PHPUnit
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest]
-        php: [7.1, 7.2, 7.3]
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.1, 7.2, 7.3 ]
+        db: [ mysql, pgsql, sqlite3 ]
+        include:
+          - db: mysql
+            database_url: mysql://root:@localhost:3307/cube4_dev
+            database_server_version: 5
+          - db: pgsql
+            database_url: postgres://postgres:password@localhost:5432/cube4_dev
+            database_server_version: 11
+          - db: sqlite3
+            database_url: sqlite:///var/eccube.db
+            database_server_version: 3
+    services:
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
     steps:
     - name: Checkout
       uses: actions/checkout@master
     - name: Setup PHP
       uses: nanasess/setup-php@master
       with:
-        php-version: ${{ matrix.php}}
-    - name: Setup Composer
-      uses: nanasess/composer-installer-action@v1
+        php-version: ${{ matrix.php }}
+
+    - name: Setup MySQL
+      if: matrix.db == 'mysql'
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        host port: '3307'
+        container port: '3306'
+        mysql version: '5.7'
+        mysql database: 'myapp_test'
+        mysql root password: 'password'
+
+    - name: Setup PostgreSQL
+      if: matrix.db == 'pgsql'
+      uses: harmon758/postgresql-action@master
+      with:
+        postgresql version: '11'
+        postgresql db: 'myapp_test'
+        postgresql user: 'postgres'
+        postgresql password: 'password'
+
     - name: Install to Composer
       run: composer install --dev --no-interaction -o
     - name: Setup to EC-CUBE
@@ -26,4 +65,3 @@ jobs:
         bin/console eccube:fixtures:load
     - name: Run to PHPUnit
       run: bin/phpunit --exclude-group cache-clear
-
