@@ -29,3 +29,5 @@ if [[ $1 == '--reset' ]]; then
 fi
 
 php -S localhost:8000 &
+
+exit 0

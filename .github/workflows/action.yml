@@ -79,8 +79,9 @@ jobs:
     #     bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
     #     bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
 
-  run-to-codeception:
-    name: Run to Codeception
+
+  run-to-codeception-package-api:
+    name: Run to Codeception with Package API
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
@@ -144,17 +145,13 @@ jobs:
         bin/console doctrine:schema:create
         bin/console eccube:fixtures:load
 
-    - name: Setup E2E environment
-      run: |
-        sudo apt-fast install -y build-essential debconf-utils screen google-chrome-stable
-        sudo apt-fast install -y unzip xvfb autogen autoconf libtool pkg-config nasm libgconf-2-4 x11-apps
-        wget -c -nc --retry-connrefused --tries=0 http://chromedriver.storage.googleapis.com/2.43/chromedriver_linux64.zip
-        unzip -o -q chromedriver_linux64.zip
-        export DISPLAY=:99
-        ./chromedriver --url-base=/wd/hub &
-        echo ">>> Started chrome-driver"
-        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-        echo ">>> Started xvfb"
+    - name: Setup Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+      uses: ./.github/actions/setup-codeception
 
     - name: Run to Codeception
       env:
@@ -163,6 +160,6 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         GROUP: ${{ matrix.group }}
-      run: ./codeception.sh -g ${GROUP}
+      run: vendor/bin/codecept -vvv run acceptance --env chrome,travis -g ${GROUP}
 
 
