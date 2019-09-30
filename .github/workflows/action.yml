@@ -177,6 +177,6 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         GROUP: ${{ matrix.group }}
-      run: vendor/bin/codecept -vvv run acceptance --env chrome,travis -g ${GROUP}
+      run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
 
 
