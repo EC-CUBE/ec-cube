@@ -23,12 +23,99 @@ jobs:
           - db: sqlite3
             database_url: sqlite:///var/eccube.db
             database_server_version: 3
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    # - name: Setup PHP
+    #   uses: nanasess/setup-php@master
+    #   with:
+    #     php-version: ${{ matrix.php }}
+
+    # - name: Setup MySQL
+    #   if: matrix.db == 'mysql'
+    #   uses: mirromutth/mysql-action@v1.1
+    #   with:
+    #     host port: '3307'
+    #     container port: '3306'
+    #     mysql version: '5.7'
+    #     mysql database: 'myapp_test'
+    #     mysql root password: 'password'
+
+    # - name: Setup PostgreSQL
+    #   if: matrix.db == 'pgsql'
+    #   uses: harmon758/postgresql-action@master
+    #   with:
+    #     postgresql version: '11'
+    #     postgresql db: 'myapp_test'
+    #     postgresql user: 'postgres'
+    #     postgresql password: 'password'
+
+    # - name: Install to Composer
+    #   run: composer install --dev --no-interaction -o
+    # - name: Setup to EC-CUBE
+    #   env:
+    #     DATABASE_URL: ${{ matrix.database_url }}
+    #     DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+    #   run: |
+    #     bin/console doctrine:database:create
+    #     bin/console doctrine:schema:create
+    #     bin/console eccube:fixtures:load
+    # - name: Run to PHPUnit
+    #   env:
+    #     APP_ENV: 'test'
+    #     DATABASE_URL: ${{ matrix.database_url }}
+    #     DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+    #   run: |
+    #     bin/phpunit --exclude-group cache-clear
+    #     bin/phpunit --group cache-clear
+    #     bin/phpunit --group cache-clear-install
+    #     bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
+    #     bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy
+    #     bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithProxy
+    #     bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy
+    #     bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
+    #     bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
+    #     bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
+    #     bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
+
+  run-to-codeception:
+    name: Run to Codeception
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.3 ]
+        db: [ pgsql ]
+        group: [ admin01, admin02, admin03, front, installer ]
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@localhost:5432/cube4_dev
+            database_server_version: 11
+          - group: admin01
+            app_env: 'codeception'
+          - group: admin02
+            app_env: 'codeception'
+          - group: admin03
+            app_env: 'codeception'
+          - group: front
+            app_env: 'codeception'
+          - group: installer
+            app_env: 'install'
     services:
       mailcatcher:
         image: schickling/mailcatcher
         ports:
           - 1080:1080
           - 1025:1025
+      mock-package-api:
+        image: eccube/mock-package-api
+        volumes:
+          - /home/runner/work/ec-cube/ec-cube/repos:/repos
+        ports:
+          - '8080:8080'
+        env:
+          MOCK_REPO_DIR: '/repos'
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -36,16 +123,6 @@ jobs:
       uses: nanasess/setup-php@master
       with:
         php-version: ${{ matrix.php }}
-
-    - name: Setup MySQL
-      if: matrix.db == 'mysql'
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        host port: '3307'
-        container port: '3306'
-        mysql version: '5.7'
-        mysql database: 'myapp_test'
-        mysql root password: 'password'
 
     - name: Setup PostgreSQL
       if: matrix.db == 'pgsql'
@@ -59,9 +136,33 @@ jobs:
     - name: Install to Composer
       run: composer install --dev --no-interaction -o
     - name: Setup to EC-CUBE
+      env:
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
       run: |
         bin/console doctrine:database:create
         bin/console doctrine:schema:create
         bin/console eccube:fixtures:load
-    - name: Run to PHPUnit
-      run: bin/phpunit --exclude-group cache-clear
+
+    - name: Setup E2E environment
+      run: |
+        sudo apt-fast install -y build-essential debconf-utils screen google-chrome-stable
+        sudo apt-fast install -y unzip xvfb autogen autoconf libtool pkg-config nasm libgconf-2-4 x11-apps
+        wget -c -nc --retry-connrefused --tries=0 http://chromedriver.storage.googleapis.com/2.43/chromedriver_linux64.zip
+        unzip -o -q chromedriver_linux64.zip
+        export DISPLAY=:99
+        ./chromedriver --url-base=/wd/hub &
+        echo ">>> Started chrome-driver"
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        echo ">>> Started xvfb"
+
+    - name: Run to Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        GROUP: ${{ matrix.group }}
+      run: ./codeception.sh -g ${GROUP}
+
+
