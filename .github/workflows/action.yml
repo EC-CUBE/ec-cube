@@ -9,16 +9,17 @@ jobs:
     name: Run to PHPUnit
     runs-on: ${{ matrix.operating-system }}
     strategy:
+      fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
         php: [ 7.1, 7.2, 7.3 ]
         db: [ mysql, pgsql, sqlite3 ]
         include:
           - db: mysql
-            database_url: mysql://root:root@localhost/cube4_dev
+            database_url: mysql://root:root@localhost/eccube_db
             database_server_version: 5
           - db: pgsql
-            database_url: postgres://postgres:password@localhost:5432/cube4_dev
+            database_url: postgres://postgres:password@localhost:5432/eccube_db
             database_server_version: 11
           - db: sqlite3
             database_url: sqlite:///var/eccube.db
@@ -57,7 +58,7 @@ jobs:
         DATABASE_URL: ${{ matrix.database_url }}
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
       run: |
-        bin/phpunit --exclude-group cache-clear
+        bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine
         bin/phpunit --group cache-clear
         bin/phpunit --group cache-clear-install
         bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
@@ -73,6 +74,7 @@ jobs:
     name: Run to Codeception
     runs-on: ${{ matrix.operating-system }}
     strategy:
+      fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
         php: [ 7.3 ]
@@ -80,7 +82,7 @@ jobs:
         group: [ admin01, admin02, admin03, front, installer ]
         include:
           - db: pgsql
-            database_url: postgres://postgres:password@localhost:5432/cube4_dev
+            database_url: postgres://postgres:password@localhost:5432/eccube_db
             database_server_version: 11
           - group: admin01
             app_env: 'codeception'
@@ -98,14 +100,7 @@ jobs:
         ports:
           - 1080:1080
           - 1025:1025
-      mock-package-api:
-        image: eccube/mock-package-api
-        volumes:
-          - /home/runner/work/ec-cube/ec-cube/repos:/repos
-        ports:
-          - '8080:8080'
-        env:
-          MOCK_REPO_DIR: '/repos'
+
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -130,8 +125,7 @@ jobs:
         postgresql password: 'password'
 
     - name: Install to Composer
-      run: |
-        composer install --dev --no-interaction -o
+      run: composer install --dev --no-interaction -o
     - name: Setup to EC-CUBE
       env:
         APP_ENV: ${{ matrix.app_env }}
@@ -153,13 +147,15 @@ jobs:
 
     - name: Run chromedriver
       env:
-        APP_ENV: ${{ matrix.app_env }}
+        APP_ENV: 'codeception'
         DATABASE_URL: ${{ matrix.database_url }}
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        NO_FIXTURES: 1
       run: |
         export DISPLAY=:99
-        ./chromedriver --url-base=/wd/hub &
+        chromedriver --url-base=/wd/hub &
         echo ">>> Started chrome-driver"
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
         echo ">>> Started xvfb"
@@ -174,4 +170,461 @@ jobs:
         GROUP: ${{ matrix.group }}
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
 
+  run-to-codeception-with-plugin-install:
+    name: Run to Codeception with Plugin install
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.3 ]
+        db: [ pgsql, mysql ]
+        method:
+          - test_install_enable_disable_remove_store
+          - test_install_enable_disable_remove_local
+          - test_install_enable_disable_enable_disable_remove_store
+          - test_install_enable_disable_enable_disable_remove_local
+          - test_install_remove_local
+          - test_install_remove_store
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@localhost:5432/eccube_db
+            database_server_version: 11
+          - db: mysql
+            database_url: mysql://root:root@localhost/eccube_db
+            database_server_version: 5
 
+    services:
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Setup actions
+      run: |
+        cd .github/actions/setup-codeception
+        npm install
+        npm run build
+
+    - name: Setup PHP
+      uses: nanasess/setup-php@master
+      with:
+        php-version: ${{ matrix.php }}
+
+    - name: Setup PostgreSQL
+      if: matrix.db == 'pgsql'
+      uses: harmon758/postgresql-action@master
+      with:
+        postgresql version: '11'
+        postgresql db: 'myapp_test'
+        postgresql user: 'postgres'
+        postgresql password: 'password'
+
+    - name: Install to Composer
+      run: composer install --dev --no-interaction -o
+    - name: Setup to EC-CUBE
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+      run: |
+        echo "APP_ENV=${APP_ENV}" > .env
+        bin/console doctrine:database:create --env=dev
+        bin/console doctrine:schema:create --env=dev
+        bin/console eccube:fixtures:load --env=dev
+
+    - name: Update baseinfo with pgsql
+      if: matrix.db == 'pgsql'
+      env:
+        PGPASSWORD: 'password'
+      run: |
+        sudo apt-fast install -y postgresql-client
+        psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+
+    - name: Update baseinfo with mysql
+      if: matrix.db == 'mysql'
+      run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
+
+    - name: Setup Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+      uses: ./.github/actions/setup-codeception
+
+    - name: Run chromedriver
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        NO_FIXTURES: 1
+      run: |
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        echo ">>> Started chrome-driver"
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        echo ">>> Started xvfb"
+        php -S localhost:8000 &
+        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+
+    - name: Run to Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        METHOD: ${{ matrix.method }}
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        NO_FIXTURES: 1
+      run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+
+  run-to-codeception-with-plugin-update:
+    name: Run to Codeception with Plugin Update
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.3 ]
+        db: [ pgsql, mysql ]
+        method:
+          - test_install_update_remove_store
+          - test_install_update_remove_local
+          - test_install_enable_disable_update_enable_disable_remove_local
+          - test_install_enable_disable_update_enable_disable_remove_store
+          - test_install_enable_update_disable_remove_store
+          - test_install_enable_update_disable_remove_local
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@localhost:5432/eccube_db
+            database_server_version: 11
+          - db: mysql
+            database_url: mysql://root:root@localhost/eccube_db
+            database_server_version: 5
+
+    services:
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Setup actions
+      run: |
+        cd .github/actions/setup-codeception
+        npm install
+        npm run build
+
+    - name: Setup PHP
+      uses: nanasess/setup-php@master
+      with:
+        php-version: ${{ matrix.php }}
+
+    - name: Setup PostgreSQL
+      if: matrix.db == 'pgsql'
+      uses: harmon758/postgresql-action@master
+      with:
+        postgresql version: '11'
+        postgresql db: 'myapp_test'
+        postgresql user: 'postgres'
+        postgresql password: 'password'
+
+    - name: Install to Composer
+      run: composer install --dev --no-interaction -o
+    - name: Setup to EC-CUBE
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+      run: |
+        echo "APP_ENV=${APP_ENV}" > .env
+        bin/console doctrine:database:create --env=dev
+        bin/console doctrine:schema:create --env=dev
+        bin/console eccube:fixtures:load --env=dev
+
+    - name: Update baseinfo with pgsql
+      if: matrix.db == 'pgsql'
+      env:
+        PGPASSWORD: 'password'
+      run: |
+        sudo apt-fast install -y postgresql-client
+        psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+
+    - name: Update baseinfo with mysql
+      if: matrix.db == 'mysql'
+      run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
+
+    - name: Setup Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+      uses: ./.github/actions/setup-codeception
+
+    - name: Run chromedriver
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        NO_FIXTURES: 1
+      run: |
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        echo ">>> Started chrome-driver"
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        echo ">>> Started xvfb"
+        php -S localhost:8000 &
+        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+
+    - name: Run to Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        METHOD: ${{ matrix.method }}
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        NO_FIXTURES: 1
+      run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+
+  run-to-codeception-with-plugin-extend:
+    name: Run to Codeception with Plugin extend
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.3 ]
+        db: [ pgsql, mysql ]
+        method:
+          - test_extend_same_table_store
+          - test_extend_same_table_disabled_remove_store
+          - test_extend_same_table_local
+          - test_extend_same_table_disabled_remove_local
+          - test_extend_same_table_crossed_store
+          - test_extend_same_table_crossed_local
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@localhost:5432/eccube_db
+            database_server_version: 11
+          - db: mysql
+            database_url: mysql://root:root@localhost/eccube_db
+            database_server_version: 5
+
+    services:
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Setup actions
+      run: |
+        cd .github/actions/setup-codeception
+        npm install
+        npm run build
+
+    - name: Setup PHP
+      uses: nanasess/setup-php@master
+      with:
+        php-version: ${{ matrix.php }}
+
+    - name: Setup PostgreSQL
+      if: matrix.db == 'pgsql'
+      uses: harmon758/postgresql-action@master
+      with:
+        postgresql version: '11'
+        postgresql db: 'myapp_test'
+        postgresql user: 'postgres'
+        postgresql password: 'password'
+
+    - name: Install to Composer
+      run: composer install --dev --no-interaction -o
+    - name: Setup to EC-CUBE
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+      run: |
+        echo "APP_ENV=${APP_ENV}" > .env
+        bin/console doctrine:database:create --env=dev
+        bin/console doctrine:schema:create --env=dev
+        bin/console eccube:fixtures:load --env=dev
+
+    - name: Update baseinfo with pgsql
+      if: matrix.db == 'pgsql'
+      env:
+        PGPASSWORD: 'password'
+      run: |
+        sudo apt-fast install -y postgresql-client
+        psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+
+    - name: Update baseinfo with mysql
+      if: matrix.db == 'mysql'
+      run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
+
+    - name: Setup Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+      uses: ./.github/actions/setup-codeception
+
+    - name: Run chromedriver
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        NO_FIXTURES: 1
+      run: |
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        echo ">>> Started chrome-driver"
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        echo ">>> Started xvfb"
+        php -S localhost:8000 &
+        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+
+    - name: Run to Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        METHOD: ${{ matrix.method }}
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        NO_FIXTURES: 1
+      run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+
+  run-to-codeception-with-plugin-depend:
+    name: Run to Codeception with Plugin depend
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.3 ]
+        db: [ pgsql, mysql ]
+        method:
+          - test_dependency_each_install_plugin
+          - test_dependency_plugin_install
+          - test_dependency_plugin_update
+          - test_install_error
+          - install_enable_disable_enable_disable_remove_store
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@localhost:5432/eccube_db
+            database_server_version: 11
+          - db: mysql
+            database_url: mysql://root:root@localhost/eccube_db
+            database_server_version: 5
+
+    services:
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Setup actions
+      run: |
+        cd .github/actions/setup-codeception
+        npm install
+        npm run build
+
+    - name: Setup PHP
+      uses: nanasess/setup-php@master
+      with:
+        php-version: ${{ matrix.php }}
+
+    - name: Setup PostgreSQL
+      if: matrix.db == 'pgsql'
+      uses: harmon758/postgresql-action@master
+      with:
+        postgresql version: '11'
+        postgresql db: 'myapp_test'
+        postgresql user: 'postgres'
+        postgresql password: 'password'
+
+    - name: Install to Composer
+      run: composer install --dev --no-interaction -o
+    - name: Setup to EC-CUBE
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+      run: |
+        echo "APP_ENV=${APP_ENV}" > .env
+        bin/console doctrine:database:create --env=dev
+        bin/console doctrine:schema:create --env=dev
+        bin/console eccube:fixtures:load --env=dev
+
+    - name: Update baseinfo with pgsql
+      if: matrix.db == 'pgsql'
+      env:
+        PGPASSWORD: 'password'
+      run: |
+        sudo apt-fast install -y postgresql-client
+        psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+
+    - name: Update baseinfo with mysql
+      if: matrix.db == 'mysql'
+      run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
+
+    - name: Setup Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+      uses: ./.github/actions/setup-codeception
+
+    - name: Run chromedriver
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        NO_FIXTURES: 1
+      run: |
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        echo ">>> Started chrome-driver"
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        echo ">>> Started xvfb"
+        php -S localhost:8000 &
+        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+
+    - name: Run to Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        METHOD: ${{ matrix.method }}
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        NO_FIXTURES: 1
+      run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
