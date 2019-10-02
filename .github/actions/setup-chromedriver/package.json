@@ -1,9 +1,9 @@
 {
-  "name": "setup-codeception",
+  "name": "setup-chromedriver",
   "version": "1.0.0",
   "private": true,
-  "description": "setup-codeception",
-  "main": "lib/setup-codeception.js",
+  "description": "setup-chromedriver",
+  "main": "lib/setup-chromedriver.js",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write **/*.ts",

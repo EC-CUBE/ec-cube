@@ -1,7 +1,7 @@
-name: 'setup-codeception'
-description: 'Setup codeception'
+name: 'setup-chromedriver'
+description: 'Setup chromedriver'
 author: 'ec-cube'
 runs:
   using: 'node12'
-  main: 'lib/setup-codeception.js'
+  main: 'lib/setup-chromedriver.js'
 
