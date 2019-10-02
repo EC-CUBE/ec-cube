@@ -5,8 +5,8 @@ on:
   release:
     types: [ published ]
 jobs:
-  run-to-phpunit:
-    name: Run to PHPUnit
+  phpunit:
+    name: PHPUnit
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -16,7 +16,7 @@ jobs:
         db: [ mysql, pgsql, sqlite3 ]
         include:
           - db: mysql
-            database_url: mysql://root:root@localhost/eccube_db
+            database_url: mysql://root:root@localhost:3306/eccube_db
             database_server_version: 5
           - db: pgsql
             database_url: postgres://postgres:password@localhost:5432/eccube_db
@@ -24,6 +24,18 @@ jobs:
           - db: sqlite3
             database_url: sqlite:///var/eccube.db
             database_server_version: 3
+
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
     - name: Checkout
@@ -33,18 +45,10 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
 
-    - name: Setup PostgreSQL
-      if: matrix.db == 'pgsql'
-      uses: harmon758/postgresql-action@master
-      with:
-        postgresql version: '11'
-        postgresql db: 'myapp_test'
-        postgresql user: 'postgres'
-        postgresql password: 'password'
+    - name: composer install
+      run: composer install --dev --no-interaction -o --apcu-autoloader
 
-    - name: Install to Composer
-      run: composer install --dev --no-interaction -o
-    - name: Setup to EC-CUBE
+    - name: Setup EC-CUBE
       env:
         DATABASE_URL: ${{ matrix.database_url }}
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
@@ -52,7 +56,8 @@ jobs:
         bin/console doctrine:database:create
         bin/console doctrine:schema:create
         bin/console eccube:fixtures:load
-    - name: Run to PHPUnit
+
+    - name: PHPUnit
       env:
         APP_ENV: 'test'
         DATABASE_URL: ${{ matrix.database_url }}
@@ -70,8 +75,8 @@ jobs:
         bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
         bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
 
-  run-to-codeception:
-    name: Run to Codeception
+  codeception:
+    name: Codeception
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -95,6 +100,17 @@ jobs:
           - group: installer
             app_env: 'install'
     services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
       mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -106,7 +122,7 @@ jobs:
       uses: actions/checkout@master
     - name: Setup actions
       run: |
-        cd .github/actions/setup-codeception
+        cd .github/actions/setup-chromedriver
         npm install
         npm run build
 
@@ -115,17 +131,8 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
 
-    - name: Setup PostgreSQL
-      if: matrix.db == 'pgsql'
-      uses: harmon758/postgresql-action@master
-      with:
-        postgresql version: '11'
-        postgresql db: 'myapp_test'
-        postgresql user: 'postgres'
-        postgresql password: 'password'
-
-    - name: Install to Composer
-      run: composer install --dev --no-interaction -o
+    - name: composer install
+      run: composer install --dev --no-interaction -o --apcu-autoloader
     - name: Setup to EC-CUBE
       env:
         APP_ENV: ${{ matrix.app_env }}
@@ -137,41 +144,38 @@ jobs:
         bin/console doctrine:schema:create --env=dev
         bin/console eccube:fixtures:load --env=dev
 
-    - name: Setup Codeception
-      env:
-        APP_ENV: ${{ matrix.app_env }}
-        DATABASE_URL: ${{ matrix.database_url }}
-        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-        MAILER_URL: 'smtp://localhost:1025'
-      uses: ./.github/actions/setup-codeception
+    - name: setup-chromedriver
+      uses: ./.github/actions/setup-chromedriver
 
     - name: Run chromedriver
-      env:
-        APP_ENV: 'codeception'
-        DATABASE_URL: ${{ matrix.database_url }}
-        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-        MAILER_URL: 'smtp://localhost:1025'
-        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        NO_FIXTURES: 1
       run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
         echo ">>> Started chrome-driver"
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
         echo ">>> Started xvfb"
-        php -S localhost:8000 &
 
-    - name: Run to Codeception
+    - name: Start PHP Development Server
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+      run: php -S localhost:8000 &
+
+    - name: Codeception
       env:
         APP_ENV: ${{ matrix.app_env }}
         DATABASE_URL: ${{ matrix.database_url }}
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
         GROUP: ${{ matrix.group }}
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
 
-  run-to-codeception-with-plugin-install:
-    name: Run to Codeception with Plugin install
+  plugin-install:
+    name: Plugin install
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -191,10 +195,20 @@ jobs:
             database_url: postgres://postgres:password@localhost:5432/eccube_db
             database_server_version: 11
           - db: mysql
-            database_url: mysql://root:root@localhost/eccube_db
+            database_url: mysql://root:root@localhost:3306/eccube_db
             database_server_version: 5
 
     services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -206,7 +220,7 @@ jobs:
       uses: actions/checkout@master
     - name: Setup actions
       run: |
-        cd .github/actions/setup-codeception
+        cd .github/actions/setup-chromedriver
         npm install
         npm run build
 
@@ -215,17 +229,9 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
 
-    - name: Setup PostgreSQL
-      if: matrix.db == 'pgsql'
-      uses: harmon758/postgresql-action@master
-      with:
-        postgresql version: '11'
-        postgresql db: 'myapp_test'
-        postgresql user: 'postgres'
-        postgresql password: 'password'
+    - name: composer install
+      run: composer install --dev --no-interaction -o --apcu-autoloader
 
-    - name: Install to Composer
-      run: composer install --dev --no-interaction -o
     - name: Setup to EC-CUBE
       env:
         APP_ENV: 'codeception'
@@ -249,32 +255,31 @@ jobs:
       if: matrix.db == 'mysql'
       run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
 
-    - name: Setup Codeception
-      env:
-        APP_ENV: ${{ matrix.app_env }}
-        DATABASE_URL: ${{ matrix.database_url }}
-        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-        MAILER_URL: 'smtp://localhost:1025'
-      uses: ./.github/actions/setup-codeception
+    - name: setup-chromedriver
+      uses: ./.github/actions/setup-chromedriver
 
     - name: Run chromedriver
-      env:
-        APP_ENV: 'codeception'
-        DATABASE_URL: ${{ matrix.database_url }}
-        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-        MAILER_URL: 'smtp://localhost:1025'
-        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        NO_FIXTURES: 1
       run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
         echo ">>> Started chrome-driver"
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
         echo ">>> Started xvfb"
-        php -S localhost:8000 &
-        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
 
-    - name: Run to Codeception
+    - name: Start PHP Development Server
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+      run: php -S localhost:8000 &
+
+    ## $ {PWD}/repos does not exist so service cannot be started
+    - name: Run package-api
+      run: docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+
+    - name: Codeception
       env:
         APP_ENV: ${{ matrix.app_env }}
         DATABASE_URL: ${{ matrix.database_url }}
@@ -285,8 +290,8 @@ jobs:
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
 
-  run-to-codeception-with-plugin-update:
-    name: Run to Codeception with Plugin Update
+  plugin-update:
+    name: Plugin Update
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -306,10 +311,20 @@ jobs:
             database_url: postgres://postgres:password@localhost:5432/eccube_db
             database_server_version: 11
           - db: mysql
-            database_url: mysql://root:root@localhost/eccube_db
+            database_url: mysql://root:root@localhost:3306/eccube_db
             database_server_version: 5
 
     services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -321,7 +336,7 @@ jobs:
       uses: actions/checkout@master
     - name: Setup actions
       run: |
-        cd .github/actions/setup-codeception
+        cd .github/actions/setup-chromedriver
         npm install
         npm run build
 
@@ -330,17 +345,8 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
 
-    - name: Setup PostgreSQL
-      if: matrix.db == 'pgsql'
-      uses: harmon758/postgresql-action@master
-      with:
-        postgresql version: '11'
-        postgresql db: 'myapp_test'
-        postgresql user: 'postgres'
-        postgresql password: 'password'
-
     - name: Install to Composer
-      run: composer install --dev --no-interaction -o
+      run: composer install --dev --no-interaction -o --apcu-autoloader
     - name: Setup to EC-CUBE
       env:
         APP_ENV: 'codeception'
@@ -364,30 +370,29 @@ jobs:
       if: matrix.db == 'mysql'
       run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
 
-    - name: Setup Codeception
-      env:
-        APP_ENV: ${{ matrix.app_env }}
-        DATABASE_URL: ${{ matrix.database_url }}
-        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-        MAILER_URL: 'smtp://localhost:1025'
-      uses: ./.github/actions/setup-codeception
+    - name: setup-chromedriver
+      uses: ./.github/actions/setup-chromedriver
 
     - name: Run chromedriver
-      env:
-        APP_ENV: 'codeception'
-        DATABASE_URL: ${{ matrix.database_url }}
-        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-        MAILER_URL: 'smtp://localhost:1025'
-        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        NO_FIXTURES: 1
       run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
         echo ">>> Started chrome-driver"
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
         echo ">>> Started xvfb"
-        php -S localhost:8000 &
-        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+
+    - name: Start PHP Development Server
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+      run: php -S localhost:8000 &
+
+    ## $ {PWD}/repos does not exist so service cannot be started
+    - name: Run package-api
+      run: docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
 
     - name: Run to Codeception
       env:
@@ -400,8 +405,8 @@ jobs:
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
 
-  run-to-codeception-with-plugin-extend:
-    name: Run to Codeception with Plugin extend
+  plugin-extend:
+    name: Plugin extend
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -421,10 +426,20 @@ jobs:
             database_url: postgres://postgres:password@localhost:5432/eccube_db
             database_server_version: 11
           - db: mysql
-            database_url: mysql://root:root@localhost/eccube_db
+            database_url: mysql://root:root@localhost:3306/eccube_db
             database_server_version: 5
 
     services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -436,7 +451,7 @@ jobs:
       uses: actions/checkout@master
     - name: Setup actions
       run: |
-        cd .github/actions/setup-codeception
+        cd .github/actions/setup-chromedriver
         npm install
         npm run build
 
@@ -445,17 +460,8 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
 
-    - name: Setup PostgreSQL
-      if: matrix.db == 'pgsql'
-      uses: harmon758/postgresql-action@master
-      with:
-        postgresql version: '11'
-        postgresql db: 'myapp_test'
-        postgresql user: 'postgres'
-        postgresql password: 'password'
-
     - name: Install to Composer
-      run: composer install --dev --no-interaction -o
+      run: composer install --dev --no-interaction -o --apcu-autoloader
     - name: Setup to EC-CUBE
       env:
         APP_ENV: 'codeception'
@@ -479,30 +485,29 @@ jobs:
       if: matrix.db == 'mysql'
       run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
 
-    - name: Setup Codeception
-      env:
-        APP_ENV: ${{ matrix.app_env }}
-        DATABASE_URL: ${{ matrix.database_url }}
-        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-        MAILER_URL: 'smtp://localhost:1025'
-      uses: ./.github/actions/setup-codeception
+    - name: setup-chromedriver
+      uses: ./.github/actions/setup-chromedriver
 
     - name: Run chromedriver
-      env:
-        APP_ENV: 'codeception'
-        DATABASE_URL: ${{ matrix.database_url }}
-        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-        MAILER_URL: 'smtp://localhost:1025'
-        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        NO_FIXTURES: 1
       run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
         echo ">>> Started chrome-driver"
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
         echo ">>> Started xvfb"
-        php -S localhost:8000 &
-        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+
+    - name: Start PHP Development Server
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+      run: php -S localhost:8000 &
+
+    ## $ {PWD}/repos does not exist so service cannot be started
+    - name: Run package-api
+      run: docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
 
     - name: Run to Codeception
       env:
@@ -515,8 +520,8 @@ jobs:
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
 
-  run-to-codeception-with-plugin-depend:
-    name: Run to Codeception with Plugin depend
+  plugin-depend:
+    name: Plugin depend
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -535,10 +540,20 @@ jobs:
             database_url: postgres://postgres:password@localhost:5432/eccube_db
             database_server_version: 11
           - db: mysql
-            database_url: mysql://root:root@localhost/eccube_db
+            database_url: mysql://root:root@localhost:3306/eccube_db
             database_server_version: 5
 
     services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -550,7 +565,7 @@ jobs:
       uses: actions/checkout@master
     - name: Setup actions
       run: |
-        cd .github/actions/setup-codeception
+        cd .github/actions/setup-chromedriver
         npm install
         npm run build
 
@@ -559,17 +574,8 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
 
-    - name: Setup PostgreSQL
-      if: matrix.db == 'pgsql'
-      uses: harmon758/postgresql-action@master
-      with:
-        postgresql version: '11'
-        postgresql db: 'myapp_test'
-        postgresql user: 'postgres'
-        postgresql password: 'password'
-
     - name: Install to Composer
-      run: composer install --dev --no-interaction -o
+      run: composer install --dev --no-interaction -o --apcu-autoloader
     - name: Setup to EC-CUBE
       env:
         APP_ENV: 'codeception'
@@ -593,30 +599,29 @@ jobs:
       if: matrix.db == 'mysql'
       run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
 
-    - name: Setup Codeception
-      env:
-        APP_ENV: ${{ matrix.app_env }}
-        DATABASE_URL: ${{ matrix.database_url }}
-        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-        MAILER_URL: 'smtp://localhost:1025'
-      uses: ./.github/actions/setup-codeception
+    - name: setup-chromedriver
+      uses: ./.github/actions/setup-chromedriver
 
     - name: Run chromedriver
-      env:
-        APP_ENV: 'codeception'
-        DATABASE_URL: ${{ matrix.database_url }}
-        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-        MAILER_URL: 'smtp://localhost:1025'
-        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        NO_FIXTURES: 1
       run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
         echo ">>> Started chrome-driver"
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
         echo ">>> Started xvfb"
-        php -S localhost:8000 &
-        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+
+    - name: Start PHP Development Server
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+      run: php -S localhost:8000 &
+
+    ## $ {PWD}/repos does not exist so service cannot be started
+    - name: Run package-api
+      run: docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
 
     - name: Run to Codeception
       env:
