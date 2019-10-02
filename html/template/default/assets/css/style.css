@@ -5805,6 +5805,8 @@ Styleguide 12.6.1
     margin-bottom: 4%;
     width: 48%;
     height: auto; }
+    .ec-newItemRole .ec-newItemRole__listItem:not(:first-child) a {
+      color: black; }
     .ec-newItemRole .ec-newItemRole__listItem:nth-child(odd) {
       margin-right: 4%; }
   .ec-newItemRole .ec-newItemRole__listItemHeading {
@@ -5812,11 +5814,9 @@ Styleguide 12.6.1
   .ec-newItemRole .ec-newItemRole__listItemTitle {
     margin: 8px 0;
     font-size: 14px;
-    font-weight: bold;
-    color: black; }
+    font-weight: bold; }
   .ec-newItemRole .ec-newItemRole__listItemPrice {
-    font-size: 12px;
-    color: black; }
+    font-size: 12px; }
 
 /**
 メディアクエリ
