@@ -714,14 +714,14 @@ jobs:
         chmod -R o+w $GITHUB_WORKSPACE
 
         echo "complession files..."
-        tar czfp $TAG_NAME.tar.gz $REPOSITORY_NAME
-        zip -ry $TAG_NAME.zip $REPOSITORY_NAME 1> /dev/null
-        md5sum $TAG_NAME.tar.gz | awk '{ print $1 }' > $TAG_NAME.tar.gz.checksum.md5
-        md5sum $TAG_NAME.zip | awk '{ print $1 }' > $TAG_NAME.zip.checksum.md5
-        sha1sum $TAG_NAME.tar.gz | awk '{ print $1 }' > $TAG_NAME.tar.gz.checksum.sha1
-        sha1sum $TAG_NAME.zip | awk '{ print $1 }' > $TAG_NAME.zip.checksum.sha1
-        sha256sum $TAG_NAME.tar.gz | awk '{ print $1 }' > $TAG_NAME.tar.gz.checksum.sha256
-        sha256sum $TAG_NAME.zip | awk '{ print $1 }' > $TAG_NAME.zip.checksum.sha256
+        tar czfp eccube-$TAG_NAME.tar.gz $REPOSITORY_NAME
+        zip -ry eccube-$TAG_NAME.zip $REPOSITORY_NAME 1> /dev/null
+        md5sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.md5
+        md5sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.md5
+        sha1sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.sha1
+        sha1sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.sha1
+        sha256sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.sha256
+        sha256sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.sha256
         ls -al
 
     - name: Upload binaries to release of TGZ
@@ -729,8 +729,8 @@ jobs:
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ runner.workspace }}/${{ github.event.release.tag_name }}.tar.gz
-        asset_name: ${{ github.event.release.tag_name }}.tar.gz
+        file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz
+        asset_name: eccube-${{ github.event.release.tag_name }}.tar.gz
         tag: ${{ github.ref }}
         overwrite: true
     - name: Upload binaries to release of ZIP
@@ -738,8 +738,8 @@ jobs:
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ runner.workspace }}/${{ github.event.release.tag_name }}.zip
-        asset_name: ${{ github.event.release.tag_name }}.zip
+        file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip
+        asset_name: eccube-${{ github.event.release.tag_name }}.zip
         tag: ${{ github.ref }}
         overwrite: true
     - name: Upload binaries to release of TGZ md5 checksum
@@ -747,8 +747,8 @@ jobs:
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ runner.workspace }}/${{ github.event.release.tag_name }}.tar.gz.checksum.md5
-        asset_name: ${{ github.event.release.tag_name }}.tar.gz.checksum.md5
+        file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.md5
+        asset_name: eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.md5
         tag: ${{ github.ref }}
         overwrite: true
     - name: Upload binaries to release of TGZ sha1 checksum
@@ -756,8 +756,8 @@ jobs:
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ runner.workspace }}/${{ github.event.release.tag_name }}.tar.gz.checksum.sha1
-        asset_name: ${{ github.event.release.tag_name }}.tar.gz.checksum.sha1
+        file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha1
+        asset_name: eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha1
         tag: ${{ github.ref }}
         overwrite: true
     - name: Upload binaries to release of TGZ sha256 checksum
@@ -765,8 +765,8 @@ jobs:
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ runner.workspace }}/${{ github.event.release.tag_name }}.tar.gz.checksum.sha256
-        asset_name: ${{ github.event.release.tag_name }}.tar.gz.checksum.sha256
+        file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha256
+        asset_name: eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha256
         tag: ${{ github.ref }}
         overwrite: true
     - name: Upload binaries to release of ZIP md5 checksum
@@ -774,8 +774,8 @@ jobs:
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ runner.workspace }}/${{ github.event.release.tag_name }}.zip.checksum.md5
-        asset_name: ${{ github.event.release.tag_name }}.zip.checksum.md5
+        file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.md5
+        asset_name: eccube-${{ github.event.release.tag_name }}.zip.checksum.md5
         tag: ${{ github.ref }}
         overwrite: true
     - name: Upload binaries to release of ZIP sha1 checksum
@@ -783,8 +783,8 @@ jobs:
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ runner.workspace }}/${{ github.event.release.tag_name }}.zip.checksum.sha1
-        asset_name: ${{ github.event.release.tag_name }}.zip.checksum.sha1
+        file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.sha1
+        asset_name: eccube-${{ github.event.release.tag_name }}.zip.checksum.sha1
         tag: ${{ github.ref }}
         overwrite: true
     - name: Upload binaries to release of ZIP sha256 checksum
@@ -792,7 +792,7 @@ jobs:
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ runner.workspace }}/${{ github.event.release.tag_name }}.zip.checksum.sha256
-        asset_name: ${{ github.event.release.tag_name }}.zip.checksum.sha256
+        file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.sha256
+        asset_name: eccube-${{ github.event.release.tag_name }}.zip.checksum.sha256
         tag: ${{ github.ref }}
         overwrite: true
