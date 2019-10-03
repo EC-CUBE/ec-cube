@@ -120,11 +120,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - name: Setup actions
-      run: |
-        cd .github/actions/setup-chromedriver
-        npm install
-        npm run build
 
     - name: Setup PHP
       uses: nanasess/setup-php@master
@@ -145,7 +140,9 @@ jobs:
         bin/console eccube:fixtures:load --env=dev
 
     - name: setup-chromedriver
-      uses: ./.github/actions/setup-chromedriver
+      uses: nanasess/setup-chromedriver@master
+      with:
+        chromedriver-version: '77.0.3865.40'
 
     - name: Run chromedriver
       run: |
@@ -218,11 +215,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - name: Setup actions
-      run: |
-        cd .github/actions/setup-chromedriver
-        npm install
-        npm run build
 
     - name: Setup PHP
       uses: nanasess/setup-php@master
@@ -256,7 +248,9 @@ jobs:
       run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
 
     - name: setup-chromedriver
-      uses: ./.github/actions/setup-chromedriver
+      uses: nanasess/setup-chromedriver@master
+      with:
+        chromedriver-version: '77.0.3865.40'
 
     - name: Run chromedriver
       run: |
@@ -334,11 +328,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - name: Setup actions
-      run: |
-        cd .github/actions/setup-chromedriver
-        npm install
-        npm run build
 
     - name: Setup PHP
       uses: nanasess/setup-php@master
@@ -371,7 +360,9 @@ jobs:
       run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
 
     - name: setup-chromedriver
-      uses: ./.github/actions/setup-chromedriver
+      uses: nanasess/setup-chromedriver@master
+      with:
+        chromedriver-version: '77.0.3865.40'
 
     - name: Run chromedriver
       run: |
@@ -449,11 +440,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - name: Setup actions
-      run: |
-        cd .github/actions/setup-chromedriver
-        npm install
-        npm run build
 
     - name: Setup PHP
       uses: nanasess/setup-php@master
@@ -486,7 +472,9 @@ jobs:
       run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
 
     - name: setup-chromedriver
-      uses: ./.github/actions/setup-chromedriver
+      uses: nanasess/setup-chromedriver@master
+      with:
+        chromedriver-version: '77.0.3865.40'
 
     - name: Run chromedriver
       run: |
@@ -563,11 +551,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - name: Setup actions
-      run: |
-        cd .github/actions/setup-chromedriver
-        npm install
-        npm run build
 
     - name: Setup PHP
       uses: nanasess/setup-php@master
@@ -600,7 +583,9 @@ jobs:
       run: mysql -h 127.0.0.1 -u root -proot eccube_db -e "update dtb_base_info set authentication_key='test';"
 
     - name: setup-chromedriver
-      uses: ./.github/actions/setup-chromedriver
+      uses: nanasess/setup-chromedriver@master
+      with:
+        chromedriver-version: '77.0.3865.40'
 
     - name: Run chromedriver
       run: |
