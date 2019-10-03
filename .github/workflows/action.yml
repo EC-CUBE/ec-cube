@@ -633,6 +633,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Setup PHP
+      if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
       uses: nanasess/setup-php@master
       with:
         php-version: '7.3'
@@ -667,6 +668,7 @@ jobs:
       run: echo "$MATRIX_CONTEXT"
 
     - name: Translate to templates
+      if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
       run: php bin/template_jp.php
 
     - name: Packaging
