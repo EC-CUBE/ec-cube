@@ -93,4 +93,14 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
 
         $this->assertTrue($this->form->isValid());
     }
+
+    public function testInvalidEmail_MaxLength()
+    {
+        $mail = str_repeat("a", $this->eccubeConfig['eccube_stext_len'] - strlen('@example.com') + 1) . '@example.com';
+        $this->formData['email']['first'] = $mail;
+        $this->formData['email']['second'] = $mail;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
 }
