@@ -142,7 +142,7 @@ jobs:
     - name: setup-chromedriver
       uses: nanasess/setup-chromedriver@master
       with:
-        chromedriver-version: '77.0.3865.40'
+        chromedriver-version: '2.43'
 
     - name: Run chromedriver
       run: |
