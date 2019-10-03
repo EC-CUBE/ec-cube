@@ -531,6 +531,9 @@ jobs:
           - db: mysql
             database_url: mysql://root:root@localhost:3306/eccube_db
             database_server_version: 5
+        exclude:
+          - db: mysql
+            method: test_dependency_plugin_update
 
     services:
       postgres:
