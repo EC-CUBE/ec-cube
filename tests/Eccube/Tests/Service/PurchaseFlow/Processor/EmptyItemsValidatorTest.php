@@ -18,7 +18,6 @@ use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
-use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\Processor\EmptyItemsValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -85,6 +84,15 @@ class EmptyItemsValidatorTest extends EccubeTestCase
     public function testEmptyItem()
     {
         $this->OrderItem->setQuantity(0);
+
+        $result = $this->validator->execute($this->Order, new PurchaseContext());
+        
+        self::assertEquals(count($this->Order->getOrderItems()), 0);
+    }
+
+    public function testMinusItem()
+    {
+        $this->OrderItem->setQuantity(-1);
 
         $result = $this->validator->execute($this->Order, new PurchaseContext());
         
