@@ -135,11 +135,10 @@ class EntryController extends AbstractController
                         log_info('仮会員登録完了画面へリダイレクト');
 
                         return $app->redirect($app->url('entry_complete'));
-                        // 仮会員設定が無効な場合は認証URLへ遷移させ、会員登録を完了させる.
                     } else {
-                        log_info('本会員登録画面へリダイレクト');
+                        // 仮会員設定が無効な場合は、会員登録を完了させる.
+                        return $this->entryActivate($app, $request, $Customer->getSecretKey());
 
-                        return $app->redirect($activateUrl);
                     }
             }
         }
@@ -179,42 +178,51 @@ class EntryController extends AbstractController
         );
 
         if ($request->getMethod() === 'GET' && count($errors) === 0) {
-            log_info('本会員登録開始');
-            try {
-                $Customer = $app['eccube.repository.customer']
-                    ->getNonActiveCustomerBySecretKey($secret_key);
-            } catch (\Exception $e) {
-                throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
-            }
 
-            $CustomerStatus = $app['eccube.repository.customer_status']->find(CustomerStatus::ACTIVE);
-            $Customer->setStatus($CustomerStatus);
-            $app['orm.em']->persist($Customer);
-            $app['orm.em']->flush();
+            // 本会員登録処理を行う
+            return $this->entryActivate($app, $request, $secret_key);
 
-            log_info('本会員登録完了');
-
-            $event = new EventArgs(
-                array(
-                    'Customer' => $Customer,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE, $event);
-
-            // メール送信
-            $app['eccube.service.mail']->sendCustomerCompleteMail($Customer);
-
-            // 本会員登録してログイン状態にする
-            $token = new UsernamePasswordToken($Customer, null, 'customer', array('ROLE_USER'));
-            $this->getSecurity($app)->setToken($token);
-            $request->getSession()->migrate(true, $app['config']['cookie_lifetime']);
-
-            log_info('ログイン済に変更', array($app->user()->getId()));
-
-            return $app->render('Entry/activate.twig');
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }
     }
+
+    private function entryActivate(Application $app, Request $request, $secret_key)
+    {
+        log_info('本会員登録開始');
+        try {
+            $Customer = $app['eccube.repository.customer']
+                ->getNonActiveCustomerBySecretKey($secret_key);
+        } catch (\Exception $e) {
+            throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
+        }
+
+        $CustomerStatus = $app['eccube.repository.customer_status']->find(CustomerStatus::ACTIVE);
+        $Customer->setStatus($CustomerStatus);
+        $app['orm.em']->persist($Customer);
+        $app['orm.em']->flush();
+
+        log_info('本会員登録完了');
+
+        $event = new EventArgs(
+            array(
+                'Customer' => $Customer,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE, $event);
+
+        // メール送信
+        $app['eccube.service.mail']->sendCustomerCompleteMail($Customer);
+
+        // 本会員登録してログイン状態にする
+        $token = new UsernamePasswordToken($Customer, null, 'customer', array('ROLE_USER'));
+        $this->getSecurity($app)->setToken($token);
+        $request->getSession()->migrate(true);
+
+        log_info('ログイン済に変更', array($app->user()->getId()));
+
+        return $app->render('Entry/activate.twig');
+    }
+
 }
