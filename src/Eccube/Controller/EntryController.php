@@ -199,11 +199,15 @@ class EntryController extends AbstractController
                         log_info('仮会員登録完了画面へリダイレクト');
 
                         return $this->redirectToRoute('entry_complete');
-                    // 仮会員設定が無効な場合は認証URLへ遷移させ、会員登録を完了させる.
-                    } else {
-                        log_info('本会員登録画面へリダイレクト');
 
-                        return $this->redirect($activateUrl);
+                    } else {
+                        // 仮会員設定が無効な場合は、会員登録を完了させる.
+                        $qtyInCart = $this->entryActivate($request, $Customer->getSecretKey());
+
+                        return $this->render('Entry/activate.twig', [
+                            'qtyInCart' => $qtyInCart,
+                        ]);
+
                     }
             }
         }
@@ -245,46 +249,9 @@ class EntryController extends AbstractController
         );
 
         if ($request->getMethod() === 'GET' && count($errors) === 0) {
-            log_info('本会員登録開始');
-            $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);
-            if (is_null($Customer)) {
-                throw new HttpException\NotFoundHttpException();
-            }
 
-            $CustomerStatus = $this->customerStatusRepository->find(CustomerStatus::REGULAR);
-            $Customer->setStatus($CustomerStatus);
-            $this->entityManager->persist($Customer);
-            $this->entityManager->flush();
-
-            log_info('本会員登録完了');
-
-            $event = new EventArgs(
-                [
-                    'Customer' => $Customer,
-                ],
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE, $event);
-
-            // メール送信
-            $this->mailService->sendCustomerCompleteMail($Customer);
-
-            // Assign session carts into customer carts
-            $Carts = $this->cartService->getCarts();
-            $qtyInCart = array_reduce($Carts, function ($qty, $Cart) {
-                return $qty + $Cart->getTotalQuantity();
-            });
-
-            // 本会員登録してログイン状態にする
-            $token = new UsernamePasswordToken($Customer, null, 'customer', ['ROLE_USER']);
-            $this->tokenStorage->setToken($token);
-            $request->getSession()->migrate(true);
-
-            if ($qtyInCart) {
-                $this->cartService->save();
-            }
-
-            log_info('ログイン済に変更', [$this->getUser()->getId()]);
+            // 会員登録処理を行う
+            $qtyInCart = $this->entryActivate($request, $secret_key);
 
             return [
                 'qtyInCart' => $qtyInCart,
@@ -293,4 +260,60 @@ class EntryController extends AbstractController
 
         throw new HttpException\NotFoundHttpException();
     }
+
+
+    /**
+     * 会員登録処理を行う
+     *
+     * @param Request $request
+     * @param $secret_key
+     * @return \Eccube\Entity\Cart|mixed
+     */
+    private function entryActivate(Request $request, $secret_key)
+    {
+        log_info('本会員登録開始');
+        $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);
+        if (is_null($Customer)) {
+            throw new HttpException\NotFoundHttpException();
+        }
+
+        $CustomerStatus = $this->customerStatusRepository->find(CustomerStatus::REGULAR);
+        $Customer->setStatus($CustomerStatus);
+        $this->entityManager->persist($Customer);
+        $this->entityManager->flush();
+
+        log_info('本会員登録完了');
+
+        $event = new EventArgs(
+            [
+                'Customer' => $Customer,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE, $event);
+
+        // メール送信
+        $this->mailService->sendCustomerCompleteMail($Customer);
+
+        // Assign session carts into customer carts
+        $Carts = $this->cartService->getCarts();
+        $qtyInCart = array_reduce($Carts, function ($qty, $Cart) {
+            return $qty + $Cart->getTotalQuantity();
+        });
+
+        // 本会員登録してログイン状態にする
+        $token = new UsernamePasswordToken($Customer, null, 'customer', ['ROLE_USER']);
+        $this->tokenStorage->setToken($token);
+        $request->getSession()->migrate(true);
+
+        if ($qtyInCart) {
+            $this->cartService->save();
+        }
+
+        log_info('ログイン済に変更', [$this->getUser()->getId()]);
+
+        return $qtyInCart;
+
+    }
+
 }
