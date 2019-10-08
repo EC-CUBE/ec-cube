@@ -5093,6 +5093,9 @@ Styleguide 11.2.6
     font-weight: bold;
     color: black;
     background: #F8F8F8; }
+  .ec-drawerRole .ec-headerCategoryArea p {
+    margin-top: 0;
+    margin-bottom: 0; }
   .ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li a {
     border-bottom: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
