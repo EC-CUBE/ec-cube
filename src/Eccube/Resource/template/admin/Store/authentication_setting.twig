@@ -80,24 +80,48 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
+                            <span>{{'admin.store.setting.get_api_key'|trans}}</span>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <span>{{'admin.store.setting.get_api_key_info'|trans}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#captcha" type="button">
+                                        {{ 'admin.store.setting.get_api_key'|trans }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.box-body -->
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
                             <span>{{'admin.store.setting.api_key_setting'|trans}}</span>
                         </div>
 
                         <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <span>{{'admin.store.setting.api_key_setting_info'|trans}}</span>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-3">
                                     <div class="d-inline-block">
                                         <span>{{ form.authentication_key.vars.label|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg" data-tooltip="true" data-placement="top" title="Tooltip"></i>
+                                        <i class="fa fa-question-circle fa-lg" data-tooltip="true" data-placement="top" title={{'admin.store.setting.api_key_tooltip'|trans}}></i>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     {{ form_widget(form.authentication_key) }}
                                 </div>
-
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#captcha" type="button">
-                                    {{ 'admin.store.setting.get_api_key'|trans }}
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -105,7 +129,6 @@ file that was distributed with this source code.
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->
-
         <div class="c-conversionArea">
             <div class="c-conversionArea__container">
                 <div class="row justify-content-between align-items-center">

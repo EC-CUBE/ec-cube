@@ -444,21 +444,18 @@ Styleguide 7.3.8
   padding: 16px;
   margin-bottom: 16px;
   & &__spec{
-    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -ms-flex-pack: space-between;
     margin-bottom:8px;
     dt{
       font-weight: normal;
-      position: relative;
-      top:0;
-      left: 0;
       text-align: left;
     }
     dd{
-      position: absolute;
-      top:0;
-      right: 0;
       text-align: right;
-
     }
     & &__specTotal {
       color: $clrRed;
@@ -471,22 +468,61 @@ Styleguide 7.3.8
     font-size: 14px;
     font-weight:bold;
   }
+  & &__paymentTotal{
+    padding: 8px 0;
+    text-align: right;
+    font-size: 14px;
+    font-weight:bold;
+    .ec-totalBox__price,
+    .ec-totalBox__taxLabel{
+        color: $clrRed;
+    }
+  }
   & &__price{
     margin-left: 16px;
     font-size: 16px;
     font-weight:bold;
-    color: $clrRed;
     @include media_desktop {
       font-size: 24px;
     }
   }
   & &__taxLabel {
     margin-left: 8px;
-    color: $clrRed;
     font-size: 12px;
     @include media_desktop {
       font-size: 14px;
     }
+  }
+  & &__taxRate {
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    margin-bottom:8px;
+    font-size: 10px;
+    @include media_desktop {
+      font-size: 12px;
+    }
+    dt{
+      font-weight: normal;
+      text-align: left;
+      margin-right: 8px;
+      &::before {
+        content: "[ ";
+      }
+    }
+    dd{
+      text-align: right;
+      &::after {
+        content: " ]";
+      }
+    }
+  }
+  & &__pointBlock{
+    padding: 18px 20px 10px;
+    margin-bottom: 10px;
+    background: #fff;
   }
   & &__btn {
     @include reset_link();
@@ -494,6 +530,9 @@ Styleguide 7.3.8
     .ec-blockBtn--action {
       font-size: 16px;
       font-weight: bold;
+    }
+    .ec-blockBtn--cancel {
+      margin-top: 8px;
     }
   }
 }

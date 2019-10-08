@@ -127,6 +127,9 @@ class CategoryController extends AbstractController
 
                 log_info('カテゴリ登録完了', [$id]);
 
+                // $formが保存されたフォーム
+                // 下の編集用フォームの場合とイベント名が共通のため
+                // このイベントのリスナーではsubmitされているフォームを判定する必要がある
                 $event = new EventArgs(
                     [
                         'form' => $form,
@@ -153,9 +156,13 @@ class CategoryController extends AbstractController
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->categoryRepository->save($editForm->getData());
 
+                    // $editFormが保存されたフォーム
+                    // 上の新規登録用フォームの場合とイベント名が共通のため
+                    // このイベントのリスナーではsubmitされているフォームを判定する必要がある
                     $event = new EventArgs(
                         [
                             'form' => $form,
+                            'editForm' => $editForm,
                             'Parent' => $Parent,
                             'TargetCategory' => $editForm->getData(),
                         ],

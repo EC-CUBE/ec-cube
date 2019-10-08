@@ -15,6 +15,7 @@ namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -99,6 +100,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             '通常価格' => $price01,
             '販売価格' => $price02,
             '送料' => 0,
+            '税率' => 0,
         ];
         $result = [];
         if ($has_header) {
@@ -362,7 +364,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
         $this->container->setParameter('eccube.constants', $config);
 
-        $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料'."\n");
+        $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,税率'."\n");
 
         $this->client->request(
             'GET',
@@ -370,6 +372,57 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * 省略可能なカラムが省略されている際に更新されないことを確認する
+     */
+    public function testCsvImportWithExistsProductsExceptOptionalColumns()
+    {
+        $Products = $this->productRepo->findAll();
+        $beforeProduct = $this->productRepo->findOneBy([], ['id' => 'ASC']);
+        $csv = [[
+            '商品ID',
+            '公開ステータス(ID)',
+            '商品名',
+            '販売種別(ID)',
+            '規格分類1(ID)',
+            '規格分類2(ID)',
+            '発送日目安(ID)',
+            '商品コード',
+            '在庫数',
+            '在庫数無制限フラグ',
+            '販売制限数',
+            '通常価格',
+            '販売価格',
+            '送料',
+        ]];
+        foreach ($Products as $Product) {
+            foreach ($Product->getProductClasses() as $ProductClass) {
+                $csv[] = [
+                    $Product->getId(),
+                    $Product->getStatus()->getId(),
+                    $Product->getName(),
+                    $ProductClass->getSaleType()->getId(),
+                    $ProductClass->getClassCategory1() == null ? null : $ProductClass->getClassCategory1()->getId(),
+                    $ProductClass->getClassCategory2() == null ? null : $ProductClass->getClassCategory2()->getId(),
+                    $ProductClass->getDeliveryDuration() == null ? null : $ProductClass->getDeliveryDuration()->getId(),
+                    $ProductClass->getCode(),
+                    $ProductClass->getStock(),
+                    $ProductClass->isStockUnlimited(),
+                    $ProductClass->getSaleLimit(),
+                    (int)$ProductClass->getPrice01(),
+                    (int)$ProductClass->getPrice02(),
+                    $ProductClass->getDeliveryFee()
+                ];
+            }
+        }
+        $this->filepath = $this->createCsvFromArray($csv);
+        $crawler = $this->scenario();
+        $this->assertRegexp('/CSVファイルをアップロードしました/u',
+            $crawler->filter('div.alert-success')->text());
+        $afterProduct = $this->productRepo->findOneBy([], ['id' => 'ASC']);
+        $this->assertEquals($beforeProduct->getDescriptionDetail(), $afterProduct->getDescriptionDetail());
     }
 
     //======================================================================
@@ -801,5 +854,54 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         }
 
         return $this->categoriesIdList[$categoryId];
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/4281
+     *
+     * @dataProvider dataTaxRuleProvider
+     *
+     * @param $optionTaxRule
+     * @param $preTaxRate
+     * @param $postTaxRate
+     * @throws \Exception
+     */
+    public function testImportTaxRule($optionTaxRule, $preTaxRate, $postTaxRate)
+    {
+        /** @var BaseInfo $BaseInfo */
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $BaseInfo->setOptionProductTaxRule($optionTaxRule);
+        $this->entityManager->flush($BaseInfo);
+        $this->entityManager->clear();
+
+        $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '税率'];
+        $csv[] = [1, '商品別税率テスト用', 1, 1, 1, $preTaxRate];
+        $this->filepath = $this->createCsvFromArray($csv);
+
+        $crawler = $this->scenario();
+        $this->assertRegexp('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
+
+        $Product = $this->productRepo->findOneBy(['name' => '商品別税率テスト用']);
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $Product->getProductClasses()[0];
+        $this->expected = $postTaxRate;
+        if ($ProductClass->getTaxRule() == null) {
+            $this->actual = $ProductClass->getTaxRule();
+        } else {
+            $this->actual = $ProductClass->getTaxRule()->getTaxRate();
+        }
+        $this->verify();
+    }
+
+    public function dataTaxRuleProvider()
+    {
+        return [
+            [true, 0, 0],
+            [true, 12, 12],
+            [true, '', null],
+            [false, 0, null],
+            [false, 12, null],
+            [false, '', null],
+        ];
     }
 }

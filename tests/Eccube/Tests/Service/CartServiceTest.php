@@ -149,7 +149,7 @@ class CartServiceTest extends AbstractServiceTestCase
     public function testAddProducts_Quantity_MultiItems()
     {
         /** @var ProductClass $ProductClass */
-        $ProductClass = $this->productClassRepository->find(10);
+        $ProductClass = $this->productClassRepository->find(11);
 
         $this->cartService->addProduct($ProductClass, 101);
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());

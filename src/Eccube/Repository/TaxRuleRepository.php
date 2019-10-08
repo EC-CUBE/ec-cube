@@ -17,6 +17,7 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\TaxRule;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -70,14 +71,27 @@ class TaxRuleRepository extends AbstractRepository
         $this->eccubeConfig = $eccubeConfig;
     }
 
+    /**
+     * 新たな TaxRule インスタンスを生成して返す.
+     *
+     * 現在適用されている丸め規則を設定する.
+     * 現在適用されている丸め規則が取得できない場合は四捨五入を設定する.
+     *
+     * @return TaxRule
+     */
     public function newTaxRule()
     {
-        $TaxRule = new \Eccube\Entity\TaxRule();
-        $RoundingType = $this->getEntityManager()
-            ->getRepository('Eccube\Entity\Master\RoundingType')
-            ->find(1);
+        /** @var RoundingType $RoundingType */
+        $RoundingType = $this->getEntityManager()->getRepository(RoundingType::class)->find(RoundingType::ROUND);
+        try {
+            $CurrentRule = $this->getByRule();
+            $RoundingType = $CurrentRule->getRoundingType();
+        } catch (NoResultException $e) {
+            // quiet
+        }
+        $TaxRule = new TaxRule();
         $TaxRule->setRoundingType($RoundingType);
-        $TaxRule->setTaxAdjust(0);
+        $TaxRule->setTaxAdjust('0');
 
         return $TaxRule;
     }
@@ -185,7 +199,7 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // ProductClass
-        if ($ProductClass && $productClassId > 0) {
+        if ($ProductClass && '0' !== $productClassId) {
             $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
             $parameters['ProductClass'] = $ProductClass;
         } else {

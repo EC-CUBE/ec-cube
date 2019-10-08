@@ -26,6 +26,8 @@ use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderStateMachine;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -78,7 +80,12 @@ class ShippingController extends AbstractController
     /**
      * @var OrderStateMachine
      */
-    private $orderStateMachine;
+    protected $orderStateMachine;
+
+    /**
+     * @var PurchaseFlow
+     */
+    protected $purchaseFlow;
 
     /**
      * EditController constructor.
@@ -91,6 +98,7 @@ class ShippingController extends AbstractController
      * @param ShippingRepository $shippingRepository
      * @param SerializerInterface $serializer
      * @param OrderStateMachine $orderStateMachine
+     * @param PurchaseFlow $orderPurchaseFlow
      */
     public function __construct(
         MailService $mailService,
@@ -100,7 +108,8 @@ class ShippingController extends AbstractController
         TaxRuleService $taxRuleService,
         ShippingRepository $shippingRepository,
         SerializerInterface $serializer,
-        OrderStateMachine $orderStateMachine
+        OrderStateMachine $orderStateMachine,
+        PurchaseFlow $orderPurchaseFlow
     ) {
         $this->mailService = $mailService;
         $this->orderItemRepository = $orderItemRepository;
@@ -110,6 +119,7 @@ class ShippingController extends AbstractController
         $this->shippingRepository = $shippingRepository;
         $this->serializer = $serializer;
         $this->orderStateMachine = $orderStateMachine;
+        $this->purchaseFlow = $orderPurchaseFlow;
     }
 
     /**
@@ -120,6 +130,9 @@ class ShippingController extends AbstractController
      */
     public function index(Request $request, Order $Order)
     {
+        $OriginOrder = clone $Order;
+        $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
+
         $TargetShippings = $Order->getShippings();
 
         // 編集前の受注情報を保持
@@ -170,8 +183,7 @@ class ShippingController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() && $request->get('mode') == 'register') {
-            log_info('出荷登録開始', [$TargetShipping->getId()]);
+        if ($form->isSubmitted() && $form->isValid()) {
 
             // 削除された項目の削除
             /** @var Shipping $OriginShipping */
@@ -181,6 +193,7 @@ class ShippingController extends AbstractController
                     // 削除されたお届け先に紐づく明細の削除
                     /** @var OrderItem $OriginOrderItem */
                     foreach ($OriginOrderItems[$key] as $OriginOrderItem) {
+                        $Order->removeOrderItem($OriginOrderItem);
                         $this->entityManager->remove($OriginOrderItem);
                     }
 
@@ -192,6 +205,7 @@ class ShippingController extends AbstractController
                     /** @var OrderItem $OriginOrderItem */
                     foreach ($OriginOrderItems[$key] as $OriginOrderItem) {
                         if (false === $TargetShippings[$key]->getOrderItems()->contains($OriginOrderItem)) {
+                            $Order->removeOrderItem($OriginOrderItem);
                             $this->entityManager->remove($OriginOrderItem);
                         }
                     }
@@ -201,32 +215,58 @@ class ShippingController extends AbstractController
             // 追加された項目の追加
             foreach ($TargetShippings as $TargetShipping) {
                 // 追加された明細の追加
+                /** @var OrderItem $OrderItem */
                 foreach ($TargetShipping->getOrderItems() as $OrderItem) {
                     $OrderItem->setShipping($TargetShipping);
-                    $OrderItem->setOrder($Order);
+                    if (is_null($OrderItem->getOrder())) {
+                        $OrderItem->setOrder($Order);
+                        $Order->addOrderItem($OrderItem);
+                    }
                 }
 
                 // 追加されたお届け先の追加
                 $TargetShipping->setOrder($Order);
             }
 
-            try {
-                foreach ($TargetShippings as $TargetShipping) {
-                    $this->entityManager->persist($TargetShipping);
+            $flowResult = $this->purchaseFlow->validate($Order, $purchaseContext);
+
+            if ($flowResult->hasWarning()) {
+                foreach ($flowResult->getWarning() as $warning) {
+                    $this->addWarning($warning->getMessage(), 'admin');
                 }
-                $this->entityManager->flush();
-
-                $this->addInfo('admin.order.shipping_save_message', 'admin');
-                $this->addSuccess('admin.common.save_complete', 'admin');
-                log_info('出荷登録完了', [$Order->getId()]);
-
-                return $this->redirectToRoute('admin_shipping_edit', ['id' => $Order->getId()]);
-            } catch (\Exception $e) {
-                log_error('出荷登録エラー', [$Order->getId(), $e]);
-                $this->addError('admin.flash.register_failed', 'admin');
             }
-        } elseif ($form->isSubmitted() && $request->get('mode') == 'register' && $form->getErrors(true)) {
-            $this->addError('admin.common.save_error', 'admin');
+
+            if ($flowResult->hasError()) {
+                foreach ($flowResult->getErrors() as $error) {
+                    $this->addError($error->getMessage(), 'admin');
+                }
+            }
+
+            if (!$flowResult->hasError() && $request->get('mode') == 'register') {
+                log_info('出荷登録開始', [$Order->getId()]);
+
+                try {
+                    $this->purchaseFlow->prepare($Order, $purchaseContext);
+                    $this->purchaseFlow->commit($Order, $purchaseContext);
+                    $this->entityManager->persist($Order);
+
+                    foreach ($TargetShippings as $TargetShipping) {
+                        $this->entityManager->persist($TargetShipping);
+                    }
+                    $this->entityManager->flush();
+
+                    $this->addInfo('admin.order.shipping_save_message', 'admin');
+                    $this->addSuccess('admin.common.save_complete', 'admin');
+                    log_info('出荷登録完了', [$Order->getId()]);
+
+                    return $this->redirectToRoute('admin_shipping_edit', ['id' => $Order->getId()]);
+                } catch (\Exception $e) {
+                    log_error('出荷登録エラー', [$Order->getId(), $e]);
+                    $this->addError('admin.flash.register_failed', 'admin');
+                }
+            } elseif ($request->get('mode') == 'register' && $form->getErrors(true)) {
+                $this->addError('admin.common.save_error', 'admin');
+            }
         }
 
         // 商品検索フォーム

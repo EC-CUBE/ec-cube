@@ -59,6 +59,10 @@ common.subtotal: 小計
 common.subtotal__with_separator: 小計：
 common.total: 合計
 common.total__with_separator: 合計：
+common.payment_total: お支払い合計
+common.reduced_tax_rate_symbol: ※
+common.reduced_tax_rate_messeage: ※ は軽減税率対象商品です。
+common.tax_rate_target: '税率 %rate% %対象'
 common.delivery_fee: 送料
 common.charge: 手数料
 common.discount: 値引き
@@ -455,7 +459,7 @@ admin.common.csv_invalid_no_data: CSVデータが存在しません
 admin.common.csv_invalid_required: '%line%行目の%name%が設定されていません'
 admin.common.csv_invalid_greater_than_zero: '%line%行目の%name%は0以上の数値を設定してください。'
 admin.common.csv_invalid_format_line: '%line%行目のCSVフォーマットが一致しません'
-admin.common.csv_invalid_date_format: '%line%行目%name%の日付フォーマットが異なります'
+admin.common.csv_invalid_date_format: '%line%行目の%name%の日付フォーマットが異なります'
 admin.common.csv_invalid_not_found: '%line%行目の%name%が存在しません'
 admin.common.csv_invalid_not_found_target: '%line%行目の%name%「%target_name%」が存在しません'
 admin.common.csv_invalid_not_same: '%line%行目の%name1%と%name2%には同じ値を使用できません'
@@ -723,6 +727,8 @@ admin.product.product_csv.sale_price_col: 販売価格
 admin.product.product_csv.sale_price_description: 0以上の数値を設定
 admin.product.product_csv.delivery_fee_col: 送料
 admin.product.product_csv.delivery_fee_description: 商品ごとの送料設定が有効の場合、0以上の数値を設定
+admin.product.product_csv.tax_rate_col: 税率
+admin.product.product_csv.tax_rate_description: 商品別税率機能設定が有効の場合、0以上の数値を設定
 
 # カテゴリCSV雛形
 admin.product.category_csv.category_id_col: カテゴリID
@@ -943,6 +949,8 @@ admin.content.file.directory_name: フォルダ名
 admin.content.file.file_list__card_title: このフォルダ内のファイル
 admin.content.file.updated: 更新
 admin.content.file.directory_tree: フォルダ構成
+admin.content.file.upload_complete: %success%件のファイルをアップロードしました。(%success%/%count%)
+admin.content.file.upload_error: %file_name% のアップロードに失敗しました。(%error%)
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
@@ -1289,10 +1297,13 @@ admin.store.plugin.uninstall.complete: プラグインを削除しました。
 admin.store.plugin.update.complete: 「%plugin_name%」をアップデートしました。
 admin.store.plugin.update.failed: 「%plugin_name%」のアップデートに失敗しました。
 admin.store.plugin.mkdir.error: ディレクトリ「%dir_name%」の作成に失敗しました。
-admin.store.setting: 設定
+admin.store.setting: 認証キー設定
 admin.store.setting.api_key_setting: 認証キー設定
+admin.store.setting.api_key_setting_info: 認証キーをお持ちの場合は入力後、「登録」ボタンを押して下さい。
 admin.store.setting.api_key: 認証キー
-admin.store.setting.get_api_key: 認証キー取得
+admin.store.setting.api_key_tooltip: 購入したプラグイン等のインストールに必要となるキーです。
+admin.store.setting.get_api_key: 認証キー新規発行
+admin.store.setting.get_api_key_info: 認証キーの新規発行と登録を行います。
 admin.store.setting.captcha_message: 画像に表示されている文字を入力してください。
 admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス
@@ -1529,6 +1540,7 @@ tooltip.customer.purchase_history: この会員が注文をした履歴が表示
 tooltip.customer.shop_memo: 店舗用のメモ欄です。フロント側には表示されません。
 tooltip.content.news.url: この新着情報の詳細な内容を記したウェブページある場合、URLを入力します。外部サイトのURLなどを利用することもできます。
 tooltip.content.news.body: HTMLタグが利用可能です。
+tooltip.content.file.upload_file: ファイルの追加は複数ファイルを選択してアップロードできます。
 tooltip.content.layout_edit: テンプレートのセクションごとにブロックをドラッグ＆ドロップで配置することができます。
 tooltip.content.page_file_name: ページの内容を記述したtwigテンプレートファイルの名前です。
 tooltip.content.page_source_code: テンプレートファイルを編集します。twigで記述します。

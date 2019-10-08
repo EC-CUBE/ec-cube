@@ -15,8 +15,13 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Order;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
+use Eccube\Entity\TaxRule;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
@@ -25,15 +30,35 @@ use Eccube\Service\TaxRuleService;
 
 class EditControllerTest extends AbstractEditControllerTestCase
 {
+    /**
+     * @var Customer
+     */
     protected $Customer;
+
+    /**
+     * @var Order
+     */
     protected $Order;
+
+    /**
+     * @var Product
+     */
     protected $Product;
+
+    /**
+     * @var CartService
+     */
     protected $cartService;
 
     /**
      * @var OrderRepository
      */
     protected $orderRepository;
+
+    /**
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
 
     public function setUp()
     {
@@ -509,7 +534,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->actual = $EditedShipping->getShippingDeliveryTime();
         $this->verify();
 
-
         $formDataForEdit = $this->createFormDataForEdit($EditedOrder);
         // 「指定なし」に変更
         $formDataForEdit['Shipping']['DeliveryTime'] = null;
@@ -532,5 +556,59 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->expected = null;
         $this->actual = $EditedShippingafterEdit->getShippingDeliveryTime();
         $this->verify();
+    }
+
+    /**
+     * 受注管理で税率を変更できる
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4269
+     */
+    public function testChangeOrderItemTaxRate()
+    {
+        /** @var RoundingType $RoundingType */
+        $RoundingType = $this->entityManager->find(RoundingType::class, RoundingType::ROUND);
+        /** @var Product $Product */
+        $Product = $this->createProduct($this->Customer, 1);
+        $this->entityManager->persist($Product);
+
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $this->Product->getProductClasses()[0];
+        $ProductClass->setPrice02(1000);
+        $this->entityManager->persist($ProductClass);
+
+        $TaxRule = new TaxRule();
+        $TaxRule->setTaxRate(8)
+            ->setTaxAdjust(0)
+            ->setRoundingType($RoundingType)
+            ->setProduct($Product)
+            ->setProductClass($ProductClass)
+            ->setApplyDate(new \DateTime('yesterday'));
+        $this->entityManager->persist($TaxRule);
+
+        $this->entityManager->flush();
+
+        $formData = $this->createFormData($this->Customer, $this->Product);
+        unset($formData['OrderStatus']);
+
+        // 商品の税率を10%に変更
+        $formData['OrderItems'][0]['tax_rate'] = '10';
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_new'),
+            [
+                'order' => $formData,
+                'mode' => 'register',
+            ]
+        );
+
+        $url = $crawler->filter('a')->text();
+        $this->assertTrue($this->client->getResponse()->isRedirect($url));
+
+        // 税率が10%で登録されている
+        /** @var Order $Order */
+        $Order = $this->orderRepository->findBy([], ['create_date' => 'DESC'])[0];
+        self::assertEquals(10, $Order->getProductOrderItems()[0]->getTaxRate());
+        self::assertEquals(100, $Order->getProductOrderItems()[0]->getTax());
     }
 }

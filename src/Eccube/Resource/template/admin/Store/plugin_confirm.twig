@@ -81,15 +81,7 @@ $(function() {
                         ctx.progressBar.css('width', '80%');
                         ctx.log(data.log);
                     })
-                }){% if is_update and Plugin.enabled %}.then(function() {
-                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」を有効化中');
-                    ctx.log('**************** Enable ****************');
-                    return $.post(ctx.relatedTarget.data('enable-url'), ctx.plugin).then(function(data) {
-                        ctx.currentCount += 1;
-                        ctx.progressBar.css('width', '100%');
-                        ctx.log(data.log);
-                    })
-                }){% endif %};
+                });
             }
         }
     };
@@ -149,7 +141,13 @@ $(function() {
 
         d.done(function() {
             $('div.progress-bar', progress).css('width', '100%');
-            message.text('インストールが完了しました。');
+
+            var message_text = 'インストールが完了しました。';
+            {% if is_update and Plugin.enabled %}
+                message_text += 'プラグイン一覧より有効化を行って下さい。';
+            {% endif %}
+            message.text(message_text);
+
         }).fail(function(res) {
             message.text('システムエラーが発生しました。');
             if (res.responseJSON) {

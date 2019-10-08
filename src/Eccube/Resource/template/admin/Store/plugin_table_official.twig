@@ -80,24 +80,28 @@ $(function() {
                         {% endif %}
                     </td>
                     <td class="align-middle">
-                        {% if Plugin.id and pluginDetail %}
-                            {% if pluginDetail.update_status == 3 %}
-                                <a href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}"
-                                   class="btn btn-ec-regular">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
-                                <ul class="plugin-meta dl-horizontal">
-                                    <li class="plugin-version">{{ 'admin.store.plugin_table_official.917'|trans({'%version%' : pluginDetail.version}) }}</li>
-                                    <li class="plugin-version">
-                                        {% set versions = '' %}
-                                        {% for version in pluginDetail.supported_versions %}
-                                            {% set versions = versions ~ version %}
-                                            {%- if loop.last == false%}{% set versions = versions ~ ',' %}{% endif -%}
-                                        {% endfor %}
-                                        {{ 'admin.store.plugin_table_official.918'|trans({'%versions%' : versions}) }}
-                                    </li>
-                                    <li class="plugin-update">{{ 'admin.store.plugin_table_official.919'|trans({'%update_date%' : pluginDetail.update_date|time_ago}) }}</li>
-                                </ul>
+                        {% if pluginDetail %}
+                            {% if Plugin.id %}
+                                {% if pluginDetail.update_status == 3 %}
+                                    <a href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}"
+                                       class="btn btn-ec-regular">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
+                                    <ul class="plugin-meta dl-horizontal">
+                                        <li class="plugin-version">{{ 'admin.store.plugin_table_official.917'|trans({'%version%' : pluginDetail.version}) }}</li>
+                                        <li class="plugin-version">
+                                            {% set versions = '' %}
+                                            {% for version in pluginDetail.supported_versions %}
+                                                {% set versions = versions ~ version %}
+                                                {%- if loop.last == false%}{% set versions = versions ~ ',' %}{% endif -%}
+                                            {% endfor %}
+                                            {{ 'admin.store.plugin_table_official.918'|trans({'%versions%' : versions}) }}
+                                        </li>
+                                        <li class="plugin-update">{{ 'admin.store.plugin_table_official.919'|trans({'%update_date%' : pluginDetail.update_date|time_ago}) }}</li>
+                                    </ul>
+                                {% else %}
+                                    <p class="mb-0">{{ 'admin.store.plugin_table_official.920'|trans }}。</p>
+                                {% endif %}
                             {% else %}
-                                <p class="mb-0">{{ 'admin.store.plugin_table_official.920'|trans }}。</p>
+                                <a href="{{ url('admin_store_plugin_install_confirm', {'id': Plugin.source}) }}" class="btn btn-ec-regular">{{ 'admin.store.plugin.install'|trans }}</a>
                             {% endif %}
                         {% endif %}
                     </td>
