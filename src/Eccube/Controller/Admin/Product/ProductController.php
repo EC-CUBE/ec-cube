@@ -330,9 +330,67 @@ class ProductController extends AbstractController
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
-                    $filename = date('mdHis').uniqid('_').'.'.$extension;
-                    $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
-                    $files[] = $filename;
+						// 2019-10-07 Add Start
+						// 加工前の画像の情報を取得
+						list($origin_w, $origin_h, $type) = getimagesize($image);
+
+						// 加工前のファイルをフォーマット別に読み出す
+						switch ($type) {
+							case IMAGETYPE_JPEG:
+								$origin_image = imagecreatefromjpeg($image);
+								break;
+
+							case IMAGETYPE_PNG:
+								$origin_image = imagecreatefrompng($image);
+								break;
+
+							case IMAGETYPE_GIF:
+								$origin_image = imagecreatefromgif($image);
+								break;
+
+							default:
+								throw new RuntimeException('対応していないファイル形式です。: ', $type);
+						}
+
+						// 新しく描画するキャンバスを作成
+						$canvas = imagecreatetruecolor($origin_w, $origin_h);
+						imagecopyresampled($canvas, $origin_image, 0,0,0,0, $origin_w, $origin_h, $origin_w, $origin_h);
+
+						$filename = date('mdHis').uniqid('_').'.'.$extension;
+						$files[] = $filename;
+
+						// 保存先を指定
+						$resize_path = $this->eccubeConfig['eccube_temp_image_dir'] . '/' . $filename;
+
+						switch ($type) {
+							case IMAGETYPE_JPEG:
+								imagejpeg($canvas, $resize_path, 60);
+								break;
+
+							case IMAGETYPE_PNG:
+								imagepng($canvas, $resize_path, 9);
+								break;
+
+							case IMAGETYPE_GIF:
+								imagegif($canvas, $resize_path);
+								break;
+
+						}
+
+						imagedestroy($origin_image);
+						imagedestroy($canvas);
+						// 2019-10-07 Add End
+
+						/* 2019-10-08 Comment Out ↓
+						// 拡張子
+						$extension = $image->getClientOriginalExtension();
+						if (!in_array(strtolower($extension), $allowExtensions)) {
+							throw new UnsupportedMediaTypeHttpException();
+						}
+						$filename = date('mdHis').uniqid('_').'.'.$extension;
+						$canvas->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
+						$files[] = $filename;
+						2019-10-08 Comment Out ↑ */
                 }
             }
         }
