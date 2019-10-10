@@ -124,3 +124,6 @@ parameters:
     eccube_result_cache_lifetime: 3600 # doctrineのresult cacheのlifetime.
     eccube_result_cache_lifetime_short: 10  # doctrineのresult cacheのlifetime. 商品一覧画面など長期間キャッシュできない箇所で使用する.
     eccube_content_maintenance_file_path: '%env(ECCUBE_MAINTENANCE_FILE_PATH)%'
+    eccube_product_image_resize: true
+    eccube_product_image_jpg_quality: 75
+    eccube_product_image_png_quality: 6
