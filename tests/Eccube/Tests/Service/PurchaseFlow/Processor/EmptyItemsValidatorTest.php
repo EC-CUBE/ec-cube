@@ -78,7 +78,7 @@ class EmptyItemsValidatorTest extends EccubeTestCase
     {
         $result = $this->validator->execute($this->Order, new PurchaseContext());
         
-        self::assertEquals(count($this->Order->getOrderItems()), 1);
+        self::assertCount(1, $this->Order->getOrderItems());
     }
 
     public function testEmptyItem()
@@ -87,7 +87,7 @@ class EmptyItemsValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext());
         
-        self::assertEquals(count($this->Order->getOrderItems()), 0);
+        self::assertCount(0, $this->Order->getOrderItems());
     }
 
     public function testMinusItem()
@@ -96,6 +96,6 @@ class EmptyItemsValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext());
         
-        self::assertEquals(count($this->Order->getOrderItems()), 0);
+        self::assertCount(0, $this->Order->getOrderItems());
     }
 }
