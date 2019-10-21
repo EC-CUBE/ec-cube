@@ -1,0 +1,45 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% set Categories = repository('Eccube\\Entity\\Category').getList() %}
+
+{% macro tree(Category) %}
+    {% from _self import tree %}
+    <a href="{{ url('product_list') }}?category_id={{ Category.id }}">
+        {{ Category.name }}
+    </a>
+    {% if Category.children|length > 0 %}
+        <ul>
+            {% for ChildCategory in Category.children %}
+                <li>
+                    {{ tree(ChildCategory) }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+{# @see https://github.com/bolt/bolt/pull/2388 #}
+{% from _self import tree %}
+
+<div class="ec-headerCategoryArea">
+    <div class="ec-headerCategoryArea__heading">
+        <p>{{ 'front.block.category.list'|trans }}</p>
+    </div>
+    <div class="ec-itemNav">
+        <ul class="ec-itemNav__nav">
+            {% for Category in Categories %}
+                <li>
+                    {{ tree(Category) }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

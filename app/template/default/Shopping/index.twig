@@ -1,0 +1,440 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% form_theme form 'Form/form_div_layout.twig' %}
+
+{% block javascript %}
+    <script>
+        $(function() {
+            var $redirectCallback = function() {
+                loadingOverlay();
+                $('#shopping_order_redirect_to').val($(this).attr('data-path'));
+                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+                setTimeout(function () {
+                    loadingOverlay("hide");
+                }, 2000);
+            };
+            $('[data-trigger]').each(function() {
+                $(this).on($(this).attr('data-trigger'), $redirectCallback);
+            });
+
+            {% if is_granted('ROLE_USER') == false %}
+            var edit = $('.customer-edit');
+            var hidden = $('.customer-in');
+            var form = $('.customer-form');
+
+            $('#customer').click(function() {
+                $(edit).each(function(index) {
+                    var name = $(this).text();
+                    var input = $('<input id="edit' + index + '" type="text" />').val(name);
+                    $(form[index]).empty().append(input);
+                });
+
+                $('.non-customer-display').hide();
+                $('.non-customer-edit').show();
+                $('.mod-button').show();
+            });
+
+            $('#customer-ok').click(function() {
+                $(form).each(function(index) {
+                    $(hidden[index]).val($(form[index]).children('input').val());
+                });
+
+                var postData = {};
+                $(hidden).each(function() {
+                    postData[$(this).attr('name')] = $(this).val();
+                });
+
+                loadingOverlay();
+
+                $.ajax({
+                    url: "{{ url('shopping_customer') }}",
+                    type: 'POST',
+                    data: postData,
+                    dataType: 'json'
+                }).done(function(data) {
+                    if (data.status == 'OK') {
+                        $(form).each(function(index) {
+                            $(edit[index]).empty().text($(form[index]).children('input').val());
+                            $(form[index]).empty();
+                        });
+
+                        // kana field
+                        $(edit[2]).empty().text(data.kana01);
+                        $(edit[3]).empty().text(data.kana02);
+                        $('#customer-kana01').val(data.kana01);
+                        $('#customer-kana02').val(data.kana02);
+                    }
+                }).fail(function() {
+                    alert('更新に失敗しました。入力内容を確認してください。');
+                }).always(function(data) {
+                    // overlayを無効
+                    loadingOverlay('hide');
+                });
+
+                $('.non-customer-display').show();
+                $('.non-customer-edit').hide();
+                $('.mod-button').hide();
+            });
+
+            $('#customer-cancel').click(function() {
+                $('.non-customer-display').show();
+                $('.non-customer-edit').hide();
+                $('.mod-button').hide();
+            });
+            {% endif %}
+        });
+    </script>
+{% endblock javascript %}
+
+{% block main %}
+
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>{{ 'front.shopping.title'|trans }}</h1>
+        </div>
+    </div>
+
+    <div class="ec-cartRole">
+        <div class="ec-cartRole__progress">
+            <ul class="ec-progress">
+                {% set step = 1 %}
+                <li class="ec-progress__item">
+                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                    </div>
+                    <div class="ec-progress__label">{{ 'front.cart.nav__cart_items'|trans }}
+                    </div>
+                </li>
+                {% if is_granted('ROLE_USER') == false %}
+                    <li class="ec-progress__item">
+                        <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                        </div>
+                        <div class="ec-progress__label">{{ 'front.cart.nav__customer_info'|trans }}
+                        </div>
+                    </li>
+                {% endif %}
+                <li class="ec-progress__item is-complete">
+                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                    </div>
+                    <div class="ec-progress__label">{{ 'front.cart.nav__order'|trans }}
+                    </div>
+                </li>
+                <li class="ec-progress__item">
+                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                    </div>
+                    <div class="ec-progress__label">{{ 'front.cart.nav__confirm'|trans }}
+                    </div>
+                </li>
+                <li class="ec-progress__item">
+                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                    </div>
+                    <div class="ec-progress__label">{{ 'front.cart.nav__complete'|trans }}
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- アラートメッセージ -->
+        {{ include('Shopping/alert.twig') }}
+    </div>
+
+    <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
+        {{ form_widget(form._token) }}
+        {{ form_widget(form.redirect_to) }}
+        <div class="ec-orderRole">
+            <div class="ec-orderRole__detail">
+                <div class="ec-orderAccount">
+                    <div class="ec-rectHeading">
+                        <h2>{{ 'front.shopping.customer_info'|trans }}</h2>
+                    </div>
+                    {% if is_granted('ROLE_USER') == false %}
+                        <div class="ec-orderAccount__change non-customer-display">
+                            <button id="customer" class="ec-inlineBtn" type="button">{{ 'common.change'|trans }}</button>
+                        </div>
+                    {% endif %}
+                    <div class="ec-orderAccount__account non-customer-display">
+                        <p class="ec-halfInput">{{ 'common.name.prefix'|trans }}<span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span>{{ 'common.name.suffix'|trans }}</p>
+                        <p class="ec-halfInput"><span class="customer-edit customer-kana01">{{ Order.kana01 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana02 }}</span></p>
+                        <p class="ec-input"><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
+                        <p class="ec-zipInput">〒<span class="customer-edit customer-postal_code">{{ Order.postal_code }}</span></p>
+                        <p class="ec-input"><span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
+                        <p class="ec-telInput"><span class="customer-edit customer-phone_number">{{ Order.phone_number }}</span></p>
+                        <p class="ec-input"><span class="customer-edit customer-email">{{ Order.email }}</span></p>
+                    </div>
+                    {% if is_granted('ROLE_USER') == false %}
+                        <div class="ec-borderedDefs  non-customer-edit" style="display:none;">
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">{{ 'common.name'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-halfInput">
+                                        <span class="customer-form customer-name01"></span>
+                                        <span class="customer-form customer-name02"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">{{ 'common.kana'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-halfInput">
+                                        <span class="customer-form customer-kana01"></span>
+                                        <span class="customer-form customer-kana02"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label" for="nonmember_company_name">{{ 'common.company_name'|trans }}</label>
+                                </dt>
+                                <dd>
+                                    <div class="ec-halfInput">
+                                        <span class="customer-form customer-company_name"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">{{ 'common.address'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-zipInput">
+                                        <span>{{ 'common.postal_symbol'|trans }}</span>
+                                        <span class="customer-form customer-postal_code"></span>
+                                        <div class="ec-zipInputHelp">
+                                            <div class="ec-zipInputHelp__icon">
+                                                <div class="ec-icon">
+                                                    <img src="{{ asset('assets/icon/question-white.svg') }}" alt="">
+                                                </div>
+                                            </div>
+                                            <a href="https://www.post.japanpost.jp/zipcode/" target="_blank">
+                                                <span>{{ 'common.search_postal_code'|trans }}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ec-select">
+                                        <span class="customer-form customer-address_pref"></span>
+                                    </div>
+                                    <div class="ec-input">
+                                        <span class="customer-form customer-address_addr01"></span>
+                                    </div>
+                                    <div class="ec-input">
+                                        <span class="customer-form customer-address_addr02"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required" for="nonmember_phone_number">{{ 'common.phone_number'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-telInput">
+                                        <span class="customer-form customer-phone_number"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    <label class="ec-label required">{{ 'common.mail_address'|trans }}</label>
+                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                </dt>
+                                <dd>
+                                    <div class="ec-input">
+                                        <span class="customer-form customer-email"></span>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="mod-button" style="display:none;">
+                            <span id="customer-ok"><button type="button" class="ec-inlineBtn">{{ 'common.ok'|trans }}</button></span>
+                            <span id="customer-cancel"><button type="button" class="ec-inlineBtn">{{ 'common.cancel'|trans }}</button></span>
+                        </div>
+                        <input type="hidden" id="customer-name01" class="customer-in" name="customer_name01" value="{{ Order.name01 }}">
+                        <input type="hidden" id="customer-name02" class="customer-in" name="customer_name02" value="{{ Order.name02 }}">
+                        <input type="hidden" id="customer-kana01" class="customer-in" name="customer_kana01" value="{{ Order.kana01 }}">
+                        <input type="hidden" id="customer-kana02" class="customer-in" name="customer_kana02" value="{{ Order.kana02 }}">
+                        <input type="hidden" id="customer-company-name" class="customer-in" name="customer_company_name" value="{{ Order.companyName }}">
+                        <input type="hidden" id="customer-postal_code" class="customer-in" name="customer_postal_code" value="{{ Order.postal_code }}">
+                        <input type="hidden" id="customer-pref" class="customer-in" name="customer_pref" value="{{ Order.pref }}">
+                        <input type="hidden" id="customer-addr01" class="customer-in" name="customer_addr01" value="{{ Order.addr01 }}">
+                        <input type="hidden" id="customer-addr02" class="customer-in" name="customer_addr02" value="{{ Order.addr02 }}">
+                        <input type="hidden" id="customer-phone_number" class="customer-in" name="customer_phone_number" value="{{ Order.phone_number }}">
+                        <input type="hidden" id="customer-email" class="customer-in" name="customer_email" value="{{ Order.email }}">
+                    {% endif %}
+                </div>
+                <div class="ec-orderDelivery">
+                    <div class="ec-rectHeading">
+                        <h2>{{ 'front.shopping.delivery_info'|trans }}</h2>
+                    </div>
+                    {% for shipping in Order.shippings %}
+                        {% set idx = loop.index0 %}
+                        <div class="ec-orderDelivery__title">{{ 'front.shopping.delivery_to'|trans }}{% if Order.multiple %}({{ loop.index }}){% endif %}
+                            <div class="ec-orderDelivery__change">
+                                {% if is_granted('ROLE_USER') %}
+                                    <button class="ec-inlineBtn" data-id="{{ shipping.id }}" data-trigger="click" data-path="{{ path('shopping_shipping', {'id': shipping.id}) }}">{{ 'common.change'|trans }}</button>
+                                {% else %}
+                                    <button class="ec-inlineBtn" data-id="{{ shipping.id }}" data-trigger="click" data-path="{{ path('shopping_shipping_edit', {'id': shipping.id}) }}">{{ 'common.change'|trans }}</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="ec-orderDelivery__item">
+                            <ul class="ec-borderedList">
+                                {% for orderItem in shipping.productOrderItems %}
+                                    <li>
+                                        <div class="ec-imageGrid">
+                                            <div class="ec-imageGrid__img"><img src="{{ asset((orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product, 'save_image') }}" alt="{{ orderItem.productName }}"></div>
+                                            <div class="ec-imageGrid__content">
+                                                <p>{{ orderItem.productName }}{{ is_reduced_tax_rate(orderItem) ? 'common.reduced_tax_rate_symbol'|trans }}</p>
+                                                {% if orderItem.productClass is not null and orderItem.productClass.classCategory1 %}
+                                                    <p>{{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}</p>
+                                                {% endif %}
+                                                {% if orderItem.productClass is not null and orderItem.productClass.classCategory2 %}
+                                                    <p>{{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}</p>
+                                                {% endif %}
+                                                <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>{{ 'common.subtotal__with_separator'|trans }}{{ orderItem.totalPrice|price }}</span></p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <p>{{ 'common.reduced_tax_rate_messeage'|trans }}</p>
+                        </div>
+                        <div class="ec-orderDelivery__address">
+                            <p>{{ 'common.name.prefix'|trans }}{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}){{ 'common.name.suffix'|trans }}</p>
+                            <p>{{ 'common.postal_symbol'|trans }}{{ shipping.postal_code }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
+                            <p>{{ shipping.phone_number }}</p>
+                        </div>
+                        <div class="ec-orderDelivery__actions">
+                            <div class="ec-selects">
+                                <div class="ec-select">
+                                    <label>{{ 'front.shopping.delivery_provider'|trans }}</label>
+                                    {{ form_widget(form.Shippings[idx].Delivery, { 'attr': { 'class': 'form-control', 'data-trigger': 'change' }}) }}
+                                    {{ form_errors(form.Shippings[idx].Delivery) }}
+                                </div>
+                                <div class="ec-select ec-select__delivery">
+                                    <label>{{ 'front.shopping.delivery_date'|trans }}</label>
+                                    {{ form_widget(form.Shippings[idx].shipping_delivery_date, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.Shippings[idx].shipping_delivery_date) }}
+                                </div>
+                                <div class="ec-select ec-select__time">
+                                    <label>{{ 'front.shopping.delivery_time'|trans }}</label>
+                                    {{ form_widget(form.Shippings[idx].DeliveryTime, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.Shippings[idx].DeliveryTime) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="ec-orderDelivery__edit">
+                        <button type="button" class="ec-inlineBtn" data-trigger="click" data-path="{{ path('shopping_shipping_multiple') }}">{{ 'front.shopping.to_multiple'|trans }}</button>
+                    </div>
+                </div>
+                <div class="ec-orderPayment">
+                    <div class="ec-rectHeading">
+                        <h2>{{ 'front.shopping.payment_info'|trans }}</h2>
+                    </div>
+                    <div class="ec-radio">
+                        {% for key, child in form.Payment %}
+                            <div style="display: block;">
+                                {% set Payment = form.Payment.vars.choices[key].data %}
+                                {{ form_widget(child, { 'attr': { 'data-trigger': 'change' }}) }}
+                                {% if Payment.payment_image is not null %}
+                                    <p><img src="{{ asset(Payment.payment_image, 'save_image') }}"></p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="ec-input {{ has_errors(form.Payment) ? ' error' }}">{{ form_errors(form.Payment) }}</div>
+                </div>
+                {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                    <div class="ec-orderPayment">
+                        <div class="ec-rectHeading">
+                            <h2>{{ 'front.shopping.point_info'|trans }}</h2>
+                        </div>
+                        <div class="ec-input {{ has_errors(form.use_point) ? ' error' }}">
+                            <p>{{ 'front.shopping.available_point'|trans({ '%point%': Order.Customer.Point|number_format }) }}</p>
+                            {{ form_widget(form.use_point, { 'attr': { 'type': 'text', 'class': 'form-control', 'data-trigger': 'change' }}) }}
+                            {{ form_errors(form.use_point) }}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="ec-orderConfirm">
+                    <div class="ec-rectHeading">
+                        <h2>{{ 'front.shopping.message_info'|trans }}</h2>
+                    </div>
+                    <div class="ec-input">
+                        {{ form_widget(form.message, {'attr': {'class': 'form-control', 'placeholder': 'front.shopping.message_placeholder'|trans, 'rows': '6'}}) }}
+                        {{ form_errors(form.message) }}
+                    </div>
+                </div>
+            </div>
+            <div class="ec-orderRole__summary">
+                <div class="ec-totalBox">
+                    <dl class="ec-totalBox__spec">
+                        <dt>{{ 'common.subtotal'|trans }}</dt>
+                        <dd class="ec-totalBox__specTotal">{{ Order.subtotal|price }}</dd>
+                    </dl>
+                    <dl class="ec-totalBox__spec">
+                        <dt>{{ 'common.charge'|trans }}</dt>
+                        <dd>{{ Order.charge|price }}</dd>
+                    </dl>
+                    <dl class="ec-totalBox__spec">
+                        <dt>{{ 'common.delivery_fee'|trans }}</dt>
+                        <dd>{{ Order.deliveryFeeTotal|price }}</dd>
+                    </dl>
+                    {% if Order.taxable_discount < 0 %}
+                    <dl class="ec-totalBox__spec">
+                        <dt>{{ 'common.discount'|trans }}</dt>
+                        <dd>{{ Order.taxable_discount|price }}</dd>
+                    </dl>
+                    {% endif %}
+                    <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.taxable_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                    {% for rate, total in Order.taxable_total_by_tax_rate %}
+                    <dl class="ec-totalBox__taxRate">
+                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
+                        <dd>{{ total|price }}</dd>
+                    </dl>
+                    {% endfor %}
+                    {% for item in Order.tax_free_discount_items %}
+                        {% if loop.first %}<div class="ec-totalBox__total"></div>{% endif %}
+                        <dl class="ec-totalBox__spec">
+                            <dt>{{ item.product_name }}</dt>
+                            <dd>{{ item.total_price|price }}</dd>
+                        </dl>
+                    {% endfor %}
+                    <div class="ec-totalBox__paymentTotal">{{ 'common.payment_total'|trans }}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                    {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                    <div class="ec-totalBox__pointBlock">
+                        <dl class="ec-totalBox__spec">
+                            <dt>{{ 'front.shopping.use_point'|trans }}</dt>
+                            <dd>{{ Order.UsePoint|number_format }} pt</dd>
+                        </dl>
+                        <dl class="ec-totalBox__spec">
+                            <dt><span class="ec-font-bold">{{ 'front.shopping.add_point'|trans }}</span></dt>
+                            <dd><span class="ec-font-bold">{{ Order.AddPoint|number_format }} pt</span></dd>
+                        </dl>
+                    </div>
+                    {% endif %}
+                    <div class="ec-totalBox__btn">
+                        <button type="submit" class="ec-blockBtn--action">{{ 'front.shopping.go_to_confirm'|trans }}</button>
+                        <a href="{{ url("cart") }}" class="ec-blockBtn--cancel">{{ 'front.shopping.back_to_cart'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

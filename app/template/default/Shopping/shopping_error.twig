@@ -1,0 +1,37 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'cart_page' %}
+
+{% block main %}
+
+<div class="ec-role">
+    <div class="ec-pageHeader">
+        <h1>{{ 'front.shopping.error'|trans }}</h1>
+    </div>
+</div>
+
+<!-- アラートメッセージ -->
+{{ include('Shopping/alert.twig', { 'error_only': true }) }}
+
+<div class="ec-role">
+    <div class="ec-off3Grid">
+        <div class="ec-off3Grid__cell">
+            <div class="ec-off4Grid">
+                <div class="ec-off4Grid__cell">
+                    <a class="ec-blockBtn--cancel" href="{{ url('cart') }}">{{ 'front.shopping.back_to_cart'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

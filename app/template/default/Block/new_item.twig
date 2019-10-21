@@ -1,0 +1,46 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+<div class="ec-role">
+    <div class="ec-newItemRole">
+        <div class="ec-newItemRole__list">
+            <div class="ec-newItemRole__listItem">
+                <div class="ec-newItemRole__listItemHeading ec-secHeading--tandem">
+                    <span class="ec-secHeading__en">{{ 'front.block.new_item.title__en'|trans }}</span>
+                    <span class="ec-secHeading__line"></span>
+                    <span class="ec-secHeading__ja">{{ 'front.block.new_item.title__ja'|trans }}</span>
+                    <a class="ec-inlineBtn--top" href="{{ url('product_list') }}">{{ 'front.block.new_item.more'|trans }}</a>
+                </div>
+            </div>
+            <div class="ec-newItemRole__listItem">
+                <a href="{{ url('product_detail', {'id': '1'}) }}">
+                    <img src="{{ asset('cube-1.png', 'save_image') }}">
+                    <p class="ec-newItemRole__listItemTitle">{{ 'front.block.new_item.item_1_name'|trans }}</p>
+                    <p class="ec-newItemRole__listItemPrice">{{ 'front.block.new_item.item_1_price'|trans }}</p>
+                </a>
+            </div>
+            <div class="ec-newItemRole__listItem">
+                <a href="{{ url('product_detail', {'id': '2'}) }}">
+                    <img src="{{ asset('sand-1.png', 'save_image') }}">
+                    <p class="ec-newItemRole__listItemTitle">{{ 'front.block.new_item.item_2_name'|trans }}</p>
+                    <p class="ec-newItemRole__listItemPrice">{{ 'front.block.new_item.item_2_price'|trans }}</p>
+                </a>
+            </div>
+            <div class="ec-newItemRole__listItem">
+                <a href="{{ url('product_detail', {'id': '1'}) }}">
+                    <img src="{{ asset(''|no_image_product , 'save_image') }}">
+                    <p class="ec-newItemRole__listItemTitle">{{ 'front.block.new_item.item_3_name'|trans }}</p>
+                    <p class="ec-newItemRole__listItemPrice">{{ 'front.block.new_item.item_3_price'|trans }}</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

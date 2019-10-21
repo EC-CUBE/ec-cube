@@ -1,0 +1,53 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set mypageno = 'withdraw' %}
+
+{% set body_class = 'mypage' %}
+
+{% block main %}
+    <div class="ec-layoutRole__main">
+        <div class="ec-mypageRole">
+            <div class="ec-pageHeader">
+                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__withdrow'|trans }}</h1>
+            </div>
+            {{ include('Mypage/navi.twig') }}
+        </div>
+        <div class="ec-mypageRole">
+            <div class="ec-withdrawConfirmRole">
+                <div class="ec-off3Grid">
+                    <div class="ec-off3Grid__cell">
+                        <div style="font-size:100px;text-align:center;">
+                            <div class="ec-icon"><img src="{{ asset('assets/icon/exclamation.svg') }}" alt=""></div>
+                        </div>
+                        <p class="ec-withdrawConfirmRole__title">{{ 'front.mypage.withdraw_execute_message__title'|trans }}</p>
+                        <p class="ec-withdrawConfirmRole__description">{{ 'front.mypage.withdraw_message__body'|trans }}
+                        </p>
+                    </div>
+                </div>
+                <form method="post" action="{{ url('mypage_withdraw') }}">
+                    {{ form_widget(form._token) }}
+                    <div class="ec-off4Grid">
+                        <div class="ec-off4Grid__cell">
+                            <a class="ec-withdrawConfirmRole__cancel ec-blockBtn--cancel" href="{{ url('mypage') }}">
+                                {{ 'front.mypage.withdraw_cancel'|trans }}
+                            </a>
+                            <button type="submit" class="ec-blockBtn" name="mode"
+                                    value="complete">{{ 'front.mypage.withdraw_execute'|trans }}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,241 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'cart_page' %}
+
+{% block main %}
+
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>{{ 'front.cart.title'|trans }}</h1>
+        </div>
+    </div>
+
+    <div class="ec-cartRole">
+        <div class="ec-cartRole__progress">
+            <ul class="ec-progress">
+                {% set step = 1 %}
+                <li class="ec-progress__item is-complete">
+                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                    </div>
+                    <div class="ec-progress__label">{{ 'front.cart.nav__cart_items'|trans }}
+                    </div>
+                </li>
+                {% if is_granted('ROLE_USER') == false %}
+                    <li class="ec-progress__item">
+                        <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                        </div>
+                        <div class="ec-progress__label">{{ 'front.cart.nav__customer_info'|trans }}
+                        </div>
+                    </li>
+                {% endif %}
+                <li class="ec-progress__item">
+                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                    </div>
+                    <div class="ec-progress__label">{{ 'front.cart.nav__order'|trans }}
+                    </div>
+                </li>
+                <li class="ec-progress__item">
+                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                    </div>
+                    <div class="ec-progress__label">{{ 'front.cart.nav__confirm'|trans }}
+                    </div>
+                </li>
+                <li class="ec-progress__item">
+                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                    </div>
+                    <div class="ec-progress__label">{{ 'front.cart.nav__complete'|trans }}
+                    </div>
+                </li>
+            </ul>
+        </div>
+        {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
+        {% for error in app.session.flashbag.get('eccube.front.request.error') %}
+            {% set idx = loop.index0 %}
+            <div class="ec-cartRole__error">
+                <div class="ec-alert-warning">
+                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                    <div class="ec-alert-warning__text">
+                        {% if productStr[idx] is defined %}
+                            {{ error|trans({'%product%':productStr[idx]})|nl2br }}
+                        {% else %}
+                            {{ error|trans|nl2br }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        {% for error in app.session.flashbag.get('eccube.front.cart.error') %}
+            <div class="ec-cartRole__error">
+                <div class="ec-alert-warning">
+                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                    <div class="ec-alert-warning__text">
+                        {{ error|trans|nl2br }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        {% if totalQuantity > 0 %}
+            <div class="ec-cartRole__totalText">
+                <p>
+                    {{ 'front.cart.total_price'|trans({ '%price%': totalPrice|price })|raw }}
+                </p>
+            </div>
+            {% if Carts|length > 1 %}
+                <div class="ec-cartRole__error">
+                    <div class="ec-alert-warning">
+                        <div class="ec-alert-warning__text">
+                            {{ 'front.cart.divide_cart'|trans|nl2br }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <form name="form" id="form_cart" class="ec-cartRole" method="post" action="{{ url('cart') }}">
+
+                {% for CartIndex,Cart in Carts %}
+                    {% set cartKey = Cart.cart_key %}
+                    {% for error in app.session.flashbag.get('eccube.front.cart.' ~ cartKey ~ '.request.error') %}
+                        <div class="ec-cartRole__error">
+                            <div class="ec-alert-warning">
+                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                                <div class="ec-alert-warning__text">
+                                    {{ error|trans|nl2br }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <div class="ec-cartRole__cart">
+                        <div class="ec-cartTable">
+                            <ol class="ec-cartHeader">
+                                <li class="ec-cartHeader__label">{{ 'front.cart.delete'|trans }}</li>
+                                <li class="ec-cartHeader__label">{{ 'front.cart.product'|trans }}</li>
+                                <li class="ec-cartHeader__label">{{ 'common.quantity'|trans }}</li>
+                                <li class="ec-cartHeader__label">{{ 'common.subtotal'|trans }}</li>
+                            </ol>
+                            {% for CartItem in Cart.CartItems %}
+                                {% set ProductClass = CartItem.ProductClass %}
+                                {% set Product = ProductClass.Product %}
+                                <ul class="ec-cartRow">
+                                    <li class="ec-cartRow__delColumn">
+                                        <a href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="ec-icon" data-method="put" data-message="カートから商品を削除してもよろしいですか?">
+                                            <img src="{{ asset('assets/icon/cross.svg') }}" alt="delete">
+                                        </a>
+                                    </li>
+                                    <li class="ec-cartRow__contentColumn">
+                                        <div class="ec-cartRow__img">
+                                            <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
+                                                <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}"/>
+                                            </a>
+                                        </div>
+                                        <div class="ec-cartRow__summary">
+                                            <div class="ec-cartRow__name">
+                                                <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">{{ Product.name }}</a>
+                                                {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
+                                                    <br>{{ ProductClass.ClassCategory1.ClassName.name }}：{{ ProductClass.ClassCategory1 }}
+                                                {% endif %}
+                                                {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
+                                                    <br>{{ ProductClass.ClassCategory2.ClassName.name }}：{{ ProductClass.ClassCategory2 }}
+                                                {% endif %}
+                                            </div>
+                                            <div class="ec-cartRow__unitPrice">{{ CartItem.price|price }}</div>
+                                            <div class="ec-cartRow__sutbtotalSP">{{ 'common.subtotal__with_separator'|trans }}{{ CartItem.total_price|price }}</div>
+                                        </div>
+                                    </li>
+                                    <li class="ec-cartRow__amountColumn">
+                                        <div class="ec-cartRow__amount">{{ CartItem.quantity|number_format }}</div>
+                                        <div class="ec-cartRow__amountSP">{{ 'common.quantity__with_separator'|trans }}{{ CartItem.quantity|number_format }}</div>
+                                        <div class="ec-cartRow__amountUpDown">
+                                            {% if CartItem.quantity > 1 %}
+                                                <a href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountDownButton load-overlay" data-method="put" data-confirm="false">
+                                                    <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus-dark.svg') }}" alt="reduce"></span>
+                                                </a>
+                                            {% else %}
+                                                <div class="ec-cartRow__amountDownButtonDisabled">
+                                                    <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus.svg') }}" alt="reduce"></span>
+                                                </div>
+                                            {% endif %}
+                                            <a href="{{ url('cart_handle_item', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountUpButton load-overlay" data-method="put" data-confirm="false">
+                                                <span class="ec-cartRow__amountUpButton__icon"><img src="{{ asset('assets/icon/plus-dark.svg') }}" alt="increase"></span>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="ec-cartRow__subtotalColumn">
+                                        <div class="ec-cartRow__sutbtotal">{{ CartItem.total_price|price }}</div>
+                                    </li>
+                                </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="ec-cartRole__progress">
+                        {% if BaseInfo.delivery_free_amount and BaseInfo.delivery_free_quantity %}
+                            <br/>
+                            {% if is_delivery_free[cartKey] %}
+                                {{ 'front.cart.delivery_fee_free__now'|trans }}
+                            {% else %}
+                                {{ 'front.cart.delivery_fee_free__price_and_quantity'|trans({ '%price%': least[cartKey]|price, '%quantity%': quantity[cartKey]|number_format })|raw }}
+                            {% endif %}
+                        {% elseif BaseInfo.delivery_free_amount %}
+                            <br/>
+                            {% if is_delivery_free[cartKey] %}
+                                {{ 'front.cart.delivery_fee_free__now'|trans }}
+                            {% else %}
+                                {{ 'front.cart.delivery_fee_free__price'|trans({ '%price%': least[cartKey]|price })|raw }}
+                            {% endif %}
+                        {% elseif BaseInfo.delivery_free_quantity %}
+                            <br/>
+                            {% if is_delivery_free[cartKey] %}
+                                {{ 'front.cart.delivery_fee_free__now'|trans }}
+                            {% else %}
+                                {{ 'front.cart.delivery_fee_free__quantity'|trans({ '%quantity%': quantity[cartKey]|number_format })|raw }}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="ec-cartRole__actions">
+                        <div class="ec-cartRole__total">{{ 'common.total__with_separator'|trans }}<span class="ec-cartRole__totalAmount">{{ Cart.totalPrice|price }}</span>
+                        </div>
+                        <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'cart_key':cartKey}) }}">{{ 'front.cart.checkout'|trans }}</a>
+                        {% if loop.last %}
+                            <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">{{ 'front.cart.continue'|trans }}</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </form>
+        {% else %}
+            {% for CartIndex,Cart in Carts %}
+                {% set cartKey = Cart.cart_key %}
+                {% for error in app.session.flashbag.get('eccube.front.cart.' ~ cartKey ~ '.request.error') %}
+                    <div class="ec-cartRole__error">
+                        <div class="ec-alert-warning">
+                            <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                            <div class="ec-alert-warning__text">
+                                {{ error|trans|nl2br }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div class="ec-role">
+                <div class="ec-off3Grid">
+                    <div class="ec-off3Grid__cell">
+                        <div class="ec-alert-warning">
+                            <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                            <div class="ec-alert-warning__text">{{ 'front.cart.no_items'|trans }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

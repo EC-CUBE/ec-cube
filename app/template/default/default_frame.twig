@@ -1,0 +1,160 @@
+<!doctype html>
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+<html lang="{{ eccube_config.locale }}">
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# product: http://ogp.me/ns/product#">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="eccube-csrf-token" content="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+    <title>{{ BaseInfo.shop_name }}{% if subtitle is defined and subtitle is not empty %} / {{ subtitle }}{% elseif title is defined and title is not empty %} / {{ title }}{% endif %}</title>
+    {% if Page.author is not empty %}
+        <meta name="author" content="{{ Page.author }}">
+    {% endif %}
+    {% if Page.description is not empty %}
+        <meta name="description" content="{{ Page.description }}">
+    {% endif %}
+    {% if Page.keyword is not empty %}
+        <meta name="keywords" content="{{ Page.keyword }}">
+    {% endif %}
+    {% if Page.meta_robots is not empty %}
+        <meta name="robots" content="{{ Page.meta_robots }}">
+    {% endif %}
+    {% if Page.meta_tags is not empty %}
+        {{ include(template_from_string(Page.meta_tags)) }}
+    {% endif %}
+    <link rel="icon" href="{{ asset('assets/img/common/favicon.ico', 'user_data') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    {% block stylesheet %}{% endblock %}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script>
+        $(function() {
+            $.ajaxSetup({
+                'headers': {
+                    'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content')
+                }
+            });
+        });
+    </script>
+    {# Layout: HEAD #}
+    {% if Layout.Head %}
+        {{ include('block.twig', {'Blocks': Layout.Head}) }}
+    {% endif %}
+    {# プラグイン用styleseetやmetatagなど #}
+    {% if plugin_assets is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_assets }) }}{% endif %}
+    <link rel="stylesheet" href="{{ asset('assets/css/customize.css', 'user_data') }}">
+</head>
+<body id="page_{{ app.request.get('_route') }}" class="{{ body_class|default('other_page') }}">
+{# Layout: BODY_AFTER #}
+{% if Layout.BodyAfter %}
+    {{ include('block.twig', {'Blocks': Layout.BodyAfter}) }}
+{% endif %}
+
+<div class="ec-layoutRole">
+    {# Layout: HEADER #}
+    {% if Layout.Header %}
+        <div class="ec-layoutRole__header">
+            {{ include('block.twig', {'Blocks': Layout.Header}) }}
+        </div>
+    {% endif %}
+
+    {# Layout: CONTENTS_TOP #}
+    {% if Layout.ContentsTop %}
+        <div class="ec-layoutRole__contentTop">
+            {{ include('block.twig', {'Blocks': Layout.ContentsTop}) }}
+        </div>
+    {% endif %}
+
+    <div class="ec-layoutRole__contents">
+        {# Layout: SIDE_LEFT #}
+        {% if Layout.SideLeft %}
+            <div class="ec-layoutRole__left">
+                {{ include('block.twig', {'Blocks': Layout.SideLeft}) }}
+            </div>
+        {% endif %}
+
+        {% set layoutRoleMain = 'ec-layoutRole__main' %}
+        {% if Layout.ColumnNum == 2 %}
+            {% set layoutRoleMain = 'ec-layoutRole__mainWithColumn' %}
+        {% elseif Layout.ColumnNum == 3 %}
+            {% set layoutRoleMain = 'ec-layoutRole__mainBetweenColumn' %}
+        {% endif %}
+
+        <div class="{{ layoutRoleMain }}">
+            {# Layout: MAIN_TOP #}
+            {% if Layout.MainTop %}
+                <div class="ec-layoutRole__mainTop">
+                    {{ include('block.twig', {'Blocks': Layout.MainTop}) }}
+                </div>
+            {% endif %}
+
+            {# MAIN AREA #}
+            {% block main %}{% endblock %}
+
+            {# Layout: MAIN_Bottom #}
+            {% if Layout.MainBottom %}
+                <div class="ec-layoutRole__mainBottom">
+                    {{ include('block.twig', {'Blocks': Layout.MainBottom}) }}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Layout: SIDE_RIGHT #}
+        {% if Layout.SideRight %}
+            <div class="ec-layoutRole__right">
+                {{ include('block.twig', {'Blocks': Layout.SideRight}) }}
+            </div>
+        {% endif %}
+    </div>
+
+    {# Layout: CONTENTS_BOTTOM #}
+    {% if Layout.ContentsBottom %}
+        <div class="ec-layoutRole__contentBottom">
+            {{ include('block.twig', {'Blocks': Layout.ContentsBottom}) }}
+        </div>
+    {% endif %}
+
+    {# Layout: CONTENTS_FOOTER #}
+    {% if Layout.Footer %}
+        <div class="ec-layoutRole__footer">
+            {{ include('block.twig', {'Blocks': Layout.Footer}) }}
+        </div>
+    {% endif %}
+</div><!-- ec-layoutRole -->
+
+<div class="ec-overlayRole"></div>
+<div class="ec-drawerRoleClose"><i class="fas fa-times"></i></div>
+<div class="ec-drawerRole">
+    {# Layout: DRAWER #}
+    {% if Layout.Drawer %}
+        {{ include('block.twig', {'Blocks': Layout.Drawer}) }}
+    {% endif %}
+</div>
+<div class="ec-blockTopBtn pagetop">{{'common.pagetop'|trans}}</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% include('@common/lang.twig') %}
+<script src="{{ asset('assets/js/function.js') }}"></script>
+<script src="{{ asset('assets/js/eccube.js') }}"></script>
+{% block javascript %}{% endblock %}
+{# Layout: CLOSE_BODY_BEFORE #}
+{% if Layout.CloseBodyBefore %}
+    {{ include('block.twig', {'Blocks': Layout.CloseBodyBefore}) }}
+{% endif %}
+{# プラグイン用Snippet #}
+{% if plugin_snippets is defined %}
+    {{ include('snippet.twig', { snippets: plugin_snippets }) }}
+{% endif %}
+    <script src="{{ asset('assets/js/customize.js', 'user_data') }}"></script>
+</body>
+</html>

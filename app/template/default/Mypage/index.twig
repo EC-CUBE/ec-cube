@@ -1,0 +1,85 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set mypageno = 'index' %}
+
+{% set body_class = 'mypage' %}
+
+{% block main %}
+    <div class="ec-layoutRole__main">
+        <div class="ec-mypageRole">
+            <div class="ec-pageHeader">
+                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__history'|trans }}</h1>
+            </div>
+            {% include 'Mypage/navi.twig' %}
+        </div>
+        <div class="ec-mypageRole">
+            {% if pagination.totalItemCount > 0 %}
+                <p class="ec-para-normal">{{ 'front.mypage.history_count'|trans({'%count%':pagination.totalItemCount}) }}</p>
+                {% for Order in pagination %}
+                    <div class="ec-historyRole">
+                        <div class="ec-historyRole__contents">
+
+                            <div class="ec-historyRole__header">
+                                <div class="ec-historyListHeader">
+                                    <p class="ec-historyListHeader__date">{{ Order.order_date|date_sec }}</p>
+                                    <dl class="ec-definitions">
+                                        <dt>{{ 'front.mypage.order_no'|trans }}</dt>
+                                        <dd>{{ Order.order_no }}</dd>
+                                    </dl>
+                                    {% if (BaseInfo.option_mypage_order_status_display) %}
+                                        <dl class="ec-definitions">
+                                            <dt>{{ 'front.mypage.order_status'|trans }}</dt>
+                                            <dd>{{ Order.CustomerOrderStatus }}</dd>
+                                        </dl>
+                                    {% endif %}
+                                    <p class="ec-historyListHeader__action"><a class="ec-inlineBtn"
+                                                                               href="{{ url('mypage_history', {'order_no': Order.order_no}) }}">{{ 'front.mypage.view_detail'|trans }}</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="ec-historyRole__detail">
+                                {% for OrderItem in Order.MergedProductOrderItems %}
+                                    <div class="ec-imageGrid">
+                                        <div class="ec-imageGrid__img">
+                                            {% if OrderItem.Product is null %}
+                                                <img src="{{ asset(''|no_image_product, 'save_image') }}"/>
+                                            {% else %}
+                                                <img src="{{ asset(OrderItem.Product.MainListImage|no_image_product, 'save_image') }}">
+                                            {% endif %}
+                                        </div>
+                                        <div class="ec-imageGrid__content">
+                                            <p class="ec-historyRole__detailTitle">{{ OrderItem.product_name }}</p>
+                                            {% if OrderItem.class_category_name1 is not empty %}
+                                                {{ OrderItem.class_category_name1 }}
+                                            {% endif %}
+                                            {% if OrderItem.class_category_name1 is not empty %}
+                                                / {{ OrderItem.class_category_name2 }}
+                                            {% endif %}
+                                            <p class="ec-historyRole__detailPrice">{{ OrderItem.price_inc_tax|price }}
+                                                × {{ OrderItem.quantity }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="ec-pagerRole">
+                    {% include "pager.twig" with {'pages': pagination.paginationData} %}
+                </div>
+            {% else %}
+                <p class="ec-para-normal">{{ 'front.mypage.history_not_found'|trans }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% set NewsList = repository('Eccube\\Entity\\News').getList() %}
+
+{% block javascript %}
+    <script>
+        $(function() {
+            $('.ec-newsRole__news').each(function() {
+                var listLength = $(this).find('.ec-newsRole__newsItem').length;
+                if (listLength > 5) {
+                    $(this).find('.ec-newsRole__newsItem:gt(4)').each(function() {
+                        $(this).hide();
+                    });
+                    $(this).append('<a id="news_readmore" class="ec-inlineBtn--top">{{ 'front.block.news.read_more'|trans }}</a>');
+                    var dispNum = 5;
+                    $(this).find('#news_readmore').click(function() {
+                        dispNum += 5;
+                        $(this).parent().find('.ec-newsRole__newsItem:lt(' + dispNum + ')').show();
+                        if (dispNum >= listLength) {
+                            $(this).hide();
+                        }
+                    })
+                }
+            });
+
+            $('.ec-newsRole__newsHeading').on('click', function() {
+                $newsItem = $(this).parent('.ec-newsRole__newsItem');
+                $newsDescription = $newsItem.children('.ec-newsRole__newsDescription');
+                if ($newsDescription.css('display') == 'none') {
+                    $newsItem.addClass('is_active');
+                    $newsDescription.slideDown(300);
+                } else {
+                    $newsItem.removeClass('is_active');
+                    $newsDescription.slideUp(300);
+                }
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
+<div class="ec-role">
+    <div class="ec-newsRole">
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">{{ 'front.block.news.title__en'|trans }}</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">{{ 'front.block.news.title__ja'|trans }}</span>
+        </div>
+        <div class="ec-newsRole__news">
+            {% for News in NewsList %}
+                <div class="ec-newsRole__newsItem">
+                    <div class="ec-newsRole__newsHeading">
+                        <div class="ec-newsRole__newsDate">
+                            {{ News.publish_date|date_day }}
+                        </div>
+                        <div class="ec-newsRole__newsColumn">
+                            <div class="ec-newsRole__newsTitle">
+                                {{ News.title }}
+                            </div>
+                            {% if News.description or News.url %}
+                                <div class="ec-newsRole__newsClose">
+                                    <a class="ec-newsRole__newsCloseBtn">
+                                        <i class="fas fa-angle-down"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="ec-newsRole__newsDescription">
+                        {{ News.description|raw|nl2br }}
+                        {% if News.url %}
+                            <br>
+                            <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>{{ 'front.block.news.see_details'|trans }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'registration_page' %}
+
+{% block main %}
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>{{ 'front.entry.complete_title'|trans }}</h1>
+        </div>
+    </div>
+    <div class="ec-registerCompleteRole">
+        <div class="ec-off3Grid ec-text-ac">
+            <div class="ec-off3Grid__cell">
+                <div class="ec-reportHeading">
+                    <h2>{{ 'front.entry.complete_message__title'|trans }}</h2>
+                </div>
+                <p class="ec-reportDescription">{{ 'front.entry.complete_message__activated'|trans|nl2br }}</p>
+                <div class="ec-off4Grid">
+                    <div class="ec-off4Grid__cell">
+                        {% if qtyInCart %}
+                            <a class="ec-blockBtn--action" style="margin-bottom: 3px" href="{{ url('cart') }}">{{ 'common.go_to_cart'|trans }}</a>
+                        {% endif %}
+                        <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

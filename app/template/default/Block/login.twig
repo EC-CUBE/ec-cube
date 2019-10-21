@@ -1,0 +1,56 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+<div class="ec-headerNav">
+    {% if is_granted('ROLE_USER') %}
+        <div class="ec-headerNav__item">
+            <a href="{{ url('mypage') }}">
+                <i class="ec-headerNav__itemIcon fas fa-user fa-fw"></i>
+                <span class="ec-headerNav__itemLink">{{ 'front.block.login.mypage'|trans }}</span>
+            </a>
+        </div>
+        {% if BaseInfo.option_favorite_product %}
+            <div class="ec-headerNav__item">
+                <a href="{{ url('mypage_favorite') }}">
+                    <i class="ec-headerNav__itemIcon fas fa-heart fa-fw"></i>
+                    <span class="ec-headerNav__itemLink">{{ 'front.block.login.favorite'|trans }}</span>
+                </a>
+            </div>
+        {% endif %}
+        <div class="ec-headerNav__item">
+            <a href="{{ url('logout') }}">
+                <i class="ec-headerNav__itemIcon fas fa-lock fa-fw"></i>
+                <span class="ec-headerNav__itemLink">{{ 'front.block.login.logout'|trans }}</span>
+            </a>
+        </div>
+    {% else %}
+        <div class="ec-headerNav__item">
+            <a href="{{ url('entry') }}">
+                <i class="ec-headerNav__itemIcon fas fa-user fa-fw"></i>
+                <span class="ec-headerNav__itemLink">{{ 'front.block.login.customer_registration'|trans }}</span>
+            </a>
+        </div>
+        {% if BaseInfo.option_favorite_product %}
+            <div class="ec-headerNav__item">
+                <a href="{{ url('mypage_favorite') }}">
+                    <i class="ec-headerNav__itemIcon fas fa-heart fa-fw"></i>
+                    <span class="ec-headerNav__itemLink">{{ 'front.block.login.favorite'|trans }}</span>
+                </a>
+            </div>
+        {% endif %}
+        <div class="ec-headerNav__item">
+            <a href="{{ url('mypage_login') }}">
+                <i class="ec-headerNav__itemIcon fas fa-lock fa-fw"></i>
+                <span class="ec-headerNav__itemLink">{{ 'front.block.login.login'|trans }}</span>
+            </a>
+        </div>
+    {% endif %}
+</div>

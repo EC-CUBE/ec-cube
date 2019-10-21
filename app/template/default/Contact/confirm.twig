@@ -1,0 +1,129 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% form_theme form 'Form/form_div_layout.twig' %}
+
+{% block main %}
+    <div class="ec-contactConfirmRole">
+        <div class="ec-pageHeader">
+            <h1>{{ 'front.contact.title'|trans }}</h1>
+        </div>
+        <div class="ec-off1Grid">
+            <div class="ec-off1Grid__cell">
+                <form method="post" action="{{ url('contact') }}" class="h-adr">
+                    {{ form_widget(form._token) }}
+                    <p>{{ 'front.contact.inquiry_notice'|trans|nl2br }}</p>
+                    <div class="ec-borderedDefs">
+                        <dl>
+                            <dt>
+                                {{ form_label(form.name, 'common.name', { 'label_attr': { 'class': 'ec-label '}}) }}
+                            </dt>
+                            <dd>
+                                {{ form.name.name01.vars.data }}
+                                {{ form.name.name02.vars.data }}
+                                {{ form_widget(form.name.name01, { type : 'hidden' }) }}
+                                {{ form_widget(form.name.name02, { type : 'hidden' }) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>
+                                {{ form_label(form.kana, 'common.kana', { 'label_attr': { 'class': 'ec-label' }}) }}
+                            </dt>
+                            <dd>
+                                {{ form.kana.kana01.vars.data }}
+                                {{ form.kana.kana02.vars.data }}
+                                {{ form_widget(form.kana.kana01, { type : 'hidden' }) }}
+                                {{ form_widget(form.kana.kana02, { type : 'hidden' }) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>
+                                {{ form_label(form.address, 'common.address', { 'label_attr': { 'class': 'ec-label' }}) }}
+                            </dt>
+                            <dd>
+                                {# 郵便番号 #}
+                                <span><span>{{ 'common.postal_symbol'|trans }}</span></span>{{ form.postal_code.vars.data }}
+                                {{ form_widget(form.postal_code, { type : 'hidden' }) }}
+                                {# 都道府県・住所 #}
+                                {{ form.address.pref.vars.data }} {{ form.address.addr01.vars.data }} {{ form.address.addr02.vars.data }}
+                                {{ form_widget(form.address.pref, { type : 'hidden' }) }}
+                                {{ form_widget(form.address.addr01, { type : 'hidden' }) }}
+                                {{ form_widget(form.address.addr02, { type : 'hidden' }) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>
+                                {{ form_label(form.phone_number, 'common.phone_number', { 'label_attr': { 'class': 'ec-label' }}) }}
+                            </dt>
+                            <dd>{{ form.phone_number.vars.data }}
+                                {{ form_widget(form.phone_number, { type : 'hidden' }) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>
+                                {{ form_label(form.email, 'common.mail_address', {'label_attr': {'class': 'ec-label'}}) }}
+                            </dt>
+                            <dd>
+                                {{ form.email.vars.data }}
+                                {{ form_widget(form.email, { type : 'hidden' }) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>
+                                {{ form_label(form.contents, 'front.contact.inquiry_contents', { 'label_attr': { 'class': 'ec-label' }}) }}
+                            </dt>
+                            <dd>
+                                {{ form.contents.vars.data|nl2br }}
+                                {{ form_widget(form.contents, { type : 'hidden' }) }}
+                            </dd>
+                        </dl>
+                        {# エンティティ拡張の自動出力 #}
+                        {% for f in form if f.vars.eccube_form_options.auto_render %}
+                            {% if f.vars.eccube_form_options.form_theme %}
+                                {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                {{ form_row(f) }}
+                            {% else %}
+                                <dl>
+                                    <dt>
+                                        {{ form_label(f) }}
+                                    </dt>
+                                    <dd>
+                                        <div class="{{ f.vars.eccube_form_options.style_class }}{{ has_errors(f) ? ' error' }}">
+                                            {{ f.vars.data }}
+                                            {{ form_widget(f, { type: 'hidden'}) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="ec-RegisterRole__actions">
+                        <div class="ec-off4Grid">
+                            <div class="ec-off4Grid__cell">
+                                <button type="submit"
+                                        class="ec-blockBtn--action"
+                                        name="mode"
+                                        value="complete">{{ 'common.send'|trans }}
+                                </button>
+                                <button type="submit"
+                                        class="ec-blockBtn--cancel"
+                                        name="mode"
+                                        value="back">{{ 'common.back'|trans }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'mypage' %}
+
+{% block main %}
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>{{ 'common.login'|trans }}</h1>
+        </div>
+        <div class="ec-off2Grid">
+            <div class="ec-off2Grid__cell">
+                <form name="login_mypage" id="login_mypage" method="post" action="{{ url('mypage_login') }}">
+                    {% if app.session.flashBag.has('eccube.login.target.path') %}
+                        {% for targetPath in app.session.flashBag.get('eccube.login.target.path') %}
+                            <input type="hidden" name="_target_path" value="{{ targetPath }}" />
+                        {% endfor %}
+                    {% endif %}
+                    <div class="ec-login">
+                        <div class="ec-login__icon">
+                            <div class="ec-icon"><img src="{{ asset('assets/icon/user.svg') }}" alt=""></div>
+                        </div>
+                        <div class="ec-login__input">
+                            <div class="ec-input">
+                                {{ form_widget(form.login_email, {'attr': {'style' : 'ime-mode: disabled;', 'placeholder' : 'common.mail_address', 'autofocus': true}}) }}
+                                {{ form_widget(form.login_pass,  {'attr': {'placeholder' : 'common.password' }}) }}
+                            </div>
+                            {% if BaseInfo.option_remember_me %}
+                            <div class="ec-checkbox">
+                                <label>
+                                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                        <input type="hidden" name="login_memory" value="1">
+                                    {% else %}
+                                        {{ form_widget(form.login_memory, { 'label': 'common.remember_me'|trans }) }}
+                                    {% endif %}
+                                </label>
+                            </div>
+                            {% endif %}
+                            {% for reset_complete in app.session.flashbag.get('password_reset_complete') %}
+                                <p>{{ reset_complete|trans }}</p>
+                            {% endfor %}
+                            {% if error %}
+                                <p class="ec-errorMessage">{{ error.messageKey|trans(error.messageData, 'validators')|nl2br }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="ec-grid2">
+                            <div class="ec-grid2__cell">
+                                <div class="ec-login__actions">
+                                    <button type="submit"
+                                            class="ec-blockBtn--cancel">{{ 'common.login'|trans }}</button>
+                                </div>
+                            </div>
+                            <div class="ec-grid2__cell">
+                                <div class="ec-login__link"><a class="ec-link"
+                                                               href="{{ url('forgot') }}">{{ 'common.forgot_login'|trans }}</a>
+                                </div>
+                                <div class="ec-login__link"><a class="ec-link"
+                                                               href="{{ url('entry') }}">{{ 'common.signup'|trans }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

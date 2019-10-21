@@ -1,0 +1,32 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block main %}
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>{{ 'front.privacy.title'|trans }}</h1>
+        </div>
+        <div class="ec-off1Grid">
+            <div class="ec-off1Grid__cell">
+                <p>
+                    個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。
+                </p>
+            </div>
+        </div>
+        <div class="ec-off1Grid">
+            <div class="ec-off1Grid__cell">
+                <div class="ec-heading-bold">個人情報の定義</div>
+                <p>お客さま個人に関する情報(以下「個人情報」といいます)であって、お客さまのお名前、住所、電話番号など当該お客さま個人を識別することができる情報をさします。他の情報と組み合わせて照合することにより個人を識別することができる情報も含まれます。</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

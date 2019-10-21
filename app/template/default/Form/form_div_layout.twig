@@ -1,0 +1,79 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{#
+ - form_div_layout.html.twig
+ - https://github.com/symfony/symfony/blob/master/src/Symfony/Bridge/Twig/Resources/views/Form/form_div_layout.html.twig
+#}
+{%- extends 'form_div_layout.html.twig' -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        {%- for error in errors -%}
+            <p class="ec-errorMessage">{{ error.message|trans({}, translation_domain) }}</p>
+        {%- endfor -%}
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{%- block form_label -%}
+    {{ parent() }}
+    {%- if required -%}
+        <span class="ec-required">{{ 'common.required'|trans }}</span>
+    {%- endif -%}
+{%- endblock form_label -%}
+
+{% block choice_widget %}
+    {% if type is defined and type == 'hidden' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{%- block textarea_widget -%}
+    {% if type is defined and type == 'hidden' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{%- endblock textarea_widget -%}
+
+{%- block radio_widget -%}
+    {% if type is defined and type == 'hidden' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {{ parent() }}
+        <label for="{{ id }}">
+            <span>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</span>
+        </label>
+    {% endif %}
+{%- endblock radio_widget -%}
+
+
+{%- block checkbox_widget -%}
+    {% if type is defined and type == 'hidden' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {{ parent() }}
+        {% if label is not null %}
+            <label for="{{ id }}">
+                <span>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</span>
+            </label>
+        {% endif %}
+    {% endif %}
+{%- endblock checkbox_widget -%}
+
+{%- block widget_attributes -%}
+    {%- if id %} id="{{ id }}" {% endif -%}
+    name="{{ full_name }}"
+    {%- if disabled %} disabled="disabled"{% endif -%}
+    {%- if required %} required="required"{% endif -%}
+    {{ block('attributes') }}
+{%- endblock widget_attributes -%}

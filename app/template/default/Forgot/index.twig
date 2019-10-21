@@ -1,0 +1,56 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% form_theme form 'Form/form_div_layout.twig' %}
+
+{% block main %}
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>{{ 'front.forgot.title'|trans }}</h1>
+        </div>
+    </div>
+    <div class="ec-forgotRole">
+        <form name="form1" id="form1" method="post" action="{{ url('forgot') }}">
+            {{ form_widget(form._token) }}
+            <div class="ec-off1Grid">
+                <div class="ec-off1Grid__cell">
+                    <div class="ec-forgotRole__form">
+                        <div class="ec-forgotRole__intro">
+                            <p class="ec-para-normal">{{ 'front.forgot.message1'|trans }}</p>
+                            <p class="ec-para-normal">{{ 'front.forgot.message2'|trans }}</p>
+                        </div>
+                        <div class="ec-borderedDefs">
+                            <dl>
+                                <dt>
+                                    {{ form_label(form.login_email, 'common.mail_address', { 'label_attr': { 'class': 'ec-label' }}) }}
+                                </dt>
+                                <dd>
+                                    <div class="ec-input{{ has_errors(form.login_email) ? ' error' }}">
+                                        {{ form_widget(form.login_email) }}
+                                        {{ form_errors(form.login_email) }}
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ec-off4Grid">
+                <div class="ec-off4Grid__cell">
+                    <button type="submit" class="ec-blockBtn--action">{{ 'common.next'|trans }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+

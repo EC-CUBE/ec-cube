@@ -1,0 +1,68 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% if pages.pageCount > 1 %}
+    <ul class="ec-pager">
+        {# 最初へ #}
+        {% if pages.firstPageInRange != 1 %}
+            <li class="ec-pager__item">
+                <a href="{{ path(
+                app.request.attributes.get('_route'),
+                app.request.query.all|merge({'pageno': pages.first})) }}">{{ 'common.first'|trans }}</a></li>
+
+        {% endif %}
+
+        {# 前へ #}
+        {% if pages.previous is defined %}
+            <li class="ec-pager__item">
+                <a href="{{ path(
+                app.request.attributes.get('_route'),
+                app.request.query.all|merge({'pageno': pages.previous})) }}">{{ 'common.prev'|trans }}</a></li>
+        {% endif %}
+
+        {# 1ページリンクが表示されない場合、「...」を表示 #}
+        {% if pages.firstPageInRange != 1 %}
+            <li class="ec-pager__item">...</li>
+        {% endif %}
+
+        {% for page in pages.pagesInRange %}
+            {% if page == pages.current %}
+                <li class="ec-pager__item--active"><a href="{{ path(
+                    app.request.attributes.get('_route'),
+                    app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
+            {% else %}
+                <li class="ec-pager__item"><a href="{{ path(
+                    app.request.attributes.get('_route'),
+                    app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
+            {% endif %}
+        {% endfor %}
+
+        {# 最終ページリンクが表示されない場合、「...」を表示 #}
+        {% if pages.last != pages.lastPageInRange %}
+            <li class="ec-pager__item">...</li>
+        {% endif %}
+
+        {# 次へ #}
+        {% if pages.next is defined %}
+            <li class="ec-pager__item">
+                <a href="{{ path(
+                app.request.attributes.get('_route'),
+                app.request.query.all|merge({'pageno': pages.next})) }}">{{ 'common.next'|trans }}</a></li>
+        {% endif %}
+
+        {# 最後へ #}
+        {% if pages.last != pages.lastPageInRange %}
+            <li class="ec-pager__item">
+                <a href="{{ path(
+                app.request.attributes.get('_route'),
+                app.request.query.all|merge({'pageno': pages.last})) }}">{{ 'common.last'|trans }}</a></li>
+        {% endif %}
+    </ul>
+{% endif %}

@@ -1,0 +1,91 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block main %}
+
+<div class="ec-role">
+    <div class="ec-pageHeader">
+        <h1>{{ 'front.about.title'|trans }}</h1>
+    </div>
+    <div class="ec-off1Grid">
+        <div class="ec-off1Grid__cell">
+            <div class="ec-borderedDefs">
+                {% if BaseInfo.shop_name|default is not empty %}
+                    <dl id="help_about_box__shop_name">
+                        <dt>
+                            <label class="ec-label">{{ 'common.shop_name'|trans }}</label>
+                        </dt>
+                        <dd>{{ BaseInfo.shop_name }}</dd>
+                    </dl>
+                {% endif %}
+                {% if BaseInfo.company_name|default is not empty %}
+                    <dl id="help_about_box__company_name">
+                        <dt>
+                            <label class="ec-label">{{ 'common.company_name'|trans }}</label>
+                        </dt>
+                        <dd>{{ BaseInfo.company_name }}</dd>
+                    </dl>
+                {% endif %}
+
+                {% if BaseInfo.postal_code|default is not empty %}
+                    <dl id="help_about_box__address">
+                        <dt>
+                            <label class="ec-label">{{ 'common.address'|trans }}</label>
+                        </dt>
+                        <dd>{{ 'common.postal_symbol'|trans }}{{ BaseInfo.postal_code }}<br />
+                            {{ BaseInfo.pref }}{{ BaseInfo.addr01 }}{{ BaseInfo.addr02 }}
+                        </dd>
+                    </dl>
+                {% endif %}
+
+                {% if BaseInfo.phone_number|default is not empty %}
+                    <dl id="help_about_box__phone_number">
+                        <dt>
+                            <label class="ec-label">{{ 'common.phone_number'|trans }}</label>
+                        </dt>
+                        <dd>{{ BaseInfo.phone_number }}</dd>
+                    </dl>
+                {% endif %}
+
+                {% if BaseInfo.business_hour|default is not empty %}
+                    <dl id="help_about_box__business_hour">
+                        <dt>
+                            <label class="ec-label">{{ 'front.about.business_hour'|trans }}</label>
+                        </dt>
+                        <dd>{{ BaseInfo.business_hour }}</dd>
+                    </dl>
+                {% endif %}
+
+                {% if BaseInfo.good_traded|default is not empty %}
+                    <dl id="help_about_box__good_traded">
+                        <dt>
+                            <label class="ec-label">{{ 'front.about.good_traded'|trans }}</label>
+                        </dt>
+                        <dd>{{ BaseInfo.good_traded|nl2br }}</dd>
+                    </dl>
+                {% endif %}
+
+                {% if BaseInfo.message|default is not empty %}
+                    <dl id="help_about_box__message">
+                        <dt>
+                            <label class="ec-label">{{ 'front.about.message'|trans }}</label>
+                        </dt>
+                        <dd>{{ BaseInfo.message|nl2br }}</dd>
+                    </dl>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

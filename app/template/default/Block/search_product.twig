@@ -1,0 +1,31 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% form_theme form 'Form/form_div_layout.twig' %}
+
+<div class="ec-headerSearch">
+    <form method="get" class="searchform" action="{{ path('product_list') }}">
+        <div class="ec-headerSearch__category">
+            <div class="ec-select ec-select_search">
+                {{ form_widget(form.category_id, {'id': null, 'attr': {'class': 'category_id'}}) }}
+            </div>
+        </div>
+        <div class="ec-headerSearch__keyword">
+            <div class="ec-input">
+                {{ form_widget(form.name, {'id': null, 'attr': {'class': 'search-name', 'placeholder' : 'common.search_keyword' }} ) }}
+                <button class="ec-headerSearch__keywordBtn" type="submit">
+                    <div class="ec-icon">
+                        <img src="{{ asset('assets/icon/search-dark.svg') }}" alt="">
+                    </div>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

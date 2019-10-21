@@ -1,0 +1,70 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+<div class="ec-headerLinkArea">
+    <div class="ec-headerLink__list">
+        <a class="ec-headerLink__item" href="{{ url('cart') }}">
+            <div class="ec-headerLink__icon">
+                <i class="fas fa-shopping-cart fa-fw"></i>
+            </div>
+            <span>{{ 'front.block.login.to_cart'|trans }}</span>
+        </a>
+        {% if is_granted('ROLE_USER') %}
+            <a class="ec-headerLink__item" href="{{ url('mypage') }}">
+                <div class="ec-headerLink__icon">
+                    <i class="fas fa-user fa-fw"></i>
+                </div>
+                <span>{{ 'front.block.login.mypage'|trans }}</span>
+            </a>
+            {% if BaseInfo.option_favorite_product %}
+                <a class="ec-headerLink__item" href="{{ url('mypage_favorite') }}">
+                    <div class="ec-headerLink__icon">
+                        <i class="fas fa-heart fa-fw"></i>
+                    </div>
+                    <span>{{ 'front.block.login.favorite'|trans }}</span>
+                </a>
+            {% endif %}
+            <a class="ec-headerLink__item" href="{{ url('logout') }}">
+                <div class="ec-headerLink__icon">
+                    <i class="fas fa-lock fa-fw"></i>
+                </div>
+                <span>{{ 'front.block.login.logout'|trans }}</span>
+            </a>
+        {% else %}
+            <a class="ec-headerLink__item" href="{{ url('entry') }}">
+                <div class="ec-headerLink__icon">
+                    <i class="fas fa-user fa-fw"></i>
+                </div>
+                <span>{{ 'front.block.login.customer_registration'|trans }}</span>
+            </a>
+            {% if BaseInfo.option_favorite_product %}
+                <a class="ec-headerLink__item" href="{{ url('mypage_favorite') }}">
+                    <div class="ec-headerLink__icon">
+                        <i class="fas fa-heart fa-fw"></i>
+                    </div>
+                    <span>{{ 'front.block.login.favorite'|trans }}</span>
+                </a>
+            {% endif %}
+            <a class="ec-headerLink__item" href="{{ url('mypage_login') }}">
+                <div class="ec-headerLink__icon">
+                    <i class="fas fa-lock fa-fw"></i>
+                </div>
+                <span>{{ 'front.block.login.login'|trans }}</span>
+            </a>
+        {% endif %}
+        <a class="ec-headerLink__item" href="{{ url('homepage') }}">
+            <div class="ec-headerLink__icon">
+                <i class="fas fa-home fa-fw"></i>
+            </div>
+            <span>{{ 'front.block.login.to_home'|trans }}</span>
+        </a>
+    </div>
+</div>

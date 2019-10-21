@@ -1,0 +1,206 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set mypageno = 'index' %}
+
+{% set body_class = 'mypage' %}
+
+{% block main %}
+    <div class="ec-layoutRole__main">
+        <div class="ec-mypageRole">
+            <div class="ec-pageHeader">
+                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__history_detail'|trans }}</h1>
+            </div>
+            {% include 'Mypage/navi.twig' %}
+        </div>
+
+        {% set remessage = false %}
+
+        <div class="ec-orderRole">
+            <div class="ec-orderRole__detail">
+                <div class="ec-orderOrder">
+                    <div class="ec-definitions">
+                        <dt>{{ 'front.mypage.order_date'|trans }}</dt>
+                        <dd>{{ Order.create_date|date_sec }}</dd>
+                    </div>
+                    <div class="ec-definitions">
+                        <dt>{{ 'front.mypage.order_no'|trans }}</dt>
+                        <dd>{{ Order.order_no }}</dd>
+                    </div>
+                    {% if BaseInfo.option_mypage_order_status_display %}
+                        <div class="ec-definitions">
+                            <dt>{{ 'front.mypage.order_status'|trans }}</dt>
+                            <dd>{{ Order.CustomerOrderStatus }}</dd>
+                        </div>
+                    {% endif %}
+                    {% if BaseInfo.isOptionPoint %}
+                        <div class="ec-definitions">
+                            <dt>{{ 'front.mypage.use_point'|trans }}</dt>
+                            <dd>{{ Order.usePoint|number_format }} pt</dd>
+                        </div>
+                        <div class="ec-definitions">
+                            <dt>{{ 'front.mypage.add_point'|trans }}</dt>
+                            <dd>{{ Order.addPoint|number_format }} pt</dd>
+                        </div>
+                    {% endif %}
+
+                </div>
+                <div class="ec-orderDelivery">
+                    <div class="ec-rectHeading">
+                        <h2>{{ 'front.mypage.delivery_info'|trans }}</h2>
+                    </div>
+                    {% for Shipping in Order.Shippings %}
+                        <div class="ec-orderDelivery__title">{{ 'front.mypage.delivery'|trans }}{% if Order.multiple %}({{ loop.index }}){% endif %}</div>
+                        {% for orderItem in Shipping.productOrderItems %}
+                            <div class="ec-orderDelivery__item">
+                                <div class="ec-imageGrid">
+                                    <div class="ec-imageGrid__img">
+                                        {% if orderItem.product is null %}
+                                            <img src="{{ asset(''|no_image_product, 'save_image') }}"/>
+                                        {% else %}
+                                            <img src="{{ asset(orderItem.Product.MainListImage|no_image_product, 'save_image') }}"
+                                                 alt="{{ orderItem.productName }}"/>
+                                        {% endif %}
+                                    </div>
+                                    <div class="ec-imageGrid__content">
+                                        <p>
+                                            {% if orderItem.Product is not null and orderItem.Product.Status.id == constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_SHOW') %}
+                                                <a href="{{ url('product_detail', {'id': orderItem.Product.id}) }}">{{ orderItem.productName }}</a>
+                                            {% else %}
+                                                {{ orderItem.productName }}
+                                            {% endif %} ×{{ orderItem.quantity }} {{ is_reduced_tax_rate(orderItem) ? 'common.reduced_tax_rate_symbol'|trans }}
+                                        </p>
+                                        {% if orderItem.ProductClass is not null %}
+                                            {% if orderItem.ProductClass.ClassCategory1 is not null %}
+                                                {{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}
+                                            {% endif %}
+                                            {% if orderItem.ProductClass.ClassCategory2 %}
+                                                <br>{{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}
+                                            {% endif %}
+                                        {% endif %}
+                                        <p>{{ orderItem.price_inc_tax|price }}
+                                            × {{ orderItem.quantity|number_format }}</p>
+                                        {% if orderItem.product and orderItem.price_inc_tax != orderItem.productClass.price02IncTax %}
+                                            <p class="ec-color-accent">
+                                                {{ 'front.mypage.current_price'|trans }}{{ orderItem.productClass.price02IncTax|price }}</p>
+                                            {% set remessage = true %}
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <p>{{ 'common.reduced_tax_rate_messeage'|trans }}</p>
+                        <div class="ec-orderDelivery__address">
+                            <p>{{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
+                                ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})</p>
+                            <p>{{ 'common.postal_symbol'|trans }}{{ Shipping.postal_code }} {{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</p>
+                            <p>{{ Shipping.phone_number }}</p>
+                        </div>
+                        <div class="ec-definitions--soft">
+                            <dt>{{ 'front.mypage.delivery_provider'|trans }} :</dt>
+                            <dd>{{ Shipping.shipping_delivery_name }}</dd>
+                        </div>
+                        <div class="ec-definitions--soft">
+                            <dt>{{ 'front.mypage.delivery_date'|trans }} :</dt>
+                            <dd>{{ Shipping.shipping_delivery_date|date_day_with_weekday|default('common.select__unspecified'|trans) }}</dd>
+                        </div>
+                        <div class="ec-definitions--soft">
+                            <dt>{{ 'front.mypage.delivery_time'|trans }} :</dt>
+                            <dd>{{ Shipping.shipping_delivery_time|default('common.select__unspecified'|trans) }}</dd>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="ec-orderPayment">
+                    <div class="ec-rectHeading">
+                        <h2>{{ 'front.mypage.payment_info'|trans }}</h2>
+                    </div>
+                    <p>{{ 'front.mypage.payment'|trans }} : {{ Order.PaymentMethod }}</p>
+                </div>
+                <div class="ec-orderConfirm">
+                    <div class="ec-rectHeading">
+                        <h2>{{ 'front.mypage.message'|trans }}</h2>
+                    </div>
+                    <p>{{ Order.message|default('front.mypage.message_not_found'|trans)|nl2br }}</p>
+                </div>
+                <div class="ec-orderMails">
+                    <div class="ec-rectHeading">
+                        <h2>{{ 'front.mypage.mail_list'|trans }}</h2>
+                    </div>
+                    {% for MailHistory in Order.MailHistories %}
+                        <div class="ec-orderMail">
+                            <div class="ec-orderMail__time">{{ MailHistory.send_date|date_sec }}</div>
+                            <div class="ec-orderMail__link"><a>{{ MailHistory.mail_subject }}</a></div>
+                            <div class="ec-orderMail__body">{{ MailHistory.mail_body|nl2br }}<p class="ec-orderMail__close"><a>{{ 'common.close'|trans }}</a></p></div>
+                        </div>
+                    {% else %}
+                        <p class="ec-reportDescription">{{ 'front.mypage.mail_not_found'|trans }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="ec-orderRole__summary">
+                <div class="ec-totalBox">
+                    <dl class="ec-totalBox__spec">
+                        <dt>{{ 'common.subtotal'|trans }}</dt>
+                        <dd>{{ Order.subtotal|price }}</dd>
+                    </dl>
+                    <dl class="ec-totalBox__spec">
+                        <dt>{{ 'common.charge'|trans }}</dt>
+                        <dd>{{ Order.charge|price }}</dd>
+                    </dl>
+                    <dl class="ec-totalBox__spec">
+                        <dt>{{ 'common.delivery_fee'|trans }}</dt>
+                        <dd>{{ Order.delivery_fee_total|price }}</dd>
+                    </dl>
+                    {% if Order.taxable_discount < 0 %}
+                    <dl class="ec-totalBox__spec">
+                        <dt>{{ 'common.discount'|trans }}</dt>
+                        <dd>{{ Order.taxable_discount|price }}</dd>
+                    </dl>
+                    {% endif %}
+                    <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span
+                                class="ec-totalBox__price">{{ Order.taxable_total|price }}</span><span
+                                class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                    {% for rate, total in Order.taxable_total_by_tax_rate %}
+                    <dl class="ec-totalBox__taxRate">
+                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
+                        <dd>{{ total|price }}</dd>
+                    </dl>
+                    {% endfor %}
+                    {% for item in Order.tax_free_discount_items %}
+                        {% if loop.first %}<div class="ec-totalBox__total"></div>{% endif %}
+                        <dl class="ec-totalBox__spec">
+                            <dt>{{ item.product_name }}</dt>
+                            <dd>{{ item.total_price|price }}</dd>
+                        </dl>
+                    {% endfor %}
+                    <div class="ec-totalBox__paymentTotal">{{ 'common.total'|trans }}<span
+                                class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span
+                                class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                    {% if stockOrder %}
+                        <a href="{{ url('mypage_order', {'order_no': Order.order_no }) }}"
+                       class="ec-blockBtn--action load-overlay" {{ csrf_token_for_anchor() }} data-method="put"
+                       data-confirm="false">{{ 'front.mypage.reorder'|trans }}</a>
+                    {% endif %}
+                </div>
+                {% if remessage %}
+                    <p class="ec-color-accent">
+                        <strong>{{ 'front.mypage.reorder_message'|trans }}</strong>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="ec-role">
+            <a href="{{ url('mypage') }}" class="ec-inlineBtn">{{ 'common.back'|trans }}</a>
+        </div>
+    </div>
+{% endblock %}

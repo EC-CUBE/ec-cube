@@ -1,0 +1,65 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% set Carts = get_all_carts() %}
+{% set totalPrice = get_carts_total_price() %}
+{% set totalQuantity = get_carts_total_quantity() %}
+<div class="ec-cartNaviWrap">
+    <div class="ec-cartNavi">
+        <i class="ec-cartNavi__icon fas fa-shopping-cart">
+            <span class="ec-cartNavi__badge">{{ totalQuantity|number_format }}</span>
+        </i>
+        <div class="ec-cartNavi__label">
+            <div class="ec-cartNavi__price">{{ totalPrice|price }}</div>
+        </div>
+    </div>
+    {% if totalQuantity > 0 %}
+        <div class="ec-cartNaviIsset">
+            {% for Cart in Carts %}
+                {% for CartItem in Cart.CartItems %}
+                    {% set ProductClass = CartItem.ProductClass %}
+                    {% set Product = ProductClass.Product %}
+                    <div class="ec-cartNaviIsset__cart">
+                        <div class="ec-cartNaviIsset__cartImage">
+                            <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}">
+                        </div>
+                        <div class="ec-cartNaviIsset__cartContent">
+                            <div class="ec-cartNaviIsset__cartContentTitle">{{ Product.name }}
+                                <div class="ec-font-size-1">
+                                    {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
+                                        {{ ProductClass.ClassCategory1.ClassName.name }}：{{ ProductClass.ClassCategory1 }}
+                                    {% endif %}
+                                    {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
+                                        <br>{{ ProductClass.ClassCategory2.ClassName.name }}：{{ ProductClass.ClassCategory2 }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="ec-cartNaviIsset__cartContentPrice">
+                                {{ CartItem.price|price }}
+                                <div class="ec-cartNaviIsset__cartContentTax">{{ 'common.tax_include'|trans }}</div>
+                            </div>
+                            <div class="ec-cartNaviIsset__cartContentNumber">{{ 'common.quantity'|trans }} {{ CartItem.quantity|number_format }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div class="ec-cartNaviIsset__action">
+                <a class="ec-blockBtn--action" href="{{ url('cart') }}">{{ 'front.block.cart.go_to_cart'|trans }}</a>
+                <a class="ec-blockBtn ec-cartNavi--cancel">{{ 'common.cancel'|trans }}</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="ec-cartNaviNull">
+            <div class="ec-cartNaviNull__message">
+                <p>{{ 'front.block.cart.no_item'|trans }}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>

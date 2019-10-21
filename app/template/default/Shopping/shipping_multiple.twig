@@ -1,0 +1,160 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block javascript %}
+<script>
+$(function() {
+    $('.add').click(function() {
+        var data = $(this).data();
+        var idx = data.idx;
+        var itemIdx = 0;
+        var item = $('#item' + idx);
+        var row = $('#item' + idx + '-0');
+
+        // 既存のお届け先のrowをコピーして雛形とする
+        var addrow = $(row).clone();
+
+        // 追加する要素のIndexを決定
+        item.find('.shipping_item').each(function() {
+            itemIdx = $(this).attr('data-itemidx');
+        });
+        itemIdx = 1 + parseInt(itemIdx);
+
+        // 行のID設定
+        addrow.attr('id', 'item' + idx + '-' + itemIdx);
+        addrow.attr('data-itemidx', itemIdx);
+
+        // お届け先セレクトボックスのIDとNAME設定
+        addrow.find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][customer_address]');
+        addrow.find('select').attr('id', 'form_shipping_multiple_' + idx + '_shipping_' + itemIdx + '_customer_address');
+
+        // 数量のINPUTのIDとNAME設定
+        addrow.find('input').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][quantity]');
+        addrow.find('input').attr('id', 'form_shipping_multiple_' + idx + '_shipping_' + itemIdx + '_quantity');
+
+        // その他、divやbuttonのID設定
+        addrow.find('[id*="multiple_list__shipping_address"]').attr('id', 'multiple_list__shipping_address--' + idx + '_' + itemIdx + '');
+        addrow.find('[id*="multiple_list__shipping_quantity"]').attr('id', 'multiple_list__shipping_quantity--' + idx + '_' + itemIdx + '');
+        addrow.find('button').each(function() {
+            $(this).attr('id', 'button__delete--' + idx + '_' + itemIdx + '');
+            $(this).attr('data-itemidx', idx + '-' + itemIdx);
+            $(this).data('itemidx', idx + '-' + itemIdx);
+            $(this).removeAttr('style');
+        });
+
+        $(item).append($(addrow));
+    });
+
+    $(document).on('click', '.delete', function() {
+        var data = $(this).data();
+        $('#item' + data.itemidx).remove();
+    });
+
+});
+</script>
+{% endblock javascript %}
+
+{% block main %}
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>{{ 'front.shopping.shipping_multiple_title'|trans }}</h1>
+        </div>
+    </div>
+
+    <div class="ec-AddAddress">
+        <form id="shipping-multiple-form" method="post" action="{{ url('shopping_shipping_multiple') }}">
+            {{ form_widget(form._token) }}
+            <div class="ec-AddAddress__info">
+                <p>{{ 'front.shopping.shipping_multiple_message'|trans }}</p>
+            </div>
+
+            {% for error in errors %}
+                <div class="text-danger">{{ error.message }}</div>
+            {% endfor %}
+
+            <div class="ec-AddAddress__new"><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn ec-inlineBtn">{{ 'front.shopping.shipping_add_new_shipping'|trans }}</a></div>
+
+            {% for orderItem in OrderItems %}
+                {% set idx = loop.index0 %}
+                {% set itemvalue = 0 %}
+                <div id="multiple_list__item_box--{{ idx }}" class="ec-AddAddress__add">
+                    <div class="ec-AddAddress__item">
+                        <div class="ec-AddAddress__itemThumb">
+                            <img src="{{ asset(orderItem.product.MainListImage|no_image_product, 'save_image') }}">
+                        </div>
+                        <div class="ec-AddAddress__itemtContent">
+                            <div class="ec-AddAddress__itemtTitle">{{ orderItem.productName }}
+                            </div>
+                            {% if orderItem.productClass.classCategory1 %}
+                                <div class="ec-AddAddress__itemtSize">{{ orderItem.productClass.classCategory1 }}</div>
+                            {% endif %}
+                            {% if orderItem.productClass.classCategory2 %}
+                                <div class="ec-AddAddress__itemtSize">{{ orderItem.productClass.classCategory2 }}</div>
+                            {% endif %}
+                            <div class="ec-AddAddress__itemtPrice">{{ 'common.subtotal__with_separator'|trans }}{{ orderItem.totalPrice|price }}</div>
+
+                            {% for key, value in compItemQuantities %}
+                                {% if orderItem.productClass.id == key %}
+                                    <div class="ec-AddAddress__itemtNumber" id="multiple_list__value--{{ idx }}_{{ key }}">{{ 'common.quantity'|trans }}：{{ value }}</div>
+                                    {% set itemvalue = value %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div id="item{{ idx }}">
+                        {% for shipping in form.shipping_multiple[idx].shipping %}
+                            <div id="item{{ idx }}-{{ loop.index0 }}" data-itemidx="{{ loop.index0 }}" class="ec-AddAddress__select shipping_item item{{ idx }}">
+                                <div id="multiple_list__shipping_address--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectAddress">
+                                    <div class="ec-select">
+                                        <label>{{ 'front.shopping.delivery_to'|trans }}</label>
+                                        {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
+                                        {{ form_errors(shipping.customer_address) }}
+                                    </div>
+                                </div>
+                                <div id="multiple_list__shipping_quantity--{{ idx }}_{{ loop.index0 }}" class="ec-AddAddress__selectNumber">
+                                    <div class="ec-input">
+                                        <label>{{ 'common.quantity'|trans }}</label>
+                                        {% for key, value in compItemQuantities %}
+                                            {% if orderItem.productClass.id == key %}
+                                                {% set quantity = shipping.quantity.vars.value ?: value %}
+                                                {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}, 'value': quantity}) }}
+                                                {{ form_errors(shipping.quantity) }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <button id="button__delete--{{ idx }}_{{ loop.index0 }}" type="button" class="btn ec-inlineBtn delete"
+                                        {% if loop.index0 == 0 %}style="display:none;"{% endif %}
+                                        data-itemidx="{{ idx }}-{{ loop.index0 }}">{{'common.delete'|trans}}</button>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div id="multiple_list__add_button{{ idx }}" class="ec-AddAddress__btn">
+                        <button id="button__add{{ idx }}" type="button" class="ec-inlineBtn add" data-idx="{{ idx }}">{{ 'front.shopping.shipping_add_new_shipping__short'|trans }}</button>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="ec-AddAddress__actions">
+                <div class="ec-off4Grid">
+                    <div class="ec-off4Grid__cell">
+                        <button id="button__confirm" type="submit" class="ec-blockBtn--action">{{ 'front.shopping.shipping_send_selected_shipping'|trans }}</button>
+                        <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">{{ 'common.back'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+<div class="ec-navlistRole">
+    <ul class="ec-navlistRole__navlist">
+        <li class="ec-navlistRole__item {% if mypageno|default('') == 'index' %}active{% endif %}">
+            <a href="{{ url('mypage') }}">{{ 'front.mypage.nav__history'|trans }}</a>
+        </li>
+        {% if BaseInfo.option_favorite_product %}
+            <li class="ec-navlistRole__item {% if mypageno|default('') == 'favorite' %}active{% endif %}">
+                <a href="{{ url('mypage_favorite') }}">{{ 'front.mypage.nav__favorite'|trans }}</a>
+            </li>
+        {% endif %}
+        <li class="ec-navlistRole__item {% if mypageno|default('') == 'change' %}active{% endif %}">
+            <a href="{{ url('mypage_change') }}">{{ 'front.mypage.nav__customer'|trans }}</a>
+        </li>
+        <li class="ec-navlistRole__item {% if mypageno|default('') == 'delivery' %}active{% endif %}">
+            <a href="{{ url('mypage_delivery') }}">{{ 'front.mypage.nav__customer_address'|trans }}</a>
+        </li>
+        <li class="ec-navlistRole__item {% if mypageno|default('') == 'withdraw' %}active{% endif %}">
+            <a href="{{ url('mypage_withdraw') }}">{{ 'front.mypage.nav__withdrow'|trans }}</a>
+        </li>
+    </ul>
+</div>
+
+<div class="ec-welcomeMsg">
+    <p>{{ 'front.mypage.welcome'|trans({ '%last_name%': app.user.name01, '%first_name%': app.user.name02 }) }}</p>
+    {% if BaseInfo.option_point %}
+        <p>{{ 'front.mypage.welcome__point'|trans({ '%point%': app.user.point|number_format}) }}</p>
+    {% endif %}
+</div>
+
