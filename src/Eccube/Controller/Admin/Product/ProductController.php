@@ -330,6 +330,10 @@ class ProductController extends AbstractController
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
+                    $filename = date('mdHis').uniqid('_').'.'.$extension;
+                    $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
+                    $files[] = $filename;
+
                     if ($this->eccubeConfig->get('eccube_product_image_resize')) {
 
                         // 加工前の画像の情報を取得
@@ -379,12 +383,6 @@ class ProductController extends AbstractController
 
                         imagedestroy($origin_image);
                         imagedestroy($canvas);
-                    } else {
-
-                        $filename = date('mdHis').uniqid('_').'.'.$extension;
-                        $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
-                        $files[] = $filename;
-
                     }
                 }
             }
