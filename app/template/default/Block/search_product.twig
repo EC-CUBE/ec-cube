@@ -9,23 +9,14 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% form_theme form 'Form/form_div_layout.twig' %}
+<form method="get" class="form-search-head form-inline bg-white p-3 p-md-0 justify-content-center" action="{{ path('product_list') }}">
+  <div class="input-group w-100">
+    {{ form_widget(form.category_id, {'id': null, 'attr': {'aria-label': 'front.block.category.category__ja'|trans, 'class': 'category_id'} }) }}
+    {{ form_label(form.name, '', { 'label_attr': { 'class': 'd-none' }}) }}
+    {{ form_widget(form.name, {'id': null, 'attr': {'class': 'form-control rounded-right', 'placeholder' : 'common.search_keyword', 'aria-label': 'common.search_keyword'|trans }} ) }}
+    <button class="btn btn-primary rounded-right" aria-label="{{ 'admin.common.search'|trans }}" type="submit">
+        <i class="fas fa-search"></i>
+    </button>
+    </div>
+</form>
 
-<div class="ec-headerSearch">
-    <form method="get" class="searchform" action="{{ path('product_list') }}">
-        <div class="ec-headerSearch__category">
-            <div class="ec-select ec-select_search">
-                {{ form_widget(form.category_id, {'id': null, 'attr': {'class': 'category_id'}}) }}
-            </div>
-        </div>
-        <div class="ec-headerSearch__keyword">
-            <div class="ec-input">
-                {{ form_widget(form.name, {'id': null, 'attr': {'class': 'search-name', 'placeholder' : 'common.search_keyword' }} ) }}
-                <button class="ec-headerSearch__keywordBtn" type="submit">
-                    <div class="ec-icon">
-                        <img src="{{ asset('assets/icon/search-dark.svg') }}" alt="">
-                    </div>
-                </button>
-            </div>
-        </div>
-    </form>
-</div>

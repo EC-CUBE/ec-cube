@@ -1,0 +1,6 @@
+.cart-row__amount,
+.cart-row__action {
+  i {
+    @include font-size(20px);
+  }
+}

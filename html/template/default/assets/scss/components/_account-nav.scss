@@ -1,0 +1,38 @@
+.ec-navlistRole{
+  & &__navlist {
+    display: flex;
+    flex-wrap: wrap;
+    border-color: #D0D0D0;
+    border-style: solid;
+    border-width: 1px 0 0 1px;
+    margin-bottom: 32px;
+    padding: 0;
+    list-style: none;
+
+    @include media-breakpoint-up(md) {
+      flex-wrap: nowrap;
+    }
+  }
+
+  & &__item{
+    width: 50%;
+    border-color: #D0D0D0;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    text-align: center;
+    font-weight: bold;
+    a {
+      padding: 16px;
+      width: 100%;
+      display: inline-block;
+      &:hover{
+        background: #f5f7f8;
+      }
+    }
+  }
+  .active {
+    a {
+      color: #DE5D50;
+    }
+  }
+}

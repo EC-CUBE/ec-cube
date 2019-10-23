@@ -11,55 +11,53 @@ file that was distributed with this source code.
 {% set Carts = get_all_carts() %}
 {% set totalPrice = get_carts_total_price() %}
 {% set totalQuantity = get_carts_total_quantity() %}
-<div class="ec-cartNaviWrap">
-    <div class="ec-cartNavi">
-        <i class="ec-cartNavi__icon fas fa-shopping-cart">
-            <span class="ec-cartNavi__badge">{{ totalQuantity|number_format }}</span>
-        </i>
-        <div class="ec-cartNavi__label">
-            <div class="ec-cartNavi__price">{{ totalPrice|price }}</div>
-        </div>
-    </div>
-    {% if totalQuantity > 0 %}
-        <div class="ec-cartNaviIsset">
-            {% for Cart in Carts %}
-                {% for CartItem in Cart.CartItems %}
-                    {% set ProductClass = CartItem.ProductClass %}
-                    {% set Product = ProductClass.Product %}
-                    <div class="ec-cartNaviIsset__cart">
-                        <div class="ec-cartNaviIsset__cartImage">
-                            <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}">
-                        </div>
-                        <div class="ec-cartNaviIsset__cartContent">
-                            <div class="ec-cartNaviIsset__cartContentTitle">{{ Product.name }}
-                                <div class="ec-font-size-1">
-                                    {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
-                                        {{ ProductClass.ClassCategory1.ClassName.name }}：{{ ProductClass.ClassCategory1 }}
-                                    {% endif %}
-                                    {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
-                                        <br>{{ ProductClass.ClassCategory2.ClassName.name }}：{{ ProductClass.ClassCategory2 }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="ec-cartNaviIsset__cartContentPrice">
-                                {{ CartItem.price|price }}
-                                <div class="ec-cartNaviIsset__cartContentTax">{{ 'common.tax_include'|trans }}</div>
-                            </div>
-                            <div class="ec-cartNaviIsset__cartContentNumber">{{ 'common.quantity'|trans }} {{ CartItem.quantity|number_format }}</div>
+
+<div class="ec-cartNavi">
+    <i class="fa-stack fa-fw fas fa-shopping-cart"></i>
+    <small class="mini-count">{{ totalQuantity|number_format }}</small>
+    <strong>{{ totalPrice|price }}</strong>
+</div>
+{% if totalQuantity > 0 %}
+    <div class="ec-cartNaviIsset">
+        {% for Cart in Carts %}
+            {% for CartItem in Cart.CartItems %}
+                {% set ProductClass = CartItem.ProductClass %}
+                {% set Product = ProductClass.Product %}
+                <div class="media mb-3 pb-3 border-bottom">
+                    {# Image #}
+                    {% include "Components/product/image.twig" with {'product': Product, 'imgClass': 'product-thumb mr-3'} %}
+                    
+                    <div class="media-body text-left">
+                        <h6 class="mt-0">
+                            {# Name #}
+                            {% include "Components/product/name.twig" with {'product': Product} %}
+                        </h6>
+
+                        {# Options #}
+                        {% include "Components/product/options.twig" with {'productClass': ProductClass, class: 'mini-product-options'} %}
+
+                        {# Price #}
+                        {% include "Components/product/price.twig" with {'product': CartItem, 'type': 'mini' } %}
+                        <div class="mini-quantity">
+                            {{ 'common.quantity'|trans }} {{ CartItem.quantity|number_format }}
                         </div>
                     </div>
-                {% endfor %}
+                </div>
             {% endfor %}
-            <div class="ec-cartNaviIsset__action">
-                <a class="ec-blockBtn--action" href="{{ url('cart') }}">{{ 'front.block.cart.go_to_cart'|trans }}</a>
-                <a class="ec-blockBtn ec-cartNavi--cancel">{{ 'common.cancel'|trans }}</a>
-            </div>
+        {% endfor %}
+        <div class="mini-actions">
+            <a class="btn btn-primary btn-block" href="{{ url('cart') }}">
+                {{ 'front.block.cart.go_to_cart'|trans }}
+            </a>
+            <btn class="ec-cartNavi--cancel btn btn-secondary btn-block">
+                {{ 'common.cancel'|trans }}
+            </btn>
         </div>
-    {% else %}
-        <div class="ec-cartNaviNull">
-            <div class="ec-cartNaviNull__message">
-                <p>{{ 'front.block.cart.no_item'|trans }}</p>
-            </div>
+    </div>
+{% else %}
+    <div class="ec-cartNaviNull">
+        <div class="alert alert-danger mb-0" role="alert">
+            {{ 'front.block.cart.no_item'|trans }}
         </div>
-    {% endif %}
-</div>
+    </div>
+{% endif %}

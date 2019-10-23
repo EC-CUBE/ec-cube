@@ -8,27 +8,38 @@ http://www.ec-cube.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-<div class="ec-footerRole">
-    <div class="ec-footerRole__inner">
-        <ul class="ec-footerNavi">
-            <li class="ec-footerNavi__link">
-                <a href="{{ url('help_about') }}">{{ 'front.block.footer.about_us'|trans }}</a>
-            </li>
-            <li class="ec-footerNavi__link">
-                <a href="{{ url('help_privacy') }}">{{ 'front.block.footer.privacy_policy'|trans }}</a>
-            </li>
-            <li class="ec-footerNavi__link">
-                <a href="{{ url('help_tradelaw') }}">{{ 'front.block.footer.act_on_specified_commercial_transactions'|trans }}</a>
-            </li>
-            <li class="ec-footerNavi__link">
-                <a href="{{ url('contact') }}">{{ 'front.block.footer.inquiry'|trans }}</a>
-            </li>
-        </ul>
-        <div class="ec-footerTitle">
-            <div class="ec-footerTitle__logo">
-                <a href="{{ url('homepage') }}">{{ BaseInfo.shop_name }}</a>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <ul class="footer-links">
+                <li>
+                    <a href="{{ url('help_about') }}">
+                        {{ 'front.block.footer.about_us'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('help_privacy') }}">
+                        {{ 'front.block.footer.privacy_policy'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('help_tradelaw') }}">
+                        {{ 'front.block.footer.act_on_specified_commercial_transactions'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('contact') }}">
+                        {{ 'front.block.footer.inquiry'|trans }}
+                    </a>
+                </li>
+            </ul>
+
+            <div class="footer-content">
+                <h4 class="footer-logo">
+                    <a href="{{ url('homepage') }}"><strong>{{ BaseInfo.shop_name }}</strong></a>
+                </h4>
+                <small class="copyright">{{ 'common.copyright'|trans }} {{ BaseInfo.shop_name }}</small>
             </div>
-            <div class="ec-footerTitle__copyright">copyright (c) {{ BaseInfo.shop_name }} all rights reserved.</div>
         </div>
     </div>
 </div>

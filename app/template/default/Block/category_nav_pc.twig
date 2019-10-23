@@ -16,9 +16,9 @@ file that was distributed with this source code.
         {{ Category.name }}
     </a>
     {% if Category.children|length > 0 %}
-        <ul>
+        <ul class="sub-menu">
             {% for ChildCategory in Category.children %}
-                <li>
+                <li class="sub-menu-item">
                     {{ tree(ChildCategory) }}
                 </li>
             {% endfor %}
@@ -29,11 +29,11 @@ file that was distributed with this source code.
 {# @see https://github.com/bolt/bolt/pull/2388 #}
 {% from _self import tree %}
 
-<div class="ec-categoryNaviRole">
-    <div class="ec-itemNav">
-        <ul class="ec-itemNav__nav">
+<div id="wrap-mega-menu" class="wrap-mega-menu bg-dark">
+    <div class="mega-menu">
+        <ul class="menu-items">
             {% for Category in Categories %}
-                <li>
+                <li class="menu-item">
                     {{ tree(Category) }}
                 </li>
             {% endfor %}

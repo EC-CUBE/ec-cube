@@ -1,0 +1,5 @@
+.bg-load-overlay {
+  @include position(fixed, 0 null null 0, 99);
+  @include size(100%);
+  background: rgba(255, 255, 255, 0.4);
+}

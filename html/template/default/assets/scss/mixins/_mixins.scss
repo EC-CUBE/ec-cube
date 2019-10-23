@@ -1,0 +1,148 @@
+/// Provides a quick method for setting an element’s position. Use a `null` value to “skip” a side.
+///
+/// @param {Position} $position [relative]
+///   A CSS position value
+///
+/// @param {Arglist} $coordinates [null null null null]
+///   List of values that correspond to the 4-value syntax for the edges of a box
+///
+/// @example scss - Usage
+///   .element {
+///     @include position(absolute, 0 null null 10em);
+///   }
+///
+/// @example css - CSS Output
+///   .element {
+///     left: 10em;
+///     position: absolute;
+///     top: 0;
+///   }
+///
+/// @require {function} is-length
+/// @require {function} unpack
+
+// Function Unpack
+@function unpack($shorthand) {
+  @if length($shorthand) == 1 {
+      @return nth($shorthand, 1) nth($shorthand, 1) nth($shorthand, 1) nth($shorthand, 1);
+  } @else if length($shorthand) == 2 {
+      @return nth($shorthand, 1) nth($shorthand, 2) nth($shorthand, 1) nth($shorthand, 2);
+  } @else if length($shorthand) == 3 {
+      @return nth($shorthand, 1) nth($shorthand, 2) nth($shorthand, 3) nth($shorthand, 2);
+  } @else {
+      @return $shorthand;
+  }
+}
+
+// Function is-length
+@function is-length($value) {
+  @return type-of($value) != "null" and (str-slice($value + "", 1, 4) == "calc" or index(auto inherit initial 0, $value) or (type-of($value) == "number" and not(unitless($value))));
+}
+
+@mixin position($position: relative, $coordinates: null null null null, $zindex: 1) {
+  @if type-of($position) == list {
+      $coordinates: $position;
+      $position: relative;
+  }
+
+  $coordinates: unpack($coordinates);
+
+  $offsets: (
+      top:    nth($coordinates, 1),
+      right:  nth($coordinates, 2),
+      bottom: nth($coordinates, 3),
+      left:   nth($coordinates, 4)
+  );
+  position: $position;
+  z-index: $zindex;
+
+  @each $offset, $value in $offsets {
+      @if is-length($value) {
+          #{$offset}: $value;
+      }
+  }
+}
+
+// =============================================================================
+// SIZE
+// =============================================================================
+
+@mixin size($value) {
+  $width: nth($value, 1);
+  $height: $width;
+
+  @if length($value)>1 {
+      $height: nth($value, 2);
+  }
+
+  @if is-size($height) {
+      height: $height;
+  }
+
+  @else {
+      @warn "`#{$height}` is not a valid length for the `$height` parameter in the `size` mixin.";
+  }
+
+  @if is-size($width) {
+      width: $width;
+  }
+
+  @else {
+      @warn "`#{$width}` is not a valid length for the `$width` parameter in the `size` mixin.";
+  }
+}
+
+// =============================================================================
+// LIBRARY MIXINS & FUNCTIONS
+// =============================================================================
+
+
+// Rem Calculations
+// -----------------------------------------------------------------------------
+$fontSize-root: 16px !default; // 1
+
+@function stripUnit($num) {
+  @return $num / ($num * 0 + 1);
+}
+
+// scss-lint:disable ZeroUnit
+@function convertToRem($value, $base-value: $fontSize-base) {
+  $value: stripUnit($value) / stripUnit($base-value) * 1rem;
+  @if ($value == 0rem) { $value: 0; } // Turn 0rem into 0
+  @return $value;
+}
+
+@function remCalc($values, $base-value: $fontSize-root) {
+
+  $max: length($values);
+
+  @if $max == 1 { @return convertToRem(nth($values, 1), $base-value); }
+
+  $remValues: ();
+
+  @for $i from 1 through $max {
+      $remValues: append($remValues, convertToRem(nth($values, $i), $base-value));
+  }
+
+  @return $remValues;
+}
+
+
+//
+// Square
+// =============================================================================
+
+@mixin square($size) {
+  height: remCalc($size);
+  width: remCalc($size);
+}
+
+
+//
+// Circle
+// =============================================================================
+
+@mixin circle($size) {
+  @include square($size);
+  border-radius: remCalc($size);
+}

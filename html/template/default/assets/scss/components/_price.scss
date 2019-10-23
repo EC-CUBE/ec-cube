@@ -1,0 +1,24 @@
+.wrap-product-price {
+  div.price-normal:first-child {
+    @include font-size(28px);
+  }
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+
+  + .price-normal {
+   @extend .price-sale; 
+  }
+}
+
+.price-normal,
+.price-class-normal {
+  @include font-size(20px);
+}
+
+.price-sale {
+  @include font-size(28px);
+  color: $danger;
+}

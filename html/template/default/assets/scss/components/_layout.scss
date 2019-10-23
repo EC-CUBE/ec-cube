@@ -1,0 +1,15 @@
+.main_front_page {
+  .container-full {
+    .eyecatch,
+    .topics,
+    .new-items,
+    .feature-category,
+    .news {
+      @extend .container;
+    }
+  }
+}
+
+.ec-layoutRole__main {
+  @extend .mb-4;
+}

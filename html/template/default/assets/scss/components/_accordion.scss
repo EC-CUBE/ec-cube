@@ -1,0 +1,26 @@
+.accordion {
+  .card {
+    border-radius: 0;
+  }
+
+  button {
+    @extend .d-flex;
+    align-items: center;
+    justify-content: space-between;
+    outline: none;
+    padding: 0;
+    width: 100%;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+
+    &.collapsed {
+      i::before {
+        content: "\f067"; 
+      }
+    }
+  }
+}

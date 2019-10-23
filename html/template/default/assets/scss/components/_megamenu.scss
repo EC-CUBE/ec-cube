@@ -1,0 +1,143 @@
+.wrap-mega-menu {
+  display: none;
+
+  @include media-breakpoint-up(md) {
+    display: block;
+  }
+}
+
+.mega-menu {
+  position: relative;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  a {
+    color: $black;
+  }
+}
+
+.menu-items {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.sub-menu {
+  background: $white;
+  display: none;
+}
+
+.menu-item {
+  > a {
+    color: $white;
+    display: block;
+    padding: 15px 25px;
+  }
+
+  > .sub-menu {
+    @extend .shadow-sm;
+    border-bottom: 1px solid $gray-300;
+    left: 0;
+    padding-left: 15%;
+    padding-right: 15%;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    z-index: 12;
+
+    > .sub-menu-item {    
+      > a {
+        font-weight: bold;
+        margin-top: 10px;
+      }
+    
+      .sub-menu {
+        display: block;
+      }
+    }
+  }
+
+  &:hover {
+    > .sub-menu {
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+}
+
+.sub-menu-item {
+  flex: 1 1 25%;
+
+  > a {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+  }
+
+  .sub-menu {
+    display: block;
+    padding-bottom: 10px;
+  }
+}
+
+/* Mobile menu */
+.menu-heading {
+  background: $white;
+  border-top: 1px solid $card-border-color;
+  padding: 12px 15px;
+}
+
+.accordion-menu {
+  .card {
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .card-header {
+    background: $white;
+    border-radius: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  button {
+    color: $black;
+
+    &:hover,
+    &:focus {
+      color: $black;
+    }
+  }
+}
+
+.accordion-content {
+  .card-body {
+    padding: 0;
+  }
+
+  a {
+    border-bottom: 1px solid $card-border-color;
+    color: $black;
+    display: block;
+    padding: 15px 40px 15px 15px;
+    position: relative;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &::after {
+      content: "\f054";
+      display: block;
+      font-family: "Font Awesome 5 Free"; 
+      font-weight: 900;
+      margin-top: -12px;
+      position: absolute;
+      right: 15px;
+      top: 50%;
+    }
+  }
+}

@@ -9,27 +9,29 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-<div class="ec-categoryRole">
-    <div class="ec-role">
-        <div class="ec-secHeading">
-            <span class="ec-secHeading__en">{{ 'front.block.category.category__en'|trans }}</span>
-            <span class="ec-secHeading__line"></span>
-            <span class="ec-secHeading__ja">{{ 'front.block.category.category__ja'|trans }}</span>
-        </div>
-        <div class="ec-categoryRole__list">
-            <div class="ec-categoryRole__listItem">
+<div class="feature-category">
+    <div class="row mb-4">
+        <h5 class="col-12 text-left pb-2">
+            <b>{{ 'front.block.category.category__en'|trans }}</b><span class="ec-vertical-line"></span>{{ 'front.block.category.category__ja'|trans }}
+        </h5>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow">
                 <a href="{{ url('product_list') }}?category_id=2">
-                    <img src="{{ asset('assets/img/top/fpo_355x150.png') }}">
+                    <img src="{{ asset('assets/img/top/bnr_ice.png') }}" class="card-img-top" alt="">
                 </a>
             </div>
-            <div class="ec-categoryRole__listItem">
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow">
                 <a href="{{ url('product_list') }}?category_id=1">
-                    <img src="{{ asset('assets/img/top/fpo_355x150.png') }}">
+                    <img src="{{ asset('assets/img/top/bnr_gelato.png') }}" class="card-img-top" alt="">
                 </a>
             </div>
-            <div class="ec-categoryRole__listItem">
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow">
                 <a href="{{ url('product_list') }}?category_id=5">
-                    <img src="{{ asset('assets/img/top/fpo_355x150.png') }}">
+                    <img src="{{ asset('assets/img/top/bnr_sweets.png') }}" class="card-img-top" alt="">
                 </a>
             </div>
         </div>

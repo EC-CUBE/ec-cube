@@ -9,25 +9,29 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-<div class="ec-topicRole">
-    <div class="ec-role">
-        <div class="ec-secHeading">
-            <span class="ec-secHeading__en">{{ 'front.block.topic.topic__en'|trans }}</span>
-            <span class="ec-secHeading__line"></span>
-            <span class="ec-secHeading__ja">{{ 'front.block.topic.topic__ja'|trans }}</span>
-        </div>
-        <div class="ec-topicRole__list">
-            <div class="ec-topicRole__listItem">
-                <a href="{{ url('product_list') }}?category_id=1">
-                    <img src="{{ asset('assets/img/top/img_bnr01.jpg') }}">
-                </a>
-                <p class="ec-topicRole__listItemTitle">{{ 'front.block.topic.title__gelato'|trans }}</p>
-            </div>
-            <div class="ec-topicRole__listItem">
-                <a href="{{ url('product_list') }}?category_id=5">
-                    <img src="{{ asset('assets/img/top/img_bnr02.jpg') }}">
-                </a>
-                <p class="ec-topicRole__listItemTitle">{{ 'front.block.topic.title__ice'|trans }}</p>
+<div class="topics">
+    <div class="row mb-4">
+        <h5 class="col-12 text-left pb-2">
+            <b>{{ 'front.block.topic.topic__en'|trans }}</b><span class="ec-vertical-line"></span>{{ 'front.block.topic.topic__ja'|trans }}
+        </h5>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="card border-0 shadow">
+                        <a href="{{ url('product_list') }}?category_id=1" class="card-img-top">
+                            <img src="{{ asset('assets/img/top/img_bnr01.jpg') }}">
+                        </a>
+                        <div class="card-body text-center">{{ 'front.block.topic.title__gelato'|trans }}</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="card border-0 shadow">
+                        <a href="{{ url('product_list') }}?category_id=5" class="card-img-top">
+                            <img src="{{ asset('assets/img/top/img_bnr02.jpg') }}">
+                        </a>
+                        <div class="card-body text-center">{{ 'front.block.topic.title__ice'|trans }}</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

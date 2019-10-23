@@ -1,0 +1,30 @@
+.eccube-footer {
+  background: $dark;
+  color: $white;
+
+  a {
+    color: $white;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}
+.footer-links {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 15px 0;
+
+  li {
+    display: inline-block;
+    padding: 15px;
+  }
+}
+
+.footer-content {
+  padding-bottom: 30px;
+  text-align: center;
+}

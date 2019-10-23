@@ -1,0 +1,8 @@
+.form-options {
+  @include media-breakpoint-up(md) {
+    select,
+    input {
+      width: 50%;
+    }
+  }
+}

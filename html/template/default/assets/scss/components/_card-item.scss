@@ -1,0 +1,17 @@
+.card-item {
+  color: $black; 
+
+  &--name {
+    @include font-size(14px);
+    font-weight: bold;
+    margin: 20px 0 5px;
+  }
+
+  &--price {
+    @include font-size(12px);
+  }
+
+  @include media-breakpoint-down(sm) {
+    margin-bottom: 15px;
+  }
+}

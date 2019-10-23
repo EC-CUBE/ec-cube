@@ -1,0 +1,9 @@
+// Custom select
+select {
+  @extend .custom-select;
+  padding-right: 35px;
+
+  &.form-control {
+    padding-right: 35px;
+  }
+}

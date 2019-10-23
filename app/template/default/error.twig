@@ -18,18 +18,19 @@ file that was distributed with this source code.
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
 <body>
-<div class="ec-layoutRole">
-    <div class="ec-404Role">
-        <div class="ec-off4Grid">
-            <div class="ec-off4Grid__cell">
-                <div style="font-size:100px;text-align:center;">
-                    <div class="ec-404Role__icon ec-icon">
-                        <img src="{{ asset('assets/icon/exclamation-pale.svg') }}" alt="">
-                    </div>
+<div class="container d-flex align-items-center justify-content-center vh-100 error-page">
+    <div class="row w-75">
+        <div class="col-12">
+            <div class="jumbotron mt-4 py-4 text-center bg-light">
+                <h4>
+                    <i class="h1 fas fa-exclamation-triangle text-warning"></i>
+                    <p>{{ error_title }}</p>
+                </h4>
+                <div class="error-message my-3">
+                    {{ error_message }}
                 </div>
-                <p class="ec-404Role__title ec-reportHeading">{{ error_title }}</p>
-                <p class="ec-404Role__description ec-reportDescription">{{ error_message }}</p>
-                <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a>
+                <hr class="my-4">
+                <a class="btn btn-primary" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a>
             </div>
         </div>
     </div>

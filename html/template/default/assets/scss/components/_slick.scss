@@ -1,0 +1,33 @@
+.main_visual {
+  &.slick-slider {
+    margin-bottom: remCalc(50px);
+  }
+}
+
+
+.slick-dots {
+  bottom: remCalc(-30px);
+
+  li button::before {
+    font-size: remCalc(16px);
+  }
+} 
+
+/* Arrow */ 
+.slick-prev, 
+.slick-next {
+  @include size(auto);
+  z-index: 2;
+
+  &::before {
+    @include font-size(40px);
+  }
+}
+
+.slick-prev {
+  left: remCalc(25px);
+}
+
+.slick-next {
+  right: remCalc(25px);
+}

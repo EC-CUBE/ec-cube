@@ -9,48 +9,48 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-<div class="ec-headerNav">
+<ul class="nav">
     {% if is_granted('ROLE_USER') %}
-        <div class="ec-headerNav__item">
-            <a href="{{ url('mypage') }}">
-                <i class="ec-headerNav__itemIcon fas fa-user fa-fw"></i>
-                <span class="ec-headerNav__itemLink">{{ 'front.block.login.mypage'|trans }}</span>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('mypage') }}">
+                <i class="fas fa-user fa-fw"></i>
+                <span>{{ 'front.block.login.mypage'|trans }}</span>
             </a>
-        </div>
+        </li>
         {% if BaseInfo.option_favorite_product %}
-            <div class="ec-headerNav__item">
-                <a href="{{ url('mypage_favorite') }}">
-                    <i class="ec-headerNav__itemIcon fas fa-heart fa-fw"></i>
-                    <span class="ec-headerNav__itemLink">{{ 'front.block.login.favorite'|trans }}</span>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('mypage_favorite') }}">
+                    <i class="fas fa-heart fa-fw"></i>
+                    <span>{{ 'front.block.login.favorite'|trans }}</span>
                 </a>
-            </div>
+            </li>
         {% endif %}
-        <div class="ec-headerNav__item">
-            <a href="{{ url('logout') }}">
-                <i class="ec-headerNav__itemIcon fas fa-lock fa-fw"></i>
-                <span class="ec-headerNav__itemLink">{{ 'front.block.login.logout'|trans }}</span>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('logout') }}">
+                <i class="fas fa-lock fa-fw"></i>
+                <span>{{ 'front.block.login.logout'|trans }}</span>
             </a>
-        </div>
+        </li>
     {% else %}
-        <div class="ec-headerNav__item">
-            <a href="{{ url('entry') }}">
-                <i class="ec-headerNav__itemIcon fas fa-user fa-fw"></i>
-                <span class="ec-headerNav__itemLink">{{ 'front.block.login.customer_registration'|trans }}</span>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('entry') }}">
+                <i class="fas fa-user fa-fw"></i>
+                <span>{{ 'front.block.login.customer_registration'|trans }}</span>
             </a>
-        </div>
+        </li>
         {% if BaseInfo.option_favorite_product %}
-            <div class="ec-headerNav__item">
-                <a href="{{ url('mypage_favorite') }}">
-                    <i class="ec-headerNav__itemIcon fas fa-heart fa-fw"></i>
-                    <span class="ec-headerNav__itemLink">{{ 'front.block.login.favorite'|trans }}</span>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('mypage_favorite') }}">
+                    <i class="fas fa-heart fa-fw"></i>
+                    <span>{{ 'front.block.login.favorite'|trans }}</span>
                 </a>
-            </div>
+            </li>
         {% endif %}
-        <div class="ec-headerNav__item">
-            <a href="{{ url('mypage_login') }}">
-                <i class="ec-headerNav__itemIcon fas fa-lock fa-fw"></i>
-                <span class="ec-headerNav__itemLink">{{ 'front.block.login.login'|trans }}</span>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('mypage_login') }}">
+                <i class="fas fa-lock fa-fw"></i>
+                <span>{{ 'front.block.login.login'|trans }}</span>
             </a>
-        </div>
+        </li>
     {% endif %}
-</div>
+</ul>

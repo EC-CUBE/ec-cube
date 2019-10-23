@@ -11,14 +11,15 @@
 
 $(function() {
 
-    $('.pagetop').hide();
-
+    // Back to top & stick order summary
+    const $btnTop = $('[data-pagetop]');
+    $btnTop.hide();
     $(window).on('scroll', function() {
         // ページトップフェードイン
         if ($(this).scrollTop() > 300) {
-            $('.pagetop').fadeIn();
+            $btnTop.fadeIn();
         } else {
-            $('.pagetop').fadeOut();
+            $btnTop.fadeOut();
         }
 
         // PC表示の時のみに適用
@@ -46,40 +47,35 @@ $(function() {
         }
         return false;
     });
+    $btnTop.on('click', () => {
+        $('html,body').animate({ scrollTop: 0 }, 500);
+    });
+    // Back to top & stick order summary
 
-
-    $('.ec-headerNavSP').on('click', function() {
-        $('.ec-layoutRole').toggleClass('is_active');
-        $('.ec-drawerRole').toggleClass('is_active');
-        $('.ec-drawerRoleClose').toggleClass('is_active');
-        $('body').toggleClass('have_curtain');
+    // Hamburger Menu
+    const $body = $('body');
+    $('.js-hamburger-open').on('click', () => {
+        $body.toggleClass('have_curtain');
     });
 
-    $('.ec-overlayRole').on('click', function() {
-        $('body').removeClass('have_curtain');
-        $('.ec-layoutRole').removeClass('is_active');
-        $('.ec-drawerRole').removeClass('is_active');
-        $('.ec-drawerRoleClose').removeClass('is_active');
+    $('.js-hamburger-close, .eccube-overlay').on('click', () => {
+        $body.removeClass('have_curtain');
     });
 
-    $('.ec-drawerRoleClose').on('click', function() {
-        $('body').removeClass('have_curtain');
-        $('.ec-layoutRole').removeClass('is_active');
-        $('.ec-drawerRole').removeClass('is_active');
-        $('.ec-drawerRoleClose').removeClass('is_active');
+    $('.is_inDrawer').each(function () {
+        const html = $(this).html();
+        $(html).appendTo('.ec-drawerRole');
+    });
+    // End Hamburger Menu
+
+    // MINI CART
+    const $miniCartWrapper = $('.mini-cart-wrapper');
+    $miniCartWrapper.on('click', '.ec-cartNavi', () => {
+        $miniCartWrapper.toggleClass('is-active');
     });
 
-    // TODO: カート展開時のアイコン変更処理
-    $('.ec-headerRole__cart').on('click', '.ec-cartNavi', function() {
-        // $('.ec-cartNavi').toggleClass('is-active');
-        $('.ec-cartNaviIsset').toggleClass('is-active');
-        $('.ec-cartNaviNull').toggleClass('is-active')
-    });
-
-    $('.ec-headerRole__cart').on('click', '.ec-cartNavi--cancel', function() {
-        // $('.ec-cartNavi').toggleClass('is-active');
-        $('.ec-cartNaviIsset').toggleClass('is-active');
-        $('.ec-cartNaviNull').toggleClass('is-active')
+    $miniCartWrapper.on('click', '.ec-cartNavi--cancel', () => {
+        $miniCartWrapper.toggleClass('is-active');
     });
 
     $('.ec-orderMail__link').on('click', function() {
@@ -88,15 +84,6 @@ $(function() {
 
     $('.ec-orderMail__close').on('click', function() {
         $(this).parent().slideToggle();
-    });
-
-    $('.is_inDrawer').each(function() {
-        var html = $(this).html();
-        $(html).appendTo('.ec-drawerRole');
-    });
-
-    $('.ec-blockTopBtn').on('click', function() {
-        $('html,body').animate({'scrollTop': 0}, 500);
     });
 
     // スマホのドロワーメニュー内の下層カテゴリ表示

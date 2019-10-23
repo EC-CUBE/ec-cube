@@ -1,0 +1,18 @@
+
+.pagetop {
+  @include position(fixed, null 0 remCalc(10px) null null);
+  background-color: $dark;
+  color: $white;
+  cursor: pointer;
+  display: none;
+  height: 40px;
+  line-height: 40px;
+  opacity: 0.8;
+  padding: 0 remCalc(15px);
+  text-align: center;
+
+  @include media-breakpoint-up(md) {
+    bottom: 30px;
+    right:30px;
+  }
+}

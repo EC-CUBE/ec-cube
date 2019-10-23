@@ -8,21 +8,21 @@ http://www.ec-cube.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-<div class="ec-headerNaviRole">
-    <div class="ec-headerNaviRole__left">
-        <div class="ec-headerNaviRole__search">
-            {{ render(path('block_search_product')) }}
-        </div>
-        <div class="ec-headerRole__navSP">
+<div class="eccube-top-header container pt-2 pt-md-0 py-md-4">
+    <div class="row">
+        <div class="col-md-3 col-lg-4 align-self-center pr-0">
+            <div class="eccube-header-search d-none d-md-block">
+                {{ render(path('block_search_product')) }}
+            </div>
             {{ include('Block/nav_sp.twig') }}
         </div>
-    </div>
-    <div class="ec-headerNaviRole__right">
-        <div class="ec-headerNaviRole__nav">
-            {{ include('Block/login.twig') }}
-        </div>
-        <div class="ec-headerRole__cart">
-            {{ include('Block/cart.twig') }}
+        <div class="col-auto d-flex justify-content-end align-items-center ml-auto">
+            <div id="eccube-header-nav" class="eccube-header-nav">
+                {{ include('Block/login.twig') }}
+            </div>
+            <div id="mini-cart-wrapper" class="mini-cart-wrapper">
+                {{ include('Block/cart.twig') }}
+            </div>
         </div>
     </div>
 </div>

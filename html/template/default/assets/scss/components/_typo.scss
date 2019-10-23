@@ -1,0 +1,24 @@
+img {
+  max-width: 100%;
+}
+
+.seperate-line {
+  background: $black;
+  display: block;
+  height: 1px;
+  margin: 12px auto;
+  width: 20%;
+}
+
+.ec-vertical-line {
+  @include size(1px 16px);
+  align-self: center;
+  background-color: $black;
+  display: inline-flex;
+  margin: 0 remCalc(20px);
+}
+
+.page-heading {
+  margin-bottom: 0;
+  padding: 15px 0;
+}

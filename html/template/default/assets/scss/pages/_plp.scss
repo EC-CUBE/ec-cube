@@ -1,0 +1,20 @@
+.navbar-plp {
+  @include media-breakpoint-down(xs) {
+    .product-total-count,
+    .form-actions {
+      width: 100%;
+    }
+  }
+}
+
+/* PRODUCT ITEMS */ 
+.product-item {
+  display: flex;
+  align-items: stretch;
+
+  .card-body {
+    a {
+      @extend .stretched-link;
+    }
+  }
+}

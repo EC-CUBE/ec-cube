@@ -1,0 +1,18 @@
+.ec-errorMessage {
+  @extend .invalid-feedback;
+  display: block;
+}
+
+.is-invalid {
+  .form-control {
+    @extend .form-control.is-invalid;
+  }
+}
+
+.ec-required{
+  @extend .invalid-feedback;
+  display: inline-block;
+  margin: 0 0 0 5px;
+  vertical-align: 2px;
+  width: auto;
+}

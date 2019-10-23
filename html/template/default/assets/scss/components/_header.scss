@@ -1,0 +1,134 @@
+.eccube-header {
+  @extend .mb-3;
+}
+
+.eccube-top-header {
+  @include font-size(14px);
+
+  @include media-breakpoint-down(sm) {
+    @include font-size(20px);
+    max-width: 100%;
+  }
+
+  input,
+  select,
+  button {
+    @include font-size(14px);
+  }
+}
+
+/* SEARCH */
+.form-search-head {
+  position: relative;
+
+  select {
+    max-width: 46%;
+  }
+
+  input {
+    max-width: 54%;
+    padding-right: remCalc(30px);
+  }
+
+  button {
+    @include font-size(16px);
+    @include position(absolute, 50% 5px null null, 3);
+    @include size(24px);
+    background: none;
+    border: none;
+    color: $primary;
+    line-height: 24px;
+    margin-top: -12px;
+    padding: 0;
+
+    &:hover,
+    &:focus {
+      background: none;
+      color: $primary;
+    }
+  }
+}
+
+/* NAVIGATION */
+.eccube-header-nav {
+  a {
+    padding-left: remCalc(6px);
+    padding-right: remCalc(6px);
+    color: $dark; 
+
+    span {
+      display: none;
+
+      @include media-breakpoint-up(md) {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+/* HAMBURGER MENU */
+.hamburger-menu-open,
+.hamburger-menu-close {
+  @include font-size(18px);
+  @include position(fixed, 10px null null null, 21);
+  @include circle(40px);
+  padding: remCalc(10px);
+  text-align: center;
+}
+
+.hamburger-menu-open {
+  background: $primary;
+  color: $white;
+  display: block;
+  left: 10px;
+
+  @include media-breakpoint-up(md) {
+    display: none;
+  }
+}
+
+.hamburger-menu-close {
+  background: $white;
+  color: $black;
+  display: none;
+  right: 20px;  
+}
+
+.ec-drawerRole {
+  @include position(fixed, 0 null null 0, 21);
+  background: black;
+  display: none;
+  height: 100vh;
+  overflow-y: scroll;
+  transition: all .3s;
+  width: calc(100% - 80px);
+}
+
+.eccube-overlay {
+  @include size(100% 100vh);
+  @include position(fixed, 0 null null 0, 20);
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+.have_curtain {
+  .hamburger-menu-close,
+  .ec-drawerRole,
+  .eccube-overlay {
+    display: block;
+
+    @include media-breakpoint-up(md) {
+      display: none;
+    }
+  }
+
+  .hamburger-menu-open {
+    display: none;
+  }
+}
+
+.list-group-login {
+  .list-group-item {
+    padding-left: remCalc(15px);
+  }
+}

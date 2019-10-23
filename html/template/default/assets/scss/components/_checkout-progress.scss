@@ -1,0 +1,71 @@
+.ec-progress{
+  margin: 0 auto;
+  padding: 8px 0 16px;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  list-style: none;
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: 30px;
+    padding: 0;
+  }
+
+  & &__item{
+    @include font-size(14px);
+    display:table-cell;
+    position: relative;
+    text-align: center;
+    font-weight: bold;
+    z-index: 10;
+
+    &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      background: #525263;
+      width: 100%;
+      height: 0.25em;
+      top: 1.25em;
+      left: 50%;
+      margin-left: 1.5em\9;
+      z-index: -1;
+    }
+    &:last-child:after {
+      display: none;
+    }
+  }
+  & &__number{
+    @include font-size(12px);
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+    background: #525263;
+    color: #fff;
+    top: 0;
+    left: 18px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+
+    @include media-breakpoint-up(md) {
+      @include font-size(20px);
+      line-height: 42px;
+      width: 42px;
+      height: 42px;
+    }
+  }
+  & &__label {
+    @include font-size(12px);
+  }
+  .is-complete {
+    .ec-progress__number {
+      background: #5CB1B1;
+    }
+    .ec-progress__label {
+      color: #5CB1B1;
+    }
+  }
+}

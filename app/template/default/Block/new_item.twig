@@ -1,3 +1,4 @@
+
 {#
 This file is part of EC-CUBE
 
@@ -8,38 +9,39 @@ http://www.ec-cube.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-
-<div class="ec-role">
-    <div class="ec-newItemRole">
-        <div class="ec-newItemRole__list">
-            <div class="ec-newItemRole__listItem">
-                <div class="ec-newItemRole__listItemHeading ec-secHeading--tandem">
-                    <span class="ec-secHeading__en">{{ 'front.block.new_item.title__en'|trans }}</span>
-                    <span class="ec-secHeading__line"></span>
-                    <span class="ec-secHeading__ja">{{ 'front.block.new_item.title__ja'|trans }}</span>
-                    <a class="ec-inlineBtn--top" href="{{ url('product_list') }}">{{ 'front.block.new_item.more'|trans }}</a>
+<div class="new-items">
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6 col-md-3 d-flex align-items-center justify-content-center">
+                    <div class="ec-newItemRole__listItemHeading ec-secHeading--tandem">
+                        <b>{{ 'front.block.new_item.title__en'|trans }}</b>
+                        <span class="seperate-line"></span>
+                        <small class="d-block pb-4 text-center">{{ 'front.block.new_item.title__ja'|trans }}</small>
+                        <a class="btn btn-dark" href="{{ url('product_list') }}">{{ 'front.block.new_item.more'|trans }}</a>
+                    </div>
                 </div>
-            </div>
-            <div class="ec-newItemRole__listItem">
-                <a href="{{ url('product_detail', {'id': '1'}) }}">
-                    <img src="{{ asset('cube-1.png', 'save_image') }}">
-                    <p class="ec-newItemRole__listItemTitle">{{ 'front.block.new_item.item_1_name'|trans }}</p>
-                    <p class="ec-newItemRole__listItemPrice">{{ 'front.block.new_item.item_1_price'|trans }}</p>
-                </a>
-            </div>
-            <div class="ec-newItemRole__listItem">
-                <a href="{{ url('product_detail', {'id': '2'}) }}">
-                    <img src="{{ asset('sand-1.png', 'save_image') }}">
-                    <p class="ec-newItemRole__listItemTitle">{{ 'front.block.new_item.item_2_name'|trans }}</p>
-                    <p class="ec-newItemRole__listItemPrice">{{ 'front.block.new_item.item_2_price'|trans }}</p>
-                </a>
-            </div>
-            <div class="ec-newItemRole__listItem">
-                <a href="{{ url('product_detail', {'id': '1'}) }}">
-                    <img src="{{ asset(''|no_image_product , 'save_image') }}">
-                    <p class="ec-newItemRole__listItemTitle">{{ 'front.block.new_item.item_3_name'|trans }}</p>
-                    <p class="ec-newItemRole__listItemPrice">{{ 'front.block.new_item.item_3_price'|trans }}</p>
-                </a>
+                <div class="col-6 col-md-3 card-item">
+                    <a href="{{ url('product_detail', {'id': '1'}) }}">
+                        <img src="{{ asset('cube-1.png', 'save_image') }}">
+                        <p class="card-item--name">{{ 'front.block.new_item.item_1_name'|trans }}</p>
+                        <p class="card-item--price">{{ 'front.block.new_item.item_1_price'|trans }}</p>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3 card-item">
+                    <a href="{{ url('product_detail', {'id': '2'}) }}">
+                        <img src="{{ asset('sand-1.png', 'save_image') }}">
+                        <p class="card-item--name">{{ 'front.block.new_item.item_2_name'|trans }}</p>
+                        <p class="card-item--price">{{ 'front.block.new_item.item_2_price'|trans }}</p>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3 card-item">
+                    <a href="{{ url('product_detail', {'id': '1'}) }}">
+                        <img src="{{ asset(''|no_image_product , 'save_image') }}">
+                        <p class="card-item--name">{{ 'front.block.new_item.item_3_name'|trans }}</p>
+                        <p class="card-item--price">{{ 'front.block.new_item.item_3_price'|trans }}</p>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

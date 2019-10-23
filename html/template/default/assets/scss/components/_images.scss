@@ -1,0 +1,11 @@
+img.product-thumb {
+  max-width: 90px;
+}
+
+img.product-small {
+  max-width: 90px;
+
+  @include media-breakpoint-up(md) { 
+    max-width: 120px;
+  }
+}
