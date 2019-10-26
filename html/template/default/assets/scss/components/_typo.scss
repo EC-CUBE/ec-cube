@@ -19,6 +19,14 @@ img {
 }
 
 .page-heading {
-  margin-bottom: 0;
-  padding: 15px 0;
+  @extend .border-bottom;
+  margin-bottom: remCalc(15px);
+  padding-top: remCalc(15px);
+  padding-bottom: remCalc(10px);
+}
+
+body.have_curtain {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
 }

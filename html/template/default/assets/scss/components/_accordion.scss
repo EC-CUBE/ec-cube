@@ -1,6 +1,15 @@
 .accordion {
-  .card {
+  > .card {
     border-radius: 0;
+
+    .card-header {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+  }
+
+  .accordion-content {
+    border-top: $card-border-width solid $card-border-color;
   }
 
   button {

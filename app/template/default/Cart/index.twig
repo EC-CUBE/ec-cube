@@ -13,229 +13,165 @@ file that was distributed with this source code.
 {% set body_class = 'cart_page' %}
 
 {% block main %}
+    {% include "Components/heading.twig" with {'title': 'front.cart.title' } %}
 
-    <div class="ec-role">
-        <div class="ec-pageHeader">
-            <h1>{{ 'front.cart.title'|trans }}</h1>
-        </div>
-    </div>
+    {% include "Components/checkout/progress-bar.twig" with {'step1': 'is-complete' } %}
+    
+    {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
+    {% for error in app.session.flashbag.get('eccube.front.request.error') %}
+        {% set idx = loop.index0 %}
+        {% if productStr[idx] is defined %}
+            {% include "Components/error.twig" with {'message': error|trans({'%product%':productStr[idx]})} %}
+        {% else %}
+            {% include "Components/error.twig" with {'message': error} %}
+        {% endif %}
+    {% endfor %}
 
-    <div class="ec-cartRole">
-        <div class="ec-cartRole__progress">
-            <ul class="ec-progress">
-                {% set step = 1 %}
-                <li class="ec-progress__item is-complete">
-                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
-                    </div>
-                    <div class="ec-progress__label">{{ 'front.cart.nav__cart_items'|trans }}
-                    </div>
-                </li>
-                {% if is_granted('ROLE_USER') == false %}
-                    <li class="ec-progress__item">
-                        <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+    {% for error in app.session.flashbag.get('eccube.front.cart.error') %}
+        {% include "Components/error.twig" with {'message': error} %}
+    {% endfor %}
+
+    {% if totalQuantity > 0 %}
+        <h6 class="text-center pb-3">
+            {{ 'front.cart.total_price'|trans({ '%price%': totalPrice|price })|raw }}
+        </h6>
+
+        {% if Carts|length > 1 %}
+            {% include "Components/error.twig" with {'message': 'front.cart.divide_cart'} %}
+        {% endif %}
+
+        <form name="form" id="form_cart" method="post" action="{{ url('cart') }}">
+            {% for CartIndex,Cart in Carts %}
+                {% set cartKey = Cart.cart_key %}
+                {% for error in app.session.flashbag.get('eccube.front.cart.' ~ cartKey ~ '.request.error') %}
+                    {% include "Components/error.twig" with {'message': error} %}
+                {% endfor %}
+                <div class="p-3 bg-light">
+                    <div class="row">
+                        <div class="col-1">
+                            {{ 'front.cart.delete'|trans }}
                         </div>
-                        <div class="ec-progress__label">{{ 'front.cart.nav__customer_info'|trans }}
+                        <div class="col-8 col-md-6">
+                            {{ 'front.cart.product'|trans }}
                         </div>
-                    </li>
-                {% endif %}
-                <li class="ec-progress__item">
-                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
-                    </div>
-                    <div class="ec-progress__label">{{ 'front.cart.nav__order'|trans }}
-                    </div>
-                </li>
-                <li class="ec-progress__item">
-                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
-                    </div>
-                    <div class="ec-progress__label">{{ 'front.cart.nav__confirm'|trans }}
-                    </div>
-                </li>
-                <li class="ec-progress__item">
-                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
-                    </div>
-                    <div class="ec-progress__label">{{ 'front.cart.nav__complete'|trans }}
-                    </div>
-                </li>
-            </ul>
-        </div>
-        {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
-        {% for error in app.session.flashbag.get('eccube.front.request.error') %}
-            {% set idx = loop.index0 %}
-            <div class="ec-cartRole__error">
-                <div class="ec-alert-warning">
-                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
-                    <div class="ec-alert-warning__text">
-                        {% if productStr[idx] is defined %}
-                            {{ error|trans({'%product%':productStr[idx]})|nl2br }}
-                        {% else %}
-                            {{ error|trans|nl2br }}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-        {% for error in app.session.flashbag.get('eccube.front.cart.error') %}
-            <div class="ec-cartRole__error">
-                <div class="ec-alert-warning">
-                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
-                    <div class="ec-alert-warning__text">
-                        {{ error|trans|nl2br }}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-        {% if totalQuantity > 0 %}
-            <div class="ec-cartRole__totalText">
-                <p>
-                    {{ 'front.cart.total_price'|trans({ '%price%': totalPrice|price })|raw }}
-                </p>
-            </div>
-            {% if Carts|length > 1 %}
-                <div class="ec-cartRole__error">
-                    <div class="ec-alert-warning">
-                        <div class="ec-alert-warning__text">
-                            {{ 'front.cart.divide_cart'|trans|nl2br }}
+                        <div class="col-3 col-md-2 text-center">
+                            {{ 'common.quantity'|trans }}
+                        </div>
+                        <div class="d-none d-md-block col-3 text-right">
+                            {{ 'common.subtotal'|trans }}
                         </div>
                     </div>
                 </div>
-            {% endif %}
 
-            <form name="form" id="form_cart" class="ec-cartRole" method="post" action="{{ url('cart') }}">
+                {% for CartItem in Cart.CartItems %}
+                    {% set ProductClass = CartItem.ProductClass %}
+                    {% set Product = ProductClass.Product %}
+                    <div class="py-4 border-bottom">
+                        <div class="row flex-nowrap">
+                            <div class="col-1 cart-row__action align-self-center text-center">
+                                <a title="{{ 'common.delete'|trans }}" href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="text-danger" data-method="put" data-message="カートから商品を削除してもよろしいですか?">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </div>
+                            <div class="col-8 col-md-6 cart-row__content">
+                                <div class="media">
+                                    {# Image #}
+                                    {% include "Components/product/image.twig" with {'product': Product, 'type': 'link', 'linkClass': 'align-self-center mr-3', 'imgClass': 'product-small'} %}
+                                    
+                                    <div class="media-body align-self-center">
+                                        <div class="cart-item__name">
+                                            {# Name #}
+                                            {% include "Components/product/name.twig" with {'product': Product} %}
+                                        </div>
 
-                {% for CartIndex,Cart in Carts %}
-                    {% set cartKey = Cart.cart_key %}
-                    {% for error in app.session.flashbag.get('eccube.front.cart.' ~ cartKey ~ '.request.error') %}
-                        <div class="ec-cartRole__error">
-                            <div class="ec-alert-warning">
-                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
-                                <div class="ec-alert-warning__text">
-                                    {{ error|trans|nl2br }}
+                                        {# Options #}
+                                        {% include "Components/product/options.twig" with {'productClass': ProductClass, class: 'cart-item__options'} %}
+
+                                        {# Price #}
+                                        {% include "Components/product/price.twig" with {'product': CartItem, type: 'cart'} %}
+
+                                        <div class="cart-item__sutbtotal d-block d-md-none">
+                                            {{ 'common.subtotal__with_separator'|trans }} {{ CartItem.total_price|price }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-
-                    <div class="ec-cartRole__cart">
-                        <div class="ec-cartTable">
-                            <ol class="ec-cartHeader">
-                                <li class="ec-cartHeader__label">{{ 'front.cart.delete'|trans }}</li>
-                                <li class="ec-cartHeader__label">{{ 'front.cart.product'|trans }}</li>
-                                <li class="ec-cartHeader__label">{{ 'common.quantity'|trans }}</li>
-                                <li class="ec-cartHeader__label">{{ 'common.subtotal'|trans }}</li>
-                            </ol>
-                            {% for CartItem in Cart.CartItems %}
-                                {% set ProductClass = CartItem.ProductClass %}
-                                {% set Product = ProductClass.Product %}
-                                <ul class="ec-cartRow">
-                                    <li class="ec-cartRow__delColumn">
-                                        <a href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="ec-icon" data-method="put" data-message="カートから商品を削除してもよろしいですか?">
-                                            <img src="{{ asset('assets/icon/cross.svg') }}" alt="delete">
+                            <div class="col-3 col-md-2 cart-row__amount px-0">
+                                <div class="cart-row__amount__content">
+                                    <div class="w-100 text-center">
+                                        <span class="d-inline-block d-md-none">{{ 'common.quantity__with_separator'|trans }}</span>{{ CartItem.quantity|number_format }}
+                                    </div>
+                                    {% if CartItem.quantity > 1 %}
+                                        <a title="" href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="load-overlay mr-1" data-method="put" data-confirm="false">
+                                            <i class="fas fa-minus-circle"></i>
                                         </a>
-                                    </li>
-                                    <li class="ec-cartRow__contentColumn">
-                                        <div class="ec-cartRow__img">
-                                            <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
-                                                <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}"/>
-                                            </a>
-                                        </div>
-                                        <div class="ec-cartRow__summary">
-                                            <div class="ec-cartRow__name">
-                                                <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">{{ Product.name }}</a>
-                                                {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
-                                                    <br>{{ ProductClass.ClassCategory1.ClassName.name }}：{{ ProductClass.ClassCategory1 }}
-                                                {% endif %}
-                                                {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
-                                                    <br>{{ ProductClass.ClassCategory2.ClassName.name }}：{{ ProductClass.ClassCategory2 }}
-                                                {% endif %}
-                                            </div>
-                                            <div class="ec-cartRow__unitPrice">{{ CartItem.price|price }}</div>
-                                            <div class="ec-cartRow__sutbtotalSP">{{ 'common.subtotal__with_separator'|trans }}{{ CartItem.total_price|price }}</div>
-                                        </div>
-                                    </li>
-                                    <li class="ec-cartRow__amountColumn">
-                                        <div class="ec-cartRow__amount">{{ CartItem.quantity|number_format }}</div>
-                                        <div class="ec-cartRow__amountSP">{{ 'common.quantity__with_separator'|trans }}{{ CartItem.quantity|number_format }}</div>
-                                        <div class="ec-cartRow__amountUpDown">
-                                            {% if CartItem.quantity > 1 %}
-                                                <a href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountDownButton load-overlay" data-method="put" data-confirm="false">
-                                                    <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus-dark.svg') }}" alt="reduce"></span>
-                                                </a>
-                                            {% else %}
-                                                <div class="ec-cartRow__amountDownButtonDisabled">
-                                                    <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus.svg') }}" alt="reduce"></span>
-                                                </div>
-                                            {% endif %}
-                                            <a href="{{ url('cart_handle_item', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountUpButton load-overlay" data-method="put" data-confirm="false">
-                                                <span class="ec-cartRow__amountUpButton__icon"><img src="{{ asset('assets/icon/plus-dark.svg') }}" alt="increase"></span>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li class="ec-cartRow__subtotalColumn">
-                                        <div class="ec-cartRow__sutbtotal">{{ CartItem.total_price|price }}</div>
-                                    </li>
-                                </ul>
-                            {% endfor %}
-                        </div>
+                                    {% else %}
+                                        <button class="btn-down-disabled mr-1" disabled>
+                                            <i class="fas fa-minus-circle"></i>
+                                        </button>
+                                    {% endif %}
+                                    <a title="" href="{{ url('cart_handle_item', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="load-overlay ml-1" data-method="put" data-confirm="false">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-none d-md-block col-3 text-right align-self-center cart-row__subtotal">
+                                <b>{{ CartItem.total_price|price }}</b>
+                            </div>
+                        </div>  
                     </div>
-                    <div class="ec-cartRole__progress">
-                        {% if BaseInfo.delivery_free_amount and BaseInfo.delivery_free_quantity %}
-                            <br/>
+                {% endfor %}
+                        
+                <div id="eccube-cart-promotion" class="ec-cart-promotion">
+                    {% if BaseInfo.delivery_free_amount and BaseInfo.delivery_free_quantity %}
+                        <div class="alert alert-info text-center mb-0 mt-4" role="alert">
                             {% if is_delivery_free[cartKey] %}
                                 {{ 'front.cart.delivery_fee_free__now'|trans }}
                             {% else %}
                                 {{ 'front.cart.delivery_fee_free__price_and_quantity'|trans({ '%price%': least[cartKey]|price, '%quantity%': quantity[cartKey]|number_format })|raw }}
                             {% endif %}
-                        {% elseif BaseInfo.delivery_free_amount %}
-                            <br/>
+                        </div>
+                    {% elseif BaseInfo.delivery_free_amount %}
+                        <div class="alert alert-info text-center mb-0 mt-4" role="alert">
                             {% if is_delivery_free[cartKey] %}
                                 {{ 'front.cart.delivery_fee_free__now'|trans }}
                             {% else %}
                                 {{ 'front.cart.delivery_fee_free__price'|trans({ '%price%': least[cartKey]|price })|raw }}
                             {% endif %}
-                        {% elseif BaseInfo.delivery_free_quantity %}
-                            <br/>
+                        </div>
+                    {% elseif BaseInfo.delivery_free_quantity %}
+                        <div class="alert alert-info text-center mb-0 mt-4" role="alert">
                             {% if is_delivery_free[cartKey] %}
                                 {{ 'front.cart.delivery_fee_free__now'|trans }}
                             {% else %}
                                 {{ 'front.cart.delivery_fee_free__quantity'|trans({ '%quantity%': quantity[cartKey]|number_format })|raw }}
                             {% endif %}
-                        {% endif %}
-                    </div>
-                    <div class="ec-cartRole__actions">
-                        <div class="ec-cartRole__total">{{ 'common.total__with_separator'|trans }}<span class="ec-cartRole__totalAmount">{{ Cart.totalPrice|price }}</span>
                         </div>
-                        <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'cart_key':cartKey}) }}">{{ 'front.cart.checkout'|trans }}</a>
+                    {% endif %}
+                </div>
+                <div id="eccube-cart-total" class="row d-flex justify-content-end">
+                    <div class="col-md-4">
+                        <div class="cart-total pt-4 pb-2 d-flex justify-content-between align-items-center">
+                            <b>{{ 'common.total__with_separator'|trans }}</b>
+                            <span class="text-price h3 mb-0">{{ Cart.totalPrice|price }}</span>
+                        </div>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ path('cart_buystep', {'cart_key':cartKey}) }}">{{ 'front.cart.checkout'|trans }}</a>
+
                         {% if loop.last %}
-                            <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">{{ 'front.cart.continue'|trans }}</a>
+                            <a class="btn btn-secondary btn-block btn-lg" href="{{ path('homepage') }}">{{ 'front.cart.continue'|trans }}</a>
                         {% endif %}
-                    </div>
-                {% endfor %}
-            </form>
-        {% else %}
-            {% for CartIndex,Cart in Carts %}
-                {% set cartKey = Cart.cart_key %}
-                {% for error in app.session.flashbag.get('eccube.front.cart.' ~ cartKey ~ '.request.error') %}
-                    <div class="ec-cartRole__error">
-                        <div class="ec-alert-warning">
-                            <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
-                            <div class="ec-alert-warning__text">
-                                {{ error|trans|nl2br }}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endfor %}
-            <div class="ec-role">
-                <div class="ec-off3Grid">
-                    <div class="ec-off3Grid__cell">
-                        <div class="ec-alert-warning">
-                            <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
-                            <div class="ec-alert-warning__text">{{ 'front.cart.no_items'|trans }}</div>
-                        </div>
                     </div>
                 </div>
-            </div>
-        {% endif %}
-    </div>
-
+            {% endfor %}
+        </form>
+    {% else %}
+        {% for CartIndex,Cart in Carts %}
+            {% set cartKey = Cart.cart_key %}
+            {% for error in app.session.flashbag.get('eccube.front.cart.' ~ cartKey ~ '.request.error') %}
+                {% include "Components/error.twig" with {'message': error} %}
+            {% endfor %}
+        {% endfor %}
+        {% include "Components/error.twig" with {'message': 'front.cart.no_items'} %}
+    {% endif %}
+    
 {% endblock %}

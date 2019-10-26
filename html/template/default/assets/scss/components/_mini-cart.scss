@@ -25,7 +25,7 @@
   color: $white;
   display: inline-block;
   line-height: remCalc(16px);
-  margin: remCalc(-16px) remCalc(10px) 0 remCalc(-12px);
+  margin: remCalc(-20px) remCalc(10px) 0 remCalc(-10px);
   text-align: center;
   z-index: 0;
 
@@ -49,12 +49,13 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
-  margin-left: remCalc(6px);
-  padding: remCalc(8px) remCalc(15px) remCalc(8px) remCalc(10px);
+  margin-left: 0;
+  padding: remCalc(10px) remCalc(12px);
 
   @include media-breakpoint-down(sm) {
     background: none;
     border-radius: 0;
+    padding-right: 0;
 
     strong {
       display: none;

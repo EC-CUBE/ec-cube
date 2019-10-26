@@ -1,6 +1,23 @@
 .cart-row__amount,
 .cart-row__action {
   i {
-    @include font-size(20px);
+    @include font-size(24px);
   }
+}
+
+.cart-row__amount {
+  align-self: center;
+
+  &__content {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.btn-down-disabled {
+  background: none;
+  border: none;
+  padding: 0;
 }

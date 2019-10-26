@@ -1,5 +1,5 @@
 .eccube-footer {
-  background: $dark;
+  background: $black;
   color: $white;
 
   a {
@@ -10,21 +10,41 @@
     }
   }
 }
+
 .footer-links {
   align-items: center;
-  display: flex;
   justify-content: center;
   list-style: none;
   margin: 0;
-  padding: 15px 0;
+  padding: 0;
 
   li {
-    display: inline-block;
-    padding: 15px;
+    border-bottom: 1px solid $gray-600;
+    
+    a {
+      display: block;
+      padding: 15px;
+      text-align: center;
+
+      &:hover,
+      &:focus {
+        opacity: .8;
+      }
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    display: flex;
+    padding: 15px 0;
+
+    li {
+      border: none;
+    }
   }
 }
 
 .footer-content {
-  padding-bottom: 30px;
+  padding-bottom: remCalc(60px);
+  padding-top: remCalc(40px);
   text-align: center;
 }

@@ -22,3 +22,7 @@
   @include font-size(28px);
   color: $danger;
 }
+
+.text-price {
+  @extend .text-danger;
+}

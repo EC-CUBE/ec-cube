@@ -21,13 +21,27 @@
 .form-search-head {
   position: relative;
 
+  input,
   select {
-    max-width: 46%;
+    width: 100%;
+  }
+
+  select {
+    @include media-breakpoint-up(md) {
+      max-width: 46%;
+    }
   }
 
   input {
-    max-width: 54%;
     padding-right: remCalc(30px);
+
+    @include media-breakpoint-up(md) {
+      max-width: 54%;
+    }
+
+    @include media-breakpoint-down(sm) {
+      border-top: none;
+    }
   }
 
   button {
@@ -38,7 +52,7 @@
     border: none;
     color: $primary;
     line-height: 24px;
-    margin-top: -12px;
+    margin-top: 6px;
     padding: 0;
 
     &:hover,
@@ -46,15 +60,19 @@
       background: none;
       color: $primary;
     }
+
+    @include media-breakpoint-up(md) {
+      margin-top: -12px;
+    }
   }
 }
 
 /* NAVIGATION */
 .eccube-header-nav {
   a {
-    padding-left: remCalc(6px);
-    padding-right: remCalc(6px);
-    color: $dark; 
+    padding-left: remCalc(10px);
+    padding-right: remCalc(10px);
+    color: $black; 
 
     span {
       display: none;
@@ -70,15 +88,15 @@
 .hamburger-menu-open,
 .hamburger-menu-close {
   @include font-size(18px);
-  @include position(fixed, 10px null null null, 21);
-  @include circle(40px);
+  @include position(fixed, 1px null null null, 21);
+  @include circle(38px);
+  background: $white;
+  color: $black;
   padding: remCalc(10px);
   text-align: center;
 }
 
 .hamburger-menu-open {
-  background: $primary;
-  color: $white;
   display: block;
   left: 10px;
 
@@ -88,8 +106,6 @@
 }
 
 .hamburger-menu-close {
-  background: $white;
-  color: $black;
   display: none;
   right: 20px;  
 }
@@ -128,6 +144,8 @@
 }
 
 .list-group-login {
+  margin-top: -1px;
+  
   .list-group-item {
     padding-left: remCalc(15px);
   }
