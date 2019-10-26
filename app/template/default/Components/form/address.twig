@@ -16,21 +16,35 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block formContent %}
-  <div class="row mb-3 {{ has_errors(form.address.pref) ? 'is-invalid'}}">
+    <div class="row mb-3 {{ has_errors(form.postal_code) ? 'is-invalid'}}">
+        <div class="input-group col-6">
+            <div class="input-group-prepend">
+                <div class="input-group-text">{{ 'common.postal_symbol'|trans }}</div>
+            </div>
+            {{ form_widget(form.postal_code, { 'attr': { 'class': 'form-control p-postal-code' }}) }}
+            {{ form_errors(form.postal_code) }}
+        </div>
+        <div class="col-6 d-flex align-items-center">
+            <i class="fas fa-question-circle mr-2"></i>
+            <a href="https://www.post.japanpost.jp/zipcode/" target="_blank"><span>{{ 'common.search_postal_code'|trans }}</span></a>
+        </div>
+    </div>
+
+    <div class="row mb-3 {{ has_errors(form.address.pref) ? 'is-invalid'}}">
         <div class="col-12">
-            {{ form_widget(form.address.pref, { 'attr': {'class': 'form-control w-auto' }}) }}
+            {{ form_widget(form.address.pref, { 'attr': {'class': 'form-control w-auto p-region-id' }}) }}
             {{ form_errors(form.address.pref) }}
         </div>
     </div>
     <div class="row mb-3 {{ has_errors(form.address.addr01) ? 'is-invalid'}}">
         <div class="col-12">
-            {{ form_widget(form.address.addr01, { 'attr': { 'placeholder': 'common.address_sample_01', 'class': 'form-control' }}) }}
+            {{ form_widget(form.address.addr01, { 'attr': { 'placeholder': 'common.address_sample_01', 'class': 'form-control p-locality p-street-address' }}) }}
             {{ form_errors(form.address.addr01) }}
         </div>
     </div>
     <div class="row {{ has_errors(form.address.addr02) ? 'is-invalid'}}">
         <div class="col-12">
-            {{ form_widget(form.address.addr02, { 'attr': { 'placeholder': 'common.address_sample_02', 'class': 'form-control' }}) }}
+            {{ form_widget(form.address.addr02, { 'attr': { 'placeholder': 'common.address_sample_02', 'class': 'form-control p-extended-address' }}) }}
             {{ form_errors(form.address.addr02) }}
         </div>
     </div>
