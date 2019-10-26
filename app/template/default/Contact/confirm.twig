@@ -22,9 +22,9 @@ file that was distributed with this source code.
                     <div class="alert alert-info" role="alert">
                         {{ 'front.contact.inquiry_notice'|trans|nl2br }}
                     </div>
-                    <ul class="list-group">
+                    <ul class="list-group clear-margin-label">
                         <li class="list-group-item">
-                            <div class="row clear-margin-label">
+                            <div class="row">
                                 <div class="col-sm-4">
                                     {{ form_label(form.name, 'common.name') }}
                                 </div>
@@ -37,7 +37,7 @@ file that was distributed with this source code.
                             </div>
                         </li>
                         <li class="list-group-item">
-                            <div class="row clear-margin-label">
+                            <div class="row">
                                 <div class="col-sm-4">
                                     {{ form_label(form.kana, 'common.kana') }}
                                 </div>
@@ -50,7 +50,7 @@ file that was distributed with this source code.
                             </div>
                         </li>
                         <li class="list-group-item">
-                            <div class="row clear-margin-label">
+                            <div class="row">
                                 <div class="col-sm-4">
                                     {{ form_label(form.address, 'common.address') }}
                                 </div>
@@ -67,7 +67,7 @@ file that was distributed with this source code.
                             </div>
                         </li>
                         <li class="list-group-item">
-                            <div class="row clear-margin-label">
+                            <div class="row">
                                 <div class="col-sm-4">
                                     {{ form_label(form.phone_number, 'common.phone_number') }}
                                 </div>
@@ -78,7 +78,7 @@ file that was distributed with this source code.
                             </div>
                         </li>
                         <li class="list-group-item">
-                            <div class="row clear-margin-label">
+                            <div class="row">
                                 <div class="col-sm-4">
                                     {{ form_label(form.email, 'common.mail_address') }}
                                 </div>
@@ -89,7 +89,7 @@ file that was distributed with this source code.
                             </div>
                         </li>
                         <li class="list-group-item">
-                            <div class="row clear-margin-label">
+                            <div class="row">
                                 <div class="col-sm-4">
                                     {{ form_label(form.contents, 'front.contact.inquiry_contents') }}
                                 </div>
@@ -106,7 +106,7 @@ file that was distributed with this source code.
                                 {{ form_row(f) }}
                             {% else %}
                                 <li class="list-group-item">
-                                    <div class="row clear-margin-label">
+                                    <div class="row">
                                         <div class="col-sm-4">
                                             {{ form_label(f) }}
                                         </div>
@@ -125,7 +125,7 @@ file that was distributed with this source code.
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col-sm-4"></div>
-                                <div class="col-sm-4">
+                                <div class="col-md-4">
                                     <button type="submit"
                                             class="btn btn-primary btn-block"
                                             name="mode"

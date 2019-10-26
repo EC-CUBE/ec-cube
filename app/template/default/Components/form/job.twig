@@ -18,7 +18,7 @@ file that was distributed with this source code.
 {% block formContent %}
     <div class="row {{ has_errors(form.job) ? 'is-invalid'}}">
         <div class="col-12">
-            {{ form_widget(form.job, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_widget(form.job, { 'attr': { 'class': 'form-control w-auto' }}) }}
             {{ form_errors(form.job) }}
         </div>
     </div>

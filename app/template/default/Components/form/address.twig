@@ -17,14 +17,14 @@ file that was distributed with this source code.
 
 {% block formContent %}
     <div class="row mb-3 {{ has_errors(form.postal_code) ? 'is-invalid'}}">
-        <div class="input-group col-6">
+        <div class="input-group col-sm-6 mb-2 mb-sm-0">
             <div class="input-group-prepend">
                 <div class="input-group-text">{{ 'common.postal_symbol'|trans }}</div>
             </div>
             {{ form_widget(form.postal_code, { 'attr': { 'class': 'form-control p-postal-code' }}) }}
             {{ form_errors(form.postal_code) }}
         </div>
-        <div class="col-6 d-flex align-items-center">
+        <div class="col-sm-6 d-flex align-items-center">
             <i class="fas fa-question-circle mr-2"></i>
             <a href="https://www.post.japanpost.jp/zipcode/" target="_blank"><span>{{ 'common.search_postal_code'|trans }}</span></a>
         </div>

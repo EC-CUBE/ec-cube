@@ -20,13 +20,13 @@ file that was distributed with this source code.
         <div class="col-12">
             <div class="form-row">
                 <div class="col-auto w-25">
-                    {{ form_widget(form.birth.day, { 'attr': { 'class': 'form-control' }}) }}
+                    {{ form_widget(form.birth.year, { 'attr': { 'class': 'form-control' }}) }}
                 </div>
                 <div class="col-auto w-25">
                     {{ form_widget(form.birth.month, { 'attr': { 'class': 'form-control' }}) }}
                 </div>
                 <div class="col-auto w-25">
-                    {{ form_widget(form.birth.year, { 'attr': { 'class': 'form-control' }}) }}
+                    {{ form_widget(form.birth.day, { 'attr': { 'class': 'form-control' }}) }}
                 </div>
             </div>
             {{ form_errors(form.birth) }}
