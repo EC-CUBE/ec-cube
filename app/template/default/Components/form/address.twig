@@ -1,0 +1,37 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'Components/form/base_input.twig' %}
+{% set custom_class = customClass|default('') %}
+
+{% block formLabel %}
+  {{ form_label(form.address, 'common.address', { 'label_attr': { 'class': 'col-form-label' }}) }}
+{% endblock %}
+
+{% block formContent %}
+  <div class="row mb-3 {{ has_errors(form.address.pref) ? 'is-invalid'}}">
+        <div class="col-12">
+            {{ form_widget(form.address.pref, { 'attr': {'class': 'form-control w-auto' }}) }}
+            {{ form_errors(form.address.pref) }}
+        </div>
+    </div>
+    <div class="row mb-3 {{ has_errors(form.address.addr01) ? 'is-invalid'}}">
+        <div class="col-12">
+            {{ form_widget(form.address.addr01, { 'attr': { 'placeholder': 'common.address_sample_01', 'class': 'form-control' }}) }}
+            {{ form_errors(form.address.addr01) }}
+        </div>
+    </div>
+    <div class="row {{ has_errors(form.address.addr02) ? 'is-invalid'}}">
+        <div class="col-12">
+            {{ form_widget(form.address.addr02, { 'attr': { 'placeholder': 'common.address_sample_02', 'class': 'form-control' }}) }}
+            {{ form_errors(form.address.addr02) }}
+        </div>
+    </div>
+{% endblock %}

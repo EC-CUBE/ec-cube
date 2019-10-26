@@ -9,7 +9,7 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% form_theme form 'Form/form_div_layout.twig' %}
-<form method="get" class="form-search-head form-inline bg-white p-3 p-md-0 justify-content-center" action="{{ path('product_list') }}">
+<form method="get" class="form-search-head p-3 p-md-0 justify-content-center" action="{{ path('product_list') }}">
   <div class="input-group w-100">
     {{ form_widget(form.category_id, {'id': null, 'attr': {'aria-label': 'front.block.category.category__ja'|trans, 'class': 'category_id'} }) }}
     {{ form_label(form.name, '', { 'label_attr': { 'class': 'd-none' }}) }}

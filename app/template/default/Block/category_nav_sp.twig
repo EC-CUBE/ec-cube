@@ -59,7 +59,7 @@ file that was distributed with this source code.
     </div>
     {% for Category in Categories %}
         <div class="card">
-            <div class="card-header" id="headingMenu-{{ Category.id }}">
+            <div class="card-header px-3" id="headingMenu-{{ Category.id }}">
                 <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseMenu-{{ Category.id }}" aria-expanded="true" aria-controls="collapseMenu-{{ Category.id }}">
                     {{ Category.name }}
                     <i class="fas fa-minus"></i>

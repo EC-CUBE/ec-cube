@@ -1,0 +1,25 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+<nav id="eccube-product-sort" class="navbar navbar-plp {{class|default('')}}">
+    {% if pagination.totalItemCount > 0 %}
+        <div class="product-total-count mb-1 mb-sm-0">
+            {{ 'front.product.search_result__detail'|trans({ '%count%': pagination.totalItemCount })|raw }}
+        </div>
+    {% else %}
+        <span>{{ 'front.product.search__product_not_found'|trans }}</span>
+    {% endif %}
+    <div class="form-inline form-actions">
+        {% if pagination.totalItemCount > 0 %}
+            {{ form_widget(disp_number_form, {'id': '', 'attr': {'class': 'disp-number ml-sm-3 mb-2 mb-sm-0', 'aria-label': 'Số lượng hiển thị'} }) }}
+            {{ form_widget(order_by_form, {'id': '', 'attr': {'class': 'order-by ml-sm-3', 'aria-label': 'Sắp xếp theo'} }) }}
+        {% endif %}
+    </div>
+</nav>

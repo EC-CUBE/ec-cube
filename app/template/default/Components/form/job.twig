@@ -1,0 +1,25 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'Components/form/base_input.twig' %}
+{% set custom_class = customClass|default('') %}
+
+{% block formLabel %}
+    {{ form_label(form.job, 'common.job', { 'label_attr': { 'class': 'col-form-label' }}) }}
+{% endblock %}
+
+{% block formContent %}
+    <div class="row {{ has_errors(form.job) ? 'is-invalid'}}">
+        <div class="col-12">
+            {{ form_widget(form.job, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_errors(form.job) }}
+        </div>
+    </div>
+{% endblock %}

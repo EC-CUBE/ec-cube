@@ -1,0 +1,35 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'Components/form/base_input.twig' %}
+{% set custom_class = customClass|default('') %}
+
+{% block formLabel %}
+    {{ form_label(form.birth, 'common.birth_day', { 'label_attr': { 'class': 'col-form-label' }}) }}
+{% endblock %}
+
+{% block formContent %}
+  <div class="row {{ has_errors(form.birth) ? 'is-invalid'}}">
+        <div class="col-12">
+            <div class="form-row">
+                <div class="col-auto w-25">
+                    {{ form_widget(form.birth.day, { 'attr': { 'class': 'form-control' }}) }}
+                </div>
+                <div class="col-auto w-25">
+                    {{ form_widget(form.birth.month, { 'attr': { 'class': 'form-control' }}) }}
+                </div>
+                <div class="col-auto w-25">
+                    {{ form_widget(form.birth.year, { 'attr': { 'class': 'form-control' }}) }}
+                </div>
+            </div>
+            {{ form_errors(form.birth) }}
+        </div>
+    </div>
+{% endblock %}

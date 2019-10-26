@@ -1,0 +1,31 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'Components/form/base_input.twig' %}
+{% set custom_class = customClass|default('') %}
+
+{% block formLabel %}
+    {{ form_label(form.email, 'common.mail_address', { 'label_attr': { 'class': 'col-form-label' }}) }}
+{% endblock %}
+
+{% block formContent %}
+    <div class="row mb-3 {{ has_errors(form.email.first) ? 'is-invalid'}}">
+        <div class="col-12">
+            {{ form_widget(form.email.first, { 'attr': { 'placeholder': 'common.mail_address_sample', 'class': 'form-control' }}) }}
+            {{ form_errors(form.email.first) }}
+        </div>
+    </div>
+    <div class="row {{ has_errors(form.email.second) ? 'is-invalid'}}">
+        <div class="col-12">
+            {{ form_widget(form.email.second, { 'attr': { 'placeholder': 'common.repeated_confirm', 'class': 'form-control' }}) }}
+            {{ form_errors(form.email.second) }}
+        </div>
+    </div>
+{% endblock %}

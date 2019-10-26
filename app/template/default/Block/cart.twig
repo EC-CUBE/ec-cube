@@ -13,7 +13,7 @@ file that was distributed with this source code.
 {% set totalQuantity = get_carts_total_quantity() %}
 
 <div class="ec-cartNavi">
-    <i class="fa-stack fa-fw fas fa-shopping-cart"></i>
+    <i class="fas fa-shopping-cart"></i>
     <small class="mini-count">{{ totalQuantity|number_format }}</small>
     <strong>{{ totalPrice|price }}</strong>
 </div>

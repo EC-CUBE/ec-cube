@@ -1,0 +1,43 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+<form action="{{ url('product_add_cart', {id:product.id}) }}" method="post" id="form1" name="form1" class="form-options {{class|default('')}}">
+  {% if product.stock_find %}
+    {% if form.classcategory_id1 is defined %}
+      <div class="form-group mb-2">
+        {{ form_widget(form.classcategory_id1, {'attr': {'class': 'classcategory_id1', 'aria-label': 'Tùy chọn 1'}}) }}
+        {{ form_errors(form.classcategory_id1) }}
+      </div>
+      {% if form.classcategory_id2 is defined %}
+        <div class="form-group mb-2">
+          {{ form_widget(form.classcategory_id2, {'attr': {'class': 'classcategory_id2', 'aria-label': 'Tùy chọn 2'}}) }}
+          {{ form_errors(form.classcategory_id2) }}
+        </div>
+      {% endif %}
+    {% endif %}
+    <div class="form-group">
+      {{ form_label(form.quantity, 'common.quantity', { 'label_attr': { 'class': 'col-form-label' }}) }}
+      {{ form_widget(form.quantity, {'attr': {'class': 'quantity'}}) }}
+      {{ form_errors(form.quantity) }}
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-block add-cart">
+        {{ 'front.product.add_cart'|trans }}
+      </button>
+    </div>
+  {% else %}
+    <div class="form-group">
+      <button type="button" class="btn btn-secondary btn-block" disabled="disabled">
+        {{ 'front.product.out_of_stock'|trans }}
+      </button>
+    </div>
+  {% endif %}
+  {{ form_rest(form) }}
+</form>

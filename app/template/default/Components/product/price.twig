@@ -1,0 +1,83 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% if type is defined and type == 'detail' %}
+  {# FOR PRODUCT DETAIL #}
+  <div class="wrap-product-price {{class|default('')}}">
+    {% if product.hasProductClass -%}
+        <del class="product-price price-class-normal">
+            {% if product.getPrice01Min is not null and product.getPrice01IncTaxMin == product.getPrice01IncTaxMax %}
+                <span>
+                  {{ 'front.product.normal_price'|trans }}: <span class="price01-default">{{ product.getPrice01IncTaxMin|price }}</span>
+                </span>
+                <small>{{ 'common.tax_include'|trans }}</small>
+            {% elseif product.getPrice01Min is not null and product.getPrice01Max is not null %}
+                <span>
+                  {{ 'front.product.normal_price'|trans }}: <span class="price01-default">{{ product.getPrice01IncTaxMin|price }} ～ {{ product.getPrice01IncTaxMax|price }}</span>
+                </span>
+                <small>{{ 'common.tax_include'|trans }}</small>
+            {% endif %}
+        </del>
+    {% else %}
+        {% if product.getPrice01Max is not null %}
+            <del class="product-price price-normal">
+                  <span>{{ 'front.product.normal_price'|trans }}: {{ product.getPrice01IncTaxMin|price }}</span>
+                  <small>{{ 'common.tax_include'|trans }}</small>
+              </del>
+        {% endif %}
+    {% endif %}
+
+    {% if product.hasProductClass -%}
+        {% if product.getPrice02IncTaxMin == product.getPrice02IncTaxMax %}
+          <div class="product-price price-sale">
+            <span class="price02-default">{{ product.getPrice02IncTaxMin|price }}</span>
+            <small>{{ 'common.tax_include'|trans }}</small>
+          </div>
+        {% else %}
+          <div class="product-price price-sale">
+              <span class="price02-default">{{ product.getPrice02IncTaxMin|price }} ～ {{ product.getPrice02IncTaxMax|price }}</span>
+              <small>{{ 'common.tax_include'|trans }}</small>
+          </div>
+        {% endif %}
+    {% else %}
+        <div class="product-price price-normal">
+            <span>{{ product.getPrice02IncTaxMin|price }}</span>
+            <small>{{ 'common.tax_include'|trans }}</small>
+        </div>
+    {% endif %}
+  </div>
+{% elseif type is defined and type == 'list' %}
+  {# FOR PRODUCT LIST #}
+  <div class="price02-default product-price {{class|default('')}}">
+      {% if product.hasProductClass %}
+          {% if product.getPrice02Min == product.getPrice02Max %}
+              {{ product.getPrice02IncTaxMin|price }}
+          {% else %}
+              {{ product.getPrice02IncTaxMin|price }} ～ {{ product.getPrice02IncTaxMax|price }}
+          {% endif %}
+      {% else %}
+          {{ product.getPrice02IncTaxMin|price }}
+      {% endif %}
+  </div>
+{% elseif type is defined and type == 'mini' %}
+  {# FOR MINI CART #}
+  <div class="mini-price {{class|default('h6')}}">
+      <span>{{ product.price|price }}</span>
+      <small>{{ 'common.tax_include'|trans }}</small>
+  </div>
+{% elseif type is defined and type == 'checkout' %}
+  {# FOR CHECKOUT AND ORDER HISTORY #}
+  <div class="price-x-quanity {{class|default('')}}">
+    {{ product.priceIncTax|price }} × {{ product.quantity|number_format }}
+  </div>
+{% elseif type is defined and type == 'cart' %}
+  {# FOR CART #}
+  <div class="cart-item__unitPrice">{{ product.price|price }}</div>
+{% endif %}

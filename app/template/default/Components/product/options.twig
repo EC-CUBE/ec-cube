@@ -1,0 +1,39 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% if type is defined and type == 'order-history' %}
+  {# Order history #}
+  {% if productClass.class_category_name1 is not empty or productClass.class_category_name2 is not empty %}
+    <div class="product-options {{class|default('')}}">
+      <small>
+        {{ productClass.class_category_name1 }}
+        {% if productClass.class_category_name2 is not empty %}
+         {{ '/ ' ~ productClass.class_category_name2 }}
+        {% endif %}
+      </small>
+    </div>
+  {% endif %}
+{% else %}
+  {# Other case #}
+  {% if productClass.ClassCategory1 is not null or productClass.ClassCategory1 is not null %}
+    <div class="product-options {{class|default('')}}">
+      {% if productClass.ClassCategory1 and productClass.ClassCategory1.id %}
+          <small>
+              {{ productClass.ClassCategory1.ClassName.name }}: {{ productClass.ClassCategory1 }}
+          </small>
+      {% endif %}
+      {% if productClass.ClassCategory2 and productClass.ClassCategory2.id %}
+          <small>
+              {{ productClass.ClassCategory2.ClassName.name }}: {{ productClass.ClassCategory2 }}
+          </small>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endif %}

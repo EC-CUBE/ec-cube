@@ -1,0 +1,28 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+<div class="modal fade {{class|default('')}}" id="{{ id|default('eccube-modal') }}" tabindex="-1" role="dialog" aria-labelledby="ecModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ecModalLabel">{{ 'front.product.add_cart_complete'|trans }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center" id="modal-body">
+                <button id="close-modal" type="button" class="btn btn-secondary" data-dismiss="modal">
+                {{ 'front.product.continue'|trans }}
+                </button>
+                <a href="{{ url('cart') }}" class="btn btn-primary">{{ 'common.go_to_cart'|trans }}</a>
+            </div>
+        </div>
+    </div>
+</div>

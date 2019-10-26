@@ -1,0 +1,28 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+<div class="item_visual main-product-image {{class|default('mb-3')}}">
+  {% for ProductImage in product.ProductImage %}
+    <div class="slide-item">
+      <img src="{{ asset(ProductImage, 'save_image') }}" alt="{{ product.name }}">
+    </div>
+  {% else %}
+    <div class="slide-item">
+      <img src="{{ asset(''|no_image_product, 'save_image') }}" alt="{{ product.name }}"/>
+    </div>
+  {% endfor %}
+</div>
+<div class="product-image-thumbails d-none d-md-flex row no-gutters {{class|default('')}}">
+  {% for ProductImage in product.ProductImage %}
+    <div class="slideThumb col-3 text-center" data-index="{{ loop.index0 }}">
+      <img src="{{ asset(ProductImage, 'save_image') }}" alt="{{ product.name }}">
+    </div>
+  {% endfor %}
+</div>

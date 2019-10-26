@@ -1,0 +1,17 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% if type is defined and type == 'link' %}
+  <a class="text-decoration-none {{linkClass|default('')}}" href="{{ url('product_detail', {'id': product.id}) }}">
+    <img class="{{imgClass|default('')}}" src="{{ asset(product.main_list_image|no_image_product, 'save_image') }}" alt="{{ product.name }}">
+  </a>
+{% else %}
+  <img class="{{imgClass|default('')}}" src="{{ asset(product.main_list_image|no_image_product, 'save_image') }}" alt="{{ product.name }}">
+{% endif %}

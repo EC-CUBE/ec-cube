@@ -1,0 +1,31 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+<nav id="eccube-breadcrumb" aria-label="breadcrumb {{class|default('')}}">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{{ url('product_list') }}">{{ 'front.product.all_category'|trans }}</a>
+    </li>
+    {% if breadcrumb is not null %}
+      {% for Path in breadcrumb.path %}
+        <li class="breadcrumb-item {% if loop.last %}active{% endif %}" {% if loop.last %}aria-current="page"{% endif %}>
+          <a href="{{ url('product_list') }}?category_id={{ Path.id }}">
+            {{ Path.name }}
+          </a>
+        </li>
+      {% endfor %}
+    {% endif %}
+    {% if search_form.vars.value and search_form.vars.value.name %}
+      <li class="breadcrumb-item">
+        {{ 'front.product.search_result__keyword'|trans({ '%name%': search_form.vars.value.name }) }}
+      </li>
+    {% endif %}
+  </ol>
+</nav>

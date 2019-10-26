@@ -1,0 +1,30 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% for f in form if f.vars.eccube_form_options.auto_render %}
+    {% if f.vars.eccube_form_options.form_theme %}
+        {% form_theme f f.vars.eccube_form_options.form_theme %}
+        {{ form_row(f) }}
+    {% else %}
+        <div class="form-group row">
+            <div class="col-sm-4">
+                {{ form_label(f, { 'label_attr': { 'class': 'col-form-label' }}) }}
+            </div>
+            <div class="col-sm-8">
+                <div class="row {{ f.vars.eccube_form_options.style_class }} {{ has_errors(f) ? 'is-invalid'}}">
+                    <div class="col-12">
+                        {{ form_widget(f, { 'attr': { 'class': 'form-control' }}) }}
+                        {{ form_errors(f) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
