@@ -13,43 +13,31 @@ file that was distributed with this source code.
 {% form_theme form 'Form/form_div_layout.twig' %}
 
 {% block main %}
-    <div class="ec-role">
-        <div class="ec-pageHeader">
-            <h1>{{ 'front.forgot.title'|trans }}</h1>
-        </div>
-    </div>
-    <div class="ec-forgotRole">
-        <form name="form1" id="form1" method="post" action="{{ url('forgot') }}">
-            {{ form_widget(form._token) }}
-            <div class="ec-off1Grid">
-                <div class="ec-off1Grid__cell">
-                    <div class="ec-forgotRole__form">
-                        <div class="ec-forgotRole__intro">
-                            <p class="ec-para-normal">{{ 'front.forgot.message1'|trans }}</p>
-                            <p class="ec-para-normal">{{ 'front.forgot.message2'|trans }}</p>
-                        </div>
-                        <div class="ec-borderedDefs">
-                            <dl>
-                                <dt>
-                                    {{ form_label(form.login_email, 'common.mail_address', { 'label_attr': { 'class': 'ec-label' }}) }}
-                                </dt>
-                                <dd>
-                                    <div class="ec-input{{ has_errors(form.login_email) ? ' error' }}">
-                                        {{ form_widget(form.login_email) }}
-                                        {{ form_errors(form.login_email) }}
-                                    </div>
-                                </dd>
-                            </dl>
-                        </div>
+    {% include "Components/heading.twig" with {'title': 'front.forgot.title' } %}
+    <div class="row">
+        <div class="col-12">
+            <form name="form1" id="form1" method="post" action="{{ url('forgot') }}">
+                {{ form_widget(form._token) }}
+                <div class="form-group">
+                    <p>{{ 'front.forgot.message1'|trans }}</p>
+                    <p>{{ 'front.forgot.message2'|trans }}</p>
+                </div>
+
+                {# Email #}
+                {% include "Components/form/input.twig" 
+                    with {
+                        'form': form, 
+                        'field': 'login_email', 
+                        'label': 'common.mail_address'
+                    } 
+                %}
+                <div class="form-group row">
+                    <div class="col-md-4 mx-auto">
+                        <button type="submit" class="btn btn-primary btn-block">{{ 'common.next'|trans }}</button>
                     </div>
                 </div>
-            </div>
-            <div class="ec-off4Grid">
-                <div class="ec-off4Grid__cell">
-                    <button type="submit" class="ec-blockBtn--action">{{ 'common.next'|trans }}</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 {% endblock %}
 
