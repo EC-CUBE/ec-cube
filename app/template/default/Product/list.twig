@@ -39,7 +39,7 @@ file that was distributed with this source code.
             });
 
             $('.add-cart').on('click', function(e) {
-                var $form = $(this).parents('li').find('form');
+                var $form = $(this).closest('form');;
 
                 // 個数フォームのチェック
                 var $quantity = $form.parent().find('.quantity');
@@ -65,18 +65,19 @@ file that was distributed with this source code.
                 }).done(function(data) {
                     // レスポンス内のメッセージをalertで表示
                     $.each(data.messages, function() {
-                        $('#ec-modal-header').html(this);
+                        $('#modal-body').html(this);
                     });
 
-                    $('#ec-modal-checkbox').prop('checked', true);
-
+                    // Open modal
+                    $('#eccube-modal').modal('show');
+                    
                     // カートブロックを更新する
                     $.ajax({
                         url: '{{ url('block_cart') }}',
                         type: 'GET',
                         dataType: 'html'
                     }).done(function(html) {
-                        $('.ec-headerRole__cart').html(html);
+                        $('.mini-cart-wrapper').html(html);
                     });
                 }).fail(function(data) {
                     alert('{{ 'front.product.add_cart_error'|trans }}');
@@ -91,138 +92,83 @@ file that was distributed with this source code.
 
 {% block main %}
     {% if search_form.category_id.vars.errors|length > 0 %}
-        <div class="ec-searchnavRole">
-            <p class="errormsg text-danger">{{ 'front.product.search__category_not_found'|trans }}</p>
+        <div class="mt-3">
+            {% include "Components/error.twig" with {'message': 'front.product.search__category_not_found'} %}
         </div>
     {% else %}
-        <div class="ec-searchnavRole">
-            <form name="form1" id="form1" method="get" action="?">
-                {% for item in search_form %}
-                    <input type="hidden" id="{{ item.vars.id }}"
-                           name="{{ item.vars.full_name }}"
-                           {% if item.vars.value is not empty %}value="{{ item.vars.value }}" {% endif %}/>
-                {% endfor %}
-            </form>
-            <div class="ec-searchnavRole__topicpath">
-                <ol class="ec-topicpath">
-                    <li class="ec-topicpath__item"><a href="{{ url('product_list') }}">{{ 'front.product.all_category'|trans }}</a>
-                    </li>
-                    {% if Category is not null %}
-                        {% for Path in Category.path %}
-                            <li class="ec-topicpath__divider">|</li>
-                            <li class="ec-topicpath__item{% if loop.last %}--active{% endif %}"><a
-                                        href="{{ url('product_list') }}?category_id={{ Path.id }}">{{ Path.name }}</a>
-                            </li>
-                        {% endfor %}
-                    {% endif %}
-                    {% if search_form.vars.value and search_form.vars.value.name %}
-                        <li class="ec-topicpath__divider">|</li>
-                        <li class="ec-topicpath__item">{{ 'front.product.search_result__keyword'|trans({ '%name%': search_form.vars.value.name }) }}</li>
-                    {% endif %}
-                </ol>
-            </div>
-            <div class="ec-searchnavRole__infos">
-                <div class="ec-searchnavRole__counter">
-                    {% if pagination.totalItemCount > 0 %}
-                        {{ 'front.product.search_result__detail'|trans({ '%count%': pagination.totalItemCount })|raw }}
-                    {% else %}
-                        <span>{{ 'front.product.search__product_not_found'|trans }}</span>
-                    {% endif %}
-                </div>
-                {% if pagination.totalItemCount > 0 %}
-                    <div class="ec-searchnavRole__actions">
-                        <div class="ec-select">
-                            {{ form_widget(disp_number_form, {'id': '', 'attr': {'class': 'disp-number'}}) }}
-                            {{ form_widget(order_by_form, {'id': '', 'attr': {'class': 'order-by'}}) }}
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-        {% if pagination.totalItemCount > 0 %}
-            <div class="ec-shelfRole">
-                <ul class="ec-shelfGrid">
-                    {% for Product in pagination %}
-                        <li class="ec-shelfGrid__item">
-                            <a href="{{ url('product_detail', {'id': Product.id}) }}">
-                                <p class="ec-shelfGrid__item-image">
-                                    <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
-                                </p>
-                                <p>{{ Product.name }}</p>
-                                {% if Product.description_list %}
-                                    <p>{{ Product.description_list|raw|nl2br }}</p>
-                                {% endif %}
-                                <p class="price02-default">
-                                    {% if Product.hasProductClass %}
-                                        {% if Product.getPrice02Min == Product.getPrice02Max %}
-                                            {{ Product.getPrice02IncTaxMin|price }}
-                                        {% else %}
-                                            {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
-                                        {% endif %}
-                                    {% else %}
-                                        {{ Product.getPrice02IncTaxMin|price }}
-                                    {% endif %}
-                                </p>
-                            </a>
+        <form name="form1" id="form1" method="get" action="?" class="mt-3">
+            {% for item in search_form %}
+                <input type="hidden" id="{{ item.vars.id }}"
+                        name="{{ item.vars.full_name }}"
+                        {% if item.vars.value is not empty %}value="{{ item.vars.value }}" {% endif %}/>
+            {% endfor %}
+        </form>
 
+        {# Breadcrumb #}
+        {% include "Components/product/breadcrumb.twig" with {'breadcrumb': Category} %}
+        
+        {# Sort #}
+        {% include "Components/product/sort.twig" with {'pagination': pagination, 'class': ' p-0 mb-3 border-bottom pb-3'} %}
+
+        {% if pagination.totalItemCount > 0 %}
+            <div id="product-list" class="row">
+                {% for Product in pagination %}
+                    <div class="product-item col-sm-6 col-md-6 col-lg-3">
+                        <div class="card mb-4">
+                            {# Image #}
+                            {% include "Components/product/image.twig" with {'product': Product, 'type': 'link'} %}
+
+                            <div class="card-body p-3 position-relative">
+                                {# Name #}
+                                {% include "Components/product/name.twig" with {'product': Product} %}
+                                
+                                {# Product Description #}
+                                {% include "Components/product/description_list.twig" with {'product': Product, 'truncate': true, 'class': 'bg-light p-2 my-2'} %}
+
+                                {# Price #}
+                                {% include "Components/product/price.twig" with {'product': Product, type: 'list'} %}
+                                
+                            </div>
                             {% if Product.stock_find %}
                                 {% set form = forms[Product.id] %}
-                                <form name="form{{ Product.id }}" id="productForm{{ Product.id }}" action="{{ url('product_add_cart', {id:Product.id}) }}" method="post">
-                                    <div class="ec-productRole__actions">
+                                <form class="card-footer p-3" name="form{{ Product.id }}" id="productForm{{ Product.id }}" action="{{ url('product_add_cart', {id:Product.id}) }}" method="post">
+                                    <div class="mb-3">
                                         {% if form.classcategory_id1 is defined %}
-                                            <div class="ec-select">
-                                                {{ form_widget(form.classcategory_id1) }}
+                                            <div class="product-options mb-2">
+                                                {{ form_widget(form.classcategory_id1, {'attr': {'class': 'classcategory_id1'}}) }}
                                                 {{ form_errors(form.classcategory_id1) }}
                                             </div>
                                             {% if form.classcategory_id2 is defined %}
-                                                <div class="ec-select">
-                                                    {{ form_widget(form.classcategory_id2) }}
+                                                <div class="product-options mb-2">
+                                                    {{ form_widget(form.classcategory_id2, {'attr': {'class': 'classcategory_id2'}}) }}
                                                     {{ form_errors(form.classcategory_id2) }}
                                                 </div>
                                             {% endif %}
                                         {% endif %}
-                                        <div class="ec-numberInput"><span>{{ 'common.quantity'|trans }}</span>
+                                        <div class="product-quantity">
+                                            {{ form_label(form.quantity, 'common.quantity') }}
                                             {{ form_widget(form.quantity, {'attr': {'class': 'quantity'}}) }}
                                             {{ form_errors(form.quantity) }}
                                         </div>
                                     </div>
-                                    {{ form_rest(form) }}
-                                </form>
-                                <div class="ec-productRole__btn">
-                                    <button type="submit" class="ec-blockBtn--action add-cart" data-cartid="{{ Product.id }}" form="productForm{{ Product.id }}">
+                                    <button aria-label="{{ 'front.product.add_cart'|trans }}" type="submit" class="btn btn-primary btn-block add-cart" data-cartid="{{ Product.id }}" form="productForm{{ Product.id }}">
                                         {{ 'front.product.add_cart'|trans }}
                                     </button>
-                                </div>
+                                    {{ form_rest(form) }}
+                                </form>
                             {% else %}
-                                <div class="ec-productRole__btn">
-                                    <button type="button" class="ec-blockBtn--action" disabled="disabled">
+                                <div class="card-footer p-3">
+                                    <button type="button" class="btn btn-block btn-primary" disabled="disabled">
                                         {{ 'front.product.out_of_stock'|trans }}
                                     </button>
                                 </div>
                             {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="ec-modal">
-                <input type="checkbox" id="ec-modal-checkbox" class="checkbox">
-                <div class="ec-modal-overlay">
-                    <label for="ec-modal-checkbox" class="ec-modal-overlay-close"></label>
-                    <div class="ec-modal-wrap">
-                        <label for="ec-modal-checkbox" class="ec-modal-close"><span class="ec-icon"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt=""/></span></label>
-                        <div id="ec-modal-header" class="text-center">{{ 'front.product.add_cart_complete'|trans }}</div>
-                        <div class="ec-modal-box">
-                            <div class="ec-role">
-                                <label for="ec-modal-checkbox" class="ec-inlineBtn--cancel">{{ 'front.product.continue'|trans }}</label>
-                                <a href="{{ url('cart') }}" class="ec-inlineBtn--action">{{ 'common.go_to_cart'|trans }}</a>
-                            </div>
                         </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
-            <div class="ec-pagerRole">
-                {% include "pager.twig" with {'pages': pagination.paginationData} %}
-            </div>
+            {% include "Components/product/modal.twig" %}
+            {% include "pager.twig" with {'pages': pagination.paginationData, 'class': 'mb-4'} %}
         {% endif %}
     {% endif %}
 {% endblock %}

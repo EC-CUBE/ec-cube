@@ -12,7 +12,7 @@ file that was distributed with this source code.
     {% if product.description_detail %}
         <li class="nav-item">
             <a class="nav-link active" id="description_detail-tab" data-toggle="tab" href="#product-description_detail" role="tab" aria-controls="product-description_detail" aria-selected="true">
-                Chi tiết sản phẩm
+                {{ 'admin.product.description_detail'|trans }}
             </a>
         </li>
     {% endif %}
@@ -20,7 +20,7 @@ file that was distributed with this source code.
     {% if product.description_list %}
         <li class="nav-item">
             <a class="nav-link" id="description_list-tab" data-toggle="tab" href="#product-description_list" role="tab" aria-controls="product-description_list" aria-selected="true">
-                Thông số kỹ thuật
+                {{ 'admin.product.description_list'|trans }}
             </a>
         </li>
     {% endif %}
@@ -28,7 +28,7 @@ file that was distributed with this source code.
     {% if product.freearea %}
         <li class="nav-item">
             <a class="nav-link" id="freearea-tab" data-toggle="tab" href="#product-freearea" role="tab" aria-controls="product-freearea" aria-selected="false">
-                Khuyến mãi
+                {{ 'admin.product.free_area'|trans }}
             </a>
         </li>
     {% endif %}
@@ -51,7 +51,7 @@ file that was distributed with this source code.
     {% if product.freearea %}
         <div class="py-3 tab-pane fade" id="product-freearea" role="tabpanel" aria-labelledby="freearea-tab">
             {# Product Freearea #}
-            {% include "Components/product/freearea.twig" with {'product': product} %}
+            {{ include(template_from_string(Product.freearea)) }}
         </div>
     {% endif %}
 </div>

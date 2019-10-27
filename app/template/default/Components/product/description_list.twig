@@ -11,8 +11,8 @@ file that was distributed with this source code.
 {% if product.description_list %}
   <div class="product-description description-list {{class|default('')}}">
     {% if truncate is defined %}
-      {{ product.description_list|raw|nl2br|length > 90 ? 
-      product.description_list|raw|nl2br|slice(0, 90) ~ '...' : 
+      {{ product.description_list|raw|nl2br|length > 25 ? 
+      product.description_list|raw|nl2br|slice(0, 25) ~ '...' : 
       product.description_list|raw|nl2br  }}
     {% else %}
         {{ product.description_list|raw|nl2br }}

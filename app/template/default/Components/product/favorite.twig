@@ -9,14 +9,14 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% if BaseInfo.option_favorite_product %}
-  <form id="form-add-favorite" action="{{ url('product_add_favorite', {id:product.id}) }}" method="post">
+  <form id="form-add-favorite" class="form-add-favorite" action="{{ url('product_add_favorite', {id:product.id}) }}" method="post">
     <div class="form-group {{class|default('')}}">
       {% if is_favorite == false %}
-        <button type="submit" id="favorite" class="btn btn-secondary btn-block">
+        <button type="submit" id="favorite" class="btn btn-secondary btn-block btn-add-tofavorite">
           {{ 'front.product.add_favorite'|trans }}
         </button>
       {% else %}
-        <button type="submit" id="favorite" class="btn btn-secondary btn-block" disabled="disabled">
+        <button type="submit" id="favorite" class="btn btn-secondary btn-block btn-add-tofavorite" disabled="disabled">
           {{ 'front.product.add_favorite_alrady'|trans }}
         </button>
       {% endif %}

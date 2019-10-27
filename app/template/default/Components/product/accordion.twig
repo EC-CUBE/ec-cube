@@ -1,0 +1,53 @@
+<div class="accordion product-accordion {{class|default('')}}" id="productAccordion">
+  {% if product.description_detail %}
+    <div class="card">
+      <div class="card-header" id="heading_description_detail">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse_description_detail" aria-expanded="true" aria-controls="collapse_description_detail">
+            <span>{{ 'admin.product.description_detail'|trans }}</span>
+            <i class="fas fa-minus"></i>
+        </button>
+      </div>
+
+      <div id="collapse_description_detail" class="collapse show" aria-labelledby="heading_description_detail" data-parent="#productAccordion">
+        <div class="card-body">
+            {# Product Detail #}
+            {% include "Components/product/description_detail.twig" with {'product': product} %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if product.description_list %}
+    <div class="card">
+      <div class="card-header" id="heading_description_list">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse_description_list" aria-expanded="false" aria-controls="collapse_description_list">
+          <span>{{ 'admin.product.description_list'|trans }}</span>
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+      <div id="collapse_description_list" class="collapse" aria-labelledby="heading_description_list" data-parent="#productAccordion">
+        <div class="card-body">
+            {# Product Description #}
+            {% include "Components/product/description_list.twig" with {'product': product} %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if product.freearea %}
+    <div class="card">
+      <div class="card-header" id="heading_freearea">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse_freearea" aria-expanded="false" aria-controls="collapse_freearea">
+            <span>{{ 'admin.product.free_area'|trans }}</span>
+            <i class="fas fa-minus"></i>
+        </button>
+      </div>
+      <div id="collapse_freearea" class="collapse" aria-labelledby="heading_freearea" data-parent="#productAccordion">
+        <div class="card-body">
+            {# Product Freearea #}
+            {{ include(template_from_string(Product.freearea)) }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>

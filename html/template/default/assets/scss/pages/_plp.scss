@@ -7,6 +7,10 @@
   }
 }
 
+.ec-font-bold {
+  @extend .font-weight-bold;
+}
+
 /* PRODUCT ITEMS */ 
 .product-item {
   display: flex;

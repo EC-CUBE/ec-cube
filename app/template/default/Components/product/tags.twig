@@ -9,9 +9,9 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% if product.Tags is not empty %}
-  <div class="product-tags {{class|default('mb-2')}}">
+  <div class="product-tags {{class|default('')}}">
       {% for Tag in product.Tags %}
-          <span class="badge badge-info">{{ Tag }}</span>
+          <span class="badge badge-light border rounded font-weight-normal">{{ Tag }}</span>
       {% endfor %}
   </div>
 {% endif %}

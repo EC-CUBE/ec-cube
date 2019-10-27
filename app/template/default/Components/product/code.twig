@@ -9,10 +9,10 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% if product.code_min is not empty %}
-  <div class="product-code {{class|default('mb-2')}}">
+  <div class="product-code {{class|default('mb-3 pb-3 border-bottom')}}">
     {{ 'front.product.code'|trans }}:  
-    <strong class="product-code-default">
+    <span class="product-code-default">
       {{ product.code_min }}{% if product.code_min != product.code_max %} ～ {{ product.code_max }}{% endif %}
-    </strong>
+    </span>
   </div>
 {% endif %}
