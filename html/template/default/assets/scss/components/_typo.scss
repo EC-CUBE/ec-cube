@@ -30,3 +30,11 @@ body.have_curtain {
   position: fixed;
   width: 100%;
 }
+
+.clear-margin-label {
+  @include media-breakpoint-up(md) {
+    label {
+      margin-bottom: 0;
+    }
+  }
+}

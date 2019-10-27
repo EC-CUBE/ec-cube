@@ -11,12 +11,11 @@ file that was distributed with this source code.
 {% extends 'default_frame.twig' %}
 
 {% block main %}
-<div class="ec-role">
-    <div class="ec-pageHeader">
-        <h1>{{ 'front.agreement.title'|trans }}</h1>
-    </div>
-    <div class="ec-off1Grid">
-        <div class="ec-off1Grid__cell">
+{% include "Components/heading.twig" with {'title': 'front.agreement.title' } %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-help-section page-agreement">
 {{ '
 第1条 (会員)
 

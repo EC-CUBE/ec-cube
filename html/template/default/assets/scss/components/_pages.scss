@@ -1,25 +1,3 @@
-.page-help-section {
-  label {
-    margin-bottom: 0;
-  }
-  
-  tr {
-    td:first-child {
-      padding-left: 0;
-    }
-
-    td:last-child {
-      padding-right: 0;
-    }
-  }
-}
-
-.clear-margin-label {
-  label {
-    margin-bottom: 0;
-  }
-}
-
 /* Postal Code */
 .page-postalcode {
   @include media-breakpoint-down(sm) {

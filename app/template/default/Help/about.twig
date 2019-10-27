@@ -12,78 +12,104 @@ file that was distributed with this source code.
 
 {% block main %}
 
-<div class="ec-role">
-    <div class="ec-pageHeader">
-        <h1>{{ 'front.about.title'|trans }}</h1>
-    </div>
-    <div class="ec-off1Grid">
-        <div class="ec-off1Grid__cell">
-            <div class="ec-borderedDefs">
+{% include "Components/heading.twig" with {'title': 'front.about.title' } %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-help-section page-about-us">
+            <ul class="list-group clear-margin-label">
                 {% if BaseInfo.shop_name|default is not empty %}
-                    <dl id="help_about_box__shop_name">
-                        <dt>
-                            <label class="ec-label">{{ 'common.shop_name'|trans }}</label>
-                        </dt>
-                        <dd>{{ BaseInfo.shop_name }}</dd>
-                    </dl>
+                    <li class="list-group-item help_about_box__shop_name">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="ec-label">{{ 'common.shop_name'|trans }}</label>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ BaseInfo.shop_name }}
+                            </div>
+                        </div>
+                    </li>
                 {% endif %}
+
                 {% if BaseInfo.company_name|default is not empty %}
-                    <dl id="help_about_box__company_name">
-                        <dt>
-                            <label class="ec-label">{{ 'common.company_name'|trans }}</label>
-                        </dt>
-                        <dd>{{ BaseInfo.company_name }}</dd>
-                    </dl>
+                    <li class="list-group-item help_about_box__company_name">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="ec-label">{{ 'common.company_name'|trans }}</label>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ BaseInfo.company_name }}
+                            </div>
+                        </div>
+                    </li>
                 {% endif %}
 
                 {% if BaseInfo.postal_code|default is not empty %}
-                    <dl id="help_about_box__address">
-                        <dt>
-                            <label class="ec-label">{{ 'common.address'|trans }}</label>
-                        </dt>
-                        <dd>{{ 'common.postal_symbol'|trans }}{{ BaseInfo.postal_code }}<br />
-                            {{ BaseInfo.pref }}{{ BaseInfo.addr01 }}{{ BaseInfo.addr02 }}
-                        </dd>
-                    </dl>
+                    <li class="list-group-item help_about_box__address">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="ec-label">{{ 'common.address'|trans }}</label>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ 'common.postal_symbol'|trans }}{{ BaseInfo.postal_code }}<br />
+                                {{ BaseInfo.pref }}{{ BaseInfo.addr01 }}{{ BaseInfo.addr02 }}
+                            </div>
+                        </div>
+                    </li>
                 {% endif %}
 
                 {% if BaseInfo.phone_number|default is not empty %}
-                    <dl id="help_about_box__phone_number">
-                        <dt>
-                            <label class="ec-label">{{ 'common.phone_number'|trans }}</label>
-                        </dt>
-                        <dd>{{ BaseInfo.phone_number }}</dd>
-                    </dl>
+                    <li class="list-group-item help_about_box__phone_number">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="ec-label">{{ 'common.phone_number'|trans }}</label>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ BaseInfo.phone_number }}
+                            </div>
+                        </div>
+                    </li>
                 {% endif %}
 
                 {% if BaseInfo.business_hour|default is not empty %}
-                    <dl id="help_about_box__business_hour">
-                        <dt>
-                            <label class="ec-label">{{ 'front.about.business_hour'|trans }}</label>
-                        </dt>
-                        <dd>{{ BaseInfo.business_hour }}</dd>
-                    </dl>
+                    <li class="list-group-item help_about_box__business_hour">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="ec-label">{{ 'front.about.business_hour'|trans }}</label>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ BaseInfo.business_hour }}
+                            </div>
+                        </div>
+                    </li>
                 {% endif %}
 
                 {% if BaseInfo.good_traded|default is not empty %}
-                    <dl id="help_about_box__good_traded">
-                        <dt>
-                            <label class="ec-label">{{ 'front.about.good_traded'|trans }}</label>
-                        </dt>
-                        <dd>{{ BaseInfo.good_traded|nl2br }}</dd>
-                    </dl>
+                    <li class="list-group-item help_about_box__good_traded">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="ec-label">{{ 'front.about.good_traded'|trans }}</label>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ BaseInfo.good_traded|nl2br }}
+                            </div>
+                        </div>
+                    </li>
                 {% endif %}
 
                 {% if BaseInfo.message|default is not empty %}
-                    <dl id="help_about_box__message">
-                        <dt>
-                            <label class="ec-label">{{ 'front.about.message'|trans }}</label>
-                        </dt>
-                        <dd>{{ BaseInfo.message|nl2br }}</dd>
-                    </dl>
+                    <li class="list-group-item help_about_box__message">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="ec-label">{{ 'front.about.message'|trans }}</label>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ BaseInfo.message|nl2br }}
+                            </div>
+                        </div>
+                    </li>
                 {% endif %}
-            </div>
-
+            </ul>
         </div>
     </div>
 </div>
