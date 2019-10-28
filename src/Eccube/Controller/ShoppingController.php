@@ -121,10 +121,6 @@ class ShoppingController extends AbstractShoppingController
         $flowResult = $this->executePurchaseFlow($Order, false);
         $this->entityManager->flush();
 
-        // 新規登録時はflushしてから採番
-        $this->orderNoProcessor->process($Order, new PurchaseContext($Order, $Order->getCustomer()));
-        $this->entityManager->flush();
-
         if ($flowResult->hasError()) {
             log_info('[注文手続] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
 
@@ -368,6 +364,9 @@ class ShoppingController extends AbstractShoppingController
                 log_info('[注文処理] 集計処理を開始します.', [$Order->getId()]);
                 $response = $this->executePurchaseFlow($Order);
                 $this->entityManager->flush();
+
+                // 新規登録時はflushしてから採番
+                $this->orderNoProcessor->process($Order, new PurchaseContext($Order, $Order->getCustomer()));
 
                 if ($response) {
                     return $response;
