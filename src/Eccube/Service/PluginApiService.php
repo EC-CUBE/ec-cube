@@ -15,7 +15,6 @@ namespace Eccube\Service;
 
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
-use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginApiException;
 use Eccube\Repository\BaseInfoRepository;
@@ -42,9 +41,9 @@ class PluginApiService
     private $requestStack;
 
     /**
-     * @var BaseInfo
+     * @var BaseInfoRepository
      */
-    private $BaseInfo;
+    private $baseInfoRepository;
 
     /**
      * @var PluginRepository
@@ -66,7 +65,7 @@ class PluginApiService
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->requestStack = $requestStack;
-        $this->BaseInfo = $baseInfoRepository->get();
+        $this->baseInfoRepository = $baseInfoRepository;
         $this->pluginRepository = $pluginRepository;
     }
 
@@ -286,7 +285,7 @@ class PluginApiService
             }
         }
 
-        $key = $this->BaseInfo->getAuthenticationKey();
+        $key = $this->baseInfoRepository->get()->getAuthenticationKey();
 
         $baseUrl = null;
         if ($this->requestStack->getCurrentRequest()) {
