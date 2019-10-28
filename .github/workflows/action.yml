@@ -1,7 +1,17 @@
 name: CI/CD for EC-CUBE
 on:
   push:
+    branches:
+      - 4.0
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
   pull_request:
+    paths:
+      - '**'
+      - '!*.md'
   release:
     types: [ published ]
 jobs:
