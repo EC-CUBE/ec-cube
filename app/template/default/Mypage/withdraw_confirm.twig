@@ -12,42 +12,33 @@ file that was distributed with this source code.
 
 {% set mypageno = 'withdraw' %}
 
-{% set body_class = 'mypage' %}
+{% set body_class = 'mypage mypage_withdraw_confirm' %}
 
 {% block main %}
-    <div class="ec-layoutRole__main">
-        <div class="ec-mypageRole">
-            <div class="ec-pageHeader">
-                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__withdrow'|trans }}</h1>
-            </div>
-            {{ include('Mypage/navi.twig') }}
-        </div>
-        <div class="ec-mypageRole">
-            <div class="ec-withdrawConfirmRole">
-                <div class="ec-off3Grid">
-                    <div class="ec-off3Grid__cell">
-                        <div style="font-size:100px;text-align:center;">
-                            <div class="ec-icon"><img src="{{ asset('assets/icon/exclamation.svg') }}" alt=""></div>
-                        </div>
-                        <p class="ec-withdrawConfirmRole__title">{{ 'front.mypage.withdraw_execute_message__title'|trans }}</p>
-                        <p class="ec-withdrawConfirmRole__description">{{ 'front.mypage.withdraw_message__body'|trans }}
-                        </p>
-                    </div>
+    {% include "Components/heading.twig" with {'title': 'front.mypage.title', 'subTitle': 'front.mypage.nav__withdrow' } %}
+
+    {% include 'Mypage/navi.twig' %}
+
+    <div class="row">
+        <div class="col-12">
+            <form method="post" action="{{ url('mypage_withdraw') }}">
+                {{ form_widget(form._token) }}
+                <div class="p-4 text-center bg-light">
+                    <span class="display-2"><i class="fas fa-exclamation-triangle text-danger"></i></span>
+                    <h4 class="pb-2">{{ 'front.mypage.withdraw_execute_message__title'|trans }}</h4>
+                    <p>{{ 'front.mypage.withdraw_message__body'|trans }}</p>
+                    <hr class="my-4">
+                    <form method="post" action="{{ url('mypage_withdraw') }}">
+                        {{ form_widget(form._token) }}
+                        <a class="btn btn-secondary" href="{{ url('mypage') }}">
+                            {{ 'front.mypage.withdraw_cancel'|trans }}
+                        </a>
+                        <button type="submit" class="btn btn-danger" name="mode" value="complete">
+                            {{ 'front.mypage.withdraw_execute'|trans }}
+                        </button>
+                    </form>
                 </div>
-                <form method="post" action="{{ url('mypage_withdraw') }}">
-                    {{ form_widget(form._token) }}
-                    <div class="ec-off4Grid">
-                        <div class="ec-off4Grid__cell">
-                            <a class="ec-withdrawConfirmRole__cancel ec-blockBtn--cancel" href="{{ url('mypage') }}">
-                                {{ 'front.mypage.withdraw_cancel'|trans }}
-                            </a>
-                            <button type="submit" class="ec-blockBtn" name="mode"
-                                    value="complete">{{ 'front.mypage.withdraw_execute'|trans }}
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
 {% endblock %}

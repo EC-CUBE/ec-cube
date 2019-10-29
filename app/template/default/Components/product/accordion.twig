@@ -8,7 +8,7 @@
         </button>
       </div>
 
-      <div id="collapse_description_detail" class="collapse show" aria-labelledby="heading_description_detail" data-parent="#productAccordion">
+      <div id="collapse_description_detail" class="collapse accordion-content show" aria-labelledby="heading_description_detail" data-parent="#productAccordion">
         <div class="card-body">
             {# Product Detail #}
             {% include "Components/product/description_detail.twig" with {'product': product} %}
@@ -25,7 +25,7 @@
           <i class="fas fa-minus"></i>
         </button>
       </div>
-      <div id="collapse_description_list" class="collapse" aria-labelledby="heading_description_list" data-parent="#productAccordion">
+      <div id="collapse_description_list" class="collapse accordion-content" aria-labelledby="heading_description_list" data-parent="#productAccordion">
         <div class="card-body">
             {# Product Description #}
             {% include "Components/product/description_list.twig" with {'product': product} %}
@@ -42,7 +42,7 @@
             <i class="fas fa-minus"></i>
         </button>
       </div>
-      <div id="collapse_freearea" class="collapse" aria-labelledby="heading_freearea" data-parent="#productAccordion">
+      <div id="collapse_freearea" class="collapse accordion-content" aria-labelledby="heading_freearea" data-parent="#productAccordion">
         <div class="card-body">
             {# Product Freearea #}
             {{ include(template_from_string(Product.freearea)) }}

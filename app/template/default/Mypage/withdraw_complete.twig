@@ -12,27 +12,20 @@ file that was distributed with this source code.
 
 {% set mypageno = 'withdraw' %}
 
-{% set body_class = 'mypage' %}
+{% set body_class = 'mypage mypage_withdraw_complete' %}
 
 {% block main %}
-    <div class="ec-layoutRole__main">
-        <div class="ec-mypageRole">
-            <div class="ec-pageHeader">
-                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__withdrow'|trans }}</h1>
-            </div>
-        </div>
-        <div class="ec-mypageRole">
-            <div class="ec-withdrawCompleteRole">
-                <div class="ec-off4Grid">
-                    <div class="ec-off4Grid__cell">
-                        <div class="ec-reportHeading">
-                            <h2>{{ 'front.mypage.withdraw_complete_message__title'|trans }}</h2>
-                        </div>
-                        <p class="ec-reportDescription">{{ 'front.mypage.withdraw_complete_message__body'|trans|nl2br }}</p>
-                        <p><a href="{{ url('homepage') }}"
-                              class="ec-blockBtn--cancel">{{ 'common.go_to_top'|trans }}</a></p>
-                    </div>
-                </div>
+    {% include "Components/heading.twig" with {'title': 'front.mypage.title', 'subTitle': 'front.mypage.nav__withdrow' } %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="p-4 text-center bg-light">
+                <h4 class="pb-2">{{ 'front.mypage.withdraw_complete_message__title'|trans }}</h4>
+                <p>{{ 'front.mypage.withdraw_complete_message__body'|trans|nl2br }}</p>
+                <hr class="my-4">
+                <a href="{{ url('homepage') }}" class="btn btn-primary">
+                    {{ 'common.go_to_top'|trans }}
+                </a>
             </div>
         </div>
     </div>

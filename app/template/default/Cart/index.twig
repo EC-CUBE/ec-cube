@@ -149,16 +149,16 @@ file that was distributed with this source code.
                         </div>
                     {% endif %}
                 </div>
-                <div id="eccube-cart-total" class="row d-flex justify-content-end">
+                <div id="eccube-cart-total" class="row eccube-cart-total">
                     <div class="col-md-4">
                         <div class="cart-total pt-4 pb-2 d-flex justify-content-between align-items-center">
                             <b>{{ 'common.total__with_separator'|trans }}</b>
                             <span class="text-price h3 mb-0">{{ Cart.totalPrice|price }}</span>
                         </div>
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ path('cart_buystep', {'cart_key':cartKey}) }}">{{ 'front.cart.checkout'|trans }}</a>
+                        <a class="btn btn-primary btn-block" href="{{ path('cart_buystep', {'cart_key':cartKey}) }}">{{ 'front.cart.checkout'|trans }}</a>
 
                         {% if loop.last %}
-                            <a class="btn btn-secondary btn-block btn-lg" href="{{ path('homepage') }}">{{ 'front.cart.continue'|trans }}</a>
+                            <a class="btn btn-secondary btn-block" href="{{ path('homepage') }}">{{ 'front.cart.continue'|trans }}</a>
                         {% endif %}
                     </div>
                 </div>

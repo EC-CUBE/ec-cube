@@ -31,13 +31,15 @@ file that was distributed with this source code.
                                     <i class="fas fa-minus"></i>
                                 </button>
                             {% else %}
-                                <small class="mr-4 text-left d-block d-md-inline-block">{{ News.publish_date|date_day }}</small> 
-                                {{ News.title }}
+                                <button class="btn justify-content-start" disabled>
+                                    <small class="mr-4 text-left d-block d-md-inline-block">{{ News.publish_date|date_day }}</small> 
+                                    {{ News.title }}
+                                </button>
                             {% endif %}
                         </div>
 
                         <div id="collapse-{{ News.id }}" class="accordion-content collapse" aria-labelledby="news-{{ News.id }}" data-parent="#news-accordion">
-                            <div class="card-body p-3">
+                            <div class="card-body">
                                 <div class="news-content">
                                     {{ News.description|raw|nl2br }}
                                 </div>

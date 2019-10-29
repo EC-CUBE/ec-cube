@@ -1,38 +1,42 @@
 .ec-navlistRole{
-  & &__navlist {
-    display: flex;
-    flex-wrap: wrap;
-    border-color: #D0D0D0;
+  &__navlist {
+    border-color: $gray-300;
     border-style: solid;
     border-width: 1px 0 0 1px;
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
     margin-bottom: 32px;
     padding: 0;
-    list-style: none;
 
     @include media-breakpoint-up(md) {
       flex-wrap: nowrap;
     }
   }
 
-  & &__item{
-    width: 50%;
-    border-color: #D0D0D0;
+  &__item{
+    border-color: $gray-300;
     border-style: solid;
     border-width: 0 1px 1px 0;
     text-align: center;
-    font-weight: bold;
+    width: 50%;
+
     a {
+      color: $black;
+      display: inline-block;
       padding: 16px;
       width: 100%;
-      display: inline-block;
+
       &:hover{
-        background: #f5f7f8;
+        background: $gray-100;
       }
     }
   }
+
   .active {
     a {
-      color: #DE5D50;
+      color: $blue;
+      font-weight: bold;
     }
   }
 }

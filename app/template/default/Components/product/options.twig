@@ -12,12 +12,12 @@ file that was distributed with this source code.
   {# Order history #}
   {% if productClass.class_category_name1 is not empty or productClass.class_category_name2 is not empty %}
     <div class="product-options {{class|default('')}}">
-      <small>
+      <span>
         {{ productClass.class_category_name1 }}
         {% if productClass.class_category_name2 is not empty %}
          {{ '/ ' ~ productClass.class_category_name2 }}
         {% endif %}
-      </small>
+      </span>
     </div>
   {% endif %}
 {% else %}
@@ -25,14 +25,14 @@ file that was distributed with this source code.
   {% if productClass.ClassCategory1 is not null or productClass.ClassCategory1 is not null %}
     <div class="product-options {{class|default('')}}">
       {% if productClass.ClassCategory1 and productClass.ClassCategory1.id %}
-          <small>
+          <span>
               {{ productClass.ClassCategory1.ClassName.name }}: {{ productClass.ClassCategory1 }}
-          </small>
+          </span>
       {% endif %}
       {% if productClass.ClassCategory2 and productClass.ClassCategory2.id %}
-          <small>
+          <span>
               {{ productClass.ClassCategory2.ClassName.name }}: {{ productClass.ClassCategory2 }}
-          </small>
+          </span>
       {% endif %}
     </div>
   {% endif %}

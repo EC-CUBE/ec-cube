@@ -12,28 +12,21 @@ file that was distributed with this source code.
 
 {% set mypageno = 'change' %}
 
-{% set body_class = 'mypage' %}
+{% set body_class = 'mypage mypage_change_complete' %}
 
 {% block main %}
-    <div class="ec-layoutRole__main">
-        <div class="ec-mypageRole">
-            <div class="ec-pageHeader">
-                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__customer_complete'|trans }}</h1>
-            </div>
-            {% include 'Mypage/navi.twig' %}
-        </div>
-        <div class="ec-registerCompleteRole">
-            <div class="ec-off2Grid ec-text-ac">
-                <div class="ec-off2Grid__cell">
-                    <div class="ec-reportHeading">
-                        <h2>{{ 'front.mypage.customer_complete_message__title'|trans }}</h2>
-                    </div>
-                    <p class="ec-reportDescription">{{ 'front.mypage.customer_complete_message__body'|trans }}</p>
-                    <div class="ec-off4Grid">
-                        <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel"
-                                                          href="{{ url('homepage') }}">{{ 'common.back'|trans }}</a>
-                        </div>
-                    </div>
+    {% include "Components/heading.twig" with {'title': 'front.mypage.title', 'subTitle': 'front.mypage.nav__customer_complete' } %}
+
+    {% include 'Mypage/navi.twig' %}
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="p-4 text-center bg-light">
+                <h4 class="pb-2">{{ 'front.mypage.customer_complete_message__title'|trans }}</h4>
+                <p>{{ 'front.mypage.customer_complete_message__body'|trans }}</p>
+                <hr class="my-4">
+                <div class="col-md-3 px-0 mx-auto">
+                    <a class="btn btn-primary btn-block" href="{{ url('homepage') }}">{{ 'common.back'|trans }}</a>
                 </div>
             </div>
         </div>

@@ -12,59 +12,55 @@ file that was distributed with this source code.
 
 {% set mypageno = 'favorite' %}
 
-{% set body_class = 'mypage' %}
+{% set body_class = 'mypage mypage_favorite' %}
 
 {% block main %}
-    <div class="ec-layoutRole__main">
-        <div class="ec-mypageRole">
-            <div class="ec-pageHeader">
-                <h1>{{ 'front.mypage.title'|trans }}/{{ 'front.mypage.nav__favorite'|trans }}</h1>
-            </div>
-            {% include 'Mypage/navi.twig' %}
-        </div>
-
-        <div class="ec-mypageRole">
-            <div class="ec-favoriteRole">
-                {% if pagination.totalItemCount > 0 %}
-                    <div class="ec-favoriteRole__header">
-                        <p>{{ 'front.mypage.favorite_count'|trans({'%count%':pagination.totalItemCount}) }}</p>
+    {% include "Components/heading.twig" with {'title': 'front.mypage.title', 'subTitle': 'front.mypage.nav__favorite' } %}
+    
+    {% include 'Mypage/navi.twig' %}
+    <div id="my-account-favorite" class="row">
+        <div class="col-12">
+            {% if pagination.totalItemCount > 0 %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <b>{{ 'front.mypage.favorite_count'|trans({'%count%':pagination.totalItemCount}) }}</b>
                     </div>
-                    <div class="ec-favoriteRole__detail">
-                        <ul class="ec-favoriteRole__itemList">
+                    <div class="card-body pb-0">
+                        <div class="row">
                             {% for FavoriteProduct in pagination %}
                                 {% set Product = FavoriteProduct.Product %}
-                                <li class="ec-favoriteRole__item">
-                                    <a class="ec-closeBtn--circle"
-                                       href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }}
-                                       data-method="delete">
-                                        <div class="ec-icon">
-                                            <img src="{{ asset('assets/icon/cross-white.svg') }}" alt="close">
+                                <div class="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
+                                    <div class="card">
+                                        {# Image #}
+                                        {% include "Components/product/image.twig" with {'product': Product, 'type': 'link'} %}
+
+                                        <div class="card-body">
+                                            {# Name #}
+                                            {% include "Components/product/name.twig" with {'product': Product, 'type': 'text', class: 'h6 card-title'} %}
+
+                                            {# Price #}
+                                            {% include "Components/product/price.twig" with {'product': Product, type: 'list'} %}
                                         </div>
-                                    </a>
-                                    <a class="ec-favoriteRole__itemThumb" href="{{ url('product_detail', {'id': Product.id}) }}">
-                                        <p class="ec-favoriteRole__item-image">
-                                            <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
-                                        </p>
-                                    </a>
-                                    <p class="ec-favoriteRole__itemTitle">{{ Product.name }}</p>
-                                    <p class="ec-favoriteRole__itemPrice">
-                                        {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
-                                            {{ Product.price02_inc_tax_min|price }}
-                                        {% else %}
-                                            {{ Product.price02_inc_tax_min|price }}～{{ Product.price02_inc_tax_max|price }}
-                                        {% endif %}
-                                    </p>
-                                </li>
+                                        <div class="card-footer">
+                                            <a class="btn btn-danger btn-block"
+                                            href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }}
+                                            data-method="delete">
+                                                {{ 'common.delete'|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endfor %}
-                        </ul>
+                        
+                        </div>
                     </div>
-                    <div class="ec-pagerRole">
-                        {% include "pager.twig" with {'pages': pagination.paginationData} %}
-                    </div>
-                {% else %}
-                    <div class="ec-favoriteRole__header">{{ 'front.mypage.favorite_not_found'|trans }}</div>
-                {% endif %}
-            </div>
+                </div>
+                {% include "pager.twig" with {'pages': pagination.paginationData, 'class': 'mb-4'} %}
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    {{ 'front.mypage.favorite_not_found'|trans }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

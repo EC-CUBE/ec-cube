@@ -6,6 +6,11 @@
       border-bottom: none;
       margin-bottom: 0;
     }
+
+    &:first-of-type {
+      @extend .border-bottom;
+      margin-bottom: -$card-border-width;
+    }
   }
 
   .accordion-content {
