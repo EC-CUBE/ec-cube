@@ -43,11 +43,11 @@ file that was distributed with this source code.
                         {% if BaseInfo.isOptionPoint %}
                             <li class="list-group-item">
                                 <b>{{ 'front.mypage.use_point'|trans }}</b>
-                                {{ Order.usePoint|number_format }} pt
+                                {{ Order.usePoint|number_format }} {{ 'common.point'|trans }}
                             </li>
                             <li class="list-group-item">
                                 <b>{{ 'front.mypage.add_point'|trans }}</b>
-                                {{ Order.addPoint|number_format }} pt
+                                {{ Order.addPoint|number_format }} {{ 'common.point'|trans }}
                             </li>
                         {% endif %}
                     </ul>

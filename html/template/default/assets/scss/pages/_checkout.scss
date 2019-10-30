@@ -2,3 +2,36 @@
   border-top: 1px solid $card-border-color;
   padding-top: 15px; 
 }
+
+.guest-checkout {
+  align-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  justify-content: center;
+}
+
+/* ORDER SUMARY */ 
+.ec-orderRole__summary {
+  .list-group-sub-item {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: remCalc(8px);
+  }
+}
+
+/* POSTCODE */ 
+.customer-postal_code {
+  flex: 1 1 auto;
+  width: 1%;
+}
+
+/* PAYMENTS */ 
+.ec-list-payments {
+  input {
+    @extend .mr-2;
+    position: relative;
+    top: remCalc(-2px);
+  }
+}

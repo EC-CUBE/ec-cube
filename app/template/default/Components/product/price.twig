@@ -75,7 +75,9 @@ file that was distributed with this source code.
 {% elseif type is defined and type == 'checkout' %}
   {# FOR CHECKOUT AND ORDER HISTORY #}
   <div class="price-x-quanity {{class|default('')}}">
-    {{ product.priceIncTax|price }} × {{ product.quantity|number_format }}
+    <p class="mb-0">
+      {{ product.priceIncTax|price }} × {{ product.quantity|number_format }}<span class="ml-3">{{ 'common.subtotal__with_separator'|trans }}{{ product.totalPrice|price }}</span>
+    </p>
   </div>
 {% elseif type is defined and type == 'cart' %}
   {# FOR CART #}

@@ -10,42 +10,79 @@ file that was distributed with this source code.
 #}
 <div id="order-summary" class="ec-orderRole__summary">
     <div class="card">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <b>{{ 'common.subtotal'|trans }}</b>
-                <span class="font-weight-bold">{{ Order.subtotal|price }}</span>
+        <ul class="list-group list-group-flush ec-totalBox">
+            <li class="list-group-item">
+                <div class="list-group-sub-item ec-totalBox__subtotal">
+                    {{ 'common.subtotal'|trans }}
+                    <span>{{ Order.subtotal|price }}</span>
+                </div>
+
+                <div class="list-group-sub-item ec-totalBox__charge">
+                    {{ 'common.charge'|trans }}
+                    <span>{{ Order.charge|price }}</span>
+                </div>
+                <div class="list-group-sub-item ec-totalBox__delivery_fee">
+                    {{ 'common.delivery_fee'|trans }}
+                    <span>{{ Order.deliveryFeeTotal|price }}</span>
+                </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ 'common.charge'|trans }}
-                <span>{{ Order.charge|price }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ 'common.delivery_fee'|trans }}
-                <span>{{ Order.deliveryFeeTotal|price }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ 'common.discount'|trans }}
-                <span>{{ Order.discount|price }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <b>{{ 'common.total'|trans }}</b>
-                <p class="text-price font-weight-bold">
-                    <span class="h4">{{ Order.total|price }}</span>
-                    <span class="h6">{{ 'common.tax_include'|trans }}</span>
-                </p>
-            </li>
-            {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ 'front.shopping.use_point'|trans }}
-                    <span>{{ Order.UsePoint|number_format }} {{ 'common.point'|trans }}</span>
+            {% if Order.taxable_discount < 0 %}
+                <li class="list-group-item">
+                    <div class="list-group-sub-item ec-totalBox__taxable_discount">
+                        {{ 'common.discount'|trans }}
+                        <span>{{ Order.taxable_discount|price }}</span>
+                    </div>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <b>{{ 'front.shopping.add_point'|trans }}</b>
-                    <span>{{ Order.AddPoint|number_format }} {{ 'common.point'|trans }}</span>
+            {% endif %}
+
+            <li class="list-group-item">
+                <div class="list-group-sub-item justify-content-end ec-totalBox__total">
+                    <b class="mr-3">{{ 'common.total'|trans }}</b>
+                    <p class="mb-0">
+                        <span class="h4 font-weight-bold">{{ Order.taxable_total|price }}</span>
+                        <span class="h6 font-weight-bold">{{ 'common.tax_include'|trans }}</span>
+                    </p>
+                </div>
+
+                {% for rate, total in Order.taxable_total_by_tax_rate %}
+                    <div class="text-right text-muted mb-2 ec-totalBox__taxRate">
+                        <small>[{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}
+                        <span>{{ total|price }}</span>]</small>
+                    </div>
+                {% endfor %}
+
+                {% for item in Order.tax_free_discount_items %}
+                    <li class="list-group-item">
+                        <div class="list-group-sub-item ec-totalBox__tax_free_discount_items">
+                            {{ item.product_name }}
+                            <span>{{ item.total_price|price }}</span>
+                        </div>
+                    </li>
+                {% endfor %}
+
+                <div class="list-group-sub-item justify-content-end justify-content-end ec-totalBox__paymentTotal">
+                    <b class="mr-3">{{ 'common.payment_total'|trans }}</b>
+                    <p class="text-price mb-0">
+                        <b class="h4 font-weight-bold">{{ Order.payment_total|price }}</b>
+                        <span class="h6 font-weight-bold">{{ 'common.tax_include'|trans }}</span>
+                    </p>
+                </div>
+            </li>
+
+            {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                <li class="list-group-item list-group-item-primary">
+                    <div class="list-group-sub-item ec-totalBox__pointBlock">
+                        {{ 'front.shopping.use_point'|trans }}
+                        <span>{{ Order.UsePoint|number_format }} {{ 'common.point'|trans }}</span>
+                    </div>
+                    <div class="list-group-sub-item mb-0 ec-totalBox__pointBlock">
+                        <b>{{ 'front.shopping.add_point'|trans }}</b>
+                        <span class="font-weight-bold">{{ Order.AddPoint|number_format }} {{ 'common.point'|trans }}</span>
+                    </div>
                 </li>
             {% endif %}
         </ul>
-        <div class="card-footer">
+        <div class="card-footer ec-totalBox__btn">
             <button type="submit" class="btn btn-primary btn-block">
               {% if type is defined %}
                 {{ 'front.shopping.checkout'|trans }}
@@ -53,7 +90,12 @@ file that was distributed with this source code.
                 {{ 'front.shopping.go_to_confirm'|trans }}
               {% endif %}
             </button>
-            <a href="{{ url("cart") }}" class="btn btn-secondary btn-block">{{ 'front.shopping.back_to_cart'|trans }}</a>
+
+            {% if type is defined %}
+                <a href="{{ url("shopping") }}" class="btn btn-secondary btn-block">{{ 'front.shopping.back_to_order'|trans }}</a>
+            {% else %}
+                <a href="{{ url("cart") }}" class="btn btn-secondary btn-block">{{ 'front.shopping.back_to_cart'|trans }}</a>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -1,26 +1,23 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
 {% if error_only is not defined %}
     {% set error_only = false %}
 {% endif %}
+
 {% for error in app.session.flashbag.get('eccube.front.error') %}
-    <div class="ec-cartRole__error">
-        <div class="ec-alert-warning">
-            <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
-            <div class="ec-alert-warning__text">
-                {{ error|trans|nl2br }}
-            </div>
-        </div>
-    </div>
+    {% include "Components/error.twig" with {'message': error} %}
 {% endfor %}
+
 {% if error_only == false %}
-{% for error in app.session.flashbag.get('eccube.front.warning') %}
-    <div class="ec-cartRole__error">
-        <div class="ec-alert-warning">
-            <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}">
-            </div>
-            <div class="ec-alert-warning__text">
-                {{ error|trans|nl2br }}
-            </div>
-        </div>
-    </div>
-{% endfor %}
+    {% for error in app.session.flashbag.get('eccube.front.warning') %}
+        {% include "Components/error.twig" with {'message': error} %}
+    {% endfor %}
 {% endif %}

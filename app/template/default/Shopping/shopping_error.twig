@@ -10,28 +10,21 @@ file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
-{% set body_class = 'cart_page' %}
+{% set body_class = 'checkout checkout_shipping_error' %}
 
 {% block main %}
 
-<div class="ec-role">
-    <div class="ec-pageHeader">
-        <h1>{{ 'front.shopping.error'|trans }}</h1>
-    </div>
-</div>
+{% include "Components/heading.twig" with {'title': 'front.shopping.error' } %}
 
 <!-- アラートメッセージ -->
 {{ include('Shopping/alert.twig', { 'error_only': true }) }}
 
-<div class="ec-role">
-    <div class="ec-off3Grid">
-        <div class="ec-off3Grid__cell">
-            <div class="ec-off4Grid">
-                <div class="ec-off4Grid__cell">
-                    <a class="ec-blockBtn--cancel" href="{{ url('cart') }}">{{ 'front.shopping.back_to_cart'|trans }}</a>
-                </div>
-            </div>
+<div class="row">
+    <div class="col-12 justify-content-center">
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-primary" href="{{ url('cart') }}">{{ 'front.shopping.back_to_cart'|trans }}</a>
         </div>
     </div>
 </div>
+
 {% endblock %}

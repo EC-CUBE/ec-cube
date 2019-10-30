@@ -10,68 +10,58 @@ file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
+{% set body_class = 'checkout checkout_shipping' %}
+
 {% block main %}
-    <div class="ec-role">
-        <div class="ec-pageHeader">
-            <h1>{{ 'front.shopping.shipping_title'|trans }}</h1>
-        </div>
-    </div>
+    {% include "Components/heading.twig" with {'title': 'front.shopping.shipping_title' } %}
+    
+    {% if has_errors(form.addresses) %}
+        {% include "Components/error.twig" with {'message': 'front.shopping.shipping_unselected'} %}
+    {% endif %}
 
-    <div class="ec-registerRole">
-        <div class="ec-off1Grid">
-            <div class="ec-off1Grid__cell">
-                <div class="ec-addressRole">
-                    {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
-                        <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">{{ 'front.shopping.shipping_add_new_shipping'|trans }}</a></div>
-                    {% else %}
-                        <div class="ec-alert-warning">
-                            <div class="ec-alert-warning__text">
-                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                                {{ 'common.customer_address_count_is_over'|trans({ '%count%': eccube_config.eccube_deliv_addr_max }) }}
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if has_errors(form.addresses) %}
-                        <div class="ec-alert-warning">
-                            <div class="ec-alert-warning__text">
-                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                                {{ 'front.shopping.shipping_unselected'|trans }}
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
+    {% if Customer.CustomerAddresses|length > eccube_config.eccube_deliv_addr_max %}
+        {% include "Components/error.twig" with {'message': 'common.customer_address_count_is_over'|trans({'%count%':eccube_config.eccube_deliv_addr_max})} %}
+    {% endif %}
 
-                <form method="post" action="{{ url('shopping_shipping', {'id': shippingId}) }}">
-                    {{ form_widget(form._token) }}
-                    <div class="ec-addressList">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card">
+                {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
+                    <div class="card-header">
+                        <div class="ec-addressRole__actions"><a href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">{{ 'front.shopping.shipping_add_new_shipping'|trans }}</a></div>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <form id="shopping-shipping" method="post" action="{{ url('shopping_shipping', {'id': shippingId}) }}">
+                        {{ form_widget(form._token) }}
                         {% for choice in form.addresses.vars.choices %}
                             {% set Address = choice.data %}
-                        <div class="ec-addressList__item">
-                            <div class="ec-addressList__remove">
-                                {% set checked = choice is selectedchoice(form.addresses.vars.value) ? 'checked="checked"' : '' %}
-                                <input type="radio" id="address{{ choice.value }}" name="{{ form.addresses.vars.full_name }}" value="{{ choice.value }}" {{ checked }} />
+                            <div class="card p-0 rounded-0 mb-3">
+                                <div class="row no-gutters">
+                                    {% set checked = choice is selectedchoice(form.addresses.vars.value) ? 'checked="checked"' : '' %}
+                                    <div class="col-2 d-flex align-items-center justify-content-center">
+                                        <label class="position-absolute w-100 h-100" for="address{{ choice.value }}"></label>
+                                        <input type="radio" id="address{{ choice.value }}" name="{{ form.addresses.vars.full_name }}" value="{{ choice.value }}" {{ checked }} />
+                                    </div>
+                                    <div class="col-10 d-flex align-items-center justify-content-center">
+                                        <div class="card-body">
+                                            <p class="mb-0">{{ Address.name01 }}&nbsp;{{ Address.name02 }}</p>
+                                            <p class="mb-0">{{ 'common.postal_symbol'|trans }}{{ Address.postal_code }} {{ Address.Pref }}{{ Address.addr01 }}{{ Address.addr02 }}</p>
+                                            <p class="mb-0">{{ Address.phone_number }}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="ec-addressList__address">
-                                <div>{{ Address.name01 }}&nbsp;{{ Address.name02 }}</div>
-                                <div>〒{{ Address.postal_code }} {{ Address.Pref }}{{ Address.addr01 }}{{ Address.addr02 }}</div>
-                                <div>{{ Address.phone_number }}</div>
-                            </div>
-                        </div>
                         {% endfor %}
-                    </div>
-
-                    <div class="ec-registerRole__actions">
-                        <div class="ec-off4Grid">
-                            <div class="ec-off4Grid__cell">
-                                <button type="submit" class="ec-blockBtn--action">{{ 'front.shopping.shipping_send_selected_shipping'|trans }}</button>
-                                <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">{{ 'common.back'|trans }}</a>
+                        <div class="row">
+                            <div class="col-md-4 mx-auto">
+                                <button type="submit" class="btn btn-primary btn-block">{{ 'front.shopping.shipping_send_selected_shipping'|trans }}</button>
+                                <a class="btn btn-secondary btn-block" href="{{ url('shopping') }}">{{ 'common.back'|trans }}</a>
                             </div>
                         </div>
-                    </div>
-
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-
     </div>
 {% endblock %}
