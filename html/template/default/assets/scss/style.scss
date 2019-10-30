@@ -1,10 +1,8 @@
-$font-family-sans-serif: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
-
-$body-color: #000;
-
-$border-radius: 0;
-$border-radius-lg: 0;
-$border-radius-sm: 0;
+// =============================================================================
+// Custom Bootstrap 4.3.1 here
+// Refer the config https://github.com/twbs/bootstrap/blob/v4.3.1/scss/_variables.scss
+// =============================================================================
+@import "variables";
 
 // =============================================================================
 // Bootstrap 4.3.1

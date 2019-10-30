@@ -9,7 +9,7 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% extends 'Components/form/base_input.twig' %}
-{% set custom_class = customClass|default('') %}
+{% set custom_class = customClass|default('form-group-phone') %}
 
 {% block formLabel %}
     {{ form_label(form.phone_number, 'common.phone_number', { 'label_attr': { 'class': 'col-form-label' }}) }}
