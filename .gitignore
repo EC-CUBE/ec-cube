@@ -1,6 +1,7 @@
 !dummy
 !.gitmodule
 composer.phar
+gulpconfig.js
 /vendor/
 /node_modules/
 /var/*
