@@ -629,6 +629,9 @@
     "webmozart/assert": {
         "version": "1.3.0"
     },
+    "webonyx/graphql-php": {
+        "version": "v0.13.8"
+    },
     "zendframework/zend-code": {
         "version": "3.3.0"
     },

@@ -103,7 +103,8 @@
         "tecnickcom/tcpdf": "^6.2",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.4",
-        "vlucas/phpdotenv": "v2.4.0"
+        "vlucas/phpdotenv": "v2.4.0",
+        "webonyx/graphql-php": "^0.13.8"
     },
     "require-dev": {
         "bheller/images-generator": "^1.0",
