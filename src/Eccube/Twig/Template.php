@@ -38,7 +38,7 @@ abstract class Template extends \Twig\Template
                 $newTemplate = $this->env->createTemplate($event->getSource());
                 $newTemplate->display($event->getParameters(), $blocks);
             } else {
-                parent::display($context, $blocks);
+                parent::display($event->getParameters(), $blocks);
             }
         } else {
             parent::display($context, $blocks);
