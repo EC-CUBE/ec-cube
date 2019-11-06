@@ -50,6 +50,18 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+
     - name: Setup PHP
       uses: nanasess/setup-php@master
       with:
@@ -131,6 +143,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
 
     - name: Setup PHP
       uses: nanasess/setup-php@master
@@ -226,6 +249,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
 
     - name: Setup PHP
       uses: nanasess/setup-php@master
@@ -340,6 +374,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+
     - name: Setup PHP
       uses: nanasess/setup-php@master
       with:
@@ -451,6 +496,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
 
     - name: Setup PHP
       uses: nanasess/setup-php@master
@@ -566,6 +622,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+
     - name: Setup PHP
       uses: nanasess/setup-php@master
       with:
@@ -647,6 +714,17 @@ jobs:
       uses: nanasess/setup-php@master
       with:
         php-version: '7.3'
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
 
     - name: Install to Composer
       if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
