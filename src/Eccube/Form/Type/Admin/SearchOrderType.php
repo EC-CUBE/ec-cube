@@ -207,7 +207,7 @@ class SearchOrderType extends AbstractType
                 ],
             ])
             ->add('shipping_delivery_date_end', DateType::class, [
-                'label' => 'admin.order.delivery_date__start',
+                'label' => 'admin.order.delivery_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',

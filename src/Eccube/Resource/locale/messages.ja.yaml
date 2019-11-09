@@ -760,6 +760,8 @@ admin.order.order_date__end: 注文日(終了)
 admin.order.payment_date: 入金日
 admin.order.payment_date__start: 入金日(開始)
 admin.order.payment_date__end: 入金日(終了)
+admin.order.delivery_date__start: お届け日(開始)
+admin.order.delivery_date__end: お届け日(終了)
 admin.order.order_no: 注文番号
 admin.order.shipping_date: 出荷日
 admin.order.message: お問い合わせ

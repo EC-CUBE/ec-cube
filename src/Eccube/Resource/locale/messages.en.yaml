@@ -760,6 +760,8 @@ admin.order.order_date__end: Order Date (End)
 admin.order.payment_date: Payment Date
 admin.order.payment_date__start: Payment Date (Start)
 admin.order.payment_date__end: Payment Date (End)
+admin.order.delivery_date__start: Delivery Date (Start)
+admin.order.delivery_date__end: Delivery Date (End)
 admin.order.order_no: Order No.
 admin.order.shipping_date: Shipping Date
 admin.order.message: Inquiry
