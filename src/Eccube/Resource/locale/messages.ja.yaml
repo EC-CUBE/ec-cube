@@ -462,6 +462,7 @@ admin.common.csv_invalid_not_same: '%line%行目の%name1%と%name2%には同じ
 admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません'
 admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
 admin.common.csv_invalid_foreign_key: '%line%行目の%name%は関連するデータがあるため削除できません'
+admin.common.csv_invalid_description_detail_upper_limit: '%line%行目の%name%は%max%文字以下の文字列を指定してください。'
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 admin.common.delete_modal__title: 削除します
