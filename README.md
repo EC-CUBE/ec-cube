@@ -5,14 +5,14 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/quality-score.png?b=4.0)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=4.0)
 [![Coverage Status](https://coveralls.io/repos/github/EC-CUBE/ec-cube/badge.svg?branch=4.0)](https://coveralls.io/github/EC-CUBE/ec-cube?branch=4.0)
 
-[![Slack](http://img.shields.io/badge/slack-join%5fchat-brightgreen.svg?style=flat)](https://www.ec-cube.net/rd.php?aid=join-slack)
+[![Slack](https://img.shields.io/badge/slack-join%5fchat-brightgreen.svg?style=flat)](https://www.ec-cube.net/rd.php?aid=join-slack)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 
 + 本ドキュメントはEC-CUBEの開発者を主要な対象者としております。  
-+ パッケージ版は正式リリース後に[EC-CUBEオフィシャルサイト](http://www.ec-cube.net)で配布します。  
-+ カスタマイズやEC-CUBEの利用、仕様に関しては[開発コミュニティ](http://xoops.ec-cube.net)をご利用ください。  
++ パッケージ版は正式リリース後に[EC-CUBEオフィシャルサイト](https://www.ec-cube.net)で配布します。  
++ カスタマイズやEC-CUBEの利用、仕様に関しては[開発コミュニティ](https://xoops.ec-cube.net)をご利用ください。  
 + 本体開発にあたって不明点などあれば[Issue](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご利用下さい。
 + EC-CUBE 3.0系の保守については、3.0ブランチにて開発を行っております。
 + EC-CUBE 2.13系の保守については、[EC-CUBE/eccube-2_13](https://github.com/EC-CUBE/eccube-2_13/)にて開発を行っております。
@@ -21,11 +21,11 @@
 
 ### EC-CUBE 4.0のインストール方法
 
-開発ドキュメントの [インストール方法](http://doc4.ec-cube.net/quickstart_install) の手順に従ってインストールしてください。
+開発ドキュメントの [インストール方法](https://doc4.ec-cube.net/quickstart_install) の手順に従ってインストールしてください。
 
 ### CSS の編集・ビルド方法
 
-[Sass](http://sass-lang.com) を使用して記述されています。
+[Sass](https://sass-lang.com) を使用して記述されています。
 Sass のソースコードは `html/template/{admin,default}/assets/scss` にあります。
 前提として [https://nodejs.org/ja/] より、 Node.js をインストールしておいてください。
 
@@ -43,11 +43,11 @@ npm run build # Sass のビルド
 * PostgreSQL 9.2.1   
 * ブラウザー：Google Chrome  
 
-詳しくは開発ドキュメントの [システム要件](http://doc4.ec-cube.net/quickstart_requirement) をご確認ください。
+詳しくは開発ドキュメントの [システム要件](https://doc4.ec-cube.net/quickstart_requirement) をご確認ください。
 
 ## ドキュメント
 
-### [EC-CUBE 4.0 開発ドキュメント@doc4.ec-cube.net](http://doc4.ec-cube.net/)
+### [EC-CUBE 4.0 開発ドキュメント@doc4.ec-cube.net](https://doc4.ec-cube.net/)
 
 
 EC-CUBE 4.0 の仕様や手順、開発Tipsに関するドキュメントを掲載しています。  
