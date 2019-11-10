@@ -38,6 +38,7 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\OrderStateMachine;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
@@ -279,8 +280,13 @@ class EditController extends AbstractController
                             }
                             // ステートマシンでステータスは更新されるので, 古いステータスに戻す.
                             $TargetOrder->setOrderStatus($OldStatus);
-                            // FormTypeでステータスの遷移チェックは行っているのでapplyのみ実行.
-                            $this->orderStateMachine->apply($TargetOrder, $NewStatus);
+                            try {
+                                // FormTypeでステータスの遷移チェックは行っているのでapplyのみ実行.
+                                $this->orderStateMachine->apply($TargetOrder, $NewStatus);
+                            } catch (InvalidItemException $e) {
+                                $this->addError($e->getMessage(), 'admin');
+                                break;
+                            }
                         }
 
                         $this->entityManager->persist($TargetOrder);
