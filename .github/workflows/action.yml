@@ -314,9 +314,11 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
       run: php -S localhost:8000 &
 
-    ## $ {PWD}/repos does not exist so service cannot be started
+    ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
-      run: docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+      run: |
+        if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
+        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
 
     - name: Codeception
       env:
@@ -437,9 +439,11 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
       run: php -S localhost:8000 &
 
-    ## $ {PWD}/repos does not exist so service cannot be started
+    ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
-      run: docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+      run: |
+        if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
+        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
 
     - name: Run to Codeception
       env:
@@ -560,9 +564,11 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
       run: php -S localhost:8000 &
 
-    ## $ {PWD}/repos does not exist so service cannot be started
+    ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
-      run: docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+      run: |
+        if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
+        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
 
     - name: Run to Codeception
       env:
@@ -685,9 +691,11 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
       run: php -S localhost:8000 &
 
-    ## $ {PWD}/repos does not exist so service cannot be started
+    ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
-      run: docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+      run: |
+        if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
+        docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
 
     - name: Run to Codeception
       env:
