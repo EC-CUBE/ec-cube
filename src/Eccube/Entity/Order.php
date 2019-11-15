@@ -220,12 +220,19 @@ if (!class_exists('\Eccube\Entity\Order')) {
                     ->setProduct($ProductOrderItem->getProduct())
                     ->setProductName($ProductOrderItem->getProductName())
                     ->setProductCode($ProductOrderItem->getProductCode())
+                    ->setClassName1($ProductOrderItem->getClassName1())
+                    ->setClassName2($ProductOrderItem->getClassName2())
                     ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
                     ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
                     ->setPrice($ProductOrderItem->getPrice())
                     ->setTax($ProductOrderItem->getTax())
                     ->setTaxRate($ProductOrderItem->getTaxRate())
-                    ->setQuantity($ProductOrderItem->getQuantity());
+                    ->setQuantity($ProductOrderItem->getQuantity())
+                    ->setProductClass($ProductOrderItem->getProductClass())
+                    ->setRoundingType($ProductOrderItem->getRoundingType())
+                    ->setTaxType($ProductOrderItem->getTaxType())
+                    ->setTaxDisplayType($ProductOrderItem->getTaxDisplayType())
+                    ->setOrderItemType($ProductOrderItem->getOrderItemType());
                     $orderItemArray[$productClassId] = $OrderItem;
                 }
             }
