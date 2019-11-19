@@ -52,7 +52,7 @@ npm run build # Sass のビルド
 
 EC-CUBE 4.0 の仕様や手順、開発Tipsに関するドキュメントを掲載しています。  
 修正や追記、新規ドキュメントの作成をいただく場合、以下のレポジトリからPullRequestをお送りください。  
-[https://github.com/EC-CUBE/ec-cube.github.io](https://github.com/EC-CUBE/ec-cube.github.io)
+[https://github.com/EC-CUBE/doc4.ec-cube.net](https://github.com/EC-CUBE/doc4.ec-cube.net)
 
 ## 開発への参加
 
