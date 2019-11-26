@@ -96,4 +96,3 @@ class EccubeExtensionTest extends EccubeTestCase
         ];
     }
 }
-

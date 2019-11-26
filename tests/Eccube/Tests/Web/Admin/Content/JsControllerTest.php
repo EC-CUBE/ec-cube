@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -45,6 +46,7 @@ class JsControllerTest extends AbstractAdminWebTestCase
         $fs->dumpFile($this->dir.self::JS_FILE, $this->contents);
         parent::tearDown();
     }
+
     public function test_routing_AdminContentJs_index()
     {
         $this->client->request('GET', $this->generateUrl('admin_content_js'));
@@ -61,14 +63,13 @@ __JS_CONTENTS__;
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_js'),
-            ['form' =>
-             [
-                 'js' => $js
-             ]
+            ['form' => [
+                 'js' => $js,
+             ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
-        $form["form[js]"] = $js;
+        $form['form[js]'] = $js;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_js')));
         $contents = file_get_contents($this->dir.self::JS_FILE);
@@ -90,18 +91,16 @@ __JS_CONTENTS__;
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_js'),
-            ['form' =>
-             [
-                 'js' => $js
-             ]
+            ['form' => [
+                 'js' => $js,
+             ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
-        $form["form[js]"] = $js;
+        $form['form[js]'] = $js;
         $this->client->submit($form);
         $this->assertFalse($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_js')));
     }
-
 
     public function test_routing_AdminContentJs_deleted()
     {
@@ -117,14 +116,13 @@ __JS_CONTENTS__;
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_js'),
-            ['form' =>
-             [
-                 'js' => $js
-             ]
+            ['form' => [
+                 'js' => $js,
+             ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
-        $form["form[js]"] = $js;
+        $form['form[js]'] = $js;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_js')));
         $contents = file_get_contents($this->dir.self::JS_FILE);

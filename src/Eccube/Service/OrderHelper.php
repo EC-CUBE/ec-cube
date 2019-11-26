@@ -216,9 +216,9 @@ class OrderHelper
     /**
      * 購入処理中の受注を取得する.
      *
-     * @param null|string $preOrderId
+     * @param string|null $preOrderId
      *
-     * @return null|Order
+     * @return Order|null
      */
     public function getPurchaseProcessingOrder($preOrderId = null)
     {

@@ -228,6 +228,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
 
         /**
          * @var string|null
+         *
          * @deprecated 使用していないため、削除予定
          *
          * @ORM\Column(name="php_path", type="string", length=255, nullable=true)
@@ -1056,7 +1057,8 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         }
 
         /**
-         * @return null|string
+         * @return string|null
+         *
          * @deprecated 使用していないため、削除予定
          */
         public function getPhpPath()
@@ -1065,7 +1067,8 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         }
 
         /**
-         * @param null|string $php_path
+         * @param string|null $php_path
+         *
          * @deprecated 使用していないため、削除予定
          *
          * @return $this

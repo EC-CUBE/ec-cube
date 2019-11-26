@@ -757,6 +757,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param string|null $currentRoundingTypeId 現在の RoundingType ID
      * @param string|null $expected RoundingType ID の期待値
      * @param bool $isNew 商品を新規作成の場合 true
+     *
      * @see https://github.com/EC-CUBE/ec-cube/issues/2114
      *
      * @dataProvider dataEditRoundingTypeProvider
@@ -914,7 +915,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -943,7 +944,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -986,7 +987,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',

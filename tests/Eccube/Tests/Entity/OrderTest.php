@@ -195,7 +195,7 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableTotalByTaxRate()
     {
         $Order = $this->createTestOrder();
-        self::assertArraySubset([10 => 220, 8 => 216,], $Order->getTaxableTotalByTaxRate());
+        self::assertArraySubset([10 => 220, 8 => 216], $Order->getTaxableTotalByTaxRate());
     }
 
     public function testGetTaxableDiscountItems()

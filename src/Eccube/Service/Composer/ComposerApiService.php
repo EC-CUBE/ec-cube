@@ -77,7 +77,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @return string
      *
@@ -105,7 +105,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run remove command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @return string
      *
@@ -131,7 +131,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run update command
      *
      * @param boolean $dryRun
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -152,7 +152,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run install command
      *
      * @param boolean $dryRun
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -263,7 +263,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run composer command
      *
      * @param array $commands
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      * @param bool $init
      *
      * @return string

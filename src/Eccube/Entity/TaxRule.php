@@ -499,7 +499,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          */
         public function isProductTaxRule()
         {
-            return ($this->getProductClass() !== null || $this->getProduct() !== null);
+            return $this->getProductClass() !== null || $this->getProduct() !== null;
         }
     }
 }

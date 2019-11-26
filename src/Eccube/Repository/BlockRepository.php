@@ -61,7 +61,7 @@ class BlockRepository extends AbstractRepository
      *
      * @param  \Eccube\Entity\Master\DeviceType $DeviceType
      *
-     * @return null|\Symfony\Component\HttpFoundation\Request
+     * @return \Symfony\Component\HttpFoundation\Request|null
      */
     public function getList($DeviceType)
     {
@@ -82,7 +82,7 @@ class BlockRepository extends AbstractRepository
      *
      * @param  Ecube\Entity\Block[]  $Blocks
      *
-     * @return null|Ecube\Entity\Block[]
+     * @return Ecube\Entity\Block[]|null
      */
     public function getUnusedBlocks($Blocks)
     {

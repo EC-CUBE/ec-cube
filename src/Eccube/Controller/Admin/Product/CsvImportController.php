@@ -146,6 +146,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import")
      * @Template("@admin/Product/csv_product.twig")
+     *
      * @throws \Doctrine\ORM\NoResultException
      */
     public function csvProduct(Request $request, CacheUtil $cacheUtil)
@@ -291,11 +292,10 @@ class CsvImportController extends AbstractCsvImportController
                                     $message = trans('admin.common.csv_invalid_description_detail_upper_limit', [
                                         '%line%' => $line,
                                         '%name%' => $headerByKey['description_detail'],
-                                        '%max%' => $this->eccubeConfig['eccube_ltext_len'],]);
+                                        '%max%' => $this->eccubeConfig['eccube_ltext_len'], ]);
                                     $this->addErrors($message);
 
                                     return $this->renderWithError($form, $headers);
-
                                 } else {
                                     $Product->setDescriptionDetail(StringUtil::trimAll($row[$headerByKey['description_detail']]));
                                 }
@@ -866,7 +866,7 @@ class CsvImportController extends AbstractCsvImportController
     protected function createProductImage($row, Product $Product, $data, $headerByKey)
     {
         if (!isset($row[$headerByKey['product_image']])) {
-             return;
+            return;
         }
         if (StringUtil::isNotBlank($row[$headerByKey['product_image']])) {
             // 画像の削除

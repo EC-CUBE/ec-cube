@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -45,6 +46,7 @@ class CssControllerTest extends AbstractAdminWebTestCase
         $fs->dumpFile($this->dir.self::CSS_FILE, $this->contents);
         parent::tearDown();
     }
+
     public function test_routing_AdminContentCss_index()
     {
         $this->client->request('GET', $this->generateUrl('admin_content_css'));
@@ -61,14 +63,13 @@ __CSS_CONTENTS__;
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_css'),
-            ['form' =>
-             [
-                 'css' => $css
-             ]
+            ['form' => [
+                 'css' => $css,
+             ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
-        $form["form[css]"] = $css;
+        $form['form[css]'] = $css;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
         $contents = file_get_contents($this->dir.self::CSS_FILE);
@@ -90,18 +91,16 @@ __CSS_CONTENTS__;
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_css'),
-            ['form' =>
-             [
-                 'css' => $css
-             ]
+            ['form' => [
+                 'css' => $css,
+             ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
-        $form["form[css]"] = $css;
+        $form['form[css]'] = $css;
         $this->client->submit($form);
         $this->assertFalse($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
     }
-
 
     public function test_routing_AdminContentCss_deleted()
     {
@@ -117,14 +116,13 @@ __CSS_CONTENTS__;
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_css'),
-            ['form' =>
-             [
-                 'css' => $css
-             ]
+            ['form' => [
+                 'css' => $css,
+             ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
-        $form["form[css]"] = $css;
+        $form['form[css]'] = $css;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
         $contents = file_get_contents($this->dir.self::CSS_FILE);

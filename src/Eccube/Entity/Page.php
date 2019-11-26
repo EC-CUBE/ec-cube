@@ -506,7 +506,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * @param $layoutId
          *
-         * @return null|int
+         * @return int|null
          */
         public function getSortNo($layoutId)
         {

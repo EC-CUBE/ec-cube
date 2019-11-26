@@ -86,9 +86,9 @@ if (!class_exists('\Eccube\Entity\Order')) {
             $total = [];
 
             foreach ($this->getTaxableItems() as $Item) {
-                    $totalPrice = $Item->getTotalPrice();
-                    $taxRate = $Item->getTaxRate();
-                    $total[$taxRate] = isset($total[$taxRate])
+                $totalPrice = $Item->getTotalPrice();
+                $taxRate = $Item->getTaxRate();
+                $total[$taxRate] = isset($total[$taxRate])
                         ? $total[$taxRate] + $totalPrice
                         : $totalPrice;
             }
@@ -105,7 +105,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxableDiscountItems()
         {
-            return array_filter($this->getTaxableItems(), function(OrderItem $Item) {
+            return array_filter($this->getTaxableItems(), function (OrderItem $Item) {
                 return $Item->isDiscount();
             });
         }
@@ -129,7 +129,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxFreeDiscountItems()
         {
-            return array_filter($this->OrderItems->toArray(), function(OrderItem $Item) {
+            return array_filter($this->OrderItems->toArray(), function (OrderItem $Item) {
                 return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION);
             });
         }
@@ -1045,6 +1045,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * Get discount.
          *
          * @deprecated 4.0.3 から値引きは課税値引きと 非課税・不課税の値引きの2種に分かれる. 課税値引きについてはgetTaxableDiscountを利用してください.
+         *
          * @return string
          */
         public function getDiscount()
@@ -1345,7 +1346,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @return null|string
+         * @return string|null
          */
         public function getCompleteMessage()
         {
@@ -1353,7 +1354,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @param null|string $complete_message
+         * @param string|null $complete_message
          *
          * @return $this
          */
@@ -1365,7 +1366,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @param null|string $complete_message
+         * @param string|null $complete_message
          *
          * @return $this
          */
@@ -1377,7 +1378,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @return null|string
+         * @return string|null
          */
         public function getCompleteMailMessage()
         {
@@ -1385,7 +1386,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @param null|string $complete_mail_message
+         * @param string|null $complete_mail_message
          *
          * @return
          */
@@ -1397,7 +1398,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @param null|string $complete_mail_message
+         * @param string|null $complete_mail_message
          *
          * @return
          */
@@ -1760,7 +1761,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set orderStatus.
          *
-         * @param \Eccube\Entity\Master\OrderStatus|null|object $orderStatus
+         * @param \Eccube\Entity\Master\OrderStatus|object|null $orderStatus
          *
          * @return Order
          */

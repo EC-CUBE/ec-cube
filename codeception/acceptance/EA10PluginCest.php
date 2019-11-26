@@ -797,6 +797,7 @@ class Horizon_Local extends Local_Plugin
     {
         // アップデートで新たしいカラムが追加される
         $this->columns[] = 'dtb_dash.new_column';
+
         return parent::アップデート();
     }
 
@@ -821,6 +822,7 @@ class Horizon_Store extends Store_Plugin
     {
         // アップデートで新たしいカラムが追加される
         $this->columns[] = 'dtb_dash.new_column';
+
         return parent::アップデート();
     }
 

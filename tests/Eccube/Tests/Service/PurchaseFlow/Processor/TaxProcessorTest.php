@@ -30,7 +30,7 @@ class TaxProcessorTest extends EccubeTestCase
     /** @var TaxProcessor */
     private $processor;
 
-    /** @var Order  */
+    /** @var Order */
     private $Order;
 
     /** @var Product */
@@ -129,7 +129,6 @@ class TaxProcessorTest extends EccubeTestCase
         $this->taxRuleRepository->clearCache();
         $actual = $this->taxRuleRepository->getByRule($this->Product, $this->ProductClass);
         self::assertEquals($TaxRule, $actual);
-
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrderWithProductClasses($Customer, $this->Product->getProductClasses()->toArray());

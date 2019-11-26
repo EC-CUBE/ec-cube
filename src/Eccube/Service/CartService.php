@@ -424,7 +424,7 @@ class CartService
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPreOrderId()
     {

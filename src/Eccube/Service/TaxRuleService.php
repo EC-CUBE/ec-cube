@@ -40,10 +40,10 @@ class TaxRuleService
      * 設定情報に基づいて税金の金額を返す
      *
      * @param  int                                    $price        計算対象の金額
-     * @param  int|null|\Eccube\Entity\Product        $product      商品
-     * @param  int|null|\Eccube\Entity\ProductClass   $productClass 商品規格
-     * @param  int|null|\Eccube\Entity\Master\Pref    $pref         都道府県
-     * @param  int|null|\Eccube\Entity\Master\Country $country      国
+     * @param  int|\Eccube\Entity\Product|null        $product      商品
+     * @param  int|\Eccube\Entity\ProductClass|null   $productClass 商品規格
+     * @param  int|\Eccube\Entity\Master\Pref|null    $pref         都道府県
+     * @param  int|\Eccube\Entity\Master\Country|null $country      国
      *
      * @return double                                 税金付与した金額
      */
@@ -72,10 +72,10 @@ class TaxRuleService
      * calcIncTax
      *
      * @param  int                                    $price        計算対象の金額
-     * @param  int|null|\Eccube\Entity\Product        $product      商品
-     * @param  int|null|\Eccube\Entity\ProductClass   $productClass 商品規格
-     * @param  int|null|\Eccube\Entity\Master\Pref    $pref         都道府県
-     * @param  int|null|\Eccube\Entity\Master\Country $country      国
+     * @param  int|\Eccube\Entity\Product|null        $product      商品
+     * @param  int|\Eccube\Entity\ProductClass|null   $productClass 商品規格
+     * @param  int|\Eccube\Entity\Master\Pref|null    $pref         都道府県
+     * @param  int|\Eccube\Entity\Master\Country|null $country      国
      *
      * @return double
      */
