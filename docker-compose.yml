@@ -11,6 +11,8 @@ volumes:
     driver: local
   mailcatcher-data:
     driver: local
+  phpmyadmin-sessions:
+    driver: local
   
   ### ignore folder volume #####
   var:
@@ -28,8 +30,8 @@ services:
         # ビルド時点でDBサーバの起動や接続が出来ない、という場合等にエラーとなるため。
         SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD: "true"
     ports:
-      - 8080:80
-      - 4430:443
+      - "${APACHE_HOST_HTTP_PORT}:80"
+      - "${APACHE_HOST_HTTPS_PORT}:443"
     volumes:
       - ".:/var/www/html:cached"
       ### 同期対象からコストの重いフォルダを除外 #####################
@@ -40,13 +42,13 @@ services:
   
   ### Postgres ################################
   postgres:
-    image: postgres:10
+    image: postgres:${POSTGRES_VERSION}
     environment:
-      - POSTGRES_DB=eccubedb
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
-      - 15432:5432
+      - "${POSTGRES_HOST_PORT}:5432"
     volumes:
       - pg-database:/var/lib/postgresql/data
     networks: 
@@ -54,16 +56,15 @@ services:
   
   ### MySQL ##################################
   mysql:
-    image: mysql:5.7
+    image: mysql:${MYSQL_VERSION}
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: eccubedb
-      MYSQL_USER: dbuser
-      MYSQL_PASSWORD: secret
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${WORKSPACE_TIMEZONE}
     volumes:
       - mysql-database:/var/lib/mysql
     ports:
-      - 13306:3306
+      - ${MYSQL_HOST_PORT}:3306
     networks: 
       - backend
 
@@ -71,7 +72,36 @@ services:
   mailcatcher:
     image: schickling/mailcatcher
     ports:
-      - "1080:1080"
-      - "1025:1025"
+      - "${MAILCATCHER_HOST_HTTP_PORT}:1025"
+      - "${MAILCATCHER_HOST_SMTP_PORT}:1080"
     networks: 
       - backend
+
+
+  ### phpMyAdmin ##################################
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${PHPMYADMIN_HOST_HTTP_PORT}:80"
+    volumes:
+      - phpmyadmin-sessions:/sessions
+    networks:
+      - backend
+    depends_on:
+      - mysql
+
+  ### pgweb ##################################
+  pgweb:
+    image: donnex/pgweb
+    command: -s --bind=0.0.0.0 --listen=8080 --url postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DB}?sslmode=disable
+    ports:
+      - "${PGWEB_HOST_HTTP_PORT}:8080"
+    networks:
+      - backend
+    depends_on:
+      - postgres
