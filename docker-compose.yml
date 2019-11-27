@@ -72,8 +72,8 @@ services:
   mailcatcher:
     image: schickling/mailcatcher
     ports:
-      - "${MAILCATCHER_HOST_HTTP_PORT}:1025"
-      - "${MAILCATCHER_HOST_SMTP_PORT}:1080"
+      - "${MAILCATCHER_HOST_SMTP_PORT}:1025"
+      - "${MAILCATCHER_HOST_HTTP_PORT}:1080"
     networks: 
       - backend
 
