@@ -50,7 +50,6 @@ before_install: &php_setup |
   echo "date.timezone=Asia/Tokyo" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 eccube_setup: &eccube_setup |
-  echo "APP_ENV=codeception" > .env
   bin/console doctrine:database:create --env=dev
   bin/console doctrine:schema:create --env=dev
   bin/console eccube:fixtures:load --env=dev
@@ -61,6 +60,7 @@ package_api_setup: &package_api_setup |
 
 install:
   - &composer_install composer install --dev --no-interaction -o --apcu-autoloader
+  - echo "APP_ENV=test" > .env
   - *eccube_setup
 
 script:
@@ -104,6 +104,7 @@ jobs:
       - docker run -d -p 1080:1080 -p 1025:1025 --name mailcatcher schickling/mailcatcher
     install:
       - *composer_install
+      - echo "APP_ENV=codeception" > .env
       - *eccube_setup
     php: 7.3
     env: GROUP=admin01 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
