@@ -279,8 +279,13 @@ class EditController extends AbstractController
                             }
                             // ステートマシンでステータスは更新されるので, 古いステータスに戻す.
                             $TargetOrder->setOrderStatus($OldStatus);
-                            // FormTypeでステータスの遷移チェックは行っているのでapplyのみ実行.
-                            $this->orderStateMachine->apply($TargetOrder, $NewStatus);
+                            try {
+                                // FormTypeでステータスの遷移チェックは行っているのでapplyのみ実行.
+                                $this->orderStateMachine->apply($TargetOrder, $NewStatus);
+                            } catch (ShoppingException $e) {
+                                $this->addError($e->getMessage(), 'admin');
+                                break;
+                            }
                         }
 
                         $this->entityManager->persist($TargetOrder);
