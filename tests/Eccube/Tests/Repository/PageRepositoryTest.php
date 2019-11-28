@@ -28,7 +28,7 @@ class PageRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->pageRepo = $this->container->get(PageRepository::class);
+        $this->pageRepo = $this->entityManager->getRepository(\Eccube\Entity\Page::class);
         $this->userDataRealDir = $this->container->getParameter('eccube_theme_user_data_dir');
         $this->templateRealDir = $this->container->getParameter('eccube_theme_app_dir');
         $this->templateDefaultRealDir = $this->container->getParameter('eccube_theme_src_dir');

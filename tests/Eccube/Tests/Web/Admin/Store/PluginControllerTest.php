@@ -47,7 +47,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->expected = $form['php_path'];
-        $this->actual = $this->container->get(BaseInfoRepository::class)->get()->getPhpPath();
+        $this->actual = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get()->getPhpPath();
         $this->verify();
     }
 }

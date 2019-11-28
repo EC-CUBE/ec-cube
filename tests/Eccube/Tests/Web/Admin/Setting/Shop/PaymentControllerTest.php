@@ -38,7 +38,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->paymentRepository = $this->container->get(PaymentRepository::class);
+        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
         $this->imageDir = sys_get_temp_dir().'/'.sha1(mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);

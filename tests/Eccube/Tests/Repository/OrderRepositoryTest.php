@@ -37,7 +37,7 @@ class OrderRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->orderRepository = $this->container->get(OrderRepository::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
 
         $this->createProduct();
         $this->Customer = $this->createCustomer();

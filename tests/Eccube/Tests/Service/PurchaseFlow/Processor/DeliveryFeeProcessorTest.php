@@ -44,7 +44,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->BaseInfoRepository = $this->container->get(BaseInfoRepository::class);
+        $this->BaseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
     }

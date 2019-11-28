@@ -62,8 +62,8 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->templateRepository = $this->container->get(TemplateRepository::class);
-        $this->deviceTypeRepository = $this->container->get(DeviceTypeRepository::class);
+        $this->templateRepository = $this->entityManager->getRepository(\Eccube\Entity\Template::class);
+        $this->deviceTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\DeviceType::class);
 
         $this->dir = \tempnam(\sys_get_temp_dir(), 'TemplateControllerTest');
         $fs = new Filesystem();

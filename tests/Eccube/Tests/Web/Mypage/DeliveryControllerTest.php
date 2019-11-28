@@ -104,7 +104,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
         $client = $this->client;
 
-        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
 
@@ -120,7 +120,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
 
@@ -142,7 +142,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
         $id = $CustomerAddress->getId();
@@ -155,7 +155,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
 
-        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->find($id);
+        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->find($id);
         $this->assertNull($CustomerAddress);
 
         $this->expected = ['mypage.address.delete.complete'];

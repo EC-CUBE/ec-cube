@@ -84,10 +84,10 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->customerRepo = $this->container->get(CustomerRepository::class);
-        $this->customerAddressRepo = $this->container->get(CustomerAddressRepository::class);
-        $this->masterPrefRepo = $this->container->get(PrefRepository::class);
-        $this->masterSexRepo = $this->container->get(SexRepository::class);
+        $this->customerRepo = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
+        $this->customerAddressRepo = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class);
+        $this->masterPrefRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Pref::class);
+        $this->masterSexRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Sex::class);
         $this->deleteAllRows([
             'dtb_order_item',
             'dtb_shipping',

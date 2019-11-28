@@ -33,8 +33,8 @@ class IndexControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
         $this->Member = $this->createMember();
-        $this->orderStatusRepository = $this->container->get(OrderStatusRepository::class);
-        $this->orderRepository = $this->container->get(OrderRepository::class);
+        $this->orderStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
     }
 
     public function testRoutingAdminIndex()

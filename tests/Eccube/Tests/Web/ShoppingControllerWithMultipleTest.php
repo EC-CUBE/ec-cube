@@ -55,9 +55,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     public function setUp()
     {
         parent::setUp();
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
-        $this->orderRepository = $this->container->get(OrderRepository::class);
-        $this->orderStatusRepository = $this->container->get(OrderStatusRepository::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->orderStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
     }
 
     /**

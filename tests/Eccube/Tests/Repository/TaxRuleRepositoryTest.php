@@ -89,10 +89,10 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         parent::setUp();
 
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
-        $this->memberRepository = $this->container->get(MemberRepository::class);
-        $this->prefRepository = $this->container->get(PrefRepository::class);
-        $this->countryRepository = $this->container->get(CountryRepository::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
+        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
+        $this->prefRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Pref::class);
+        $this->countryRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Country::class);
 
         $this->BaseInfo->setOptionProductTaxRule(0);
         $this->Product = $this->createProduct('生活必需品');

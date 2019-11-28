@@ -416,7 +416,7 @@ class PointProcessorTest extends EccubeTestCase
         $OrderItem->setProductClass($ProductClass);
         $OrderItem->setPrice($price);
         $OrderItem->setQuantity($quantity);
-        $ProductType = $this->container->get(OrderItemTypeRepository::class)->find(OrderItemType::PRODUCT);
+        $ProductType = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderItemType::class)->find(OrderItemType::PRODUCT);
         $OrderItem->setOrderItemType($ProductType);
 
         return $OrderItem;

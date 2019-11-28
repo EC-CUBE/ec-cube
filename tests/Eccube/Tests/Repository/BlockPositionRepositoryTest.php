@@ -73,11 +73,11 @@ class BlockPositionRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->blockRepository = $this->container->get(BlockRepository::class);
-        $this->blockPositionRepository = $this->container->get(BlockPositionRepository::class);
-        $this->layoutRepository = $this->container->get(LayoutRepository::class);
+        $this->blockRepository = $this->entityManager->getRepository(\Eccube\Entity\Block::class);
+        $this->blockPositionRepository = $this->entityManager->getRepository(\Eccube\Entity\BlockPosition::class);
+        $this->layoutRepository = $this->entityManager->getRepository(\Eccube\Entity\Layout::class);
         $this->remove();
-        $this->DeviceType = $this->container->get(DeviceTypeRepository::class)
+        $this->DeviceType = $this->entityManager->getRepository(DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         $Layout = new Layout();

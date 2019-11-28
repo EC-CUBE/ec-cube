@@ -54,8 +54,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     {
         parent::setUp();
 
-        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
-        $this->categoryRepository = $this->container->get(CategoryRepository::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
+        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
     }
 
     public function scenario()

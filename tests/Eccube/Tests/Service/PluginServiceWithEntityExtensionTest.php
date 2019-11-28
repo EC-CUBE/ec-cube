@@ -58,7 +58,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $prop->setAccessible(true);
         $prop->setValue($this->service, $this->mockSchemaService);
 
-        $this->pluginRepository = $this->container->get(PluginRepository::class);
+        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
     }
 
     public function tearDown()

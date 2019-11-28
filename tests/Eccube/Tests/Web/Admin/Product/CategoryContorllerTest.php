@@ -31,7 +31,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->remove();
         $this->createCategories();
         $this->client->disableReboot();
-        $this->categoryRepository = $this->container->get(CategoryRepository::class);
+        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
     }
 
     public function createCategories()

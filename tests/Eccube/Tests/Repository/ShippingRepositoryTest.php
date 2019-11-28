@@ -90,9 +90,9 @@ class ShippingRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->memberRepository = $this->container->get(MemberRepository::class);
-        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
-        $this->shippingRepository = $this->container->get(ShippingRepository::class);
+        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
+        $this->shippingRepository = $this->entityManager->getRepository(\Eccube\Entity\Shipping::class);
 
         $faker = $this->getFaker();
         $this->Member = $this->memberRepository->find(2);

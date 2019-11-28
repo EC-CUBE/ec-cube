@@ -58,10 +58,10 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         parent::setUp();
         $this->createProduct();
 
-        $this->orderStatusRepo = $this->container->get(OrderStatusRepository::class);
-        $this->paymentRepo = $this->container->get(PaymentRepository::class);
-        $this->orderRepo = $this->container->get(OrderRepository::class);
-        $this->sexRepo = $this->container->get(SexRepository::class);
+        $this->orderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
+        $this->paymentRepo = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
+        $this->orderRepo = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->sexRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Sex::class);
         $this->Customer = $this->createCustomer();
         $this->entityManager->persist($this->Customer);
         $this->entityManager->flush();

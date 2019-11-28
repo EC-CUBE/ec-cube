@@ -34,7 +34,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->shippingRepository = $this->container->get(ShippingRepository::class);
+        $this->shippingRepository = $this->entityManager->getRepository(\Eccube\Entity\Shipping::class);
     }
 
     public function testIndex()

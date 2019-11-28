@@ -66,7 +66,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $f = new Filesystem();
         $f->remove($files);
 
-        $this->pluginRepository = $this->container->get(PluginRepository::class);
+        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
         $this->pluginService = $this->container->get(PluginService::class);
         $this->schemaService = $this->container->get(SchemaService::class);
     }

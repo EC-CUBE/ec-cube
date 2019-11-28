@@ -42,9 +42,9 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->orderStatusRepo = $this->container->get(OrderStatusRepository::class);
-        $this->orderRepo = $this->container->get(OrderRepository::class);
-        $this->orderPdfRepository = $this->container->get(OrderPdfRepository::class);
+        $this->orderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
+        $this->orderRepo = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->orderPdfRepository = $this->entityManager->getRepository(\Eccube\Entity\OrderPdf::class);
     }
 
     /**
