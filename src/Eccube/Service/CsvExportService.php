@@ -317,16 +317,13 @@ class CsvExportService
 
         // one to one の場合は, dtb_csv.reference_field_name, 合致する結果を取得する.
         if ($data instanceof \Eccube\Entity\AbstractEntity) {
-            if (EntityUtil::isNotEmpty($data)) {
-                return $data->offsetGet($Csv->getReferenceFieldName());
-            }
+
+            return $data->offsetGet($Csv->getReferenceFieldName());
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             // one to manyの場合は, カンマ区切りに変換する.
             $array = [];
             foreach ($data as $elem) {
-                if (EntityUtil::isNotEmpty($elem)) {
-                    $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
-                }
+                $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
             }
 
             return implode($this->eccubeConfig['eccube_csv_export_multidata_separator'], $array);
