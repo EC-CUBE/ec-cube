@@ -113,7 +113,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
                 ['id' => $this->Customer->getId()]
             )
         ));
-        $EditedCustomer = $this->container->get(CustomerRepository::class)->find($this->Customer->getId());
+        $EditedCustomer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->find($this->Customer->getId());
 
         $this->expected = $form['email'];
         $this->actual = $EditedCustomer->getEmail();
@@ -145,7 +145,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             ['admin_customer' => $form]
         );
 
-        $NewCustomer = $this->container->get(CustomerRepository::class)->findOneBy(['email' => $form['email']]);
+        $NewCustomer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->findOneBy(['email' => $form['email']]);
         $this->assertNotNull($NewCustomer);
         $this->assertTrue($form['email'] == $NewCustomer->getEmail());
     }
@@ -159,7 +159,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         //add Order pendding status for this customer
         $Order = $this->createOrder($this->Customer);
-        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::PAID);
+        $OrderStatus = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class)->find(OrderStatus::PAID);
         $Order->setOrderStatus($OrderStatus);
         $this->Customer->addOrder($Order);
         $this->entityManager->persist($this->Customer);
@@ -180,7 +180,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         //add Order pending status for this customer
         $Order = $this->createOrder($this->Customer);
-        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::PROCESSING);
+        $OrderStatus = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class)->find(OrderStatus::PROCESSING);
         $Order->setOrderStatus($OrderStatus);
         $this->Customer->addOrder($Order);
         $this->entityManager->persist($Order);
@@ -212,7 +212,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             ['admin_customer' => $form]
         );
 
-        $EditedCustomer = $this->container->get(CustomerRepository::class)->find($this->Customer->getId());
+        $EditedCustomer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->find($this->Customer->getId());
 
         $this->assertRegExp('/@dummy.dummy/', $EditedCustomer->getEmail());
     }
@@ -237,7 +237,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
                 ['id' => $this->Customer->getId()]
             )
         ));
-        $EditedCustomer = $this->container->get(CustomerRepository::class)->find($this->Customer->getId());
+        $EditedCustomer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->find($this->Customer->getId());
 
         $this->expected = $form['email'];
         $this->actual = $EditedCustomer->getEmail();

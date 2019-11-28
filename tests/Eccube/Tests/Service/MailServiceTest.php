@@ -476,7 +476,7 @@ class MailServiceTest extends AbstractServiceTestCase
         self::assertEquals([$Order->getEmail() => 0], $message->getTo(), '受注者にメールが送られているはず');
 
         /** @var MailHistoryRepository $mailHistoryRepository */
-        $mailHistoryRepository = $this->container->get(MailHistoryRepository::class);
+        $mailHistoryRepository = $this->entityManager->getRepository(\Eccube\Entity\MailHistory::class);
         $histories = $mailHistoryRepository->findBy(['Order' => $Order]);
         self::assertEquals(1, count($histories), 'メール履歴が作成されているはず');
 

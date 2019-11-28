@@ -46,13 +46,13 @@ class OrderTest extends EccubeTestCase
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
-        $TaxRule = $this->container->get(TaxRuleRepository::class)->getByRule();
+        $TaxRule = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class)->getByRule();
         $this->rate = $TaxRule->getTaxRate();
     }
 
     public function testConstructor()
     {
-        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::PROCESSING);
+        $OrderStatus = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class)->find(OrderStatus::PROCESSING);
         $Order = new Order($OrderStatus);
 
         $this->expected = 0;
@@ -113,7 +113,7 @@ class OrderTest extends EccubeTestCase
 
     public function testGetSaleTypes()
     {
-        $this->expected = [$this->container->get(SaleTypeRepository::class)->find(1)];
+        $this->expected = [$this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class)->find(1)];
         $this->actual = $this->Order->getSaleTypes();
         $this->verify();
     }

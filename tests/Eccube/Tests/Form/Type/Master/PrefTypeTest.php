@@ -28,7 +28,7 @@ class PrefTypeTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->prefRepo = $this->container->get(PrefRepository::class);
+        $this->prefRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Pref::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

@@ -42,7 +42,7 @@ class DbalExecutorTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->jobRepository = $this->container->get(JobRepository::class);
+        $this->jobRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Job::class);
 
         $Jobs = $this->jobRepository->findAll();
         foreach ($Jobs as $Job) {

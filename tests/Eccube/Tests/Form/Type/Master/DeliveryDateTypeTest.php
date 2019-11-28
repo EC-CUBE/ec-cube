@@ -28,7 +28,7 @@ class DeliveryDurationTypeTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->deliveryDurationRepo = $this->container->get(DeliveryDurationRepository::class);
+        $this->deliveryDurationRepo = $this->entityManager->getRepository(\Eccube\Entity\DeliveryDuration::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

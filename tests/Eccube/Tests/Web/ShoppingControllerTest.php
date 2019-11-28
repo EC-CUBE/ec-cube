@@ -43,8 +43,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
-        $this->paymentRepository = $this->container->get(PaymentRepository::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
     }
 
     public function testRoutingShoppingLogin()
@@ -108,13 +108,13 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 生成された受注のチェック
-        $Order = $this->container->get(OrderRepository::class)->findOneBy(
+        $Order = $this->entityManager->getRepository(\Eccube\Entity\Order::class)->findOneBy(
             [
                 'Customer' => $Customer,
             ]
         );
 
-        $OrderNew = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
+        $OrderNew = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class)->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
         $this->actual = $Order->getOrderStatus();
         $this->verify();
@@ -552,13 +552,13 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 生成された受注のチェック
-        $Order = $this->container->get(OrderRepository::class)->findOneBy(
+        $Order = $this->entityManager->getRepository(\Eccube\Entity\Order::class)->findOneBy(
             [
                 'Customer' => $Customer,
             ]
         );
 
-        $OrderNew = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
+        $OrderNew = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class)->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
         $this->actual = $Order->getOrderStatus();
         $this->verify();
@@ -588,7 +588,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $price = 27777;
         $pointUse = 27777;
         /** @var ProductClass $ProductClass */
-        $ProductClass = $this->container->get(ProductClassRepository::class)->find(1);
+        $ProductClass = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class)->find(1);
         $ProductClass->setPrice02($price);
         $this->entityManager->flush($ProductClass);
 

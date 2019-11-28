@@ -28,7 +28,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->saleTypeRepo = $this->container->get(SaleTypeRepository::class);
+        $this->saleTypeRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

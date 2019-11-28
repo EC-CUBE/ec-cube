@@ -39,8 +39,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->productRepo = $this->container->get(ProductRepository::class);
-        $this->categoryRepo = $this->container->get(CategoryRepository::class);
+        $this->productRepo = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $this->categoryRepo = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
         $this->filepath = __DIR__.'/products.csv';
         copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
     }

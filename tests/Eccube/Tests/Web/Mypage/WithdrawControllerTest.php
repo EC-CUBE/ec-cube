@@ -88,7 +88,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         /** @var \Swift_Message $Message */
         $Message = $Messages[0];
 
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $this->expected = '['.$BaseInfo->getShopName().'] 退会手続きのご完了';
         $this->actual = $Message->getSubject();
         $this->verify();

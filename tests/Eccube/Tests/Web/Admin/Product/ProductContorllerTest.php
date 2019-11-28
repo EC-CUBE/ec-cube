@@ -71,11 +71,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->productRepository = $this->container->get(ProductRepository::class);
+        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
         $this->baseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
-        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
-        $this->productTagRepository = $this->container->get(ProductTagRepository::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
+        $this->productTagRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductTag::class);
 
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {

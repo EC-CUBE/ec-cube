@@ -35,7 +35,7 @@ class CategoryRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->categoryRepository = $this->container->get(CategoryRepository::class);
+        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
         $this->remove();
         $this->createCategories();
     }

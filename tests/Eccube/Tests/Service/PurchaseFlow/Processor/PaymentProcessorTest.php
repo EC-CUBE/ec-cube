@@ -106,7 +106,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $this->ProductClass3 = $this->Product->getProductClasses()[2];
         $this->ProductClass3->setSaleType($SaleType);
 
-        $this->validator = new PaymentValidator($this->container->get(DeliveryRepository::class));
+        $this->validator = new PaymentValidator($this->entityManager->getRepository(\Eccube\Entity\Delivery::class));
     }
 
     public function testInstance()

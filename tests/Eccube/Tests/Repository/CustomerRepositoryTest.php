@@ -57,8 +57,8 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->email = 'customer@example.com';
         $this->Customer = $this->createCustomer($this->email);
 
-        $this->customerRepo = $this->container->get(CustomerRepository::class);
-        $this->masterOrderStatusRepo = $this->container->get(OrderStatusRepository::class);
+        $this->customerRepo = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
+        $this->masterOrderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
     }
 
     public function testNewCustomer()
