@@ -48,7 +48,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
     {
         parent::setUp();
 
-        $this->csvExportService = $this->container->get(CsvExportService::class);
+        $this->csvExportService = self::$container->get(CsvExportService::class);
         $this->csvRepository = $this->entityManager->getRepository(\Eccube\Entity\Csv::class);
         $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
 

@@ -62,7 +62,7 @@ class PaginationTest extends EccubeTestCase
         parent::setUp();
 
         $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
-        $this->paginator = $this->container->get(PaginatorInterface::class);
+        $this->paginator = self::$container->get(PaginatorInterface::class);
         $this->tagRepository = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);
         $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
 

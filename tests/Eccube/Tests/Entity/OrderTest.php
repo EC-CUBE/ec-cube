@@ -122,7 +122,7 @@ class OrderTest extends EccubeTestCase
     {
         $faker = $this->getFaker();
         /** @var Order $Order */
-        $Order = $this->container->get(Generator::class)->createOrder(
+        $Order = self::$container->get(Generator::class)->createOrder(
             $this->Customer,
             [],
             null,

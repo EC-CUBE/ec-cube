@@ -40,7 +40,7 @@ class EntityProxyServiceTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->entityProxyService = $this->container->get(EntityProxyService::class);
+        $this->entityProxyService = self::$container->get(EntityProxyService::class);
 
         $this->tempOutputDir = tempnam(sys_get_temp_dir(), 'ProxyGeneratorTest');
         unlink($this->tempOutputDir);

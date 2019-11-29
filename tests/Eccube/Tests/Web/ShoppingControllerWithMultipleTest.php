@@ -978,7 +978,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ],
         ];
 
-        $cartService = $this->container->get(CartService::class);
+        $cartService = self::$container->get(CartService::class);
         $cartService->clear();
 
         $this->client->request(

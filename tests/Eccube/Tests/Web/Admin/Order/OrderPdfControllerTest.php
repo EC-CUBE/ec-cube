@@ -390,7 +390,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertCount(1, $OrderPdfs, '1件保存されているはず');
 
         $OrderPdf = current($OrderPdfs);
-        $token = $this->container->get('security.token_storage')->getToken();
+        $token = self::$container->get('security.token_storage')->getToken();
         $adminTest = $token->getUser();
         $this->assertEquals($adminTest->getId(), $OrderPdf->getMemberId(), '管理ユーザーのIDと一致するはず');
 

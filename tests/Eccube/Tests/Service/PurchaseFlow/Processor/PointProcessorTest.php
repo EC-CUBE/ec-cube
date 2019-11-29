@@ -42,8 +42,8 @@ class PointProcessorTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->processor = $this->container->get(PointProcessor::class);
-        $this->addPointProcessor = $this->container->get(AddPointProcessor::class);
+        $this->processor = self::$container->get(PointProcessor::class);
+        $this->addPointProcessor = self::$container->get(AddPointProcessor::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 

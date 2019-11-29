@@ -38,7 +38,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
             'line_max' => '50',
         ];
 
-        $logDir = $this->container->getParameter('kernel.logs_dir');
+        $logDir = self::$container->getParameter('kernel.logs_dir');
 
         $this->logTest = $logDir.'/'.$this->formData['files'];
 

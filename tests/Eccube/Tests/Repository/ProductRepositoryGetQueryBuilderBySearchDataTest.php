@@ -71,7 +71,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
         $this->productListOrderByRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductListOrderBy::class);
-        $this->paginator = $this->container->get('knp_paginator');
+        $this->paginator = self::$container->get('knp_paginator');
 
         $this->ProductListMax = new ProductListMax();
         $this->ProductListOrderBy = new ProductListOrderBy();

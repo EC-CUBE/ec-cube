@@ -59,11 +59,11 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $this->container->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
+        self::$container->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
         $this->client->request('GET', $this->generateUrl('shopping_complete'));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertNull($this->container->get('session')->get('eccube.front.shopping.order.id'));
+        $this->assertNull(self::$container->get('session')->get('eccube.front.shopping.order.id'));
     }
 
     public function testShoppingError()
@@ -500,7 +500,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
         $SaleTypeNormal = $this->entityManager->find(SaleType::class, SaleType::SALE_TYPE_NORMAL);
-        $Delivery = $this->container->get(Generator::class)->createDelivery();
+        $Delivery = self::$container->get(Generator::class)->createDelivery();
         $Delivery->setSaleType($SaleTypeNormal);
         $this->entityManager->flush($Delivery);
         $Payments = $this->paymentRepository->findAll();
@@ -592,12 +592,12 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $ProductClass->setPrice02($price);
         $this->entityManager->flush($ProductClass);
 
-        $Delivery = $this->container->get(Generator::class)->createDelivery();
+        $Delivery = self::$container->get(Generator::class)->createDelivery();
         $Delivery->setSaleType($ProductClass->getSaleType());
         $this->entityManager->flush($Delivery);
 
-        $COD1 = $this->container->get(Generator::class)->createPayment($Delivery, 'COD1', 0, 0, 30000);
-        $COD2 = $this->container->get(Generator::class)->createPayment($Delivery, 'COD2', 0, 30001, 300000);
+        $COD1 = self::$container->get(Generator::class)->createPayment($Delivery, 'COD1', 0, 0, 30000);
+        $COD2 = self::$container->get(Generator::class)->createPayment($Delivery, 'COD2', 0, 30001, 300000);
 
         // カート画面
         $this->scenarioCartIn($Customer, 1);

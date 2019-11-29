@@ -61,14 +61,14 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             $this->markTestSkipped('does not support of '.$platform);
         }
         $files = Finder::create()
-            ->in($this->container->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->in(self::$container->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);
 
         $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
-        $this->pluginService = $this->container->get(PluginService::class);
-        $this->schemaService = $this->container->get(SchemaService::class);
+        $this->pluginService = self::$container->get(PluginService::class);
+        $this->schemaService = self::$container->get(SchemaService::class);
     }
 
     public function tearDown()

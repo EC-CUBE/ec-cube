@@ -24,7 +24,7 @@ class PaymentChargePreprocessorTest extends EccubeTestCase
 {
     public function testProcess()
     {
-        $processor = $this->container->get(PaymentChargePreprocessor::class);
+        $processor = self::$container->get(PaymentChargePreprocessor::class);
         $Order = $this->createOrder($this->createCustomer());
         /*
          * @var OrderItem
@@ -43,7 +43,7 @@ class PaymentChargePreprocessorTest extends EccubeTestCase
      */
     public function testProcessWithPaymentCharge()
     {
-        $processor = $this->container->get(PaymentChargePreProcessor::class);
+        $processor = self::$container->get(PaymentChargePreProcessor::class);
         $Order = $this->createOrder($this->createCustomer());
         /*
          * @var OrderItem

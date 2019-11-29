@@ -114,7 +114,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
         // 後方互換のため最初の1つのみ渡す
-        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
+        $Order = self::$container->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
             0, 0, OrderStatus::NEW);
         $this->loginTo($this->Customer);
         $client = $this->client;
@@ -131,7 +131,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
         // 後方互換のため最初の1つのみ渡す
-        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
+        $Order = self::$container->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
             0, 0, OrderStatus::PROCESSING);
         $this->loginTo($this->Customer);
 

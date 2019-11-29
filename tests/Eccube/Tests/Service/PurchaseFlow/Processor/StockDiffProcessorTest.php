@@ -44,7 +44,7 @@ class StockDiffProcessorTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->processor = $this->container->get(StockDiffProcessor::class);
+        $this->processor = self::$container->get(StockDiffProcessor::class);
         $this->OrderStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
         $this->OrderItemTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderItemType::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
