@@ -180,3 +180,9 @@ services:
     Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
         arguments:
             - '@native_file_session_handler'
+
+    SunCat\MobileDetectBundle\DeviceDetector\MobileDetector:
+        tags:
+          - { name: mobile_detect.mobile_detector.default }
+          - { name: mobile_detect.mobile_detector }
+        public: true

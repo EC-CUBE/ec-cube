@@ -24,7 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -37,7 +37,7 @@ class ShippingMultipleItemType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @var Session
+     * @var SessionInterface
      */
     protected $session;
 
@@ -65,13 +65,13 @@ class ShippingMultipleItemType extends AbstractType
      * ShippingMultipleItemType constructor.
      *
      * @param EccubeConfig $eccubeConfig
-     * @param Session $session
+     * @param SessionInterface $session
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
-        Session $session,
+        SessionInterface $session,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         PrefRepository $prefRepository,
