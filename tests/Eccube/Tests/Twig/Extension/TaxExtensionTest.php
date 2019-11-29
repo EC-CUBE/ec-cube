@@ -32,7 +32,7 @@ class TaxExtensionTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->taxExtension = $this->container->get(TaxExtension::class);
+        $this->taxExtension = self::$container->get(TaxExtension::class);
         $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
     }
 

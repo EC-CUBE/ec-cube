@@ -40,7 +40,7 @@ class LoginControllerTest extends AbstractWebTestCase
             ]
         );
 
-        $this->assertNotNull($this->container->get('security.token_storage')->getToken(), 'ログインしているかどうか');
+        $this->assertNotNull(self::$container->get('security.token_storage')->getToken(), 'ログインしているかどうか');
     }
 
     public function testRoutingAdminLogin_ログインしていない場合は401エラーがかえる()

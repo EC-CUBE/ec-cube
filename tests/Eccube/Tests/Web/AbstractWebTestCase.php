@@ -64,7 +64,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
         }
         $token = new UsernamePasswordToken($User, null, $firewall, $role);
 
-        $session = $this->container->get('session');
+        $session = self::$container->get('session');
 
         $session->set('_security_'.$firewall, serialize($token));
         $session->save();

@@ -40,7 +40,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
                 'csrf_protection' => false,
             ])
             ->getForm();
-        $this->container->get('request_stack')->push(new Request());
+        self::$container->get('request_stack')->push(new Request());
     }
 
     public function testValidData()

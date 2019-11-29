@@ -63,11 +63,11 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->mailService = $this->container->get(MailService::class);
+        $this->mailService = self::$container->get(MailService::class);
 
         $request = Request::createFromGlobals();
-        $this->container->get('request_stack')->push($request);
-        $twig = $this->container->get('twig');
+        self::$container->get('request_stack')->push($request);
+        $twig = self::$container->get('twig');
         $twig->addGlobal('BaseInfo', $this->BaseInfo);
     }
 
