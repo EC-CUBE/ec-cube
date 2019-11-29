@@ -171,3 +171,9 @@ services:
         # Symfony\Bridge\Twig\Extension\RoutingExtensionの後に登録するため,
         # autoconfigureはfalseにし, CompilerPassで追加する.
         autoconfigure: false
+
+    SunCat\MobileDetectBundle\DeviceDetector\MobileDetector:
+        tags:
+          - { name: mobile_detect.mobile_detector.default }
+          - { name: mobile_detect.mobile_detector }
+        public: true

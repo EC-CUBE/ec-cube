@@ -27,8 +27,8 @@ class TemplateListenerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $twig = new Reference('Eccube\Twig\Environment');
-        $df = $container->getDefinition('sensio_framework_extra.view.listener');
-        $df->replaceArgument(1, $twig);
+        // $twig = new Reference('Eccube\Twig\Environment');
+        // $df = $container->getDefinition('sensio_framework_extra.view.listener');
+        // $df->replaceArgument(1, $twig);
     }
 }
