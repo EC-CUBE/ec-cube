@@ -26,32 +26,33 @@ use Twig\Loader\ArrayLoader;
 
 class TwigExtensionPassTest extends TestCase
 {
-    protected $contailer;
+    /** @var ContainerBuilder */
+    protected $containerBuilder;
 
     public function setUp()
     {
-        self::$container = new ContainerBuilder();
+        $this->containerBuilder = new ContainerBuilder();
 
-        self::$container->register(RouteCollection::class);
-        self::$container->register(RequestContext::class);
-        self::$container->register(UrlGeneratorInterface::class, UrlGenerator::class)
+        $this->containerBuilder->register(RouteCollection::class);
+        $this->containerBuilder->register(RequestContext::class);
+        $this->containerBuilder->register(UrlGeneratorInterface::class, UrlGenerator::class)
             ->setAutowired(true);
-        self::$container->register(IgnoreRoutingNotFoundExtension::class)
+        $this->containerBuilder->register(IgnoreRoutingNotFoundExtension::class)
             ->setAutowired(true);
-        self::$container->register(\Twig_LoaderInterface::class, ArrayLoader::class);
-        self::$container->register('twig', Environment::class)
+        $this->containerBuilder->register(\Twig_LoaderInterface::class, ArrayLoader::class);
+        $this->containerBuilder->register('twig', Environment::class)
             ->setPublic(true)
             ->setAutowired(true);
     }
 
     public function testProcess()
     {
-        self::$container->setParameter('kernel.debug', false);
-        self::$container->addCompilerPass(new TwigExtensionPass());
-        self::$container->compile();
+        $this->containerBuilder->setParameter('kernel.debug', false);
+        $this->containerBuilder->addCompilerPass(new TwigExtensionPass());
+        $this->containerBuilder->compile();
 
         /** @var Environment $twig */
-        $twig = self::$container->get('twig');
+        $twig = $this->containerBuilder->get('twig');
         self::assertTrue($twig->hasExtension(IgnoreRoutingNotFoundExtension::class));
         self::assertInstanceOf(
             IgnoreRoutingNotFoundExtension::class,
