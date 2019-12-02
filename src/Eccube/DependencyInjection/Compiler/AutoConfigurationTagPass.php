@@ -50,6 +50,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         }
 
         $definition->addTag('doctrine.event_subscriber');
+        $definition->setPublic(true);
     }
 
     protected function configureFormTypeExtensionTag(Definition $definition)
@@ -67,5 +68,6 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         $type = $instance->getExtendedType();
 
         $definition->addTag('form.type_extension', ['extended_type' => $type]);
+        $definition->setPublic(true);
     }
 }
