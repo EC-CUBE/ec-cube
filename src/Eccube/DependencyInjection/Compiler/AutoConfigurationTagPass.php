@@ -35,7 +35,8 @@ class AutoConfigurationTagPass implements CompilerPassInterface
     {
         foreach ($container->getDefinitions() as $definition) {
             $this->configureDoctrineEventSubscriberTag($definition);
-            $this->configureFormTypeExtensionTag($definition);
+            // FIXME form.type_extension にアクセスできず動作しない
+            // $this->configureFormTypeExtensionTag($definition);
         }
     }
 
@@ -45,12 +46,12 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         if (!is_subclass_of($class, EventSubscriber::class)) {
             return;
         }
+
         if ($definition->hasTag('doctrine.event_subscriber')) {
             return;
         }
 
         $definition->addTag('doctrine.event_subscriber');
-        $definition->setPublic(true);
     }
 
     protected function configureFormTypeExtensionTag(Definition $definition)
@@ -59,15 +60,17 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         if (!is_subclass_of($class, AbstractTypeExtension::class)) {
             return;
         }
+
         if ($definition->hasTag('form.type_extension')) {
             return;
         }
 
         $ref = new \ReflectionClass($class);
-        $instance = $ref->newInstanceWithoutConstructor();
-        $type = $instance->getExtendedType();
+        $method = $ref->getMethod('getExtendedTypes');
+        $types = $method->invoke(null);
+        // $instance = $ref->newInstanceWithoutConstructor();
+        // $type = $instance->getExtendedType();
 
-        $definition->addTag('form.type_extension', ['extended_type' => $type]);
-        $definition->setPublic(true);
+        $definition->addTag('form.type_extension', ['extended_types' => $types]);
     }
 }
