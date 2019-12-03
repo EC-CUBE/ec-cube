@@ -28,7 +28,7 @@ use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -122,11 +122,11 @@ class OwnerStoreController extends AbstractController
      *
      * @param Request     $request
      * @param int $page_no
-     * @param Paginator $paginator
+     * @param PaginatorInterface $paginator
      *
      * @return array
      */
-    public function search(Request $request, $page_no = null, Paginator $paginator)
+    public function search(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
         if (empty($this->BaseInfo->getAuthenticationKey())) {
             $this->addWarning('admin.store.plugin.search.not_auth', 'admin');
