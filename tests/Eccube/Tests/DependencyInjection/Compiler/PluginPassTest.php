@@ -21,45 +21,45 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class PluginPassTest extends TestCase
 {
     /**
-     * @var ContainerInterface
+     * @var ContainerBuilder
      */
-    private $container;
+    private $containerBuilder;
 
     public function setUp()
     {
-        self::$container = new ContainerBuilder();
-        self::$container->register(\Plugin\Sample\TestClass::class)
+        $this->containerBuilder = new ContainerBuilder();
+        $this->containerBuilder->register(\Plugin\Sample\TestClass::class)
             ->setPublic(true)
             ->addTag('test_tag');
 
-        self::$container->register(\Plugin\SamplePayment\TestClass::class)
+        $this->containerBuilder->register(\Plugin\SamplePayment\TestClass::class)
             ->setPublic(true)
             ->addTag('test_tag');
     }
 
     public function testAllEnabled()
     {
-        self::$container->setParameter('eccube.plugins.disabled', []);
-        self::$container->addCompilerPass(new PluginPass());
-        self::$container->compile();
+        $this->containerBuilder->setParameter('eccube.plugins.disabled', []);
+        $this->containerBuilder->addCompilerPass(new PluginPass());
+        $this->containerBuilder->compile();
 
-        $def = self::$container->getDefinition(\Plugin\Sample\TestClass::class);
+        $def = $this->containerBuilder->getDefinition(\Plugin\Sample\TestClass::class);
         self::assertTrue($def->hasTag('test_tag'));
 
-        $def = self::$container->getDefinition(\Plugin\SamplePayment\TestClass::class);
+        $def = $this->containerBuilder->getDefinition(\Plugin\SamplePayment\TestClass::class);
         self::assertTrue($def->hasTag('test_tag'));
     }
 
     public function testSampleDisabled()
     {
-        self::$container->setParameter('eccube.plugins.disabled', ['Sample']);
-        self::$container->addCompilerPass(new PluginPass());
-        self::$container->compile();
+        $this->containerBuilder->setParameter('eccube.plugins.disabled', ['Sample']);
+        $this->containerBuilder->addCompilerPass(new PluginPass());
+        $this->containerBuilder->compile();
 
-        $def = self::$container->getDefinition(\Plugin\Sample\TestClass::class);
+        $def = $this->containerBuilder->getDefinition(\Plugin\Sample\TestClass::class);
 
         self::assertFalse($def->hasTag('test_tag'), 'Sampleはタグが外れる');
-        $def = self::$container->getDefinition(\Plugin\SamplePayment\TestClass::class);
+        $def = $this->containerBuilder->getDefinition(\Plugin\SamplePayment\TestClass::class);
         self::assertTrue($def->hasTag('test_tag'), 'SamplePaymentは残っているはず');
     }
 }
