@@ -25,7 +25,6 @@ use Symfony\Component\Form\AbstractTypeExtension;
  * 以下のタグは自動設定が行われないため, 自動設定対象になるように処理する
  *
  * - doctrine.event_subscriber
- * - form.type_extension
  *
  * PluginPassで無効なプラグインのタグは解除されるため, PluginPassより先行して実行する必要がある
  */
@@ -35,8 +34,6 @@ class AutoConfigurationTagPass implements CompilerPassInterface
     {
         foreach ($container->getDefinitions() as $definition) {
             $this->configureDoctrineEventSubscriberTag($definition);
-            // FIXME form.type_extension にアクセスできず動作しない
-            // $this->configureFormTypeExtensionTag($definition);
         }
     }
 
@@ -52,25 +49,5 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         }
 
         $definition->addTag('doctrine.event_subscriber');
-    }
-
-    protected function configureFormTypeExtensionTag(Definition $definition)
-    {
-        $class = $definition->getClass();
-        if (!is_subclass_of($class, AbstractTypeExtension::class)) {
-            return;
-        }
-
-        if ($definition->hasTag('form.type_extension')) {
-            return;
-        }
-
-        $ref = new \ReflectionClass($class);
-        $method = $ref->getMethod('getExtendedTypes');
-        $types = $method->invoke(null);
-        // $instance = $ref->newInstanceWithoutConstructor();
-        // $type = $instance->getExtendedType();
-
-        $definition->addTag('form.type_extension', ['extended_types' => $types]);
     }
 }
