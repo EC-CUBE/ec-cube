@@ -28,7 +28,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
      * @ORM\HasLifecycleCallbacks()
      * @ORM\Entity(repositoryClass="Eccube\Repository\MemberRepository")
      */
-    class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
+    class Member extends \Eccube\Entity\AbstractEntity implements UserInterface, \Serializable
     {
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {
@@ -467,6 +467,43 @@ if (!class_exists('\Eccube\Entity\Member')) {
         public function getCreator()
         {
             return $this->Creator;
+        }
+
+        /**
+         * String representation of object
+         * @link http://php.net/manual/en/serializable.serialize.php
+         * @return string the string representation of the object or null
+         * @since 5.1.0
+         */
+        public function serialize()
+        {
+            // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
+            // MemberRepository::loadUserByUsername() で Work をチェックしているため、ここでは不要
+            return serialize([
+                $this->id,
+                $this->login_id,
+                $this->password,
+                $this->salt,
+            ]);
+        }
+
+        /**
+         * Constructs the object
+         * @link http://php.net/manual/en/serializable.unserialize.php
+         * @param string $serialized <p>
+         * The string representation of the object.
+         * </p>
+         * @return void
+         * @since 5.1.0
+         */
+        public function unserialize($serialized)
+        {
+            list (
+                $this->id,
+                $this->login_id,
+                $this->password,
+                $this->salt,
+            ) = unserialize($serialized);
         }
     }
 }
