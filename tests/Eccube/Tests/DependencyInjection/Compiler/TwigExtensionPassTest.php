@@ -23,6 +23,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
+use Twig\Loader\LoaderInterface;
 
 class TwigExtensionPassTest extends TestCase
 {
@@ -39,7 +40,7 @@ class TwigExtensionPassTest extends TestCase
             ->setAutowired(true);
         $this->containerBuilder->register(IgnoreRoutingNotFoundExtension::class)
             ->setAutowired(true);
-        $this->containerBuilder->register(\Twig_LoaderInterface::class, ArrayLoader::class);
+        $this->containerBuilder->register(LoaderInterface::class, ArrayLoader::class);
         $this->containerBuilder->register('twig', Environment::class)
             ->setPublic(true)
             ->setAutowired(true);
