@@ -103,14 +103,6 @@ class Kernel extends BaseKernel
                 ->register('email.validator')
                 ->asSharedInstanceOf(NoRFCEmailValidator::class);
         }
-
-        // Activate to $app
-        $app = Application::getInstance(['debug' => $this->isDebug()]);
-        $app->setParentContainer($container);
-        $app->initialize();
-        $app->boot();
-
-        $container->set('app', $app);
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
