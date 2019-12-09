@@ -26,6 +26,8 @@ use Eccube\DependencyInjection\Compiler\TwigBlockPass;
 use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
+use Eccube\DependencyInjection\Facade\LoggerFacade;
+use Eccube\DependencyInjection\Facade\TranslatorFacade;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -101,6 +103,15 @@ class Kernel extends BaseKernel
             \Swift_DependencyContainer::getInstance()
                 ->register('email.validator')
                 ->asSharedInstanceOf(NoRFCEmailValidator::class);
+        }
+
+        $Logger = $container->get('eccube.logger');
+        if ($Logger !== null && $Logger instanceof \Eccube\Log\Logger) {
+            LoggerFacade::init($container, $Logger);
+        }
+        $Translator = $container->get('translator');
+        if ($Translator !== null && $Translator instanceof \Symfony\Component\Translation\TranslatorInterface) {
+            TranslatorFacade::init($container, $Translator);
         }
     }
 
