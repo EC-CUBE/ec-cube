@@ -181,6 +181,9 @@ services:
         arguments:
             - '@native_file_session_handler'
 
+    Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
+        public: true
+
     SunCat\MobileDetectBundle\DeviceDetector\MobileDetector:
         tags:
           - { name: mobile_detect.mobile_detector.default }
