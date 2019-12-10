@@ -172,6 +172,9 @@ services:
         # autoconfigureはfalseにし, CompilerPassで追加する.
         autoconfigure: false
 
+    Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
+        public: true
+
     SunCat\MobileDetectBundle\DeviceDetector\MobileDetector:
         tags:
           - { name: mobile_detect.mobile_detector.default }
