@@ -18,6 +18,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Repository\Master\PrefRepository;
+use Eccube\Service\OrderHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -62,6 +63,11 @@ class ShippingMultipleItemType extends AbstractType
     protected $entityManager;
 
     /**
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
      * ShippingMultipleItemType constructor.
      *
      * @param EccubeConfig $eccubeConfig
@@ -75,7 +81,8 @@ class ShippingMultipleItemType extends AbstractType
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         PrefRepository $prefRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        OrderHelper $orderHelper
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->session = $session;
@@ -83,6 +90,7 @@ class ShippingMultipleItemType extends AbstractType
         $this->tokenStorage = $tokenStorage;
         $this->prefRepository = $prefRepository;
         $this->entityManager = $entityManager;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -117,7 +125,7 @@ class ShippingMultipleItemType extends AbstractType
                 } else {
                     $CustomerAddresses = [];
                     // 非会員の場合は、セッションに保持されている注文者住所とお届け先住所をマージしてリストを作成
-                    if ($NonMember = $this->session->get('eccube.front.shopping.nonmember')) {
+                    if ($NonMember = $this->orderHelper->getNonMember('eccube.front.shopping.nonmember')) {
                         $CustomerAddress = new CustomerAddress();
                         $CustomerAddress->setFromCustomer($NonMember);
 
