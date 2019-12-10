@@ -138,7 +138,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $Nonmember = self::$container->get('session')->get('eccube.front.shopping.nonmember');
+        $Nonmember = self::$container->get(OrderHelper::class)->getNonMember('eccube.front.shopping.nonmember');
         $this->assertNotNull($Nonmember);
         $this->assertNotNull(self::$container->get('session')->get('eccube.front.shopping.nonmember.customeraddress'));
 
