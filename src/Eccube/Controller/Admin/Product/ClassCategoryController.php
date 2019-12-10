@@ -107,7 +107,7 @@ class ClassCategoryController extends AbstractController
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 log_info('規格分類登録開始', [$id]);
 
                 $this->classCategoryRepository->save($TargetClassCategory);
