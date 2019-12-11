@@ -37,7 +37,33 @@ services:
       - "vender:/var/www/html/vendor"
     networks: 
       - backend
-  
+    depends_on:
+      - init-ec-cube
+
+  ### 初回起動時に実行するセットアップ処理
+  #### * composer installを実行
+  #### * .envを生成
+  #### * composerのセットアップコマンド実行
+  #### * var/ディレクトリの所有者変更
+  init-ec-cube:
+    build:
+      context: .
+      args:
+        SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD: "true"
+    volumes:
+      - ".:/var/www/html:cached"
+      - "var:/var/www/html/var"
+      - "vender:/var/www/html/vendor"
+    command: bash -c '
+      cd /var/www/html;
+      [[ -z "`ls -A vendor/`" ]] && composer install;
+      [[ ! -f .env ]] && {
+        cp -a .env{.dist,};
+        composer run-script installer-scripts && composer run-script auto-scripts;
+        chown -R www-data:www-data var/;
+      }
+      '
+
   ### Postgres ################################
   postgres:
     image: postgres:10
