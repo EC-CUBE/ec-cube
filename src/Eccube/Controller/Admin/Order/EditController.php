@@ -24,6 +24,7 @@ use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
