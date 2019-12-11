@@ -56,11 +56,12 @@ services:
       - "vender:/var/www/html/vendor"
     command: bash -c '
       cd /var/www/html;
-      [[ -z "`ls -A vendor/`" ]] && composer install;
       [[ ! -f .env ]] && {
         cp -a .env{.dist,};
+        [[ -z "`ls -A vendor/`" ]] && composer install;
         composer run-script installer-scripts && composer run-script auto-scripts;
-        chown -R www-data:www-data var/;
+        chown -R www-data:www-data var/ vendor/;
+        chmod -R g+w var/ vendor/;
       }
       '
 
