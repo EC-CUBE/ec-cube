@@ -26,7 +26,10 @@ class DeliveryDurationTest extends EccubeTestCase
         $this->deliveryDurationRepository = $this->container->get(DeliveryDurationRepository::class);
     }
 
-    public function testCompareTo()
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/4405
+     */
+    public function testBackOrderedDuration()
     {
         $BackorderedId = 9;
         $BackorderedDuration = -1;
