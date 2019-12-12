@@ -28,3 +28,10 @@ admin_logout:
     path: '/%eccube_admin_route%/logout'
 logout:
     path: /logout
+user_data:
+    path: /{route}
+    requirements:
+         route: '([0-9a-zA-Z_\-]+\/?)+(?<!\/)'
+    defaults:
+        _controller: Eccube\Controller\UserDataController::index
+
