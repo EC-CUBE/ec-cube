@@ -46,6 +46,10 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     protected function getCacheLifetime()
     {
-        return $this->eccubeConfig['eccube_result_cache_lifetime'];
+        if ($this->eccubeConfig !== null) {
+            return $this->eccubeConfig['eccube_result_cache_lifetime'];
+        }
+
+        return 0;
     }
 }
