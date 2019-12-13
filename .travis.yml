@@ -27,7 +27,7 @@ php:
   - 7.1
   - 7.2
   - 7.3
-  - 7.4snapshot
+  - 7.4
 
 env:
   global:
@@ -39,7 +39,6 @@ env:
 
 matrix:
   allow_failures:
-    - php: 7.4snapshot
     - env: DATABASE_URL=sqlite:///var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
 
 ## see https://github.com/symfony/symfony/blob/e0bdc0c35e9afdb3bee8af172f90e9648c4012fc/.travis.yml#L92-L97
