@@ -33,8 +33,8 @@ class PluginLocalInstallType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'pluginlocalinstall.text.message.select_file']),
                     new Assert\File([
-                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip'],
                         'mimeTypesMessage' => 'pluginlocalinstall.text.message.allowed_format',
+                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'],
                     ]),
                 ],
             ]);
