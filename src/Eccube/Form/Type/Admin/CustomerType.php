@@ -31,6 +31,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -146,6 +148,15 @@ class CustomerType extends AbstractType
                     ]),
                 ],
             ]);
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $Customer = $event->getData();
+
+            // ポイント数が入力されていない場合0を登録
+            if (is_null($Customer->getPoint())) {
+                $Customer->setPoint(0);
+            }
+        });
     }
 
     /**
