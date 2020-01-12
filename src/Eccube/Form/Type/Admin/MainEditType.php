@@ -221,6 +221,13 @@ class MainEditType extends AbstractType
                         ->setParameter('page_id', $Page->getId());
                 }
 
+                //確認ページの編集ページ存在している場合
+                if ($Page->getEditType() == Page::EDIT_TYPE_DEFAULT_CONFIRM && $Page->getMasterPage()) {
+                    $qb
+                        ->andWhere('p.id <> :master_page_id')
+                        ->setParameter('master_page_id', $Page->getMasterPage()->getId());
+                }
+
                 $count = $qb->getQuery()->getSingleScalarResult();
                 if ($count > 0) {
                     $form['url']->addError(new FormError(trans('admin.content.page_url_exists')));
@@ -253,7 +260,7 @@ class MainEditType extends AbstractType
                     $qb->select('count(p)')
                         ->from('Eccube\\Entity\\Page', 'p')
                         ->where('p.file_name = :file_name')
-                        ->andWhere('p.edit_type = :edit_type')
+                        ->andWhere('p.edit_type >= :edit_type')
                         ->setParameter('file_name', $Page->getFileName())
                         ->setParameter('edit_type', Page::EDIT_TYPE_DEFAULT);
 

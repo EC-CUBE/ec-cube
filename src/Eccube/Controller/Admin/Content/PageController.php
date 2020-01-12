@@ -120,7 +120,7 @@ class PageController extends AbstractController
         $namespace = '@user_data/';
         if ($id) {
             // 編集不可ページはURL、ページ名、ファイル名を保持
-            if ($Page->getEditType() == Page::EDIT_TYPE_DEFAULT) {
+            if ($Page->getEditType() >= Page::EDIT_TYPE_DEFAULT) {
                 $isUserDataPage = false;
                 $namespace = '';
                 $PrevPage = clone $Page;
@@ -245,6 +245,7 @@ class PageController extends AbstractController
             'form' => $form->createView(),
             'page_id' => $Page->getId(),
             'is_user_data_page' => $isUserDataPage,
+            'is_confirm_page' => $Page->getEditType() == Page::EDIT_TYPE_DEFAULT_CONFIRM,
             'template_path' => $templatePath,
             'url' => $url,
         ];

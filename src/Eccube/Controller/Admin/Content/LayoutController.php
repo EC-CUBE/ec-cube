@@ -207,7 +207,7 @@ class LayoutController extends AbstractController
                     throw new NotFoundHttpException();
                 }
 
-                if ($Page->getEditType() == \Eccube\Entity\Page::EDIT_TYPE_DEFAULT) {
+                if ($Page->getEditType() >= \Eccube\Entity\Page::EDIT_TYPE_DEFAULT) {
                     if ($Page->getUrl() === 'product_detail') {
                         $product = $this->productRepository->findOneBy(['Status' => ProductStatus::DISPLAY_SHOW]);
                         if (is_null($product)) {
