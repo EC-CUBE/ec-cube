@@ -77,7 +77,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $MailTemplate = $this->createMail();
         $form = [
             '_token' => 'dummy',
-            'template' => $MailTemplate->getId(),
             'mail_subject' => 'Test Subject',
             'tpl_data' => 'Test TPL Data',
         ];
@@ -103,7 +102,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $MailTemplate = $this->createMail();
         $form = [
             '_token' => 'dummy',
-            'template' => $MailTemplate->getId(),
             'mail_subject' => 'Test Subject',
             'tpl_data' => 'Test TPL Data',
             'html_tpl_data' => '<font color="red">Test HTML TPL Data</font>',
@@ -127,7 +125,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $mid = 99999;
         $form = [
             '_token' => 'dummy',
-            'template' => $mid,
             'mail_subject' => 'Test Subject',
         ];
         $this->client->request(
@@ -152,7 +149,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $form = [
             '_token' => 'dummy',
-            'template' => null,
             'mail_subject' => null,
         ];
         $this->client->request(
