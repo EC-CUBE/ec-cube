@@ -98,6 +98,39 @@ class InstallerCommand extends Command
         }
         $authMagic = $this->io->ask('Auth Magic', $authMagic);
 
+        // 以下環境変数に規定済の設定値があれば利用する
+        // APP_ENV
+        $appEnv = getenv('APP_ENV');
+        // .envが存在しない状態では規定値'install'となっているため、
+        // devに変更する。
+        if (empty($appEnv) || $appEnv === 'install') {
+            $appEnv = 'dev';
+        }
+
+        // APP_DEBUG
+        $appDebug = getenv('APP_DEBUG');
+        if (empty($appDebug)) {
+            $appDebug = '1';
+        }
+
+        // ECCUBE_ADMIN_ROUTE
+        $adminRoute = $this->container->getParameter('eccube_admin_route');
+        if (empty($adminRoute)) {
+            $adminRoute = 'admin';
+        }
+
+        // ECCUBE_TEMPLATE_CODE
+        $templateCode = $this->container->getParameter('eccube_theme_code');
+        if (empty($templateCode)) {
+            $templateCode = 'default';
+        }
+
+        // ECCUBE_LOCALE
+        $locale = $this->container->getParameter('locale');
+        if (empty($locale)) {
+            $locale = 'ja';
+        }
+
         $this->io->caution('Execute the installation process. All data is initialized.');
         $question = new ConfirmationQuestion('Is it OK?');
         if (!$this->io->askQuestion($question)) {
@@ -110,15 +143,15 @@ class InstallerCommand extends Command
         }
 
         $envParameters = [
-            'APP_ENV' => 'dev',
-            'APP_DEBUG' => '1',
+            'APP_ENV' => $appEnv,
+            'APP_DEBUG' => $appDebug,
             'DATABASE_URL' => $databaseUrl,
             'DATABASE_SERVER_VERSION' => $serverVersion,
             'MAILER_URL' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $authMagic,
-            'ECCUBE_ADMIN_ROUTE' => 'admin',
-            'ECCUBE_TEMPLATE_CODE' => 'default',
-            'ECCUBE_LOCALE' => 'ja',
+            'ECCUBE_ADMIN_ROUTE' => $adminRoute,
+            'ECCUBE_TEMPLATE_CODE' => $templateCode,
+            'ECCUBE_LOCALE' => $locale,
         ];
 
         $envDir = $this->container->getParameter('kernel.project_dir');
