@@ -82,7 +82,7 @@ class MailController extends AbstractController
 
             $templatePath = $this->getParameter('eccube_theme_front_dir');
             $file = $templatePath.'/'.$Mail->getFileName();
-            $htmlFile = $templatePath.'/'.$this->getHtmlFileName($Mail->getFileName());
+            $htmlFile = $this->getHtmlFileName($file);
 
             $fs = new Filesystem();
             if ($fs->exists($file)) {

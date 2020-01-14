@@ -150,19 +150,16 @@ file that was distributed with this source code.
                                     <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                 </div>
                                 <div class="col-10">
-                                    <div class="form-row">
                                         {% if Mail is null %}
-                                            <div class="col-8 pl-0">
+                                            <div class="col-10 pl-0">
                                                 {{ form_widget(form.file_name) }}
                                                 {{ form_errors(form.file_name) }}
                                             </div>
-                                            <div class="col-2 pl-0">.twig</div>
                                         {% else %}
                                             <div class="col-10 pl-0">
                                                 {{ Mail.file_name }}
                                             </div>
                                         {% endif %}
-                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-2">
