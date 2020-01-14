@@ -57,6 +57,7 @@ class ExceptionListener implements EventSubscriberInterface
                 case 403:
                 case 405:
                 case 406:
+                    $infoMess = 'アクセスできません。';
                     $title = trans('exception.error_title_can_not_access');
                     if ($exception->getMessage()) {
                         $message = $exception->getMessage();
@@ -65,6 +66,7 @@ class ExceptionListener implements EventSubscriberInterface
                     }
                     break;
                 case 404:
+                    $infoMess = 'ページがみつかりません。';
                     $title = trans('exception.error_title_not_found');
                     $message = trans('exception.error_message_not_found');
                     break;
@@ -73,12 +75,20 @@ class ExceptionListener implements EventSubscriberInterface
             }
         }
 
-        log_error('システムエラーが発生しました。', [
-            $exception->getMessage(),
-            $exception->getFile(),
-            $exception->getLine(),
-            $exception->getTraceAsString(),
-        ]);
+        if (isset($infoMess)) {
+            log_info($infoMess, [
+                $exception->getMessage(),
+                $exception->getFile(),
+                $exception->getLine(),
+            ]);
+        } else {
+            log_error('システムエラーが発生しました。', [
+                $exception->getMessage(),
+                $exception->getFile(),
+                $exception->getLine(),
+                $exception->getTraceAsString(),
+            ]);
+        }
 
         try {
             $file = $this->requestContext->isAdmin() ? '@admin/error.twig' : 'error.twig';
