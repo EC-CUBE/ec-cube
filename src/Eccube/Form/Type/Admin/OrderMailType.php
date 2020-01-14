@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\MailTemplate;
 use Eccube\Form\Type\Master\MailTemplateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -52,8 +53,9 @@ class OrderMailType extends AbstractType
                 'mapped' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('mt')
-                        ->andWhere('mt.id = :id')
+                        ->andWhere('mt.id = :id or mt.edit_type = :edit_type')
                         ->setParameter('id', $this->eccubeConfig['eccube_order_mail_template_id'])
+                        ->setParameter('edit_type', MailTemplate::EDIT_TYPE_USER)
                         ->orderBy('mt.id', 'ASC');
                 },
             ])

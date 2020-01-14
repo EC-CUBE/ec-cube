@@ -1147,6 +1147,8 @@ admin.setting.shop.mail.mail_body: Body
 admin.setting.shop.mail.mail_text: Text
 admin.setting.shop.mail.mail_html: HTML
 admin.setting.shop.mail.preview: Preview
+admin.setting.shop.mail.file_name: This is the name of a twig template file which has the mail contents.
+admin.setting.shop.mail_list: All Mail Templates
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : CSV Outputs
@@ -1573,7 +1575,6 @@ tooltip.setting.shop.delivery.sale_type: Specify the sales type(s) available for
 tooltip.setting.shop.delivery.apply_to_pref: The same shipping charge can be applied to all prefectures. You can later change the shipping rate for each prefecture one by one.
 tooltip.setting.shop.delivery.shop_memo: This is a note for store Owner''s. It is not displayed on the storefront.
 tooltip.setting.shop.tax_setting: You can set the tax rates applicable to all products. The general tax rate can be overwritten if you enter a new rate.
-tooltip.setting.shop.mail.mail_template: Please select an existing email template. Contents are displayed in the text field below.
 tooltip.setting.shop.csv.csv_columns: You can output various data in CSV format. You can specify the items for CSV output.
 tooltip.setting.shop.csv.csv_type: Specify the CSV file type.
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
