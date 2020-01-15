@@ -133,12 +133,11 @@ class MailControllerTest extends AbstractAdminWebTestCase
             ['mail' => $form]
         );
 
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $mid]);
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $outPut = $this->container->get('session')->getFlashBag()->get('eccube.admin.error');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_error';
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
     }
 
@@ -153,11 +152,43 @@ class MailControllerTest extends AbstractAdminWebTestCase
         ];
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_setting_shop_mail'),
+            $this->generateUrl('admin_setting_shop_mail_edit'),
             ['mail' => $form]
         );
 
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+    }
+
+    public function testDelete()
+    {
+        $TestMail = new MailTemplate();
+        $TestMail->setEditType(MailTemplate::EDIT_TYPE_USER);
+        $TestMail->setFileName("test");
+        $TestMail->setName("test");
+        $TestMail->setMailSubject("test");
+        $this->entityManager->persist($TestMail);
+        $this->entityManager->flush();
+
+        $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
+        $this->client->request('DELETE',
+            $this->generateUrl('admin_setting_shop_mail_delete', ['id' => $TestMail->getId()])
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+    }
+
+    public function testDeleteIdNotFound()
+    {
+        // before
+        $mid = 99999;
+
+        // main
+        $this->client->request('DELETE',
+            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $mid])
+        );
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 }

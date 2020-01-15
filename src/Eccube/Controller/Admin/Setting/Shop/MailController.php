@@ -24,6 +24,7 @@ use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -72,9 +73,7 @@ class MailController extends AbstractController
             ]);
 
         if (!$Mail) {
-            $this->deleteMessage();
-
-            return $this->redirectToRoute('admin_setting_shop_mail');
+            throw new NotFoundHttpException();
         }
 
         // ユーザーが作ったページのみ削除する
@@ -117,8 +116,17 @@ class MailController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/mail/edit/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
      * @Template("@admin/Setting/Shop/mail_edit.twig")
      */
-    public function edit(Request $request, MailTemplate $Mail = null, Environment $twig)
+    public function edit(Request $request, $id = null, Environment $twig)
     {
+
+        $Mail = null;
+        if ($id) {
+            $Mail = $this->mailTemplateRepository->find($id);
+            if (is_null($Mail)) {
+                throw new NotFoundHttpException();
+            }
+        }
+
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
 
