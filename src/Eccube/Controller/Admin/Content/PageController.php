@@ -270,7 +270,7 @@ class PageController extends AbstractController
         // ユーザーが作ったページのみ削除する
         if ($Page->getEditType() == Page::EDIT_TYPE_USER) {
             $templatePath = $this->getParameter('eccube_theme_user_data_dir');
-            $file = $templatePath.'/'.$Page->getFileName().'.twig';
+            $file = $templatePath.'/'.$Page->getFileName();
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);

@@ -141,30 +141,11 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    /**
-     * Create
-     */
-    public function testCreateFail()
-    {
-        $form = [
-            '_token' => 'dummy',
-            'mail_subject' => null,
-        ];
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_setting_shop_mail_new'),
-            ['mail' => $form]
-        );
-
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_new');
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-    }
-
     public function testDelete()
     {
         $TestMail = new MailTemplate();
         $TestMail->setEditType(MailTemplate::EDIT_TYPE_USER);
-        $TestMail->setFileName("test");
+        $TestMail->setFileName("Mail/test.twig");
         $TestMail->setName("test");
         $TestMail->setMailSubject("test");
         $this->entityManager->persist($TestMail);
@@ -174,6 +155,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->client->request('DELETE',
             $this->generateUrl('admin_setting_shop_mail_delete', ['id' => $TestMail->getId()])
         );
+
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
