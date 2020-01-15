@@ -46,6 +46,7 @@ common.mail_address_sample: e.g. ec-cube@example.com
 common.repeated_confirm: Please re-enter
 common.password: Password
 common.password_sample: Alphabets, numbers and symbols %min% - %max%chars
+common.password_eq_email: Password cannot be set to the same value as email address
 common.password_for_confirmation: Password (Re-enter)
 common.gender: Gender
 common.job: Occupation
