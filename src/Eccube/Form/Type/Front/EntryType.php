@@ -29,10 +29,12 @@ use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use function foo\func;
 
 class EntryType extends AbstractType
 {
@@ -113,6 +115,15 @@ class EntryType extends AbstractType
             }
         }
         );
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            /** @var Customer $Customer */
+            $Customer = $event->getData();
+            if ($Customer->getPassword() != "" && $Customer->getPassword() == $Customer->getEmail()) {
+                $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            }
+        });
     }
 
     /**
