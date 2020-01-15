@@ -133,8 +133,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
             ['mail' => $form]
         );
 
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $mid]);
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+        //$redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $mid]);
+        //$this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->expected = 404;
         $this->actual = $this->client->getResponse()->getStatusCode();
@@ -152,11 +152,11 @@ class MailControllerTest extends AbstractAdminWebTestCase
         ];
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_setting_shop_mail_edit'),
+            $this->generateUrl('admin_setting_shop_mail_new'),
             ['mail' => $form]
         );
 
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_new');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 

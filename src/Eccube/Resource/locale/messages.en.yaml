@@ -1149,6 +1149,7 @@ admin.setting.shop.mail.mail_html: HTML
 admin.setting.shop.mail.preview: Preview
 admin.setting.shop.mail.file_name: This is the name of a twig template file which has the mail contents.
 admin.setting.shop.mail_list: All Mail Templates
+admin.setting.shop.mail_file_name_exists: Data with the same file name already exists. Please enter a different one.
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : CSV Outputs

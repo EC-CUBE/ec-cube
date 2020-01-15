@@ -1149,6 +1149,7 @@ admin.setting.shop.mail.mail_html: HTML
 admin.setting.shop.mail.preview: プレビュー
 admin.setting.shop.mail.file_name: ファイル名
 admin.setting.shop.mail_list: 一覧を見る
+admin.setting.shop.mail_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：CSV出力項目設定

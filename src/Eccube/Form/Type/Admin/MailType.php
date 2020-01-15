@@ -124,14 +124,15 @@ class MailType extends AbstractType
 
             if (!$Mail->getId()) {
                 $qb = $this->entityManager->createQueryBuilder();
+
                 $qb->select('count(m)')
                     ->from('Eccube\\Entity\\MailTemplate', 'm')
                     ->where('m.file_name = :file_name')
-                    ->setParameter('file_name', $Mail['file_name']);
+                    ->setParameter('file_name', sprintf('Mail/%s.twig', $Mail['file_name']));
 
                 $count = $qb->getQuery()->getSingleScalarResult();
                 if ($count > 0) {
-                    $form['file_name']->addError(new FormError(trans('admin.content.page_file_name_exists')));
+                    $form['file_name']->addError(new FormError(trans('admin.setting.shop.mail_file_name_exists')));
                 }
             }
         });
