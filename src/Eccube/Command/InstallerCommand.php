@@ -100,18 +100,14 @@ class InstallerCommand extends Command
 
         // 以下環境変数に規定済の設定値があれば利用する
         // APP_ENV
-        $appEnv = getenv('APP_ENV');
+        $appEnv = env('APP_ENV', 'dev');
         // .envが存在しない状態では規定値'install'となっているため、
-        // devに変更する。
-        if (empty($appEnv) || $appEnv === 'install') {
+        if ($appEnv === 'install') {
             $appEnv = 'dev';
         }
 
         // APP_DEBUG
-        $appDebug = getenv('APP_DEBUG');
-        if (empty($appDebug)) {
-            $appDebug = '1';
-        }
+        $appDebug = env('APP_DEBUG','1');
 
         // ECCUBE_ADMIN_ROUTE
         $adminRoute = $this->container->getParameter('eccube_admin_route');
