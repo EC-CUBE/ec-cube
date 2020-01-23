@@ -101,7 +101,7 @@ class InstallerCommand extends Command
         // 以下環境変数に規定済の設定値があれば利用する
         // APP_ENV
         $appEnv = env('APP_ENV', 'dev');
-        // .envが存在しない状態では規定値'install'となっているため、
+        // .envが存在しない状態では規定値'install'となっているため、devに更新する
         if ($appEnv === 'install') {
             $appEnv = 'dev';
         }
