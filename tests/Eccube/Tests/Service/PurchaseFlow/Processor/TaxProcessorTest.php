@@ -85,14 +85,35 @@ class TaxProcessorTest extends EccubeTestCase
     }
 
     /**
-     * @see https://github.com/EC-CUBE/ec-cube/issues/4269
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4236
      */
-    public function testTaxRateChanged()
+    public function testTaxRateChangedShoppingFlow()
     {
         // 受注作成後に税率を変更
         $this->TaxRule->setTaxRate(10);
 
-        $this->processor->process($this->Order, new PurchaseContext());
+        $context = new PurchaseContext();
+        $context->setFlowType(PurchaseContext::SHOPPING_FLOW);
+        $this->processor->process($this->Order, $context);
+
+        /** @var OrderItem[] $ProductOrderItems */
+        $ProductOrderItems = $this->Order->getProductOrderItems();
+
+        self::assertEquals(1, count($ProductOrderItems));
+        self::assertEquals(1100, $ProductOrderItems[0]->getTotalPrice());
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4269
+     */
+    public function testTaxRateChangedOrderFlow()
+    {
+        // 受注作成後に税率を変更
+        $this->TaxRule->setTaxRate(10);
+
+        $context = new PurchaseContext();
+        $context->setFlowType(PurchaseContext::ORDER_FLOW);
+        $this->processor->process($this->Order, $context);
 
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
