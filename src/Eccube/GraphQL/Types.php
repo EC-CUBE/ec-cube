@@ -83,11 +83,14 @@ class Types
 
     private function convertFieldMappingToType($fieldMapping)
     {
-        $type = $fieldMapping['id'] ? Type::id() : [
+        $type = isset($fieldMapping['id']) ? Type::id() : [
             'string' => Type::string(),
             'text' => Type::string(),
             'integer' => Type::int(),
             'decimal' => Type::float(),
+            'datetimetz' => Type::int(),
+            'smallint' => Type::int(),
+            'boolean' => Type::boolean(),
         ][$fieldMapping['type']];
 
         if ($type) {
