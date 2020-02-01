@@ -667,6 +667,8 @@ class ShoppingController extends AbstractShoppingController
 
         $form = $builder->getForm();
 
+        $this->setLoginTargetPath('shopping');
+
         return [
             'error' => $authenticationUtils->getLastAuthenticationError(),
             'form' => $form->createView(),
