@@ -82,6 +82,10 @@ class SecurityListener implements EventSubscriberInterface
     {
         $request = $this->requestStack->getCurrentRequest();
         $request->getSession()->set('_security.login_memory', (bool) $request->request->get('login_memory', 0));
+
+        if ($target_path = $request->request->get('_target_path')) {
+            $request->getSession()->getFlashBag()->set('eccube.login.target.path', $target_path);
+        }
     }
 
     /**
