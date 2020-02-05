@@ -12,11 +12,7 @@ services:
   - xvfb
 
 addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
+  chrome: stable
 
 cache:
   directories:
@@ -38,6 +34,7 @@ matrix:
   allow_failures:
     - php: 7.4snapshot
     - env: DATABASE_URL=sqlite:///var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
+    - env: APP_ENV=codeception
 
 ## see https://github.com/symfony/symfony/blob/e0bdc0c35e9afdb3bee8af172f90e9648c4012fc/.travis.yml#L92-L97
 before_install: &php_setup |
