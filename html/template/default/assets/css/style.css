@@ -592,8 +592,8 @@ Styleguide 2.1.1
   .ec-inlineBtn.disabled, .ec-inlineBtn[disabled],
   fieldset[disabled] .ec-inlineBtn {
     cursor: not-allowed;
-    filter: alpha(opacity=65);
     opacity: 0.65;
+    filter: alpha(opacity=65);
     box-shadow: none; }
   .ec-inlineBtn:focus, .ec-inlineBtn.focus {
     color: #525263;
@@ -607,7 +607,6 @@ Styleguide 2.1.1
   .open > .ec-inlineBtn.dropdown-toggle {
     color: #525263;
     background-color: #d7dfe3;
-    background-image: none;
     border-color: #adadad; }
     .ec-inlineBtn:active:hover, .ec-inlineBtn:active:focus, .ec-inlineBtn:active.focus, .ec-inlineBtn.active:hover, .ec-inlineBtn.active:focus, .ec-inlineBtn.active.focus,
     .open > .ec-inlineBtn.dropdown-toggle:hover,
@@ -616,6 +615,9 @@ Styleguide 2.1.1
       color: #525263;
       background-color: #c2ced4;
       border-color: #8c8c8c; }
+  .ec-inlineBtn:active, .ec-inlineBtn.active,
+  .open > .ec-inlineBtn.dropdown-toggle {
+    background-image: none; }
   .ec-inlineBtn.disabled:hover, .ec-inlineBtn.disabled:focus, .ec-inlineBtn.disabled.focus, .ec-inlineBtn[disabled]:hover, .ec-inlineBtn[disabled]:focus, .ec-inlineBtn[disabled].focus,
   fieldset[disabled] .ec-inlineBtn:hover,
   fieldset[disabled] .ec-inlineBtn:focus,
@@ -666,8 +668,8 @@ Styleguide 2.1.1
   .ec-inlineBtn--primary.disabled, .ec-inlineBtn--primary[disabled],
   fieldset[disabled] .ec-inlineBtn--primary {
     cursor: not-allowed;
-    filter: alpha(opacity=65);
     opacity: 0.65;
+    filter: alpha(opacity=65);
     box-shadow: none; }
   .ec-inlineBtn--primary:focus, .ec-inlineBtn--primary.focus {
     color: #fff;
@@ -681,7 +683,6 @@ Styleguide 2.1.1
   .open > .ec-inlineBtn--primary.dropdown-toggle {
     color: #fff;
     background-color: #479393;
-    background-image: none;
     border-color: #438d8d; }
     .ec-inlineBtn--primary:active:hover, .ec-inlineBtn--primary:active:focus, .ec-inlineBtn--primary:active.focus, .ec-inlineBtn--primary.active:hover, .ec-inlineBtn--primary.active:focus, .ec-inlineBtn--primary.active.focus,
     .open > .ec-inlineBtn--primary.dropdown-toggle:hover,
@@ -690,6 +691,9 @@ Styleguide 2.1.1
       color: #fff;
       background-color: #3b7b7b;
       border-color: #2e6060; }
+  .ec-inlineBtn--primary:active, .ec-inlineBtn--primary.active,
+  .open > .ec-inlineBtn--primary.dropdown-toggle {
+    background-image: none; }
   .ec-inlineBtn--primary.disabled:hover, .ec-inlineBtn--primary.disabled:focus, .ec-inlineBtn--primary.disabled.focus, .ec-inlineBtn--primary[disabled]:hover, .ec-inlineBtn--primary[disabled]:focus, .ec-inlineBtn--primary[disabled].focus,
   fieldset[disabled] .ec-inlineBtn--primary:hover,
   fieldset[disabled] .ec-inlineBtn--primary:focus,
@@ -740,8 +744,8 @@ Styleguide 2.1.1
   .ec-inlineBtn--action.disabled, .ec-inlineBtn--action[disabled],
   fieldset[disabled] .ec-inlineBtn--action {
     cursor: not-allowed;
-    filter: alpha(opacity=65);
     opacity: 0.65;
+    filter: alpha(opacity=65);
     box-shadow: none; }
   .ec-inlineBtn--action:focus, .ec-inlineBtn--action.focus {
     color: #fff;
@@ -755,7 +759,6 @@ Styleguide 2.1.1
   .open > .ec-inlineBtn--action.dropdown-toggle {
     color: #fff;
     background-color: #d33828;
-    background-image: none;
     border-color: #cb3526; }
     .ec-inlineBtn--action:active:hover, .ec-inlineBtn--action:active:focus, .ec-inlineBtn--action:active.focus, .ec-inlineBtn--action.active:hover, .ec-inlineBtn--action.active:focus, .ec-inlineBtn--action.active.focus,
     .open > .ec-inlineBtn--action.dropdown-toggle:hover,
@@ -764,6 +767,9 @@ Styleguide 2.1.1
       color: #fff;
       background-color: #b53022;
       border-color: #93271c; }
+  .ec-inlineBtn--action:active, .ec-inlineBtn--action.active,
+  .open > .ec-inlineBtn--action.dropdown-toggle {
+    background-image: none; }
   .ec-inlineBtn--action.disabled:hover, .ec-inlineBtn--action.disabled:focus, .ec-inlineBtn--action.disabled.focus, .ec-inlineBtn--action[disabled]:hover, .ec-inlineBtn--action[disabled]:focus, .ec-inlineBtn--action[disabled].focus,
   fieldset[disabled] .ec-inlineBtn--action:hover,
   fieldset[disabled] .ec-inlineBtn--action:focus,
@@ -814,8 +820,8 @@ Styleguide 2.1.1
   .ec-inlineBtn--cancel.disabled, .ec-inlineBtn--cancel[disabled],
   fieldset[disabled] .ec-inlineBtn--cancel {
     cursor: not-allowed;
-    filter: alpha(opacity=65);
     opacity: 0.65;
+    filter: alpha(opacity=65);
     box-shadow: none; }
   .ec-inlineBtn--cancel:focus, .ec-inlineBtn--cancel.focus {
     color: #fff;
@@ -829,7 +835,6 @@ Styleguide 2.1.1
   .open > .ec-inlineBtn--cancel.dropdown-toggle {
     color: #fff;
     background-color: #3b3b47;
-    background-image: none;
     border-color: #363642; }
     .ec-inlineBtn--cancel:active:hover, .ec-inlineBtn--cancel:active:focus, .ec-inlineBtn--cancel:active.focus, .ec-inlineBtn--cancel.active:hover, .ec-inlineBtn--cancel.active:focus, .ec-inlineBtn--cancel.active.focus,
     .open > .ec-inlineBtn--cancel.dropdown-toggle:hover,
@@ -838,6 +843,9 @@ Styleguide 2.1.1
       color: #fff;
       background-color: #2b2b34;
       border-color: #18181d; }
+  .ec-inlineBtn--cancel:active, .ec-inlineBtn--cancel.active,
+  .open > .ec-inlineBtn--cancel.dropdown-toggle {
+    background-image: none; }
   .ec-inlineBtn--cancel.disabled:hover, .ec-inlineBtn--cancel.disabled:focus, .ec-inlineBtn--cancel.disabled.focus, .ec-inlineBtn--cancel[disabled]:hover, .ec-inlineBtn--cancel[disabled]:focus, .ec-inlineBtn--cancel[disabled].focus,
   fieldset[disabled] .ec-inlineBtn--cancel:hover,
   fieldset[disabled] .ec-inlineBtn--cancel:focus,
@@ -909,8 +917,8 @@ Styleguide 2.1.2
   .ec-blockBtn.disabled, .ec-blockBtn[disabled],
   fieldset[disabled] .ec-blockBtn {
     cursor: not-allowed;
-    filter: alpha(opacity=65);
     opacity: 0.65;
+    filter: alpha(opacity=65);
     box-shadow: none; }
   .ec-blockBtn:focus, .ec-blockBtn.focus {
     color: #525263;
@@ -924,7 +932,6 @@ Styleguide 2.1.2
   .open > .ec-blockBtn.dropdown-toggle {
     color: #525263;
     background-color: #d7dfe3;
-    background-image: none;
     border-color: #adadad; }
     .ec-blockBtn:active:hover, .ec-blockBtn:active:focus, .ec-blockBtn:active.focus, .ec-blockBtn.active:hover, .ec-blockBtn.active:focus, .ec-blockBtn.active.focus,
     .open > .ec-blockBtn.dropdown-toggle:hover,
@@ -933,6 +940,9 @@ Styleguide 2.1.2
       color: #525263;
       background-color: #c2ced4;
       border-color: #8c8c8c; }
+  .ec-blockBtn:active, .ec-blockBtn.active,
+  .open > .ec-blockBtn.dropdown-toggle {
+    background-image: none; }
   .ec-blockBtn.disabled:hover, .ec-blockBtn.disabled:focus, .ec-blockBtn.disabled.focus, .ec-blockBtn[disabled]:hover, .ec-blockBtn[disabled]:focus, .ec-blockBtn[disabled].focus,
   fieldset[disabled] .ec-blockBtn:hover,
   fieldset[disabled] .ec-blockBtn:focus,
@@ -989,8 +999,8 @@ Styleguide 2.1.2
   .ec-blockBtn--primary.disabled, .ec-blockBtn--primary[disabled],
   fieldset[disabled] .ec-blockBtn--primary {
     cursor: not-allowed;
-    filter: alpha(opacity=65);
     opacity: 0.65;
+    filter: alpha(opacity=65);
     box-shadow: none; }
   .ec-blockBtn--primary:focus, .ec-blockBtn--primary.focus {
     color: #fff;
@@ -1004,7 +1014,6 @@ Styleguide 2.1.2
   .open > .ec-blockBtn--primary.dropdown-toggle {
     color: #fff;
     background-color: #479393;
-    background-image: none;
     border-color: #438d8d; }
     .ec-blockBtn--primary:active:hover, .ec-blockBtn--primary:active:focus, .ec-blockBtn--primary:active.focus, .ec-blockBtn--primary.active:hover, .ec-blockBtn--primary.active:focus, .ec-blockBtn--primary.active.focus,
     .open > .ec-blockBtn--primary.dropdown-toggle:hover,
@@ -1013,6 +1022,9 @@ Styleguide 2.1.2
       color: #fff;
       background-color: #3b7b7b;
       border-color: #2e6060; }
+  .ec-blockBtn--primary:active, .ec-blockBtn--primary.active,
+  .open > .ec-blockBtn--primary.dropdown-toggle {
+    background-image: none; }
   .ec-blockBtn--primary.disabled:hover, .ec-blockBtn--primary.disabled:focus, .ec-blockBtn--primary.disabled.focus, .ec-blockBtn--primary[disabled]:hover, .ec-blockBtn--primary[disabled]:focus, .ec-blockBtn--primary[disabled].focus,
   fieldset[disabled] .ec-blockBtn--primary:hover,
   fieldset[disabled] .ec-blockBtn--primary:focus,
@@ -1069,8 +1081,8 @@ Styleguide 2.1.2
   .ec-blockBtn--action.disabled, .ec-blockBtn--action[disabled],
   fieldset[disabled] .ec-blockBtn--action {
     cursor: not-allowed;
-    filter: alpha(opacity=65);
     opacity: 0.65;
+    filter: alpha(opacity=65);
     box-shadow: none; }
   .ec-blockBtn--action:focus, .ec-blockBtn--action.focus {
     color: #fff;
@@ -1084,7 +1096,6 @@ Styleguide 2.1.2
   .open > .ec-blockBtn--action.dropdown-toggle {
     color: #fff;
     background-color: #d33828;
-    background-image: none;
     border-color: #cb3526; }
     .ec-blockBtn--action:active:hover, .ec-blockBtn--action:active:focus, .ec-blockBtn--action:active.focus, .ec-blockBtn--action.active:hover, .ec-blockBtn--action.active:focus, .ec-blockBtn--action.active.focus,
     .open > .ec-blockBtn--action.dropdown-toggle:hover,
@@ -1093,6 +1104,9 @@ Styleguide 2.1.2
       color: #fff;
       background-color: #b53022;
       border-color: #93271c; }
+  .ec-blockBtn--action:active, .ec-blockBtn--action.active,
+  .open > .ec-blockBtn--action.dropdown-toggle {
+    background-image: none; }
   .ec-blockBtn--action.disabled:hover, .ec-blockBtn--action.disabled:focus, .ec-blockBtn--action.disabled.focus, .ec-blockBtn--action[disabled]:hover, .ec-blockBtn--action[disabled]:focus, .ec-blockBtn--action[disabled].focus,
   fieldset[disabled] .ec-blockBtn--action:hover,
   fieldset[disabled] .ec-blockBtn--action:focus,
@@ -1149,8 +1163,8 @@ Styleguide 2.1.2
   .ec-blockBtn--cancel.disabled, .ec-blockBtn--cancel[disabled],
   fieldset[disabled] .ec-blockBtn--cancel {
     cursor: not-allowed;
-    filter: alpha(opacity=65);
     opacity: 0.65;
+    filter: alpha(opacity=65);
     box-shadow: none; }
   .ec-blockBtn--cancel:focus, .ec-blockBtn--cancel.focus {
     color: #fff;
@@ -1164,7 +1178,6 @@ Styleguide 2.1.2
   .open > .ec-blockBtn--cancel.dropdown-toggle {
     color: #fff;
     background-color: #3b3b47;
-    background-image: none;
     border-color: #363642; }
     .ec-blockBtn--cancel:active:hover, .ec-blockBtn--cancel:active:focus, .ec-blockBtn--cancel:active.focus, .ec-blockBtn--cancel.active:hover, .ec-blockBtn--cancel.active:focus, .ec-blockBtn--cancel.active.focus,
     .open > .ec-blockBtn--cancel.dropdown-toggle:hover,
@@ -1173,6 +1186,9 @@ Styleguide 2.1.2
       color: #fff;
       background-color: #2b2b34;
       border-color: #18181d; }
+  .ec-blockBtn--cancel:active, .ec-blockBtn--cancel.active,
+  .open > .ec-blockBtn--cancel.dropdown-toggle {
+    background-image: none; }
   .ec-blockBtn--cancel.disabled:hover, .ec-blockBtn--cancel.disabled:focus, .ec-blockBtn--cancel.disabled.focus, .ec-blockBtn--cancel[disabled]:hover, .ec-blockBtn--cancel[disabled]:focus, .ec-blockBtn--cancel[disabled].focus,
   fieldset[disabled] .ec-blockBtn--cancel:hover,
   fieldset[disabled] .ec-blockBtn--cancel:focus,
@@ -4968,8 +4984,8 @@ Styleguide 12.3.1
   .ec-inlineBtn--top.disabled, .ec-inlineBtn--top[disabled],
   fieldset[disabled] .ec-inlineBtn--top {
     cursor: not-allowed;
-    filter: alpha(opacity=65);
     opacity: 0.65;
+    filter: alpha(opacity=65);
     box-shadow: none; }
   .ec-inlineBtn--top:focus, .ec-inlineBtn--top.focus {
     color: white;
@@ -4983,7 +4999,6 @@ Styleguide 12.3.1
   .open > .ec-inlineBtn--top.dropdown-toggle {
     color: white;
     background-color: black;
-    background-image: none;
     border-color: black; }
     .ec-inlineBtn--top:active:hover, .ec-inlineBtn--top:active:focus, .ec-inlineBtn--top:active.focus, .ec-inlineBtn--top.active:hover, .ec-inlineBtn--top.active:focus, .ec-inlineBtn--top.active.focus,
     .open > .ec-inlineBtn--top.dropdown-toggle:hover,
@@ -4992,6 +5007,9 @@ Styleguide 12.3.1
       color: white;
       background-color: black;
       border-color: black; }
+  .ec-inlineBtn--top:active, .ec-inlineBtn--top.active,
+  .open > .ec-inlineBtn--top.dropdown-toggle {
+    background-image: none; }
   .ec-inlineBtn--top.disabled:hover, .ec-inlineBtn--top.disabled:focus, .ec-inlineBtn--top.disabled.focus, .ec-inlineBtn--top[disabled]:hover, .ec-inlineBtn--top[disabled]:focus, .ec-inlineBtn--top[disabled].focus,
   fieldset[disabled] .ec-inlineBtn--top:hover,
   fieldset[disabled] .ec-inlineBtn--top:focus,
@@ -5057,8 +5075,8 @@ Styleguide 2.1.2
   .ec-blockBtn--top.disabled, .ec-blockBtn--top[disabled],
   fieldset[disabled] .ec-blockBtn--top {
     cursor: not-allowed;
-    filter: alpha(opacity=65);
     opacity: 0.65;
+    filter: alpha(opacity=65);
     box-shadow: none; }
   .ec-blockBtn--top:focus, .ec-blockBtn--top.focus {
     color: white;
@@ -5072,7 +5090,6 @@ Styleguide 2.1.2
   .open > .ec-blockBtn--top.dropdown-toggle {
     color: white;
     background-color: black;
-    background-image: none;
     border-color: black; }
     .ec-blockBtn--top:active:hover, .ec-blockBtn--top:active:focus, .ec-blockBtn--top:active.focus, .ec-blockBtn--top.active:hover, .ec-blockBtn--top.active:focus, .ec-blockBtn--top.active.focus,
     .open > .ec-blockBtn--top.dropdown-toggle:hover,
@@ -5081,6 +5098,9 @@ Styleguide 2.1.2
       color: white;
       background-color: black;
       border-color: black; }
+  .ec-blockBtn--top:active, .ec-blockBtn--top.active,
+  .open > .ec-blockBtn--top.dropdown-toggle {
+    background-image: none; }
   .ec-blockBtn--top.disabled:hover, .ec-blockBtn--top.disabled:focus, .ec-blockBtn--top.disabled.focus, .ec-blockBtn--top[disabled]:hover, .ec-blockBtn--top[disabled]:focus, .ec-blockBtn--top[disabled].focus,
   fieldset[disabled] .ec-blockBtn--top:hover,
   fieldset[disabled] .ec-blockBtn--top:focus,
@@ -5660,21 +5680,20 @@ Styleguide 13.4
     color: #4b5361; }
 
 .ec-modal .ec-modal-overlay-close {
+  display: none;
   width: 100%;
   height: 100%;
   position: fixed;
   left: 0;
-  top: 0;
-  z-index: -100; }
-
-.ec-modal input:checked ~ .ec-modal-overlay-close {
-  z-index: 9998; }
+  top: 0; }
 
 .ec-modal input:checked ~ .ec-modal-overlay {
   transform: scale(1);
   opacity: 1;
   z-index: 9997;
   overflow: auto; }
+  .ec-modal input:checked ~ .ec-modal-overlay .ec-modal-overlay-close {
+    display: block; }
 
 .ec-modal input:checked ~ .ec-modal-overlay .ec-modal-wrap {
   transform: translateY(0);
