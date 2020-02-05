@@ -183,12 +183,13 @@ class EntryController extends AbstractController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
 
-                    $activateUrl = $this->generateUrl('entry_activate', ['secret_key' => $Customer->getSecretKey()], UrlGeneratorInterface::ABSOLUTE_URL);
 
                     $activateFlg = $this->BaseInfo->isOptionCustomerActivate();
 
                     // 仮会員設定が有効な場合は、確認メールを送信し完了画面表示.
                     if ($activateFlg) {
+                        $activateUrl = $this->generateUrl('entry_activate', ['secret_key' => $Customer->getSecretKey()], UrlGeneratorInterface::ABSOLUTE_URL);
+
                         // メール送信
                         $this->mailService->sendCustomerConfirmMail($Customer, $activateUrl);
 
@@ -204,7 +205,9 @@ class EntryController extends AbstractController
                         // 仮会員設定が無効な場合は、会員登録を完了させる.
                         $qtyInCart = $this->entryActivate($request, $Customer->getSecretKey());
 
-                        return $this->render('Entry/activate.twig', [
+                        // URLを変更するため完了画面にリダイレクト
+                        return $this->redirectToRoute('entry_activate', [
+                            'secret_key' => $Customer->getSecretKey(),
                             'qtyInCart' => $qtyInCart,
                         ]);
 
@@ -231,10 +234,10 @@ class EntryController extends AbstractController
     /**
      * 会員のアクティベート（本会員化）を行う.
      *
-     * @Route("/entry/activate/{secret_key}", name="entry_activate")
+     * @Route("/entry/activate/{secret_key}/{qtyInCart}", name="entry_activate")
      * @Template("Entry/activate.twig")
      */
-    public function activate(Request $request, $secret_key)
+    public function activate(Request $request, $secret_key, $qtyInCart = null)
     {
         $errors = $this->recursiveValidator->validate(
             $secret_key,
@@ -248,7 +251,12 @@ class EntryController extends AbstractController
             ]
         );
 
-        if ($request->getMethod() === 'GET' && count($errors) === 0) {
+        if(!is_null($qtyInCart)) {
+
+            return [
+                'qtyInCart' => $qtyInCart,
+            ];
+        } elseif ($request->getMethod() === 'GET' && count($errors) === 0) {
 
             // 会員登録処理を行う
             $qtyInCart = $this->entryActivate($request, $secret_key);
@@ -297,9 +305,10 @@ class EntryController extends AbstractController
 
         // Assign session carts into customer carts
         $Carts = $this->cartService->getCarts();
-        $qtyInCart = array_reduce($Carts, function ($qty, $Cart) {
-            return $qty + $Cart->getTotalQuantity();
-        });
+        $qtyInCart = 0;
+        foreach ($Carts as $Cart) {
+            $qtyInCart += $Cart->getTotalQuantity();
+        }
 
         // 本会員登録してログイン状態にする
         $token = new UsernamePasswordToken($Customer, null, 'customer', ['ROLE_USER']);
