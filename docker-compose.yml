@@ -1,7 +1,7 @@
 version: "3"
 
 networks:
-  backend: 
+  backend:
     driver: bridge
 
 volumes:
@@ -11,17 +11,17 @@ volumes:
     driver: local
   mailcatcher-data:
     driver: local
-  
+
   ### ignore folder volume #####
   var:
     driver: local
-  vender:
+  vendor:
     driver: local
 
 services:
   ### ECCube4 ##################################
   ec-cube:
-    build: 
+    build:
       context: .
       args:
         # ビルド時のECCubeインストールスクリプトをスキップする場合にtrueを指定する。
@@ -34,10 +34,10 @@ services:
       - ".:/var/www/html:cached"
       ### 同期対象からコストの重いフォルダを除外 #####################
       - "var:/var/www/html/var"
-      - "vender:/var/www/html/vendor"
-    networks: 
+      - "vendor:/var/www/html/vendor"
+    networks:
       - backend
-  
+
   ### Postgres ################################
   postgres:
     image: postgres:10
@@ -49,9 +49,9 @@ services:
       - 15432:5432
     volumes:
       - pg-database:/var/lib/postgresql/data
-    networks: 
+    networks:
       - backend
-  
+
   ### MySQL ##################################
   mysql:
     image: mysql:5.7
@@ -64,7 +64,7 @@ services:
       - mysql-database:/var/lib/mysql
     ports:
       - 13306:3306
-    networks: 
+    networks:
       - backend
 
   ### Mailcatcher ##################################
@@ -73,5 +73,5 @@ services:
     ports:
       - "1080:1080"
       - "1025:1025"
-    networks: 
+    networks:
       - backend
