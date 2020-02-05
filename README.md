@@ -5,7 +5,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/quality-score.png?b=4.0)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=4.0)
 [![Coverage Status](https://coveralls.io/repos/github/EC-CUBE/ec-cube/badge.svg?branch=4.0)](https://coveralls.io/github/EC-CUBE/ec-cube?branch=4.0)
 
-[![Slack](https://img.shields.io/badge/slack-join%5fchat-brightgreen.svg?style=flat)](https://www.ec-cube.net/rd.php?aid=join-slack)
+[![Slack](https://img.shields.io/badge/slack-join%5fchat-brightgreen.svg?style=flat)](https://join.slack.com/t/ec-cube/shared_invite/enQtNDA1MDYzNDQxMTIzLTY5MTRhOGQ2MmZhMjQxYTAwMmVlMDc5MDU2NjJlZmFiM2E3M2Q0M2Y3OTRlMGY4NTQzN2JiZDBkNmQwNTUzYzc)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
@@ -29,10 +29,10 @@
 Sass のソースコードは `html/template/{admin,default}/assets/scss` にあります。
 前提として [https://nodejs.org/ja/] より、 Node.js をインストールしておいてください。
 
-以下のコマンドでビルドすることで、 `html/template/{admin,default}/assets/css` に CSS ファイルが出力されます。
+以下のコマンドでビルドすることで、 `html/template/**/assets/css` に CSS ファイルが出力されます。
 
 ```shell
-npm install # 初回のみ
+npm ci # 初回およびpackage-lock.jsonに変更があったとき
 npm run build # Sass のビルド
 ```
 
@@ -62,7 +62,7 @@ EC-CUBE 4.0の不具合の修正、機能のブラッシュアップを目的と
 Pull Requestの送信前に、Issueにて提議いただく事も可能です。  
 Issuesの利用方法については、[こちら](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご確認ください。  
 
-[Slack](https://www.ec-cube.net/rd.php?aid=join-slack)でも本体の開発に関する意見交換などを行っております。
+[Slack](https://join.slack.com/t/ec-cube/shared_invite/enQtNDA1MDYzNDQxMTIzLTY5MTRhOGQ2MmZhMjQxYTAwMmVlMDc5MDU2NjJlZmFiM2E3M2Q0M2Y3OTRlMGY4NTQzN2JiZDBkNmQwNTUzYzc)でも本体の開発に関する意見交換などを行っております。
 
 
 
