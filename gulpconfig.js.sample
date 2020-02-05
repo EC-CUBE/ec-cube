@@ -1,0 +1,14 @@
+module.exports = {
+  server: 'http://localhost:8000',
+  paths: {
+    source: {
+      template: './html/template',
+    },
+    output: {
+      template: './html/template',
+    },
+    assets: {
+      scss: '/**/scss/**/*.scss',
+    },
+  }
+};

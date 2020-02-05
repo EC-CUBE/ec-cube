@@ -1,57 +1,184 @@
-const gulp = require("gulp");
-const $ = require("gulp-load-plugins")();
-const sass = require('gulp-sass');
+/*
+ * モジュール
+ */
+// common
+const gulp = require('gulp');
+const plumber = require('gulp-plumber');
+const notify = require('gulp-notify');
 const rename = require('gulp-rename');
+const process = require('process');
+// server
+const browserSync = require('browser-sync')
+// sass
+const sass = require('gulp-sass');
+const postcss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
+const cssmqpacker = require('css-mqpacker');
+const sortCSSmq = require('sort-css-media-queries');
 const cleanCSS = require('gulp-clean-css');
-const es = require('event-stream');
 
-const srcPattern = [
-    'default',
-    'admin'
-];
+/*
+ * 変数
+ */
+// gulpconfig 存在しない場合のフォールバック
+try {
+  var config = require('./gulpconfig');
+} catch (e) {
+  var config = {
+    paths: {
+      source: {
+        template: './html/template',
+      },
+      output: {
+        template: './html/template',
+      },
+      assets: {
+        scss: '/**/scss/**/*.scss',
+      },
+    }
+  }
+}
 
-// CSS出力
-gulp.task('sass', function() {
-    let events = srcPattern.map((target) => {
-        return gulp.src(`./html/template/${target}/assets/scss/**/*.scss`)
-            .pipe($.plumber({
-                errorHandler: $.notify.onError('<%= error.message %>')
-            }))
-            .pipe($.sourcemaps.init())
-            .pipe(sass({
-                sourceMap: true
-            }))
-            .pipe($.pleeease({
-                autoprefixer: true,
-                minifier: false,
-                mqpacker: true
-            }))
-            .pipe($.sourcemaps.write('./maps'))
-            .pipe(gulp.dest(`./html/template/${target}/assets/css/`))
-    });
-    return es.concat(events);
+/*
+ * config 存在判定
+ */
+const configDecisionTask = (done) => {
+  if (!config.server) {
+    console.log('\033[31m' + 'Error:'+ '\033[39m' + ' gulpconfig.jsが設定されていません。');
+    console.log('\033[31m' + 'Error:'+ '\033[39m' + ' タスクを終了します。');
+    throw new Error();
+  }
+  done();
+};
+
+/*
+ * Browsersync サーバー
+ */
+const serverTask = (done) => {
+  browserSync({
+    proxy: config.server
+  })
+  done()
+};
+
+/*
+ * sass
+ */
+const sassSource = config.paths.source.template + config.paths.assets.scss;
+const sassOutput = config.paths.output.template;
+
+// scssのコンパイル
+const sassTask = () => {
+  return gulp
+    .src([sassSource], {
+      sourcemaps: true,
+      base: config.paths.output.template
+    })
+    .pipe(plumber({
+      errorHandler: notify.onError('Error: <%= error.message %>')
+    }))
+    .pipe(sass())
+    .pipe(postcss([
+      autoprefixer(),
+      cssmqpacker({
+        sort: sortCSSmq
+      }),
+    ]))
+    .pipe(rename((path) => {
+      path.dirname = path.dirname.replace('/scss', '/css')
+    }))
+    .pipe(gulp.dest(sassOutput, {sourcemaps: '.'}))
+    .pipe(browserSync.stream());
+};
+
+// scssのコンパイル minify化
+const sassCssMinifyTask = () => {
+  return gulp
+    .src([sassSource], {
+      sourcemaps: true,
+      base: config.paths.output.template
+    })
+    .pipe(plumber({
+      errorHandler: notify.onError('Error: <%= error.message %>')
+    }))
+    .pipe(sass())
+    .pipe(postcss([
+      autoprefixer(),
+      cssmqpacker({
+        sort: sortCSSmq
+      }),
+    ]))
+    .pipe(cleanCSS())
+    .pipe(rename((path) => {
+      path.dirname = path.dirname.replace('/scss', '/css')
+      if (path.extname === '.css') path.extname = '.min.css'
+    }))
+    .pipe(gulp.dest(sassOutput, {sourcemaps: '.'}))
+    .pipe(browserSync.stream());
+};
+
+/*
+ * エクスポート
+ */
+exports.configDecisionTask = configDecisionTask;
+exports.serverTask = serverTask;
+exports.sassTask = sassTask;
+exports.sassCssMinifyTask = sassCssMinifyTask;
+
+/*
+ * タスク
+ */
+// デフォルト
+gulp.task('default',
+  gulp.parallel(sassTask, sassCssMinifyTask)
+);
+
+// 監視
+gulp.task('watch', () => {
+  gulp.parallel(sassTask, sassCssMinifyTask),
+  gulp.watch(
+    config.paths.source.template + config.paths.assets.scss,
+    gulp.parallel(sassTask, sassCssMinifyTask)
+  )
 });
 
-// CSS圧縮(cssディレクトリ直下のファイルだけ対象とする)
-gulp.task('minify-css', function() {
-    let events = srcPattern.map((target) => {
-        return gulp.src([`./html/template/${target}/assets/css/*.css`, `!./html/template/${target}/assets/css/**/*.min.css`])
-            .pipe($.plumber({
-                errorHandler: $.notify.onError('<%= error.message %>')
-            }))
-            .pipe($.sourcemaps.init())
-            .pipe(sass({
-                sourceMap: true
-            }))
-            .pipe(cleanCSS())
-            .pipe(rename({
-                extname: '.min.css'
-            }))
-            .pipe($.sourcemaps.write('./maps'))
-            .pipe(gulp.dest(`./html/template/${target}/assets/css/`))
-    });
-    return es.concat(events);
-});
+// minifyタスクの監視
+gulp.task('watch:min', gulp.series(
+  sassCssMinifyTask,
+  () => {
+    gulp.watch(
+      config.paths.source.template + config.paths.assets.scss,
+      sassCssMinifyTask
+    )
+  }
+));
 
-gulp.task("default", ["sass", "minify-css"]);
+// 監視 ブラウザ自動更新
+gulp.task('server', gulp.series(
+  configDecisionTask,
+  gulp.parallel(sassTask, sassCssMinifyTask),
+  serverTask,
+  () => {
+    gulp.watch(
+      config.paths.source.template + config.paths.assets.scss,
+      sassTask
+    ),
+    gulp.watch(
+      config.paths.source.template + config.paths.assets.scss,
+      sassCssMinifyTask
+    );
+  }
+));
 
+// 監視 ブラウザ自動更新 minify化
+gulp.task('server:min', gulp.series(
+  configDecisionTask,
+  sassCssMinifyTask,
+  serverTask,
+  () => {
+    gulp.watch(
+      config.paths.source.template + config.paths.assets.scss,
+      sassCssMinifyTask
+    );
+  }
+));

@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -29,21 +30,30 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class CacheUtil implements EventSubscriberInterface
 {
+
+    const DOCTRINE_APP_CACHE_KEY = 'doctrine.app_cache_pool';
+
     private $clearCacheAfterResponse = false;
 
     /**
      * @var KernelInterface
      */
     protected $kernel;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * CacheUtil constructor.
      *
      * @param KernelInterface $kernel
+     * @param ContainerInterface $container
      */
-    public function __construct(KernelInterface $kernel)
+    public function __construct(KernelInterface $kernel, ContainerInterface $container)
     {
         $this->kernel = $kernel;
+        $this->container = $container;
     }
 
     /**
@@ -100,7 +110,6 @@ class CacheUtil implements EventSubscriberInterface
 
     /**
      * Doctrineのキャッシュを削除します.
-     * APP_ENV=prodの場合のみ実行されます.
      *
      * @param null $env
      *
@@ -110,7 +119,7 @@ class CacheUtil implements EventSubscriberInterface
      */
     public function clearDoctrineCache()
     {
-        if ($this->kernel->getEnvironment() !== 'prod') {
+        if (!$this->container->has(self::DOCTRINE_APP_CACHE_KEY)) {
             return;
         }
         $console = new Application($this->kernel);
@@ -118,7 +127,7 @@ class CacheUtil implements EventSubscriberInterface
 
         $command = [
             'command' => 'cache:pool:clear',
-            'pools' => ['doctrine.app_cache_pool'],
+            'pools' => [self::DOCTRINE_APP_CACHE_KEY],
             '--no-ansi' => true,
         ];
 
