@@ -155,7 +155,7 @@ class SearchOrderType extends AbstractType
                 ],
             ])
             ->add('payment_date_end', DateType::class, [
-                'label' => 'admin.order.payment_date__start',
+                'label' => 'admin.order.payment_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
