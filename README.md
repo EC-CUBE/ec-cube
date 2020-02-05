@@ -29,10 +29,10 @@
 Sass のソースコードは `html/template/{admin,default}/assets/scss` にあります。
 前提として [https://nodejs.org/ja/] より、 Node.js をインストールしておいてください。
 
-以下のコマンドでビルドすることで、 `html/template/{admin,default}/assets/css` に CSS ファイルが出力されます。
+以下のコマンドでビルドすることで、 `html/template/**/assets/css` に CSS ファイルが出力されます。
 
 ```shell
-npm install # 初回のみ
+npm ci # 初回およびpackage-lock.jsonに変更があったとき
 npm run build # Sass のビルド
 ```
 
