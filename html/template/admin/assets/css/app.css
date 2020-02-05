@@ -304,7 +304,7 @@ Styleguide 3.0
     color: #2f3f4e;
     cursor: pointer;
     position: relative; }
-    .c-mainNavArea__navItemTitle:after {
+    .c-mainNavArea__navItemTitle::after {
       display: inline-block;
       width: 16px;
       height: 16px;
@@ -319,7 +319,7 @@ Styleguide 3.0
     .c-mainNavArea__navItemTitle:hover {
       background: rgba(15, 15, 15, 0.05);
       text-decoration: none; }
-    .c-mainNavArea__navItemTitle.collapsed:after {
+    .c-mainNavArea__navItemTitle.collapsed::after {
       content: "\f107"; }
     .c-mainNavArea__navItemTitle i {
       margin-right: .5em;
@@ -327,7 +327,7 @@ Styleguide 3.0
       font-size: inherit; }
     .c-mainNavArea__navItemTitle span {
       color: #2f3f4e; }
-  .c-mainNavArea__navItem:first-of-type > .c-mainNavArea__navItemTitle:after {
+  .c-mainNavArea__navItem:first-of-type > .c-mainNavArea__navItemTitle::after {
     display: none; }
   .c-mainNavArea__navItemSubTitle {
     display: block;
@@ -350,7 +350,7 @@ Styleguide 3.0
       position: absolute;
       top: 7px;
       right: 15px; }
-    .c-mainNavArea__navItemSubTitle.collapsed:after {
+    .c-mainNavArea__navItemSubTitle.collapsed::after {
       content: "\f107"; }
     .c-mainNavArea__navItemSubTitle:hover {
       text-decoration: none; }
@@ -362,7 +362,6 @@ Styleguide 3.0
   height: 100%;
   left: 0;
   opacity: 1;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   transition: left 0.2s 0.2s, opacity 0.1s 0.1s, width 0.1s, height 0.1s; }
 
 /*
@@ -381,14 +380,12 @@ Styleguide 3.1
 .c-curtain {
   width: 0;
   height: 0;
-  opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; }
+  opacity: 0; }
 
 .c-curtain.is-active {
   width: 0;
   height: 0;
   opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   transition: opacity 0.3s 0.1s, width 0.1s, height 0.1s; }
 
 /*
@@ -533,7 +530,7 @@ Styleguide 4.5
   padding: 15px;
   box-sizing: border-box;
   position: relative; }
-  .c-subContents:before {
+  .c-subContents::before {
     content: "";
     width: 0;
     height: 0;
@@ -635,7 +632,6 @@ Styleguide 5.1
   .c-baseLink:hover {
     color: #fff;
     opacity: .5;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     text-decoration: none; }
   .c-baseLink i {
     display: inline-block;
@@ -681,7 +677,7 @@ p 項目の内容はドラッグ＆ドロップで変更可能です。
   background-size: contain;
   cursor: pointer;
   position: relative; }
-  .c-form__fileUploadThumbnail:before {
+  .c-form__fileUploadThumbnail::before {
     display: block;
     content: "";
     width: 100%;
@@ -700,7 +696,7 @@ p 項目の内容はドラッグ＆ドロップで変更可能です。
     top: 2px;
     right: 2px; }
 
-.c-form__fileUploadThumbnail:hover:before {
+.c-form__fileUploadThumbnail:hover::before {
   background: rgba(0, 0, 0, 0.5); }
 
 .c-form__fileUploadThumbnail:hover .delete-image {
@@ -759,21 +755,21 @@ include /assets/tmpl/components/directory.pug
 
 Styleguide 7.0
 */
-.c-directoryTree label:before {
+.c-directoryTree label::before {
   content: "\f147";
   display: inline-block;
   margin-right: .5em;
   font-family: FontAwesome;
   font-size: 16px; }
 
-.c-directoryTree label[data-toggle="collapse"]:before {
+.c-directoryTree label[data-toggle="collapse"]::before {
   content: "\f147";
   display: inline-block;
   margin-right: .5em;
   font-family: FontAwesome;
   font-size: 16px; }
 
-.c-directoryTree label.collapsed:before {
+.c-directoryTree label.collapsed::before {
   content: "\f196";
   display: inline-block;
   margin-right: .5em;
@@ -787,7 +783,7 @@ Styleguide 7.0
     display: inline-block;
     margin-left: 16px; }
 
-.c-directoryTree ul > li > ul li:not(:last-of-type) > label:before {
+.c-directoryTree ul > li > ul li:not(:last-of-type) > label::before {
   margin-left: 2px;
   margin-right: .5em;
   content: "├";
@@ -795,14 +791,14 @@ Styleguide 7.0
   width: 1em;
   height: 1em; }
 
-.c-directoryTree ul > li > ul li:last-of-type > label:before {
+.c-directoryTree ul > li > ul li:last-of-type > label::before {
   margin-right: .6em;
   content: "└";
   display: inline-block;
   width: 1em;
   height: 1em; }
 
-.c-directoryTree ul > li > ul label:after {
+.c-directoryTree ul > li > ul label::after {
   content: "\f147";
   display: inline-block;
   margin-right: .5em;
@@ -811,7 +807,7 @@ Styleguide 7.0
   position: absolute;
   left: 20px; }
 
-.c-directoryTree ul > li > ul label[data-toggle="collapse"]:after {
+.c-directoryTree ul > li > ul label[data-toggle="collapse"]::after {
   content: "\f147";
   display: inline-block;
   margin-right: .5em;
@@ -820,7 +816,7 @@ Styleguide 7.0
   position: absolute;
   left: 20px; }
 
-.c-directoryTree ul > li > ul label.collapsed:after {
+.c-directoryTree ul > li > ul label.collapsed::after {
   content: "\f196";
   display: inline-block;
   margin-right: .5em;
@@ -857,14 +853,14 @@ Styleguide 7.1
   overflow: scroll; }
   .c-directoryTree--register ul > li > ul li > label {
     margin-left: 10px; }
-  .c-directoryTree--register ul > li > ul li:not(:last-of-type) > label:before {
+  .c-directoryTree--register ul > li > ul li:not(:last-of-type) > label::before {
     margin-left: 2px;
     margin-right: .5em;
     content: "├";
     display: inline-block;
     width: 1em;
     height: 1em; }
-  .c-directoryTree--register ul > li > ul li:last-of-type > label:before {
+  .c-directoryTree--register ul > li > ul li:last-of-type > label::before {
     margin-right: .6em;
     content: "└";
     display: inline-block;
@@ -887,21 +883,21 @@ include /assets/tmpl/components/directory.pug
 
 Styleguide 7.2
 */
-.c-directoryTree--folder label:before {
+.c-directoryTree--folder label::before {
   content: "\f114";
   display: inline-block;
   margin-right: .5em;
   font-family: FontAwesome;
   font-size: 16px; }
 
-.c-directoryTree--folder label[data-toggle="collapse"]:before {
+.c-directoryTree--folder label[data-toggle="collapse"]::before {
   content: "\f115";
   display: inline-block;
   margin-right: .5em;
   font-family: FontAwesome;
   font-size: 16px; }
 
-.c-directoryTree--folder label.collapsed:before {
+.c-directoryTree--folder label.collapsed::before {
   content: "\f114";
   display: inline-block;
   margin-right: .5em;
@@ -913,10 +909,9 @@ Styleguide 7.2
   position: relative; }
   .c-directoryTree--folder ul > li > ul li > label span, .c-directoryTree--folder ul > li > ul li > label a {
     display: inline-block;
-    margin-left: 24px;
     margin-left: 1.5rem; }
 
-.c-directoryTree--folder ul > li > ul li:not(:last-of-type) > label:before {
+.c-directoryTree--folder ul > li > ul li:not(:last-of-type) > label::before {
   margin-left: 2px;
   margin-right: .5em;
   content: "├";
@@ -924,14 +919,14 @@ Styleguide 7.2
   width: 1em;
   height: 1em; }
 
-.c-directoryTree--folder ul > li > ul li:last-of-type > label:before {
+.c-directoryTree--folder ul > li > ul li:last-of-type > label::before {
   margin-right: .6em;
   content: "└";
   display: inline-block;
   width: 1em;
   height: 1em; }
 
-.c-directoryTree--folder ul > li > ul label:after {
+.c-directoryTree--folder ul > li > ul label::after {
   content: "\f114";
   display: inline-block;
   margin-right: .5em;
@@ -940,7 +935,7 @@ Styleguide 7.2
   position: absolute;
   left: 20px; }
 
-.c-directoryTree--folder ul > li > ul label[data-toggle="collapse"]:after {
+.c-directoryTree--folder ul > li > ul label[data-toggle="collapse"]::after {
   content: "\f115";
   display: inline-block;
   margin-right: .5em;
@@ -949,7 +944,7 @@ Styleguide 7.2
   position: absolute;
   left: 20px; }
 
-.c-directoryTree--folder ul > li > ul label.collapsed:after {
+.c-directoryTree--folder ul > li > ul label.collapsed::after {
   content: "\f114";
   display: inline-block;
   margin-right: .5em;
@@ -1036,53 +1031,50 @@ Font Awesome v4.7.0 で利用可能なフォント群については、<a href="
 Styleguide 11.0
 */
 
-@media only screen and (max-width: 767px){
-  .c-headerBar__logo{
-    display: none; }
-  .c-headerBar__toggleBtn{
-    display: table-cell; }
-  .c-mainNavArea{
-    left: -220px;
-    width: 0;
-    height: 0;
-    opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; }
-  .c-contentsArea{
-    margin-left: 0; }
-  .c-conversionArea{
-    width: 100%; } }
+@media only screen and (min-width: 768px) and (max-width: 1279px) {
+    .c-mainNavArea {
+      width: 160px; }
+      .c-mainNavArea__navItem ul {
+        font-size: 13px; }
+      .c-mainNavArea__navItem li a {
+        padding: 10px 0 10px 25px; }
+      .c-mainNavArea__navItem li ul li a {
+        padding: 10px 0 10px 30px; }
+      .c-mainNavArea__navItemTitle {
+        font-size: 14px; }
+        .c-mainNavArea__navItemTitle::after {
+          right: 5px; }
+        .c-mainNavArea__navItemTitle i {
+          right: 1px; }
+        .c-mainNavArea__navItemSubTitle:after {
+          right: 5px; }
+    .c-contentsArea {
+      margin-left: 160px; }
+    .c-conversionArea {
+      width: calc(100% - 160px); } }
 
-@media only screen and (min-width: 768px) and (max-width: 1279px){
-  .c-mainNavArea{
-    width: 160px; }
-  .c-mainNavArea__navItem ul{
-    font-size: 13px; }
-  .c-mainNavArea__navItem li a{
-    padding: 10px 0 10px 25px; }
-  .c-mainNavArea__navItem li ul li a{
-    padding: 10px 0 10px 30px; }
-  .c-mainNavArea__navItemTitle{
-    font-size: 14px; }
-  .c-mainNavArea__navItemTitle:after{
-    right: 5px; }
-  .c-mainNavArea__navItemTitle i{
-    right: 1px; }
-  .c-mainNavArea__navItemSubTitle:after{
-    right: 5px; }
-  .c-contentsArea{
-    margin-left: 160px; }
-  .c-conversionArea{
-    width: calc(100% - 160px); } }
+@media only screen and (max-width: 1280px) {
+    .c-curtain.is-active {
+      display: block;
+      width: 100%;
+      height: 100vh;
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 300;
+      position: fixed; } }
 
-@media only screen and (max-width: 1280px){
-  .c-curtain.is-active{
-    display: block;
-    width: 100%;
-    height: 100vh;
-    opacity: 1;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 300;
-    position: fixed; } }
-
-/*# sourceMappingURL=maps/app.css.map */
+@media only screen and (max-width: 767px) {
+      .c-headerBar__logo {
+        display: none; }
+      .c-headerBar__toggleBtn {
+        display: table-cell; }
+    .c-mainNavArea {
+      left: -220px;
+      width: 0;
+      height: 0;
+      opacity: 0; }
+    .c-contentsArea {
+      margin-left: 0; }
+    .c-conversionArea {
+      width: 100%; } }
+/*# sourceMappingURL=app.css.map */

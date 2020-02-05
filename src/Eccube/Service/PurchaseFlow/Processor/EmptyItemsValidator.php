@@ -46,7 +46,7 @@ class EmptyItemsValidator extends ItemHolderValidator
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         foreach ($itemHolder->getItems() as $item) {
-            if ($item->isProduct() && $item->getQuantity() == 0) {
+            if ($item->isProduct() && $item->getQuantity() <= 0) {
                 if ($itemHolder instanceof Order) {
                     foreach ($itemHolder->getShippings() as $Shipping) {
                         $Shipping->removeOrderItem($item);

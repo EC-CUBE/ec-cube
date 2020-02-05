@@ -57,6 +57,10 @@ class OrderNoProcessor implements ItemHolderPreprocessor
                 return;
             }
 
+            if (null === $Order->getId()) {
+                return;
+            }
+
             $format = $this->eccubeConfig['eccube_order_no_format'];
             if (empty($format)) {
                 // フォーマットが設定されていなければ受注IDが設定される

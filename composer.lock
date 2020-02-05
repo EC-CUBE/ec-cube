@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88f0068d67d51e28078cf25ca541e669",
+    "content-hash": "54f828784a479f284e3802f7e7ddfab1",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -5006,93 +5006,6 @@
             "time": "2019-03-31T16:47:37+00:00"
         },
         {
-            "name": "symfony/lts",
-            "version": "v3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/lts.git",
-                "reference": "3a4e88df038e3197e6b66d091d2495fd7d255c0b"
-            },
-            "conflict": {
-                "symfony/asset": ">=4",
-                "symfony/browser-kit": ">=4",
-                "symfony/cache": ">=4",
-                "symfony/class-loader": ">=4",
-                "symfony/config": ">=4",
-                "symfony/console": ">=4",
-                "symfony/css-selector": ">=4",
-                "symfony/debug": ">=4",
-                "symfony/debug-bundle": ">=4",
-                "symfony/dependency-injection": ">=4",
-                "symfony/doctrine-bridge": ">=4",
-                "symfony/dom-crawler": ">=4",
-                "symfony/dotenv": ">=4",
-                "symfony/event-dispatcher": ">=4",
-                "symfony/expression-language": ">=4",
-                "symfony/filesystem": ">=4",
-                "symfony/finder": ">=4",
-                "symfony/form": ">=4",
-                "symfony/framework-bundle": ">=4",
-                "symfony/http-foundation": ">=4",
-                "symfony/http-kernel": ">=4",
-                "symfony/inflector": ">=4",
-                "symfony/intl": ">=4",
-                "symfony/ldap": ">=4",
-                "symfony/lock": ">=4",
-                "symfony/monolog-bridge": ">=4",
-                "symfony/options-resolver": ">=4",
-                "symfony/process": ">=4",
-                "symfony/property-access": ">=4",
-                "symfony/property-info": ">=4",
-                "symfony/proxy-manager-bridge": ">=4",
-                "symfony/routing": ">=4",
-                "symfony/security": ">=4",
-                "symfony/security-bundle": ">=4",
-                "symfony/security-core": ">=4",
-                "symfony/security-csrf": ">=4",
-                "symfony/security-guard": ">=4",
-                "symfony/security-http": ">=4",
-                "symfony/serializer": ">=4",
-                "symfony/stopwatch": ">=4",
-                "symfony/symfony": ">=4",
-                "symfony/templating": ">=4",
-                "symfony/translation": ">=4",
-                "symfony/twig-bridge": ">=4",
-                "symfony/twig-bundle": ">=4",
-                "symfony/validator": ">=4",
-                "symfony/var-dumper": ">=4",
-                "symfony/web-link": ">=4",
-                "symfony/web-profiler-bundle": ">=4",
-                "symfony/web-server-bundle": ">=4",
-                "symfony/workflow": ">=4",
-                "symfony/yaml": ">=4"
-            },
-            "type": "metapackage",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Enforces Long Term Supported versions of Symfony components",
-            "homepage": "https://symfony.com",
-            "abandoned": "symfony/flex",
-            "time": "2017-10-19T02:02:36+00:00"
-        },
-        {
             "name": "symfony/maker-bundle",
             "version": "v1.11.6",
             "source": {
@@ -8093,7 +8006,7 @@
             "time": "2018-07-12T10:23:15+00:00"
         },
         {
-            "name": "mikey179/vfsStream",
+            "name": "mikey179/vfsstream",
             "version": "v1.6.6",
             "source": {
                 "type": "git",
@@ -8976,6 +8889,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2018-08-09T05:50:03+00:00"
         },
         {
@@ -9191,16 +9105,16 @@
         },
         {
             "name": "sebastian/exporter",
-            "version": "3.1.0",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "234199f4528de6d12aaa58b612e98f7d36adb937"
+                "reference": "68609e1261d215ea5b21b7987539cbfbe156ec3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/234199f4528de6d12aaa58b612e98f7d36adb937",
-                "reference": "234199f4528de6d12aaa58b612e98f7d36adb937",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/68609e1261d215ea5b21b7987539cbfbe156ec3e",
+                "reference": "68609e1261d215ea5b21b7987539cbfbe156ec3e",
                 "shasum": ""
             },
             "require": {
@@ -9228,6 +9142,10 @@
             ],
             "authors": [
                 {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                },
+                {
                     "name": "Jeff Welch",
                     "email": "whatthejeff@gmail.com"
                 },
@@ -9236,16 +9154,12 @@
                     "email": "github@wallbash.com"
                 },
                 {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@2bepublished.at"
-                },
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                },
-                {
                     "name": "Adam Harvey",
                     "email": "aharvey@php.net"
+                },
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
                 }
             ],
             "description": "Provides the functionality to export PHP variables for visualization",
@@ -9254,7 +9168,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2017-04-03T13:19:02+00:00"
+            "time": "2019-09-14T09:02:43+00:00"
         },
         {
             "name": "sebastian/global-state",
