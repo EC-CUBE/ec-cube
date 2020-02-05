@@ -460,6 +460,7 @@ class OrderPdfService extends TcpdfFpdi
         // 受注詳細情報
         // =========================================
         $i = 0;
+        $isShowReducedTaxMess = false;
         /* @var OrderItem $OrderItem */
         foreach ($Shipping->getOrderItems() as $OrderItem) {
             // class categoryの生成
@@ -484,6 +485,7 @@ class OrderPdfService extends TcpdfFpdi
             }
             if ($this->taxExtension->isReducedTaxRate($OrderItem)) {
                 $productName .= ' ※';
+                $isShowReducedTaxMess = true;
             }
             $arrOrder[$i][0] = $productName;
             // 購入数量
@@ -571,11 +573,13 @@ class OrderPdfService extends TcpdfFpdi
             $arrOrder[$i][2] = '請求金額';
             $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
 
-            ++$i;
-            $arrOrder[$i][0] = '※は軽減税率対象商品です。';
-            $arrOrder[$i][1] = '';
-            $arrOrder[$i][2] = '';
-            $arrOrder[$i][3] = '';
+            if ($isShowReducedTaxMess) {
+                ++$i;
+                $arrOrder[$i][0] = '※は軽減税率対象商品です。';
+                $arrOrder[$i][1] = '';
+                $arrOrder[$i][2] = '';
+                $arrOrder[$i][3] = '';
+            }
         }
 
         // PDFに設定する
