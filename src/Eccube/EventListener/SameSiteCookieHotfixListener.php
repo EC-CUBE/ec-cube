@@ -13,6 +13,7 @@
 
 namespace Eccube\EventListener;
 
+use Eccube\Twig\Environment;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -31,6 +32,16 @@ class SameSiteCookieHotfixListener implements EventSubscriberInterface
         '/^.*Macintosh; Intel Mac OS X.*Version\/1[0-2].*Safari.*$/',
     ];
 
+    /**
+     * @var Environment
+     */
+    private $twig;
+
+    public function __construct(Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
@@ -43,7 +54,11 @@ class SameSiteCookieHotfixListener implements EventSubscriberInterface
         });
 
         if ($isUnsupported) {
-            $event->setResponse(new Response('お使いのブラウザーではご利用いただけません。'));
+            $event->setResponse(new Response($this->twig->render('error_samesite.twig', [
+                'error_title' => 'お使いのブラウザーではご利用いただけません。',
+                'error_message' => '最新版にアップデートして頂くか、他のブラウザーでご利用ください。',
+                'ua' => $ua
+            ])));
         }
     }
 
