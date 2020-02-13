@@ -9,5 +9,7 @@ trikoder_oauth2:
     resource_server:
         public_key: '%kernel.project_dir%/var/oauth/public.key'
 
+    scopes: ['read', 'write']
+
     persistence:
         doctrine: null

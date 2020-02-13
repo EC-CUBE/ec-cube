@@ -45,6 +45,29 @@ openssl genrsa -out private.key 2048
 openssl rsa -in private.key -pubout -out public.key
 ```
 
+[詳しくはこちら](https://oauth2.thephpleague.com/installation/#generating-public-and-private-keys)
+
+[クライアントの作成コマンドはこちら](https://github.com/trikoder/oauth2-bundle/blob/v2.x/docs/basic-setup.md)
+[grant-type](https://github.com/trikoder/oauth2-bundle/blob/v2.x/OAuth2Grants.php)
+
+```クライアント作成例
+bin/console trikoder:oauth2:create-client --redirect-uri=http://127.0.0.1:8000/ --grant-type=authorization_code --grant-type=client_credentials --grant-type=implicit --grant-type=password --grant-type=refresh_token --scope=read --scope=write
+bin/console trikoder:oauth2:list-clients
+```
+
+#### Client credentials grant
+
+```
+curl -X POST \
+  http://127.0.0.1:8000/token \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'grant_type=client_credentials&client_id=df9dea359f9076daae73f4aa07d6a7e8&client_secret=a921ed597f91e367e9d268e128b0550f165c6e415e768ed4b7e2dc29d406bf7d95b16e9b76e4f66912d0fc8dce388cbe4aa822a8515afc99f6fc6f4dfbfe58a7&scope=read'
+```
+
+
+
+
 ### 動作確認環境
 
 * Apache/2.4.x (mod_rewrite / mod_ssl 必須)
