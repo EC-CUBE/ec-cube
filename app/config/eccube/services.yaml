@@ -171,3 +171,10 @@ services:
         # Symfony\Bridge\Twig\Extension\RoutingExtensionの後に登録するため,
         # autoconfigureはfalseにし, CompilerPassで追加する.
         autoconfigure: false
+
+    Eccube\EventListener\UserResolveListener:
+        arguments:
+            - '@Eccube\Security\Core\User\MemberProvider'
+            - '@Eccube\Security\Core\Encoder\UserPasswordEncoder'
+        tags:
+            - { name: kernel.event_listener, event: trikoder.oauth2.user_resolve, method: onUserResolve }
