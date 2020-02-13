@@ -77,6 +77,12 @@ curl -X POST \
   -d 'grant_type=password&client_id=df9dea359f9076daae73f4aa07d6a7e8&client_secret=a921ed597f91e367e9d268e128b0550f165c6e415e768ed4b7e2dc29d406bf7d95b16e9b76e4f66912d0fc8dce388cbe4aa822a8515afc99f6fc6f4dfbfe58a7&scope=read&username=admin&password=password'
 ```
 
+#### Implicit grant
+
+```
+http://127.0.0.1:8000/authorize?response_type=token&client_id=df9dea359f9076daae73f4aa07d6a7e8&client_secret=a921ed597f91e367e9d268e128b0550f165c6e415e768ed4b7e2dc29d406bf7d95b16e9b76e4f66912d0fc8dce388cbe4aa822a8515afc99f6fc6f4dfbfe58a7&scope=read
+```
+
 ### 動作確認環境
 
 * Apache/2.4.x (mod_rewrite / mod_ssl 必須)
