@@ -97,6 +97,16 @@ curl -X POST \
   -d 'grant_type=authorization_code&client_id={client_id}&client_secret={client_secret}&redirect_uri={redirect_uri}&code={code}'
 ```
 
+#### Refresh token grant
+
+```shell
+curl -X POST \
+  http://127.0.0.1:8000/token \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'grant_type=refresh_token&client_id={client_id}&client_secret={client_secret}&refresh_token={refresh_token}'
+```
+
 ### 動作確認環境
 
 * Apache/2.4.x (mod_rewrite / mod_ssl 必須)
