@@ -196,15 +196,9 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
             return false;
         }
 
-        $sm = $conn->getSchemaManager();
-        $tables = array_filter(
-            $sm->listTables(),
-            function ($table) {
-                return $table->getName() === 'dtb_plugin';
-            }
-        );
+        $tableNames = $conn->getSchemaManager()->listTableNames();
 
-        return empty($tables) ? false : true;
+        return in_array('dtb_plugin', $tableNames);
     }
 
     /**
