@@ -64,7 +64,7 @@ curl -X POST \
   http://127.0.0.1:8000/token \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/x-www-form-urlencoded' \
-  -d 'grant_type=client_credentials&client_id=df9dea359f9076daae73f4aa07d6a7e8&client_secret=a921ed597f91e367e9d268e128b0550f165c6e415e768ed4b7e2dc29d406bf7d95b16e9b76e4f66912d0fc8dce388cbe4aa822a8515afc99f6fc6f4dfbfe58a7&scope=read'
+  -d 'grant_type=client_credentials&client_id={client_id}&client_secret={client_secret}&scope=read'
 ```
 
 #### Resource owner password credentials grant
@@ -74,13 +74,27 @@ curl -X POST \
   http://127.0.0.1:8000/token \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/x-www-form-urlencoded' \
-  -d 'grant_type=password&client_id=df9dea359f9076daae73f4aa07d6a7e8&client_secret=a921ed597f91e367e9d268e128b0550f165c6e415e768ed4b7e2dc29d406bf7d95b16e9b76e4f66912d0fc8dce388cbe4aa822a8515afc99f6fc6f4dfbfe58a7&scope=read&username=admin&password=password'
+  -d 'grant_type=password&client_id={client_id}&client_secret={client_secret}&scope=read&username=admin&password=password'
 ```
 
 #### Implicit grant
 
+```uri
+http://127.0.0.1:8000/authorize?response_type=token&client_id={client_id}&client_secret={client_secret}&scope=read
 ```
-http://127.0.0.1:8000/authorize?response_type=token&client_id=df9dea359f9076daae73f4aa07d6a7e8&client_secret=a921ed597f91e367e9d268e128b0550f165c6e415e768ed4b7e2dc29d406bf7d95b16e9b76e4f66912d0fc8dce388cbe4aa822a8515afc99f6fc6f4dfbfe58a7&scope=read
+
+#### Authorization code grant
+
+```uri
+http://127.0.0.1:8000/authorize?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope=read
+```
+
+```shell
+curl -X POST \
+  http://127.0.0.1:8000/token \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'grant_type=authorization_code&client_id={client_id}&client_secret={client_secret}&redirect_uri={redirect_uri}&code={code}'
 ```
 
 ### 動作確認環境
