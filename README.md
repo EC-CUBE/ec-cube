@@ -36,6 +36,15 @@ npm ci # 初回およびpackage-lock.jsonに変更があったとき
 npm run build # Sass のビルド
 ```
 
+### OAuth2の設定
+
+```shell
+mkdir var/oauth
+cd var/oauth
+openssl genrsa -out private.key 2048
+openssl rsa -in private.key -pubout -out public.key
+```
+
 ### 動作確認環境
 
 * Apache/2.4.x (mod_rewrite / mod_ssl 必須)
