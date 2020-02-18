@@ -80,13 +80,13 @@ curl -X POST \
 #### Implicit grant
 
 ```uri
-http://127.0.0.1:8000/authorize?response_type=token&client_id={client_id}&client_secret={client_secret}&scope=read
+http://127.0.0.1:8000/admin/authorize?response_type=token&client_id={client_id}&client_secret={client_secret}&scope=read&state={csrf_token}
 ```
 
 #### Authorization code grant
 
 ```uri
-http://127.0.0.1:8000/authorize?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope=read
+http://127.0.0.1:8000/admin/authorize?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope=read&state={csrf_token}
 ```
 
 ```shell
