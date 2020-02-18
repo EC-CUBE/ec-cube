@@ -28,6 +28,7 @@ use GraphQL\GraphQL;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,6 +62,7 @@ class ApiController extends AbstractController
 
     /**
      * @Route("/api", name="api")
+     * @Security("has_role('ROLE_OAUTH2_READ')")
      */
     public function index(Request $request)
     {

@@ -20,6 +20,11 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api:
+            pattern: ^/api
+            security: true
+            stateless: true
+            oauth2: true
         admin:
             pattern: '^(/%eccube_admin_route%/|/authorize)'
             anonymous: true
