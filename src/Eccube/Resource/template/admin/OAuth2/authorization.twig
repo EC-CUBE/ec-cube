@@ -1,0 +1,22 @@
+{% extends '@admin/login_frame.twig' %}
+
+{% block main %}
+    <p>このアプリ連携を許可しますか？</p>
+    <p>このアプリは以下のアクセス権を要求しています:</p>
+    <p>{{ scope }}</p>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.client_id) }}
+    {{ form_row(form.client_secret) }}
+    {{ form_row(form.redirect_uri) }}
+    {{ form_row(form.response_type) }}
+    {{ form_row(form.state) }}
+    {{ form_row(form.scope) }}
+    <div class="col-auto">
+        <button class="btn btn-ec-conversion px-5" type="submit">許可</button>
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}

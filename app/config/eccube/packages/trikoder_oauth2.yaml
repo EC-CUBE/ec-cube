@@ -1,0 +1,15 @@
+trikoder_oauth2:
+
+    authorization_server:
+        private_key: '%kernel.project_dir%/var/oauth/private.key'
+        private_key_passphrase: null
+
+        encryption_key: '%env(string:OAUTH2_ENCRYPTION_KEY)%'
+
+    resource_server:
+        public_key: '%kernel.project_dir%/var/oauth/public.key'
+
+    scopes: ['read', 'write']
+
+    persistence:
+        doctrine: null

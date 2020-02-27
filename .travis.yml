@@ -20,7 +20,6 @@ cache:
     - bin/.phpunit
 
 php:
-  - 7.1
   - 7.2
   - 7.3
   - 7.4snapshot
@@ -51,6 +50,11 @@ eccube_setup: &eccube_setup |
   bin/console doctrine:database:create --env=dev
   bin/console doctrine:schema:create --env=dev
   bin/console eccube:fixtures:load --env=dev
+  mkdir var/oauth
+  openssl genrsa -out private.key 2048
+  openssl rsa -in private.key -pubout -out public.key
+  mv private.key var/oauth
+  mv public.key var/oauth
 
 package_api_setup: &package_api_setup |
   mkdir ${PWD}/repos

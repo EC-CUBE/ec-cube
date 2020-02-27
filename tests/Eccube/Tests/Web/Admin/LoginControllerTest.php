@@ -53,4 +53,26 @@ class LoginControllerTest extends AbstractWebTestCase
             $this->client->getResponse()->getStatusCode()
         );
     }
+
+    public function testRoutingAdminOauth2Authorize_ログインしていない場合はログイン画面を表示()
+    {
+        $this->client->request('GET', $this->generateUrl('admin_oauth2_authorize'));
+
+        // ログイン
+        $this->assertEquals(
+            401,
+            $this->client->getResponse()->getStatusCode()
+        );
+    }
+
+    public function testRoutingOauth2Authorize_ログインしていない場合はログイン画面を表示()
+    {
+        $this->client->request('GET', $this->generateUrl('oauth2_authorize'));
+
+        // ログイン
+        $this->assertEquals(
+            401,
+            $this->client->getResponse()->getStatusCode()
+        );
+    }
 }

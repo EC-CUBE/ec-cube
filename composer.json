@@ -12,7 +12,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.2.0",
         "ext-intl": "*",
         "ext-mbstring": "*",
         "composer/ca-bundle": "^1.1",
@@ -40,6 +40,7 @@
         "mobiledetect/mobiledetectlib": "^2.8",
         "monolog/monolog": "^1.23",
         "nesbot/carbon": "^1.22",
+        "nyholm/psr7": "^1.2",
         "pimple/pimple": "^1.1",
         "psr/cache": "^1.0",
         "psr/container": "^1.0",
@@ -101,9 +102,11 @@
         "symfony/workflow": "^3.4",
         "symfony/yaml": "^3.4",
         "tecnickcom/tcpdf": "^6.2",
+        "trikoder/oauth2-bundle": "^2.1",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.4",
-        "vlucas/phpdotenv": "v2.4.0"
+        "vlucas/phpdotenv": "v2.4.0",
+        "webonyx/graphql-php": "^0.13.8"
     },
     "require-dev": {
         "bheller/images-generator": "^1.0",
@@ -181,7 +184,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.1.3"
+            "php": "7.2.0"
         },
         "preferred-install": {
             "*": "dist"
