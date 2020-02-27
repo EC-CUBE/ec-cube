@@ -67,6 +67,11 @@ before_test:
   - php bin\console doctrine:database:create
   - php bin\console doctrine:schema:create
   - php bin\console eccube:fixtures:load
+  - mkdir var\oauth
+  - openssl genrsa -out private.key 2048
+  - openssl rsa -in private.key -pubout -out public.key
+  - move private.key var\oauth
+  - move public.key var\oauth
 
 test_script:
   - php bin\phpunit --exclude-group cache-clear
