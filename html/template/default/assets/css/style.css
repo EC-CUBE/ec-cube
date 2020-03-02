@@ -5432,7 +5432,8 @@ Styleguide 12.2
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  margin-bottom: 40px; }
+  margin-bottom: 40px;
+  /* Deprecated https://github.com/EC-CUBE/ec-cube/pull/4220 */ }
   .ec-eyecatchRole .ec-eyecatchRole__image {
     display: block;
     margin-bottom: 40px;
