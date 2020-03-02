@@ -1415,7 +1415,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -1465,7 +1465,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -1515,7 +1515,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -1824,7 +1824,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -1874,7 +1874,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -1924,7 +1924,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -4368,7 +4368,7 @@ Styleguide 11.2.4
   .ec-headerSearch .ec-headerSearch__keyword input[type="search"] {
     width: 100%;
     height: 34px;
-    font-size: 1.2rem;
+    font-size: 16px;
     border: 0 none;
     padding: 0.5em 50px 0.5em 1em;
     box-shadow: none;
@@ -7345,10 +7345,22 @@ Styleguide 22.1
       right: 30px;
       bottom: 30px; }
     .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
+      font-size: 14px; }
+    .ec-input select, .ec-halfInput select, .ec-numberInput select, .ec-zipInput select, .ec-telInput select, .ec-select select, .ec-birth select {
+      font-size: 14px; }
+    .ec-input textarea, .ec-halfInput textarea, .ec-numberInput textarea, .ec-zipInput textarea, .ec-telInput textarea, .ec-select textarea, .ec-birth textarea {
+      font-size: 14px; }
+    .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
       margin-bottom: 16px; }
     .ec-halfInput input[type='text'] {
       margin-left: 15px;
       width: 45%; }
+    .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
+      font-size: 14px; }
+    .ec-input select, .ec-halfInput select, .ec-numberInput select, .ec-zipInput select, .ec-telInput select, .ec-select select, .ec-birth select {
+      font-size: 14px; }
+    .ec-input textarea, .ec-halfInput textarea, .ec-numberInput textarea, .ec-zipInput textarea, .ec-telInput textarea, .ec-select textarea, .ec-birth textarea {
+      font-size: 14px; }
     .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
       margin-bottom: 16px; }
     .ec-halfInput input[type='text'] {
@@ -7582,6 +7594,8 @@ Styleguide 22.1
       border-bottom-left-radius: inherit;
       border-top-right-radius: 50px;
       border-bottom-right-radius: 50px; }
+      .ec-headerSearch .ec-headerSearch__keyword input[type="search"] {
+        font-size: 12px; }
     .ec-categoryNaviRole {
       display: block;
       width: 100%; }
