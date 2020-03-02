@@ -1,0 +1,77 @@
+version: "3"
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  pg-database:
+    driver: local
+  mysql-database:
+    driver: local
+  mailcatcher-data:
+    driver: local
+
+  ### ignore folder volume #####
+  var:
+    driver: local
+  vendor:
+    driver: local
+
+services:
+  ### ECCube4 ##################################
+  ec-cube:
+    build:
+      context: .
+      args:
+        # ビルド時のECCubeインストールスクリプトをスキップする場合にtrueを指定する。
+        # ビルド時点でDBサーバの起動や接続が出来ない、という場合等にエラーとなるため。
+        SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD: "true"
+    ports:
+      - 8080:80
+      - 4430:443
+    volumes:
+      - ".:/var/www/html:cached"
+      ### 同期対象からコストの重いフォルダを除外 #####################
+      - "var:/var/www/html/var"
+      - "vendor:/var/www/html/vendor"
+    networks:
+      - backend
+
+  ### Postgres ################################
+  postgres:
+    image: postgres:10
+    environment:
+      - POSTGRES_DB=eccubedb
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=secret
+    ports:
+      - 15432:5432
+    volumes:
+      - pg-database:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  ### MySQL ##################################
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: eccubedb
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql-database:/var/lib/mysql
+    ports:
+      - 13306:3306
+    networks:
+      - backend
+
+  ### Mailcatcher ##################################
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - backend
