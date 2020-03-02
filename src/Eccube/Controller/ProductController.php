@@ -36,6 +36,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ProductController extends AbstractController
@@ -344,7 +345,7 @@ class ProductController extends AbstractController
         } else {
             // 非会員の場合、ログイン画面を表示
             //  ログイン後の画面遷移先を設定
-            $this->setLoginTargetPath($this->generateUrl('product_add_favorite', ['id' => $Product->getId()]));
+            $this->setLoginTargetPath($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
             $this->session->getFlashBag()->set('eccube.add.favorite', true);
 
             $event = new EventArgs(

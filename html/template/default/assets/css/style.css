@@ -5680,21 +5680,20 @@ Styleguide 13.4
     color: #4b5361; }
 
 .ec-modal .ec-modal-overlay-close {
+  display: none;
   width: 100%;
   height: 100%;
   position: fixed;
   left: 0;
-  top: 0;
-  z-index: -100; }
-
-.ec-modal input:checked ~ .ec-modal-overlay-close {
-  z-index: 9998; }
+  top: 0; }
 
 .ec-modal input:checked ~ .ec-modal-overlay {
   transform: scale(1);
   opacity: 1;
   z-index: 9997;
   overflow: auto; }
+  .ec-modal input:checked ~ .ec-modal-overlay .ec-modal-overlay-close {
+    display: block; }
 
 .ec-modal input:checked ~ .ec-modal-overlay .ec-modal-wrap {
   transform: translateY(0);
