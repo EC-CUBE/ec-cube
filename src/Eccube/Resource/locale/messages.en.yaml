@@ -105,10 +105,15 @@ front.block.topic.title__gelato: Rich yet healthier than ice cream!! Gelatos
 front.block.topic.title__ice: Crispy!! Ice cream cones
 front.block.eyecatch.title__en: CUBE GELATO ICE
 front.block.eyecatch.title__ja: Enjoy the colorful gelato 'CUBE'
+# Deprecated https://github.com/EC-CUBE/ec-cube/pull/4220
 front.block.eyecatch.descriptiron: |
  Gelato is ice cream made in the Italian style, which is generally lower in fat than other styles of ice cream.
  Our fruity gelato is made of carefully selected fresh fruits of the season. Enjoy CUBE Gelato, rich yet healthy with moderate sweetness.
  Also find our ice candies and ice sandwiches made with gelato recipes.
+front.block.eyecatch.description: |
+  Gelato is ice cream made in the Italian style, which is generally lower in fat than other styles of ice cream.
+  Our fruity gelato is made of carefully selected fresh fruits of the season. Enjoy CUBE Gelato, rich yet healthy with moderate sweetness.
+  Also find our ice candies and ice sandwiches made with gelato recipes.
 front.block.eyecatch.view_list: See all
 front.block.new_item.title__en: NEW ITEMS
 front.block.new_item.title__ja: New Items
@@ -462,6 +467,7 @@ admin.common.csv_invalid_not_same: 'You are not allowed to enter the same value 
 admin.common.csv_invalid_can_not: '%name% is invalid in the line %line%'
 admin.common.csv_invalid_image: 'Your are not allowed to use "/" or "../" as suffix in %name% in the %line%'
 admin.common.csv_invalid_foreign_key: 'You are unable to delete %name% in the line %line% because it has related data'
+admin.common.csv_invalid_description_detail_upper_limit: '%name% should be less than %max% characters in the line %line%.'
 admin.common.drag_and_drop_description: You can change the order of the items by drag & drop.
 admin.common.drag_and_drop_image_description: Drag & drop the images or
 admin.common.delete_modal__title: Delete
@@ -760,6 +766,8 @@ admin.order.order_date__end: Order Date (End)
 admin.order.payment_date: Payment Date
 admin.order.payment_date__start: Payment Date (Start)
 admin.order.payment_date__end: Payment Date (End)
+admin.order.delivery_date__start: Delivery Date (Start)
+admin.order.delivery_date__end: Delivery Date (End)
 admin.order.order_no: Order No.
 admin.order.shipping_date: Shipping Date
 admin.order.message: Inquiry

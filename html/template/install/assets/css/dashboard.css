@@ -1007,7 +1007,8 @@ textarea.disp_area {
 	font-weight: bold;
 }
 .step_nav .current .number {
-	background: #fff;
+    color: #fff;
+	background: #42B3E5;
 }
 
 

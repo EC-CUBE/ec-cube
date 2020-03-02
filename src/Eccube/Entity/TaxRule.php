@@ -456,8 +456,9 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          * 自分の方が大きければ正の整数
          * 小さければ負の整数を返す.
          *
-         * 1. apply_date
-         * 2. sort_no
+         * 1. 商品別税率が有効
+         * 2. apply_date
+         * 3. sort_no
          *
          * このメソッドは usort() 関数などで使用する.
          *
@@ -467,22 +468,38 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          */
         public function compareTo(TaxRule $Target)
         {
-            if ($this->getApplyDate()->format('YmdHis') == $Target->getApplyDate()->format('YmdHis')) {
-                if ($this->getSortNo() == $Target->getSortNo()) {
-                    return 0;
-                }
-                if ($this->getSortNo() > $Target->getSortNo()) {
-                    return -1;
-                } else {
-                    return 1;
-                }
+            if ($this->isProductTaxRule() && !$Target->isProductTaxRule()) {
+                return -1;
+            } elseif (!$this->isProductTaxRule() && $Target->isProductTaxRule()) {
+                return 1;
             } else {
-                if ($this->getApplyDate()->format('YmdHis') > $Target->getApplyDate()->format('YmdHis')) {
-                    return -1;
+                if ($this->getApplyDate()->format('YmdHis') == $Target->getApplyDate()->format('YmdHis')) {
+                    if ($this->getSortNo() == $Target->getSortNo()) {
+                        return 0;
+                    }
+                    if ($this->getSortNo() > $Target->getSortNo()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
                 } else {
-                    return 1;
+                    if ($this->getApplyDate()->format('YmdHis') > $Target->getApplyDate()->format('YmdHis')) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
                 }
             }
+        }
+
+        /**
+         * 商品別税率設定が適用されているかどうか.
+         *
+         * @return bool 商品別税率が適用されている場合 true
+         */
+        public function isProductTaxRule()
+        {
+            return ($this->getProductClass() !== null || $this->getProduct() !== null);
         }
     }
 }
