@@ -2,6 +2,7 @@ twig:
     globals:
       BaseInfo: null
       eccube_config: '@Eccube\Common\EccubeConfig'
+      event_dispatcher: '@event_dispatcher'
     paths:
       '%eccube_theme_front_dir%': ~
       '%eccube_theme_front_default_dir%': ~
@@ -19,3 +20,4 @@ twig:
     #     - 'Form/form_div_layout.twig'
     date:
       timezone: '%timezone%'
+    base_template_class: 'Eccube\Twig\Template'
