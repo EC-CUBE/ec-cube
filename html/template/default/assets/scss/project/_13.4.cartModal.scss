@@ -87,24 +87,23 @@ Styleguide 13.4
   }
 
   .ec-modal-overlay-close {
+    display: none;
     width: 100%;
     height: 100%;
     position: fixed;
     left: 0;
     top: 0;
-    z-index: -100;
   }
 
   input:checked {
-    ~ .ec-modal-overlay-close {
-      z-index: 9998;
-    }
-
     ~ .ec-modal-overlay {
       transform: scale(1);
       opacity: 1;
       z-index: 9997;
       overflow: auto;
+      .ec-modal-overlay-close {
+        display: block;
+      }
     }
 
     ~ .ec-modal-overlay .ec-modal-wrap {
