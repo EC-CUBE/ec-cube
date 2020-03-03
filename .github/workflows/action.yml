@@ -776,6 +776,7 @@ jobs:
         TAG_NAME: ${{ github.event.release.tag_name }}
         REPOSITORY_NAME: ${{ github.event.repository.name }}
       run: |
+        rm -rf $GITHUB_WORKSPACE/.editorconfig
         rm -rf $GITHUB_WORKSPACE/.gitignore
         rm -rf $GITHUB_WORKSPACE/.buildpath
         rm -rf $GITHUB_WORKSPACE/.gitmodules
