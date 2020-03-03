@@ -54,7 +54,7 @@ const configDecisionTask = (done) => {
 /*
  * Browsersync サーバー
  */
-const serverTask = (done) => {
+const BrowsersyncTask = (done) => {
   browserSync({
     proxy: config.server
   })
@@ -121,7 +121,7 @@ const sassCssMinifyTask = () => {
  * エクスポート
  */
 exports.configDecisionTask = configDecisionTask;
-exports.serverTask = serverTask;
+exports.BrowsersyncTask = BrowsersyncTask;
 exports.sassTask = sassTask;
 exports.sassCssMinifyTask = sassCssMinifyTask;
 
@@ -154,10 +154,10 @@ gulp.task('watch:min', gulp.series(
 ));
 
 // 監視 ブラウザ自動更新
-gulp.task('server', gulp.series(
+gulp.task('start', gulp.series(
   configDecisionTask,
   gulp.parallel(sassTask, sassCssMinifyTask),
-  serverTask,
+  BrowsersyncTask,
   () => {
     gulp.watch(
       config.paths.source.template + config.paths.assets.scss,
@@ -171,10 +171,10 @@ gulp.task('server', gulp.series(
 ));
 
 // 監視 ブラウザ自動更新 minify化
-gulp.task('server:min', gulp.series(
+gulp.task('start:min', gulp.series(
   configDecisionTask,
   sassCssMinifyTask,
-  serverTask,
+  BrowsersyncTask,
   () => {
     gulp.watch(
       config.paths.source.template + config.paths.assets.scss,

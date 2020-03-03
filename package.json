@@ -13,8 +13,8 @@
     "build": "gulp",
     "watch": "gulp watch",
     "watch:min": "gulp watch:min",
-    "server": "gulp server",
-    "server:min": "gulp server:min"
+    "start": "gulp start",
+    "start:min": "gulp start:min"
   },
   "repository": {
     "type": "git",
