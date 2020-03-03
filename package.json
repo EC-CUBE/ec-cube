@@ -1,6 +1,6 @@
 {
   "name": "eccube",
-  "version": "4.0.0",
+  "version": "4.0.3",
   "description": "EC-CUBE EC open platform.",
   "main": "index.js",
   "directories": {
@@ -30,7 +30,7 @@
   "devDependencies": {
     "autoprefixer": "^9.6.4",
     "bootstrap": "^4.1.3",
-    "bootstrap-sass": "^3.3.7",
+    "bootstrap-sass": "^3.4.1",
     "browser-sync": "^2.26.7",
     "css-mqpacker": "^7.0.0",
     "gulp": "^4.0.2",

@@ -283,6 +283,7 @@ file that was distributed with this source code.
                     </div>
                     {% for shipping in Order.shippings %}
                         {% set idx = loop.index0 %}
+                        {% set isShowReducedTaxMess = false %}
                         <div class="ec-orderDelivery__title">{{ 'front.shopping.delivery_to'|trans }}{% if Order.multiple %}({{ loop.index }}){% endif %}
                             <div class="ec-orderDelivery__change">
                                 {% if is_granted('ROLE_USER') %}
@@ -299,7 +300,7 @@ file that was distributed with this source code.
                                         <div class="ec-imageGrid">
                                             <div class="ec-imageGrid__img"><img src="{{ asset((orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product, 'save_image') }}" alt="{{ orderItem.productName }}"></div>
                                             <div class="ec-imageGrid__content">
-                                                <p>{{ orderItem.productName }}{{ is_reduced_tax_rate(orderItem) ? 'common.reduced_tax_rate_symbol'|trans }}</p>
+                                                <p>{{ orderItem.productName }}{% if is_reduced_tax_rate(orderItem) %}{{ 'common.reduced_tax_rate_symbol'|trans }}{% set isShowReducedTaxMess = true %}{% endif %}</p>
                                                 {% if orderItem.productClass is not null and orderItem.productClass.classCategory1 %}
                                                     <p>{{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}</p>
                                                 {% endif %}
@@ -312,7 +313,7 @@ file that was distributed with this source code.
                                     </li>
                                 {% endfor %}
                             </ul>
-                            <p>{{ 'common.reduced_tax_rate_messeage'|trans }}</p>
+                            <p>{{ isShowReducedTaxMess ? 'common.reduced_tax_rate_messeage'|trans }}</p>
                         </div>
                         <div class="ec-orderDelivery__address">
                             <p>{{ 'common.name.prefix'|trans }}{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}){{ 'common.name.suffix'|trans }}</p>
