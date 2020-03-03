@@ -288,8 +288,8 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $this->taxRuleRepository->clearCache();
         $TaxRule = $this->taxRuleRepository->getByRule($this->Product, null, null, $Country);
 
-        // 国別設定の方が優先される
-        $this->expected = $this->TaxRule2->getId();
+        // 商品別設定の方が優先される
+        $this->expected = $this->TaxRule3->getId();
         $this->actual = $TaxRule->getId();
         $this->verify();
     }

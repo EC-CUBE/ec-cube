@@ -215,17 +215,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
                 } else {
                     // 新規規格の商品は新しく追加する
                     $OrderItem = new OrderItem();
-                    $OrderItem->setOrder($ProductOrderItem->getOrder());
-                    $OrderItem
-                    ->setProduct($ProductOrderItem->getProduct())
-                    ->setProductName($ProductOrderItem->getProductName())
-                    ->setProductCode($ProductOrderItem->getProductCode())
-                    ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
-                    ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
-                    ->setPrice($ProductOrderItem->getPrice())
-                    ->setTax($ProductOrderItem->getTax())
-                    ->setTaxRate($ProductOrderItem->getTaxRate())
-                    ->setQuantity($ProductOrderItem->getQuantity());
+                    $OrderItem->copyProperties($ProductOrderItem, ['id']);
                     $orderItemArray[$productClassId] = $OrderItem;
                 }
             }

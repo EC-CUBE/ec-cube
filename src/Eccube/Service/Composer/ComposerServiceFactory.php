@@ -21,12 +21,6 @@ class ComposerServiceFactory
 {
     public static function createService(ContainerInterface $container)
     {
-        /** @var BaseInfo $BaseInfo */
-        $BaseInfo = $container->get(BaseInfoRepository::class)->get();
-        if (!empty($BaseInfo->getPhpPath())) {
-            return $container->get(ComposerProcessService::class);
-        }
-
         return $container->get(ComposerApiService::class);
     }
 }

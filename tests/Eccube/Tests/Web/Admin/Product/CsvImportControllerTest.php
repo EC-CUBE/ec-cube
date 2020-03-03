@@ -857,6 +857,30 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * @dataProvider dataDescriptionDetailProvider
+     * @see https://github.com/EC-CUBE/ec-cube/pull/4218
+     */
+    public function testImportDescriptionetail($length, $selector, $pattern)
+    {
+        $csv = [];
+        $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '商品説明(詳細)'];
+        $csv[] = [1, '商品詳細テスト用', 1, 1, 1, str_repeat('a', $length)];
+        $this->filepath = $this->createCsvFromArray($csv);
+
+        $crawler = $this->scenario();
+        $this->assertRegexp($pattern, $crawler->filter($selector)->text());
+    }
+
+    public function dataDescriptionDetailProvider()
+    {
+        return [
+            [2999, 'div.alert-success', '/CSVファイルをアップロードしました/u'],
+            [3000, 'div.alert-success', '/CSVファイルをアップロードしました/u'],
+            [3001, 'div.text-danger', '/2行目の商品説明\(詳細\)は3000文字以下の文字列を指定してください。/u'],
+        ];
+    }
+
+    /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/4281
      *
      * @dataProvider dataTaxRuleProvider

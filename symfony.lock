@@ -164,6 +164,9 @@
     "knplabs/knp-paginator-bundle": {
         "version": "v2.7.1"
     },
+    "kylekatarnls/update-helper": {
+        "version": "1.2.0"
+    },
     "mikey179/vfsstream": {
         "version": "v1.6.5"
     },
@@ -433,9 +436,6 @@
     },
     "symfony/intl": {
         "version": "v3.4.1"
-    },
-    "symfony/lts": {
-        "version": "v3"
     },
     "symfony/maker-bundle": {
         "version": "1.0",

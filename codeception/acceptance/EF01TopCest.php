@@ -31,12 +31,14 @@ class EF01TopCest
 
     private function clearDoctrineCache()
     {
-        // APP_ENV=prodで実行した際は, 直接データを投入しても反映されないため,
+        // APP_ENV=prod/codeceptionで実行した際は, 直接データを投入しても反映されないため,
         // キャッシュを削除して表示できるようにする
         $fs = new Symfony\Component\Filesystem\Filesystem();
-        $cacheDir = __DIR__.'/../../var/cache/prod/pools';
-        if ($fs->exists($cacheDir)) {
-            $fs->remove($cacheDir);
+        foreach (['prod', 'codeception'] as $env) {
+            $cacheDir = __DIR__."/../../var/cache/${env}/pools";
+            if ($fs->exists($cacheDir)) {
+                $fs->remove($cacheDir);
+            }
         }
     }
 
