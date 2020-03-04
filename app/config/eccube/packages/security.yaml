@@ -31,7 +31,7 @@ security:
                 default_target_path: admin_homepage
                 username_parameter: 'login_id'
                 password_parameter: 'password'
-                use_forward: true
+                use_forward: false
                 success_handler: eccube.security.success_handler
                 failure_handler: eccube.security.failure_handler
             logout:
@@ -53,7 +53,7 @@ security:
                 default_target_path: homepage
                 username_parameter: 'login_email'
                 password_parameter: 'login_pass'
-                use_forward: true
+                use_forward: false
                 success_handler: eccube.security.success_handler
                 failure_handler: eccube.security.failure_handler
             logout:
