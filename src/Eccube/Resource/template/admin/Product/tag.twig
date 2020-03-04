@@ -151,6 +151,22 @@ file that was distributed with this source code.
                                                 {{ 'admin.common.create__new'|trans }}
                                             </button>
                                         </div>
+
+                                        {# エンティティ拡張の自動出力 #}
+                                        {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                            {% if f.vars.eccube_form_options.form_theme %}
+                                                {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                                {{ form_row(f) }}
+                                            {% else %}
+                                                <div class="col-auto align-items-center">
+                                                    <div>
+                                                        <span>{{ f.vars.label|trans }}</span>
+                                                        {{ form_widget(f) }}
+                                                        {{ form_errors(f) }}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
                                     </form>
                                 </li>
                                 <li class="list-group-item">
@@ -194,6 +210,23 @@ file that was distributed with this source code.
                                                 {{ form_widget(forms[Tag.id].name, {'attr': {'data-origin-value': forms[Tag.id].name.vars.value }}) }}
                                                 {{ form_errors(forms[Tag.id].name) }}
                                             </div>
+
+                                            {# エンティティ拡張の自動出力 #}
+                                            {% for f in forms[Tag.id] if f.vars.eccube_form_options.auto_render %}
+                                                {% if f.vars.eccube_form_options.form_theme %}
+                                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                                    {{ form_row(f) }}
+                                                {% else %}
+                                                    <div class="col-auto align-items-center">
+                                                        <div>
+                                                            <span>{{ f.vars.label|trans }}</span>
+                                                            {{ form_widget(f) }}
+                                                            {{ form_errors(f) }}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+
                                             <div class="col-auto align-items-center">
                                                 <button class="btn btn-ec-conversion" type="submit">{{ 'admin.common.decision'|trans }}</button>
                                             </div>
