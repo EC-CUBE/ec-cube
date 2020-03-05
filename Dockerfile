@@ -59,22 +59,26 @@ COPY . ${APACHE_DOCUMENT_ROOT}
 
 WORKDIR ${APACHE_DOCUMENT_ROOT}
 
-ENV COMPOSER_ALLOW_SUPERUSER 1
-
 RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer \
   && composer config -g repos.packagist composer https://packagist.jp \
   && composer global require hirak/prestissimo \
-  && composer install \
-    --no-scripts \
-    --no-autoloader \
-    --no-dev -d ${APACHE_DOCUMENT_ROOT} \
-  && chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT} \
   && chown www-data:www-data /var/www \
+  && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
+  && chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT} \
+  && find ${APACHE_DOCUMENT_ROOT} -type d -print0 \
+  | xargs -0 chmod g+s \
   ;
 
 USER www-data
+
+RUN composer install \
+  --no-scripts \
+  --no-autoloader \
+  --no-dev -d ${APACHE_DOCUMENT_ROOT} \
+  ;
+
 RUN composer dumpautoload -o --apcu --no-dev
 
 RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/.env ]; then \
