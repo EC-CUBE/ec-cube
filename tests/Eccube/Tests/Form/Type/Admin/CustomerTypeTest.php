@@ -232,6 +232,15 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    public function testInvalidPassword_EqualEmail()
+    {
+        $this->formData['password']['first'] = $this->formData['email'];
+        $this->formData['password']['second'] = $this->formData['email'];
+
+        $this->form->submit($this->formData);
+        $this->assertEquals(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());
+    }
+
     public function testInvalidStatus_Blank()
     {
         $this->formData['status'] = '';

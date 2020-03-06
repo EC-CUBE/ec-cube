@@ -155,7 +155,7 @@ class CustomerType extends AbstractType
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
-            if ($Customer->getPassword() != "" && $Customer->getPassword() == $Customer->getEmail()) {
+            if ($Customer->getPassword() != '' && $Customer->getPassword() == $Customer->getEmail()) {
                 $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
             }
         });
