@@ -47,7 +47,7 @@ class PluginManagementType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'ファイルを選択してください。']),
                     new Assert\File([
-                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip'],
+                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'],
                         'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
                     ]),
                 ],

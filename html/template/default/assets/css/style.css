@@ -1399,7 +1399,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -1449,7 +1449,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -1499,7 +1499,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -1808,7 +1808,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -1858,7 +1858,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -1908,7 +1908,7 @@ Styleguide 3.1.1
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -4130,6 +4130,11 @@ Styleguide 11.2
     box-sizing: inherit; }
   .ec-headerNaviRole img {
     width: 100%; }
+  .ec-headerNaviRole .fa-bars {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
   .ec-headerNaviRole .ec-headerNaviRole__left {
     width: calc(100% / 3); }
   .ec-headerNaviRole .ec-headerNaviRole__search {
@@ -4352,7 +4357,7 @@ Styleguide 11.2.4
   .ec-headerSearch .ec-headerSearch__keyword input[type="search"] {
     width: 100%;
     height: 34px;
-    font-size: 1.2rem;
+    font-size: 16px;
     border: 0 none;
     padding: 0.5em 50px 0.5em 1em;
     box-shadow: none;
@@ -4606,7 +4611,10 @@ Styleguide 11.2.6
   left: 270px;
   z-index: 1000; }
   .ec-drawerRoleClose .fas {
-    vertical-align: top; }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
 
 .ec-drawerRole.is_active {
   display: block;
@@ -4880,7 +4888,8 @@ Styleguide 12.2
 .ec-eyecatchRole {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 40px; }
+  margin-bottom: 40px;
+  /* Deprecated https://github.com/EC-CUBE/ec-cube/pull/4220 */ }
   .ec-eyecatchRole .ec-eyecatchRole__image {
     display: block;
     margin-bottom: 40px;
@@ -4897,6 +4906,10 @@ Styleguide 12.2
     font-size: 24px;
     font-weight: bold; }
   .ec-eyecatchRole .ec-eyecatchRole__introDescriptiron {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 2; }
+  .ec-eyecatchRole .ec-eyecatchRole__introDescription {
     margin-bottom: 20px;
     font-size: 16px;
     line-height: 2; }
@@ -5660,21 +5673,20 @@ Styleguide 13.4
     color: #4b5361; }
 
 .ec-modal .ec-modal-overlay-close {
+  display: none;
   width: 100%;
   height: 100%;
   position: fixed;
   left: 0;
-  top: 0;
-  z-index: -100; }
-
-.ec-modal input:checked ~ .ec-modal-overlay-close {
-  z-index: 9998; }
+  top: 0; }
 
 .ec-modal input:checked ~ .ec-modal-overlay {
   transform: scale(1);
   opacity: 1;
   z-index: 9997;
   overflow: auto; }
+  .ec-modal input:checked ~ .ec-modal-overlay .ec-modal-overlay-close {
+    display: block; }
 
 .ec-modal input:checked ~ .ec-modal-overlay .ec-modal-wrap {
   transform: translateY(0);
@@ -7321,10 +7333,22 @@ Styleguide 22.1
       right: 30px;
       bottom: 30px; }
     .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
+      font-size: 14px; }
+    .ec-input select, .ec-halfInput select, .ec-numberInput select, .ec-zipInput select, .ec-telInput select, .ec-select select, .ec-birth select {
+      font-size: 14px; }
+    .ec-input textarea, .ec-halfInput textarea, .ec-numberInput textarea, .ec-zipInput textarea, .ec-telInput textarea, .ec-select textarea, .ec-birth textarea {
+      font-size: 14px; }
+    .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
       margin-bottom: 16px; }
     .ec-halfInput input[type='text'] {
       margin-left: 15px;
       width: 45%; }
+    .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
+      font-size: 14px; }
+    .ec-input select, .ec-halfInput select, .ec-numberInput select, .ec-zipInput select, .ec-telInput select, .ec-select select, .ec-birth select {
+      font-size: 14px; }
+    .ec-input textarea, .ec-halfInput textarea, .ec-numberInput textarea, .ec-zipInput textarea, .ec-telInput textarea, .ec-select textarea, .ec-birth textarea {
+      font-size: 14px; }
     .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
       margin-bottom: 16px; }
     .ec-halfInput input[type='text'] {
@@ -7558,6 +7582,8 @@ Styleguide 22.1
       border-bottom-left-radius: inherit;
       border-top-right-radius: 50px;
       border-bottom-right-radius: 50px; }
+      .ec-headerSearch .ec-headerSearch__keyword input[type="search"] {
+        font-size: 12px; }
     .ec-categoryNaviRole {
       display: block;
       width: 100%; }
@@ -7674,6 +7700,8 @@ Styleguide 22.1
         margin-bottom: 1em;
         font-size: 26px; }
       .ec-eyecatchRole .ec-eyecatchRole__introDescriptiron {
+        margin-bottom: 30px; }
+      .ec-eyecatchRole .ec-eyecatchRole__introDescription {
         margin-bottom: 30px; }
     .ec-blockBtn--top {
       max-width: 260px; }

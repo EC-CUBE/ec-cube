@@ -44,11 +44,61 @@ class InstallerCommand extends Command
      */
     protected $databaseUrl;
 
+    private $envFileUpdater;
+
     public function __construct(ContainerInterface $container)
     {
         parent::__construct();
 
         $this->container = $container;
+
+        /* env更新処理無名クラス */
+        $this->envFileUpdater = new class() {
+            public $appEnv;
+            public $appDebug;
+            public $databaseUrl;
+            public $serverVersion;
+            public $mailerUrl;
+            public $authMagic;
+            public $adminRoute;
+            public $templateCode;
+            public $locale;
+
+            public $envDir;
+
+            private function getEnvParameters()
+            {
+                return  [
+                            'APP_ENV' => $this->appEnv,
+                            'APP_DEBUG' => $this->appDebug,
+                            'DATABASE_URL' => $this->databaseUrl,
+                            'DATABASE_SERVER_VERSION' => $this->serverVersion,
+                            'MAILER_URL' => $this->mailerUrl,
+                            'ECCUBE_AUTH_MAGIC' => $this->authMagic,
+                            'ECCUBE_ADMIN_ROUTE' => $this->adminRoute,
+                            'ECCUBE_TEMPLATE_CODE' => $this->templateCode,
+                            'ECCUBE_LOCALE' => $this->locale,
+                        ];
+            }
+
+            /**
+             * envファイル更新処理
+             */
+            public function updateEnvFile()
+            {
+                // $envDir = $this->container->getParameter('kernel.project_dir');
+                $envFile = $this->envDir.'/.env';
+                $envDistFile = $this->envDir.'/.env.dist';
+
+                $env = file_exists($envFile)
+                            ? file_get_contents($envFile)
+                            : file_get_contents($envDistFile);
+
+                $env = StringUtil::replaceOrAddEnv($env, $this->getEnvParameters());
+
+                file_put_contents($envFile, $env);
+            }
+        };
     }
 
     protected function configure()
@@ -79,24 +129,57 @@ class InstallerCommand extends Command
         if (empty($databaseUrl)) {
             $databaseUrl = 'sqlite:///var/eccube.db';
         }
-        $databaseUrl = $this->io->ask('Database Url', $databaseUrl);
+        $this->envFileUpdater->databaseUrl = $this->io->ask('Database Url', $databaseUrl);
 
         // DATABASE_SERVER_VERSION
-        $serverVersion = $this->getDatabaseServerVersion($databaseUrl);
+        $this->envFileUpdater->serverVersion = $this->getDatabaseServerVersion($databaseUrl);
 
         // MAILER_URL
         $mailerUrl = $this->container->getParameter('eccube_mailer_url');
         if (empty($mailerUrl)) {
             $mailerUrl = 'null://localhost';
         }
-        $mailerUrl = $this->io->ask('Mailer Url', $mailerUrl);
+        $this->envFileUpdater->mailerUrl = $this->io->ask('Mailer Url', $mailerUrl);
 
         // ECCUBE_AUTH_MAGIC
         $authMagic = $this->container->getParameter('eccube_auth_magic');
         if (empty($authMagic) || $authMagic === '<change.me>') {
             $authMagic = StringUtil::random();
         }
-        $authMagic = $this->io->ask('Auth Magic', $authMagic);
+        $this->envFileUpdater->authMagic = $this->io->ask('Auth Magic', $authMagic);
+
+        // 以下環境変数に規定済の設定値があれば利用する
+        // APP_ENV
+        $appEnv = env('APP_ENV', 'dev');
+        // .envが存在しない状態では規定値'install'となっているため、devに更新する
+        if ($appEnv === 'install') {
+            $appEnv = 'dev';
+        }
+        $this->envFileUpdater->appEnv = $appEnv;
+
+        // APP_DEBUG
+        $this->envFileUpdater->appDebug = env('APP_DEBUG', '1');
+
+        // ECCUBE_ADMIN_ROUTE
+        $adminRoute = $this->container->getParameter('eccube_admin_route');
+        if (empty($adminRoute)) {
+            $adminRoute = 'admin';
+        }
+        $this->envFileUpdater->adminRoute = $adminRoute;
+
+        // ECCUBE_TEMPLATE_CODE
+        $templateCode = $this->container->getParameter('eccube_theme_code');
+        if (empty($templateCode)) {
+            $templateCode = 'default';
+        }
+        $this->envFileUpdater->templateCode = $templateCode;
+
+        // ECCUBE_LOCALE
+        $locale = $this->container->getParameter('locale');
+        if (empty($locale)) {
+            $locale = 'ja';
+        }
+        $this->envFileUpdater->locale = $locale;
 
         $this->io->caution('Execute the installation process. All data is initialized.');
         $question = new ConfirmationQuestion('Is it OK?');
@@ -109,29 +192,9 @@ class InstallerCommand extends Command
             return;
         }
 
-        $envParameters = [
-            'APP_ENV' => 'dev',
-            'APP_DEBUG' => '1',
-            'DATABASE_URL' => $databaseUrl,
-            'DATABASE_SERVER_VERSION' => $serverVersion,
-            'MAILER_URL' => $mailerUrl,
-            'ECCUBE_AUTH_MAGIC' => $authMagic,
-            'ECCUBE_ADMIN_ROUTE' => 'admin',
-            'ECCUBE_TEMPLATE_CODE' => 'default',
-            'ECCUBE_LOCALE' => 'ja',
-        ];
-
-        $envDir = $this->container->getParameter('kernel.project_dir');
-        $envFile = $envDir.'/.env';
-        $envDistFile = $envDir.'/.env.dist';
-
-        $env = file_exists($envFile)
-            ? file_get_contents($envFile)
-            : file_get_contents($envDistFile);
-
-        $env = StringUtil::replaceOrAddEnv($env, $envParameters);
-
-        file_put_contents($envFile, $env);
+        // envファイルへの更新反映処理
+        $this->envFileUpdater->envDir = $this->container->getParameter('kernel.project_dir');
+        $this->envFileUpdater->updateEnvFile();
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)

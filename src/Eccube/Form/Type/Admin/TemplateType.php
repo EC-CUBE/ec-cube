@@ -66,7 +66,7 @@ class TemplateType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(['message' => trans('admin.common.select')]),
                     new Assert\File([
-                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip'],
+                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'],
                         'mimeTypesMessage' => trans('admin.store.template.invalid_upload_file'),
                     ]),
                 ],

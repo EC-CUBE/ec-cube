@@ -35,7 +35,7 @@ class SessionProcessor
             return $records;
         }
 
-        $records['extra']['session_id'] = $this->session->getId();
+        $records['extra']['session_id'] = substr(sha1($this->session->getId()), 0, 8);
 
         return $records;
     }
