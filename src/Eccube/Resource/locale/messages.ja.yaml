@@ -46,6 +46,7 @@ common.mail_address_sample: 例：ec-cube@example.com
 common.repeated_confirm: 確認のためもう一度入力してください
 common.password: パスワード
 common.password_sample: 半角英数記号%min%〜%max%文字
+common.password_eq_email: パスワードはメールアドレスと同じ値を設定できません。
 common.password_for_confirmation: パスワード(確認)
 common.gender: 性別
 common.job: 職業
