@@ -155,8 +155,17 @@ class CustomerType extends AbstractType
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
-            if ($Customer->getPassword() != "" && $Customer->getPassword() == $Customer->getEmail()) {
+            if ($Customer->getPassword() != '' && $Customer->getPassword() == $Customer->getEmail()) {
                 $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            }
+        });
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $Customer = $event->getData();
+
+            // ポイント数が入力されていない場合0を登録
+            if (is_null($Customer->getPoint())) {
+                $Customer->setPoint(0);
             }
         });
     }

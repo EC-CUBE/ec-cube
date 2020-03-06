@@ -65,18 +65,26 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             if ($ProductClass->isStockUnlimited()) {
                 continue;
             }
+
             $stock = $ProductClass->getStock();
-            // 更新後ステータスがキャンセルの場合は, 差分ではなく更新後の個数で確認.
+            $Items = $To->getProductOrderItems();
+            $Items = array_filter($Items, function ($Item) use ($id) {
+                return $Item->getProductClass()->getId() == $id;
+            });
+            $toQuantity = array_reduce($Items, function ($quantity, $Item) {
+                return $quantity += $Item->getQuantity();
+            }, 0);
+            
+            // ステータスをキャンセルに変更した場合
             if ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::CANCEL
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() != OrderStatus::CANCEL) {
-                $Items = $To->getProductOrderItems();
-                $Items = array_filter($Items, function ($Item) use ($id) {
-                    return $Item->getProductClass()->getId() == $id;
-                });
-                $toQuantity = array_reduce($Items, function ($quantity, $Item) {
-                    return $quantity += $Item->getQuantity();
-                }, 0);
                 if ($stock + $toQuantity < 0) {
+                    $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
+                }
+            // ステータスをキャンセルから対応中に変更した場合
+            } elseif ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::IN_PROGRESS
+                && $From->getOrderStatus() && $From->getOrderStatus()->getId() == OrderStatus::CANCEL) {
+                if ($stock - $toQuantity < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             } else {

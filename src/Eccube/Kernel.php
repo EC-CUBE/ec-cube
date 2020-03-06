@@ -22,7 +22,6 @@ use Eccube\DependencyInjection\Compiler\PaymentMethodPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
-use Eccube\DependencyInjection\Compiler\TemplateListenerPass;
 use Eccube\DependencyInjection\Compiler\TwigBlockPass;
 use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
@@ -183,10 +182,6 @@ class Kernel extends BaseKernel
         // DocumentRootをルーティディレクトリに設定する.
         $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
 
-        if ($this->environment !== 'install') {
-            // テンプレートフックポイントを動作させるように.
-            $container->addCompilerPass(new TemplateListenerPass());
-        }
 
         // twigのurl,path関数を差し替え
         $container->addCompilerPass(new TwigExtensionPass());
