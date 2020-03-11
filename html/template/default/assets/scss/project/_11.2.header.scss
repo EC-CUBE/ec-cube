@@ -109,6 +109,13 @@ Styleguide 11.2
   align-items: center;
   padding-top: 15px;
 
+  .fa-bars {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   @include media_desktop {
     padding-bottom: 40px;
   }
@@ -393,13 +400,16 @@ Styleguide 11.2.4
     input[type="search"]{
       width: 100%;
       height: 34px;
-      font-size: 1.2rem;
+      font-size: 16px;
       border: 0 none;
       padding: 0.5em 50px 0.5em 1em;
       box-shadow: none;
       background: none;
       box-sizing: border-box;
       margin-bottom: 0;
+      @include media_desktop {
+        font-size: 12px;
+      }
     }
     .ec-icon {
       width: 22px;
@@ -735,7 +745,10 @@ Styleguide 11.2.6
   z-index: 1000;
 
   .fas {
-    vertical-align: top;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   @include media_desktop {
     display: none;

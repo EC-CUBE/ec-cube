@@ -15,6 +15,7 @@ namespace Eccube\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer\EntityToIdTransformer;
@@ -35,7 +36,7 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 class AddCartType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $config;
 
@@ -56,9 +57,10 @@ class AddCartType extends AbstractType
 
     protected $doctrine;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ManagerRegistry $doctrine, EccubeConfig $config)
     {
         $this->doctrine = $doctrine;
+        $this->config = $config;
     }
 
     /**

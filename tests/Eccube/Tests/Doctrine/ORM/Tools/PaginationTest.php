@@ -71,7 +71,13 @@ class PaginationTest extends EccubeTestCase
         /** @var EntityManager $em */
         $em = $this->entityManager;
         $conn = $em->getConnection();
-        $conn->rollback();
+        if (!$conn->isConnected()) {
+            $conn->connect();
+        }
+        if ($conn->isTransactionActive()) {
+            $conn->rollback();
+        }
+
         $this->dropTable($conn->getWrappedConnection());
         $this->createTable($conn->getWrappedConnection());
         $conn->beginTransaction();

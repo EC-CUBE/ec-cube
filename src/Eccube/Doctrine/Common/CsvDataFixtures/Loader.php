@@ -62,10 +62,10 @@ class Loader
                 // 定義ファイルに記載の順にソート.
                 function (\SplFileInfo $a, \SplFileInfo $b) use ($definition) {
                     if (!isset($definition[$a->getFilename()])) {
-                        throw new \Exception(sprintf('"%s" is undefined in %s', $a->getFilename()));
+                        throw new \Exception(sprintf('"%s" is undefined in definition.yml', $a->getFilename()));
                     }
                     if (!isset($definition[$b->getFilename()])) {
-                        throw new \Exception(sprintf('"%s" is undefined in %s', $b->getFilename()));
+                        throw new \Exception(sprintf('"%s" is undefined in definition.yml', $b->getFilename()));
                     }
 
                     $a_sortNo = $definition[$a->getFilename()];
