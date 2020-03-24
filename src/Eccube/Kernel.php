@@ -126,6 +126,11 @@ class Kernel extends BaseKernel
         $dir = dirname(__DIR__).'/../app/Plugin/*/Resource/config';
         $loader->load($dir.'/services'.self::CONFIG_EXTS, 'glob');
         $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
+
+        // カスタマイズディレクトリのservices.phpをロードする.
+        $dir = dirname(__DIR__).'/../app/Customize/Resource/config';
+        $loader->load($dir.'/services'.self::CONFIG_EXTS, 'glob');
+        $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
