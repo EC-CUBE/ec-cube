@@ -20,4 +20,3 @@ twig:
     #     - 'Form/form_div_layout.twig'
     date:
       timezone: '%timezone%'
-    base_template_class: 'Eccube\Twig\Template'
