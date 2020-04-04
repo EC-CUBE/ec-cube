@@ -40,6 +40,7 @@ gulpconfig.js
 /tests/tmp/*
 /reports/*
 .idea
+.vscode/
 *.php~
 .env
 .maintenance
