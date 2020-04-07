@@ -36,10 +36,6 @@ DirectoryIndex index.php index.html .ht
     RewriteCond %{HTTP:Authorization} ^(.*)
     RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 
-    # さくらのレンタルサーバでサイトへのアクセスをSSL経由に制限する場合の対応
-    # RewriteCond %{HTTP:x-sakura-forwarded-for} !^$
-    # RewriteRule ^(.*) - [E=HTTPS:on]
-
     RewriteRule "^\.git" - [F]
     RewriteRule "^src/" - [F]
     RewriteRule "^app/" - [F]
