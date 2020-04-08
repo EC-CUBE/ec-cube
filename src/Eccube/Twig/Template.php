@@ -32,9 +32,10 @@ abstract class Template extends \Twig\Template
         if (isset($globals['event_dispatcher']) && strpos($this->getTemplateName(), '__string_template__') !== 0) {
             /** @var EventDispatcherInterface $eventDispatcher */
             $eventDispatcher = $globals['event_dispatcher'];
-            $event = new TemplateEvent($this->getTemplateName(), $this->getSourceContext()->getCode(), $context);
+            $originCode = $this->env->getLoader()->getSourceContext($this->getTemplateName())->getCode();
+            $event = new TemplateEvent($this->getTemplateName(), $originCode, $context);
             $eventDispatcher->dispatch($this->getTemplateName(), $event);
-            if ($event->getSource() !== $this->getSourceContext()->getCode()) {
+            if ($event->getSource() !== $originCode) {
                 $newTemplate = $this->env->createTemplate($event->getSource());
                 $newTemplate->display($event->getParameters(), $blocks);
             } else {
