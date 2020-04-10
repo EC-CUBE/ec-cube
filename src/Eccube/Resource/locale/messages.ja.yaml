@@ -735,7 +735,7 @@ admin.product.product_csv.tax_rate_description: 商品別税率機能設定が�
 
 # カテゴリCSV雛形
 admin.product.category_csv.category_id_col: カテゴリID
-admin.product.category_csv.category_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
+admin.product.category_csv.category_id_description: 新規登録の場合は空にしてください。既存のカテゴリを更新する場合は、カテゴリIDを指定してください。
 admin.product.category_csv.category_name_col: カテゴリ名
 admin.product.category_csv.category_name_description: ''
 admin.product.category_csv.parent_category_id_col: 親カテゴリID
