@@ -24,10 +24,10 @@ $(function() {
         // PC表示の時のみに適用
         if (window.innerWidth > 767) {
 
-            if ($('#shopping-form').length) {
+            if ($('.ec-orderRole').length) {
 
                 var side = $(".ec-orderRole__summary"),
-                    wrap = $("#shopping-form"),
+                    wrap = $(".ec-orderRole").first(),
                     min_move = wrap.offset().top,
                     max_move = wrap.height(),
                     margin_bottom = max_move - min_move;
