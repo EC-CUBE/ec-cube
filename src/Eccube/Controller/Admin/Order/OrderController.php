@@ -411,7 +411,7 @@ class OrderController extends AbstractController
                 $Csvs = $csvService->getCsvs();
 
                 $Order = $entity;
-                $OrderItems = $Order->getOrderItems();
+                $OrderItems = $Order->getItems();
 
                 foreach ($OrderItems as $OrderItem) {
                     $ExportCsvRow = new ExportCsvRow();
