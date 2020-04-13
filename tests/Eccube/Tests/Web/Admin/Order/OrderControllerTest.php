@@ -299,6 +299,50 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4509
+     */
+    public function testExportOrderWithSortedItems()
+    {
+        // 意味はないけどバッファリングさせたいので置いておく
+        $this->expectOutputRegex('/user-[0-9]@example.com/', 'user-[0-9]@example.com が含まれる CSV が出力されるか');
+
+        // CSV出力させる
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_order_export_order')
+        );
+
+        // CSVの出力結果を保存
+        $csv = realpath(dirname(__FILE__)).'/test.csv';
+        $output = $this->getActualOutput();
+        file_put_contents($csv, $output);
+
+        // CSVとして読み込み
+        $file = new \SplFileObject($csv);
+        $file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY | \SplFileObject::DROP_NEW_LINE );
+
+        // 注文ごとに明細IDを保持
+        $items = [];
+        foreach ($file as $row) {
+            $orderId = $row[0]; // 注文ID
+            $orderItemTypeId = (int)$row[46]; // 明細種別ID
+            $items[$orderId][] = $orderItemTypeId;
+        }
+
+        // 明細IDがID昇順になっているか確認
+        foreach ($items as $orderId => $orderItemTypeIds) {
+            $actual = $orderItemTypeIds;
+
+            sort($orderItemTypeIds);
+            $expected = $orderItemTypeIds;
+
+            $this->assertSame($expected, $actual);
+        }
+
+        unlink($csv);
+    }
+
+    /**
      * Test for issue 1995
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1995
