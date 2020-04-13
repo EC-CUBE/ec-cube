@@ -338,8 +338,6 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
             $this->assertSame($expected, $actual);
         }
-
-        unlink($csv);
     }
 
     /**
