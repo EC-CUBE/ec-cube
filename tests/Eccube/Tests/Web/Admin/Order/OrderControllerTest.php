@@ -313,7 +313,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         );
 
         // CSVの出力結果を保存
-        $csv = realpath(dirname(__FILE__)).'/test.csv';
+        $csv = tempnam(sys_get_temp_dir(), __CLASS__);
         $output = $this->getActualOutput();
         file_put_contents($csv, $output);
 
