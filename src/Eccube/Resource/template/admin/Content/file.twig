@@ -135,13 +135,12 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                         </div>
+                        {% for error in errors %}
+                            <p class="text-danger errormsg">{{ error.message|trans }}</p>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-            {% for error in errors %}
-                <p class="text-danger errormsg">{{ error.message|trans }}</p>
-            {% endfor %}
-
             <div class="c-contentsArea__cols">
                 <div class="c-contentsArea__primaryCol">
                     <div class="c-primaryCol">
