@@ -2,12 +2,6 @@ FROM php:7.3-apache-stretch
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
 
-RUN /bin/rm /etc/apt/sources.list \
-  && { \
-    echo 'deb http://cdn.debian.net/debian/ stretch main contrib non-free'; \
-    echo 'deb http://cdn.debian.net/debian/ stretch-updates main contrib'; \
-  } > /etc/apt/sources.list.d/mirror.jp.list
-
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
     apt-transport-https \
