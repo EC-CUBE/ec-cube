@@ -191,7 +191,7 @@ class OrderType extends AbstractType
                 'required' => false,
             ])
             ->add('use_point', NumberType::class, [
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
