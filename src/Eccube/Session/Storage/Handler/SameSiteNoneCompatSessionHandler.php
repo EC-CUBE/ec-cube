@@ -35,7 +35,6 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      */
     public function __construct(\SessionHandlerInterface $handler)
     {
-        parent::__construct($handler);
         $this->handler = $handler;
         // TODO UA や PHP バージョンで分岐する
         ini_set('session.cookie_path', '/; SameSite=None');
@@ -48,8 +47,11 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     public function open($savePath, $sessionName)
     {
         $this->sessionName = $sessionName;
-
-        return parent::open($savePath, $sessionName);
+        // see https://github.com/symfony/symfony/blob/f46e6cb8a086d0c44502cf35e699a1aa0044b11c/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/AbstractSessionHandler.php#L37-L39
+        if (!headers_sent() && !ini_get('session.cache_limiter') && '0' !== ini_get('session.cache_limiter')) {
+            header(sprintf('Cache-Control: max-age=%d, private, must-revalidate', 60 * (int) ini_get('session.cache_expire')));
+        }
+        return $this->handler->open($savePath, $sessionName);
     }
 
     /**
