@@ -1,31 +1,60 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Session\Storage\Handler;
 
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\StrictSessionHandler;
 
 class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
 {
+    /** @var \SessionHandlerInterface */
+    private $handler;
+    /** @var string */
     private $sessionName;
+    /** @var string */
     private $prefetchId;
+    /** @var string|null */
     private $prefetchData;
+    /** @var string */
     private $newSessionId;
+    /** @var string|null */
     private $igbinaryEmptyData;
 
+    /**
+     *  {@inheritdoc}
+     */
     public function __construct(\SessionHandlerInterface $handler)
     {
         parent::__construct($handler);
         $this->handler = $handler;
         // TODO UA や PHP バージョンで分岐する
         ini_set('session.cookie_path', '/; SameSite=None');
-        ini_set('session.cookie_secure', 1);
+        ini_set('session.cookie_secure', '1');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function open($savePath, $sessionName)
     {
         $this->sessionName = $sessionName;
+
         return parent::open($savePath, $sessionName);
     }
+
+    /**
+     * {@inheritdoc}
+     */
     public function destroy($sessionId)
     {
         if (\PHP_VERSION_ID < 70000) {
@@ -67,9 +96,9 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
                                   'expires' => 0,
                                   'path' => '/', // TODO
                                   'domain' => ini_get('session.cookie_domain'),
-                                  'secure' =>  filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN),
+                                  'secure' => filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN),
                                   'httponly' => filter_var(ini_get('session.cookie_httponly'), FILTER_VALIDATE_BOOLEAN),
-                                  'samesite' => 'None' // TODO UA で分岐する
+                                  'samesite' => 'None', // TODO UA で分岐する
                               ]
                     );
                 }
