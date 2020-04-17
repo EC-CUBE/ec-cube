@@ -36,9 +36,14 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
     /**
      * @dataProvider provideSession
      */
-    public function testSession($fixture)
+    public function testSession($fixture, $user_agent)
     {
-        $context = ['http' => ['header' => "Cookie: sid=123abc\r\n"]];
+        $context = [
+            'http' => [
+                'header' => "Cookie: sid=123abc\r\n",
+                'user_agent' => $user_agent
+            ]
+        ];
         $context = stream_context_create($context);
         $result = file_get_contents(sprintf('http://localhost:8053/%s.php', $fixture), false, $context);
 
@@ -47,10 +52,20 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
 
     public function provideSession()
     {
+        $userAgents = [
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 13_1_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.1 Mobile/15E148 Safari/604.1',
+        ];
+
         foreach (glob(self::FIXTURES_DIR.'/*.php') as $file) {
             $name = pathinfo($file, PATHINFO_FILENAME);
             if ($name == 'common') continue;
-            yield [$name];
+            if ($name == 'storage') {
+                // TODO Mock が動作しないためスキップ
+                continue;
+            }
+            foreach ($userAgents as $user_agent) {
+                yield [$name, $user_agent];
+            }
         }
     }
 }
