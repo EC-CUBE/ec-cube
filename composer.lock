@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c7efc44402b4eb643446b45fbc2d105",
+    "content-hash": "9f90fb1a2efd3a3160e24841a6a19488",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1686,6 +1686,7 @@
                 "monolog",
                 "productivity"
             ],
+            "abandoned": true,
             "time": "2019-10-24T07:13:31+00:00"
         },
         {
@@ -3347,6 +3348,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
+            "abandoned": "symfony/maker-bundle",
             "time": "2017-12-07T15:36:41+00:00"
         },
         {
@@ -3447,7 +3449,52 @@
                 "fpdi",
                 "pdf"
             ],
+            "abandoned": true,
             "time": "2019-01-30T14:39:33+00:00"
+        },
+        {
+            "name": "skorp/detect-incompatible-samesite-useragents",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/skorp/detect-incompatible-samesite-useragents.git",
+                "reference": "4299c61f8c4edac2b63fd8629408d0bfc5ad76d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/skorp/detect-incompatible-samesite-useragents/zipball/4299c61f8c4edac2b63fd8629408d0bfc5ad76d9",
+                "reference": "4299c61f8c4edac2b63fd8629408d0bfc5ad76d9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Skorp\\Dissua\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kadir Özdemir"
+                }
+            ],
+            "description": "Determine if UserAgent is incompatible with SameSite=None",
+            "keywords": [
+                "cookies",
+                "safari",
+                "samesite",
+                "samesite cookie"
+            ],
+            "time": "2020-01-29T21:12:37+00:00"
         },
         {
             "name": "suncat/mobile-detect-bundle",
@@ -7569,6 +7616,7 @@
                 "code",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-code",
             "time": "2019-10-05T23:18:22+00:00"
         },
         {
@@ -7623,6 +7671,7 @@
                 "events",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-eventmanager",
             "time": "2018-04-25T15:33:34+00:00"
         }
     ],
@@ -8000,12 +8049,12 @@
             "version": "1.7.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/facebook/php-webdriver.git",
+                "url": "https://github.com/php-webdriver/php-webdriver-archive.git",
                 "reference": "e43de70f3c7166169d0f14a374505392734160e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/e43de70f3c7166169d0f14a374505392734160e5",
+                "url": "https://api.github.com/repos/php-webdriver/php-webdriver-archive/zipball/e43de70f3c7166169d0f14a374505392734160e5",
                 "reference": "e43de70f3c7166169d0f14a374505392734160e5",
                 "shasum": ""
             },
@@ -8053,6 +8102,7 @@
                 "selenium",
                 "webdriver"
             ],
+            "abandoned": "php-webdriver/webdriver",
             "time": "2019-06-13T08:02:18+00:00"
         },
         {
