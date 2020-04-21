@@ -69,7 +69,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
         return $this->handler->read($sessionId);
     }
 
-        /**
+    /**
      * {@inheritdoc}
      */
     public function updateTimestamp($sessionId, $data)
@@ -207,6 +207,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      */
     private function shouldSendSameSiteNone()
     {
-        return SameSite::handle($_SERVER['HTTP_USER_AGENT']);
+        $userAgent = array_key_exists('HTTP_USER_AGENT', $_SERVER) ? $_SERVER['HTTP_USER_AGENT'] : null;
+        return SameSite::handle($userAgent);
     }
 }
