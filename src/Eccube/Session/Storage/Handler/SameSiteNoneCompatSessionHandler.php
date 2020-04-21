@@ -13,6 +13,9 @@
 
 namespace Eccube\Session\Storage\Handler;
 
+use Skorp\Dissua\SameSite;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\StrictSessionHandler;
 
 class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
@@ -38,9 +41,10 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     public function __construct(\SessionHandlerInterface $handler)
     {
         $this->handler = $handler;
-        // TODO UA や PHP バージョンで分岐する
-        ini_set('session.cookie_path', '/; SameSite=None');
-        ini_set('session.cookie_secure', '1');
+
+        ini_set('session.cookie_secure', $this->getCookieSecure());
+        ini_set('session.cookie_samesite', $this->getCookieSameSite());
+        ini_set('session.cookie_path', $this->getCookiePath());
     }
 
     /**
@@ -49,10 +53,11 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     public function open($savePath, $sessionName)
     {
         $this->sessionName = $sessionName;
-        // see https://github.com/symfony/symfony/blob/f46e6cb8a086d0c44502cf35e699a1aa0044b11c/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/AbstractSessionHandler.php#L37-L39
+        // see https://github.com/symfony/symfony/blob/2adc85d49cbe14e346068fa7e9c2e1f08ab31de6/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/AbstractSessionHandler.php#L35-L37
         if (!headers_sent() && !ini_get('session.cache_limiter') && '0' !== ini_get('session.cache_limiter')) {
             header(sprintf('Cache-Control: max-age=%d, private, must-revalidate', 60 * (int) ini_get('session.cache_expire')));
         }
+
         return $this->handler->open($savePath, $sessionName);
     }
 
@@ -82,6 +87,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
 
     /**
      * {@inheritdoc}
+     * @see https://github.com/symfony/symfony/blob/2adc85d49cbe14e346068fa7e9c2e1f08ab31de6/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/AbstractSessionHandler.php#L126-L167
      */
     public function destroy($sessionId)
     {
@@ -122,11 +128,11 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
                     setcookie($this->sessionName, '',
                               [
                                   'expires' => 0,
-                                  'path' => '/', // TODO
+                                  'path' => $this->getCookiePath(),
                                   'domain' => ini_get('session.cookie_domain'),
                                   'secure' => filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN),
                                   'httponly' => filter_var(ini_get('session.cookie_httponly'), FILTER_VALIDATE_BOOLEAN),
-                                  'samesite' => 'None', // TODO UA で分岐する
+                                  'samesite' => $this->getCookieSameSite(),
                               ]
                     );
                 }
@@ -160,5 +166,47 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     public function gc($maxlifetime)
     {
         return $this->handler->gc($maxlifetime);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCookieSameSite()
+    {
+        if ($this->shouldSendSameSiteNone() && \PHP_VERSION_ID >= 70300 && $this->getCookieSecure()) {
+            return Cookie::SAMESITE_NONE;
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getCookiePath()
+    {
+        $cookiePath = env('ECCUBE_COOKIE_PATH', '/');
+        if ($this->shouldSendSameSiteNone() && \PHP_VERSION_ID < 70300 && $this->getCookieSecure()) {
+            return $cookiePath.'; SameSite='.Cookie::SAMESITE_NONE;
+        }
+
+        return $cookiePath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCookieSecure()
+    {
+        $request = Request::createFromGlobals();
+        return $request->isSecure() ? '1' : '0';
+    }
+
+    /**
+     * @return bool
+     */
+    private function shouldSendSameSiteNone()
+    {
+        return SameSite::handle($_SERVER['HTTP_USER_AGENT']);
     }
 }

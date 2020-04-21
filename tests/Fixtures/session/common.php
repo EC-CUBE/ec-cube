@@ -1,6 +1,8 @@
 <?php
 
+use Dotenv\Dotenv;
 use Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler;
+use Symfony\Component\HttpFoundation\Request;
 
 $parent = __DIR__;
 while (!@file_exists($parent.'/vendor/autoload.php')) {
@@ -17,6 +19,13 @@ while (!@file_exists($parent.'/vendor/autoload.php')) {
 }
 
 require $parent.'/vendor/autoload.php';
+if (file_exists($parent.'/.env')) {
+    (new Dotenv($parent))->overload();
+}
+
+Request::setTrustedProxies(['127.0.0.1', '::1', 'REMOTE_ADDR'], Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+Request::setTrustedHosts(['127.0.0.1', '::1']);
+Request::createFromGlobals();
 
 error_reporting(-1);
 ini_set('html_errors', 0);
