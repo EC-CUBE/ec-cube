@@ -101,6 +101,12 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
                 // TODO Mock が動作しないためスキップ
                 continue;
             }
+            if ($name == 'regenerate') {
+                // XXX PHP7.4.5, 7.3.17 のバグでエラーになるためスキップ
+                // see https://github.com/symfony/symfony/pull/36485#issuecomment-615928699
+                if (PHP_VERSION_ID === 70405) continue;
+                if (PHP_VERSION_ID === 70317) continue;
+            }
             foreach ($userAgents as $user_agent => $shouldSendSameSiteNone) {
                 yield [$name, $user_agent, $shouldSendSameSiteNone];
             }
