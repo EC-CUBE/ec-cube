@@ -1,5 +1,5 @@
 const build = require('./gulp/build/build')
-const watch = require('./gulp/build/watch')
+const start = require('./gulp/build/start')
 
 exports.default = build
-exports.start = watch
+exports.start = start

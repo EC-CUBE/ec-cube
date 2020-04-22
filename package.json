@@ -11,10 +11,7 @@
     "clean": "echo \"Error: no clean specified\" && exit 1",
     "start": "echo \"Error: no start specified\" && exit 1",
     "build": "gulp",
-    "watch": "gulp watch",
-    "watch:min": "gulp watch:min",
-    "start": "gulp start",
-    "start:min": "gulp start:min"
+    "start": "gulp start"
   },
   "repository": {
     "type": "git",
