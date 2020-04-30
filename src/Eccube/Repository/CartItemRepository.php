@@ -14,7 +14,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\CartItem;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
 
 /**
  * CartRepository

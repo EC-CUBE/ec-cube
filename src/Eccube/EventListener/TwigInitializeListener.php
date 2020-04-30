@@ -29,7 +29,7 @@ use Eccube\Repository\PageRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\BlockPositionRepository;
 use Eccube\Request\Context;
-use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
+// use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -129,7 +129,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         AuthorityRoleRepository $authorityRoleRepository,
         EccubeConfig $eccubeConfig,
         Context $context,
-        MobileDetector $mobileDetector,
+        // MobileDetector $mobileDetector,
         UrlGeneratorInterface $router,
         LayoutRepository $layoutRepository
     ) {
@@ -142,7 +142,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->authorityRoleRepository = $authorityRoleRepository;
         $this->eccubeConfig = $eccubeConfig;
         $this->requestContext = $context;
-        $this->mobileDetector = $mobileDetector;
+        // $this->mobileDetector = $mobileDetector;
         $this->router = $router;
         $this->layoutRepository = $layoutRepository;
     }

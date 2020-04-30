@@ -15,7 +15,7 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\NoResultException;
 use Eccube\Entity\Layout;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
 
 /**
  * LayoutRepository

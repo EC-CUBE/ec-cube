@@ -16,7 +16,7 @@ namespace Eccube\Repository;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Page;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

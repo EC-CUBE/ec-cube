@@ -3,13 +3,13 @@ parameters:
     env(ECCUBE_ADMIN_ROUTE): 'admin'
     env(ECCUBE_USER_DATA_ROUTE): 'user_data'
     env(ECCUBE_ADMIN_ALLOW_HOSTS): '[]'
-    env(ECCUBE_FORCE_SSL): false
+    env(ECCUBE_FORCE_SSL): null
     env(ECCUBE_TEMPLATE_CODE): 'default'
     env(ECCUBE_AUTH_MAGIC): '<change.me>'
     env(ECCUBE_COOKIE_NAME): 'eccube'
     env(ECCUBE_COOKIE_PATH): '/'
-    env(ECCUBE_COOKIE_LIFETIME): 0
-    env(ECCUBE_GC_MAXLIFETIME): 1440
+    env(ECCUBE_COOKIE_LIFETIME): '0'
+    env(ECCUBE_GC_MAXLIFETIME): '1440'
     env(ECCUBE_PACKAGE_API_URL): 'https://package-api.ec-cube.net'
     env(ECCUBE_OWNERS_STORE_URL): 'https://www.ec-cube.net'
     env(ECCUBE_MAINTENANCE_FILE_PATH): '%kernel.project_dir%/.maintenance'
@@ -24,8 +24,8 @@ parameters:
     eccube.theme: '%env(ECCUBE_TEMPLATE_CODE)%'
     eccube_theme_code: '%eccube.theme%'
     eccube_auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
-    eccube_auth_type: HMAC
-    eccube_password_hash_algos: SHA256
+    eccube_auth_type: 'HMAC'
+    eccube_password_hash_algos: 'SHA256'
     eccube_theme_app_dir: '%kernel.project_dir%/app/template'
     eccube_theme_src_dir: '%kernel.project_dir%/src/Eccube/Resource/template'
     eccube_theme_user_data_dir: '%eccube_theme_app_dir%/user_data'

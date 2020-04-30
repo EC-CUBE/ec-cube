@@ -70,7 +70,7 @@ class Kernel extends BaseKernel
 
     public function registerBundles()
     {
-        $contents = require $this->getProjectDir().'/app/config/eccube/bundles.php';
+        $contents = require __DIR__.'/../../app/config/eccube/bundles.php';
         foreach ($contents as $class => $envs) {
             if (isset($envs['all']) || isset($envs[$this->environment])) {
                 yield new $class();
@@ -144,6 +144,14 @@ class Kernel extends BaseKernel
         $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getProjectDir(): string
+    {
+        return \realpath(__DIR__.'/../../');
+    }
+
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
         $container = $this->getContainer();
@@ -197,10 +205,6 @@ class Kernel extends BaseKernel
 
         // DocumentRootをルーティディレクトリに設定する.
         $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
-
-
-        // twigのurl,path関数を差し替え
-        $container->addCompilerPass(new TwigExtensionPass());
 
         $container->register('app', Application::class)
             ->setSynthetic(true)

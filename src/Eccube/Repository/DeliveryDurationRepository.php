@@ -14,7 +14,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\DeliveryDuration;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
 
 /**
  * DeliveryDurationRepository

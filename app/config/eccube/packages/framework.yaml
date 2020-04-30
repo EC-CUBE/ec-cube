@@ -15,6 +15,7 @@ framework:
         cookie_lifetime: '%env(ECCUBE_COOKIE_LIFETIME)%'
         gc_maxlifetime: '%env(ECCUBE_GC_MAXLIFETIME)%'
         cookie_httponly: true
+        cookie_secure: "auto"
 
     # When using the HTTP Cache, ESI allows to render page fragments separately
     # and with different cache configurations for each fragment
@@ -50,4 +51,4 @@ framework:
     # See https://symfony.com/doc/current/reference/configuration/framework.html#ide
     ide: ~
     validation: { enable_annotations: true }
-    templating: { engines: ['twig'] }
+    # templating: { engines: ['twig'] }

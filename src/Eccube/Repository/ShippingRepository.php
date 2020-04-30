@@ -16,7 +16,7 @@ namespace Eccube\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Entity\Shipping;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
 
 /**
  * ShippingRepository

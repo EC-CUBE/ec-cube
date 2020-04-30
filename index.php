@@ -1,7 +1,7 @@
 <?php
 
 use Eccube\Kernel;
-use Symfony\Component\Debug\Debug;
+use Symfony\Component\ErrorHandler\Debug;
 use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -53,6 +53,7 @@ if ($trustedHosts) {
     Request::setTrustedHosts(explode(',', $trustedHosts));
 }
 
+$kernel = new Kernel($env, $debug);
 $request = Request::createFromGlobals();
 
 $maintenanceFile = env('ECCUBE_MAINTENANCE_FILE_PATH', __DIR__.'/.maintenance');
@@ -72,7 +73,7 @@ if (file_exists($maintenanceFile)) {
     }
 }
 
-$kernel = new Kernel($env, $debug);
+
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);

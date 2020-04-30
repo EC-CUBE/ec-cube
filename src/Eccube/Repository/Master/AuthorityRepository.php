@@ -15,7 +15,7 @@ namespace Eccube\Repository\Master;
 
 use Eccube\Repository\AbstractRepository;
 use Eccube\Entity\Master\Authority;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
 
 /**
  * AuthorityRepository

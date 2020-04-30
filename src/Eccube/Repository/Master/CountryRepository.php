@@ -15,7 +15,7 @@ namespace Eccube\Repository\Master;
 
 use Eccube\Entity\Master\Country;
 use Eccube\Repository\AbstractRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
 
 /**
  * CountryRepository

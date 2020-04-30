@@ -15,7 +15,7 @@ namespace Eccube\EventListener;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Request\Context;
-use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
+// use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Twig\Environment;
@@ -42,11 +42,13 @@ class MobileTemplatePathListener implements EventSubscriberInterface
      */
     protected $eccubeConfig;
 
-    public function __construct(Context $context, Environment $twig, MobileDetector $detector, EccubeConfig $eccubeConfig)
+    public function __construct(Context $context, Environment $twig,
+                                // MobileDetector $detector,
+                                EccubeConfig $eccubeConfig)
     {
         $this->context = $context;
         $this->twig = $twig;
-        $this->detector = $detector;
+        // $this->detector = $detector;
         $this->eccubeConfig = $eccubeConfig;
     }
 

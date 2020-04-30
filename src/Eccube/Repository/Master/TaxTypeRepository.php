@@ -15,7 +15,7 @@ namespace Eccube\Repository\Master;
 
 use Eccube\Entity\Master\TaxType;
 use Eccube\Repository\AbstractRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
 
 /**
  * TaxTypeRepository

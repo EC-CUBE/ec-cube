@@ -19,7 +19,7 @@ use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductStock;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
 
 /**
  * ProductRepository
