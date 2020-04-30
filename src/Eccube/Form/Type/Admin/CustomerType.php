@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\Master\CustomerStatusType;
@@ -31,6 +32,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -146,6 +150,24 @@ class CustomerType extends AbstractType
                     ]),
                 ],
             ]);
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            /** @var Customer $Customer */
+            $Customer = $event->getData();
+            if ($Customer->getPassword() != '' && $Customer->getPassword() == $Customer->getEmail()) {
+                $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            }
+        });
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $Customer = $event->getData();
+
+            // ポイント数が入力されていない場合0を登録
+            if (is_null($Customer->getPoint())) {
+                $Customer->setPoint(0);
+            }
+        });
     }
 
     /**

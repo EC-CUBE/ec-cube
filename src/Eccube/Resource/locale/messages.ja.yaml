@@ -46,6 +46,7 @@ common.mail_address_sample: 例：ec-cube@example.com
 common.repeated_confirm: 確認のためもう一度入力してください
 common.password: パスワード
 common.password_sample: '半角英数記号%min%〜%max%文字'
+common.password_eq_email: パスワードはメールアドレスと同じ値を設定できません。
 common.password_for_confirmation: パスワード(確認)
 common.gender: 性別
 common.job: 職業
@@ -105,7 +106,12 @@ front.block.topic.title__gelato: 濃厚なのにアイスよりヘルシー!! �
 front.block.topic.title__ice: サクサク食感が魅力!! コーンアイス特集
 front.block.eyecatch.title__en: CUBE GELATO ICE
 front.block.eyecatch.title__ja: 彩のジェラート"CUBE"をご堪能ください。
+# Deprecated https://github.com/EC-CUBE/ec-cube/pull/4220
 front.block.eyecatch.descriptiron: |
+  ジェラートとはイタリアン・アイスクリームのことで、一般的なアイスクリームに比べて、乳脂肪分が低いのが特徴です。
+  当店では厳選した旬の果物のおいしさをそのままジェラートに仕上げました。風味が濃厚でありながら、甘さ控えめでヘルシーなキューブジェラートをご堪能ください。
+  さらにジェラートの製法を活かした、アイスキャンディ・アイスサンドも販売しております。
+front.block.eyecatch.description: |
   ジェラートとはイタリアン・アイスクリームのことで、一般的なアイスクリームに比べて、乳脂肪分が低くいのが特徴です。
   当店では厳選した旬の果物のおいしさをそのままジェラートに仕上げました。風味が濃厚でありながら、甘さ控えめでヘルシーなキューブジェラートをご堪能ください。
   さらにジェラートの製法を活かした、アイスキャンディ・アイスサンドも販売しております。
@@ -729,7 +735,7 @@ admin.product.product_csv.tax_rate_description: 商品別税率機能設定が�
 
 # カテゴリCSV雛形
 admin.product.category_csv.category_id_col: カテゴリID
-admin.product.category_csv.category_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
+admin.product.category_csv.category_id_description: 新規登録の場合は空にしてください。既存のカテゴリを更新する場合は、カテゴリIDを指定してください。
 admin.product.category_csv.category_name_col: カテゴリ名
 admin.product.category_csv.category_name_description: ''
 admin.product.category_csv.parent_category_id_col: 親カテゴリID

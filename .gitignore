@@ -18,6 +18,7 @@ gulpconfig.js
 /app/template/*
 !/app/template/admin
 !/app/template/default
+!/app/template/user_data
 /app/proxy/entity/*
 !/app/proxy/entity/.gitkeep
 /html/plugin/*
@@ -40,6 +41,7 @@ gulpconfig.js
 /tests/tmp/*
 /reports/*
 .idea
+.vscode/
 *.php~
 .env
 .maintenance

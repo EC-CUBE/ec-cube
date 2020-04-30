@@ -21,7 +21,6 @@ use Eccube\Exception\PluginApiException;
 use Eccube\Form\Type\Admin\SearchPluginApiType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerProcessService;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginApiService;
 use Eccube\Service\PluginService;
@@ -77,7 +76,6 @@ class OwnerStoreController extends AbstractController
      *
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
-     * @param ComposerProcessService $composerProcessService
      * @param ComposerServiceInterface $composerService
      * @param SystemService $systemService
      * @param PluginApiService $pluginApiService
@@ -90,7 +88,6 @@ class OwnerStoreController extends AbstractController
     public function __construct(
         PluginRepository $pluginRepository,
         PluginService $pluginService,
-        ComposerProcessService $composerProcessService,
         ComposerServiceInterface $composerService,
         SystemService $systemService,
         PluginApiService $pluginApiService,
@@ -105,12 +102,7 @@ class OwnerStoreController extends AbstractController
         $this->cacheUtil = $cacheUtil;
 
         // TODO: Check the flow of the composer service below
-        $memoryLimit = $this->systemService->getMemoryLimit();
-        if ($memoryLimit == -1 or $memoryLimit >= $this->eccubeConfig['eccube_composer_memory_limit']) {
-            $this->composerService = $composerService;
-        } else {
-            $this->composerService = $composerProcessService;
-        }
+        $this->composerService = $composerService;
     }
 
     /**

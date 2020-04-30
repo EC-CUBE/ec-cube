@@ -122,7 +122,7 @@ class StockDiffProcessorTest extends EccubeTestCase
             [1, 1, 1, false, OrderStatus::IN_PROGRESS, OrderStatus::IN_PROGRESS],
             [1, 1, 1, false, OrderStatus::IN_PROGRESS, OrderStatus::CANCEL],
             [1, 1, 1, false, OrderStatus::IN_PROGRESS, OrderStatus::DELIVERED],
-            [1, 1, 2, false, OrderStatus::CANCEL, OrderStatus::IN_PROGRESS],
+            [1, 1, 1, false, OrderStatus::CANCEL, OrderStatus::IN_PROGRESS],
             [1, 1, 2, false, OrderStatus::CANCEL, OrderStatus::CANCEL],
             [1, 1, 2, false, OrderStatus::DELIVERED, OrderStatus::DELIVERED],
             [1, 1, 2, false, OrderStatus::DELIVERED, OrderStatus::RETURNED],

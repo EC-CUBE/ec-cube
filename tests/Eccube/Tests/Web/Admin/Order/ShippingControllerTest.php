@@ -280,7 +280,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         // 税額が計算されている
         /** @var Order $Order */
         $Order = $this->entityManager->find(Order::class, $Order->getId());
-        self::assertEquals(80, $Order->getProductOrderItems()[0]->getTax());
-        self::assertEquals(160, $Order->getProductOrderItems()[1]->getTax());
+        self::assertEquals(100, $Order->getProductOrderItems()[0]->getTax());
+        self::assertEquals(200, $Order->getProductOrderItems()[1]->getTax());
     }
 }

@@ -1,6 +1,6 @@
 DirectoryIndex index.php index.html .ht
 
-<FilesMatch "^composer|^COPYING|^\.env|^\.maintenance|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|^Dockerfile|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml|dockerignore)$">
+<FilesMatch "^composer|^COPYING|^\.env|^\.maintenance|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|^Dockerfile|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml|dockerignore|sample)$">
     order allow,deny
     deny from all
 </FilesMatch>
@@ -36,10 +36,6 @@ DirectoryIndex index.php index.html .ht
     RewriteCond %{HTTP:Authorization} ^(.*)
     RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 
-    # さくらのレンタルサーバでサイトへのアクセスをSSL経由に制限する場合の対応
-    # RewriteCond %{HTTP:x-sakura-forwarded-for} !^$
-    # RewriteRule ^(.*) - [E=HTTPS:on]
-
     RewriteRule "^\.git" - [F]
     RewriteRule "^src/" - [F]
     RewriteRule "^app/" - [F]
@@ -57,15 +53,15 @@ DirectoryIndex index.php index.html .ht
 </IfModule>
 
 # 管理画面へのBasic認証サンプル
-# 
-#     AuthType Basic
-#     AuthName "Please enter username and password"
-#     AuthUserFile /path/to/.htpasswd
-#     AuthGroupFile /dev/null
-#     require valid-user
 #
-#     SetEnvIf Request_URI "^/admin" admin_path  # ^/adminは, 管理画面URLに応じて変更してください
+# AuthType Basic
+# AuthName "Please enter username and password"
+# AuthUserFile /path/to/.htpasswd
+# AuthGroupFile /dev/null
+# require valid-user
+#
+# SetEnvIf Request_URI "^/admin" admin_path  # ^/adminは, 管理画面URLに応じて変更してください
 # <RequireAll>
 #     Require all granted
 #     Require not env admin_path
-# </RequireAll>#
+# </RequireAll>

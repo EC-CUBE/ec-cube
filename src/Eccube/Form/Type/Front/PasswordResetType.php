@@ -14,11 +14,15 @@
 namespace Eccube\Form\Type\Front;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PasswordResetType extends AbstractType
@@ -52,6 +56,13 @@ class PasswordResetType extends AbstractType
                 new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
             ],
         ])->add('password', RepeatedPasswordType::class);
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            if ($form['password']['first']->getData() == $form['login_email']->getData()) {
+                $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            }
+        });
     }
 
     /**

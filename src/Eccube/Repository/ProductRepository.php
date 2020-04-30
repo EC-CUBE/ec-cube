@@ -220,7 +220,9 @@ class ProductRepository extends AbstractRepository
             ->innerJoin('p.ProductClasses', 'pc')
             ->leftJoin('p.ProductImage', 'pi')
             ->leftJoin('pc.TaxRule', 'tr')
-            ->leftJoin('pc.ProductStock', 'ps');
+            ->leftJoin('pc.ProductStock', 'ps')
+            ->andWhere('pc.visible = :visible')
+            ->setParameter('visible', true);
 
         // id
         if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {

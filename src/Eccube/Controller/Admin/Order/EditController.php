@@ -24,6 +24,7 @@ use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
@@ -279,8 +280,13 @@ class EditController extends AbstractController
                             }
                             // ステートマシンでステータスは更新されるので, 古いステータスに戻す.
                             $TargetOrder->setOrderStatus($OldStatus);
-                            // FormTypeでステータスの遷移チェックは行っているのでapplyのみ実行.
-                            $this->orderStateMachine->apply($TargetOrder, $NewStatus);
+                            try {
+                                // FormTypeでステータスの遷移チェックは行っているのでapplyのみ実行.
+                                $this->orderStateMachine->apply($TargetOrder, $NewStatus);
+                            } catch (ShoppingException $e) {
+                                $this->addError($e->getMessage(), 'admin');
+                                break;
+                            }
                         }
 
                         $this->entityManager->persist($TargetOrder);

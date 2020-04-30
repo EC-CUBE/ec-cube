@@ -2,11 +2,6 @@ FROM php:7.3-apache-stretch
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
 
-RUN echo "deb http://cdn.debian.net/debian/ stretch main contrib non-free" > /etc/apt/sources.list.d/mirror.jp.list
-RUN echo "deb http://cdn.debian.net/debian/ stretch-updates main contrib" >> /etc/apt/sources.list.d/mirror.jp.list
-
-RUN /bin/rm /etc/apt/sources.list
-
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
     apt-transport-https \
@@ -26,27 +21,26 @@ RUN apt-get update \
     locales \
     ssl-cert \
     unzip \
-    vim \
     zlib1g-dev \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && echo "en_US.UTF-8 UTF-8" >/etc/locale.gen \
-  && locale-gen
+  && locale-gen \
+  ;
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-  && docker-php-ext-install -j$(nproc) zip gd mysqli pdo_mysql opcache intl pgsql pdo_pgsql
+  && docker-php-ext-install -j$(nproc) zip gd mysqli pdo_mysql opcache intl pgsql pdo_pgsql \
+  ;
 
 RUN pecl install apcu && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apc.ini
 
-RUN mkdir -p ${APACHE_DOCUMENT_ROOT}
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN mkdir -p ${APACHE_DOCUMENT_ROOT} \
+  && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
+  && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
+  ;
 
-RUN a2enmod rewrite
-RUN a2enmod headers
-
+RUN a2enmod rewrite headers ssl
 # Enable SSL
-RUN a2enmod ssl
 RUN ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
 EXPOSE 443
 
@@ -55,26 +49,30 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Override with custom configuration settings
 COPY dockerbuild/php.ini $PHP_INI_DIR/conf.d/
 
+COPY . ${APACHE_DOCUMENT_ROOT}
+
+WORKDIR ${APACHE_DOCUMENT_ROOT}
+
 RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer \
   && composer config -g repos.packagist composer https://packagist.jp \
-  && composer global require hirak/prestissimo
+  && composer global require hirak/prestissimo \
+  && chown www-data:www-data /var/www \
+  && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
+  && chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT} \
+  && find ${APACHE_DOCUMENT_ROOT} -type d -print0 \
+  | xargs -0 chmod g+s \
+  ;
 
-ENV COMPOSER_ALLOW_SUPERUSER 1
-
-COPY . ${APACHE_DOCUMENT_ROOT}
-
-WORKDIR ${APACHE_DOCUMENT_ROOT}
+USER www-data
 
 RUN composer install \
   --no-scripts \
   --no-autoloader \
   --no-dev -d ${APACHE_DOCUMENT_ROOT} \
-  && chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT} \
-  && chown www-data:www-data /var/www
+  ;
 
-USER www-data
 RUN composer dumpautoload -o --apcu --no-dev
 
 RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/.env ]; then \

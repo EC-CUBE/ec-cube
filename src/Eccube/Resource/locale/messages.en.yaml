@@ -46,6 +46,7 @@ common.mail_address_sample: e.g. ec-cube@example.com
 common.repeated_confirm: Please re-enter
 common.password: Password
 common.password_sample: 'Alphabets, numbers and symbols %min% - %max%chars'
+common.password_eq_email: Password cannot be set to the same value as email address.
 common.password_for_confirmation: Password (Re-enter)
 common.gender: Gender
 common.job: Occupation
@@ -105,10 +106,15 @@ front.block.topic.title__gelato: Rich yet healthier than ice cream!! Gelatos
 front.block.topic.title__ice: Crispy!! Ice cream cones
 front.block.eyecatch.title__en: CUBE GELATO ICE
 front.block.eyecatch.title__ja: Enjoy the colorful gelato 'CUBE'
+# Deprecated https://github.com/EC-CUBE/ec-cube/pull/4220
 front.block.eyecatch.descriptiron: |
  Gelato is ice cream made in the Italian style, which is generally lower in fat than other styles of ice cream.
  Our fruity gelato is made of carefully selected fresh fruits of the season. Enjoy CUBE Gelato, rich yet healthy with moderate sweetness.
  Also find our ice candies and ice sandwiches made with gelato recipes.
+front.block.eyecatch.description: |
+  Gelato is ice cream made in the Italian style, which is generally lower in fat than other styles of ice cream.
+  Our fruity gelato is made of carefully selected fresh fruits of the season. Enjoy CUBE Gelato, rich yet healthy with moderate sweetness.
+  Also find our ice candies and ice sandwiches made with gelato recipes.
 front.block.eyecatch.view_list: See all
 front.block.new_item.title__en: NEW ITEMS
 front.block.new_item.title__ja: New Items

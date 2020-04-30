@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.1, 7.2, 7.3 ]
+        php: [ 7.1, 7.2, 7.3, 7.4 ]
         db: [ mysql, pgsql, sqlite3 ]
         include:
           - db: mysql
@@ -724,10 +724,12 @@ jobs:
         php-version: '7.3'
 
     - name: Get Composer Cache Directory
+      if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
       id: composer-cache
       run: |
         echo "::set-output name=dir::$(composer config cache-files-dir)"
     - uses: actions/cache@v1
+      if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -774,6 +776,7 @@ jobs:
         TAG_NAME: ${{ github.event.release.tag_name }}
         REPOSITORY_NAME: ${{ github.event.repository.name }}
       run: |
+        rm -rf $GITHUB_WORKSPACE/.editorconfig
         rm -rf $GITHUB_WORKSPACE/.gitignore
         rm -rf $GITHUB_WORKSPACE/.buildpath
         rm -rf $GITHUB_WORKSPACE/.gitmodules
