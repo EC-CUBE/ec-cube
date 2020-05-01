@@ -14,11 +14,13 @@
 namespace Eccube\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
@@ -29,10 +31,14 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
      */
     protected $container;
 
-    public function __construct(ContainerInterface $container)
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    public function __construct(ContainerInterface $container, ManagerRegistry $registry, TranslatorInterface $translator)
     {
-        parent::__construct();
+        parent::__construct($registry);
         $this->container = $container;
+        $this->translator = $translator;
     }
 
     protected function configure()
@@ -88,7 +94,7 @@ EOF
             'sort_no' => 1,
             'update_date' => new \DateTime(),
             'create_date' => new \DateTime(),
-            'name' => trans('install.member_name'),
+            'name' => $this->translator->trans('install.member_name'),
             'department' => 'EC-CUBE SHOP',
             'discriminator_type' => 'member',
         ], [

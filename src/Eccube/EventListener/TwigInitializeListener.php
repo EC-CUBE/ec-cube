@@ -31,7 +31,7 @@ use Eccube\Repository\BlockPositionRepository;
 use Eccube\Request\Context;
 // use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
@@ -148,12 +148,12 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
-     * @param GetResponseEvent $event
+     * @param RequestEvent $event
      *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if ($this->initialized) {
             return;
@@ -171,11 +171,11 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
-     * @param GetResponseEvent $event
+     * @param RequestEvent $event
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function setFrontVariables(GetResponseEvent $event)
+    public function setFrontVariables(RequestEvent $event)
     {
         $request = $event->getRequest();
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
@@ -187,9 +187,9 @@ class TwigInitializeListener implements EventSubscriberInterface
         }
 
         $type = DeviceType::DEVICE_TYPE_PC;
-        if ($this->mobileDetector->isMobile()) {
-            $type = DeviceType::DEVICE_TYPE_MB;
-        }
+        // if ($this->mobileDetector->isMobile()) {
+        //     $type = DeviceType::DEVICE_TYPE_MB;
+        // }
 
         // URLからPageを取得
         /** @var Page $Page */
@@ -246,9 +246,9 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
-     * @param GetResponseEvent $event
+     * @param RequestEvent $event
      */
-    public function setAdminGlobals(GetResponseEvent $event)
+    public function setAdminGlobals(RequestEvent $event)
     {
         // メニュー表示用配列.
         $menus = [];

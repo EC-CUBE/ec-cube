@@ -17,7 +17,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Request\Context;
 // use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Twig\Environment;
 
 class MobileTemplatePathListener implements EventSubscriberInterface
@@ -52,7 +52,7 @@ class MobileTemplatePathListener implements EventSubscriberInterface
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -62,9 +62,9 @@ class MobileTemplatePathListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$this->detector->isMobile()) {
-            return;
-        }
+        // if (!$this->detector->isMobile()) {
+        //     return;
+        // }
 
         $paths = [
             $this->eccubeConfig->get('eccube_theme_src_dir').'/smartphone',
