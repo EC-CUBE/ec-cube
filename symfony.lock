@@ -1,9 +1,48 @@
 {
+    "behat/gherkin": {
+        "version": "v4.6.2"
+    },
     "bheller/images-generator": {
         "version": "1.0.1"
     },
     "captbaritone/mailcatcher-codeception-module": {
         "version": "1.2.1"
+    },
+    "codeception/codeception": {
+        "version": "2.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.3",
+            "ref": "5d3fec49d4a7ecb411c417fc51cf48b06a86946d"
+        },
+        "files": [
+            "codeception.yml",
+            "tests/_data/.gitignore",
+            "tests/_output/.gitignore",
+            "tests/_support/AcceptanceTester.php",
+            "tests/_support/FunctionalTester.php",
+            "tests/_support/Helper/Acceptance.php",
+            "tests/_support/Helper/Functional.php",
+            "tests/_support/Helper/Unit.php",
+            "tests/_support/UnitTester.php",
+            "tests/_support/_generated/.gitignore",
+            "tests/acceptance/.gitignore",
+            "tests/functional/.gitignore",
+            "tests/unit/.gitignore",
+            "tests/acceptance.suite.yml",
+            "tests/functional.suite.yml",
+            "tests/unit.suite.yml"
+        ]
+    },
+    "codeception/lib-asserts": {
+        "version": "1.12.0"
+    },
+    "codeception/phpunit-wrapper": {
+        "version": "6.8.1"
+    },
+    "codeception/stub": {
+        "version": "3.0.0"
     },
     "composer/ca-bundle": {
         "version": "1.1.0"
@@ -19,6 +58,18 @@
     },
     "composer/xdebug-handler": {
         "version": "1.1.0"
+    },
+    "dama/doctrine-test-bundle": {
+        "version": "4.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "4.0",
+            "ref": "56eaa387b5e48ebcc7c95a893b47dfa1ad51449c"
+        },
+        "files": [
+            "app/config/eccube/packages/test/dama_doctrine_test_bundle.yaml"
+        ]
     },
     "doctrine/annotations": {
         "version": "1.0",

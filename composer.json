@@ -48,6 +48,7 @@
         "setasign/fpdi-tcpdf": "^2.2",
         "swiftmailer/swiftmailer": "^6.1",
         "symfony/asset": "^5.0",
+        "symfony/cache": "^5.0",
         "symfony/config": "^5.0",
         "symfony/console": "^5.0",
         "symfony/css-selector": "^5.0",
@@ -97,6 +98,8 @@
     "require-dev": {
         "bheller/images-generator": "^1.0",
         "captbaritone/mailcatcher-codeception-module": "^1.2",
+        "codeception/codeception": "^4.1",
+        "dama/doctrine-test-bundle": "^6",
         "easycorp/easy-log-handler": "^1.0",
         "fzaninotto/faker": "^1.7",
         "mikey179/vfsstream": "^1.6",
@@ -158,7 +161,7 @@
     "extra": {
         "symfony": {
             "id": "01C0Q71D54BCVSB8ZWR3VECDRD",
-            "allow-contrib": false
+            "allow-contrib": true
         },
         "symfony-web-dir": ".",
         "bin-dir": "bin",

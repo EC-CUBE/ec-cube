@@ -1,0 +1,14 @@
+paths:
+    tests: codeception
+    output: codeception/_output
+    data: codeception/_data
+    support: codeception/_support
+    envs: codeception/_envs
+actor_suffix: Tester
+settings:
+    bootstrap: _bootstrap.php
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+params:
+    - .env
