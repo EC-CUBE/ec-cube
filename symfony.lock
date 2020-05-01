@@ -263,9 +263,6 @@
             "ref": "c276fa48d4713de91eb410289b3b1834acb7e403"
         }
     },
-    "phpunit/phpunit-mock-objects": {
-        "version": "5.0.6"
-    },
     "pimple/pimple": {
         "version": "v1.1.1"
     },
@@ -319,6 +316,9 @@
     },
     "sebastian/resource-operations": {
         "version": "1.0.0"
+    },
+    "sebastian/type": {
+        "version": "1.1.3"
     },
     "sebastian/version": {
         "version": "2.0.1"
