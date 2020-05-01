@@ -27,7 +27,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
      */
     protected $BaseInfo;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);

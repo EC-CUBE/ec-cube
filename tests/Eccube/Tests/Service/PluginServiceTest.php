@@ -46,7 +46,7 @@ class PluginServiceTest extends AbstractServiceTestCase
      *
      * @throws \ReflectionException
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 
@@ -68,7 +68,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
     }
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         $dirs = [];
         $finder = new Finder();

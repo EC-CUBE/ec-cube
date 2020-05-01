@@ -30,7 +30,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'tax_rate' => '8',
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

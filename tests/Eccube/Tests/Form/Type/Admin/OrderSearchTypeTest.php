@@ -20,7 +20,7 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

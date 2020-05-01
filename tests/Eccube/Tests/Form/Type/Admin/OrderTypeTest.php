@@ -64,7 +64,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         ],
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

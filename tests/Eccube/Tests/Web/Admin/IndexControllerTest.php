@@ -29,7 +29,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
     /** @var OrderRepository */
     protected $orderRepository;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->Member = $this->createMember();

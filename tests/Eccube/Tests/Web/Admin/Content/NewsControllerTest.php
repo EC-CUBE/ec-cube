@@ -26,7 +26,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

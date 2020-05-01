@@ -24,7 +24,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
 
     protected $env;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 
@@ -34,7 +34,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         if ($this->env) {
             file_put_contents($this->envFile, $this->env);

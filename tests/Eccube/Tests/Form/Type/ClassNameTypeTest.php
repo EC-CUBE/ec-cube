@@ -25,7 +25,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
         'name' => '形状',
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

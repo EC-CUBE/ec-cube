@@ -29,7 +29,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
         ],
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->form = $this->formFactory
@@ -38,7 +38,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         parent::tearDown();
         $this->form = null;

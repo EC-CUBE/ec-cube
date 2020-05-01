@@ -26,7 +26,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * Setup
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         for ($i = 0; $i < 10; $i++) {
@@ -47,7 +47,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * tearDown
      */
-    public function tearDown()
+    protected function tearDown() : void
     {
         parent::tearDown();
     }

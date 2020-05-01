@@ -36,7 +36,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     private $categoriesIdList = [];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->productRepo = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
@@ -45,7 +45,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
     }
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         if (file_exists($this->filepath)) {
             unlink($this->filepath);

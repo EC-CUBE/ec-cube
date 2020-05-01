@@ -86,7 +86,7 @@ class ShippingRepositoryTest extends EccubeTestCase
      *
      * @throws \Doctrine\ORM\NoResultException
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

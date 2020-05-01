@@ -23,7 +23,7 @@ class ChangeControllerTest extends AbstractWebTestCase
      */
     protected $Customer;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();

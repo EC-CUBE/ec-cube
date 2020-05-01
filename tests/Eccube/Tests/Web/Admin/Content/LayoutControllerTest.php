@@ -48,7 +48,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->PageLayoutRepo = $this->entityManager->getRepository(\Eccube\Entity\PageLayout::class);

@@ -25,7 +25,7 @@ class PluginPassTest extends TestCase
      */
     private $containerBuilder;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->containerBuilder = new ContainerBuilder();
         $this->containerBuilder->register(\Plugin\Sample\TestClass::class)

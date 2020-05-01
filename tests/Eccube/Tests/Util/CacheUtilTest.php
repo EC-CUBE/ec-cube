@@ -29,7 +29,7 @@ class CacheUtilTest extends TestCase
     private $root;
     private $dirs;
 
-    public function setUp()
+    protected function setUp() : void
     {
         // 仮想ファイルを生成
         $this->root = vfsStream::setup('rootDir');

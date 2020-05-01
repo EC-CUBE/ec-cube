@@ -31,7 +31,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
         'admin_allow_hosts' => '',
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

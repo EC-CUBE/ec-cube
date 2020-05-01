@@ -30,14 +30,14 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     /** @var OrderRepository */
     private $orderRepository;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
         $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
     }
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         $this->cleanUpMailCatcherMessages();
         parent::tearDown();

@@ -38,7 +38,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();

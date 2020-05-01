@@ -21,7 +21,7 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
 {
     private $testCase;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();

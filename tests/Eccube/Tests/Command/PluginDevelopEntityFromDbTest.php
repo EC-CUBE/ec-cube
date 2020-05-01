@@ -19,14 +19,14 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class PluginDevelopEntityFromDbTest extends AbstractCommandTest
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         self::markTestIncomplete();
     }
 
     private $testCase;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
@@ -378,7 +378,7 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
         }
     }
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         $this->app->initDoctrine();
     }

@@ -50,7 +50,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'note' => 'note',
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

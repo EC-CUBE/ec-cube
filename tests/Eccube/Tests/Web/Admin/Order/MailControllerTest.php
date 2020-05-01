@@ -32,7 +32,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      */
     protected $Order;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $faker = $this->getFaker();

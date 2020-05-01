@@ -44,7 +44,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
      */
     private $classNameRepo;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->productClassRepo = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);

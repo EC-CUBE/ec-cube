@@ -31,7 +31,7 @@ class TaxRuleTypeTest extends AbstractTypeTestCase
     /** @var FormInterface */
     protected $form;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

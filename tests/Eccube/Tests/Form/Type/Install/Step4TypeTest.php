@@ -35,7 +35,7 @@ class Step4TypeTest extends AbstractTypeTestCase
         'database_password' => '',
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

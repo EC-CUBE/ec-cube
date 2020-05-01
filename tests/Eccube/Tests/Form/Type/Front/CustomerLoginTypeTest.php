@@ -27,7 +27,7 @@ class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'login_pass' => '111111111',
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

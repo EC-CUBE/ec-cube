@@ -21,7 +21,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
  */
 class MailControllerTest extends AbstractAdminWebTestCase
 {
-    public function tearDown()
+    protected function tearDown() : void
     {
         $themeDir = self::$container->getParameter('eccube_theme_front_dir');
         if (file_exists($themeDir.'/Mail/order.twig')) {

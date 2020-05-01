@@ -25,7 +25,7 @@ class MailTemplateTypeTest extends AbstractTypeTestCase
     /** @var MailTemplateRepository */
     protected $mailTemplateRepo;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->mailTemplateRepo = $this->entityManager->getRepository(\Eccube\Entity\MailTemplate::class);
