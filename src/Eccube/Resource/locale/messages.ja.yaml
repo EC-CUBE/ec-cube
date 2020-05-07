@@ -1141,6 +1141,7 @@ admin.setting.shop.tax.rounding_type: 課税規則
 admin.setting.shop.tax.base_rate_setting: 基本税率設定
 admin.setting.shop.tax.tax_rate: 税率
 admin.setting.shop.tax.apply_date: 適用日時
+admin.setting.shop.tax.apply_date.available_error: 同時刻の適用日時を設定できません。
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：メール設定
