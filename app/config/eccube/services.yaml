@@ -167,10 +167,9 @@ services:
 
     Symfony\Component\HttpFoundation\ParameterBag:
 
+    # APP_ENV=prod時にtwigテンプレート内のroutingでシステムエラーになるのを抑止.
     Eccube\Twig\Extension\IgnoreRoutingNotFoundExtension:
-        # Symfony\Bridge\Twig\Extension\RoutingExtensionの後に登録するため,
-        # autoconfigureはfalseにし, CompilerPassで追加する.
-        autoconfigure: false
+        decorates: 'twig.extension.routing'
 
     Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
         public: true
