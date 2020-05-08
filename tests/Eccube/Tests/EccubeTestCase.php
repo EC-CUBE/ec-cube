@@ -61,7 +61,6 @@ abstract class EccubeTestCase extends WebTestCase
     protected function setUp() : void
     {
         parent::setUp();
-        self::bootKernel();
         $this->client = static::createClient();
         $this->entityManager = self::$container->get('doctrine')->getManager();
         $this->eccubeConfig = self::$container->get(EccubeConfig::class);
