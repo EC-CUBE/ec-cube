@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6779d9f6549b7e93797d88d61f773f6",
+    "content-hash": "508552179374a19e8d824928456c5c30",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -3455,6 +3455,67 @@
             ],
             "abandoned": true,
             "time": "2020-02-19T11:40:30+00:00"
+        },
+        {
+            "name": "suncat/mobile-detect-bundle",
+            "version": "dev-master",
+            "target-dir": "SunCat/MobileDetectBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/suncat2000/MobileDetectBundle.git",
+                "reference": "462bfa75388c4b63c0e31de80b7365264bacfda8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/suncat2000/MobileDetectBundle/zipball/462bfa75388c4b63c0e31de80b7365264bacfda8",
+                "reference": "462bfa75388c4b63c0e31de80b7365264bacfda8",
+                "shasum": ""
+            },
+            "require": {
+                "mobiledetect/mobiledetectlib": "~2.8",
+                "php": ">=5.5.9",
+                "symfony/framework-bundle": "~2.7|~3.3|~4.0|~5.0",
+                "twig/twig": "~1.26|~2.0||^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35|^5.4.3|^6.0",
+                "satooshi/php-coveralls": "^2.0.0",
+                "symfony/phpunit-bridge": "~2.7|~3.3|~4.0|~5.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "SunCat\\MobileDetectBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolay Ivlev",
+                    "email": "nikolay.kotovsky@gmail.com"
+                },
+                {
+                    "name": "Henri Vesala",
+                    "email": "henri.vesala@gmail.com"
+                },
+                {
+                    "name": "netmikey",
+                    "homepage": "https://github.com/netmikey"
+                }
+            ],
+            "description": "Symfony2/3/4 bundle for detect mobile devices, managing mobile view types, redirect to mobile version.",
+            "homepage": "https://github.com/suncat2000/MobileDetectBundle",
+            "keywords": [
+                "mobile",
+                "mobile detect",
+                "mobile redirect",
+                "mobile view managing",
+                "symfony mobile"
+            ],
+            "time": "2020-02-12T12:29:17+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -11417,6 +11478,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "suncat/mobile-detect-bundle": 20,
         "dama/doctrine-test-bundle": 20,
         "mikey179/vfsstream": 20
     },

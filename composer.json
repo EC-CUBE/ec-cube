@@ -46,6 +46,7 @@
         "sensio/framework-extra-bundle": "^5.5",
         "setasign/fpdi": "^2.2",
         "setasign/fpdi-tcpdf": "^2.2",
+        "suncat/mobile-detect-bundle": "dev-master",
         "swiftmailer/swiftmailer": "^6.1",
         "symfony/asset": "^5.0",
         "symfony/cache": "^5.0",
