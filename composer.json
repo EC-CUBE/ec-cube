@@ -102,7 +102,7 @@
         "dama/doctrine-test-bundle": "dev-master",
         "easycorp/easy-log-handler": "^1.0",
         "fzaninotto/faker": "^1.7",
-        "mikey179/vfsstream": "^1.6",
+        "mikey179/vfsstream": "2.0.x-dev",
         "php-coveralls/php-coveralls": "^2.1",
         "phpunit/phpunit": "^8.5",
         "symfony/browser-kit": "^5.0",
