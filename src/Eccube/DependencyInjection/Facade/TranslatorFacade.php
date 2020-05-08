@@ -3,7 +3,7 @@
 namespace Eccube\DependencyInjection\Facade;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * XXX ContainerInterface は不要かも
