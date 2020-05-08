@@ -75,7 +75,7 @@ class ShopController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -92,8 +92,8 @@ class ShopController extends AbstractController
                 $request
             );
             $this->eventDispatcher->dispatch(
-                EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
-                $event
+                $event,
+                EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE
             );
 
             // キャッシュの削除
