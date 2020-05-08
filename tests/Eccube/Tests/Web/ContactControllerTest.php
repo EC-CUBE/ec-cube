@@ -170,7 +170,6 @@ class ContactControllerTest extends AbstractWebTestCase
 
     public function testRoutingComplete()
     {
-        $this->client = $this->createClient();
         $this->client->request('GET', $this->generateUrl('contact_complete'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
