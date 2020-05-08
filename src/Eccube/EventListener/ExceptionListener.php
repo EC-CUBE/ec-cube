@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExceptionListener implements EventSubscriberInterface
 {
@@ -32,22 +33,26 @@ class ExceptionListener implements EventSubscriberInterface
      */
     protected $requestContext;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * ExceptionListener constructor.
      */
-    public function __construct(\Twig_Environment $twig, Context $requestContext)
+    public function __construct(\Twig_Environment $twig, Context $requestContext, TranslatorInterface $translator)
     {
         $this->twig = $twig;
         $this->requestContext = $requestContext;
+        $this->translator = $translator;
     }
 
     public function onKernelException(ExceptionEvent $event)
     {
-        $title = trans('exception.error_title');
-        $message = trans('exception.error_message');
+        $title = $this->translator->trans('exception.error_title');
+        $message = $this->translator->trans('exception.error_message');
         $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
 
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
 
         if ($exception instanceof HttpExceptionInterface) {
             $statusCode = $exception->getStatusCode();
