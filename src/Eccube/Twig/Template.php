@@ -47,7 +47,7 @@ class Template extends \Twig\Template
     public function getTemplateName()
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
-        // デバッグツールバーでエラーが発生するためから文字を返しておく。
+        // デバッグツールバーでエラーが発生するため空文字を返しておく。
         // @see https://github.com/EC-CUBE/ec-cube/issues/4529
         return '';
     }
