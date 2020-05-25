@@ -11,6 +11,7 @@ RUN apt-get update \
     debconf-utils \
     gcc \
     git \
+    vim \
     gnupg2 \
     libfreetype6-dev \
     libicu-dev \
