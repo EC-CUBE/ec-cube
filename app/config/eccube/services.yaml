@@ -171,3 +171,10 @@ services:
         # Symfony\Bridge\Twig\Extension\RoutingExtensionの後に登録するため,
         # autoconfigureはfalseにし, CompilerPassで追加する.
         autoconfigure: false
+
+    native_file_session_handler:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
+
+    Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
+        arguments:
+            - '@native_file_session_handler'

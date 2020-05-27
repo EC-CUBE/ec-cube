@@ -515,6 +515,7 @@ abstract class Abstract_Plugin
 
     public function 検証()
     {
+        $this->I->wait(1);
         if ($this->initialized) {
             $this->tableExists();
             $this->columnExists();

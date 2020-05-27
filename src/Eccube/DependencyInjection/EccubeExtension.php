@@ -121,7 +121,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
         $enabled = [];
         foreach ($plugins as $plugin) {
-            if ($plugin['enabled']) {
+            if (array_key_exists('enabled', $plugin) && $plugin['enabled']) {
                 $enabled[] = $plugin['code'];
             }
         }
