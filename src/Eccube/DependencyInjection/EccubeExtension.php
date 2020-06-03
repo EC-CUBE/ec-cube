@@ -55,13 +55,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
             $forceSSL = false;
         }
 
-        // framework.yamlでは制御できないため, ここで定義する.
-        $container->prependExtensionConfig('framework', [
-            'session' => [
-                'cookie_secure' => $forceSSL,
-            ],
-        ]);
-
         // SSL強制時は, httpsのみにアクセス制限する
         $accessControl = [
           ['path' => '^/%eccube_admin_route%/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
