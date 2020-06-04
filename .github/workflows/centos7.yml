@@ -24,3 +24,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
+    - name: Setup
+      run: |
+        yum -y install epel-release
+        yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+        yum -y install mariadb-server mysql-devel postgresql-server httpd httpd-devel mod_ssl
+        yum -y install --enablerepo=epel,remi,remi-safe,remi-php73 php-mbstring php-devel php-mhash php-pgsql php-mysql php-xml php-gd  php-intl php-curl php-zip php73-php-pecl-apcu php-opcache php-pecl-apcu
+
+    - name: Setup composer
+      run: |
+        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+        php composer-setup.php
+        php composer.phar install
