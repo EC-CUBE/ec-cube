@@ -20,7 +20,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-    container: centos:7
+      matrix:
+        db: [ mysql, pgsql ]
+        include:
+          - db: mysql
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: 5.5
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 9.2
+    container:
+      image: centos:7
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -30,6 +40,14 @@ jobs:
         yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
         yum -y install mariadb-server mysql-devel postgresql-server httpd httpd-devel mod_ssl
         yum -y install --enablerepo=epel,remi,remi-safe,remi-php73 php-mbstring php-devel php-mhash php-pgsql php-mysql php-xml php-gd  php-intl php-curl php-zip php73-php-pecl-apcu php-opcache php-pecl-apcu
+    - name: CREATE DATABASE
+      run: |
+        mv /usr/bin/systemctl /usr/bin/systemctl.old
+        curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py > /usr/bin/systemctl
+        chmod +x /usr/bin/systemctl
+        systemctl start mariadb.service
+        su - postgres -c "initdb --no-locale -E utf8"
+        mysql --user=root -e "CREATE DATABASE eccube_db DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 
     - name: Setup composer
       run: |
