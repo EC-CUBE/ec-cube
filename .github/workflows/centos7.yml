@@ -1,0 +1,26 @@
+name: CentOS7 on EC-CUBE
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+  release:
+    types: [ published ]
+jobs:
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    container: centos:7
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
