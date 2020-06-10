@@ -2,7 +2,7 @@ name: CI/CD for EC-CUBE
 on:
   push:
     branches:
-      - 4.0
+      - '*'
     tags:
       - '*'
     paths:
@@ -208,6 +208,12 @@ jobs:
         GROUP: ${{ matrix.group }}
         SYMFONY_DEPRECATIONS_HELPER: weak
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: codeception-${{ matrix.group }}-evidence
+        path: codeception/_output/
 
   plugin-install:
     name: Plugin install
@@ -338,6 +344,12 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-install-${{ matrix.method }}-evidence
+        path: codeception/_output/
 
   plugin-update:
     name: Plugin Update
@@ -467,6 +479,12 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-update-${{ matrix.method }}-evidence
+        path: codeception/_output/
 
   plugin-extend:
     name: Plugin extend
@@ -596,6 +614,12 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-extend-${{ matrix.method }}-evidence
+        path: codeception/_output/
 
   plugin-depend:
     name: Plugin depend
@@ -727,6 +751,12 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-depend-${{ matrix.method }}-evidence
+        path: codeception/_output/
 
   deploy:
     name: Deploy
