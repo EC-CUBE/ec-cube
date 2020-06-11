@@ -9,7 +9,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "echo \"Error: no clean specified\" && exit 1",
-    "start": "echo \"Error: no start specified\" && exit 1",
     "build": "gulp",
     "watch": "gulp watch",
     "watch:min": "gulp watch:min",
