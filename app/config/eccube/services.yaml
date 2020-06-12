@@ -174,6 +174,8 @@ services:
 
     native_file_session_handler:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
+        arguments:
+            - '%session.save_path%'
 
     Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
         arguments:
