@@ -12,6 +12,7 @@ const browserSync = require('browser-sync')
 // sass
 const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
+const atImport = require('postcss-import');
 const autoprefixer = require('autoprefixer');
 const cssmqpacker = require('css-mqpacker');
 const sortCSSmq = require('sort-css-media-queries');
@@ -79,6 +80,7 @@ const sassTask = () => {
     }))
     .pipe(sass())
     .pipe(postcss([
+      atImport(),
       autoprefixer(),
       cssmqpacker({
         sort: sortCSSmq
