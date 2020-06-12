@@ -196,7 +196,7 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-      run: php -S localhost:8000 &
+      run: php -dsession.save_path=${GITHUB_WORKSPACE}/var/sessions/${APP_ENV} -S localhost:8000 &
 
     - name: Codeception
       env:
@@ -320,7 +320,7 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-      run: php -S localhost:8000 &
+      run: php -dsession.save_path=${GITHUB_WORKSPACE}/var/sessions/${APP_ENV} -S localhost:8000 &
 
     ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
@@ -449,7 +449,7 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-      run: php -S localhost:8000 &
+      run: php -dsession.save_path=${GITHUB_WORKSPACE}/var/sessions/${APP_ENV} -S localhost:8000 &
 
     ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
@@ -578,7 +578,7 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-      run: php -S localhost:8000 &
+      run: php -dsession.save_path=${GITHUB_WORKSPACE}/var/sessions/${APP_ENV} -S localhost:8000 &
 
     ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
@@ -709,7 +709,7 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-      run: php -S localhost:8000 &
+      run: php -dsession.save_path=${GITHUB_WORKSPACE}/var/sessions/${APP_ENV} -S localhost:8000 &
 
     ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
