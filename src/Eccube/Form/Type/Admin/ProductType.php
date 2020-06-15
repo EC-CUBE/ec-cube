@@ -184,23 +184,28 @@ class ProductType extends AbstractType
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var FormInterface $form */
             $form = $event->getForm();
-            $this->validateFilePath($form->get('delete_images'), $this->eccubeConfig['eccube_save_image_dir']);
-            $this->validateFilePath($form->get('add_images'), $this->eccubeConfig['eccube_temp_image_dir']);
+            $saveImgDir = $this->eccubeConfig['eccube_save_image_dir'];
+            $tempImgDir = $this->eccubeConfig['eccube_temp_image_dir'];
+            $this->validateFilePath($form->get('delete_images'), [$saveImgDir, $tempImgDir]);
+            $this->validateFilePath($form->get('add_images'), [$tempImgDir]);
         });
     }
 
     /**
-     * 指定したディレクトリ以下のパスかどうかを確認。
+     * 指定された複数ディレクトリのうち、いずれかのディレクトリ以下にファイルが存在するかを確認。
      *
      * @param $form FormInterface
-     * @param $dir string
+     * @param $dirs array
      */
-    private function validateFilePath($form, $dir)
+    private function validateFilePath($form, $dirs)
     {
-        $topDirPath = realpath($dir);
         foreach ($form->getData() as $fileName) {
-            $filePath = realpath($dir.'/'.$fileName);
-            if (strpos($filePath, $topDirPath) !== 0 || $filePath === $topDirPath) {
+            $fileInDir = array_filter($dirs, function ($dir) use ($fileName) {
+                $filePath = realpath($dir.'/'.$fileName);
+                $topDirPath = realpath($dir);
+                return strpos($filePath, $topDirPath) === 0 && $filePath !== $topDirPath;
+            });
+            if (!$fileInDir) {
                 $form->getRoot()['product_image']->addError(new FormError(trans('admin.product.image__invalid_path')));
             }
         }
