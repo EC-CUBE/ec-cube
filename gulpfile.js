@@ -87,7 +87,7 @@ const sassTask = () => {
       }),
     ]))
     .pipe(rename((path) => {
-      path.dirname = path.dirname.replace('/scss', '/css')
+      path.dirname = path.dirname.replace(/scss$/, 'css')
     }))
     .pipe(gulp.dest(sassOutput, {sourcemaps: '.'}))
     .pipe(browserSync.stream());
@@ -112,7 +112,7 @@ const sassCssMinifyTask = () => {
     ]))
     .pipe(cleanCSS())
     .pipe(rename((path) => {
-      path.dirname = path.dirname.replace('/scss', '/css')
+      path.dirname = path.dirname.replace(/scss$/, 'css')
       if (path.extname === '.css') path.extname = '.min.css'
     }))
     .pipe(gulp.dest(sassOutput, {sourcemaps: '.'}))
