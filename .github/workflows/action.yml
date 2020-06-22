@@ -208,6 +208,18 @@ jobs:
         GROUP: ${{ matrix.group }}
         SYMFONY_DEPRECATIONS_HELPER: weak
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: codeception-${{ matrix.group }}-evidence
+        path: codeception/_output/
+    - name: Upload logs
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: codeception-${{ matrix.group }}-logs
+        path: var/log/
 
   plugin-install:
     name: Plugin install
@@ -338,6 +350,18 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-install-${{ matrix.method }}-evidence
+        path: codeception/_output/
+    - name: Upload logs
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-install-${{ matrix.method }}-logs
+        path: var/log/
 
   plugin-update:
     name: Plugin Update
@@ -467,6 +491,18 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-update-${{ matrix.method }}-evidence
+        path: codeception/_output/
+    - name: Upload logs
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-update-${{ matrix.method }}-logs
+        path: var/log/
 
   plugin-extend:
     name: Plugin extend
@@ -596,6 +632,18 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-extend-${{ matrix.method }}-evidence
+        path: codeception/_output/
+    - name: Upload logs
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-extend-${{ matrix.method }}-logs
+        path: var/log/
 
   plugin-depend:
     name: Plugin depend
@@ -727,6 +775,18 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
         NO_FIXTURES: 1
       run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-depend-${{ matrix.method }}-evidence
+        path: codeception/_output/
+    - name: Upload logs
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin-depend-${{ matrix.method }}-logs
+        path: var/log/
 
   deploy:
     name: Deploy
