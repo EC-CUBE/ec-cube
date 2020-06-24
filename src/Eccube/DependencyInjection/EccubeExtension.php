@@ -46,7 +46,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
     protected function configureFramework(ContainerBuilder $container)
     {
-        // SSL強制時は, cookie_secureをtrueにする
         $forceSSL = $container->resolveEnvPlaceholders('%env(ECCUBE_FORCE_SSL)%', true);
         // envから取得した内容が文字列のため, booleanに変換
         if ('true' === $forceSSL) {

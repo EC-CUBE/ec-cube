@@ -9,11 +9,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "echo \"Error: no clean specified\" && exit 1",
-    "start": "echo \"Error: no start specified\" && exit 1",
+    "start": "gulp start",
     "build": "gulp",
     "watch": "gulp watch",
     "watch:min": "gulp watch:min",
-    "start": "gulp start",
     "start:min": "gulp start:min"
   },
   "repository": {
@@ -41,6 +40,7 @@
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
     "normalize.css": "^5.0.0",
+    "postcss-import": "^12.0.1",
     "process": "^0.11.10",
     "sort-css-media-queries": "^1.4.3"
   }
