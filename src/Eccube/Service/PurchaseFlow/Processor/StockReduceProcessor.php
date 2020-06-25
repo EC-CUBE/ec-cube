@@ -84,7 +84,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
                 // 在庫チェックあり
                 /* @var ProductStock $productStock */
                 $productStock = $item->getProductClass()->getProductStock();
-                if($productStock->getProductClassId() === null){
+                if ($productStock->getProductClassId() === null) {
                     // 在庫に対してロックを実行
                     $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
                     $this->entityManager->refresh($productStock);
