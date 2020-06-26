@@ -50,7 +50,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     {
         parent::setUp();
 
-        $this->service = $this->container->get(PluginService::class);
+        $this->service = self::$container->get(PluginService::class);
         $rc = new \ReflectionClass($this->service);
 
         $prop = $rc->getProperty('schemaService');
@@ -65,7 +65,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $prop->setAccessible(true);
         $prop->setValue($this->service, $this->createMock(EntityProxyService::class));
 
-        $this->pluginRepository = $this->container->get(PluginRepository::class);
+        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
     }
 
     public function tearDown()
@@ -73,7 +73,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $dirs = [];
         $finder = new Finder();
         $iterator = $finder
-            ->in($this->container->getParameter('kernel.project_dir').'/app/Plugin')
+            ->in(self::$container->getParameter('kernel.project_dir').'/app/Plugin')
             ->name('dummy*')
             ->directories();
         foreach ($iterator as $dir) {
@@ -85,7 +85,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         }
 
         $files = Finder::create()
-            ->in($this->container->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->in(self::$container->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);
@@ -557,20 +557,20 @@ EOD;
             $this->markTestSkipped('does not support of '.$platform);
         }
 
-        $this->service = $this->container->get(PluginService::class);
+        $this->service = self::$container->get(PluginService::class);
         $rc = new \ReflectionClass($this->service);
 
         $prop = $rc->getProperty('schemaService');
         $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->container->get(SchemaService::class));
+        $prop->setValue($this->service, self::$container->get(SchemaService::class));
 
         $prop = $rc->getProperty('composerService');
         $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->container->get(ComposerServiceInterface::class));
+        $prop->setValue($this->service, self::$container->get(ComposerServiceInterface::class));
 
         $prop = $rc->getProperty('entityProxyService');
         $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->container->get(EntityProxyService::class));
+        $prop->setValue($this->service, self::$container->get(EntityProxyService::class));
 
         $faker = $this->getFaker();
         // インストールするプラグインを作成する

@@ -28,7 +28,7 @@ class MailTemplateTypeTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->mailTemplateRepo = $this->container->get(MailTemplateRepository::class);
+        $this->mailTemplateRepo = $this->entityManager->getRepository(\Eccube\Entity\MailTemplate::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

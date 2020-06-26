@@ -82,7 +82,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             [Constant::TOKEN_NAME => '_dummy']
         );
 
-        $ProductClass = $this->container->get(ProductClassRepository::class)->find($product_class_id);
+        $ProductClass = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class)->find($product_class_id);
         if ($Customer) {
             $this->loginTo($Customer);
             $cart_key = $Customer->getId().'_'.$ProductClass->getSaleType()->getId();

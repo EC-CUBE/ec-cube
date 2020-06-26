@@ -17,6 +17,7 @@ use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
+use Eccube\Entity\Master\Pref;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -39,10 +40,10 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($Delivery);
         $this->entityManager->flush();
 
-        $Prefs = $this->container->get(PrefRepository::class)->findAll();
+        $Prefs = $this->entityManager->getRepository(Pref::class)->findAll();
 
         foreach ($Prefs as $Pref) {
-            $DeliveryFee = $this->container->get(DeliveryFeeRepository::class)
+            $DeliveryFee = $this->entityManager->getRepository(DeliveryFee::class)
                 ->findOneBy([
                     'Delivery' => $Delivery,
                     'Pref' => $Pref,

@@ -90,9 +90,9 @@ class ShippingRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->memberRepository = $this->container->get(MemberRepository::class);
-        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
-        $this->shippingRepository = $this->container->get(ShippingRepository::class);
+        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
+        $this->shippingRepository = $this->entityManager->getRepository(\Eccube\Entity\Shipping::class);
 
         $faker = $this->getFaker();
         $this->Member = $this->memberRepository->find(2);
@@ -139,7 +139,7 @@ class ShippingRepositoryTest extends EccubeTestCase
             $this->Shippings[$i] = $Shipping;
         }
 
-        $purchaseFlow = $this->container->get('eccube.purchase.flow.order');
+        $purchaseFlow = self::$container->get('eccube.purchase.flow.order');
         $purchaseFlow->validate($this->Order, new PurchaseContext($this->Order));
         $this->entityManager->flush();
     }

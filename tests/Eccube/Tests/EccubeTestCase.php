@@ -46,11 +46,6 @@ abstract class EccubeTestCase extends WebTestCase
     protected $client;
 
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * @var EntityManagerInterface
      */
     protected $entityManager;
@@ -66,10 +61,10 @@ abstract class EccubeTestCase extends WebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->client = self::createClient();
-        $this->container = $this->client->getContainer();
-        $this->entityManager = $this->container->get('doctrine')->getManager();
-        $this->eccubeConfig = $this->container->get(EccubeConfig::class);
+        self::bootKernel();
+        $this->client = static::createClient();
+        $this->entityManager = self::$container->get('doctrine')->getManager();
+        $this->eccubeConfig = self::$container->get(EccubeConfig::class);
     }
 
     /**
@@ -117,7 +112,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createMember($username = null)
     {
-        return $this->container->get(Generator::class)->createMember($username);
+        return self::$container->get(Generator::class)->createMember($username);
     }
 
     /**
@@ -129,7 +124,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createCustomer($email = null)
     {
-        return $this->container->get(Generator::class)->createCustomer($email);
+        return self::$container->get(Generator::class)->createCustomer($email);
     }
 
     /**
@@ -142,7 +137,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
     {
-        return $this->container->get(Generator::class)->createCustomerAddress($Customer, $is_nonmember);
+        return self::$container->get(Generator::class)->createCustomerAddress($Customer, $is_nonmember);
     }
 
     /**
@@ -154,7 +149,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createNonMember($email = null)
     {
-        return $this->container->get(Generator::class)->createNonMember($email);
+        return self::$container->get(Generator::class)->createNonMember($email);
     }
 
     /**
@@ -167,7 +162,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createProduct($product_name = null, $product_class_num = 3)
     {
-        return $this->container->get(Generator::class)->createProduct($product_name, $product_class_num);
+        return self::$container->get(Generator::class)->createProduct($product_name, $product_class_num);
     }
 
     /**
@@ -183,7 +178,7 @@ abstract class EccubeTestCase extends WebTestCase
         $ProductClasses = $Product->getProductClasses();
 
         // 後方互換のため最初の1つのみ渡す
-        return $this->container->get(Generator::class)->createOrder($Customer, [$ProductClasses[0]]);
+        return self::$container->get(Generator::class)->createOrder($Customer, [$ProductClasses[0]]);
     }
 
     /**
@@ -196,7 +191,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses)
     {
-        return $this->container->get(Generator::class)->createOrder($Customer, $ProductClasses);
+        return self::$container->get(Generator::class)->createOrder($Customer, $ProductClasses);
     }
 
     /**
@@ -212,7 +207,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createPayment(\Eccube\Entity\Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
     {
-        return $this->container->get(Generator::class)->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
+        return self::$container->get(Generator::class)->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
     }
 
     /**
@@ -222,7 +217,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createPage()
     {
-        return $this->container->get(Generator::class)->createPage();
+        return self::$container->get(Generator::class)->createPage();
     }
 
     /**
@@ -405,7 +400,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     protected function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->container->get('router')->generate($route, $parameters, $referenceType);
+        return self::$container->get('router')->generate($route, $parameters, $referenceType);
     }
 
     /**
@@ -423,6 +418,6 @@ abstract class EccubeTestCase extends WebTestCase
      */
     protected function getCsrfToken($csrfTokenId)
     {
-        return $this->container->get('security.csrf.token_manager')->getToken($csrfTokenId);
+        return self::$container->get('security.csrf.token_manager')->getToken($csrfTokenId);
     }
 }

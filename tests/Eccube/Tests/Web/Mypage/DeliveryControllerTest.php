@@ -104,7 +104,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
         $client = $this->client;
 
-        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
 
@@ -120,7 +120,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
 
@@ -142,7 +142,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
         $id = $CustomerAddress->getId();
@@ -155,11 +155,11 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
 
-        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->find($id);
+        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->find($id);
         $this->assertNull($CustomerAddress);
 
         $this->expected = ['mypage.address.delete.complete'];
-        $this->actual = $this->container->get('session')->getFlashBag()->get('eccube.front.success');
+        $this->actual = self::$container->get('session')->getFlashBag()->get('eccube.front.success');
         $this->verify();
     }
 
@@ -193,7 +193,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->assertCount(0, $crawler->filter('span.ec-errorMessage'));
 
         // お届け先上限まで登録
-        $max = $this->container->getParameter('eccube_deliv_addr_max');
+        $max = self::$container->getParameter('eccube_deliv_addr_max');
         for ($i = 0; $i < $max; $i++) {
             $this->createCustomerAddress($this->Customer);
         }

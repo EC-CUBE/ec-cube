@@ -77,10 +77,10 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $editable = false;
 
-        $templatePath = $this->container->getParameter('eccube_theme_front_dir');
-        $Page = $this->container->get(PageRepository::class)->find(1);
+        $templatePath = self::$container->getParameter('eccube_theme_front_dir');
+        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find(1);
 
-        $source = $this->container->get('twig')
+        $source = self::$container->get('twig')
             ->getLoader()
             ->getSourceContext($Page->getFileName().'.twig')
             ->getCode();
@@ -119,7 +119,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
         $faker = $this->getFaker();
 
-        $templatePath = $this->container->getParameter('eccube_theme_user_data_dir');
+        $templatePath = self::$container->getParameter('eccube_theme_user_data_dir');
 
         $name = $faker->word;
         $source = $faker->realText();
@@ -141,7 +141,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirection());
         preg_match('|content/page/([0-9]+)/edit|', $client->getResponse()->headers->get('Location'), $matches);
-        $Page = $this->container->get(PageRepository::class)->find($matches[1]);
+        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find($matches[1]);
 
         $this->expected = $name;
         $this->actual = $Page->getName();
@@ -156,10 +156,10 @@ class PageControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
 
-        $templatePath = $this->container->getParameter('eccube_theme_front_dir');
-        $Page = $this->container->get(PageRepository::class)->find(42); // Shoppin/index
+        $templatePath = self::$container->getParameter('eccube_theme_front_dir');
+        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find(42); // Shoppin/index
 
-        $source = $this->container->get('twig')
+        $source = self::$container->get('twig')
             ->getLoader()
             ->getSourceContext($Page->getFileName().'.twig')
             ->getCode();
@@ -198,7 +198,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
         $faker = $this->getFaker();
 
-        $templatePath = $this->container->getParameter('eccube_theme_user_data_dir');
+        $templatePath = self::$container->getParameter('eccube_theme_user_data_dir');
 
         $name = $faker->word;
         $source = $faker->realText();
@@ -220,13 +220,13 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirection());
         preg_match('|content/page/([0-9]+)/edit|', $client->getResponse()->headers->get('Location'), $matches);
-        $Page = $this->container->get(PageRepository::class)->find($matches[1]);
+        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find($matches[1]);
 
         $this->expected = $name;
         $this->actual = $Page->getName();
         $this->verify('ページ新規作成');
 
-        $source = $this->container->get('twig')
+        $source = self::$container->get('twig')
             ->getLoader()
             ->getSourceContext('@user_data/'.$Page->getFileName().'.twig')
             ->getCode();

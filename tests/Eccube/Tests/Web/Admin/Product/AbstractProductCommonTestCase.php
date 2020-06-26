@@ -57,9 +57,9 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
     {
         parent::setUp();
         $this->faker = $this->getFaker();
-        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
-        $this->saleTypeRepository = $this->container->get(SaleTypeRepository::class);
-        $this->deliveryDurationRepository = $this->container->get(DeliveryDurationRepository::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
+        $this->saleTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);
+        $this->deliveryDurationRepository = $this->entityManager->getRepository(\Eccube\Entity\DeliveryDuration::class);
     }
 
     /**

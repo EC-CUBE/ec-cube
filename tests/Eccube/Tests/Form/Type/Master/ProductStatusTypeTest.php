@@ -28,7 +28,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->productStatusRepo = $this->container->get(ProductStatusRepository::class);
+        $this->productStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

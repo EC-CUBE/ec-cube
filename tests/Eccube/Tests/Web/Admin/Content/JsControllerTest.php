@@ -32,7 +32,7 @@ class JsControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->dir = $this->container->getParameter('eccube_html_dir').'/user_data/assets/js/';
+        $this->dir = self::$container->getParameter('eccube_html_dir').'/user_data/assets/js/';
         $this->contents = file_get_contents($this->dir.self::JS_FILE);
         $fs = new Filesystem();
         $fs->dumpFile($this->dir.self::JS_FILE, '');

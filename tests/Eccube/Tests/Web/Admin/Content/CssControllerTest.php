@@ -32,7 +32,7 @@ class CssControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->dir = $this->container->getParameter('eccube_html_dir').'/user_data/assets/css/';
+        $this->dir = self::$container->getParameter('eccube_html_dir').'/user_data/assets/css/';
         $this->contents = file_get_contents($this->dir.self::CSS_FILE);
         $fs = new Filesystem();
         $fs->dumpFile($this->dir.self::CSS_FILE, '');

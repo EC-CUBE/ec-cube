@@ -28,8 +28,8 @@ class EccubeExtensionTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $EccubeConfig = $this->container->get(EccubeConfig::class);
-        $productRepository = $this->container->get(ProductRepository::class);
+        $EccubeConfig = self::$container->get(EccubeConfig::class);
+        $productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
         $this->Extension = new EccubeExtension($EccubeConfig, $productRepository);
     }
 

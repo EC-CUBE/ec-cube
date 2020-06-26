@@ -39,8 +39,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->productRepo = $this->container->get(ProductRepository::class);
-        $this->categoryRepo = $this->container->get(CategoryRepository::class);
+        $this->productRepo = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $this->categoryRepo = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
         $this->filepath = __DIR__.'/products.csv';
         copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
     }
@@ -362,7 +362,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->eccubeConfig;
         $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
-        $this->container->setParameter('eccube.constants', $config);
+        self::$container->setParameter('eccube.constants', $config);
 
         $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,税率'."\n");
 
@@ -586,7 +586,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->eccubeConfig;
         $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
-        $this->container->setParameter('eccube.constants', $config);
+        self::$container->setParameter('eccube.constants', $config);
 
         $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID,カテゴリ削除フラグ'."\n");
 

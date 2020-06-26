@@ -61,10 +61,10 @@ class PaginationTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->productRepository = $this->container->get(ProductRepository::class);
-        $this->paginator = $this->container->get(PaginatorInterface::class);
-        $this->tagRepository = $this->container->get(TagRepository::class);
-        $this->memberRepository = $this->container->get(MemberRepository::class);
+        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $this->paginator = self::$container->get(PaginatorInterface::class);
+        $this->tagRepository = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);
+        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
 
         // mysqlの場合, トランザクション中にcreate tableを行うと暗黙的にcommitされてしまい, テストデータをロールバックできない
         // そのため, create tableを行った後に, 再度トランザクションを開始するようにしている

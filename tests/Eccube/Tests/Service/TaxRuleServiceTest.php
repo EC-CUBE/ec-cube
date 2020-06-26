@@ -41,12 +41,12 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $this->BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $this->BaseInfo->setOptionProductTaxRule(0);
-        $this->TaxRule1 = $this->container->get(TaxRuleRepository::class)->find(1);
+        $this->TaxRule1 = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class)->find(1);
         $this->TaxRule1->setApplyDate(new \DateTime('-1 day'));
-        $this->container->get('doctrine')->getManager()->flush();
-        $this->taxRuleService = $this->container->get(TaxRuleService::class);
+        self::$container->get('doctrine')->getManager()->flush();
+        $this->taxRuleService = self::$container->get(TaxRuleService::class);
     }
 
     public function testRoundByCalcRuleWithDefault()

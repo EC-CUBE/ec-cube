@@ -42,8 +42,8 @@ class PointProcessorTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->processor = $this->container->get(PointProcessor::class);
-        $this->addPointProcessor = $this->container->get(AddPointProcessor::class);
+        $this->processor = self::$container->get(PointProcessor::class);
+        $this->addPointProcessor = self::$container->get(AddPointProcessor::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
@@ -416,7 +416,7 @@ class PointProcessorTest extends EccubeTestCase
         $OrderItem->setProductClass($ProductClass);
         $OrderItem->setPrice($price);
         $OrderItem->setQuantity($quantity);
-        $ProductType = $this->container->get(OrderItemTypeRepository::class)->find(OrderItemType::PRODUCT);
+        $ProductType = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderItemType::class)->find(OrderItemType::PRODUCT);
         $OrderItem->setOrderItemType($ProductType);
 
         return $OrderItem;

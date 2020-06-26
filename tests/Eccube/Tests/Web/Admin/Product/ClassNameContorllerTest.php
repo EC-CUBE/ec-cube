@@ -47,10 +47,10 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->productClassRepo = $this->container->get(ProductClassRepository::class);
-        $this->classCategoryRepo = $this->container->get(ClassCategoryRepository::class);
-        $this->classNameRepo = $this->container->get(ClassNameRepository::class);
-        $this->Member = $this->container->get(MemberRepository::class)->find(1);
+        $this->productClassRepo = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);
+        $this->classCategoryRepo = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
+        $this->classNameRepo = $this->entityManager->getRepository(\Eccube\Entity\ClassName::class);
+        $this->Member = $this->entityManager->getRepository(\Eccube\Entity\Member::class)->find(1);
         $this->removeClass();
 
         for ($i = 0; $i < 3; $i++) {

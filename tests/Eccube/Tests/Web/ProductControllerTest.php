@@ -36,8 +36,8 @@ class ProductControllerTest extends AbstractWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
-        $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->classCategoryRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
     }
 
     public function testRoutingList()

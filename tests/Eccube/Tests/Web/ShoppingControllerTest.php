@@ -43,8 +43,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
-        $this->paymentRepository = $this->container->get(PaymentRepository::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
     }
 
     public function testRoutingShoppingLogin()
@@ -59,11 +59,11 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $this->container->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
+        self::$container->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
         $this->client->request('GET', $this->generateUrl('shopping_complete'));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertNull($this->container->get('session')->get('eccube.front.shopping.order.id'));
+        $this->assertNull(self::$container->get('session')->get('eccube.front.shopping.order.id'));
     }
 
     public function testShoppingError()
@@ -108,13 +108,13 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 生成された受注のチェック
-        $Order = $this->container->get(OrderRepository::class)->findOneBy(
+        $Order = $this->entityManager->getRepository(\Eccube\Entity\Order::class)->findOneBy(
             [
                 'Customer' => $Customer,
             ]
         );
 
-        $OrderNew = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
+        $OrderNew = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class)->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
         $this->actual = $Order->getOrderStatus();
         $this->verify();
@@ -500,7 +500,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
         $SaleTypeNormal = $this->entityManager->find(SaleType::class, SaleType::SALE_TYPE_NORMAL);
-        $Delivery = $this->container->get(Generator::class)->createDelivery();
+        $Delivery = self::$container->get(Generator::class)->createDelivery();
         $Delivery->setSaleType($SaleTypeNormal);
         $this->entityManager->flush($Delivery);
         $Payments = $this->paymentRepository->findAll();
@@ -552,13 +552,13 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 生成された受注のチェック
-        $Order = $this->container->get(OrderRepository::class)->findOneBy(
+        $Order = $this->entityManager->getRepository(\Eccube\Entity\Order::class)->findOneBy(
             [
                 'Customer' => $Customer,
             ]
         );
 
-        $OrderNew = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
+        $OrderNew = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class)->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
         $this->actual = $Order->getOrderStatus();
         $this->verify();
@@ -588,16 +588,16 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $price = 27777;
         $pointUse = 27777;
         /** @var ProductClass $ProductClass */
-        $ProductClass = $this->container->get(ProductClassRepository::class)->find(1);
+        $ProductClass = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class)->find(1);
         $ProductClass->setPrice02($price);
         $this->entityManager->flush($ProductClass);
 
-        $Delivery = $this->container->get(Generator::class)->createDelivery();
+        $Delivery = self::$container->get(Generator::class)->createDelivery();
         $Delivery->setSaleType($ProductClass->getSaleType());
         $this->entityManager->flush($Delivery);
 
-        $COD1 = $this->container->get(Generator::class)->createPayment($Delivery, 'COD1', 0, 0, 30000);
-        $COD2 = $this->container->get(Generator::class)->createPayment($Delivery, 'COD2', 0, 30001, 300000);
+        $COD1 = self::$container->get(Generator::class)->createPayment($Delivery, 'COD1', 0, 0, 30000);
+        $COD2 = self::$container->get(Generator::class)->createPayment($Delivery, 'COD2', 0, 30001, 300000);
 
         // カート画面
         $this->scenarioCartIn($Customer, 1);
