@@ -323,6 +323,9 @@
     "setasign/fpdi-tcpdf": {
         "version": "v2.0.0"
     },
+    "skorp/detect-incompatible-samesite-useragents": {
+        "version": "1.0.0"
+    },
     "suncat/mobile-detect-bundle": {
         "version": "1.0",
         "recipe": {
@@ -496,6 +499,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.13.0"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.1"
     },
     "symfony/process": {
         "version": "v3.4.1"
