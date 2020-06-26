@@ -8,10 +8,9 @@ framework:
     trusted_hosts: ~
     # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
     session:
-        handler_id: session.handler.native_file
+        handler_id: 'Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler'
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
         name: '%env(ECCUBE_COOKIE_NAME)%'
-        cookie_path: '%env(ECCUBE_COOKIE_PATH)%'
         cookie_lifetime: '%env(ECCUBE_COOKIE_LIFETIME)%'
         gc_maxlifetime: '%env(ECCUBE_GC_MAXLIFETIME)%'
         cookie_httponly: true

@@ -608,6 +608,7 @@ admin.product.name: Product Name
 admin.product.image: Product Images
 admin.product.image__short: Images
 admin.product.image_size: 'More than 600px x 600px is recommended'
+admin.product.image__invalid_path: Invalid image path.
 admin.product.sale_type: Sales Type
 admin.product.description_detail: Product Descriptions
 admin.product.description_list: Product Descriptions (All)
@@ -1141,6 +1142,7 @@ admin.setting.shop.tax.rounding_type: Rounding
 admin.setting.shop.tax.base_rate_setting: General Rate
 admin.setting.shop.tax.tax_rate: Tax Rate
 admin.setting.shop.tax.apply_date: Apply on
+admin.setting.shop.tax.apply_date.available_error: The same date and time cannot be set.
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : Emails
