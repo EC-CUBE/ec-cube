@@ -131,7 +131,7 @@ class LayoutController extends AbstractController
 
         /** @var Layout $Layout */
         if (!$Layout->isDeletable()) {
-            $this->deleteMessage();
+            $this->addWarning(trans('admin.common.delete_error_foreign_key', ['%name%' => $Layout->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_content_layout');
         }
