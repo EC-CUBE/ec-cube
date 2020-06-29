@@ -265,7 +265,7 @@ file that was distributed with this source code.
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <form class="form-row d-none mode-edit" method="POST" action="{{ (Parent and Parent.id) ? url('admin_product_category_show', {'parent_id': Parent.id}) : url('admin_product_category') }}">
+                                                <form class="form-row d-none mode-edit" method="POST" action="{{ (Parent and Parent.id) ? url('admin_product_category_show', {'parent_id': Parent.id}) : url('admin_product_category') }}" enctype="multipart/form-data">
                                                     {{ form_widget(forms[Category.id]._token) }}
                                                     <div class="col-auto align-items-center">
                                                         {{ form_widget(forms[Category.id].name, {'attr': {'data-origin-value': forms[Category.id].name.vars.value}}) }}

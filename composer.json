@@ -50,6 +50,7 @@
         "sensio/generator-bundle": "^3.1",
         "setasign/fpdi": "^2.2",
         "setasign/fpdi-tcpdf": "^2.2",
+        "skorp/detect-incompatible-samesite-useragents": "^1.0",
         "suncat/mobile-detect-bundle": "^1.1",
         "swiftmailer/swiftmailer": "^6.1",
         "symfony/asset": "^3.4",

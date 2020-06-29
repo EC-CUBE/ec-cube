@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<ruleset name="Sample">
+ <description>A sample coding standard</description>
+
+ <!-- Include all sniffs in the PEAR standard -->
+ <rule ref="Zend">
+   <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman.BraceOnSameLine"/>
+   <exclude name="Zend.NamingConventions.ValidVariableName.NotCamelCaps"/>
+   <exclude name="PEAR.Classes.ClassDeclaration.OpenBraceNewLine"/>
+ </rule>
+
+ <!-- Include some specific sniffs -->
+ <rule ref="Generic.ControlStructures.InlineControlStructure"/>
+ <rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
+
+ <!-- Change the settings of the Line Length sniff -->
+ <rule ref="Generic.Files.LineLength">
+  <properties>
+   <property name="lineLimit" value="120"/>
+   <property name="absoluteLineLimit" value="0"/>
+  </properties>
+ </rule>
+
+  <!-- Change both Line Length messages -->
+ <rule ref="Generic.Files.LineLength.MaxExceeded">
+  <message>Line longer than the max of %s; has %s chars</message>
+ </rule>
+ <rule ref="Generic.Files.LineLength.TooLong">
+  <message>Line longer than %s chars; has %s chars</message>
+ </rule>
+
+ <!-- Disable internal message for missing code and short open tags -->
+ <rule ref="Internal.NoCodeFound">
+  <severity>0</severity>
+ </rule>
+</ruleset>
