@@ -16,6 +16,7 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Service\OrderHelper;
+use Symfony\Component\BrowserKit\Cookie;
 
 /**
  * Class ShoppingControllerWithNonmemberTest
@@ -31,6 +32,14 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     {
         parent::setUp();
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+
+        // セッションが途中できれてしまうような事象が発生するため
+        // https://github.com/symfony/symfony/issues/13450#issuecomment-353745790
+        $session = $this->client->getContainer()->get('session');
+        $session->set('dummy', 'dummy');
+        $session->save();
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $this->client->getCookieJar()->set($cookie);
     }
 
     public function testRoutingShoppingLogin()
