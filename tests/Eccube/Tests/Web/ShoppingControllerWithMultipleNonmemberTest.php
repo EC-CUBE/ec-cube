@@ -16,6 +16,7 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
+use Symfony\Component\BrowserKit\Cookie;
 
 /**
  * 非会員複数配送指定のテストケース.
