@@ -43,6 +43,7 @@ DirectoryIndex index.php index.html .ht
     RewriteRule "^var/" - [F]
     RewriteRule "^vendor/" - [F]
     RewriteRule "^node_modules/" - [F]
+    RewriteRule "^gulp/" - [F]
     RewriteRule "^codeception/" - [F]
     RewriteRule "^bin/" - [F]
     RewriteRule "^dockerbuild/" - [F]
