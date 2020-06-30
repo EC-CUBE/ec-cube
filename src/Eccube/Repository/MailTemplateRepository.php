@@ -28,4 +28,18 @@ class MailTemplateRepository extends AbstractRepository
     {
         parent::__construct($registry, MailTemplate::class);
     }
+
+    /**
+     * getList
+     *
+     * @return array|null
+     */
+    public function getList()
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->orderBy('m.id');
+
+        return $qb->getQuery()
+            ->getResult();
+    }
 }

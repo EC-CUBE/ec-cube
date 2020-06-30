@@ -19,10 +19,12 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailTemplateRepository;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -48,11 +50,83 @@ class MailController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/setting/shop/mail", name="admin_setting_shop_mail")
-     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
      * @Template("@admin/Setting/Shop/mail.twig")
      */
-    public function index(Request $request, MailTemplate $Mail = null, Environment $twig)
+    public function index()
     {
+        $MailTemplates = $this->mailTemplateRepository->getList();
+
+        return ['MailTemplates' => $MailTemplates];
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, $id = null, CacheUtil $cacheUtil)
+    {
+        $this->isTokenValid();
+
+        /** @var MailTemplate $Mail */
+        $Mail = $this->mailTemplateRepository
+            ->findOneBy([
+                'id' => $id,
+            ]);
+
+        if (!$Mail) {
+            throw new NotFoundHttpException();
+        }
+
+        // ユーザーが作ったページのみ削除する
+        if ($Mail->getEditType() == MailTemplate::EDIT_TYPE_USER) {
+
+            $templatePath = $this->getParameter('eccube_theme_front_dir');
+            $file = $templatePath.'/'.$Mail->getFileName();
+            $htmlFile = $this->getHtmlFileName($file);
+
+            $fs = new Filesystem();
+            if ($fs->exists($file)) {
+                $fs->remove($file);
+            }
+            if ($fs->exists($htmlFile)) {
+                $fs->remove($htmlFile);
+            }
+            $this->entityManager->remove($Mail);
+            $this->entityManager->flush();
+
+            $event = new EventArgs(
+                [
+                    'Mail' => $Mail,
+                ],
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_DELETE_COMPLETE, $event);
+
+            $this->addSuccess('admin.common.delete_complete', 'admin');
+
+            // キャッシュの削除
+            $cacheUtil->clearTwigCache();
+            $cacheUtil->clearDoctrineCache();
+        }
+
+        return $this->redirectToRoute('admin_setting_shop_mail');
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/setting/shop/mail/edit/new", name="admin_setting_shop_mail_new")
+     * @Route("/%eccube_admin_route%/setting/shop/mail/edit/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
+     * @Template("@admin/Setting/Shop/mail_edit.twig")
+     */
+    public function edit(Request $request, $id = null, Environment $twig)
+    {
+
+        $Mail = null;
+        if ($id) {
+            $Mail = $this->mailTemplateRepository->find($id);
+            if (is_null($Mail)) {
+                throw new NotFoundHttpException();
+            }
+        }
+
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
 
@@ -66,11 +140,14 @@ class MailController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
-        $form['template']->setData($Mail);
-        $htmlFileName = $Mail ? $this->getHtmlFileName($Mail->getFileName()) : null;
+
+        $isUserType = false;
 
         // 更新時
         if (!is_null($Mail)) {
+
+            $htmlFileName = $this->getHtmlFileName($Mail->getFileName());
+
             // テンプレートファイルの取得
             $source = $twig->getLoader()
                 ->getSourceContext($Mail->getFileName())
@@ -84,57 +161,73 @@ class MailController extends AbstractController
 
                 $form->get('html_tpl_data')->setData($source);
             }
+        } else {
+            $isUserType = true;
         }
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        $form->handleRequest($request);
 
-            // 新規登録は現時点では未実装とする.
+        if ($form->isSubmitted() && $form->isValid()) {
+
             if (is_null($Mail)) {
-                $this->addError('admin.common.save_error', 'admin');
-
-                return $this->redirectToRoute('admin_setting_shop_mail');
+                $fileName = sprintf('Mail/%s.twig', $form->get('file_name')->getData());
+            } else {
+                $fileName = $Mail->getFileName();
             }
 
-            if ($form->isValid()) {
-                $this->entityManager->flush();
 
-                // ファイル生成・更新
-                $templatePath = $this->getParameter('eccube_theme_front_dir');
-                $filePath = $templatePath.'/'.$Mail->getFileName();
+            // ファイル生成・更新
+            $templatePath = $this->getParameter('eccube_theme_front_dir');
+            $filePath = $templatePath.'/'.$fileName;
 
+            $fs = new Filesystem();
+            $mailData = $form->get('tpl_data')->getData();
+            $mailData = StringUtil::convertLineFeed($mailData);
+            $fs->dumpFile($filePath, $mailData);
+
+            // HTMLファイル用
+            $htmlMailData = $form->get('html_tpl_data')->getData();
+            $htmlFile = $this->getHtmlFileName($filePath);
+            if (!is_null($htmlMailData)) {
+                $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
+                $fs->dumpFile($htmlFile, $htmlMailData);
+            } else {
                 $fs = new Filesystem();
-                $mailData = $form->get('tpl_data')->getData();
-                $mailData = StringUtil::convertLineFeed($mailData);
-                $fs->dumpFile($filePath, $mailData);
-
-                // HTMLファイル用
-                $htmlMailData = $form->get('html_tpl_data')->getData();
-                if (!is_null($htmlMailData)) {
-                    $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
-                    $fs->dumpFile($templatePath.'/'.$htmlFileName, $htmlMailData);
+                if ($fs->exists($htmlFile)) {
+                    $fs->remove($htmlFile);
                 }
-
-                $event = new EventArgs(
-                    [
-                        'form' => $form,
-                        'Mail' => $Mail,
-                        'templatePath' => $templatePath,
-                        'filePath' => $filePath,
-                    ],
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
-
-                $this->addSuccess('admin.common.save_complete', 'admin');
-
-                return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
             }
+
+            /** @var MailTemplate $Mail */
+            $Mail = $form->getData();
+            if ($isUserType) {
+                $Mail->setEditType(MailTemplate::EDIT_TYPE_USER);
+            }
+            $Mail->setFileName($fileName);
+            $this->entityManager->persist($Mail);
+            $this->entityManager->flush();
+
+
+            $event = new EventArgs(
+                [
+                    'form' => $form,
+                    'Mail' => $Mail,
+                    'templatePath' => $templatePath,
+                    'filePath' => $filePath,
+                ],
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
+
+            $this->addSuccess('admin.common.save_complete', 'admin');
+
+            return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
         }
+
 
         return [
             'form' => $form->createView(),
-            'id' => is_null($Mail) ? null : $Mail->getId(),
+            'Mail' => $Mail,
         ];
     }
 

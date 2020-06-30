@@ -27,6 +27,10 @@ if (!class_exists('\Eccube\Entity\MailTemplate')) {
      */
     class MailTemplate extends \Eccube\Entity\AbstractEntity
     {
+
+        const EDIT_TYPE_USER = 0;
+        const EDIT_TYPE_DEFAULT = 1;
+
         /**
          * @return string
          */
@@ -64,6 +68,13 @@ if (!class_exists('\Eccube\Entity\MailTemplate')) {
          * @ORM\Column(name="mail_subject", type="string", length=255, nullable=true)
          */
         private $mail_subject;
+
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="edit_type", type="smallint", options={"unsigned":true,"default":1})
+         */
+        private $edit_type = self::EDIT_TYPE_DEFAULT;
 
         /**
          * @var \DateTime
@@ -169,6 +180,30 @@ if (!class_exists('\Eccube\Entity\MailTemplate')) {
         public function getMailSubject()
         {
             return $this->mail_subject;
+        }
+
+        /**
+         * Set editType.
+         *
+         * @param int $editType
+         *
+         * @return MailTemplate
+         */
+        public function setEditType($editType)
+        {
+            $this->edit_type = $editType;
+
+            return $this;
+        }
+
+        /**
+         * Get editType.
+         *
+         * @return int
+         */
+        public function getEditType()
+        {
+            return $this->edit_type;
         }
 
         /**

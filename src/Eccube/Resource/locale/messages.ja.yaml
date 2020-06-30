@@ -1155,6 +1155,9 @@ admin.setting.shop.mail.mail_body: 本文
 admin.setting.shop.mail.mail_text: テキスト
 admin.setting.shop.mail.mail_html: HTML
 admin.setting.shop.mail.preview: プレビュー
+admin.setting.shop.mail.file_name: ファイル名
+admin.setting.shop.mail_list: 一覧を見る
+admin.setting.shop.mail_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：CSV出力項目設定
@@ -1581,7 +1584,6 @@ tooltip.setting.shop.delivery.sale_type: この配送方法で取り扱える販
 tooltip.setting.shop.delivery.apply_to_pref: すべての都道府県に同じ送料を一括で設定できます。あとから個々の都道府県の送料を書き換えることも可能です。
 tooltip.setting.shop.delivery.shop_memo: 店舗用のメモ欄です。フロント側には表示されません。
 tooltip.setting.shop.tax_setting: 商品共通の税率を設定できます。新しい税率を追加することで基本税率設定を上書きすることが可能です。
-tooltip.setting.shop.mail.mail_template: 既存のメールテンプレートを選択してください。以下に内容が表示されます。
 tooltip.setting.shop.csv.csv_columns: 各種のデータをCSVで出力できます。出力したい項目をこちらで設定することが可能です。
 tooltip.setting.shop.csv.csv_type: 設定したいCSVの種類を指定してください。
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。

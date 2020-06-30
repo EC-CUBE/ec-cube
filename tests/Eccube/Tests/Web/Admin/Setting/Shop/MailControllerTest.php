@@ -77,7 +77,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $MailTemplate = $this->createMail();
         $form = [
             '_token' => 'dummy',
-            'template' => $MailTemplate->getId(),
             'mail_subject' => 'Test Subject',
             'tpl_data' => 'Test TPL Data',
         ];
@@ -103,7 +102,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $MailTemplate = $this->createMail();
         $form = [
             '_token' => 'dummy',
-            'template' => $MailTemplate->getId(),
             'mail_subject' => 'Test Subject',
             'tpl_data' => 'Test TPL Data',
             'html_tpl_data' => '<font color="red">Test HTML TPL Data</font>',
@@ -127,7 +125,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $mid = 99999;
         $form = [
             '_token' => 'dummy',
-            'template' => $mid,
             'mail_subject' => 'Test Subject',
         ];
         $this->client->request(
@@ -136,32 +133,44 @@ class MailControllerTest extends AbstractAdminWebTestCase
             ['mail' => $form]
         );
 
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+        //$redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $mid]);
+        //$this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $outPut = $this->container->get('session')->getFlashBag()->get('eccube.admin.error');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_error';
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
     }
 
-    /**
-     * Create
-     */
-    public function testCreateFail()
+    public function testDelete()
     {
-        $form = [
-            '_token' => 'dummy',
-            'template' => null,
-            'mail_subject' => null,
-        ];
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_setting_shop_mail'),
-            ['mail' => $form]
-        );
+        $TestMail = new MailTemplate();
+        $TestMail->setEditType(MailTemplate::EDIT_TYPE_USER);
+        $TestMail->setFileName("Mail/test.twig");
+        $TestMail->setName("test");
+        $TestMail->setMailSubject("test");
+        $this->entityManager->persist($TestMail);
+        $this->entityManager->flush();
 
         $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
+        $this->client->request('DELETE',
+            $this->generateUrl('admin_setting_shop_mail_delete', ['id' => $TestMail->getId()])
+        );
+
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+    }
+
+    public function testDeleteIdNotFound()
+    {
+        // before
+        $mid = 99999;
+
+        // main
+        $this->client->request('DELETE',
+            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $mid])
+        );
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 }
