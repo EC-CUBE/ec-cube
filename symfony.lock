@@ -200,6 +200,9 @@
     "phar-io/version": {
         "version": "1.0.1"
     },
+    "php": {
+        "version": "7.1.3"
+    },
     "php-coveralls/php-coveralls": {
         "version": "v2.0.0"
     },
