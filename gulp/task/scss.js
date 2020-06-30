@@ -28,7 +28,7 @@ module.exports = () => {
       }),
     ]))
     .pipe(rename((path) => {
-      path.dirname = path.dirname.replace('/scss', '/css')
+      path.dirname = path.dirname.replace(/scss$/, 'css')
     }))
     .pipe(dest(config.paths.output.template, {sourcemaps: '.'}))
     .pipe(browserSync.stream())

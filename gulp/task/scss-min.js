@@ -27,7 +27,7 @@ module.exports = () => {
     ]))
     .pipe(cleanCSS())
     .pipe(rename((path) => {
-      path.dirname = path.dirname.replace('/scss', '/css')
+      path.dirname = path.dirname.replace(/scss$/, 'css')
       if (path.extname === '.css') path.extname = '.min.css'
     }))
     .pipe(dest(config.paths.output.template, {sourcemaps: '.'}))
