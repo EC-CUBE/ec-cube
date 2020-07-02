@@ -189,6 +189,8 @@ class Kernel extends BaseKernel
                 $builder = $routes->import($dir, '/', 'annotation');
                 $builder->setSchemes($scheme);
             }
+            $builder = $routes->import($pluginDir.'/'.$plugin.'/Resource/config/routes'.self::CONFIG_EXTS, '/', 'glob');
+            $builder->setSchemes($scheme);
         }
     }
 
