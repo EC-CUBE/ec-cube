@@ -1062,6 +1062,7 @@ admin.setting.system.authority_management: 権限管理
 admin.setting.system.security_management: セキュリティ管理
 admin.setting.system.log_display: ログ表示
 admin.setting.system.master_data_management: マスタデータ管理
+admin.setting.system.oauth_management: OAuth管理
 admin.setting.system.system_info: システム情報
 
 #------------------------------------------------------------------------------------
@@ -1244,6 +1245,20 @@ admin.setting.system.master_data.description: |
 admin.setting.system.master_data.id: ID
 admin.setting.system.master_data.name: Name
 admin.setting.system.master_data.duplicate_id: 重複したIDを登録することはできません。
+
+#------------------------------------------------------------------------------------
+# 設定：システム設定：OAuth管理
+#------------------------------------------------------------------------------------
+
+admin.setting.system.oauth.identifier: クライアントID
+admin.setting.system.oauth.secret: クライアントシークレット
+admin.setting.system.oauth.scope: スコープ
+admin.setting.system.oauth.redirect_uri: リダイレクトURI
+admin.setting.system.oauth.grant_type: グラントタイプ
+admin.setting.system.oauth.client_registration: OAuthクライアント登録
+admin.setting.system.oauth.delete__confirm_title: OAuthクライアントを削除します。
+admin.setting.system.oauth.delete__confirm_message: OAuthクライアントを削除してよろしいですか？
+admin.setting.system.oauth.clear_expired_tokens: 期限切れのアクセストークンとリフレッシュトークンを削除する
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：システム情報

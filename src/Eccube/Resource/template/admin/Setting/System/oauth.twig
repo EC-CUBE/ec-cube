@@ -1,0 +1,127 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['setting', 'system', 'oauth'] %}
+
+{% block title %}{{ 'admin.setting.system.oauth_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
+
+{% block main %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div id="create-client" class="d-block mb-3">
+                    <a class="btn btn-ec-regular" href="{{ url('admin_setting_oauth_create_client') }}">{{ 'admin.common.registration__new'|trans }}</a>
+                </div>
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-body p-0">
+                        <table class="table table-sm" style="table-layout:fixed;">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0 pt-2 pb-2 text-center" style="width:300px;">
+                                        {{ 'admin.setting.system.oauth.identifier'|trans }}
+                                    </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center" style="width:400px;">
+                                        {{ 'admin.setting.system.oauth.secret'|trans }}
+                                    </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.system.oauth.scope'|trans }}
+                                    </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.system.oauth.redirect_uri'|trans }}
+                                    </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.system.oauth.grant_type'|trans }}
+                                    </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for client in clients %}
+                                    <tr id="client-{{ client.identifier }}">
+                                        <td class="align-middle text-center pl-3">
+                                            {{ client.identifier }}
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            {{ client.Secret }}
+                                        </td>
+                                        <td class="align-middle text-center pl-3">
+                                            {% for Scope in client.scopes %}
+                                                {{ Scope }}<br>
+                                            {% endfor %}
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            {% for RedirectUri in client.redirectUris %}
+                                                {{ RedirectUri }}<br>
+                                            {% endfor %}
+                                        </td>
+                                        <td class="align-middle text-center pl-3">
+                                            {% for Grant in client.grants %}
+                                                {{ Grant }}<br>
+                                            {% endfor %}
+                                        </td>
+                                        <td class="align-middle pr-3">
+                                            <div class="text-right">
+                                                <div class="px-1 d-inline-block">
+                                                    <div class="d-inline-block mr-2" data-tooltip="true"
+                                                         data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                        <a class="btn btn-ec-actionIcon action-delete" data-toggle="modal"
+                                                           data-target="#oauth_delete_{{ client.identifier }}">
+                                                            <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="modal fade" id="oauth_delete_{{ client.identifier }}" tabindex="-1"
+                                                         role="dialog" aria-labelledby="oauth_delete_{{ client.identifier }}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title font-weight-bold">
+                                                                        {{ 'admin.setting.system.oauth.delete__confirm_title'|trans }}
+                                                                    </h5>
+                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body text-left">
+                                                                    <p class="text-left">{{ 'admin.setting.system.oauth.delete__confirm_message'|trans }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                                        {{ 'admin.common.cancel'|trans }}
+                                                                    </button>
+                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_setting_oauth_delete_client', {identifier: client.identifier}) }}"
+                                                                            {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
+                                                                        {{ 'admin.common.delete'|trans }}
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card rounded border-0 mb-4">
+                    <a class="btn btn-ec-conversion ladda-button" href="{{ url('admin_setting_oauth_clear_expired_tokens') }}"
+                            {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
+                        {{ 'admin.setting.system.oauth.clear_expired_tokens'|trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

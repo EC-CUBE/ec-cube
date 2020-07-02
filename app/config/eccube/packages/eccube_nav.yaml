@@ -130,6 +130,9 @@ parameters:
                         masterdata:
                             name: admin.setting.system.master_data_management
                             url: admin_setting_system_masterdata
+                        oauth:
+                            name: admin.setting.system.oauth_management
+                            url: admin_setting_system_oauth
                         system_index:
                             name: admin.setting.system.system_info
                             url: admin_setting_system_system

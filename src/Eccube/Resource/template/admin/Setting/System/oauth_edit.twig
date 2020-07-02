@@ -1,0 +1,147 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['setting', 'system', 'oauth'] %}
+
+{% block title %}{{ 'admin.setting.system.oauth.client_registration'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <form name="client_form" role="form" id="client_form" method="post" action="" novalidate>
+        {{ form_widget(form._token) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <span class="card-title">{{ 'admin.setting.system.oauth.client_registration'|trans }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="clientInfo">
+                            <div class="card-body">
+
+                                {# identifier #}
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.setting.system.oauth.identifier'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_widget(form.identifier) }}
+                                            </div>
+                                            {{ form_errors(form.identifier) }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {# secret #}
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.setting.system.oauth.secret'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_widget(form.secret) }}
+                                            </div>
+                                            {{ form_errors(form.secret) }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {# scope #}
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.setting.system.oauth.scope'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_widget(form.scopes, {'attr': { 'readonly': 'readonly' } }) }}
+                                            </div>
+                                            {{ form_errors(form.scopes) }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {# redirect_uri #}
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.setting.system.oauth.redirect_uri'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_widget(form.redirect_uris) }}
+                                            </div>
+                                            {{ form_errors(form.redirect_uris) }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {# grant_type #}
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.setting.system.oauth.grant_type'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_widget(form.grants, {'attr': { 'readonly': 'readonly' } }) }}
+                                            </div>
+                                            {{ form_errors(form.grants) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
+                            <a class="c-baseLink"
+                               href="{{ url('admin_setting_system_oauth') }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i>
+                                <span>{{ 'admin.setting.system.oauth_management'|trans }}</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">
+                                    {{ 'admin.common.registration'|trans }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

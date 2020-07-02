@@ -1062,6 +1062,7 @@ admin.setting.system.authority_management: Permission
 admin.setting.system.security_management: Security
 admin.setting.system.log_display: Logs
 admin.setting.system.master_data_management: Master Data
+admin.setting.system.oauth_management: OAuth
 admin.setting.system.system_info: System Info
 
 #------------------------------------------------------------------------------------
@@ -1244,6 +1245,20 @@ admin.setting.system.master_data.description: |
 admin.setting.system.master_data.id: ID
 admin.setting.system.master_data.name: Name
 admin.setting.system.master_data.duplicate_id: You are not allowed to register duplicated IDs.
+
+#------------------------------------------------------------------------------------
+# Settings : System : OAuth
+#------------------------------------------------------------------------------------
+
+admin.setting.system.oauth.identifier: Client ID
+admin.setting.system.oauth.secret: Client Secret
+admin.setting.system.oauth.scope: Scope
+admin.setting.system.oauth.redirect_uri: Redirect URI
+admin.setting.system.oauth.grant_type: Grant Type
+admin.setting.system.oauth.client_registration: Client Registration
+admin.setting.system.oauth.delete__confirm_title: Delete a Client
+admin.setting.system.oauth.delete__confirm_message: Are you sure to delete this Client?
+admin.setting.system.oauth.clear_expired_tokens: Clears all expired access and/or refresh tokens
 
 #------------------------------------------------------------------------------------
 # Settings : System : System Info
