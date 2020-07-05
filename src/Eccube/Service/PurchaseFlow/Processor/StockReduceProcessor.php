@@ -78,25 +78,27 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
             return;
         }
 
+        $stocks = [];
         foreach ($itemHolder->getProductOrderItems() as $item) {
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
             if (!$item->getProductClass()->isStockUnlimited()) {
                 // 在庫チェックあり
                 /* @var ProductStock $productStock */
                 $productStock = $item->getProductClass()->getProductStock();
-                if ($productStock->getProductClassId() === null) {
-                    // 在庫に対してロックを実行
-                    $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
-                    $this->entityManager->refresh($productStock);
-                    $productStock->setProductClassId($item->getProductClass()->getId());
-                }
+                // 在庫に対してロックを実行
+                $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
+                $this->entityManager->refresh($productStock);
                 $ProductClass = $item->getProductClass();
-                $stock = $callback($productStock->getStock(), $item->getQuantity());
-                if ($stock < 0) {
+                if(!array_key_exists($ProductClass->getId(), $stocks)){
+                    $stocks[$ProductClass->getId()]['stock'] = $callback($productStock->getStock(), $item->getQuantity());
+                }else{
+                    $stocks[$ProductClass->getId()]['stock'] = $callback($stocks[$ProductClass->getId()]['stock'], $item->getQuantity());
+                }
+                if ($stocks[$ProductClass->getId()]['stock'] < 0) {
                     throw new ShoppingException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
-                $productStock->setStock($stock);
-                $ProductClass->setStock($stock);
+                $productStock->setStock($stocks[$ProductClass->getId()]['stock']);
+                $ProductClass->setStock($stocks[$ProductClass->getId()]['stock']);
             }
         }
     }
