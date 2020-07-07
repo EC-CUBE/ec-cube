@@ -279,8 +279,6 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Add blockPosition
          *
-         * @param \Eccube\Entity\BlockPosition $blockPosition
-         *
          * @return Block
          */
         public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
@@ -292,8 +290,6 @@ if (!class_exists('\Eccube\Entity\Block')) {
 
         /**
          * Remove blockPosition
-         *
-         * @param \Eccube\Entity\BlockPosition $blockPosition
          */
         public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
         {

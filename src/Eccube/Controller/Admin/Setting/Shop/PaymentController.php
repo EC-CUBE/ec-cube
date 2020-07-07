@@ -41,8 +41,6 @@ class PaymentController extends AbstractController
 
     /**
      * PaymentController constructor.
-     *
-     * @param PaymentRepository $paymentRepository
      */
     public function __construct(PaymentRepository $paymentRepository)
     {
@@ -204,9 +202,6 @@ class PaymentController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete", methods={"DELETE"})
      *
-     * @param Request $request
-     * @param Payment $TargetPayment
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(Request $request, Payment $TargetPayment)
@@ -264,8 +259,6 @@ class PaymentController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/setting/shop/payment/sort_no/move", name="admin_setting_shop_payment_sort_no_move", methods={"POST"})
-     *
-     * @param Request $request
      *
      * @return Response
      */

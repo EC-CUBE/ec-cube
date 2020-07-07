@@ -240,8 +240,6 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
         /**
          * Add classCategory.
          *
-         * @param \Eccube\Entity\ClassCategory $classCategory
-         *
          * @return ClassName
          */
         public function addClassCategory(\Eccube\Entity\ClassCategory $classCategory)
@@ -253,8 +251,6 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
 
         /**
          * Remove classCategory.
-         *
-         * @param \Eccube\Entity\ClassCategory $classCategory
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -275,8 +271,6 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return ClassName
          */

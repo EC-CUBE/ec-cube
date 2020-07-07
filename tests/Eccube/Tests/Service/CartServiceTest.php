@@ -14,17 +14,17 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\Master\SaleTypeRepository;
+use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
-use Eccube\Entity\Product;
-use Eccube\Entity\Master\SaleType;
-use Eccube\Repository\OrderRepository;
-use Eccube\Repository\Master\SaleTypeRepository;
 
 class CartServiceTest extends AbstractServiceTestCase
 {

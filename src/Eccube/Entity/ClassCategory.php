@@ -239,8 +239,6 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * Set className.
          *
-         * @param \Eccube\Entity\ClassName|null $className
-         *
          * @return ClassCategory
          */
         public function setClassName(\Eccube\Entity\ClassName $className = null)
@@ -262,8 +260,6 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return ClassCategory
          */

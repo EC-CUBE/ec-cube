@@ -170,8 +170,6 @@ if (!class_exists('\Eccube\Entity\ProductImage')) {
         /**
          * Set product.
          *
-         * @param \Eccube\Entity\Product|null $product
-         *
          * @return ProductImage
          */
         public function setProduct(\Eccube\Entity\Product $product = null)
@@ -193,8 +191,6 @@ if (!class_exists('\Eccube\Entity\ProductImage')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return ProductImage
          */

@@ -14,8 +14,8 @@
 namespace Eccube\Tests\Doctrine;
 
 use Eccube\Entity\Product;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\ProductRepository;
+use Eccube\Tests\EccubeTestCase;
 
 class TimeZoneTest extends EccubeTestCase
 {

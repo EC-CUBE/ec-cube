@@ -66,12 +66,6 @@ class OrderType extends AbstractType
 
     /**
      * OrderType constructor.
-     *
-     * @param OrderRepository $orderRepository
-     * @param DeliveryRepository $deliveryRepository
-     * @param PaymentRepository $paymentRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param Context $requestContext
      */
     public function __construct(
         OrderRepository $orderRepository,
@@ -216,8 +210,6 @@ class OrderType extends AbstractType
     /**
      * 出荷に紐づく配送方法を取得する.
      *
-     * @param Order $Order
-     *
      * @return Delivery[]
      */
     private function getDeliveries(Order $Order)
@@ -276,7 +268,6 @@ class OrderType extends AbstractType
     /**
      * 支払い方法の利用条件でフィルタをかける.
      *
-     * @param ArrayCollection $Payments
      * @param $total
      *
      * @return Payment[]

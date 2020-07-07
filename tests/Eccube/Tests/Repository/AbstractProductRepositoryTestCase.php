@@ -14,8 +14,8 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\CustomerFavoriteProduct;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\ProductRepository;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * ProductRepository test cases.

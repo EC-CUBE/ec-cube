@@ -21,6 +21,7 @@ use Eccube\Repository\BaseInfoRepository;
 
 /**
  * Class ComposerProcessService
+ *
  * @deprecated Not maintained
  */
 class ComposerProcessService implements ComposerServiceInterface
@@ -48,10 +49,6 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * ComposerProcessService constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param EntityManagerInterface $entityManager
-     * @param ComposerApiService $composerApiService
      */
     public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, ComposerApiService $composerApiService, BaseInfoRepository $baseInfoRepository)
     {

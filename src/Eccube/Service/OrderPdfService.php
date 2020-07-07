@@ -112,13 +112,7 @@ class OrderPdfService extends TcpdfFpdi
 
     /**
      * OrderPdfService constructor.
-     * @param EccubeConfig $eccubeConfig
-     * @param OrderRepository $orderRepository
-     * @param ShippingRepository $shippingRepository
-     * @param TaxRuleService $taxRuleService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EccubeExtension $eccubeExtension
-     * @param TaxExtension $taxExtension
+     *
      * @throws \Exception
      */
     public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository, ShippingRepository $shippingRepository, TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, EccubeExtension $eccubeExtension, TaxExtension $taxExtension)
@@ -328,8 +322,6 @@ class OrderPdfService extends TcpdfFpdi
 
     /**
      * メッセージを設定する.
-     *
-     * @param array $formData
      */
     protected function renderMessageData(array $formData)
     {
@@ -340,8 +332,6 @@ class OrderPdfService extends TcpdfFpdi
 
     /**
      * PDFに備考を設定数.
-     *
-     * @param array $formData
      */
     protected function renderEtcData(array $formData)
     {
@@ -389,8 +379,6 @@ class OrderPdfService extends TcpdfFpdi
 
     /**
      * 購入者情報を設定する.
-     *
-     * @param Shipping $Shipping
      */
     protected function renderOrderData(Shipping $Shipping)
     {
@@ -448,8 +436,6 @@ class OrderPdfService extends TcpdfFpdi
 
     /**
      * 購入商品詳細情報を設定する.
-     *
-     * @param Shipping $Shipping
      */
     protected function renderOrderDetailData(Shipping $Shipping)
     {
@@ -559,7 +545,7 @@ class OrderPdfService extends TcpdfFpdi
             $arrOrder[$i][2] = '';
             $arrOrder[$i][3] = '';
 
-            foreach($Order->getTaxFreeDiscountItems() as $Item) {
+            foreach ($Order->getTaxFreeDiscountItems() as $Item) {
                 ++$i;
                 $arrOrder[$i][0] = '';
                 $arrOrder[$i][1] = '';
@@ -714,8 +700,6 @@ class OrderPdfService extends TcpdfFpdi
 
     /**
      * データが設定されていない場合にデフォルト値を設定する.
-     *
-     * @param array $formData
      */
     protected function setDefaultData(array &$formData)
     {

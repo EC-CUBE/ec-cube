@@ -308,8 +308,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set productClass.
          *
-         * @param \Eccube\Entity\ProductClass|null $productClass
-         *
          * @return TaxRule
          */
         public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
@@ -331,8 +329,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return TaxRule
          */
@@ -356,8 +352,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set country.
          *
-         * @param \Eccube\Entity\Master\Country|null $country
-         *
          * @return TaxRule
          */
         public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -380,8 +374,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set pref.
          *
-         * @param \Eccube\Entity\Master\Pref|null $pref
-         *
          * @return TaxRule
          */
         public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -403,8 +395,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
 
         /**
          * Set product.
-         *
-         * @param \Eccube\Entity\Product|null $product
          *
          * @return TaxRule
          */
@@ -499,7 +489,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          */
         public function isProductTaxRule()
         {
-            return ($this->getProductClass() !== null || $this->getProduct() !== null);
+            return $this->getProductClass() !== null || $this->getProduct() !== null;
         }
     }
 }

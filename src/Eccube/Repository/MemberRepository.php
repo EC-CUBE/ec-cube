@@ -34,8 +34,6 @@ class MemberRepository extends AbstractRepository
     /**
      * 管理ユーザの表示順を一つ上げる.
      *
-     * @param Member $Member
-     *
      * @throws \Exception 更新対象のユーザより上位のユーザが存在しない場合.
      */
     public function up(Member $Member)
@@ -56,8 +54,6 @@ class MemberRepository extends AbstractRepository
 
     /**
      * 管理ユーザの表示順を一つ下げる.
-     *
-     * @param Member $Member
      *
      * @throws \Exception 更新対象のユーザより下位のユーザが存在しない場合.
      */

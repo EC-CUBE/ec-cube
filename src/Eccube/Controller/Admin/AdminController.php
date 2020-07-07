@@ -92,16 +92,6 @@ class AdminController extends AbstractController
 
     /**
      * AdminController constructor.
-     *
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param AuthenticationUtils $helper
-     * @param MemberRepository $memberRepository
-     * @param EncoderFactoryInterface $encoderFactory
-     * @param OrderRepository $orderRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param CustomerRepository $custmerRepository
-     * @param ProductRepository $productRepository
-     * @param PluginApiService $pluginApiService
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -156,8 +146,6 @@ class AdminController extends AbstractController
 
     /**
      * 管理画面ホーム
-     *
-     * @param Request $request
      *
      * @return array
      *
@@ -273,8 +261,6 @@ class AdminController extends AbstractController
     /**
      * 売上状況の取得
      *
-     * @param Request $request
-     *
      * @Route("/%eccube_admin_route%/sale_chart", name="admin_homepage_sale")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -308,8 +294,6 @@ class AdminController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/change_password", name="admin_change_password")
      * @Template("@admin/change_password.twig")
-     *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
@@ -373,8 +357,6 @@ class AdminController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/search_nonstock", name="admin_homepage_nonstock")
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function searchNonStockProducts(Request $request)
@@ -395,8 +377,6 @@ class AdminController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/search_customer", name="admin_homepage_customer")
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function searchCustomer(Request $request)
@@ -413,9 +393,8 @@ class AdminController extends AbstractController
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param array $excludes
      *
-     * @return null|Request
+     * @return Request|null
      */
     protected function getOrderEachStatus(array $excludes)
     {
@@ -577,8 +556,6 @@ class AdminController extends AbstractController
     /**
      * 期間指定のデータを取得
      *
-     * @param Carbon $fromDate
-     * @param Carbon $toDate
      * @param $format
      *
      * @return array
@@ -603,8 +580,6 @@ class AdminController extends AbstractController
      * 期間毎にデータをまとめる
      *
      * @param $result
-     * @param Carbon $fromDate
-     * @param Carbon $toDate
      * @param $format
      *
      * @return array

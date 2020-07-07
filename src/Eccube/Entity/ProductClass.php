@@ -88,7 +88,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set price02 IncTax
          *
-         *
          * @return ProductClass
          */
         public function setPrice02IncTax($price02_inc_tax)
@@ -611,8 +610,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set productStock.
          *
-         * @param \Eccube\Entity\ProductStock|null $productStock
-         *
          * @return ProductClass
          */
         public function setProductStock(\Eccube\Entity\ProductStock $productStock = null)
@@ -634,8 +631,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
 
         /**
          * Set taxRule.
-         *
-         * @param \Eccube\Entity\TaxRule|null $taxRule
          *
          * @return ProductClass
          */
@@ -659,8 +654,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set product.
          *
-         * @param \Eccube\Entity\Product|null $product
-         *
          * @return ProductClass
          */
         public function setProduct(\Eccube\Entity\Product $product = null)
@@ -682,8 +675,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
 
         /**
          * Set saleType.
-         *
-         * @param \Eccube\Entity\Master\SaleType|null $saleType
          *
          * @return ProductClass
          */
@@ -707,8 +698,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set classCategory1.
          *
-         * @param \Eccube\Entity\ClassCategory|null $classCategory1
-         *
          * @return ProductClass
          */
         public function setClassCategory1(\Eccube\Entity\ClassCategory $classCategory1 = null)
@@ -730,8 +719,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
 
         /**
          * Set classCategory2.
-         *
-         * @param \Eccube\Entity\ClassCategory|null $classCategory2
          *
          * @return ProductClass
          */
@@ -755,8 +742,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set deliveryDuration.
          *
-         * @param \Eccube\Entity\DeliveryDuration|null $deliveryDuration
-         *
          * @return ProductClass
          */
         public function setDeliveryDuration(\Eccube\Entity\DeliveryDuration $deliveryDuration = null)
@@ -778,8 +763,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return ProductClass
          */

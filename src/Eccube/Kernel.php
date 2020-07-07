@@ -187,7 +187,6 @@ class Kernel extends BaseKernel
         // DocumentRootをルーティディレクトリに設定する.
         $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
 
-
         // twigのurl,path関数を差し替え
         $container->addCompilerPass(new TwigExtensionPass());
 

@@ -33,8 +33,8 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -706,9 +706,6 @@ class ShoppingController extends AbstractShoppingController
     /**
      * PaymentMethodをコンテナから取得する.
      *
-     * @param Order $Order
-     * @param FormInterface $form
-     *
      * @return PaymentMethodInterface
      */
     private function createPaymentMethod(Order $Order, FormInterface $form)
@@ -722,8 +719,6 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethod::applyを実行する.
-     *
-     * @param PaymentMethodInterface $paymentMethod
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -762,8 +757,6 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethod::checkoutを実行する.
-     *
-     * @param PaymentMethodInterface $paymentMethod
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */

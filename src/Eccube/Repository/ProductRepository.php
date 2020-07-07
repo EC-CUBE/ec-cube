@@ -41,10 +41,6 @@ class ProductRepository extends AbstractRepository
 
     /**
      * ProductRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param Queries $queries
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,

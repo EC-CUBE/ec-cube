@@ -21,7 +21,6 @@ use Doctrine\ORM\QueryBuilder;
 abstract class OrderByCustomizer implements QueryCustomizer
 {
     /**
-     * @param QueryBuilder $builder
      * @param array $params
      * @param string $queryKey
      */

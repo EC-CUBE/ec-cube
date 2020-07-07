@@ -14,11 +14,11 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Service\SystemService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Eccube\Service\SystemService;
 
 class MaintenanceController extends AbstractController
 {

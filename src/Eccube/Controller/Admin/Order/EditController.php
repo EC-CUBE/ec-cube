@@ -14,7 +14,6 @@
 namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
@@ -127,21 +126,6 @@ class EditController extends AbstractController
 
     /**
      * EditController constructor.
-     *
-     * @param TaxRuleService $taxRuleService
-     * @param DeviceTypeRepository $deviceTypeRepository
-     * @param ProductRepository $productRepository
-     * @param CategoryRepository $categoryRepository
-     * @param CustomerRepository $customerRepository
-     * @param SerializerInterface $serializer
-     * @param DeliveryRepository $deliveryRepository
-     * @param PurchaseFlow $orderPurchaseFlow
-     * @param OrderRepository $orderRepository
-     * @param OrderNoProcessor $orderNoProcessor
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param OrderStateMachine $orderStateMachine
-     * @param OrderHelper $orderHelper
      */
     public function __construct(
         TaxRuleService $taxRuleService,
@@ -411,7 +395,6 @@ class EditController extends AbstractController
      * @Route("/%eccube_admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_No" = "\d+"}, name="admin_order_search_customer_html_page")
      * @Template("@admin/Order/search_customer.twig")
      *
-     * @param Request $request
      * @param integer $page_no
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -504,8 +487,6 @@ class EditController extends AbstractController
      * 顧客情報を検索する.
      *
      * @Route("/%eccube_admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id", methods={"POST"})
-     *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -659,8 +640,6 @@ class EditController extends AbstractController
      * @Route("/%eccube_admin_route%/order/search/order_item_type", name="admin_order_search_order_item_type")
      * @Template("@admin/Order/order_item_type.twig")
      *
-     * @param Request $request
-     *
      * @return array
      */
     public function searchOrderItemType(Request $request)
@@ -679,7 +658,7 @@ class EditController extends AbstractController
                 ['OrderItemType' => $Charge, 'TaxType' => $Taxation],
                 ['OrderItemType' => $DeliveryFee, 'TaxType' => $Taxation],
                 ['OrderItemType' => $Discount, 'TaxType' => $Taxation],
-                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable]
+                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable],
             ];
 
             return [

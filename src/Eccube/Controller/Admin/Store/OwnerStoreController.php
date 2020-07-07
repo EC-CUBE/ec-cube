@@ -74,14 +74,6 @@ class OwnerStoreController extends AbstractController
     /**
      * OwnerStoreController constructor.
      *
-     * @param PluginRepository $pluginRepository
-     * @param PluginService $pluginService
-     * @param ComposerServiceInterface $composerService
-     * @param SystemService $systemService
-     * @param PluginApiService $pluginApiService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param CacheUtil $cacheUtil
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -112,9 +104,7 @@ class OwnerStoreController extends AbstractController
      * @Route("/search/page/{page_no}", name="admin_store_plugin_owners_search_page", requirements={"page_no" = "\d+"})
      * @Template("@admin/Store/plugin_search.twig")
      *
-     * @param Request     $request
      * @param int $page_no
-     * @param Paginator $paginator
      *
      * @return array
      */
@@ -218,8 +208,6 @@ class OwnerStoreController extends AbstractController
      * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     * @param Request $request
-     *
      * @return array
      *
      * @throws \Eccube\Exception\PluginException
@@ -247,8 +235,6 @@ class OwnerStoreController extends AbstractController
      * Api Install plugin by composer connect with package repo
      *
      * @Route("/install", name="admin_store_plugin_api_install", methods={"POST"})
-     *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -283,8 +269,6 @@ class OwnerStoreController extends AbstractController
      * New ways to remove plugin: using composer command
      *
      * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall", methods={"DELETE"})
-     *
-     * @param Plugin $Plugin
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -337,8 +321,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/upgrade", name="admin_store_plugin_api_upgrade", methods={"POST"})
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiUpgrade(Request $request)
@@ -367,8 +349,6 @@ class OwnerStoreController extends AbstractController
      * オーナーズブラグインインストール、スキーマ更新
      *
      * @Route("/schema_update", name="admin_store_plugin_api_schema_update", methods={"POST"})
-     *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -419,8 +399,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/update", name="admin_store_plugin_api_update", methods={"POST"})
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiUpdate(Request $request)
@@ -463,8 +441,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
-     *
-     * @param Plugin $Plugin
      *
      * @return array
      */

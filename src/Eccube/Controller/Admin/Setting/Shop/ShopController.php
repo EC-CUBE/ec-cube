@@ -41,9 +41,6 @@ class ShopController extends AbstractController
 
     /**
      * ShopController constructor.
-     *
-     * @param Twig_Environment $twig
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(Twig_Environment $twig, BaseInfoRepository $baseInfoRepository)
     {
@@ -54,8 +51,6 @@ class ShopController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/setting/shop", name="admin_setting_shop")
      * @Template("@admin/Setting/Shop/shop_master.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */

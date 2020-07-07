@@ -33,8 +33,6 @@ class Step4Type extends AbstractType
 
     /**
      * Step4Type constructor.
-     *
-     * @param RequestStack $requestStack
      */
     public function __construct(
         RequestStack $requestStack

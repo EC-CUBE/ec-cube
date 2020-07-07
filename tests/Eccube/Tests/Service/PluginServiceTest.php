@@ -546,6 +546,7 @@ EOD;
 
     /**
      * Test Entity and Trait
+     *
      * @group update-schema-doctrine
      * @group update-schema-doctrine-install
      */
@@ -766,7 +767,7 @@ EOD;
             'version' => $config['version'],
             'type' => 'eccube-plugin',
             'require' => [
-                'ec-cube/plugin-installer' => '*'
+                'ec-cube/plugin-installer' => '*',
                  ],
             'extra' => [
                 'code' => $config['code'],

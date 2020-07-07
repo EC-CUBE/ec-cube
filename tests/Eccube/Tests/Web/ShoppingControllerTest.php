@@ -14,15 +14,15 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Delivery;
-use Eccube\Entity\Payment;
-use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Payment;
+use Eccube\Entity\PaymentOption;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\Fixture\Generator;
 use Symfony\Component\DomCrawler\Crawler;
@@ -650,7 +650,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
-     * @param Delivery $Delivery
      * @param Payment[] $Payments
      */
     private function setUpPayments(Delivery $Delivery, array $Payments)

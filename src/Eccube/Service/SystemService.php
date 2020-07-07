@@ -14,11 +14,11 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class SystemService implements EventSubscriberInterface
 {
@@ -51,9 +51,6 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * SystemService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param ContainerInterface $container
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -158,8 +155,6 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * KernelEvents::TERMINATE で設定されるEvent
-     *
-     * @param PostResponseEvent $event
      */
     public function disableMaintenanceEvent(PostResponseEvent $event)
     {

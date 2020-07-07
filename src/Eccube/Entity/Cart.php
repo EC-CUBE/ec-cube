@@ -148,9 +148,6 @@ if (!class_exists('\Eccube\Entity\Cart')) {
             return $this->cart_key;
         }
 
-        /**
-         * @param string $cartKey
-         */
         public function setCartKey(string $cartKey)
         {
             $this->cart_key = $cartKey;
@@ -201,8 +198,6 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         }
 
         /**
-         * @param  CartItem            $CartItem
-         *
          * @return \Eccube\Entity\Cart
          */
         public function addCartItem(CartItem $CartItem)
@@ -301,17 +296,11 @@ if (!class_exists('\Eccube\Entity\Cart')) {
             return $totalQuantity;
         }
 
-        /**
-         * @param ItemInterface $item
-         */
         public function addItem(ItemInterface $item)
         {
             $this->CartItems->add($item);
         }
 
-        /**
-         * @param ItemInterface $item
-         */
         public function removeItem(ItemInterface $item)
         {
             $this->CartItems->removeElement($item);
@@ -345,9 +334,6 @@ if (!class_exists('\Eccube\Entity\Cart')) {
             return $this->delivery_fee_total;
         }
 
-        /**
-         * @return Customer
-         */
         public function getCustomer(): Customer
         {
             return $this->Customer;

@@ -77,12 +77,6 @@ class PluginController extends AbstractController
     /**
      * PluginController constructor.
      *
-     * @param PluginRepository $pluginRepository
-     * @param PluginService $pluginService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PluginApiService $pluginApiService
-     * @param ComposerServiceInterface $composerService
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -197,10 +191,6 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update", methods={"POST"})
      *
-     * @param Request $request
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
-     *
      * @return RedirectResponse
      */
     public function update(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
@@ -263,8 +253,6 @@ class PluginController extends AbstractController
      * 対象のプラグインを有効にします。
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable", methods={"POST"})
-     *
-     * @param Plugin $Plugin
      *
      * @return RedirectResponse|JsonResponse
      *
@@ -353,10 +341,6 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable", methods={"POST"})
      *
-     * @param Request $request
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse
      */
     public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
@@ -431,9 +415,6 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall", methods={"DELETE"})
      *
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
-     *
      * @return RedirectResponse
      *
      * @throws \Exception
@@ -476,9 +457,6 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install")
      * @Template("@admin/Store/plugin_install.twig")
-     *
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
      *
      * @return array|RedirectResponse
      */
@@ -542,8 +520,6 @@ class PluginController extends AbstractController
      * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
      * @Template("@admin/Store/authentication_setting.twig")
      *
-     * @param Request $request
-     *
      * @return array
      */
     public function authenticationSetting(Request $request, CacheUtil $cacheUtil)
@@ -577,8 +553,6 @@ class PluginController extends AbstractController
 
     /**
      * フォルダ設置のみのプラグインを取得する.
-     *
-     * @param array $plugins
      *
      * @return array
      *

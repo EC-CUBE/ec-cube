@@ -25,8 +25,6 @@ class PurchaseFlowResult
 
     /**
      * PurchaseFlowResult constructor.
-     *
-     * @param ItemHolderInterface $itemHolder
      */
     public function __construct(ItemHolderInterface $itemHolder)
     {

@@ -41,7 +41,8 @@ if (!class_exists('\Eccube\Entity\Order')) {
      */
     class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
     {
-        use NameTrait, PointTrait;
+        use NameTrait;
+        use PointTrait;
 
         /**
          * 課税対象の明細を返す.
@@ -86,9 +87,9 @@ if (!class_exists('\Eccube\Entity\Order')) {
             $total = [];
 
             foreach ($this->getTaxableItems() as $Item) {
-                    $totalPrice = $Item->getTotalPrice();
-                    $taxRate = $Item->getTaxRate();
-                    $total[$taxRate] = isset($total[$taxRate])
+                $totalPrice = $Item->getTotalPrice();
+                $taxRate = $Item->getTaxRate();
+                $total[$taxRate] = isset($total[$taxRate])
                         ? $total[$taxRate] + $totalPrice
                         : $totalPrice;
             }
@@ -105,7 +106,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxableDiscountItems()
         {
-            return array_filter($this->getTaxableItems(), function(OrderItem $Item) {
+            return array_filter($this->getTaxableItems(), function (OrderItem $Item) {
                 return $Item->isDiscount();
             });
         }
@@ -129,7 +130,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxFreeDiscountItems()
         {
-            return array_filter($this->OrderItems->toArray(), function(OrderItem $Item) {
+            return array_filter($this->OrderItems->toArray(), function (OrderItem $Item) {
                 return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION);
             });
         }
@@ -1035,6 +1036,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          * Get discount.
          *
          * @deprecated 4.0.3 から値引きは課税値引きと 非課税・不課税の値引きの2種に分かれる. 課税値引きについてはgetTaxableDiscountを利用してください.
+         *
          * @return string
          */
         public function getDiscount()
@@ -1335,7 +1337,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @return null|string
+         * @return string|null
          */
         public function getCompleteMessage()
         {
@@ -1343,7 +1345,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @param null|string $complete_message
+         * @param string|null $complete_message
          *
          * @return $this
          */
@@ -1355,7 +1357,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @param null|string $complete_message
+         * @param string|null $complete_message
          *
          * @return $this
          */
@@ -1367,7 +1369,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @return null|string
+         * @return string|null
          */
         public function getCompleteMailMessage()
         {
@@ -1375,7 +1377,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @param null|string $complete_mail_message
+         * @param string|null $complete_mail_message
          *
          * @return
          */
@@ -1387,7 +1389,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
-         * @param null|string $complete_mail_message
+         * @param string|null $complete_mail_message
          *
          * @return
          */
@@ -1413,8 +1415,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Add orderItem.
          *
-         * @param \Eccube\Entity\OrderItem $OrderItem
-         *
          * @return Order
          */
         public function addOrderItem(\Eccube\Entity\OrderItem $OrderItem)
@@ -1426,8 +1426,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * Remove orderItem.
-         *
-         * @param \Eccube\Entity\OrderItem $OrderItem
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1459,8 +1457,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Add shipping.
          *
-         * @param \Eccube\Entity\Shipping $Shipping
-         *
          * @return Order
          */
         public function addShipping(\Eccube\Entity\Shipping $Shipping)
@@ -1472,8 +1468,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * Remove shipping.
-         *
-         * @param \Eccube\Entity\Shipping $Shipping
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1498,8 +1492,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Add mailHistory.
          *
-         * @param \Eccube\Entity\MailHistory $mailHistory
-         *
          * @return Order
          */
         public function addMailHistory(\Eccube\Entity\MailHistory $mailHistory)
@@ -1511,8 +1503,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * Remove mailHistory.
-         *
-         * @param \Eccube\Entity\MailHistory $mailHistory
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1533,8 +1523,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * Set customer.
-         *
-         * @param \Eccube\Entity\Customer|null $customer
          *
          * @return Order
          */
@@ -1558,8 +1546,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set country.
          *
-         * @param \Eccube\Entity\Master\Country|null $country
-         *
          * @return Order
          */
         public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -1581,8 +1567,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * Set pref.
-         *
-         * @param \Eccube\Entity\Master\Pref|null $pref
          *
          * @return Order
          */
@@ -1606,8 +1590,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set sex.
          *
-         * @param \Eccube\Entity\Master\Sex|null $sex
-         *
          * @return Order
          */
         public function setSex(\Eccube\Entity\Master\Sex $sex = null)
@@ -1629,8 +1611,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * Set job.
-         *
-         * @param \Eccube\Entity\Master\Job|null $job
          *
          * @return Order
          */
@@ -1654,8 +1634,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set payment.
          *
-         * @param \Eccube\Entity\Payment|null $payment
-         *
          * @return Order
          */
         public function setPayment(\Eccube\Entity\Payment $payment = null)
@@ -1677,8 +1655,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * Set deviceType.
-         *
-         * @param \Eccube\Entity\Master\DeviceType|null $deviceType
          *
          * @return Order
          */
@@ -1702,8 +1678,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set customerOrderStatus.
          *
-         * @param \Eccube\Entity\Master\CustomerOrderStatus|null $customerOrderStatus
-         *
          * @return Order
          */
         public function setCustomerOrderStatus(\Eccube\Entity\Master\CustomerOrderStatus $customerOrderStatus = null)
@@ -1725,8 +1699,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
 
         /**
          * Set orderStatusColor.
-         *
-         * @param \Eccube\Entity\Master\OrderStatusColor|null $orderStatusColor
          *
          * @return Order
          */
@@ -1750,7 +1722,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set orderStatus.
          *
-         * @param \Eccube\Entity\Master\OrderStatus|null|object $orderStatus
+         * @param \Eccube\Entity\Master\OrderStatus|object|null $orderStatus
          *
          * @return Order
          */
@@ -1771,9 +1743,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
             return $this->OrderStatus;
         }
 
-        /**
-         * @param ItemInterface $item
-         */
         public function addItem(ItemInterface $item)
         {
             $this->OrderItems->add($item);

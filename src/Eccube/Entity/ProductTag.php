@@ -125,8 +125,6 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Set product.
          *
-         * @param \Eccube\Entity\Product|null $product
-         *
          * @return ProductTag
          */
         public function setProduct(\Eccube\Entity\Product $product = null)
@@ -149,8 +147,6 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Set tag.
          *
-         * @param \Eccube\Entity\Tag|null $tag
-         *
          * @return ProductTag
          */
         public function setTag(\Eccube\Entity\Tag $tag = null)
@@ -172,8 +168,6 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return ProductTag
          */

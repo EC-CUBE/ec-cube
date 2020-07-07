@@ -41,8 +41,6 @@ class TagController extends AbstractController
      * @Route("/%eccube_admin_route%/product/tag", name="admin_product_tag")
      * @Template("@admin/Product/tag.twig")
      *
-     * @param Request $request
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Request $request)

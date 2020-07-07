@@ -317,8 +317,6 @@ if (!class_exists('\Eccube\Entity\Csv')) {
         /**
          * Set csvType.
          *
-         * @param \Eccube\Entity\Master\CsvType|null $csvType
-         *
          * @return Csv
          */
         public function setCsvType(\Eccube\Entity\Master\CsvType $csvType = null)
@@ -340,8 +338,6 @@ if (!class_exists('\Eccube\Entity\Csv')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return Csv
          */

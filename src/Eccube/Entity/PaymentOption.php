@@ -116,8 +116,6 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
         /**
          * Set delivery.
          *
-         * @param \Eccube\Entity\Delivery|null $delivery
-         *
          * @return PaymentOption
          */
         public function setDelivery(\Eccube\Entity\Delivery $delivery = null)
@@ -139,8 +137,6 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
 
         /**
          * Set payment.
-         *
-         * @param \Eccube\Entity\Payment|null $payment
          *
          * @return PaymentOption
          */

@@ -132,8 +132,6 @@ class InstallController extends AbstractController
      * @Route("/install/step1", name="install_step1")
      * @Template("step1.twig")
      *
-     * @param Request $request
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function step1(Request $request)
@@ -250,8 +248,6 @@ class InstallController extends AbstractController
      * @Route("/install/step3", name="install_step3")
      * @Template("step3.twig")
      *
-     * @param Request $request
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Doctrine\DBAL\DBALException
@@ -324,8 +320,6 @@ class InstallController extends AbstractController
      * @Route("/install/step4", name="install_step4")
      * @Template("step4.twig")
      *
-     * @param Request $request
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
@@ -374,8 +368,6 @@ class InstallController extends AbstractController
      *
      * @Route("/install/step5", name="install_step5")
      * @Template("step5.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
@@ -607,8 +599,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array $params
-     *
      * @return string
      */
     public function createDatabaseUrl(array $params)
@@ -679,8 +669,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array $params
-     *
      * @return string
      *
      * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
@@ -956,7 +944,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array $params
-     * @param EntityManager $em
      *
      * @return array
      */
@@ -978,7 +965,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array $params
-     * @param EntityManager $em
      */
     protected function sendAppData($params, EntityManager $em)
     {
@@ -1007,8 +993,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param EntityManager $em
-     *
      * @return string
      */
     public function getDatabaseVersion(EntityManager $em)

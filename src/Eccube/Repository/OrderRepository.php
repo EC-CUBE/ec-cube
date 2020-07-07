@@ -38,9 +38,6 @@ class OrderRepository extends AbstractRepository
 
     /**
      * OrderRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param Queries $queries
      */
     public function __construct(RegistryInterface $registry, Queries $queries)
     {
@@ -50,7 +47,6 @@ class OrderRepository extends AbstractRepository
 
     /**
      * @param int $orderId
-     * @param OrderStatus $Status
      */
     public function changeStatus($orderId, \Eccube\Entity\Master\OrderStatus $Status)
     {
@@ -307,8 +303,6 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Customer $Customer
-     *
      * @return QueryBuilder
      */
     public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer)
@@ -345,9 +339,6 @@ class OrderRepository extends AbstractRepository
 
     /**
      * 会員の購入金額, 購入回数, 初回購入日, 最終購入費を更新する
-     *
-     * @param Customer $Customer
-     * @param array $OrderStatuses
      */
     public function updateOrderSummary(Customer $Customer, array $OrderStatuses = [OrderStatus::NEW, OrderStatus::PAID, OrderStatus::DELIVERED, OrderStatus::IN_PROGRESS])
     {

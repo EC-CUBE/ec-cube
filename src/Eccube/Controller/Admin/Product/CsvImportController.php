@@ -104,16 +104,6 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * CsvImportController constructor.
      *
-     * @param DeliveryDurationRepository $deliveryDurationRepository
-     * @param SaleTypeRepository $saleTypeRepository
-     * @param TagRepository $tagRepository
-     * @param CategoryRepository $categoryRepository
-     * @param ClassCategoryRepository $classCategoryRepository
-     * @param ProductStatusRepository $productStatusRepository
-     * @param ProductRepository $productRepository
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param ValidatorInterface $validator
      * @throws \Exception
      */
     public function __construct(
@@ -867,7 +857,6 @@ class CsvImportController extends AbstractCsvImportController
      * 商品画像の削除、登録
      *
      * @param $row
-     * @param Product $Product
      * @param CsvImportService $data
      * @param $headerByKey
      */
@@ -918,7 +907,6 @@ class CsvImportController extends AbstractCsvImportController
      * 商品カテゴリの削除、登録
      *
      * @param $row
-     * @param Product $Product
      * @param CsvImportService $data
      * @param $headerByKey
      */
@@ -986,7 +974,6 @@ class CsvImportController extends AbstractCsvImportController
      * タグの登録
      *
      * @param array $row
-     * @param Product $Product
      * @param CsvImportService $data
      */
     protected function createProductTag($row, Product $Product, $data, $headerByKey)
@@ -1036,7 +1023,6 @@ class CsvImportController extends AbstractCsvImportController
      * 商品規格分類1、商品規格分類2がnullとなる商品規格情報を作成
      *
      * @param $row
-     * @param Product $Product
      * @param CsvImportService $data
      * @param $headerByKey
      * @param null $ClassCategory1
@@ -1191,8 +1177,6 @@ class CsvImportController extends AbstractCsvImportController
      * 商品規格情報を更新
      *
      * @param $row
-     * @param Product $Product
-     * @param ProductClass $ProductClass
      * @param CsvImportService $data
      *
      * @return ProductClass

@@ -18,7 +18,6 @@ use Doctrine\ORM\QueryBuilder;
 abstract class WhereCustomizer implements QueryCustomizer
 {
     /**
-     * @param QueryBuilder $builder
      * @param array $params
      * @param string $queryKey
      */

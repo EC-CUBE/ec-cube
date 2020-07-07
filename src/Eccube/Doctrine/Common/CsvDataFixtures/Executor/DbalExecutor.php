@@ -31,8 +31,6 @@ class DbalExecutor extends AbstractExecutor
 
     /**
      * DbalExecutor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {

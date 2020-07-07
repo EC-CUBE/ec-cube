@@ -17,9 +17,9 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
-use Eccube\Form\Type\RepeatedEmailType;
 use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
+use Eccube\Form\Type\RepeatedEmailType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,8 +34,6 @@ class NonMemberType extends AbstractType
 
     /**
      * NonMemberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

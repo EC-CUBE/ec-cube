@@ -80,14 +80,6 @@ class ProductController extends AbstractController
 
     /**
      * ProductController constructor.
-     *
-     * @param PurchaseFlow $cartPurchaseFlow
-     * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
-     * @param CartService $cartService
-     * @param ProductRepository $productRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param AuthenticationUtils $helper
-     * @param ProductListMaxRepository $productListMaxRepository
      */
     public function __construct(
         PurchaseFlow $cartPurchaseFlow,
@@ -265,9 +257,6 @@ class ProductController extends AbstractController
      * @Route("/products/detail/{id}", name="product_detail", methods={"GET"}, requirements={"id" = "\d+"})
      * @Template("Product/detail.twig")
      * @ParamConverter("Product", options={"repository_method" = "findWithSortedClassCategories"})
-     *
-     * @param Request $request
-     * @param Product $Product
      *
      * @return array
      */
@@ -485,7 +474,7 @@ class ProductController extends AbstractController
     /**
      * ページタイトルの設定
      *
-     * @param  null|array $searchData
+     * @param  array|null $searchData
      *
      * @return str
      */
@@ -502,8 +491,6 @@ class ProductController extends AbstractController
 
     /**
      * 閲覧可能な商品かどうかを判定
-     *
-     * @param Product $Product
      *
      * @return boolean 閲覧可能な場合はtrue
      */

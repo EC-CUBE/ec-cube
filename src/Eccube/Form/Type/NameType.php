@@ -31,8 +31,6 @@ class NameType extends AbstractType
 
     /**
      * NameType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         EccubeConfig $eccubeConfig

@@ -30,8 +30,6 @@ class OrderStatusType extends AbstractType
 
     /**
      * OrderStatusType constructor.
-     *
-     * @param OrderRepository $orderRepository
      */
     public function __construct(OrderRepository $orderRepository)
     {

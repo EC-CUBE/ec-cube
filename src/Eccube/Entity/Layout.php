@@ -361,8 +361,6 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Add blockPosition
          *
-         * @param \Eccube\Entity\BlockPosition $blockPosition
-         *
          * @return Layout
          */
         public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
@@ -374,8 +372,6 @@ if (!class_exists('\Eccube\Entity\Layout')) {
 
         /**
          * Remove blockPosition
-         *
-         * @param \Eccube\Entity\BlockPosition $blockPosition
          */
         public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
         {
@@ -395,8 +391,6 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Add pageLayoutLayout
          *
-         * @param \Eccube\Entity\PageLayout $PageLayout
-         *
          * @return Layout
          */
         public function addPageLayout(\Eccube\Entity\PageLayout $PageLayout)
@@ -408,8 +402,6 @@ if (!class_exists('\Eccube\Entity\Layout')) {
 
         /**
          * Remove pageLayoutLayout
-         *
-         * @param \Eccube\Entity\PageLayout $PageLayout
          */
         public function removePageLayout(\Eccube\Entity\PageLayout $PageLayout)
         {

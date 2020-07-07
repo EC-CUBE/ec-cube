@@ -140,7 +140,6 @@ abstract class AbstractCommandTest extends EccubeTestCase
     /**
      * mockQuestionHelper
      *
-     * @param Command $cmd
      * @param callable $mockHandler
      */
     protected function mockQuestionHelper(Command $cmd, $mockHandler)

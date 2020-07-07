@@ -312,8 +312,6 @@ if (!class_exists('\Eccube\Entity\News')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
-         *
          * @return News
          */
         public function setCreator(\Eccube\Entity\Member $creator = null)

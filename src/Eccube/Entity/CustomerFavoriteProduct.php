@@ -131,8 +131,6 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
         /**
          * Set customer.
          *
-         * @param \Eccube\Entity\Customer|null $customer
-         *
          * @return CustomerFavoriteProduct
          */
         public function setCustomer(\Eccube\Entity\Customer $customer = null)
@@ -154,8 +152,6 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
 
         /**
          * Set product.
-         *
-         * @param \Eccube\Entity\Product|null $product
          *
          * @return CustomerFavoriteProduct
          */

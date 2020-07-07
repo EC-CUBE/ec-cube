@@ -31,8 +31,6 @@ class ContactController extends AbstractController
 
     /**
      * ContactController constructor.
-     *
-     * @param MailService $mailService
      */
     public function __construct(
         MailService $mailService)

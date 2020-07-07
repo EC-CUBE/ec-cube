@@ -424,8 +424,6 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Set authority.
          *
-         * @param \Eccube\Entity\Master\Authority|null $authority
-         *
          * @return Member
          */
         public function setAuthority(\Eccube\Entity\Master\Authority $authority = null)
@@ -447,8 +445,6 @@ if (!class_exists('\Eccube\Entity\Member')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return Member
          */

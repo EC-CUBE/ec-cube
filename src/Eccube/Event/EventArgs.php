@@ -31,7 +31,6 @@ class EventArgs extends GenericEvent
     /**
      * EventArgs constructor.
      *
-     * @param array $arguments
      * @param Request $request
      */
     public function __construct(array $arguments = [], Request $request = null)
@@ -40,9 +39,6 @@ class EventArgs extends GenericEvent
         $this->request = $request;
     }
 
-    /**
-     * @param Request $request
-     */
     public function setRequest(Request $request)
     {
         $this->request = $request;
@@ -56,9 +52,6 @@ class EventArgs extends GenericEvent
         return $this->request;
     }
 
-    /**
-     * @param Response $response
-     */
     public function setResponse(Response $response)
     {
         $this->response = $response;

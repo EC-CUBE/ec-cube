@@ -33,7 +33,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     /**
      * 受注編集用フォーム作成.
      *
-     * @param Customer $Customer
      * @param Product $Product
      *
      * @return array
@@ -119,8 +118,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     }
 
     /**
-     * @param Product $Product
-     *
      * @return array
      */
     public function createOrderItemFormData(Product $Product)
@@ -144,8 +141,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
 
     /**
      * 受注再編集用フォーム作成.
-     *
-     * @param Order $Order
      *
      * @return array
      */
@@ -202,8 +197,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
 
     /**
      * 受注再編集用フォーム作成.
-     *
-     * @param Shipping $Shipping
      *
      * @return array
      */

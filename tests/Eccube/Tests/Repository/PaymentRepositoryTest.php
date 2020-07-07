@@ -16,10 +16,10 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\PaymentOption;
-use Eccube\Repository\PaymentRepository;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\PaymentOptionRepository;
+use Eccube\Repository\PaymentRepository;
+use Eccube\Tests\EccubeTestCase;
 
 class PaymentRepositoryTest extends EccubeTestCase
 {

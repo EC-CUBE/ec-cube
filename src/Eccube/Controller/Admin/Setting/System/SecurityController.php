@@ -31,8 +31,6 @@ class SecurityController extends AbstractController
 
     /**
      * SecurityController constructor.
-     *
-     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(TokenStorageInterface $tokenStorage)
     {

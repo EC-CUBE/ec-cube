@@ -16,24 +16,24 @@ namespace Eccube\Controller\Admin\Content;
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Layout;
-use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Entity\Master\ProductStatus;
-use Eccube\Repository\BlockRepository;
+use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Repository\BlockPositionRepository;
+use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
-use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment as Twig;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class LayoutController extends AbstractController
 {
@@ -80,13 +80,6 @@ class LayoutController extends AbstractController
 
     /**
      * LayoutController constructor.
-     *
-     * @param BlockRepository $blockRepository
-     * @param LayoutRepository $layoutRepository
-     * @param PageLayoutRepository $pageLayoutRepository
-     * @param pageRepository $pageRepository
-     * @param ProductRepository $productRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(BlockRepository $blockRepository, BlockPositionRepository $blockPositionRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository, PageRepository $pageRepository, ProductRepository $productRepository, DeviceTypeRepository $deviceTypeRepository)
     {
@@ -120,8 +113,6 @@ class LayoutController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete", methods={"DELETE"})
-     *
-     * @param Layout $Layout
      *
      * @return RedirectResponse
      */
@@ -237,9 +228,6 @@ class LayoutController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block", methods={"GET"})
-     *
-     * @param Request $request
-     * @param Twig $twig
      *
      * @return JsonResponse
      */

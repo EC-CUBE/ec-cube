@@ -37,7 +37,7 @@ class TemplateEvent extends Event
     private $parameters;
 
     /**
-     * @var null|Response
+     * @var Response|null
      */
     private $response;
 
@@ -56,8 +56,6 @@ class TemplateEvent extends Event
      *
      * @param string $view
      * @param string $source
-     * @param array $parameters
-     * @param Response|null $response
      */
     public function __construct($view, $source, array $parameters = [], Response $response = null)
     {
@@ -145,7 +143,7 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @return null|Response
+     * @return Response|null
      */
     public function getResponse()
     {
@@ -153,7 +151,7 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @param null|Response $response
+     * @param Response|null $response
      */
     public function setResponse($response)
     {

@@ -52,10 +52,6 @@ class PageRepository extends AbstractRepository
 
     /**
      * PageRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param EccubeConfig $eccubeConfig
-     * @param ContainerInterface $container
      */
     public function __construct(RegistryInterface $registry, EccubeConfig $eccubeConfig, ContainerInterface $container)
     {

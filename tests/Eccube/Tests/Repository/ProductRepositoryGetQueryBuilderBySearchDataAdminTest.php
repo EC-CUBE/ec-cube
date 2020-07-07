@@ -17,8 +17,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
-use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 
 /**
  * ProductRepository#getQueryBuilderBySearchDataAdmin test cases.

@@ -28,8 +28,6 @@ class ClassNameRepository extends AbstractRepository
 {
     /**
      * ClassNameRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {

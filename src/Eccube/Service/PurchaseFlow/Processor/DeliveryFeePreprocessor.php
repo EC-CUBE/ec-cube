@@ -54,11 +54,6 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
 
     /**
      * DeliveryFeePreprocessor constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EntityManagerInterface $entityManager
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param DeliveryFeeRepository $deliveryFeeRepository
      */
     public function __construct(
         BaseInfoRepository $baseInfoRepository,
@@ -73,9 +68,6 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
      * @throws \Doctrine\ORM\NoResultException
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -98,8 +90,6 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     *
      * @throws \Doctrine\ORM\NoResultException
      */
     private function saveDeliveryFeeItem(ItemHolderInterface $itemHolder)

@@ -57,13 +57,6 @@ class CustomerRepository extends AbstractRepository
 
     /**
      * CustomerRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param Queries $queries
-     * @param EntityManagerInterface $entityManager
-     * @param OrderRepository $orderRepository
-     * @param EncoderFactoryInterface $encoderFactory
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
@@ -281,7 +274,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @param $secretKey
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getProvisionalCustomerBySecretKey($secretKey)
     {
@@ -296,7 +289,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @param $email
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getRegularCustomerByEmail($email)
     {
@@ -312,7 +305,7 @@ class CustomerRepository extends AbstractRepository
      * @param $resetKey
      * @param $email
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getRegularCustomerByResetKey($resetKey, $email = null)
     {
@@ -346,8 +339,6 @@ class CustomerRepository extends AbstractRepository
     /**
      * 仮会員, 本会員の会員を返す.
      * Eccube\Entity\CustomerのUniqueEntityバリデーションで使用しています.
-     *
-     * @param array $criteria
      *
      * @return Customer[]
      */

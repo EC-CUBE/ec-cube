@@ -335,8 +335,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Add paymentOption.
          *
-         * @param \Eccube\Entity\PaymentOption $paymentOption
-         *
          * @return Delivery
          */
         public function addPaymentOption(\Eccube\Entity\PaymentOption $paymentOption)
@@ -348,8 +346,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
 
         /**
          * Remove paymentOption.
-         *
-         * @param \Eccube\Entity\PaymentOption $paymentOption
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -371,8 +367,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Add deliveryFee.
          *
-         * @param \Eccube\Entity\DeliveryFee $deliveryFee
-         *
          * @return Delivery
          */
         public function addDeliveryFee(\Eccube\Entity\DeliveryFee $deliveryFee)
@@ -384,8 +378,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
 
         /**
          * Remove deliveryFee.
-         *
-         * @param \Eccube\Entity\DeliveryFee $deliveryFee
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -407,8 +399,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Add deliveryTime.
          *
-         * @param \Eccube\Entity\DeliveryTime $deliveryTime
-         *
          * @return Delivery
          */
         public function addDeliveryTime(\Eccube\Entity\DeliveryTime $deliveryTime)
@@ -420,8 +410,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
 
         /**
          * Remove deliveryTime.
-         *
-         * @param \Eccube\Entity\DeliveryTime $deliveryTime
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -442,8 +430,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return Delivery
          */
@@ -466,8 +452,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
 
         /**
          * Set saleType.
-         *
-         * @param \Eccube\Entity\Master\SaleType|null $saleType
          *
          * @return Delivery
          */

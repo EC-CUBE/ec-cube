@@ -44,9 +44,6 @@ class SecurityType extends AbstractType
 
     /**
      * SecurityType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param ValidatorInterface $validator
      */
     public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, RequestStack $requestStack)
     {

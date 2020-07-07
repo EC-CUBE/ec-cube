@@ -27,7 +27,6 @@ class ProcessResult
 
     /**
      * @param string $type
-     * @param string|null $message
      * @param string|null $class 呼び出し元クラス
      */
     private function __construct($type, string $message = null, $class = null)

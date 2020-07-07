@@ -100,8 +100,6 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
         /**
          * Set delivery.
          *
-         * @param \Eccube\Entity\Delivery|null $delivery
-         *
          * @return DeliveryFee
          */
         public function setDelivery(\Eccube\Entity\Delivery $delivery = null)
@@ -123,8 +121,6 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
 
         /**
          * Set pref.
-         *
-         * @param \Eccube\Entity\Master\Pref|null $pref
          *
          * @return DeliveryFee
          */

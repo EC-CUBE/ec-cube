@@ -31,8 +31,6 @@ class ClassNameType extends AbstractType
      * {@inheritdoc}
      *
      * ClassNameType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

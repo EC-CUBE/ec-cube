@@ -39,8 +39,6 @@ class MailController extends AbstractController
 
     /**
      * MailController constructor.
-     *
-     * @param MailTemplateRepository $mailTemplateRepository
      */
     public function __construct(MailTemplateRepository $mailTemplateRepository)
     {

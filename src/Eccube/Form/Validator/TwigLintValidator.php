@@ -28,8 +28,6 @@ class TwigLintValidator extends ConstraintValidator
 
     /**
      * TwigLintValidator constructor.
-     *
-     * @param \Twig_Environment $twig
      */
     public function __construct(\Twig_Environment $twig)
     {
@@ -38,7 +36,6 @@ class TwigLintValidator extends ConstraintValidator
 
     /**
      * @param mixed $value
-     * @param Constraint $constraint
      */
     public function validate($value, Constraint $constraint)
     {

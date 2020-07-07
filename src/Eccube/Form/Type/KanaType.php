@@ -28,8 +28,6 @@ class KanaType extends AbstractType
 
     /**
      * KanaType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

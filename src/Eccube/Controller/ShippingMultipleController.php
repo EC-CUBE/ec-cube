@@ -26,9 +26,9 @@ use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,13 +68,6 @@ class ShippingMultipleController extends AbstractShoppingController
 
     /**
      * ShippingMultipleController constructor.
-     *
-     * @param PrefRepository $prefRepository
-     * @param OrderRepository $orderRepository
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param OrderHelper $orderHelper
-     * @param CartService $cartService
-     * @param PurchaseFlow $cartPurchaseFlow
      */
     public function __construct(
         PrefRepository $prefRepository,

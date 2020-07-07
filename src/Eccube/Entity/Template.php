@@ -204,8 +204,6 @@ if (!class_exists('\Eccube\Entity\Template')) {
         /**
          * Set deviceType.
          *
-         * @param \Eccube\Entity\Master\DeviceType|null $deviceType
-         *
          * @return Template
          */
         public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)

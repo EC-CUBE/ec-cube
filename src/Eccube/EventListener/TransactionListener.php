@@ -60,8 +60,6 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      * Kernel request listener callback.
-     *
-     * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
@@ -88,8 +86,6 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      * Kernel exception listener callback.
-     *
-     * @param GetResponseForExceptionEvent $event
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
@@ -113,8 +109,6 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      *  Kernel terminate listener callback.
-     *
-     * @param PostResponseEvent $event
      */
     public function onKernelTerminate(PostResponseEvent $event)
     {

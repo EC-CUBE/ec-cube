@@ -38,7 +38,6 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28のように、日までのフォーマットで表示します(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
-     * @param Environment $env
      * @param $date
      *
      * @return bool|string
@@ -58,7 +57,6 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28 16:13のように、分までのフォーマットで表示します(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
-     * @param Environment $env
      * @param $date
      *
      * @return bool|string
@@ -78,7 +76,6 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28 16:13:05(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
-     * @param Environment $env
      * @param $date
      *
      * @return bool|string
@@ -93,7 +90,6 @@ class IntlExtension extends AbstractExtension
     }
 
     /**
-     * @param Environment $env
      * @param $date
      *
      * @return bool|string

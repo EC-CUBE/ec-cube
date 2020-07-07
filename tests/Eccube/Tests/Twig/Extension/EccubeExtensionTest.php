@@ -15,8 +15,8 @@ namespace Eccube\Tests\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Repository\ProductRepository;
-use Eccube\Twig\Extension\EccubeExtension;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Twig\Extension\EccubeExtension;
 
 class EccubeExtensionTest extends EccubeTestCase
 {
@@ -96,4 +96,3 @@ class EccubeExtensionTest extends EccubeTestCase
         ];
     }
 }
-

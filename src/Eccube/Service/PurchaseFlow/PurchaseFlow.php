@@ -180,9 +180,6 @@ class PurchaseFlow
     /**
      * 購入フロー仮確定処理.
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
      * @throws PurchaseException
      */
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
@@ -197,9 +194,6 @@ class PurchaseFlow
     /**
      * 購入フロー確定処理.
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
      * @throws PurchaseException
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
@@ -213,9 +207,6 @@ class PurchaseFlow
 
     /**
      * 購入フロー仮確定取り消し処理.
-     *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
      */
     public function rollback(ItemHolderInterface $target, PurchaseContext $context)
     {
@@ -261,9 +252,6 @@ class PurchaseFlow
         $this->discountProcessors[] = $discountProcessor;
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateTotal(ItemHolderInterface $itemHolder)
     {
         $total = array_reduce($itemHolder->getItems()->toArray(), function ($sum, ItemInterface $item) {
@@ -295,9 +283,6 @@ class PurchaseFlow
         }
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateDeliveryFeeTotal(ItemHolderInterface $itemHolder)
     {
         $total = $itemHolder->getItems()
@@ -310,9 +295,6 @@ class PurchaseFlow
         $itemHolder->setDeliveryFeeTotal($total);
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateDiscount(ItemHolderInterface $itemHolder)
     {
         $total = $itemHolder->getItems()
@@ -326,9 +308,6 @@ class PurchaseFlow
         $itemHolder->setDiscount($total * -1);
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateCharge(ItemHolderInterface $itemHolder)
     {
         $total = $itemHolder->getItems()
@@ -341,9 +320,6 @@ class PurchaseFlow
         $itemHolder->setCharge($total);
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateTax(ItemHolderInterface $itemHolder)
     {
         $total = $itemHolder->getItems()
@@ -359,9 +335,6 @@ class PurchaseFlow
         $itemHolder->setTax($total);
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateAll(ItemHolderInterface $itemHolder)
     {
         $this->calculateDeliveryFeeTotal($itemHolder);
@@ -389,9 +362,9 @@ class PurchaseFlow
             'ItemPreprocessor' => $this->itemPreprocessors->map($callback)->toArray(),
             'ItemHolderPreprocessor' => $this->itemHolderPreprocessors->map($callback)->toArray(),
             'DiscountProcessor' => $this->discountProcessors->map($callback)->toArray(),
-            'ItemHolderPostValidator' => $this->itemHolderPostValidators->map($callback)->toArray()
+            'ItemHolderPostValidator' => $this->itemHolderPostValidators->map($callback)->toArray(),
         ];
-        $tree  = new \RecursiveTreeIterator(new \RecursiveArrayIterator($flows));
+        $tree = new \RecursiveTreeIterator(new \RecursiveArrayIterator($flows));
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_RIGHT, ' ');
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_LAST, '　');
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_HAS_NEXT, '│');
@@ -405,6 +378,7 @@ class PurchaseFlow
                 $out .= $key.PHP_EOL;
             }
         }
+
         return $out;
     }
 

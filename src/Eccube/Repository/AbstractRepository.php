@@ -13,8 +13,8 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Entity\AbstractEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Eccube\Entity\AbstractEntity;
 
 abstract class AbstractRepository extends ServiceEntityRepository
 {

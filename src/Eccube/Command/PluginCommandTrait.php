@@ -32,7 +32,6 @@ trait PluginCommandTrait
     protected $pluginRepository;
 
     /**
-     * @param PluginService $pluginService
      * @required
      */
     public function setPluginService(PluginService $pluginService)
@@ -41,7 +40,6 @@ trait PluginCommandTrait
     }
 
     /**
-     * @param PluginRepository $pluginRepository
      * @required
      */
     public function setPluginRepository(PluginRepository $pluginRepository)

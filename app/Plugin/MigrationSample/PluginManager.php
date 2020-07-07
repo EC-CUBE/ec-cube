@@ -22,11 +22,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class PluginManager extends AbstractPluginManager
 {
     const VERSION = '1.0.0';
+
     /**
      * Install the plugin.
-     *
-     * @param array $meta
-     * @param ContainerInterface $container
      */
     public function install(array $meta, ContainerInterface $container)
     {
@@ -35,9 +33,6 @@ class PluginManager extends AbstractPluginManager
 
     /**
      * Update the plugin.
-     *
-     * @param array $meta
-     * @param ContainerInterface $container
      */
     public function update(array $meta, ContainerInterface $container)
     {
@@ -48,9 +43,6 @@ class PluginManager extends AbstractPluginManager
 
     /**
      * Enable the plugin.
-     *
-     * @param array $meta
-     * @param ContainerInterface $container
      */
     public function enable(array $meta, ContainerInterface $container)
     {
@@ -59,9 +51,6 @@ class PluginManager extends AbstractPluginManager
 
     /**
      * Disable the plugin.
-     *
-     * @param array $meta
-     * @param ContainerInterface $container
      */
     public function disable(array $meta, ContainerInterface $container)
     {
@@ -72,9 +61,6 @@ class PluginManager extends AbstractPluginManager
 
     /**
      * Uninstall the plugin.
-     *
-     * @param array $meta
-     * @param ContainerInterface $container
      */
     public function uninstall(array $meta, ContainerInterface $container)
     {

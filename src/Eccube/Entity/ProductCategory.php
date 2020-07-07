@@ -116,8 +116,6 @@ if (!class_exists('\Eccube\Entity\ProductCategory')) {
         /**
          * Set product.
          *
-         * @param \Eccube\Entity\Product|null $product
-         *
          * @return ProductCategory
          */
         public function setProduct(\Eccube\Entity\Product $product = null)
@@ -139,8 +137,6 @@ if (!class_exists('\Eccube\Entity\ProductCategory')) {
 
         /**
          * Set category.
-         *
-         * @param \Eccube\Entity\Category|null $category
          *
          * @return ProductCategory
          */

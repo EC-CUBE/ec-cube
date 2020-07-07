@@ -586,6 +586,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
 
         /**
          * Set taxRuleId.
+         *
          * @deprecated 税率設定は受注作成時に決定するため廃止予定
          *
          * @param int|null $taxRuleId
@@ -601,6 +602,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
 
         /**
          * Get taxRuleId.
+         *
          * @deprecated 税率設定は受注作成時に決定するため廃止予定
          *
          * @return int|null
@@ -661,8 +663,6 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         /**
          * Set order.
          *
-         * @param \Eccube\Entity\Order|null $order
-         *
          * @return OrderItem
          */
         public function setOrder(\Eccube\Entity\Order $order = null)
@@ -694,8 +694,6 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         /**
          * Set product.
          *
-         * @param \Eccube\Entity\Product|null $product
-         *
          * @return OrderItem
          */
         public function setProduct(\Eccube\Entity\Product $product = null)
@@ -718,8 +716,6 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         /**
          * Set productClass.
          *
-         * @param \Eccube\Entity\ProductClass|null $productClass
-         *
          * @return OrderItem
          */
         public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
@@ -741,8 +737,6 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
 
         /**
          * Set shipping.
-         *
-         * @param \Eccube\Entity\Shipping|null $shipping
          *
          * @return OrderItem
          */

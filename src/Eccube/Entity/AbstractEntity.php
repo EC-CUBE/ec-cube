@@ -227,8 +227,6 @@ abstract class AbstractEntity implements \ArrayAccess
     /**
      * Set AnnotationReader.
      *
-     * @param Reader $Reader
-     *
      * @return AbstractEntity
      */
     public function setAnnotationReader(Reader $Reader)
@@ -254,8 +252,6 @@ abstract class AbstractEntity implements \ArrayAccess
 
     /**
      * Convert to Entity of Identity value to associative array.
-     *
-     * @param AbstractEntity $Entity
      *
      * @return array associative array of [[id => value], [id => value], ...]
      */

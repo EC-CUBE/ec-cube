@@ -180,8 +180,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         /**
          * Set block.
          *
-         * @param \Eccube\Entity\Block|null $block
-         *
          * @return BlockPosition
          */
         public function setBlock(\Eccube\Entity\Block $block = null)
@@ -203,8 +201,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
 
         /**
          * Set layout.
-         *
-         * @param \Eccube\Entity\Layout|null $Layout
          *
          * @return BlockPosition
          */

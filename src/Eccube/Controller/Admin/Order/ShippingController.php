@@ -89,16 +89,6 @@ class ShippingController extends AbstractController
 
     /**
      * EditController constructor.
-     *
-     * @param MailService $mailService
-     * @param OrderItemRepository $orderItemRepository
-     * @param CategoryRepository $categoryRepository
-     * @param DeliveryRepository $deliveryRepository
-     * @param TaxRuleService $taxRuleService
-     * @param ShippingRepository $shippingRepository
-     * @param SerializerInterface $serializer
-     * @param OrderStateMachine $orderStateMachine
-     * @param PurchaseFlow $orderPurchaseFlow
      */
     public function __construct(
         MailService $mailService,
@@ -184,7 +174,6 @@ class ShippingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             // 削除された項目の削除
             /** @var Shipping $OriginShipping */
             foreach ($OriginShippings as $key => $OriginShipping) {
@@ -296,8 +285,6 @@ class ShippingController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail")
      *
-     * @param Shipping $Shipping
-     *
      * @return Response
      *
      * @throws \Twig_Error
@@ -309,8 +296,6 @@ class ShippingController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail", methods={"PUT"})
-     *
-     * @param Shipping $Shipping
      *
      * @return JsonResponse
      *

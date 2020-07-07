@@ -31,9 +31,6 @@ class BlockPositionRepository extends AbstractRepository
 
     /**
      * BlockPositionRepository constructor.
-     *
-     * @param BlockRepository $blockRepository
-     * @param RegistryInterface $registry
      */
     public function __construct(BlockRepository $blockRepository, RegistryInterface $registry)
     {

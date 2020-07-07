@@ -44,9 +44,6 @@ class CategoryController extends AbstractController
 
     /**
      * CategoryController constructor.
-     *
-     * @param CsvExportService $csvExportService
-     * @param CategoryRepository $categoryRepository
      */
     public function __construct(
         CsvExportService $csvExportService,
@@ -285,8 +282,6 @@ class CategoryController extends AbstractController
      * カテゴリCSVの出力.
      *
      * @Route("/%eccube_admin_route%/product/category/export", name="admin_product_category_export")
-     *
-     * @param Request $request
      *
      * @return StreamedResponse
      */

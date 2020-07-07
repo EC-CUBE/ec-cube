@@ -61,9 +61,6 @@ class LogListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
     public function onKernelRequestEarly(GetResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
@@ -73,9 +70,6 @@ class LogListener implements EventSubscriberInterface
         $this->logger->info('INIT');
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
@@ -98,9 +92,6 @@ class LogListener implements EventSubscriberInterface
         return $request->attributes->get('_route');
     }
 
-    /**
-     * @param FilterControllerEvent $event
-     */
     public function onKernelController(FilterControllerEvent $event)
     {
         if (!$event->isMasterRequest()) {
@@ -111,9 +102,6 @@ class LogListener implements EventSubscriberInterface
         $this->logger->info('LOGIC START', [$route]);
     }
 
-    /**
-     * @param FilterResponseEvent $event
-     */
     public function onKernelResponse(FilterResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
@@ -124,18 +112,12 @@ class LogListener implements EventSubscriberInterface
         $this->logger->info('LOGIC END', [$route]);
     }
 
-    /**
-     * @param PostResponseEvent $event
-     */
     public function onKernelTerminate(PostResponseEvent $event)
     {
         $route = $this->getRoute($event->getRequest());
         $this->logger->info('PROCESS END', [$route]);
     }
 
-    /**
-     * @param GetResponseForExceptionEvent $event
-     */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $e = $event->getException();

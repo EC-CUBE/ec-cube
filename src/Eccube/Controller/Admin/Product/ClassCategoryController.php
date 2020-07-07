@@ -46,10 +46,6 @@ class ClassCategoryController extends AbstractController
 
     /**
      * ClassCategoryController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param ClassCategoryRepository $classCategoryRepository
-     * @param ClassNameRepository $classNameRepository
      */
     public function __construct(
         ProductClassRepository $productClassRepository,

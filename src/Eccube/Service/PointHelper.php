@@ -36,9 +36,6 @@ class PointHelper
 
     /**
      * PointHelper constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(BaseInfoRepository $baseInfoRepository, EntityManagerInterface $entityManager)
     {
@@ -113,7 +110,6 @@ class PointHelper
     /**
      * 明細追加処理.
      *
-     * @param ItemHolderInterface $itemHolder
      * @param integer $discount
      */
     public function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount)
@@ -139,8 +135,6 @@ class PointHelper
 
     /**
      * 既存のポイント明細を削除する.
-     *
-     * @param ItemHolderInterface $itemHolder
      */
     public function removePointDiscountItem(ItemHolderInterface $itemHolder)
     {

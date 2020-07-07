@@ -26,8 +26,6 @@ class CustomerAddressRepository extends AbstractRepository
 {
     /**
      * CustomerAddressRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {

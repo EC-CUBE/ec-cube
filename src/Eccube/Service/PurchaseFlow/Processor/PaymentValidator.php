@@ -34,8 +34,6 @@ class PaymentValidator extends ItemHolderValidator
 
     /**
      * PaymentProcessor constructor.
-     *
-     * @param DeliveryRepository $deliveryRepository
      */
     public function __construct(DeliveryRepository $deliveryRepository)
     {

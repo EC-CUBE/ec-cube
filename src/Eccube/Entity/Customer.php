@@ -900,8 +900,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Add customerFavoriteProduct.
          *
-         * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
-         *
          * @return Customer
          */
         public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct)
@@ -913,8 +911,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
 
         /**
          * Remove customerFavoriteProduct.
-         *
-         * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -936,8 +932,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Add customerAddress.
          *
-         * @param \Eccube\Entity\CustomerAddress $customerAddress
-         *
          * @return Customer
          */
         public function addCustomerAddress(\Eccube\Entity\CustomerAddress $customerAddress)
@@ -949,8 +943,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
 
         /**
          * Remove customerAddress.
-         *
-         * @param \Eccube\Entity\CustomerAddress $customerAddress
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -972,8 +964,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Add order.
          *
-         * @param \Eccube\Entity\Order $order
-         *
          * @return Customer
          */
         public function addOrder(\Eccube\Entity\Order $order)
@@ -985,8 +975,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
 
         /**
          * Remove order.
-         *
-         * @param \Eccube\Entity\Order $order
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1007,8 +995,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
 
         /**
          * Set status.
-         *
-         * @param \Eccube\Entity\Master\CustomerStatus|null $status
          *
          * @return Customer
          */
@@ -1032,8 +1018,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set sex.
          *
-         * @param \Eccube\Entity\Master\Sex|null $sex
-         *
          * @return Customer
          */
         public function setSex(\Eccube\Entity\Master\Sex $sex = null)
@@ -1055,8 +1039,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
 
         /**
          * Set job.
-         *
-         * @param \Eccube\Entity\Master\Job|null $job
          *
          * @return Customer
          */
@@ -1080,8 +1062,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set country.
          *
-         * @param \Eccube\Entity\Master\Country|null $country
-         *
          * @return Customer
          */
         public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -1103,8 +1083,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
 
         /**
          * Set pref.
-         *
-         * @param \Eccube\Entity\Master\Pref|null $pref
          *
          * @return Customer
          */

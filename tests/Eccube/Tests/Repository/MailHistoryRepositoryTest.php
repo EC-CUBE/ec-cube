@@ -13,14 +13,14 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
+use Eccube\Entity\Member;
+use Eccube\Entity\Order;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Entity\Member;
-use Eccube\Entity\Customer;
-use Eccube\Entity\Order;
 
 /**
  * MailHistoryRepository test cases.

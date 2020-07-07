@@ -17,9 +17,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Member;
 use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\OrderHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\AuthenticationEvents;
@@ -49,9 +49,6 @@ class SecurityListener implements EventSubscriberInterface
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * @param InteractiveLoginEvent $event
-     */
     public function onInteractiveLogin(InteractiveLoginEvent $event)
     {
         $user = $event
@@ -75,9 +72,6 @@ class SecurityListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param AuthenticationFailureEvent $event
-     */
     public function onAuthenticationFailure(AuthenticationFailureEvent $event)
     {
         $request = $this->requestStack->getCurrentRequest();

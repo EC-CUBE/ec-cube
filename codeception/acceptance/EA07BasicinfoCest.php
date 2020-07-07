@@ -11,6 +11,7 @@
  * file that was distributed with this source code.
  */
 
+use Codeception\Util\Fixtures;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\DeliveryEditPage;
 use Page\Admin\DeliveryManagePage;
@@ -19,7 +20,6 @@ use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
-use Codeception\Util\Fixtures;
 
 /**
  * @group admin

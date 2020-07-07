@@ -120,7 +120,6 @@ class OrderHelper
     /**
      * 購入処理中の受注を生成する.
      *
-     * @param Customer $Customer
      * @param $CartItems
      *
      * @return Order
@@ -166,8 +165,6 @@ class OrderHelper
     }
 
     /**
-     * @param Cart $Cart
-     *
      * @return bool
      */
     public function verifyCart(Cart $Cart)
@@ -216,9 +213,9 @@ class OrderHelper
     /**
      * 購入処理中の受注を取得する.
      *
-     * @param null|string $preOrderId
+     * @param string|null $preOrderId
      *
-     * @return null|Order
+     * @return Order|null
      */
     public function getPurchaseProcessingOrder($preOrderId = null)
     {
@@ -250,9 +247,6 @@ class OrderHelper
     }
 
     /**
-     * @param Cart $Cart
-     * @param Customer $Customer
-     *
      * @return Order|null
      */
     public function initializeOrder(Cart $Cart, Customer $Customer)
@@ -279,9 +273,6 @@ class OrderHelper
 
     /**
      * 会員情報の更新日時が受注の作成日時よりも新しければ, 受注の注文者情報を更新する.
-     *
-     * @param Order $Order
-     * @param Customer $Customer
      */
     public function updateCustomerInfo(Order $Order, Customer $Customer)
     {
@@ -365,8 +356,6 @@ class OrderHelper
     }
 
     /**
-     * @param Customer $Customer
-     *
      * @return Shipping
      */
     protected function createShippingFromCustomer(Customer $Customer)
@@ -387,9 +376,6 @@ class OrderHelper
         return $Shipping;
     }
 
-    /**
-     * @param Shipping $Shipping
-     */
     protected function setDefaultDelivery(Shipping $Shipping)
     {
         // 配送商品に含まれる販売種別を抽出.
@@ -411,9 +397,6 @@ class OrderHelper
         $Shipping->setShippingDeliveryName($Delivery->getName());
     }
 
-    /**
-     * @param Order $Order
-     */
     protected function setDefaultPayment(Order $Order)
     {
         $OrderItems = $Order->getOrderItems();
@@ -445,11 +428,6 @@ class OrderHelper
         }
     }
 
-    /**
-     * @param Order $Order
-     * @param Shipping $Shipping
-     * @param array $OrderItems
-     */
     protected function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
     {
         foreach ($OrderItems as $OrderItem) {

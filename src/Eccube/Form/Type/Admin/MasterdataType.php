@@ -34,8 +34,6 @@ class MasterdataType extends AbstractType
 
     /**
      * MasterdataType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {

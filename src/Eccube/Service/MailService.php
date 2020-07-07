@@ -68,14 +68,6 @@ class MailService
 
     /**
      * MailService constructor.
-     *
-     * @param \Swift_Mailer $mailer
-     * @param MailTemplateRepository $mailTemplateRepository
-     * @param MailHistoryRepository $mailHistoryRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param \Twig_Environment $twig
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         \Swift_Mailer $mailer,
@@ -633,8 +625,6 @@ class MailService
      * 発送通知メールを送信する.
      * 発送通知メールは受注ごとに送られる
      *
-     * @param Shipping $Shipping
-     *
      * @throws \Twig_Error
      */
     public function sendShippingNotifyMail(Shipping $Shipping)
@@ -688,8 +678,6 @@ class MailService
     }
 
     /**
-     * @param Shipping $Shipping
-     * @param Order $Order
      * @param string|null $templateName
      * @param boolean $is_html
      *

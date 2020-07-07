@@ -194,8 +194,6 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
         /**
          * Set productClass.
          *
-         * @param \Eccube\Entity\ProductClass|null $productClass
-         *
          * @return ProductStock
          */
         public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
@@ -217,8 +215,6 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return ProductStock
          */

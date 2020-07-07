@@ -39,9 +39,6 @@ class OrderPdfType extends AbstractType
 
     /**
      * OrderPdfType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager)
     {
@@ -51,9 +48,6 @@ class OrderPdfType extends AbstractType
 
     /**
      * Build config type form.
-     *
-     * @param FormBuilderInterface $builder
-     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

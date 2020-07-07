@@ -33,8 +33,6 @@ class PhoneNumberType extends AbstractType
 
     /**
      * PhoneNumberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

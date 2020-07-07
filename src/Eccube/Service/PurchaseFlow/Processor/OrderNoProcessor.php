@@ -35,9 +35,6 @@ class OrderNoProcessor implements ItemHolderPreprocessor
 
     /**
      * OrderNoProcessor constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param OrderRepository $orderRepository
      */
     public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository)
     {

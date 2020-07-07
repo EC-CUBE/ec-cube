@@ -20,10 +20,10 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
-use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,11 +52,6 @@ class CartController extends AbstractController
 
     /**
      * CartController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param CartService $cartService
-     * @param PurchaseFlow $cartPurchaseFlow
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         ProductClassRepository $productClassRepository,

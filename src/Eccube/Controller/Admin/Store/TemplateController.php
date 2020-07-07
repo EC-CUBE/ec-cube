@@ -44,9 +44,6 @@ class TemplateController extends AbstractController
 
     /**
      * TemplateController constructor.
-     *
-     * @param TemplateRepository $templateRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(
         TemplateRepository $templateRepository,
@@ -61,8 +58,6 @@ class TemplateController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/template", name="admin_store_template")
      * @Template("@admin/Store/template.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -106,9 +101,6 @@ class TemplateController extends AbstractController
      * テンプレート一覧からのダウンロード
      *
      * @Route("/%eccube_admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"})
-     *
-     * @param Request $request
-     * @param \Eccube\Entity\Template $Template
      *
      * @return BinaryFileResponse
      */
@@ -212,8 +204,6 @@ class TemplateController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/template/install", name="admin_store_template_install")
      * @Template("@admin/Store/template_add.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */

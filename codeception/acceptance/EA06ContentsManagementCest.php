@@ -112,7 +112,7 @@ class EA06ContentsManagementCest
 
             $FileManagePage->一覧_パスをコピー(1);
             $I->wait(5);
-            $returnText = $I->grabValueFrom("#fileList table > tbody > tr:nth-child(1) > td:nth-child(4) span.copy-file-path input.form-control");
+            $returnText = $I->grabValueFrom('#fileList table > tbody > tr:nth-child(1) > td:nth-child(4) span.copy-file-path input.form-control');
             $I->assertEquals('/html/user_data/upload.txt', $returnText);
 
             $FileManagePage->一覧_表示(1);

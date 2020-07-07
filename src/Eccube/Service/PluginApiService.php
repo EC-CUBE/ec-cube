@@ -53,11 +53,6 @@ class PluginApiService
     /**
      * PluginApiService constructor.
      *
-     * @param EccubeConfig $eccubeConfig
-     * @param RequestStack $requestStack
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PluginRepository $pluginRepository
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

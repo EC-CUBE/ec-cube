@@ -33,18 +33,12 @@ class AddPointProcessor extends ItemHolderPostValidator
 
     /**
      * AddPointProcessor constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(BaseInfoRepository $baseInfoRepository)
     {
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     */
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->supports($itemHolder)) {
@@ -58,8 +52,6 @@ class AddPointProcessor extends ItemHolderPostValidator
 
     /**
      * 付与ポイントを計算.
-     *
-     * @param ItemHolderInterface $itemHolder
      *
      * @return int
      */
@@ -83,7 +75,7 @@ class AddPointProcessor extends ItemHolderPostValidator
                 } elseif ($item->isProduct()) {
                     // ポイント = 単価 * ポイント付与率 * 数量
                     $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
-                } elseif($item->isDiscount()) {
+                } elseif ($item->isDiscount()) {
                     $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
                 }
 
@@ -101,8 +93,6 @@ class AddPointProcessor extends ItemHolderPostValidator
      * - ポイント設定が有効であること.
      * - $itemHolderがOrderエンティティであること.
      * - 会員のOrderであること.
-     *
-     * @param ItemHolderInterface $itemHolder
      *
      * @return bool
      */

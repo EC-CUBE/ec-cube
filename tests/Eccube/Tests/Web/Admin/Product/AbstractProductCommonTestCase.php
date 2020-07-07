@@ -20,10 +20,10 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
 use Eccube\Repository\DeliveryDurationRepository;
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Faker\Generator;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Faker\Generator;
 
 /**
  * Class ProductCommon
@@ -114,8 +114,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
     /**
      * Create class name
      *
-     * @param Member|null $Creator
-     *
      * @return ClassName
      */
     protected function createClassName(Member $Creator = null)
@@ -137,9 +135,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * Create class category
-     *
-     * @param Member $Creator
-     * @param ClassName $TestClassName
      *
      * @return ClassCategory
      */
@@ -165,11 +160,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * Create product class
-     *
-     * @param Member $Creator
-     * @param Product $TestProduct
-     * @param ClassCategory $TestClassCategory1
-     * @param ClassCategory $TestClassCategory2
      *
      * @return ProductClass
      */
@@ -218,9 +208,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * Create product stock
-     *
-     * @param Member $Creator
-     * @param ProductClass $TestProductClass
      *
      * @return ProductStock
      */

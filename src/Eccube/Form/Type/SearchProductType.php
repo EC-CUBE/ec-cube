@@ -32,8 +32,6 @@ class SearchProductType extends AbstractType
 
     /**
      * SearchProductType constructor.
-     *
-     * @param CategoryRepository $categoryRepository
      */
     public function __construct(CategoryRepository $categoryRepository)
     {

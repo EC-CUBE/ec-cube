@@ -28,8 +28,6 @@ class ShippingMultipleType extends AbstractType
 
     /**
      * ShippingMultipleType constructor.
-     *
-     * @param ShippingRepository $shippingRepository
      */
     public function __construct(ShippingRepository $shippingRepository)
     {

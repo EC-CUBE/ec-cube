@@ -31,18 +31,12 @@ class DeliveryFeeFreePreprocessor implements ItemHolderPreprocessor
 
     /**
      * DeliveryFeeProcessor constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(BaseInfoRepository $baseInfoRepository)
     {
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext     $context
-     */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $isDeliveryFree = false;

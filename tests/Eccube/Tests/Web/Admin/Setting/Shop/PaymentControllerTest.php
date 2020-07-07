@@ -177,7 +177,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
                 'payment_register' => $formData,
             ],
             [
-                'payment_register' => ['payment_image_file' => $image]
+                'payment_register' => ['payment_image_file' => $image],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -206,7 +206,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
                 'payment_register' => $formData,
             ],
             [
-                'payment_register' => ['payment_image_file' => $image]
+                'payment_register' => ['payment_image_file' => $image],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -249,7 +249,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
                'payment_register' => $formData,
            ],
            [
-               'payment_register' => ['payment_image_file' => $image]
+               'payment_register' => ['payment_image_file' => $image],
            ],
            [
                'HTTP_X-Requested-With' => 'XMLHttpRequest',

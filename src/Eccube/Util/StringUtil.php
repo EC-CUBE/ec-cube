@@ -314,7 +314,6 @@ class StringUtil
      * envファイルのコンテンツを更新または追加する.
      *
      * @param string $env
-     * @param array $replacement
      *
      * @return string
      */

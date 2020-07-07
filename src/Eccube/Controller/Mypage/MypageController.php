@@ -16,8 +16,8 @@ namespace Eccube\Controller\Mypage;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
-use Eccube\Entity\Product;
 use Eccube\Entity\Order;
+use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -71,12 +71,6 @@ class MypageController extends AbstractController
 
     /**
      * MypageController constructor.
-     *
-     * @param OrderRepository $orderRepository
-     * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
-     * @param CartService $cartService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PurchaseFlow $purchaseFlow
      */
     public function __construct(
         OrderRepository $orderRepository,

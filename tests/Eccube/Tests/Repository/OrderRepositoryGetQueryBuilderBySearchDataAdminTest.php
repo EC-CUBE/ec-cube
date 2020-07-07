@@ -153,7 +153,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->assertCount(1, $this->Results);
     }
 
-
     public function testMultiWithPhoneNumber()
     {
         /** @var Order[] $Orders */
@@ -174,8 +173,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
         $this->assertCount(1, $this->Results);
     }
-
-
 
     public function testOrderIdEnd()
     {
@@ -539,9 +536,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     }
 
     /**
-     * @param array $searchPaymentNos
-     * @param int $expected
-     *
      * @dataProvider dataPaymentProvider
      */
     public function testPayment(array $searchPaymentNos, int $expected)
@@ -636,9 +630,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     }
 
     /**
-     * @param array $checks
-     * @param int $expected
-     *
      * @dataProvider dataShippingMailProvider
      */
     public function testShippingMail(array $checks, int $expected)

@@ -123,8 +123,6 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
         /**
          * Set delivery.
          *
-         * @param \Eccube\Entity\Delivery|null $delivery
-         *
          * @return DeliveryTime
          */
         public function setDelivery(\Eccube\Entity\Delivery $delivery = null)

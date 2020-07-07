@@ -735,8 +735,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Add orderItem.
          *
-         * @param \Eccube\Entity\OrderItem $OrderItem
-         *
          * @return Shipping
          */
         public function addOrderItem(\Eccube\Entity\OrderItem $OrderItem)
@@ -748,8 +746,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
 
         /**
          * Remove orderItem.
-         *
-         * @param \Eccube\Entity\OrderItem $OrderItem
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -783,8 +779,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set country.
          *
-         * @param \Eccube\Entity\Master\Country|null $country
-         *
          * @return Shipping
          */
         public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -807,8 +801,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set pref.
          *
-         * @param \Eccube\Entity\Master\Pref|null $pref
-         *
          * @return Shipping
          */
         public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -830,8 +822,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
 
         /**
          * Set delivery.
-         *
-         * @param \Eccube\Entity\Delivery|null $delivery
          *
          * @return Shipping
          */
@@ -865,8 +855,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Product class of shipment item (temp)
          *
-         * @param \Eccube\Entity\ProductClass $ProductClassOfTemp
-         *
          * @return $this
          */
         public function setProductClassOfTemp(\Eccube\Entity\ProductClass $ProductClassOfTemp)
@@ -878,8 +866,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
 
         /**
          * Set order.
-         *
-         * @param Order $Order
          *
          * @return $this
          */
@@ -984,8 +970,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return Shipping
          */

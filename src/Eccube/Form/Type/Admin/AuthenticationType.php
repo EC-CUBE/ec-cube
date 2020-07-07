@@ -30,8 +30,6 @@ class AuthenticationType extends AbstractType
 
     /**
      * AuthenticationType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

@@ -106,8 +106,5 @@ interface ItemHolderInterface
      */
     public function getUsePoint();
 
-    /**
-     * @param ItemInterface $item
-     */
     public function addItem(ItemInterface $item);
 }

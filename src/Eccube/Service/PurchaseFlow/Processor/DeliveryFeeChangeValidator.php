@@ -25,9 +25,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class DeliveryFeeChangeValidator extends ItemHolderPostValidator
 {
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
      * @throws InvalidItemException
      */
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)

@@ -30,8 +30,6 @@ class PreOrderIdValidator implements PurchaseProcessor
 
     /**
      * PreOrderIdValidator constructor.
-     *
-     * @param CartService $cartService
      */
     public function __construct(CartService $cartService)
     {
@@ -40,9 +38,6 @@ class PreOrderIdValidator implements PurchaseProcessor
 
     /**
      * 受注の仮確定処理を行います。
-     *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
      *
      * @throws PurchaseException
      */
@@ -53,9 +48,6 @@ class PreOrderIdValidator implements PurchaseProcessor
 
     /**
      * 受注の確定処理を行います。
-     *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
      *
      * @throws PurchaseException
      */
@@ -69,9 +61,6 @@ class PreOrderIdValidator implements PurchaseProcessor
      *
      * 別のorder_idが渡されてきた場合に処理が継続されないようにするため、
      * orderのpre_order_idがsessionのpre_order_idと一致するか確認する
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {

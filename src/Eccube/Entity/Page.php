@@ -458,8 +458,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * Add pageLayoutLayout
          *
-         * @param \Eccube\Entity\PageLayout $PageLayout
-         *
          * @return Page
          */
         public function addPageLayout(\Eccube\Entity\PageLayout $PageLayout)
@@ -471,8 +469,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
 
         /**
          * Remove pageLayoutLayout
-         *
-         * @param \Eccube\Entity\PageLayout $PageLayout
          */
         public function removePageLayout(\Eccube\Entity\PageLayout $PageLayout)
         {
@@ -481,8 +477,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
 
         /**
          * Set MasterPage.
-         *
-         * @param \Eccube\Entity\Page|null $page
          *
          * @return Page
          */
@@ -506,7 +500,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * @param $layoutId
          *
-         * @return null|int
+         * @return int|null
          */
         public function getSortNo($layoutId)
         {

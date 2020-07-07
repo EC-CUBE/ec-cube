@@ -71,11 +71,6 @@ class DeliveryController extends AbstractController
 
     /**
      * DeliveryController constructor.
-     *
-     * @param PaymentOptionRepository $paymentOptionRepository
-     * @param DeliveryFeeRepository $deliveryFeeRepository
-     * @param PrefRepository $prefRepository
-     * @param DeliveryRepository $deliveryRepository
      */
     public function __construct(PaymentOptionRepository $paymentOptionRepository, DeliveryFeeRepository $deliveryFeeRepository, PrefRepository $prefRepository, DeliveryRepository $deliveryRepository, DeliveryTimeRepository $deliveryTimeRepository, SaleTypeRepository $saleTypeRepository)
     {

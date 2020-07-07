@@ -2571,8 +2571,6 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * @param Customer $Customer
-     * @param ProductClass $ProductClass
      * @param int $num
      *
      * @return mixed
@@ -2661,9 +2659,6 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * @param Customer $Customer
-     * @param ProductClass $ProductClass
-     *
      * @return \Symfony\Component\DomCrawler\Crawler
      */
     protected function scenarioCartDown(Customer $Customer, ProductClass $ProductClass)
@@ -2677,7 +2672,6 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * @param Product $Product
      * @param int     $display
      *
      * @return Product
@@ -2695,7 +2689,6 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * @param ProductClass $ProductClass
      * @param int          $stock
      *
      * @return ProductClass
@@ -2751,8 +2744,6 @@ class CartValidationTest extends AbstractWebTestCase
 
     /**
      * エラーに表示する商品名を取得
-     *
-     * @param ProductClass $ProductClass
      *
      * @return string
      */

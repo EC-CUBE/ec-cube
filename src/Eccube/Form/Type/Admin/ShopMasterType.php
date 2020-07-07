@@ -16,10 +16,10 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
-use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\PhoneNumberType;
-use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Type\PostalType;
+use Eccube\Form\Type\PriceType;
+use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -43,8 +43,6 @@ class ShopMasterType extends AbstractType
 
     /**
      * ShopMasterType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

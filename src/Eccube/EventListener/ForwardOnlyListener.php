@@ -27,8 +27,6 @@ class ForwardOnlyListener implements EventSubscriberInterface
 {
     /**
      * Kernel Controller listener callback.
-     *
-     * @param FilterControllerEvent $event
      */
     public function onController(FilterControllerEvent $event)
     {

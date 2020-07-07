@@ -36,9 +36,6 @@ class LogType extends AbstractType
 
     /**
      * LogType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param KernelInterface $kernel
      */
     public function __construct(EccubeConfig $eccubeConfig, KernelInterface $kernel)
     {

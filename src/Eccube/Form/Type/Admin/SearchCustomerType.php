@@ -17,8 +17,8 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Form\Type\Master\CustomerStatusType;
 use Eccube\Form\Type\Master\PrefType;
-use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\Master\SexType;
+use Eccube\Form\Type\PriceType;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -43,9 +43,6 @@ class SearchCustomerType extends AbstractType
 
     /**
      * SearchCustomerType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param CustomerStatusRepository $customerStatusRepository
      */
     public function __construct(
         CustomerStatusRepository $customerStatusRepository,

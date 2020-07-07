@@ -34,8 +34,6 @@ class AddressType extends AbstractType
      * {@inheritdoc}
      *
      * AddressType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

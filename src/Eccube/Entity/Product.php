@@ -806,8 +806,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productCategory.
          *
-         * @param \Eccube\Entity\ProductCategory $productCategory
-         *
          * @return Product
          */
         public function addProductCategory(\Eccube\Entity\ProductCategory $productCategory)
@@ -819,8 +817,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
 
         /**
          * Remove productCategory.
-         *
-         * @param \Eccube\Entity\ProductCategory $productCategory
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -842,8 +838,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productClass.
          *
-         * @param \Eccube\Entity\ProductClass $productClass
-         *
          * @return Product
          */
         public function addProductClass(\Eccube\Entity\ProductClass $productClass)
@@ -855,8 +849,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
 
         /**
          * Remove productClass.
-         *
-         * @param \Eccube\Entity\ProductClass $productClass
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -878,8 +870,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productImage.
          *
-         * @param \Eccube\Entity\ProductImage $productImage
-         *
          * @return Product
          */
         public function addProductImage(\Eccube\Entity\ProductImage $productImage)
@@ -891,8 +881,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
 
         /**
          * Remove productImage.
-         *
-         * @param \Eccube\Entity\ProductImage $productImage
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -914,8 +902,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productTag.
          *
-         * @param \Eccube\Entity\ProductTag $productTag
-         *
          * @return Product
          */
         public function addProductTag(\Eccube\Entity\ProductTag $productTag)
@@ -927,8 +913,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
 
         /**
          * Remove productTag.
-         *
-         * @param \Eccube\Entity\ProductTag $productTag
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -971,8 +955,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add customerFavoriteProduct.
          *
-         * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
-         *
          * @return Product
          */
         public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct)
@@ -984,8 +966,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
 
         /**
          * Remove customerFavoriteProduct.
-         *
-         * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1006,8 +986,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return Product
          */
@@ -1030,8 +1008,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
 
         /**
          * Set status.
-         *
-         * @param \Eccube\Entity\Master\ProductStatus|null $status
          *
          * @return Product
          */

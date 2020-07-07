@@ -23,7 +23,6 @@ interface QueryCustomizer
     /**
      * クエリをカスタマイズします。
      *
-     * @param QueryBuilder $builder
      * @param array $params
      * @param string $queryKey
      */

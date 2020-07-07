@@ -13,14 +13,14 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\TaxRule;
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Entity\BaseInfo;
-use Eccube\Repository\TaxRuleRepository;
-use Eccube\Repository\MemberRepository;
-use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\CountryRepository;
+use Eccube\Repository\Master\PrefRepository;
+use Eccube\Repository\MemberRepository;
+use Eccube\Repository\TaxRuleRepository;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * TaxRuleRepository test cases.

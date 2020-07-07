@@ -87,15 +87,6 @@ class OrderItemType extends AbstractType
     /**
      * OrderItemType constructor.
      *
-     * @param EntityManagerInterface $entityManager
-     * @param EccubeConfig $eccubeConfig
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param ProductClassRepository $productClassRepository
-     * @param OrderItemRepository $orderItemRepository
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param ValidatorInterface $validator
-     *
      * @throws \Exception
      */
     public function __construct(
@@ -188,7 +179,6 @@ class OrderItemType extends AbstractType
                     if (!isset($OrderItem['tax_type']) || StringUtil::isBlank($OrderItem['tax_type'])) {
                         $OrderItem['tax_type'] = TaxType::TAXATION;
                     }
-
                 } else {
                     if ($orderItemTypeId == OrderItemTypeMaster::DISCOUNT && $OrderItem['tax_type'] == TaxType::NON_TAXABLE) {
                         $OrderItem['tax_rate'] = '0';
@@ -305,10 +295,6 @@ class OrderItemType extends AbstractType
         return 'order_item';
     }
 
-    /**
-     * @param FormInterface $form
-     * @param ConstraintViolationListInterface $errors
-     */
     protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors)
     {
         if (empty($errors)) {

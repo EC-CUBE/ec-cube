@@ -201,8 +201,6 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
         /**
          * Set order.
          *
-         * @param \Eccube\Entity\Order|null $order
-         *
          * @return MailHistory
          */
         public function setOrder(\Eccube\Entity\Order $order = null)
@@ -224,8 +222,6 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return MailHistory
          */

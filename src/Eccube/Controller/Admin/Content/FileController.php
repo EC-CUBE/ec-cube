@@ -58,7 +58,7 @@ class FileController extends AbstractController
             ->add('file', FileType::class, [
                 'multiple' => true,
                 'attr' => [
-                    'multiple' => 'multiple'
+                    'multiple' => 'multiple',
                 ],
             ])
             ->add('create_file', TextType::class)
@@ -131,8 +131,6 @@ class FileController extends AbstractController
 
     /**
      * Create directory
-     *
-     * @param Request $request
      */
     public function create(Request $request)
     {
@@ -140,7 +138,7 @@ class FileController extends AbstractController
             ->add('file', FileType::class, [
                 'multiple' => true,
                 'attr' => [
-                    'multiple' => 'multiple'
+                    'multiple' => 'multiple',
                 ],
             ])
             ->add('create_file', TextType::class, [
@@ -209,7 +207,7 @@ class FileController extends AbstractController
         }
 
         // 削除実行時のカレントディレクトリを表示させる
-        return $this->redirectToRoute('admin_content_file', array('tree_select_file' => dirname($selectFile)));
+        return $this->redirectToRoute('admin_content_file', ['tree_select_file' => dirname($selectFile)]);
     }
 
     /**
@@ -274,6 +272,7 @@ class FileController extends AbstractController
 
         if (!$this->checkDir($nowDir, $topDir)) {
             $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
+
             return;
         }
 
@@ -284,18 +283,18 @@ class FileController extends AbstractController
             $filename = $this->convertStrToServer($file->getClientOriginalName());
             try {
                 $file->move($nowDir, $filename);
-                $successCount ++;
+                $successCount++;
             } catch (FileException $e) {
                 $this->errors[] = ['message' => trans('admin.content.file.upload_error', [
                     '%file_name%' => $filename,
-                    '%error%' => $e->getMessage()
+                    '%error%' => $e->getMessage(),
                 ])];
             }
         }
         if ($successCount > 0) {
             $this->addSuccess(trans('admin.content.file.upload_complete', [
                 '%success%' => $successCount,
-                '%count%' => $uploadCount
+                '%count%' => $uploadCount,
             ]), 'admin');
         }
     }

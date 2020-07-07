@@ -25,8 +25,8 @@ use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class PluginService
 {
@@ -102,16 +102,6 @@ class PluginService
 
     /**
      * PluginService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param PluginRepository $pluginRepository
-     * @param EntityProxyService $entityProxyService
-     * @param SchemaService $schemaService
-     * @param EccubeConfig $eccubeConfig
-     * @param ContainerInterface $container
-     * @param CacheUtil $cacheUtil
-     * @param ComposerServiceInterface $composerService
-     * @param PluginApiService $pluginApiService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -397,7 +387,6 @@ class PluginService
 
     /**
      * @param $dir
-     * @param array $config_cache
      *
      * @throws PluginException
      */
@@ -554,7 +543,6 @@ class PluginService
     }
 
     /**
-     * @param Plugin $plugin
      * @param bool $force
      *
      * @return bool
@@ -689,7 +677,6 @@ class PluginService
     /**
      * Update plugin
      *
-     * @param Plugin $plugin
      * @param string $path
      *
      * @return bool
@@ -735,7 +722,6 @@ class PluginService
     /**
      * Update plugin
      *
-     * @param Plugin $plugin
      * @param array  $meta     Config data
      *
      * @throws \Exception

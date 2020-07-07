@@ -57,12 +57,6 @@ class WithdrawController extends AbstractController
 
     /**
      * WithdrawController constructor.
-     *
-     * @param MailService $mailService
-     * @param CustomerStatusRepository $customerStatusRepository
-     * @param TokenStorageInterface $tokenStorage
-     * @param CartService $cartService
-     * @param OrderHelper $orderHelper
      */
     public function __construct(
         MailService $mailService,

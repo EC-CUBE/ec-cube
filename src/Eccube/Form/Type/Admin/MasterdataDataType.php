@@ -34,8 +34,6 @@ class MasterdataDataType extends AbstractType
 
     /**
      * MasterdataDataType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

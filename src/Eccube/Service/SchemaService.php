@@ -18,8 +18,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
 use Eccube\Util\StringUtil;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class SchemaService
 {
@@ -30,8 +30,6 @@ class SchemaService
 
     /**
      * SchemaService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {

@@ -19,7 +19,6 @@ use Eccube\Entity\ClassName;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
-use Eccube\Entity\TaxRule;
 use Eccube\Form\Type\Admin\ProductClassMatrixType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
@@ -62,9 +61,6 @@ class ProductClassController extends AbstractController
 
     /**
      * ProductClassController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param ClassCategoryRepository $classCategoryRepository
      */
     public function __construct(
         ProductRepository $productRepository,
@@ -235,9 +231,6 @@ class ProductClassController extends AbstractController
     /**
      * 規格名1/2から, 商品規格の組み合わせを生成する.
      *
-     * @param ClassName $ClassName1
-     * @param ClassName|null $ClassName2
-     *
      * @return array|ProductClass[]
      */
     protected function createProductClasses(ClassName $ClassName1, ClassName $ClassName2 = null)
@@ -307,7 +300,6 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格を登録, 更新する.
      *
-     * @param Product $Product
      * @param array|ProductClass[] $ProductClasses
      */
     protected function saveProductClasses(Product $Product, $ProductClasses = [])
@@ -399,9 +391,6 @@ class ProductClassController extends AbstractController
      * 商品規格登録フォームを生成する.
      *
      * @param array $ProductClasses
-     * @param ClassName|null $ClassName1
-     * @param ClassName|null $ClassName2
-     * @param array $options
      *
      * @return \Symfony\Component\Form\FormInterface
      */

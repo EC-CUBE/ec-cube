@@ -419,8 +419,6 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         /**
          * Add paymentOption.
          *
-         * @param \Eccube\Entity\PaymentOption $paymentOption
-         *
          * @return Payment
          */
         public function addPaymentOption(\Eccube\Entity\PaymentOption $paymentOption)
@@ -432,8 +430,6 @@ if (!class_exists('\Eccube\Entity\Payment')) {
 
         /**
          * Remove paymentOption.
-         *
-         * @param \Eccube\Entity\PaymentOption $paymentOption
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -454,8 +450,6 @@ if (!class_exists('\Eccube\Entity\Payment')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return Payment
          */

@@ -35,8 +35,6 @@ class ContactType extends AbstractType
 
     /**
      * ContactType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

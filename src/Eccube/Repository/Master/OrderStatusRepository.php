@@ -13,9 +13,9 @@
 
 namespace Eccube\Repository\Master;
 
-use Eccube\Entity\Master\OrderStatus;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\AbstractRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -29,8 +29,6 @@ class OrderStatusRepository extends AbstractRepository
 {
     /**
      * OrderStatusRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -42,7 +40,6 @@ class OrderStatusRepository extends AbstractRepository
      *
      * TODO Abstract メソッドにしたい
      *
-     * @param array $criteria
      * @param array $orderBy
      * @param integer $limit
      * @param integer $offset

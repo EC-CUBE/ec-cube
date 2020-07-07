@@ -27,9 +27,6 @@ class InitSubscriber implements EventSubscriber
         return [Events::postConnect];
     }
 
-    /**
-     * @param ConnectionEventArgs $args
-     */
     public function postConnect(ConnectionEventArgs $args)
     {
         $db = $args->getConnection();

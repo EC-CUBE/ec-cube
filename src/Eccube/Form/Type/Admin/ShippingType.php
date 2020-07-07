@@ -66,11 +66,6 @@ class ShippingType extends AbstractType
 
     /**
      * ShippingType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param DeliveryRepository $deliveryRepository
-     * @param DeliveryTimeRepository $deliveryTimeRepository
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         EccubeConfig $eccubeConfig,

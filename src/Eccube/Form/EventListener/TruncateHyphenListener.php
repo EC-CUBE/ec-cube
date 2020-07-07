@@ -29,9 +29,6 @@ class TruncateHyphenListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param FormEvent $event
-     */
     public function onPreSubmit(FormEvent $event)
     {
         $data = $event->getData();

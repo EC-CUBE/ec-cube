@@ -42,9 +42,6 @@ class CsvController extends AbstractController
 
     /**
      * CsvController constructor.
-     *
-     * @param CsvRepository $csvRepository
-     * @param CsvTypeRepository $csvTypeRepository
      */
     public function __construct(CsvRepository $csvRepository, CsvTypeRepository $csvTypeRepository)
     {

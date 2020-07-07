@@ -479,8 +479,6 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         /**
          * Set customer.
          *
-         * @param \Eccube\Entity\Customer|null $customer
-         *
          * @return CustomerAddress
          */
         public function setCustomer(\Eccube\Entity\Customer $customer = null)
@@ -503,8 +501,6 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         /**
          * Set country.
          *
-         * @param \Eccube\Entity\Master\Country|null $country
-         *
          * @return CustomerAddress
          */
         public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -526,8 +522,6 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
 
         /**
          * Set pref.
-         *
-         * @param \Eccube\Entity\Master\Pref|null $pref
          *
          * @return CustomerAddress
          */

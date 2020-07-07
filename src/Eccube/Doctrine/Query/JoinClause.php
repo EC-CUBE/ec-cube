@@ -103,8 +103,6 @@ class JoinClause
     /**
      * WHERE句を追加します。
      *
-     * @param WhereClause $whereClause
-     *
      * @return $this
      */
     public function addWhere(WhereClause $whereClause)
@@ -116,8 +114,6 @@ class JoinClause
 
     /**
      * ORDER BY句を追加します。
-     *
-     * @param OrderByClause $orderByClause
      *
      * @return $this
      */

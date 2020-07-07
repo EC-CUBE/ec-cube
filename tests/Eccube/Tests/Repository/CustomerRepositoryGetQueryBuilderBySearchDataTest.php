@@ -13,13 +13,13 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Entity\Customer;
 
 /**
  * CustomerRepository test cases.

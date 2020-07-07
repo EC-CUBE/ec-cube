@@ -28,8 +28,6 @@ class StockMultipleValidator extends ItemHolderValidator
 
     /**
      * StockProcessor constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
      */
     public function __construct(ProductClassRepository $productClassRepository)
     {
@@ -37,9 +35,6 @@ class StockMultipleValidator extends ItemHolderValidator
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)

@@ -91,7 +91,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         {
             return $this->id;
         }
-        
+
         /**
          * @param  integer  $price
          *
@@ -209,8 +209,6 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         }
 
         /**
-         * @param ProductClass $ProductClass
-         *
          * @return $this
          */
         public function setProductClass(ProductClass $ProductClass)
@@ -253,9 +251,6 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
             return $this->Cart;
         }
 
-        /**
-         * @param Cart $Cart
-         */
         public function setCart(Cart $Cart)
         {
             $this->Cart = $Cart;

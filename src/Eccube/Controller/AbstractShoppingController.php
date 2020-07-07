@@ -26,7 +26,6 @@ class AbstractShoppingController extends AbstractController
     protected $purchaseFlow;
 
     /**
-     * @param PurchaseFlow $shoppingPurchaseFlow
      * @required
      */
     public function setPurchaseFlow(PurchaseFlow $shoppingPurchaseFlow)
@@ -35,7 +34,6 @@ class AbstractShoppingController extends AbstractController
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
      * @param bool $returnResponse レスポンスを返すかどうか. falseの場合はPurchaseFlowResultを返す.
      *
      * @return PurchaseFlowResult|\Symfony\Component\HttpFoundation\RedirectResponse

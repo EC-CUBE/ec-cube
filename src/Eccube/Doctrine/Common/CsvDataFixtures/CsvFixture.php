@@ -31,8 +31,6 @@ class CsvFixture implements FixtureInterface
 
     /**
      * CsvFixture constructor.
-     *
-     * @param \SplFileObject|null $file
      */
     public function __construct(\SplFileObject $file = null)
     {

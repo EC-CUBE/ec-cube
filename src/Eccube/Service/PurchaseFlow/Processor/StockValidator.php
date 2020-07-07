@@ -14,8 +14,8 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemValidator;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 在庫制限チェック.
@@ -23,9 +23,6 @@ use Eccube\Service\PurchaseFlow\ItemValidator;
 class StockValidator extends ItemValidator
 {
     /**
-     * @param ItemInterface $item
-     * @param PurchaseContext $context
-     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     protected function validate(ItemInterface $item, PurchaseContext $context)

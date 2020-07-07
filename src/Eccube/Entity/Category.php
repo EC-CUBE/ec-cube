@@ -51,7 +51,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
         }
 
         /**
-         * @param  \Doctrine\ORM\EntityManager $em
          * @param  integer                     $sortNo
          *
          * @return \Eccube\Entity\Category
@@ -364,8 +363,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Add productCategory.
          *
-         * @param \Eccube\Entity\ProductCategory $productCategory
-         *
          * @return Category
          */
         public function addProductCategory(\Eccube\Entity\ProductCategory $productCategory)
@@ -377,8 +374,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
 
         /**
          * Remove productCategory.
-         *
-         * @param \Eccube\Entity\ProductCategory $productCategory
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -400,8 +395,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Add child.
          *
-         * @param \Eccube\Entity\Category $child
-         *
          * @return Category
          */
         public function addChild(\Eccube\Entity\Category $child)
@@ -413,8 +406,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
 
         /**
          * Remove child.
-         *
-         * @param \Eccube\Entity\Category $child
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -435,8 +426,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
 
         /**
          * Set parent.
-         *
-         * @param \Eccube\Entity\Category|null $parent
          *
          * @return Category
          */
@@ -459,8 +448,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
 
         /**
          * Set creator.
-         *
-         * @param \Eccube\Entity\Member|null $creator
          *
          * @return Category
          */

@@ -14,21 +14,21 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductTag;
 use Eccube\Entity\Tag;
 use Eccube\Entity\TaxRule;
+use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Repository\ProductRepository;
+use Eccube\Repository\ProductTagRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
-use Eccube\Repository\ProductRepository;
-use Eccube\Repository\ProductTagRepository;
-use Eccube\Entity\BaseInfo;
-use Eccube\Repository\TaxRuleRepository;
-use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Entity\Product;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -757,6 +757,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param string|null $currentRoundingTypeId 現在の RoundingType ID
      * @param string|null $expected RoundingType ID の期待値
      * @param bool $isNew 商品を新規作成の場合 true
+     *
      * @see https://github.com/EC-CUBE/ec-cube/issues/2114
      *
      * @dataProvider dataEditRoundingTypeProvider
@@ -914,7 +915,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -943,7 +944,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -986,7 +987,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',

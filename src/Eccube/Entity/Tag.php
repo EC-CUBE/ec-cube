@@ -149,8 +149,6 @@ if (!class_exists('\Eccube\Entity\Tag')) {
         /**
          * Add productTag.
          *
-         * @param \Eccube\Entity\ProductTag $productTag
-         *
          * @return Tag
          */
         public function addProductTag(\Eccube\Entity\ProductTag $productTag)
@@ -162,8 +160,6 @@ if (!class_exists('\Eccube\Entity\Tag')) {
 
         /**
          * Remove productTag.
-         *
-         * @param \Eccube\Entity\ProductTag $productTag
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */

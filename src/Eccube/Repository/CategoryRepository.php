@@ -34,9 +34,6 @@ class CategoryRepository extends AbstractRepository
 
     /**
      * CategoryRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,

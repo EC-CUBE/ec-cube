@@ -19,7 +19,6 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -44,9 +43,6 @@ class TaxProcessor implements ItemHolderPreprocessor
 
     /**
      * TaxProcessor constructor.
-     *
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param TaxRuleService $taxRuleService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -59,9 +55,6 @@ class TaxProcessor implements ItemHolderPreprocessor
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
      * @throws \Doctrine\ORM\NoResultException
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)

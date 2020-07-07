@@ -13,18 +13,18 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Entity\OrderItem;
-use Eccube\Repository\Master\OrderItemTypeRepository;
-use Eccube\Repository\Master\TaxDisplayTypeRepository;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Order;
-use Eccube\Entity\Payment;
-use Eccube\Repository\Master\TaxTypeRepository;
 use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
+use Eccube\Entity\Payment;
+use Eccube\Repository\Master\OrderItemTypeRepository;
+use Eccube\Repository\Master\TaxDisplayTypeRepository;
+use Eccube\Repository\Master\TaxTypeRepository;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class PaymentChargePreprocessor implements ItemHolderPreprocessor
 {
@@ -45,10 +45,6 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
 
     /**
      * PaymentChargePreprocessor constructor.
-     *
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param TaxDisplayTypeRepository $taxDisplayTypeRepository
-     * @param TaxTypeRepository $taxTypeRepository
      */
     public function __construct(
         OrderItemTypeRepository $orderItemTypeRepository,
@@ -62,9 +58,6 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
 
     /**
      * {@inheritdoc}
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
@@ -88,8 +81,6 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
 
     /**
      * Add charge item to item holder
-     *
-     * @param ItemHolderInterface $itemHolder
      */
     protected function addChargeItem(ItemHolderInterface $itemHolder)
     {

@@ -39,9 +39,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * EccubeExtension constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param ProductRepository $productRepository
      */
     public function __construct(EccubeConfig $eccubeConfig, ProductRepository $productRepository)
     {
@@ -236,8 +233,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Get the ClassCategories as JSON.
-     *
-     * @param Product $Product
      *
      * @return string
      */

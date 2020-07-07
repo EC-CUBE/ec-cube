@@ -91,14 +91,6 @@ class CartService
 
     /**
      * CartService constructor.
-     *
-     * @param SessionInterface $session
-     * @param EntityManagerInterface $entityManager
-     * @param ProductClassRepository $productClassRepository
-     * @param CartItemComparator $cartItemComparator
-     * @param CartItemAllocator $cartItemAllocator
-     * @param TokenStorageInterface $tokenStorage
-     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         SessionInterface $session,
@@ -424,7 +416,7 @@ class CartService
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPreOrderId()
     {

@@ -59,7 +59,6 @@ class AbstractController extends Controller
     protected $session;
 
     /**
-     * @param EccubeConfig $eccubeConfig
      * @required
      */
     public function setEccubeConfig(EccubeConfig $eccubeConfig)
@@ -68,7 +67,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @required
      */
     public function setEntityManager(EntityManagerInterface $entityManager)
@@ -77,7 +75,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param TranslatorInterface $translator
      * @required
      */
     public function setTranslator(TranslatorInterface $translator)
@@ -86,7 +83,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param SessionInterface $session
      * @required
      */
     public function setSession(SessionInterface $session)
@@ -95,7 +91,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param FormFactoryInterface $formFactory
      * @required
      */
     public function setFormFactory(FormFactoryInterface $formFactory)
@@ -104,7 +99,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
      * @required
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)

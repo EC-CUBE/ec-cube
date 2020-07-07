@@ -39,9 +39,6 @@ class EntityProxyService
 
     /**
      * EntityProxyService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param ContainerInterface $container
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -286,8 +283,6 @@ class EntityProxyService
 
     /**
      * remove block to 'if (!class_exists(<class name>)) { }'
-     *
-     * @param Tokens $entityTokens
      */
     private function removeClassExistsBlock(Tokens $entityTokens)
     {

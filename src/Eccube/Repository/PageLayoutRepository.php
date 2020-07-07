@@ -26,8 +26,6 @@ class PageLayoutRepository extends AbstractRepository
 {
     /**
      * PageLayoutRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {

@@ -35,8 +35,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * StockProcessor constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
      */
     public function __construct(ProductClassRepository $productClassRepository)
     {
@@ -44,9 +42,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -74,14 +69,14 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             $toQuantity = array_reduce($Items, function ($quantity, $Item) {
                 return $quantity += $Item->getQuantity();
             }, 0);
-            
+
             // ステータスをキャンセルに変更した場合
             if ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::CANCEL
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() != OrderStatus::CANCEL) {
                 if ($stock + $toQuantity < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
-            // ステータスをキャンセルから対応中に変更した場合
+                // ステータスをキャンセルから対応中に変更した場合
             } elseif ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::IN_PROGRESS
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() == OrderStatus::CANCEL) {
                 if ($stock - $toQuantity < 0) {
@@ -142,9 +137,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * 受注の仮確定処理を行います。
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
      * @throws PurchaseException
      */
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
@@ -177,9 +169,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * 受注の確定処理を行います。
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
      * @throws PurchaseException
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
@@ -190,9 +179,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * 仮確定した受注データの取り消し処理を行います。
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {

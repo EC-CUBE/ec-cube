@@ -18,8 +18,8 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
 use Eccube\Repository\Master\OrderStatusRepository;
-use Eccube\Repository\OrderRepository;
 use Eccube\Repository\OrderPdfRepository;
+use Eccube\Repository\OrderRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
 use Symfony\Component\DomCrawler\Crawler;
@@ -404,8 +404,6 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @param Crawler $crawler
-     *
      * @return \Symfony\Component\DomCrawler\Form
      */
     private function getForm(Crawler $crawler)

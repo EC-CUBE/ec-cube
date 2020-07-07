@@ -299,9 +299,6 @@ class OrderStateMachineTest extends EccubeTestCase
     }
 
     /**
-     * @param Order $Order
-     * @param ProductClass $ProductClass
-     *
      * @return OrderItem
      */
     private function getProductOrderItem(Order $Order, ProductClass $ProductClass)

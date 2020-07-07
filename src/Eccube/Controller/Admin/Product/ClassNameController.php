@@ -35,8 +35,6 @@ class ClassNameController extends AbstractController
 
     /**
      * ClassNameController constructor.
-     *
-     * @param ClassNameRepository $classNameRepository
      */
     public function __construct(ClassNameRepository $classNameRepository)
     {

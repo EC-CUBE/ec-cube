@@ -26,8 +26,6 @@ class DeliveryFeeRepository extends AbstractRepository
 {
     /**
      * DeliveryFeeRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {

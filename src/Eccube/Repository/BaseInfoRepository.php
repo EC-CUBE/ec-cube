@@ -26,8 +26,6 @@ class BaseInfoRepository extends AbstractRepository
 {
     /**
      * BaseInfoRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {

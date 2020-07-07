@@ -30,8 +30,6 @@ class PaymentTotalLimitValidator extends ItemHolderPostValidator
 
     /**
      * PaymentTotalLimitValidator constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -39,9 +37,6 @@ class PaymentTotalLimitValidator extends ItemHolderPostValidator
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)

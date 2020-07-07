@@ -28,8 +28,6 @@ class Application extends \Pimple
     protected $parentContainer;
 
     /**
-     * @param array $values
-     *
      * @return Application
      */
     public static function getInstance(array $values = [])
