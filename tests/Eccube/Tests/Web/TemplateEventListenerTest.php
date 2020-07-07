@@ -22,7 +22,7 @@ class TemplateEventListenerTest extends AbstractWebTestCase
     {
         $calledEvents = [];
         /** @var EventDispatcher $eventDispatcher */
-        $eventDispatcher = $this->container->get('event_dispatcher');
+        $eventDispatcher = self::$container->get('event_dispatcher');
         $listener = function ($event) use (&$calledEvents) {
             /* @var TemplateEvent $event */
             $calledEvents[] = $event->getView();
