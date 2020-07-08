@@ -71,10 +71,10 @@ USER www-data
 RUN composer install \
   --no-scripts \
   --no-autoloader \
-  --no-dev -d ${APACHE_DOCUMENT_ROOT} \
+  -d ${APACHE_DOCUMENT_ROOT} \
   ;
 
-RUN composer dumpautoload -o --apcu --no-dev
+RUN composer dumpautoload -o --apcu
 
 RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/.env ]; then \
         cp -p .env.dist .env \

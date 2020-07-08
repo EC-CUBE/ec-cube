@@ -207,6 +207,7 @@ file that was distributed with this source code.
                 });
                 saveBtn.on('click', function() {
                     returnLink.val($(this).data('return-link'));
+                    $(this).addClass('disabled');
                     form.submit();
                 });
                 target.on('click', function() {

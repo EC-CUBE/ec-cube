@@ -140,8 +140,15 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     protected function configureTwigPaths(ContainerBuilder $container, $enabled, $pluginDir)
     {
         $paths = [];
+        $projectDir = $container->getParameter('kernel.project_dir');
 
         foreach ($enabled as $code) {
+            // app/template/plugin/[plugin code]
+            $dir = $projectDir.'/app/template/plugin/'.$code;
+            if (file_exists($dir)) {
+                $paths[$dir] = $code;
+            }
+            // app/Plugin/[plugin code]/Resource/template
             $dir = $pluginDir.'/'.$code.'/Resource/template';
             if (file_exists($dir)) {
                 $paths[$dir] = $code;
