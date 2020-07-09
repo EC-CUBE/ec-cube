@@ -19,6 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\PriceType;
@@ -224,6 +226,34 @@ class SearchOrderType extends AbstractType
                 'required' => false,
             ])
         ;
+
+        // EC-CUBE 4.0.4 以前のバージョンで互換性を保つため
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+
+            // チェック対象
+            $dates = [
+                'order_date_start',
+                'payment_date_start',
+                'update_date_start',
+                'shipping_delivery_date_start',
+                'order_date_end',
+                'payment_date_end',
+                'update_date_end',
+                'shipping_delivery_date_end',
+            ];
+
+            foreach ($dates as $date) {
+                if (isset($data[$date])) {
+                    // 日時が yyyy-MM-dd で指定されて入れば末尾に 00:00 を追加
+                    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $data[$date])) {
+                        $data[$date] .= ' 00:00';
+                    }
+                }
+            }
+
+            $event->setData($data);
+        });
     }
 
     /**
