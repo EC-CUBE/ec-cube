@@ -22,7 +22,7 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -91,52 +91,48 @@ class SearchProductType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
             ])
-            ->add('create_date_start', DateType::class, [
+            ->add('create_date_start', DateTimeType::class, [
                 'label' => 'admin.common.create_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_date_start',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
-            ->add('create_date_end', DateType::class, [
+            ->add('create_date_end', DateTimeType::class, [
                 'label' => 'admin.common.create_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_date_end',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
-            ->add('update_date_start', DateType::class, [
+            ->add('update_date_start', DateTimeType::class, [
                 'label' => 'admin.common.update_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_date_start',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
-            ->add('update_date_end', DateType::class, [
+            ->add('update_date_end', DateTimeType::class, [
                 'label' => 'admin.common.update_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_date_end',

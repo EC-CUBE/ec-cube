@@ -22,7 +22,7 @@ file that was distributed with this source code.
                     {{ not loop.last ? ',&nbsp;' }}
                 {%- endfor -%}
             {%- elseif php_is_a(child.vars.data, '\DateTime') -%}
-                {{ child.vars.data|date_day }}
+                {{ child.vars.data|date_min }}
             {%- else -%}
                 {# ChoiceType -> multiple:false #}
                 {%- if child.vars.choices is defined and child.vars.choices is not empty -%}

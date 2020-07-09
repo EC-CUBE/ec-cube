@@ -43,7 +43,7 @@ file that was distributed with this source code.
                 ).done(function() {
                     $('input[id$=_date_start]').datetimepicker({
                         locale: '{{ eccube_config.locale }}',
-                        format: 'YYYY-MM-DD',
+                        format: 'YYYY-MM-DD HH:mm',
                         useCurrent: false,
                         buttons: {
                             showToday: true,
@@ -53,7 +53,7 @@ file that was distributed with this source code.
 
                     $('input[id$=_date_end]').datetimepicker({
                         locale: '{{ eccube_config.locale }}',
-                        format: 'YYYY-MM-DD',
+                        format: 'YYYY-MM-DD HH:mm',
                         useCurrent: false,
                         buttons: {
                             showToday: true,

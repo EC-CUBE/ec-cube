@@ -16,7 +16,7 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Entity\Shipping;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -115,104 +115,96 @@ class SearchOrderType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
             ])
-            ->add('order_date_start', DateType::class, [
+            ->add('order_date_start', DateTimeType::class, [
                 'label' => 'admin.order.order_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_order_date_start',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
-            ->add('order_date_end', DateType::class, [
+            ->add('order_date_end', DateTimeType::class, [
                 'label' => 'admin.order.order_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_order_date_end',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
-            ->add('payment_date_start', DateType::class, [
+            ->add('payment_date_start', DateTimeType::class, [
                 'label' => 'admin.order.payment_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_payment_date_start',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
-            ->add('payment_date_end', DateType::class, [
+            ->add('payment_date_end', DateTimeType::class, [
                 'label' => 'admin.order.payment_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_payment_date_end',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
-            ->add('update_date_start', DateType::class, [
+            ->add('update_date_start', DateTimeType::class, [
                 'label' => 'admin.common.update_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_date_start',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
-            ->add('update_date_end', DateType::class, [
+            ->add('update_date_end', DateTimeType::class, [
                 'label' => 'admin.common.update_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_date_end',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
-            ->add('shipping_delivery_date_start', DateType::class, [
+            ->add('shipping_delivery_date_start', DateTimeType::class, [
                 'label' => 'admin.order.delivery_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_shipping_delivery_date_start',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
-            ->add('shipping_delivery_date_end', DateType::class, [
+            ->add('shipping_delivery_date_end', DateTimeType::class, [
                 'label' => 'admin.order.delivery_date__end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'format' => 'yyyy-MM-dd HH:mm',
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_shipping_delivery_date_end',
