@@ -66,6 +66,8 @@ class SearchProductTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             ['update_date_end', '2020-07-09', true],
             ['update_date_end', '2020-07-09 09:00', true],
             ['update_date_end', '2020-07-09 aa', false],
+            ['id', '2020-07-09', true],
+            ['category_id', '1', true],
         ];
     }
 }

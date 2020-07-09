@@ -111,6 +111,9 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
             ['last_buy_end', '2020-07-09', true],
             ['last_buy_end', '2020-07-09 09:00', true],
             ['last_buy_end', '2020-07-09 aa', false],
+            ['birth_start', '2020-07-09', true],
+            ['birth_end', '2020-07-09', true],
+            ['phone_number', '2020-07-09', true],
         ];
     }
 }

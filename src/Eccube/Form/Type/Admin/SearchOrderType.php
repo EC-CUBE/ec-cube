@@ -18,6 +18,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -230,24 +231,15 @@ class SearchOrderType extends AbstractType
         // EC-CUBE 4.0.4 以前のバージョンで互換性を保つため
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
+            $form = $event->getForm();
 
-            // チェック対象
-            $dates = [
-                'order_date_start',
-                'payment_date_start',
-                'update_date_start',
-                'shipping_delivery_date_start',
-                'order_date_end',
-                'payment_date_end',
-                'update_date_end',
-                'shipping_delivery_date_end',
-            ];
-
-            foreach ($dates as $date) {
-                if (isset($data[$date])) {
+            /** @var $child Form */
+            foreach ($form->all() as $child) {
+                // DateTimeType でデータが送られている場合はチェック
+                if ($child->getConfig()->getType()->getInnerType() instanceof DateTimeType && isset($data[$child->getName()])) {
                     // 日時が yyyy-MM-dd で指定されて入れば末尾に 00:00 を追加
-                    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $data[$date])) {
-                        $data[$date] .= ' 00:00';
+                    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $data[$child->getName()])) {
+                        $data[$child->getName()] .= ' 00:00';
                     }
                 }
             }

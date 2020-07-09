@@ -78,6 +78,7 @@ class SearchOrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             ['shipping_delivery_date_end', '2020-07-09', true],
             ['shipping_delivery_date_end', '2020-07-09 09:00', true],
             ['shipping_delivery_date_end', '2020-07-09 aa', false],
+            ['phone_number', '2020-07-09', true],
         ];
     }
 }
