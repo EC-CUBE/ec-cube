@@ -55,14 +55,4 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
         $this->form->submit($formData);
         $this->assertFalse($this->form->isValid());
     }
-
-    public function testBuyProductCode_NotValiedData()
-    {
-        $formData = [
-            'buy_product_code' => str_repeat('A', $this->eccubeConfig['eccube_stext_len'] + 1),
-        ];
-
-        $this->form->submit($formData);
-        $this->assertFalse($this->form->isValid());
-    }
 }
