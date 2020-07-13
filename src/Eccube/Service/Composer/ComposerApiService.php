@@ -18,9 +18,11 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Service\SchemaService;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+
 
 /**
  * Class ComposerApiService
@@ -43,9 +45,17 @@ class ComposerApiService implements ComposerServiceInterface
      */
     private $baseInfoRepository;
 
-    public function __construct(EccubeConfig $eccubeConfig, BaseInfoRepository $baseInfoRepository)
+    /** @var SchemaService */
+    private $schemaService;
+
+    public function __construct(
+        EccubeConfig $eccubeConfig,
+        BaseInfoRepository $baseInfoRepository,
+        SchemaService $schemaService
+    )
     {
         $this->eccubeConfig = $eccubeConfig;
+        $this->schemaService = $schemaService;
         $this->baseInfoRepository = $baseInfoRepository;
     }
 
@@ -115,8 +125,9 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function execRemove($packageName, $output = null)
     {
-        $packageName = explode(' ', trim($packageName));
+        $this->dropTableToExtra($packageName);
 
+        $packageName = explode(' ', trim($packageName));
         return $this->runCommand([
             'command' => 'remove',
             'packages' => $packageName,
@@ -368,5 +379,27 @@ class ComposerApiService implements ComposerServiceInterface
     public function configureRepository(BaseInfo $BaseInfo)
     {
         $this->init($BaseInfo);
+    }
+
+    private function dropTableToExtra($packageNames)
+    {
+        $projectRoot = $this->eccubeConfig->get('kernel.project_dir');
+        foreach (explode(' ', trim($packageNames)) as $packageName) {
+            $pluginCode = basename($packageName);
+            $composerJsonPath = $projectRoot.'/app/Plugin/'.$pluginCode.'/composer.json';
+            if (file_exists($composerJsonPath) === false) {
+                throw new PluginException("${composerJsonPath} not found.");
+            }
+            $json = json_decode(file_get_contents($composerJsonPath), true);
+            if ($json === null) {
+                throw new PluginException("Invalid json format. [${composerJsonPath}]");
+            }
+
+            if (array_key_exists('entity-namespaces', $json['extra']) && is_array($json['extra']['entity-namespaces'])) {
+                foreach ($json['extra']['entity-namespaces'] as $namespace) {
+                    $this->schemaService->dropTable($namespace);
+                }
+            }
+        }
     }
 }
