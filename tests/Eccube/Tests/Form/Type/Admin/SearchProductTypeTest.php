@@ -33,17 +33,15 @@ class SearchProductTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
      * @dataProvider dataFormDateProvider
      *
      * @param string $formName
-     * @param string $formValue
-     * @param bool $result
      */
-    public function testDateSearch(string $formName, string $formValue, bool $result)
+    public function testDateSearch(string $formName)
     {
         $formData = [
-            $formName => $formValue,
+            $formName => '2020-07-09',
         ];
 
         $this->form->submit($formData);
-        $this->assertEquals($result, $this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
     /**
@@ -54,20 +52,42 @@ class SearchProductTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function dataFormDateProvider()
     {
         return [
-            ['create_date_start', '2020-07-09', true],
-            ['create_date_start', '2020-07-09 09:00', true],
-            ['create_date_start', '2020-07-09 aa', false],
-            ['update_date_start', '2020-07-09', true],
-            ['update_date_start', '2020-07-09 09:00', true],
-            ['update_date_start', '2020-07-09 aa', false],
-            ['create_date_end', '2020-07-09', true],
-            ['create_date_end', '2020-07-09 09:00', true],
-            ['create_date_end', '2020-07-09 aa', false],
-            ['update_date_end', '2020-07-09', true],
-            ['update_date_end', '2020-07-09 09:00', true],
-            ['update_date_end', '2020-07-09 aa', false],
-            ['id', '2020-07-09', true],
-            ['category_id', '1', true],
+            ['create_date_start'],
+            ['update_date_start'],
+            ['create_date_end'],
+            ['update_date_end'],
+        ];
+    }
+
+    /**
+     * EC-CUBE 4.0.5 以降で yyyy-MM-dd HH:mm のフォーマットでの検索機能を追加
+     *
+     * @dataProvider dataFormDateTimeProvider
+     *
+     * @param string $formName
+     */
+    public function testDateTimeSearch(string $formName)
+    {
+        $formData = [
+            $formName => '2020-07-09 09:00',
+        ];
+
+        $this->form->submit($formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * Data provider datetime form test.
+     *
+     * @return array
+     */
+    public function dataFormDateTimeProvider()
+    {
+        return [
+            ['create_datetime_start'],
+            ['update_datetime_start'],
+            ['create_datetime_end'],
+            ['update_datetime_end'],
         ];
     }
 }

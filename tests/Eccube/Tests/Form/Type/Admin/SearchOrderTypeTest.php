@@ -33,17 +33,15 @@ class SearchOrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
      * @dataProvider dataFormDateProvider
      *
      * @param string $formName
-     * @param string $formValue
-     * @param bool $result
      */
-    public function testDateSearch(string $formName, string $formValue, bool $result)
+    public function testDateSearch(string $formName)
     {
         $formData = [
-            $formName => $formValue,
+            $formName => '2020-07-09',
         ];
 
         $this->form->submit($formData);
-        $this->assertEquals($result, $this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
     /**
@@ -54,31 +52,50 @@ class SearchOrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function dataFormDateProvider()
     {
         return [
-            ['order_date_start', '2020-07-09', true],
-            ['order_date_start', '2020-07-09 09:00', true],
-            ['order_date_start', '2020-07-09 aa', false],
-            ['payment_date_start', '2020-07-09', true],
-            ['payment_date_start', '2020-07-09 09:00', true],
-            ['payment_date_start', '2020-07-09 aa', false],
-            ['update_date_start', '2020-07-09', true],
-            ['update_date_start', '2020-07-09 09:00', true],
-            ['update_date_start', '2020-07-09 aa', false],
-            ['shipping_delivery_date_start', '2020-07-09', true],
-            ['shipping_delivery_date_start', '2020-07-09 09:00', true],
-            ['shipping_delivery_date_start', '2020-07-09 aa', false],
-            ['order_date_end', '2020-07-09', true],
-            ['order_date_end', '2020-07-09 09:00', true],
-            ['order_date_end', '2020-07-09 aa', false],
-            ['payment_date_end', '2020-07-09', true],
-            ['payment_date_end', '2020-07-09 09:00', true],
-            ['payment_date_end', '2020-07-09 aa', false],
-            ['update_date_end', '2020-07-09', true],
-            ['update_date_end', '2020-07-09 09:00', true],
-            ['update_date_end', '2020-07-09 aa', false],
-            ['shipping_delivery_date_end', '2020-07-09', true],
-            ['shipping_delivery_date_end', '2020-07-09 09:00', true],
-            ['shipping_delivery_date_end', '2020-07-09 aa', false],
-            ['phone_number', '2020-07-09', true],
+            ['order_date_start'],
+            ['payment_date_start'],
+            ['update_date_start'],
+            ['shipping_delivery_date_start'],
+            ['order_date_end'],
+            ['payment_date_end'],
+            ['update_date_end'],
+            ['shipping_delivery_date_end'],
+        ];
+    }
+
+    /**
+     * EC-CUBE 4.0.5 以降で yyyy-MM-dd HH:mm のフォーマットでの検索機能を追加
+     *
+     * @dataProvider dataFormDateTimeProvider
+     *
+     * @param string $formName
+     */
+    public function testDateTimeSearch(string $formName)
+    {
+        $formData = [
+            $formName => '2020-07-09 09:00',
+        ];
+
+        $this->form->submit($formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * Data provider datetime form test.
+     *
+     * @return array
+     */
+    public function dataFormDateTimeProvider()
+    {
+        return [
+            ['order_datetime_start'],
+            ['payment_datetime_start'],
+            ['update_datetime_start'],
+            ['shipping_delivery_datetime_start'],
+            ['order_datetime_end'],
+            ['payment_datetime_end'],
+            ['update_datetime_end'],
+            ['shipping_delivery_datetime_end'],
         ];
     }
 }

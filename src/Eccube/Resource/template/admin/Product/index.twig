@@ -238,14 +238,14 @@ file that was distributed with this source code.
                             <div class="form-row align-items-center">
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
-                                    {{ form_widget(searchForm.create_date_start) }}
-                                    {{ form_errors(searchForm.create_date_start) }}
+                                    {{ form_widget(searchForm.create_datetime_start) }}
+                                    {{ form_errors(searchForm.create_datetime_start) }}
                                 </div>
                                 <div class="col-auto text-center"><span>{{ 'admin.common.separator__range'|trans }}</span>
                                 </div>
                                 <div class="col">
-                                    {{ form_widget(searchForm.create_date_end) }}
-                                    {{ form_errors(searchForm.create_date_end) }}
+                                    {{ form_widget(searchForm.create_datetime_end) }}
+                                    {{ form_errors(searchForm.create_datetime_end) }}
                                 </div>
                             </div>
                         </div>
@@ -254,13 +254,13 @@ file that was distributed with this source code.
                             <div class="form-row align-items-center">
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
-                                    {{ form_widget(searchForm.update_date_start) }}
-                                    {{ form_errors(searchForm.update_date_start) }}
+                                    {{ form_widget(searchForm.update_datetime_start) }}
+                                    {{ form_errors(searchForm.update_datetime_start) }}
                                 </div>
                                 <div class="col-auto"><span>{{ 'admin.common.separator__range'|trans }}</span></div>
                                 <div class="col">
-                                    {{ form_widget(searchForm.update_date_end) }}
-                                    {{ form_errors(searchForm.update_date_end) }}
+                                    {{ form_widget(searchForm.update_datetime_end) }}
+                                    {{ form_errors(searchForm.update_datetime_end) }}
                                 </div>
                             </div>
                         </div>
