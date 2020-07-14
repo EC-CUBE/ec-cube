@@ -24,7 +24,7 @@ file that was distributed with this source code.
             {%- elseif php_is_a(child.vars.data, '\DateTime') -%}
                 {# DateTimeType の時は分まで表示 #}
                 {% if 'datetime' in child.vars.id %}
-                    {{ child.vars.data|date_min }}
+                    {{ child.vars.data|date_sec }}
                 {% else %}
                     {{ child.vars.data|date_day }}
                 {% endif %}

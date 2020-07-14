@@ -111,7 +111,7 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
     public function testDateTimeSearch(string $formName)
     {
         $formData = [
-            $formName => '2020-07-09 09:00',
+            $formName => '2020-07-09 09:00:00',
         ];
 
         $this->form->submit($formData);
