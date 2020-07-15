@@ -197,6 +197,18 @@
     "nikic/php-parser": {
         "version": "v4.0.3"
     },
+    "nyholm/psr7": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "7c0a9352a57376f04f5444e74565102c3a23d0c7"
+        },
+        "files": [
+            "app/config/eccube/packages/nyholm_psr7.yaml"
+        ]
+    },
     "ocramius/package-versions": {
         "version": "1.2.0"
     },
@@ -220,6 +232,9 @@
     },
     "php-cs-fixer/diff": {
         "version": "v1.2.0"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
