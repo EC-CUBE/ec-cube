@@ -1,13 +1,34 @@
+parameters:
+    env(ECCUBE_OAUTH2_AUTHORIZATION_SERVER_PRIVATE_KEY): '%kernel.project_dir%/var/oauth/private.key'
+    env(ECCUBE_OAUTH2_RESOURCE_SERVER_PUBLIC_KEY): '%kernel.project_dir%/var/oauth/public.key'
+    env(ECCUBE_OAUTH2_ENCRYPTION_KEY): '<change.me>'
+
 trikoder_oauth2:
 
     authorization_server:
-        private_key: /var/oauth/private.key                     # Change this
-        private_key_passphrase: null                            # Passphrase of the private key, if any
+        private_key: '%env(ECCUBE_OAUTH2_AUTHORIZATION_SERVER_PRIVATE_KEY)%'
+        private_key_passphrase: null
+        encryption_key: '%env(ECCUBE_OAUTH2_ENCRYPTION_KEY)%'
 
-        encryption_key: '%env(string:OAUTH2_ENCRYPTION_KEY)%'   # (Optional) Change this
+      # Whether to enable the client credentials grant
+        enable_client_credentials_grant: false
+
+      # Whether to enable the password grant
+        enable_password_grant: false
+
+      # Whether to enable the refresh token grant
+        enable_refresh_token_grant: true
+
+      # Whether to enable the authorization code grant
+        enable_auth_code_grant: true
+
+      # Whether to enable the implicit grant
+        enable_implicit_grant: false
 
     resource_server:
-        public_key: /var/oauth/public.key                       # Change this
+        public_key: '%env(ECCUBE_OAUTH2_RESOURCE_SERVER_PUBLIC_KEY)%'
+
+    scopes: ['read', 'write']
 
     persistence:
         doctrine: null
