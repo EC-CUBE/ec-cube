@@ -41,6 +41,9 @@
             "ref": "56eaa387b5e48ebcc7c95a893b47dfa1ad51449c"
         }
     },
+    "defuse/php-encryption": {
+        "version": "v2.2.1"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -167,6 +170,15 @@
     "kylekatarnls/update-helper": {
         "version": "1.2.0"
     },
+    "lcobucci/jwt": {
+        "version": "3.3.2"
+    },
+    "league/event": {
+        "version": "2.2.0"
+    },
+    "league/oauth2-server": {
+        "version": "7.4.0"
+    },
     "mikey179/vfsstream": {
         "version": "v1.6.5"
     },
@@ -201,7 +213,7 @@
         "version": "1.0.1"
     },
     "php": {
-        "version": "7.1.3"
+        "version": "7.2.0"
     },
     "php-coveralls/php-coveralls": {
         "version": "v2.0.0"
@@ -256,6 +268,9 @@
     },
     "psr/container": {
         "version": "1.0.0"
+    },
+    "psr/http-factory": {
+        "version": "1.0.1"
     },
     "psr/http-message": {
         "version": "1.0.1"
@@ -512,6 +527,9 @@
     "symfony/proxy-manager-bridge": {
         "version": "v3.4.4"
     },
+    "symfony/psr-http-message-bridge": {
+        "version": "v1.2.0"
+    },
     "symfony/routing": {
         "version": "3.3",
         "recipe": {
@@ -616,6 +634,19 @@
     },
     "theseer/tokenizer": {
         "version": "1.1.0"
+    },
+    "trikoder/oauth2-bundle": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "f9437559d3494fa0189811ff84ab97e51cb58772"
+        },
+        "files": [
+            "app/config/eccube/packages/trikoder_oauth2.yaml",
+            "app/config/eccube/routes/trikoder_oauth2.yaml"
+        ]
     },
     "twig/extensions": {
         "version": "1.0",
