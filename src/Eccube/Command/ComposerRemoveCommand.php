@@ -15,9 +15,11 @@ namespace Eccube\Command;
 
 use Eccube\Service\Composer\ComposerApiService;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ComposerRemoveCommand extends Command
 {
@@ -42,5 +44,17 @@ class ComposerRemoveCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->composerService->execRemove($input->getArgument('package'), $output);
+
+        $io = new SymfonyStyle($input, $output);
+        try {
+            /* @var Command $command */
+            $command = $this->getApplication()->get('cache:clear');
+            $command->run(new ArrayInput([
+                'command' => 'cache:clear',
+                '--no-warmup' => true,
+            ]), $io);
+        } catch (\Exception $e) {
+            $io->error($e->getMessage());
+        }
     }
 }

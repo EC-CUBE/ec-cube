@@ -18,11 +18,11 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Service\PluginContext;
 use Eccube\Service\SchemaService;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-
 
 /**
  * Class ComposerApiService
@@ -48,15 +48,21 @@ class ComposerApiService implements ComposerServiceInterface
     /** @var SchemaService */
     private $schemaService;
 
+    /**
+     * @var PluginContext
+     */
+    private $pluginContext;
+
     public function __construct(
         EccubeConfig $eccubeConfig,
         BaseInfoRepository $baseInfoRepository,
-        SchemaService $schemaService
-    )
-    {
+        SchemaService $schemaService,
+        PluginContext $pluginContext
+    ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->schemaService = $schemaService;
         $this->baseInfoRepository = $baseInfoRepository;
+        $this->pluginContext = $pluginContext;
     }
 
     /**
@@ -87,7 +93,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @return string
      *
@@ -115,7 +121,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run remove command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @return string
      *
@@ -128,6 +134,7 @@ class ComposerApiService implements ComposerServiceInterface
         $this->dropTableToExtra($packageName);
 
         $packageName = explode(' ', trim($packageName));
+
         return $this->runCommand([
             'command' => 'remove',
             'packages' => $packageName,
@@ -142,7 +149,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run update command
      *
      * @param boolean $dryRun
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -163,7 +170,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run install command
      *
      * @param boolean $dryRun
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -274,7 +281,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run composer command
      *
      * @param array $commands
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      * @param bool $init
      *
      * @return string
@@ -370,8 +377,6 @@ class ComposerApiService implements ComposerServiceInterface
     }
 
     /**
-     * @param BaseInfo $BaseInfo
-     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -383,22 +388,13 @@ class ComposerApiService implements ComposerServiceInterface
 
     private function dropTableToExtra($packageNames)
     {
-        $projectRoot = $this->eccubeConfig->get('kernel.project_dir');
         foreach (explode(' ', trim($packageNames)) as $packageName) {
             $pluginCode = basename($packageName);
-            $composerJsonPath = $projectRoot.'/app/Plugin/'.$pluginCode.'/composer.json';
-            if (file_exists($composerJsonPath) === false) {
-                throw new PluginException("${composerJsonPath} not found.");
-            }
-            $json = json_decode(file_get_contents($composerJsonPath), true);
-            if ($json === null) {
-                throw new PluginException("Invalid json format. [${composerJsonPath}]");
-            }
+            $this->pluginContext->setCode($pluginCode);
+            $this->pluginContext->setUninstall();
 
-            if (array_key_exists('entity-namespaces', $json['extra']) && is_array($json['extra']['entity-namespaces'])) {
-                foreach ($json['extra']['entity-namespaces'] as $namespace) {
-                    $this->schemaService->dropTable($namespace);
-                }
+            foreach ($this->pluginContext->getExtraEntityNamespaces() as $namespace) {
+                $this->schemaService->dropTable($namespace);
             }
         }
     }
