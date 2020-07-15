@@ -1,2 +1,8 @@
-oauth2:
-    resource: '@TrikoderOAuth2Bundle/Resources/config/routes.xml'
+oauth2_authorize:
+  path: /%eccube_admin_route%/authorize
+  defaults: { _controller: Trikoder\Bundle\OAuth2Bundle\Controller\AuthorizationController::indexAction }
+
+oauth2_token:
+  path: /token
+  defaults: { _controller: Trikoder\Bundle\OAuth2Bundle\Controller\TokenController::indexAction }
+  methods: [POST]
