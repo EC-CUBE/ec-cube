@@ -10621,13 +10621,12 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1.3",
+        "php": "^7.2",
         "ext-intl": "*",
         "ext-mbstring": "*"
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "7.1.3"
-    },
-    "plugin-api-version": "1.1.0"
+        "php": "7.2.0"
+    }
 }
