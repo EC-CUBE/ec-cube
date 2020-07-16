@@ -84,6 +84,12 @@ class PluginContext
     public function getExtraEntityNamespaces(): array
     {
         $json = $this->getComposerJson();
-        return isset($json['extra']) ? $json['extra']['entity-namespaces'] : [];
+        if (isset($json['extra'])) {
+            if (array_key_exists('entity-namespaces', $json['extra'])) {
+                return $json['extra']['entity-namespaces'];
+            }
+        }
+
+        return [];
     }
 }
