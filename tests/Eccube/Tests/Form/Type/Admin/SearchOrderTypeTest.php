@@ -64,7 +64,7 @@ class SearchOrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     }
 
     /**
-     * EC-CUBE 4.0.5 以降で yyyy-MM-dd HH:mm のフォーマットでの検索機能を追加
+     * EC-CUBE 4.0.5 以降で yyyy-MM-dd HH:mm:ss のフォーマットでの検索機能を追加
      *
      * @dataProvider dataFormDateTimeProvider
      *
