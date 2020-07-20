@@ -445,6 +445,18 @@ class EA10PluginCest
             ->削除();
     }
 
+    public function test_bundle_install_update_enable_disable_remove_store(\AcceptanceTester $I)
+    {
+        Bundle_Store::start($I)
+            ->インストール()
+            ->有効化()
+            ->無効化()
+            ->アップデート()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
     private function publishPlugin($fileName)
     {
         copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);
