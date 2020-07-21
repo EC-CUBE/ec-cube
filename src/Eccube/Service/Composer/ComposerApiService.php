@@ -95,7 +95,6 @@ class ComposerApiService implements ComposerServiceInterface
             '--no-interaction' => true,
             '--profile' => true,
             '--prefer-dist' => true,
-            '--ignore-platform-reqs' => true,
             '--update-with-dependencies' => true,
             '--no-scripts' => true,
         ], $output);
@@ -343,6 +342,7 @@ class ComposerApiService implements ComposerServiceInterface
                 ],
             ],
         ]);
+        $this->execConfig('platform.php', [PHP_VERSION]);
         $this->execConfig('repositories.eccube', [$json]);
         if (strpos($url, 'http://') === 0) {
             $this->execConfig('secure-http', ['false']);
