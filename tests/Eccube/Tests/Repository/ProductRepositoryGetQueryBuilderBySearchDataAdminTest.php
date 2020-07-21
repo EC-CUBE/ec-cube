@@ -228,56 +228,87 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $this->verify();
     }
 
-    public function testCreateDateStart()
+    /**
+     * @dataProvider dataFormDateProvider
+     *
+     * @param string $formName
+     * @param string $time
+     * @param int $expected
+     */
+    public function testDate(string $formName, string $time, int $expected)
     {
         $this->searchData = [
-            'create_date_start' => new \DateTime('- 1 days'),
+            $formName => new \DateTime($time),
         ];
 
         $this->scenario();
 
-        $this->expected = 3;
+        $this->expected = $expected;
         $this->actual = count($this->Results);
         $this->verify();
     }
 
-    public function testCreateDateEnd()
+    /**
+     * Data provider date form test.
+     *
+     * time:
+     * - today: 今日の00:00:00
+     * - tomorrow: 明日の00:00:00
+     * - yesterday: 昨日の00:00:00
+     *
+     * @return array
+     */
+    public function dataFormDateProvider()
+    {
+        return [
+            ['create_date_start', 'today', 3],
+            ['create_date_start', 'tomorrow', 0],
+            ['update_date_start', 'today', 3],
+            ['update_date_start', 'tomorrow', 0],
+            ['create_date_end', 'today', 3],
+            ['create_date_end', 'yesterday', 0],
+            ['update_date_end', 'today', 3],
+            ['update_date_end', 'yesterday', 0],
+        ];
+    }
+
+    /**
+     * @dataProvider dataFormDateTimeProvider
+     *
+     * @param string $formName
+     * @param string $time
+     * @param int $expected
+     */
+    public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->searchData = [
-            'create_date_end' => new \DateTime('+ 1 days'),
+            $formName => new \DateTime($time),
         ];
 
         $this->scenario();
 
-        $this->expected = 3;
+        $this->expected = $expected;
         $this->actual = count($this->Results);
         $this->verify();
     }
 
-    public function testUpdateDateStart()
+    /**
+     * Data provider datetime form test.
+     *
+     * @return array
+     */
+    public function dataFormDateTimeProvider()
     {
-        $this->searchData = [
-            'update_date_start' => new \DateTime('- 1 days'),
+        return [
+            ['create_datetime_start', '- 1 hour', 3],
+            ['create_datetime_start', '+ 1 hour', 0],
+            ['update_datetime_start', '- 1 hour', 3],
+            ['update_datetime_start', '+ 1 hour', 0],
+            ['create_datetime_end', '+ 1 hour', 3],
+            ['create_datetime_end', '- 1 hour', 0],
+            ['update_datetime_end', '+ 1 hour', 3],
+            ['update_datetime_end', '- 1 hour', 0],
         ];
-
-        $this->scenario();
-
-        $this->expected = 3;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testUpdateDateEnd()
-    {
-        $this->searchData = [
-            'update_date_end' => new \DateTime('+ 1 days'),
-        ];
-
-        $this->scenario();
-
-        $this->expected = 3;
-        $this->actual = count($this->Results);
-        $this->verify();
     }
 
     public function testCategory()

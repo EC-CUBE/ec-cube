@@ -1,22 +1,13 @@
 <?php
 
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
- *
- * http://www.ec-cube.co.jp/
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Eccube\Tests\Form\Type\Admin;
 
-use Eccube\Form\Type\Admin\SearchCustomerType;
+
+use Eccube\Form\Type\Admin\SearchOrderType;
 use Symfony\Component\Form\FormInterface;
 
-class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class SearchOrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /**
      * @var FormInterface
@@ -32,28 +23,8 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(SearchCustomerType::class, null, ['csrf_protection' => false])
+            ->createBuilder(SearchOrderType::class, null, ['csrf_protection' => false])
             ->getForm();
-    }
-
-    public function testPhoneNumber_NotValidData()
-    {
-        $formData = [
-            'phone_number' => str_repeat('A', 55),
-        ];
-
-        $this->form->submit($formData);
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testBuyProductName_NotValiedData()
-    {
-        $formData = [
-            'buy_product_name' => str_repeat('A', $this->eccubeConfig['eccube_stext_len'] + 1),
-        ];
-
-        $this->form->submit($formData);
-        $this->assertFalse($this->form->isValid());
     }
 
     /**
@@ -81,13 +52,14 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
     public function dataFormDateProvider()
     {
         return [
-            ['create_date_start'],
+            ['order_date_start'],
+            ['payment_date_start'],
             ['update_date_start'],
-            ['last_buy_start'],
-            ['create_date_end'],
+            ['shipping_delivery_date_start'],
+            ['order_date_end'],
+            ['payment_date_end'],
             ['update_date_end'],
-            ['last_buy_end'],
-            ['birth_start'],
+            ['shipping_delivery_date_end'],
         ];
     }
 
@@ -116,12 +88,14 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
     public function dataFormDateTimeProvider()
     {
         return [
-            ['create_datetime_start'],
+            ['order_datetime_start'],
+            ['payment_datetime_start'],
             ['update_datetime_start'],
-            ['last_buy_datetime_start'],
-            ['create_datetime_end'],
+            ['shipping_delivery_datetime_start'],
+            ['order_datetime_end'],
+            ['payment_datetime_end'],
             ['update_datetime_end'],
-            ['last_buy_datetime_end'],
+            ['shipping_delivery_datetime_end'],
         ];
     }
 }
