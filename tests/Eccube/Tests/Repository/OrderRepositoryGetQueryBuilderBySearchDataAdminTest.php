@@ -364,120 +364,107 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testOrderDateStart()
+    /**
+     * @dataProvider dataFormDateProvider
+     *
+     * @param string $formName
+     * @param string $time
+     * @param int $expected
+     * @param int $OrderStatusId
+     */
+    public function testDate(string $formName, string $time, int $expected, int $OrderStatusId = null)
     {
+        if (!is_null($OrderStatusId)) {
+            $Status = $this->orderStatusRepo->find($OrderStatusId);
+            $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
+        }
+
         $this->searchData = [
-            'order_date_start' => new \DateTime('- 1 days'),
+            $formName => new \DateTime($time),
         ];
 
         $this->scenario();
 
-        $this->expected = 2;
+        $this->expected = $expected;
         $this->actual = count($this->Results);
         $this->verify();
     }
 
-    public function testOrderDateEnd()
+    /**
+     * Data provider date form test.
+     *
+     * time:
+     * - today: 今日の00:00:00
+     * - tomorrow: 明日の00:00:00
+     * - yesterday: 昨日の00:00:00
+     *
+     * @return array
+     */
+    public function dataFormDateProvider()
     {
+        return [
+            ['order_date_start', 'today', 2],
+            ['order_date_start', 'tomorrow', 0],
+            ['payment_date_start', 'today', 1, OrderStatus::PAID],
+            ['payment_date_start', 'tomorrow', 0, OrderStatus::PAID],
+            ['update_date_start', 'today', 2],
+            ['update_date_start', 'tomorrow', 0],
+            ['order_date_end', 'today', 2],
+            ['order_date_end', 'yesterday', 0],
+            ['payment_date_end', 'today', 1, OrderStatus::PAID],
+            ['payment_date_end', 'yesterday', 0, OrderStatus::PAID],
+            ['update_date_end', 'today', 2],
+            ['update_date_end', 'yesterday', 0],
+        ];
+    }
+
+    /**
+     * @dataProvider dataFormDateTimeProvider
+     *
+     * @param string $formName
+     * @param string $time
+     * @param int $expected
+     * @param int|null $OrderStatusId
+     */
+    public function testDateTime(string $formName, string $time, int $expected, int $OrderStatusId = null)
+    {
+        if (!is_null($OrderStatusId)) {
+            $Status = $this->orderStatusRepo->find($OrderStatusId);
+            $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
+        }
+
         $this->searchData = [
-            'order_date_end' => new \DateTime('+ 1 days'),
+            $formName => new \DateTime($time),
         ];
 
         $this->scenario();
 
-        $this->expected = 2;
+        $this->expected = $expected;
         $this->actual = count($this->Results);
         $this->verify();
     }
 
-    public function testUpdateDateStart()
+    /**
+     * Data provider datetime form test.
+     *
+     * @return array
+     */
+    public function dataFormDateTimeProvider()
     {
-        $this->searchData = [
-            'update_date_start' => new \DateTime('- 1 days'),
+        return [
+            ['order_datetime_start', '- 1 hour', 2],
+            ['order_datetime_start', '+ 1 hour', 0],
+            ['payment_datetime_start', '- 1 hour', 1, OrderStatus::PAID],
+            ['payment_datetime_start', '+ 1 hour', 0, OrderStatus::PAID],
+            ['update_datetime_start', '- 1 hour', 2],
+            ['update_datetime_start', '+ 1 hour', 0],
+            ['order_datetime_end', '+ 1 hour', 2],
+            ['order_datetime_end', '- 1 hour', 0],
+            ['payment_datetime_end', '+ 1 hour', 1, OrderStatus::PAID],
+            ['payment_datetime_end', '- 1 hour', 0, OrderStatus::PAID],
+            ['update_datetime_end', '+ 1 hour', 2],
+            ['update_datetime_end', '- 1 hour', 0],
         ];
-
-        $this->scenario();
-
-        $this->expected = 2;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testUpdateDateEnd()
-    {
-        $this->searchData = [
-            'update_date_end' => new \DateTime('+ 1 days'),
-        ];
-
-        $this->scenario();
-
-        $this->expected = 2;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testPaymentDateStart()
-    {
-        $Status = $this->orderStatusRepo->find(OrderStatus::PAID);
-        $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
-
-        $this->searchData = [
-            'payment_date_start' => new \DateTime('- 1 days'),
-        ];
-
-        $this->scenario();
-
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testPaymentDateEnd()
-    {
-        $Status = $this->orderStatusRepo->find(OrderStatus::PAID);
-        $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
-        $this->searchData = [
-            'payment_date_end' => new \DateTime('+ 1 days'),
-        ];
-
-        $this->scenario();
-
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testCommitDateStart()
-    {
-        $this->markTestSkipped('order.shipping_dateは不要と思われる.');
-        $Status = $this->orderStatusRepo->find(OrderStatus::DELIVERED);
-        $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
-
-        $this->searchData = [
-            'shipping_date_start' => new \DateTime('- 1 days'),
-        ];
-
-        $this->scenario();
-
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testCommitDateEnd()
-    {
-        $this->markTestSkipped('order.shipping_dateは不要と思われる.');
-        $Status = $this->orderStatusRepo->find(OrderStatus::DELIVERED);
-        $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
-        $this->searchData = [
-            'shipping_date_end' => new \DateTime('+ 1 days'),
-        ];
-
-        $this->scenario();
-
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
     }
 
     public function testPaymentTotalStart()
