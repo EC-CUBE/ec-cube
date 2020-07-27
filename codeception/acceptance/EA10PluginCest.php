@@ -447,10 +447,9 @@ class EA10PluginCest
 
     public function test_bundle_install_update_enable_disable_remove_store(\AcceptanceTester $I)
     {
-        Bundle_Store::start($I)
-            ->インストール()
+        $Bundle = Bundle_Store::start($I);
+        $Bundle->インストール()
             ->有効化()
-            ->無効化()
             ->アップデート()
             ->有効化()
             ->無効化()
