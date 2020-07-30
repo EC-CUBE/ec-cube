@@ -18,6 +18,8 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Service\PluginContext;
+use Eccube\Service\SchemaService;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -43,10 +45,24 @@ class ComposerApiService implements ComposerServiceInterface
      */
     private $baseInfoRepository;
 
-    public function __construct(EccubeConfig $eccubeConfig, BaseInfoRepository $baseInfoRepository)
-    {
+    /** @var SchemaService */
+    private $schemaService;
+
+    /**
+     * @var PluginContext
+     */
+    private $pluginContext;
+
+    public function __construct(
+        EccubeConfig $eccubeConfig,
+        BaseInfoRepository $baseInfoRepository,
+        SchemaService $schemaService,
+        PluginContext $pluginContext
+    ) {
         $this->eccubeConfig = $eccubeConfig;
+        $this->schemaService = $schemaService;
         $this->baseInfoRepository = $baseInfoRepository;
+        $this->pluginContext = $pluginContext;
     }
 
     /**
@@ -77,7 +93,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @return string
      *
@@ -105,7 +121,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run remove command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @return string
      *
@@ -115,6 +131,8 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function execRemove($packageName, $output = null)
     {
+        $this->dropTableToExtra($packageName);
+
         $packageName = explode(' ', trim($packageName));
 
         return $this->runCommand([
@@ -131,7 +149,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run update command
      *
      * @param boolean $dryRun
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -152,7 +170,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run install command
      *
      * @param boolean $dryRun
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -263,7 +281,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run composer command
      *
      * @param array $commands
-     * @param null|OutputInterface $output
+     * @param OutputInterface|null $output
      * @param bool $init
      *
      * @return string
@@ -359,8 +377,6 @@ class ComposerApiService implements ComposerServiceInterface
     }
 
     /**
-     * @param BaseInfo $BaseInfo
-     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -368,5 +384,18 @@ class ComposerApiService implements ComposerServiceInterface
     public function configureRepository(BaseInfo $BaseInfo)
     {
         $this->init($BaseInfo);
+    }
+
+    private function dropTableToExtra($packageNames)
+    {
+        foreach (explode(' ', trim($packageNames)) as $packageName) {
+            $pluginCode = basename($packageName);
+            $this->pluginContext->setCode($pluginCode);
+            $this->pluginContext->setUninstall();
+
+            foreach ($this->pluginContext->getExtraEntityNamespaces() as $namespace) {
+                $this->schemaService->dropTable($namespace);
+            }
+        }
     }
 }

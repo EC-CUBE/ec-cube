@@ -73,6 +73,28 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
+
+        $pluginDir = $this->getProjectDir().'/app/Plugin';
+        $finder = (new Finder())
+            ->in($pluginDir)
+            ->sortByName()
+            ->depth(0)
+            ->directories();
+        $plugins = array_map(function ($dir) {
+            return $dir->getBaseName();
+        }, iterator_to_array($finder));
+
+        foreach ($plugins as $code) {
+            $pluginBundles = $pluginDir.'/'.$code.'/Resource/config/bundles.php';
+            if (file_exists($pluginBundles)) {
+                $contents = require $pluginBundles;
+                foreach ($contents as $class => $envs) {
+                    if (isset($envs['all']) || isset($envs[$this->environment])) {
+                        yield new $class();
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -165,6 +187,11 @@ class Kernel extends BaseKernel
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (file_exists($dir)) {
                 $builder = $routes->import($dir, '/', 'annotation');
+                $builder->setSchemes($scheme);
+            }
+            if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {
+
+                $builder = $routes->import($pluginDir.'/'.$plugin.'/Resource/config/routes'.self::CONFIG_EXTS, '/', 'glob');
                 $builder->setSchemes($scheme);
             }
         }
