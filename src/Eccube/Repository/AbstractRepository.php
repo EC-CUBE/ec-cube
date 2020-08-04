@@ -25,7 +25,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     /**
      * エンティティを削除します。
-     * 物理削除ではなく、del_flgを利用した論理削除を行います。
      *
      * @param AbstractEntity $entity
      */
