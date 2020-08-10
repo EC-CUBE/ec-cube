@@ -220,6 +220,13 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $option_remember_me = true;
 
         /**
+         * @var boolean
+         *
+         * @ORM\Column(name="option_require_kana", type="boolean", options={"default":true})
+         */
+        private $option_require_kana = true;
+
+        /**
          * @var string|null
          *
          * @ORM\Column(name="authentication_key", type="string", length=255, nullable=true)
@@ -902,6 +909,20 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         }
 
         /**
+         * Set optionRequireKana
+         *
+         * @param boolean $optionRequireKana
+         *
+         * @return BaseInfo
+         */
+        public function setOptionRequireKana($optionRequireKana)
+        {
+            $this->option_require_kana = $optionRequireKana;
+
+            return $this;
+        }
+
+        /**
          * Get optionRememberMe.
          *
          * @return boolean
@@ -909,6 +930,16 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         public function isOptionRememberMe()
         {
             return $this->option_remember_me;
+        }
+
+        /**
+         * Get optionRequireKana
+         *
+         * @return boolean
+         */
+        public function isOptionRequireKana()
+        {
+            return $this->option_require_kana;
         }
 
         /**
