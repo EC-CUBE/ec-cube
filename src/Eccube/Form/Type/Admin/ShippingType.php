@@ -90,22 +90,8 @@ class ShippingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', NameType::class, [
-                'required' => false,
-                'options' => [
-                    'constraints' => [
-                        new Assert\NotBlank(),
-                    ],
-                ],
-            ])
-            ->add('kana', KanaType::class, [
-                'required' => false,
-                'options' => [
-                    'constraints' => [
-                        new Assert\NotBlank(),
-                    ],
-                ],
-            ])
+            ->add('name', NameType::class)
+            ->add('kana', KanaType::class)
             ->add('company_name', TextType::class, [
                 'required' => false,
                 'constraints' => [
