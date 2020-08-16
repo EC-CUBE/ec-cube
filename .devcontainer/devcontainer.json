@@ -4,7 +4,7 @@
         "../docker-compose.yml"
     ],
     "service": "ec-cube",
-    "workspaceFolder": "/var/www",
+    "workspaceFolder": "/var/www/html",
     "settings": {
         "intelephense.environment.phpVersion": "7.3",
         "php-cs-fixer.allowRisky": false,
