@@ -1,0 +1,13 @@
+{
+    "name": "eccube",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    "service": "ec-cube",
+    "workspaceFolder": "/var/www",
+    "settings": {
+        "terminal.integrated.shell.linux": null
+    },
+    "extensions": [
+    ]
+}
