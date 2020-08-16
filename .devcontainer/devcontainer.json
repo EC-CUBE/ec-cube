@@ -6,9 +6,13 @@
     "service": "ec-cube",
     "workspaceFolder": "/var/www",
     "settings": {
+        "intelephense.environment.phpVersion": "7.3",
+        "php.suggest.basic": false,
+        "php.validate.enable": false,
         "terminal.integrated.shell.linux": null
     },
     "extensions": [
+        "bmewburn.vscode-intelephense-client",
         "EditorConfig.EditorConfig"
     ]
 }
