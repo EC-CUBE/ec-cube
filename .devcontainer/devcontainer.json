@@ -19,6 +19,7 @@
     "extensions": [
         "junstyle.php-cs-fixer",
         "bmewburn.vscode-intelephense-client",
+        "mblode.twig-language-2",
         "EditorConfig.EditorConfig"
     ]
 }
