@@ -9,5 +9,6 @@
         "terminal.integrated.shell.linux": null
     },
     "extensions": [
+        "EditorConfig.EditorConfig"
     ]
 }
