@@ -76,11 +76,11 @@ class LogType extends AbstractType
             ->add('line_max', TextType::class, [
                 'data' => '50',
                 'attr' => [
-                    'maxlength' => 5,
+                    'maxlength' => strlen(PHP_INT_MAX),
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(['min' => 1, 'max' => 50000]),
+                    new Assert\Range(['min' => 1, 'max' => PHP_INT_MAX]),
                 ],
             ]);
     }
