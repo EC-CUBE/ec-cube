@@ -3,5 +3,6 @@ framework:
     translator:
         paths:
             - '%kernel.project_dir%/src/Eccube/Resource/locale/'
+            - '%kernel.project_dir%/app/Customize/Resource/locale/'
         fallbacks:
             - '%locale%'

@@ -39,6 +39,9 @@ class ProductClassMatrixType extends AbstractType
                     return $er->createQueryBuilder('cn')
                         ->orderBy('cn.sort_no', 'DESC');
                 },
+                'choice_label' => function (ClassName $className) {
+                    return sprintf("%s (%s)", $className->getName(), $className->getBackendName());
+                },
                 'placeholder' => 'admin.product.select__class1',
                 'constraints' => [
                     new NotBlank(),
@@ -49,6 +52,9 @@ class ProductClassMatrixType extends AbstractType
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cn')
                         ->orderBy('cn.sort_no', 'DESC');
+                },
+                'choice_label' => function (ClassName $className) {
+                    return sprintf("%s (%s)", $className->getName(), $className->getBackendName());
                 },
                 'placeholder' => 'admin.product.select__class2',
                 'constraints' => new Callback(function (

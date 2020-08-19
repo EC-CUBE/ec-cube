@@ -21,7 +21,7 @@ file that was distributed with this source code.
             <div class="ec-off2Grid__cell">
                 <form name="login_mypage" id="login_mypage" method="post" action="{{ url('mypage_login') }}">
                     {% if app.session.flashBag.has('eccube.login.target.path') %}
-                        {% for targetPath in app.session.flashBag.get('eccube.login.target.path') %}
+                        {% for targetPath in app.session.flashBag.peek('eccube.login.target.path') %}
                             <input type="hidden" name="_target_path" value="{{ targetPath }}" />
                         {% endfor %}
                     {% endif %}

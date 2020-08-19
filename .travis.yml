@@ -23,16 +23,18 @@ php:
   - 7.1
   - 7.2
   - 7.3
-  - 7.4snapshot
+  - 7.4
 
 env:
-  - DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
-  - DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
-  - DATABASE_URL=sqlite:///var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
+  global:
+    - SYMFONY_DEPRECATIONS_HELPER=weak
+  matrix:
+    - DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
+    - DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
+    - DATABASE_URL=sqlite:///var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
 
 matrix:
   allow_failures:
-    - php: 7.4snapshot
     - env: DATABASE_URL=sqlite:///var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
     - env: APP_ENV=codeception
 
@@ -47,7 +49,6 @@ before_install: &php_setup |
   echo "date.timezone=Asia/Tokyo" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 eccube_setup: &eccube_setup |
-  echo "APP_ENV=codeception" > .env
   bin/console doctrine:database:create --env=dev
   bin/console doctrine:schema:create --env=dev
   bin/console eccube:fixtures:load --env=dev
@@ -58,6 +59,7 @@ package_api_setup: &package_api_setup |
 
 install:
   - &composer_install composer install --dev --no-interaction -o --apcu-autoloader
+  - echo "APP_ENV=test" > .env
   - *eccube_setup
 
 script:
@@ -101,6 +103,7 @@ jobs:
       - docker run -d -p 1080:1080 -p 1025:1025 --name mailcatcher schickling/mailcatcher
     install:
       - *composer_install
+      - echo "APP_ENV=codeception" > .env
       - *eccube_setup
     php: 7.3
     env: GROUP=admin01 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
@@ -250,6 +253,10 @@ jobs:
         ./codeception.sh --reset
         psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
         ./codeception.sh EA10PluginCest:install_enable_disable_enable_disable_remove_store
+      - |
+        ./codeception.sh --reset
+        psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
+        ./codeception.sh EA10PluginCest:test_enhance_plugin_entity
   - <<: *e2e_test
     php: 7.3
     env: APP_ENV=codeception DATABASE_URL=mysql://root:@localhost/eccube_db DATABASE_SERVER_VERSION=5 MAILER_URL=smtp://localhost:1025 ECCUBE_PACKAGE_API_URL=http://localhost:8080 NO_FIXTURES=1
@@ -382,6 +389,10 @@ jobs:
         ./codeception.sh --reset
         mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
         ./codeception.sh EA10PluginCest:install_enable_disable_enable_disable_remove_store
+      - |
+        ./codeception.sh --reset
+        mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
+        ./codeception.sh EA10PluginCest:test_enhance_plugin_entity
 
   # インストーラのテスト
   - <<: *e2e_test

@@ -183,12 +183,23 @@ class CustomerRepository extends AbstractRepository
         }
 
         // create_date
-        if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
+        if (!empty($searchData['create_datetime_start']) && $searchData['create_datetime_start']) {
+            $date = $searchData['create_datetime_start'];
+            $qb
+                ->andWhere('c.create_date >= :create_date_start')
+                ->setParameter('create_date_start', $date);
+        } elseif (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
             $qb
                 ->andWhere('c.create_date >= :create_date_start')
                 ->setParameter('create_date_start', $searchData['create_date_start']);
         }
-        if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
+
+        if (!empty($searchData['create_datetime_end']) && $searchData['create_datetime_end']) {
+            $date = $searchData['create_datetime_end'];
+            $qb
+                ->andWhere('c.create_date < :create_date_end')
+                ->setParameter('create_date_end', $date);
+        } elseif (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
             $date = clone $searchData['create_date_end'];
             $date->modify('+1 days');
             $qb
@@ -197,12 +208,23 @@ class CustomerRepository extends AbstractRepository
         }
 
         // update_date
-        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+        if (!empty($searchData['update_datetime_start']) && $searchData['update_datetime_start']) {
+            $date = $searchData['update_datetime_start'];
+            $qb
+                ->andWhere('c.update_date >= :update_date_start')
+                ->setParameter('update_date_start', $date);
+        } elseif (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $qb
                 ->andWhere('c.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $searchData['update_date_start']);
         }
-        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+
+        if (!empty($searchData['update_datetime_end']) && $searchData['update_datetime_end']) {
+            $date = $searchData['update_datetime_end'];
+            $qb
+                ->andWhere('c.update_date < :update_date_end')
+                ->setParameter('update_date_end', $date);
+        } elseif (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = clone $searchData['update_date_end'];
             $date->modify('+1 days');
             $qb
@@ -211,12 +233,23 @@ class CustomerRepository extends AbstractRepository
         }
 
         // last_buy
-        if (!empty($searchData['last_buy_start']) && $searchData['last_buy_start']) {
+        if (!empty($searchData['last_buy_datetime_start']) && $searchData['last_buy_datetime_start']) {
+            $date = $searchData['last_buy_datetime_start'];
+            $qb
+                ->andWhere('c.last_buy_date >= :last_buy_start')
+                ->setParameter('last_buy_start', $date);
+        } elseif (!empty($searchData['last_buy_start']) && $searchData['last_buy_start']) {
             $qb
                 ->andWhere('c.last_buy_date >= :last_buy_start')
                 ->setParameter('last_buy_start', $searchData['last_buy_start']);
         }
-        if (!empty($searchData['last_buy_end']) && $searchData['last_buy_end']) {
+
+        if (!empty($searchData['last_buy_datetime_end']) && $searchData['last_buy_datetime_end']) {
+            $date = $searchData['last_buy_datetime_end'];
+            $qb
+                ->andWhere('c.last_buy_date < :last_buy_end')
+                ->setParameter('last_buy_end', $date);
+        } elseif (!empty($searchData['last_buy_end']) && $searchData['last_buy_end']) {
             $date = clone $searchData['last_buy_end'];
             $date->modify('+1 days');
             $qb
