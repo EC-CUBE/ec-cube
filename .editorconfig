@@ -1,0 +1,61 @@
+; top-most EditorConfig file
+root = true
+
+; Unix-style newlines
+[*]
+charset = utf-8
+end_of_line = LF
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{php,html,twig,sh,json}]
+indent_style = space
+indent_size = 4
+
+[*.{js,css,scss,yml,yaml,xml}]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[codeception/**.{yml,yaml}]
+indent_style = space
+indent_size = 4
+
+[app/config/eccube/**.{yaml,yml}]
+indent_style = space
+indent_size = 4
+
+[html/template/**.js]
+indent_style = space
+indent_size = 4
+
+[html/template/install/assets/**.js]
+indent_style = tab
+tab_width = 4
+indent_size = 4
+
+[html/template/install/assets/**.css]
+indent_style = tab
+tab_width = 4
+indent_size = 4
+
+[phpunit.xml{,.dist}]
+indent_style = space
+indent_size = 4
+
+[.php_cs{,.dist}]
+indent_style = space
+indent_size = 4
+
+[.htaccess]
+indent_style = space
+indent_size = 4
+
+[COMMIT_EDITMSG]
+max_line_length = 0
+
+[Dockerfile]
+indent_style = space
+indent_size = 2

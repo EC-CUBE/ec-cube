@@ -18,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * OrderItemType
  *
+ * 受注明細種別
+ *
  * @ORM\Table(name="mtb_order_item_type")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)

@@ -1,0 +1,5 @@
+# https://github.com/symfony/demo/blob/master/config/packages/prod/doctrine.yaml
+# https://symfony.com/doc/master/bundles/DoctrineBundle/configuration.html
+doctrine:
+    orm:
+        result_cache_driver: array

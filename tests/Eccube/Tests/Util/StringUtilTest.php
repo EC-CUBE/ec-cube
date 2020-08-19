@@ -53,6 +53,9 @@ class StringUtilTest extends TestCase
 
     public function testRandomException()
     {
+        if (PHP_VERSION_ID >= 70400) {
+            $this->markTestSkipped('Skip because it is fatal error in PHP7.4 or higher.');
+        }
         $this->expected = 'Unable to generate random string.';
         try {
             StringUtil::random(0);
