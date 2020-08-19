@@ -209,7 +209,10 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPassword_MinLength()
     {
-        $this->formData['password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1);
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1);
+
+        $this->formData['password']['first'] = $password;
+        $this->formData['password']['second'] = $password;
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -226,10 +229,22 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPassword_MaxLength()
     {
-        $this->formData['password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] + 1);
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] + 1);
+
+        $this->formData['password']['first'] = $password;
+        $this->formData['password']['second'] = $password;
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidPassword_EqualEmail()
+    {
+        $this->formData['password']['first'] = $this->formData['email'];
+        $this->formData['password']['second'] = $this->formData['email'];
+
+        $this->form->submit($this->formData);
+        $this->assertEquals(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());
     }
 
     public function testInvalidStatus_Blank()

@@ -90,8 +90,9 @@ class TaxProcessor implements ItemHolderPreprocessor
                 continue;
             }
 
-            // 税率が設定されていない場合は税率を明細にコピーする
-            if ($item->getRoundingType() === null) {
+            // 注文フロー内で税率が変更された場合を考慮し反映する
+            // 受注管理画面内では既に登録された税率は自動で変更しない
+            if ($context->isShoppingFlow() || $item->getRoundingType() === null) {
                 $TaxRule = $item->getOrderItemType()->isProduct()
                     ? $this->taxRuleRepository->getByRule($item->getProduct(), $item->getProductClass())
                     : $this->taxRuleRepository->getByRule();

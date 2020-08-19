@@ -21,6 +21,7 @@ use Eccube\Repository\BaseInfoRepository;
 
 /**
  * Class ComposerProcessService
+ * @deprecated Not maintained
  */
 class ComposerProcessService implements ComposerServiceInterface
 {

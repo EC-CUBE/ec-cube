@@ -2,12 +2,6 @@ FROM php:7.3-apache-stretch
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
 
-RUN /bin/rm /etc/apt/sources.list \
-  && { \
-    echo 'deb http://cdn.debian.net/debian/ stretch main contrib non-free'; \
-    echo 'deb http://cdn.debian.net/debian/ stretch-updates main contrib'; \
-  } > /etc/apt/sources.list.d/mirror.jp.list
-
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
     apt-transport-https \
@@ -17,6 +11,7 @@ RUN apt-get update \
     debconf-utils \
     gcc \
     git \
+    vim \
     gnupg2 \
     libfreetype6-dev \
     libicu-dev \
@@ -59,23 +54,27 @@ COPY . ${APACHE_DOCUMENT_ROOT}
 
 WORKDIR ${APACHE_DOCUMENT_ROOT}
 
-ENV COMPOSER_ALLOW_SUPERUSER 1
-
 RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer \
   && composer config -g repos.packagist composer https://packagist.jp \
   && composer global require hirak/prestissimo \
-  && composer install \
-    --no-scripts \
-    --no-autoloader \
-    --no-dev -d ${APACHE_DOCUMENT_ROOT} \
-  && chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT} \
   && chown www-data:www-data /var/www \
+  && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
+  && chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT} \
+  && find ${APACHE_DOCUMENT_ROOT} -type d -print0 \
+  | xargs -0 chmod g+s \
   ;
 
 USER www-data
-RUN composer dumpautoload -o --apcu --no-dev
+
+RUN composer install \
+  --no-scripts \
+  --no-autoloader \
+  -d ${APACHE_DOCUMENT_ROOT} \
+  ;
+
+RUN composer dumpautoload -o --apcu
 
 RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/.env ]; then \
         cp -p .env.dist .env \

@@ -41,6 +41,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
@@ -113,9 +114,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param TaxRuleRepository $taxRuleRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param ValidatorInterface $validator
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Exception
      */
     public function __construct(
         DeliveryDurationRepository $deliveryDurationRepository,
@@ -146,6 +145,10 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import")
      * @Template("@admin/Product/csv_product.twig")
+     *
+     * @return array
+     *
+     * @throws \Doctrine\DBAL\ConnectionException
      * @throws \Doctrine\ORM\NoResultException
      */
     public function csvProduct(Request $request, CacheUtil $cacheUtil)
@@ -291,11 +294,11 @@ class CsvImportController extends AbstractCsvImportController
                                     $message = trans('admin.common.csv_invalid_description_detail_upper_limit', [
                                         '%line%' => $line,
                                         '%name%' => $headerByKey['description_detail'],
-                                        '%max%' => $this->eccubeConfig['eccube_ltext_len'],]);
+                                        '%max%' => $this->eccubeConfig['eccube_ltext_len'],
+                                    ]);
                                     $this->addErrors($message);
 
                                     return $this->renderWithError($form, $headers);
-
                                 } else {
                                     $Product->setDescriptionDetail(StringUtil::trimAll($row[$headerByKey['description_detail']]));
                                 }
@@ -708,7 +711,7 @@ class CsvImportController extends AbstractCsvImportController
                             }
                             $Category = $this->categoryRepository->find($row[$headerByKey['id']]);
                             if (!$Category) {
-                                $this->addErrors(($data->key() + 1).'行目のカテゴリIDが存在しません。');
+                                $this->addErrors(($data->key() + 1).'行目の更新対象のカテゴリIDが存在しません。新規登録の場合は、カテゴリIDの値を空で登録してください。');
 
                                 return $this->renderWithError($form, $headers);
                             }
@@ -812,6 +815,10 @@ class CsvImportController extends AbstractCsvImportController
      * アップロード用CSV雛形ファイルダウンロード
      *
      * @Route("/%eccube_admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template")
+     *
+     * @param $type
+     *
+     * @return StreamedResponse
      */
     public function csvTemplate(Request $request, $type)
     {
@@ -862,11 +869,12 @@ class CsvImportController extends AbstractCsvImportController
      * @param $row
      * @param Product $Product
      * @param CsvImportService $data
+     * @param $headerByKey
      */
     protected function createProductImage($row, Product $Product, $data, $headerByKey)
     {
         if (!isset($row[$headerByKey['product_image']])) {
-             return;
+            return;
         }
         if (StringUtil::isNotBlank($row[$headerByKey['product_image']])) {
             // 画像の削除

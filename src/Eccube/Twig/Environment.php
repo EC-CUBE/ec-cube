@@ -13,9 +13,10 @@
 
 namespace Eccube\Twig;
 
-use Eccube\Event\TemplateEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
+/**
+ * @deprecated Twig\Environmentを利用してください。
+ * https://github.com/EC-CUBE/ec-cube/pull/4362 の修正で不要になったが、互換性のためにクラスは残す。
+ */
 class Environment extends \Twig_Environment
 {
     /**
@@ -23,36 +24,13 @@ class Environment extends \Twig_Environment
      */
     protected $twig;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    public function __construct(\Twig_Environment $twig, EventDispatcherInterface $eventDispatcher)
+    public function __construct(\Twig_Environment $twig)
     {
         $this->twig = $twig;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function render($name, array $context = [])
     {
-        // twigファイルのソースコードを読み込み文字列化する.
-        $source = $this->twig->getLoader()
-            ->getSourceContext($name)
-            ->getCode();
-
-        // プラグインにはテンプレートファイル名, 文字列化されたtwigファイル, パラメータを渡す.
-        $event = new TemplateEvent($name, $source, $context);
-
-        // テンプレートフックポイントの実行.
-        $this->eventDispatcher->dispatch($name, $event);
-
-        // プラグインで変更された文字列から, テンプレートオブジェクトを生成.
-        $template = $this->twig->createTemplate($event->getSource());
-
-        // レンダリング実行.
-        $content = $template->render($event->getParameters());
-
-        return $content;
+        return $this->twig->render($name, $context);
     }
 }

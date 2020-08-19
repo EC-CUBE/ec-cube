@@ -177,4 +177,13 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
+
+    public function testInvalidPassword_EqualEmail()
+    {
+        $this->formData['password']['first'] = $this->formData['email']['first'];
+        $this->formData['password']['second'] = $this->formData['email']['first'];
+
+        $this->form->submit($this->formData);
+        $this->assertEquals(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());
+    }
 }

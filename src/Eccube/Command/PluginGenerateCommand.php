@@ -117,6 +117,7 @@ class PluginGenerateCommand extends Command
         $this->createNav($pluginDir, $code);
         $this->createTwigBlock($pluginDir, $code);
         $this->createConfigController($pluginDir, $code);
+        $this->createGithubActions($pluginDir);
 
         $this->io->success(sprintf('Plugin was successfully created: %s %s %s', $name, $code, $version));
     }
@@ -161,6 +162,7 @@ class PluginGenerateCommand extends Command
             'Resource/doctrine',
             'Resource/locale',
             'Resource/template/admin',
+            '.github/workflows',
         ];
 
         foreach ($dirs as $dir) {
@@ -190,6 +192,47 @@ EOL;
 
         $this->fs->dumpFile($pluginDir.'/composer.json', $source);
     }
+
+
+    /**
+     * @param string $pluginDir
+     */
+    protected function createGithubActions($pluginDir)
+    {
+        $source = '
+name: Packaging for EC-CUBE Plugin
+on:
+  release:
+    types: [ published ]
+jobs:
+  deploy:
+    name: Build
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Packaging
+        working-directory: ../
+        run: |
+          rm -rf $GITHUB_WORKSPACE/.github
+          find $GITHUB_WORKSPACE -name "dummy" -delete
+          find $GITHUB_WORKSPACE -name ".git*" -and ! -name ".gitkeep" -print0 | xargs -0 rm -rf
+          chmod -R o+w $GITHUB_WORKSPACE
+          cd $GITHUB_WORKSPACE
+          tar cvzf ../${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz ./*
+      - name: Upload binaries to release of TGZ
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ runner.workspace }}/${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz
+          asset_name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
+';
+
+        $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
+    }
+
 
     /**
      * @param string $pluginDir
