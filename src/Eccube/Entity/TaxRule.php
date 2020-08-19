@@ -83,9 +83,9 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="tax_rate", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":8})
+         * @ORM\Column(name="tax_rate", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */
-        private $tax_rate = 8;
+        private $tax_rate = 0;
 
         /**
          * @var string

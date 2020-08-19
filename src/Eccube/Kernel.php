@@ -126,6 +126,11 @@ class Kernel extends BaseKernel
         $dir = dirname(__DIR__).'/../app/Plugin/*/Resource/config';
         $loader->load($dir.'/services'.self::CONFIG_EXTS, 'glob');
         $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
+
+        // カスタマイズディレクトリのservices.phpをロードする.
+        $dir = dirname(__DIR__).'/../app/Customize/Resource/config';
+        $loader->load($dir.'/services'.self::CONFIG_EXTS, 'glob');
+        $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
@@ -259,10 +264,12 @@ class Kernel extends BaseKernel
 
         foreach ($plugins as $code) {
             if (file_exists($pluginDir.'/'.$code.'/Entity')) {
-                $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
-                    ['Plugin\\'.$code.'\\Entity'],
-                    ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity']
-                ));
+                $paths = ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity'];
+                $namespaces = ['Plugin\\'.$code.'\\Entity'];
+                $reader = new Reference('annotation_reader');
+                $driver = new Definition(AnnotationDriver::class, [$reader, $paths]);
+                $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
+                $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
             }
         }
     }

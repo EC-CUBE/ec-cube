@@ -1,24 +1,386 @@
 @charset "UTF-8";
-@import url(/node_modules/normalize.css/normalize.css);
+/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
+/**
+ * 1. Change the default font family in all browsers (opinionated).
+ * 2. Correct the line height in all browsers.
+ * 3. Prevent adjustments of font size after orientation changes in
+ *    IE on Windows Phone and in iOS.
+ */
+/* Document
+   ========================================================================== */
+html {
+  font-family: sans-serif; /* 1 */
+  line-height: 1.15; /* 2 */
+  -ms-text-size-adjust: 100%; /* 3 */
+  -webkit-text-size-adjust: 100%; /* 3 */
+}
+/* Sections
+   ========================================================================== */
+/**
+ * Remove the margin in all browsers (opinionated).
+ */
+body {
+  margin: 0;
+}
+/**
+ * Add the correct display in IE 9-.
+ */
+article,
+aside,
+footer,
+header,
+nav,
+section {
+  display: block;
+}
+/**
+ * Correct the font size and margin on `h1` elements within `section` and
+ * `article` contexts in Chrome, Firefox, and Safari.
+ */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+/* Grouping content
+   ========================================================================== */
+/**
+ * Add the correct display in IE 9-.
+ * 1. Add the correct display in IE.
+ */
+figcaption,
+figure,
+main { /* 1 */
+  display: block;
+}
+/**
+ * Add the correct margin in IE 8.
+ */
+figure {
+  margin: 1em 40px;
+}
+/**
+ * 1. Add the correct box sizing in Firefox.
+ * 2. Show the overflow in Edge and IE.
+ */
+hr {
+  box-sizing: content-box; /* 1 */
+  height: 0; /* 1 */
+  overflow: visible; /* 2 */
+}
+/**
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+pre {
+  font-family: monospace, monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+/* Text-level semantics
+   ========================================================================== */
+/**
+ * 1. Remove the gray background on active links in IE 10.
+ * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+ */
+a {
+  background-color: transparent; /* 1 */
+  -webkit-text-decoration-skip: objects; /* 2 */
+}
+/**
+ * Remove the outline on focused links when they are also active or hovered
+ * in all browsers (opinionated).
+ */
+a:active,
+a:hover {
+  outline-width: 0;
+}
+/**
+ * 1. Remove the bottom border in Firefox 39-.
+ * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+ */
+abbr[title] {
+  border-bottom: none; /* 1 */
+  text-decoration: underline; /* 2 */
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted; /* 2 */
+}
+/**
+ * Prevent the duplicate application of `bolder` by the next rule in Safari 6.
+ */
+b,
+strong {
+  font-weight: inherit;
+}
+/**
+ * Add the correct font weight in Chrome, Edge, and Safari.
+ */
+b,
+strong {
+  font-weight: bolder;
+}
+/**
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+code,
+kbd,
+samp {
+  font-family: monospace, monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+/**
+ * Add the correct font style in Android 4.3-.
+ */
+dfn {
+  font-style: italic;
+}
+/**
+ * Add the correct background and color in IE 9-.
+ */
+mark {
+  background-color: #ff0;
+  color: #000;
+}
+/**
+ * Add the correct font size in all browsers.
+ */
+small {
+  font-size: 80%;
+}
+/**
+ * Prevent `sub` and `sup` elements from affecting the line height in
+ * all browsers.
+ */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sub {
+  bottom: -0.25em;
+}
+sup {
+  top: -0.5em;
+}
+/* Embedded content
+   ========================================================================== */
+/**
+ * Add the correct display in IE 9-.
+ */
+audio,
+video {
+  display: inline-block;
+}
+/**
+ * Add the correct display in iOS 4-7.
+ */
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+/**
+ * Remove the border on images inside links in IE 10-.
+ */
+img {
+  border-style: none;
+}
+/**
+ * Hide the overflow in IE.
+ */
+svg:not(:root) {
+  overflow: hidden;
+}
+/* Forms
+   ========================================================================== */
+/**
+ * 1. Change the font styles in all browsers (opinionated).
+ * 2. Remove the margin in Firefox and Safari.
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: sans-serif; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+/**
+ * Show the overflow in IE.
+ * 1. Show the overflow in Edge.
+ */
+button,
+input { /* 1 */
+  overflow: visible;
+}
+/**
+ * Remove the inheritance of text transform in Edge, Firefox, and IE.
+ * 1. Remove the inheritance of text transform in Firefox.
+ */
+button,
+select { /* 1 */
+  text-transform: none;
+}
+/**
+ * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
+ *    controls in Android 4.
+ * 2. Correct the inability to style clickable types in iOS and Safari.
+ */
+button,
+html [type="button"], /* 1 */
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button; /* 2 */
+}
+/**
+ * Remove the inner border and padding in Firefox.
+ */
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+/**
+ * Restore the focus styles unset by the previous rule.
+ */
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+/**
+ * Change the border, margin, and padding in all browsers (opinionated).
+ */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+/**
+ * 1. Correct the text wrapping in Edge and IE.
+ * 2. Correct the color inheritance from `fieldset` elements in IE.
+ * 3. Remove the padding so developers are not caught out when they zero out
+ *    `fieldset` elements in all browsers.
+ */
+legend {
+  box-sizing: border-box; /* 1 */
+  color: inherit; /* 2 */
+  display: table; /* 1 */
+  max-width: 100%; /* 1 */
+  padding: 0; /* 3 */
+  white-space: normal; /* 1 */
+}
+/**
+ * 1. Add the correct display in IE 9-.
+ * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.
+ */
+progress {
+  display: inline-block; /* 1 */
+  vertical-align: baseline; /* 2 */
+}
+/**
+ * Remove the default vertical scrollbar in IE.
+ */
+textarea {
+  overflow: auto;
+}
+/**
+ * 1. Add the correct box sizing in IE 10-.
+ * 2. Remove the padding in IE 10-.
+ */
+[type="checkbox"],
+[type="radio"] {
+  box-sizing: border-box; /* 1 */
+  padding: 0; /* 2 */
+}
+/**
+ * Correct the cursor style of increment and decrement buttons in Chrome.
+ */
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+/**
+ * 1. Correct the odd appearance in Chrome and Safari.
+ * 2. Correct the outline style in Safari.
+ */
+[type="search"] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+/**
+ * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.
+ */
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+/**
+ * 1. Correct the inability to style clickable types in iOS and Safari.
+ * 2. Change font properties to `inherit` in Safari.
+ */
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+/* Interactive
+   ========================================================================== */
+/*
+ * Add the correct display in IE 9-.
+ * 1. Add the correct display in Edge, IE, and Firefox.
+ */
+details, /* 1 */
+menu {
+  display: block;
+}
+/*
+ * Add the correct display in all browsers.
+ */
+summary {
+  display: list-item;
+}
+/* Scripting
+   ========================================================================== */
+/**
+ * Add the correct display in IE 9-.
+ */
+canvas {
+  display: inline-block;
+}
+/**
+ * Add the correct display in IE.
+ */
+template {
+  display: none;
+}
+/* Hidden
+   ========================================================================== */
+/**
+ * Add the correct display in IE 10-.
+ */
+[hidden] {
+  display: none;
+}
 body {
   font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   color: #525263;
   transition: z-index 0ms 5.28455ms;
   background: #f6f6f6;
   margin: 0; }
-
 a {
   text-decoration: none; }
-
 pre {
   background-color: transparent;
   border: none;
   padding: 16px 0; }
-
 p {
   -webkit-margin-before: 0;
   -webkit-margin-after: 0; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -53,7 +415,6 @@ Styleguide 1.1.1
   font-size: 32px;
   font-weight: normal;
   color: #525263; }
-
 /*
 ページヘッダ
 
@@ -74,7 +435,6 @@ Styleguide 1.1.2
   padding: 8px 0 12px;
   font-size: 16px;
   font-weight: bold; }
-
 /*
 サブ見出し
 
@@ -89,7 +449,6 @@ Styleguide 1.1.3
 */
 .ec-heading {
   margin: 24px 0; }
-
 /*
 サブ見出し(太字)
 
@@ -106,7 +465,6 @@ Styleguide 1.1.4
   margin: 16px 0;
   font-size: 16px;
   font-weight: bold; }
-
 /*
 背景付き見出し
 
@@ -128,7 +486,6 @@ Styleguide 1.1.5
   padding: 8px 12px;
   font-size: 20px;
   font-weight: bold; }
-
 /*
 メッセージ見出し
 
@@ -150,11 +507,10 @@ Styleguide 1.1.6
   text-align: center;
   font-size: 24px;
   font-weight: bold; }
-  .ec-reportHeading h1, .ec-reportHeading h2, .ec-reportHeading h3,
+.ec-reportHeading h1, .ec-reportHeading h2, .ec-reportHeading h3,
   .ec-reportHeading h4, .ec-reportHeading h5, .ec-reportHeading h6, .ec-reportHeading p {
     font-weight: bold;
     font-size: 24px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -186,10 +542,9 @@ Styleguide 1.2.1
   color: #0092C4;
   text-decoration: none;
   cursor: pointer; }
-  .ec-link:hover {
+.ec-link:hover {
     color: #33A8D0;
     text-decoration: none; }
-
 /*
 テキスト（太字）
 
@@ -202,7 +557,6 @@ Styleguide 1.2.2
 */
 .ec-font-bold {
   font-weight: bold; }
-
 /*
 テキスト（グレー）
 
@@ -215,7 +569,6 @@ Styleguide 1.2.3
 */
 .ec-color-grey {
   color: #9a947e; }
-
 /*
 テキスト（赤）
 
@@ -229,10 +582,8 @@ Styleguide 1.2.4
 */
 .ec-color-red {
   color: #DE5D50; }
-
 .ec-color-accent {
   color: #DE5D50; }
-
 /*
 フォントサイズ
 
@@ -251,22 +602,16 @@ Styleguide 1.2.5
 */
 .ec-font-size-1 {
   font-size: 12px; }
-
 .ec-font-size-2 {
   font-size: 14px; }
-
 .ec-font-size-3 {
   font-size: 16px; }
-
 .ec-font-size-4 {
   font-size: 20px; }
-
 .ec-font-size-5 {
   font-size: 32px; }
-
 .ec-font-size-6 {
   font-size: 40px; }
-
 /*
 テキスト水平位置
 
@@ -279,7 +624,6 @@ Styleguide 1.2.6
 */
 .ec-text-ac {
   text-align: center; }
-
 /*
 価格テキスト
 
@@ -301,16 +645,13 @@ Styleguide 1.2.7
 .ec-price .ec-price__unit {
   font-size: 18px;
   font-weight: bold; }
-
 .ec-price .ec-price__price {
   display: inline-block;
   padding: 0 .3em;
   font-size: 18px;
   font-weight: bold; }
-
 .ec-price .ec-price__tax {
   font-size: 12px; }
-
 /*
 テキストの位置
 
@@ -334,13 +675,10 @@ Styleguide 1.2.8
 */
 .text-left {
   text-align: left; }
-
 .text-center {
   text-align: center; }
-
 .text-right {
   text-align: right; }
-
 /*
 メッセージテキスト
 
@@ -366,7 +704,6 @@ Styleguide 1.2.9
   text-align: center;
   font-size: 16px;
   line-height: 1.4; }
-
 /*
 テキスト下部のスペース
 
@@ -380,7 +717,6 @@ Styleguide 1.2.10
 */
 .ec-para-normal {
   margin-bottom: 16px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -423,15 +759,13 @@ Styleguide 1.3.1
 .ec-definitions, .ec-definitions--soft {
   margin: 5px 0;
   display: block; }
-  .ec-definitions dt, .ec-definitions--soft dt, .ec-definitions dd, .ec-definitions--soft dd {
+.ec-definitions dt, .ec-definitions--soft dt, .ec-definitions dd, .ec-definitions--soft dd {
     display: inline-block;
     margin: 0; }
-  .ec-definitions dt, .ec-definitions--soft dt {
+.ec-definitions dt, .ec-definitions--soft dt {
     font-weight: bold; }
-
 .ec-definitions--soft dt {
   font-weight: normal; }
-
 /*
 下線つき定義リスト
 
@@ -459,38 +793,36 @@ Styleguide 1.3.2
   width: 100%;
   border-top: 1px dotted #ccc;
   margin-bottom: 16px; }
-  .ec-borderedDefs dl {
+.ec-borderedDefs dl {
     display: flex;
     border-bottom: 1px dotted #ccc;
     margin: 0;
     padding: 10px 0 0;
     flex-wrap: wrap; }
-  .ec-borderedDefs dt, .ec-borderedDefs dd {
+.ec-borderedDefs dt, .ec-borderedDefs dd {
     padding: 0; }
-  .ec-borderedDefs dt {
+.ec-borderedDefs dt {
     font-weight: normal;
     width: 100%;
     padding-top: 0; }
-  .ec-borderedDefs dd {
+.ec-borderedDefs dd {
     padding: 0;
     width: 100%;
     line-height: 2.5; }
-  .ec-borderedDefs p {
+.ec-borderedDefs p {
     line-height: 1.4; }
-
 .ec-list-chilled {
   display: table-row;
   border: 0 none;
   padding: 8px 0; }
-  .ec-list-chilled dt, .ec-list-chilled dd {
+.ec-list-chilled dt, .ec-list-chilled dd {
     display: table-cell;
     border-bottom: 1px dotted #ccc;
     padding: 0; }
-  .ec-list-chilled dt {
+.ec-list-chilled dt {
     width: 30%; }
-  .ec-list-chilled dd {
+.ec-list-chilled dd {
     padding: 0; }
-
 /*
 ボーダーリスト
 
@@ -512,22 +844,20 @@ Styleguide 1.3.3
   border-top: 0;
   list-style: none;
   padding: 0; }
-  .ec-borderedList li {
+.ec-borderedList li {
     border-bottom: 1px dotted #ccc; }
-
 .ec-list-chilled {
   display: table-row;
   border: 0 none;
   padding: 8px 0; }
-  .ec-list-chilled dt, .ec-list-chilled dd {
+.ec-list-chilled dt, .ec-list-chilled dd {
     display: table-cell;
     border-bottom: 1px dotted #ccc;
     padding: 16px 0; }
-  .ec-list-chilled dt {
+.ec-list-chilled dt {
     width: 30%; }
-  .ec-list-chilled dd {
+.ec-list-chilled dd {
     padding: 16px; }
-
 /*
 ボタンサイズ
 
@@ -579,56 +909,55 @@ Styleguide 2.1.1
   color: #525263;
   background-color: #F5F7F8;
   border-color: #ccc; }
-  .ec-inlineBtn:focus, .ec-inlineBtn.focus, .ec-inlineBtn:active:focus, .ec-inlineBtn:active.focus, .ec-inlineBtn.active:focus, .ec-inlineBtn.active.focus {
+.ec-inlineBtn:focus, .ec-inlineBtn.focus, .ec-inlineBtn:active:focus, .ec-inlineBtn:active.focus, .ec-inlineBtn.active:focus, .ec-inlineBtn.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .ec-inlineBtn:hover, .ec-inlineBtn:focus, .ec-inlineBtn.focus {
+.ec-inlineBtn:hover, .ec-inlineBtn:focus, .ec-inlineBtn.focus {
     color: #525263;
     text-decoration: none; }
-  .ec-inlineBtn:active, .ec-inlineBtn.active {
+.ec-inlineBtn:active, .ec-inlineBtn.active {
     outline: 0;
     background-image: none;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .ec-inlineBtn.disabled, .ec-inlineBtn[disabled],
+.ec-inlineBtn.disabled, .ec-inlineBtn[disabled],
   fieldset[disabled] .ec-inlineBtn {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     opacity: 0.65;
     box-shadow: none; }
-  .ec-inlineBtn:focus, .ec-inlineBtn.focus {
+.ec-inlineBtn:focus, .ec-inlineBtn.focus {
     color: #525263;
     background-color: #d7dfe3;
     border-color: #8c8c8c; }
-  .ec-inlineBtn:hover {
+.ec-inlineBtn:hover {
     color: #525263;
     background-color: #d7dfe3;
     border-color: #adadad; }
-  .ec-inlineBtn:active, .ec-inlineBtn.active,
+.ec-inlineBtn:active, .ec-inlineBtn.active,
   .open > .ec-inlineBtn.dropdown-toggle {
     color: #525263;
     background-color: #d7dfe3;
     background-image: none;
     border-color: #adadad; }
-    .ec-inlineBtn:active:hover, .ec-inlineBtn:active:focus, .ec-inlineBtn:active.focus, .ec-inlineBtn.active:hover, .ec-inlineBtn.active:focus, .ec-inlineBtn.active.focus,
+.ec-inlineBtn:active:hover, .ec-inlineBtn:active:focus, .ec-inlineBtn:active.focus, .ec-inlineBtn.active:hover, .ec-inlineBtn.active:focus, .ec-inlineBtn.active.focus,
     .open > .ec-inlineBtn.dropdown-toggle:hover,
     .open > .ec-inlineBtn.dropdown-toggle:focus,
     .open > .ec-inlineBtn.dropdown-toggle.focus {
       color: #525263;
       background-color: #c2ced4;
       border-color: #8c8c8c; }
-  .ec-inlineBtn.disabled:hover, .ec-inlineBtn.disabled:focus, .ec-inlineBtn.disabled.focus, .ec-inlineBtn[disabled]:hover, .ec-inlineBtn[disabled]:focus, .ec-inlineBtn[disabled].focus,
+.ec-inlineBtn.disabled:hover, .ec-inlineBtn.disabled:focus, .ec-inlineBtn.disabled.focus, .ec-inlineBtn[disabled]:hover, .ec-inlineBtn[disabled]:focus, .ec-inlineBtn[disabled].focus,
   fieldset[disabled] .ec-inlineBtn:hover,
   fieldset[disabled] .ec-inlineBtn:focus,
   fieldset[disabled] .ec-inlineBtn.focus {
     background-color: #F5F7F8;
     border-color: #ccc; }
-  .ec-inlineBtn .badge {
+.ec-inlineBtn .badge {
     color: #F5F7F8;
     background-color: #525263; }
-  .ec-inlineBtn .ec-icon img {
+.ec-inlineBtn .ec-icon img {
     width: 1em;
     vertical-align: text-bottom; }
-
 .ec-inlineBtn--primary {
   display: inline-block;
   margin-bottom: 0;
@@ -653,56 +982,55 @@ Styleguide 2.1.1
   color: #fff;
   background-color: #5CB1B1;
   border-color: #5CB1B1; }
-  .ec-inlineBtn--primary:focus, .ec-inlineBtn--primary.focus, .ec-inlineBtn--primary:active:focus, .ec-inlineBtn--primary:active.focus, .ec-inlineBtn--primary.active:focus, .ec-inlineBtn--primary.active.focus {
+.ec-inlineBtn--primary:focus, .ec-inlineBtn--primary.focus, .ec-inlineBtn--primary:active:focus, .ec-inlineBtn--primary:active.focus, .ec-inlineBtn--primary.active:focus, .ec-inlineBtn--primary.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .ec-inlineBtn--primary:hover, .ec-inlineBtn--primary:focus, .ec-inlineBtn--primary.focus {
+.ec-inlineBtn--primary:hover, .ec-inlineBtn--primary:focus, .ec-inlineBtn--primary.focus {
     color: #525263;
     text-decoration: none; }
-  .ec-inlineBtn--primary:active, .ec-inlineBtn--primary.active {
+.ec-inlineBtn--primary:active, .ec-inlineBtn--primary.active {
     outline: 0;
     background-image: none;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .ec-inlineBtn--primary.disabled, .ec-inlineBtn--primary[disabled],
+.ec-inlineBtn--primary.disabled, .ec-inlineBtn--primary[disabled],
   fieldset[disabled] .ec-inlineBtn--primary {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     opacity: 0.65;
     box-shadow: none; }
-  .ec-inlineBtn--primary:focus, .ec-inlineBtn--primary.focus {
+.ec-inlineBtn--primary:focus, .ec-inlineBtn--primary.focus {
     color: #fff;
     background-color: #479393;
     border-color: #2e6060; }
-  .ec-inlineBtn--primary:hover {
+.ec-inlineBtn--primary:hover {
     color: #fff;
     background-color: #479393;
     border-color: #438d8d; }
-  .ec-inlineBtn--primary:active, .ec-inlineBtn--primary.active,
+.ec-inlineBtn--primary:active, .ec-inlineBtn--primary.active,
   .open > .ec-inlineBtn--primary.dropdown-toggle {
     color: #fff;
     background-color: #479393;
     background-image: none;
     border-color: #438d8d; }
-    .ec-inlineBtn--primary:active:hover, .ec-inlineBtn--primary:active:focus, .ec-inlineBtn--primary:active.focus, .ec-inlineBtn--primary.active:hover, .ec-inlineBtn--primary.active:focus, .ec-inlineBtn--primary.active.focus,
+.ec-inlineBtn--primary:active:hover, .ec-inlineBtn--primary:active:focus, .ec-inlineBtn--primary:active.focus, .ec-inlineBtn--primary.active:hover, .ec-inlineBtn--primary.active:focus, .ec-inlineBtn--primary.active.focus,
     .open > .ec-inlineBtn--primary.dropdown-toggle:hover,
     .open > .ec-inlineBtn--primary.dropdown-toggle:focus,
     .open > .ec-inlineBtn--primary.dropdown-toggle.focus {
       color: #fff;
       background-color: #3b7b7b;
       border-color: #2e6060; }
-  .ec-inlineBtn--primary.disabled:hover, .ec-inlineBtn--primary.disabled:focus, .ec-inlineBtn--primary.disabled.focus, .ec-inlineBtn--primary[disabled]:hover, .ec-inlineBtn--primary[disabled]:focus, .ec-inlineBtn--primary[disabled].focus,
+.ec-inlineBtn--primary.disabled:hover, .ec-inlineBtn--primary.disabled:focus, .ec-inlineBtn--primary.disabled.focus, .ec-inlineBtn--primary[disabled]:hover, .ec-inlineBtn--primary[disabled]:focus, .ec-inlineBtn--primary[disabled].focus,
   fieldset[disabled] .ec-inlineBtn--primary:hover,
   fieldset[disabled] .ec-inlineBtn--primary:focus,
   fieldset[disabled] .ec-inlineBtn--primary.focus {
     background-color: #5CB1B1;
     border-color: #5CB1B1; }
-  .ec-inlineBtn--primary .badge {
+.ec-inlineBtn--primary .badge {
     color: #5CB1B1;
     background-color: #fff; }
-  .ec-inlineBtn--primary .ec-icon img {
+.ec-inlineBtn--primary .ec-icon img {
     width: 1em;
     vertical-align: text-bottom; }
-
 .ec-inlineBtn--action {
   display: inline-block;
   margin-bottom: 0;
@@ -727,56 +1055,55 @@ Styleguide 2.1.1
   color: #fff;
   background-color: #DE5D50;
   border-color: #DE5D50; }
-  .ec-inlineBtn--action:focus, .ec-inlineBtn--action.focus, .ec-inlineBtn--action:active:focus, .ec-inlineBtn--action:active.focus, .ec-inlineBtn--action.active:focus, .ec-inlineBtn--action.active.focus {
+.ec-inlineBtn--action:focus, .ec-inlineBtn--action.focus, .ec-inlineBtn--action:active:focus, .ec-inlineBtn--action:active.focus, .ec-inlineBtn--action.active:focus, .ec-inlineBtn--action.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .ec-inlineBtn--action:hover, .ec-inlineBtn--action:focus, .ec-inlineBtn--action.focus {
+.ec-inlineBtn--action:hover, .ec-inlineBtn--action:focus, .ec-inlineBtn--action.focus {
     color: #525263;
     text-decoration: none; }
-  .ec-inlineBtn--action:active, .ec-inlineBtn--action.active {
+.ec-inlineBtn--action:active, .ec-inlineBtn--action.active {
     outline: 0;
     background-image: none;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .ec-inlineBtn--action.disabled, .ec-inlineBtn--action[disabled],
+.ec-inlineBtn--action.disabled, .ec-inlineBtn--action[disabled],
   fieldset[disabled] .ec-inlineBtn--action {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     opacity: 0.65;
     box-shadow: none; }
-  .ec-inlineBtn--action:focus, .ec-inlineBtn--action.focus {
+.ec-inlineBtn--action:focus, .ec-inlineBtn--action.focus {
     color: #fff;
     background-color: #d33828;
     border-color: #93271c; }
-  .ec-inlineBtn--action:hover {
+.ec-inlineBtn--action:hover {
     color: #fff;
     background-color: #d33828;
     border-color: #cb3526; }
-  .ec-inlineBtn--action:active, .ec-inlineBtn--action.active,
+.ec-inlineBtn--action:active, .ec-inlineBtn--action.active,
   .open > .ec-inlineBtn--action.dropdown-toggle {
     color: #fff;
     background-color: #d33828;
     background-image: none;
     border-color: #cb3526; }
-    .ec-inlineBtn--action:active:hover, .ec-inlineBtn--action:active:focus, .ec-inlineBtn--action:active.focus, .ec-inlineBtn--action.active:hover, .ec-inlineBtn--action.active:focus, .ec-inlineBtn--action.active.focus,
+.ec-inlineBtn--action:active:hover, .ec-inlineBtn--action:active:focus, .ec-inlineBtn--action:active.focus, .ec-inlineBtn--action.active:hover, .ec-inlineBtn--action.active:focus, .ec-inlineBtn--action.active.focus,
     .open > .ec-inlineBtn--action.dropdown-toggle:hover,
     .open > .ec-inlineBtn--action.dropdown-toggle:focus,
     .open > .ec-inlineBtn--action.dropdown-toggle.focus {
       color: #fff;
       background-color: #b53022;
       border-color: #93271c; }
-  .ec-inlineBtn--action.disabled:hover, .ec-inlineBtn--action.disabled:focus, .ec-inlineBtn--action.disabled.focus, .ec-inlineBtn--action[disabled]:hover, .ec-inlineBtn--action[disabled]:focus, .ec-inlineBtn--action[disabled].focus,
+.ec-inlineBtn--action.disabled:hover, .ec-inlineBtn--action.disabled:focus, .ec-inlineBtn--action.disabled.focus, .ec-inlineBtn--action[disabled]:hover, .ec-inlineBtn--action[disabled]:focus, .ec-inlineBtn--action[disabled].focus,
   fieldset[disabled] .ec-inlineBtn--action:hover,
   fieldset[disabled] .ec-inlineBtn--action:focus,
   fieldset[disabled] .ec-inlineBtn--action.focus {
     background-color: #DE5D50;
     border-color: #DE5D50; }
-  .ec-inlineBtn--action .badge {
+.ec-inlineBtn--action .badge {
     color: #DE5D50;
     background-color: #fff; }
-  .ec-inlineBtn--action .ec-icon img {
+.ec-inlineBtn--action .ec-icon img {
     width: 1em;
     vertical-align: text-bottom; }
-
 .ec-inlineBtn--cancel {
   display: inline-block;
   margin-bottom: 0;
@@ -801,56 +1128,55 @@ Styleguide 2.1.1
   color: #fff;
   background-color: #525263;
   border-color: #525263; }
-  .ec-inlineBtn--cancel:focus, .ec-inlineBtn--cancel.focus, .ec-inlineBtn--cancel:active:focus, .ec-inlineBtn--cancel:active.focus, .ec-inlineBtn--cancel.active:focus, .ec-inlineBtn--cancel.active.focus {
+.ec-inlineBtn--cancel:focus, .ec-inlineBtn--cancel.focus, .ec-inlineBtn--cancel:active:focus, .ec-inlineBtn--cancel:active.focus, .ec-inlineBtn--cancel.active:focus, .ec-inlineBtn--cancel.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .ec-inlineBtn--cancel:hover, .ec-inlineBtn--cancel:focus, .ec-inlineBtn--cancel.focus {
+.ec-inlineBtn--cancel:hover, .ec-inlineBtn--cancel:focus, .ec-inlineBtn--cancel.focus {
     color: #525263;
     text-decoration: none; }
-  .ec-inlineBtn--cancel:active, .ec-inlineBtn--cancel.active {
+.ec-inlineBtn--cancel:active, .ec-inlineBtn--cancel.active {
     outline: 0;
     background-image: none;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .ec-inlineBtn--cancel.disabled, .ec-inlineBtn--cancel[disabled],
+.ec-inlineBtn--cancel.disabled, .ec-inlineBtn--cancel[disabled],
   fieldset[disabled] .ec-inlineBtn--cancel {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     opacity: 0.65;
     box-shadow: none; }
-  .ec-inlineBtn--cancel:focus, .ec-inlineBtn--cancel.focus {
+.ec-inlineBtn--cancel:focus, .ec-inlineBtn--cancel.focus {
     color: #fff;
     background-color: #3b3b47;
     border-color: #18181d; }
-  .ec-inlineBtn--cancel:hover {
+.ec-inlineBtn--cancel:hover {
     color: #fff;
     background-color: #3b3b47;
     border-color: #363642; }
-  .ec-inlineBtn--cancel:active, .ec-inlineBtn--cancel.active,
+.ec-inlineBtn--cancel:active, .ec-inlineBtn--cancel.active,
   .open > .ec-inlineBtn--cancel.dropdown-toggle {
     color: #fff;
     background-color: #3b3b47;
     background-image: none;
     border-color: #363642; }
-    .ec-inlineBtn--cancel:active:hover, .ec-inlineBtn--cancel:active:focus, .ec-inlineBtn--cancel:active.focus, .ec-inlineBtn--cancel.active:hover, .ec-inlineBtn--cancel.active:focus, .ec-inlineBtn--cancel.active.focus,
+.ec-inlineBtn--cancel:active:hover, .ec-inlineBtn--cancel:active:focus, .ec-inlineBtn--cancel:active.focus, .ec-inlineBtn--cancel.active:hover, .ec-inlineBtn--cancel.active:focus, .ec-inlineBtn--cancel.active.focus,
     .open > .ec-inlineBtn--cancel.dropdown-toggle:hover,
     .open > .ec-inlineBtn--cancel.dropdown-toggle:focus,
     .open > .ec-inlineBtn--cancel.dropdown-toggle.focus {
       color: #fff;
       background-color: #2b2b34;
       border-color: #18181d; }
-  .ec-inlineBtn--cancel.disabled:hover, .ec-inlineBtn--cancel.disabled:focus, .ec-inlineBtn--cancel.disabled.focus, .ec-inlineBtn--cancel[disabled]:hover, .ec-inlineBtn--cancel[disabled]:focus, .ec-inlineBtn--cancel[disabled].focus,
+.ec-inlineBtn--cancel.disabled:hover, .ec-inlineBtn--cancel.disabled:focus, .ec-inlineBtn--cancel.disabled.focus, .ec-inlineBtn--cancel[disabled]:hover, .ec-inlineBtn--cancel[disabled]:focus, .ec-inlineBtn--cancel[disabled].focus,
   fieldset[disabled] .ec-inlineBtn--cancel:hover,
   fieldset[disabled] .ec-inlineBtn--cancel:focus,
   fieldset[disabled] .ec-inlineBtn--cancel.focus {
     background-color: #525263;
     border-color: #525263; }
-  .ec-inlineBtn--cancel .badge {
+.ec-inlineBtn--cancel .badge {
     color: #525263;
     background-color: #fff; }
-  .ec-inlineBtn--cancel .ec-icon img {
+.ec-inlineBtn--cancel .ec-icon img {
     width: 1em;
     vertical-align: text-bottom; }
-
 /*
 ブロックボタン（全幅）
 
@@ -896,56 +1222,55 @@ Styleguide 2.1.2
   line-height: 56px;
   padding-top: 0;
   padding-bottom: 0; }
-  .ec-blockBtn:focus, .ec-blockBtn.focus, .ec-blockBtn:active:focus, .ec-blockBtn:active.focus, .ec-blockBtn.active:focus, .ec-blockBtn.active.focus {
+.ec-blockBtn:focus, .ec-blockBtn.focus, .ec-blockBtn:active:focus, .ec-blockBtn:active.focus, .ec-blockBtn.active:focus, .ec-blockBtn.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .ec-blockBtn:hover, .ec-blockBtn:focus, .ec-blockBtn.focus {
+.ec-blockBtn:hover, .ec-blockBtn:focus, .ec-blockBtn.focus {
     color: #525263;
     text-decoration: none; }
-  .ec-blockBtn:active, .ec-blockBtn.active {
+.ec-blockBtn:active, .ec-blockBtn.active {
     outline: 0;
     background-image: none;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .ec-blockBtn.disabled, .ec-blockBtn[disabled],
+.ec-blockBtn.disabled, .ec-blockBtn[disabled],
   fieldset[disabled] .ec-blockBtn {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     opacity: 0.65;
     box-shadow: none; }
-  .ec-blockBtn:focus, .ec-blockBtn.focus {
+.ec-blockBtn:focus, .ec-blockBtn.focus {
     color: #525263;
     background-color: #d7dfe3;
     border-color: #8c8c8c; }
-  .ec-blockBtn:hover {
+.ec-blockBtn:hover {
     color: #525263;
     background-color: #d7dfe3;
     border-color: #adadad; }
-  .ec-blockBtn:active, .ec-blockBtn.active,
+.ec-blockBtn:active, .ec-blockBtn.active,
   .open > .ec-blockBtn.dropdown-toggle {
     color: #525263;
     background-color: #d7dfe3;
     background-image: none;
     border-color: #adadad; }
-    .ec-blockBtn:active:hover, .ec-blockBtn:active:focus, .ec-blockBtn:active.focus, .ec-blockBtn.active:hover, .ec-blockBtn.active:focus, .ec-blockBtn.active.focus,
+.ec-blockBtn:active:hover, .ec-blockBtn:active:focus, .ec-blockBtn:active.focus, .ec-blockBtn.active:hover, .ec-blockBtn.active:focus, .ec-blockBtn.active.focus,
     .open > .ec-blockBtn.dropdown-toggle:hover,
     .open > .ec-blockBtn.dropdown-toggle:focus,
     .open > .ec-blockBtn.dropdown-toggle.focus {
       color: #525263;
       background-color: #c2ced4;
       border-color: #8c8c8c; }
-  .ec-blockBtn.disabled:hover, .ec-blockBtn.disabled:focus, .ec-blockBtn.disabled.focus, .ec-blockBtn[disabled]:hover, .ec-blockBtn[disabled]:focus, .ec-blockBtn[disabled].focus,
+.ec-blockBtn.disabled:hover, .ec-blockBtn.disabled:focus, .ec-blockBtn.disabled.focus, .ec-blockBtn[disabled]:hover, .ec-blockBtn[disabled]:focus, .ec-blockBtn[disabled].focus,
   fieldset[disabled] .ec-blockBtn:hover,
   fieldset[disabled] .ec-blockBtn:focus,
   fieldset[disabled] .ec-blockBtn.focus {
     background-color: #F5F7F8;
     border-color: #ccc; }
-  .ec-blockBtn .badge {
+.ec-blockBtn .badge {
     color: #F5F7F8;
     background-color: #525263; }
-  .ec-blockBtn .ec-icon img {
+.ec-blockBtn .ec-icon img {
     width: 1em;
     vertical-align: text-bottom; }
-
 .ec-blockBtn--primary {
   display: inline-block;
   margin-bottom: 0;
@@ -976,56 +1301,55 @@ Styleguide 2.1.2
   line-height: 56px;
   padding-top: 0;
   padding-bottom: 0; }
-  .ec-blockBtn--primary:focus, .ec-blockBtn--primary.focus, .ec-blockBtn--primary:active:focus, .ec-blockBtn--primary:active.focus, .ec-blockBtn--primary.active:focus, .ec-blockBtn--primary.active.focus {
+.ec-blockBtn--primary:focus, .ec-blockBtn--primary.focus, .ec-blockBtn--primary:active:focus, .ec-blockBtn--primary:active.focus, .ec-blockBtn--primary.active:focus, .ec-blockBtn--primary.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .ec-blockBtn--primary:hover, .ec-blockBtn--primary:focus, .ec-blockBtn--primary.focus {
+.ec-blockBtn--primary:hover, .ec-blockBtn--primary:focus, .ec-blockBtn--primary.focus {
     color: #525263;
     text-decoration: none; }
-  .ec-blockBtn--primary:active, .ec-blockBtn--primary.active {
+.ec-blockBtn--primary:active, .ec-blockBtn--primary.active {
     outline: 0;
     background-image: none;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .ec-blockBtn--primary.disabled, .ec-blockBtn--primary[disabled],
+.ec-blockBtn--primary.disabled, .ec-blockBtn--primary[disabled],
   fieldset[disabled] .ec-blockBtn--primary {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     opacity: 0.65;
     box-shadow: none; }
-  .ec-blockBtn--primary:focus, .ec-blockBtn--primary.focus {
+.ec-blockBtn--primary:focus, .ec-blockBtn--primary.focus {
     color: #fff;
     background-color: #479393;
     border-color: #2e6060; }
-  .ec-blockBtn--primary:hover {
+.ec-blockBtn--primary:hover {
     color: #fff;
     background-color: #479393;
     border-color: #438d8d; }
-  .ec-blockBtn--primary:active, .ec-blockBtn--primary.active,
+.ec-blockBtn--primary:active, .ec-blockBtn--primary.active,
   .open > .ec-blockBtn--primary.dropdown-toggle {
     color: #fff;
     background-color: #479393;
     background-image: none;
     border-color: #438d8d; }
-    .ec-blockBtn--primary:active:hover, .ec-blockBtn--primary:active:focus, .ec-blockBtn--primary:active.focus, .ec-blockBtn--primary.active:hover, .ec-blockBtn--primary.active:focus, .ec-blockBtn--primary.active.focus,
+.ec-blockBtn--primary:active:hover, .ec-blockBtn--primary:active:focus, .ec-blockBtn--primary:active.focus, .ec-blockBtn--primary.active:hover, .ec-blockBtn--primary.active:focus, .ec-blockBtn--primary.active.focus,
     .open > .ec-blockBtn--primary.dropdown-toggle:hover,
     .open > .ec-blockBtn--primary.dropdown-toggle:focus,
     .open > .ec-blockBtn--primary.dropdown-toggle.focus {
       color: #fff;
       background-color: #3b7b7b;
       border-color: #2e6060; }
-  .ec-blockBtn--primary.disabled:hover, .ec-blockBtn--primary.disabled:focus, .ec-blockBtn--primary.disabled.focus, .ec-blockBtn--primary[disabled]:hover, .ec-blockBtn--primary[disabled]:focus, .ec-blockBtn--primary[disabled].focus,
+.ec-blockBtn--primary.disabled:hover, .ec-blockBtn--primary.disabled:focus, .ec-blockBtn--primary.disabled.focus, .ec-blockBtn--primary[disabled]:hover, .ec-blockBtn--primary[disabled]:focus, .ec-blockBtn--primary[disabled].focus,
   fieldset[disabled] .ec-blockBtn--primary:hover,
   fieldset[disabled] .ec-blockBtn--primary:focus,
   fieldset[disabled] .ec-blockBtn--primary.focus {
     background-color: #5CB1B1;
     border-color: #5CB1B1; }
-  .ec-blockBtn--primary .badge {
+.ec-blockBtn--primary .badge {
     color: #5CB1B1;
     background-color: #fff; }
-  .ec-blockBtn--primary .ec-icon img {
+.ec-blockBtn--primary .ec-icon img {
     width: 1em;
     vertical-align: text-bottom; }
-
 .ec-blockBtn--action {
   display: inline-block;
   margin-bottom: 0;
@@ -1056,56 +1380,55 @@ Styleguide 2.1.2
   line-height: 56px;
   padding-top: 0;
   padding-bottom: 0; }
-  .ec-blockBtn--action:focus, .ec-blockBtn--action.focus, .ec-blockBtn--action:active:focus, .ec-blockBtn--action:active.focus, .ec-blockBtn--action.active:focus, .ec-blockBtn--action.active.focus {
+.ec-blockBtn--action:focus, .ec-blockBtn--action.focus, .ec-blockBtn--action:active:focus, .ec-blockBtn--action:active.focus, .ec-blockBtn--action.active:focus, .ec-blockBtn--action.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .ec-blockBtn--action:hover, .ec-blockBtn--action:focus, .ec-blockBtn--action.focus {
+.ec-blockBtn--action:hover, .ec-blockBtn--action:focus, .ec-blockBtn--action.focus {
     color: #525263;
     text-decoration: none; }
-  .ec-blockBtn--action:active, .ec-blockBtn--action.active {
+.ec-blockBtn--action:active, .ec-blockBtn--action.active {
     outline: 0;
     background-image: none;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .ec-blockBtn--action.disabled, .ec-blockBtn--action[disabled],
+.ec-blockBtn--action.disabled, .ec-blockBtn--action[disabled],
   fieldset[disabled] .ec-blockBtn--action {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     opacity: 0.65;
     box-shadow: none; }
-  .ec-blockBtn--action:focus, .ec-blockBtn--action.focus {
+.ec-blockBtn--action:focus, .ec-blockBtn--action.focus {
     color: #fff;
     background-color: #d33828;
     border-color: #93271c; }
-  .ec-blockBtn--action:hover {
+.ec-blockBtn--action:hover {
     color: #fff;
     background-color: #d33828;
     border-color: #cb3526; }
-  .ec-blockBtn--action:active, .ec-blockBtn--action.active,
+.ec-blockBtn--action:active, .ec-blockBtn--action.active,
   .open > .ec-blockBtn--action.dropdown-toggle {
     color: #fff;
     background-color: #d33828;
     background-image: none;
     border-color: #cb3526; }
-    .ec-blockBtn--action:active:hover, .ec-blockBtn--action:active:focus, .ec-blockBtn--action:active.focus, .ec-blockBtn--action.active:hover, .ec-blockBtn--action.active:focus, .ec-blockBtn--action.active.focus,
+.ec-blockBtn--action:active:hover, .ec-blockBtn--action:active:focus, .ec-blockBtn--action:active.focus, .ec-blockBtn--action.active:hover, .ec-blockBtn--action.active:focus, .ec-blockBtn--action.active.focus,
     .open > .ec-blockBtn--action.dropdown-toggle:hover,
     .open > .ec-blockBtn--action.dropdown-toggle:focus,
     .open > .ec-blockBtn--action.dropdown-toggle.focus {
       color: #fff;
       background-color: #b53022;
       border-color: #93271c; }
-  .ec-blockBtn--action.disabled:hover, .ec-blockBtn--action.disabled:focus, .ec-blockBtn--action.disabled.focus, .ec-blockBtn--action[disabled]:hover, .ec-blockBtn--action[disabled]:focus, .ec-blockBtn--action[disabled].focus,
+.ec-blockBtn--action.disabled:hover, .ec-blockBtn--action.disabled:focus, .ec-blockBtn--action.disabled.focus, .ec-blockBtn--action[disabled]:hover, .ec-blockBtn--action[disabled]:focus, .ec-blockBtn--action[disabled].focus,
   fieldset[disabled] .ec-blockBtn--action:hover,
   fieldset[disabled] .ec-blockBtn--action:focus,
   fieldset[disabled] .ec-blockBtn--action.focus {
     background-color: #DE5D50;
     border-color: #DE5D50; }
-  .ec-blockBtn--action .badge {
+.ec-blockBtn--action .badge {
     color: #DE5D50;
     background-color: #fff; }
-  .ec-blockBtn--action .ec-icon img {
+.ec-blockBtn--action .ec-icon img {
     width: 1em;
     vertical-align: text-bottom; }
-
 .ec-blockBtn--cancel {
   display: inline-block;
   margin-bottom: 0;
@@ -1136,56 +1459,55 @@ Styleguide 2.1.2
   line-height: 56px;
   padding-top: 0;
   padding-bottom: 0; }
-  .ec-blockBtn--cancel:focus, .ec-blockBtn--cancel.focus, .ec-blockBtn--cancel:active:focus, .ec-blockBtn--cancel:active.focus, .ec-blockBtn--cancel.active:focus, .ec-blockBtn--cancel.active.focus {
+.ec-blockBtn--cancel:focus, .ec-blockBtn--cancel.focus, .ec-blockBtn--cancel:active:focus, .ec-blockBtn--cancel:active.focus, .ec-blockBtn--cancel.active:focus, .ec-blockBtn--cancel.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .ec-blockBtn--cancel:hover, .ec-blockBtn--cancel:focus, .ec-blockBtn--cancel.focus {
+.ec-blockBtn--cancel:hover, .ec-blockBtn--cancel:focus, .ec-blockBtn--cancel.focus {
     color: #525263;
     text-decoration: none; }
-  .ec-blockBtn--cancel:active, .ec-blockBtn--cancel.active {
+.ec-blockBtn--cancel:active, .ec-blockBtn--cancel.active {
     outline: 0;
     background-image: none;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .ec-blockBtn--cancel.disabled, .ec-blockBtn--cancel[disabled],
+.ec-blockBtn--cancel.disabled, .ec-blockBtn--cancel[disabled],
   fieldset[disabled] .ec-blockBtn--cancel {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     opacity: 0.65;
     box-shadow: none; }
-  .ec-blockBtn--cancel:focus, .ec-blockBtn--cancel.focus {
+.ec-blockBtn--cancel:focus, .ec-blockBtn--cancel.focus {
     color: #fff;
     background-color: #3b3b47;
     border-color: #18181d; }
-  .ec-blockBtn--cancel:hover {
+.ec-blockBtn--cancel:hover {
     color: #fff;
     background-color: #3b3b47;
     border-color: #363642; }
-  .ec-blockBtn--cancel:active, .ec-blockBtn--cancel.active,
+.ec-blockBtn--cancel:active, .ec-blockBtn--cancel.active,
   .open > .ec-blockBtn--cancel.dropdown-toggle {
     color: #fff;
     background-color: #3b3b47;
     background-image: none;
     border-color: #363642; }
-    .ec-blockBtn--cancel:active:hover, .ec-blockBtn--cancel:active:focus, .ec-blockBtn--cancel:active.focus, .ec-blockBtn--cancel.active:hover, .ec-blockBtn--cancel.active:focus, .ec-blockBtn--cancel.active.focus,
+.ec-blockBtn--cancel:active:hover, .ec-blockBtn--cancel:active:focus, .ec-blockBtn--cancel:active.focus, .ec-blockBtn--cancel.active:hover, .ec-blockBtn--cancel.active:focus, .ec-blockBtn--cancel.active.focus,
     .open > .ec-blockBtn--cancel.dropdown-toggle:hover,
     .open > .ec-blockBtn--cancel.dropdown-toggle:focus,
     .open > .ec-blockBtn--cancel.dropdown-toggle.focus {
       color: #fff;
       background-color: #2b2b34;
       border-color: #18181d; }
-  .ec-blockBtn--cancel.disabled:hover, .ec-blockBtn--cancel.disabled:focus, .ec-blockBtn--cancel.disabled.focus, .ec-blockBtn--cancel[disabled]:hover, .ec-blockBtn--cancel[disabled]:focus, .ec-blockBtn--cancel[disabled].focus,
+.ec-blockBtn--cancel.disabled:hover, .ec-blockBtn--cancel.disabled:focus, .ec-blockBtn--cancel.disabled.focus, .ec-blockBtn--cancel[disabled]:hover, .ec-blockBtn--cancel[disabled]:focus, .ec-blockBtn--cancel[disabled].focus,
   fieldset[disabled] .ec-blockBtn--cancel:hover,
   fieldset[disabled] .ec-blockBtn--cancel:focus,
   fieldset[disabled] .ec-blockBtn--cancel.focus {
     background-color: #525263;
     border-color: #525263; }
-  .ec-blockBtn--cancel .badge {
+.ec-blockBtn--cancel .badge {
     color: #525263;
     background-color: #fff; }
-  .ec-blockBtn--cancel .ec-icon img {
+.ec-blockBtn--cancel .ec-icon img {
     width: 1em;
     vertical-align: text-bottom; }
-
 /*
 アイコンボタン
 
@@ -1213,7 +1535,7 @@ Styleguide 2.2.1
 */
 .ec-closeBtn {
   cursor: pointer; }
-  .ec-closeBtn .ec-icon img {
+.ec-closeBtn .ec-icon img {
     display: inline-block;
     margin-right: 5px;
     width: 1em;
@@ -1221,7 +1543,6 @@ Styleguide 2.2.1
     position: relative;
     top: -1px;
     vertical-align: middle; }
-
 /*
 アイコンボタン(○)
 
@@ -1258,7 +1579,7 @@ Styleguide 2.2.2
   vertical-align: middle;
   position: relative;
   text-align: center; }
-  .ec-closeBtn--circle .ec-icon img {
+.ec-closeBtn--circle .ec-icon img {
     display: block;
     margin-top: -.5em;
     margin-left: -.5em;
@@ -1267,7 +1588,6 @@ Styleguide 2.2.2
     position: absolute;
     top: 50%;
     left: 50%; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -1310,7 +1630,6 @@ Styleguide 2.3.1
   line-height: 40px;
   opacity: 0.8;
   background-color: #9da3a9; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -1346,7 +1665,6 @@ Styleguide 3.1.1
 */
 .ec-input input[type="search"], .ec-halfInput input[type="search"], .ec-numberInput input[type="search"], .ec-zipInput input[type="search"], .ec-telInput input[type="search"], .ec-select input[type="search"], .ec-birth input[type="search"] {
   box-sizing: border-box; }
-
 .ec-input input[type="radio"], .ec-halfInput input[type="radio"], .ec-numberInput input[type="radio"], .ec-zipInput input[type="radio"], .ec-telInput input[type="radio"], .ec-select input[type="radio"], .ec-birth input[type="radio"],
 .ec-input input[type="checkbox"],
 .ec-halfInput input[type="checkbox"],
@@ -1358,14 +1676,11 @@ Styleguide 3.1.1
   margin: 4px 0 0;
   margin-top: 1px \9;
   line-height: normal; }
-
 .ec-input input[type="file"], .ec-halfInput input[type="file"], .ec-numberInput input[type="file"], .ec-zipInput input[type="file"], .ec-telInput input[type="file"], .ec-select input[type="file"], .ec-birth input[type="file"] {
   display: block; }
-
 .ec-input input[type="range"], .ec-halfInput input[type="range"], .ec-numberInput input[type="range"], .ec-zipInput input[type="range"], .ec-telInput input[type="range"], .ec-select input[type="range"], .ec-birth input[type="range"] {
   display: block;
   width: 100%; }
-
 .ec-input select[multiple], .ec-halfInput select[multiple], .ec-numberInput select[multiple], .ec-zipInput select[multiple], .ec-telInput select[multiple], .ec-select select[multiple], .ec-birth select[multiple],
 .ec-input select[size],
 .ec-halfInput select[size],
@@ -1375,7 +1690,6 @@ Styleguide 3.1.1
 .ec-select select[size],
 .ec-birth select[size] {
   height: auto; }
-
 .ec-input input[type="file"]:focus, .ec-halfInput input[type="file"]:focus, .ec-numberInput input[type="file"]:focus, .ec-zipInput input[type="file"]:focus, .ec-telInput input[type="file"]:focus, .ec-select input[type="file"]:focus, .ec-birth input[type="file"]:focus,
 .ec-input input[type="radio"]:focus,
 .ec-halfInput input[type="radio"]:focus,
@@ -1393,7 +1707,6 @@ Styleguide 3.1.1
 .ec-birth input[type="checkbox"]:focus {
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px; }
-
 .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
   display: block;
   width: 100%;
@@ -1410,21 +1723,21 @@ Styleguide 3.1.1
   box-shadow: none;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   border-radius: 3px; }
-  .ec-input input:focus, .ec-halfInput input:focus, .ec-numberInput input:focus, .ec-zipInput input:focus, .ec-telInput input:focus, .ec-select input:focus, .ec-birth input:focus {
+.ec-input input:focus, .ec-halfInput input:focus, .ec-numberInput input:focus, .ec-zipInput input:focus, .ec-telInput input:focus, .ec-select input:focus, .ec-birth input:focus {
     border-color: #66afe9;
     outline: 0;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
-  .ec-input input::-moz-placeholder, .ec-halfInput input::-moz-placeholder, .ec-numberInput input::-moz-placeholder, .ec-zipInput input::-moz-placeholder, .ec-telInput input::-moz-placeholder, .ec-select input::-moz-placeholder, .ec-birth input::-moz-placeholder {
+.ec-input input::-moz-placeholder, .ec-halfInput input::-moz-placeholder, .ec-numberInput input::-moz-placeholder, .ec-zipInput input::-moz-placeholder, .ec-telInput input::-moz-placeholder, .ec-select input::-moz-placeholder, .ec-birth input::-moz-placeholder {
     color: #999;
     opacity: 1; }
-  .ec-input input:-ms-input-placeholder, .ec-halfInput input:-ms-input-placeholder, .ec-numberInput input:-ms-input-placeholder, .ec-zipInput input:-ms-input-placeholder, .ec-telInput input:-ms-input-placeholder, .ec-select input:-ms-input-placeholder, .ec-birth input:-ms-input-placeholder {
+.ec-input input:-ms-input-placeholder, .ec-halfInput input:-ms-input-placeholder, .ec-numberInput input:-ms-input-placeholder, .ec-zipInput input:-ms-input-placeholder, .ec-telInput input:-ms-input-placeholder, .ec-select input:-ms-input-placeholder, .ec-birth input:-ms-input-placeholder {
     color: #999; }
-  .ec-input input::-webkit-input-placeholder, .ec-halfInput input::-webkit-input-placeholder, .ec-numberInput input::-webkit-input-placeholder, .ec-zipInput input::-webkit-input-placeholder, .ec-telInput input::-webkit-input-placeholder, .ec-select input::-webkit-input-placeholder, .ec-birth input::-webkit-input-placeholder {
+.ec-input input::-webkit-input-placeholder, .ec-halfInput input::-webkit-input-placeholder, .ec-numberInput input::-webkit-input-placeholder, .ec-zipInput input::-webkit-input-placeholder, .ec-telInput input::-webkit-input-placeholder, .ec-select input::-webkit-input-placeholder, .ec-birth input::-webkit-input-placeholder {
     color: #999; }
-  .ec-input input::-ms-expand, .ec-halfInput input::-ms-expand, .ec-numberInput input::-ms-expand, .ec-zipInput input::-ms-expand, .ec-telInput input::-ms-expand, .ec-select input::-ms-expand, .ec-birth input::-ms-expand {
+.ec-input input::-ms-expand, .ec-halfInput input::-ms-expand, .ec-numberInput input::-ms-expand, .ec-zipInput input::-ms-expand, .ec-telInput input::-ms-expand, .ec-select input::-ms-expand, .ec-birth input::-ms-expand {
     border: 0;
     background-color: transparent; }
-  .ec-input input[disabled], .ec-halfInput input[disabled], .ec-numberInput input[disabled], .ec-zipInput input[disabled], .ec-telInput input[disabled], .ec-select input[disabled], .ec-birth input[disabled], .ec-input input[readonly], .ec-halfInput input[readonly], .ec-numberInput input[readonly], .ec-zipInput input[readonly], .ec-telInput input[readonly], .ec-select input[readonly], .ec-birth input[readonly],
+.ec-input input[disabled], .ec-halfInput input[disabled], .ec-numberInput input[disabled], .ec-zipInput input[disabled], .ec-telInput input[disabled], .ec-select input[disabled], .ec-birth input[disabled], .ec-input input[readonly], .ec-halfInput input[readonly], .ec-numberInput input[readonly], .ec-zipInput input[readonly], .ec-telInput input[readonly], .ec-select input[readonly], .ec-birth input[readonly],
   fieldset[disabled] .ec-input input,
   fieldset[disabled] .ec-halfInput input,
   fieldset[disabled] .ec-numberInput input,
@@ -1434,7 +1747,7 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-birth input {
     background-color: #eeeeee;
     opacity: 1; }
-  .ec-input input[disabled], .ec-halfInput input[disabled], .ec-numberInput input[disabled], .ec-zipInput input[disabled], .ec-telInput input[disabled], .ec-select input[disabled], .ec-birth input[disabled],
+.ec-input input[disabled], .ec-halfInput input[disabled], .ec-numberInput input[disabled], .ec-zipInput input[disabled], .ec-telInput input[disabled], .ec-select input[disabled], .ec-birth input[disabled],
   fieldset[disabled] .ec-input input,
   fieldset[disabled] .ec-halfInput input,
   fieldset[disabled] .ec-numberInput input,
@@ -1443,7 +1756,6 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-select input,
   fieldset[disabled] .ec-birth input {
     cursor: not-allowed; }
-
 .ec-input select, .ec-halfInput select, .ec-numberInput select, .ec-zipInput select, .ec-telInput select, .ec-select select, .ec-birth select {
   display: block;
   width: 100%;
@@ -1460,21 +1772,21 @@ Styleguide 3.1.1
   box-shadow: none;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   border-radius: 3px; }
-  .ec-input select:focus, .ec-halfInput select:focus, .ec-numberInput select:focus, .ec-zipInput select:focus, .ec-telInput select:focus, .ec-select select:focus, .ec-birth select:focus {
+.ec-input select:focus, .ec-halfInput select:focus, .ec-numberInput select:focus, .ec-zipInput select:focus, .ec-telInput select:focus, .ec-select select:focus, .ec-birth select:focus {
     border-color: #66afe9;
     outline: 0;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
-  .ec-input select::-moz-placeholder, .ec-halfInput select::-moz-placeholder, .ec-numberInput select::-moz-placeholder, .ec-zipInput select::-moz-placeholder, .ec-telInput select::-moz-placeholder, .ec-select select::-moz-placeholder, .ec-birth select::-moz-placeholder {
+.ec-input select::-moz-placeholder, .ec-halfInput select::-moz-placeholder, .ec-numberInput select::-moz-placeholder, .ec-zipInput select::-moz-placeholder, .ec-telInput select::-moz-placeholder, .ec-select select::-moz-placeholder, .ec-birth select::-moz-placeholder {
     color: #999;
     opacity: 1; }
-  .ec-input select:-ms-input-placeholder, .ec-halfInput select:-ms-input-placeholder, .ec-numberInput select:-ms-input-placeholder, .ec-zipInput select:-ms-input-placeholder, .ec-telInput select:-ms-input-placeholder, .ec-select select:-ms-input-placeholder, .ec-birth select:-ms-input-placeholder {
+.ec-input select:-ms-input-placeholder, .ec-halfInput select:-ms-input-placeholder, .ec-numberInput select:-ms-input-placeholder, .ec-zipInput select:-ms-input-placeholder, .ec-telInput select:-ms-input-placeholder, .ec-select select:-ms-input-placeholder, .ec-birth select:-ms-input-placeholder {
     color: #999; }
-  .ec-input select::-webkit-input-placeholder, .ec-halfInput select::-webkit-input-placeholder, .ec-numberInput select::-webkit-input-placeholder, .ec-zipInput select::-webkit-input-placeholder, .ec-telInput select::-webkit-input-placeholder, .ec-select select::-webkit-input-placeholder, .ec-birth select::-webkit-input-placeholder {
+.ec-input select::-webkit-input-placeholder, .ec-halfInput select::-webkit-input-placeholder, .ec-numberInput select::-webkit-input-placeholder, .ec-zipInput select::-webkit-input-placeholder, .ec-telInput select::-webkit-input-placeholder, .ec-select select::-webkit-input-placeholder, .ec-birth select::-webkit-input-placeholder {
     color: #999; }
-  .ec-input select::-ms-expand, .ec-halfInput select::-ms-expand, .ec-numberInput select::-ms-expand, .ec-zipInput select::-ms-expand, .ec-telInput select::-ms-expand, .ec-select select::-ms-expand, .ec-birth select::-ms-expand {
+.ec-input select::-ms-expand, .ec-halfInput select::-ms-expand, .ec-numberInput select::-ms-expand, .ec-zipInput select::-ms-expand, .ec-telInput select::-ms-expand, .ec-select select::-ms-expand, .ec-birth select::-ms-expand {
     border: 0;
     background-color: transparent; }
-  .ec-input select[disabled], .ec-halfInput select[disabled], .ec-numberInput select[disabled], .ec-zipInput select[disabled], .ec-telInput select[disabled], .ec-select select[disabled], .ec-birth select[disabled], .ec-input select[readonly], .ec-halfInput select[readonly], .ec-numberInput select[readonly], .ec-zipInput select[readonly], .ec-telInput select[readonly], .ec-select select[readonly], .ec-birth select[readonly],
+.ec-input select[disabled], .ec-halfInput select[disabled], .ec-numberInput select[disabled], .ec-zipInput select[disabled], .ec-telInput select[disabled], .ec-select select[disabled], .ec-birth select[disabled], .ec-input select[readonly], .ec-halfInput select[readonly], .ec-numberInput select[readonly], .ec-zipInput select[readonly], .ec-telInput select[readonly], .ec-select select[readonly], .ec-birth select[readonly],
   fieldset[disabled] .ec-input select,
   fieldset[disabled] .ec-halfInput select,
   fieldset[disabled] .ec-numberInput select,
@@ -1484,7 +1796,7 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-birth select {
     background-color: #eeeeee;
     opacity: 1; }
-  .ec-input select[disabled], .ec-halfInput select[disabled], .ec-numberInput select[disabled], .ec-zipInput select[disabled], .ec-telInput select[disabled], .ec-select select[disabled], .ec-birth select[disabled],
+.ec-input select[disabled], .ec-halfInput select[disabled], .ec-numberInput select[disabled], .ec-zipInput select[disabled], .ec-telInput select[disabled], .ec-select select[disabled], .ec-birth select[disabled],
   fieldset[disabled] .ec-input select,
   fieldset[disabled] .ec-halfInput select,
   fieldset[disabled] .ec-numberInput select,
@@ -1493,7 +1805,6 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-select select,
   fieldset[disabled] .ec-birth select {
     cursor: not-allowed; }
-
 .ec-input textarea, .ec-halfInput textarea, .ec-numberInput textarea, .ec-zipInput textarea, .ec-telInput textarea, .ec-select textarea, .ec-birth textarea {
   display: block;
   width: 100%;
@@ -1510,21 +1821,21 @@ Styleguide 3.1.1
   box-shadow: none;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   border-radius: 3px; }
-  .ec-input textarea:focus, .ec-halfInput textarea:focus, .ec-numberInput textarea:focus, .ec-zipInput textarea:focus, .ec-telInput textarea:focus, .ec-select textarea:focus, .ec-birth textarea:focus {
+.ec-input textarea:focus, .ec-halfInput textarea:focus, .ec-numberInput textarea:focus, .ec-zipInput textarea:focus, .ec-telInput textarea:focus, .ec-select textarea:focus, .ec-birth textarea:focus {
     border-color: #66afe9;
     outline: 0;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
-  .ec-input textarea::-moz-placeholder, .ec-halfInput textarea::-moz-placeholder, .ec-numberInput textarea::-moz-placeholder, .ec-zipInput textarea::-moz-placeholder, .ec-telInput textarea::-moz-placeholder, .ec-select textarea::-moz-placeholder, .ec-birth textarea::-moz-placeholder {
+.ec-input textarea::-moz-placeholder, .ec-halfInput textarea::-moz-placeholder, .ec-numberInput textarea::-moz-placeholder, .ec-zipInput textarea::-moz-placeholder, .ec-telInput textarea::-moz-placeholder, .ec-select textarea::-moz-placeholder, .ec-birth textarea::-moz-placeholder {
     color: #999;
     opacity: 1; }
-  .ec-input textarea:-ms-input-placeholder, .ec-halfInput textarea:-ms-input-placeholder, .ec-numberInput textarea:-ms-input-placeholder, .ec-zipInput textarea:-ms-input-placeholder, .ec-telInput textarea:-ms-input-placeholder, .ec-select textarea:-ms-input-placeholder, .ec-birth textarea:-ms-input-placeholder {
+.ec-input textarea:-ms-input-placeholder, .ec-halfInput textarea:-ms-input-placeholder, .ec-numberInput textarea:-ms-input-placeholder, .ec-zipInput textarea:-ms-input-placeholder, .ec-telInput textarea:-ms-input-placeholder, .ec-select textarea:-ms-input-placeholder, .ec-birth textarea:-ms-input-placeholder {
     color: #999; }
-  .ec-input textarea::-webkit-input-placeholder, .ec-halfInput textarea::-webkit-input-placeholder, .ec-numberInput textarea::-webkit-input-placeholder, .ec-zipInput textarea::-webkit-input-placeholder, .ec-telInput textarea::-webkit-input-placeholder, .ec-select textarea::-webkit-input-placeholder, .ec-birth textarea::-webkit-input-placeholder {
+.ec-input textarea::-webkit-input-placeholder, .ec-halfInput textarea::-webkit-input-placeholder, .ec-numberInput textarea::-webkit-input-placeholder, .ec-zipInput textarea::-webkit-input-placeholder, .ec-telInput textarea::-webkit-input-placeholder, .ec-select textarea::-webkit-input-placeholder, .ec-birth textarea::-webkit-input-placeholder {
     color: #999; }
-  .ec-input textarea::-ms-expand, .ec-halfInput textarea::-ms-expand, .ec-numberInput textarea::-ms-expand, .ec-zipInput textarea::-ms-expand, .ec-telInput textarea::-ms-expand, .ec-select textarea::-ms-expand, .ec-birth textarea::-ms-expand {
+.ec-input textarea::-ms-expand, .ec-halfInput textarea::-ms-expand, .ec-numberInput textarea::-ms-expand, .ec-zipInput textarea::-ms-expand, .ec-telInput textarea::-ms-expand, .ec-select textarea::-ms-expand, .ec-birth textarea::-ms-expand {
     border: 0;
     background-color: transparent; }
-  .ec-input textarea[disabled], .ec-halfInput textarea[disabled], .ec-numberInput textarea[disabled], .ec-zipInput textarea[disabled], .ec-telInput textarea[disabled], .ec-select textarea[disabled], .ec-birth textarea[disabled], .ec-input textarea[readonly], .ec-halfInput textarea[readonly], .ec-numberInput textarea[readonly], .ec-zipInput textarea[readonly], .ec-telInput textarea[readonly], .ec-select textarea[readonly], .ec-birth textarea[readonly],
+.ec-input textarea[disabled], .ec-halfInput textarea[disabled], .ec-numberInput textarea[disabled], .ec-zipInput textarea[disabled], .ec-telInput textarea[disabled], .ec-select textarea[disabled], .ec-birth textarea[disabled], .ec-input textarea[readonly], .ec-halfInput textarea[readonly], .ec-numberInput textarea[readonly], .ec-zipInput textarea[readonly], .ec-telInput textarea[readonly], .ec-select textarea[readonly], .ec-birth textarea[readonly],
   fieldset[disabled] .ec-input textarea,
   fieldset[disabled] .ec-halfInput textarea,
   fieldset[disabled] .ec-numberInput textarea,
@@ -1534,7 +1845,7 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-birth textarea {
     background-color: #eeeeee;
     opacity: 1; }
-  .ec-input textarea[disabled], .ec-halfInput textarea[disabled], .ec-numberInput textarea[disabled], .ec-zipInput textarea[disabled], .ec-telInput textarea[disabled], .ec-select textarea[disabled], .ec-birth textarea[disabled],
+.ec-input textarea[disabled], .ec-halfInput textarea[disabled], .ec-numberInput textarea[disabled], .ec-zipInput textarea[disabled], .ec-telInput textarea[disabled], .ec-select textarea[disabled], .ec-birth textarea[disabled],
   fieldset[disabled] .ec-input textarea,
   fieldset[disabled] .ec-halfInput textarea,
   fieldset[disabled] .ec-numberInput textarea,
@@ -1543,43 +1854,34 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-select textarea,
   fieldset[disabled] .ec-birth textarea {
     cursor: not-allowed; }
-
 .ec-input input:focus, .ec-halfInput input:focus, .ec-numberInput input:focus, .ec-zipInput input:focus, .ec-telInput input:focus, .ec-select input:focus, .ec-birth input:focus, .ec-input textarea:focus, .ec-halfInput textarea:focus, .ec-numberInput textarea:focus, .ec-zipInput textarea:focus, .ec-telInput textarea:focus, .ec-select textarea:focus, .ec-birth textarea:focus {
   box-shadow: none;
   border-color: #3c8dbc; }
-
 .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
   height: 40px;
   margin-bottom: 10px; }
-
 .ec-input textarea, .ec-halfInput textarea, .ec-numberInput textarea, .ec-zipInput textarea, .ec-telInput textarea, .ec-select textarea, .ec-birth textarea {
   height: auto;
   min-height: 100px; }
-
 .ec-input p, .ec-halfInput p, .ec-numberInput p, .ec-zipInput p, .ec-telInput p, .ec-select p, .ec-birth p {
   line-height: 1.4; }
-
 .ec-input .ec-errorMessage, .ec-halfInput .ec-errorMessage, .ec-numberInput .ec-errorMessage, .ec-zipInput .ec-errorMessage, .ec-telInput .ec-errorMessage, .ec-select .ec-errorMessage, .ec-birth .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
   color: #DE5D50; }
-
 .error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select {
   margin-bottom: 5px;
   border-color: #CF3F34;
   background: #FDF1F0; }
-
 .ec-checkbox .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
   color: #DE5D50; }
-
 .error.ec-checkbox input, .error.ec-checkbox label {
   border-color: #CF3F34;
   background: #FDF1F0; }
-
 /*
 フォーム（text２つ）
 
@@ -1602,10 +1904,8 @@ Styleguide 3.1.2
   display: inline-block;
   width: 47%;
   margin-left: 2%; }
-
 .ec-halfInput input[type='text']:first-child {
   margin-left: 0; }
-
 /*
 数量ボタン
 
@@ -1627,7 +1927,6 @@ Styleguide 3.1.3
   width: auto;
   max-width: 100px;
   text-align: right; }
-
 /*
 郵便番号フォーム
 
@@ -1654,24 +1953,23 @@ Styleguide 3.1.4
 */
 .ec-zipInput {
   display: inline-block; }
-  .ec-zipInput input {
+.ec-zipInput input {
     display: inline-block;
     text-align: left;
     width: auto;
     max-width: 8em;
     font-size: 16px; }
-  .ec-zipInput span {
+.ec-zipInput span {
     display: inline-block;
     padding: 0 5px 0 3px;
     margin-left: 5px; }
-
 .ec-zipInputHelp {
   display: inline-block;
   margin-left: 10px;
   margin-bottom: 16px;
   vertical-align: baseline;
   line-height: 0; }
-  .ec-zipInputHelp .ec-zipInputHelp__icon {
+.ec-zipInputHelp .ec-zipInputHelp__icon {
     display: inline-block;
     margin-top: -10px;
     width: 20px;
@@ -1681,23 +1979,21 @@ Styleguide 3.1.4
     font-size: 13px;
     position: relative;
     top: -6px; }
-    .ec-zipInputHelp .ec-zipInputHelp__icon .ec-icon img {
+.ec-zipInputHelp .ec-zipInputHelp__icon .ec-icon img {
       width: 1em;
       height: 1em;
       position: relative;
       left: 3px;
       top: 3px; }
-  .ec-zipInputHelp span {
+.ec-zipInputHelp span {
     margin-left: 8px;
     display: inline-block;
     color: #0092C4;
     vertical-align: 3px; }
-
 .ec-zipAuto {
   margin-bottom: 16px; }
-  .ec-zipAuto .ec-inlineBtn {
+.ec-zipAuto .ec-inlineBtn {
     font-weight: normal; }
-
 /*
 電話番号ボタン
 
@@ -1716,7 +2012,6 @@ Styleguide 3.1.5
 .ec-telInput input {
   max-width: 10em;
   text-align: left; }
-
 /**
  * ECCUBE 固有のスタイルユーティリティ
  */
@@ -1755,7 +2050,6 @@ Styleguide 3.1.1
 */
 .ec-input input[type="search"], .ec-halfInput input[type="search"], .ec-numberInput input[type="search"], .ec-zipInput input[type="search"], .ec-telInput input[type="search"], .ec-select input[type="search"], .ec-birth input[type="search"] {
   box-sizing: border-box; }
-
 .ec-input input[type="radio"], .ec-halfInput input[type="radio"], .ec-numberInput input[type="radio"], .ec-zipInput input[type="radio"], .ec-telInput input[type="radio"], .ec-select input[type="radio"], .ec-birth input[type="radio"],
 .ec-input input[type="checkbox"],
 .ec-halfInput input[type="checkbox"],
@@ -1767,14 +2061,11 @@ Styleguide 3.1.1
   margin: 4px 0 0;
   margin-top: 1px \9;
   line-height: normal; }
-
 .ec-input input[type="file"], .ec-halfInput input[type="file"], .ec-numberInput input[type="file"], .ec-zipInput input[type="file"], .ec-telInput input[type="file"], .ec-select input[type="file"], .ec-birth input[type="file"] {
   display: block; }
-
 .ec-input input[type="range"], .ec-halfInput input[type="range"], .ec-numberInput input[type="range"], .ec-zipInput input[type="range"], .ec-telInput input[type="range"], .ec-select input[type="range"], .ec-birth input[type="range"] {
   display: block;
   width: 100%; }
-
 .ec-input select[multiple], .ec-halfInput select[multiple], .ec-numberInput select[multiple], .ec-zipInput select[multiple], .ec-telInput select[multiple], .ec-select select[multiple], .ec-birth select[multiple],
 .ec-input select[size],
 .ec-halfInput select[size],
@@ -1784,7 +2075,6 @@ Styleguide 3.1.1
 .ec-select select[size],
 .ec-birth select[size] {
   height: auto; }
-
 .ec-input input[type="file"]:focus, .ec-halfInput input[type="file"]:focus, .ec-numberInput input[type="file"]:focus, .ec-zipInput input[type="file"]:focus, .ec-telInput input[type="file"]:focus, .ec-select input[type="file"]:focus, .ec-birth input[type="file"]:focus,
 .ec-input input[type="radio"]:focus,
 .ec-halfInput input[type="radio"]:focus,
@@ -1802,7 +2092,6 @@ Styleguide 3.1.1
 .ec-birth input[type="checkbox"]:focus {
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px; }
-
 .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
   display: block;
   width: 100%;
@@ -1819,21 +2108,21 @@ Styleguide 3.1.1
   box-shadow: none;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   border-radius: 3px; }
-  .ec-input input:focus, .ec-halfInput input:focus, .ec-numberInput input:focus, .ec-zipInput input:focus, .ec-telInput input:focus, .ec-select input:focus, .ec-birth input:focus {
+.ec-input input:focus, .ec-halfInput input:focus, .ec-numberInput input:focus, .ec-zipInput input:focus, .ec-telInput input:focus, .ec-select input:focus, .ec-birth input:focus {
     border-color: #66afe9;
     outline: 0;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
-  .ec-input input::-moz-placeholder, .ec-halfInput input::-moz-placeholder, .ec-numberInput input::-moz-placeholder, .ec-zipInput input::-moz-placeholder, .ec-telInput input::-moz-placeholder, .ec-select input::-moz-placeholder, .ec-birth input::-moz-placeholder {
+.ec-input input::-moz-placeholder, .ec-halfInput input::-moz-placeholder, .ec-numberInput input::-moz-placeholder, .ec-zipInput input::-moz-placeholder, .ec-telInput input::-moz-placeholder, .ec-select input::-moz-placeholder, .ec-birth input::-moz-placeholder {
     color: #999;
     opacity: 1; }
-  .ec-input input:-ms-input-placeholder, .ec-halfInput input:-ms-input-placeholder, .ec-numberInput input:-ms-input-placeholder, .ec-zipInput input:-ms-input-placeholder, .ec-telInput input:-ms-input-placeholder, .ec-select input:-ms-input-placeholder, .ec-birth input:-ms-input-placeholder {
+.ec-input input:-ms-input-placeholder, .ec-halfInput input:-ms-input-placeholder, .ec-numberInput input:-ms-input-placeholder, .ec-zipInput input:-ms-input-placeholder, .ec-telInput input:-ms-input-placeholder, .ec-select input:-ms-input-placeholder, .ec-birth input:-ms-input-placeholder {
     color: #999; }
-  .ec-input input::-webkit-input-placeholder, .ec-halfInput input::-webkit-input-placeholder, .ec-numberInput input::-webkit-input-placeholder, .ec-zipInput input::-webkit-input-placeholder, .ec-telInput input::-webkit-input-placeholder, .ec-select input::-webkit-input-placeholder, .ec-birth input::-webkit-input-placeholder {
+.ec-input input::-webkit-input-placeholder, .ec-halfInput input::-webkit-input-placeholder, .ec-numberInput input::-webkit-input-placeholder, .ec-zipInput input::-webkit-input-placeholder, .ec-telInput input::-webkit-input-placeholder, .ec-select input::-webkit-input-placeholder, .ec-birth input::-webkit-input-placeholder {
     color: #999; }
-  .ec-input input::-ms-expand, .ec-halfInput input::-ms-expand, .ec-numberInput input::-ms-expand, .ec-zipInput input::-ms-expand, .ec-telInput input::-ms-expand, .ec-select input::-ms-expand, .ec-birth input::-ms-expand {
+.ec-input input::-ms-expand, .ec-halfInput input::-ms-expand, .ec-numberInput input::-ms-expand, .ec-zipInput input::-ms-expand, .ec-telInput input::-ms-expand, .ec-select input::-ms-expand, .ec-birth input::-ms-expand {
     border: 0;
     background-color: transparent; }
-  .ec-input input[disabled], .ec-halfInput input[disabled], .ec-numberInput input[disabled], .ec-zipInput input[disabled], .ec-telInput input[disabled], .ec-select input[disabled], .ec-birth input[disabled], .ec-input input[readonly], .ec-halfInput input[readonly], .ec-numberInput input[readonly], .ec-zipInput input[readonly], .ec-telInput input[readonly], .ec-select input[readonly], .ec-birth input[readonly],
+.ec-input input[disabled], .ec-halfInput input[disabled], .ec-numberInput input[disabled], .ec-zipInput input[disabled], .ec-telInput input[disabled], .ec-select input[disabled], .ec-birth input[disabled], .ec-input input[readonly], .ec-halfInput input[readonly], .ec-numberInput input[readonly], .ec-zipInput input[readonly], .ec-telInput input[readonly], .ec-select input[readonly], .ec-birth input[readonly],
   fieldset[disabled] .ec-input input,
   fieldset[disabled] .ec-halfInput input,
   fieldset[disabled] .ec-numberInput input,
@@ -1843,7 +2132,7 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-birth input {
     background-color: #eeeeee;
     opacity: 1; }
-  .ec-input input[disabled], .ec-halfInput input[disabled], .ec-numberInput input[disabled], .ec-zipInput input[disabled], .ec-telInput input[disabled], .ec-select input[disabled], .ec-birth input[disabled],
+.ec-input input[disabled], .ec-halfInput input[disabled], .ec-numberInput input[disabled], .ec-zipInput input[disabled], .ec-telInput input[disabled], .ec-select input[disabled], .ec-birth input[disabled],
   fieldset[disabled] .ec-input input,
   fieldset[disabled] .ec-halfInput input,
   fieldset[disabled] .ec-numberInput input,
@@ -1852,7 +2141,6 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-select input,
   fieldset[disabled] .ec-birth input {
     cursor: not-allowed; }
-
 .ec-input select, .ec-halfInput select, .ec-numberInput select, .ec-zipInput select, .ec-telInput select, .ec-select select, .ec-birth select {
   display: block;
   width: 100%;
@@ -1869,21 +2157,21 @@ Styleguide 3.1.1
   box-shadow: none;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   border-radius: 3px; }
-  .ec-input select:focus, .ec-halfInput select:focus, .ec-numberInput select:focus, .ec-zipInput select:focus, .ec-telInput select:focus, .ec-select select:focus, .ec-birth select:focus {
+.ec-input select:focus, .ec-halfInput select:focus, .ec-numberInput select:focus, .ec-zipInput select:focus, .ec-telInput select:focus, .ec-select select:focus, .ec-birth select:focus {
     border-color: #66afe9;
     outline: 0;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
-  .ec-input select::-moz-placeholder, .ec-halfInput select::-moz-placeholder, .ec-numberInput select::-moz-placeholder, .ec-zipInput select::-moz-placeholder, .ec-telInput select::-moz-placeholder, .ec-select select::-moz-placeholder, .ec-birth select::-moz-placeholder {
+.ec-input select::-moz-placeholder, .ec-halfInput select::-moz-placeholder, .ec-numberInput select::-moz-placeholder, .ec-zipInput select::-moz-placeholder, .ec-telInput select::-moz-placeholder, .ec-select select::-moz-placeholder, .ec-birth select::-moz-placeholder {
     color: #999;
     opacity: 1; }
-  .ec-input select:-ms-input-placeholder, .ec-halfInput select:-ms-input-placeholder, .ec-numberInput select:-ms-input-placeholder, .ec-zipInput select:-ms-input-placeholder, .ec-telInput select:-ms-input-placeholder, .ec-select select:-ms-input-placeholder, .ec-birth select:-ms-input-placeholder {
+.ec-input select:-ms-input-placeholder, .ec-halfInput select:-ms-input-placeholder, .ec-numberInput select:-ms-input-placeholder, .ec-zipInput select:-ms-input-placeholder, .ec-telInput select:-ms-input-placeholder, .ec-select select:-ms-input-placeholder, .ec-birth select:-ms-input-placeholder {
     color: #999; }
-  .ec-input select::-webkit-input-placeholder, .ec-halfInput select::-webkit-input-placeholder, .ec-numberInput select::-webkit-input-placeholder, .ec-zipInput select::-webkit-input-placeholder, .ec-telInput select::-webkit-input-placeholder, .ec-select select::-webkit-input-placeholder, .ec-birth select::-webkit-input-placeholder {
+.ec-input select::-webkit-input-placeholder, .ec-halfInput select::-webkit-input-placeholder, .ec-numberInput select::-webkit-input-placeholder, .ec-zipInput select::-webkit-input-placeholder, .ec-telInput select::-webkit-input-placeholder, .ec-select select::-webkit-input-placeholder, .ec-birth select::-webkit-input-placeholder {
     color: #999; }
-  .ec-input select::-ms-expand, .ec-halfInput select::-ms-expand, .ec-numberInput select::-ms-expand, .ec-zipInput select::-ms-expand, .ec-telInput select::-ms-expand, .ec-select select::-ms-expand, .ec-birth select::-ms-expand {
+.ec-input select::-ms-expand, .ec-halfInput select::-ms-expand, .ec-numberInput select::-ms-expand, .ec-zipInput select::-ms-expand, .ec-telInput select::-ms-expand, .ec-select select::-ms-expand, .ec-birth select::-ms-expand {
     border: 0;
     background-color: transparent; }
-  .ec-input select[disabled], .ec-halfInput select[disabled], .ec-numberInput select[disabled], .ec-zipInput select[disabled], .ec-telInput select[disabled], .ec-select select[disabled], .ec-birth select[disabled], .ec-input select[readonly], .ec-halfInput select[readonly], .ec-numberInput select[readonly], .ec-zipInput select[readonly], .ec-telInput select[readonly], .ec-select select[readonly], .ec-birth select[readonly],
+.ec-input select[disabled], .ec-halfInput select[disabled], .ec-numberInput select[disabled], .ec-zipInput select[disabled], .ec-telInput select[disabled], .ec-select select[disabled], .ec-birth select[disabled], .ec-input select[readonly], .ec-halfInput select[readonly], .ec-numberInput select[readonly], .ec-zipInput select[readonly], .ec-telInput select[readonly], .ec-select select[readonly], .ec-birth select[readonly],
   fieldset[disabled] .ec-input select,
   fieldset[disabled] .ec-halfInput select,
   fieldset[disabled] .ec-numberInput select,
@@ -1893,7 +2181,7 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-birth select {
     background-color: #eeeeee;
     opacity: 1; }
-  .ec-input select[disabled], .ec-halfInput select[disabled], .ec-numberInput select[disabled], .ec-zipInput select[disabled], .ec-telInput select[disabled], .ec-select select[disabled], .ec-birth select[disabled],
+.ec-input select[disabled], .ec-halfInput select[disabled], .ec-numberInput select[disabled], .ec-zipInput select[disabled], .ec-telInput select[disabled], .ec-select select[disabled], .ec-birth select[disabled],
   fieldset[disabled] .ec-input select,
   fieldset[disabled] .ec-halfInput select,
   fieldset[disabled] .ec-numberInput select,
@@ -1902,7 +2190,6 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-select select,
   fieldset[disabled] .ec-birth select {
     cursor: not-allowed; }
-
 .ec-input textarea, .ec-halfInput textarea, .ec-numberInput textarea, .ec-zipInput textarea, .ec-telInput textarea, .ec-select textarea, .ec-birth textarea {
   display: block;
   width: 100%;
@@ -1919,21 +2206,21 @@ Styleguide 3.1.1
   box-shadow: none;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   border-radius: 3px; }
-  .ec-input textarea:focus, .ec-halfInput textarea:focus, .ec-numberInput textarea:focus, .ec-zipInput textarea:focus, .ec-telInput textarea:focus, .ec-select textarea:focus, .ec-birth textarea:focus {
+.ec-input textarea:focus, .ec-halfInput textarea:focus, .ec-numberInput textarea:focus, .ec-zipInput textarea:focus, .ec-telInput textarea:focus, .ec-select textarea:focus, .ec-birth textarea:focus {
     border-color: #66afe9;
     outline: 0;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
-  .ec-input textarea::-moz-placeholder, .ec-halfInput textarea::-moz-placeholder, .ec-numberInput textarea::-moz-placeholder, .ec-zipInput textarea::-moz-placeholder, .ec-telInput textarea::-moz-placeholder, .ec-select textarea::-moz-placeholder, .ec-birth textarea::-moz-placeholder {
+.ec-input textarea::-moz-placeholder, .ec-halfInput textarea::-moz-placeholder, .ec-numberInput textarea::-moz-placeholder, .ec-zipInput textarea::-moz-placeholder, .ec-telInput textarea::-moz-placeholder, .ec-select textarea::-moz-placeholder, .ec-birth textarea::-moz-placeholder {
     color: #999;
     opacity: 1; }
-  .ec-input textarea:-ms-input-placeholder, .ec-halfInput textarea:-ms-input-placeholder, .ec-numberInput textarea:-ms-input-placeholder, .ec-zipInput textarea:-ms-input-placeholder, .ec-telInput textarea:-ms-input-placeholder, .ec-select textarea:-ms-input-placeholder, .ec-birth textarea:-ms-input-placeholder {
+.ec-input textarea:-ms-input-placeholder, .ec-halfInput textarea:-ms-input-placeholder, .ec-numberInput textarea:-ms-input-placeholder, .ec-zipInput textarea:-ms-input-placeholder, .ec-telInput textarea:-ms-input-placeholder, .ec-select textarea:-ms-input-placeholder, .ec-birth textarea:-ms-input-placeholder {
     color: #999; }
-  .ec-input textarea::-webkit-input-placeholder, .ec-halfInput textarea::-webkit-input-placeholder, .ec-numberInput textarea::-webkit-input-placeholder, .ec-zipInput textarea::-webkit-input-placeholder, .ec-telInput textarea::-webkit-input-placeholder, .ec-select textarea::-webkit-input-placeholder, .ec-birth textarea::-webkit-input-placeholder {
+.ec-input textarea::-webkit-input-placeholder, .ec-halfInput textarea::-webkit-input-placeholder, .ec-numberInput textarea::-webkit-input-placeholder, .ec-zipInput textarea::-webkit-input-placeholder, .ec-telInput textarea::-webkit-input-placeholder, .ec-select textarea::-webkit-input-placeholder, .ec-birth textarea::-webkit-input-placeholder {
     color: #999; }
-  .ec-input textarea::-ms-expand, .ec-halfInput textarea::-ms-expand, .ec-numberInput textarea::-ms-expand, .ec-zipInput textarea::-ms-expand, .ec-telInput textarea::-ms-expand, .ec-select textarea::-ms-expand, .ec-birth textarea::-ms-expand {
+.ec-input textarea::-ms-expand, .ec-halfInput textarea::-ms-expand, .ec-numberInput textarea::-ms-expand, .ec-zipInput textarea::-ms-expand, .ec-telInput textarea::-ms-expand, .ec-select textarea::-ms-expand, .ec-birth textarea::-ms-expand {
     border: 0;
     background-color: transparent; }
-  .ec-input textarea[disabled], .ec-halfInput textarea[disabled], .ec-numberInput textarea[disabled], .ec-zipInput textarea[disabled], .ec-telInput textarea[disabled], .ec-select textarea[disabled], .ec-birth textarea[disabled], .ec-input textarea[readonly], .ec-halfInput textarea[readonly], .ec-numberInput textarea[readonly], .ec-zipInput textarea[readonly], .ec-telInput textarea[readonly], .ec-select textarea[readonly], .ec-birth textarea[readonly],
+.ec-input textarea[disabled], .ec-halfInput textarea[disabled], .ec-numberInput textarea[disabled], .ec-zipInput textarea[disabled], .ec-telInput textarea[disabled], .ec-select textarea[disabled], .ec-birth textarea[disabled], .ec-input textarea[readonly], .ec-halfInput textarea[readonly], .ec-numberInput textarea[readonly], .ec-zipInput textarea[readonly], .ec-telInput textarea[readonly], .ec-select textarea[readonly], .ec-birth textarea[readonly],
   fieldset[disabled] .ec-input textarea,
   fieldset[disabled] .ec-halfInput textarea,
   fieldset[disabled] .ec-numberInput textarea,
@@ -1943,7 +2230,7 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-birth textarea {
     background-color: #eeeeee;
     opacity: 1; }
-  .ec-input textarea[disabled], .ec-halfInput textarea[disabled], .ec-numberInput textarea[disabled], .ec-zipInput textarea[disabled], .ec-telInput textarea[disabled], .ec-select textarea[disabled], .ec-birth textarea[disabled],
+.ec-input textarea[disabled], .ec-halfInput textarea[disabled], .ec-numberInput textarea[disabled], .ec-zipInput textarea[disabled], .ec-telInput textarea[disabled], .ec-select textarea[disabled], .ec-birth textarea[disabled],
   fieldset[disabled] .ec-input textarea,
   fieldset[disabled] .ec-halfInput textarea,
   fieldset[disabled] .ec-numberInput textarea,
@@ -1952,43 +2239,34 @@ Styleguide 3.1.1
   fieldset[disabled] .ec-select textarea,
   fieldset[disabled] .ec-birth textarea {
     cursor: not-allowed; }
-
 .ec-input input:focus, .ec-halfInput input:focus, .ec-numberInput input:focus, .ec-zipInput input:focus, .ec-telInput input:focus, .ec-select input:focus, .ec-birth input:focus, .ec-input textarea:focus, .ec-halfInput textarea:focus, .ec-numberInput textarea:focus, .ec-zipInput textarea:focus, .ec-telInput textarea:focus, .ec-select textarea:focus, .ec-birth textarea:focus {
   box-shadow: none;
   border-color: #3c8dbc; }
-
 .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
   height: 40px;
   margin-bottom: 10px; }
-
 .ec-input textarea, .ec-halfInput textarea, .ec-numberInput textarea, .ec-zipInput textarea, .ec-telInput textarea, .ec-select textarea, .ec-birth textarea {
   height: auto;
   min-height: 100px; }
-
 .ec-input p, .ec-halfInput p, .ec-numberInput p, .ec-zipInput p, .ec-telInput p, .ec-select p, .ec-birth p {
   line-height: 1.4; }
-
 .ec-input .ec-errorMessage, .ec-halfInput .ec-errorMessage, .ec-numberInput .ec-errorMessage, .ec-zipInput .ec-errorMessage, .ec-telInput .ec-errorMessage, .ec-select .ec-errorMessage, .ec-birth .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
   color: #DE5D50; }
-
 .error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select {
   margin-bottom: 5px;
   border-color: #CF3F34;
   background: #FDF1F0; }
-
 .ec-checkbox .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
   color: #DE5D50; }
-
 .error.ec-checkbox input, .error.ec-checkbox label {
   border-color: #CF3F34;
   background: #FDF1F0; }
-
 /*
 フォーム（text２つ）
 
@@ -2011,10 +2289,8 @@ Styleguide 3.1.2
   display: inline-block;
   width: 47%;
   margin-left: 2%; }
-
 .ec-halfInput input[type='text']:first-child {
   margin-left: 0; }
-
 /*
 数量ボタン
 
@@ -2036,7 +2312,6 @@ Styleguide 3.1.3
   width: auto;
   max-width: 100px;
   text-align: right; }
-
 /*
 郵便番号フォーム
 
@@ -2063,24 +2338,23 @@ Styleguide 3.1.4
 */
 .ec-zipInput {
   display: inline-block; }
-  .ec-zipInput input {
+.ec-zipInput input {
     display: inline-block;
     text-align: left;
     width: auto;
     max-width: 8em;
     font-size: 16px; }
-  .ec-zipInput span {
+.ec-zipInput span {
     display: inline-block;
     padding: 0 5px 0 3px;
     margin-left: 5px; }
-
 .ec-zipInputHelp {
   display: inline-block;
   margin-left: 10px;
   margin-bottom: 16px;
   vertical-align: baseline;
   line-height: 0; }
-  .ec-zipInputHelp .ec-zipInputHelp__icon {
+.ec-zipInputHelp .ec-zipInputHelp__icon {
     display: inline-block;
     margin-top: -10px;
     width: 20px;
@@ -2090,23 +2364,21 @@ Styleguide 3.1.4
     font-size: 13px;
     position: relative;
     top: -6px; }
-    .ec-zipInputHelp .ec-zipInputHelp__icon .ec-icon img {
+.ec-zipInputHelp .ec-zipInputHelp__icon .ec-icon img {
       width: 1em;
       height: 1em;
       position: relative;
       left: 3px;
       top: 3px; }
-  .ec-zipInputHelp span {
+.ec-zipInputHelp span {
     margin-left: 8px;
     display: inline-block;
     color: #0092C4;
     vertical-align: 3px; }
-
 .ec-zipAuto {
   margin-bottom: 16px; }
-  .ec-zipAuto .ec-inlineBtn {
+.ec-zipAuto .ec-inlineBtn {
     font-weight: normal; }
-
 /*
 電話番号ボタン
 
@@ -2125,7 +2397,6 @@ Styleguide 3.1.5
 .ec-telInput input {
   max-width: 10em;
   text-align: left; }
-
 /*
 フォーム部品(その他)
 
@@ -2159,14 +2430,11 @@ Styleguide 3.2.2
 */
 .ec-radio label {
   margin-right: 20px; }
-
 .ec-radio input {
   margin-right: 10px;
   margin-bottom: 10px; }
-
 .ec-radio span {
   font-weight: normal; }
-
 /*
 ラジオ(垂直)
 
@@ -2195,11 +2463,9 @@ Styleguide 3.2.3
 */
 .ec-blockRadio label {
   display: block; }
-
 .ec-blockRadio span {
   padding-left: 10px;
   font-weight: normal; }
-
 /*
 セレクトボックス
 
@@ -2231,31 +2497,27 @@ Styleguide 3.2.4
 .ec-selects {
   margin-bottom: 20px;
   border-bottom: 1px dotted #ccc; }
-
 .ec-select {
   margin-bottom: 16px; }
-  .ec-select select {
+.ec-select select {
     display: inline-block;
     width: auto;
     background-color: #f8f8f8;
     -webkit-appearance: menulist;
     -moz-appearance: menulist; }
-    .ec-select select:focus {
+.ec-select select:focus {
       box-shadow: none; }
-  .ec-select label {
+.ec-select label {
     margin-right: 10px;
     font-weight: bold; }
-  .ec-select label:nth-child(3) {
+.ec-select label:nth-child(3) {
     margin-left: 10px;
     font-weight: bold; }
-
 .ec-select__delivery {
   display: block;
   margin-right: 16px; }
-
 .ec-select__time {
   display: block; }
-
 /*
 生年月日選択
 
@@ -2297,12 +2559,10 @@ Styleguide 3.2.5
   background-color: #f8f8f8;
   -webkit-appearance: menulist;
   -moz-appearance: menulist; }
-  .ec-birth select:focus {
+.ec-birth select:focus {
     box-shadow: none; }
-
 .ec-birth span {
   margin-left: 5px; }
-
 /*
 チェックボックス （水平）
 
@@ -2322,13 +2582,10 @@ Styleguide 3.2.6
 */
 .ec-checkbox label {
   display: inline-block; }
-
 .ec-checkbox input {
   margin-bottom: 10px; }
-
 .ec-checkbox span {
   font-weight: normal; }
-
 /*
 チェックボックス (垂直)
 
@@ -2346,10 +2603,8 @@ Styleguide 3.2.7
 */
 .ec-blockCheckbox label {
   display: block; }
-
 .ec-blockCheckbox span {
   font-weight: normal; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -2395,7 +2650,6 @@ Styleguide 3.3.1
   display: inline-block;
   font-weight: bold;
   margin-bottom: 5px; }
-
 /*
 必須ラベル
 
@@ -2423,7 +2677,6 @@ Styleguide 3.3.2
   color: #DE5D50;
   font-size: 12px;
   font-weight: normal; }
-
 /*
 アイコン
 
@@ -2443,7 +2696,6 @@ Styleguide 4.1
 .ec-icon img {
   max-width: 80px;
   max-height: 80px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -2482,13 +2734,12 @@ Styleguide 5.1.1
 .ec-grid2 {
   display: block;
   margin: 0; }
-  .ec-grid2 .ec-grid2__cell {
+.ec-grid2 .ec-grid2__cell {
     position: relative;
     min-height: 1px; }
-  .ec-grid2 .ec-grid2__cell2 {
+.ec-grid2 .ec-grid2__cell2 {
     position: relative;
     min-height: 1px; }
-
 /*
 3分割グリッド
 
@@ -2506,16 +2757,15 @@ Styleguide 5.1.2
 .ec-grid3 {
   display: block;
   margin: 0; }
-  .ec-grid3 .ec-grid3__cell {
+.ec-grid3 .ec-grid3__cell {
     position: relative;
     min-height: 1px; }
-  .ec-grid3 .ec-grid3__cell2 {
+.ec-grid3 .ec-grid3__cell2 {
     position: relative;
     min-height: 1px; }
-  .ec-grid3 .ec-grid3__cell3 {
+.ec-grid3 .ec-grid3__cell3 {
     position: relative;
     min-height: 1px; }
-
 /*
 4分割グリッド
 
@@ -2534,10 +2784,9 @@ Styleguide 5.1.3
 .ec-grid4 {
   display: block;
   margin: 0; }
-  .ec-grid4 .ec-grid4__cell {
+.ec-grid4 .ec-grid4__cell {
     position: relative;
     min-height: 1px; }
-
 /*
 6分割グリッド
 
@@ -2565,16 +2814,15 @@ Styleguide 5.1.4
 .ec-grid6 {
   display: block;
   margin: 0; }
-  .ec-grid6 .ec-grid6__cell {
+.ec-grid6 .ec-grid6__cell {
     position: relative;
     min-height: 1px; }
-  .ec-grid6 .ec-grid6__cell2 {
+.ec-grid6 .ec-grid6__cell2 {
     position: relative;
     min-height: 1px; }
-  .ec-grid6 .ec-grid6__cell3 {
+.ec-grid6 .ec-grid6__cell3 {
     position: relative;
     min-height: 1px; }
-
 /*
 中央寄せグリッド 10/12
 
@@ -2590,9 +2838,8 @@ Styleguide 5.1.5
 */
 .ec-off1Grid {
   margin: 0; }
-  .ec-off1Grid .ec-off1Grid__cell {
+.ec-off1Grid .ec-off1Grid__cell {
     margin: 0; }
-
 /*
 中央寄せグリッド 8/12
 
@@ -2608,9 +2855,8 @@ Styleguide 5.1.6
 .ec-off2Grid {
   display: block;
   margin: 0; }
-  .ec-off2Grid .ec-off2Grid__cell {
+.ec-off2Grid .ec-off2Grid__cell {
     margin: 0; }
-
 /*
 中央寄せグリッド 6/12
 
@@ -2626,9 +2872,8 @@ Styleguide 5.1.7
 .ec-off3Grid {
   display: block;
   margin: 0; }
-  .ec-off3Grid .ec-off3Grid__cell {
+.ec-off3Grid .ec-off3Grid__cell {
     margin: 0; }
-
 /*
 中央寄せグリッド 4/12
 
@@ -2645,9 +2890,8 @@ Styleguide 5.1.8
 .ec-off4Grid {
   display: block;
   margin: 0; }
-  .ec-off4Grid .ec-off4Grid__cell {
+.ec-off4Grid .ec-off4Grid__cell {
     margin: 0; }
-
 /*
 グリッドオプション
 
@@ -2674,7 +2918,6 @@ Styleguide 5.1.10
 */
 .ec-grid--left {
   justify-content: flex-start; }
-
 /*
 グリッドセルの右寄せ
 
@@ -2690,7 +2933,6 @@ Styleguide 5.1.11
 */
 .ec-grid--right {
   justify-content: flex-end; }
-
 /*
 グリッドセルの中央寄せ
 
@@ -2706,7 +2948,6 @@ Styleguide 5.1.12
 */
 .ec-grid--center {
   justify-content: center; }
-
 /**
  * ECCUBE 固有のスタイルユーティリティ
  */
@@ -2749,20 +2990,19 @@ Styleguide 5.2.1
   display: table;
   border-top: 1px dotted #ccc;
   width: 100%; }
-  .ec-imageGrid .ec-imageGrid__img {
+.ec-imageGrid .ec-imageGrid__img {
     display: table-cell;
     padding: 10px;
     width: 100px; }
-    .ec-imageGrid .ec-imageGrid__img img {
+.ec-imageGrid .ec-imageGrid__img img {
       width: 100%; }
-  .ec-imageGrid .ec-imageGrid__content {
+.ec-imageGrid .ec-imageGrid__content {
     vertical-align: middle;
     display: table-cell; }
-    .ec-imageGrid .ec-imageGrid__content span {
+.ec-imageGrid .ec-imageGrid__content span {
       margin-left: 10px; }
-    .ec-imageGrid .ec-imageGrid__content p {
+.ec-imageGrid .ec-imageGrid__content p {
       margin-bottom: 0; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -2803,33 +3043,32 @@ Styleguide 6.1.1
   height: auto;
   background: #F3F4F4;
   box-sizing: border-box; }
-  .ec-login .ec-login__icon {
+.ec-login .ec-login__icon {
     text-align: center; }
-  .ec-login .ec-icon {
+.ec-login .ec-icon {
     margin-bottom: 10px; }
-    .ec-login .ec-icon img {
+.ec-login .ec-icon img {
       width: 90px;
       height: 90px;
       display: inline-block; }
-  .ec-login .ec-login__input {
+.ec-login .ec-login__input {
     margin-bottom: 40px; }
-    .ec-login .ec-login__input .ec-checkbox span {
+.ec-login .ec-login__input .ec-checkbox span {
       margin-left: 5px;
       font-weight: normal; }
-  .ec-login .ec-login__actions {
+.ec-login .ec-login__actions {
     color: #fff; }
-    .ec-login .ec-login__actions a {
+.ec-login .ec-login__actions a {
       color: inherit;
       text-decoration: none; }
-    .ec-login .ec-login__actions a:hover {
+.ec-login .ec-login__actions a:hover {
       text-decoration: none; }
-  .ec-login .ec-login__link {
+.ec-login .ec-login__link {
     margin-top: 5px;
     margin-left: 0; }
-  .ec-login .ec-errorMessage {
+.ec-login .ec-errorMessage {
     color: #DE5D50;
     margin-bottom: 20px; }
-
 /*
 ゲスト購入
 
@@ -2851,26 +3090,25 @@ Styleguide 6.1.2
   height: auto;
   box-sizing: border-box;
   background: #F3F4F4; }
-  .ec-guest .ec-guest__inner {
+.ec-guest .ec-guest__inner {
     display: table-cell;
     vertical-align: middle;
     text-align: center; }
-    .ec-guest .ec-guest__inner p {
+.ec-guest .ec-guest__inner p {
       margin-bottom: 16px; }
-  .ec-guest .ec-guest__actions {
+.ec-guest .ec-guest__actions {
     display: block;
     vertical-align: middle;
     text-align: center;
     color: #fff; }
-    .ec-guest .ec-guest__actions a {
+.ec-guest .ec-guest__actions a {
       color: inherit;
       text-decoration: none; }
-    .ec-guest .ec-guest__actions a:hover {
+.ec-guest .ec-guest__actions a:hover {
       text-decoration: none; }
-  .ec-guest .ec-guest__icon {
+.ec-guest .ec-guest__icon {
     font-size: 70px;
     text-align: center; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -2910,37 +3148,36 @@ Styleguide 7.1.1
   display: flex;
   justify-content: space-between;
   flex-direction: column; }
-  .ec-displayB .ec-displayB__cell {
+.ec-displayB .ec-displayB__cell {
     width: 100%;
     margin-bottom: 16px; }
-    .ec-displayB .ec-displayB__cell a {
+.ec-displayB .ec-displayB__cell a {
       color: inherit;
       text-decoration: none; }
-    .ec-displayB .ec-displayB__cell a:hover {
+.ec-displayB .ec-displayB__cell a:hover {
       text-decoration: none; }
-    .ec-displayB .ec-displayB__cell:hover {
+.ec-displayB .ec-displayB__cell:hover {
       text-decoration: none; }
-      .ec-displayB .ec-displayB__cell:hover img {
+.ec-displayB .ec-displayB__cell:hover img {
         opacity: .8; }
-      .ec-displayB .ec-displayB__cell:hover a {
+.ec-displayB .ec-displayB__cell:hover a {
         text-decoration: none; }
-  .ec-displayB .ec-displayB__img {
+.ec-displayB .ec-displayB__img {
     margin-bottom: 15px; }
-  .ec-displayB .ec-displayB__catch {
+.ec-displayB .ec-displayB__catch {
     margin-bottom: 15px;
     text-decoration: none;
     font-weight: bold;
     color: #9a947e; }
-  .ec-displayB .ec-displayB__comment {
+.ec-displayB .ec-displayB__comment {
     margin-bottom: 14px;
     text-decoration: none;
     color: #525263;
     font-size: 14px; }
-  .ec-displayB .ec-displayB__link {
+.ec-displayB .ec-displayB__link {
     text-decoration: none;
     font-weight: bold;
     color: #9a947e; }
-
 /*
 商品アイテム（商品紹介C）
 
@@ -2960,41 +3197,40 @@ Styleguide 7.1.2
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 24px; }
-  .ec-displayC .ec-displayC__cell {
+.ec-displayC .ec-displayC__cell {
     width: 47%; }
-    .ec-displayC .ec-displayC__cell a {
+.ec-displayC .ec-displayC__cell a {
       color: inherit;
       text-decoration: none; }
-    .ec-displayC .ec-displayC__cell a:hover {
+.ec-displayC .ec-displayC__cell a:hover {
       text-decoration: none; }
-    .ec-displayC .ec-displayC__cell:hover a {
+.ec-displayC .ec-displayC__cell:hover a {
       text-decoration: none; }
-    .ec-displayC .ec-displayC__cell:hover img {
+.ec-displayC .ec-displayC__cell:hover img {
       opacity: .8; }
-  .ec-displayC .ec-displayC__img {
+.ec-displayC .ec-displayC__img {
     display: block;
     width: 100%;
     margin-bottom: 15px; }
-  .ec-displayC .ec-displayC__catch {
+.ec-displayC .ec-displayC__catch {
     display: block;
     width: 100%;
     font-weight: bold;
     color: #9a947e; }
-  .ec-displayC .ec-displayC__title {
+.ec-displayC .ec-displayC__title {
     display: block;
     width: 100%;
     color: #525263; }
-  .ec-displayC .ec-displayC__price {
+.ec-displayC .ec-displayC__price {
     display: block;
     width: 100%;
     font-weight: bold;
     color: #525263; }
-  .ec-displayC .ec-displayC__price--sp {
+.ec-displayC .ec-displayC__price--sp {
     display: block;
     width: 100%;
     font-weight: bold;
     color: #DE5D50; }
-
 /*
 商品アイテム（商品紹介D）
 
@@ -3012,22 +3248,21 @@ Styleguide 7.1.3
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap-reverse; }
-  .ec-displayD .ec-displayD__cell {
+.ec-displayD .ec-displayD__cell {
     width: 30%;
     margin-bottom: 8px; }
-    .ec-displayD .ec-displayD__cell a {
+.ec-displayD .ec-displayD__cell a {
       color: inherit;
       text-decoration: none; }
-    .ec-displayD .ec-displayD__cell a:hover {
+.ec-displayD .ec-displayD__cell a:hover {
       text-decoration: none; }
-    .ec-displayD .ec-displayD__cell:hover {
+.ec-displayD .ec-displayD__cell:hover {
       text-decoration: none; }
-      .ec-displayD .ec-displayD__cell:hover img {
+.ec-displayD .ec-displayD__cell:hover img {
         opacity: .8; }
-  .ec-displayD .ec-displayD__img {
+.ec-displayD .ec-displayD__img {
     display: block;
     width: 100%; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -3075,14 +3310,14 @@ Styleguide 7.2.1
   overflow: hidden;
   font-size: 12px;
   color: #0092C4; }
-  .ec-topicpath .ec-topicpath__item a {
+.ec-topicpath .ec-topicpath__item a {
     color: inherit;
     text-decoration: none; }
-  .ec-topicpath .ec-topicpath__item a:hover {
+.ec-topicpath .ec-topicpath__item a:hover {
     text-decoration: none; }
-  .ec-topicpath .ec-topicpath__divider {
+.ec-topicpath .ec-topicpath__divider {
     color: #000; }
-  .ec-topicpath .ec-topicpath__item,
+.ec-topicpath .ec-topicpath__item,
   .ec-topicpath .ec-topicpath__divider,
   .ec-topicpath .ec-topicpath__item--active {
     display: inline-block;
@@ -3090,14 +3325,13 @@ Styleguide 7.2.1
     text-align: center;
     position: relative;
     letter-spacing: normal; }
-  .ec-topicpath .ec-topicpath__item--active {
+.ec-topicpath .ec-topicpath__item--active {
     font-weight: bold; }
-    .ec-topicpath .ec-topicpath__item--active a {
+.ec-topicpath .ec-topicpath__item--active a {
       color: inherit;
       text-decoration: none; }
-    .ec-topicpath .ec-topicpath__item--active a:hover {
+.ec-topicpath .ec-topicpath__item--active a:hover {
       text-decoration: none; }
-
 /*
 ページャ
 
@@ -3117,35 +3351,34 @@ Styleguide 7.2.2
   margin: 0 auto;
   padding: 1em 0;
   text-align: center; }
-  .ec-pager .ec-pager__item,
+.ec-pager .ec-pager__item,
   .ec-pager .ec-pager__item--active {
     display: inline-block;
     min-width: 29px;
     padding: 0 3px 0 2px;
     text-align: center;
     position: relative; }
-    .ec-pager .ec-pager__item a,
+.ec-pager .ec-pager__item a,
     .ec-pager .ec-pager__item--active a {
       color: inherit;
       text-decoration: none; }
-    .ec-pager .ec-pager__item a:hover,
+.ec-pager .ec-pager__item a:hover,
     .ec-pager .ec-pager__item--active a:hover {
       text-decoration: none; }
-    .ec-pager .ec-pager__item a,
+.ec-pager .ec-pager__item a,
     .ec-pager .ec-pager__item--active a {
       color: inherit;
       display: block;
       line-height: 1.8;
       padding: 5px 1em;
       text-decoration: none; }
-    .ec-pager .ec-pager__item a:hover,
+.ec-pager .ec-pager__item a:hover,
     .ec-pager .ec-pager__item--active a:hover {
       color: inherit; }
-  .ec-pager .ec-pager__item--active {
+.ec-pager .ec-pager__item--active {
     background: #F3F3F3; }
-  .ec-pager .ec-pager__item:hover {
+.ec-pager .ec-pager__item:hover {
     background: #F3F3F3; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -3165,7 +3398,6 @@ Twitter Bootstrap デフォルト準拠
   100% {
     opacity: 1;
     visibility: visible; } }
-
 @-webkit-keyframes fadeOut {
   0% {
     opacity: 1;
@@ -3173,7 +3405,6 @@ Twitter Bootstrap デフォルト準拠
   100% {
     opacity: 0;
     visibility: hidden; } }
-
 @keyframes fadeOut {
   0% {
     opacity: 1;
@@ -3181,7 +3412,6 @@ Twitter Bootstrap デフォルト準拠
   100% {
     opacity: 0;
     visibility: hidden; } }
-
 .bg-load-overlay {
   background: rgba(255, 255, 255, 0.4);
   box-sizing: border-box;
@@ -3196,7 +3426,6 @@ Twitter Bootstrap デフォルト準拠
   height: 100%;
   z-index: 2147483647;
   opacity: 1; }
-
 /**
  * ECCUBE 固有のスタイルユーティリティ
  */
@@ -3240,14 +3469,14 @@ Styleguide 7.3.1
   width: 100%;
   max-width: 600px;
   list-style: none; }
-  .ec-progress .ec-progress__item {
+.ec-progress .ec-progress__item {
     display: table-cell;
     position: relative;
     font-size: 14px;
     text-align: center;
     font-weight: bold;
     z-index: 10; }
-    .ec-progress .ec-progress__item:after {
+.ec-progress .ec-progress__item:after {
       content: '';
       position: absolute;
       display: block;
@@ -3258,9 +3487,9 @@ Styleguide 7.3.1
       left: 50%;
       margin-left: 1.5em\9;
       z-index: -1; }
-    .ec-progress .ec-progress__item:last-child:after {
+.ec-progress .ec-progress__item:last-child:after {
       display: none; }
-  .ec-progress .ec-progress__number {
+.ec-progress .ec-progress__number {
     line-height: 30px;
     width: 30px;
     height: 30px;
@@ -3274,13 +3503,12 @@ Styleguide 7.3.1
     text-align: center;
     vertical-align: middle;
     border-radius: 50%; }
-  .ec-progress .ec-progress__label {
+.ec-progress .ec-progress__label {
     font-size: 12px; }
-  .ec-progress .is-complete .ec-progress__number {
+.ec-progress .is-complete .ec-progress__number {
     background: #5CB1B1; }
-  .ec-progress .is-complete .ec-progress__label {
+.ec-progress .is-complete .ec-progress__label {
     color: #5CB1B1; }
-
 /*
 カートナビゲーション
 
@@ -3300,14 +3528,13 @@ sg-wrapper:
 
 Styleguide 7.3.5
 */
-
 .ec-cartNavi {
   display: inline-block;
   padding: 10px 0 0 20px;
   width: auto;
   color: black;
   background: transparent; }
-  .ec-cartNavi .ec-cartNavi__icon {
+.ec-cartNavi .ec-cartNavi__icon {
     display: inline-block;
     font-size: 20px;
     display: inline-block;
@@ -3316,7 +3543,7 @@ Styleguide 7.3.5
     -webkit-animation: fadeIn 200ms linear 0s;
             animation: fadeIn 200ms linear 0s;
     position: relative; }
-  .ec-cartNavi .ec-cartNavi__badge {
+.ec-cartNavi .ec-cartNavi__badge {
     display: inline-block;
     border-radius: 99999px;
     box-sizing: border-box;
@@ -3332,17 +3559,14 @@ Styleguide 7.3.5
     position: absolute;
     left: 60%;
     top: -10px; }
-  .ec-cartNavi .ec-cartNavi__price {
+.ec-cartNavi .ec-cartNavi__price {
     display: none; }
-
 .ec-cartNavi.is-active .ec-cartNavi__icon:before {
   content: "\f00d";
   font-family: "Font Awesome 5 Free";
   font-weight: 900; }
-
 .ec-cartNavi.is-active .ec-cartNavi__badge {
   display: none; }
-
 /*
 カートナビゲーションのポップアップ(商品詳細)
 
@@ -3388,44 +3612,42 @@ Styleguide 7.3.6
   z-index: 20;
   position: absolute;
   right: 0; }
-  .ec-cartNaviIsset .ec-cartNaviIsset__cart {
+.ec-cartNaviIsset .ec-cartNaviIsset__cart {
     border-bottom: 1px solid #E8E8E8;
     margin-bottom: 16px;
     padding-bottom: 32px; }
-    .ec-cartNaviIsset .ec-cartNaviIsset__cart:after {
+.ec-cartNaviIsset .ec-cartNaviIsset__cart:after {
       content: " ";
       display: table; }
-    .ec-cartNaviIsset .ec-cartNaviIsset__cart:after {
+.ec-cartNaviIsset .ec-cartNaviIsset__cart:after {
       clear: both; }
-  .ec-cartNaviIsset .ec-cartNaviIsset__cartImage {
+.ec-cartNaviIsset .ec-cartNaviIsset__cartImage {
     float: left;
     width: 45%; }
-    .ec-cartNaviIsset .ec-cartNaviIsset__cartImage img {
+.ec-cartNaviIsset .ec-cartNaviIsset__cartImage img {
       width: 100%; }
-  .ec-cartNaviIsset .ec-cartNaviIsset__cartContent {
+.ec-cartNaviIsset .ec-cartNaviIsset__cartContent {
     float: right;
     width: 55%;
     padding-left: 16px;
     text-align: left;
     box-sizing: border-box; }
-  .ec-cartNaviIsset .ec-cartNaviIsset__action .ec-blockBtn--action {
+.ec-cartNaviIsset .ec-cartNaviIsset__action .ec-blockBtn--action {
     color: #fff;
     margin-bottom: 8px; }
-  .ec-cartNaviIsset .ec-cartNaviIsset__cartContentTitle {
+.ec-cartNaviIsset .ec-cartNaviIsset__cartContentTitle {
     margin-bottom: 8px; }
-  .ec-cartNaviIsset .ec-cartNaviIsset__cartContentPrice {
+.ec-cartNaviIsset .ec-cartNaviIsset__cartContentPrice {
     font-weight: bold; }
-  .ec-cartNaviIsset .ec-cartNaviIsset__cartContentTax {
+.ec-cartNaviIsset .ec-cartNaviIsset__cartContentTax {
     display: inline-block;
     font-size: 12px;
     font-weight: normal;
     margin-left: 2px; }
-  .ec-cartNaviIsset .ec-cartNaviIsset__cartContentNumber {
+.ec-cartNaviIsset .ec-cartNaviIsset__cartContentNumber {
     font-size: 14px; }
-
 .ec-cartNaviIsset.is-active {
   display: block; }
-
 /*
 カートナビゲーションのポップアップ(商品なし)
 
@@ -3482,19 +3704,17 @@ Styleguide 7.3.7
   z-index: 3;
   position: absolute;
   right: 0; }
-  .ec-cartNaviNull .ec-cartNaviNull__message {
+.ec-cartNaviNull .ec-cartNaviNull__message {
     border: 1px solid #D9D9D9;
     padding: 16px 0;
     font-size: 16px;
     font-weight: bold;
     color: #fff;
     background-color: #F99; }
-    .ec-cartNaviNull .ec-cartNaviNull__message p {
+.ec-cartNaviNull .ec-cartNaviNull__message p {
       margin: 0; }
-
 .ec-cartNaviNull.is-active {
   display: block; }
-
 /*
 総計
 
@@ -3512,71 +3732,70 @@ Styleguide 7.3.8
   background: #F3F3F3;
   padding: 16px;
   margin-bottom: 16px; }
-  .ec-totalBox .ec-totalBox__spec {
+.ec-totalBox .ec-totalBox__spec {
     display: flex;
     justify-content: space-between;
     -ms-flex-pack: space-between;
     margin-bottom: 8px; }
-    .ec-totalBox .ec-totalBox__spec dt {
+.ec-totalBox .ec-totalBox__spec dt {
       font-weight: normal;
       text-align: left; }
-    .ec-totalBox .ec-totalBox__spec dd {
+.ec-totalBox .ec-totalBox__spec dd {
       text-align: right; }
-    .ec-totalBox .ec-totalBox__spec .ec-totalBox .ec-totalBox__spec__specTotal {
+.ec-totalBox .ec-totalBox__spec .ec-totalBox .ec-totalBox__spec__specTotal {
       color: #DE5D50; }
-  .ec-totalBox .ec-totalBox__total {
+.ec-totalBox .ec-totalBox__total {
     border-top: 1px dotted #ccc;
     padding: 8px 0;
     text-align: right;
     font-size: 14px;
     font-weight: bold; }
-  .ec-totalBox .ec-totalBox__paymentTotal {
+.ec-totalBox .ec-totalBox__paymentTotal {
     padding: 8px 0;
     text-align: right;
     font-size: 14px;
     font-weight: bold; }
-    .ec-totalBox .ec-totalBox__paymentTotal .ec-totalBox__price,
+.ec-totalBox .ec-totalBox__paymentTotal .ec-totalBox__price,
     .ec-totalBox .ec-totalBox__paymentTotal .ec-totalBox__taxLabel {
       color: #DE5D50; }
-  .ec-totalBox .ec-totalBox__price {
+.ec-totalBox .ec-totalBox__price {
     margin-left: 16px;
     font-size: 16px;
     font-weight: bold; }
-  .ec-totalBox .ec-totalBox__taxLabel {
+.ec-totalBox .ec-totalBox__taxLabel {
     margin-left: 8px;
     font-size: 12px; }
-  .ec-totalBox .ec-totalBox__taxRate {
+.ec-totalBox .ec-totalBox__taxRate {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 8px;
     font-size: 10px; }
-    .ec-totalBox .ec-totalBox__taxRate dt {
+.ec-totalBox .ec-totalBox__taxRate dt {
       font-weight: normal;
       text-align: left;
       margin-right: 8px; }
-      .ec-totalBox .ec-totalBox__taxRate dt::before {
+.ec-totalBox .ec-totalBox__taxRate dt::before {
         content: "[ "; }
-    .ec-totalBox .ec-totalBox__taxRate dd {
+.ec-totalBox .ec-totalBox__taxRate dd {
       text-align: right; }
-      .ec-totalBox .ec-totalBox__taxRate dd::after {
+.ec-totalBox .ec-totalBox__taxRate dd::after {
         content: " ]"; }
-  .ec-totalBox .ec-totalBox__pointBlock {
+.ec-totalBox .ec-totalBox__pointBlock {
     padding: 18px 20px 10px;
     margin-bottom: 10px;
     background: #fff; }
-  .ec-totalBox .ec-totalBox__btn {
+.ec-totalBox .ec-totalBox__btn {
     color: #fff; }
-    .ec-totalBox .ec-totalBox__btn a {
+.ec-totalBox .ec-totalBox__btn a {
       color: inherit;
       text-decoration: none; }
-    .ec-totalBox .ec-totalBox__btn a:hover {
+.ec-totalBox .ec-totalBox__btn a:hover {
       text-decoration: none; }
-    .ec-totalBox .ec-totalBox__btn .ec-blockBtn--action {
+.ec-totalBox .ec-totalBox__btn .ec-blockBtn--action {
       font-size: 16px;
       font-weight: bold; }
-    .ec-totalBox .ec-totalBox__btn .ec-blockBtn--cancel {
+.ec-totalBox .ec-totalBox__btn .ec-blockBtn--cancel {
       margin-top: 8px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -3610,16 +3829,15 @@ Styleguide 8.1.1
 .ec-news {
   margin-bottom: 16px;
   background: #F8F8F8; }
-  .ec-news .ec-news__title {
+.ec-news .ec-news__title {
     font-weight: bold;
     padding: 8px;
     font-size: 16px;
     text-align: center; }
-  .ec-news .ec-news__items {
+.ec-news .ec-news__items {
     padding: 0;
     list-style: none;
     border-top: 1px dotted #ccc; }
-
 /*
 折りたたみ項目
 
@@ -3651,42 +3869,41 @@ Styleguide 8.1.2
   flex-wrap: wrap;
   overflow: hidden;
   padding: 0 16px; }
-  .ec-newsline .ec-newsline__info {
+.ec-newsline .ec-newsline__info {
     width: 100%;
     padding: 16px 0; }
-    .ec-newsline .ec-newsline__info:after {
+.ec-newsline .ec-newsline__info:after {
       content: " ";
       display: table; }
-    .ec-newsline .ec-newsline__info:after {
+.ec-newsline .ec-newsline__info:after {
       clear: both; }
-  .ec-newsline .ec-newsline__date {
+.ec-newsline .ec-newsline__date {
     display: inline-block;
     margin-right: 10px;
     float: left; }
-  .ec-newsline .ec-newsline__comment {
+.ec-newsline .ec-newsline__comment {
     display: inline-block;
     float: left; }
-  .ec-newsline .ec-newsline__close {
+.ec-newsline .ec-newsline__close {
     float: right;
     display: inline-block;
     text-align: right; }
-    .ec-newsline .ec-newsline__close .ec-closeBtn--circle {
+.ec-newsline .ec-newsline__close .ec-closeBtn--circle {
       display: inline-block;
       width: 25px;
       height: 25px;
       min-width: 25px;
       min-height: 25px; }
-  .ec-newsline .ec-newsline__description {
+.ec-newsline .ec-newsline__description {
     width: 100%;
     height: 0;
     transition: all .2s ease-out; }
-  .ec-newsline.is_active .ec-newsline__description {
+.ec-newsline.is_active .ec-newsline__description {
     height: auto;
     transition: all .2s ease-out;
     padding-bottom: 16px; }
-  .ec-newsline.is_active .ec-icon img {
+.ec-newsline.is_active .ec-icon img {
     transform: rotateX(180deg); }
-
 /**
  * ECCUBE 固有のスタイルユーティリティ
  */
@@ -3731,12 +3948,11 @@ Styleguide 9.1.1
   margin-bottom: 32px;
   padding: 0;
   list-style: none; }
-  .ec-navlistRole .ec-navlistRole__navlist a {
+.ec-navlistRole .ec-navlistRole__navlist a {
     color: inherit;
     text-decoration: none; }
-  .ec-navlistRole .ec-navlistRole__navlist a:hover {
+.ec-navlistRole .ec-navlistRole__navlist a:hover {
     text-decoration: none; }
-
 .ec-navlistRole .ec-navlistRole__item {
   width: 50%;
   border-color: #D0D0D0;
@@ -3744,16 +3960,14 @@ Styleguide 9.1.1
   border-width: 0 1px 1px 0;
   text-align: center;
   font-weight: bold; }
-  .ec-navlistRole .ec-navlistRole__item a {
+.ec-navlistRole .ec-navlistRole__item a {
     padding: 16px;
     width: 100%;
     display: inline-block; }
-    .ec-navlistRole .ec-navlistRole__item a:hover {
+.ec-navlistRole .ec-navlistRole__item a:hover {
       background: #f5f7f8; }
-
 .ec-navlistRole .active a {
   color: #DE5D50; }
-
 /*
 マイページ（お気に入り機能無効）
 
@@ -3797,25 +4011,24 @@ Styleguide 9.1.3
   padding-bottom: 32px;
   text-align: center;
   border-bottom: 1px dotted #ccc; }
-  .ec-welcomeMsg:after {
+.ec-welcomeMsg:after {
     content: " ";
     display: table; }
-  .ec-welcomeMsg:after {
+.ec-welcomeMsg:after {
     clear: both; }
-  .ec-welcomeMsg textarea {
+.ec-welcomeMsg textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-welcomeMsg img {
+.ec-welcomeMsg img {
     max-width: 100%; }
-  .ec-welcomeMsg html {
+.ec-welcomeMsg html {
     box-sizing: border-box; }
-  .ec-welcomeMsg *,
+.ec-welcomeMsg *,
   .ec-welcomeMsg *::before,
   .ec-welcomeMsg *::after {
     box-sizing: inherit; }
-  .ec-welcomeMsg img {
+.ec-welcomeMsg img {
     width: 100%; }
-
 /*
 お気に入り一覧
 
@@ -3831,51 +4044,45 @@ Styleguide 9.1.4
 */
 .ec-favoriteRole .ec-favoriteRole__header {
   margin-bottom: 16px; }
-
 .ec-favoriteRole .ec-favoriteRole__itemList {
   display: flex;
   flex-wrap: wrap;
   padding: 0;
   list-style: none; }
-  .ec-favoriteRole .ec-favoriteRole__itemList a {
+.ec-favoriteRole .ec-favoriteRole__itemList a {
     color: inherit;
     text-decoration: none; }
-  .ec-favoriteRole .ec-favoriteRole__itemList a:hover {
+.ec-favoriteRole .ec-favoriteRole__itemList a:hover {
     text-decoration: none; }
-
 .ec-favoriteRole .ec-favoriteRole__item {
   margin-bottom: 8px;
   width: 47.5%;
   position: relative;
   box-sizing: border-box;
   padding: 10px; }
-  .ec-favoriteRole .ec-favoriteRole__item-image {
+.ec-favoriteRole .ec-favoriteRole__item-image {
     height: 150px;
     margin-bottom: 10px;
     text-align: center; }
-  .ec-favoriteRole .ec-favoriteRole__item img {
+.ec-favoriteRole .ec-favoriteRole__item img {
     width: auto;
     max-height: 100%; }
-  .ec-favoriteRole .ec-favoriteRole__item .ec-closeBtn--circle {
+.ec-favoriteRole .ec-favoriteRole__item .ec-closeBtn--circle {
     position: absolute;
     right: 10px;
     top: 10px; }
-    .ec-favoriteRole .ec-favoriteRole__item .ec-closeBtn--circle .ec-icon img {
+.ec-favoriteRole .ec-favoriteRole__item .ec-closeBtn--circle .ec-icon img {
       width: 1em;
       height: 1em; }
-
 .ec-favoriteRole .ec-favoriteRole__itemThumb {
   display: block;
   height: auto;
   margin-bottom: 8px; }
-
 .ec-favoriteRole .ec-favoriteRole__itemTitle {
   margin-bottom: 2px; }
-
 .ec-favoriteRole .ec-favoriteRole__itemPrice {
   font-weight: bold;
   margin-bottom: 0; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -3905,25 +4112,24 @@ Styleguide 11.1
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-role:after {
+.ec-role:after {
     content: " ";
     display: table; }
-  .ec-role:after {
+.ec-role:after {
     clear: both; }
-  .ec-role textarea {
+.ec-role textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-role img {
+.ec-role img {
     max-width: 100%; }
-  .ec-role html {
+.ec-role html {
     box-sizing: border-box; }
-  .ec-role *,
+.ec-role *,
   .ec-role *::before,
   .ec-role *::after {
     box-sizing: inherit; }
-  .ec-role img {
+.ec-role img {
     width: 100%; }
-
 /*
 マイページセクション
 
@@ -3948,25 +4154,24 @@ Styleguide 11.1.2
   color: #525263;
   -webkit-text-size-adjust: 100%;
   width: 100%; }
-  .ec-mypageRole:after {
+.ec-mypageRole:after {
     content: " ";
     display: table; }
-  .ec-mypageRole:after {
+.ec-mypageRole:after {
     clear: both; }
-  .ec-mypageRole textarea {
+.ec-mypageRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-mypageRole img {
+.ec-mypageRole img {
     max-width: 100%; }
-  .ec-mypageRole html {
+.ec-mypageRole html {
     box-sizing: border-box; }
-  .ec-mypageRole *,
+.ec-mypageRole *,
   .ec-mypageRole *::before,
   .ec-mypageRole *::after {
     box-sizing: inherit; }
-  .ec-mypageRole img {
+.ec-mypageRole img {
     width: 100%; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -3982,7 +4187,6 @@ Twitter Bootstrap デフォルト準拠
   100% {
     opacity: 1;
     visibility: visible; } }
-
 @keyframes fadeOut {
   0% {
     opacity: 1;
@@ -3990,7 +4194,6 @@ Twitter Bootstrap デフォルト準拠
   100% {
     opacity: 0;
     visibility: hidden; } }
-
 .bg-load-overlay {
   background: rgba(255, 255, 255, 0.4);
   box-sizing: border-box;
@@ -4005,7 +4208,6 @@ Twitter Bootstrap デフォルト準拠
   height: 100%;
   z-index: 2147483647;
   opacity: 1; }
-
 /*
 ヘッダー
 
@@ -4029,25 +4231,24 @@ Styleguide 11.2
   width: 100%;
   transition: transform 0.3s;
   background: #fff; }
-  .ec-layoutRole .ec-layoutRole__contentTop {
+.ec-layoutRole .ec-layoutRole__contentTop {
     padding: 0; }
-  .ec-layoutRole .ec-layoutRole__contents {
+.ec-layoutRole .ec-layoutRole__contents {
     margin-right: auto;
     margin-left: auto;
     width: 100%;
     max-width: 1150px;
     display: flex;
     flex-wrap: nowrap; }
-  .ec-layoutRole .ec-layoutRole__main {
+.ec-layoutRole .ec-layoutRole__main {
     width: 100%; }
-  .ec-layoutRole .ec-layoutRole__mainWithColumn {
+.ec-layoutRole .ec-layoutRole__mainWithColumn {
     width: 100%; }
-  .ec-layoutRole .ec-layoutRole__mainBetweenColumn {
+.ec-layoutRole .ec-layoutRole__mainBetweenColumn {
     width: 100%; }
-  .ec-layoutRole .ec-layoutRole__left,
+.ec-layoutRole .ec-layoutRole__left,
   .ec-layoutRole .ec-layoutRole__right {
     display: none; }
-
 .ec-headerRole {
   margin: 0 auto;
   padding-left: 20px;
@@ -4065,38 +4266,37 @@ Styleguide 11.2
   flex-wrap: wrap;
   justify-content: space-between;
   width: auto; }
-  .ec-headerRole:after {
+.ec-headerRole:after {
     content: " ";
     display: table; }
-  .ec-headerRole:after {
+.ec-headerRole:after {
     clear: both; }
-  .ec-headerRole textarea {
+.ec-headerRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-headerRole img {
+.ec-headerRole img {
     max-width: 100%; }
-  .ec-headerRole html {
+.ec-headerRole html {
     box-sizing: border-box; }
-  .ec-headerRole *,
+.ec-headerRole *,
   .ec-headerRole *::before,
   .ec-headerRole *::after {
     box-sizing: inherit; }
-  .ec-headerRole img {
+.ec-headerRole img {
     width: 100%; }
-  .ec-headerRole:after {
+.ec-headerRole:after {
     display: none; }
-  .ec-headerRole::before {
+.ec-headerRole::before {
     display: none; }
-  .ec-headerRole .ec-headerRole__title {
+.ec-headerRole .ec-headerRole__title {
     width: 100%; }
-  .ec-headerRole .ec-headerRole__navSP {
+.ec-headerRole .ec-headerRole__navSP {
     display: block;
     position: absolute;
     top: 15px;
     width: 27%;
     right: 0;
     text-align: right; }
-
 .ec-headerNaviRole {
   margin: 0 auto;
   padding-left: 20px;
@@ -4112,55 +4312,54 @@ Styleguide 11.2
   justify-content: space-between;
   align-items: center;
   padding-top: 15px; }
-  .ec-headerNaviRole:after {
+.ec-headerNaviRole:after {
     content: " ";
     display: table; }
-  .ec-headerNaviRole:after {
+.ec-headerNaviRole:after {
     clear: both; }
-  .ec-headerNaviRole textarea {
+.ec-headerNaviRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-headerNaviRole img {
+.ec-headerNaviRole img {
     max-width: 100%; }
-  .ec-headerNaviRole html {
+.ec-headerNaviRole html {
     box-sizing: border-box; }
-  .ec-headerNaviRole *,
+.ec-headerNaviRole *,
   .ec-headerNaviRole *::before,
   .ec-headerNaviRole *::after {
     box-sizing: inherit; }
-  .ec-headerNaviRole img {
+.ec-headerNaviRole img {
     width: 100%; }
-  .ec-headerNaviRole .fa-bars {
+.ec-headerNaviRole .fa-bars {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); }
-  .ec-headerNaviRole .ec-headerNaviRole__left {
+.ec-headerNaviRole .ec-headerNaviRole__left {
     width: calc(100% / 3); }
-  .ec-headerNaviRole .ec-headerNaviRole__search {
+.ec-headerNaviRole .ec-headerNaviRole__search {
     display: none; }
-  .ec-headerNaviRole .ec-headerNaviRole__navSP {
+.ec-headerNaviRole .ec-headerNaviRole__navSP {
     display: block; }
-  .ec-headerNaviRole .ec-headerNaviRole__right {
+.ec-headerNaviRole .ec-headerNaviRole__right {
     width: calc(100% * 2 / 3);
     display: flex;
     justify-content: flex-end;
     align-items: center; }
-  .ec-headerNaviRole .ec-headerNaviRole__nav {
+.ec-headerNaviRole .ec-headerNaviRole__nav {
     display: inline-block; }
-    .ec-headerNaviRole .ec-headerNaviRole__nav a {
+.ec-headerNaviRole .ec-headerNaviRole__nav a {
       color: inherit;
       text-decoration: none; }
-    .ec-headerNaviRole .ec-headerNaviRole__nav a:hover {
+.ec-headerNaviRole .ec-headerNaviRole__nav a:hover {
       text-decoration: none; }
-  .ec-headerNaviRole .ec-headerNaviRole__cart {
+.ec-headerNaviRole .ec-headerNaviRole__cart {
     display: inline-block; }
-    .ec-headerNaviRole .ec-headerNaviRole__cart a {
+.ec-headerNaviRole .ec-headerNaviRole__cart a {
       color: inherit;
       text-decoration: none; }
-    .ec-headerNaviRole .ec-headerNaviRole__cart a:hover {
+.ec-headerNaviRole .ec-headerNaviRole__cart a:hover {
       text-decoration: none; }
-
 .ec-headerNavSP {
   display: block;
   cursor: pointer;
@@ -4177,12 +4376,10 @@ Styleguide 11.2
   top: 10px;
   left: 10px;
   z-index: 1000; }
-  .ec-headerNavSP .fas {
+.ec-headerNavSP .fas {
     vertical-align: top; }
-
 .ec-headerNavSP.is-active {
   display: none; }
-
 /*
 ヘッダー：タイトル
 
@@ -4199,42 +4396,41 @@ Styleguide 11.2.1
   line-height: 1.4;
   color: #525263;
   -webkit-text-size-adjust: 100%; }
-  .ec-headerTitle textarea {
+.ec-headerTitle textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-headerTitle img {
+.ec-headerTitle img {
     max-width: 100%; }
-  .ec-headerTitle html {
+.ec-headerTitle html {
     box-sizing: border-box; }
-  .ec-headerTitle *,
+.ec-headerTitle *,
   .ec-headerTitle *::before,
   .ec-headerTitle *::after {
     box-sizing: inherit; }
-  .ec-headerTitle img {
+.ec-headerTitle img {
     width: 100%; }
-  .ec-headerTitle .ec-headerTitle__title {
+.ec-headerTitle .ec-headerTitle__title {
     text-align: center; }
-    .ec-headerTitle .ec-headerTitle__title h1 {
+.ec-headerTitle .ec-headerTitle__title h1 {
       margin: 0;
       padding: 0; }
-    .ec-headerTitle .ec-headerTitle__title a {
+.ec-headerTitle .ec-headerTitle__title a {
       display: inline-block;
       margin-bottom: 30px;
       text-decoration: none;
       font-size: 20px;
       font-weight: bold;
       color: black; }
-      .ec-headerTitle .ec-headerTitle__title a:hover {
+.ec-headerTitle .ec-headerTitle__title a:hover {
         opacity: .8; }
-  .ec-headerTitle .ec-headerTitle__subtitle {
+.ec-headerTitle .ec-headerTitle__subtitle {
     font-size: 10px;
     text-align: center; }
-    .ec-headerTitle .ec-headerTitle__subtitle a {
+.ec-headerTitle .ec-headerTitle__subtitle a {
       display: inline-block;
       color: #0092C4;
       text-decoration: none;
       cursor: pointer; }
-
 /*
 ヘッダー：ユーザナビゲーション
 
@@ -4257,23 +4453,22 @@ Styleguide 11.2.3
 */
 .ec-headerNav {
   text-align: right; }
-  .ec-headerNav .ec-headerNav__item {
+.ec-headerNav .ec-headerNav__item {
     margin-left: 0;
     display: inline-block;
     font-size: 28px; }
-  .ec-headerNav .ec-headerNav__itemIcon {
+.ec-headerNav .ec-headerNav__itemIcon {
     display: inline-block;
     margin-right: 10px;
     margin-left: 10px;
     font-size: 18px;
     color: black; }
-  .ec-headerNav .ec-headerNav__itemLink {
+.ec-headerNav .ec-headerNav__itemLink {
     display: none;
     margin-right: 5px;
     font-size: 14px;
     vertical-align: middle;
     color: black; }
-
 /*
 ヘッダー：検索ボックス
 
@@ -4297,18 +4492,16 @@ Styleguide 11.2.4
 .ec-headerSearch:after {
   content: " ";
   display: table; }
-
 .ec-headerSearch:after {
   clear: both; }
-
 .ec-headerSearch .ec-headerSearch__category {
   float: none; }
-  .ec-headerSearch .ec-headerSearch__category .ec-select {
+.ec-headerSearch .ec-headerSearch__category .ec-select {
     overflow: hidden;
     width: 100%;
     margin: 0;
     text-align: center; }
-    .ec-headerSearch .ec-headerSearch__category .ec-select select {
+.ec-headerSearch .ec-headerSearch__category .ec-select select {
       width: 100%;
       cursor: pointer;
       padding: 8px 24px 8px 8px;
@@ -4323,18 +4516,18 @@ Styleguide 11.2.4
          -moz-appearance: none;
               appearance: none;
       color: #fff; }
-      .ec-headerSearch .ec-headerSearch__category .ec-select select option {
+.ec-headerSearch .ec-headerSearch__category .ec-select select option {
         color: #000; }
-      .ec-headerSearch .ec-headerSearch__category .ec-select select::-ms-expand {
+.ec-headerSearch .ec-headerSearch__category .ec-select select::-ms-expand {
         display: none; }
-    .ec-headerSearch .ec-headerSearch__category .ec-select.ec-select_search {
+.ec-headerSearch .ec-headerSearch__category .ec-select.ec-select_search {
       position: relative;
       border: 0;
       background: #000;
       color: #fff;
       border-top-right-radius: 10px;
       border-top-left-radius: 10px; }
-      .ec-headerSearch .ec-headerSearch__category .ec-select.ec-select_search::before {
+.ec-headerSearch .ec-headerSearch__category .ec-select.ec-select_search::before {
         position: absolute;
         top: 0.8em;
         right: 0.4em;
@@ -4346,7 +4539,6 @@ Styleguide 11.2.4
         border-right: 6px solid transparent;
         border-top: 6px solid #fff;
         pointer-events: none; }
-
 .ec-headerSearch .ec-headerSearch__keyword {
   position: relative;
   color: #525263;
@@ -4354,7 +4546,7 @@ Styleguide 11.2.4
   background-color: #f6f6f6;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px; }
-  .ec-headerSearch .ec-headerSearch__keyword input[type="search"] {
+.ec-headerSearch .ec-headerSearch__keyword input[type="search"] {
     width: 100%;
     height: 34px;
     font-size: 16px;
@@ -4364,10 +4556,9 @@ Styleguide 11.2.4
     background: none;
     box-sizing: border-box;
     margin-bottom: 0; }
-  .ec-headerSearch .ec-headerSearch__keyword .ec-icon {
+.ec-headerSearch .ec-headerSearch__keyword .ec-icon {
     width: 22px;
     height: 22px; }
-
 .ec-headerSearch .ec-headerSearch__keywordBtn {
   border: 0;
   background: none;
@@ -4378,7 +4569,6 @@ Styleguide 11.2.4
   display: block;
   white-space: nowrap;
   z-index: 1; }
-
 /*
 ヘッダー：カテゴリナビ
 
@@ -4408,32 +4598,30 @@ Styleguide 11.2.5
   width: 100%;
   max-width: 1130px;
   display: none; }
-  .ec-categoryNaviRole:after {
+.ec-categoryNaviRole:after {
     content: " ";
     display: table; }
-  .ec-categoryNaviRole:after {
+.ec-categoryNaviRole:after {
     clear: both; }
-  .ec-categoryNaviRole textarea {
+.ec-categoryNaviRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-categoryNaviRole img {
+.ec-categoryNaviRole img {
     max-width: 100%; }
-  .ec-categoryNaviRole html {
+.ec-categoryNaviRole html {
     box-sizing: border-box; }
-  .ec-categoryNaviRole *,
+.ec-categoryNaviRole *,
   .ec-categoryNaviRole *::before,
   .ec-categoryNaviRole *::after {
     box-sizing: inherit; }
-  .ec-categoryNaviRole img {
+.ec-categoryNaviRole img {
     width: 100%; }
-
 .ec-itemNav {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   text-align: center; }
-
 .ec-itemNav__nav {
   display: block;
   margin: 0 auto;
@@ -4443,7 +4631,6 @@ Styleguide 11.2.5
   list-style-type: none;
   text-align: center;
   vertical-align: bottom; }
-
 .ec-itemNav__nav li {
   float: none;
   margin: 0;
@@ -4451,7 +4638,6 @@ Styleguide 11.2.5
   width: 100%;
   text-align: center;
   position: relative; }
-
 .ec-itemNav__nav li a {
   display: block;
   border-bottom: 1px solid #E8E8E8;
@@ -4466,7 +4652,6 @@ Styleguide 11.2.5
   text-align: left;
   background: #fff;
   border-bottom: 1px solid #E8E8E8; }
-
 .ec-itemNav__nav li ul {
   display: none;
   z-index: 0;
@@ -4477,13 +4662,11 @@ Styleguide 11.2.5
   position: static;
   top: 100%;
   left: 0; }
-
 .ec-itemNav__nav li ul li {
   overflow: hidden;
   width: 100%;
   height: auto;
   transition: .3s; }
-
 .ec-itemNav__nav li ul li a {
   border-bottom: 1px solid #E8E8E8;
   padding: 16px 22px 16px 16px;
@@ -4492,24 +4675,18 @@ Styleguide 11.2.5
   color: white;
   text-align: left;
   background: black; }
-
 .ec-itemNav__nav > li:hover > a {
   background: #fafafa; }
-
 .ec-itemNav__nav > li:hover li:hover > a {
   background: #333; }
-
 .ec-itemNav__nav li ul li ul {
   top: 0;
   left: 100%;
   width: auto; }
-
 .ec-itemNav__nav li ul li ul li a {
   background: #7D7D7D; }
-
 .ec-itemNav__nav li:hover ul li ul li a:hover {
   background: #333; }
-
 /*
 ヘッダー：SPヘッダー
 
@@ -4533,17 +4710,17 @@ Styleguide 11.2.6
   left: 0;
   z-index: 1;
   transition: z-index 0ms 1ms; }
-  .ec-drawerRole .ec-headerSearchArea {
+.ec-drawerRole .ec-headerSearchArea {
     padding: 20px 10px;
     width: 100%;
     background: #F8F8F8; }
-  .ec-drawerRole .ec-headerSearch {
+.ec-drawerRole .ec-headerSearch {
     padding: 16px 8px 26px;
     background: #EBEBEB;
     color: #636378; }
-    .ec-drawerRole .ec-headerSearch select {
+.ec-drawerRole .ec-headerSearch select {
       width: 100% !important; }
-  .ec-drawerRole .ec-headerCategoryArea .ec-headerCategoryArea__heading {
+.ec-drawerRole .ec-headerCategoryArea .ec-headerCategoryArea__heading {
     border-top: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
     padding: 1em 10px;
@@ -4551,49 +4728,48 @@ Styleguide 11.2.6
     font-weight: bold;
     color: black;
     background: #F8F8F8; }
-  .ec-drawerRole .ec-headerCategoryArea p {
+.ec-drawerRole .ec-headerCategoryArea p {
     margin-top: 0;
     margin-bottom: 0; }
-  .ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li a {
+.ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li a {
     border-bottom: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     color: black;
     font-weight: normal;
     background: #f8f8f8; }
-  .ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li ul li a {
+.ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li ul li a {
     border-bottom: 1px solid #ccc;
     padding-left: 20px;
     font-weight: normal;
     background: white; }
-  .ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav > li:hover > a {
+.ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav > li:hover > a {
     background: #f8f8f8; }
-  .ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav > li:hover li:hover > a {
+.ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav > li:hover li:hover > a {
     background: white; }
-  .ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li ul li ul li a {
+.ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li ul li ul li a {
     padding-left: 40px;
     color: black;
     background: white; }
-  .ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li:hover ul li ul li a:hover {
+.ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li:hover ul li ul li a:hover {
     background: white; }
-  .ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li ul li ul li ul li a {
+.ec-drawerRole .ec-headerCategoryArea .ec-itemNav__nav li ul li ul li ul li a {
     padding-left: 60px;
     font-weight: normal; }
-  .ec-drawerRole .ec-headerLinkArea {
+.ec-drawerRole .ec-headerLinkArea {
     background: black; }
-    .ec-drawerRole .ec-headerLinkArea .ec-headerLink__list {
+.ec-drawerRole .ec-headerLinkArea .ec-headerLink__list {
       border-top: 1px solid #ccc; }
-    .ec-drawerRole .ec-headerLinkArea .ec-headerLink__item {
+.ec-drawerRole .ec-headerLinkArea .ec-headerLink__item {
       display: block;
       border-bottom: 1px solid #ccc;
       padding: 15px 20px;
       font-size: 16px;
       font-weight: bold;
       color: white; }
-    .ec-drawerRole .ec-headerLinkArea .ec-headerLink__icon {
+.ec-drawerRole .ec-headerLinkArea .ec-headerLink__icon {
       display: inline-block;
       width: 28px;
       font-size: 17px; }
-
 .ec-drawerRoleClose {
   display: none;
   cursor: pointer;
@@ -4610,22 +4786,19 @@ Styleguide 11.2.6
   top: 10px;
   left: 270px;
   z-index: 1000; }
-  .ec-drawerRoleClose .fas {
+.ec-drawerRoleClose .fas {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); }
-
 .ec-drawerRole.is_active {
   display: block;
   transform: translateX(0);
   transition: all .3s;
   z-index: 100000; }
-
 .ec-drawerRoleClose.is_active {
   display: inline-block;
   transition: all .3s; }
-
 .ec-overlayRole {
   position: fixed;
   width: 100%;
@@ -4637,13 +4810,11 @@ Styleguide 11.2.6
   transform: translateX(0);
   transition: all .3s;
   visibility: hidden; }
-
 .have_curtain .ec-overlayRole {
   display: block;
   opacity: 1;
   background: rgba(0, 0, 0, 0.5);
   visibility: visible; }
-
 /*
 ヘッダー：test
 
@@ -4665,7 +4836,6 @@ Styleguide 11.2.7
 */
 .ec-itemNavAccordion {
   display: none; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -4691,7 +4861,6 @@ Styleguide 11.3
   border-top: 1px solid #7d7d7d;
   margin-top: 30px;
   background: black; }
-
 /*
 フッターナビ
 
@@ -4715,19 +4884,18 @@ Styleguide 11.3.1
   color: white;
   list-style: none;
   text-align: center; }
-  .ec-footerNavi .ec-footerNavi__link {
+.ec-footerNavi .ec-footerNavi__link {
     display: block; }
-    .ec-footerNavi .ec-footerNavi__link a {
+.ec-footerNavi .ec-footerNavi__link a {
       display: block;
       border-bottom: 1px solid #7d7d7d;
       padding: 15px 0;
       font-size: 14px;
       color: inherit;
       text-decoration: none; }
-    .ec-footerNavi .ec-footerNavi__link:hover a {
+.ec-footerNavi .ec-footerNavi__link:hover a {
       opacity: .8;
       text-decoration: none; }
-
 /*
 フッタータイトル
 
@@ -4750,24 +4918,23 @@ Styleguide 11.3.2
   padding: 40px 0 60px;
   text-align: center;
   color: white; }
-  .ec-footerTitle .ec-footerTitle__logo {
+.ec-footerTitle .ec-footerTitle__logo {
     display: block;
     margin-bottom: 10px;
     font-weight: bold; }
-    .ec-footerTitle .ec-footerTitle__logo a {
+.ec-footerTitle .ec-footerTitle__logo a {
       color: inherit;
       text-decoration: none; }
-    .ec-footerTitle .ec-footerTitle__logo a:hover {
+.ec-footerTitle .ec-footerTitle__logo a:hover {
       text-decoration: none; }
-    .ec-footerTitle .ec-footerTitle__logo a {
+.ec-footerTitle .ec-footerTitle__logo a {
       font-size: 22px;
       color: inherit; }
-    .ec-footerTitle .ec-footerTitle__logo:hover a {
+.ec-footerTitle .ec-footerTitle__logo:hover a {
       opacity: .8;
       text-decoration: none; }
-  .ec-footerTitle .ec-footerTitle__copyright {
+.ec-footerTitle .ec-footerTitle__copyright {
     font-size: 10px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -4798,28 +4965,27 @@ Styleguide 12.1
   width: 100%;
   max-width: 1130px;
   margin-bottom: 24px; }
-  .ec-sliderRole:after {
+.ec-sliderRole:after {
     content: " ";
     display: table; }
-  .ec-sliderRole:after {
+.ec-sliderRole:after {
     clear: both; }
-  .ec-sliderRole textarea {
+.ec-sliderRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-sliderRole img {
+.ec-sliderRole img {
     max-width: 100%; }
-  .ec-sliderRole html {
+.ec-sliderRole html {
     box-sizing: border-box; }
-  .ec-sliderRole *,
+.ec-sliderRole *,
   .ec-sliderRole *::before,
   .ec-sliderRole *::after {
     box-sizing: inherit; }
-  .ec-sliderRole img {
+.ec-sliderRole img {
     width: 100%; }
-  .ec-sliderRole ul {
+.ec-sliderRole ul {
     padding: 0;
     list-style: none; }
-
 .ec-sliderItemRole {
   margin: 0 auto;
   padding-left: 20px;
@@ -4832,41 +4998,40 @@ Styleguide 12.1
   width: 100%;
   max-width: 1130px;
   margin-bottom: 24px; }
-  .ec-sliderItemRole:after {
+.ec-sliderItemRole:after {
     content: " ";
     display: table; }
-  .ec-sliderItemRole:after {
+.ec-sliderItemRole:after {
     clear: both; }
-  .ec-sliderItemRole textarea {
+.ec-sliderItemRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-sliderItemRole img {
+.ec-sliderItemRole img {
     max-width: 100%; }
-  .ec-sliderItemRole html {
+.ec-sliderItemRole html {
     box-sizing: border-box; }
-  .ec-sliderItemRole *,
+.ec-sliderItemRole *,
   .ec-sliderItemRole *::before,
   .ec-sliderItemRole *::after {
     box-sizing: inherit; }
-  .ec-sliderItemRole img {
+.ec-sliderItemRole img {
     width: 100%; }
-  .ec-sliderItemRole ul {
+.ec-sliderItemRole ul {
     padding: 0;
     list-style: none; }
-  .ec-sliderItemRole .item_nav {
+.ec-sliderItemRole .item_nav {
     display: none; }
-  .ec-sliderItemRole .slideThumb {
+.ec-sliderItemRole .slideThumb {
     margin-bottom: 25px;
     width: 33%;
     opacity: .8;
     cursor: pointer; }
-    .ec-sliderItemRole .slideThumb:focus {
+.ec-sliderItemRole .slideThumb:focus {
       outline: none; }
-    .ec-sliderItemRole .slideThumb:hover {
+.ec-sliderItemRole .slideThumb:hover {
       opacity: 1; }
-    .ec-sliderItemRole .slideThumb img {
+.ec-sliderItemRole .slideThumb img {
       width: 80%; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -4890,30 +5055,29 @@ Styleguide 12.2
   flex-wrap: wrap;
   margin-bottom: 40px;
   /* Deprecated https://github.com/EC-CUBE/ec-cube/pull/4220 */ }
-  .ec-eyecatchRole .ec-eyecatchRole__image {
+.ec-eyecatchRole .ec-eyecatchRole__image {
     display: block;
     margin-bottom: 40px;
     width: 100%;
     height: 100%; }
-  .ec-eyecatchRole .ec-eyecatchRole__intro {
+.ec-eyecatchRole .ec-eyecatchRole__intro {
     color: black; }
-  .ec-eyecatchRole .ec-eyecatchRole__introEnTitle {
+.ec-eyecatchRole .ec-eyecatchRole__introEnTitle {
     margin-bottom: .8em;
     font-size: 16px;
     font-weight: normal; }
-  .ec-eyecatchRole .ec-eyecatchRole__introTitle {
+.ec-eyecatchRole .ec-eyecatchRole__introTitle {
     margin-bottom: .8em;
     font-size: 24px;
     font-weight: bold; }
-  .ec-eyecatchRole .ec-eyecatchRole__introDescriptiron {
+.ec-eyecatchRole .ec-eyecatchRole__introDescriptiron {
     margin-bottom: 20px;
     font-size: 16px;
     line-height: 2; }
-  .ec-eyecatchRole .ec-eyecatchRole__introDescription {
+.ec-eyecatchRole .ec-eyecatchRole__introDescription {
     margin-bottom: 20px;
     font-size: 16px;
     line-height: 2; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -4968,56 +5132,55 @@ Styleguide 12.3.1
   color: white;
   background-color: black;
   border-color: black; }
-  .ec-inlineBtn--top:focus, .ec-inlineBtn--top.focus, .ec-inlineBtn--top:active:focus, .ec-inlineBtn--top:active.focus, .ec-inlineBtn--top.active:focus, .ec-inlineBtn--top.active.focus {
+.ec-inlineBtn--top:focus, .ec-inlineBtn--top.focus, .ec-inlineBtn--top:active:focus, .ec-inlineBtn--top:active.focus, .ec-inlineBtn--top.active:focus, .ec-inlineBtn--top.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .ec-inlineBtn--top:hover, .ec-inlineBtn--top:focus, .ec-inlineBtn--top.focus {
+.ec-inlineBtn--top:hover, .ec-inlineBtn--top:focus, .ec-inlineBtn--top.focus {
     color: #525263;
     text-decoration: none; }
-  .ec-inlineBtn--top:active, .ec-inlineBtn--top.active {
+.ec-inlineBtn--top:active, .ec-inlineBtn--top.active {
     outline: 0;
     background-image: none;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .ec-inlineBtn--top.disabled, .ec-inlineBtn--top[disabled],
+.ec-inlineBtn--top.disabled, .ec-inlineBtn--top[disabled],
   fieldset[disabled] .ec-inlineBtn--top {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     opacity: 0.65;
     box-shadow: none; }
-  .ec-inlineBtn--top:focus, .ec-inlineBtn--top.focus {
+.ec-inlineBtn--top:focus, .ec-inlineBtn--top.focus {
     color: white;
     background-color: black;
     border-color: black; }
-  .ec-inlineBtn--top:hover {
+.ec-inlineBtn--top:hover {
     color: white;
     background-color: black;
     border-color: black; }
-  .ec-inlineBtn--top:active, .ec-inlineBtn--top.active,
+.ec-inlineBtn--top:active, .ec-inlineBtn--top.active,
   .open > .ec-inlineBtn--top.dropdown-toggle {
     color: white;
     background-color: black;
     background-image: none;
     border-color: black; }
-    .ec-inlineBtn--top:active:hover, .ec-inlineBtn--top:active:focus, .ec-inlineBtn--top:active.focus, .ec-inlineBtn--top.active:hover, .ec-inlineBtn--top.active:focus, .ec-inlineBtn--top.active.focus,
+.ec-inlineBtn--top:active:hover, .ec-inlineBtn--top:active:focus, .ec-inlineBtn--top:active.focus, .ec-inlineBtn--top.active:hover, .ec-inlineBtn--top.active:focus, .ec-inlineBtn--top.active.focus,
     .open > .ec-inlineBtn--top.dropdown-toggle:hover,
     .open > .ec-inlineBtn--top.dropdown-toggle:focus,
     .open > .ec-inlineBtn--top.dropdown-toggle.focus {
       color: white;
       background-color: black;
       border-color: black; }
-  .ec-inlineBtn--top.disabled:hover, .ec-inlineBtn--top.disabled:focus, .ec-inlineBtn--top.disabled.focus, .ec-inlineBtn--top[disabled]:hover, .ec-inlineBtn--top[disabled]:focus, .ec-inlineBtn--top[disabled].focus,
+.ec-inlineBtn--top.disabled:hover, .ec-inlineBtn--top.disabled:focus, .ec-inlineBtn--top.disabled.focus, .ec-inlineBtn--top[disabled]:hover, .ec-inlineBtn--top[disabled]:focus, .ec-inlineBtn--top[disabled].focus,
   fieldset[disabled] .ec-inlineBtn--top:hover,
   fieldset[disabled] .ec-inlineBtn--top:focus,
   fieldset[disabled] .ec-inlineBtn--top.focus {
     background-color: black;
     border-color: black; }
-  .ec-inlineBtn--top .badge {
+.ec-inlineBtn--top .badge {
     color: black;
     background-color: white; }
-  .ec-inlineBtn--top .ec-icon img {
+.ec-inlineBtn--top .ec-icon img {
     width: 1em;
     vertical-align: text-bottom; }
-
 /*
 ロングボタン（全幅）
 
@@ -5057,56 +5220,55 @@ Styleguide 2.1.2
   line-height: 56px;
   padding-top: 0;
   padding-bottom: 0; }
-  .ec-blockBtn--top:focus, .ec-blockBtn--top.focus, .ec-blockBtn--top:active:focus, .ec-blockBtn--top:active.focus, .ec-blockBtn--top.active:focus, .ec-blockBtn--top.active.focus {
+.ec-blockBtn--top:focus, .ec-blockBtn--top.focus, .ec-blockBtn--top:active:focus, .ec-blockBtn--top:active.focus, .ec-blockBtn--top.active:focus, .ec-blockBtn--top.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .ec-blockBtn--top:hover, .ec-blockBtn--top:focus, .ec-blockBtn--top.focus {
+.ec-blockBtn--top:hover, .ec-blockBtn--top:focus, .ec-blockBtn--top.focus {
     color: #525263;
     text-decoration: none; }
-  .ec-blockBtn--top:active, .ec-blockBtn--top.active {
+.ec-blockBtn--top:active, .ec-blockBtn--top.active {
     outline: 0;
     background-image: none;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .ec-blockBtn--top.disabled, .ec-blockBtn--top[disabled],
+.ec-blockBtn--top.disabled, .ec-blockBtn--top[disabled],
   fieldset[disabled] .ec-blockBtn--top {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     opacity: 0.65;
     box-shadow: none; }
-  .ec-blockBtn--top:focus, .ec-blockBtn--top.focus {
+.ec-blockBtn--top:focus, .ec-blockBtn--top.focus {
     color: white;
     background-color: black;
     border-color: black; }
-  .ec-blockBtn--top:hover {
+.ec-blockBtn--top:hover {
     color: white;
     background-color: black;
     border-color: black; }
-  .ec-blockBtn--top:active, .ec-blockBtn--top.active,
+.ec-blockBtn--top:active, .ec-blockBtn--top.active,
   .open > .ec-blockBtn--top.dropdown-toggle {
     color: white;
     background-color: black;
     background-image: none;
     border-color: black; }
-    .ec-blockBtn--top:active:hover, .ec-blockBtn--top:active:focus, .ec-blockBtn--top:active.focus, .ec-blockBtn--top.active:hover, .ec-blockBtn--top.active:focus, .ec-blockBtn--top.active.focus,
+.ec-blockBtn--top:active:hover, .ec-blockBtn--top:active:focus, .ec-blockBtn--top:active.focus, .ec-blockBtn--top.active:hover, .ec-blockBtn--top.active:focus, .ec-blockBtn--top.active.focus,
     .open > .ec-blockBtn--top.dropdown-toggle:hover,
     .open > .ec-blockBtn--top.dropdown-toggle:focus,
     .open > .ec-blockBtn--top.dropdown-toggle.focus {
       color: white;
       background-color: black;
       border-color: black; }
-  .ec-blockBtn--top.disabled:hover, .ec-blockBtn--top.disabled:focus, .ec-blockBtn--top.disabled.focus, .ec-blockBtn--top[disabled]:hover, .ec-blockBtn--top[disabled]:focus, .ec-blockBtn--top[disabled].focus,
+.ec-blockBtn--top.disabled:hover, .ec-blockBtn--top.disabled:focus, .ec-blockBtn--top.disabled.focus, .ec-blockBtn--top[disabled]:hover, .ec-blockBtn--top[disabled]:focus, .ec-blockBtn--top[disabled].focus,
   fieldset[disabled] .ec-blockBtn--top:hover,
   fieldset[disabled] .ec-blockBtn--top:focus,
   fieldset[disabled] .ec-blockBtn--top.focus {
     background-color: black;
     border-color: black; }
-  .ec-blockBtn--top .badge {
+.ec-blockBtn--top .badge {
     color: black;
     background-color: white; }
-  .ec-blockBtn--top .ec-icon img {
+.ec-blockBtn--top .ec-icon img {
     width: 1em;
     vertical-align: text-bottom; }
-
 /*
 見出し
 
@@ -5138,22 +5300,21 @@ Styleguide 12.4.1
 .ec-secHeading {
   margin-bottom: 15px;
   color: black; }
-  .ec-secHeading .ec-secHeading__en {
+.ec-secHeading .ec-secHeading__en {
     font-size: 18px;
     font-weight: bold;
     letter-spacing: .2em; }
-  .ec-secHeading .ec-secHeading__line {
+.ec-secHeading .ec-secHeading__line {
     display: inline-block;
     margin: 0 20px;
     width: 1px;
     height: 14px;
     background: black; }
-  .ec-secHeading .ec-secHeading__ja {
+.ec-secHeading .ec-secHeading__ja {
     font-size: 12px;
     font-weight: normal;
     letter-spacing: .15em;
     vertical-align: 2px; }
-
 /*
 縦並び見出し
 
@@ -5171,25 +5332,24 @@ Styleguide 12.4.2
   margin-bottom: 15px;
   color: black;
   text-align: center; }
-  .ec-secHeading--tandem .ec-secHeading__en {
+.ec-secHeading--tandem .ec-secHeading__en {
     display: block;
     font-size: 18px;
     font-weight: bold;
     letter-spacing: .2em; }
-  .ec-secHeading--tandem .ec-secHeading__line {
+.ec-secHeading--tandem .ec-secHeading__line {
     display: block;
     margin: 13px auto;
     width: 20px;
     height: 1px;
     background: black; }
-  .ec-secHeading--tandem .ec-secHeading__ja {
+.ec-secHeading--tandem .ec-secHeading__ja {
     display: block;
     margin-bottom: 30px;
     font-size: 12px;
     font-weight: normal;
     letter-spacing: .15em;
     vertical-align: 2px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -5213,18 +5373,17 @@ Styleguide 12.5.1
 .ec-topicRole {
   padding: 40px 0;
   background: #F8F8F8; }
-  .ec-topicRole .ec-topicRole__list {
+.ec-topicRole .ec-topicRole__list {
     display: flex;
     flex-wrap: wrap; }
-  .ec-topicRole .ec-topicRole__listItem {
+.ec-topicRole .ec-topicRole__listItem {
     margin-bottom: 20px;
     width: 100%;
     height: auto; }
-  .ec-topicRole .ec-topicRole__listItemTitle {
+.ec-topicRole .ec-topicRole__listItemTitle {
     margin-top: .5em;
     font-size: 14px;
     color: black; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -5247,26 +5406,25 @@ Styleguide 12.6.1
 */
 .ec-newItemRole {
   padding: 40px 0; }
-  .ec-newItemRole .ec-newItemRole__list {
+.ec-newItemRole .ec-newItemRole__list {
     display: flex;
     flex-wrap: wrap; }
-  .ec-newItemRole .ec-newItemRole__listItem {
+.ec-newItemRole .ec-newItemRole__listItem {
     margin-bottom: 4%;
     width: 48%;
     height: auto; }
-    .ec-newItemRole .ec-newItemRole__listItem:not(:first-child) a {
+.ec-newItemRole .ec-newItemRole__listItem:not(:first-child) a {
       color: black; }
-    .ec-newItemRole .ec-newItemRole__listItem:nth-child(odd) {
+.ec-newItemRole .ec-newItemRole__listItem:nth-child(odd) {
       margin-right: 4%; }
-  .ec-newItemRole .ec-newItemRole__listItemHeading {
+.ec-newItemRole .ec-newItemRole__listItemHeading {
     margin-top: calc(45% - 20px); }
-  .ec-newItemRole .ec-newItemRole__listItemTitle {
+.ec-newItemRole .ec-newItemRole__listItemTitle {
     margin: 8px 0;
     font-size: 14px;
     font-weight: bold; }
-  .ec-newItemRole .ec-newItemRole__listItemPrice {
+.ec-newItemRole .ec-newItemRole__listItemPrice {
     font-size: 12px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -5291,14 +5449,13 @@ Styleguide 12.7.1
   padding: 40px 0;
   color: black;
   background: #F8F8F8; }
-  .ec-categoryRole .ec-categoryRole__list {
+.ec-categoryRole .ec-categoryRole__list {
     display: flex;
     flex-wrap: wrap; }
-  .ec-categoryRole .ec-categoryRole__listItem {
+.ec-categoryRole .ec-categoryRole__listItem {
     margin-bottom: 20px;
     width: 100%;
     height: auto; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -5321,24 +5478,24 @@ Styleguide 12.8.1
 */
 .ec-newsRole {
   padding: 40px 0 0; }
-  .ec-newsRole .ec-newsRole__news {
+.ec-newsRole .ec-newsRole__news {
     box-sizing: border-box; }
-  .ec-newsRole .ec-newsRole__newsItem {
+.ec-newsRole .ec-newsRole__newsItem {
     width: 100%; }
-    .ec-newsRole .ec-newsRole__newsItem:not(:last-of-type) {
+.ec-newsRole .ec-newsRole__newsItem:not(:last-of-type) {
       border-bottom: 1px solid #ccc; }
-    .ec-newsRole .ec-newsRole__newsItem:last-of-type {
+.ec-newsRole .ec-newsRole__newsItem:last-of-type {
       margin-bottom: 20px; }
-  .ec-newsRole .ec-newsRole__newsHeading {
+.ec-newsRole .ec-newsRole__newsHeading {
     cursor: pointer; }
-  .ec-newsRole .ec-newsRole__newsDate {
+.ec-newsRole .ec-newsRole__newsDate {
     display: block;
     margin: 15px 0 5px;
     font-size: 12px;
     color: black; }
-  .ec-newsRole .ec-newsRole__newsColumn {
+.ec-newsRole .ec-newsRole__newsColumn {
     display: flex; }
-  .ec-newsRole .ec-newsRole__newsTitle {
+.ec-newsRole .ec-newsRole__newsTitle {
     display: inline-block;
     margin-bottom: 10px;
     width: 90%;
@@ -5346,11 +5503,11 @@ Styleguide 12.8.1
     font-weight: bold;
     color: #7D7D7D;
     line-height: 1.6; }
-  .ec-newsRole .ec-newsRole__newsClose {
+.ec-newsRole .ec-newsRole__newsClose {
     display: inline-block;
     width: 10%;
     position: relative; }
-  .ec-newsRole .ec-newsRole__newsCloseBtn {
+.ec-newsRole .ec-newsRole__newsCloseBtn {
     display: inline-block;
     margin-left: auto;
     border-radius: 50%;
@@ -5362,20 +5519,19 @@ Styleguide 12.8.1
     cursor: pointer;
     position: absolute;
     right: 5px; }
-  .ec-newsRole .ec-newsRole__newsDescription {
+.ec-newsRole .ec-newsRole__newsDescription {
     display: none;
     margin: 0 0 10px;
     font-size: 14px;
     line-height: 1.4;
     overflow: hidden; }
-    .ec-newsRole .ec-newsRole__newsDescription a {
+.ec-newsRole .ec-newsRole__newsDescription a {
       color: #0092C4; }
-  .ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription {
+.ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription {
     margin: 0 0 10px; }
-  .ec-newsRole__newsItem.is_active .ec-newsRole__newsCloseBtn i {
+.ec-newsRole__newsItem.is_active .ec-newsRole__newsCloseBtn i {
     display: inline-block;
     transform: rotateX(180deg) translateY(2px); }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -5399,7 +5555,7 @@ Styleguide 13.1
 .ec-searchnavRole {
   margin-bottom: 0;
   padding: 0; }
-  .ec-searchnavRole .ec-searchnavRole__infos {
+.ec-searchnavRole .ec-searchnavRole__infos {
     margin: 0 auto;
     padding-left: 20px;
     padding-right: 20px;
@@ -5415,31 +5571,30 @@ Styleguide 13.1
     margin-bottom: 16px;
     padding-top: 5px;
     flex-direction: column; }
-    .ec-searchnavRole .ec-searchnavRole__infos:after {
+.ec-searchnavRole .ec-searchnavRole__infos:after {
       content: " ";
       display: table; }
-    .ec-searchnavRole .ec-searchnavRole__infos:after {
+.ec-searchnavRole .ec-searchnavRole__infos:after {
       clear: both; }
-    .ec-searchnavRole .ec-searchnavRole__infos textarea {
+.ec-searchnavRole .ec-searchnavRole__infos textarea {
       /* for chrome fontsize bug */
       font-family: sans-serif; }
-    .ec-searchnavRole .ec-searchnavRole__infos img {
+.ec-searchnavRole .ec-searchnavRole__infos img {
       max-width: 100%; }
-    .ec-searchnavRole .ec-searchnavRole__infos html {
+.ec-searchnavRole .ec-searchnavRole__infos html {
       box-sizing: border-box; }
-    .ec-searchnavRole .ec-searchnavRole__infos *,
+.ec-searchnavRole .ec-searchnavRole__infos *,
     .ec-searchnavRole .ec-searchnavRole__infos *::before,
     .ec-searchnavRole .ec-searchnavRole__infos *::after {
       box-sizing: inherit; }
-    .ec-searchnavRole .ec-searchnavRole__infos img {
+.ec-searchnavRole .ec-searchnavRole__infos img {
       width: 100%; }
-  .ec-searchnavRole .ec-searchnavRole__counter {
+.ec-searchnavRole .ec-searchnavRole__counter {
     margin-bottom: 16px;
     width: 100%; }
-  .ec-searchnavRole .ec-searchnavRole__actions {
+.ec-searchnavRole .ec-searchnavRole__actions {
     text-align: right;
     width: 100%; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -5474,25 +5629,24 @@ Styleguide 13.2
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-shelfRole:after {
+.ec-shelfRole:after {
     content: " ";
     display: table; }
-  .ec-shelfRole:after {
+.ec-shelfRole:after {
     clear: both; }
-  .ec-shelfRole textarea {
+.ec-shelfRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-shelfRole img {
+.ec-shelfRole img {
     max-width: 100%; }
-  .ec-shelfRole html {
+.ec-shelfRole html {
     box-sizing: border-box; }
-  .ec-shelfRole *,
+.ec-shelfRole *,
   .ec-shelfRole *::before,
   .ec-shelfRole *::after {
     box-sizing: inherit; }
-  .ec-shelfRole img {
+.ec-shelfRole img {
     width: 100%; }
-
 /*
 商品一覧グリッド
 
@@ -5515,35 +5669,34 @@ Styleguide 13.2.1
   flex-wrap: wrap;
   padding: 0;
   list-style: none; }
-  .ec-shelfGrid a {
+.ec-shelfGrid a {
     color: inherit;
     text-decoration: none; }
-  .ec-shelfGrid a:hover {
+.ec-shelfGrid a:hover {
     text-decoration: none; }
-  .ec-shelfGrid .ec-shelfGrid__item {
+.ec-shelfGrid .ec-shelfGrid__item {
     margin-bottom: 36px;
     width: 50%;
     display: flex;
     flex-direction: column; }
-    .ec-shelfGrid .ec-shelfGrid__item-image {
+.ec-shelfGrid .ec-shelfGrid__item-image {
       height: 150px;
       margin-bottom: 10px;
       text-align: center; }
-    .ec-shelfGrid .ec-shelfGrid__item img {
+.ec-shelfGrid .ec-shelfGrid__item img {
       width: auto;
       max-height: 100%; }
-    .ec-shelfGrid .ec-shelfGrid__item .ec-productRole__btn {
+.ec-shelfGrid .ec-shelfGrid__item .ec-productRole__btn {
       margin-top: auto;
       margin-bottom: 15px; }
-  .ec-shelfGrid .ec-shelfGrid__item:nth-child(odd) {
+.ec-shelfGrid .ec-shelfGrid__item:nth-child(odd) {
     padding-right: 8px; }
-  .ec-shelfGrid .ec-shelfGrid__item:nth-child(even) {
+.ec-shelfGrid .ec-shelfGrid__item:nth-child(even) {
     padding-left: 8px; }
-  .ec-shelfGrid .ec-shelfGrid__title {
+.ec-shelfGrid .ec-shelfGrid__title {
     margin-bottom: 7px; }
-  .ec-shelfGrid .ec-shelfGrid__plice {
+.ec-shelfGrid .ec-shelfGrid__plice {
     font-weight: bold; }
-
 /*
 13.2.2 商品一覧グリッド（中央寄せ）
 
@@ -5568,33 +5721,32 @@ Styleguide 13.2.2
   padding: 0;
   list-style: none;
   justify-content: center; }
-  .ec-shelfGridCenter a {
+.ec-shelfGridCenter a {
     color: inherit;
     text-decoration: none; }
-  .ec-shelfGridCenter a:hover {
+.ec-shelfGridCenter a:hover {
     text-decoration: none; }
-  .ec-shelfGridCenter .ec-shelfGridCenter__item {
+.ec-shelfGridCenter .ec-shelfGridCenter__item {
     margin-bottom: 36px;
     width: 50%; }
-    .ec-shelfGridCenter .ec-shelfGridCenter__item-image {
+.ec-shelfGridCenter .ec-shelfGridCenter__item-image {
       height: 150px;
       margin-bottom: 10px;
       text-align: center; }
-    .ec-shelfGridCenter .ec-shelfGridCenter__item img {
+.ec-shelfGridCenter .ec-shelfGridCenter__item img {
       width: auto;
       max-height: 100%; }
-    .ec-shelfGridCenter .ec-shelfGridCenter__item .ec-productRole__btn {
+.ec-shelfGridCenter .ec-shelfGridCenter__item .ec-productRole__btn {
       margin-top: auto;
       padding-top: 1em; }
-  .ec-shelfGridCenter .ec-shelfGridCenter__item:nth-child(odd) {
+.ec-shelfGridCenter .ec-shelfGridCenter__item:nth-child(odd) {
     padding-right: 8px; }
-  .ec-shelfGridCenter .ec-shelfGridCenter__item:nth-child(even) {
+.ec-shelfGridCenter .ec-shelfGridCenter__item:nth-child(even) {
     padding-left: 8px; }
-  .ec-shelfGridCenter .ec-shelfGridCenter__title {
+.ec-shelfGridCenter .ec-shelfGridCenter__title {
     margin-bottom: 7px; }
-  .ec-shelfGridCenter .ec-shelfGridCenter__plice {
+.ec-shelfGridCenter .ec-shelfGridCenter__plice {
     font-weight: bold; }
-
 /*
 商品一覧フッター
 
@@ -5628,7 +5780,6 @@ Styleguide 13.4
 */
 .ec-modal .checkbox {
   display: none; }
-
 .ec-modal .ec-modal-overlay {
   opacity: 0;
   transition: all 0.3s ease;
@@ -5641,7 +5792,6 @@ Styleguide 13.4
   transform: scale(1);
   display: flex;
   background-color: rgba(0, 0, 0, 0.3); }
-
 .ec-modal .ec-modal-wrap {
   background-color: #fff;
   border: 1px solid #333;
@@ -5651,16 +5801,15 @@ Styleguide 13.4
   border-radius: 2px;
   transition: all 0.5s ease;
   align-self: center; }
-  .ec-modal .ec-modal-wrap .ec-modal-box {
+.ec-modal .ec-modal-wrap .ec-modal-box {
     text-align: center; }
-  .ec-modal .ec-modal-wrap .ec-modal-box div {
+.ec-modal .ec-modal-wrap .ec-modal-box div {
     margin-top: 20px; }
-  .ec-modal .ec-modal-wrap.small {
+.ec-modal .ec-modal-wrap.small {
     width: 30%; }
-  .ec-modal .ec-modal-wrap.full {
+.ec-modal .ec-modal-wrap.full {
     width: 100%;
     height: 100%; }
-
 .ec-modal .ec-modal-overlay .ec-modal-close {
   position: absolute;
   right: 20px;
@@ -5668,10 +5817,9 @@ Styleguide 13.4
   font-size: 20px;
   height: 30px;
   width: 20px; }
-  .ec-modal .ec-modal-overlay .ec-modal-close:hover {
+.ec-modal .ec-modal-overlay .ec-modal-close:hover {
     cursor: pointer;
     color: #4b5361; }
-
 .ec-modal .ec-modal-overlay-close {
   display: none;
   width: 100%;
@@ -5679,19 +5827,16 @@ Styleguide 13.4
   position: fixed;
   left: 0;
   top: 0; }
-
 .ec-modal input:checked ~ .ec-modal-overlay {
   transform: scale(1);
   opacity: 1;
   z-index: 9997;
   overflow: auto; }
-  .ec-modal input:checked ~ .ec-modal-overlay .ec-modal-overlay-close {
+.ec-modal input:checked ~ .ec-modal-overlay .ec-modal-overlay-close {
     display: block; }
-
 .ec-modal input:checked ~ .ec-modal-overlay .ec-modal-wrap {
   transform: translateY(0);
   z-index: 9999; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -5722,37 +5867,37 @@ Styleguide 14.1
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-productRole:after {
+.ec-productRole:after {
     content: " ";
     display: table; }
-  .ec-productRole:after {
+.ec-productRole:after {
     clear: both; }
-  .ec-productRole textarea {
+.ec-productRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-productRole img {
+.ec-productRole img {
     max-width: 100%; }
-  .ec-productRole html {
+.ec-productRole html {
     box-sizing: border-box; }
-  .ec-productRole *,
+.ec-productRole *,
   .ec-productRole *::before,
   .ec-productRole *::after {
     box-sizing: inherit; }
-  .ec-productRole img {
+.ec-productRole img {
     width: 100%; }
-  .ec-productRole .ec-productRole__img {
+.ec-productRole .ec-productRole__img {
     margin-right: 0;
     margin-bottom: 20px; }
-  .ec-productRole .ec-productRole__profile {
+.ec-productRole .ec-productRole__profile {
     margin-left: 0; }
-  .ec-productRole .ec-productRole__title .ec-headingTitle {
+.ec-productRole .ec-productRole__title .ec-headingTitle {
     font-size: 20px; }
-  .ec-productRole .ec-productRole__tags {
+.ec-productRole .ec-productRole__tags {
     margin-top: 16px;
     padding: 0;
     padding-bottom: 16px;
     border-bottom: 1px dotted #ccc; }
-  .ec-productRole .ec-productRole__tag {
+.ec-productRole .ec-productRole__tag {
     display: inline-block;
     padding: 2px 5px;
     list-style: none;
@@ -5761,40 +5906,39 @@ Styleguide 14.1
     border: solid 1px #D7DADD;
     border-radius: 3px;
     background-color: #F5F7F8; }
-  .ec-productRole .ec-productRole__priceRegular {
+.ec-productRole .ec-productRole__priceRegular {
     padding-top: 14px; }
-  .ec-productRole .ec-productRole__priceRegularTax {
+.ec-productRole .ec-productRole__priceRegularTax {
     margin-left: 5px;
     font-size: 10px; }
-  .ec-productRole .ec-productRole__price {
+.ec-productRole .ec-productRole__price {
     color: #DE5D50;
     font-size: 28px;
     padding: 0;
     border-bottom: 0; }
-  .ec-productRole .ec-productRole__code {
+.ec-productRole .ec-productRole__code {
     padding: 14px 0;
     border-bottom: 1px dotted #ccc; }
-  .ec-productRole .ec-productRole__category {
+.ec-productRole .ec-productRole__category {
     padding: 14px 0;
     border-bottom: 1px dotted #ccc; }
-    .ec-productRole .ec-productRole__category a {
+.ec-productRole .ec-productRole__category a {
       color: #33A8D0; }
-    .ec-productRole .ec-productRole__category ul {
+.ec-productRole .ec-productRole__category ul {
       list-style: none;
       padding: 0;
       margin: 0; }
-  .ec-productRole .ec-productRole__actions {
+.ec-productRole .ec-productRole__actions {
     padding: 14px 0; }
-    .ec-productRole .ec-productRole__actions .ec-select select {
+.ec-productRole .ec-productRole__actions .ec-select select {
       height: 40px;
       max-width: 100%;
       min-width: 100%; }
-  .ec-productRole .ec-productRole__btn {
+.ec-productRole .ec-productRole__btn {
     width: 100%;
     margin-bottom: 10px; }
-  .ec-productRole .ec-productRole__description {
+.ec-productRole .ec-productRole__description {
     margin-bottom: 16px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -5833,58 +5977,57 @@ Styleguide 15.1
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end; }
-  .ec-cartRole:after {
+.ec-cartRole:after {
     content: " ";
     display: table; }
-  .ec-cartRole:after {
+.ec-cartRole:after {
     clear: both; }
-  .ec-cartRole textarea {
+.ec-cartRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-cartRole img {
+.ec-cartRole img {
     max-width: 100%; }
-  .ec-cartRole html {
+.ec-cartRole html {
     box-sizing: border-box; }
-  .ec-cartRole *,
+.ec-cartRole *,
   .ec-cartRole *::before,
   .ec-cartRole *::after {
     box-sizing: inherit; }
-  .ec-cartRole img {
+.ec-cartRole img {
     width: 100%; }
-  .ec-cartRole::before {
+.ec-cartRole::before {
     display: none; }
-  .ec-cartRole .ec-cartRole__progress {
+.ec-cartRole .ec-cartRole__progress {
     width: 100%;
     text-align: center; }
-  .ec-cartRole .ec-cartRole__error {
+.ec-cartRole .ec-cartRole__error {
     width: 100%;
     text-align: center; }
-    .ec-cartRole .ec-cartRole__error .ec-alert-warning {
+.ec-cartRole .ec-cartRole__error .ec-alert-warning {
       max-width: 80%;
       display: inline-block; }
-  .ec-cartRole .ec-cartRole__totalText {
+.ec-cartRole .ec-cartRole__totalText {
     margin-bottom: 0;
     padding: 16px 0 6px;
     width: 100%;
     text-align: center;
     font-weight: normal; }
-  .ec-cartRole .ec-cartRole__cart {
+.ec-cartRole .ec-cartRole__cart {
     margin: 0;
     width: 100%; }
-  .ec-cartRole .ec-cartRole__actions {
+.ec-cartRole .ec-cartRole__actions {
     text-align: right;
     width: 100%; }
-  .ec-cartRole .ec-cartRole__total {
+.ec-cartRole .ec-cartRole__total {
     padding: 15px 0 30px;
     font-weight: bold;
     font-size: 16px; }
-  .ec-cartRole .ec-cartRole__totalAmount {
+.ec-cartRole .ec-cartRole__totalAmount {
     margin-left: 30px;
     color: #de5d50;
     font-size: 16px; }
-  .ec-cartRole .ec-blockBtn--action {
+.ec-cartRole .ec-blockBtn--action {
     margin-bottom: 10px; }
-
 /*
 カート商品表示枠（テーブルヘッダ）
 
@@ -5907,7 +6050,6 @@ Styleguide 15.1.2
   display: table;
   border-top: 1px dotted #ccc;
   width: 100%; }
-
 /*
 カート商品表示枠（テーブルヘッダ）
 
@@ -5934,14 +6076,13 @@ Styleguide 15.1.3
   display: none;
   width: 100%;
   background: #F4F3F0; }
-  .ec-cartHeader .ec-cartHeader__label {
+.ec-cartHeader .ec-cartHeader__label {
     display: table-cell;
     padding: 16px;
     text-align: center;
     background: #F4F3F0;
     overflow-x: hidden;
     font-weight: bold; }
-
 .ec-cartCompleteRole {
   margin: 0 auto;
   padding-left: 20px;
@@ -5953,25 +6094,24 @@ Styleguide 15.1.3
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-cartCompleteRole:after {
+.ec-cartCompleteRole:after {
     content: " ";
     display: table; }
-  .ec-cartCompleteRole:after {
+.ec-cartCompleteRole:after {
     clear: both; }
-  .ec-cartCompleteRole textarea {
+.ec-cartCompleteRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-cartCompleteRole img {
+.ec-cartCompleteRole img {
     max-width: 100%; }
-  .ec-cartCompleteRole html {
+.ec-cartCompleteRole html {
     box-sizing: border-box; }
-  .ec-cartCompleteRole *,
+.ec-cartCompleteRole *,
   .ec-cartCompleteRole *::before,
   .ec-cartCompleteRole *::after {
     box-sizing: inherit; }
-  .ec-cartCompleteRole img {
+.ec-cartCompleteRole img {
     width: 100%; }
-
 /*
 カート内商品
 
@@ -5997,51 +6137,51 @@ Styleguide 15.1.4
 */
 .ec-cartRow {
   display: table-row; }
-  .ec-cartRow .ec-cartRow__delColumn {
+.ec-cartRow .ec-cartRow__delColumn {
     border-bottom: 1px dotted #ccc;
     text-align: center;
     display: table-cell;
     width: 14%;
     vertical-align: middle; }
-    .ec-cartRow .ec-cartRow__delColumn .ec-icon img {
+.ec-cartRow .ec-cartRow__delColumn .ec-icon img {
       width: 1.5em;
       height: 1.5em; }
-  .ec-cartRow .ec-cartRow__contentColumn {
+.ec-cartRow .ec-cartRow__contentColumn {
     border-bottom: 1px dotted #ccc;
     padding: 10px 0;
     display: table; }
-  .ec-cartRow .ec-cartRow__img {
+.ec-cartRow .ec-cartRow__img {
     display: table-cell;
     width: 40%;
     vertical-align: middle;
     padding-right: 10px; }
-  .ec-cartRow .ec-cartRow__summary {
+.ec-cartRow .ec-cartRow__summary {
     display: table-cell;
     margin-left: 5px;
     font-weight: bold;
     vertical-align: middle;
     width: 46%; }
-    .ec-cartRow .ec-cartRow__summary .ec-cartRow__name {
+.ec-cartRow .ec-cartRow__summary .ec-cartRow__name {
       margin-bottom: 5px; }
-    .ec-cartRow .ec-cartRow__summary .ec-cartRow__sutbtotalSP {
+.ec-cartRow .ec-cartRow__summary .ec-cartRow__sutbtotalSP {
       display: block;
       font-weight: normal; }
-  .ec-cartRow .ec-cartRow__amountColumn {
+.ec-cartRow .ec-cartRow__amountColumn {
     display: table-cell;
     border-bottom: 1px dotted #ccc;
     vertical-align: middle;
     text-align: center;
     width: 20%; }
-    .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amount {
+.ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amount {
       display: none;
       margin-bottom: 10px; }
-    .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountSP {
+.ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountSP {
       display: block;
       margin-bottom: 10px; }
-    .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpDown {
+.ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpDown {
       display: flex;
       justify-content: center; }
-    .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpButton {
+.ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpButton {
       margin: 0 2px;
       display: inline-block;
       border: 2px solid #c9c9c9;
@@ -6056,7 +6196,7 @@ Styleguide 15.1.4
       position: relative;
       text-align: center;
       background: #fff; }
-      .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpButton .ec-cartRow__amountUpButton__icon img {
+.ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountUpButton .ec-cartRow__amountUpButton__icon img {
         display: block;
         margin-left: -0.4em;
         width: .8em;
@@ -6064,7 +6204,7 @@ Styleguide 15.1.4
         position: absolute;
         top: 28%;
         left: 50%; }
-    .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButton, .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButtonDisabled {
+.ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButton, .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButtonDisabled {
       margin: 0 2px;
       display: inline-block;
       border: 2px solid #c9c9c9;
@@ -6079,7 +6219,7 @@ Styleguide 15.1.4
       position: relative;
       text-align: center;
       background: #fff; }
-      .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButton .ec-cartRow__amountDownButton__icon img, .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButtonDisabled .ec-cartRow__amountDownButton__icon img {
+.ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButton .ec-cartRow__amountDownButton__icon img, .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButtonDisabled .ec-cartRow__amountDownButton__icon img {
         display: block;
         margin-left: -0.4em;
         width: .8em;
@@ -6087,14 +6227,13 @@ Styleguide 15.1.4
         position: absolute;
         top: 28%;
         left: 50%; }
-    .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButtonDisabled {
+.ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButtonDisabled {
       cursor: default; }
-  .ec-cartRow .ec-cartRow__subtotalColumn {
+.ec-cartRow .ec-cartRow__subtotalColumn {
     display: none;
     border-bottom: 1px dotted #ccc;
     text-align: right;
     width: 16.66666667%; }
-
 /*
 カート内商品(商品が１の場合)
 
@@ -6119,7 +6258,6 @@ Styleguide 15.1.5
 */
 .ec-cartRow .ec-cartRow__amountColumn .ec-cartRow__amountDownButtonDisabled {
   cursor: default; }
-
 /*
 アラート
 
@@ -6143,7 +6281,7 @@ Styleguide 15.1.6
   text-align: center;
   background: #F99;
   margin-bottom: 20px; }
-  .ec-alert-warning .ec-alert-warning__icon {
+.ec-alert-warning .ec-alert-warning__icon {
     display: inline-block;
     margin-right: 1rem;
     width: 20px;
@@ -6151,13 +6289,12 @@ Styleguide 15.1.6
     color: #fff;
     fill: #fff;
     vertical-align: top; }
-  .ec-alert-warning .ec-alert-warning__text {
+.ec-alert-warning .ec-alert-warning__text {
     display: inline-block;
     font-size: 16px;
     font-weight: bold;
     color: #fff;
     position: relative; }
-
 /*
 アラート(空)
 
@@ -6210,37 +6347,36 @@ Styleguide 15.2
   display: flex;
   flex-direction: column;
   margin-top: 0; }
-  .ec-orderRole:after {
+.ec-orderRole:after {
     content: " ";
     display: table; }
-  .ec-orderRole:after {
+.ec-orderRole:after {
     clear: both; }
-  .ec-orderRole textarea {
+.ec-orderRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-orderRole img {
+.ec-orderRole img {
     max-width: 100%; }
-  .ec-orderRole html {
+.ec-orderRole html {
     box-sizing: border-box; }
-  .ec-orderRole *,
+.ec-orderRole *,
   .ec-orderRole *::before,
   .ec-orderRole *::after {
     box-sizing: inherit; }
-  .ec-orderRole img {
+.ec-orderRole img {
     width: 100%; }
-  .ec-orderRole .ec-inlineBtn {
+.ec-orderRole .ec-inlineBtn {
     font-weight: normal; }
-  .ec-orderRole .ec-orderRole__detail {
+.ec-orderRole .ec-orderRole__detail {
     padding: 0;
     width: 100%; }
-  .ec-orderRole .ec-orderRole__summary {
+.ec-orderRole .ec-orderRole__summary {
     width: 100%; }
-    .ec-orderRole .ec-orderRole__summary .ec-inlineBtn {
+.ec-orderRole .ec-orderRole__summary .ec-inlineBtn {
       display: inline-block; }
-  .ec-orderRole .ec-borderedList {
+.ec-orderRole .ec-borderedList {
     margin-bottom: 20px;
     border-top: 1px dotted #ccc; }
-
 /*
 注文履歴詳細 オーダ情報
 
@@ -6257,10 +6393,9 @@ Styleguide 15.2.1
 */
 .ec-orderOrder {
   margin-bottom: 30px; }
-  .ec-orderOrder .ec-orderOrder__items {
+.ec-orderOrder .ec-orderOrder__items {
     border-bottom: 1px dotted #ccc;
     border-top: 1px dotted #ccc; }
-
 /*
 注文履歴詳細 お客様情報
 
@@ -6276,20 +6411,19 @@ Styleguide 15.2.2
 */
 .ec-orderAccount {
   margin-bottom: 30px; }
-  .ec-orderAccount p {
+.ec-orderAccount p {
     margin-bottom: 0; }
-  .ec-orderAccount:after {
+.ec-orderAccount:after {
     content: " ";
     display: table; }
-  .ec-orderAccount:after {
+.ec-orderAccount:after {
     clear: both; }
-  .ec-orderAccount .ec-orderAccount__change {
+.ec-orderAccount .ec-orderAccount__change {
     display: inline-block;
     margin-left: 10px;
     float: right; }
-  .ec-orderAccount .ec-orderAccount__account {
+.ec-orderAccount .ec-orderAccount__account {
     margin-bottom: 16px; }
-
 /*
 注文詳細 配送情報
 
@@ -6308,22 +6442,18 @@ Styleguide 15.2.3
   font-weight: bold;
   font-size: 18px;
   position: relative; }
-
 .ec-orderDelivery .ec-orderDelivery__change {
   display: inline-block;
   position: absolute;
   right: 0;
   top: 0; }
-
 .ec-orderDelivery .ec-orderDelivery__items {
   border-bottom: 1px dotted #ccc;
   border-top: 1px dotted #ccc; }
-
 .ec-orderDelivery .ec-orderDelivery__address {
   margin: 10px 0 18px; }
-  .ec-orderDelivery .ec-orderDelivery__address p {
+.ec-orderDelivery .ec-orderDelivery__address p {
     margin: 0; }
-
 /*
 注文履歴詳細 支払情報
 
@@ -6358,9 +6488,8 @@ Styleguide 15.2.5
 */
 .ec-orderConfirm {
   margin-bottom: 20px; }
-  .ec-orderConfirm .ec-input textarea, .ec-orderConfirm .ec-halfInput textarea, .ec-orderConfirm .ec-numberInput textarea, .ec-orderConfirm .ec-zipInput textarea, .ec-orderConfirm .ec-telInput textarea, .ec-orderConfirm .ec-select textarea, .ec-orderConfirm .ec-birth textarea {
+.ec-orderConfirm .ec-input textarea, .ec-orderConfirm .ec-halfInput textarea, .ec-orderConfirm .ec-numberInput textarea, .ec-orderConfirm .ec-zipInput textarea, .ec-orderConfirm .ec-telInput textarea, .ec-orderConfirm .ec-select textarea, .ec-orderConfirm .ec-birth textarea {
     height: 96px; }
-
 /*
 お届け先の複数指定
 
@@ -6377,59 +6506,58 @@ Styleguide 15.2.6
 */
 .ec-AddAddress {
   padding: 0 10px; }
-  .ec-AddAddress .ec-AddAddress__info {
+.ec-AddAddress .ec-AddAddress__info {
     margin-bottom: 32px;
     text-align: center;
     font-size: 16px; }
-  .ec-AddAddress .ec-AddAddress__add {
+.ec-AddAddress .ec-AddAddress__add {
     border-top: 1px solid #f4f4f4;
     padding-top: 20px;
     margin-bottom: 20px; }
-  .ec-AddAddress .ec-AddAddress__item {
+.ec-AddAddress .ec-AddAddress__item {
     display: table;
     padding: 16px;
     background: #f4f4f4;
     margin-bottom: 16px; }
-  .ec-AddAddress .ec-AddAddress__itemThumb {
+.ec-AddAddress .ec-AddAddress__itemThumb {
     display: table-cell;
     min-width: 160px;
     width: 20%; }
-    .ec-AddAddress .ec-AddAddress__itemThumb img {
+.ec-AddAddress .ec-AddAddress__itemThumb img {
       width: 100%; }
-  .ec-AddAddress .ec-AddAddress__itemtContent {
+.ec-AddAddress .ec-AddAddress__itemtContent {
     display: table-cell;
     vertical-align: middle;
     padding-left: 16px;
     font-size: 16px; }
-  .ec-AddAddress .ec-AddAddress__itemtTitle {
+.ec-AddAddress .ec-AddAddress__itemtTitle {
     font-weight: bold;
     margin-bottom: 10px; }
-  .ec-AddAddress .ec-AddAddress__itemtSize {
+.ec-AddAddress .ec-AddAddress__itemtSize {
     margin-bottom: 10px; }
-  .ec-AddAddress .ec-AddAddress__select {
+.ec-AddAddress .ec-AddAddress__select {
     margin-bottom: 5px; }
-  .ec-AddAddress .ec-AddAddress__selectAddress {
+.ec-AddAddress .ec-AddAddress__selectAddress {
     display: inline-block; }
-    .ec-AddAddress .ec-AddAddress__selectAddress label {
+.ec-AddAddress .ec-AddAddress__selectAddress label {
       font-size: 16px;
       font-weight: normal; }
-    .ec-AddAddress .ec-AddAddress__selectAddress select {
+.ec-AddAddress .ec-AddAddress__selectAddress select {
       min-width: 100%; }
-  .ec-AddAddress .ec-AddAddress__selectNumber {
+.ec-AddAddress .ec-AddAddress__selectNumber {
     display: inline-block;
     margin-left: 30px; }
-    .ec-AddAddress .ec-AddAddress__selectNumber label {
+.ec-AddAddress .ec-AddAddress__selectNumber label {
       font-size: 16px;
       font-weight: normal; }
-    .ec-AddAddress .ec-AddAddress__selectNumber input {
+.ec-AddAddress .ec-AddAddress__selectNumber input {
       display: inline-block;
       margin-left: 10px;
       width: 80px; }
-  .ec-AddAddress .ec-AddAddress__actions .ec-blockBtn--action {
+.ec-AddAddress .ec-AddAddress__actions .ec-blockBtn--action {
     margin-bottom: 8px; }
-  .ec-AddAddress .ec-AddAddress__new {
+.ec-AddAddress .ec-AddAddress__new {
     margin-bottom: 20px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -6459,24 +6587,21 @@ Styleguide 16.1
   display: flex;
   flex-direction: column;
   color: #525263; }
-
 .ec-historyRole .ec-historyRole__header {
   width: 100%; }
-
 .ec-historyRole .ec-historyRole__detail {
   border-top: 1px dotted #ccc;
   width: 100%; }
-  .ec-historyRole .ec-historyRole__detail .ec-imageGrid:nth-of-type(1) {
+.ec-historyRole .ec-historyRole__detail .ec-imageGrid:nth-of-type(1) {
     border-top: none; }
-  .ec-historyRole .ec-historyRole__detail .ec-historyRole__detailTitle {
+.ec-historyRole .ec-historyRole__detail .ec-historyRole__detailTitle {
     margin-bottom: 8px;
     font-size: 1.6rem;
     font-weight: bold; }
-  .ec-historyRole .ec-historyRole__detail .ec-historyRole__detailPrice {
+.ec-historyRole .ec-historyRole__detail .ec-historyRole__detailPrice {
     margin-bottom: 8px;
     font-size: 1.6rem;
     font-weight: bold; }
-
 /*
 注文履歴一覧 規格
 
@@ -6496,13 +6621,11 @@ Styleguide 16.1.1
   margin-bottom: 8px;
   margin-right: .5rem;
   font-size: 1.6rem; }
-
 .ec-historyRole .ec-historyRole__detail .ec-historyRole__detailOption::after {
   display: inline-block;
   padding-left: .5rem;
   content: "/";
   font-weight: bold; }
-
 /*
 注文履歴一覧ヘッダ
 
@@ -6521,13 +6644,11 @@ Styleguide 16.1.2
 .ec-historyListHeader .ec-historyListHeader__date {
   font-weight: bold;
   font-size: 16px; }
-
 .ec-historyListHeader .ec-historyListHeader__action {
   margin: 16px 0; }
-  .ec-historyListHeader .ec-historyListHeader__action a {
+.ec-historyListHeader .ec-historyListHeader__action a {
     font-size: 12px;
     font-weight: normal; }
-
 /**
  * ECCUBE 固有のスタイルユーティリティ
  */
@@ -6567,13 +6688,10 @@ Styleguide 16.2.5
 .ec-orderMails .ec-orderMails__item {
   padding-bottom: 10px;
   border-bottom: 1px dotted #ccc; }
-
 .ec-orderMails .ec-orderMails__time {
   margin: 0; }
-
 .ec-orderMails .ec-orderMails__body {
   display: none; }
-
 /*
 注文履歴詳細 メール履歴個別
 
@@ -6592,27 +6710,26 @@ Styleguide 16.2.6
   padding-bottom: 10px;
   border-bottom: 1px dotted #ccc;
   margin-bottom: 16px; }
-  .ec-orderMail .ec-orderMail__time {
+.ec-orderMail .ec-orderMail__time {
     margin: 0; }
-  .ec-orderMail .ec-orderMail__body {
+.ec-orderMail .ec-orderMail__body {
     display: none; }
-  .ec-orderMail .ec-orderMail__time {
+.ec-orderMail .ec-orderMail__time {
     margin-bottom: 4px; }
-  .ec-orderMail .ec-orderMail__link {
+.ec-orderMail .ec-orderMail__link {
     margin-bottom: 4px; }
-    .ec-orderMail .ec-orderMail__link a {
+.ec-orderMail .ec-orderMail__link a {
       color: #0092C4;
       text-decoration: none;
       cursor: pointer; }
-    .ec-orderMail .ec-orderMail__link a:hover {
+.ec-orderMail .ec-orderMail__link a:hover {
       color: #33A8D0; }
-  .ec-orderMail .ec-orderMail__close a {
+.ec-orderMail .ec-orderMail__close a {
     color: #0092C4;
     text-decoration: none;
     cursor: pointer; }
-  .ec-orderMail .ec-orderMail__close a:hover {
+.ec-orderMail .ec-orderMail__close a:hover {
     color: #33A8D0; }
-
 /*
 住所一覧
 
@@ -6635,40 +6752,34 @@ Styleguide 17.1
 */
 .ec-addressRole .ec-addressRole__item {
   border-top: 1px dotted #ccc; }
-
 .ec-addressRole .ec-addressRole__actions {
   margin-top: 32px;
   padding-bottom: 20px;
   border-bottom: 1px dotted #ccc; }
-
 .ec-addressList .ec-addressList__item {
   display: table;
   width: 100%;
   position: relative;
   border-bottom: 1px dotted #ccc; }
-
 .ec-addressList .ec-addressList__remove {
   vertical-align: middle;
   padding: 16px;
   text-align: center; }
-  .ec-addressList .ec-addressList__remove .ec-icon img {
+.ec-addressList .ec-addressList__remove .ec-icon img {
     width: 1em;
     height: 1em; }
-
 .ec-addressList .ec-addressList__address {
   display: table-cell;
   vertical-align: middle;
   padding: 16px;
   margin-right: 4em;
   width: 80%; }
-
 .ec-addressList .ec-addressList__action {
   position: relative;
   vertical-align: middle;
   text-align: right;
   top: 27px;
   padding-right: 10px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -6701,29 +6812,28 @@ Styleguide 18.1
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-forgotRole:after {
+.ec-forgotRole:after {
     content: " ";
     display: table; }
-  .ec-forgotRole:after {
+.ec-forgotRole:after {
     clear: both; }
-  .ec-forgotRole textarea {
+.ec-forgotRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-forgotRole img {
+.ec-forgotRole img {
     max-width: 100%; }
-  .ec-forgotRole html {
+.ec-forgotRole html {
     box-sizing: border-box; }
-  .ec-forgotRole *,
+.ec-forgotRole *,
   .ec-forgotRole *::before,
   .ec-forgotRole *::after {
     box-sizing: inherit; }
-  .ec-forgotRole img {
+.ec-forgotRole img {
     width: 100%; }
-  .ec-forgotRole .ec-forgotRole__intro {
+.ec-forgotRole .ec-forgotRole__intro {
     font-size: 16px; }
-  .ec-forgotRole .ec-forgotRole__form {
+.ec-forgotRole .ec-forgotRole__form {
     margin-bottom: 16px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -6754,32 +6864,31 @@ Styleguide 19.1
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-registerRole:after {
+.ec-registerRole:after {
     content: " ";
     display: table; }
-  .ec-registerRole:after {
+.ec-registerRole:after {
     clear: both; }
-  .ec-registerRole textarea {
+.ec-registerRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-registerRole img {
+.ec-registerRole img {
     max-width: 100%; }
-  .ec-registerRole html {
+.ec-registerRole html {
     box-sizing: border-box; }
-  .ec-registerRole *,
+.ec-registerRole *,
   .ec-registerRole *::before,
   .ec-registerRole *::after {
     box-sizing: inherit; }
-  .ec-registerRole img {
+.ec-registerRole img {
     width: 100%; }
-  .ec-registerRole .ec-registerRole__actions {
+.ec-registerRole .ec-registerRole__actions {
     padding-top: 20px;
     text-align: center; }
-    .ec-registerRole .ec-registerRole__actions p {
+.ec-registerRole .ec-registerRole__actions p {
       margin-bottom: 16px; }
-  .ec-registerRole .ec-blockBtn--action {
+.ec-registerRole .ec-blockBtn--action {
     margin-bottom: 16px; }
-
 .ec-registerCompleteRole {
   margin: 0 auto;
   padding-left: 20px;
@@ -6791,25 +6900,24 @@ Styleguide 19.1
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-registerCompleteRole:after {
+.ec-registerCompleteRole:after {
     content: " ";
     display: table; }
-  .ec-registerCompleteRole:after {
+.ec-registerCompleteRole:after {
     clear: both; }
-  .ec-registerCompleteRole textarea {
+.ec-registerCompleteRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-registerCompleteRole img {
+.ec-registerCompleteRole img {
     max-width: 100%; }
-  .ec-registerCompleteRole html {
+.ec-registerCompleteRole html {
     box-sizing: border-box; }
-  .ec-registerCompleteRole *,
+.ec-registerCompleteRole *,
   .ec-registerCompleteRole *::before,
   .ec-registerCompleteRole *::after {
     box-sizing: inherit; }
-  .ec-registerCompleteRole img {
+.ec-registerCompleteRole img {
     width: 100%; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -6840,29 +6948,28 @@ Styleguide 19.2
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-contactRole:after {
+.ec-contactRole:after {
     content: " ";
     display: table; }
-  .ec-contactRole:after {
+.ec-contactRole:after {
     clear: both; }
-  .ec-contactRole textarea {
+.ec-contactRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-contactRole img {
+.ec-contactRole img {
     max-width: 100%; }
-  .ec-contactRole html {
+.ec-contactRole html {
     box-sizing: border-box; }
-  .ec-contactRole *,
+.ec-contactRole *,
   .ec-contactRole *::before,
   .ec-contactRole *::after {
     box-sizing: inherit; }
-  .ec-contactRole img {
+.ec-contactRole img {
     width: 100%; }
-  .ec-contactRole .ec-contactRole__actions {
+.ec-contactRole .ec-contactRole__actions {
     padding-top: 20px; }
-  .ec-contactRole p {
+.ec-contactRole p {
     margin: 16px 0; }
-
 .ec-contactConfirmRole {
   margin: 0 auto;
   padding-left: 20px;
@@ -6874,29 +6981,28 @@ Styleguide 19.2
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-contactConfirmRole:after {
+.ec-contactConfirmRole:after {
     content: " ";
     display: table; }
-  .ec-contactConfirmRole:after {
+.ec-contactConfirmRole:after {
     clear: both; }
-  .ec-contactConfirmRole textarea {
+.ec-contactConfirmRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-contactConfirmRole img {
+.ec-contactConfirmRole img {
     max-width: 100%; }
-  .ec-contactConfirmRole html {
+.ec-contactConfirmRole html {
     box-sizing: border-box; }
-  .ec-contactConfirmRole *,
+.ec-contactConfirmRole *,
   .ec-contactConfirmRole *::before,
   .ec-contactConfirmRole *::after {
     box-sizing: inherit; }
-  .ec-contactConfirmRole img {
+.ec-contactConfirmRole img {
     width: 100%; }
-  .ec-contactConfirmRole .ec-contactConfirmRole__actions {
+.ec-contactConfirmRole .ec-contactConfirmRole__actions {
     padding-top: 20px; }
-  .ec-contactConfirmRole .ec-blockBtn--action {
+.ec-contactConfirmRole .ec-blockBtn--action {
     margin-bottom: 16px; }
-
 .ec-contactCompleteRole {
   margin: 0 auto;
   padding-left: 20px;
@@ -6908,25 +7014,24 @@ Styleguide 19.2
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-contactCompleteRole:after {
+.ec-contactCompleteRole:after {
     content: " ";
     display: table; }
-  .ec-contactCompleteRole:after {
+.ec-contactCompleteRole:after {
     clear: both; }
-  .ec-contactCompleteRole textarea {
+.ec-contactCompleteRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-contactCompleteRole img {
+.ec-contactCompleteRole img {
     max-width: 100%; }
-  .ec-contactCompleteRole html {
+.ec-contactCompleteRole html {
     box-sizing: border-box; }
-  .ec-contactCompleteRole *,
+.ec-contactCompleteRole *,
   .ec-contactCompleteRole *::before,
   .ec-contactCompleteRole *::after {
     box-sizing: inherit; }
-  .ec-contactCompleteRole img {
+.ec-contactCompleteRole img {
     width: 100%; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -6958,29 +7063,28 @@ Styleguide 19.3
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-customerRole:after {
+.ec-customerRole:after {
     content: " ";
     display: table; }
-  .ec-customerRole:after {
+.ec-customerRole:after {
     clear: both; }
-  .ec-customerRole textarea {
+.ec-customerRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-customerRole img {
+.ec-customerRole img {
     max-width: 100%; }
-  .ec-customerRole html {
+.ec-customerRole html {
     box-sizing: border-box; }
-  .ec-customerRole *,
+.ec-customerRole *,
   .ec-customerRole *::before,
   .ec-customerRole *::after {
     box-sizing: inherit; }
-  .ec-customerRole img {
+.ec-customerRole img {
     width: 100%; }
-  .ec-customerRole .ec-customerRole__actions {
+.ec-customerRole .ec-customerRole__actions {
     padding-top: 20px; }
-  .ec-customerRole .ec-blockBtn--action {
+.ec-customerRole .ec-blockBtn--action {
     margin-bottom: 10px; }
-
 .ec-contactConfirmRole {
   margin: 0 auto;
   padding-left: 20px;
@@ -6992,29 +7096,28 @@ Styleguide 19.3
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-contactConfirmRole:after {
+.ec-contactConfirmRole:after {
     content: " ";
     display: table; }
-  .ec-contactConfirmRole:after {
+.ec-contactConfirmRole:after {
     clear: both; }
-  .ec-contactConfirmRole textarea {
+.ec-contactConfirmRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-contactConfirmRole img {
+.ec-contactConfirmRole img {
     max-width: 100%; }
-  .ec-contactConfirmRole html {
+.ec-contactConfirmRole html {
     box-sizing: border-box; }
-  .ec-contactConfirmRole *,
+.ec-contactConfirmRole *,
   .ec-contactConfirmRole *::before,
   .ec-contactConfirmRole *::after {
     box-sizing: inherit; }
-  .ec-contactConfirmRole img {
+.ec-contactConfirmRole img {
     width: 100%; }
-  .ec-contactConfirmRole .ec-contactConfirmRole__actions {
+.ec-contactConfirmRole .ec-contactConfirmRole__actions {
     padding-top: 20px; }
-  .ec-contactConfirmRole .ec-blockBtn--action {
+.ec-contactConfirmRole .ec-blockBtn--action {
     margin-bottom: 16px; }
-
 .ec-contactCompleteRole {
   margin: 0 auto;
   padding-left: 20px;
@@ -7026,25 +7129,24 @@ Styleguide 19.3
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 1130px; }
-  .ec-contactCompleteRole:after {
+.ec-contactCompleteRole:after {
     content: " ";
     display: table; }
-  .ec-contactCompleteRole:after {
+.ec-contactCompleteRole:after {
     clear: both; }
-  .ec-contactCompleteRole textarea {
+.ec-contactCompleteRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-contactCompleteRole img {
+.ec-contactCompleteRole img {
     max-width: 100%; }
-  .ec-contactCompleteRole html {
+.ec-contactCompleteRole html {
     box-sizing: border-box; }
-  .ec-contactCompleteRole *,
+.ec-contactCompleteRole *,
   .ec-contactCompleteRole *::before,
   .ec-contactCompleteRole *::after {
     box-sizing: inherit; }
-  .ec-contactCompleteRole img {
+.ec-contactCompleteRole img {
     width: 100%; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -7057,7 +7159,6 @@ Twitter Bootstrap デフォルト準拠
   100% {
     opacity: 1;
     visibility: visible; } }
-
 @keyframes fadeOut {
   0% {
     opacity: 1;
@@ -7065,7 +7166,6 @@ Twitter Bootstrap デフォルト準拠
   100% {
     opacity: 0;
     visibility: hidden; } }
-
 .bg-load-overlay {
   background: rgba(255, 255, 255, 0.4);
   box-sizing: border-box;
@@ -7080,7 +7180,6 @@ Twitter Bootstrap デフォルト準拠
   height: 100%;
   z-index: 2147483647;
   opacity: 1; }
-
 /*
 404ページ
 
@@ -7105,26 +7204,25 @@ Styleguide 20.1
   background-color: #f2f2f2;
   text-align: center;
   box-sizing: border-box; }
-  .ec-404Role textarea {
+.ec-404Role textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-404Role img {
+.ec-404Role img {
     max-width: 100%; }
-  .ec-404Role html {
+.ec-404Role html {
     box-sizing: border-box; }
-  .ec-404Role *,
+.ec-404Role *,
   .ec-404Role *::before,
   .ec-404Role *::after {
     box-sizing: inherit; }
-  .ec-404Role img {
+.ec-404Role img {
     width: 100%; }
-  .ec-404Role .ec-404Role__icon img {
+.ec-404Role .ec-404Role__icon img {
     width: 1em;
     height: 1em; }
-  .ec-404Role .ec-404Role__title {
+.ec-404Role .ec-404Role__title {
     font-weight: bold;
     font-size: 25px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -7157,35 +7255,34 @@ Styleguide 21.1
   max-width: 1130px;
   text-align: center;
   padding: 0 16px; }
-  .ec-withdrawRole:after {
+.ec-withdrawRole:after {
     content: " ";
     display: table; }
-  .ec-withdrawRole:after {
+.ec-withdrawRole:after {
     clear: both; }
-  .ec-withdrawRole textarea {
+.ec-withdrawRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-withdrawRole img {
+.ec-withdrawRole img {
     max-width: 100%; }
-  .ec-withdrawRole html {
+.ec-withdrawRole html {
     box-sizing: border-box; }
-  .ec-withdrawRole *,
+.ec-withdrawRole *,
   .ec-withdrawRole *::before,
   .ec-withdrawRole *::after {
     box-sizing: inherit; }
-  .ec-withdrawRole img {
+.ec-withdrawRole img {
     width: 100%; }
-  .ec-withdrawRole .ec-withdrawRole__title {
+.ec-withdrawRole .ec-withdrawRole__title {
     margin-bottom: 16px;
     font-weight: bold;
     font-size: 24px; }
-  .ec-withdrawRole .ec-withdrawRole__description {
+.ec-withdrawRole .ec-withdrawRole__description {
     margin-bottom: 32px;
     font-size: 16px; }
-  .ec-withdrawRole .ec-icon img {
+.ec-withdrawRole .ec-icon img {
     width: 100px;
     height: 100px; }
-
 /*
 退会手続き実行確認
 
@@ -7202,20 +7299,16 @@ Styleguide 21.1.2
 */
 .ec-withdrawConfirmRole .ec-withdrawConfirmRole__cancel {
   margin-bottom: 20px; }
-
 .ec-withdrawConfirmRole .ec-withdrawConfirmRole__title {
   margin-bottom: 16px;
   font-weight: bold;
   font-size: 24px; }
-
 .ec-withdrawConfirmRole .ec-withdrawConfirmRole__description {
   margin-bottom: 32px;
   font-size: 16px; }
-
 .ec-withdrawConfirmRole .ec-icon img {
   width: 100px;
   height: 100px; }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -7248,32 +7341,32 @@ Styleguide 22.1
   max-width: 1130px;
   text-align: center;
   padding: 0 16px; }
-  .ec-userEditCompleteRole:after {
+.ec-userEditCompleteRole:after {
     content: " ";
     display: table; }
-  .ec-userEditCompleteRole:after {
+.ec-userEditCompleteRole:after {
     clear: both; }
-  .ec-userEditCompleteRole textarea {
+.ec-userEditCompleteRole textarea {
     /* for chrome fontsize bug */
     font-family: sans-serif; }
-  .ec-userEditCompleteRole img {
+.ec-userEditCompleteRole img {
     max-width: 100%; }
-  .ec-userEditCompleteRole html {
+.ec-userEditCompleteRole html {
     box-sizing: border-box; }
-  .ec-userEditCompleteRole *,
+.ec-userEditCompleteRole *,
   .ec-userEditCompleteRole *::before,
   .ec-userEditCompleteRole *::after {
     box-sizing: inherit; }
-  .ec-userEditCompleteRole img {
+.ec-userEditCompleteRole img {
     width: 100%; }
-  .ec-userEditCompleteRole .ec-userEditCompleteRole__title {
+.ec-userEditCompleteRole .ec-userEditCompleteRole__title {
     margin-bottom: 16px;
     font-weight: bold;
     font-size: 24px; }
-  .ec-userEditCompleteRole .ec-userEditCompleteRole__description {
+.ec-userEditCompleteRole .ec-userEditCompleteRole__description {
     margin-bottom: 32px;
     font-size: 16px; }
-  @media (min-width: 768px) {
+@media (min-width: 768px) {
       .ec-grid2 .ec-grid2__cell {
         width: 50%; }
       .ec-grid2 .ec-grid2__cell2 {
@@ -7292,7 +7385,7 @@ Styleguide 22.1
         width: 33.33333%; }
       .ec-grid6 .ec-grid6__cell3 {
         width: 50%; } }
-  @media only screen and (min-width: 768px) {
+@media only screen and (min-width: 768px) {
     .ec-pageHeader h1 {
       border-top: none;
       border-bottom: 1px solid #ccc;
@@ -7927,7 +8020,7 @@ Styleguide 22.1
         margin-bottom: 16px; }
       .ec-userEditCompleteRole .ec-userEditCompleteRole__title {
         font-size: 32px; } }
-  @media only screen and (min-width: 768px) and (min-width: 768px) {
+@media only screen and (min-width: 768px) and (min-width: 768px) {
     .ec-off1Grid {
       display: flex; }
     .ec-off1Grid .ec-off1Grid__cell {

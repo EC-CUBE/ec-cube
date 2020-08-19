@@ -608,6 +608,7 @@ admin.product.name: 商品名
 admin.product.image: 商品画像
 admin.product.image__short: 画像
 admin.product.image_size: '推奨サイズ : 600px x 600px以上'
+admin.product.image__invalid_path: 画像のパスが不正です。
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
@@ -735,7 +736,7 @@ admin.product.product_csv.tax_rate_description: 商品別税率機能設定が�
 
 # カテゴリCSV雛形
 admin.product.category_csv.category_id_col: カテゴリID
-admin.product.category_csv.category_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
+admin.product.category_csv.category_id_description: 新規登録の場合は空にしてください。既存のカテゴリを更新する場合は、カテゴリIDを指定してください。
 admin.product.category_csv.category_name_col: カテゴリ名
 admin.product.category_csv.category_name_description: ''
 admin.product.category_csv.parent_category_id_col: 親カテゴリID
@@ -1014,7 +1015,7 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
     <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
-    <meta property="product:retailer_title" content="{{ Product.name }}"/>
+    <meta property="product:retailer_title" content="{{ BaseInfo.shop_name }}"/>
 admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 admin.content.css__card_title: CSS設定
 admin.content.js__card_title: JavaScript設定
@@ -1141,6 +1142,7 @@ admin.setting.shop.tax.rounding_type: 課税規則
 admin.setting.shop.tax.base_rate_setting: 基本税率設定
 admin.setting.shop.tax.tax_rate: 税率
 admin.setting.shop.tax.apply_date: 適用日時
+admin.setting.shop.tax.apply_date.available_error: 同時刻の適用日時を設定できません。
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：メール設定

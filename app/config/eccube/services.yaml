@@ -74,7 +74,7 @@ services:
 
     Plugin\:
         resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,DoctrineMigrations}'
+        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,Codeception,DoctrineMigrations}'
 
     Customize\:
         resource: '../../../app/Customize/*'
@@ -171,3 +171,12 @@ services:
         # Symfony\Bridge\Twig\Extension\RoutingExtensionの後に登録するため,
         # autoconfigureはfalseにし, CompilerPassで追加する.
         autoconfigure: false
+
+    native_file_session_handler:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
+        arguments:
+            - '%session.save_path%'
+
+    Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
+        arguments:
+            - '@native_file_session_handler'

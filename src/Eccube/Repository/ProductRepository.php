@@ -301,14 +301,24 @@ class ProductRepository extends AbstractRepository
         }
 
         // crate_date
-        if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
+        if (!empty($searchData['create_datetime_start']) && $searchData['create_datetime_start']) {
+            $date = $searchData['create_datetime_start'];
+            $qb
+                ->andWhere('p.create_date >= :create_date_start')
+                ->setParameter('create_date_start', $date);
+        } elseif (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
             $date = $searchData['create_date_start'];
             $qb
                 ->andWhere('p.create_date >= :create_date_start')
                 ->setParameter('create_date_start', $date);
         }
 
-        if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
+        if (!empty($searchData['create_datetime_end']) && $searchData['create_datetime_end']) {
+            $date = $searchData['create_datetime_end'];
+            $qb
+                ->andWhere('p.create_date < :create_date_end')
+                ->setParameter('create_date_end', $date);
+        } elseif (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
             $date = clone $searchData['create_date_end'];
             $date = $date
                 ->modify('+1 days');
@@ -318,13 +328,24 @@ class ProductRepository extends AbstractRepository
         }
 
         // update_date
-        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+        if (!empty($searchData['update_datetime_start']) && $searchData['update_datetime_start']) {
+            $date = $searchData['update_datetime_start'];
+            $qb
+                ->andWhere('p.update_date >= :update_date_start')
+                ->setParameter('update_date_start', $date);
+        } elseif (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start'];
             $qb
                 ->andWhere('p.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
-        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+
+        if (!empty($searchData['update_datetime_end']) && $searchData['update_datetime_end']) {
+            $date = $searchData['update_datetime_end'];
+            $qb
+                ->andWhere('p.update_date < :update_date_end')
+                ->setParameter('update_date_end', $date);
+        } elseif (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = clone $searchData['update_date_end'];
             $date = $date
                 ->modify('+1 days');
