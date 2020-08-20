@@ -18,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TaxDisplayType
  *
+ * 税抜表示 / 税込表示
+ *
  * @ORM\Table(name="mtb_tax_display_type")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)

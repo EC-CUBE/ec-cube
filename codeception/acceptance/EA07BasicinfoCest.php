@@ -221,15 +221,15 @@ class EA07BasicinfoCest
 
         // 一覧
         $I->see('税率設定', '#page_admin_setting_shop_tax > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div.card-header');
-        $I->see('8%', '#ex-tax_rule-1 > td.align-middle.text-right');
+        $I->see('10%', '#ex-tax_rule-1 > td.align-middle.text-right');
 
         // 登録
         $TaxManagePage
-            ->入力_消費税率(1, '10')
+            ->入力_消費税率(1, '8')
             ->入力_適用日(date('Y'), date('n'), date('j'))
             ->入力_適用時(date('G'), (int) date('i'))
             ->共通税率設定_登録();
-        $I->see('10%', $TaxManagePage->一覧_税率(2));
+        $I->see('8%', $TaxManagePage->一覧_税率(2));
 
         // edit
         $TaxManagePage

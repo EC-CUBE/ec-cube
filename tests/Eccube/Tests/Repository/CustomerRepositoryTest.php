@@ -126,6 +126,16 @@ class CustomerRepositoryTest extends EccubeTestCase
         $Customer = $this->customerRepo->getRegularCustomerByResetKey($reset_key);
         $this->assertNull($Customer);
     }
+
+    public function testGetQueryBuilderBySearchDataByMulti2147483648()
+    {
+        $Customer = $this->createCustomer('2147483648@example.com');
+        $actual = $this->customerRepo->getQueryBuilderBySearchData(['multi' => '2147483648'])
+            ->getQuery()
+            ->getResult();
+
+        self::assertEquals($Customer, $actual[0]);
+    }
 }
 
 class DummyCustomer implements UserInterface

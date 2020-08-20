@@ -89,7 +89,7 @@ class TaxRuleType extends AbstractType
                 ->getSingleScalarResult();
             if ($count > 0) {
                 $form = $event->getForm();
-                $form['apply_date']->addError(new FormError(trans('taxrule.text.error.date_not_available')));
+                $form['apply_date']->addError(new FormError(trans('admin.setting.shop.tax.apply_date.available_error')));
             }
         });
     }

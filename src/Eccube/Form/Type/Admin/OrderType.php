@@ -191,7 +191,7 @@ class OrderType extends AbstractType
                 'required' => false,
             ])
             ->add('use_point', NumberType::class, [
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
@@ -426,7 +426,10 @@ class OrderType extends AbstractType
         if ($oldStatus->getId() != $newStatus->getId()) {
             if (!$this->orderStateMachine->can($Order, $newStatus)) {
                 $form['OrderStatus']->addError(
-                    new FormError(trans('admin.order.failed_to_change_status__short', $oldStatus->getName(), $newStatus->getName())));
+                    new FormError(trans('admin.order.failed_to_change_status__short', [
+                        '%from%' => $oldStatus->getName(),
+                        '%to%' => $newStatus->getName(),
+                    ])));
             }
         }
     }
