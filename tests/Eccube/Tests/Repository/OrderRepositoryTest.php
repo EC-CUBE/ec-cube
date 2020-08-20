@@ -119,4 +119,18 @@ class OrderRepositoryTest extends EccubeTestCase
         self::assertEquals(2, $Customer->getBuyTimes());
         self::assertEquals($Order1->getTotal() + $Order2->getTotal(), $Customer->getBuyTotal());
     }
+
+    public function testGetQueryBuilderBySearchDataForAdmin_multi_2147483648()
+    {
+        $Order = $this->createOrder($this->createCustomer('2147483648@example.com'));
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->orderRepository->save($Order);
+        $this->entityManager->flush();;
+
+        $actual = $this->orderRepository->getQueryBuilderBySearchDataForAdmin(['multi' => '2147483648'])
+            ->getQuery()
+            ->getResult();
+
+        self::assertEquals($Order, $actual[0]);
+    }
 }
