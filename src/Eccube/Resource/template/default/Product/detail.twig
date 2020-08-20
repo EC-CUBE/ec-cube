@@ -187,7 +187,7 @@ file that was distributed with this source code.
                         $('#ec-modal-header').html(this);
                     });
 
-                    $('#ec-modal-checkbox').prop('checked', true);
+                    $('.ec-modal').show()
 
                     // カートブロックを更新する
                     $.ajax({
@@ -204,6 +204,10 @@ file that was distributed with this source code.
                     $('.add-cart').prop('disabled', false);
                 });
             });
+        });
+
+        $('.ec-modal-overlay, .ec-modal .ec-inlineBtn--cancel').on('click', function() {
+            $('.ec-modal').hide()
         });
     </script>
 {% endblock %}
@@ -336,15 +340,13 @@ file that was distributed with this source code.
                         {{ form_rest(form) }}
                     </form>
                     <div class="ec-modal">
-                        <input type="checkbox" id="ec-modal-checkbox" class="checkbox">
                         <div class="ec-modal-overlay">
-                            <label for="ec-modal-checkbox" class="ec-modal-overlay-close"></label>
                             <div class="ec-modal-wrap">
-                                <label for="ec-modal-checkbox" class="ec-modal-close"><span class="ec-icon"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt=""/></span></label>
+                                <span class="ec-modal-close"><span class="ec-icon"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt=""/></span></span>
                                 <div id="ec-modal-header" class="text-center">{{ 'front.product.add_cart_complete'|trans }}</div>
                                 <div class="ec-modal-box">
                                     <div class="ec-role">
-                                        <label for="ec-modal-checkbox" class="ec-inlineBtn--cancel">{{ 'front.product.continue'|trans }}</label>
+                                        <span class="ec-inlineBtn--cancel">{{ 'front.product.continue'|trans }}</span>
                                         <a href="{{ url('cart') }}" class="ec-inlineBtn--action">{{ 'common.go_to_cart'|trans }}</a>
                                     </div>
                                 </div>
