@@ -24,12 +24,12 @@
   "homepage": "https://www.ec-cube.net/",
   "lint-staged": {
     "*.php": [
-      "vendor/bin/php-cs-fixer --config=.php_cs.dist --path-mode=intersection fix"
+      "vendor/bin/php-cs-fixer --config=.php_cs.dist --path-mode=intersection fix || node -e ''"
     ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged --shell"
     }
   },
   "dependencies": {},
