@@ -22,6 +22,16 @@
     "url": "https://github.com/EC-CUBE/ec-cube/issues"
   },
   "homepage": "https://www.ec-cube.net/",
+  "lint-staged": {
+    "*.php": [
+      "vendor/bin/php-cs-fixer --config=.php_cs.dist --path-mode=intersection fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^9.6.4",
