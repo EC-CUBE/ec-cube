@@ -291,10 +291,12 @@ class Kernel extends BaseKernel
 
         foreach ($plugins as $code) {
             if (file_exists($pluginDir.'/'.$code.'/Entity')) {
-                $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
-                    ['Plugin\\'.$code.'\\Entity'],
-                    ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity']
-                ));
+                $paths = ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity'];
+                $namespaces = ['Plugin\\'.$code.'\\Entity'];
+                $reader = new Reference('annotation_reader');
+                $driver = new Definition(AnnotationDriver::class, [$reader, $paths]);
+                $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
+                $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
             }
         }
     }

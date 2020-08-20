@@ -436,6 +436,7 @@ class EA10PluginCest
         $fs->remove($dir);
     }
 
+<<<<<<< HEAD
     public function test_bundle_install_enable_disable_remove_store(\AcceptanceTester $I)
     {
         $Bundle = Bundle_Store::start($I);
@@ -454,6 +455,26 @@ class EA10PluginCest
             ->有効化()
             ->無効化()
             ->削除();
+=======
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/4638
+     */
+    public function test_enhance_plugin_entity(\AcceptanceTester $I)
+    {
+        $Boomerang = Boomerang_Store::start($I)
+            ->インストール()
+            ->有効化()
+            ->カート作成();
+
+        $I->see('[1]');
+
+        Boomerang10_Store::start($I, $Boomerang)
+            ->インストール()
+            ->有効化();
+
+        $Boomerang->カート一覧();
+        $I->see('[1]');
+>>>>>>> 9c8a0d2fe53739ed81bdc60aa82cdf3779666c53
     }
 
     private function publishPlugin($fileName)
@@ -967,6 +988,32 @@ class Boomerang_Store extends Store_Plugin
     public static function start(AcceptanceTester $I)
     {
         return new self($I);
+    }
+
+    public function カート一覧()
+    {
+        $this->I->amOnPage('/boomerang');
+    }
+
+    public function カート作成()
+    {
+        $this->I->amOnPage('/boomerang/new');
+        $this->I->seeCurrentUrlMatches('/^\/boomerang$/');
+        return $this;
+    }
+}
+
+class Boomerang10_Store extends Store_Plugin
+{
+    public function __construct(AcceptanceTester $I, Store_Plugin $dependency = null)
+    {
+        parent::__construct($I, 'Boomerang10', $dependency);
+        $this->columns[] = 'dtb_bar.mail';
+    }
+
+    public static function start(AcceptanceTester $I, Store_Plugin $dependency = null)
+    {
+        return new self($I, $dependency = null);
     }
 }
 
