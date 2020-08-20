@@ -103,6 +103,9 @@ class CustomerRepository extends AbstractRepository
             //スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
             $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
+            if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
+                $id = null;
+            }
             $qb
                 ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
                 ->setParameter('customer_id', $id)

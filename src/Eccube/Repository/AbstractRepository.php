@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\DBAL\DBALException;
 use Eccube\Entity\AbstractEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -50,5 +51,25 @@ abstract class AbstractRepository extends ServiceEntityRepository
         }
 
         return 0;
+    }
+
+    /**
+     * PostgreSQL環境かどうかを判定します。
+     * @return bool
+     * @throws DBALException
+     */
+    protected function isPostgreSQL()
+    {
+        return 'postgresql' == $this->getEntityManager()->getConnection()->getDatabasePlatform()->getName();
+    }
+
+    /**
+     * MySQL環境かどうかを判定します。
+     * @return bool
+     * @throws DBALException
+     */
+    protected function isMySQL()
+    {
+        return 'mysql' == $this->getEntityManager()->getConnection()->getDatabasePlatform()->getName();
     }
 }
