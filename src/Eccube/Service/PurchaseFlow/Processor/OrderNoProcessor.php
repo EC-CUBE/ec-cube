@@ -71,13 +71,13 @@ class OrderNoProcessor implements ItemHolderPreprocessor
                         if (count($matches) === 2) {
                             switch ($matches[1]) {
                                 case 'yyyy':
-                                    return date('Y');
+                                    return (new \DateTime())->format('Y');
                                 case 'yy':
-                                    return date('y');
+                                    return (new \DateTime())->format('y');
                                 case 'mm':
-                                    return date('m');
+                                    return (new \DateTime())->format('m');
                                 case 'dd':
-                                    return date('d');
+                                    return (new \DateTime())->format('d');
                                 default:
                                     $res = explode(',', str_replace(' ', '', $matches[1]));
                                     if (count($res) === 2 && is_numeric($res[1])) {
