@@ -456,6 +456,26 @@ class EA10PluginCest
         $I->see('[1]');
     }
 
+    public function test_bundle_install_enable_disable_remove_store(\AcceptanceTester $I)
+    {
+        $Bundle = Bundle_Store::start($I);
+        $Bundle->インストール()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
+    public function test_bundle_install_update_enable_disable_remove_store(\AcceptanceTester $I)
+    {
+        $Bundle = Bundle_Store::start($I);
+        $Bundle->インストール()
+            ->有効化()
+            ->アップデート()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
     private function publishPlugin($fileName)
     {
         copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);
@@ -1006,6 +1026,36 @@ class Boomerang_Local extends Local_Plugin
         $this->traits['\Plugin\Boomerang\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
     }
 
+    public static function start(AcceptanceTester $I)
+    {
+        return new self($I);
+    }
+}
+
+class Bundle_Store extends Store_Plugin
+{
+    public function __construct(AcceptanceTester $I)
+    {
+        parent::__construct($I, 'Bundle');
+        $this->tables[] = 'oauth2_client';
+        $this->tables[] = 'oauth2_refresh_token';
+        $this->tables[] = 'oauth2_access_token';
+        $this->tables[] = 'oauth2_authorization_code';
+    }
+
+    public function 有効化()
+    {
+        parent::有効化();
+
+        return $this;
+    }
+
+    public function 無効化()
+    {
+        parent::無効化();
+
+        return $this;
+    }
     public static function start(AcceptanceTester $I)
     {
         return new self($I);
