@@ -1,0 +1,25 @@
+{
+    "name": "eccube",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    "service": "ec-cube",
+    "workspaceFolder": "/var/www/html",
+    "settings": {
+        "intelephense.environment.phpVersion": "7.3",
+        "php-cs-fixer.allowRisky": false,
+        "php-cs-fixer.config": "/var/www/html/.php_cs.dist",
+        "php-cs-fixer.executablePath": "/var/www/html/vendor/bin/php-cs-fixer",
+        "php-cs-fixer.lastDownload": 0,
+        "php-cs-fixer.onsave": true,
+        "php.suggest.basic": false,
+        "php.validate.enable": false,
+        "terminal.integrated.shell.linux": null
+    },
+    "extensions": [
+        "junstyle.php-cs-fixer",
+        "bmewburn.vscode-intelephense-client",
+        "mblode.twig-language-2",
+        "EditorConfig.EditorConfig"
+    ]
+}

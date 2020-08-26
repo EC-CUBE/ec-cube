@@ -237,6 +237,8 @@ jobs:
           - test_install_enable_disable_enable_disable_remove_local
           - test_install_remove_local
           - test_install_remove_store
+          - test_bundle_install_enable_disable_remove_store
+          - test_bundle_install_update_enable_disable_remove_store
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -660,6 +662,7 @@ jobs:
           - test_dependency_plugin_update
           - test_install_error
           - install_enable_disable_enable_disable_remove_store
+          - test_enhance_plugin_entity
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
