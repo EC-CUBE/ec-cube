@@ -261,9 +261,9 @@ jobs:
         exclude:
           # bundle は PHP 7.2 以上のみ対応
           - php: 7.1
-            method:
-              - test_bundle_install_enable_disable_remove_store
-              - test_bundle_install_update_enable_disable_remove_store
+            method: test_bundle_install_enable_disable_remove_store
+          - php: 7.1
+            method: test_bundle_install_update_enable_disable_remove_store
 
     services:
       mysql:
