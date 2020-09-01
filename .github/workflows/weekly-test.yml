@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.1, 7.2, 7.3, 7.4 ]
+        php: [ 7.1, 7.4 ]
         db: [ mysql55, mysql57, pgsql92, pgsql11 sqlite3 ]
         include:
           - db: mysql55
@@ -123,7 +123,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.1, 7.2, 7.3, 7.4 ]
+        php: [ 7.1, 7.4 ]
         db: [ pgsql ]
         group: [ admin01, admin02, admin03, front, installer ]
         include:
@@ -240,7 +240,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.1, 7.2, 7.3, 7.4 ]
+        php: [ 7.1, 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_install_enable_disable_remove_store
@@ -390,7 +390,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.1, 7.2, 7.3, 7.4 ]
+        php: [ 7.1, 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_install_update_remove_store
@@ -531,7 +531,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.1, 7.2, 7.3, 7.4 ]
+        php: [ 7.1, 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_extend_same_table_store
@@ -672,7 +672,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.1, 7.2, 7.3, 7.4 ]
+        php: [ 7.1, 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_dependency_each_install_plugin
