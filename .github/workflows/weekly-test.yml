@@ -901,10 +901,11 @@ jobs:
       - name: Translate to templates
         run: php bin/template_jp.php
 
+      - run: echo "::set-env name=PACKAGING_DATE::$(date +%Y%m%d)"
+
       - name: Packaging
         working-directory: ../
         env:
-          COMMIT_ID: ${{ github.event.head_commit.id }}
           REPOSITORY_NAME: ${{ github.event.repository.name }}
           OUTPUT_DIR: _output
         run: |
@@ -937,20 +938,20 @@ jobs:
 
           echo "complession files..."
           mkdir $OUTPUT_DIR
-          tar czfp eccube-$COMMIT_ID.tar.gz $REPOSITORY_NAME
-          zip -ry eccube-$COMMIT_ID.zip $REPOSITORY_NAME 1> /dev/null
-          md5sum eccube-$COMMIT_ID.tar.gz | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$COMMIT_ID.tar.gz.checksum.md5
-          md5sum eccube-$COMMIT_ID.zip | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$COMMIT_ID.zip.checksum.md5
-          sha1sum eccube-$COMMIT_ID.tar.gz | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$COMMIT_ID.tar.gz.checksum.sha1
-          sha1sum eccube-$COMMIT_ID.zip | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$COMMIT_ID.zip.checksum.sha1
-          sha256sum eccube-$COMMIT_ID.tar.gz | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$COMMIT_ID.tar.gz.checksum.sha256
-          sha256sum eccube-$COMMIT_ID.zip | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$COMMIT_ID.zip.checksum.sha256
-          mv eccube-$COMMIT_ID.tar.gz $OUTPUT_DIR/
-          mv eccube-$COMMIT_ID.zip $OUTPUT_DIR/
+          tar czfp eccube-$PACKAGING_DATE.tar.gz $REPOSITORY_NAME
+          zip -ry eccube-$PACKAGING_DATE.zip $REPOSITORY_NAME 1> /dev/null
+          md5sum eccube-$PACKAGING_DATE.tar.gz | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$PACKAGING_DATE.tar.gz.checksum.md5
+          md5sum eccube-$PACKAGING_DATE.zip | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$PACKAGING_DATE.zip.checksum.md5
+          sha1sum eccube-$PACKAGING_DATE.tar.gz | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$PACKAGING_DATE.tar.gz.checksum.sha1
+          sha1sum eccube-$PACKAGING_DATE.zip | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$PACKAGING_DATE.zip.checksum.sha1
+          sha256sum eccube-$PACKAGING_DATE.tar.gz | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$PACKAGING_DATE.tar.gz.checksum.sha256
+          sha256sum eccube-$PACKAGING_DATE.zip | awk '{ print $1 }' > $OUTPUT_DIR/eccube-$PACKAGING_DATE.zip.checksum.sha256
+          mv eccube-$PACKAGING_DATE.tar.gz $OUTPUT_DIR/
+          mv eccube-$PACKAGING_DATE.zip $OUTPUT_DIR/
           ls -al $OUTPUT_DIR
 
       - name: Upload packages
         uses: actions/upload-artifact@v2
         with:
-          name: eccube-${{ github.event.head_commit.id }}
+          name: eccube-$PACKAGING_DATE
           path: ${{ runner.workspace }}/_output/
