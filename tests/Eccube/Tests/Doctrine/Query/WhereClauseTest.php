@@ -167,6 +167,20 @@ class WhereClauseTest extends EccubeTestCase
         self::assertEquals([new Parameter('Price', 1000)], $this->getParams($actual));
     }
 
+    public function testParameterNull()
+    {
+        $actual = WhereClause::eq('name', ':Name', null);
+        self::assertEquals('name = :Name', $this->asString($actual));
+        self::assertEquals([new Parameter('Name', null)], $this->getParams($actual));
+    }
+
+    public function testParameterFalseEquivalent()
+    {
+        $actual = WhereClause::eq('name', ':Name', '0');
+        self::assertEquals('name = :Name', $this->asString($actual));
+        self::assertEquals([new Parameter('Name', '0')], $this->getParams($actual));
+    }
+
     /*
      * Helper methods.
      */
