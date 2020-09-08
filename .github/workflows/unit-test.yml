@@ -2,7 +2,7 @@ name: Unit test for EC-CUBE
 on:
   push:
     branches:
-      - 4.0
+      - '*'
     tags:
       - '*'
     paths:
