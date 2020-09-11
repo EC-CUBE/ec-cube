@@ -310,12 +310,19 @@ if (!class_exists('\Eccube\Entity\Customer')) {
             return ['ROLE_USER'];
         }
 
+        public static function getUsernameField(): string
+        {
+            return property_exists(static::class, 'usernameField')
+                ? static::$usernameField
+                : 'email';
+        }
+
         /**
          * {@inheritdoc}
          */
         public function getUsername()
         {
-            return $this->email;
+            return $this->{static::getUsernameField()};
         }
 
         /**
