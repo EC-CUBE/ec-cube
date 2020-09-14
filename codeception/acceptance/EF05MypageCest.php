@@ -263,6 +263,8 @@ class EF05MypageCest
         CustomerAddressListPage::at($I)
             ->削除(1);
 
+        $I->wait(1);
+
         // 確認
         $I->see('お届け先は登録されていません。', '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > div > div > div:nth-child(2) > p');
     }
