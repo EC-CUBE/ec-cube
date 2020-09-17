@@ -216,11 +216,12 @@ class ProductRepository extends AbstractRepository
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            ->addSelect('pc', 'pi', 'tr', 'ps')
-            ->innerJoin('p.ProductClasses', 'pc')
+            ->addSelect('_pc', 'pi', 'tr', 'ps')
+            ->innerJoin('p.ProductClasses', '_pc')
+            ->leftJoin('p.ProductClasses', 'pc')
             ->leftJoin('p.ProductImage', 'pi')
-            ->leftJoin('pc.TaxRule', 'tr')
-            ->leftJoin('pc.ProductStock', 'ps')
+            ->leftJoin('_pc.TaxRule', 'tr')
+            ->leftJoin('_pc.ProductStock', 'ps')
             ->andWhere('pc.visible = :visible')
             ->setParameter('visible', true);
 
