@@ -13,26 +13,33 @@
 
 namespace Eccube\Tests\Twig\Extension;
 
-use Eccube\Application;
 use Eccube\Entity\Block;
 use Eccube\Repository\BlockRepository;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Twig\Environment;
 use Eccube\Twig\Extension\EccubeDynamicBlockExtension;
 use Eccube\Twig\Extension\TwigIncludeExtension;
+use Symfony\Bridge\Twig\Extension\HttpKernelRuntime;
+use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Environment;
 use Twig\Loader\ArrayLoader;
+use Twig\RuntimeLoader\RuntimeLoaderInterface;
 
 class EccubeDynamicBlockExtensionTest extends EccubeTestCase
 {
     /** @var Environment */
     protected $twig;
 
+    /** @var UrlGeneratorInterface */
+    protected $router;
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->twig = $this->initializeTwig();
+        $this->router = $this->createMock(UrlGeneratorInterface::class);
+        $this->twig = $this->initializeTwig($this->router);
 
         $BlockUsingController = new Block();
         $BlockUsingController
@@ -49,25 +56,27 @@ class EccubeDynamicBlockExtensionTest extends EccubeTestCase
         $this->entityManager->flush();
     }
 
-    protected function initializeTwig(): \Twig_Environment
+    protected function initializeTwig(UrlGeneratorInterface $router): Environment
     {
-        $app = static::createClient()->getContainer()->get('app');
-        assert($app instanceof Application);
-
-        $loader = new ArrayLoader();
-        $loader->setTemplate('Block/use_controller.twig', '{{ value }}');
-        $loader->setTemplate('Block/without_controller.twig', 'foo');
-        $dispatcher = $app['dispatcher'];
-        assert($dispatcher instanceof EventDispatcherInterface);
-        $twig = new \Twig_Environment($loader);
-        $eccubeTwig = new Environment($twig, $dispatcher);
+        $dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $dispatcher->expects($this->any())->method('dispatch');
+        $twig = new Environment(new ArrayLoader([
+            'Block/use_controller.twig' => '{{ value }}',
+            'Block/without_controller.twig' => 'foo',
+        ]));
         $extensions = [
             new EccubeDynamicBlockExtension($this->container->get(BlockRepository::class)),
-            new TwigIncludeExtension($eccubeTwig),
+            new TwigIncludeExtension($twig),
+            new RoutingExtension($router),
         ];
         foreach ($extensions as $extension) {
             $twig->addExtension($extension);
         }
+
+        $runtime = new HttpKernelRuntime($this->container->get('fragment.handler'));
+        $runtimeLoader = $this->createMock(RuntimeLoaderInterface::class);
+        $runtimeLoader->expects($this->any())->method('load')->willReturn($runtime);
+        $twig->addRuntimeLoader($runtimeLoader);
 
         return $twig;
     }
@@ -82,13 +91,13 @@ class EccubeDynamicBlockExtensionTest extends EccubeTestCase
 
     public function testEccubeDynamicBlockFunctionUsingController()
     {
-        // TODO
+        $template = $this->twig->createTemplate('{{ eccube_dynamic_block("use_controller") }}');
         $this->markTestSkipped();
     }
 
     public function testEccubeDynamicBlockFunctionUsingControllerWithParameter()
     {
-        // TODO
+        $template = $this->twig->createTemplate('{{ eccube_dynamic_block("use_controller", {"param": 5}) }}');
         $this->markTestSkipped();
     }
 }
