@@ -21,6 +21,10 @@ use Eccube\Twig\Extension\TwigIncludeExtension;
 use Symfony\Bridge\Twig\Extension\HttpKernelRuntime;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
@@ -40,6 +44,11 @@ class EccubeDynamicBlockExtensionTest extends EccubeTestCase
 
         $this->router = $this->createMock(UrlGeneratorInterface::class);
         $this->twig = $this->initializeTwig($this->router);
+
+        $this->container->set(
+            EccubeDynamicBlockExtensionTestController::class,
+            new EccubeDynamicBlockExtensionTestController($this->twig)
+        );
 
         $BlockUsingController = new Block();
         $BlockUsingController
@@ -73,6 +82,10 @@ class EccubeDynamicBlockExtensionTest extends EccubeTestCase
             $twig->addExtension($extension);
         }
 
+        $requestStack = new RequestStack();
+        $requestStack->push(new Request());
+        $this->container->set('request_stack', $requestStack);
+
         $runtime = new HttpKernelRuntime($this->container->get('fragment.handler'));
         $runtimeLoader = $this->createMock(RuntimeLoaderInterface::class);
         $runtimeLoader->expects($this->any())->method('load')->willReturn($runtime);
@@ -91,13 +104,31 @@ class EccubeDynamicBlockExtensionTest extends EccubeTestCase
 
     public function testEccubeDynamicBlockFunctionUsingController()
     {
+        $controllerReference = new ControllerReference('Eccube\Tests\Twig\Extension\EccubeDynamicBlockExtensionTestController:useController');
+        $this->router->expects($this->any())->method('generate')->willReturn($controllerReference);
+
         $template = $this->twig->createTemplate('{{ eccube_dynamic_block("use_controller") }}');
-        $this->markTestSkipped();
+        $this->expected = 'hoge';
+        $this->actual = $template->render();
+        $this->verify();
+    }
+}
+
+class EccubeDynamicBlockExtensionTestController
+{
+    /** @var Environment */
+    private $twig;
+
+    public function __construct(Environment $twig)
+    {
+        $this->twig = $twig;
     }
 
-    public function testEccubeDynamicBlockFunctionUsingControllerWithParameter()
+    public function useController()
     {
-        $template = $this->twig->createTemplate('{{ eccube_dynamic_block("use_controller", {"param": 5}) }}');
-        $this->markTestSkipped();
+        $body = $this->twig->render('Block/use_controller.twig', [
+            'value' => 'hoge',
+        ]);
+        return new Response($body);
     }
 }
