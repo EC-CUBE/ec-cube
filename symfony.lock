@@ -332,6 +332,9 @@
     "setasign/fpdi-tcpdf": {
         "version": "v2.0.0"
     },
+    "skorp/detect-incompatible-samesite-useragents": {
+        "version": "1.0.0"
+    },
     "suncat/mobile-detect-bundle": {
         "version": "1.0",
         "recipe": {
