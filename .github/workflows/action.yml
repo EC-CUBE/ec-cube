@@ -196,7 +196,7 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-      run: php -dsession.save_path=${GITHUB_WORKSPACE}/var/sessions/${APP_ENV} -S localhost:8000 &
+      run: php -S localhost:8000 &
 
     - name: Codeception
       env:
@@ -237,6 +237,8 @@ jobs:
           - test_install_enable_disable_enable_disable_remove_local
           - test_install_remove_local
           - test_install_remove_store
+          - test_bundle_install_enable_disable_remove_store
+          - test_bundle_install_update_enable_disable_remove_store
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -332,7 +334,7 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-      run: php -dsession.save_path=${GITHUB_WORKSPACE}/var/sessions/${APP_ENV} -S localhost:8000 &
+      run: php -S localhost:8000 &
 
     ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
@@ -473,7 +475,7 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-      run: php -dsession.save_path=${GITHUB_WORKSPACE}/var/sessions/${APP_ENV} -S localhost:8000 &
+      run: php -S localhost:8000 &
 
     ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
@@ -614,7 +616,7 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-      run: php -dsession.save_path=${GITHUB_WORKSPACE}/var/sessions/${APP_ENV} -S localhost:8000 &
+      run: php -S localhost:8000 &
 
     ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
@@ -660,6 +662,7 @@ jobs:
           - test_dependency_plugin_update
           - test_install_error
           - install_enable_disable_enable_disable_remove_store
+          - test_enhance_plugin_entity
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -757,7 +760,7 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-      run: php -dsession.save_path=${GITHUB_WORKSPACE}/var/sessions/${APP_ENV} -S localhost:8000 &
+      run: php -S localhost:8000 &
 
     ## ${PWD}/repos does not exist so service cannot be started
     - name: Run package-api
@@ -855,6 +858,7 @@ jobs:
       env:
         TAG_NAME: ${{ github.event.release.tag_name }}
         REPOSITORY_NAME: ${{ github.event.repository.name }}
+        PATH_NAME: eccube-${{ github.event.release.tag_name }}
       run: |
         rm -rf $GITHUB_WORKSPACE/.editorconfig
         rm -rf $GITHUB_WORKSPACE/.gitignore
@@ -884,14 +888,16 @@ jobs:
         chmod -R o+w $GITHUB_WORKSPACE
 
         echo "complession files..."
-        tar czfp eccube-$TAG_NAME.tar.gz $REPOSITORY_NAME
-        zip -ry eccube-$TAG_NAME.zip $REPOSITORY_NAME 1> /dev/null
+        mv $REPOSITORY_NAME $PATH_NAME
+        tar czfp eccube-$TAG_NAME.tar.gz $PATH_NAME
+        zip -ry eccube-$TAG_NAME.zip $PATH_NAME 1> /dev/null
         md5sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.md5
         md5sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.md5
         sha1sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.sha1
         sha1sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.sha1
         sha256sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.sha256
         sha256sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.sha256
+        mv $PATH_NAME $REPOSITORY_NAME
         ls -al
 
     - name: Upload binaries to release of TGZ

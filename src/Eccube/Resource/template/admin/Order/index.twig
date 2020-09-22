@@ -34,34 +34,31 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         $(function() {
-            if ($('[type="date"]').prop('type') != 'date') {
-                // input type属性でdateが利用できるかどうか(カレンダー表示できないブラウザ対応)
-                $.when(
-                    $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
-                    $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
-                    $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
-                ).done(function() {
-                    $('input[id$=_date_start]').datetimepicker({
-                        locale: '{{ eccube_config.locale }}',
-                        format: 'YYYY-MM-DD',
-                        useCurrent: false,
-                        buttons: {
-                            showToday: true,
-                            showClose: true
-                        }
-                    });
-
-                    $('input[id$=_date_end]').datetimepicker({
-                        locale: '{{ eccube_config.locale }}',
-                        format: 'YYYY-MM-DD',
-                        useCurrent: false,
-                        buttons: {
-                            showToday: true,
-                            showClose: true
-                        }
-                    });
+            $.when(
+                $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
+                $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
+                $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
+            ).done(function() {
+                // datetimepicker で value が消えてしまうので data-value に保持しておく
+                $('input.datetimepicker-input').each(function() {
+                    $(this).data('value', $(this).val());
                 });
-            }
+
+                $('input.datetimepicker-input').datetimepicker({
+                    locale: '{{ eccube_config.locale }}',
+                    format: 'YYYY-MM-DD HH:mm:ss',
+                    useCurrent: false,
+                    buttons: {
+                        showToday: true,
+                        showClose: true
+                    },
+                });
+
+                // datetimepicker で value が消えてしまうので更新
+                $('input.datetimepicker-input').each(function() {
+                    $(this).val($(this).data('value'));
+                });
+            });
 
             toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
             $('input[id^="check_"]').on('change', function() {
@@ -258,13 +255,13 @@ file that was distributed with this source code.
                         <label class="col-form-label">{{ 'admin.order.order_date'|trans }}</label>
                         <div class="form-row align-items-center">
                             <div class="col">
-                                {{ form_widget(searchForm.order_date_start) }}
-                                {{ form_errors(searchForm.order_date_start) }}
+                                {{ form_widget(searchForm.order_datetime_start) }}
+                                {{ form_errors(searchForm.order_datetime_start) }}
                             </div>
                             <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
-                                {{ form_widget(searchForm.order_date_end) }}
-                                {{ form_errors(searchForm.order_date_end) }}
+                                {{ form_widget(searchForm.order_datetime_end) }}
+                                {{ form_errors(searchForm.order_datetime_end) }}
                             </div>
                         </div>
                     </div>
@@ -279,13 +276,13 @@ file that was distributed with this source code.
                         <label class="col-form-label">{{ 'admin.order.payment_date'|trans }}</label>
                         <div class="form-row align-items-center">
                             <div class="col">
-                                {{ form_widget(searchForm.payment_date_start) }}
-                                {{ form_errors(searchForm.payment_date_start) }}
+                                {{ form_widget(searchForm.payment_datetime_start) }}
+                                {{ form_errors(searchForm.payment_datetime_start) }}
                             </div>
                             <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
-                                {{ form_widget(searchForm.payment_date_end) }}
-                                {{ form_errors(searchForm.payment_date_end) }}
+                                {{ form_widget(searchForm.payment_datetime_end) }}
+                                {{ form_errors(searchForm.payment_datetime_end) }}
                             </div>
                         </div>
                     </div>
@@ -300,13 +297,13 @@ file that was distributed with this source code.
                         <label class="col-form-label">{{ 'admin.common.update_date'|trans }}</label>
                         <div class="form-row align-items-center">
                             <div class="col">
-                                {{ form_widget(searchForm.update_date_start) }}
-                                {{ form_errors(searchForm.update_date_start) }}
+                                {{ form_widget(searchForm.update_datetime_start) }}
+                                {{ form_errors(searchForm.update_datetime_start) }}
                             </div>
                             <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
-                                {{ form_widget(searchForm.update_date_end) }}
-                                {{ form_errors(searchForm.update_date_end) }}
+                                {{ form_widget(searchForm.update_datetime_end) }}
+                                {{ form_errors(searchForm.update_datetime_end) }}
                             </div>
                         </div>
                     </div>
@@ -322,15 +319,15 @@ file that was distributed with this source code.
                         <div class="form-row align-items-center">
                             <div class="col">
                                 <div class="input-group">
-                                    {{ form_widget(searchForm.shipping_delivery_date_start) }}
-                                    {{ form_errors(searchForm.shipping_delivery_date_start) }}
+                                    {{ form_widget(searchForm.shipping_delivery_datetime_start) }}
+                                    {{ form_errors(searchForm.shipping_delivery_datetime_start) }}
                                 </div>
                             </div>
                             <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 <div class="input-group">
-                                    {{ form_widget(searchForm.shipping_delivery_date_end) }}
-                                    {{ form_errors(searchForm.shipping_delivery_date_end) }}
+                                    {{ form_widget(searchForm.shipping_delivery_datetime_end) }}
+                                    {{ form_errors(searchForm.shipping_delivery_datetime_end) }}
                                 </div>
                             </div>
                         </div>

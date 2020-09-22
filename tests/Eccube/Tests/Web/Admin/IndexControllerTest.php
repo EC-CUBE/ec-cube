@@ -51,11 +51,16 @@ class IndexControllerTest extends AbstractAdminWebTestCase
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/1143
+     *
+     * @param int $hour
+     *
+     * @dataProvider indexWithSalesProvider
      */
-    public function testIndexWithSales()
+    public function testIndexWithSales($hour)
     {
         $Customer = $this->createCustomer();
         $Today = new \DateTime();
+        $Today->setTime($hour, 0);
         $Yesterday = new \DateTime('-1 days');
 
         $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
@@ -90,15 +95,14 @@ class IndexControllerTest extends AbstractAdminWebTestCase
             }
         }
 
-        $this->client->request(
+        $crawler = $this->client->request(
             'GET',
             $this->generateUrl('admin_homepage')
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        // TODO: Need to improve functionality sale today and this month, etc
-       /* preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('.today_sale')->text()), $match);
+        preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(2) > div')->text()), $match);
         $this->expected = $todaysSales;
         $this->actual = str_replace(',', '', $match[1]);
         $this->verify('本日の売上');
@@ -107,57 +111,31 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->actual = str_replace(',', '', $match[2]);
         $this->verify('本日の売上件数');
 
-        preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('.yesterday_sale')->text()), $match);
+        preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(3) > div')->text()), $match);
         $this->expected = $yesterdaysSales;
         $this->actual = str_replace(',', '', $match[1]);
         $this->verify('昨日の売上');
 
         $this->expected = 3;
         $this->actual = str_replace(',', '', $match[2]);
-        $this->verify('昨日の売上件数');*/
+        $this->verify('昨日の売上件数');
 
-        /*
-         // 当月の受注を取得する
-         $firstDate = clone $Today;
-         $firstDate->setDate($Today->format('Y'), $Today->format('m'), 1);
-         $firstDate->setTime(0, 0 ,0);
-         $endDate = clone $firstDate;
-         $endDate->setDate($Today->format('Y'), $Today->format('m'), $Today->format('t'));
-         $endDate->setTime(23, 59, 59);
+        preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(1) > div')->text()), $match);
+        $this->expected = $todaysSales + $yesterdaysSales;
+        $this->actual = str_replace(',', '', $match[1]);
+        $this->verify('今月の売上');
 
-         $qb = $this->orderRepository->createQueryBuilder('o');
-         $qb->andWhere($qb->expr()->notIn('o.OrderStatus',
-                                          array(
-                                              $OrderPending->getId(),
-                                              $OrderProcessing->getId(),
-                                              $OrderCancel->getId()
-                                          )))
-             ->andWhere('o.order_date BETWEEN :firstDate AND :endDate')
-             ->setParameters(
-                 array(
-                     'firstDate' => $firstDate,
-                     'endDate' => $endDate
-                 )
-             );
-         $MonthlyOrders = $qb->getQuery()->getResult();
+        $this->expected = 6;
+        $this->actual = str_replace(',', '', $match[2]);
+        $this->verify('今月の売上件数');
+    }
 
-         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('.monthly_sale')->text()), $match);
-         $this->expected = array_reduce( // MonthlyOrders の payment_total をすべて足す
-             array_map(
-                 function ($Order) {
-                     return $Order->getPaymentTotal();
-                 }, $MonthlyOrders
-             ),
-             function ($carry, $item) {
-                 return $carry += $item;
-             }
-         );
-         $this->actual = str_replace(',', '', $match[1]);
-         $this->verify('今月の売上');
-
-         $this->expected = count($MonthlyOrders);
-         $this->actual = str_replace(',', '', $match[2]);
-         $this->verify('今月の売上件数');*/
+    public function indexWithSalesProvider()
+    {
+        return [
+            [8],
+            [10],
+        ];
     }
 
     public function testChangePasswordWithPost()

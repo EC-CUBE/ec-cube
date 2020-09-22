@@ -175,7 +175,7 @@ file that was distributed with this source code.
                     {% endif %}
                 </td>
                 <td class="align-middle pr-3 text-right">
-                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}, '{{ Product.name }}')" name="mode" value="modal">
+                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}, '{{ Product.name|escape('js') }}')" name="mode" value="modal">
                         <i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i>
                     </button>
                 </td>

@@ -200,6 +200,9 @@
     "phar-io/version": {
         "version": "1.0.1"
     },
+    "php": {
+        "version": "7.1.3"
+    },
     "php-coveralls/php-coveralls": {
         "version": "v2.0.0"
     },
@@ -482,8 +485,14 @@
     "symfony/polyfill-ctype": {
         "version": "v1.8.0"
     },
+    "symfony/polyfill-iconv": {
+        "version": "v1.17.1"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.6.0"
+    },
+    "symfony/polyfill-intl-idn": {
+        "version": "v1.17.1"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
