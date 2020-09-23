@@ -858,6 +858,7 @@ jobs:
       env:
         TAG_NAME: ${{ github.event.release.tag_name }}
         REPOSITORY_NAME: ${{ github.event.repository.name }}
+        PATH_NAME: eccube-${{ github.event.release.tag_name }}
       run: |
         rm -rf $GITHUB_WORKSPACE/.editorconfig
         rm -rf $GITHUB_WORKSPACE/.gitignore
@@ -887,14 +888,16 @@ jobs:
         chmod -R o+w $GITHUB_WORKSPACE
 
         echo "complession files..."
-        tar czfp eccube-$TAG_NAME.tar.gz $REPOSITORY_NAME
-        zip -ry eccube-$TAG_NAME.zip $REPOSITORY_NAME 1> /dev/null
+        mv $REPOSITORY_NAME $PATH_NAME
+        tar czfp eccube-$TAG_NAME.tar.gz $PATH_NAME
+        zip -ry eccube-$TAG_NAME.zip $PATH_NAME 1> /dev/null
         md5sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.md5
         md5sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.md5
         sha1sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.sha1
         sha1sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.sha1
         sha256sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.sha256
         sha256sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.sha256
+        mv $PATH_NAME $REPOSITORY_NAME
         ls -al
 
     - name: Upload binaries to release of TGZ
