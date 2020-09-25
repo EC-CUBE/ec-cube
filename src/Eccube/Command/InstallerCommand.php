@@ -113,8 +113,8 @@ class InstallerCommand extends Command
         $this->io->text([
             'If you prefer to not use this interactive wizard, define the environment valiables as follows:',
             '',
-            ' $ export APP_ENV=dev',
-            ' $ export APP_DEBUG=1',
+            ' $ export APP_ENV=prod',
+            ' $ export APP_DEBUG=0',
             ' $ export DATABASE_URL=database_url',
             ' $ export DATABASE_SERVER_VERSION=server_version',
             ' $ export MAILER_URL=mailer_url',
@@ -150,15 +150,15 @@ class InstallerCommand extends Command
 
         // 以下環境変数に規定済の設定値があれば利用する
         // APP_ENV
-        $appEnv = env('APP_ENV', 'dev');
-        // .envが存在しない状態では規定値'install'となっているため、devに更新する
+        $appEnv = env('APP_ENV', 'prod');
+        // .envが存在しない状態では規定値'install'となっているため、prodに更新する
         if ($appEnv === 'install') {
-            $appEnv = 'dev';
+            $appEnv = 'prod';
         }
         $this->envFileUpdater->appEnv = $appEnv;
 
         // APP_DEBUG
-        $this->envFileUpdater->appDebug = env('APP_DEBUG', '1');
+        $this->envFileUpdater->appDebug = env('APP_DEBUG', '0');
 
         // ECCUBE_ADMIN_ROUTE
         $adminRoute = $this->container->getParameter('eccube_admin_route');
