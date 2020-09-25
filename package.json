@@ -22,12 +22,23 @@
     "url": "https://github.com/EC-CUBE/ec-cube/issues"
   },
   "homepage": "https://www.ec-cube.net/",
+  "lint-staged": {
+    "*.php": [
+      "cross-env vendor/bin/php-cs-fixer --config=.php_cs.dist --path-mode=intersection fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged 2>&1 | echo || node -e ''"
+    }
+  },
   "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^9.6.4",
     "bootstrap": "^4.3.1",
     "bootstrap-sass": "^3.4.1",
     "browser-sync": "^2.26.7",
+    "cross-env": "^7.0.2",
     "css-mqpacker": "^7.0.0",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.2.0",
@@ -36,6 +47,8 @@
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
     "normalize.css": "^5.0.0",
     "postcss-import": "^12.0.1",
     "process": "^0.11.10",
