@@ -174,11 +174,17 @@ file that was distributed with this source code.
                         </div>
                     {% endif %}
                 </td>
-                <td class="align-middle pr-3 text-right">
-                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}, '{{ Product.name|escape('js') }}')" name="mode" value="modal">
-                        <i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i>
-                    </button>
-                </td>
+                {% if Product.stock_find %}
+                    <td class="align-middle pr-3 text-right">
+                        <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}, '{{ Product.name|escape('js') }}')" name="mode" value="modal">
+                            <i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i>
+                        </button>
+                    </td>
+                {% else %}
+                    <td class="align-middle pr-3 text-right">
+                        {{ 'front.product.out_of_stock_label'|trans }}
+                    </td>
+                {% endif %}
             </tr>
         </form>
     {% endfor %}
@@ -189,4 +195,3 @@ file that was distributed with this source code.
         {% include "@admin/pager.twig" with {'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
     </div>
 {% endif %}
-
