@@ -45,15 +45,11 @@ class WhereClause
      */
     private static function newWhereClause($expr, $x, $y)
     {
-        if ($y) {
-            if (is_array($y)) {
-                return new WhereClause($expr, $y);
-            } else {
-                return new WhereClause($expr, [$x => $y]);
-            }
+        if (is_array($y)) {
+            return new WhereClause($expr, $y);
+        } else {
+            return new WhereClause($expr, [$x => $y]);
         }
-
-        return new WhereClause($expr);
     }
 
     /**
