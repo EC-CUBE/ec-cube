@@ -18,6 +18,7 @@ composer.phar
 !/app/template/admin
 !/app/template/default
 !/app/template/user_data
+!/app/template/smartphone
 /app/proxy/entity/*
 !/app/proxy/entity/.gitkeep
 /html/plugin/*
