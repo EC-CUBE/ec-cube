@@ -461,8 +461,12 @@ class OrderPdfService extends TcpdfFpdi
         // =========================================
         $i = 0;
         $isShowReducedTaxMess = false;
+        $Order = $Shipping->getOrder();
         /* @var OrderItem $OrderItem */
         foreach ($Shipping->getOrderItems() as $OrderItem) {
+            if (!$Order->isMultiple() && is_null($OrderItem->getProduct())) {
+                continue;
+            }
             // class categoryの生成
             $classCategory = '';
             /** @var OrderItem $OrderItem */
@@ -497,8 +501,6 @@ class OrderPdfService extends TcpdfFpdi
 
             ++$i;
         }
-
-        $Order = $Shipping->getOrder();
 
         if (!$Order->isMultiple()) {
             // =========================================
