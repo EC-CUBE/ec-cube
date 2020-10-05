@@ -30,9 +30,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class CacheUtil implements EventSubscriberInterface
 {
-
-    const DOCTRINE_APP_CACHE_KEY = 'doctrine.app_cache_pool';
-
     private $clearCacheAfterResponse = false;
 
     /**
@@ -111,23 +108,18 @@ class CacheUtil implements EventSubscriberInterface
     /**
      * Doctrineのキャッシュを削除します.
      *
-     * @param null $env
-     *
      * @return string
      *
      * @throws \Exception
      */
     public function clearDoctrineCache()
     {
-        if (!$this->container->has(self::DOCTRINE_APP_CACHE_KEY)) {
-            return;
-        }
         $console = new Application($this->kernel);
         $console->setAutoExit(false);
 
         $command = [
             'command' => 'cache:pool:clear',
-            'pools' => [self::DOCTRINE_APP_CACHE_KEY],
+            'pools' => ['cache.app_clearer'],
             '--no-ansi' => true,
         ];
 
