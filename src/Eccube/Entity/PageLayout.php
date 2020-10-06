@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\PageLayout')) {
+if (!class_exists('\Eccube\Entity\PageLayout', false)) {
     /**
      * PageLayout
      *

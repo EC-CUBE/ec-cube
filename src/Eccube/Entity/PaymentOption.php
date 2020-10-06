@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\PaymentOption')) {
+if (!class_exists('\Eccube\Entity\PaymentOption', false)) {
     /**
      * PaymentOption
      *

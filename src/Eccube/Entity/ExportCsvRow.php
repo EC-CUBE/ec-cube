@@ -13,7 +13,7 @@
 
 namespace Eccube\Entity;
 
-if (!class_exists('\Eccube\Entity\ExportCsvRow')) {
+if (!class_exists('\Eccube\Entity\ExportCsvRow', false)) {
     class ExportCsvRow extends \Eccube\Entity\AbstractEntity
     {
         /**

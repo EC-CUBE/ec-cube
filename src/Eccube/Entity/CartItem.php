@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\CartItem')) {
+if (!class_exists('\Eccube\Entity\CartItem', false)) {
     /**
      * CartItem
      *
@@ -91,7 +91,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         {
             return $this->id;
         }
-        
+
         /**
          * @param  integer  $price
          *

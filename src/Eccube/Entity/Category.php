@@ -16,7 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\Category')) {
+if (!class_exists('\Eccube\Entity\Category', false)) {
     /**
      * Category
      *

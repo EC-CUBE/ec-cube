@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
-if (!class_exists('\Eccube\Entity\Cart')) {
+if (!class_exists('\Eccube\Entity\Cart', false)) {
     /**
      * Cart
      *

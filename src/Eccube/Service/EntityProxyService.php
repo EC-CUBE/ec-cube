@@ -80,9 +80,7 @@ class EntityProxyService
             $baseName = basename($fileName);
             $entityTokens = Tokens::fromCode(file_get_contents($fileName));
 
-            if (strpos($fileName, 'app/proxy/entity') === false) {
-                $this->removeClassExistsBlock($entityTokens); // remove class_exists block
-            } else {
+            if (strpos($fileName, 'app/proxy/entity') !== false) {
                 // Remove to duplicate path of /app/proxy/entity
                 $fileName = str_replace('/app/proxy/entity', '', $fileName);
             }
@@ -282,23 +280,5 @@ class EntityProxyService
         }
 
         return $result;
-    }
-
-    /**
-     * remove block to 'if (!class_exists(<class name>)) { }'
-     *
-     * @param Tokens $entityTokens
-     */
-    private function removeClassExistsBlock(Tokens $entityTokens)
-    {
-        $startIndex = $entityTokens->getNextTokenOfKind(0, [[T_IF]]);
-        $classIndex = $entityTokens->getNextTokenOfKind(0, [[T_CLASS]]);
-        if ($startIndex > 0 && $startIndex < $classIndex) { // if statement before class
-            $blockStartIndex = $entityTokens->getNextTokenOfKind($startIndex, ['{']);
-            $blockEndIndex = $entityTokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $blockStartIndex);
-
-            $entityTokens->clearRange($startIndex, $blockStartIndex);
-            $entityTokens->clearRange($blockEndIndex, $blockEndIndex + 1);
-        }
     }
 }
