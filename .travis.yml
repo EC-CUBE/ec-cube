@@ -253,6 +253,10 @@ jobs:
         ./codeception.sh --reset
         psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
         ./codeception.sh EA10PluginCest:install_enable_disable_enable_disable_remove_store
+      - |
+        ./codeception.sh --reset
+        psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
+        ./codeception.sh EA10PluginCest:test_enhance_plugin_entity
   - <<: *e2e_test
     php: 7.3
     env: APP_ENV=codeception DATABASE_URL=mysql://root:@localhost/eccube_db DATABASE_SERVER_VERSION=5 MAILER_URL=smtp://localhost:1025 ECCUBE_PACKAGE_API_URL=http://localhost:8080 NO_FIXTURES=1
@@ -385,6 +389,10 @@ jobs:
         ./codeception.sh --reset
         mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
         ./codeception.sh EA10PluginCest:install_enable_disable_enable_disable_remove_store
+      - |
+        ./codeception.sh --reset
+        mysql -h 127.0.0.1 -u root eccube_db -e "update dtb_base_info set authentication_key='test', php_path = '$(which php)';"
+        ./codeception.sh EA10PluginCest:test_enhance_plugin_entity
 
   # インストーラのテスト
   - <<: *e2e_test

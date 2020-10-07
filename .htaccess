@@ -1,6 +1,6 @@
 DirectoryIndex index.php index.html .ht
 
-<FilesMatch "^composer|^COPYING|^\.env|^\.maintenance|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|^Dockerfile|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml|dockerignore|sample)$">
+<FilesMatch "^composer|^COPYING|^\.env|^\.maintenance|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|^Dockerfile|^\.editorconfig|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml|dockerignore|sample)$">
     order allow,deny
     deny from all
 </FilesMatch>
@@ -43,9 +43,11 @@ DirectoryIndex index.php index.html .ht
     RewriteRule "^var/" - [F]
     RewriteRule "^vendor/" - [F]
     RewriteRule "^node_modules/" - [F]
+    RewriteRule "^gulp/" - [F]
     RewriteRule "^codeception/" - [F]
     RewriteRule "^bin/" - [F]
     RewriteRule "^dockerbuild/" - [F]
+    RewriteRule "^\.devcontainer/" - [F]
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
