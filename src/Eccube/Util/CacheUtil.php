@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -30,6 +31,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class CacheUtil implements EventSubscriberInterface
 {
+
+    const DOCTRINE_APP_CACHE_KEY = 'doctrine.app_cache_pool';
+
     private $clearCacheAfterResponse = false;
 
     /**
@@ -114,12 +118,18 @@ class CacheUtil implements EventSubscriberInterface
      */
     public function clearDoctrineCache()
     {
+        /** @var Psr6CacheClearer $poolClearer */
+        $poolClearer = $this->container->get('cache.global_clearer');
+        if (!$poolClearer->hasPool(self::DOCTRINE_APP_CACHE_KEY)) {
+            return;
+        }
+
         $console = new Application($this->kernel);
         $console->setAutoExit(false);
 
         $command = [
             'command' => 'cache:pool:clear',
-            'pools' => ['cache.app_clearer'],
+            'pools' => [self::DOCTRINE_APP_CACHE_KEY],
             '--no-ansi' => true,
         ];
 
