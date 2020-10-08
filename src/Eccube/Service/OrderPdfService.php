@@ -464,7 +464,7 @@ class OrderPdfService extends TcpdfFpdi
         $Order = $Shipping->getOrder();
         /* @var OrderItem $OrderItem */
         foreach ($Shipping->getOrderItems() as $OrderItem) {
-            if (!$Order->isMultiple() && is_null($OrderItem->getProduct())) {
+            if (!$Order->isMultiple() && !$OrderItem->isProduct()) {
                 continue;
             }
             // class categoryの生成
