@@ -37,7 +37,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * エンティティの登録/保存します。
      *
-     * @param $entity|AbstractEntity エンティティ
+     * @param AbstractEntity $entity
      */
     public function save($entity)
     {
