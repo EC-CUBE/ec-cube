@@ -498,13 +498,13 @@
         "version": "v1.8.0"
     },
     "symfony/polyfill-iconv": {
-        "version": "v1.13.0"
+        "version": "v1.17.1"
     },
     "symfony/polyfill-intl-icu": {
         "version": "v1.6.0"
     },
     "symfony/polyfill-intl-idn": {
-        "version": "v1.13.0"
+        "version": "v1.17.1"
     },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.18.1"

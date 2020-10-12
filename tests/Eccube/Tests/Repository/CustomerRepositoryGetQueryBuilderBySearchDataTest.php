@@ -578,84 +578,101 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testCreateDateStart()
-    {
-        $this->searchData = [
-            'create_date_start' => new \DateTime('- 1 days'),
-        ];
-
-        $this->scenario();
-
-        $this->expected = 4;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testCreateDateEnd()
-    {
-        $this->searchData = [
-            'create_date_end' => new \DateTime('+ 1 days'),
-        ];
-
-        $this->scenario();
-        $this->expected = 4;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testUpdateDateStart()
-    {
-        $this->searchData = [
-            'update_date_start' => new \DateTime('- 1 days'),
-        ];
-
-        $this->scenario();
-
-        $this->expected = 4;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testUpdateDateEnd()
-    {
-        $this->searchData = [
-            'update_date_end' => new \DateTime('+ 1 days'),
-        ];
-
-        $this->scenario();
-        $this->expected = 4;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testLastBuyStart()
+    /**
+     * @dataProvider dataFormDateProvider
+     *
+     * @param string $formName
+     * @param string $time
+     * @param int $expected
+     */
+    public function testDate(string $formName, string $time, int $expected)
     {
         $this->Customer->setLastBuyDate(new \DateTime());
         $this->entityManager->flush();
 
         $this->searchData = [
-            'last_buy_start' => new \DateTime('- 1 days'),
+            $formName => new \DateTime($time),
         ];
 
         $this->scenario();
-        $this->expected = 1;
+
+        $this->expected = $expected;
         $this->actual = count($this->Results);
         $this->verify();
     }
 
-    public function testLastBuyEnd()
+    /**
+     * Data provider date form test.
+     *
+     * time:
+     * - today: 今日の00:00:00
+     * - tomorrow: 明日の00:00:00
+     * - yesterday: 昨日の00:00:00
+     *
+     * @return array
+     */
+    public function dataFormDateProvider()
+    {
+        return [
+            ['create_date_start', 'today', 4],
+            ['create_date_start', 'tomorrow', 0],
+            ['update_date_start', 'today', 4],
+            ['update_date_start', 'tomorrow', 0],
+            ['last_buy_start', 'today', 1],
+            ['last_buy_start', 'tomorrow', 0],
+            ['create_date_end', 'today', 4],
+            ['create_date_end', 'yesterday', 0],
+            ['update_date_end', 'today', 4],
+            ['update_date_end', 'yesterday', 0],
+            ['last_buy_end', 'today', 1],
+            ['last_buy_end', 'yesterday', 0],
+        ];
+    }
+
+    /**
+     * @dataProvider dataFormDateTimeProvider
+     *
+     * @param string $formName
+     * @param string $time
+     * @param int $expected
+     */
+    public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->Customer->setLastBuyDate(new \DateTime());
         $this->entityManager->flush();
 
         $this->searchData = [
-            'last_buy_end' => new \DateTime('+ 1 days'),
+            $formName => new \DateTime($time),
         ];
 
         $this->scenario();
-        $this->expected = 1;
+
+        $this->expected = $expected;
         $this->actual = count($this->Results);
         $this->verify();
+    }
+
+    /**
+     * Data provider datetime form test.
+     *
+     * @return array
+     */
+    public function dataFormDateTimeProvider()
+    {
+        return [
+            ['create_datetime_start', '- 1 hour', 4],
+            ['create_datetime_start', '+ 1 hour', 0],
+            ['update_datetime_start', '- 1 hour', 4],
+            ['update_datetime_start', '+ 1 hour', 0],
+            ['last_buy_datetime_start', '- 1 hour', 1],
+            ['last_buy_datetime_start', '+ 1 hour', 0],
+            ['create_datetime_end', '+ 1 hour', 4],
+            ['create_datetime_end', '- 1 hour', 0],
+            ['update_datetime_end', '+ 1 hour', 4],
+            ['update_datetime_end', '- 1 hour', 0],
+            ['last_buy_datetime_end', '+ 1 hour', 1],
+            ['last_buy_datetime_end', '- 1 hour', 0],
+        ];
     }
 
     public function testStatus()

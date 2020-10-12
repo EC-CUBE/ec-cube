@@ -35,35 +35,31 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         $(function() {
-
-            if ($('[type="date"]').prop('type') != 'date') {
-                // input type属性でdateが利用できるかどうか(カレンダー表示できないブラウザ対応)
-                $.when(
-                    $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
-                    $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
-                    $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
-                ).done(function() {
-                    $('input[id$=_date_start]').datetimepicker({
-                        locale: '{{ eccube_config.locale }}',
-                        format: 'YYYY-MM-DD',
-                        useCurrent: false,
-                        buttons: {
-                            showToday: true,
-                            showClose: true
-                        }
-                    });
-
-                    $('input[id$=_date_end]').datetimepicker({
-                        locale: '{{ eccube_config.locale }}',
-                        format: 'YYYY-MM-DD',
-                        useCurrent: false,
-                        buttons: {
-                            showToday: true,
-                            showClose: true
-                        }
-                    });
+            $.when(
+                $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
+                $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
+                $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
+            ).done(function() {
+                // datetimepicker で value が消えてしまうので data-value に保持しておく
+                $('input.datetimepicker-input').each(function() {
+                    $(this).data('value', $(this).val());
                 });
-            }
+
+                $('input.datetimepicker-input').datetimepicker({
+                    locale: '{{ eccube_config.locale }}',
+                    format: 'YYYY-MM-DD HH:mm:ss',
+                    useCurrent: false,
+                    buttons: {
+                        showToday: true,
+                        showClose: true
+                    },
+                });
+
+                // datetimepicker で value が消えてしまうので更新
+                $('input.datetimepicker-input').each(function() {
+                    $(this).val($(this).data('value'));
+                });
+            });
 
             $('#bulkDelete').on('click', function() {
 
@@ -242,14 +238,14 @@ file that was distributed with this source code.
                             <div class="form-row align-items-center">
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
-                                    {{ form_widget(searchForm.create_date_start) }}
-                                    {{ form_errors(searchForm.create_date_start) }}
+                                    {{ form_widget(searchForm.create_datetime_start) }}
+                                    {{ form_errors(searchForm.create_datetime_start) }}
                                 </div>
                                 <div class="col-auto text-center"><span>{{ 'admin.common.separator__range'|trans }}</span>
                                 </div>
                                 <div class="col">
-                                    {{ form_widget(searchForm.create_date_end) }}
-                                    {{ form_errors(searchForm.create_date_end) }}
+                                    {{ form_widget(searchForm.create_datetime_end) }}
+                                    {{ form_errors(searchForm.create_datetime_end) }}
                                 </div>
                             </div>
                         </div>
@@ -258,13 +254,13 @@ file that was distributed with this source code.
                             <div class="form-row align-items-center">
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
-                                    {{ form_widget(searchForm.update_date_start) }}
-                                    {{ form_errors(searchForm.update_date_start) }}
+                                    {{ form_widget(searchForm.update_datetime_start) }}
+                                    {{ form_errors(searchForm.update_datetime_start) }}
                                 </div>
                                 <div class="col-auto"><span>{{ 'admin.common.separator__range'|trans }}</span></div>
                                 <div class="col">
-                                    {{ form_widget(searchForm.update_date_end) }}
-                                    {{ form_errors(searchForm.update_date_end) }}
+                                    {{ form_widget(searchForm.update_datetime_end) }}
+                                    {{ form_errors(searchForm.update_datetime_end) }}
                                 </div>
                             </div>
                         </div>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "181f828830017834b5792b2caebbe097",
+    "content-hash": "68501e844a376e1c57639be63fa554d7",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -87,12 +87,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "5df1797d20c6ab1eb606dc0f0d76a16ba57ddb7f"
+                "reference": "03b8c3db3f836c52f79c2267ea773216a69b9abf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/5df1797d20c6ab1eb606dc0f0d76a16ba57ddb7f",
-                "reference": "5df1797d20c6ab1eb606dc0f0d76a16ba57ddb7f",
+                "url": "https://api.github.com/repos/composer/composer/zipball/03b8c3db3f836c52f79c2267ea773216a69b9abf",
+                "reference": "03b8c3db3f836c52f79c2267ea773216a69b9abf",
                 "shasum": ""
             },
             "require": {
@@ -177,7 +177,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-21T12:46:17+00:00"
+            "time": "2020-10-08T12:38:41+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -1712,19 +1712,20 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.7.3",
+            "version": "2.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "d95e03ba660d50d785a9925f41927fef0ee553cf"
+                "reference": "7d84a4998091ece4d645253ac65de9f879eeed2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/d95e03ba660d50d785a9925f41927fef0ee553cf",
-                "reference": "d95e03ba660d50d785a9925f41927fef0ee553cf",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/7d84a4998091ece4d645253ac65de9f879eeed2f",
+                "reference": "7d84a4998091ece4d645253ac65de9f879eeed2f",
                 "shasum": ""
             },
             "require": {
+                "composer/package-versions-deprecated": "^1.8",
                 "doctrine/annotations": "^1.8",
                 "doctrine/cache": "^1.9.1",
                 "doctrine/collections": "^1.5",
@@ -1736,7 +1737,6 @@
                 "doctrine/lexer": "^1.0",
                 "doctrine/persistence": "^1.3.3 || ^2.0",
                 "ext-pdo": "*",
-                "ocramius/package-versions": "^1.2",
                 "php": "^7.1",
                 "symfony/console": "^3.0|^4.0|^5.0"
             },
@@ -1798,23 +1798,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/v2.7.3"
+                "source": "https://github.com/doctrine/orm/tree/2.7.4"
             },
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine/orm",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-05-26T16:03:49+00:00"
+            "time": "2020-10-10T17:11:26+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -2001,6 +1987,61 @@
             "time": "2020-03-27T11:06:43+00:00"
         },
         {
+            "name": "easycorp/easy-log-handler",
+            "version": "v1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EasyCorp/easy-log-handler.git",
+                "reference": "224e1dfcf9455aceee89cd0af306ac097167fac1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EasyCorp/easy-log-handler/zipball/224e1dfcf9455aceee89cd0af306ac097167fac1",
+                "reference": "224e1dfcf9455aceee89cd0af306ac097167fac1",
+                "shasum": ""
+            },
+            "require": {
+                "monolog/monolog": "~1.6|~2.0",
+                "php": ">=7.1",
+                "symfony/yaml": "^3.4|^4.0|^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EasyCorp\\EasyLog\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Javier Eguiluz",
+                    "email": "javiereguiluz@gmail.com"
+                },
+                {
+                    "name": "Project Contributors",
+                    "homepage": "https://github.com/EasyCorp/easy-log-handler"
+                }
+            ],
+            "description": "A handler for Monolog that optimizes log messages to be processed by humans instead of software. Improve your productivity with logs that are easy to understand.",
+            "homepage": "https://github.com/EasyCorp/easy-log-handler",
+            "keywords": [
+                "easy",
+                "log",
+                "logging",
+                "monolog",
+                "productivity"
+            ],
+            "support": {
+                "issues": "https://github.com/EasyCorp/easy-log-handler/issues",
+                "source": "https://github.com/EasyCorp/easy-log-handler/tree/master"
+            },
+            "abandoned": true,
+            "time": "2019-10-24T07:13:31+00:00"
+        },
+        {
             "name": "ec-cube/plugin-installer",
             "version": "2.0.x-dev",
             "source": {
@@ -2104,12 +2145,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "9f8cc4dc7e0887df547d14acf1872009e5ff92bf"
+                "reference": "3887f77656c953af697c2762e404f07e1875fe64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/9f8cc4dc7e0887df547d14acf1872009e5ff92bf",
-                "reference": "9f8cc4dc7e0887df547d14acf1872009e5ff92bf",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/3887f77656c953af697c2762e404f07e1875fe64",
+                "reference": "3887f77656c953af697c2762e404f07e1875fe64",
                 "shasum": ""
             },
             "require": {
@@ -2202,7 +2243,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-10-04T14:37:19+00:00"
+            "time": "2020-10-09T13:04:19+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -5552,16 +5593,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.9.4",
+            "version": "v1.9.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "115e67f76ba95d70946a6e0b15d4578bf04927c3"
+                "reference": "5c71110ad383ada3d5305c19ff8419a58f799c00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/115e67f76ba95d70946a6e0b15d4578bf04927c3",
-                "reference": "115e67f76ba95d70946a6e0b15d4578bf04927c3",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/5c71110ad383ada3d5305c19ff8419a58f799c00",
+                "reference": "5c71110ad383ada3d5305c19ff8419a58f799c00",
                 "shasum": ""
             },
             "require": {
@@ -5599,7 +5640,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v1.9.4"
+                "source": "https://github.com/symfony/flex/tree/v1.9.6"
             },
             "funding": [
                 {
@@ -5615,7 +5656,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-14T14:58:36+00:00"
+            "time": "2020-10-07T12:55:56+00:00"
         },
         {
             "name": "symfony/form",
@@ -10121,16 +10162,16 @@
         },
         {
             "name": "codeception/phpunit-wrapper",
-            "version": "6.8.1",
+            "version": "6.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/phpunit-wrapper.git",
-                "reference": "ca6e94c6dadc19db05698d4e0d84214e570ce045"
+                "reference": "372f1b5c1b0842dfc1fb491175ea22861a42ba13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/ca6e94c6dadc19db05698d4e0d84214e570ce045",
-                "reference": "ca6e94c6dadc19db05698d4e0d84214e570ce045",
+                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/372f1b5c1b0842dfc1fb491175ea22861a42ba13",
+                "reference": "372f1b5c1b0842dfc1fb491175ea22861a42ba13",
                 "shasum": ""
             },
             "require": {
@@ -10165,9 +10206,9 @@
             "description": "PHPUnit classes used by Codeception",
             "support": {
                 "issues": "https://github.com/Codeception/phpunit-wrapper/issues",
-                "source": "https://github.com/Codeception/phpunit-wrapper/tree/6.8.1"
+                "source": "https://github.com/Codeception/phpunit-wrapper/tree/6.8.2"
             },
-            "time": "2020-03-20T08:05:05+00:00"
+            "time": "2020-10-11T18:17:59+00:00"
         },
         {
             "name": "codeception/stub",
@@ -10265,61 +10306,6 @@
                 "source": "https://github.com/dmaicher/doctrine-test-bundle/tree/v5.0.5"
             },
             "time": "2019-11-25T10:12:28+00:00"
-        },
-        {
-            "name": "easycorp/easy-log-handler",
-            "version": "v1.0.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/EasyCorp/easy-log-handler.git",
-                "reference": "224e1dfcf9455aceee89cd0af306ac097167fac1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/easy-log-handler/zipball/224e1dfcf9455aceee89cd0af306ac097167fac1",
-                "reference": "224e1dfcf9455aceee89cd0af306ac097167fac1",
-                "shasum": ""
-            },
-            "require": {
-                "monolog/monolog": "~1.6|~2.0",
-                "php": ">=7.1",
-                "symfony/yaml": "^3.4|^4.0|^5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "EasyCorp\\EasyLog\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Javier Eguiluz",
-                    "email": "javiereguiluz@gmail.com"
-                },
-                {
-                    "name": "Project Contributors",
-                    "homepage": "https://github.com/EasyCorp/easy-log-handler"
-                }
-            ],
-            "description": "A handler for Monolog that optimizes log messages to be processed by humans instead of software. Improve your productivity with logs that are easy to understand.",
-            "homepage": "https://github.com/EasyCorp/easy-log-handler",
-            "keywords": [
-                "easy",
-                "log",
-                "logging",
-                "monolog",
-                "productivity"
-            ],
-            "support": {
-                "issues": "https://github.com/EasyCorp/easy-log-handler/issues",
-                "source": "https://github.com/EasyCorp/easy-log-handler/tree/master"
-            },
-            "abandoned": true,
-            "time": "2019-10-24T07:13:31+00:00"
         },
         {
             "name": "facebook/webdriver",

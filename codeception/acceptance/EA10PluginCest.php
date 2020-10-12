@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
+use Page\Admin\CacheManagePage;
 use Page\Admin\PluginLocalInstallPage;
 use Page\Admin\PluginManagePage;
 use Page\Admin\PluginSearchPage;
@@ -399,6 +400,80 @@ class EA10PluginCest
 
         // エラー後に他のプラグインがインストールできる
         $Horizon->インストール();
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/4527
+     */
+    public function test_template_overwrite(\AcceptanceTester $I)
+    {
+        $plugin = new Local_Plugin($I, 'Template');
+        $plugin->インストール();
+        $plugin->有効化();
+
+        // テンプレートの確認
+        $I->amOnPage('/template');
+        $I->see('hello');
+
+        // テンプレートをapp/template/plugin/[Plugin Code]に設置
+        $dir = $this->config->get('eccube_theme_app_dir').'/plugin/Template';
+        $fs = new \Symfony\Component\Filesystem\Filesystem();
+        $fs->mkdir($dir);
+        $fs->dumpFile($dir.'/index.twig', 'bye');
+
+        // キャッシュ削除すると反映される
+        $page = CacheManagePage::go($I);
+        $page->キャッシュ削除();
+
+        // 上書きされていることを確認
+        $I->amOnPage('/template');
+        $I->see('bye');
+
+        $I->amOnPage('/'.$this->config->get('eccube_admin_route').'/store/plugin');
+        $plugin->無効化();
+        $plugin->削除();
+
+        $fs->remove($dir);
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/4638
+     */
+    public function test_enhance_plugin_entity(\AcceptanceTester $I)
+    {
+        $Boomerang = Boomerang_Store::start($I)
+            ->インストール()
+            ->有効化()
+            ->カート作成();
+
+        $I->see('[1]');
+
+        Boomerang10_Store::start($I, $Boomerang)
+            ->インストール()
+            ->有効化();
+
+        $Boomerang->カート一覧();
+        $I->see('[1]');
+    }
+
+    public function test_bundle_install_enable_disable_remove_store(\AcceptanceTester $I)
+    {
+        $Bundle = Bundle_Store::start($I);
+        $Bundle->インストール()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
+    public function test_bundle_install_update_enable_disable_remove_store(\AcceptanceTester $I)
+    {
+        $Bundle = Bundle_Store::start($I);
+        $Bundle->インストール()
+            ->有効化()
+            ->アップデート()
+            ->有効化()
+            ->無効化()
+            ->削除();
     }
 
     private function publishPlugin($fileName)
@@ -913,6 +988,32 @@ class Boomerang_Store extends Store_Plugin
     {
         return new self($I);
     }
+
+    public function カート一覧()
+    {
+        $this->I->amOnPage('/boomerang');
+    }
+
+    public function カート作成()
+    {
+        $this->I->amOnPage('/boomerang/new');
+        $this->I->seeCurrentUrlMatches('/^\/boomerang$/');
+        return $this;
+    }
+}
+
+class Boomerang10_Store extends Store_Plugin
+{
+    public function __construct(AcceptanceTester $I, Store_Plugin $dependency = null)
+    {
+        parent::__construct($I, 'Boomerang10', $dependency);
+        $this->columns[] = 'dtb_bar.mail';
+    }
+
+    public static function start(AcceptanceTester $I, Store_Plugin $dependency = null)
+    {
+        return new self($I, $dependency = null);
+    }
 }
 
 class Boomerang_Local extends Local_Plugin
@@ -925,6 +1026,36 @@ class Boomerang_Local extends Local_Plugin
         $this->traits['\Plugin\Boomerang\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
     }
 
+    public static function start(AcceptanceTester $I)
+    {
+        return new self($I);
+    }
+}
+
+class Bundle_Store extends Store_Plugin
+{
+    public function __construct(AcceptanceTester $I)
+    {
+        parent::__construct($I, 'Bundle');
+        $this->tables[] = 'oauth2_client';
+        $this->tables[] = 'oauth2_refresh_token';
+        $this->tables[] = 'oauth2_access_token';
+        $this->tables[] = 'oauth2_authorization_code';
+    }
+
+    public function 有効化()
+    {
+        parent::有効化();
+
+        return $this;
+    }
+
+    public function 無効化()
+    {
+        parent::無効化();
+
+        return $this;
+    }
     public static function start(AcceptanceTester $I)
     {
         return new self($I);

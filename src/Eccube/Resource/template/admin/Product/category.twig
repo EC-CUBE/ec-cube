@@ -187,7 +187,7 @@ file that was distributed with this source code.
                                     <form role="form" name="form1" id="form1" method="post"
                                           action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}"
                                           enctype="multipart/form-data">
-                                        {% if TargetCategory.hierarchy < eccube_config.eccube_category_nest_level %}
+                                        {% if TargetCategory.hierarchy <= eccube_config.eccube_category_nest_level %}
                                             {{ form_widget(form._token) }}
                                             <div class="form-row mb-3">
                                                 <div class="col-auto">
