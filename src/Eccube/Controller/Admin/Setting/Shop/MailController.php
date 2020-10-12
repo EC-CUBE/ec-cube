@@ -19,6 +19,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailTemplateRepository;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -51,7 +52,7 @@ class MailController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
      * @Template("@admin/Setting/Shop/mail.twig")
      */
-    public function index(Request $request, MailTemplate $Mail = null, Environment $twig)
+    public function index(Request $request, MailTemplate $Mail = null, Environment $twig, CacheUtil $cacheUtil)
     {
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
@@ -127,6 +128,9 @@ class MailController extends AbstractController
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
+
+                // キャッシュの削除
+                $cacheUtil->clearTwigCache();
 
                 return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
             }

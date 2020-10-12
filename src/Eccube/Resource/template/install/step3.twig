@@ -50,7 +50,7 @@ file that was distributed with this source code.
                                 <h2>{{ 'install.security_configuration'|trans}}</h2>
                                 {{ form_row(form.admin_dir , {attr : { placeholder: 'install.directory_name_notice'|trans }}) }}
                                 {% if request.secure %}
-                                    {{ form_row(form.admin_force_ssl) }}
+                                    {{ form_row(form.admin_force_ssl , {attr : {'checked': 'checked'}}) }}
                                 {% else %}
                                     <span class="text-danger">{{ 'install.https_only_notice'|trans }}</span>
                                     {{ form_row(form.admin_force_ssl , {attr : {disabled: 'disabled', 'value': null}}) }}
