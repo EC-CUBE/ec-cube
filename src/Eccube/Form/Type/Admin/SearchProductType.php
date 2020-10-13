@@ -23,6 +23,7 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -104,6 +105,18 @@ class SearchProductType extends AbstractType
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
+            ->add('create_datetime_start', DateTimeType::class, [
+                'label' => 'admin.common.create_date__start',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_create_datetime_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
+            ])
             ->add('create_date_end', DateType::class, [
                 'label' => 'admin.common.create_date__end',
                 'required' => false,
@@ -114,6 +127,18 @@ class SearchProductType extends AbstractType
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_date_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
+            ])
+            ->add('create_datetime_end', DateTimeType::class, [
+                'label' => 'admin.common.create_date__end',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_create_datetime_end',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
@@ -130,6 +155,18 @@ class SearchProductType extends AbstractType
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
+            ->add('update_datetime_start', DateTimeType::class, [
+                'label' => 'admin.common.update_date__start',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_update_datetime_start',
+                    'data-toggle' => 'datetimepicker',
+                ],
+            ])
             ->add('update_date_end', DateType::class, [
                 'label' => 'admin.common.update_date__end',
                 'required' => false,
@@ -140,6 +177,18 @@ class SearchProductType extends AbstractType
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_date_end',
+                    'data-toggle' => 'datetimepicker',
+                ],
+            ])
+            ->add('update_datetime_end', DateTimeType::class, [
+                'label' => 'admin.common.update_date__end',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'attr' => [
+                    'class' => 'datetimepicker-input',
+                    'data-target' => '#'.$this->getBlockPrefix().'_update_datetime_end',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])

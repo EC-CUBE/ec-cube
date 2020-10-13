@@ -1015,7 +1015,7 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
     <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
-    <meta property="product:retailer_title" content="{{ Product.name }}"/>
+    <meta property="product:retailer_title" content="{{ BaseInfo.shop_name }}"/>
 admin.content.page_file_name_exists: Data with the same file name already exists. Please enter a different one.
 admin.content.css__card_title: CSS Settings
 admin.content.block_name: Block Name

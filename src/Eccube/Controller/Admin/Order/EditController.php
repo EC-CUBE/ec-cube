@@ -408,7 +408,7 @@ class EditController extends AbstractController
      * 顧客情報を検索する.
      *
      * @Route("/%eccube_admin_route%/order/search/customer/html", name="admin_order_search_customer_html")
-     * @Route("/%eccube_admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_No" = "\d+"}, name="admin_order_search_customer_html_page")
+     * @Route("/%eccube_admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_customer_html_page")
      * @Template("@admin/Order/search_customer.twig")
      *
      * @param Request $request

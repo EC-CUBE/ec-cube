@@ -44,7 +44,7 @@ class MailService
     /**
      * @var MailHistoryRepository
      */
-    private $mailHistoryRepository;
+    protected $mailHistoryRepository;
 
     /**
      * @var EventDispatcher

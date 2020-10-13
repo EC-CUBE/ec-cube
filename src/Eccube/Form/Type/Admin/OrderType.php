@@ -426,7 +426,10 @@ class OrderType extends AbstractType
         if ($oldStatus->getId() != $newStatus->getId()) {
             if (!$this->orderStateMachine->can($Order, $newStatus)) {
                 $form['OrderStatus']->addError(
-                    new FormError(trans('admin.order.failed_to_change_status__short', $oldStatus->getName(), $newStatus->getName())));
+                    new FormError(trans('admin.order.failed_to_change_status__short', [
+                        '%from%' => $oldStatus->getName(),
+                        '%to%' => $newStatus->getName(),
+                    ])));
             }
         }
     }
