@@ -190,7 +190,6 @@ class Kernel extends BaseKernel
                 $builder->setSchemes($scheme);
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {
-
                 $builder = $routes->import($pluginDir.'/'.$plugin.'/Resource/config/routes'.self::CONFIG_EXTS, '/', 'glob');
                 $builder->setSchemes($scheme);
             }
@@ -213,7 +212,6 @@ class Kernel extends BaseKernel
 
         // DocumentRootをルーティディレクトリに設定する.
         $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
-
 
         // twigのurl,path関数を差し替え
         $container->addCompilerPass(new TwigExtensionPass());
@@ -303,6 +301,12 @@ class Kernel extends BaseKernel
 
     protected function loadEntityProxies()
     {
+        // see https://github.com/EC-CUBE/ec-cube/issues/4727
+        // キャッシュクリアなど、コード内でコマンドを利用している場合に2回実行されてしまう
+        if (true === $this->booted) {
+            return;
+        }
+
         $files = Finder::create()
             ->in(__DIR__.'/../../app/proxy/entity/')
             ->name('*.php')
