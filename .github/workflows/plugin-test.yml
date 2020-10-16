@@ -132,7 +132,7 @@ jobs:
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
-          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Codeception
         env:
@@ -273,7 +273,7 @@ jobs:
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
-          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Run to Codeception
         env:
@@ -414,7 +414,7 @@ jobs:
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
-          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Run to Codeception
         env:
@@ -558,7 +558,7 @@ jobs:
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
-          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Run to Codeception
         env:
