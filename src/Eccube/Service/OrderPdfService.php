@@ -413,7 +413,7 @@ class OrderPdfService extends TcpdfFpdi
         $this->lfText(27, 51, $Shipping->getAddr02(), 10); //購入者住所2
 
         // 購入者氏名
-        if ($Shipping->getCompanyName()) {
+        if (null !== $Shipping->getCompanyName()) {
             // 会社名
             $text = $Shipping->getCompanyName();
             $this->lfText(27, 57, $text, 11);
