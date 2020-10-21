@@ -48,6 +48,7 @@ DirectoryIndex index.php index.html .ht
     RewriteRule "^bin/" - [F]
     RewriteRule "^dockerbuild/" - [F]
     RewriteRule "^\.devcontainer/" - [F]
+    RewriteRule "^zap/" - [F]
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
