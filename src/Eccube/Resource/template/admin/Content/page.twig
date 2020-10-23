@@ -74,7 +74,7 @@ file that was distributed with this source code.
                                         {% endif %}
                                     </td>
                                     <td class="align-middle pl-3 text-break">
-                                        {{ Page.file_name }}
+                                        {% if Page.file_name %}{{ Page.file_name }}.twig{% endif %}
                                     </td>
                                     {# TODO レイアウトの数にかかわらず高さを揃えたい #}
                                     <td class="align-middle{{ Page.layouts|length < 2 ? ' pb-4' }} text-nowrap">
