@@ -17,6 +17,14 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+    <style>
+        .ace_scrollbar {
+            z-index: 3 !important;
+        }
+    </style>
+{% endblock %}
+
 {% block javascript %}
     <script>
         var sections = {
