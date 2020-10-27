@@ -16,7 +16,7 @@
         "ext-intl": "*",
         "ext-mbstring": "*",
         "composer/ca-bundle": "^1.1",
-        "composer/composer": "^1.6",
+        "composer/composer": "^2.0@dev",
         "doctrine/annotations": "^1.6",
         "doctrine/cache": "^1.7",
         "doctrine/collections": "^1.5",
@@ -32,10 +32,10 @@
         "doctrine/lexer": "^1.0",
         "doctrine/migrations": "^1.8",
         "doctrine/orm": "^2.6",
+        "ec-cube/plugin-installer": "^2.0@dev",
         "easycorp/easy-log-handler": "^1.0",
-        "ec-cube/plugin-installer": "~0.0.6",
         "egulias/email-validator": "^2.1",
-        "friendsofphp/php-cs-fixer": "^2.10",
+        "friendsofphp/php-cs-fixer": "^2.17@dev",
         "guzzlehttp/guzzle": "^6.3",
         "knplabs/knp-paginator-bundle": "^2.7",
         "mobiledetect/mobiledetectlib": "^2.8",
@@ -129,11 +129,16 @@
             "Eccube\\": "src/Eccube",
             "Plugin\\": "app/Plugin"
         },
-        "exclude-from-classmap": ["**/Test/**", "**/Tests/**", "**/test/**", "**/tests/**"]
+        "exclude-from-classmap": [
+            "**/Test/**",
+            "**/Tests/**",
+            "**/test/**",
+            "**/tests/**"
+        ]
     },
-    "autoload-dev" : {
+    "autoload-dev": {
         "psr-4": {
-            "Eccube\\Tests\\" : "tests/Eccube/Tests"
+            "Eccube\\Tests\\": "tests/Eccube/Tests"
         }
     },
     "scripts": {
