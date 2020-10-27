@@ -59,12 +59,18 @@ COPY . ${APACHE_DOCUMENT_ROOT}
 
 WORKDIR ${APACHE_DOCUMENT_ROOT}
 
-RUN curl -sS https://getcomposer.org/installer \
-  | php \
-  && mv composer.phar /usr/bin/composer \
-  && composer config -g repos.packagist composer https://packagist.jp \
-  && composer global require hirak/prestissimo \
-  && chown www-data:www-data /var/www \
+# DockerHubの公式composerコンテナイメージから実行ファイルを取得する。
+# コンテナイメージのタグでバージョン指定
+# 下記build-argsでインストールバージョンを引数で指定したいが、
+# Docker 19.03時点では「COPY --from」に対してARGが展開されなかったため、直接指定している
+# ARG COMPOSER_VERSION=1 
+# COPY --from=composer:${COMPOSER_VERSION} /usr/bin/composer /usr/bin/composer
+COPY --from=composer:1 /usr/bin/composer /usr/bin/composer
+RUN composer config -g repos.packagist composer https://packagist.jp \
+  && composer global require hirak/prestissimo 
+
+# 実行フォルダ配下の権限設定
+RUN chown www-data:www-data /var/www \
   && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
   && chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT} \
   && find ${APACHE_DOCUMENT_ROOT} -type d -print0 \
