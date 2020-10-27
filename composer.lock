@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86241f0d555f8bc5334b06fe86463c8d",
+    "content-hash": "4d85ea241951bec8497c68952477a727",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -83,16 +83,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "dev-master",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "03b8c3db3f836c52f79c2267ea773216a69b9abf"
+                "reference": "74e8c71026edba786290047199619ac6b6490094"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/03b8c3db3f836c52f79c2267ea773216a69b9abf",
-                "reference": "03b8c3db3f836c52f79c2267ea773216a69b9abf",
+                "url": "https://api.github.com/repos/composer/composer/zipball/74e8c71026edba786290047199619ac6b6490094",
+                "reference": "74e8c71026edba786290047199619ac6b6490094",
                 "shasum": ""
             },
             "require": {
@@ -120,7 +120,6 @@
                 "ext-zip": "Enabling the zip extension allows you to unzip archives",
                 "ext-zlib": "Allow gzip compression of HTTP requests"
             },
-            "default-branch": true,
             "bin": [
                 "bin/composer"
             ],
@@ -161,7 +160,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/master"
+                "source": "https://github.com/composer/composer/tree/2.0.2"
             },
             "funding": [
                 {
@@ -177,7 +176,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-08T12:38:41+00:00"
+            "time": "2020-10-25T22:03:59+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -12241,7 +12240,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "composer/composer": 20,
         "ec-cube/plugin-installer": 20,
         "friendsofphp/php-cs-fixer": 20
     },
