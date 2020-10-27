@@ -59,9 +59,8 @@ COPY . ${APACHE_DOCUMENT_ROOT}
 
 WORKDIR ${APACHE_DOCUMENT_ROOT}
 
-RUN curl -sS https://getcomposer.org/installer \
-  | php \
-  && mv composer.phar /usr/bin/composer \
+RUN curl -sS https://getcomposer.org/composer-1.phar -o /usr/bin/composer \
+  && chmod +x /usr/bin/composer \
   && composer config -g repos.packagist composer https://packagist.jp \
   && composer global require hirak/prestissimo \
   && chown www-data:www-data /var/www \
