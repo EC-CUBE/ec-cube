@@ -992,6 +992,7 @@ admin.content.layout_section__drawer: '#drawer'
 admin.content.layout_section__close_body_before: 'Right before the </body> tags'
 admin.content.page_name: Page Name
 admin.content.page__card_title: Page Settings
+admin.content.page_route_name: Route Name
 admin.content.page_url: URL
 admin.content.page_url_exists: The URL already exists.
 admin.content.page_file_name: File Name
