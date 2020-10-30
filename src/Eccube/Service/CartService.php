@@ -193,13 +193,22 @@ class CartService
      */
     public function mergeFromPersistedCart()
     {
+        $persistedCarts = $this->getPersistedCarts();
+        $sessionCarts = $this->getSessionCarts();
+
+        // 永続化されたカートとセッションのカートが同一の場合はマージしない #4574
+        $cartKeys = $this->session->get('cart_keys', []);
+        if (in_array($persistedCarts[0]->getCartKey(), $cartKeys)) {
+            return;
+        };
+
         $CartItems = [];
-        foreach ($this->getPersistedCarts() as $Cart) {
+        foreach ($persistedCarts as $Cart) {
             $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
         }
 
         // セッションにある非会員カートとDBから取得した会員カートをマージする.
-        foreach ($this->getSessionCarts() as $Cart) {
+        foreach ($sessionCarts as $Cart) {
             $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
         }
 
