@@ -55,7 +55,11 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Override with custom configuration settings
 COPY dockerbuild/php.ini $PHP_INI_DIR/conf.d/
 
-RUN chown www-data:www-data /var/www
+RUN chown www-data:www-data /var/www \
+  && mkdir -p ${APACHE_DOCUMENT_ROOT}/vendor \
+  && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
+  && chown www-data:www-data ${APACHE_DOCUMENT_ROOT}/vendor \
+  && chmod g+s ${APACHE_DOCUMENT_ROOT}/vendor
 
 RUN curl -sS https://getcomposer.org/installer \
   | php \
@@ -80,10 +84,9 @@ USER root
 COPY . ${APACHE_DOCUMENT_ROOT}
 WORKDIR ${APACHE_DOCUMENT_ROOT}
 
-RUN mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
-  && find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or -print0 \
+RUN find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or -print0 \
   | xargs -0 chown www-data:www-data \
-  && find ${APACHE_DOCUMENT_ROOT} -type d -print0 \
+  && find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or \( -type d -print0 \) \
   | xargs -0 chmod g+s \
   ;
 
