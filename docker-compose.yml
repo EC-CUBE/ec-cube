@@ -25,6 +25,7 @@ services:
   ec-cube:
     build:
       context: .
+      target: develop
       args:
         # ビルド時のECCubeインストールスクリプトをスキップする場合にtrueを指定する。
         # ビルド時点でDBサーバの起動や接続が出来ない、という場合等にエラーとなるため。
