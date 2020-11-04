@@ -992,6 +992,7 @@ admin.content.layout_section__drawer: '#drawer'
 admin.content.layout_section__close_body_before: '</body>タグ直前'
 admin.content.page_name: ページ名
 admin.content.page__card_title: ページ設定
+admin.content.page_route_name: ルーティング名
 admin.content.page_url: URL
 admin.content.page_url_exists: 既にURLが存在しています。
 admin.content.page_file_name: ファイル名
