@@ -39,9 +39,9 @@ npm run build # Sass のビルド
 ### 動作確認環境
 
 * Apache/2.4.x (mod_rewrite / mod_ssl 必須)
-* PHP7.1.20
-* PostgreSQL 9.2.1   
-* ブラウザー：Google Chrome  
+* PHP7.2
+* PostgreSQL 9.6 / MySQL 5.6
+* ブラウザー：Google Chrome
 
 詳しくは開発ドキュメントの [システム要件](https://doc4.ec-cube.net/quickstart_requirement) をご確認ください。
 
