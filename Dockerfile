@@ -62,6 +62,7 @@ WORKDIR ${APACHE_DOCUMENT_ROOT}
 RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer \
+  && composer selfupdate --1 \
   && composer config -g repos.packagist composer https://packagist.jp \
   && composer global require hirak/prestissimo \
   && chown www-data:www-data /var/www \
