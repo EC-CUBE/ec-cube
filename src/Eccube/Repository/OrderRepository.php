@@ -151,16 +151,18 @@ class OrderRepository extends AbstractRepository
 
         // name
         if (isset($searchData['name']) && StringUtil::isNotBlank($searchData['name'])) {
+            $clean_name = preg_replace('/\s+|[　]+/u', '', $searchData['name']);
             $qb
                 ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
-                ->setParameter('name', '%'.$searchData['name'].'%');
+                ->setParameter('name', '%'.$clean_name.'%');
         }
 
         // kana
         if (isset($searchData['kana']) && StringUtil::isNotBlank($searchData['kana'])) {
+            $clean_kana = preg_replace('/\s+|[　]+/u', '', $searchData['kana']);
             $qb
                 ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
-                ->setParameter('kana', '%'.$searchData['kana'].'%');
+                ->setParameter('kana', '%'.$clean_kana.'%');
         }
 
         // email
