@@ -108,15 +108,15 @@ class OrderRepository extends AbstractRepository
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             //スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
-            $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
-            if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
-                $id = null;
+            $multi = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
+            if ($multi && $multi > '2147483647' && $this->isPostgreSQL()) {
+                $multi = null;
             }
             $qb
-                ->andWhere('o.id = :order_id OR CONCAT(o.name01, o.name02) LIKE :likemulti OR '.
+                ->andWhere('o.id = :multi OR CONCAT(o.name01, o.name02) LIKE :likemulti OR '.
                             'CONCAT(o.kana01, o.kana02) LIKE :likemulti OR o.company_name LIKE :likemulti OR '.
                             'o.order_no LIKE :likemulti OR o.email LIKE :likemulti OR o.phone_number LIKE :likemulti')
-                ->setParameter('order_id', $id)
+                ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%'.$clean_key_multi.'%');
         }
 
