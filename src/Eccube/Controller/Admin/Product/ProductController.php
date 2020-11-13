@@ -722,7 +722,11 @@ class ProductController extends AbstractController
                     $deleteImages = $event->getArgument('deleteImages');
 
                     // 画像ファイルの削除(commit後に削除させる)
+                    /** @var ProductImage $deleteImage */
                     foreach ($deleteImages as $deleteImage) {
+                        if ($this->productImageRepository->findOneBy(['file_name' => $deleteImage->getFileName()])) {
+                            continue;
+                        }
                         try {
                             $fs = new Filesystem();
                             $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$deleteImage);

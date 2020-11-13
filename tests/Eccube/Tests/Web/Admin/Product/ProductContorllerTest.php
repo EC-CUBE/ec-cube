@@ -1093,4 +1093,43 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
         $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
     }
+
+    public function testDeleteAndDeleteProductImage()
+    {
+        /** @var Generator $generator */
+        $generator = $this->container->get(Generator::class);
+        $Product1 = $generator->createProduct(null, 0, 'abstract');
+        $Product2 = $generator->createProduct(null, 0, 'abstract');
+
+        $DuplicatedImage = $Product1->getProductImage()->first();
+        assert($DuplicatedImage instanceof ProductImage);
+
+        $NotDuplicatedImage = $Product1->getProductImage()->last();
+        assert($NotDuplicatedImage instanceof ProductImage);
+
+        $NewProduct2Image = new ProductImage();
+        $NewProduct2Image
+            ->setProduct($Product2)
+            ->setFileName($DuplicatedImage->getFileName())
+            ->setSortNo(999)
+        ;
+        $Product2->addProductImage($NewProduct2Image);
+        $this->entityManager->persist($NewProduct2Image);
+        $this->entityManager->flush();
+
+        $params = [
+            'id' => $Product1->getId(),
+            Constant::TOKEN_NAME => 'dummy',
+        ];
+
+        $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
+
+        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]).'?resume=1';
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
+
+        $dir = __DIR__.'/../../../../../../html/upload/save_image/';
+        $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
+        $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
+    }
 }
