@@ -546,9 +546,14 @@ class ProductController extends AbstractController
                     }
                     $this->entityManager->persist($Product);
 
+                    $basename = basename($delete_image);
+                    if (in_array($basename, ['', '.', '..'], true)) {
+                        continue;
+                    }
+
                     // 削除
                     $fs = new Filesystem();
-                    $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$delete_image);
+                    $fs->remove($this->eccubeConfig['eccube_save_image_dir'] . '/' . $basename);
                 }
                 $this->entityManager->persist($Product);
                 $this->entityManager->flush();
