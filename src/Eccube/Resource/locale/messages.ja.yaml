@@ -608,7 +608,6 @@ admin.product.name: 商品名
 admin.product.image: 商品画像
 admin.product.image__short: 画像
 admin.product.image_size: '推奨サイズ : 600px x 600px以上'
-admin.product.image__invalid_path: 画像のパスが不正です。
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)

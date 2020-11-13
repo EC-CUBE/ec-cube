@@ -608,7 +608,6 @@ admin.product.name: Product Name
 admin.product.image: Product Images
 admin.product.image__short: Images
 admin.product.image_size: 'More than 600px x 600px is recommended'
-admin.product.image__invalid_path: Invalid image path.
 admin.product.sale_type: Sales Type
 admin.product.description_detail: Product Descriptions
 admin.product.description_list: Product Descriptions (All)
