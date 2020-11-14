@@ -14,8 +14,8 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Customer;
-use Eccube\Entity\Order;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\EccubeTestCase;
 
@@ -125,12 +125,81 @@ class OrderRepositoryTest extends EccubeTestCase
         $Order = $this->createOrder($this->createCustomer('2147483648@example.com'));
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
         $this->orderRepository->save($Order);
-        $this->entityManager->flush();;
+        $this->entityManager->flush();
 
         $actual = $this->orderRepository->getQueryBuilderBySearchDataForAdmin(['multi' => '2147483648'])
             ->getQuery()
             ->getResult();
 
         self::assertEquals($Order, $actual[0]);
+    }
+
+    /**
+     * @dataProvider dataGetQueryBuilderBySearchDataForAdmin_nameProvider
+     */
+    public function testGetQueryBuilderBySearchDataForAdmin_name(string $formName, string $searchWord, int $expected)
+    {
+        $this->Order
+            ->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW))
+            ->setName01('姓')
+            ->setName02('名')
+            ->setKana01('セイ')
+            ->setKana02('メイ')
+            ->setCompanyName('株式会社　会社名'); // 全角スペース
+        $this->orderRepository->save($this->Order);
+        $this->entityManager->flush();
+
+        $actual = $this->orderRepository->getQueryBuilderBySearchDataForAdmin([$formName => $searchWord])
+            ->getQuery()
+            ->getResult();
+
+        self::assertCount($expected, $actual);
+    }
+
+    public function dataGetQueryBuilderBySearchDataForAdmin_nameProvider()
+    {
+        return [
+            ['multi', '姓', 1],
+            ['multi', '名', 1],
+            ['multi', '姓名', 1],
+            ['multi', '姓 名', 1],
+            ['multi', '姓　名', 1],
+            ['multi', 'セイ', 1],
+            ['multi', 'メイ', 1],
+            ['multi', 'セイメイ', 1],
+            ['multi', 'セイ メイ', 1],
+            ['multi', 'セイ　メイ', 1],
+            ['multi', '株式会社', 1],
+            ['multi', '会社名', 1],
+            ['multi', '株式会社会社名', 0],
+            ['multi', '株式会社 会社名', 0], // 半角スペース
+            ['multi', '株式会社　会社名', 1], // 全角スペース
+            ['multi', '石', 0],
+            ['multi', 'キューブ', 0],
+            ['multi', '姓 球部', 0],
+            ['multi', 'セイ 名', 0],
+            ['multi', '姓　メイ', 0],
+            ['name', '姓', 1],
+            ['name', '名', 1],
+            ['name', '姓名', 1],
+            ['name', '姓 名', 1],
+            ['name', '姓　名', 1],
+            ['name', 'セイ', 0],
+            ['name', '株式会社　会社名', 0],
+            ['kana', 'セイ', 1],
+            ['kana', 'メイ', 1],
+            ['kana', 'セイメイ', 1],
+            ['kana', 'セイ メイ', 1],
+            ['kana', 'セイ　メイ', 1],
+            ['kana', '姓', 0],
+            ['kana', '株式会社　会社名', 0],
+            ['company_name', '株式会社', 1],
+            ['company_name', '会社名', 1],
+            ['company_name', '株式会社会社名', 0],
+            ['company_name', '株式会社 会社名', 0], // 半角スペース
+            ['company_name', '株式会社　会社名', 1], // 全角スペース
+            ['company_name', '姓', 0],
+            ['company_name', 'セイ', 0],
+        ];
     }
 }
