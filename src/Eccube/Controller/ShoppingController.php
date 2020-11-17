@@ -124,7 +124,7 @@ class ShoppingController extends AbstractShoppingController
             log_info('[注文手続] Warningが発生しました.', [$flowResult->getWarning()]);
 
             // 受注明細と同期をとるため, CartPurchaseFlowを実行する
-            $cartPurchaseFlow->validate($Cart, new PurchaseContext());
+            $cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
             $this->cartService->save();
         }
 
@@ -685,7 +685,7 @@ class ShoppingController extends AbstractShoppingController
         // 受注とカートのずれを合わせるため, カートのPurchaseFlowをコールする.
         $Cart = $this->cartService->getCart();
         if (null !== $Cart) {
-            $cartPurchaseFlow->validate($Cart, new PurchaseContext());
+            $cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
             $this->cartService->setPreOrderId(null);
             $this->cartService->save();
         }
