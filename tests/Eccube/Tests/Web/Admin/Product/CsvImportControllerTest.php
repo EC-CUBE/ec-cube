@@ -16,6 +16,7 @@ namespace Eccube\Tests\Web\Admin\Product;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductImage;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -927,5 +928,40 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             [false, 12, null],
             [false, '', null],
         ];
+    }
+
+    /**
+     * 商品を削除する際に、他の商品画像が参照しているファイルは削除せず、それ以外は削除することをテスト
+     */
+    public function testDeleteImage()
+    {
+        /** @var \Eccube\Tests\Fixture\Generator $generator */
+        $generator = $this->container->get(\Eccube\Tests\Fixture\Generator::class);
+        $Product1 = $generator->createProduct(null, 0, 'abstract');
+        $Product2 = $generator->createProduct(null, 0, 'abstract');
+
+        $DuplicatedImage = $Product1->getProductImage()->first();
+        assert($DuplicatedImage instanceof ProductImage);
+
+        $NotDuplicatedImage = $Product1->getProductImage()->last();
+        assert($NotDuplicatedImage instanceof ProductImage);
+
+        $NewProduct2Image = new ProductImage();
+        $NewProduct2Image
+            ->setProduct($Product2)
+            ->setFileName($DuplicatedImage->getFileName())
+            ->setSortNo(999);
+        $Product2->addProductImage($NewProduct2Image);
+        $this->entityManager->persist($NewProduct2Image);
+        $this->entityManager->flush();
+
+        $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '商品削除フラグ', '販売種別(ID)', '販売価格'];
+        $csv[] = [$Product1->getId(), '1', 'hoge', '1', '1', '1000'];
+        $this->filepath = $this->createCsvFromArray($csv);
+        $this->scenario();
+
+        $dir = __DIR__ . '/../../../../../../html/upload/save_image/';
+        $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
+        $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
     }
 }
