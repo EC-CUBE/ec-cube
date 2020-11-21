@@ -168,11 +168,14 @@ class ProductType extends AbstractType
             ->add('delete_images', CollectionType::class, [
                 'entry_type' => HiddenType::class,
                 'entry_options' => [
-                    'constraints' => new Assert\Regex([
-                        'pattern' => '#(?:\A|/)\.{1,2}(?:\z|/)#u',
-                        'match' => false,
-                        'message' => 'admin.product.image__invalid_path',
-                    ]),
+                    'constraints' => [
+                        new Assert\Regex([
+                            'pattern' => '#(?:\A|/)\.{1,2}(?:\z|/)#u',
+                            'match' => false,
+                            'message' => 'admin.product.image__invalid_path',
+                        ]),
+                        new Assert\NotBlank(),
+                    ],
                 ],
                 'prototype' => true,
                 'mapped' => false,
