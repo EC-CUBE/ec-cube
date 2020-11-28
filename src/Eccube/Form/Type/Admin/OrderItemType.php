@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderItemType as OrderItemTypeMaster;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
@@ -165,6 +166,11 @@ class OrderItemType extends AbstractType
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->entityManager,
                     TaxType::class
+                )))
+            ->add($builder->create('tax_display_type', HiddenType::class)
+                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                    $this->entityManager,
+                    TaxDisplayType::class
                 )))
             ->add($builder->create('ProductClass', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(

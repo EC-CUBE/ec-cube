@@ -19,6 +19,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
@@ -675,11 +676,14 @@ class EditController extends AbstractController
             $NonTaxable = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
             $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
 
+            $IncludedTaxDisplayType = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+            $ExcludedTaxDisplayType = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+
             $OrderItemTypes = [
-                ['OrderItemType' => $Charge, 'TaxType' => $Taxation],
-                ['OrderItemType' => $DeliveryFee, 'TaxType' => $Taxation],
-                ['OrderItemType' => $Discount, 'TaxType' => $Taxation],
-                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable]
+                ['OrderItemType' => $Charge, 'TaxType' => $Taxation, 'TaxDisplayType' => $IncludedTaxDisplayType],
+                ['OrderItemType' => $DeliveryFee, 'TaxType' => $Taxation, 'TaxDisplayType' => $IncludedTaxDisplayType],
+                ['OrderItemType' => $Discount, 'TaxType' => $Taxation, 'TaxDisplayType' => $ExcludedTaxDisplayType],
+                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable, 'TaxDisplayType' => $ExcludedTaxDisplayType]
             ];
 
             return [

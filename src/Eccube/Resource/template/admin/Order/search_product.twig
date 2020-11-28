@@ -97,6 +97,7 @@ file that was distributed with this source code.
         $($lastRow).find(formIdPrefix + index + '_quantity').val(quantity);
         $($lastRow).find(formIdPrefix + index + '_order_item_type').val(type);
         $($lastRow).find(formIdPrefix + index + '_product_name').val(product_name);
+        $($lastRow).find(formIdPrefix + index + '_tax_display_type').val({{ constant('Eccube\\Entity\\Master\\TaxDisplayType::EXCLUDED') }});
 
         // モーダル閉じる.
         $('#searchProductModal').modal('hide');

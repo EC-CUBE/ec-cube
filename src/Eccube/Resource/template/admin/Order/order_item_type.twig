@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 <script>
     // 受注明細行を追加する.
-    function fnAddOrderItem($row, product_id, type, product_name, tax_type) {
+    function fnAddOrderItem($row, product_id, type, product_name, tax_type, tax_display_type) {
         var prototype = $collectionHolder.data('prototype');
         index++;
         var newForm = prototype.replace(/__name__/g, index);
@@ -22,7 +22,7 @@ file that was distributed with this source code.
         $($lastRow).find(formIdPrefix + index + '_order_item_type').val(type);
         $($lastRow).find(formIdPrefix + index + '_product_name').val(product_name);
         $($lastRow).find(formIdPrefix + index + '_tax_type').val(tax_type);
-
+        $($lastRow).find(formIdPrefix + index + '_tax_display_type').val(tax_display_type);
         // モーダル閉じる.
         $('#addOrderItemType').modal('hide');
 
@@ -50,7 +50,7 @@ file that was distributed with this source code.
                 <td class="align-middle pl-3">{{ OrderItemType.OrderItemType.name }}</td>
                 <td class="align-middle pl-3">{{ OrderItemType.TaxType.name }}</td>
                 <td class="align-middle pr-3 text-right">
-                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), null, {{ OrderItemType.OrderItemType.id }}, '{{ OrderItemType.OrderItemType.name }}', '{{ OrderItemType.TaxType.id }}')" name="mode" value="modal">
+                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), null, {{ OrderItemType.OrderItemType.id }}, '{{ OrderItemType.OrderItemType.name }}', '{{ OrderItemType.TaxType.id }}', '{{ OrderItemType.TaxDisplayType.id }}')" name="mode" value="modal">
                         <i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i>
                     </button>
                 </td>
