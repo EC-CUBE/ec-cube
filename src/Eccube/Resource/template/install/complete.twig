@@ -16,7 +16,12 @@ file that was distributed with this source code.
 <div id="main" class="step7">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div id="plugin-enable" class="col-md-12">
+                <div class="page-header">
+                    <h1>{{ 'プラグインを有効化しています'|trans }}</h1>
+                </div>
+            </div>
+            <div id="completed" class="col-md-12" style="display: none;">
                 <div class="page-header">
                     <h1>{{ 'install.completed'|trans }}</h1>
                 </div>
@@ -30,4 +35,15 @@ file that was distributed with this source code.
         </div>
     </div>
 </div>
+
+<script>
+    $(function(){
+        $.ajax({
+            type: "POST",
+            url: "{{ plugin_enable_url }}",
+        }).done(function () {
+            $('#completed').show();
+        });
+    });
+</script>
 {% endblock %}
