@@ -96,7 +96,7 @@ class ContactController extends AbstractController
                 case 'confirm':
                     return $this->render('Contact/confirm.twig', [
                         'form' => $form->createView(),
-                        'Page' => $this->pageRepository->getPageByRoute('')
+                        'Page' => $this->pageRepository->getPageByRoute('contact_confirm')
                     ]);
 
                 case 'complete':
