@@ -49,4 +49,4 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 45,Shopping / Review,shopping_confirm,Shopping/confirm,2,,,,2017-03-07 01:15:03,2017-03-07 01:15:03,noindex,,page,
 46,Registration (Form) Review,entry,Entry/confirm,3,,,,2020-01-12 01:15:03,2020-01-12 01:15:03,noindex,18,page,
 47,My Account / Membership Cancellation (Form) Review,mypage_withdraw,Mypage/withdraw_confirm,3,,,,2020-01-12 10:14:52,2020-01-12 10:14:52,noindex,12,page,
-48,Inquiry (Form) Review,contact,Contact/confirm,3,,,,2020-01-12 10:14:52,2020-01-12 10:14:52,,16,page,
+48,Inquiry (Form) Review,contact,Contact/confirm,3,,,,2020-01-12 10:14:52,2020-01-12 10:14:52,noindex,16,page,
