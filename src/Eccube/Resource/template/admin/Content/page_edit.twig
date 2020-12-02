@@ -173,114 +173,116 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
-                    <!-- レイアウト設定 -->
-                    <div class="card rounded border-0 mb-4">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
-                                         title="{{ 'tooltip.content.page_layout'|trans }}">
-                                        <span class="card-title">
-                                            {{ 'admin.content.page_layout__card_title'|trans }}
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#pageLayout" aria-expanded="false" aria-controls="pageLayout">
-                                        <i class="fa fa-angle-up fa-lg"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="collapse show ec-cardCollapse" id="pageLayout">
-                            <div class="card-body">
-                                <!-- PC -->
-                                <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_pc'|trans }}</span></div>
-                                    <div class="col-10">
-                                        {{ form_widget(form.PcLayout) }}
-                                        {{ form_errors(form.PcLayout) }}
-                                    </div>
-                                </div>
-                                <!-- モバイル -->
-                                <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_mobile'|trans }}</span></div>
-                                    <div class="col-10">
-                                        {{ form_widget(form.SpLayout) }}
-                                        {{ form_errors(form.SpLayout) }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- メタ設定 -->
-                    <div class="card rounded border-0 mb-4">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_meta'|trans }}">
-                                        <span class="card-title">{{ 'admin.content.page_meta__card_title'|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                    </div>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#pageMeta" aria-expanded="false" aria-controls="pageMeta">
-                                        <i class="fa fa-angle-up fa-lg"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="collapse show ec-cardCollapse" id="pageMeta">
-                            <div class="card-body">
-                                <!-- author -->
-                                <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_meta_author'|trans }}</span></div>
-                                    <div class="col-10">
-                                        {{ form_widget(form.author) }}
-                                        {{ form_errors(form.author) }}
-                                    </div>
-                                </div>
-                                <!-- description -->
-                                <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_meta_description'|trans }}</span></div>
-                                    <div class="col-10">
-                                        {{ form_widget(form.description) }}
-                                        {{ form_errors(form.description) }}
-                                    </div>
-                                </div>
-                                <!-- keyword -->
-                                <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_meta_keyword'|trans }}</span></div>
-                                    <div class="col-10">
-                                        {{ form_widget(form.keyword) }}
-                                        {{ form_errors(form.keyword) }}
-                                    </div>
-                                </div>
-                                <!-- robot -->
-                                <div class="row mb-2">
-                                    <div class="col-2"><span>{{ 'admin.content.page_meta_robot'|trans }}</span></div>
-                                    <div class="col-10">
-                                        {{ form_widget(form.meta_robots) }}
-                                        {{ form_errors(form.meta_robots) }}
-                                    </div>
-                                </div>
-                                <!-- metatag -->
+                    {%- if not is_confirm_page %}
+                        <!-- レイアウト設定 -->
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
                                 <div class="row">
-                                    <div class="col-2">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_meta_tags'|trans }}">
-                                            <span>{{ 'admin.content.page_meta_metatag'|trans }}</span>
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                             title="{{ 'tooltip.content.page_layout'|trans }}">
+                                            <span class="card-title">
+                                                {{ 'admin.content.page_layout__card_title'|trans }}
+                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <a data-toggle="collapse" href="#pageLayout" aria-expanded="false" aria-controls="pageLayout">
+                                            <i class="fa fa-angle-up fa-lg"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="pageLayout">
+                                <div class="card-body">
+                                    <!-- PC -->
+                                    <div class="row mb-2">
+                                        <div class="col-2"><span>{{ 'admin.content.page_pc'|trans }}</span></div>
+                                        <div class="col-10">
+                                            {{ form_widget(form.PcLayout) }}
+                                            {{ form_errors(form.PcLayout) }}
+                                        </div>
+                                    </div>
+                                    <!-- モバイル -->
+                                    <div class="row mb-2">
+                                        <div class="col-2"><span>{{ 'admin.content.page_mobile'|trans }}</span></div>
+                                        <div class="col-10">
+                                            {{ form_widget(form.SpLayout) }}
+                                            {{ form_errors(form.SpLayout) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- メタ設定 -->
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_meta'|trans }}">
+                                            <span class="card-title">{{ 'admin.content.page_meta__card_title'|trans }}</span>
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
                                     </div>
-                                    <div class="col-10">
-                                        {{ form_widget(form.meta_tags, { attr : { placeholder : 'admin.content.page_meta_metatag_placeholder'|trans, rows : '10' }}) }}
-                                        {{ form_errors(form.meta_tags) }}
+                                    <div class="col-4 text-right">
+                                        <a data-toggle="collapse" href="#pageMeta" aria-expanded="false" aria-controls="pageMeta">
+                                            <i class="fa fa-angle-up fa-lg"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="pageMeta">
+                                <div class="card-body">
+                                    <!-- author -->
+                                    <div class="row mb-2">
+                                        <div class="col-2"><span>{{ 'admin.content.page_meta_author'|trans }}</span></div>
+                                        <div class="col-10">
+                                            {{ form_widget(form.author) }}
+                                            {{ form_errors(form.author) }}
+                                        </div>
+                                    </div>
+                                    <!-- description -->
+                                    <div class="row mb-2">
+                                        <div class="col-2"><span>{{ 'admin.content.page_meta_description'|trans }}</span></div>
+                                        <div class="col-10">
+                                            {{ form_widget(form.description) }}
+                                            {{ form_errors(form.description) }}
+                                        </div>
+                                    </div>
+                                    <!-- keyword -->
+                                    <div class="row mb-2">
+                                        <div class="col-2"><span>{{ 'admin.content.page_meta_keyword'|trans }}</span></div>
+                                        <div class="col-10">
+                                            {{ form_widget(form.keyword) }}
+                                            {{ form_errors(form.keyword) }}
+                                        </div>
+                                    </div>
+                                    <!-- robot -->
+                                    <div class="row mb-2">
+                                        <div class="col-2"><span>{{ 'admin.content.page_meta_robot'|trans }}</span></div>
+                                        <div class="col-10">
+                                            {{ form_widget(form.meta_robots) }}
+                                            {{ form_errors(form.meta_robots) }}
+                                        </div>
+                                    </div>
+                                    <!-- metatag -->
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_meta_tags'|trans }}">
+                                                <span>{{ 'admin.content.page_meta_metatag'|trans }}</span>
+                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-10">
+                                            {{ form_widget(form.meta_tags, { attr : { placeholder : 'admin.content.page_meta_metatag_placeholder'|trans, rows : '10' }}) }}
+                                            {{ form_errors(form.meta_tags) }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {% endif -%}
                 </div>
             </div>
         </div>

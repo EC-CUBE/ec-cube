@@ -31,6 +31,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
         const EDIT_TYPE_USER = 0;
         const EDIT_TYPE_PREVIEW = 1;
         const EDIT_TYPE_DEFAULT = 2;
+        const EDIT_TYPE_DEFAULT_CONFIRM = 3;
 
         // 特定商取引法ページID
         const TRADELAW_PAGE_ID = 21;
