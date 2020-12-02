@@ -10,7 +10,7 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 <meta property=""product:price:amount"" content=""{{ Product.getPrice02IncTaxMin }}""/>
 <meta property=""product:price:currency"" content=""{{ eccube_config.currency }}""/>
 <meta property=""product:product_link"" content=""{{ url('product_detail', {'id': Product.id}) }}""/>
-<meta property=""product:retailer_title"" content=""{{ Product.name }}""/>"
+<meta property=""product:retailer_title"" content=""{{ BaseInfo.shop_name }}""/>"
 4,My Account,mypage,Mypage/index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
 5,My Account / Edit Customer Info (Form),mypage_change,Mypage/change,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
 6,My Account / Edit Customer Info (Thank-you),mypage_change_complete,Mypage/change_complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
