@@ -287,6 +287,7 @@ class OrderPdfService extends TcpdfFpdi
 
         // テンプレートに使うテンプレートファイルのページ番号を指定
         $this->useTemplate($tplIdx, null, null, null, null, true);
+        $this->setPageMark();
     }
 
     /**
