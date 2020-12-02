@@ -23,8 +23,6 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20201127000000 extends AbstractMigration
 {
-    const NAME = 'dtb_page';
-
     public function up(Schema $schema) : void
     {
         $count = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_page WHERE url = 'entry_confirm'");
