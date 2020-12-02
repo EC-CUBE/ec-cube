@@ -42,7 +42,7 @@ final class Version20201127000000 extends AbstractMigration
         )");
 
         $sortNo++;
-        $this->addSql("INSERT INTO dtb_page_layout (page_id, layout_id, sort_no, discriminator_type) VALUES ($pageId, 2, , $sortNo, 'pagelayout')");
+        $this->addSql("INSERT INTO dtb_page_layout (page_id, layout_id, sort_no, discriminator_type) VALUES ($pageId, 2, $sortNo, 'pagelayout')");
 
         $pageId++;
         $this->addSql("INSERT INTO dtb_page (
@@ -52,7 +52,7 @@ final class Version20201127000000 extends AbstractMigration
         )");
 
         $sortNo++;
-        $this->addSql("INSERT INTO dtb_page_layout (page_id, layout_id, sort_no, discriminator_type) VALUES ($pageId, 2, , $sortNo, 'pagelayout')");
+        $this->addSql("INSERT INTO dtb_page_layout (page_id, layout_id, sort_no, discriminator_type) VALUES ($pageId, 2, $sortNo, 'pagelayout')");
 
         $pageId++;
         $this->addSql("INSERT INTO dtb_page (
@@ -62,7 +62,7 @@ final class Version20201127000000 extends AbstractMigration
         )");
 
         $sortNo++;
-        $this->addSql("INSERT INTO dtb_page_layout (page_id, layout_id, sort_no, discriminator_type) VALUES ($pageId, 2, , $sortNo, 'pagelayout')");
+        $this->addSql("INSERT INTO dtb_page_layout (page_id, layout_id, sort_no, discriminator_type) VALUES ($pageId, 2, $sortNo, 'pagelayout')");
 
         if ($this->platform->getName() === 'postgresql') {
             $this->addSql("SELECT setval('dtb_page_id_seq', $pageId)");
