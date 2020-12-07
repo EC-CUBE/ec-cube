@@ -52,7 +52,6 @@ class InstallPluginController extends InstallController
 
             $systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
             $systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
-            $cacheUtil->clearCache();
 
             try {
                 ob_start();
@@ -68,8 +67,33 @@ class InstallPluginController extends InstallController
             }
         }
 
+        return $this->json(['success' => true, 'log' => $log]);
+    }
+
+    /**
+     * プラグインを有効にします。
+     *
+     * @Route("/install/cache/clear", name="install_cache_clear")
+     *
+     * @return JsonResponse
+     */
+    public function cacheClear(CacheUtil $cacheUtil)
+    {
+        // トランザクションチェックファイルの有効期限を確認する
+        $projectDir = $this->getParameter('kernel.project_dir');
+        if (!file_exists($projectDir.parent::TRANSACTION_CHECK_FILE)) {
+            throw new NotFoundHttpException();
+        }
+
+        $transaction_checker = file_get_contents($projectDir.parent::TRANSACTION_CHECK_FILE);
+        if ($transaction_checker < time()) {
+            throw new NotFoundHttpException();
+        }
+
+        $cacheUtil->clearCache();
+
         unlink($projectDir.parent::TRANSACTION_CHECK_FILE);
 
-        return $this->json(['success' => true, 'log' => $log]);
+        return $this->json(['success' => true]);
     }
 }

@@ -491,7 +491,6 @@ class InstallController extends AbstractController
             'ECCUBE_COOKIE_PATH' => $request->getBasePath() ? $request->getBasePath() : '/',
             'ECCUBE_TEMPLATE_CODE' => 'default',
             'ECCUBE_LOCALE' => 'ja',
-            'ECCUBE_PACKAGE_API_URL' => 'http://127.0.0.1:9999',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);
@@ -503,6 +502,7 @@ class InstallController extends AbstractController
         $basePath = $request->getBasePath();
         $adminUrl = $host.$basePath.'/'.$replacement['ECCUBE_ADMIN_ROUTE'];
         $pluginEnableUrl = $host.$basePath.'/install/plugin/enable';
+        $cacheClearUrl = $host.$basePath.'/install/cache/clear';
 
         $this->removeSessionData($this->session);
 
@@ -514,6 +514,7 @@ class InstallController extends AbstractController
         return [
             'admin_url' => $adminUrl,
             'plugin_enable_url' => $pluginEnableUrl,
+            'cache_clear_url' => $cacheClearUrl,
         ];
     }
 
