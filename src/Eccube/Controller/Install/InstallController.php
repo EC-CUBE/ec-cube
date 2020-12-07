@@ -58,6 +58,9 @@ class InstallController extends AbstractController
      */
     const DEFAULT_AUTH_MAGIC = '<change.me>';
 
+    /** @var string */
+    const TRANSACTION_CHECK_FILE = '/var/.httransaction';
+
     protected $requiredModules = [
         'pdo',
         'phar',
@@ -499,12 +502,12 @@ class InstallController extends AbstractController
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
         $adminUrl = $host.$basePath.'/'.$replacement['ECCUBE_ADMIN_ROUTE'];
-        $pluginEnableUrl = $host.$basePath.'/install/plugin/1/enable';
+        $pluginEnableUrl = $host.$basePath.'/install/plugin/enable';
 
         $this->removeSessionData($this->session);
 
-        // FIXME: installで設定したsessionをprodで参照できない
-        $this->session->set('install.plugin_enable_ok', true);
+        // 有効化URLのトランザクションチェックファイルを生成する
+        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10));
 
         $this->cacheUtil->clearCache('prod');
 
@@ -512,44 +515,6 @@ class InstallController extends AbstractController
             'admin_url' => $adminUrl,
             'plugin_enable_url' => $pluginEnableUrl,
         ];
-    }
-
-    /**
-     * 対象のプラグインを有効にします。
-     *
-     * @Route("/install/plugin/{id}/enable", requirements={"id" = "\d+"}, name="install_plugin_enable")
-     *
-     * @return JsonResponse
-     *
-     * @throws PluginException
-     */
-    public function pluginEnable(Plugin $Plugin, CacheUtil $cacheUtil, SystemService $systemService, PluginService $pluginService)
-    {
-        // FIXME: installで設定したsessionをprodで参照できない
-//        if (!$this->session->get('install.plugin_enable_ok', false)) {
-//            throw new BadRequestHttpException();
-//        }
-
-        $systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
-        $systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
-        $cacheUtil->clearCache();
-
-        $log = null;
-
-        try {
-            ob_start();
-
-            $pluginService->installWithCode($Plugin->getCode());
-
-            $pluginService->enable($Plugin);
-        } finally {
-            $log = ob_get_clean();
-            while (ob_get_level() > 0) {
-                ob_end_flush();
-            }
-        }
-
-        return $this->json(['success' => true, 'log' => $log]);
     }
 
     protected function getSessionData(SessionInterface $session)
