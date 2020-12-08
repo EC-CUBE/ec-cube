@@ -45,7 +45,7 @@ file that was distributed with this source code.
     $(function(){
         $.ajax({
             type: "POST",
-            url: "{{ plugin_enable_url }}",
+            url: "{{ url('install_plugin_enable') }}",
             async: false
         }).done(function () {
             $('#plugin-enable').hide();
@@ -53,7 +53,7 @@ file that was distributed with this source code.
         });
         $.ajax({
             type: "POST",
-            url: "{{ cache_clear_url }}",
+            url: "{{ url('install_cache_clear') }}",
             async: false
         }).done(function () {
             $('#cache-clear').hide();

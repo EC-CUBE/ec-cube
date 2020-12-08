@@ -495,8 +495,6 @@ class InstallController extends AbstractController
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
         $adminUrl = $host.$basePath.'/'.$replacement['ECCUBE_ADMIN_ROUTE'];
-        $pluginEnableUrl = $host.$basePath.'/install/plugin/enable';
-        $cacheClearUrl = $host.$basePath.'/install/cache/clear';
 
         $this->removeSessionData($this->session);
 
@@ -507,8 +505,6 @@ class InstallController extends AbstractController
 
         return [
             'admin_url' => $adminUrl,
-            'plugin_enable_url' => $pluginEnableUrl,
-            'cache_clear_url' => $cacheClearUrl,
         ];
     }
 

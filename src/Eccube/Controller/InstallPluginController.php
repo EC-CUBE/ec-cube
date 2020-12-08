@@ -15,9 +15,11 @@ namespace Eccube\Controller;
 
 use Eccube\Controller\Install\InstallController;
 use Eccube\Entity\Plugin;
+use Eccube\Exception\PluginException;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -32,16 +34,10 @@ class InstallPluginController extends InstallController
      *
      * @throws PluginException
      */
-    public function pluginEnable(CacheUtil $cacheUtil, SystemService $systemService, PluginService $pluginService)
+    public function pluginEnable(SystemService $systemService, PluginService $pluginService)
     {
         // トランザクションチェックファイルの有効期限を確認する
-        $projectDir = $this->getParameter('kernel.project_dir');
-        if (!file_exists($projectDir.parent::TRANSACTION_CHECK_FILE)) {
-            throw new NotFoundHttpException();
-        }
-
-        $transaction_checker = file_get_contents($projectDir.parent::TRANSACTION_CHECK_FILE);
-        if ($transaction_checker < time()) {
+        if (!$this->isValidTransaction()) {
             throw new NotFoundHttpException();
         }
 
@@ -49,7 +45,6 @@ class InstallPluginController extends InstallController
         $log = null;
         // プラグインが存在しない場合は無視する
         if ($Plugin !== null) {
-
             $systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
             $systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
 
@@ -80,20 +75,33 @@ class InstallPluginController extends InstallController
     public function cacheClear(CacheUtil $cacheUtil)
     {
         // トランザクションチェックファイルの有効期限を確認する
-        $projectDir = $this->getParameter('kernel.project_dir');
-        if (!file_exists($projectDir.parent::TRANSACTION_CHECK_FILE)) {
-            throw new NotFoundHttpException();
-        }
-
-        $transaction_checker = file_get_contents($projectDir.parent::TRANSACTION_CHECK_FILE);
-        if ($transaction_checker < time()) {
+        if (!$this->isValidTransaction()) {
             throw new NotFoundHttpException();
         }
 
         $cacheUtil->clearCache();
 
+        // トランザクションファイルを削除する
+        $projectDir = $this->getParameter('kernel.project_dir');
         unlink($projectDir.parent::TRANSACTION_CHECK_FILE);
 
         return $this->json(['success' => true]);
+    }
+
+    /**
+     * トランザクションチェックファイルの有効期限を確認する
+     *
+     * @return bool
+     */
+    public function isValidTransaction()
+    {
+        $projectDir = $this->getParameter('kernel.project_dir');
+        if (!file_exists($projectDir.parent::TRANSACTION_CHECK_FILE)) {
+            return false;
+        }
+
+        $transaction_checker = file_get_contents($projectDir.parent::TRANSACTION_CHECK_FILE);
+
+        return $transaction_checker >= time();
     }
 }
