@@ -964,4 +964,30 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
         $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
     }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4781
+     */
+    public function testSjisWinCsvTest()
+    {
+        // CSV生成
+        $csv = $this->createCsvAsArray();
+        $csv[1][2] = 'テスト①'; // 商品名：機種依存文字で設定
+        $csv[1][3] = 'sjis-win-test';
+        $this->filepath = $this->createCsvFromArray($csv);
+
+        // sjis-winに変換
+        $content = file_get_contents($this->filepath);
+        $content = mb_convert_encoding($content, 'sjis-win', 'UTF-8');
+        file_put_contents($this->filepath, $content);
+
+        $this->scenario();
+
+        $Product = $this->productRepo->findOneBy(['note' => 'sjis-win-test']);
+
+        // 文字化けしないことを確認
+        $this->expected = 'テスト①';
+        $this->actual = $Product->getName();
+        $this->verify();
+    }
 }
