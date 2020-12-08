@@ -24,6 +24,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class BaseInfoRepository extends AbstractRepository
 {
+    private $cache = [];
+
     /**
      * BaseInfoRepository constructor.
      *
@@ -36,17 +38,23 @@ class BaseInfoRepository extends AbstractRepository
 
     /**
      * @param int $id
-     *
-     * @return BaseInfo
+     * @return array|mixed
+     * @throws \Exception
      */
     public function get($id = 1)
     {
+        if (isset($this->cache[$id])) {
+            return $this->cache[$id];
+        }
+
         $BaseInfo = $this->find($id);
 
         if (null === $BaseInfo) {
             throw new \Exception('BaseInfo not found. id = '.$id);
         }
 
-        return $this->find($id);
+        $this->cache[$id] = $BaseInfo;
+
+        return $this->cache[$id];
     }
 }
