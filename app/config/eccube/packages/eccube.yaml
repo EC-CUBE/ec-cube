@@ -73,6 +73,8 @@ parameters:
     eccube_csv_export_separator: ,
     # 出力エンコーディング
     eccube_csv_export_encoding: SJIS-win
+    # 入力エンコーディング
+    eccube_csv_import_encoding: ['UTF-8', 'SJIS-win', 'SJIS', 'EUC-JP', 'ASCII', 'JIS']
     # 日付のフォーマット
     eccube_csv_export_date_format: 'Y-m-d H:i:s'
     # 複数データの区切り文字
