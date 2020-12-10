@@ -21,6 +21,7 @@ node_modules
 !/html/plugin/.gitkeep
 /html/upload/save_image/*
 !/html/upload/save_image/.gitkeep
+!/html/upload/save_image/no_image_product.png
 /html/upload/temp_image/*
 !/html/upload/temp_image/.gitkeep
 /html/template/*
