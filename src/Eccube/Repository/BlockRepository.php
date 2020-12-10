@@ -16,7 +16,7 @@ namespace Eccube\Repository;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * BlocRepository
@@ -34,11 +34,11 @@ class BlockRepository extends AbstractRepository
     /**
      * BlockRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
-        RegistryInterface $registry,
+        ManagerRegistry $registry,
         EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Block::class);

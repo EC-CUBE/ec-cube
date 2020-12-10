@@ -21,7 +21,7 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * OrderRepository
@@ -39,10 +39,10 @@ class OrderRepository extends AbstractRepository
     /**
      * OrderRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      * @param Queries $queries
      */
-    public function __construct(RegistryInterface $registry, Queries $queries)
+    public function __construct(ManagerRegistry $registry, Queries $queries)
     {
         parent::__construct($registry, Order::class);
         $this->queries = $queries;
