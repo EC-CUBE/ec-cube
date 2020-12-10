@@ -563,9 +563,9 @@ class InstallController extends AbstractController
     protected function createConnection(array $params)
     {
         if (strpos($params['url'], 'mysql') !== false) {
-            $params['charset'] = 'utf8';
+            $params['charset'] = 'utf8mb4';
             $params['defaultTableOptions'] = [
-                'collate' => 'utf8_general_ci',
+                'collate' => 'utf8mb4_general_ci',
             ];
         }
 
