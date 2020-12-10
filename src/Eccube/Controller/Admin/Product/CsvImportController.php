@@ -1215,7 +1215,7 @@ class CsvImportController extends AbstractCsvImportController
         $ProductClass->setProduct($Product);
 
         $line = $data->key() + 1;
-        if ($row[$headerByKey['sale_type']] == '') {
+        if (!isset($row[$headerByKey['sale_type']]) || $row[$headerByKey['sale_type']] == '') {
             $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['sale_type']]);
             $this->addErrors($message);
         } else {
@@ -1234,7 +1234,7 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         // 規格分類1、2をそれぞれセットし作成
-        if ($row[$headerByKey['class_category1']] != '') {
+        if (isset($row[$headerByKey['class_category1']]) && $row[$headerByKey['class_category1']] != '') {
             if (preg_match('/^\d+$/', $row[$headerByKey['class_category1']])) {
                 $ClassCategory = $this->classCategoryRepository->find($row[$headerByKey['class_category1']]);
                 if (!$ClassCategory) {
@@ -1249,7 +1249,7 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        if ($row[$headerByKey['class_category2']] != '') {
+        if (isset($row[$headerByKey['class_category2']]) && $row[$headerByKey['class_category2']] != '') {
             if (preg_match('/^\d+$/', $row[$headerByKey['class_category2']])) {
                 $ClassCategory = $this->classCategoryRepository->find($row[$headerByKey['class_category2']]);
                 if (!$ClassCategory) {
@@ -1264,7 +1264,7 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        if ($row[$headerByKey['delivery_date']] != '') {
+        if (isset($row[$headerByKey['delivery_date']]) && $row[$headerByKey['delivery_date']] != '') {
             if (preg_match('/^\d+$/', $row[$headerByKey['delivery_date']])) {
                 $DeliveryDuration = $this->deliveryDurationRepository->find($row[$headerByKey['delivery_date']]);
                 if (!$DeliveryDuration) {
@@ -1279,7 +1279,7 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        if (StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
+        if (isset($row[$headerByKey['product_code']]) && StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
             $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
         } else {
             $ProductClass->setCode(null);
@@ -1311,7 +1311,7 @@ class CsvImportController extends AbstractCsvImportController
             $this->addErrors($message);
         }
 
-        if ($row[$headerByKey['sale_limit']] != '') {
+        if (isset($row[$headerByKey['sale_limit']]) && $row[$headerByKey['sale_limit']] != '') {
             $saleLimit = str_replace(',', '', $row[$headerByKey['sale_limit']]);
             if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                 $ProductClass->setSaleLimit($saleLimit);
@@ -1321,7 +1321,7 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        if ($row[$headerByKey['price01']] != '') {
+        if (isset($row[$headerByKey['price01']]) && $row[$headerByKey['price01']] != '') {
             $price01 = str_replace(',', '', $row[$headerByKey['price01']]);
             $errors = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
             if ($errors->count() === 0) {
@@ -1332,7 +1332,7 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        if ($row[$headerByKey['price02']] == '') {
+        if (!isset($row[$headerByKey['price02']]) || $row[$headerByKey['price02']] == '') {
             $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['price02']]);
             $this->addErrors($message);
         } else {
