@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        php: [ 7.3, 8.0 ]
         db: [ pgsql, mysql ]
         method:
           - test_install_enable_disable_remove_store
