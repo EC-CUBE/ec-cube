@@ -40,11 +40,15 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -107,6 +111,12 @@ class CsvImportController extends AbstractCsvImportController
 
     private $errors = [];
 
+    protected $isXmlHttpRequest = false;
+
+    protected $csvFileNo = 1;
+
+    protected $currentLineNo = 1;
+
     /**
      * CsvImportController constructor.
      *
@@ -167,6 +177,9 @@ class CsvImportController extends AbstractCsvImportController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $this->isXmlHttpRequest = $form['is_xml_http_request']->getData();
+                $this->csvFileNo = $form['csv_file_no']->getData();
+
                 $formFile = $form['import_file']->getData();
                 if (!empty($formFile)) {
                     log_info('商品CSV登録開始');
@@ -207,7 +220,8 @@ class CsvImportController extends AbstractCsvImportController
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
-                        $line = $data->key() + 1;
+                        $line = $this->convertLineNo($data->key() + 1);
+                        $this->currentLineNo = $line;
                         if ($headerSize != count($row)) {
                             $message = trans('admin.common.csv_invalid_format_line', ['%line%' => $line]);
                             $this->addErrors($message);
@@ -653,8 +667,10 @@ class CsvImportController extends AbstractCsvImportController
                     }
 
                     log_info('商品CSV登録完了');
-                    $message = 'admin.common.csv_upload_complete';
-                    $this->session->getFlashBag()->add('eccube.admin.success', $message);
+                    if (!$this->isXmlHttpRequest) {
+                        $message = 'admin.common.csv_upload_complete';
+                        $this->session->getFlashBag()->add('eccube.admin.success', $message);
+                    }
 
                     $cacheUtil->clearDoctrineCache();
                 }
@@ -868,6 +884,19 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         $this->removeUploadedFile();
+
+        if ($this->isXmlHttpRequest) {
+            return $this->json([
+                'success' => !$this->hasErrors(),
+                'success_message' => trans('admin.common.csv_upload_line_success', [
+                    '%from%' => $this->convertLineNo(2),
+                    '%to%' => $this->currentLineNo]),
+                'errors' => $this->errors,
+                'error_message' => trans('admin.common.csv_upload_line_error',[
+                    '%from%' => $this->convertLineNo(2),
+                    '%to%' => $this->currentLineNo])
+            ]);
+        }
 
         return [
             'form' => $form->createView(),
@@ -1560,5 +1589,114 @@ class CsvImportController extends AbstractCsvImportController
         $ProductCategory->setCategoryId($Category->getId());
 
         return $ProductCategory;
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/product/csv_split", name="admin_product_csv_split")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function splitCsv(Request $request)
+    {
+        $this->isTokenValid();
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $dir = $this->eccubeConfig['eccube_csv_temp_realdir'];
+            if (!file_exists($dir)) {
+                $fs = new Filesystem();
+                $fs->mkdir($dir);
+            }
+
+            $data = $form['import_file']->getData();
+            $src = new \SplFileObject($data->getRealPath());
+            $src->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY | \SplFileObject::DROP_NEW_LINE);
+
+            $fileNo = 1;
+            $fileName = StringUtil::random(8);
+
+            $dist = new \SplFileObject($dir.'/'.$fileName.$fileNo.'.csv', 'w');
+            $header = $src->current();
+            $src->next();
+            $dist->fputcsv($header);
+
+            while ($row = $src->current()) {
+                $dist->fputcsv($row);
+                if (($src->key() + $fileNo) % $this->eccubeConfig['eccube_csv_split_lines'] === 0) {
+                    \error_log($dir.'/'.$fileName.$fileNo.'.csv');
+                    $fileNo++;
+                    $dist = new \SplFileObject($dir.'/'.$fileName.$fileNo.'.csv', 'w');
+                    $dist->fputcsv($header);
+                }
+                $src->next();
+            }
+
+            return $this->json(['success' => true, 'file_name' => $fileName, 'max_file_no' => $fileNo]);
+        }
+
+        return $this->json(['success' => false, 'message' => $form->getErrors(true ,true)]);
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/product/csv_split_import", name="admin_product_csv_split_import")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager)
+    {
+        $this->isTokenValid();
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $files = Finder::create()
+            ->in($this->eccubeConfig['eccube_csv_temp_realdir'])
+            ->name('*.csv')
+            ->files();
+
+        $choices = [];
+        foreach ($files as $file) {
+            $choices[$file->getBaseName()] = true;
+        }
+
+        $filename = $request->get('file_name');
+        if (!isset($choices[$filename])) {
+            throw new BadRequestHttpException();
+        }
+
+        $path = $this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$filename;
+        $request->files->set('admin_csv_import', ['import_file' => new UploadedFile(
+            $path,
+            'import.csv',
+            'text/csv',
+            filesize($path),
+            null,
+            true
+        )]);
+
+        $request->setMethod('POST');
+        $request->request->set('admin_csv_import', [
+            Constant::TOKEN_NAME => $tokenManager->getToken('admin_csv_import')->getValue(),
+            'is_xml_http_request' => true,
+            'csv_file_no' => $request->get('file_no'),
+        ]);
+
+        return $this->forwardToRoute('admin_product_csv_import');
+    }
+
+    protected function convertLineNo($currentLineNo) {
+        if ($this->isXmlHttpRequest) {
+            return ($this->eccubeConfig['eccube_csv_split_lines'] - 1) * ($this->csvFileNo - 1) + $currentLineNo;
+        }
+
+        return $currentLineNo;
     }
 }
