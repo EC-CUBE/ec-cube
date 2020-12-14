@@ -205,6 +205,9 @@ file that was distributed with this source code.
                                         {{ form_errors(form.import_file) }}
                                     </div>
                                     <button class="btn btn-ec-conversion" id="upload-button" type="button" data-toggle="modal" data-target="#importCsvModal" disabled>{{ 'admin.common.bulk_registration'|trans }}</button>
+                                    {% for error in errors %}
+                                        <div class="text-danger">{{ error }}</div>
+                                    {% endfor %}
                                 </form>
                             </div>
                         </div>
