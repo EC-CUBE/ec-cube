@@ -14,6 +14,7 @@
 namespace Eccube\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,9 +30,9 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
      */
     protected $container;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, ManagerRegistry $doctrine)
     {
-        parent::__construct();
+        parent::__construct($doctrine);
         $this->container = $container;
     }
 
