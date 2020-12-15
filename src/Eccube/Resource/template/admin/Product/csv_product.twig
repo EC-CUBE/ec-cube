@@ -153,12 +153,12 @@ file that was distributed with this source code.
                 var display = $('#bulkMessages li:last').css('display')
                 if (display == 'none') {
                     $('#bulkMessages li').show();
-                    $('#toggleMessages span').text("{{ 'admin.common.open_detail'|trans }}")
+                    $('#toggleMessages span').text("{{ 'admin.common.close_detail'|trans }}")
                     $('#toggleMessages i').removeClass('fa-plus-square-o')
                     $('#toggleMessages i').addClass('fa-minus-square-o')
                 } else {
                     $('#bulkMessages li:nth-child(n+2)').hide()
-                    $('#toggleMessages span').text("{{ 'admin.common.close_detail'|trans }}")
+                    $('#toggleMessages span').text("{{ 'admin.common.open_detail'|trans }}")
                     $('#toggleMessages i').removeClass('fa-minus-square-o')
                     $('#toggleMessages i').addClass('fa-plus-square-o')
                 }
