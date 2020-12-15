@@ -473,7 +473,7 @@ admin.common.csv_invalid_foreign_key: 'You are unable to delete %name% in the li
 admin.common.csv_invalid_description_detail_upper_limit: '%name% should be less than %max% characters in the line %line%.'
 admin.common.csv_upload_in_progress: 'Uploading CSV file ...'
 admin.common.csv_upload_line_success: 'The %from% to %to% lines have been registered.'
-admin.common.csv_upload_line_error: 'An error occurred on lines %from% to %to%.'
+admin.common.csv_upload_line_error: 'An error has occurred. The registration process after the %from% line has been cancelled.'
 admin.common.drag_and_drop_description: You can change the order of the items by drag & drop.
 admin.common.drag_and_drop_image_description: Drag & drop the images or
 admin.common.delete_modal__title: Delete

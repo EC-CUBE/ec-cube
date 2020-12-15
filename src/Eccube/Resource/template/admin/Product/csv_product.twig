@@ -88,7 +88,9 @@ file that was distributed with this source code.
                                 $('.progress-bar', modal).css('width', (current / total * 100) + '%');
                                 d.resolve(data)
                             } else {
-                                addError(data.error_message)
+                                $('.modal-body p', modal)
+                                    .text(data.error_message)
+
                                 data.errors.forEach(function (error) {
                                     addError(error)
                                 });
@@ -116,10 +118,11 @@ file that was distributed with this source code.
                 setupModal(modal)
                     // CSV分割
                     .then(split(formData))
-                    .catch(function(data) {
+                    .catch(function() {
+                        $('.modal-body p', modal).text("{{ 'admin.common.csv_upload_error'|trans }}")
                         $('.progress-bar', modal).css('width', '100%')
-                        $('.progress-bar', modal).addClass('bg-danger');
-                        return $.Deferred().reject()
+                        $('.progress-bar', modal).addClass('bg-danger')
+                        return $.Deferred().reject();
                     })
                     // 分割したCSVを登録
                     .then(function(data) {
@@ -131,17 +134,12 @@ file that was distributed with this source code.
                         return d.promise()
                     })
                     // 完了メッセージ
-                    .then(
-                        function() {
-                            $('.modal-body p', modal).text("{{ 'admin.common.csv_upload_complete'|trans }}")
-                            $('.progress-bar', modal).addClass('bg-success');
-                        },
-                        function() {
-                            $('.modal-body p', modal).text("{{ 'admin.common.csv_upload_error'|trans }}")
-                        }
-                    )
-                    // モーダルのロック解除
                     .then(function() {
+                        $('.modal-body p', modal).text("{{ 'admin.common.csv_upload_complete'|trans }}")
+                        $('.progress-bar', modal).addClass('bg-success');
+                    })
+                    // モーダルのロック解除
+                    .always(function() {
                         $('.progress-bar', modal).removeClass('progress-bar-animated')
                         // メッセージ行が複数ある場合に詳細表示
                         if ($('#bulkMessages li').length > 1) {

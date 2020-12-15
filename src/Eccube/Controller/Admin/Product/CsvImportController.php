@@ -893,8 +893,7 @@ class CsvImportController extends AbstractCsvImportController
                     '%to%' => $this->currentLineNo]),
                 'errors' => $this->errors,
                 'error_message' => trans('admin.common.csv_upload_line_error',[
-                    '%from%' => $this->convertLineNo(2),
-                    '%to%' => $this->currentLineNo])
+                    '%from%' => $this->convertLineNo(2)])
             ]);
         }
 

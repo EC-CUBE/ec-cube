@@ -472,8 +472,8 @@ admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"
 admin.common.csv_invalid_foreign_key: '%line%行目の%name%は関連するデータがあるため削除できません'
 admin.common.csv_invalid_description_detail_upper_limit: '%line%行目の%name%は%max%文字以下の文字列を指定してください。'
 admin.common.csv_upload_in_progress: 'CSVファイルのアップロード中...'
-admin.common.csv_upload_line_success: '%from%行目〜%to%行目を登録しました。'
-admin.common.csv_upload_line_error: '%from%行目〜%to%行目でエラーが発生しました。'
+admin.common.csv_upload_line_success: '%from%行目〜%to%行目を登録しました'
+admin.common.csv_upload_line_error: 'エラーが発生しました。%from%行目以降の登録処理はキャンセルされました'
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 admin.common.delete_modal__title: 削除します
