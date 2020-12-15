@@ -1627,15 +1627,16 @@ class CsvImportController extends AbstractCsvImportController
             $src->next();
             $dist->fputcsv($header);
 
+            $i = 0;
             while ($row = $src->current()) {
                 $dist->fputcsv($row);
-                if (($src->key() + $fileNo) % $this->eccubeConfig['eccube_csv_split_lines'] === 0) {
-                    \error_log($dir.'/'.$fileName.$fileNo.'.csv');
+                $src->next();
+
+                if (!$src->eof() && ++$i % $this->eccubeConfig['eccube_csv_split_lines'] === 0) {
                     $fileNo++;
                     $dist = new \SplFileObject($dir.'/'.$fileName.$fileNo.'.csv', 'w');
                     $dist->fputcsv($header);
                 }
-                $src->next();
             }
 
             return $this->json(['success' => true, 'file_name' => $fileName, 'max_file_no' => $fileNo]);
@@ -1694,7 +1695,7 @@ class CsvImportController extends AbstractCsvImportController
 
     protected function convertLineNo($currentLineNo) {
         if ($this->isXmlHttpRequest) {
-            return ($this->eccubeConfig['eccube_csv_split_lines'] - 1) * ($this->csvFileNo - 1) + $currentLineNo;
+            return ($this->eccubeConfig['eccube_csv_split_lines']) * ($this->csvFileNo - 1) + $currentLineNo;
         }
 
         return $currentLineNo;
