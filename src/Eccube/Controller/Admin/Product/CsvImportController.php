@@ -1657,15 +1657,7 @@ class CsvImportController extends AbstractCsvImportController
             throw new BadRequestHttpException();
         }
 
-        $files = Finder::create()
-            ->in($this->eccubeConfig['eccube_csv_temp_realdir'])
-            ->name('*.csv')
-            ->files();
-
-        $choices = [];
-        foreach ($files as $file) {
-            $choices[$file->getBaseName()] = true;
-        }
+        $choices = $this->getCsvTempFiles();
 
         $filename = $request->get('file_name');
         if (!isset($choices[$filename])) {
@@ -1690,6 +1682,48 @@ class CsvImportController extends AbstractCsvImportController
         ]);
 
         return $this->forwardToRoute('admin_product_csv_import');
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/product/csv_split_cleanup", name="admin_product_csv_split_cleanup")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function cleanupSplitCsv(Request $request)
+    {
+        $this->isTokenValid();
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $files = $request->get('files', []);
+        $choices = $this->getCsvTempFiles();
+
+        foreach ($files as $filename) {
+            if (isset($choices[$filename])) {
+                unlink($choices[$filename]);
+            } else {
+                return $this->json(['success' => false]);
+            }
+        }
+
+        return $this->json(['success' => true]);
+    }
+
+    protected function getCsvTempFiles()
+    {
+        $files = Finder::create()
+            ->in($this->eccubeConfig['eccube_csv_temp_realdir'])
+            ->name('*.csv')
+            ->files();
+
+        $choices = [];
+        foreach ($files as $file) {
+            $choices[$file->getBaseName()] = $file->getRealPath();
+        }
+
+        return $choices;
     }
 
     protected function convertLineNo($currentLineNo) {

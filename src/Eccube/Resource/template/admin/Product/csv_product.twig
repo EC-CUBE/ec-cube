@@ -78,7 +78,7 @@ file that was distributed with this source code.
                             url: '{{ url('admin_product_csv_split_import') }}',
                             type: 'POST',
                             data: {
-                                file_name: file_name,
+                                file_name: file_name + current + '.csv',
                                 file_no: current
                             },
                         })
@@ -102,6 +102,15 @@ file that was distributed with this source code.
                                     .appendTo('.progress', modal)
 
                                 $('.progress-bar', modal).addClass('bg-success')
+
+                                // エラー発生以降の分割ファイルをクリア
+                                var files = []
+                                for (var i = current + 1; i <= total; i++) {
+                                    files.push(file_name + i + '.csv')
+                                }
+                                if (files.length > 0) {
+                                    $.post('{{ url('admin_product_csv_split_cleanup') }}', { files: files })
+                                }
 
                                 d.reject(data);
                             }
@@ -128,8 +137,7 @@ file that was distributed with this source code.
                     .then(function(data) {
                         var d = $.Deferred().resolve();
                         for (var i = 1; i <= data.max_file_no; i++) {
-                            var file_name = data.file_name + i + '.csv'
-                            d = d.then(upload(file_name, i, data.max_file_no))
+                            d = d.then(upload(data.file_name, i, data.max_file_no))
                         }
                         return d.promise()
                     })
