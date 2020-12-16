@@ -662,8 +662,14 @@ class EA03ProductCest
 
         ProductCsvUploadPage::go($I)
             ->入力_CSVファイル('product.csv')
-            ->CSVアップロード();
-        $I->see('CSVファイルをアップロードしました', ProductCsvUploadPage::$完了メッセージ);
+            ->アップロードボタン有効化()
+            ->モーダルを表示()
+            ->CSVアップロード実行()
+            ->CSVアップロード確認()
+            ->モーダルを閉じる()
+        ;
+
+        ProductCsvUploadPage::at($I);
 
         ProductManagePage::go($I)->検索('アップロード商品');
         $I->see('検索結果：3件が該当しました', ProductManagePage::$検索結果_メッセージ);

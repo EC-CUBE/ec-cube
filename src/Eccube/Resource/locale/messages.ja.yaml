@@ -428,6 +428,8 @@ admin.common.next: 次へ
 admin.common.first: 最初へ
 admin.common.last: 最後へ
 admin.common.back: 戻る
+admin.common.open_detail: '詳細を表示'
+admin.common.close_detail: '詳細を閉じる'
 
 # 汎用ラベル, メッセージ
 admin.common.show: 表示
@@ -469,6 +471,9 @@ admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません
 admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
 admin.common.csv_invalid_foreign_key: '%line%行目の%name%は関連するデータがあるため削除できません'
 admin.common.csv_invalid_description_detail_upper_limit: '%line%行目の%name%は%max%文字以下の文字列を指定してください。'
+admin.common.csv_upload_in_progress: 'CSVファイルのアップロード中...'
+admin.common.csv_upload_line_success: '%from%行目〜%to%行目を登録しました'
+admin.common.csv_upload_line_error: 'エラーが発生しました。%from%行目以降の登録処理はキャンセルされました'
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 admin.common.delete_modal__title: 削除します
@@ -743,6 +748,10 @@ admin.product.category_csv.parent_category_id_col: 親カテゴリID
 admin.product.category_csv.parent_category_id_description: ''
 admin.product.category_csv.delete_flag_col: カテゴリ削除フラグ
 admin.product.category_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
+
+# 商品CSV
+admin.product.product_csv_upload__title: '商品CSVをアップロードします'
+admin.product.product_csv_upload__message: '商品CSVファイルをアップロードします。よろしいですか？'
 
 #------------------------------------------------------------------------------------
 # 受注
