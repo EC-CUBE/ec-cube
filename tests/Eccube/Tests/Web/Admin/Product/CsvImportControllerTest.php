@@ -48,6 +48,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $fs = new Filesystem();
+        $fs->mkdir($this->eccubeConfig['eccube_csv_temp_realdir']);
         $fs->remove($this->getCsvTempFiles());
     }
 
@@ -1066,6 +1067,29 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $json = \json_decode($response->getContent(), true);
         $this->assertTrue($json['success']);
         $this->assertEquals('2行目〜2行目を登録しました', $json['success_message']);
+    }
+
+    public function testCleanupCsv()
+    {
+        $fileName = 'product.csv';
+        touch($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName);
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_csv_split_cleanup'),
+            [
+                'files' => [$fileName],
+            ],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertTrue($response->isSuccessful());
+
+        $json = \json_decode($response->getContent(), true);
+        $this->assertTrue($json['success']);
+        $this->assertFalse(file_exists($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName));
     }
 
     private function getCsvTempFiles()
