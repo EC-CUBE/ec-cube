@@ -55,7 +55,7 @@ class CsvImportType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('is_xml_http_request', CheckboxType::class, [
+            ->add('is_split_csv', CheckboxType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => false,

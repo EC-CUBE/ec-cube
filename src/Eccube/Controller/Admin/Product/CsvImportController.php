@@ -111,7 +111,7 @@ class CsvImportController extends AbstractCsvImportController
 
     private $errors = [];
 
-    protected $isXmlHttpRequest = false;
+    protected $isSplitCsv = false;
 
     protected $csvFileNo = 1;
 
@@ -177,7 +177,7 @@ class CsvImportController extends AbstractCsvImportController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->isXmlHttpRequest = $form['is_xml_http_request']->getData();
+                $this->isSplitCsv = $form['is_split_csv']->getData();
                 $this->csvFileNo = $form['csv_file_no']->getData();
 
                 $formFile = $form['import_file']->getData();
@@ -667,7 +667,7 @@ class CsvImportController extends AbstractCsvImportController
                     }
 
                     log_info('商品CSV登録完了');
-                    if (!$this->isXmlHttpRequest) {
+                    if (!$this->isSplitCsv) {
                         $message = 'admin.common.csv_upload_complete';
                         $this->session->getFlashBag()->add('eccube.admin.success', $message);
                     }
@@ -885,7 +885,7 @@ class CsvImportController extends AbstractCsvImportController
 
         $this->removeUploadedFile();
 
-        if ($this->isXmlHttpRequest) {
+        if ($this->isSplitCsv) {
             return $this->json([
                 'success' => !$this->hasErrors(),
                 'success_message' => trans('admin.common.csv_upload_line_success', [
@@ -1685,7 +1685,7 @@ class CsvImportController extends AbstractCsvImportController
         $request->setMethod('POST');
         $request->request->set('admin_csv_import', [
             Constant::TOKEN_NAME => $tokenManager->getToken('admin_csv_import')->getValue(),
-            'is_xml_http_request' => true,
+            'is_split_csv' => true,
             'csv_file_no' => $request->get('file_no'),
         ]);
 
@@ -1693,7 +1693,7 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     protected function convertLineNo($currentLineNo) {
-        if ($this->isXmlHttpRequest) {
+        if ($this->isSplitCsv) {
             return ($this->eccubeConfig['eccube_csv_split_lines']) * ($this->csvFileNo - 1) + $currentLineNo;
         }
 
