@@ -75,8 +75,7 @@ class EntityProxyService
         // プロキシファイルの生成
         foreach ($targetEntities as $targetEntity) {
             $traits = isset($addTraits[$targetEntity]) ? $addTraits[$targetEntity] : [];
-            $rc = new ClassReflection($targetEntity);
-            $fileName = str_replace('\\', '/', $rc->getFileName());
+            $fileName = $this->originalEntityPath($targetEntity);
             $baseName = basename($fileName);
             $entityTokens = Tokens::fromCode(file_get_contents($fileName));
 
@@ -113,6 +112,30 @@ class EntityProxyService
         }
 
         return $generatedFiles;
+    }
+
+    private function originalEntityPath(string $entityClassName): string
+    {
+        $projectDir = rtrim(str_replace('\\', '/', $this->container->getParameter('kernel.project_dir')), '/');
+        $originalPath = null;
+
+        if (preg_match('/\AEccube\\\\Entity\\\\(.+)\z/', $entityClassName, $matches)) {
+            $pathToEntity = str_replace('\\', '/', $matches[1]);
+            $originalPath = sprintf('%s/src/Eccube/Entity/%s.php', $projectDir, $pathToEntity);
+        } elseif (preg_match('/\ACustomize\\\\Entity\\\\(.+)\z/', $entityClassName, $matches)) {
+            $pathToEntity = str_replace('\\', '/', $matches[1]);
+            $originalPath = sprintf('%s/app/Customize/Entity/%s.php', $projectDir, $pathToEntity);
+        } elseif (preg_match('/\APlugin\\\\([^\\\\]+)\\\\Entity\\\\(.+)\z/', $entityClassName, $matches)) {
+            $pathToEntity = str_replace('\\', '/', $matches[2]);
+            $originalPath = sprintf('%s/app/Plugin/%s/Entity/%s.php', $projectDir, $matches[1], $pathToEntity);
+        }
+
+        if ($originalPath !== null && file_exists($originalPath)) {
+            return $originalPath;
+        }
+
+        $rc = new ClassReflection($entityClassName);
+        return str_replace('\\', '/', $rc->getFileName());
     }
 
     /**

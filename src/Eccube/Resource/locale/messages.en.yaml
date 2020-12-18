@@ -428,6 +428,8 @@ admin.common.next: Next
 admin.common.first: Go to First
 admin.common.last: Go to Last
 admin.common.back: Go back
+admin.common.open_detail: 'Show details'
+admin.common.close_detail: 'Close details'
 
 # Generic Labels, Messages
 admin.common.show: Display
@@ -469,6 +471,9 @@ admin.common.csv_invalid_can_not: '%name% is invalid in the line %line%'
 admin.common.csv_invalid_image: 'Your are not allowed to use "/" or "../" as suffix in %name% in the %line%'
 admin.common.csv_invalid_foreign_key: 'You are unable to delete %name% in the line %line% because it has related data'
 admin.common.csv_invalid_description_detail_upper_limit: '%name% should be less than %max% characters in the line %line%.'
+admin.common.csv_upload_in_progress: 'Uploading CSV file ...'
+admin.common.csv_upload_line_success: 'The %from% to %to% lines have been registered.'
+admin.common.csv_upload_line_error: 'An error has occurred. The registration process after the %from% line has been cancelled.'
 admin.common.drag_and_drop_description: You can change the order of the items by drag & drop.
 admin.common.drag_and_drop_image_description: Drag & drop the images or
 admin.common.delete_modal__title: Delete
@@ -743,6 +748,10 @@ admin.product.category_csv.parent_category_id_col: Parent Category ID
 admin.product.category_csv.parent_category_id_description: ''
 admin.product.category_csv.delete_flag_col: Category Deletion Flag
 admin.product.category_csv.delete_flag_description: 'Specify 0: Upload or 1: Delete. If unspecified, it is set to 0.'
+
+# Product CSV
+admin.product.product_csv_upload__title: 'Upload product CSV'
+admin.product.product_csv_upload__message: 'Upload the product CSV file. Is it OK?'
 
 #------------------------------------------------------------------------------------
 # Orders

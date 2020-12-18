@@ -274,18 +274,22 @@ class EccubeExtension extends AbstractExtension
             ];
             if($class_category_id2)
             {
-                $class_categories[$class_category_id1]['#'.$class_category_id2] = [
-                    'classcategory_id2' => $class_category_id2,
-                    'name' => $class_category_name2,
-                    'stock_find' => $ProductClass->getStockFind(),
-                    'price01' => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01()),
-                    'price02' => number_format($ProductClass->getPrice02()),
-                    'price01_inc_tax' => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
-                    'price02_inc_tax' => number_format($ProductClass->getPrice02IncTax()),
-                    'product_class_id' => (string) $ProductClass->getId(),
-                    'product_code' => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
-                    'sale_type' => (string) $ProductClass->getSaleType()->getId(),
-                ];
+              $class_categories[$class_category_id1]['#'.$class_category_id2] = [
+                  'classcategory_id2' => $class_category_id2,
+                  'name' => $class_category_name2,
+                  'stock_find' => $ProductClass->getStockFind(),
+                  'price01' => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01()),
+                  'price02' => number_format($ProductClass->getPrice02()),
+                  'price01_inc_tax' => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
+                  'price02_inc_tax' => number_format($ProductClass->getPrice02IncTax()),
+                  'price01_with_currency' => $ProductClass->getPrice01() === null ? '' : $this->getPriceFilter($ProductClass->getPrice01()),
+                  'price02_with_currency' => $this->getPriceFilter($ProductClass->getPrice02()),
+                  'price01_inc_tax_with_currency' => $ProductClass->getPrice01() === null ? '' : $this->getPriceFilter($ProductClass->getPrice01IncTax()),
+                  'price02_inc_tax_with_currency' => $this->getPriceFilter($ProductClass->getPrice02IncTax()),
+                  'product_class_id' => (string) $ProductClass->getId(),
+                  'product_code' => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
+                  'sale_type' => (string) $ProductClass->getSaleType()->getId(),
+              ];
             }
         }
 
