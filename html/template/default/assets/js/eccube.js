@@ -92,26 +92,26 @@
             var $cartbtn = $form.parent().find('.add-cart').first();
             if (typeof this.product_cart_origin === 'undefined') {
                 // 初期値を保持しておく
-                this.product_cart_origin = $cartbtn.text();
+                this.product_cart_origin = $cartbtn.html();
             }
             $cartbtn.prop('disabled', false);
-            $cartbtn.text(this.product_cart_origin);
+            $cartbtn.html(this.product_cart_origin);
 
             // 通常価格
             var $price01 = $form.parent().find('.price01-default').first();
             if (typeof this.price01_origin === 'undefined') {
                 // 初期値を保持しておく
-                this.price01_origin = $price01.text();
+                this.price01_origin = $price01.html();
             }
-            $price01.text(this.price01_origin);
+            $price01.html(this.price01_origin);
 
             // 販売価格
             var $price02 = $form.parent().find('.price02-default').first();
             if (typeof price02_origin[product_id] === 'undefined') {
                 // 初期値を保持しておく
-                price02_origin[product_id] = $price02.text();
+                price02_origin[product_id] = $price02.html();
             }
-            $price02.text(price02_origin[product_id]);
+            $price02.html(price02_origin[product_id]);
 
             // 商品規格
             var $product_class_id_dynamic = $form.find('[id^=ProductClass]');
@@ -130,38 +130,38 @@
             var $cartbtn = $form.parent().find('.add-cart').first();
             if (typeof this.product_cart_origin === 'undefined') {
                 // 初期値を保持しておく
-                this.product_cart_origin = $cartbtn.text();
+                this.product_cart_origin = $cartbtn.html();
             }
             if (classcat2 && classcat2.stock_find === false) {
                 $cartbtn.prop('disabled', true);
                 $cartbtn.text('ただいま品切れ中です');
             } else {
                 $cartbtn.prop('disabled', false);
-                $cartbtn.text(this.product_cart_origin);
+                $cartbtn.html(this.product_cart_origin);
             }
 
             // 通常価格
             var $price01 = $form.parent().find('.price01-default').first();
             if (typeof this.price01_origin === 'undefined') {
                 // 初期値を保持しておく
-                this.price01_origin = $price01.text();
+                this.price01_origin = $price01.html();
             }
             if (classcat2 && typeof classcat2.price01_inc_tax !== 'undefined' && String(classcat2.price01_inc_tax).length >= 1) {
-                $price01.text('￥' + classcat2.price01_inc_tax);
+                $price01.text(classcat2.price01_inc_tax_with_currency);
             } else {
-                $price01.text(this.price01_origin);
+                $price01.html(this.price01_origin);
             }
 
             // 販売価格
             var $price02 = $form.parent().find('.price02-default').first();
             if (typeof price02_origin[product_id] === 'undefined') {
                 // 初期値を保持しておく
-                price02_origin[product_id] = $price02.text();
+                price02_origin[product_id] = $price02.html();
             }
             if (classcat2 && typeof classcat2.price02_inc_tax !== 'undefined' && String(classcat2.price02_inc_tax).length >= 1) {
-                $price02.text('￥' + classcat2.price02_inc_tax);
+                $price02.text(classcat2.price02_inc_tax_with_currency);
             } else {
-                $price02.text(price02_origin[product_id]);
+                $price02.html(price02_origin[product_id]);
             }
 
             // ポイント
