@@ -147,7 +147,7 @@
                 this.price01_origin = $price01.html();
             }
             if (classcat2 && typeof classcat2.price01_inc_tax !== 'undefined' && String(classcat2.price01_inc_tax).length >= 1) {
-                $price01.text('￥' + classcat2.price01_inc_tax);
+                $price01.text(classcat2.price01_inc_tax_with_currency);
             } else {
                 $price01.html(this.price01_origin);
             }
@@ -159,7 +159,7 @@
                 price02_origin[product_id] = $price02.html();
             }
             if (classcat2 && typeof classcat2.price02_inc_tax !== 'undefined' && String(classcat2.price02_inc_tax).length >= 1) {
-                $price02.text(classcat2.price02_inc_tax);
+                $price02.text(classcat2.price02_inc_tax_with_currency);
             } else {
                 $price02.html(price02_origin[product_id]);
             }
