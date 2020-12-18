@@ -91,14 +91,6 @@ class CartService
 
     /**
      * CartService constructor.
-     *
-     * @param SessionInterface $session
-     * @param EntityManagerInterface $entityManager
-     * @param ProductClassRepository $productClassRepository
-     * @param CartItemComparator $cartItemComparator
-     * @param CartItemAllocator $cartItemAllocator
-     * @param TokenStorageInterface $tokenStorage
-     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         SessionInterface $session,
@@ -196,15 +188,14 @@ class CartService
         $persistedCarts = $this->getPersistedCarts();
         $sessionCarts = $this->getSessionCarts();
 
+        $CartItems = [];
+
         // 永続化されたカートとセッションのカートが同一の場合はマージしない #4574
         $cartKeys = $this->session->get('cart_keys', []);
-        if (in_array($persistedCarts[0]->getCartKey(), $cartKeys)) {
-            return;
-        };
-
-        $CartItems = [];
-        foreach ($persistedCarts as $Cart) {
-            $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
+        if ((count($persistedCarts) > 0) && !in_array($persistedCarts[0]->getCartKey(), $cartKeys, true)) {
+            foreach ($persistedCarts as $Cart) {
+                $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
+            }
         }
 
         // セッションにある非会員カートとDBから取得した会員カートをマージする.
@@ -433,7 +424,7 @@ class CartService
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPreOrderId()
     {
