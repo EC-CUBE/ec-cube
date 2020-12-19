@@ -63,7 +63,6 @@ RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer \
   && composer config -g repos.packagist composer https://packagist.jp \
-  && composer global require hirak/prestissimo \
   && chown www-data:www-data /var/www \
   && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
   && chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT} \
