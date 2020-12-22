@@ -43,8 +43,10 @@ use Eccube\Service\CsvExportService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
+use Monolog\Handler\NullHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -896,7 +898,7 @@ class ProductController extends AbstractController
      *
      * @return StreamedResponse
      */
-    public function export(Request $request)
+    public function export(Request $request, ContainerInterface $container)
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
@@ -906,7 +908,14 @@ class ProductController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request, $container) {
+
+            // ログ出力を無効化 https://github.com/EC-CUBE/ec-cube/issues/4775
+            /** @var \Symfony\Bridge\Monolog\Logger $logger */
+            $logger = $container->get('monolog.logger.php');
+            $handers = $logger->getHandlers();
+            $logger->setHandlers([new NullHandler()]);
+
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
 
@@ -985,6 +994,8 @@ class ProductController extends AbstractController
                     $csvService->fputcsv($ExportCsvRow->getRow());
                 }
             });
+
+            $logger->setHandlers($handers);
         });
 
         $now = new \DateTime();
