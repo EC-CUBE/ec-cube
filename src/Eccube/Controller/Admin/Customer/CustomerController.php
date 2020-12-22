@@ -29,7 +29,9 @@ use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
+use Monolog\Handler\NullHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -274,7 +276,7 @@ class CustomerController extends AbstractController
      *
      * @return StreamedResponse
      */
-    public function export(Request $request)
+    public function export(Request $request, ContainerInterface $container)
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
@@ -284,7 +286,14 @@ class CustomerController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request, $container) {
+            // ログ出力を無効化 https://github.com/EC-CUBE/ec-cube/issues/4775
+            /** @var \Symfony\Bridge\Monolog\Logger $logger */
+            $logger = $container->get('monolog.logger.php');
+            $handers = $logger->getHandlers();
+            $logger->setHandlers([new NullHandler()]);
+
+
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
 
@@ -328,6 +337,8 @@ class CustomerController extends AbstractController
                 // 出力.
                 $csvService->fputcsv($ExportCsvRow->getRow());
             });
+
+            $logger->setHandlers($handers);
         });
 
         $now = new \DateTime();

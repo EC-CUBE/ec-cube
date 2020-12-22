@@ -40,7 +40,9 @@ use Eccube\Service\OrderStateMachine;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
+use Monolog\Handler\NullHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -124,6 +126,11 @@ class OrderController extends AbstractController
     protected $mailService;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * OrderController constructor.
      *
      * @param PurchaseFlow $orderPurchaseFlow
@@ -154,7 +161,8 @@ class OrderController extends AbstractController
         OrderPdfRepository $orderPdfRepository,
         ValidatorInterface $validator,
         OrderStateMachine $orderStateMachine,
-        MailService $mailService
+        MailService $mailService,
+        ContainerInterface $container
     ) {
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
@@ -170,6 +178,7 @@ class OrderController extends AbstractController
         $this->validator = $validator;
         $this->orderStateMachine = $orderStateMachine;
         $this->mailService = $mailService;
+        $this->container = $container;
     }
 
     /**
@@ -395,6 +404,12 @@ class OrderController extends AbstractController
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request, $csvTypeId) {
+            // ログ出力を無効化 https://github.com/EC-CUBE/ec-cube/issues/4775
+            /** @var \Symfony\Bridge\Monolog\Logger $logger */
+            $logger = $this->container->get('monolog.logger.php');
+            $handers = $logger->getHandlers();
+            $logger->setHandlers([new NullHandler()]);
+
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType($csvTypeId);
 
@@ -448,6 +463,8 @@ class OrderController extends AbstractController
                     $csvService->fputcsv($ExportCsvRow->getRow());
                 }
             });
+
+            $logger->setHandlers($handers);
         });
 
         $response->headers->set('Content-Type', 'application/octet-stream');
