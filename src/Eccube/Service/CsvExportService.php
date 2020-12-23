@@ -282,7 +282,9 @@ class CsvExportService
         $query = $this->qb->getQuery();
         foreach ($query->getResult() as $iterableResult) {
             $closure($iterableResult, $this);
-            $this->entityManager->clear();
+            // https://github.com/EC-CUBE/ec-cube/issues/4775
+            // entityManager::detach内のtrigger errorを避けるため、UnitOfWork::detachを直接呼び出す
+            $this->entityManager->getUnitOfWork()->detach($iterableResult);
             $query->free();
             flush();
         }
