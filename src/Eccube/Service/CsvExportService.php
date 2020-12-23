@@ -333,8 +333,6 @@ class CsvExportService
             // スカラ値の場合はそのまま.
             return $data;
         }
-
-        return null;
     }
 
     /**
