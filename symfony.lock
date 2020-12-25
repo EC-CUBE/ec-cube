@@ -164,6 +164,9 @@
             "ref": "bb31a3bbec00a8fc8aa1c9fbf9b0ef9fc492f93d"
         }
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "1.x-dev"
+    },
     "fzaninotto/faker": {
         "version": "v1.7.1"
     },
@@ -185,6 +188,15 @@
     "knplabs/knp-paginator-bundle": {
         "version": "v2.7.1"
     },
+    "laminas/laminas-code": {
+        "version": "3.5.x-dev"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.4.x-dev"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.2.x-dev"
+    },
     "mikey179/vfsstream": {
         "version": "v1.6.5"
     },
@@ -202,9 +214,6 @@
     },
     "ocramius/package-versions": {
         "version": "1.2.0"
-    },
-    "ocramius/proxy-manager": {
-        "version": "2.1.1"
     },
     "paragonie/random_compat": {
         "version": "v2.0.11"
@@ -485,9 +494,6 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
-    "symfony/mime": {
-        "version": "v4.4.0"
-    },
     "symfony/monolog-bridge": {
         "version": "v3.4.1"
     },
@@ -520,6 +526,9 @@
     },
     "symfony/polyfill-iconv": {
         "version": "v1.17.1"
+    },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "1.21-dev"
     },
     "symfony/polyfill-intl-icu": {
         "version": "v1.6.0"
@@ -691,11 +700,5 @@
     },
     "webmozart/assert": {
         "version": "1.3.0"
-    },
-    "zendframework/zend-code": {
-        "version": "3.3.0"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.0"
     }
 }
