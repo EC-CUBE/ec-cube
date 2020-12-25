@@ -4,8 +4,8 @@
     "type": "project",
     "homepage": "https://www.ec-cube.net/",
     "license": [
-       "GPL-2.0-only",
-       "proprietary"
+        "GPL-2.0-only",
+        "proprietary"
     ],
     "support": {
         "issues": "https://github.com/EC-CUBE/ec-cube/issues"
@@ -57,7 +57,6 @@
         "symfony/console": "^5.0",
         "symfony/css-selector": "^5.0",
         "symfony/debug-bundle": "^5.0",
-        "symfony/debug-pack": "^1.0",
         "symfony/dependency-injection": "^5.0",
         "symfony/doctrine-bridge": "^5.0",
         "symfony/dom-crawler": "^5.0",
