@@ -15,7 +15,7 @@ namespace Eccube\Repository\Master;
 
 use Eccube\Repository\AbstractRepository;
 use Eccube\Entity\Master\RoundingType;
-use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * RoundingTypeRepository
@@ -25,7 +25,7 @@ use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
  */
 class RoundingTypeRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, RoundingType::class);
     }

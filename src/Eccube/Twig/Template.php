@@ -13,16 +13,14 @@
 
 namespace Eccube\Twig;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Eccube\Event\TemplateEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-abstract class Template extends \Twig\Template
+class Template extends \Twig\Template
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
-     * @param array $context
-     * @param array $blocks
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\SyntaxError
      */
@@ -44,5 +42,23 @@ abstract class Template extends \Twig\Template
         } else {
             parent::display($context, $blocks);
         }
+    }
+
+    public function getTemplateName()
+    {
+        // Templateのキャッシュ作成時に動的に作成されるメソッド
+        // デバッグツールバーでエラーが発生するため空文字を返しておく。
+        // @see https://github.com/EC-CUBE/ec-cube/issues/4529
+        return '';
+    }
+
+    public function getDebugInfo()
+    {
+        // Templateのキャッシュ作成時に動的に作成されるメソッド
+    }
+
+    protected function doDisplay(array $context, array $blocks = [])
+    {
+        // Templateのキャッシュ作成時に動的に作成されるメソッド
     }
 }

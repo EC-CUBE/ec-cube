@@ -56,13 +56,72 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testBuyProductCode_NotValiedData()
+    /**
+     * EC-CUBE 4.0.4 以前のバージョンで互換性を保つため yyyy-MM-dd のフォーマットもチェック
+     *
+     * @dataProvider dataFormDateProvider
+     *
+     * @param string $formName
+     */
+    public function testDateSearch(string $formName)
     {
         $formData = [
-            'buy_product_code' => str_repeat('A', $this->eccubeConfig['eccube_stext_len'] + 1),
+            $formName => '2020-07-09',
         ];
 
         $this->form->submit($formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * Data provider date form test.
+     *
+     * @return array
+     */
+    public function dataFormDateProvider()
+    {
+        return [
+            ['create_date_start'],
+            ['update_date_start'],
+            ['last_buy_start'],
+            ['create_date_end'],
+            ['update_date_end'],
+            ['last_buy_end'],
+            ['birth_start'],
+        ];
+    }
+
+    /**
+     * EC-CUBE 4.0.5 以降で yyyy-MM-dd HH:mm:ss のフォーマットでの検索機能を追加
+     *
+     * @dataProvider dataFormDateTimeProvider
+     *
+     * @param string $formName
+     */
+    public function testDateTimeSearch(string $formName)
+    {
+        $formData = [
+            $formName => '2020-07-09 09:00:00',
+        ];
+
+        $this->form->submit($formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * Data provider datetime form test.
+     *
+     * @return array
+     */
+    public function dataFormDateTimeProvider()
+    {
+        return [
+            ['create_datetime_start'],
+            ['update_datetime_start'],
+            ['last_buy_datetime_start'],
+            ['create_datetime_end'],
+            ['update_datetime_end'],
+            ['last_buy_datetime_end'],
+        ];
     }
 }

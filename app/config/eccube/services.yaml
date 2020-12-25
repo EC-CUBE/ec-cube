@@ -61,6 +61,18 @@ services:
     Eccube\Service\Composer\ComposerServiceInterface:
         factory: ['Eccube\Service\Composer\ComposerServiceFactory', createService]
 
+    Eccube\Service\Composer\ComposerApiService:
+        lazy: true
+        public: true
+
+    Eccube\Repository\PluginRepository:
+        lazy: true
+        public: true
+
+    Eccube\Service\PluginService:
+        lazy: true
+        public: true
+
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
     Eccube\Controller\:
@@ -170,6 +182,18 @@ services:
     # APP_ENV=prod時にtwigテンプレート内のroutingでシステムエラーになるのを抑止.
     Eccube\Twig\Extension\IgnoreRoutingNotFoundExtension:
         decorates: 'twig.extension.routing'
+        # Symfony\Bridge\Twig\Extension\RoutingExtensionの後に登録するため,
+        # autoconfigureはfalseにし, CompilerPassで追加する.
+        autoconfigure: false
+
+    native_file_session_handler:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
+        arguments:
+            - '%session.save_path%'
+
+    Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
+        arguments:
+            - '@native_file_session_handler'
 
     Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
         public: true

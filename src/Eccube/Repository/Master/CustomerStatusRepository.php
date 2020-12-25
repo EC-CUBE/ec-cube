@@ -15,7 +15,7 @@ namespace Eccube\Repository\Master;
 
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Repository\AbstractRepository;
-use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * CustomerStatusRepository
@@ -25,7 +25,7 @@ use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
  */
 class CustomerStatusRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CustomerStatus::class);
     }

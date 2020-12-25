@@ -14,7 +14,7 @@
 namespace Eccube\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,9 +34,9 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
     /** @var TranslatorInterface */
     protected $translator;
 
-    public function __construct(ContainerInterface $container, ManagerRegistry $registry, TranslatorInterface $translator)
+    public function __construct(ContainerInterface $container, ManagerRegistry $doctrine)
     {
-        parent::__construct($registry);
+        parent::__construct($doctrine);
         $this->container = $container;
         $this->translator = $translator;
     }

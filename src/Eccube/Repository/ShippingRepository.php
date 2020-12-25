@@ -16,7 +16,7 @@ namespace Eccube\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Entity\Shipping;
 use Eccube\Util\StringUtil;
-use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * ShippingRepository
@@ -26,7 +26,7 @@ use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
  */
 class ShippingRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Shipping::class);
     }
@@ -37,6 +37,8 @@ class ShippingRepository extends AbstractRepository
      * @param  array $searchData
      *
      * @return QueryBuilder
+     *
+     * @deprecated 使用していないので削除予定
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {

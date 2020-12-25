@@ -137,8 +137,8 @@
     "doctrine/persistence": {
         "version": "v1.0.0"
     },
-    "doctrine/reflection": {
-        "version": "v1.0.0"
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
     },
     "easycorp/easy-log-handler": {
         "version": "1.0",
@@ -175,9 +175,6 @@
     },
     "guzzlehttp/psr7": {
         "version": "1.4.2"
-    },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
     },
     "justinrainbow/json-schema": {
         "version": "5.2.6"
@@ -287,6 +284,9 @@
     "ralouphie/getallheaders": {
         "version": "2.0.5"
     },
+    "react/promise": {
+        "version": "v2.8.0"
+    },
     "sebastian/code-unit-reverse-lookup": {
         "version": "1.0.1"
     },
@@ -329,6 +329,18 @@
     "seld/phar-utils": {
         "version": "1.0.1"
     },
+    "sensio/framework-extra-bundle": {
+        "version": "5.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "5.2",
+            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
+        },
+        "files": [
+            "app/config/eccube/packages/sensio_framework_extra.yaml"
+        ]
+    },
     "sensiolabs/security-checker": {
         "version": "4.0",
         "recipe": {
@@ -343,6 +355,9 @@
     },
     "setasign/fpdi-tcpdf": {
         "version": "v2.0.0"
+    },
+    "skorp/detect-incompatible-samesite-useragents": {
+        "version": "1.0.0"
     },
     "suncat/mobile-detect-bundle": {
         "version": "1.0",
@@ -402,7 +417,7 @@
         "version": "v3.4.1"
     },
     "symfony/deprecation-contracts": {
-        "version": "2.1-dev"
+        "version": "v2.2.0"
     },
     "symfony/doctrine-bridge": {
         "version": "v3.4.1"
@@ -446,6 +461,9 @@
             "ref": "8c507e663cf8a8c023d4287974d909bf68f06814"
         }
     },
+    "symfony/http-client-contracts": {
+        "version": "v1.1.10"
+    },
     "symfony/http-foundation": {
         "version": "v3.4.1"
     },
@@ -466,6 +484,9 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/mime": {
+        "version": "v4.4.0"
     },
     "symfony/monolog-bridge": {
         "version": "v3.4.1"
@@ -498,19 +519,16 @@
         "version": "v1.8.0"
     },
     "symfony/polyfill-iconv": {
-        "version": "v1.13.0"
-    },
-    "symfony/polyfill-intl-grapheme": {
-        "version": "1.15-dev"
+        "version": "v1.17.1"
     },
     "symfony/polyfill-intl-icu": {
         "version": "v1.6.0"
     },
     "symfony/polyfill-intl-idn": {
-        "version": "v1.13.0"
+        "version": "v1.17.1"
     },
     "symfony/polyfill-intl-normalizer": {
-        "version": "1.15-dev"
+        "version": "v1.18.1"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
@@ -525,7 +543,7 @@
         "version": "v1.13.0"
     },
     "symfony/polyfill-php80": {
-        "version": "1.15-dev"
+        "version": "v1.17.1"
     },
     "symfony/process": {
         "version": "v3.4.1"

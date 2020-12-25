@@ -18,9 +18,6 @@ use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\MigrationException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -51,6 +48,9 @@ class InstallController extends AbstractController
      * default value of auth magic
      */
     const DEFAULT_AUTH_MAGIC = '<change.me>';
+
+    /** @var string */
+    const TRANSACTION_CHECK_FILE = '/var/.httransaction';
 
     protected $requiredModules = [
         'pdo',
@@ -131,8 +131,6 @@ class InstallController extends AbstractController
      *
      * @Route("/install/step1", name="install_step1")
      * @Template("step1.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -250,8 +248,6 @@ class InstallController extends AbstractController
      * @Route("/install/step3", name="install_step3")
      * @Template("step3.twig")
      *
-     * @param Request $request
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Doctrine\DBAL\DBALException
@@ -324,8 +320,6 @@ class InstallController extends AbstractController
      * @Route("/install/step4", name="install_step4")
      * @Template("step4.twig")
      *
-     * @param Request $request
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
@@ -374,8 +368,6 @@ class InstallController extends AbstractController
      *
      * @Route("/install/step5", name="install_step5")
      * @Template("step5.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
@@ -503,6 +495,9 @@ class InstallController extends AbstractController
 
         $this->removeSessionData($this->session);
 
+        // 有効化URLのトランザクションチェックファイルを生成する
+        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10));
+
         $this->cacheUtil->clearCache('prod');
 
         return [
@@ -607,8 +602,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array $params
-     *
      * @return string
      */
     public function createDatabaseUrl(array $params)
@@ -679,8 +672,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array $params
-     *
      * @return string
      *
      * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
@@ -809,8 +800,8 @@ class InstallController extends AbstractController
         $config->setMigrationsDirectory($migrationDir);
         $config->registerMigrationsFromDirectory($migrationDir);
 
-        $migration = new Migration($config);
-        $migration->setNoMigrationException(true);
+        // $migration = new Migration($config);
+        // $migration->setNoMigrationException(true);
 
         return $migration;
     }
@@ -945,18 +936,17 @@ class InstallController extends AbstractController
         }
     }
 
-    public function migrate(Migration $migration)
-    {
-        try {
-            // nullを渡すと最新バージョンまでマイグレートする
-            $migration->migrate(null, false);
-        } catch (MigrationException $e) {
-        }
-    }
+    // public function migrate(Migration $migration)
+    // {
+    //     try {
+    //         // nullを渡すと最新バージョンまでマイグレートする
+    //         $migration->migrate(null, false);
+    //     } catch (MigrationException $e) {
+    //     }
+    // }
 
     /**
      * @param array $params
-     * @param EntityManager $em
      *
      * @return array
      */
@@ -978,7 +968,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array $params
-     * @param EntityManager $em
      */
     protected function sendAppData($params, EntityManager $em)
     {
@@ -1007,8 +996,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param EntityManager $em
-     *
      * @return string
      */
     public function getDatabaseVersion(EntityManager $em)

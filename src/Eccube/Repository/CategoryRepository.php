@@ -17,7 +17,7 @@ use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Category;
-use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * CategoryRepository
@@ -35,11 +35,11 @@ class CategoryRepository extends AbstractRepository
     /**
      * CategoryRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
-        RegistryInterface $registry,
+        ManagerRegistry $registry,
         EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Category::class);

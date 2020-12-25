@@ -14,7 +14,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\Csv;
-use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * CsvRepository
@@ -24,7 +24,7 @@ use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
  */
 class CsvRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Csv::class);
     }

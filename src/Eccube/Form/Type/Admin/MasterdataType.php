@@ -13,8 +13,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Form\AbstractType;
@@ -53,7 +53,6 @@ class MasterdataType extends AbstractType
         $driverChain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
         /** @var MappingDriver[] $drivers */
         $drivers = $driverChain->getDrivers();
-
         foreach ($drivers as $namespace => $driver) {
             if ($namespace == 'Eccube\Entity') {
                 $classNames = $driver->getAllClassNames();

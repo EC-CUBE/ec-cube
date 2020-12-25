@@ -25,6 +25,13 @@ file that was distributed with this source code.
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <!-- Bootstrap core JavaScript
+        ================================================== -->
+    <!-- Ajaxを利用したいので先に読み込む -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="{{ asset('assets/js/vendor/jquery-3.3.1.min.js', 'install') }}"><\/script>')</script>
+    <script src="{{ asset('dist/js/bootstrap.min.js', 'install') }}"></script>
+    <script src="{{ asset('assets/js/function.js', 'install') }}"></script>
 </head>
 
 <body>
@@ -57,14 +64,5 @@ file that was distributed with this source code.
     </div>
 
 </div>
-
-<!-- Bootstrap core JavaScript
-    ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="{{ asset('assets/js/vendor/jquery-3.3.1.min.js', 'install') }}"><\/script>')</script>
-<script src="{{ asset('dist/js/bootstrap.min.js', 'install') }}"></script>
-<script src="{{ asset('assets/js/function.js', 'install') }}"></script>
-
 </body>
 </html>

@@ -12,27 +12,30 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.3",
         "ext-intl": "*",
         "ext-mbstring": "*",
         "composer/ca-bundle": "^1.1",
-        "composer/composer": "^1.10",
-        "doctrine/annotations": "*",
-        "doctrine/cache": "*",
-        "doctrine/collections": "*",
-        "doctrine/common": "*",
-        "doctrine/data-fixtures": "*",
-        "doctrine/dbal": "*",
-        "doctrine/doctrine-fixtures-bundle": "*",
-        "doctrine/doctrine-migrations-bundle": "*",
-        "doctrine/inflector": "*",
-        "doctrine/instantiator": "*",
-        "doctrine/lexer": "*",
-        "doctrine/migrations": "*",
-        "doctrine/orm": "*",
-        "ec-cube/plugin-installer": "~0.0.6",
+        "composer/composer": "^2.0",
+        "doctrine/annotations": "^1.6",
+        "doctrine/cache": "^1.7",
+        "doctrine/collections": "^1.5",
+        "doctrine/common": "^3.0",
+        "doctrine/data-fixtures": "^1.3",
+        "doctrine/dbal": "^2.12",
+        "doctrine/doctrine-bundle": "^2.2",
+        "doctrine/doctrine-cache-bundle": "^1.3",
+        "doctrine/doctrine-fixtures-bundle": "^3.0",
+        "doctrine/doctrine-migrations-bundle": "^2.2",
+        "doctrine/inflector": "^1.3",
+        "doctrine/instantiator": "^1.1",
+        "doctrine/lexer": "^1.0",
+        "doctrine/migrations": "^2.2",
+        "doctrine/orm": "^2.8",
+        "easycorp/easy-log-handler": "^1.0",
+        "ec-cube/plugin-installer": "^2.0@dev",
         "egulias/email-validator": "^2.1",
-        "friendsofphp/php-cs-fixer": "^2.10",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "guzzlehttp/guzzle": "^6.3",
         "knplabs/knp-paginator-bundle": "^5.2",
         "mobiledetect/mobiledetectlib": "^2.8",
@@ -46,16 +49,19 @@
         "sensio/framework-extra-bundle": "^5.5",
         "setasign/fpdi": "^2.2",
         "setasign/fpdi-tcpdf": "^2.2",
-        "suncat/mobile-detect-bundle": "dev-master",
-        "swiftmailer/swiftmailer": "6.3.x-dev",
+        "skorp/detect-incompatible-samesite-useragents": "^1.0",
+        "suncat/mobile-detect-bundle": "^1.1",
+        "swiftmailer/swiftmailer": "^6.1",
         "symfony/asset": "^5.0",
         "symfony/cache": "^5.0",
         "symfony/config": "^5.0",
         "symfony/console": "^5.0",
         "symfony/css-selector": "^5.0",
+        "symfony/debug": "^5.0",
         "symfony/debug-bundle": "^5.0",
         "symfony/debug-pack": "^1.0",
         "symfony/dependency-injection": "^5.0",
+        "symfony/doctrine-bridge": "^5.0",
         "symfony/dom-crawler": "^5.0",
         "symfony/dotenv": "^5.0",
         "symfony/event-dispatcher": "^5.0",
@@ -78,10 +84,11 @@
         "symfony/property-access": "^5.0",
         "symfony/proxy-manager-bridge": "^5.0",
         "symfony/routing": "^5.0",
+        "symfony/security": "^5.0",
         "symfony/security-bundle": "^5.0",
         "symfony/serializer": "^5.0",
         "symfony/stopwatch": "^5.0",
-        "symfony/swiftmailer-bundle": "^3.4@dev",
+        "symfony/swiftmailer-bundle": "^3.1",
         "symfony/templating": "^5.0",
         "symfony/translation": "^5.0",
         "symfony/twig-bridge": "^5.0",
@@ -89,6 +96,7 @@
         "symfony/validator": "^5.0",
         "symfony/var-dumper": "^5.0",
         "symfony/web-profiler-bundle": "^5.0",
+        "symfony/web-server-bundle": "^5.0",
         "symfony/workflow": "^5.0",
         "symfony/yaml": "^5.0",
         "tecnickcom/tcpdf": "^6.2",
@@ -101,7 +109,6 @@
         "captbaritone/mailcatcher-codeception-module": "^1.2",
         "codeception/codeception": "^4.1",
         "dama/doctrine-test-bundle": "dev-master",
-        "easycorp/easy-log-handler": "^1.0",
         "fzaninotto/faker": "^1.7",
         "mikey179/vfsstream": "2.0.x-dev",
         "php-coveralls/php-coveralls": "^2.1",
@@ -121,11 +128,16 @@
             "Eccube\\": "src/Eccube",
             "Plugin\\": "app/Plugin"
         },
-        "exclude-from-classmap": ["**/Test/**", "**/Tests/**", "**/test/**", "**/tests/**"]
+        "exclude-from-classmap": [
+            "**/Test/**",
+            "**/Tests/**",
+            "**/test/**",
+            "**/tests/**"
+        ]
     },
-    "autoload-dev" : {
+    "autoload-dev": {
         "psr-4": {
-            "Eccube\\Tests\\" : "tests/Eccube/Tests"
+            "Eccube\\Tests\\": "tests/Eccube/Tests"
         }
     },
     "scripts": {
@@ -171,6 +183,9 @@
         "public-dir": "."
     },
     "config": {
+        "platform": {
+            "php": "7.3.0"
+        },
         "preferred-install": {
             "*": "dist"
         },

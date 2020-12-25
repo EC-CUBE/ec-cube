@@ -20,6 +20,7 @@ use Eccube\Form\Type\Admin\LogType;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class LogController extends AbstractController
 {
@@ -27,7 +28,7 @@ class LogController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/system/log", name="admin_setting_system_log")
      * @Template("@admin/Setting/System/log.twig")
      *
-     * @return array
+     * @return array|Symfony\Component\HttpFoundation\StreamedResponse
      */
     public function index(Request $request)
     {
@@ -67,10 +68,27 @@ class LogController extends AbstractController
         $logDir = $this->getParameter('kernel.logs_dir').DIRECTORY_SEPARATOR.$this->getParameter('kernel.environment');
         $logFile = $logDir.'/'.$formData['files'];
 
-        return [
-            'form' => $form->createView(),
-            'log' => $this->parseLogFile($logFile, $formData),
-        ];
+        if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'download') {
+            $bufferSize = 1024 * 50;
+            $response = new StreamedResponse();
+            $response->headers->set('Content-Length',filesize($logFile));
+            $response->headers->set('Content-Disposition','attachment; filename=' . basename($logFile));
+            $response->headers->set('Content-Type','application/octet-stream');
+            $response->setCallback(function() use($logFile,$bufferSize) {
+                if ($fh = fopen($logFile,'r')) {
+                    while (!feof($fh)) {
+                        echo fread($fh,$bufferSize);
+                    }
+                }
+            });
+            $response->send();
+            return $response;
+        } else {
+            return [
+                'form' => $form->createView(),
+                'log' => $this->parseLogFile($logFile, $formData),
+            ];
+        }
     }
 
     /**

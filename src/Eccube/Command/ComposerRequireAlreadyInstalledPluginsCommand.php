@@ -70,7 +70,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
         $unSupportedPlugins = [];
 
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->neq('source', 0))
+            ->where(Criteria::expr()->notIn('source', ['', '0']))
             ->orderBy(['code' => 'ASC']);
         $Plugins = $this->pluginRepository->matching($criteria);
 

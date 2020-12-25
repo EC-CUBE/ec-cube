@@ -17,7 +17,7 @@ use Eccube\Entity\Master\OrderStatus;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Eccube\Repository\AbstractRepository;
-use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * OrderStatusRepository
@@ -30,9 +30,9 @@ class OrderStatusRepository extends AbstractRepository
     /**
      * OrderStatusRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, OrderStatus::class);
     }

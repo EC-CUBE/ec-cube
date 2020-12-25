@@ -14,7 +14,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\ProductCategory;
-use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * ProductCategoryRepository
@@ -24,7 +24,7 @@ use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
  */
 class ProductCategoryRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ProductCategory::class);
     }

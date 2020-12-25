@@ -43,8 +43,6 @@ class PluginServiceTest extends AbstractServiceTestCase
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \ReflectionException
      */
     protected function setUp() : void
     {
@@ -732,6 +730,23 @@ EOD;
         $this->service->removeAssets($code);
 
         $this->assertFileNotExists($dir);
+    }
+
+    public function testReadConfig_normalizeSourceToZero()
+    {
+        $pluginDir = $this->createTempDir();
+        $composerFile = json_encode([
+            'name' => 'ReadConfig',
+            'version' => '1.0.0',
+            'extra' => [
+                'code' => 'ReadConfig',
+            ],
+        ]);
+        file_put_contents($pluginDir.'/composer.json', $composerFile);
+
+        $config = $this->service->readConfig($pluginDir);
+
+        self::assertEquals('0', $config['source']);
     }
 
     /**

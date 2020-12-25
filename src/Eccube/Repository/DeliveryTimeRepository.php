@@ -14,7 +14,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\DeliveryTime;
-use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * DelivTimeRepository
@@ -24,7 +24,7 @@ use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
  */
 class DeliveryTimeRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, DeliveryTime::class);
     }

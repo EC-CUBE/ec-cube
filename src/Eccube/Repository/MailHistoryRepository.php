@@ -16,7 +16,7 @@ namespace Eccube\Repository;
 use Eccube\Entity\MailHistory;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * MailHistoryRepository
@@ -29,9 +29,9 @@ class MailHistoryRepository extends AbstractRepository
     /**
      * MailHistoryRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MailHistory::class);
     }

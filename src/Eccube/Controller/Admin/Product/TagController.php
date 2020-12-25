@@ -148,7 +148,7 @@ class TagController extends AbstractController
         } catch (\Exception $e) {
             log_info('タグ削除エラー', [$Tag->getId(), $e]);
 
-            $message = trans('admin.common.delete_error.foreign_key', ['%name%' => $Tag->getName()]);
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Tag->getName()]);
             $this->addError($message, 'admin');
         }
 

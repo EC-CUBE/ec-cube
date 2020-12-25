@@ -101,6 +101,11 @@ class PluginService
     private $systemService;
 
     /**
+     * @var PluginContext
+     */
+    private $pluginContext;
+
+    /**
      * PluginService constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -112,6 +117,8 @@ class PluginService
      * @param CacheUtil $cacheUtil
      * @param ComposerServiceInterface $composerService
      * @param PluginApiService $pluginApiService
+     * @param SystemService $systemService
+     * @param PluginContext $pluginContext
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -123,7 +130,8 @@ class PluginService
         CacheUtil $cacheUtil,
         ComposerServiceInterface $composerService,
         PluginApiService $pluginApiService,
-        SystemService $systemService
+        SystemService $systemService,
+        PluginContext $pluginContext
     ) {
         $this->entityManager = $entityManager;
         $this->pluginRepository = $pluginRepository;
@@ -137,6 +145,7 @@ class PluginService
         $this->composerService = $composerService;
         $this->pluginApiService = $pluginApiService;
         $this->systemService = $systemService;
+        $this->pluginContext = $pluginContext;
     }
 
     /**
@@ -200,6 +209,9 @@ class PluginService
      */
     public function installWithCode($code)
     {
+        $this->pluginContext->setCode($code);
+        $this->pluginContext->setInstall();
+
         $pluginDir = $this->calcPluginDir($code);
         $this->checkPluginArchiveContent($pluginDir);
         $config = $this->readConfig($pluginDir);
@@ -208,9 +220,9 @@ class PluginService
             // 依存プラグインが有効になっていない場合はエラー
             $requires = $this->getPluginRequired($config);
             $notInstalledOrDisabled = array_filter($requires, function ($req) {
-                $code = preg_replace('/^ec-cube\//', '', $req['name']);
+                $code = preg_replace('/^ec-cube\//i', '', $req['name']);
                 /** @var Plugin $DependPlugin */
-                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+                $DependPlugin = $this->pluginRepository->findByCode($code);
 
                 return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
             });
@@ -460,7 +472,7 @@ class PluginService
             'code' => $json['extra']['code'],
             'name' => isset($json['description']) ? $json['description'] : $json['extra']['code'],
             'version' => $json['version'],
-            'source' => isset($json['extra']['id']) ? $json['extra']['id'] : false,
+            'source' => isset($json['extra']['id']) ? $json['extra']['id'] : 0,
         ];
     }
 
@@ -781,7 +793,7 @@ class PluginService
 
         $results = [];
 
-        $this->composerService->foreachRequires('ec-cube/'.$pluginCode, $pluginVersion, function ($package) use (&$results) {
+        $this->composerService->foreachRequires('ec-cube/'.strtolower($pluginCode), $pluginVersion, function ($package) use (&$results) {
             $results[] = $package;
         }, 'eccube-plugin');
 
@@ -833,7 +845,8 @@ class PluginService
                 if (!isset($json['require'])) {
                     continue;
                 }
-                if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require'])) {
+                if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require']) // 前方互換用
+                    || array_key_exists(self::VENDOR_NAME.'/'.strtolower($pluginCode), $json['require'])) {
                     $dependents[] = $plugin->getCode();
                 }
             }
@@ -955,8 +968,10 @@ class PluginService
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
         }
         // Find plugin in array
-        $index = array_search($pluginCode, array_column($plugins, 'product_code'));
-
+        $index = array_search($pluginCode, array_column($plugins, 'product_code')); // 前方互換用
+        if (false === $index) {
+            $index = array_search(strtolower($pluginCode), array_column($plugins, 'product_code'));
+        }
         return $index;
     }
 

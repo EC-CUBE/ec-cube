@@ -11,6 +11,7 @@ RUN apt-get update \
     debconf-utils \
     gcc \
     git \
+    vim \
     gnupg2 \
     libfreetype6-dev \
     libicu-dev \
@@ -33,6 +34,11 @@ RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
   ;
 
 RUN pecl install apcu && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apc.ini
+
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+  && apt-get install -y nodejs \
+  && apt-get clean \
+  ;
 
 RUN mkdir -p ${APACHE_DOCUMENT_ROOT} \
   && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
@@ -57,7 +63,6 @@ RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer \
   && composer config -g repos.packagist composer https://packagist.jp \
-  && composer global require hirak/prestissimo \
   && chown www-data:www-data /var/www \
   && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
   && chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT} \
@@ -70,10 +75,10 @@ USER www-data
 RUN composer install \
   --no-scripts \
   --no-autoloader \
-  --no-dev -d ${APACHE_DOCUMENT_ROOT} \
+  -d ${APACHE_DOCUMENT_ROOT} \
   ;
 
-RUN composer dumpautoload -o --apcu --no-dev
+RUN composer dumpautoload -o --apcu
 
 RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/.env ]; then \
         cp -p .env.dist .env \

@@ -16,7 +16,7 @@ namespace Eccube\Repository;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Entity\Member;
-use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * MemberRepository
@@ -26,7 +26,7 @@ use Doctrine\Common\Persistence\ManagerRegistry as RegistryInterface;
  */
 class MemberRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Member::class);
     }

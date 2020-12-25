@@ -13,8 +13,8 @@
 
 namespace Eccube\Form\Type;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ProductClass;

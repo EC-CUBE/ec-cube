@@ -84,9 +84,6 @@ class ContactController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             switch ($request->get('mode')) {
                 case 'confirm':
-                    $form = $builder->getForm();
-                    $form->handleRequest($request);
-
                     return $this->render('Contact/confirm.twig', [
                         'form' => $form->createView(),
                     ]);

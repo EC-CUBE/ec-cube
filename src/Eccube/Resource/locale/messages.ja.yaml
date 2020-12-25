@@ -608,6 +608,7 @@ admin.product.name: 商品名
 admin.product.image: 商品画像
 admin.product.image__short: 画像
 admin.product.image_size: '推奨サイズ : 600px x 600px以上'
+admin.product.image__invalid_path: 画像のパスが不正です。
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
@@ -1014,7 +1015,7 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
     <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
-    <meta property="product:retailer_title" content="{{ Product.name }}"/>
+    <meta property="product:retailer_title" content="{{ BaseInfo.shop_name }}"/>
 admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 admin.content.css__card_title: CSS設定
 admin.content.js__card_title: JavaScript設定
@@ -1649,6 +1650,8 @@ install.database_connection_error: データベースに接続できませんで
 install.database_do_initialize: データベースの初期化を行います。初期化には少し時間がかかる場合があります。<br>すでにテーブル等が作成されている場合は中断されます。
 install.database_skip_notice: 旧バージョンをインストールしていて、既存の情報を削除したくない場合はチェックをいれてください
 install.database_skip: データベースの初期化を行わない
+install.installing_plugin: プラグインを有効化しています
+install.clearing_cache: キャッシュを削除しています
 install.completed: インストールが完了しました！
 install.access_admin_page: 管理画面にアクセスしてみましょう
 install.perform_initial_setting: 先ほど登録したログインID・パスワードで、管理画面にログインすることができます。デザインの編集や商品を登録してみましょう！

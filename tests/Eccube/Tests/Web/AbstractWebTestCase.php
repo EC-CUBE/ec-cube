@@ -23,6 +23,8 @@ abstract class AbstractWebTestCase extends EccubeTestCase
     protected function setUp() : void
     {
         parent::setUp();
+
+        $this->createSession();
     }
 
     protected function tearDown() : void
@@ -68,9 +70,18 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
         $session->set('_security_'.$firewall, serialize($token));
         $session->save();
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
 
         return $this->client;
+    }
+
+    public function createSession()
+    {
+        // セッションが途中できれてしまうような事象が発生するため
+        // https://github.com/symfony/symfony/issues/13450#issuecomment-353745790
+        $session = $this->client->getContainer()->get('session');
+        $session->set('dummy', 'dummy');
+        $session->save();
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $this->client->getCookieJar()->set($cookie);
     }
 }

@@ -608,6 +608,7 @@ admin.product.name: Product Name
 admin.product.image: Product Images
 admin.product.image__short: Images
 admin.product.image_size: 'More than 600px x 600px is recommended'
+admin.product.image__invalid_path: Invalid image path.
 admin.product.sale_type: Sales Type
 admin.product.description_detail: Product Descriptions
 admin.product.description_list: Product Descriptions (All)
@@ -1014,7 +1015,7 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
     <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
-    <meta property="product:retailer_title" content="{{ Product.name }}"/>
+    <meta property="product:retailer_title" content="{{ BaseInfo.shop_name }}"/>
 admin.content.page_file_name_exists: Data with the same file name already exists. Please enter a different one.
 admin.content.css__card_title: CSS Settings
 admin.content.block_name: Block Name
@@ -1649,6 +1650,8 @@ install.database_connection_error: Unable to access the database.
 install.database_do_initialize: Initializing the database. It may take a while to complete.<br>It will be suspended if you have already created tables etc.
 install.database_skip_notice: Please check here if you do not want to delete the existing data from the older versions.
 install.database_skip: Do not initialize the database
+install.installing_plugin: Installing the plugin
+install.clearing_cache: Clearing the cache
 install.completed: Successfully installed!
 install.access_admin_page: Let's access the Admin Console.
 install.perform_initial_setting: You can login the Admin Console with the ID and password you have just registered. Try your favorite design and upload products!
