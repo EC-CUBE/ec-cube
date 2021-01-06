@@ -28,8 +28,8 @@ use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ShippingRepository;
-use Eccube\Util\EntityUtil;
 use Eccube\Util\FormUtil;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -110,6 +110,9 @@ class CsvExportService
      */
     protected $formFactory;
 
+    /** @var PaginatorInterface */
+    protected $paginator;
+
     /**
      * CsvExportService constructor.
      *
@@ -117,8 +120,12 @@ class CsvExportService
      * @param CsvRepository $csvRepository
      * @param CsvTypeRepository $csvTypeRepository
      * @param OrderRepository $orderRepository
+     * @param ShippingRepository $shippingRepository
      * @param CustomerRepository $customerRepository
+     * @param ProductRepository $productRepository
      * @param EccubeConfig $eccubeConfig
+     * @param FormFactoryInterface $formFactory
+     * @param PaginatorInterface $paginator
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -129,7 +136,8 @@ class CsvExportService
         CustomerRepository $customerRepository,
         ProductRepository $productRepository,
         EccubeConfig $eccubeConfig,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        PaginatorInterface $paginator
     ) {
         $this->entityManager = $entityManager;
         $this->csvRepository = $csvRepository;
@@ -140,6 +148,7 @@ class CsvExportService
         $this->eccubeConfig = $eccubeConfig;
         $this->productRepository = $productRepository;
         $this->formFactory = $formFactory;
+        $this->paginator = $paginator;
     }
 
     /**
@@ -279,14 +288,20 @@ class CsvExportService
 
         $this->fopen();
 
-        $query = $this->qb->getQuery();
-        foreach ($query->getResult() as $iterableResult) {
-            $closure($iterableResult, $this);
-            // https://github.com/EC-CUBE/ec-cube/issues/4775
-            // entityManager::detach内のtrigger errorを避けるため、UnitOfWork::detachを直接呼び出す
-            $this->entityManager->getUnitOfWork()->detach($iterableResult);
-            $query->free();
-            flush();
+        $page = 1;
+        $limit = 100;
+        while ($results = $this->paginator->paginate($this->qb, $page, $limit)) {
+            if (!$results->valid()) {
+                break;
+            }
+
+            foreach ($results as $result) {
+                $closure($result, $this);
+                flush();
+            }
+
+            $this->entityManager->clear();
+            $page++;
         }
 
         $this->fclose();
