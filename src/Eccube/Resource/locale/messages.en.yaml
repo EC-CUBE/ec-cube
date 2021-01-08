@@ -603,7 +603,7 @@ admin.product.permanently_delete__complete_message: Product has been deleted suc
 admin.product.permanently_delete__complete: Completed
 admin.product.permanently_delete__system_error: System error occurred
 admin.product.copy__confirm_title: Duplicate a product
-admin.product.copy__confirm_message: Are you sure to delete this product?
+admin.product.copy__confirm_message: Are you sure you want to duplicate the product?
 admin.product.name: Product Name
 admin.product.image: Product Images
 admin.product.image__short: Images
