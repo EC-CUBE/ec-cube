@@ -51,6 +51,7 @@ jobs:
           rm -rf $GITHUB_WORKSPACE/.coveralls.yml
           rm -rf $GITHUB_WORKSPACE/.php_cs.dist
           rm -rf $GITHUB_WORKSPACE/phpunit.xml.dist
+          rm -rf $GITHUB_WORKSPACE/phpstan.neon.dist
           rm -rf $GITHUB_WORKSPACE/app.json
           rm -rf $GITHUB_WORKSPACE/Procfile
           rm -rf $GITHUB_WORKSPACE/LICENSE.txt
