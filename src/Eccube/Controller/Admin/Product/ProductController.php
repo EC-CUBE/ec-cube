@@ -374,6 +374,8 @@ class ProductController extends AbstractController
             $ProductStock->setProductClass($ProductClass);
         } else {
             $Product = $this->productRepository->find($id);
+            $ProductClass = null;
+            $ProductStock = null;
             if (!$Product) {
                 throw new NotFoundHttpException();
             }
