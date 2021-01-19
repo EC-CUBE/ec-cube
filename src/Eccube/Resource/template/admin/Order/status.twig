@@ -1,0 +1,95 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['order', 'order_status'] %}
+
+{% block title %}{{ '対応状況管理'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
+
+{% block main %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                    <form id="form" name="form" method="post" action="{{ url('admin_order_status') }}">
+                        {{ form_widget(form._token) }}
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
+                                <div class="read">
+                                    {{ '対応状況管理'|trans|nl2br }}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-top-0 pt-2 pb-2 text-center" style="width: 20%">
+                                            {{ 'admin.setting.system.master_data.id'|trans }}
+                                        </th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">
+                                            {{ '名称'|trans }}
+                                        </th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">
+                                            {{ '色'|trans }}
+                                        </th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">
+                                            {{ '受注一覧での件数表示'|trans }}
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for OrderStatus in form.OrderStatuses %}
+                                        <tr>
+                                            <td class="align-middle text-center pl-3">
+                                                {{ OrderStatus.vars.data.id }}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{ form_widget(OrderStatus.name) }}
+                                                {{ form_errors(OrderStatus.name) }}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{ form_widget(OrderStatus.color) }}
+                                                {{ form_errors(OrderStatus.color) }}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{ form_widget(OrderStatus.display_order_count) }}
+                                                {{ form_errors(OrderStatus.display_order_count) }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="c-conversionArea">
+                            <div class="c-conversionArea__container">
+                                <div class="row justify-content-between align-items-center">
+                                    <div class="col-6">
+                                        <div class="c-conversionArea__leftBlockItem">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                                            <div class="col-auto">
+                                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.save'|trans }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,88 @@
+<?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Controller\Admin\Order;
+
+use Eccube\Controller\AbstractController;
+use Eccube\Form\Type\Admin\OrderStatusType;
+use Eccube\Repository\Master\OrderStatusColorRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+
+class StatusController extends AbstractController
+{
+    /**
+     * @var OrderStatusRepository
+     */
+    protected $orderStatusRepository;
+
+
+    /**
+     * @var OrderStatusColorRepository
+     */
+    protected $orderStatusColorRepository;
+
+    public function __construct(
+        OrderStatusRepository $orderStatusRepository,
+        OrderStatusColorRepository $orderStatusColorRepository
+    ) {
+        $this->orderStatusRepository = $orderStatusRepository;
+        $this->orderStatusColorRepository = $orderStatusColorRepository;
+    }
+
+    /**
+     * 受注ステータス編集画面.
+     *
+     * @Route("/%eccube_admin_route%/order/status", name="admin_order_status")
+     * @Template("@admin/Order/status.twig")
+     */
+    public function index(Request $request)
+    {
+        $OrderStatuses = $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']);
+        $builder = $this->formFactory->createBuilder();
+        $builder
+            ->add(
+                'OrderStatuses',
+                CollectionType::class,
+                [
+                    'entry_type' => OrderStatusType::class,
+                    'data' => $OrderStatuses,
+                ]
+            );
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($form['OrderStatuses'] as $child) {
+                $OrderStatus = $child->getData();
+                $this->entityManager->persist($OrderStatus);
+
+                $OrderStatusColor = $this->orderStatusColorRepository->find($OrderStatus->getId());
+                $OrderStatusColor->setName($child['color']->getData());
+                $this->entityManager->persist($OrderStatusColor);
+            }
+            $this->entityManager->flush();
+
+            $this->addSuccess('admin.common.save_complete', 'admin');
+
+            return $this->redirectToRoute('admin_order_status');
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+}
