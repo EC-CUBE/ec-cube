@@ -515,7 +515,7 @@ class ProductController extends AbstractController
                         $count++;
                         /* @var $Product \Eccube\Entity\Product */
                         $Product->addProductCategory($ProductCategory);
-                        $categoriesIdList[$ParentCategory->getId()] = true;
+                        $categoriesIdList[$Category->getId()] = true;
                     }
                 }
 
