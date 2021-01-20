@@ -119,11 +119,11 @@ class PageController extends AbstractController
         $fileName = null;
         $namespace = '@user_data/';
         if ($id) {
+            $PrevPage = clone $Page;
             // 編集不可ページはURL、ページ名、ファイル名を保持
             if ($Page->getEditType() >= Page::EDIT_TYPE_DEFAULT) {
                 $isUserDataPage = false;
                 $namespace = '';
-                $PrevPage = clone $Page;
             }
             // テンプレートファイルの取得
             $source = $twig->getLoader()
