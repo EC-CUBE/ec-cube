@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Controller\Admin\Order;
+namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\OrderStatusType;
@@ -22,7 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class StatusController extends AbstractController
+class OrderStatusController extends AbstractController
 {
     /**
      * @var OrderStatusRepository
@@ -46,8 +46,8 @@ class StatusController extends AbstractController
     /**
      * 受注ステータス編集画面.
      *
-     * @Route("/%eccube_admin_route%/order/status", name="admin_order_status")
-     * @Template("@admin/Order/status.twig")
+     * @Route("/%eccube_admin_route%/setting/shop/order_status", name="admin_setting_shop_order_status")
+     * @Template("@admin/Setting/Shop/order_status.twig")
      */
     public function index(Request $request)
     {
@@ -78,7 +78,7 @@ class StatusController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            return $this->redirectToRoute('admin_order_status');
+            return $this->redirectToRoute('admin_setting_shop_order_status');
         }
 
         return [

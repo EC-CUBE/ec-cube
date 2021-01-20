@@ -11,10 +11,11 @@ file that was distributed with this source code.
 
 {% extends '@admin/default_frame.twig' %}
 
-{% set menus = ['order', 'order_status'] %}
+{% set menus = ['setting', 'shop', 'shop_order_status'] %}
 
-{% block title %}{{ '対応状況管理'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.order_status_setting'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
+
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
@@ -31,39 +32,43 @@ file that was distributed with this source code.
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                    <form id="form" name="form" method="post" action="{{ url('admin_order_status') }}">
+                    <form id="form" method="post" action="{{ url('admin_setting_shop_order_status') }}">
                         {{ form_widget(form._token) }}
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
-                                <div class="read">
-                                    {{ '対応状況管理'|trans|nl2br }}
+                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="" data-original-title="{{ 'tooltip.setting.shop.order_status.order_status'|trans }}">
+                                    <span>{{ 'admin.setting.shop.order_status.order_status'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <table class="table table-sm">
                                     <thead>
                                     <tr>
-                                        <th class="border-top-0 pt-2 pb-2 text-center" style="width: 20%">
-                                            {{ 'admin.setting.system.master_data.id'|trans }}
+                                        <th class="border-top-0 pt-2 pb-2 text-center">
+                                            {{ 'admin.setting.shop.order_status.id'|trans }}
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">
-                                            {{ '名称'|trans }}
+                                            {{ 'admin.setting.shop.order_status.name'|trans }}
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">
-                                            {{ '色'|trans }}
+                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="" data-original-title="{{ 'tooltip.setting.shop.order_status.color'|trans }}">
+                                                <span>{{ 'admin.setting.shop.order_status.color'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            </div>
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">
-                                            {{ '受注一覧での件数表示'|trans }}
+                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="" data-original-title="{{ 'tooltip.setting.shop.order_status.display_order_count'|trans }}">
+                                                <span>{{ 'admin.setting.shop.order_status.display_order_count'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            </div>
                                         </th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for OrderStatus in form.OrderStatuses %}
                                         <tr>
-                                            <td class="align-middle text-center pl-3">
+                                            <td class="align-middle">
                                                 {{ OrderStatus.vars.data.id }}
                                             </td>
-                                            <td class="align-middle text-center">
+                                            <td class="align-middle">
                                                 {{ form_widget(OrderStatus.name) }}
                                                 {{ form_errors(OrderStatus.name) }}
                                             </td>

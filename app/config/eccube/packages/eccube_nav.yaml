@@ -38,9 +38,6 @@ parameters:
                 shipping_csv_import:
                     name: admin.order.shipping_csv_upload
                     url: admin_shipping_csv_import
-                order_status:
-                    name: 対応状況管理
-                    url: admin_order_status
         customer:
             name: admin.customer.customer_management
             icon: fa-users
@@ -115,6 +112,9 @@ parameters:
                         shop_csv:
                             name: admin.setting.shop.csv_setting
                             url: admin_setting_shop_csv
+                        shop_order_status:
+                            name: admin.setting.shop.order_status_setting
+                            url: admin_setting_shop_order_status
                 system:
                     name: admin.setting.system
                     children:
