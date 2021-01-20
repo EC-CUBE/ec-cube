@@ -146,8 +146,7 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
             throw new \InvalidArgumentException();
         }
         // see also. http://qiita.com/Hiraku/items/71e385b56dcaa37629fe
-        $class = get_class(new static());
-        $ref = new \ReflectionClass($class);
+        $ref = new \ReflectionClass(static::class);
         // クラス定数が存在していれば, クラス定数から値を取得する
         $constants = $ref->getConstants();
         if (array_key_exists($name, $constants)) {
@@ -157,6 +156,6 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
         $refProperty = $ref->getProperty($name);
         $refProperty->setAccessible(true);
 
-        return $refProperty->getValue(new $class());
+        return $refProperty->getValue($ref->newInstance());
     }
 }
