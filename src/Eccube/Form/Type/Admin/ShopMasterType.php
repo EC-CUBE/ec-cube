@@ -183,7 +183,7 @@ class ShopMasterType extends AbstractType
                         'message' => 'form_error.numeric_only',
                     ]),
                     new Assert\Range([
-                        'min' => 1,
+                        'min' => 0,
                         'max' => 100,
                     ]),
                 ],
