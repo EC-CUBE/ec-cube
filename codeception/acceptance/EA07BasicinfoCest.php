@@ -15,6 +15,7 @@ use Page\Admin\CsvSettingsPage;
 use Page\Admin\DeliveryEditPage;
 use Page\Admin\DeliveryManagePage;
 use Page\Admin\MailSettingsPage;
+use Page\Admin\OrderStatusSettingsPage;
 use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
 use Page\Admin\ShopSettingPage;
@@ -270,6 +271,19 @@ class EA07BasicinfoCest
             ->設定();
 
         $I->see('保存しました', CsvSettingsPage::$登録完了メッセージ);
+    }
+
+    public function basicinfo_受注対応状況設定(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0711-UC01-T01  受注対応状況設定');
+
+        // 表示
+        OrderStatusSettingsPage::go($I)
+            ->入力_名称('新規受付')
+            ->入力_色("#19406C")
+            ->登録();
+
+        $I->see('保存しました', OrderStatusSettingsPage::$登録完了メッセージ);
     }
 
     /**
