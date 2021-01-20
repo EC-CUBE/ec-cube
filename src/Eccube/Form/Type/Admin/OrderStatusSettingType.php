@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Repository\Master\OrderStatusColorRepository;
@@ -27,13 +28,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class OrderStatusSettingType extends AbstractType
 {
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
      * @var OrderStatusColorRepository
      */
     protected $orderStatusColorRepository;
 
     public function __construct(
+        EccubeConfig $eccubeConfig,
         OrderStatusColorRepository $orderStatusColorRepository
+
     ) {
+        $this->eccubeConfig = $eccubeConfig;
         $this->orderStatusColorRepository = $orderStatusColorRepository;
     }
 
@@ -46,14 +55,14 @@ class OrderStatusSettingType extends AbstractType
             ->add('name', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('color', TextType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('display_order_count', ToggleSwitchType::class, [

@@ -70,8 +70,10 @@ class OrderStatusController extends AbstractController
                 $this->entityManager->persist($OrderStatus);
 
                 $OrderStatusColor = $this->orderStatusColorRepository->find($OrderStatus->getId());
-                $OrderStatusColor->setName($child['color']->getData());
-                $this->entityManager->persist($OrderStatusColor);
+                if (null !== $OrderStatusColor) {
+                    $OrderStatusColor->setName($child['color']->getData());
+                    $this->entityManager->persist($OrderStatusColor);
+                }
             }
             $this->entityManager->flush();
 
