@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class OrderStatusType extends AbstractType
+class OrderStatusSettingType extends AbstractType
 {
     /**
      * @var OrderStatusColorRepository

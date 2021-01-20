@@ -14,7 +14,7 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
-use Eccube\Form\Type\Admin\OrderStatusType;
+use Eccube\Form\Type\Admin\OrderStatusSettingType;
 use Eccube\Repository\Master\OrderStatusColorRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -57,7 +57,7 @@ class OrderStatusController extends AbstractController
                 'OrderStatuses',
                 CollectionType::class,
                 [
-                    'entry_type' => OrderStatusType::class,
+                    'entry_type' => OrderStatusSettingType::class,
                     'data' => $OrderStatuses,
                 ]
             );
