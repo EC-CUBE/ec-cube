@@ -29,7 +29,6 @@ class OrderStatusController extends AbstractController
      */
     protected $orderStatusRepository;
 
-
     /**
      * @var OrderStatusColorRepository
      */

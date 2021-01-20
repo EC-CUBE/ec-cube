@@ -13,14 +13,10 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Doctrine\DBAL\Types\IntegerType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Repository\Master\OrderStatusColorRepository;
-use Eccube\Repository\Master\OrderStatusRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -31,20 +27,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class OrderStatusType extends AbstractType
 {
     /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
-
-    /**
      * @var OrderStatusColorRepository
      */
     protected $orderStatusColorRepository;
 
     public function __construct(
-        OrderStatusRepository $orderStatusRepository,
         OrderStatusColorRepository $orderStatusColorRepository
     ) {
-        $this->orderStatusRepository = $orderStatusRepository;
         $this->orderStatusColorRepository = $orderStatusColorRepository;
     }
 
@@ -57,14 +46,14 @@ class OrderStatusType extends AbstractType
             ->add('name', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => 255])
+                    new Assert\Length(['max' => 255]),
                 ],
             ])
             ->add('color', TextType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => 255])
+                    new Assert\Length(['max' => 255]),
                 ],
             ])
             ->add('display_order_count', ToggleSwitchType::class, [
@@ -98,5 +87,4 @@ class OrderStatusType extends AbstractType
             'data_class' => OrderStatus::class,
         ]);
     }
-
 }
