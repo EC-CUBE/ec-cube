@@ -15,10 +15,12 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\DBAL\Types\IntegerType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Repository\Master\OrderStatusColorRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -53,22 +55,24 @@ class OrderStatusType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Length(['max' => 255])
                 ],
             ])
             ->add('color', TextType::class, [
-                'required' => false,
                 'mapped' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Length(['max' => 255])
                 ],
             ])
-            ->add('display_order_count', CheckboxType::class, [
+            ->add('display_order_count', ToggleSwitchType::class, [
                 'required' => false,
-                'label' => false,
-            ]);
+                'label_on' => '',
+                'label_off' => '',
+            ])
+        ;
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();

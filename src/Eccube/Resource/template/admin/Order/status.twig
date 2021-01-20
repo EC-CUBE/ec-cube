@@ -15,6 +15,17 @@ file that was distributed with this source code.
 
 {% block title %}{{ '対応状況管理'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js" integrity="sha512-INXxqXxcP6zawSei7i47Xmu+6ZIBRbsYN1LHAy5H1gzl1XIfTbI/OLjUcvBnDD8F3ZSVB6mf8asEPTMxz4VNjw==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css" integrity="sha512-wuFRnk4KiQftPmBWRd5TmmgnuMEMVSySF4EsQJ50FemRIHIF5JkwD57UdcWqtGwamThUWHgXf8tSiiJitWnD0w==" crossorigin="anonymous" />
+    <script>
+    $(function () {
+        $('.color-picker').colorpicker();
+    });
+    </script>
+{% endblock %}
 
 {% block main %}
     <div class="c-contentsArea__cols">
@@ -56,8 +67,13 @@ file that was distributed with this source code.
                                                 {{ form_widget(OrderStatus.name) }}
                                                 {{ form_errors(OrderStatus.name) }}
                                             </td>
-                                            <td class="align-middle text-center">
-                                                {{ form_widget(OrderStatus.color) }}
+                                            <td class="align-middle">
+                                                <div class="input-group color-picker" >
+                                                    {{ form_widget(OrderStatus.color) }}
+                                                    <span class="input-group-append">
+                                                        <span class="input-group-text colorpicker-input-addon"><i></i></span>
+                                                    </span>
+                                                </div>
                                                 {{ form_errors(OrderStatus.color) }}
                                             </td>
                                             <td class="align-middle text-center">
