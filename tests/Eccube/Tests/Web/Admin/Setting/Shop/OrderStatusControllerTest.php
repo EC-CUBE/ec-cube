@@ -1,0 +1,105 @@
+<?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Tests\Web\Admin\Setting\Shop;
+
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\OrderStatusColor;
+use Eccube\Repository\Master\OrderStatusColorRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+
+class OrderStatusControllerTest extends AbstractAdminWebTestCase
+{
+    /**
+     * @var OrderStatusRepository
+     */
+    private $orderStatusRepository;
+
+    /**
+     * @var OrderStatusColorRepository
+     */
+    private $orderStatusColorRepository;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
+        $this->orderStatusColorRepository = $this->entityManager->getRepository(OrderStatusColor::class);
+    }
+
+    public function testRouting()
+    {
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_order_status'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testSubmit()
+    {
+        $formData = $this->createFormData();
+        $formData['OrderStatuses'][0]['name'] = 'テスト名称';
+        $formData['OrderStatuses'][0]['color'] = 'テスト色';
+
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_order_status'));
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_setting_shop_order_status'),
+            ['form' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $OrderStatus = $this->orderStatusRepository->findOneBy([], ['sort_no' => 'ASC']);
+        $OrderStatusColor = $this->orderStatusColorRepository->findOneBy([], ['sort_no' => 'ASC']);
+
+        $this->assertSame('テスト名称', $OrderStatus->getName());
+        $this->assertSame('テスト色', $OrderStatusColor->getName());
+    }
+
+    public function testSubmitWithError()
+    {
+        $formData = $this->createFormData();
+        $formData['OrderStatuses'][0]['name'] = '';
+        $formData['OrderStatuses'][0]['color'] = '';
+
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_order_status'));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_setting_shop_order_status'),
+            ['form' => $formData]
+        );
+
+        $this->assertFalse($this->client->getResponse()->isRedirection());
+        $this->assertContains('入力されていません。', $crawler->text());
+    }
+
+    private function createFormData()
+    {
+        $form = [
+            '_token' => 'dummy',
+            'OrderStatuses' => [],
+        ];
+
+        $OrderStatuses = $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']);
+
+        foreach ($OrderStatuses as $OrderStatus) {
+            $form['OrderStatuses'][] = [
+                'name' => $OrderStatus->getName(),
+                'color' => $this->orderStatusColorRepository->find($OrderStatus->getId()),
+                'display_order_count' => $OrderStatus->isDisplayOrderCount() ? '1' : '',
+            ];
+        }
+
+        return $form;
+    }
+}
