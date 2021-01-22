@@ -26,7 +26,7 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

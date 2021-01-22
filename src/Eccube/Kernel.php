@@ -70,7 +70,7 @@ class Kernel extends BaseKernel
 
     public function registerBundles()
     {
-        $contents = require $this->getProjectDir().'/app/config/eccube/bundles.php';
+        $contents = require __DIR__.'/../../app/config/eccube/bundles.php';
         foreach ($contents as $class => $envs) {
             if (isset($envs['all']) || isset($envs[$this->environment])) {
                 yield new $class();
@@ -133,7 +133,7 @@ class Kernel extends BaseKernel
             LoggerFacade::init($container, $Logger);
         }
         $Translator = $container->get('translator');
-        if ($Translator !== null && $Translator instanceof \Symfony\Component\Translation\TranslatorInterface) {
+        if ($Translator !== null && $Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
             TranslatorFacade::init($container, $Translator);
         }
 
@@ -164,6 +164,14 @@ class Kernel extends BaseKernel
         $dir = dirname(__DIR__).'/../app/Customize/Resource/config';
         $loader->load($dir.'/services'.self::CONFIG_EXTS, 'glob');
         $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProjectDir(): string
+    {
+        return \realpath(__DIR__.'/../../');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
@@ -223,9 +231,6 @@ class Kernel extends BaseKernel
 
         // DocumentRootをルーティディレクトリに設定する.
         $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
-
-        // twigのurl,path関数を差し替え
-        $container->addCompilerPass(new TwigExtensionPass());
 
         $container->register('app', Application::class)
             ->setSynthetic(true)

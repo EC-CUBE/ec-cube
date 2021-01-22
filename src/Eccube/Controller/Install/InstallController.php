@@ -18,9 +18,6 @@ use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\MigrationException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -803,8 +800,8 @@ class InstallController extends AbstractController
         $config->setMigrationsDirectory($migrationDir);
         $config->registerMigrationsFromDirectory($migrationDir);
 
-        $migration = new Migration($config);
-        $migration->setNoMigrationException(true);
+        // $migration = new Migration($config);
+        // $migration->setNoMigrationException(true);
 
         return $migration;
     }
@@ -939,14 +936,14 @@ class InstallController extends AbstractController
         }
     }
 
-    public function migrate(Migration $migration)
-    {
-        try {
-            // nullを渡すと最新バージョンまでマイグレートする
-            $migration->migrate(null, false);
-        } catch (MigrationException $e) {
-        }
-    }
+    // public function migrate(Migration $migration)
+    // {
+    //     try {
+    //         // nullを渡すと最新バージョンまでマイグレートする
+    //         $migration->migrate(null, false);
+    //     } catch (MigrationException $e) {
+    //     }
+    // }
 
     /**
      * @param array $params

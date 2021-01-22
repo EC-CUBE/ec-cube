@@ -44,7 +44,7 @@ class BlockRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->blockRepository = $this->entityManager->getRepository(\Eccube\Entity\Block::class);

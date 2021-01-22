@@ -362,8 +362,9 @@ class EccubeExtension extends AbstractExtension
         if (is_null($currency)) {
             $currency = $this->eccubeConfig->get('currency');
         }
-        $symbol = Intl::getCurrencyBundle()->getCurrencySymbol($currency);
+        // FIXME
+        // $symbol = Intl::getCurrencyBundle()->getCurrencySymbol($currency);
 
-        return $symbol;
+        return $currency;
     }
 }

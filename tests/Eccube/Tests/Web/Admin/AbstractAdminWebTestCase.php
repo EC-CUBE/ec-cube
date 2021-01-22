@@ -17,7 +17,7 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->logIn();

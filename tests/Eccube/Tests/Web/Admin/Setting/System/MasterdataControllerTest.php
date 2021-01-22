@@ -27,7 +27,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      */
     private $session;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

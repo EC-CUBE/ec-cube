@@ -21,7 +21,7 @@ class MasterdataTypeTest extends AbstractTypeTestCase
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = [];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

@@ -23,8 +23,10 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
+
 
 /**
  * キャッシュ関連のユーティリティクラス.
@@ -65,7 +67,7 @@ class CacheUtil implements EventSubscriberInterface
         $this->clearCacheAfterResponse = $env;
     }
 
-    public function forceClearCache(PostResponseEvent $event)
+    public function forceClearCache(TerminateEvent $event)
     {
         if ($this->clearCacheAfterResponse === false) {
             return;

@@ -29,7 +29,7 @@ class ForgotControllerTest extends AbstractWebTestCase
      */
     protected $customerRepository;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->client->enableProfiler();

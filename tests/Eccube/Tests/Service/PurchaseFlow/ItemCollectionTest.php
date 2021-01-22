@@ -36,7 +36,7 @@ class ItemCollectionTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $Product = $this->createProduct();

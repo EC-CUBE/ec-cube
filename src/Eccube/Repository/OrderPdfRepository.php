@@ -15,7 +15,7 @@ namespace Eccube\Repository;
 
 use Eccube\Entity\Member;
 use Eccube\Entity\OrderPdf;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * OrderPdfRepository.
@@ -25,7 +25,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class OrderPdfRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, OrderPdf::class);
     }

@@ -15,11 +15,11 @@ namespace Eccube\Command;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Eccube\Service\EntityProxyService;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateProxyCommand extends ContainerAwareCommand
+class GenerateProxyCommand extends Command
 {
     protected static $defaultName = 'eccube:generate:proxies';
 

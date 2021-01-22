@@ -20,14 +20,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 
         $this->createSession();
     }
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         parent::tearDown();
     }
@@ -66,7 +66,8 @@ abstract class AbstractWebTestCase extends EccubeTestCase
         }
         $token = new UsernamePasswordToken($User, null, $firewall, $role);
 
-        $session = $this->client->getContainer()->get('session');
+        $session = self::$container->get('session');
+
         $session->set('_security_'.$firewall, serialize($token));
         $session->save();
 

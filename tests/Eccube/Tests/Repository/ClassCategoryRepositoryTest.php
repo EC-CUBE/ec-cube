@@ -46,7 +46,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->productClassRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);

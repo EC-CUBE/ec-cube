@@ -118,7 +118,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -139,7 +139,7 @@ class DeliveryController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE);
 
             $this->addSuccess('mypage.delivery.add.complete');
 
@@ -178,7 +178,7 @@ class DeliveryController extends AbstractController
                 'CustomerAddress' => $CustomerAddress,
             ], $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE);
 
         $this->addSuccess('mypage.address.delete.complete');
 

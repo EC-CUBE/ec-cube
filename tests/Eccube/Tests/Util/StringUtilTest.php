@@ -27,7 +27,7 @@ class StringUtilTest extends TestCase
     private $actual;
     private $expected;
 
-    public function setUp()
+    protected function setUp() : void
     {
     }
 

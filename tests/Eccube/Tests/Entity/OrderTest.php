@@ -41,7 +41,7 @@ class OrderTest extends EccubeTestCase
     protected $Order;
     protected $rate;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();

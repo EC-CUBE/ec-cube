@@ -204,7 +204,7 @@ class OrderController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE);
 
         $searchForm = $builder->getForm();
 
@@ -299,7 +299,7 @@ class OrderController extends AbstractController
             $request
         );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_SEARCH);
 
         $pagination = $paginator->paginate(
             $qb,
@@ -438,7 +438,7 @@ class OrderController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER);
 
                         $ExportCsvRow->pushData();
                     }

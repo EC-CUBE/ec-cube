@@ -16,7 +16,7 @@ namespace Eccube\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Entity\Shipping;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * ShippingRepository
@@ -26,7 +26,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ShippingRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Shipping::class);
     }

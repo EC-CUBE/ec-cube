@@ -19,7 +19,7 @@ use Eccube\Repository\BaseInfoRepository;
 
 class EntryControllerTest extends AbstractWebTestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->client->enableProfiler();

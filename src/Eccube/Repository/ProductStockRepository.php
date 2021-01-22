@@ -14,7 +14,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\ProductStock;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * ProductClassRepository
@@ -24,7 +24,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ProductStockRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ProductStock::class);
     }

@@ -118,4 +118,9 @@ class PasswordEncoder implements PasswordEncoderInterface
     {
         return bin2hex(openssl_random_pseudo_bytes($length));
     }
+
+    public function needsRehash(string $encoded): bool
+    {
+         return true;
+    }
 }

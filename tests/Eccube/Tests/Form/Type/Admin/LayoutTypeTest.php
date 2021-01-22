@@ -29,7 +29,7 @@ class LayoutTypeTest extends AbstractTypeTestCase
         'Page' => 2,
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

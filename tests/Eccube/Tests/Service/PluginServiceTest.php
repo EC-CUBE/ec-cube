@@ -44,15 +44,29 @@ class PluginServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 
         $this->service = self::$container->get(PluginService::class);
+        $rc = new \ReflectionClass($this->service);
+
+        $prop = $rc->getProperty('schemaService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, $this->createMock(SchemaService::class));
+
+        $prop = $rc->getProperty('composerService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, $this->createMock(ComposerServiceInterface::class));
+
+        $prop = $rc->getProperty('entityProxyService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, $this->createMock(EntityProxyService::class));
+
         $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
     }
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         $dirs = [];
         $finder = new Finder();
@@ -540,6 +554,21 @@ EOD;
         if ('postgresql' !== $platform) {
             $this->markTestSkipped('does not support of '.$platform);
         }
+
+        $this->service = self::$container->get(PluginService::class);
+        $rc = new \ReflectionClass($this->service);
+
+        $prop = $rc->getProperty('schemaService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, self::$container->get(SchemaService::class));
+
+        $prop = $rc->getProperty('composerService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, self::$container->get(ComposerServiceInterface::class));
+
+        $prop = $rc->getProperty('entityProxyService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, self::$container->get(EntityProxyService::class));
 
         $faker = $this->getFaker();
         // インストールするプラグインを作成する

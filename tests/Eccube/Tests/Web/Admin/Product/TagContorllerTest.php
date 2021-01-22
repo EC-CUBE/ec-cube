@@ -25,7 +25,7 @@ class TagContorllerTest extends AbstractAdminWebTestCase
      */
     private $TagRepo;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->TagRepo = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);

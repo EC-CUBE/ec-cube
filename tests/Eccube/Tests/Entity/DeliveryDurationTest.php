@@ -21,7 +21,7 @@ class DeliveryDurationTest extends EccubeTestCase
 {
     private $deliveryDurationRepository;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->deliveryDurationRepository = $this->entityManager->getRepository(DeliveryDuration::class);

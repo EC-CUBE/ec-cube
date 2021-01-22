@@ -246,7 +246,7 @@ class CartController extends AbstractController
             [],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_CART_BUYSTEP_INITIALIZE);
 
         $this->cartService->setPrimary($cart_key);
         $this->cartService->save();
@@ -256,7 +256,7 @@ class CartController extends AbstractController
             [],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_CART_BUYSTEP_COMPLETE);
 
         if ($event->hasResponse()) {
             return $event->getResponse();

@@ -151,7 +151,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         return $jailPath ? $jailPath : '/';
     }
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         if (file_exists($this->getUserDataDir().'/aaa.html')) {
             unlink($this->getUserDataDir().'/aaa.html');

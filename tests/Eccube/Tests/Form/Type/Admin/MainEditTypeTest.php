@@ -34,7 +34,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
         'meta_tags' => '',
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $options = [

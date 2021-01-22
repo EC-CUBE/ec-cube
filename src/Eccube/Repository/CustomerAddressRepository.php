@@ -14,7 +14,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\CustomerAddress;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * CustomerAddressRepository
@@ -27,9 +27,9 @@ class CustomerAddressRepository extends AbstractRepository
     /**
      * CustomerAddressRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CustomerAddress::class);
     }

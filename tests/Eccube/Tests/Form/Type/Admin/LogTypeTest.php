@@ -27,7 +27,7 @@ class LogTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     protected $logTest;
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 
@@ -53,7 +53,7 @@ class LogTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             ->getForm();
     }
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         // Delete the previously created file
         @unlink($this->logTest);

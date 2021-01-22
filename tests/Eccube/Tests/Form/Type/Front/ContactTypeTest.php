@@ -41,7 +41,7 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'contents' => 'ほげほげ',
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

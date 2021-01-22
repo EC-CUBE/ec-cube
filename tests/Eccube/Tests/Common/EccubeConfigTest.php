@@ -24,7 +24,7 @@ class EccubeConfigTest extends TestCase
      */
     protected $eccubeConfig;
 
-    public function setup()
+    protected function setup() : void
     {
         $container = new Container();
         $this->eccubeConfig = new EccubeConfig($container);

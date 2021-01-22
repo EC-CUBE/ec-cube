@@ -26,7 +26,7 @@ class DeliveryTimeTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'sort_no' => '1',
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

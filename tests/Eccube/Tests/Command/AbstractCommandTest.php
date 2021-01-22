@@ -61,7 +61,7 @@ abstract class AbstractCommandTest extends EccubeTestCase
      */
     protected $loopCheckSum = 0;
 
-    public function tearDown()
+    protected function tearDown() : void
     {
         parent::tearDown();
         Application::clearInstance();

@@ -67,7 +67,7 @@ class PaymentController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_INDEX_COMPLETE);
 
         return [
             'Payments' => $Payments,
@@ -105,7 +105,7 @@ class PaymentController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -143,7 +143,7 @@ class PaymentController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -195,7 +195,7 @@ class PaymentController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_IMAGE_ADD_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_IMAGE_ADD_COMPLETE);
         $filename = $event->getArgument('filename');
 
         return $this->json(['filename' => $filename], 200);
@@ -229,7 +229,7 @@ class PaymentController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {

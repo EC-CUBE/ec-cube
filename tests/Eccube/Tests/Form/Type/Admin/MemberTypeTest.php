@@ -34,7 +34,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         'Work' => 1,
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 
