@@ -1607,6 +1607,7 @@ tooltip.setting.shop.mail.mail_template: 既存のメールテンプレートを
 tooltip.setting.shop.csv.csv_columns: 各種のデータをCSVで出力できます。出力したい項目をこちらで設定することが可能です。
 tooltip.setting.shop.csv.csv_type: 設定したいCSVの種類を指定してください。
 tooltip.setting.shop.order_status.order_status: 受注管理およびマイページで表示される対応状況の設定を行います。名称、色、件数表示の設定が可能です。
+tooltip.setting.shop.order_status.customer_order_status_name: 対応状況の名称を設定できます。ここで設定した名称は会員ログイン後のマイページで表示されます。
 tooltip.setting.shop.order_status.color: 受注管理の対応状況の色を設定できます。
 tooltip.setting.shop.order_status.display_order_count: 受注管理の対応状況ごとの受注件数の表示・非表示を設定できます。
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。

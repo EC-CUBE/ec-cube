@@ -1607,6 +1607,7 @@ tooltip.setting.shop.mail.mail_template: Please select an existing email templat
 tooltip.setting.shop.csv.csv_columns: You can output various data in CSV format. You can specify the items for CSV output.
 tooltip.setting.shop.csv.csv_type: Specify the CSV file type.
 tooltip.setting.shop.order_status.order_status: Set the order status used in order management and my page. You can set the name, color, and number display.
+tooltip.setting.shop.order_status.customer_order_status_name: You can set the name of the order status. The name set here will be displayed on My Page after logging in as a customer.
 tooltip.setting.shop.order_status.color: You can set the color of the order status used in order management.
 tooltip.setting.shop.order_status.display_order_count: You can set the display / non-display of the number of orders for each order status used in order management.
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
