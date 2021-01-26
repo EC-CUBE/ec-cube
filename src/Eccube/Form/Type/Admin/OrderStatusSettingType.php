@@ -16,6 +16,7 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Form\Type\ToggleSwitchType;
+use Eccube\Repository\Master\CustomerOrderStatusRepository;
 use Eccube\Repository\Master\OrderStatusColorRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -37,13 +38,19 @@ class OrderStatusSettingType extends AbstractType
      */
     protected $orderStatusColorRepository;
 
+    /**
+     * @var CustomerOrderStatusRepository
+     */
+    protected $customerOrderStatusRepository;
+
     public function __construct(
         EccubeConfig $eccubeConfig,
-        OrderStatusColorRepository $orderStatusColorRepository
-
+        OrderStatusColorRepository $orderStatusColorRepository,
+        CustomerOrderStatusRepository $customerOrderStatusRepository
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->orderStatusColorRepository = $orderStatusColorRepository;
+        $this->customerOrderStatusRepository = $customerOrderStatusRepository;
     }
 
     /**
@@ -53,6 +60,13 @@ class OrderStatusSettingType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                ],
+            ])
+            ->add('customer_order_status_name', TextType::class, [
+                'mapped' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
@@ -83,6 +97,10 @@ class OrderStatusSettingType extends AbstractType
             $OrderStatusColor = $this->orderStatusColorRepository->find($data->getId());
             if (null !== $OrderStatusColor) {
                 $form->get('color')->setData($OrderStatusColor->getName());
+            }
+            $CustomerOrderStatus = $this->customerOrderStatusRepository->find($data->getId());
+            if (null !== $CustomerOrderStatus) {
+                $form->get('customer_order_status_name')->setData($CustomerOrderStatus->getName());
             }
         });
     }

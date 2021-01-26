@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\OrderStatusSettingType;
+use Eccube\Repository\Master\CustomerOrderStatusRepository;
 use Eccube\Repository\Master\OrderStatusColorRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -34,12 +35,19 @@ class OrderStatusController extends AbstractController
      */
     protected $orderStatusColorRepository;
 
+    /**
+     * @var CustomerOrderStatusRepository
+     */
+    protected $customerOrderStatusRepository;
+
     public function __construct(
         OrderStatusRepository $orderStatusRepository,
-        OrderStatusColorRepository $orderStatusColorRepository
+        OrderStatusColorRepository $orderStatusColorRepository,
+        CustomerOrderStatusRepository $customerOrderStatusRepository
     ) {
         $this->orderStatusRepository = $orderStatusRepository;
         $this->orderStatusColorRepository = $orderStatusColorRepository;
+        $this->customerOrderStatusRepository = $customerOrderStatusRepository;
     }
 
     /**
@@ -68,6 +76,12 @@ class OrderStatusController extends AbstractController
             foreach ($form['OrderStatuses'] as $child) {
                 $OrderStatus = $child->getData();
                 $this->entityManager->persist($OrderStatus);
+
+                $CustomerOrderStatus = $this->customerOrderStatusRepository->find($OrderStatus->getId());
+                if (null !== $CustomerOrderStatus) {
+                    $CustomerOrderStatus->setName($child['customer_order_status_name']->getData());
+                    $this->entityManager->persist($CustomerOrderStatus);
+                }
 
                 $OrderStatusColor = $this->orderStatusColorRepository->find($OrderStatus->getId());
                 if (null !== $OrderStatusColor) {

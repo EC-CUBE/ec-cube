@@ -40,9 +40,16 @@ class OrderStatusSettingsPage extends AbstractAdminPageStyleGuide
         return $page;
     }
 
-    public function 入力_名称($value)
+    public function 入力_名称_管理($value)
     {
         $this->tester->fillField(['id' => 'form_OrderStatuses_0_name'], $value);
+
+        return $this;
+    }
+
+    public function 入力_名称_マイページ($value)
+    {
+        $this->tester->fillField(['id' => 'form_OrderStatuses_0_customer_order_status_name'], $value);
 
         return $this;
     }

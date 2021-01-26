@@ -48,7 +48,10 @@ file that was distributed with this source code.
                                             {{ 'admin.setting.shop.order_status.id'|trans }}
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">
-                                            {{ 'admin.setting.shop.order_status.name'|trans }}
+                                            {{ 'admin.setting.shop.order_status.customer_order_status_name'|trans }}
+                                        </th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">
+                                            {{ 'admin.setting.shop.order_status.admin_order_status_name'|trans }}
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">
                                             <div class="d-inline-block" data-tooltip="true" data-placement="top" title="" data-original-title="{{ 'tooltip.setting.shop.order_status.color'|trans }}">
@@ -67,6 +70,10 @@ file that was distributed with this source code.
                                         <tr>
                                             <td class="align-middle">
                                                 {{ OrderStatus.vars.data.id }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ form_widget(OrderStatus.customer_order_status_name) }}
+                                                {{ form_errors(OrderStatus.customer_order_status_name) }}
                                             </td>
                                             <td class="align-middle">
                                                 {{ form_widget(OrderStatus.name) }}

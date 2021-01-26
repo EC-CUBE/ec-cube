@@ -279,7 +279,8 @@ class EA07BasicinfoCest
 
         // 表示
         OrderStatusSettingsPage::go($I)
-            ->入力_名称('新規受付')
+            ->入力_名称_管理('新規受付')
+            ->入力_名称_マイページ('注文受付')
             ->入力_色("#19406C")
             ->登録();
 

@@ -1196,7 +1196,8 @@ admin.setting.shop.csv.how_to_use: |
 
 admin.setting.shop.order_status.order_status: Order Status
 admin.setting.shop.order_status.id: ID
-admin.setting.shop.order_status.name: Name
+admin.setting.shop.order_status.admin_order_status_name: Name(Order management)
+admin.setting.shop.order_status.customer_order_status_name: Name(My page)
 admin.setting.shop.order_status.color: Color
 admin.setting.shop.order_status.display_order_count: Number display
 
@@ -1605,9 +1606,9 @@ tooltip.setting.shop.tax_setting: You can set the tax rates applicable to all pr
 tooltip.setting.shop.mail.mail_template: Please select an existing email template. Contents are displayed in the text field below.
 tooltip.setting.shop.csv.csv_columns: You can output various data in CSV format. You can specify the items for CSV output.
 tooltip.setting.shop.csv.csv_type: Specify the CSV file type.
-tooltip.setting.shop.order_status.order_status: Set the order status used in order management. You can set the name, color, and number display.
-tooltip.setting.shop.order_status.color: You can set the color of the order status.
-tooltip.setting.shop.order_status.display_order_count: You can set the display / non-display of the number of orders received for each order status.
+tooltip.setting.shop.order_status.order_status: Set the order status used in order management and my page. You can set the name, color, and number display.
+tooltip.setting.shop.order_status.color: You can set the color of the order status used in order management.
+tooltip.setting.shop.order_status.display_order_count: You can set the display / non-display of the number of orders for each order status used in order management.
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
 tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
