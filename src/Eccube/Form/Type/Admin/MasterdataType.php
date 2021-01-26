@@ -17,6 +17,7 @@ use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Eccube\Entity\Master\CustomerOrderStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\OrderStatusColor;
 use Symfony\Component\Form\AbstractType;
@@ -65,7 +66,7 @@ class MasterdataType extends AbstractType
 
                     // OrderStatus/OrderStatusColorは対象外
                     // @see https://github.com/EC-CUBE/ec-cube/pull/4844
-                    if (in_array($meta->getName(), [OrderStatus::class, OrderStatusColor::class])) {
+                    if (in_array($meta->getName(), [OrderStatus::class, OrderStatusColor::class, CustomerOrderStatus::class,])) {
                         continue;
                     }
 
