@@ -107,8 +107,12 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
         foreach ($OrderStatuses as $OrderStatus) {
             $form['OrderStatuses'][] = [
                 'name' => $OrderStatus->getName(),
-                'customer_order_status_name' => $this->customerOrderStatusRepository->find($OrderStatus->getId()),
-                'color' => $this->orderStatusColorRepository->find($OrderStatus->getId()),
+                'customer_order_status_name' => $this->customerOrderStatusRepository
+                    ->find($OrderStatus->getId())
+                    ->getName(),
+                'color' => $this->orderStatusColorRepository
+                    ->find($OrderStatus->getId())
+                    ->getName(),
                 'display_order_count' => $OrderStatus->isDisplayOrderCount() ? '1' : '',
             ];
         }
