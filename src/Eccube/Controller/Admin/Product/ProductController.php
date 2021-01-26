@@ -374,6 +374,8 @@ class ProductController extends AbstractController
             $ProductStock->setProductClass($ProductClass);
         } else {
             $Product = $this->productRepository->find($id);
+            $ProductClass = null;
+            $ProductStock = null;
             if (!$Product) {
                 throw new NotFoundHttpException();
             }
@@ -513,7 +515,7 @@ class ProductController extends AbstractController
                         $count++;
                         /* @var $Product \Eccube\Entity\Product */
                         $Product->addProductCategory($ProductCategory);
-                        $categoriesIdList[$ParentCategory->getId()] = true;
+                        $categoriesIdList[$Category->getId()] = true;
                     }
                 }
 
