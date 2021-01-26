@@ -32,91 +32,91 @@ file that was distributed with this source code.
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                    <form id="form" method="post" action="{{ url('admin_setting_shop_order_status') }}">
-                        {{ form_widget(form._token) }}
-                        <div class="card rounded border-0 mb-4">
-                            <div class="card-header">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="" data-original-title="{{ 'tooltip.setting.shop.order_status.order_status'|trans }}">
-                                    <span>{{ 'admin.setting.shop.order_status.order_status'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
-                                </div>
+                <form id="form" method="post" action="{{ url('admin_setting_shop_order_status') }}">
+                    {{ form_widget(form._token) }}
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="" data-original-title="{{ 'tooltip.setting.shop.order_status.order_status'|trans }}">
+                                <span>{{ 'admin.setting.shop.order_status.order_status'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                             </div>
-                            <div class="card-body">
-                                <table class="table table-sm">
-                                    <thead>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm">
+                                <thead>
+                                <tr>
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.shop.order_status.id'|trans }}
+                                    </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.shop.order_status.customer_order_status_name'|trans }}
+                                    </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.shop.order_status.admin_order_status_name'|trans }}
+                                    </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="" data-original-title="{{ 'tooltip.setting.shop.order_status.color'|trans }}">
+                                            <span>{{ 'admin.setting.shop.order_status.color'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                    </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="" data-original-title="{{ 'tooltip.setting.shop.order_status.display_order_count'|trans }}">
+                                            <span>{{ 'admin.setting.shop.order_status.display_order_count'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for OrderStatus in form.OrderStatuses %}
                                     <tr>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">
-                                            {{ 'admin.setting.shop.order_status.id'|trans }}
-                                        </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">
-                                            {{ 'admin.setting.shop.order_status.customer_order_status_name'|trans }}
-                                        </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">
-                                            {{ 'admin.setting.shop.order_status.admin_order_status_name'|trans }}
-                                        </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="" data-original-title="{{ 'tooltip.setting.shop.order_status.color'|trans }}">
-                                                <span>{{ 'admin.setting.shop.order_status.color'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <td class="align-middle">
+                                            {{ OrderStatus.vars.data.id }}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ form_widget(OrderStatus.customer_order_status_name) }}
+                                            {{ form_errors(OrderStatus.customer_order_status_name) }}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ form_widget(OrderStatus.name) }}
+                                            {{ form_errors(OrderStatus.name) }}
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="input-group color-picker" >
+                                                {{ form_widget(OrderStatus.color) }}
+                                                <span class="input-group-append">
+                                                    <span class="input-group-text colorpicker-input-addon"><i></i></span>
+                                                </span>
                                             </div>
-                                        </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="" data-original-title="{{ 'tooltip.setting.shop.order_status.display_order_count'|trans }}">
-                                                <span>{{ 'admin.setting.shop.order_status.display_order_count'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
-                                            </div>
-                                        </th>
+                                            {{ form_errors(OrderStatus.color) }}
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            {{ form_widget(OrderStatus.display_order_count) }}
+                                            {{ form_errors(OrderStatus.display_order_count) }}
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for OrderStatus in form.OrderStatuses %}
-                                        <tr>
-                                            <td class="align-middle">
-                                                {{ OrderStatus.vars.data.id }}
-                                            </td>
-                                            <td class="align-middle">
-                                                {{ form_widget(OrderStatus.customer_order_status_name) }}
-                                                {{ form_errors(OrderStatus.customer_order_status_name) }}
-                                            </td>
-                                            <td class="align-middle">
-                                                {{ form_widget(OrderStatus.name) }}
-                                                {{ form_errors(OrderStatus.name) }}
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="input-group color-picker" >
-                                                    {{ form_widget(OrderStatus.color) }}
-                                                    <span class="input-group-append">
-                                                        <span class="input-group-text colorpicker-input-addon"><i></i></span>
-                                                    </span>
-                                                </div>
-                                                {{ form_errors(OrderStatus.color) }}
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                {{ form_widget(OrderStatus.display_order_count) }}
-                                                {{ form_errors(OrderStatus.display_order_count) }}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
 
-                        <div class="c-conversionArea">
-                            <div class="c-conversionArea__container">
-                                <div class="row justify-content-between align-items-center">
-                                    <div class="col-6">
-                                        <div class="c-conversionArea__leftBlockItem">
-                                        </div>
+                    <div class="c-conversionArea">
+                        <div class="c-conversionArea__container">
+                            <div class="row justify-content-between align-items-center">
+                                <div class="col-6">
+                                    <div class="c-conversionArea__leftBlockItem">
                                     </div>
-                                    <div class="col-6">
-                                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
-                                            <div class="col-auto">
-                                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
-                                            </div>
+                                </div>
+                                <div class="col-6">
+                                    <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                                        <div class="col-auto">
+                                            <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
