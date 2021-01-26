@@ -45,6 +45,7 @@ composer.phar
 *.php~
 .env
 .maintenance
+*.neon
 
 ###> symfony/phpunit-bridge ###
 .phpunit
