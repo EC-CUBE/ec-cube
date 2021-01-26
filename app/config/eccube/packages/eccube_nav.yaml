@@ -112,6 +112,9 @@ parameters:
                         shop_csv:
                             name: admin.setting.shop.csv_setting
                             url: admin_setting_shop_csv
+                        shop_order_status:
+                            name: admin.setting.shop.order_status_setting
+                            url: admin_setting_shop_order_status
                 system:
                     name: admin.setting.system
                     children:
