@@ -118,8 +118,8 @@ class PageController extends AbstractController
         // 更新時
         $fileName = null;
         $namespace = '@user_data/';
+        $PrevPage = clone $Page;
         if ($id) {
-            $PrevPage = clone $Page;
             // 編集不可ページはURL、ページ名、ファイル名を保持
             if ($Page->getEditType() >= Page::EDIT_TYPE_DEFAULT) {
                 $isUserDataPage = false;
