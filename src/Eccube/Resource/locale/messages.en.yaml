@@ -1072,6 +1072,7 @@ admin.setting.shop.delivery_setting: Delivery Settings
 admin.setting.shop.tax_setting: Taxes
 admin.setting.shop.mail_setting: Emails
 admin.setting.shop.csv_setting: CSV Outputs
+admin.setting.shop.order_status_setting: Order Status
 admin.setting.system: System Settings
 admin.setting.system.member_management: Users
 admin.setting.system.member_password_change: Passwords
@@ -1188,6 +1189,17 @@ admin.setting.shop.csv.how_to_use: |
  To add the output items, please select the item(s) on the left pane and press [Add].
  The item orders can be changed with [Item Orders] menus.
  To select multiple items, hold Ctrl (Windows) or Command (Mac) and select. Or hold Shift to select a range of items.
+
+#------------------------------------------------------------------------------------
+# Settings：Store Settings : Order Status
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.order_status.order_status: Order Status
+admin.setting.shop.order_status.id: ID
+admin.setting.shop.order_status.admin_order_status_name: Name(Order management)
+admin.setting.shop.order_status.customer_order_status_name: Name(My page)
+admin.setting.shop.order_status.color: Color
+admin.setting.shop.order_status.display_order_count: Number display
 
 #------------------------------------------------------------------------------------
 # Settings : Customers : Change Password
@@ -1594,6 +1606,10 @@ tooltip.setting.shop.tax_setting: You can set the tax rates applicable to all pr
 tooltip.setting.shop.mail.mail_template: Please select an existing email template. Contents are displayed in the text field below.
 tooltip.setting.shop.csv.csv_columns: You can output various data in CSV format. You can specify the items for CSV output.
 tooltip.setting.shop.csv.csv_type: Specify the CSV file type.
+tooltip.setting.shop.order_status.order_status: Set the order status used in order management and my page. You can set the name, color, and number display.
+tooltip.setting.shop.order_status.customer_order_status_name: You can set the name of the order status. The name set here will be displayed on My Page after logging in as a customer.
+tooltip.setting.shop.order_status.color: You can set the color of the order status used in order management.
+tooltip.setting.shop.order_status.display_order_count: You can set the display / non-display of the number of orders for each order status used in order management.
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
 tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.

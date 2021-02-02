@@ -1072,6 +1072,7 @@ admin.setting.shop.delivery_setting: 配送方法設定
 admin.setting.shop.tax_setting: 税率設定
 admin.setting.shop.mail_setting: メール設定
 admin.setting.shop.csv_setting: CSV出力項目設定
+admin.setting.shop.order_status_setting: 受注対応状況設定
 admin.setting.system: システム設定
 admin.setting.system.member_management: メンバー管理
 admin.setting.system.member_password_change: パスワード変更
@@ -1188,6 +1189,17 @@ admin.setting.shop.csv.how_to_use: |
   任意の項目を押して選択してから［項目操作］ボタンで移動し、CSV出力する項目を設定してください。
   出力する項目の順序は［項目順序］ボタンで変更することができます。
   複数の項目を選択する場合はctrlキー（Macの場合はcommandキー）を押しながら項目を押します。shiftキーを押しながら選択すると範囲選択ができます。
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：受注対応状況設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.order_status.order_status: 受注対応状況
+admin.setting.shop.order_status.id: ID
+admin.setting.shop.order_status.admin_order_status_name: 名称(受注管理)
+admin.setting.shop.order_status.customer_order_status_name: 名称(マイページ)
+admin.setting.shop.order_status.color: 色
+admin.setting.shop.order_status.display_order_count: 件数表示
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：メンバー管理 / パスワード変更
@@ -1594,6 +1606,10 @@ tooltip.setting.shop.tax_setting: 商品共通の税率を設定できます。�
 tooltip.setting.shop.mail.mail_template: 既存のメールテンプレートを選択してください。以下に内容が表示されます。
 tooltip.setting.shop.csv.csv_columns: 各種のデータをCSVで出力できます。出力したい項目をこちらで設定することが可能です。
 tooltip.setting.shop.csv.csv_type: 設定したいCSVの種類を指定してください。
+tooltip.setting.shop.order_status.order_status: 受注管理およびマイページで表示される対応状況の設定を行います。名称、色、件数表示の設定が可能です。
+tooltip.setting.shop.order_status.customer_order_status_name: 対応状況の名称を設定できます。ここで設定した名称は会員ログイン後のマイページで表示されます。
+tooltip.setting.shop.order_status.color: 受注管理の対応状況の色を設定できます。
+tooltip.setting.shop.order_status.display_order_count: 受注管理の対応状況ごとの受注件数の表示・非表示を設定できます。
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。
 tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
 tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
