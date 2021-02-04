@@ -10,6 +10,10 @@ DirectoryIndex index.php index.html .ht
     allow from all
 </Files>
 
+<IfModule mod_setenvif.c>
+  SetEnvIf Request_URI "\.(jpe?g|png)$" _image_request
+</IfModule>
+
 <IfModule mod_headers.c>
     # クリックジャッキング対策
     Header always set X-Frame-Options SAMEORIGIN
@@ -17,6 +21,9 @@ DirectoryIndex index.php index.html .ht
     # XSS対策
     Header set X-XSS-Protection "1; mode=block"
     Header set X-Content-Type-Options nosniff
+
+    #webpにvaray
+    Header append Vary Accept env=_image_request
 </IfModule>
 
 # デザインテンプレートを適用するため10Mで設定 
@@ -31,6 +38,12 @@ DirectoryIndex index.php index.html .ht
     #Options +FollowSymLinks +SymLinksIfOwnerMatch
 
     RewriteEngine On
+    
+    # Acceptヘッダがimage/webpを含む場合
+    RewriteCond %{HTTP_ACCEPT} image/webp
+    RewriteCond %{SCRIPT_FILENAME}.webp -f
+    # *.jpg、*.pngファイルを*.webpファイルに内部的にルーティングする
+    RewriteRule .(jpe?g|png)$ %{SCRIPT_FILENAME}.webp [T=image/webp]
 
     # Authorization ヘッダが取得できない環境への対応
     RewriteCond %{HTTP:Authorization} ^(.*)
@@ -53,6 +66,10 @@ DirectoryIndex index.php index.html .ht
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+<IfModule mod_mime.c>
+  # 拡張子.webpファイルはContent-Typeとしてimage/webpを返す
+  AddType image/webp .webp
 </IfModule>
 
 # 管理画面へのBasic認証サンプル
