@@ -173,7 +173,7 @@ class ProductController extends AbstractController
          * - デフォルト値
          * また, セッションに保存する際は mtb_page_maxと照合し, 一致した場合のみ保存する.
          **/
-        $page_count = $this->session->get('eccube.admin.order.search.page_count',
+        $page_count = $this->session->get('eccube.admin.product.search.page_count',
             $this->eccubeConfig->get('eccube_default_page_count'));
 
         $page_count_param = (int) $request->get('page_count');
@@ -183,7 +183,7 @@ class ProductController extends AbstractController
             foreach ($pageMaxis as $pageMax) {
                 if ($page_count_param == $pageMax->getName()) {
                     $page_count = $pageMax->getName();
-                    $this->session->set('eccube.admin.order.search.page_count', $page_count);
+                    $this->session->set('eccube.admin.product.search.page_count', $page_count);
                     break;
                 }
             }
@@ -330,10 +330,7 @@ class ProductController extends AbstractController
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
-                    $filename = date('mdHis').uniqid('_').'.'.$extension;
-                    $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
-                    $files[] = $filename;
-
+                    // リサイズ処理の可否（'eccube_product_image_resize'）
                     if ($this->eccubeConfig->get('eccube_product_image_resize')) {
 
                         // 加工前の画像の情報を取得
@@ -367,6 +364,7 @@ class ProductController extends AbstractController
                         // 保存先を指定
                         $resize_path = $this->eccubeConfig['eccube_temp_image_dir'] . '/' . $filename;
 
+                        // 画像形式ごとの処理
                         switch ($type) {
                             case IMAGETYPE_JPEG:
                                 imagejpeg($canvas, $resize_path, $this->eccubeConfig->get('eccube_product_image_jpg_quality'));
@@ -383,6 +381,12 @@ class ProductController extends AbstractController
 
                         imagedestroy($origin_image);
                         imagedestroy($canvas);
+
+                    } else {
+
+                        $filename = date('mdHis').uniqid('_').'.'.$extension;
+                        $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
+                        $files[] = $filename;
                     }
                 }
             }
