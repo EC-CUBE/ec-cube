@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>{{ BaseInfo.shop_name }}</title>
+        <title>{{ BaseInfo.shop_name }} 新着情報</title>
+        <description>{{ BaseInfo.shop_name }} 新着情報</description>
         <link>{{ url('homepage') }}</link>
         <lastBuildDate>{{ "now" | date(constant('DATE_RFC822')) }}</lastBuildDate>
         <atom:link href="{{ url('rss_feed_for_news') }}" rel="self"/>
