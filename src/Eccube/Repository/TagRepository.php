@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Entity\ProductTag;
 use Eccube\Entity\Tag;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -32,23 +33,60 @@ class TagRepository extends AbstractRepository
     /**
      * タグを保存する.
      *
-     * @param  Tag $tag タグ
+     * @param  Tag $Tag タグ
      */
-    public function save($tag)
+    public function save($Tag)
     {
-        if (!$tag->getId()) {
-            $sortNoTop = $this->findOneBy([], ['sort_no' => 'DESC']);
-            $sort_no = 0;
-            if (!is_null($sortNoTop)) {
-                $sort_no = $sortNoTop->getSortNo();
-            }
+        if (null === $Tag->getId()) {
+            $LastTagById = $this->findOneBy([], ['id' => 'DESC']);
+            $Tag->setId($LastTagById ? $LastTagById->getId() + 1 : 1);
 
-            $tag->setSortNo($sort_no + 1);
+            $LastTagBySortNo = $this->findOneBy([], ['sort_no' => 'DESC']);
+            $Tag->setSortNo($LastTagBySortNo ? $LastTagBySortNo->getSortNo() + 1 : 1);
         }
 
         $em = $this->getEntityManager();
-        $em->persist($tag);
-        $em->flush($tag);
+        $em->persist($Tag);
+        $em->flush();
+    }
+
+    /**
+     * タグを更新する.
+     *
+     * @param $Tag
+     * @param $fromId 更新前のタグID
+     * @param $toId 更新後のタグID
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function update($Tag, $fromId, $toId)
+    {
+        $em = $this->getEntityManager();
+        $Products = [];
+
+        if ($fromId !== $toId) {
+            $ProductTags = $Tag->getProductTag();
+            foreach ($ProductTags as $ProductTag) {
+                $Products[] = $ProductTag->getProduct();
+                $em->remove($ProductTag);
+            }
+            $em->flush();
+        }
+
+        $Tag->setId($toId);
+        $em->persist($Tag);
+        $em->flush();
+
+        $Tag = $this->find($toId);
+
+        foreach ($Products as $Product) {
+            $ProductTag = new ProductTag();
+            $ProductTag->setProduct($Product);
+            $ProductTag->setTag($Tag);
+            $em->persist($ProductTag);
+        }
+
+        $em->flush();
     }
 
     /**

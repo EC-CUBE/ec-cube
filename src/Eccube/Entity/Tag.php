@@ -41,7 +41,7 @@ if (!class_exists('\Eccube\Entity\Tag')) {
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
          * @ORM\Id
-         * @ORM\GeneratedValue(strategy="IDENTITY")
+         * @ORM\GeneratedValue(strategy="NONE")
          */
         protected $id;
 

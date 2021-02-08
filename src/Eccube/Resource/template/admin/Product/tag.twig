@@ -207,6 +207,10 @@ file that was distributed with this source code.
                                         <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_tag') }}">
                                             {{ form_widget(forms[Tag.id]._token) }}
                                             <div class="col-auto align-items-center">
+                                                {{ form_widget(forms[Tag.id].id, {'attr': {'data-origin-value': forms[Tag.id].id.vars.value }}) }}
+                                                {{ form_errors(forms[Tag.id].id) }}
+                                            </div>
+                                            <div class="col-auto align-items-center">
                                                 {{ form_widget(forms[Tag.id].name, {'attr': {'data-origin-value': forms[Tag.id].name.vars.value }}) }}
                                                 {{ form_errors(forms[Tag.id].name) }}
                                             </div>

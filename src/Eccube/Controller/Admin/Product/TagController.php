@@ -99,7 +99,10 @@ class TagController extends AbstractController
             foreach ($forms as $editForm) {
                 $editForm->handleRequest($request);
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
-                    $this->tagRepository->save($editForm->getData());
+                    $Tag = $editForm->getData();
+                    $fromId = $Tag->getId();
+                    $toId = $editForm['id']->getData();
+                    $this->tagRepository->update($Tag, $fromId, $toId);
 
                     $this->dispatchComplete($request, $editForm, $editForm->getData());
 
