@@ -136,9 +136,6 @@ parameters:
                         system_index:
                             name: admin.setting.system.system_info
                             url: admin_setting_system_system
-                        enhancement:
-                            name: admin.setting.system.enhancement
-                            url: admin_setting_system_enhancement
         store:
             name: admin.store
             icon: fa-plug
