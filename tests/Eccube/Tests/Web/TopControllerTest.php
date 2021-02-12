@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Repository\BaseInfoRepository;
+
 class TopControllerTest extends AbstractWebTestCase
 {
     public function testRoutingIndex()
@@ -30,15 +32,21 @@ class TopControllerTest extends AbstractWebTestCase
 
     public function test_GAスクリプト表示確認()
     {
-        // ある時
-        // データ更新
+        // GAスクリプト表示がある時
+        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $BaseInfo->setGaId('UA-12345678-1');
+        $this->entityManager->flush();
+
         $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
         $node = $crawler->filterXPath('//script[contains(@src, "googletagmanager")]');
-        $this->assertEquals('https://www.googletagmanager.com/gtag/js?id=ほげほげ', $node->attr('src'));
+        $this->assertEquals('https://www.googletagmanager.com/gtag/js?id=UA-12345678-1', $node->attr('src'));
 
-        // ない時
-        // データ更新
-        // Topコンテント取得
-        // コンテント確認
+        // GAスクリプト表示がない時
+        $BaseInfo->setGaId('');
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $node = $crawler->filterXPath('//script[contains(@src, "googletagmanager")]');
+        $this->assertEmpty($node);
     }
 }
