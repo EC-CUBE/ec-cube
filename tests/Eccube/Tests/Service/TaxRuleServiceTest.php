@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\TaxRuleService;
 

@@ -50,7 +50,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalid_NotSameValue()
+    public function testInvalidNotSameValue()
     {
         $this->formData['password']['second'] = 'eccube3@example.com';
         $this->form->submit($this->formData);
@@ -58,7 +58,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_NotBlank()
+    public function testInvalidNotBlank()
     {
         $this->formData['password']['first'] = '';
         $this->formData['password']['second'] = '';
@@ -67,7 +67,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_LengthMin()
+    public function testInvalidLengthMin()
     {
         $password = str_repeat('1', $this->eccubeConfig['eccube_password_min_len'] - 1);
 
@@ -78,7 +78,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_LengthMax()
+    public function testInvalidLengthMax()
     {
         $password = str_repeat('1', $this->eccubeConfig['eccube_password_max_len'] + 1);
 
@@ -89,7 +89,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_Hiragana()
+    public function testInvalidHiragana()
     {
         $password = str_repeat('あ', $this->eccubeConfig['eccube_password_max_len']);
 
@@ -114,7 +114,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
     }
      */
 
-    public function testInvalid_SpaceOnly()
+    public function testInvalidSpaceOnly()
     {
         $password = str_repeat(' ', $this->eccubeConfig['eccube_password_max_len']);
 
@@ -125,7 +125,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValid_Space()
+    public function testValidSpace()
     {
         // これも通っていいのか？
         $password = '1234 \n\s\t78';

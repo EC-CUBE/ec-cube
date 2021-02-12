@@ -1,11 +1,23 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Symfony\Component\HttpFoundation\Tests\Session\Storage\Handler;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * @requires PHP 7.0
+ *
  * @see https://github.com/symfony/symfony/blob/3.4/src/Symfony/Component/HttpFoundation/Tests/Session/Storage/Handler/AbstractSessionHandlerTest.php
  */
 class SameSiteNoneCompatSessionHandlerTest extends TestCase
@@ -41,8 +53,8 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         $context = [
             'http' => [
                 'header' => "Cookie: sid=123abc\r\nX-Forwarded-proto: https",
-                'user_agent' => $user_agent
-            ]
+                'user_agent' => $user_agent,
+            ],
         ];
         $context = stream_context_create($context);
         $result = file_get_contents(sprintf('http://localhost:8053/%s.php', $fixture), false, $context);
@@ -61,6 +73,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
 
     /**
      * Secure 属性が付与されない場合は, SameSite 属性も付与されない(ブラウザのデフォルト値)
+     *
      * @dataProvider provideSession
      */
     public function testNonSecureSession($fixture, $user_agent, $shouldSendSameSiteNone)
@@ -68,8 +81,8 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         $context = [
             'http' => [
                 'header' => "Cookie: sid=123abc\r\n",
-                'user_agent' => $user_agent
-            ]
+                'user_agent' => $user_agent,
+            ],
         ];
         $context = stream_context_create($context);
         $result = file_get_contents(sprintf('http://localhost:8053/%s.php', $fixture), false, $context);
@@ -96,7 +109,9 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
 
         foreach (glob(self::FIXTURES_DIR.'/*.php') as $file) {
             $name = pathinfo($file, PATHINFO_FILENAME);
-            if ($name == 'common') continue;
+            if ($name == 'common') {
+                continue;
+            }
             if ($name == 'storage') {
                 // TODO Mock が動作しないためスキップ
                 continue;

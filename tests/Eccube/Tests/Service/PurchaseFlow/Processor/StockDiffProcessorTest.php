@@ -151,12 +151,14 @@ class StockDiffProcessorTest extends EccubeTestCase
 
     /**
      * @dataProvider prepareProvider
+     *
      * @param $beforeStock int 編集前の在庫数
      * @param $afterStock int 編集後の在庫数
      * @param $beforeQuantity int 編集前の商品の数量
      * @param $afterQuantity int 編集後の商品の数量
      * @param $beforeOrderStatus int 編集前の受注ステータス
      * @param $afterOrderStatus int 編集後の受注ステータス
+     *
      * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      */
     public function testPrepare($beforeStock, $afterStock, $beforeQuantity, $afterQuantity, $beforeOrderStatus, $afterOrderStatus)

@@ -317,7 +317,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @param $secretKey
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getProvisionalCustomerBySecretKey($secretKey)
     {
@@ -332,7 +332,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @param $email
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getRegularCustomerByEmail($email)
     {
@@ -348,7 +348,7 @@ class CustomerRepository extends AbstractRepository
      * @param $resetKey
      * @param $email
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getRegularCustomerByResetKey($resetKey, $email = null)
     {

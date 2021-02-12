@@ -57,7 +57,7 @@ class NameTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidData_Name01_MaxLength()
+    public function testInvalidDataName01MaxLength()
     {
         $data = [
             'name' => [
@@ -69,7 +69,7 @@ class NameTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_Name02_MaxLength()
+    public function testInvalidDataName02MaxLength()
     {
         $data = [
             'name' => [
@@ -81,7 +81,7 @@ class NameTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_Name01_HasWhiteSpaceEn()
+    public function testInvalidDataName01HasWhiteSpaceEn()
     {
         $data = [
             'name' => [
@@ -93,7 +93,7 @@ class NameTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_Name02_HasWhiteSpaceEn()
+    public function testInvalidDataName02HasWhiteSpaceEn()
     {
         $data = [
             'name' => [
@@ -105,7 +105,7 @@ class NameTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_Name01_HasWhiteSpaceJa()
+    public function testInvalidDataName01HasWhiteSpaceJa()
     {
         $data = [
             'name' => [
@@ -117,7 +117,7 @@ class NameTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_Name02_HasWhiteSpaceJa()
+    public function testInvalidDataName02HasWhiteSpaceJa()
     {
         $data = [
             'name' => [

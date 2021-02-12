@@ -17,8 +17,8 @@ use Eccube\Common\EccubeConfig;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -85,7 +85,7 @@ class LogType extends AbstractType
                 ],
             ])
             ->add('download', SubmitType::class, [
-                'label' => 'admin.common.download'
+                'label' => 'admin.common.download',
             ]);
     }
 

@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Entity;
 
 use Eccube\Entity\DeliveryDuration;
-use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Tests\EccubeTestCase;
 
 class DeliveryDurationTest extends EccubeTestCase

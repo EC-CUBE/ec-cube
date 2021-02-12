@@ -13,21 +13,21 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
-use Eccube\Entity\OrderItem;
-use Eccube\Entity\Shipping;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Repository\MemberRepository;
 use Eccube\Entity\Member;
-use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
-use Eccube\Repository\TaxRuleRepository;
+use Eccube\Entity\Shipping;
+use Eccube\Repository\MemberRepository;
 use Eccube\Repository\ShippingRepository;
+use Eccube\Repository\TaxRuleRepository;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * ShippingRepository test cases.

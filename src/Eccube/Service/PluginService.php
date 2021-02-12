@@ -25,8 +25,8 @@ use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class PluginService
 {
@@ -972,6 +972,7 @@ class PluginService
         if (false === $index) {
             $index = array_search(strtolower($pluginCode), array_column($plugins, 'product_code'));
         }
+
         return $index;
     }
 

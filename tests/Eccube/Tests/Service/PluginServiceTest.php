@@ -16,10 +16,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerServiceInterface;
-use Eccube\Service\EntityProxyService;
 use Eccube\Service\PluginService;
-use Eccube\Service\SchemaService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -530,6 +527,7 @@ EOD;
 
     /**
      * Test Entity and Trait
+     *
      * @group update-schema-doctrine
      * @group update-schema-doctrine-install
      */
@@ -703,7 +701,7 @@ EOD;
         $this->assertFileNotExists($dir);
     }
 
-    public function testReadConfig_normalizeSourceToZero()
+    public function testReadConfigNormalizeSourceToZero()
     {
         $pluginDir = $this->createTempDir();
         $composerFile = json_encode([
@@ -735,7 +733,7 @@ EOD;
             'version' => $config['version'],
             'type' => 'eccube-plugin',
             'require' => [
-                'ec-cube/plugin-installer' => '*'
+                'ec-cube/plugin-installer' => '*',
                  ],
             'extra' => [
                 'code' => $config['code'],

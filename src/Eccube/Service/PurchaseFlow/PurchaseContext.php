@@ -13,8 +13,8 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Customer;
+use Eccube\Entity\ItemHolderInterface;
 
 /**
  * PurchaseFlowの実行中コンテキスト.

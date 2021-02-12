@@ -151,7 +151,7 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
          *
          * @return PageLayout
          */
-        public function setPage(\Eccube\Entity\Page $Page = null)
+        public function setPage(Page $Page = null)
         {
             $this->Page = $Page;
 
@@ -175,7 +175,7 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
          *
          * @return PageLayout
          */
-        public function setLayout(\Eccube\Entity\Layout $layout = null)
+        public function setLayout(Layout $layout = null)
         {
             $this->Layout = $layout;
 

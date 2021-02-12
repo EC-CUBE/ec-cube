@@ -16,7 +16,6 @@ namespace Eccube\Tests\Web\Mypage;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\AbstractWebTestCase;
 

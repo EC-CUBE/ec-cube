@@ -14,8 +14,8 @@
 namespace Eccube\Tests\Doctrine\Common\CsvDataFixtures;
 
 use Eccube\Doctrine\Common\CsvDataFixtures\CsvFixture;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\Master\JobRepository;
+use Eccube\Tests\EccubeTestCase;
 
 class CsvFixtureTest extends EccubeTestCase
 {

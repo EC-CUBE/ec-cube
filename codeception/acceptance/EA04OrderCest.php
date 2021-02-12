@@ -26,18 +26,18 @@ use Page\Admin\OrderManagePage;
  */
 class EA04OrderCest
 {
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         // すべてのテストケース実施前にログインしておく
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function order_受注検索(\AcceptanceTester $I)
+    public function order_受注検索(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC01-T01(& UC01-T02, UC01-T03) 受注検索');
 
@@ -55,7 +55,7 @@ class EA04OrderCest
         $I->see('検索条件に誤りがあります', OrderManagePage::$検索結果_エラーメッセージ);
     }
 
-    public function order_受注CSVダウンロード(\AcceptanceTester $I)
+    public function order_受注CSVダウンロード(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC02-T01 受注CSVダウンロード');
 
@@ -73,7 +73,7 @@ class EA04OrderCest
         $I->assertGreaterOrEquals(count($TargetOrders), count(file($OrderCSV)), '検索結果以上の行数があるはず');
     }
 
-    public function order_受注情報のCSV出力項目変更設定(\AcceptanceTester $I)
+    public function order_受注情報のCSV出力項目変更設定(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC02-T02 受注情報のCSV出力項目変更設定');
 
@@ -92,7 +92,7 @@ class EA04OrderCest
         $I->assertEquals(3, $value);
     }
 
-    public function order_配送CSVダウンロード(\AcceptanceTester $I)
+    public function order_配送CSVダウンロード(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC02-T01 配送CSVダウンロード');
 
@@ -110,7 +110,7 @@ class EA04OrderCest
         $I->assertGreaterOrEquals(count($TargetOrders), count(file($OrderCSV)), '検索結果以上の行数があるはず');
     }
 
-    public function order_配送情報のCSV出力項目変更設定(\AcceptanceTester $I)
+    public function order_配送情報のCSV出力項目変更設定(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC02-T02 配送情報のCSV出力項目変更設定');
 
@@ -129,7 +129,7 @@ class EA04OrderCest
         $I->assertEquals(4, $value);
     }
 
-    public function order_受注編集(\AcceptanceTester $I)
+    public function order_受注編集(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC05-T01(& UC05-T02/UC05-T03/UC06-T01) 受注編集');
 
@@ -194,7 +194,7 @@ class EA04OrderCest
         $I->see('保存しました', OrderEditPage::$登録完了メッセージ);
     }
 
-    public function order_受注削除(\AcceptanceTester $I)
+    public function order_受注削除(AcceptanceTester $I)
     {
         $I->getScenario()->incomplete('未実装：受注削除は未実装');
         $I->wantTo('EA0401-UC08-T01(& UC08-T02) 受注削除');
@@ -227,7 +227,7 @@ class EA04OrderCest
         $I->assertEquals($OrderNumForDontDel, $OrderListPage->一覧_注文番号(1));
     }
 
-    public function order_受注メール通知(\AcceptanceTester $I)
+    public function order_受注メール通知(AcceptanceTester $I)
     {
         $I->wantTo('EA0402-UC01-T01 受注メール通知');
 
@@ -241,7 +241,7 @@ class EA04OrderCest
         $I->seeInLastEmailSubjectTo('admin@example.com', '[EC-CUBE SHOP] 商品出荷のお知らせ');
     }
 
-    public function order_一括メール通知(\AcceptanceTester $I)
+    public function order_一括メール通知(AcceptanceTester $I)
     {
         $I->wantTo('EA0402-UC02-T01(& UC02-T02) 一括メール通知');
 
@@ -255,7 +255,7 @@ class EA04OrderCest
         $I->seeEmailCount(20);
     }
 
-    public function order_受注登録(\AcceptanceTester $I)
+    public function order_受注登録(AcceptanceTester $I)
     {
         $I->wantTo('EA0405-UC01-T01(& UC01-T02) 受注登録');
 
@@ -286,7 +286,7 @@ class EA04OrderCest
         $I->see('保存しました', OrderEditPage::$登録完了メッセージ);
     }
 
-    public function order_pdfページをエクスポートする(\AcceptanceTester $I)
+    public function order_pdfページをエクスポートする(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC02-T01 pdfページをエクスポートする');
 
@@ -309,7 +309,7 @@ class EA04OrderCest
         $I->closeTab();
     }
 
-    public function order_出力pdfダウンロード(\AcceptanceTester $I)
+    public function order_出力pdfダウンロード(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC02-T01 出力pdfダウンロード');
 
@@ -341,7 +341,7 @@ class EA04OrderCest
         $I->closeTab();
     }
 
-    public function order_ー括受注のステータス変更(\AcceptanceTester $I)
+    public function order_ー括受注のステータス変更(AcceptanceTester $I)
     {
         $I->wantTo('EA0405-UC06-T01_ー括受注のステータス変更');
 
@@ -392,7 +392,7 @@ class EA04OrderCest
         $I->see('検索結果：'.(count($DeliveredOrders) + count($NewOrders)).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
     }
 
-    public function order_個別出荷済みステータス変更(\AcceptanceTester $I)
+    public function order_個別出荷済みステータス変更(AcceptanceTester $I)
     {
         $I->wantTo('EA0405-UC06-T02_個別出荷済みステータス変更');
 

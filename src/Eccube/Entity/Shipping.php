@@ -739,7 +739,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          *
          * @return Shipping
          */
-        public function addOrderItem(\Eccube\Entity\OrderItem $OrderItem)
+        public function addOrderItem(OrderItem $OrderItem)
         {
             $this->OrderItems[] = $OrderItem;
 
@@ -753,7 +753,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeOrderItem(\Eccube\Entity\OrderItem $OrderItem)
+        public function removeOrderItem(OrderItem $OrderItem)
         {
             return $this->OrderItems->removeElement($OrderItem);
         }
@@ -787,7 +787,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          *
          * @return Shipping
          */
-        public function setCountry(\Eccube\Entity\Master\Country $country = null)
+        public function setCountry(Master\Country $country = null)
         {
             $this->Country = $country;
 
@@ -811,7 +811,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          *
          * @return Shipping
          */
-        public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+        public function setPref(Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 
@@ -835,7 +835,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          *
          * @return Shipping
          */
-        public function setDelivery(\Eccube\Entity\Delivery $delivery = null)
+        public function setDelivery(Delivery $delivery = null)
         {
             $this->Delivery = $delivery;
 
@@ -869,7 +869,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          *
          * @return $this
          */
-        public function setProductClassOfTemp(\Eccube\Entity\ProductClass $ProductClassOfTemp)
+        public function setProductClassOfTemp(ProductClass $ProductClassOfTemp)
         {
             $this->ProductClassOfTemp = $ProductClassOfTemp;
 
@@ -989,7 +989,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          *
          * @return Shipping
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

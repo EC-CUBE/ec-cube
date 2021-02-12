@@ -72,5 +72,6 @@ function logs($channel)
 {
     // FIXME Container の取得方法を要検討
     $container = LoggerFacade::getContainer();
+
     return $container->get('monolog.logger.'.$channel);
 }

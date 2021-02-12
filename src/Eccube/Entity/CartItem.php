@@ -91,7 +91,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         {
             return $this->id;
         }
-        
+
         /**
          * @param  integer  $price
          *

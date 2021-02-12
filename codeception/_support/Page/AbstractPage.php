@@ -15,7 +15,7 @@ namespace Page;
 
 abstract class AbstractPage
 {
-    /** @var \AcceptanceTester $tester */
+    /** @var \AcceptanceTester */
     protected $tester;
 
     /**

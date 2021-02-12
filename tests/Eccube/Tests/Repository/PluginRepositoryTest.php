@@ -19,7 +19,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class PluginRepositoryTest extends EccubeTestCase
 {
-
     /**
      * @var PluginRepository
      */
@@ -76,6 +75,7 @@ class PluginRepositoryTest extends EccubeTestCase
 
     /**
      * @param string $code
+     *
      * @return Plugin
      */
     private function createPlugin($code)
@@ -90,6 +90,7 @@ class PluginRepositoryTest extends EccubeTestCase
 
         $this->entityManager->persist($Plugin);
         $this->entityManager->flush();
+
         return $Plugin;
     }
 

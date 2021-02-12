@@ -21,7 +21,6 @@ use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
-use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\Processor\PaymentValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;

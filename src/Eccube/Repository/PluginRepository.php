@@ -48,6 +48,7 @@ class PluginRepository extends AbstractRepository
         $qb = $this->createQueryBuilder('p')
             ->where('LOWER(p.code) = :code')
             ->setParameter('code', strtolower($code));
+
         return $qb->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

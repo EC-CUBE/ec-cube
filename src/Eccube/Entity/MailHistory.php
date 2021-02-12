@@ -205,7 +205,7 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
          *
          * @return MailHistory
          */
-        public function setOrder(\Eccube\Entity\Order $order = null)
+        public function setOrder(Order $order = null)
         {
             $this->Order = $order;
 
@@ -229,7 +229,7 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
          *
          * @return MailHistory
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

@@ -21,7 +21,6 @@ use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Service\CartService;
 use Symfony\Component\HttpKernel\Client;
 
