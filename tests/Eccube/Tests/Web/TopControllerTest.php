@@ -27,4 +27,18 @@ class TopControllerTest extends AbstractWebTestCase
         $node = $crawler->filter('link[rel=icon]');
         $this->assertEquals('/html/user_data/assets/img/common/favicon.ico', $node->attr('href'));
     }
+
+    public function test_GAスクリプト表示確認()
+    {
+        // ある時
+        // データ更新
+        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $node = $crawler->filterXPath('//script[contains(@src, "googletagmanager")]');
+        $this->assertEquals('https://www.googletagmanager.com/gtag/js?id=ほげほげ', $node->attr('src'));
+
+        // ない時
+        // データ更新
+        // Topコンテント取得
+        // コンテント確認
+    }
 }
