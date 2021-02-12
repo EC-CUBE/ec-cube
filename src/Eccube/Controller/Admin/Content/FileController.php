@@ -154,7 +154,7 @@ class FileController extends AbstractController
                     new Assert\Regex([
                         'pattern' => "/^\.(.*)$/",
                         'match' => false,
-                        'message' => 'file.text.error.folder_period',
+                        'message' => 'admin.content.file.folder_name_period_error',
                     ]),
                 ],
             ])
