@@ -115,6 +115,9 @@ parameters:
                         shop_order_status:
                             name: admin.setting.shop.order_status_setting
                             url: admin_setting_shop_order_status
+                        shop_calendar:
+                            name: admin.setting.shop.calendar_setting
+                            url: admin_setting_shop_calendar
                 system:
                     name: admin.setting.system
                     children:
