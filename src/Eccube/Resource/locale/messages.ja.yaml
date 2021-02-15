@@ -119,12 +119,6 @@ front.block.eyecatch.view_list: 一覧を見る
 front.block.new_item.title__en: NEW ITEM
 front.block.new_item.title__ja: 新着商品
 front.block.new_item.more: more
-front.block.new_item.item_1_name: 彩のジェラート"CUBE"
-front.block.new_item.item_1_price: ￥1,200(税込)
-front.block.new_item.item_2_name: チェリーアイスサンド
-front.block.new_item.item_2_price: ￥800(税込)
-front.block.new_item.item_3_name: 彩のジェラート"CUBE" NEO
-front.block.new_item.item_3_price: ￥600(税込)
 front.block.news.title__en: NEWS
 front.block.news.title__ja: 新着情報
 front.block.news.read_more: more
