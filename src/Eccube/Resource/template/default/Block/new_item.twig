@@ -8,7 +8,14 @@ http://www.ec-cube.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
+{% set limit = 5 %}
+{% set Products = repository('Eccube\\Entity\\Product').findBy(
+    { Status: 1 },
+    { create_date: 'desc' },
+    limit
+) %}
 
+{% if Products %}
 <div class="ec-role">
     <div class="ec-newItemRole">
         <div class="ec-newItemRole__list">
@@ -20,27 +27,22 @@ file that was distributed with this source code.
                     <a class="ec-inlineBtn--top" href="{{ url('product_list') }}">{{ 'front.block.new_item.more'|trans }}</a>
                 </div>
             </div>
-            <div class="ec-newItemRole__listItem">
-                <a href="{{ url('product_detail', {'id': '1'}) }}">
-                    <img src="{{ asset('cube-1.png', 'save_image') }}">
-                    <p class="ec-newItemRole__listItemTitle">{{ 'front.block.new_item.item_1_name'|trans }}</p>
-                    <p class="ec-newItemRole__listItemPrice">{{ 'front.block.new_item.item_1_price'|trans }}</p>
-                </a>
-            </div>
-            <div class="ec-newItemRole__listItem">
-                <a href="{{ url('product_detail', {'id': '2'}) }}">
-                    <img src="{{ asset('sand-1.png', 'save_image') }}">
-                    <p class="ec-newItemRole__listItemTitle">{{ 'front.block.new_item.item_2_name'|trans }}</p>
-                    <p class="ec-newItemRole__listItemPrice">{{ 'front.block.new_item.item_2_price'|trans }}</p>
-                </a>
-            </div>
-            <div class="ec-newItemRole__listItem">
-                <a href="{{ url('product_detail', {'id': '1'}) }}">
-                    <img src="{{ asset(''|no_image_product , 'save_image') }}">
-                    <p class="ec-newItemRole__listItemTitle">{{ 'front.block.new_item.item_3_name'|trans }}</p>
-                    <p class="ec-newItemRole__listItemPrice">{{ 'front.block.new_item.item_3_price'|trans }}</p>
-                </a>
-            </div>
+            {% for Product in Products %}
+                <div class="ec-newItemRole__listItem">
+                    <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                        <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" alt="{{ Product.name }}">
+                        <p class="ec-newItemRole__listItemTitle">{{ Product.name }}</p>
+                        <p class="ec-newItemRole__listItemPrice">
+                            {% if Product.hasProductClass and Product.getPrice02Min != Product.getPrice02Max %}
+                                {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
+                            {% else %}
+                                {{ Product.getPrice02IncTaxMin|price }}
+                            {% endif %}
+                        </p>
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </div>
+{% endif %}
