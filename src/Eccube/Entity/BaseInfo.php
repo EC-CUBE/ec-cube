@@ -282,7 +282,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
          *
          * @ORM\Column(name="ga_id", type="string", length=255, nullable=true)
          */
-        private $ga_id;
+        private $gaId;
 
         /**
          * Get id.
@@ -1093,7 +1093,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
          */
         public function setGaId($gaId = null)
         {
-            $this->ga_id = $gaId;
+            $this->gaId = $gaId;
 
             return $this;
         }
@@ -1105,7 +1105,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
          */
         public function getGaId()
         {
-            return $this->ga_id;
+            return $this->gaId;
         }
     }
 }

@@ -13,7 +13,9 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
 
 class TopControllerTest extends AbstractWebTestCase
 {
@@ -33,7 +35,7 @@ class TopControllerTest extends AbstractWebTestCase
     public function test_GAスクリプト表示確認()
     {
         // GAスクリプト表示がある時
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $BaseInfo->setGaId('UA-12345678-1');
         $this->entityManager->flush();
 
