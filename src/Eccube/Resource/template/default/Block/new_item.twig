@@ -8,14 +8,8 @@ http://www.ec-cube.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% set limit = 5 %}
-{% set Products = repository('Eccube\\Entity\\Product').findBy(
-    { Status: 1 },
-    { create_date: 'desc' },
-    limit
-) %}
 
-{% if Products %}
+{% if Products is defined %}
 <div class="ec-role">
     <div class="ec-newItemRole">
         <div class="ec-newItemRole__list">
