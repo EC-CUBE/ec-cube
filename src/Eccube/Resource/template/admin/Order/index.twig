@@ -36,9 +36,10 @@ file that was distributed with this source code.
         $(function() {
             $.when(
                 $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
-                $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
-                $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
-            ).done(function() {
+                $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}")
+            ).then(function() {
+                return $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
+            }).then(function() {
                 // datetimepicker で value が消えてしまうので data-value に保持しておく
                 $('input.datetimepicker-input').each(function() {
                     $(this).data('value', $(this).val());

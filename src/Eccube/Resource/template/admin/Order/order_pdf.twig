@@ -54,9 +54,10 @@ file that was distributed with this source code.
                 // input type属性でdateが利用できるかどうか(カレンダー表示できないブラウザ対応)
                 $.when(
                     $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
-                    $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
-                    $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
-                ).done(function() {
+                    $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}")
+                ).then(function() {
+                    return $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
+                }).then(function() {
                     $('input[id$=_issue_date]').datetimepicker({
                         locale: '{{ eccube_config.locale }}',
                         format: 'YYYY-MM-DD',
