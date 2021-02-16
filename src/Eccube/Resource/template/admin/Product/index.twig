@@ -33,33 +33,30 @@ file that was distributed with this source code.
 {% endblock stylesheet %}
 
 {% block javascript %}
+    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}"></script>
+
     <script>
         $(function() {
-            $.when(
-                $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
-                $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}")
-            ).then(function() {
-                return $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
-            }).then(function() {
-                // datetimepicker で value が消えてしまうので data-value に保持しておく
-                $('input.datetimepicker-input').each(function() {
-                    $(this).data('value', $(this).val());
-                });
+            // datetimepicker で value が消えてしまうので data-value に保持しておく
+            $('input.datetimepicker-input').each(function() {
+                $(this).data('value', $(this).val());
+            });
 
-                $('input.datetimepicker-input').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD HH:mm:ss',
-                    useCurrent: false,
-                    buttons: {
-                        showToday: true,
-                        showClose: true
-                    },
-                });
+            $('input.datetimepicker-input').datetimepicker({
+                locale: '{{ eccube_config.locale }}',
+                format: 'YYYY-MM-DD HH:mm:ss',
+                useCurrent: false,
+                buttons: {
+                    showToday: true,
+                    showClose: true
+                },
+            });
 
-                // datetimepicker で value が消えてしまうので更新
-                $('input.datetimepicker-input').each(function() {
-                    $(this).val($(this).data('value'));
-                });
+            // datetimepicker で value が消えてしまうので更新
+            $('input.datetimepicker-input').each(function() {
+                $(this).val($(this).data('value'));
             });
 
             $('#bulkDelete').on('click', function() {
