@@ -46,19 +46,6 @@ file that was distributed with this source code.
             });
         });
     </script>
-
-    {% if BaseInfo.ga_id is not empty %}
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ BaseInfo.ga_id }}"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', '{{ BaseInfo.ga_id }}');
-    </script>
-    {% endif %}
-
     {# Layout: HEAD #}
     {% if Layout.Head %}
         {{ include('block.twig', {'Blocks': Layout.Head}) }}
