@@ -1597,7 +1597,7 @@ tooltip.setting.shop.shop.option_product_tax: If turned on, you can set the tax 
 tooltip.setting.shop.shop.option_point_enabled: If turned on, the point system is enabled.
 tooltip.setting.shop.shop.option_point_rate: You can change the point return rate by purchase amount.
 tooltip.setting.shop.shop.option_point_conversion_rate: Conversion rate per 1 point. E.g. If you set ''1'', the point becomes available to shoppers with the rate of 1 point = 1 yen.
-tooltip.setting.shop.payment.rule: You can set the terms of use for the payment method. The conditions are determined by the total payment (tax included) including fees.
+tooltip.setting.shop.payment.rule: You can set the terms of use for the payment method. If the total payment amount (tax included) including your own fee matches the conditions, it will be displayed in the payment method options of the purchase flow.
 tooltip.setting.shop.payment.logo_image: You can upload the payment option icons displayed in the payment methods during the checkout process. If not registered, the payment methods will be displayed w/o images.
 tooltip.setting.shop.delivery.tracking_number_url: Enter the URL of the shipping tracker of the delivery company.
 tooltip.setting.shop.delivery.sale_type: Specify the sales type(s) available for this delivery method.
