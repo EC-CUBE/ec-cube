@@ -1,0 +1,90 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% block javascript %}
+<script>
+$(function() {
+    var localStorageKey = 'block_browsing_history';
+
+    var getHistory = function () {
+        try {
+            return JSON.parse(localStorage.getItem(localStorageKey)) || [];
+        }
+        catch (e) {
+            localStorage.setItem(localStorageKey, null);
+            return [];
+        }
+    }
+
+    var updateHistory = function (history, product) {
+        for (var i in history) {
+            if (history[i].id === product.id) {
+                history.splice(i, 1);
+                break;
+            }
+        }
+        var newHistory = [product].concat(history).slice(0, 5);
+        localStorage.setItem(localStorageKey, JSON.stringify(newHistory));
+        return newHistory;
+    };
+
+    var getProductDetail = function () {
+        var block = $('#ex-block-browsingHistory');
+        var id = block.data('product-id');
+        if (!id) {
+            return false;
+        }
+        return {
+            id,
+            name: block.data('product-name'),
+            url: block.data('product-url'),
+            image: block.data('product-image') || null
+        }
+    };
+
+    var createDom = function (history) {
+        // todo 自ページと同じアイテムは表示しない
+        var html = '';
+        for (var i in history) {
+            html += '<div class="ec-newItemRole__listItem"><a href="' + history[i].url + '"><img src="' + history[i].image + '"><p class="ec-newItemRole__listItemTitle">' + history[i].name + '</p></a></div>';
+        }
+        $('#ex-block-browsingHistory_products').append(html);
+    }
+
+    var history = getHistory();
+    var product = getProductDetail();
+    if (product) {
+        history = updateHistory(history, product);
+    }
+
+    createDom(history);
+});
+</script>
+{% endblock %}
+<div id="ex-block-browsingHistory" class="ec-role"
+    {% if app.request.attributes.get('_route') == 'product_detail' %}
+        data-product-id="{{ Product.id }}"
+        data-product-name="{{ Product.name }}"
+        data-product-url="{{ url('product_detail', {'id': Product.id}) }}"
+        data-product-image="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}"
+    {% endif %}
+>
+    <div class="ec-newItemRole">
+        <div class="ec-newItemRole__list" id="ex-block-browsingHistory_products">
+            <div class="ec-newItemRole__listItem">
+                <div class="ec-newItemRole__listItemHeading ec-secHeading--tandem">
+                    <span class="ec-secHeading__en">最近チェックしたアイテム</span>
+                    <span class="ec-secHeading__line"></span>
+                    <span class="ec-secHeading__ja">最近チェックしたアイテム</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
