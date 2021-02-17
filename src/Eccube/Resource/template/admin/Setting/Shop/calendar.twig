@@ -36,16 +36,16 @@ file that was distributed with this source code.
 {% block javascript %}
     <script type="text/javascript">
         $(function() {
-            $('.tax_rule_list_item td.action a.edit-button').click(function() {
+            $('.calendar_list_item td.action a.edit-button').click(function() {
                 var id = $(this).data('id');
-                var tr = $('#ex-tax_rule-' + id);
+                var tr = $('#ex-calendar-' + id);
                 $(tr).find('.list').hide();
                 $(tr).find('.edit').show();
             });
 
-            $('.tax_rule_list_item .cancel').click(function() {
+            $('.calendar_list_item .cancel').click(function() {
                 var id = $(this).data('id');
-                var tr = $('#ex-tax_rule-' + id);
+                var tr = $('#ex-calendar-' + id);
                 $(tr).find('.edit').hide();
                 $(tr).find('.list').show();
             });
@@ -69,106 +69,90 @@ file that was distributed with this source code.
                             <colgroup>
                                 <col width="5%">
                                 <col width="35%">
-                                <col width="15%">
+                                <col width="20%">
                                 <col width="">
                             </colgroup>
                             <thead>
-                            <tr>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.common.id'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.calendar.title'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.calendar.holiday'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3 pr-5"></th>
-                            </tr>
+                                <tr>
+                                    <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.common.id'|trans }}</th>
+                                    <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.calendar.title'|trans }}</th>
+                                    <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.calendar.holiday'|trans }}</th>
+                                    <th class="border-top-0 pt-2 pb-2 pl-3 pr-5"></th>
+                                </tr>
                             </thead>
                             <tbody>
+                                <tr id="calendar_item_new">
+                                    <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="{{ url('admin_setting_shop_calendar_new') }}">
+                                        {{ form_widget(form._token) }}
+                                        <td class="align-middle pl-3"></td>
+                                        <td class="align-middle" style="width:230px;">
+                                            <div class="input-group">
+                                                {{ form_widget(form.title) }}
+                                                {{ form_errors(form.title) }}
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ form_widget(form.holiday) }}
+                                            {{ form_errors(form.holiday) }}
+                                        </td>
+                                        <td class="align-middle"></td>
+                                        <td class="align-middle pr-5">
+                                            <div class="row justify-content-end">
+                                                <button class="btn btn-ec-regular px-4" type="submit">{{ 'admin.common.create__new'|trans }}</button>
+                                            </div>
+                                        </td>
+                                    </form>
+                                </tr>
 
-                            <tr id="calendar_item_new">
-                                <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="{{ url('admin_setting_shop_calendar_new') }}">
-                                    {{ form_widget(form._token) }}
-                                    <td class="align-middle pl-3"></td>
-                                    <td class="align-middle" style="width:230px;">
-                                        <div class="input-group">
-                                            {{ form_widget(form.title) }}
-                                            {{ form_errors(form.title) }}
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">
-                                        {{ form_widget(form.holiday) }}
-                                        {{ form_errors(form.holiday) }}
-                                    </td>
-                                    <td class="align-middle"></td>
-                                    <td class="align-middle pr-5">
-                                        <div class="row justify-content-end">
-                                            <button class="btn btn-ec-regular px-4" type="submit">{{ 'admin.common.create__new'|trans }}</button>
-                                        </div>
-                                    </td>
-                                </form>
-                            </tr>
-
-                            {#{% for TaxRule in TaxRules %}
-                                <tr id="ex-tax_rule-{{ TaxRule.id }}" class="tax_rule_list_item {% if errors[TaxRule.id] %}has-error{% endif %}">
-                                    <form name="edit-form" id="edit-form_{{ TaxRule.id }}" method="post" action="{{ url('admin_setting_shop_tax') }}">
-                                        {{ form_widget(forms[TaxRule.id]._token) }}
-                                        <input type="hidden" value="{{ TaxRule.id }}" name="tax_rule_id">
-                                        <input type="hidden" value="edit_inline" name="mode"/>
-                                        <td class="align-middle pl-3"><span>{{ TaxRule.id }}</span></td>
-                                        <td class="align-middle text-right" style="width:230px;">
-                                            <div class="edit justify-content-end">
-                                                <div class="input-group">
-                                                    {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-right'}}) }}
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">%</span>
-                                                    </div>
-                                                    {{ form_errors(forms[TaxRule.id].tax_rate) }}
+                                {% for Calendar in Calendars %}
+                                    <tr id="ex-calendar-{{ Calendar.id }}" class="calendar_list_item {% if errors[Calendar.id] %}has-error{% endif %}">
+                                        <form name="edit-form" id="edit-form_{{ Calendar.id }}" method="post" action="{{ url('admin_setting_shop_calendar') }}">
+                                            {{ form_widget(forms[Calendar.id]._token) }}
+                                            <input type="hidden" value="{{ Calendar.id }}" name="calendar_id">
+                                            <input type="hidden" value="edit_inline" name="mode"/>
+                                            <td class="align-middle pl-3"><span>{{ Calendar.id }}</span></td>
+                                            <td class="align-middle">
+                                                <div class="edit">
+                                                    {{ form_widget(forms[Calendar.id].title) }}
                                                 </div>
-                                            </div>
-                                            <div class="list">
-                                                <span class="col-6 text-right pr-0">{{ TaxRule.tax_rate }}</span><span class="col-6 pl-1">%</span>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="edit">
-                                                {{ form_widget(forms[TaxRule.id].rounding_type) }}
-                                            </div>
-                                            <div class="list">
-                                                <span>{{ TaxRule.rounding_type }}</span>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="edit">
-                                                {% if TaxRule.default_tax_rule %}
-                                                    {{ 'admin.setting.shop.tax.base_rate_setting'|trans }}
-                                                {% else %}
-                                                    {{ form_widget(forms[TaxRule.id].apply_date) }}
-                                                    {{ form_errors(forms[TaxRule.id].apply_date) }}
-                                                {% endif %}
-                                            </div>
-                                            <div class="list">
-                                                <span>{{ TaxRule.default_tax_rule  ? 'admin.setting.shop.tax.base_rate_setting'|trans : TaxRule.apply_date|date_min }}</span>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="edit">
-                                                <button type="submit" class="btn text-nowrap btn-ec-conversion">{{ 'admin.common.decision'|trans }}</button>
-                                                <button type="button" class="btn text-nowrap btn-ec-sub cancel" data-id="{{ TaxRule.id }}">{{ 'admin.common.cancel'|trans }}</button>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle action">
-                                            <div class="col-12 col-sm-10 col-md-8 col-lg-6 pull-right">
-                                                <div class="row pr-2">
-                                                    <div class="col-6 text-center pr-0"><a class="btn btn-ec-actionIcon edit-button" data-tooltip="true" data-id="{{ TaxRule.id }}" data-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                <div class="list">
+                                                    <span>{{ Calendar.title }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="edit">
+                                                    {{ form_widget(forms[Calendar.id].holiday) }}
+                                                    {{ form_errors(forms[Calendar.id].holiday) }}
+                                                </div>
+                                                <div class="list">
+                                                    <span>{{ Calendar.holiday|date_day }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="edit">
+                                                    <button type="submit" class="btn text-nowrap btn-ec-conversion">{{ 'admin.common.decision'|trans }}</button>
+                                                    <button type="button" class="btn text-nowrap btn-ec-sub cancel" data-id="{{ Calendar.id }}">{{ 'admin.common.cancel'|trans }}</button>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle action">
+                                                <div class="col-12 col-sm-10 col-md-8 col-lg-6 pull-right">
+                                                    <div class="row pr-2">
+                                                        <div class="col-6 text-center pr-0">
+                                                            <a class="btn btn-ec-actionIcon edit-button" data-tooltip="true" data-id="{{ Calendar.id }}" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                                <i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
 
-                                                    <div class="col-6 text-center">
-                                                        {% if not TaxRule.default_tax_rule %}
+                                                        <div class="col-6 text-center">
                                                             <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top"
                                                                  title="{{ 'admin.common.delete'|trans }}">
-                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal_{{ TaxRule.id }}">
+                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal_{{ Calendar.id }}">
                                                                     <i class="fa fa-close fa-lg text-secondary"></i>
                                                                 </a>
                                                             </div>
                                                             <!-- 削除モーダル -->
-                                                            <div class="modal fade" id="DeleteModal_{{ TaxRule.id }}" tabindex="-1" role="dialog"
-                                                                 aria-labelledby="DeleteModal_{{ TaxRule.id }}" aria-hidden="true">
+                                                            <div class="modal fade" id="DeleteModal_{{ Calendar.id }}" tabindex="-1" role="dialog"
+                                                                 aria-labelledby="DeleteModal_{{ Calendar.id }}" aria-hidden="true">
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
@@ -180,13 +164,13 @@ file that was distributed with this source code.
                                                                             </button>
                                                                         </div>
                                                                         <div class="modal-body text-left">
-                                                                            <p class="text-left modal-message">{{ 'admin.common.delete_modal__message'|trans({ "%name%" : TaxRule.id }) }}</p>
+                                                                            <p class="text-left modal-message">{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Calendar.id }) }}</p>
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
                                                                                 {{ 'admin.common.cancel'|trans }}
                                                                             </button>
-                                                                            <a class="btn btn-ec-delete" href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}"
+                                                                            <a class="btn btn-ec-delete" href="{{ url('admin_setting_shop_calendar_delete', { id : Calendar.id }) }}"
                                                                                 {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
                                                                                 {{ 'admin.common.delete'|trans }}
                                                                             </a>
@@ -194,14 +178,13 @@ file that was distributed with this source code.
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        {% endif %}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </form>
-                                </tr>
-                            {% endfor %}#}
+                                            </td>
+                                        </form>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

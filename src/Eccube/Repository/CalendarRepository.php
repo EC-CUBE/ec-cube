@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\NoResultException;
 use Eccube\Entity\Calendar;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -48,5 +49,54 @@ class CalendarRepository extends AbstractRepository
         }
 
         return $this->find($id);
+    }
+
+    /**
+     * getList
+     *
+     * @return array|null
+     */
+    public function getList()
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC')
+            //->where('t.Product IS NULL AND t.ProductClass IS NULL')
+        ;
+        $Calendars = $qb
+            ->getQuery()
+            ->getResult();
+
+        return $Calendars;
+    }
+
+    /**
+     * delete.
+     *
+     * @param  int|\Eccube\Entity\Calend $Calendar
+     *
+     * @throws NoResultException
+     */
+    public function delete($Calendar)
+    {
+        if (!$Calendar instanceof Calendar) {
+            $Calendar = $this->find($Calendar);
+        }
+        if (!$Calendar) {
+            throw new NoResultException();
+        }
+        $em = $this->getEntityManager();
+        $em->remove($Calendar);
+        $em->flush();
+    }
+
+    /**
+     * Calendar のキャッシュをクリアする.
+     *
+     * getByRule() をコールすると、結果をキャッシュし、2回目以降はデータベースへアクセスしない.
+     * このメソッドをコールすると、キャッシュをクリアし、再度データベースを参照して結果を取得する.
+     */
+    public function clearCache()
+    {
+        $this->rules = [];
     }
 }

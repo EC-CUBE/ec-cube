@@ -14,14 +14,12 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
-use Eccube\Event\EccubeEvents;
-use Eccube\Event\EventArgs;
+use Eccube\Entity\Calendar;
 use Eccube\Form\Type\Admin\CalendarType;
 use Eccube\Repository\CalendarRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Eccube\Entity\Calendar;
 
 /**
  * Class CalendarController
@@ -34,9 +32,9 @@ class CalendarController extends AbstractController
     protected $calendarRepository;
 
     /**
-     * TaxRuleController constructor.
+     * CalendarRepository constructor.
      *
-     * @param CalendarRepository $calendarRepository
+     *  @param CalendarRepository $calendarRepository
      */
     public function __construct(CalendarRepository $calendarRepository)
     {
@@ -56,15 +54,6 @@ class CalendarController extends AbstractController
         $builder = $this->formFactory
             ->createBuilder(CalendarType::class, $Calendar);
 
-        $event = new EventArgs(
-            [
-                'builder' => $builder,
-                'Calendar' => $Calendar,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CALENDAR_INDEX_INITIALIZE, $event);
-
         $form = $builder->getForm();
 
         $mode = $request->get('mode');
@@ -74,24 +63,68 @@ class CalendarController extends AbstractController
                 $this->entityManager->persist($Calendar);
                 $this->entityManager->flush();
 
-                $event = new EventArgs(
-                    [
-                        'form' => $form,
-                        'Calendar' => $Calendar,
-                    ],
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CALENDAR_INDEX_COMPLETE, $event);
-
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
                 return $this->redirectToRoute('admin_setting_shop_calendar');
             }
         }
 
+        // カレンダーリスト取得
+        $Calendars = $this->calendarRepository->getList();
+
+        $forms = [];
+        $errors = [];
+        /** @var Calendar $Calendar */
+        foreach ($Calendars as $Calendar) {
+            /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+            $builder = $this->formFactory->createBuilder(CalendarType::class, $Calendar);
+
+            $editCalendarForm = $builder->getForm();
+
+            // error number
+            $error = 0;
+            if ($mode == 'edit_inline'
+                && $request->getMethod() === 'POST'
+                && (string) $Calendar->getId() === $request->get('calendar_id')
+            ) {
+                $editCalendarForm->handleRequest($request);
+                if ($editCalendarForm->isValid()) {
+                    $calendarData = $editCalendarForm->getData();
+
+                    $this->entityManager->persist($calendarData);
+                    $this->entityManager->flush();
+
+                    $this->addSuccess('admin.common.save_complete', 'admin');
+
+                    return $this->redirectToRoute('admin_setting_shop_calendar');
+                }
+                $error = count($editCalendarForm->getErrors(true));
+            }
+
+            $forms[$Calendar->getId()] = $editCalendarForm->createView();
+            $errors[$Calendar->getId()] = $error;
+        }
+
         return [
             'Calendar' => $Calendar,
+            'Calendars' => $Calendars,
             'form' => $form->createView(),
+            'forms' => $forms,
+            'errors' => $errors,
         ];
+    }
+
+    /**
+     * カレンダー設定の削除
+     *
+     * @Route("/%eccube_admin_route%/setting/shop/calendar/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_calendar_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, Calendar $Calendar)
+    {
+        $this->isTokenValid();
+        $this->calendarRepository->delete($Calendar);
+        $this->addSuccess('admin.common.delete_complete', 'admin');
+
+        return $this->redirectToRoute('admin_setting_shop_calendar');
     }
 }
