@@ -14,11 +14,14 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CalendarType;
 use Eccube\Repository\CalendarRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Eccube\Entity\Calendar;
 
 /**
  * Class CalendarController
@@ -44,20 +47,50 @@ class CalendarController extends AbstractController
      * カレンダー設定の初期表示・登録
      *
      * @Route("/%eccube_admin_route%/setting/shop/calendar", name="admin_setting_shop_calendar")
-     //* @Route("/%eccube_admin_route%/setting/shop/calendar/new", name="admin_setting_shop_calendar_new")
-     * @Template("@admin/Setting/Shop/calendar_rule.twig")
+     * @Route("/%eccube_admin_route%/setting/shop/calendar/new", name="admin_setting_shop_calendar_new")
+     * @Template("@admin/Setting/Shop/calendar.twig")
      */
     public function index(Request $request)
     {
-
-        $Calendar = new \Eccube\Entity\Calendar();
+        $Calendar = new Calendar();
         $builder = $this->formFactory
             ->createBuilder(CalendarType::class, $Calendar);
 
+        $event = new EventArgs(
+            [
+                'builder' => $builder,
+                'Calendar' => $Calendar,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CALENDAR_INDEX_INITIALIZE, $event);
+
         $form = $builder->getForm();
-        $form->handleRequest($request);
+
+        $mode = $request->get('mode');
+        if ($mode != 'edit_inline') {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->entityManager->persist($Calendar);
+                $this->entityManager->flush();
+
+                $event = new EventArgs(
+                    [
+                        'form' => $form,
+                        'Calendar' => $Calendar,
+                    ],
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CALENDAR_INDEX_COMPLETE, $event);
+
+                $this->addSuccess('admin.common.save_complete', 'admin');
+
+                return $this->redirectToRoute('admin_setting_shop_calendar');
+            }
+        }
 
         return [
+            'Calendar' => $Calendar,
             'form' => $form->createView(),
         ];
     }

@@ -338,6 +338,15 @@ final class EccubeEvents
     const ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_COMPLETE = 'admin.setting.shop.tax.rule.edit.parameter.complete';
 
     /**
+     * Admin/Setting/Shop/CalendarController
+     */
+    // index
+    const ADMIN_SETTING_SHOP_CALENDAR_INDEX_INITIALIZE = 'admin.setting.shop.calendar.index.initialize';
+    const ADMIN_SETTING_SHOP_CALENDAR_INDEX_COMPLETE = 'admin.setting.shop.calendar.index.complete';
+    // delete
+    const ADMIN_SETTING_SHOP_CALENDAR_DELETE_COMPLETE = 'admin.setting.shop.calendar.delete.complete';
+
+    /**
      * Admin/Setting/System/AuthorityController
      */
     // index

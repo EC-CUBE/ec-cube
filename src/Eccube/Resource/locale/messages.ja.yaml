@@ -1073,6 +1073,7 @@ admin.setting.shop.tax_setting: 税率設定
 admin.setting.shop.mail_setting: メール設定
 admin.setting.shop.csv_setting: CSV出力項目設定
 admin.setting.shop.order_status_setting: 受注対応状況設定
+admin.setting.shop.calendar_setting: '定休日カレンダー設定'
 admin.setting.system: システム設定
 admin.setting.system.member_management: メンバー管理
 admin.setting.system.member_password_change: パスワード変更
@@ -1200,6 +1201,13 @@ admin.setting.shop.order_status.admin_order_status_name: 名称(受注管理)
 admin.setting.shop.order_status.customer_order_status_name: 名称(マイページ)
 admin.setting.shop.order_status.color: 色
 admin.setting.shop.order_status.display_order_count: 件数表示
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：受注対応状況設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.calendar.title: 'タイトル'
+admin.setting.shop.calendar.holiday: '日付'
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：メンバー管理 / パスワード変更
@@ -1610,6 +1618,7 @@ tooltip.setting.shop.order_status.order_status: 受注管理およびマイペ�
 tooltip.setting.shop.order_status.customer_order_status_name: 対応状況の名称を設定できます。ここで設定した名称は会員ログイン後のマイページで表示されます。
 tooltip.setting.shop.order_status.color: 受注管理の対応状況の色を設定できます。
 tooltip.setting.shop.order_status.display_order_count: 受注管理の対応状況ごとの受注件数の表示・非表示を設定できます。
+tooltip.setting.shop.calendar_setting: 定休日カレンダーに表示する定休日を設定できます。
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。
 tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
 tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。

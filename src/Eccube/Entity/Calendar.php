@@ -114,6 +114,30 @@ if (!class_exists('\Eccube\Entity\Calendar')) {
         }
 
         /**
+         * Set holiday.
+         *
+         * @param \DateTime $holiday
+         *
+         * @return Calendar
+         */
+        public function setHoliday($holiday)
+        {
+            $this->holiday = $holiday;
+
+            return $this;
+        }
+
+        /**
+         * Get holiday.
+         *
+         * @return \DateTime
+         */
+        public function getHoliday()
+        {
+            return $this->holiday;
+        }
+
+        /**
          * Set createDate.
          *
          * @param \DateTime $createDate

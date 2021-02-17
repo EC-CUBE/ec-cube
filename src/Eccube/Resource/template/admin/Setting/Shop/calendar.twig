@@ -71,14 +71,12 @@ file that was distributed with this source code.
                                 <col width="35%">
                                 <col width="15%">
                                 <col width="">
-                                <col width="">
                             </colgroup>
                             <thead>
                             <tr>
                                 <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.common.id'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.calendar.title'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.calendar.holiday'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3"></th>
                                 <th class="border-top-0 pt-2 pb-2 pl-3 pr-5"></th>
                             </tr>
                             </thead>
@@ -86,7 +84,7 @@ file that was distributed with this source code.
 
                             <tr id="calendar_item_new">
                                 <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="{{ url('admin_setting_shop_calendar_new') }}">
-                                    {#{{ form_widget(form._token) }}#}
+                                    {{ form_widget(form._token) }}
                                     <td class="align-middle pl-3"></td>
                                     <td class="align-middle" style="width:230px;">
                                         <div class="input-group">
@@ -95,12 +93,8 @@ file that was distributed with this source code.
                                         </div>
                                     </td>
                                     <td class="align-middle">
-                                        bbb{#{{ form_widget(form.rounding_type) }}#}
-                                        {#{{ form_errors(form.rounding_type) }}#}
-                                    </td>
-                                    <td class="align-middle">
-                                        ccc{#{{ form_widget(form.apply_date) }}#}
-                                        {#{{ form_errors(form.apply_date) }}#}
+                                        {{ form_widget(form.holiday) }}
+                                        {{ form_errors(form.holiday) }}
                                     </td>
                                     <td class="align-middle"></td>
                                     <td class="align-middle pr-5">
