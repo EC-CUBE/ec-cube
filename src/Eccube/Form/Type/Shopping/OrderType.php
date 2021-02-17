@@ -133,7 +133,9 @@ class OrderType extends AbstractType
 
             $Deliveries = $this->getDeliveries($Order);
             $Payments = $this->getPayments($Deliveries);
-            $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal());
+            // @see https://github.com/EC-CUBE/ec-cube/issues/4881
+            $charge = $Order->getPayment() ? $Order->getPayment()->getCharge() : 0;
+            $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal() - $charge);
 
             $form = $event->getForm();
             $this->addPaymentForm($form, $Payments, $Order->getPayment());
@@ -159,7 +161,9 @@ class OrderType extends AbstractType
             }
 
             $Payments = $this->getPayments($Deliveries);
-            $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal());
+            // @see https://github.com/EC-CUBE/ec-cube/issues/4881
+            $charge = $Order->getPayment() ? $Order->getPayment()->getCharge() : 0;
+            $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal() - $charge);
 
             $form = $event->getForm();
             $this->addPaymentForm($form, $Payments);
@@ -284,14 +288,15 @@ class OrderType extends AbstractType
     private function filterPayments(ArrayCollection $Payments, $total)
     {
         $PaymentArrays = $Payments->filter(function (Payment $Payment) use ($total) {
+            $charge = $Payment->getCharge();
             $min = $Payment->getRuleMin();
             $max = $Payment->getRuleMax();
 
-            if (null !== $min && $total < $min) {
+            if (null !== $min && ($total + $charge) < $min) {
                 return false;
             }
 
-            if (null !== $max && $total > $max) {
+            if (null !== $max && ($total + $charge)  > $max) {
                 return false;
             }
 

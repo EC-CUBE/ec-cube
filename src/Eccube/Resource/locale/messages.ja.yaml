@@ -1598,6 +1598,7 @@ tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に�
 tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。
 tooltip.setting.shop.shop.option_point_rate: 購入金額に対するポイント付与率を編集できます。
 tooltip.setting.shop.shop.option_point_conversion_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
+tooltip.setting.shop.payment.rule: お支払い方法の利用条件を設定できます。自身の手数料を含む支払総額(税込)が条件に一致する場合、購入フローのお支払い方法の選択肢に表示されまます。
 tooltip.setting.shop.payment.logo_image: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
 tooltip.setting.shop.delivery.tracking_number_url: 配送業者のお問い合わせページURLを指定します。
 tooltip.setting.shop.delivery.sale_type: この配送方法で取り扱える販売種別を指定します。
