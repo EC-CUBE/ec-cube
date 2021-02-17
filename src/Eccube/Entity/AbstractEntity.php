@@ -13,7 +13,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping\Id;

@@ -208,7 +208,7 @@ if (!class_exists('\Eccube\Entity\Template')) {
          *
          * @return Template
          */
-        public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
+        public function setDeviceType(Master\DeviceType $deviceType = null)
         {
             $this->DeviceType = $deviceType;
 

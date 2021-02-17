@@ -13,15 +13,15 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Eccube\Entity\Master\DeviceType;
-use Eccube\Repository\PageLayoutRepository;
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Eccube\Repository\LayoutRepository;
-use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Entity\Layout;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
+use Eccube\Repository\LayoutRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class LayoutControllerTest extends AbstractAdminWebTestCase
 {

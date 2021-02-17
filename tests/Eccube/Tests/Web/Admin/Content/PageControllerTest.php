@@ -14,18 +14,17 @@
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Page;
-use Eccube\Repository\PageRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class PageControllerTest extends AbstractAdminWebTestCase
 {
-    public function test_routing_AdminContentPage_index()
+    public function testRoutingAdminContentPageIndex()
     {
         $this->client->request('GET', $this->generateUrl('admin_content_page'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function test_routing_AdminContentPage_edit()
+    public function testRoutingAdminContentPageEdit()
     {
         $this->client->request('GET',
             $this->generateUrl(
@@ -36,7 +35,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function test_routing_AdminContentPage_delete()
+    public function testRoutingAdminContentPageDelete()
     {
         $redirectUrl = $this->generateUrl('admin_content_page');
 
@@ -52,7 +51,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($actual);
     }
 
-    public function test_routing_AdminContentPage_delete_flg_user()
+    public function testRoutingAdminContentPageDeleteFlgUser()
     {
         $redirectUrl = $this->generateUrl('admin_content_page');
 
@@ -71,7 +70,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
-    public function test_routing_AdminContentPage_edit_name()
+    public function testRoutingAdminContentPageEditName()
     {
         $client = $this->client;
 
@@ -114,7 +113,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public function test_routing_AdminContentPageWithCreate()
+    public function testRoutingAdminContentPageWithCreate()
     {
         $client = $this->client;
         $faker = $this->getFaker();

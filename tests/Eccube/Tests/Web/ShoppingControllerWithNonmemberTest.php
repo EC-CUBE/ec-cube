@@ -16,7 +16,6 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Service\OrderHelper;
-use Symfony\Component\BrowserKit\Cookie;
 
 /**
  * Class ShoppingControllerWithNonmemberTest

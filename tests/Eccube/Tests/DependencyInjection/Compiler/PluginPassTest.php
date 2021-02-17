@@ -16,7 +16,6 @@ namespace Eccube\Tests\DependencyInjection\Compiler;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PluginPassTest extends TestCase
 {

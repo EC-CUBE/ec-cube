@@ -43,12 +43,12 @@ class TaxRuleTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    public function test_getName_validTaxRule()
+    public function testGetNameValidTaxRule()
     {
         $this->assertSame('tax_rule', $this->form->getName());
     }
 
-    public function testInValidDeliveryTaxRate_Blank()
+    public function testInValidDeliveryTaxRateBlank()
     {
         $this->formData['tax_rate'] = '';
 
@@ -56,7 +56,7 @@ class TaxRuleTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidDeliveryTaxRate_OverMaxRength()
+    public function testInValidDeliveryTaxRateOverMaxRength()
     {
         $this->formData['tax_rate'] = str_repeat('2', 101);
 
@@ -64,7 +64,7 @@ class TaxRuleTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidDeliveryTaxRate_NotNumeric()
+    public function testInValidDeliveryTaxRateNotNumeric()
     {
         $this->formData['tax_rate'] = 'abcde';
 
@@ -72,7 +72,7 @@ class TaxRuleTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidDeliveryTaxRate_HasMinus()
+    public function testInValidDeliveryTaxRateHasMinus()
     {
         $this->formData['tax_rate'] = '-12345';
 

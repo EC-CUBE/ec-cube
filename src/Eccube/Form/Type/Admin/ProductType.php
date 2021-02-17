@@ -203,6 +203,7 @@ class ProductType extends AbstractType
             $fileInDir = array_filter($dirs, function ($dir) use ($fileName) {
                 $filePath = realpath($dir.'/'.$fileName);
                 $topDirPath = realpath($dir);
+
                 return strpos($filePath, $topDirPath) === 0 && $filePath !== $topDirPath;
             });
             if (!$fileInDir) {

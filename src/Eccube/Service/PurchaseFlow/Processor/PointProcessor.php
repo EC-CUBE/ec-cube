@@ -136,7 +136,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc}
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
@@ -144,7 +144,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc}
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {

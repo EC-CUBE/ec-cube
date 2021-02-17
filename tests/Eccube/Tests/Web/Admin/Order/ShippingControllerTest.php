@@ -234,7 +234,6 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
      */
     public function testCalculateTax()
     {
-
         /** @var Product $Product */
         $Product = $this->createProduct('test', 2);
         /** @var ProductClass $ProductClass1 */

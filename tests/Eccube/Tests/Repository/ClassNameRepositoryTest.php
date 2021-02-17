@@ -18,7 +18,6 @@ use Eccube\Entity\ClassName;
 use Eccube\Entity\Member;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
-use Eccube\Repository\MemberRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\EccubeTestCase;
 

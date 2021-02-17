@@ -69,7 +69,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPhoneNumber_Blank()
+    public function testInvalidPhoneNumberBlank()
     {
         $this->formData['phone_number'] = '';
 
@@ -77,7 +77,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName01_Blank()
+    public function testInvalidName01Blank()
     {
         $this->formData['name']['name01'] = '';
 
@@ -85,7 +85,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName02_Blank()
+    public function testInvalidName02Blank()
     {
         $this->formData['name']['name02'] = '';
 
@@ -93,7 +93,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidKana01_Blank()
+    public function testInvalidKana01Blank()
     {
         $this->formData['kana']['kana01'] = '';
 
@@ -101,7 +101,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidKana02_Blank()
+    public function testInvalidKana02Blank()
     {
         $this->formData['kana']['kana02'] = '';
 
@@ -109,7 +109,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidCompanyName_Blank()
+    public function testValidCompanyNameBlank()
     {
         $this->formData['company_name'] = '';
 
@@ -117,7 +117,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPostalCode_Blank()
+    public function testInvalidPostalCodeBlank()
     {
         $this->formData['postal_code'] = '';
 
@@ -125,7 +125,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPref_Blank()
+    public function testInvalidPrefBlank()
     {
         $this->formData['address']['pref'] = '';
 
@@ -133,7 +133,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidAddr01_Blank()
+    public function testInvalidAddr01Blank()
     {
         $this->formData['address']['addr01'] = '';
 
@@ -141,7 +141,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidAddr02_Blank()
+    public function testInvalidAddr02Blank()
     {
         $this->formData['address']['addr02'] = '';
 
@@ -149,7 +149,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidemail_Blank()
+    public function testInvalidemailBlank()
     {
         $this->formData['email'] = '';
 
@@ -157,7 +157,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidEmail_Nihongo()
+    public function testInvalidEmailNihongo()
     {
         $this->formData['email'] = 'あいうえお@example.com';
 
@@ -165,7 +165,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidEmail_RFC2822()
+    public function testInvalidEmailRFC2822()
     {
         $this->formData['email'] = 'abc..@example.com';
 
@@ -173,7 +173,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidJob_Blank()
+    public function testValidJobBlank()
     {
         $this->formData['job'] = '';
 
@@ -181,7 +181,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidSex_Blank()
+    public function testValidSexBlank()
     {
         $this->formData['sex'] = '';
 
@@ -189,7 +189,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPassword_Blank()
+    public function testInvalidPasswordBlank()
     {
         $this->formData['password']['first'] = '';
         $this->formData['password']['second'] = '';
@@ -198,7 +198,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidPassword_MinLength()
+    public function testValidPasswordMinLength()
     {
         $this->formData['password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
         $this->formData['password']['second'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
@@ -207,7 +207,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPassword_MinLength()
+    public function testInvalidPasswordMinLength()
     {
         $password = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1);
 
@@ -218,7 +218,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidPassword_MaxLength()
+    public function testValidPasswordMaxLength()
     {
         $this->formData['password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
         $this->formData['password']['second'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
@@ -227,7 +227,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPassword_MaxLength()
+    public function testInvalidPasswordMaxLength()
     {
         $password = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] + 1);
 
@@ -238,7 +238,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPassword_EqualEmail()
+    public function testInvalidPasswordEqualEmail()
     {
         $this->formData['password']['first'] = $this->formData['email'];
         $this->formData['password']['second'] = $this->formData['email'];
@@ -247,7 +247,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertEquals(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());
     }
 
-    public function testInvalidStatus_Blank()
+    public function testInvalidStatusBlank()
     {
         $this->formData['status'] = '';
 
@@ -255,7 +255,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidNote_Blank()
+    public function testInvalidNoteBlank()
     {
         $this->formData['note'] = '';
 

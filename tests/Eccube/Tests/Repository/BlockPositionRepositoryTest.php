@@ -16,9 +16,8 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Block;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
-use Eccube\Repository\BlockRepository;
 use Eccube\Repository\BlockPositionRepository;
-use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
 use Eccube\Tests\EccubeTestCase;
 

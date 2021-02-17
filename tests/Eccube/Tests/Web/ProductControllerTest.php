@@ -203,7 +203,6 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertContains('お気に入りに追加済です', $html);
     }
 
-
     /**
      * 商品詳細 → ログイン画面 → お気に入り追加 → 商品詳細(お気に入り登録済み)
      */

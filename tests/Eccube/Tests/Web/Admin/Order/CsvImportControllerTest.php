@@ -42,7 +42,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
     }
 
-    public function testLoadCsv_FlippedColumns()
+    public function testLoadCsvFlippedColumns()
     {
         $Shipping = $this->createOrder($this->createCustomer())->getShippings()[0];
         self::assertNull($Shipping->getTrackingNumber());
@@ -62,7 +62,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     /**
      * @dataProvider loadCsvInvalidFormatProvider
      */
-    public function testLoadCsv_InvalidFormat($csv, $errorMessage)
+    public function testLoadCsvInvalidFormat($csv, $errorMessage)
     {
         $Shipping = $this->createOrder($this->createCustomer())->getShippings()[0];
         self::assertNull($Shipping->getTrackingNumber());

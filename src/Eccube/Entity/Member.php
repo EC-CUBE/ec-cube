@@ -404,7 +404,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
          *
          * @return Member
          */
-        public function setWork(\Eccube\Entity\Master\Work $work = null)
+        public function setWork(Master\Work $work = null)
         {
             $this->Work = $work;
 
@@ -428,7 +428,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
          *
          * @return Member
          */
-        public function setAuthority(\Eccube\Entity\Master\Authority $authority = null)
+        public function setAuthority(Master\Authority $authority = null)
         {
             $this->Authority = $authority;
 
@@ -452,7 +452,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
          *
          * @return Member
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -471,8 +471,11 @@ if (!class_exists('\Eccube\Entity\Member')) {
 
         /**
          * String representation of object
-         * @link http://php.net/manual/en/serializable.serialize.php
+         *
+         * @see http://php.net/manual/en/serializable.serialize.php
+         *
          * @return string the string representation of the object or null
+         *
          * @since 5.1.0
          */
         public function serialize()
@@ -489,21 +492,24 @@ if (!class_exists('\Eccube\Entity\Member')) {
 
         /**
          * Constructs the object
-         * @link http://php.net/manual/en/serializable.unserialize.php
+         *
+         * @see http://php.net/manual/en/serializable.unserialize.php
+         *
          * @param string $serialized <p>
          * The string representation of the object.
          * </p>
+         *
          * @return void
+         *
          * @since 5.1.0
          */
         public function unserialize($serialized)
         {
-            list (
+            list(
                 $this->id,
                 $this->login_id,
                 $this->password,
-                $this->salt,
-            ) = unserialize($serialized);
+                $this->salt) = unserialize($serialized);
         }
     }
 }

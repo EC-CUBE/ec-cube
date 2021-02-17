@@ -283,7 +283,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
          *
          * @return Block
          */
-        public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
+        public function addBlockPosition(BlockPosition $blockPosition)
         {
             $this->BlockPositions[] = $blockPosition;
 
@@ -295,7 +295,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
          *
          * @param \Eccube\Entity\BlockPosition $blockPosition
          */
-        public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
+        public function removeBlockPosition(BlockPosition $blockPosition)
         {
             $this->BlockPositions->removeElement($blockPosition);
         }
@@ -317,7 +317,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
          *
          * @return Block
          */
-        public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
+        public function setDeviceType(Master\DeviceType $deviceType = null)
         {
             $this->DeviceType = $deviceType;
 

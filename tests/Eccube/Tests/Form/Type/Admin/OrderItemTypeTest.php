@@ -52,7 +52,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPrice_Blank()
+    public function testInvalidPriceBlank()
     {
         $this->formData['price'] = '';
 
@@ -60,7 +60,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPrice_OverMaxLength()
+    public function testInvalidPriceOverMaxLength()
     {
         $this->formData['price'] = $this->eccubeConfig['eccube_price_max'] + 1;
 
@@ -68,7 +68,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPrice_NotNumeric()
+    public function testInvalidPriceNotNumeric()
     {
         $this->formData['price'] = 'abc';
 
@@ -76,7 +76,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidPrice_HasMinus()
+    public function testValidPriceHasMinus()
     {
         $this->formData['price'] = '-123456';
         // 値引き明細はマイナス値
@@ -86,7 +86,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidQuantity_Blank()
+    public function testInvalidQuantityBlank()
     {
         $this->formData['quantity'] = '';
 
@@ -94,7 +94,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidQuantity_OverMaxLength()
+    public function testInvalidQuantityOverMaxLength()
     {
         $this->formData['quantity'] = '12345678910'; //Max 9
 
@@ -102,7 +102,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidQuantity_NotNumeric()
+    public function testInvalidQuantityNotNumeric()
     {
         $this->markTestIncomplete('testInvalidQuantity_NotNumeric is not implemented.');
         $this->formData['quantity'] = 'abcde';
@@ -111,7 +111,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidQuantity_HasMinus()
+    public function testInvalidQuantityHasMinus()
     {
         $this->markTestIncomplete('testInvalidQuantity_HasMinus is not implemented.');
         $this->formData['quantity'] = '-123456';

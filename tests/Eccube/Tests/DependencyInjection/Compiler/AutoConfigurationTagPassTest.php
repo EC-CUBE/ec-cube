@@ -14,11 +14,9 @@
 namespace Eccube\Tests\DependencyInjection\Compiler;
 
 use Doctrine\Common\EventSubscriber;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
+use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class AutoConfigurationTagPassTest extends EccubeTestCase
 {
