@@ -31,6 +31,4 @@ jobs:
         sudo composer selfupdate --1
         composer install --dev --no-interaction -o --apcu-autoloader
     - name: PHPStan
-      run: |
-        composer require phpstan/phpstan --dev
-        vendor/bin/phpstan analyze src/ --error-format=github
+      run: vendor/bin/phpstan analyze src/ --error-format=github
