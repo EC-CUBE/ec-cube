@@ -54,17 +54,15 @@ file that was distributed with this source code.
 
     <script type="text/javascript">
         $(function() {
-            if ($('[type="date"]').prop('type') != 'date') {
-                $('input[id$=_issue_date]').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: true,
-                    buttons: {
-                        showToday: true,
-                        showClose: true
-                    }
-                });
-            }
+            $('input[id$=_issue_date]').datetimepicker({
+                locale: '{{ eccube_config.locale }}',
+                format: 'YYYY-MM-DD',
+                useCurrent: true,
+                buttons: {
+                    showToday: true,
+                    showClose: true
+                }
+            });
 
             var close = $('#windowclose');
 
@@ -93,7 +91,7 @@ file that was distributed with this source code.
                         <div class="card-body">
                             <div class="form-group">
                                 <label>{{ 'admin.order.delivery_note_create_date'|trans }}</label>
-                                {{ form_widget(form.issue_date) }}
+                                {{ form_widget(form.issue_date, { type: 'text' }) }}
                                 {{ form_errors(form.issue_date) }}
                             </div>
 
