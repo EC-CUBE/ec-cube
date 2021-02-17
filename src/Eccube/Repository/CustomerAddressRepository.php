@@ -43,6 +43,6 @@ class CustomerAddressRepository extends AbstractRepository
     {
         $em = $this->getEntityManager();
         $em->remove($CustomerAddress);
-        $em->flush($CustomerAddress);
+        $em->flush();
     }
 }

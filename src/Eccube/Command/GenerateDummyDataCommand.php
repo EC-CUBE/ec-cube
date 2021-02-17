@@ -181,7 +181,7 @@ EOF
                         $output->writeln('Order: id='.$Order->getId());
                         break;
                 }
-                $this->entityManager->flush($Order);
+                $this->entityManager->flush();
                 $j++;
                 if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL && ($j % 100) === 0 && $j > 0) {
                     $output->writeln(' ...'.$j);
