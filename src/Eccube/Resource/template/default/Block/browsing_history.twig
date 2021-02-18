@@ -14,6 +14,17 @@ $(function() {
     var localStorageKey = 'block_browsing_history';
     var display_limit = 6;
 
+{% if app.request.attributes.get('_route') == 'product_detail' %}
+    var product = {
+        id: {{ Product.id }},
+        name: "{{ Product.name }}",
+        url: "{{ url('product_detail', {'id': Product.id}) }}",
+        image: "{{ asset(Product.main_list_image|no_image_product, 'save_image') }}"
+    };
+{% else %}
+    var product = null;
+{% endif %}
+
     var getHistory = function () {
         try {
             return JSON.parse(localStorage.getItem(localStorageKey)) || [];
@@ -36,20 +47,6 @@ $(function() {
         return newHistory;
     };
 
-    var getProductDetail = function () {
-        var block = $('#ex-block-browsingHistory');
-        var id = block.data('product-id');
-        if (!id) {
-            return false;
-        }
-        return {
-            id,
-            name: block.data('product-name'),
-            url: block.data('product-url'),
-            image: block.data('product-image') || null
-        }
-    };
-
     var appendHtml = function (history, product) {
         var html = '';
         var counter = 0;
@@ -63,13 +60,12 @@ $(function() {
             html += '<div class="ec-browsingHistoryRole__listItem"><a href="' + history[i].url + '"><img src="' + history[i].image + '"><p class="ec-browsingHistoryRole__listItemTitle">' + history[i].name + '</p></a></div>';
         }
         if (html) {
-            $('#ex-block-browsingHistory_products').append(html).removeClass('is-hide');
+            $('#ex-block-browsingHistory_products').append(html);
             $('#ex-block-browsingHistory').css('display', 'block');
         }
     }
 
     var history = getHistory();
-    var product = getProductDetail();
     if (product) {
         history = updateHistory(history, product);
     }
@@ -78,16 +74,7 @@ $(function() {
 </script>
 {% endblock %}
 
-<div id="ex-block-browsingHistory"
-    class="ec-role"
-    style="display:none"
-    {% if app.request.attributes.get('_route') == 'product_detail' %}
-        data-product-id="{{ Product.id }}"
-        data-product-name="{{ Product.name }}"
-        data-product-url="{{ url('product_detail', {'id': Product.id}) }}"
-        data-product-image="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}"
-    {% endif %}
->
+<div id="ex-block-browsingHistory" class="ec-role" style="display:none">
     <div class="ec-browsingHistoryRole">
         <div class="ec-secHeading">
             <span class="ec-secHeading__en">{{ 'front.block.browsing_history.title__en'|trans }}</span>
