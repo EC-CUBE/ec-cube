@@ -12,6 +12,7 @@ file that was distributed with this source code.
 <script>
 $(function() {
     var localStorageKey = 'block_browsing_history';
+    var display_limit = 6;
 
     var getHistory = function () {
         try {
@@ -24,13 +25,13 @@ $(function() {
     }
 
     var updateHistory = function (history, product) {
+        var newHistory = [product];
         for (var i in history) {
-            if (history[i].id === product.id) {
-                history.splice(i, 1);
-                break;
+            if (history[i].id && history[i].id !== product.id) {
+                newHistory.push(history[i])
             }
         }
-        var newHistory = [product].concat(history).slice(0, 5);
+        newHistory = newHistory.slice(0, display_limit + 1);
         localStorage.setItem(localStorageKey, JSON.stringify(newHistory));
         return newHistory;
     };
@@ -49,13 +50,22 @@ $(function() {
         }
     };
 
-    var createDom = function (history) {
-        // todo 自ページと同じアイテムは表示しない
+    var appendHtml = function (history, product) {
         var html = '';
+        var counter = 0;
         for (var i in history) {
+            if (product && history[i].id === product.id) {
+                continue;
+            }
+            if (++counter > display_limit) {
+                break;
+            }
             html += '<div class="ec-newItemRole__listItem"><a href="' + history[i].url + '"><img src="' + history[i].image + '"><p class="ec-newItemRole__listItemTitle">' + history[i].name + '</p></a></div>';
         }
-        $('#ex-block-browsingHistory_products').append(html);
+        if (html) {
+            $('#ex-block-browsingHistory_products').append(html).removeClass('is-hide');
+            $('#ex-block-browsingHistory').css('display', 'block');
+        }
     }
 
     var history = getHistory();
@@ -63,12 +73,14 @@ $(function() {
     if (product) {
         history = updateHistory(history, product);
     }
-
-    createDom(history);
+    appendHtml(history, product);
 });
 </script>
 {% endblock %}
-<div id="ex-block-browsingHistory" class="ec-role"
+
+<div id="ex-block-browsingHistory"
+    class="ec-role"
+    style="display:none"
     {% if app.request.attributes.get('_route') == 'product_detail' %}
         data-product-id="{{ Product.id }}"
         data-product-name="{{ Product.name }}"
