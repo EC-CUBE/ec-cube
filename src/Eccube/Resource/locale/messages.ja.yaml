@@ -129,6 +129,8 @@ front.block.news.title__en: NEWS
 front.block.news.title__ja: 新着情報
 front.block.news.read_more: more
 front.block.news.see_details: 詳しくはこちら
+front.block.browsing_history.title__en: 'BROWSING HISTORY'
+front.block.browsing_history.title__ja: '最近チェックしたアイテム'
 front.block.login.customer_registration: 新規会員登録
 front.block.login.mypage: マイページ
 front.block.login.favorite: お気に入り
