@@ -60,7 +60,7 @@ $(function() {
             if (++counter > display_limit) {
                 break;
             }
-            html += '<div class="ec-newItemRole__listItem"><a href="' + history[i].url + '"><img src="' + history[i].image + '"><p class="ec-newItemRole__listItemTitle">' + history[i].name + '</p></a></div>';
+            html += '<div class="ec-browsingHistoryRole__listItem"><a href="' + history[i].url + '"><img src="' + history[i].image + '"><p class="ec-browsingHistoryRole__listItemTitle">' + history[i].name + '</p></a></div>';
         }
         if (html) {
             $('#ex-block-browsingHistory_products').append(html).removeClass('is-hide');
@@ -88,15 +88,12 @@ $(function() {
         data-product-image="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}"
     {% endif %}
 >
-    <div class="ec-newItemRole">
-        <div class="ec-newItemRole__list" id="ex-block-browsingHistory_products">
-            <div class="ec-newItemRole__listItem">
-                <div class="ec-newItemRole__listItemHeading ec-secHeading--tandem">
-                    <span class="ec-secHeading__en">最近チェックしたアイテム</span>
-                    <span class="ec-secHeading__line"></span>
-                    <span class="ec-secHeading__ja">最近チェックしたアイテム</span>
-                </div>
-            </div>
+    <div class="ec-browsingHistoryRole">
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">最近チェックしたアイテム</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">最近チェックしたアイテム</span>
         </div>
+        <div id="ex-block-browsingHistory_products" class="ec-browsingHistoryRole__list"></div>
     </div>
 </div>
