@@ -24,7 +24,6 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
-use Eccube\Entity\Payment;
 use Eccube\Entity\Shipping;
 use Eccube\EventListener\SecurityListener;
 use Eccube\Repository\DeliveryRepository;
@@ -467,16 +466,6 @@ class OrderHelper
 
         // 利用可能な支払い方法を抽出.
         $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);
-        // ここでは支払総額はまだ決まっていないため、利用条件が設定されているものは初期選択の支払い方法として除外する
-        $Payments = array_filter($Payments, function (Payment $Payment) {
-            $min = $Payment->getRuleMin();
-            $max = $Payment->getRuleMax();
-            if ($max === null && ($min === null || $min <= 1)) {
-                return true;
-            }
-
-            return false;
-        });
 
         // 初期の支払い方法を設定.
         $Payment = current($Payments);
