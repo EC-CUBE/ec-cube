@@ -13,16 +13,15 @@ file that was distributed with this source code.
 $(function() {
     var localStorageKey = 'block_browsing_history';
     var display_limit = 6;
+    var product = null;
 
 {% if app.request.attributes.get('_route') == 'product_detail' %}
-    var product = {
+    product = {
         id: {{ Product.id }},
         name: "{{ Product.name }}",
         url: "{{ url('product_detail', {'id': Product.id}) }}",
         image: "{{ asset(Product.main_list_image|no_image_product, 'save_image') }}"
     };
-{% else %}
-    var product = null;
 {% endif %}
 
     var getHistory = function () {
