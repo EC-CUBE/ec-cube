@@ -178,7 +178,11 @@ class FileController extends AbstractController
             $nowDir = $this->checkDir($nowDir, $topDir)
                 ? $this->normalizePath($nowDir)
                 : $topDir;
-            $fs->mkdir($nowDir.'/'.$filename);
+            $newFilePath = $nowDir.'/'.$filename;
+            if (file_exists($newFilePath)) {
+                throw new IOException(trans('admin.content.file.dir_exists', [ '%file_name%' => $filename, ]));
+            }
+            $fs->mkdir($newFilePath);
 
             $this->addSuccess('admin.common.create_complete', 'admin');
         } catch (IOException $e) {

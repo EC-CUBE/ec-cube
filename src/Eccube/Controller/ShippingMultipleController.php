@@ -344,7 +344,10 @@ class ShippingMultipleController extends AbstractShoppingController
                 }
 
                 $this->cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
-                $this->cartService->save();
+
+                // 注文フローで取得されるカートの入れ替わりを防止する
+                // @see https://github.com/EC-CUBE/ec-cube/issues/4293
+                $this->cartService->setPrimary($Cart->getCartKey());
             }
 
             return $this->redirectToRoute('shopping');
