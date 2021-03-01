@@ -28,8 +28,8 @@ use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ShippingRepository;
-use Eccube\Util\EntityUtil;
 use Eccube\Util\FormUtil;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -110,6 +110,9 @@ class CsvExportService
      */
     protected $formFactory;
 
+    /** @var PaginatorInterface */
+    protected $paginator;
+
     /**
      * CsvExportService constructor.
      *
@@ -117,8 +120,12 @@ class CsvExportService
      * @param CsvRepository $csvRepository
      * @param CsvTypeRepository $csvTypeRepository
      * @param OrderRepository $orderRepository
+     * @param ShippingRepository $shippingRepository
      * @param CustomerRepository $customerRepository
+     * @param ProductRepository $productRepository
      * @param EccubeConfig $eccubeConfig
+     * @param FormFactoryInterface $formFactory
+     * @param PaginatorInterface $paginator
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -129,7 +136,8 @@ class CsvExportService
         CustomerRepository $customerRepository,
         ProductRepository $productRepository,
         EccubeConfig $eccubeConfig,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        PaginatorInterface $paginator
     ) {
         $this->entityManager = $entityManager;
         $this->csvRepository = $csvRepository;
@@ -140,6 +148,7 @@ class CsvExportService
         $this->eccubeConfig = $eccubeConfig;
         $this->productRepository = $productRepository;
         $this->formFactory = $formFactory;
+        $this->paginator = $paginator;
     }
 
     /**
@@ -279,12 +288,20 @@ class CsvExportService
 
         $this->fopen();
 
-        $query = $this->qb->getQuery();
-        foreach ($query->getResult() as $iterableResult) {
-            $closure($iterableResult, $this);
-            $this->entityManager->detach($iterableResult);
-            $query->free();
-            flush();
+        $page = 1;
+        $limit = 100;
+        while ($results = $this->paginator->paginate($this->qb, $page, $limit)) {
+            if (!$results->valid()) {
+                break;
+            }
+
+            foreach ($results as $result) {
+                $closure($result, $this);
+                flush();
+            }
+
+            $this->entityManager->clear();
+            $page++;
         }
 
         $this->fclose();
@@ -317,16 +334,12 @@ class CsvExportService
 
         // one to one の場合は, dtb_csv.reference_field_name, 合致する結果を取得する.
         if ($data instanceof \Eccube\Entity\AbstractEntity) {
-            if (EntityUtil::isNotEmpty($data)) {
-                return $data->offsetGet($Csv->getReferenceFieldName());
-            }
+            return $data->offsetGet($Csv->getReferenceFieldName());
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             // one to manyの場合は, カンマ区切りに変換する.
             $array = [];
             foreach ($data as $elem) {
-                if (EntityUtil::isNotEmpty($elem)) {
-                    $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
-                }
+                $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
             }
 
             return implode($this->eccubeConfig['eccube_csv_export_multidata_separator'], $array);
@@ -337,8 +350,6 @@ class CsvExportService
             // スカラ値の場合はそのまま.
             return $data;
         }
-
-        return null;
     }
 
     /**

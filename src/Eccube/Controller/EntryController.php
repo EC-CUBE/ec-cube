@@ -21,6 +21,7 @@ use Eccube\Form\Type\Front\EntryType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CustomerStatusRepository;
+use Eccube\Repository\PageRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,6 +78,11 @@ class EntryController extends AbstractController
     protected $cartService;
 
     /**
+     * @var PageRepository
+     */
+    protected $pageRepository;
+
+    /**
      * EntryController constructor.
      *
      * @param CartService $cartService
@@ -96,7 +102,8 @@ class EntryController extends AbstractController
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory,
         ValidatorInterface $validatorInterface,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        PageRepository $pageRepository
     ) {
         $this->customerStatusRepository = $customerStatusRepository;
         $this->mailService = $mailService;
@@ -106,12 +113,14 @@ class EntryController extends AbstractController
         $this->recursiveValidator = $validatorInterface;
         $this->tokenStorage = $tokenStorage;
         $this->cartService = $cartService;
+        $this->pageRepository = $pageRepository;
     }
 
     /**
      * 会員登録画面.
      *
      * @Route("/entry", name="entry")
+     * @Route("/entry", name="entry_confirm")
      * @Template("Entry/index.twig")
      */
     public function index(Request $request)
@@ -152,6 +161,7 @@ class EntryController extends AbstractController
                         'Entry/confirm.twig',
                         [
                             'form' => $form->createView(),
+                            'Page' => $this->pageRepository->getPageByRoute('entry_confirm')
                         ]
                     );
 

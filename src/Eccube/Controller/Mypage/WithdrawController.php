@@ -18,6 +18,7 @@ use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\Master\CustomerStatusRepository;
+use Eccube\Repository\PageRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderHelper;
@@ -56,6 +57,11 @@ class WithdrawController extends AbstractController
     private $orderHelper;
 
     /**
+     * @var PageRepository
+     */
+    private $pageRepository;
+
+    /**
      * WithdrawController constructor.
      *
      * @param MailService $mailService
@@ -63,25 +69,29 @@ class WithdrawController extends AbstractController
      * @param TokenStorageInterface $tokenStorage
      * @param CartService $cartService
      * @param OrderHelper $orderHelper
+     * @param PageRepository $pageRepository
      */
     public function __construct(
         MailService $mailService,
         CustomerStatusRepository $customerStatusRepository,
         TokenStorageInterface $tokenStorage,
         CartService $cartService,
-        OrderHelper $orderHelper
+        OrderHelper $orderHelper,
+        PageRepository $pageRepository
     ) {
         $this->mailService = $mailService;
         $this->customerStatusRepository = $customerStatusRepository;
         $this->tokenStorage = $tokenStorage;
         $this->cartService = $cartService;
         $this->orderHelper = $orderHelper;
+        $this->pageRepository = $pageRepository;
     }
 
     /**
      * 退会画面.
      *
      * @Route("/mypage/withdraw", name="mypage_withdraw")
+     * @Route("/mypage/withdraw", name="mypage_withdraw_confirm")
      * @Template("Mypage/withdraw.twig")
      */
     public function index(Request $request)
@@ -109,6 +119,7 @@ class WithdrawController extends AbstractController
                         'Mypage/withdraw_confirm.twig',
                         [
                             'form' => $form->createView(),
+                            'Page' => $this->pageRepository->getPageByRoute('mypage_withdraw_confirm')
                         ]
                     );
 

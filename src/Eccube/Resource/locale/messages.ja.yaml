@@ -428,6 +428,8 @@ admin.common.next: 次へ
 admin.common.first: 最初へ
 admin.common.last: 最後へ
 admin.common.back: 戻る
+admin.common.open_detail: '詳細を表示'
+admin.common.close_detail: '詳細を閉じる'
 
 # 汎用ラベル, メッセージ
 admin.common.show: 表示
@@ -469,6 +471,9 @@ admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません
 admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
 admin.common.csv_invalid_foreign_key: '%line%行目の%name%は関連するデータがあるため削除できません'
 admin.common.csv_invalid_description_detail_upper_limit: '%line%行目の%name%は%max%文字以下の文字列を指定してください。'
+admin.common.csv_upload_in_progress: 'CSVファイルのアップロード中...'
+admin.common.csv_upload_line_success: '%from%行目〜%to%行目を登録しました'
+admin.common.csv_upload_line_error: 'エラーが発生しました。%from%行目以降の登録処理はキャンセルされました'
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 admin.common.delete_modal__title: 削除します
@@ -744,6 +749,10 @@ admin.product.category_csv.parent_category_id_description: ''
 admin.product.category_csv.delete_flag_col: カテゴリ削除フラグ
 admin.product.category_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
 
+# 商品CSV
+admin.product.product_csv_upload__title: '商品CSVをアップロードします'
+admin.product.product_csv_upload__message: '商品CSVファイルをアップロードします。よろしいですか？'
+
 #------------------------------------------------------------------------------------
 # 受注
 #------------------------------------------------------------------------------------
@@ -957,6 +966,7 @@ admin.content.file.updated: 更新
 admin.content.file.directory_tree: フォルダ構成
 admin.content.file.upload_complete: '%success%件のファイルをアップロードしました。(%success%/%count%)'
 admin.content.file.upload_error: '%file_name% のアップロードに失敗しました。(%error%)'
+admin.content.file.dir_exists: %file_name% は既に使用されています。別のフォルダ名を入力してください
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
@@ -1063,6 +1073,7 @@ admin.setting.shop.delivery_setting: 配送方法設定
 admin.setting.shop.tax_setting: 税率設定
 admin.setting.shop.mail_setting: メール設定
 admin.setting.shop.csv_setting: CSV出力項目設定
+admin.setting.shop.order_status_setting: 受注対応状況設定
 admin.setting.system: システム設定
 admin.setting.system.member_management: メンバー管理
 admin.setting.system.member_password_change: パスワード変更
@@ -1179,6 +1190,17 @@ admin.setting.shop.csv.how_to_use: |
   任意の項目を押して選択してから［項目操作］ボタンで移動し、CSV出力する項目を設定してください。
   出力する項目の順序は［項目順序］ボタンで変更することができます。
   複数の項目を選択する場合はctrlキー（Macの場合はcommandキー）を押しながら項目を押します。shiftキーを押しながら選択すると範囲選択ができます。
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：受注対応状況設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.order_status.order_status: 受注対応状況
+admin.setting.shop.order_status.id: ID
+admin.setting.shop.order_status.admin_order_status_name: 名称(受注管理)
+admin.setting.shop.order_status.customer_order_status_name: 名称(マイページ)
+admin.setting.shop.order_status.color: 色
+admin.setting.shop.order_status.display_order_count: 件数表示
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：メンバー管理 / パスワード変更
@@ -1585,6 +1607,10 @@ tooltip.setting.shop.tax_setting: 商品共通の税率を設定できます。�
 tooltip.setting.shop.mail.mail_template: 既存のメールテンプレートを選択してください。以下に内容が表示されます。
 tooltip.setting.shop.csv.csv_columns: 各種のデータをCSVで出力できます。出力したい項目をこちらで設定することが可能です。
 tooltip.setting.shop.csv.csv_type: 設定したいCSVの種類を指定してください。
+tooltip.setting.shop.order_status.order_status: 受注管理およびマイページで表示される対応状況の設定を行います。名称、色、件数表示の設定が可能です。
+tooltip.setting.shop.order_status.customer_order_status_name: 対応状況の名称を設定できます。ここで設定した名称は会員ログイン後のマイページで表示されます。
+tooltip.setting.shop.order_status.color: 受注管理の対応状況の色を設定できます。
+tooltip.setting.shop.order_status.display_order_count: 受注管理の対応状況ごとの受注件数の表示・非表示を設定できます。
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。
 tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
 tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
