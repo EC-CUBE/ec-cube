@@ -149,12 +149,12 @@ class FileController extends AbstractController
                     new Assert\Regex([
                         'pattern' => '/[^[:alnum:]_.\\-]/',
                         'match' => false,
-                        'message' => 'file.text.error.folder_symbol',
+                        'message' => 'admin.content.file.folder_name_symbol_error',
                     ]),
                     new Assert\Regex([
                         'pattern' => "/^\.(.*)$/",
                         'match' => false,
-                        'message' => 'file.text.error.folder_period',
+                        'message' => 'admin.content.file.folder_name_period_error',
                     ]),
                 ],
             ])
