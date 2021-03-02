@@ -560,7 +560,6 @@ class ProductController extends AbstractController
                     }
                 }
 
-                $this->entityManager->persist($Product);
                 $this->entityManager->flush();
 
                 $sortNos = $request->get('sort_no_images');
