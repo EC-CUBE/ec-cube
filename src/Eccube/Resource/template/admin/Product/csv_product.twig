@@ -18,34 +18,162 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/spin.min.js', 'admin') }}"></script>
     <script>
         $(function() {
-            var opts = {
-                lines: 13,
-                length: 30,
-                width: 2,
-                radius: 12,
-                corners: 1,
-                rotate: 0,
-                direction: 1,
-                color: '#BBB',
-                speed: 1,
-                trail: 67,
-                shadow: true,
-                hwaccel: false,
-                className: 'spinner',
-                zIndex: 2e9,
-                top: top
-            };
+            $('#importCsv').on('click', function() {
 
-            ImageSpinner = new Spinner(opts).spin(document.getElementById('spinner'));
-            ImageSpinner.stop();
+                var setupModal = function (modal) {
+                    modal.find('button').attr('disabled', 'disabled');
+                    $('.modal-body p', modal).text("{{ 'admin.common.csv_upload_in_progress'|trans }}");
+                    $('.progress', modal).show();
+                    return (new $.Deferred).resolve().promise();
+                }
 
-            $('#upload-form').submit(function() {
-                $('#upload-button').attr('disabled', 'disabled');
-                $('#download-button').attr('disabled', 'disabled');
-                ImageSpinner.spin(document.getElementById('spinner'));
+                var addError = function(message) {
+                    $('<li><span class="badge badge-danger">ERROR</span> </li>')
+                        .append($('<span></span>').text(message))
+                        .prependTo('#bulkMessages');
+                    $('#bulkMessages li:nth-child(n+2)').hide()
+                };
+
+                var addSuccess = function(message) {
+                    $('<li><span class="badge badge-success">SUCCESS</span> </li>')
+                        .append($('<span></span>').text(message))
+                        .prependTo('#bulkMessages');
+                    $('#bulkMessages li:nth-child(n+2)').hide()
+                };
+
+                var split = function(formData) {
+                    return function() {
+                        var d = new $.Deferred();
+                        $.ajax({
+                            url: '{{ url('admin_product_csv_split') }}',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            cache: false,
+                        })
+                        .then(function(data) {
+                            if (data.success) {
+                                d.resolve(data)
+                            } else {
+                                data.message.forEach(function(error) {
+                                    addError(error.message)
+                                })
+                                d.reject(data)
+                            }
+                        })
+                        .catch(function() {
+                            d.reject()
+                        })
+                        return d.promise();
+                    }
+                }
+
+                var upload = function(file_name, current, total) {
+                    return function() {
+                        var d = new $.Deferred();
+                        $.ajax({
+                            url: '{{ url('admin_product_csv_split_import') }}',
+                            type: 'POST',
+                            data: {
+                                file_name: file_name + current + '.csv',
+                                file_no: current
+                            },
+                        })
+                        .then(function(data) {
+                            if (data.success) {
+                                addSuccess(data.success_message)
+                                $('.progress-bar', modal).css('width', (current / total * 100) + '%');
+                                d.resolve(data)
+                            } else {
+                                $('.modal-body p', modal)
+                                    .text(data.error_message)
+
+                                data.errors.forEach(function (error) {
+                                    addError(error)
+                                });
+
+                                $('.progress-bar', modal)
+                                    .clone()
+                                    .addClass('bg-danger')
+                                    .css('width', 100 - ((current - 1) / total * 100) + '%')
+                                    .appendTo('.progress', modal)
+
+                                $('.progress-bar', modal).addClass('bg-success')
+
+                                // エラー発生以降の分割ファイルをクリア
+                                var files = []
+                                for (var i = current + 1; i <= total; i++) {
+                                    files.push(file_name + i + '.csv')
+                                }
+                                if (files.length > 0) {
+                                    $.post('{{ url('admin_product_csv_split_cleanup') }}', { files: files })
+                                }
+
+                                d.reject(data);
+                            }
+                        }, function(data) {
+                            d.reject(data)
+                        })
+                        return d.promise()
+                    }
+                }
+
+                var modal = $('#importCsvModal')
+                var formData = new FormData($('#upload-form').get(0))
+
+                setupModal(modal)
+                    // CSV分割
+                    .then(split(formData))
+                    .catch(function() {
+                        $('.modal-body p', modal).text("{{ 'admin.common.csv_upload_error'|trans }}")
+                        $('.progress-bar', modal).css('width', '100%')
+                        $('.progress-bar', modal).addClass('bg-danger')
+                        return $.Deferred().reject();
+                    })
+                    // 分割したCSVを登録
+                    .then(function(data) {
+                        var d = $.Deferred().resolve();
+                        for (var i = 1; i <= data.max_file_no; i++) {
+                            d = d.then(upload(data.file_name, i, data.max_file_no))
+                        }
+                        return d.promise()
+                    })
+                    // 完了メッセージ
+                    .then(function() {
+                        $('.modal-body p', modal).text("{{ 'admin.common.csv_upload_complete'|trans }}")
+                        $('.progress-bar', modal).addClass('bg-success');
+                    })
+                    // モーダルのロック解除
+                    .always(function() {
+                        $('.progress-bar', modal).removeClass('progress-bar-animated')
+                        // メッセージ行が複数ある場合に詳細表示
+                        if ($('#bulkMessages li').length > 1) {
+                            $('#toggleMessages').show()
+                        }
+                        modal.find('button').removeAttr('disabled').toggle()
+                    })
+            })
+
+            $('#toggleMessages').on('click', function() {
+                var display = $('#bulkMessages li:last').css('display')
+                if (display == 'none') {
+                    $('#bulkMessages li').show();
+                    $('#toggleMessages span').text("{{ 'admin.common.close_detail'|trans }}")
+                    $('#toggleMessages i').removeClass('fa-plus-square-o')
+                    $('#toggleMessages i').addClass('fa-minus-square-o')
+                } else {
+                    $('#bulkMessages li:nth-child(n+2)').hide()
+                    $('#toggleMessages span').text("{{ 'admin.common.open_detail'|trans }}")
+                    $('#toggleMessages i').removeClass('fa-minus-square-o')
+                    $('#toggleMessages i').addClass('fa-plus-square-o')
+                }
+            })
+
+            $('#importCsvDone').on('click', function() {
+                location.reload(true);
             });
 
             $('#file-select').click(function() {
@@ -54,6 +182,7 @@ file that was distributed with this source code.
                     var files = $(this).prop('files');
                     if (files.length) {
                         $('#admin_csv_import_import_file_name').text(files[0].name);
+                        $('#upload-button').prop('disabled', false);
                     }
                 });
             });
@@ -73,7 +202,7 @@ file that was distributed with this source code.
                         <div class="row">
                             <div class="col-2"><span>{{ 'admin.common.csv_select'|trans }}</span></div>
                             <div class="col">
-                                <form id="upload-form" method="post" action="{{ url('admin_product_csv_import') }}" enctype="multipart/form-data">
+                                <form id="upload-form" method="post" action="{{ url('admin_product_csv_split') }}" enctype="multipart/form-data">
                                     {{ form_widget(form._token) }}
                                     <div class="mb-2">
                                         <span id="file-select" class="btn btn-ec-regular mr-2">{{ 'admin.common.file_select'|trans }}</span>
@@ -81,7 +210,7 @@ file that was distributed with this source code.
                                         {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'd-none'}}) }}
                                         {{ form_errors(form.import_file) }}
                                     </div>
-                                    <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.common.bulk_registration'|trans }}</button>
+                                    <button class="btn btn-ec-conversion" id="upload-button" type="button" data-toggle="modal" data-target="#importCsvModal" disabled>{{ 'admin.common.bulk_registration'|trans }}</button>
                                     {% for error in errors %}
                                         <div class="text-danger">{{ error }}</div>
                                     {% endfor %}
@@ -121,6 +250,32 @@ file that was distributed with this source code.
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="importCsvModal" tabindex="-1" role="dialog" aria-labelledby="importCsvModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">{{ 'admin.product.product_csv_upload__title'|trans }}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body text-left">
+                    <span class="badge"></span>
+                    <p class="text-left">{{ 'admin.product.product_csv_upload__message'|trans }}</p>
+                    <div class="progress mb-1" style="display: none">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <ul id="bulkMessages"></ul>
+                    <div id="toggleMessages" style="display: none;">
+                        <i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span>{{ 'admin.common.open_detail'|trans }}</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                    <button class="btn btn-ec-conversion" type="button" id="importCsv">{{ 'admin.common.bulk_registration' | trans }}</button>
+                    <button class="btn btn-ec-regular" id="importCsvDone" style="display: none" type="button" data-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
                 </div>
             </div>
         </div>

@@ -38,10 +38,10 @@ npm run build # Sass のビルド
 
 ### 動作確認環境
 
-* Apache/2.4.x (mod_rewrite / mod_ssl 必須)
-* PHP7.1.20
-* PostgreSQL 9.2.1   
-* ブラウザー：Google Chrome  
+* Apache 2.4.x (mod_rewrite / mod_ssl 必須)
+* PHP 7.3.x
+* PostgreSQL 10.x / MySQL 5.7.x
+* ブラウザー：Google Chrome
 
 詳しくは開発ドキュメントの [システム要件](https://doc4.ec-cube.net/quickstart_requirement) をご確認ください。
 
@@ -57,7 +57,7 @@ EC-CUBE 4.0 の仕様や手順、開発Tipsに関するドキュメントを掲�
 ## 開発への参加
 
 EC-CUBE 4.0の不具合の修正、機能のブラッシュアップを目的として、継続的に開発を行っております。  
-コードのリファクタリング、不具合修正以外のPullRequestを送る際は、Pull Requestのコメントなどに意図を明確に記載してください。  
+コードのリファクタリング、不具合修正以外のPull Requestを送る際は、Pull Requestのコメントなどに意図を明確に記載してください。  
 
 Pull Requestの送信前に、Issueにて提議いただく事も可能です。  
 Issuesの利用方法については、[こちら](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご確認ください。  
@@ -68,6 +68,6 @@ Issuesの利用方法については、[こちら](https://github.com/EC-CUBE/ec
 
 ### コピーライトポリシーへの同意
 
-コードの提供・追加、修正・変更その他「EC-CUBE」への開発の御協力（Issue投稿、PullRequest投稿など、GitHub上での活動）を行っていただく場合には、
+コードの提供・追加、修正・変更その他「EC-CUBE」への開発の御協力（Issue投稿、Pull Request投稿など、GitHub上での活動）を行っていただく場合には、
 [EC-CUBEのコピーライトポリシー](https://github.com/EC-CUBE/ec-cube/wiki/EC-CUBE%E3%81%AE%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC)をご理解いただき、ご了承いただく必要がございます。
-Issueの投稿やPullRequestを送信する際は、EC-CUBEのコピーライトポリシーに同意したものとみなします。
+Issueの投稿やPull Requestを送信する際は、EC-CUBEのコピーライトポリシーに同意したものとみなします。

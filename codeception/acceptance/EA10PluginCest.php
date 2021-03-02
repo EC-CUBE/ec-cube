@@ -436,6 +436,46 @@ class EA10PluginCest
         $fs->remove($dir);
     }
 
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/4638
+     */
+    public function test_enhance_plugin_entity(\AcceptanceTester $I)
+    {
+        $Boomerang = Boomerang_Store::start($I)
+            ->インストール()
+            ->有効化()
+            ->カート作成();
+
+        $I->see('[1]');
+
+        Boomerang10_Store::start($I, $Boomerang)
+            ->インストール()
+            ->有効化();
+
+        $Boomerang->カート一覧();
+        $I->see('[1]');
+    }
+
+    public function test_bundle_install_enable_disable_remove_store(\AcceptanceTester $I)
+    {
+        $Bundle = Bundle_Store::start($I);
+        $Bundle->インストール()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
+    public function test_bundle_install_update_enable_disable_remove_store(\AcceptanceTester $I)
+    {
+        $Bundle = Bundle_Store::start($I);
+        $Bundle->インストール()
+            ->有効化()
+            ->アップデート()
+            ->有効化()
+            ->無効化()
+            ->削除();
+    }
+
     private function publishPlugin($fileName)
     {
         copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);
@@ -948,6 +988,32 @@ class Boomerang_Store extends Store_Plugin
     {
         return new self($I);
     }
+
+    public function カート一覧()
+    {
+        $this->I->amOnPage('/boomerang');
+    }
+
+    public function カート作成()
+    {
+        $this->I->amOnPage('/boomerang/new');
+        $this->I->seeCurrentUrlMatches('/^\/boomerang$/');
+        return $this;
+    }
+}
+
+class Boomerang10_Store extends Store_Plugin
+{
+    public function __construct(AcceptanceTester $I, Store_Plugin $dependency = null)
+    {
+        parent::__construct($I, 'Boomerang10', $dependency);
+        $this->columns[] = 'dtb_bar.mail';
+    }
+
+    public static function start(AcceptanceTester $I, Store_Plugin $dependency = null)
+    {
+        return new self($I, $dependency = null);
+    }
 }
 
 class Boomerang_Local extends Local_Plugin
@@ -960,6 +1026,36 @@ class Boomerang_Local extends Local_Plugin
         $this->traits['\Plugin\Boomerang\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
     }
 
+    public static function start(AcceptanceTester $I)
+    {
+        return new self($I);
+    }
+}
+
+class Bundle_Store extends Store_Plugin
+{
+    public function __construct(AcceptanceTester $I)
+    {
+        parent::__construct($I, 'Bundle');
+        $this->tables[] = 'oauth2_client';
+        $this->tables[] = 'oauth2_refresh_token';
+        $this->tables[] = 'oauth2_access_token';
+        $this->tables[] = 'oauth2_authorization_code';
+    }
+
+    public function 有効化()
+    {
+        parent::有効化();
+
+        return $this;
+    }
+
+    public function 無効化()
+    {
+        parent::無効化();
+
+        return $this;
+    }
     public static function start(AcceptanceTester $I)
     {
         return new self($I);

@@ -30,4 +30,18 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         // visible = trueのみ取得する, 合計3件.
         self::assertCount(3, $Result->getProductClasses());
     }
+
+    public function testGetQueryBuilderBySearchDataForAdmin_id_2147483648()
+    {
+        $Product = $this->createProduct(null, 1);
+        $Product->setName('2147483648');
+
+        $this->productRepository->save($Product);
+        $this->entityManager->flush();
+
+        $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin(['id' => '2147483648']);
+        $result = $qb->getQuery()->getResult();
+
+        self::assertEquals($Product, $result[0]);
+    }
 }

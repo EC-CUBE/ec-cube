@@ -156,8 +156,8 @@ class ProductRepository extends AbstractRepository
             foreach ($keywords as $index => $keyword) {
                 $key = sprintf('keyword%s', $index);
                 $qb
-                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR 
-                        NORMALIZE(p.search_word) LIKE NORMALIZE(:%s) OR 
+                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR
+                        NORMALIZE(p.search_word) LIKE NORMALIZE(:%s) OR
                         EXISTS (SELECT wpc%d FROM \Eccube\Entity\ProductClass wpc%d WHERE p = wpc%d.Product AND NORMALIZE(wpc%d.code) LIKE NORMALIZE(:%s))',
                         $key, $key, $index, $index, $index, $index, $key))
                     ->setParameter($key, '%'.$keyword.'%');
@@ -226,7 +226,10 @@ class ProductRepository extends AbstractRepository
 
         // id
         if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
-            $id = preg_match('/^\d{0,10}$/', $searchData['id']) ? $searchData['id'] : null;
+            $id = preg_match('/^\d{0,10}$/', $searchData['id'])  ? $searchData['id'] : null;
+            if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
+                $id = null;
+            }
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
                 ->setParameter('id', $id)

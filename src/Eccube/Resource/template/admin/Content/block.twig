@@ -26,7 +26,7 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         // searchWordの実行
-        $('#search-block').on('input', function () {
+        $('#search-block').on('input', function() {
             searchWord($(this).val(), $(".list-group li"));
         });
     </script>
@@ -57,13 +57,23 @@ file that was distributed with this source code.
                     <div class="card-body p-0">
                         <div class="card rounded border-0">
                             <ul class="list-group list-group-flush">
+                                <li>
+                                    <div class="row p-3 font-weight-bold">
+                                        <div class="col-4 col-md-6">{{ 'admin.content.block_name'|trans }}</div>
+                                        <div class="col-3 col-md-4">{{ 'admin.content.block_file_name'|trans }}</div>
+                                        <div class="col-5 col-md-2"></div>
+                                    </div>
+                                </li>
                                 {% for Block in Blocks %}
                                     <li id="ex-block-{{ Block.id }}" class="list-group-item">
                                         <div class="row">
-                                            <div class="col-7 col-md-10 d-flex align-items-center">
+                                            <div class="col-4 col-md-6 d-flex align-items-center">
                                                 <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">
                                                     {{ Block.name }}
                                                 </a>
+                                            </div>
+                                            <div class="col-3 col-md-4 d-flex align-items-center">
+                                                {{ Block.file_name }}.twig
                                             </div>
                                             <div class="col-5 col-md-2">
                                                 <div class="row">

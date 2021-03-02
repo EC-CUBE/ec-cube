@@ -18,6 +18,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -103,6 +104,9 @@ class CustomerRepository extends AbstractRepository
             //スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
             $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
+            if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
+                $id = null;
+            }
             $qb
                 ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
                 ->setParameter('customer_id', $id)
@@ -270,7 +274,9 @@ class CustomerRepository extends AbstractRepository
                 ->leftJoin('c.Orders', 'o')
                 ->leftJoin('o.OrderItems', 'oi')
                 ->andWhere('oi.product_name LIKE :buy_product_name')
-                ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
+                ->andWhere($qb->expr()->notIn('o.OrderStatus', ':order_status'))
+                ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%')
+                ->setParameter('order_status', [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         }
 
         // Order By

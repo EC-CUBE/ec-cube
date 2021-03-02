@@ -221,6 +221,9 @@
     "phpspec/prophecy": {
         "version": "1.7.5"
     },
+    "phpstan/phpstan": {
+        "version": "0.12.70"
+    },
     "phpunit/php-code-coverage": {
         "version": "5.3.2"
     },
@@ -334,6 +337,9 @@
     },
     "setasign/fpdi-tcpdf": {
         "version": "v2.0.0"
+    },
+    "skorp/detect-incompatible-samesite-useragents": {
+        "version": "1.0.0"
     },
     "suncat/mobile-detect-bundle": {
         "version": "1.0",
@@ -482,8 +488,14 @@
     "symfony/polyfill-ctype": {
         "version": "v1.8.0"
     },
+    "symfony/polyfill-iconv": {
+        "version": "v1.17.1"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.6.0"
+    },
+    "symfony/polyfill-intl-idn": {
+        "version": "v1.17.1"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
