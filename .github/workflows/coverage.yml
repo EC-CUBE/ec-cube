@@ -1,0 +1,91 @@
+name: Coverage
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+jobs:
+  phpunit:
+    name: PHPUnit
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.4 ]
+        db: [ pgsql ]
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 11
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: composer install
+        run: |
+          sudo composer selfupdate --1
+          composer install --dev --no-interaction -o --apcu-autoloader
+
+      - name: Setup EC-CUBE
+        env:
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        run: |
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
+
+      - name: PHPUnit
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_URL: 'smtp://localhost:1025'
+        continue-on-error: true
+        run: |
+          bin/phpunit --version
+          phpdbg -dmemory_limit=-1 -qrr bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1
+        with:
+          files: ./coverage1.xml
+          # token: ${{ secrets.CODECOV_TOKEN }}
+          flags: tests
+          # yml: ./codecov.yml
+          fail_ci_if_error: true
