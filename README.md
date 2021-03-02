@@ -10,9 +10,9 @@
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 
-+ 本ドキュメントはEC-CUBEの開発者を主要な対象者としております。  
-+ パッケージ版は正式リリース後に[EC-CUBEオフィシャルサイト](https://www.ec-cube.net)で配布します。  
-+ カスタマイズやEC-CUBEの利用、仕様に関しては[開発コミュニティ](https://xoops.ec-cube.net)をご利用ください。  
++ 本ドキュメントはEC-CUBEの開発者を主要な対象者としております。
++ パッケージ版は正式リリース後に[EC-CUBEオフィシャルサイト](https://www.ec-cube.net)で配布します。
++ カスタマイズやEC-CUBEの利用、仕様に関しては[開発コミュニティ](https://xoops.ec-cube.net)をご利用ください。
 + 本体開発にあたって不明点などあれば[Issue](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご利用下さい。
 + EC-CUBE 3系の保守については、 [EC-CUBE/ec-cube3](https://github.com/EC-CUBE/ec-cube3/)にて開発を行っております。
 + EC-CUBE 2系の保守については、 [EC-CUBE/ec-cube2](https://github.com/EC-CUBE/ec-cube2/)にて開発を行っております。
@@ -50,17 +50,17 @@ npm run build # Sass のビルド
 ### [EC-CUBE 4.0 開発ドキュメント@doc4.ec-cube.net](https://doc4.ec-cube.net/)
 
 
-EC-CUBE 4.0 の仕様や手順、開発Tipsに関するドキュメントを掲載しています。  
-修正や追記、新規ドキュメントの作成をいただく場合、以下のレポジトリからPullRequestをお送りください。  
+EC-CUBE 4.0 の仕様や手順、開発Tipsに関するドキュメントを掲載しています。
+修正や追記、新規ドキュメントの作成をいただく場合、以下のレポジトリからPullRequestをお送りください。
 [https://github.com/EC-CUBE/doc4.ec-cube.net](https://github.com/EC-CUBE/doc4.ec-cube.net)
 
 ## 開発への参加
 
-EC-CUBE 4.0の不具合の修正、機能のブラッシュアップを目的として、継続的に開発を行っております。  
-コードのリファクタリング、不具合修正以外のPull Requestを送る際は、Pull Requestのコメントなどに意図を明確に記載してください。  
+EC-CUBE 4.0の不具合の修正、機能のブラッシュアップを目的として、継続的に開発を行っております。
+コードのリファクタリング、不具合修正以外のPull Requestを送る際は、Pull Requestのコメントなどに意図を明確に記載してください。
 
-Pull Requestの送信前に、Issueにて提議いただく事も可能です。  
-Issuesの利用方法については、[こちら](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご確認ください。  
+Pull Requestの送信前に、Issueにて提議いただく事も可能です。
+Issuesの利用方法については、[こちら](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご確認ください。
 
 [Slack](https://join.slack.com/t/ec-cube/shared_invite/enQtNDA1MDYzNDQxMTIzLTY5MTRhOGQ2MmZhMjQxYTAwMmVlMDc5MDU2NjJlZmFiM2E3M2Q0M2Y3OTRlMGY4NTQzN2JiZDBkNmQwNTUzYzc)でも本体の開発に関する意見交換などを行っております。
 

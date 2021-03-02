@@ -964,8 +964,10 @@ admin.content.file.directory_name: フォルダ名
 admin.content.file.file_list__card_title: このフォルダ内のファイル
 admin.content.file.updated: 更新
 admin.content.file.directory_tree: フォルダ構成
-admin.content.file.upload_complete: %success%件のファイルをアップロードしました。(%success%/%count%)
-admin.content.file.upload_error: %file_name% のアップロードに失敗しました。(%error%)
+admin.content.file.upload_complete: '%success%件のファイルをアップロードしました。(%success%/%count%)'
+admin.content.file.upload_error: '%file_name% のアップロードに失敗しました。(%error%)'
+admin.content.file.folder_name_symbol_error: 使用できない文字が含まれています。
+admin.content.file.folder_name_period_error: ピリオド(.)で始まる名前は使用できません。
 admin.content.file.dir_exists: %file_name% は既に使用されています。別のフォルダ名を入力してください
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
@@ -1707,4 +1709,4 @@ purchase_flow.over_stock: 「%name%」の在庫が足りません。
 # Command
 #------------------------------------------------------------------------------------
 
-command.composer_require_already_installed.not_supported_plugin: %name% %plugin_version% は EC-CUBE %eccube_version% には対応していません。続行しますか？
+command.composer_require_already_installed.not_supported_plugin: '%name% %plugin_version% は EC-CUBE %eccube_version% には対応していません。続行しますか？'
