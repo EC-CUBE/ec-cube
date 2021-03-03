@@ -30,6 +30,7 @@ use Eccube\Repository\DeliveryTimeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\PaymentOptionRepository;
+use Eccube\Twig\Extension\EccubeExtension;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -115,7 +116,7 @@ class DeliveryController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit")
      * @Template("@admin/Setting/Shop/delivery_edit.twig")
      */
-    public function edit(Request $request, $id = null)
+    public function edit(Request $request, $id = null, EccubeExtension $extension)
     {
         if (is_null($id)) {
             $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'ASC']);
@@ -264,7 +265,13 @@ class DeliveryController extends AbstractController
                 if (!empty($PaymentData)) {
                     $mergedRules = $this->getMergeRules($PaymentsData);
                     if (count($mergedRules) > 1) {
-                        $this->addWarning('admin.setting.shop.delivery.payment_warning', 'admin');
+                        for ($i = 1; $i < count($mergedRules); $i++) {
+                            $message = trans('admin.setting.shop.delivery.payment_warning', [
+                                '%min%' => $extension->getPriceFilter($mergedRules[$i - 1]['max']),
+                                '%max%' => $extension->getPriceFilter($mergedRules[$i]['min'] - 1),
+                            ]);
+                            $this->addWarning($message, 'admin');
+                        }
                     }
                 }
 
@@ -419,6 +426,14 @@ class DeliveryController extends AbstractController
                 $mergeRules[] = ['min' => $min, 'max' => $max];
             }
         }
+
+        usort($mergeRules, function ($a, $b) {
+            if ($a['min'] == $b['min']) {
+                return 0;
+            }
+            return ($a['min'] < $b['min']) ? -1 : 1;
+        });
+
         return $mergeRules;
     }
 }

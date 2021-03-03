@@ -1145,7 +1145,7 @@ admin.setting.shop.delivery.delivery_fee_by_pref: 都道府県別送料設定
 admin.setting.shop.delivery.apply_to_pref__title: 全国一律に設定
 admin.setting.shop.delivery.apply_to_pref__button: 各都道府県に適用
 admin.setting.shop.delivery.fee.invalid: 数字で入力してください。
-admin.setting.shop.delivery.payment_warning: '設定した支払方法は、支払金額によっては利用できない場合があります。支払方法の利用条件をご確認ください。'
+admin.setting.shop.delivery.payment_warning: '税込%min% ~ %max%の購入で選択できる支払い方法がありません。支払方法の利用条件をご確認ください。'
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：税率設定

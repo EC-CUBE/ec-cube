@@ -1145,7 +1145,7 @@ admin.setting.shop.delivery.delivery_fee_by_pref: Shipping Charge by Prefecture
 admin.setting.shop.delivery.apply_to_pref__title: Flat Rate (Nationwide)
 admin.setting.shop.delivery.apply_to_pref__button: Apply to All Prefectures
 admin.setting.shop.delivery.fee.invalid: Please enter with numbers.
-admin.setting.shop.delivery.payment_warning: 'The set payment method may not be available depending on the payment amount. Please check the terms of use of the payment method.'
+admin.setting.shop.delivery.payment_warning: 'There is no payment method that can be selected for purchases of %min% to %max% including tax. Please check the payment method condition settings.'
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : Tax Rate
