@@ -59,6 +59,7 @@ jobs:
           git remote add upstream https://github.com/EC-CUBE/ec-cube.git
           git fetch upstream --tags
           git checkout refs/tags/${ECCUBE_VERSION} src/Eccube/Resource/template/default
+          git checkout refs/tags/${ECCUBE_VERSION} html/template/default
 
       - name: Get Composer Cache Directory
         id: composer-cache
