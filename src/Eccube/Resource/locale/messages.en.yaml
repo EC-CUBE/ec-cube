@@ -1147,6 +1147,7 @@ admin.setting.shop.delivery.delivery_fee_by_pref: Shipping Charge by Prefecture
 admin.setting.shop.delivery.apply_to_pref__title: Flat Rate (Nationwide)
 admin.setting.shop.delivery.apply_to_pref__button: Apply to All Prefectures
 admin.setting.shop.delivery.fee.invalid: Please enter with numbers.
+admin.setting.shop.delivery.payment_warning: 'There is no payment method that can be selected for purchases of %min% to %max% including tax. Please check the payment method condition settings.'
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : Tax Rate
@@ -1600,6 +1601,7 @@ tooltip.setting.shop.shop.option_product_tax: If turned on, you can set the tax 
 tooltip.setting.shop.shop.option_point_enabled: If turned on, the point system is enabled.
 tooltip.setting.shop.shop.option_point_rate: You can change the point return rate by purchase amount.
 tooltip.setting.shop.shop.option_point_conversion_rate: Conversion rate per 1 point. E.g. If you set ''1'', the point becomes available to shoppers with the rate of 1 point = 1 yen.
+tooltip.setting.shop.payment.rule: You can set the terms of use for the payment method. If the total payment amount (tax included) including your own fee matches the conditions, it will be displayed in the payment method options of the purchase flow.
 tooltip.setting.shop.payment.logo_image: You can upload the payment option icons displayed in the payment methods during the checkout process. If not registered, the payment methods will be displayed w/o images.
 tooltip.setting.shop.delivery.tracking_number_url: Enter the URL of the shipping tracker of the delivery company.
 tooltip.setting.shop.delivery.sale_type: Specify the sales type(s) available for this delivery method.
