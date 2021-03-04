@@ -90,14 +90,12 @@
 
             // 在庫(品切れ)
             var $cartbtn = $form.parent().find('.add-cart').first();
-            var $cartbtnOutOfStock = $form.parent().find('.add-cart-out-of-stock').first();
-            if (classcat2 && classcat2.stock_find === false) {
-                $cartbtn.hide();
-                $cartbtnOutOfStock.show();
-            } else {
-                $cartbtn.show();
-                $cartbtnOutOfStock.hide();
+            if (typeof this.product_cart_origin === 'undefined') {
+                // 初期値を保持しておく
+                this.product_cart_origin = $cartbtn.html();
             }
+            $cartbtn.prop('disabled', false);
+            $cartbtn.html(this.product_cart_origin);
 
             // 通常価格
             var $price01 = $form.parent().find('.price01-default').first();
@@ -130,13 +128,16 @@
 
             // 在庫(品切れ)
             var $cartbtn = $form.parent().find('.add-cart').first();
-            var $cartbtnOutOfStock = $form.parent().find('.add-cart-out-of-stock').first();
+            if (typeof this.product_cart_origin === 'undefined') {
+                // 初期値を保持しておく
+                this.product_cart_origin = $cartbtn.html();
+            }
             if (classcat2 && classcat2.stock_find === false) {
-                $cartbtn.hide();
-                $cartbtnOutOfStock.show();
+                $cartbtn.prop('disabled', true);
+                $cartbtn.text('ただいま品切れ中です');
             } else {
-                $cartbtn.show();
-                $cartbtnOutOfStock.hide();
+                $cartbtn.prop('disabled', false);
+                $cartbtn.html(this.product_cart_origin);
             }
 
             // 通常価格
