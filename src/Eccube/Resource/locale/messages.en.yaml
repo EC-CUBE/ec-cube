@@ -1624,6 +1624,9 @@ tooltip.setting.system.log_display: Here you can check logs such as access logs 
 tooltip.setting.system.master_data_management: Manage all Master Data here.
 tooltip.setting.system.system_info: System environment information relevant to EC-CUBE.
 tooltip.setting.system.system.php_info: PHP details relevant to EC-CUBE.
+tooltip.store.template.template_code: This code will be used as the directory name where the template is saved.
+tooltip.store.template.template_name: Set the name of the template to be displayed in the Admin Console.
+tooltip.store.template.template_file: Upload an archive file that contains a set of templates.
 
 #====================================================================================
 # Installation
