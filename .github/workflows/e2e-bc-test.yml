@@ -1,0 +1,136 @@
+name: Backward compatibility testing to Front template
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+jobs:
+  codeception:
+    name: Codeception
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [ 4.0.0, 4.0.1, 4.0.2, 4.0.3, 4.0.4, 4.0.5 ]
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.3 ]
+        db: [ pgsql ]
+        group: [ front ]
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 11
+          - group: front
+            app_env: 'codeception'
+
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Checkout to front templates
+        env:
+          ECCUBE_VERSION: ${{ matrix.version }}
+        run: |
+          git remote add upstream https://github.com/EC-CUBE/ec-cube.git
+          git fetch upstream --tags
+          git checkout refs/tags/${ECCUBE_VERSION} src/Eccube/Resource/template/default
+          git checkout refs/tags/${ECCUBE_VERSION} html/template/default
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: composer install
+        run: |
+          sudo composer selfupdate --1
+          composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: ${{ matrix.app_env }}
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+
+      - name: setup-chromedriver
+        uses: nanasess/setup-chromedriver@master
+
+      - name: Run chromedriver
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          echo ">>> Started chrome-driver"
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+          echo ">>> Started xvfb"
+
+      - name: Start PHP Development Server
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_URL: 'smtp://localhost:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        run: php -S localhost:8000 &
+
+      - name: Codeception
+        env:
+          APP_ENV: ${{ matrix.app_env }}
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_URL: 'smtp://localhost:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+          GROUP: ${{ matrix.group }}
+          SYMFONY_DEPRECATIONS_HELPER: weak
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
+      - name: Upload evidence
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-${{ matrix.group }}-evidence
+          path: codeception/_output/
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-${{ matrix.group }}-logs
+          path: var/log/
