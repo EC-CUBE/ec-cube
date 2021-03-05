@@ -186,7 +186,6 @@ class ProductType extends AbstractType
             $form = $event->getForm();
             $saveImgDir = $this->eccubeConfig['eccube_save_image_dir'];
             $tempImgDir = $this->eccubeConfig['eccube_temp_image_dir'];
-            $this->validateFilePath($form->get('delete_images'), [$saveImgDir, $tempImgDir]);
             $this->validateFilePath($form->get('add_images'), [$tempImgDir]);
         });
     }
