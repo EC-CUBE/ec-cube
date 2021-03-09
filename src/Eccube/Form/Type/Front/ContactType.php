@@ -52,7 +52,9 @@ class ContactType extends AbstractType
             ->add('name', NameType::class, [
                 'required' => true,
             ])
-            ->add('kana', KanaType::class)
+            ->add('kana', KanaType::class, [
+                'required' => false,
+            ])
             ->add('postal_code', PostalType::class, [
                 'required' => false,
             ])
