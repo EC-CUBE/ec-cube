@@ -34,12 +34,6 @@ services:
       - "vendor:/var/www/html/vendor"
       - "node_modules:/var/www/html/node_modules"
     environment:
-      TZ: Asia/Tokyo
-      PHP_POST_MAX_SIZE: 10M
-      PHP_UPLOAD_MAX_FILESIZE: 10M
-      PHP_LOG_ERRORS: "On"
-      PHP_ERROR_REPORTING: "E_ALL"
-      PHP_ERROR_LOG: "/proc/self/fd/2"
       # EC-CUBE environments
       APP_ENV: "dev"
       APP_DEBUG: 1
