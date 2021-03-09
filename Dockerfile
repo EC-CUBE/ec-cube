@@ -1,6 +1,7 @@
 FROM php:7.3-apache-stretch
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
+ENV APP_ENV prod
 
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
@@ -65,6 +66,9 @@ RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer \
   && composer selfupdate --1
+
+# 環境変数 APP_ENV は Docker コンテナ経由で渡せるようにする(.env より優先される)
+RUN echo 'SetEnv APP_ENV ${APP_ENV}' >> /etc/apache2/conf-enabled/environment.conf
 
 # 全体コピー前にcomposer installを先行完了させる(docker cache利用によるリビルド速度向上)
 USER www-data
