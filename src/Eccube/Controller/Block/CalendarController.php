@@ -18,6 +18,7 @@ use Eccube\Repository\CalendarRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Carbon\Carbon;
 
 class CalendarController extends AbstractController
 {
@@ -42,8 +43,39 @@ class CalendarController extends AbstractController
      */
     public function index(Request $request)
     {
+        // TODO あとやりたいことは月初の前にどんだけ空白埋めるか？と休日データ取ってフラグ入れる？
+
+        // 今月のカレンダーを作る
+        $today = Carbon::now();
+        $thisMonthFirstDayOfWeek = $today->startOfMonth()->dayOfWeek; // 月初の曜日
+        $thisMonthCalendar = [];
+        for ($i = 1; $i <= $today->daysInMonth; $i++) {
+            $thisMonthCalendar[$i]['day'] = $i;
+            $thisMonthCalendar[$i]['dayOfWeek'] = $thisMonthFirstDayOfWeek; // ホントは曜日詰めなくていい確認だけ
+            if ($thisMonthFirstDayOfWeek == 6) {
+                $thisMonthFirstDayOfWeek = 0; // 曜日を日曜に戻す
+            } else {
+                $thisMonthFirstDayOfWeek++;
+            }
+        }
+
+        // 来月のカレンダーを作る
+        $nextMonth = Carbon::parse('+ 1 month');
+        $nextMonthFirstDayOfWeek = $nextMonth->startOfMonth()->dayOfWeek; // 月初の曜日
+        $nextMonthCalendar = [];
+        for ($i = 1; $i <= $nextMonth->daysInMonth; $i++) {
+            $nextMonthCalendar[$i]['day'] = $i;
+            $nextMonthCalendar[$i]['dayOfWeek'] = $nextMonthFirstDayOfWeek; // ホントは曜日詰めなくていい確認だけ
+            if ($nextMonthFirstDayOfWeek == 6) {
+                $nextMonthFirstDayOfWeek = 0; // 曜日を日曜に戻す
+            } else {
+                $nextMonthFirstDayOfWeek++;
+            }
+        }
+
+
         // 当月と翌月で指定して定休日データ取る？
-        $Calendars = $this->calendarRepository->getList();
+        $Holidays = $this->calendarRepository->getList();
 //        $builder = $this->formFactory
 //            ->createNamedBuilder('', SearchProductBlockType::class)
 //            ->setMethod('GET');
@@ -54,7 +86,8 @@ class CalendarController extends AbstractController
 //        $form->handleRequest($request);
 
         return [
-            'Calendars' => $Calendars,
+            'ThisMonthCalendar' => $thisMonthCalendar,
+            'NextMonthCalendar' => $nextMonthCalendar,
         ];
     }
 }

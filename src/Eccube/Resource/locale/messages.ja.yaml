@@ -136,6 +136,8 @@ front.block.login.login: ログイン
 front.block.login.logout: ログアウト
 front.block.login.to_cart: カートを見る
 front.block.login.to_home: ホームに戻る
+front.block.calendar.title__en: CALENDAR
+front.block.calendar.title__ja: カレンダー
 
 
 #------------------------------------------------------------------------------------

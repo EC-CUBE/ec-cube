@@ -10,6 +10,51 @@ file that was distributed with this source code.
 #}
 {#{% form_theme form 'Form/form_div_layout.twig' %}#}
 <br><br>
-<div>
-カレンダー表示するよ！
+<div class="ec-role">
+    <div>
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">{{ 'front.block.calendar.title__en'|trans }}</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">{{ 'front.block.calendar.title__ja'|trans }}</span>
+        </div>
+        <table>
+            <tr>
+                <th colspan="7">
+                    <span>2021年3月</span>
+                </th>
+            </tr>
+            <tr>
+                <th>日</th>
+                <th>月</th>
+                <th>火</th>
+                <th>水</th>
+                <th>木</th>
+                <th>金</th>
+                <th>土</th>
+            </tr>
+        </table>
+        {% for day in ThisMonthCalendar %}
+            {{ day.day }} {{ day.dayOfWeek }} :
+        {% endfor %}
+        <br><br>
+        <table>
+            <tr>
+                <th colspan="7">
+                    <span>2021年4月</span>
+                </th>
+            </tr>
+            <tr>
+                <th>日</th>
+                <th>月</th>
+                <th>火</th>
+                <th>水</th>
+                <th>木</th>
+                <th>金</th>
+                <th>土</th>
+            </tr>
+        </table>
+        {% for day in NextMonthCalendar %}
+            {{ day.day }} {{ day.dayOfWeek }} :
+        {% endfor %}
+    </div>
 </div>
