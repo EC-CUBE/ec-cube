@@ -54,7 +54,7 @@ if (!class_exists('\Eccube\Entity\Calendar')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="name", type="string", length=255, nullable=true)
+         * @ORM\Column(name="title", type="string", length=255, nullable=true)
          */
         private $title;
 

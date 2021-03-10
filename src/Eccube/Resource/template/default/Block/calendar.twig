@@ -17,6 +17,10 @@ file that was distributed with this source code.
             <span class="ec-secHeading__line"></span>
             <span class="ec-secHeading__ja">{{ 'front.block.calendar.title__ja'|trans }}</span>
         </div>
+        {% for Holiday in Holidays %}
+            {{ Holiday.title }}
+        {% endfor %}
+        <br>
         <table>
             <tr>
                 <th colspan="7">

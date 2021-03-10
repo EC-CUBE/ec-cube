@@ -70,7 +70,7 @@ class CalendarController extends AbstractController
         }
 
         // カレンダーリスト取得
-        $Calendars = $this->calendarRepository->getList();
+        $Calendars = $this->calendarRepository->getListOrderByIdDesc();
 
         $forms = [];
         $errors = [];

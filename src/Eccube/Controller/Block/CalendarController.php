@@ -45,6 +45,9 @@ class CalendarController extends AbstractController
     {
         // TODO あとやりたいことは月初の前にどんだけ空白埋めるか？と休日データ取ってフラグ入れる？
 
+        // 当月と翌月で指定して定休日データ取る？
+        $Holidays = $this->calendarRepository->getHoridayListOfLastTwoMonths();
+
         // 今月のカレンダーを作る
         $today = Carbon::now();
         $thisMonthFirstDayOfWeek = $today->startOfMonth()->dayOfWeek; // 月初の曜日
@@ -73,21 +76,10 @@ class CalendarController extends AbstractController
             }
         }
 
-
-        // 当月と翌月で指定して定休日データ取る？
-        $Holidays = $this->calendarRepository->getList();
-//        $builder = $this->formFactory
-//            ->createNamedBuilder('', SearchProductBlockType::class)
-//            ->setMethod('GET');
-//
-//        $request = $this->requestStack->getMasterRequest();
-//
-//        $form = $builder->getForm();
-//        $form->handleRequest($request);
-
         return [
             'ThisMonthCalendar' => $thisMonthCalendar,
             'NextMonthCalendar' => $nextMonthCalendar,
+            'Holidays' => $Holidays,
         ];
     }
 }

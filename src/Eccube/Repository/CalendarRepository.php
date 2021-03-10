@@ -52,21 +52,34 @@ class CalendarRepository extends AbstractRepository
     }
 
     /**
-     * getList
+     * getListOrderByIdDesc
      *
      * @return array|null
      */
-    public function getList()
+    public function getListOrderByIdDesc()
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC');
+
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * getListOfLastTwoMonths
+     *
+     * @return array|null
+     */
+    public function getHoridayListOfLastTwoMonths()
     {
         $qb = $this->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC')
-            //->where('t.Product IS NULL AND t.ProductClass IS NULL')
-        ;
-        $Calendars = $qb
+            ->where('c.holiday >= \'2020-02-27 00:00:00\' and c.holiday <= \'2021-02-20 00:00:00\'');
+
+        return $qb
             ->getQuery()
             ->getResult();
-
-        return $Calendars;
     }
 
     /**
