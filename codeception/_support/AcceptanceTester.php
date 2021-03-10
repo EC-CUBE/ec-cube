@@ -13,6 +13,7 @@
 
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
+use Facebook\WebDriver\WebDriverBy;
 use Interactions\DragAndDropBy;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
