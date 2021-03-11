@@ -4,15 +4,15 @@
         <title>{{ BaseInfo.shop_name }} 新着商品</title>
         <description>{{ BaseInfo.shop_name }} 新着商品</description>
         <link>{{ url('homepage') }}</link>
-        <lastBuildDate>{{ "now" | date(constant('DATE_RFC822')) }}</lastBuildDate>
+        <lastBuildDate>{{ max( products | map(e => e.update_date) ) | date(constant('DATE_RFC2822')) }}</lastBuildDate>
         <atom:link href="{{ url('rss_feed_for_products') }}" rel="self"/>
 
         {% for product in products %}
             <item>
                 <title>{{ product.name }}</title>
                 <link>{{ url('product_detail', {'id': product.id}) }}</link>
-                <pubDate>{{ product.create_date|date(constant('DATE_RFC822')) }}</pubDate>
-                <guid>{{ url('homepage') }}rss/products/{{ product.id }}</guid>
+                <pubDate>{{ product.create_date|date(constant('DATE_RFC2822')) }}</pubDate>
+                <guid isPermaLink="true">{{ url('product_detail', {'id': product.id}) }}</guid>
                 <description><![CDATA[
                     {{ product.description_detail }}
                 ]]></description>

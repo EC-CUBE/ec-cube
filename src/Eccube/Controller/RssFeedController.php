@@ -43,7 +43,7 @@ class RssFeedController extends AbstractController
     }
 
     /**
-     * @Route("/products_feed.xml", name="rss_feed_for_products")
+     * @Route("/products_feed", name="rss_feed_for_products")
      */
     public function products()
     {
@@ -60,14 +60,14 @@ class RssFeedController extends AbstractController
         $response->headers->set('Content-Type', 'application/xml; charset=UTF-8');
 
         return $this->render(
-            'Feed/products.xml.twig',
+            'Feed/products.twig',
             ['products' => $products],
             $response
         );
     }
 
     /**
-     * @Route("/news_feed.xml", name="rss_feed_for_news")
+     * @Route("/news_feed", name="rss_feed_for_news")
      */
     public function news()
     {
@@ -89,7 +89,7 @@ class RssFeedController extends AbstractController
         $response->headers->set('Content-Type', 'application/xml; charset=UTF-8');
 
         return $this->render(
-            'Feed/news.xml.twig',
+            'Feed/news.twig',
             ['news' => $news],
             $response
         );
