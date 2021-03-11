@@ -72,6 +72,7 @@ if (!class_exists('\Eccube\Entity\Cart')) {
          * @var \Doctrine\Common\Collections\Collection|CartItem[]
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\CartItem", mappedBy="Cart", cascade={"persist"})
+         * @ORM\OrderBy({"id" = "ASC"})
          */
         private $CartItems;
 
