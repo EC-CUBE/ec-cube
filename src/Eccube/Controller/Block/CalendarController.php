@@ -13,12 +13,12 @@
 
 namespace Eccube\Controller\Block;
 
+use Carbon\Carbon;
 use Eccube\Controller\AbstractController;
 use Eccube\Repository\CalendarRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Carbon\Carbon;
 
 class CalendarController extends AbstractController
 {
@@ -29,8 +29,6 @@ class CalendarController extends AbstractController
 
     /**
      * CalendarController constructor.
-     *
-     *  @param CalendarRepository $calendarRepository
      */
     public function __construct(CalendarRepository $calendarRepository)
     {
@@ -43,43 +41,67 @@ class CalendarController extends AbstractController
      */
     public function index(Request $request)
     {
-        // TODO あとやりたいことは月初の前にどんだけ空白埋めるか？と休日データ取ってフラグ入れる？
+        // TODO あとやりたいことは休日データ取ってフラグ入れる？
 
-        // 当月と翌月で指定して定休日データ取る？
-        $Holidays = $this->calendarRepository->getHoridayListOfLastTwoMonths();
+        $firstDateOfThisMonth = Carbon::now()->startOfMonth();
+        $firstDateOfNextMonth = Carbon::parse('+ 1 month')->startOfMonth();
+        $endDateOfNextMonth = Carbon::parse('+ 1 month')->endOfMonth();
 
-        // 今月のカレンダーを作る
-        $today = Carbon::now();
-        $thisMonthFirstDayOfWeek = $today->startOfMonth()->dayOfWeek; // 月初の曜日
-        $thisMonthCalendar = [];
-        for ($i = 1; $i <= $today->daysInMonth; $i++) {
-            $thisMonthCalendar[$i]['day'] = $i;
-            $thisMonthCalendar[$i]['dayOfWeek'] = $thisMonthFirstDayOfWeek; // ホントは曜日詰めなくていい確認だけ
-            if ($thisMonthFirstDayOfWeek == 6) {
-                $thisMonthFirstDayOfWeek = 0; // 曜日を日曜に戻す
-            } else {
-                $thisMonthFirstDayOfWeek++;
-            }
-        }
+        // 2ヶ月間の定休日を取得
+        $Holidays = $this->calendarRepository->getHolidayList($firstDateOfThisMonth, $endDateOfNextMonth);
 
-        // 来月のカレンダーを作る
-        $nextMonth = Carbon::parse('+ 1 month');
-        $nextMonthFirstDayOfWeek = $nextMonth->startOfMonth()->dayOfWeek; // 月初の曜日
-        $nextMonthCalendar = [];
-        for ($i = 1; $i <= $nextMonth->daysInMonth; $i++) {
-            $nextMonthCalendar[$i]['day'] = $i;
-            $nextMonthCalendar[$i]['dayOfWeek'] = $nextMonthFirstDayOfWeek; // ホントは曜日詰めなくていい確認だけ
-            if ($nextMonthFirstDayOfWeek == 6) {
-                $nextMonthFirstDayOfWeek = 0; // 曜日を日曜に戻す
-            } else {
-                $nextMonthFirstDayOfWeek++;
-            }
-        }
+        // 今月のカレンダー配列を取得
+        $thisMonthCalendar = $this->createCalendar($firstDateOfThisMonth);
+
+        // 来月のカレンダー配列を取得
+        $nextMonthCalendar = $this->createCalendar($firstDateOfNextMonth);
 
         return [
             'ThisMonthCalendar' => $thisMonthCalendar,
             'NextMonthCalendar' => $nextMonthCalendar,
             'Holidays' => $Holidays,
         ];
+    }
+
+    /**
+     * カレンダーの配列を生成します
+     *
+     * @param Carbon $firstDateOfTargetMonth 月初日
+     *
+     * @return array カレンダーの配列
+     */
+    private function createCalendar(Carbon $firstDateOfTargetMonth)
+    {
+        // 週のうちの何日目か 0 (日曜)から 6 (土曜)を取得
+        $firstDayOfWeek = $firstDateOfTargetMonth->dayOfWeek;
+
+        $targetMonthCalendar = [];
+
+        // 1日目の曜日の位置手前まで空文字を追加
+        for ($i = 0; $i <= $firstDayOfWeek; $i++) {
+            $targetMonthCalendar[$i]['day'] = '@'; // TODO あとで空文字に変えよう
+        }
+
+        // 1日目の曜日の位置＋月の日数
+        $loopCount = $firstDayOfWeek + $firstDateOfTargetMonth->daysInMonth;
+
+        // 月の日数に合わせて日を追加
+        $dayNumber = 1;
+        for ($i = $firstDayOfWeek; $i < $loopCount; $i++) {
+            $targetMonthCalendar[$i]['day'] = $dayNumber;
+            $dayNumber++;
+        }
+
+        // 1日目の曜日の位置＋月の日数に合わせて後に空文字を追加
+        // 7日*6週=42日、7日*5週=35日
+        $paddingLoopCount = 35;
+        if ($loopCount > 35) {
+            $paddingLoopCount = 42;
+        }
+        for ($i = $loopCount; $i < $paddingLoopCount; $i++) {
+            $targetMonthCalendar[$i]['day'] = '@'; // TODO あとで空文字に変えよう
+        }
+
+        return $targetMonthCalendar;
     }
 }

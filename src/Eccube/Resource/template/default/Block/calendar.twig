@@ -18,7 +18,7 @@ file that was distributed with this source code.
             <span class="ec-secHeading__ja">{{ 'front.block.calendar.title__ja'|trans }}</span>
         </div>
         {% for Holiday in Holidays %}
-            {{ Holiday.title }}
+            {{ Holiday.title }} : {{ Holiday.holiday|date_day }}
         {% endfor %}
         <br>
         <table>
@@ -38,7 +38,7 @@ file that was distributed with this source code.
             </tr>
         </table>
         {% for day in ThisMonthCalendar %}
-            {{ day.day }} {{ day.dayOfWeek }} :
+            {{ day.day }}
         {% endfor %}
         <br><br>
         <table>
@@ -58,7 +58,7 @@ file that was distributed with this source code.
             </tr>
         </table>
         {% for day in NextMonthCalendar %}
-            {{ day.day }} {{ day.dayOfWeek }} :
+            {{ day.day }}
         {% endfor %}
     </div>
 </div>

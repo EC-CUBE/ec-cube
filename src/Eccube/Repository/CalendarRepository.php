@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Carbon\Carbon;
 use Doctrine\ORM\NoResultException;
 use Eccube\Entity\Calendar;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -27,8 +28,6 @@ class CalendarRepository extends AbstractRepository
 {
     /**
      * CalendarRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -67,15 +66,22 @@ class CalendarRepository extends AbstractRepository
     }
 
     /**
-     * getListOfLastTwoMonths
+     * getHolidayList
+     *
+     * @param Carbon $startDate 取得開始日
+     * @param Carbon $endDate 取得終了日
      *
      * @return array|null
      */
-    public function getHoridayListOfLastTwoMonths()
+    public function getHolidayList(Carbon $startDate, Carbon $endDate)
     {
         $qb = $this->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC')
-            ->where('c.holiday >= \'2020-02-27 00:00:00\' and c.holiday <= \'2021-02-20 00:00:00\'');
+            ->andWhere('c.holiday >= :startDate')
+            ->andWhere('c.holiday <= :endDate')
+            ->setParameter(':startDate', $startDate->copy())
+            ->setParameter(':endDate', $endDate->copy())
+            ->orderBy('c.holiday');
 
         return $qb
             ->getQuery()
@@ -85,7 +91,7 @@ class CalendarRepository extends AbstractRepository
     /**
      * delete.
      *
-     * @param  int|\Eccube\Entity\Calend $Calendar
+     * @param int|\Eccube\Entity\Calend $Calendar
      *
      * @throws NoResultException
      */
