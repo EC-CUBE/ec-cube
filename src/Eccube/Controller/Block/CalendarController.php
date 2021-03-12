@@ -41,8 +41,6 @@ class CalendarController extends AbstractController
      */
     public function index(Request $request)
     {
-        // TODO あとやりたいことは休日データ取ってフラグ入れる？
-
         $firstDateOfThisMonth = Carbon::now()->startOfMonth();
         $firstDateOfNextMonth = Carbon::parse('+ 1 month')->startOfMonth();
         $endDateOfNextMonth = Carbon::parse('+ 1 month')->endOfMonth();
@@ -56,10 +54,33 @@ class CalendarController extends AbstractController
         // 来月のカレンダー配列を取得
         $nextMonthCalendar = $this->createCalendar($firstDateOfNextMonth);
 
+        // TODO あとやりたいことは休日データ取ってフラグ入れる？
+        $holidayList = [];
+        foreach ($Holidays as $Holiday) {
+            $holidayList[] = $Holiday->getHoliday()->format('nj'); // 月日 例:3月1日->31
+        }
+
+        //$result = array_search(Carbon::create(2021, 3, 10, 15, 0, 0), $holidayList);
+        $result = array_search('311', $holidayList);
+
+        //$result = $Holidays[array_search(Carbon::create(2021, 2, 11), $holidayList)];
+        if ($result !== false) {
+            $result = 'あったよ！';
+        } else {
+            $result = 'ザンネン！';
+        }
+
+        for ($i = 0; $i <= count($thisMonthCalendar); $i++) {
+//            if (in_array($thisMonthCalendar[$i]['day'], $holidays)) {
+//                $thisMonthCalendar[$i]['holiday'] = true;
+//            }
+        }
+
         return [
             'ThisMonthCalendar' => $thisMonthCalendar,
             'NextMonthCalendar' => $nextMonthCalendar,
             'Holidays' => $Holidays,
+            'Temp' => $result,
         ];
     }
 
