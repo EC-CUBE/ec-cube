@@ -9,8 +9,7 @@
 
         {% for article in news %}
             <item>
-                <title>{{ article.title }}
-                </title>
+                <title>{{ article.title }}</title>
                 {% if article.url %}
                     <link>{{ article.url }}</link>
                 {% else %}
