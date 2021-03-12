@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title>{{ BaseInfo.shop_name }} 新着商品</title>
+        <description>{{ BaseInfo.shop_name }} 新着商品</description>
+        <link>{{ url('homepage') }}</link>
+        <lastBuildDate>{{ max( products | map(e => e.update_date) ) | date(constant('DATE_RFC2822')) }}</lastBuildDate>
+        <atom:link href="{{ url('rss_feed_for_products') }}" rel="self"/>
+
+        {% for product in products %}
+            <item>
+                <title>{{ product.name }}</title>
+                <link>{{ url('product_detail', {'id': product.id}) }}</link>
+                <pubDate>{{ product.create_date|date(constant('DATE_RFC2822')) }}</pubDate>
+                <guid isPermaLink="true">{{ url('product_detail', {'id': product.id}) }}</guid>
+                <description><![CDATA[
+                    {{ product.description_detail }}
+                ]]></description>
+                <media:thumbnail url="{{ absolute_url(asset(product.main_list_image|no_image_product, 'save_image')) }}"/>
+            </item>
+        {% endfor %}
+    </channel>
+</rss>
