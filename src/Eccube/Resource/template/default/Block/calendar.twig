@@ -17,7 +17,7 @@ file that was distributed with this source code.
             <span class="ec-secHeading__line"></span>
             <span class="ec-secHeading__ja">{{ 'front.block.calendar.title__ja'|trans }}</span>
         </div>
-        <table>
+        <table border="1">
             <tr>
                 <th colspan="7">
                     <span>{{ ThisMonthTitle }}</span>
@@ -32,12 +32,23 @@ file that was distributed with this source code.
                 <th>金</th>
                 <th>土</th>
             </tr>
+            <tr>
+                {% for day in ThisMonthCalendar %}
+                    <td>
+                        {% if day.holiday == 1 %}
+                            <span style="color:red">{{ day.day }}</span>
+                        {% else %}
+                            {{ day.day }}
+                        {% endif %}
+                    </td>
+                    {% if loop.index % 7 == 0 %}
+                        </tr><tr>
+                    {% endif %}
+                {% endfor %}
+            </tr>
         </table>
-        {% for day in ThisMonthCalendar %}
-            {{ day.day }}
-        {% endfor %}
-        <br><br>
-        <table>
+        <br>
+        <table border="1">
             <tr>
                 <th colspan="7">
                     <span>{{ NextMonthTitle }}</span>
@@ -52,9 +63,20 @@ file that was distributed with this source code.
                 <th>金</th>
                 <th>土</th>
             </tr>
+            <tr>
+                {% for day in NextMonthCalendar %}
+                <td>
+                    {% if day.holiday == 1 %}
+                        <span style="color:red">{{ day.day }}</span>
+                    {% else %}
+                        {{ day.day }}
+                    {% endif %}
+                </td>
+                {% if loop.index % 7 == 0 %}
+            </tr><tr>
+                {% endif %}
+                {% endfor %}
+            </tr>
         </table>
-        {% for day in NextMonthCalendar %}
-            {{ day.day }}
-        {% endfor %}
     </div>
 </div>

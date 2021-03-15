@@ -75,7 +75,6 @@ class CalendarController extends AbstractController
             'NextMonthTitle' => $nextMonthTitle,
             'ThisMonthCalendar' => $thisMonthCalendar,
             'NextMonthCalendar' => $nextMonthCalendar,
-            //'Holidays' => $HolidaysOfTwoMonths, TODO あとで消す
         ];
     }
 
@@ -93,6 +92,7 @@ class CalendarController extends AbstractController
         for ($i = 0; $i < count($targetMonthCalendar); $i++) {
             // カレンダーの日付が定休日リストに存在するかを確認
             $result = array_search($targetDate->format('Yn').$targetMonthCalendar[$i]['day'], $holidayListOfTwoMonths);
+            // 定休日フラグを設定
             if ($result !== false) {
                 $targetMonthCalendar[$i]['holiday'] = true;
             } else {
@@ -119,7 +119,7 @@ class CalendarController extends AbstractController
 
         // 1日目の曜日の位置手前まで空文字を追加
         for ($i = 0; $i <= $firstDayOfWeek; $i++) {
-            $targetMonthCalendar[$i]['day'] = '@'; // TODO あとで空文字に変えよう
+            $targetMonthCalendar[$i]['day'] = '';
         }
 
         // 1日目の曜日の位置＋月の日数
@@ -139,7 +139,7 @@ class CalendarController extends AbstractController
             $paddingLoopCount = 42;
         }
         for ($i = $loopCount; $i < $paddingLoopCount; $i++) {
-            $targetMonthCalendar[$i]['day'] = '@'; // TODO あとで空文字に変えよう
+            $targetMonthCalendar[$i]['day'] = '';
         }
 
         return $targetMonthCalendar;
