@@ -18,6 +18,7 @@ use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Exception\CartException;
 use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
@@ -427,6 +428,20 @@ class ProductController extends AbstractController
             }
             foreach ($result->getWarning() as $warning) {
                 $errorMessages[] = $warning->getMessage();
+            }
+        }
+        // エラーが発生していた場合は再度正規化をする
+        if (!empty($errorMessages)) {
+            $Carts = $this->cartService->getCarts();
+            foreach ($Carts as $Cart) {
+                $retryResult = $this->purchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
+                if ($retryResult->hasError()) {
+                    // 明細を削除してもエラーが出る場合はリクエストを失敗させる
+                    foreach ($retryResult->getErrors() as $error) {
+                        $errorMessages[] = $error->getMessage();
+                    }
+                    throw new CartException(implode(",", $errorMessages));
+                }
             }
         }
 
