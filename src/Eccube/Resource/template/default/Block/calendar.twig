@@ -17,17 +17,10 @@ file that was distributed with this source code.
             <span class="ec-secHeading__line"></span>
             <span class="ec-secHeading__ja">{{ 'front.block.calendar.title__ja'|trans }}</span>
         </div>
-        {% for Holiday in Holidays %}
-            {{ Holiday.title }} : {{ Holiday.holiday|date_day }}
-        {% endfor %}
-        <br>
-        てんぷだーよ
-            {{ Temp }}
-        <br>
         <table>
             <tr>
                 <th colspan="7">
-                    <span>2021年3月</span>
+                    <span>{{ ThisMonthTitle }}</span>
                 </th>
             </tr>
             <tr>
@@ -47,7 +40,7 @@ file that was distributed with this source code.
         <table>
             <tr>
                 <th colspan="7">
-                    <span>2021年4月</span>
+                    <span>{{ NextMonthTitle }}</span>
                 </th>
             </tr>
             <tr>

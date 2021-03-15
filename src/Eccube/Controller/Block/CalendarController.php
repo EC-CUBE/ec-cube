@@ -42,11 +42,11 @@ class CalendarController extends AbstractController
     public function index(Request $request)
     {
         $firstDateOfThisMonth = Carbon::now()->startOfMonth();
-        $firstDateOfNextMonth = Carbon::parse('+ 1 month')->startOfMonth();
-        $endDateOfNextMonth = Carbon::parse('+ 1 month')->endOfMonth();
+        $firstDateOfNextMonth = Carbon::now()->addMonth(1)->startOfMonth();
+        $endDateOfNextMonth = Carbon::now()->addMonth(1)->endOfMonth();
 
         // 2ヶ月間の定休日を取得
-        $Holidays = $this->calendarRepository->getHolidayList($firstDateOfThisMonth, $endDateOfNextMonth);
+        $HolidaysOfTwoMonths = $this->calendarRepository->getHolidayList($firstDateOfThisMonth, $endDateOfNextMonth);
 
         // 今月のカレンダー配列を取得
         $thisMonthCalendar = $this->createCalendar($firstDateOfThisMonth);
@@ -54,34 +54,53 @@ class CalendarController extends AbstractController
         // 来月のカレンダー配列を取得
         $nextMonthCalendar = $this->createCalendar($firstDateOfNextMonth);
 
-        // TODO あとやりたいことは休日データ取ってフラグ入れる？
-        $holidayList = [];
-        foreach ($Holidays as $Holiday) {
-            $holidayList[] = $Holiday->getHoliday()->format('nj'); // 月日 例:3月1日->31
+        // 定休日リストを取得
+        $holidayListOfTwoMonths = [];
+        foreach ($HolidaysOfTwoMonths as $Holiday) {
+            $holidayListOfTwoMonths[] = $Holiday->getHoliday()->format('Ynj'); // 前ゼロなし年月日 例:202131
         }
 
-        //$result = array_search(Carbon::create(2021, 3, 10, 15, 0, 0), $holidayList);
-        $result = array_search('311', $holidayList);
+        // 今月のカレンダー配列に定休日フラグを設定
+        $thisMonthCalendar = $this->setHolidayFlag($thisMonthCalendar, $holidayListOfTwoMonths, Carbon::now());
 
-        //$result = $Holidays[array_search(Carbon::create(2021, 2, 11), $holidayList)];
-        if ($result !== false) {
-            $result = 'あったよ！';
-        } else {
-            $result = 'ザンネン！';
-        }
+        // 来月のカレンダー配列に定休日フラグを設定
+        $nextMonthCalendar = $this->setHolidayFlag($nextMonthCalendar, $holidayListOfTwoMonths, Carbon::now()->addMonth(1));
 
-        for ($i = 0; $i <= count($thisMonthCalendar); $i++) {
-//            if (in_array($thisMonthCalendar[$i]['day'], $holidays)) {
-//                $thisMonthCalendar[$i]['holiday'] = true;
-//            }
-        }
+        // 各カレンダータイトルを作成
+        $thisMonthTitle = Carbon::now()->format('Y年n月');
+        $nextMonthTitle = Carbon::now()->addMonth(1)->format('Y年n月');
 
         return [
+            'ThisMonthTitle' => $thisMonthTitle,
+            'NextMonthTitle' => $nextMonthTitle,
             'ThisMonthCalendar' => $thisMonthCalendar,
             'NextMonthCalendar' => $nextMonthCalendar,
-            'Holidays' => $Holidays,
-            'Temp' => $result,
+            //'Holidays' => $HolidaysOfTwoMonths, TODO あとで消す
         ];
+    }
+
+    /**
+     * カレンダー配列に定休日フラグを設定します
+     *
+     * @param array $targetMonthCalendar カレンダー配列
+     * @param array $holidayListOfTwoMonths 定休日リスト
+     * @param Carbon $targetDate ターゲット日
+     *
+     * @return array カレンダーの配列
+     */
+    private function setHolidayFlag($targetMonthCalendar, $holidayListOfTwoMonths, Carbon $targetDate)
+    {
+        for ($i = 0; $i < count($targetMonthCalendar); $i++) {
+            // カレンダーの日付が定休日リストに存在するかを確認
+            $result = array_search($targetDate->format('Yn').$targetMonthCalendar[$i]['day'], $holidayListOfTwoMonths);
+            if ($result !== false) {
+                $targetMonthCalendar[$i]['holiday'] = true;
+            } else {
+                $targetMonthCalendar[$i]['holiday'] = false;
+            }
+        }
+
+        return $targetMonthCalendar;
     }
 
     /**
