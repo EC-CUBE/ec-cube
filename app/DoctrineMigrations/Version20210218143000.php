@@ -28,11 +28,11 @@ final class Version20210218143000 extends AbstractMigration
         if (!$blockId) {
             $blockId = $this->connection->fetchColumn('SELECT MAX(id) + 1 FROM dtb_block');
 
-            $this->addSql('INSERT INTO dtb_block (
+            $this->addSql("INSERT INTO dtb_block (
                    id, device_type_id, block_name, file_name, create_date, update_date, use_controller, deletable, discriminator_type
                 ) VALUES(
-                    ?, 10, "最近チェックした商品", "browsing_history", "2021-02-18 14:30:00", "2021-02-18 14:30:00", 0, 0, "block"
-                )', [$blockId]);
+                    ?, 10, '最近チェックした商品', 'browsing_history', '2021-02-18 14:30:00', '2021-02-18 14:30:00', false, false, 'block'
+                )", [$blockId]);
         }
     }
 
@@ -40,8 +40,8 @@ final class Version20210218143000 extends AbstractMigration
     {
         $blockId = $this->connection->fetchColumn("SELECT id FROM dtb_block WHERE file_name = 'browsing_history'");
         if ($blockId > 0) {
-            $this->addSql('DELETE FROM dtb_block_position WHERE block_id = ?', [$blockId]);
-            $this->addSql('DELETE FROM dtb_block WHERE file_name = "browsing_history"');
+            $this->addSql("DELETE FROM dtb_block_position WHERE block_id = ?", [$blockId]);
+            $this->addSql("DELETE FROM dtb_block WHERE file_name = 'browsing_history'");
         }
     }
 }
