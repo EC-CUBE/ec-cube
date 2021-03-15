@@ -22,7 +22,7 @@ final class Version20210216120000 extends AbstractMigration
         $id = $this->connection->fetchColumn('SELECT MAX(id) FROM dtb_block');
         $id++;
 
-        $this->addSql("INSERT INTO dtb_block (id, block_name, file_name, use_controller, deletable, create_date, update_date, device_type_id, discriminator_type) VALUES ($id, 'Googleアナリティクス', 'google_analytics', 0, 0, '2021-02-16 12:00:00', '2021-02-16 12:00:00', 10, 'block')");
+        $this->addSql("INSERT INTO dtb_block (id, block_name, file_name, use_controller, deletable, create_date, update_date, device_type_id, discriminator_type) VALUES ($id, 'Googleアナリティクス', 'google_analytics', false, false, '2021-02-16 12:00:00', '2021-02-16 12:00:00', 10, 'block')");
         $this->addSql("INSERT INTO dtb_block_position (section, block_id, layout_id, block_row, discriminator_type) VALUES (1, $id, 1, 0, 'blockposition')");
     }
 
