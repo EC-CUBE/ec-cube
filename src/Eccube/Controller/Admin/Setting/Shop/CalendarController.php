@@ -56,6 +56,8 @@ class CalendarController extends AbstractController
 
         $form = $builder->getForm();
 
+        // TODO 日付が重複してたらエラーにしたい
+
         $mode = $request->get('mode');
         if ($mode != 'edit_inline') {
             $form->handleRequest($request);
