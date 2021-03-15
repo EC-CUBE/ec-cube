@@ -18,11 +18,11 @@ final class Version20210216115000 extends AbstractMigration
         if (!$blockId) {
             $blockId = $this->connection->fetchColumn('SELECT MAX(id) + 1 FROM dtb_block');
 
-            $this->addSql('INSERT INTO dtb_block (
+            $this->addSql("INSERT INTO dtb_block (
             id, device_type_id, block_name, file_name, create_date, update_date, use_controller, deletable, discriminator_type
         ) VALUES(
-            ?, 10, "ソーシャルボタン", "social_buttons", "2021-02-12 14:00:00", "2021-02-12 14:00:00", 0, 0, "block"
-        )', [$blockId]);
+            ?, 10, 'ソーシャルボタン', 'social_buttons', '2021-02-12 14:00:00', '2021-02-12 14:00:00', false, false, 'block'
+        )", [$blockId]);
         }
     }
 
@@ -31,8 +31,8 @@ final class Version20210216115000 extends AbstractMigration
         // dtb_block に ソーシャルブロックがあれば削除
         $blockId = $this->connection->fetchColumn("SELECT id FROM dtb_block WHERE file_name = 'social_buttons'");
         if ($blockId > 0) {
-            $this->addSql('DELETE FROM dtb_block_position WHERE block_id = ?', [$blockId]);
-            $this->addSql('DELETE FROM dtb_block WHERE file_name = "social_buttons"');
+            $this->addSql("DELETE FROM dtb_block_position WHERE block_id = ?", [$blockId]);
+            $this->addSql("DELETE FROM dtb_block WHERE file_name = 'social_buttons'");
         }
     }
 }
