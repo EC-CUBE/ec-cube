@@ -54,7 +54,8 @@ class MemberController extends AbstractController
         EncoderFactoryInterface $encoderFactory,
         MemberRepository $memberRepository,
         TokenStorageInterface $tokenStorage
-    ) {
+    )
+    {
         $this->encoderFactory = $encoderFactory;
         $this->memberRepository = $memberRepository;
         $this->tokenStorage = $tokenStorage;
@@ -148,11 +149,7 @@ class MemberController extends AbstractController
      */
     public function edit(Request $request, Member $Member)
     {
-        $LoginMember = clone $this->tokenStorage->getToken()->getUser();
-        $this->entityManager->detach($LoginMember);
-
-        $previousPassword = $Member->getPassword();
-        $Member->setPassword($this->eccubeConfig['eccube_default_password']);
+        $Member->setPlainPassword($this->eccubeConfig['eccube_default_password']);
 
         $builder = $this->formFactory
             ->createBuilder(MemberType::class, $Member);
@@ -170,11 +167,7 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($Member->getpassword() === $this->eccubeConfig['eccube_default_password']) {
-                // 編集時にパスワードを変更していなければ
-                // 変更前のパスワード(暗号化済み)をセット
-                $Member->setPassword($previousPassword);
-            } else {
+            if ($Member->getPlainPassword() !== $this->eccubeConfig['eccube_default_password']) {
                 $salt = $Member->getSalt();
                 // 2系からのデータ移行でsaltがセットされていない場合はsaltを生成.
                 if (empty($salt)) {
@@ -182,10 +175,10 @@ class MemberController extends AbstractController
                     $Member->setSalt($salt);
                 }
 
-                $rawPassword = $Member->getPassword();
+                $password = $Member->getPlainPassword();
                 $encoder = $this->encoderFactory->getEncoder($Member);
-                $encodedPassword = $encoder->encodePassword($rawPassword, $salt);
-                $Member->setPassword($encodedPassword);
+                $password = $encoder->encodePassword($password, $salt);
+                $Member->setPassword($password);
             }
 
             $this->memberRepository->save($Member);
@@ -203,8 +196,6 @@ class MemberController extends AbstractController
 
             return $this->redirectToRoute('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         }
-
-        $this->tokenStorage->getToken()->setUser($LoginMember);
 
         return [
             'form' => $form->createView(),

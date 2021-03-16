@@ -88,7 +88,7 @@ class MemberType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('password', RepeatedPasswordType::class, [
+            ->add('plainPassword', RepeatedPasswordType::class, [
                 'first_options' => [
                     'label' => 'admin.setting.system.member.password',
                 ],

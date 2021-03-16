@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 if (!class_exists('\Eccube\Entity\Member')) {
@@ -98,6 +99,12 @@ if (!class_exists('\Eccube\Entity\Member')) {
          * @ORM\Column(name="login_id", type="string", length=255)
          */
         private $login_id;
+
+        /**
+         * @Assert\NotBlank()
+         * @Assert\Length(max=4096)
+         */
+        private $plainPassword;
 
         /**
          * @var string
@@ -265,6 +272,26 @@ if (!class_exists('\Eccube\Entity\Member')) {
         public function getLoginId()
         {
             return $this->login_id;
+        }
+
+        /**
+         * @return string
+         */
+        public function getPlainPassword(): string
+        {
+            return $this->plainPassword;
+        }
+
+        /**
+         * @param string $password
+         *
+         * @return $this
+         */
+        public function setPlainPassword(string $password): self
+        {
+            $this->plainPassword = $password;
+
+            return $this;
         }
 
         /**
