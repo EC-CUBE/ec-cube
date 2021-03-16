@@ -964,8 +964,11 @@ admin.content.file.directory_name: フォルダ名
 admin.content.file.file_list__card_title: このフォルダ内のファイル
 admin.content.file.updated: 更新
 admin.content.file.directory_tree: フォルダ構成
-admin.content.file.upload_complete: %success%件のファイルをアップロードしました。(%success%/%count%)
-admin.content.file.upload_error: %file_name% のアップロードに失敗しました。(%error%)
+admin.content.file.upload_complete: '%success%件のファイルをアップロードしました。(%success%/%count%)'
+admin.content.file.upload_error: '%file_name% のアップロードに失敗しました。(%error%)'
+admin.content.file.folder_name_symbol_error: 使用できない文字が含まれています。
+admin.content.file.folder_name_period_error: ピリオド(.)で始まる名前は使用できません。
+admin.content.file.dir_exists: %file_name% は既に使用されています。別のフォルダ名を入力してください
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
@@ -1144,6 +1147,7 @@ admin.setting.shop.delivery.delivery_fee_by_pref: 都道府県別送料設定
 admin.setting.shop.delivery.apply_to_pref__title: 全国一律に設定
 admin.setting.shop.delivery.apply_to_pref__button: 各都道府県に適用
 admin.setting.shop.delivery.fee.invalid: 数字で入力してください。
+admin.setting.shop.delivery.payment_warning: '税込%min% ~ %max%の購入で選択できる支払い方法がありません。支払方法の利用条件をご確認ください。'
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：税率設定
@@ -1597,6 +1601,7 @@ tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に�
 tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。
 tooltip.setting.shop.shop.option_point_rate: 購入金額に対するポイント付与率を編集できます。
 tooltip.setting.shop.shop.option_point_conversion_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
+tooltip.setting.shop.payment.rule: お支払い方法の利用条件を設定できます。自身の手数料を含む支払総額(税込)が条件に一致する場合、購入フローのお支払い方法の選択肢に表示されまます。
 tooltip.setting.shop.payment.logo_image: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
 tooltip.setting.shop.delivery.tracking_number_url: 配送業者のお問い合わせページURLを指定します。
 tooltip.setting.shop.delivery.sale_type: この配送方法で取り扱える販売種別を指定します。
@@ -1619,6 +1624,9 @@ tooltip.setting.system.log_display: アクセスやエラー状況などのロ�
 tooltip.setting.system.master_data_management: 各種マスターデータを管理します。
 tooltip.setting.system.system_info: このEC-CUBEに関係しているシステム環境の情報を表示しています。
 tooltip.setting.system.system.php_info: このEC-CUBEに関係しているPHPの詳細な情報を表示しています。
+tooltip.store.template.template_code: テンプレートの格納先のディレクトリ名になります。
+tooltip.store.template.template_name: 管理画面で表示するテンプレートの名前を設定します。
+tooltip.store.template.template_file: テンプレート一式となるアーカイブをアップロードします。
 
 #====================================================================================
 # インストール画面
@@ -1706,4 +1714,4 @@ purchase_flow.over_stock: 「%name%」の在庫が足りません。
 # Command
 #------------------------------------------------------------------------------------
 
-command.composer_require_already_installed.not_supported_plugin: %name% %plugin_version% は EC-CUBE %eccube_version% には対応していません。続行しますか？
+command.composer_require_already_installed.not_supported_plugin: '%name% %plugin_version% は EC-CUBE %eccube_version% には対応していません。続行しますか？'

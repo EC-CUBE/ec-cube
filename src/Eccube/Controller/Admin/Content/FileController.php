@@ -149,12 +149,12 @@ class FileController extends AbstractController
                     new Assert\Regex([
                         'pattern' => '/[^[:alnum:]_.\\-]/',
                         'match' => false,
-                        'message' => 'file.text.error.folder_symbol',
+                        'message' => 'admin.content.file.folder_name_symbol_error',
                     ]),
                     new Assert\Regex([
                         'pattern' => "/^\.(.*)$/",
                         'match' => false,
-                        'message' => 'file.text.error.folder_period',
+                        'message' => 'admin.content.file.folder_name_period_error',
                     ]),
                 ],
             ])
@@ -178,7 +178,11 @@ class FileController extends AbstractController
             $nowDir = $this->checkDir($nowDir, $topDir)
                 ? $this->normalizePath($nowDir)
                 : $topDir;
-            $fs->mkdir($nowDir.'/'.$filename);
+            $newFilePath = $nowDir.'/'.$filename;
+            if (file_exists($newFilePath)) {
+                throw new IOException(trans('admin.content.file.dir_exists', [ '%file_name%' => $filename, ]));
+            }
+            $fs->mkdir($newFilePath);
 
             $this->addSuccess('admin.common.create_complete', 'admin');
         } catch (IOException $e) {
