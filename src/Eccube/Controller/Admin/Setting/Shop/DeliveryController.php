@@ -19,6 +19,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
+use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -29,6 +30,7 @@ use Eccube\Repository\DeliveryTimeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\PaymentOptionRepository;
+use Eccube\Twig\Extension\EccubeExtension;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -114,7 +116,7 @@ class DeliveryController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit")
      * @Template("@admin/Setting/Shop/delivery_edit.twig")
      */
-    public function edit(Request $request, $id = null)
+    public function edit(Request $request, $id = null, EccubeExtension $extension)
     {
         if (is_null($id)) {
             $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'ASC']);
@@ -258,6 +260,21 @@ class DeliveryController extends AbstractController
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
+                // 支払金額によって利用できない支払方法がある場合に警告を表示
+                // @see https://github.com/EC-CUBE/ec-cube/pull/4940
+                if (!empty($PaymentData)) {
+                    $mergedRules = $this->getMergeRules($PaymentsData);
+                    if (count($mergedRules) > 1) {
+                        for ($i = 1; $i < count($mergedRules); $i++) {
+                            $message = trans('admin.setting.shop.delivery.payment_warning', [
+                                '%min%' => $extension->getPriceFilter($mergedRules[$i - 1]['max']),
+                                '%max%' => $extension->getPriceFilter($mergedRules[$i]['min'] - 1),
+                            ]);
+                            $this->addWarning($message, 'admin');
+                        }
+                    }
+                }
+
                 return $this->redirectToRoute('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]);
             }
         }
@@ -363,5 +380,60 @@ class DeliveryController extends AbstractController
         }
 
         return $this->json('OK', 200);
+    }
+
+    /**
+     * 利用条件の金額範囲を生成する.
+     *
+     * @param Payment[] $PaymentsData
+     * @return array
+     */
+    private function getMergeRules(array $PaymentsData)
+    {
+        // 手数料抜きの利用条件の一覧を作成
+        $rules = array_map(function (Payment $Payment) {
+            return [
+                'min' => $Payment->getRuleMin() ? $Payment->getRuleMin() - $Payment->getCharge() : 0,
+                'max' => $Payment->getRuleMax() ? $Payment->getRuleMax() - $Payment->getCharge() + 1 : PHP_INT_MAX,
+            ];
+        }, $PaymentsData);
+
+        $mergeRules = [];
+
+        foreach ($rules as $rule) {
+            // かぶる条件があれば抽出
+            $targetRules = array_filter($mergeRules, function ($mergeRule) use ($rule) {
+                return $rule['min'] <= $mergeRule['max'] && $mergeRule['min'] <= $rule['max'];
+            });
+
+            if (count($targetRules) === 0) {
+                $mergeRules[] = $rule;
+            } else {
+                // 被らない条件を抽出
+                $mergeRules = array_filter($mergeRules, function ($mergeRule) use ($rule) {
+                    return $rule['min'] > $mergeRule['max'] || $mergeRule['min'] > $rule['max'];
+                });
+
+                $targetRules[] = $rule;
+                $min = min(array_map(function ($rule) {
+                    return $rule['min'];
+                }, $targetRules));
+
+                $max = max(array_map(function ($rule) {
+                    return $rule['max'];
+                }, $targetRules));
+
+                $mergeRules[] = ['min' => $min, 'max' => $max];
+            }
+        }
+
+        usort($mergeRules, function ($a, $b) {
+            if ($a['min'] == $b['min']) {
+                return 0;
+            }
+            return ($a['min'] < $b['min']) ? -1 : 1;
+        });
+
+        return $mergeRules;
     }
 }

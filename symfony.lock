@@ -203,9 +203,6 @@
     "php": {
         "version": "7.1.3"
     },
-    "php-coveralls/php-coveralls": {
-        "version": "v2.0.0"
-    },
     "php-cs-fixer/diff": {
         "version": "v1.2.0"
     },
