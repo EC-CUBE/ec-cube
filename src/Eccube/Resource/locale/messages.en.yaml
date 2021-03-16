@@ -136,6 +136,8 @@ front.block.login.login: Sign in
 front.block.login.logout: Sign out
 front.block.login.to_cart: Proceed to Cart
 front.block.login.to_home: Back to Home
+front.block.calendar.title__en: 'CALENDAR'
+front.block.calendar.title__ja: 'Calendar'
 
 
 #------------------------------------------------------------------------------------
@@ -1073,6 +1075,7 @@ admin.setting.shop.tax_setting: Taxes
 admin.setting.shop.mail_setting: Emails
 admin.setting.shop.csv_setting: CSV Outputs
 admin.setting.shop.order_status_setting: Order Status
+admin.setting.shop.calendar_setting: 'Calendar'
 admin.setting.system: System Settings
 admin.setting.system.member_management: Users
 admin.setting.system.member_password_change: Passwords
@@ -1200,6 +1203,14 @@ admin.setting.shop.order_status.admin_order_status_name: Name(Order management)
 admin.setting.shop.order_status.customer_order_status_name: Name(My page)
 admin.setting.shop.order_status.color: Color
 admin.setting.shop.order_status.display_order_count: Number display
+
+#------------------------------------------------------------------------------------
+# Settings：Store Settings : Calendar
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.calendar.title: 'Title'
+admin.setting.shop.calendar.holiday: 'Date'
+admin.setting.shop.calendar.holiday.available_error: 'Date is already existed.'
 
 #------------------------------------------------------------------------------------
 # Settings : Customers : Change Password
@@ -1610,6 +1621,7 @@ tooltip.setting.shop.order_status.order_status: Set the order status used in ord
 tooltip.setting.shop.order_status.customer_order_status_name: You can set the name of the order status. The name set here will be displayed on My Page after logging in as a customer.
 tooltip.setting.shop.order_status.color: You can set the color of the order status used in order management.
 tooltip.setting.shop.order_status.display_order_count: You can set the display / non-display of the number of orders for each order status used in order management.
+tooltip.setting.shop.calendar_setting: 'You can set regular holidays for displaying in the business days calendar.'
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
 tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
