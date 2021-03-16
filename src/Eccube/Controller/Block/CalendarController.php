@@ -61,10 +61,10 @@ class CalendarController extends AbstractController
         }
 
         // 今月のカレンダー配列に定休日フラグを設定
-        $thisMonthCalendar = $this->setHolidayFlag($thisMonthCalendar, $holidayListOfTwoMonths, Carbon::now());
+        $thisMonthCalendar = $this->setHolidayAndTodayFlag($thisMonthCalendar, $holidayListOfTwoMonths, Carbon::now());
 
         // 来月のカレンダー配列に定休日フラグを設定
-        $nextMonthCalendar = $this->setHolidayFlag($nextMonthCalendar, $holidayListOfTwoMonths, Carbon::now()->addMonth(1));
+        $nextMonthCalendar = $this->setHolidayAndTodayFlag($nextMonthCalendar, $holidayListOfTwoMonths, Carbon::now()->addMonth(1));
 
         // 各カレンダータイトルを作成
         $thisMonthTitle = Carbon::now()->format('Y年n月');
@@ -79,7 +79,7 @@ class CalendarController extends AbstractController
     }
 
     /**
-     * カレンダー配列に定休日フラグを設定します
+     * カレンダー配列に定休日と今日フラグを設定します
      *
      * @param array $targetMonthCalendar カレンダー配列
      * @param array $holidayListOfTwoMonths 定休日リスト
@@ -87,16 +87,25 @@ class CalendarController extends AbstractController
      *
      * @return array カレンダーの配列
      */
-    private function setHolidayFlag($targetMonthCalendar, $holidayListOfTwoMonths, Carbon $targetDate)
+    private function setHolidayAndTodayFlag($targetMonthCalendar, $holidayListOfTwoMonths, Carbon $targetDate)
     {
         for ($i = 0; $i < count($targetMonthCalendar); $i++) {
+            $targetYmd = $targetDate->format('Yn').$targetMonthCalendar[$i]['day'];
+
             // カレンダーの日付が定休日リストに存在するかを確認
-            $result = array_search($targetDate->format('Yn').$targetMonthCalendar[$i]['day'], $holidayListOfTwoMonths);
+            $result = array_search($targetYmd, $holidayListOfTwoMonths);
             // 定休日フラグを設定
             if ($result !== false) {
                 $targetMonthCalendar[$i]['holiday'] = true;
             } else {
                 $targetMonthCalendar[$i]['holiday'] = false;
+            }
+
+            // 今日フラグを設定
+            if ($targetYmd === Carbon::now()->format('Ynj')) {
+                $targetMonthCalendar[$i]['today'] = true;
+            } else {
+                $targetMonthCalendar[$i]['today'] = false;
             }
         }
 
