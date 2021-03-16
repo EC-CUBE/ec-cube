@@ -1205,11 +1205,12 @@ admin.setting.shop.order_status.color: 色
 admin.setting.shop.order_status.display_order_count: 件数表示
 
 #------------------------------------------------------------------------------------
-# 設定：店舗設定：受注対応状況設定
+# 設定：店舗設定：定休日カレンダー設定
 #------------------------------------------------------------------------------------
 
 admin.setting.shop.calendar.title: 'タイトル'
 admin.setting.shop.calendar.holiday: '日付'
+admin.setting.shop.calendar.holiday.available_error: 同日の定休日が既に存在しているため、設定できません。
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：メンバー管理 / パスワード変更

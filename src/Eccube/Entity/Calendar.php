@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 if (!class_exists('\Eccube\Entity\Calendar')) {
     /**
-     * TaxRule
+     * Calendar
      *
      * @ORM\Table(name="dtb_calendar")
      * @ORM\InheritanceType("SINGLE_TABLE")

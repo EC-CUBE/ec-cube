@@ -58,6 +58,7 @@ class CalendarController extends AbstractController
 
         // TODO 日付が重複してたらエラーにしたい
 
+
         $mode = $request->get('mode');
         if ($mode != 'edit_inline') {
             $form->handleRequest($request);
@@ -78,7 +79,6 @@ class CalendarController extends AbstractController
         $errors = [];
         /** @var Calendar $Calendar */
         foreach ($Calendars as $Calendar) {
-            /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
             $builder = $this->formFactory->createBuilder(CalendarType::class, $Calendar);
 
             $editCalendarForm = $builder->getForm();

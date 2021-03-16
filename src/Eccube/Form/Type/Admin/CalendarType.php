@@ -14,12 +14,17 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Calendar;
 use Eccube\Repository\CalendarRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,13 +38,20 @@ class CalendarType extends AbstractType
     protected $eccubeConfig;
 
     /**
+     * @var CalendarRepository
+     */
+    protected $calendarRepository;
+
+    /**
      * CalendarType constructor.
      *
      * @param EccubeConfig $eccubeConfig
+     * @param CalendarRepository $calendarRepository
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig, CalendarRepository $calendarRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
+        $this->calendarRepository = $calendarRepository;
     }
 
     /**
@@ -70,5 +82,23 @@ class CalendarType extends AbstractType
                 ],
             ])
         ;
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            // 日付重複チェック
+            /** @var Calendar $Calendar */
+            $Calendar = $event->getData();
+            $qb = $this->calendarRepository->createQueryBuilder('c');
+            $qb
+                ->select('count(c.id)')
+                ->where('c.holiday = :holiday')
+                ->setParameter('holiday', $Calendar->getHoliday());
+
+            $count = $qb->getQuery()
+                ->getSingleScalarResult();
+            if ($count > 0) {
+                $form = $event->getForm();
+                $form['holiday']->addError(new FormError(trans('admin.setting.shop.calendar.holiday.available_error')));
+            }
+        });
     }
 }
