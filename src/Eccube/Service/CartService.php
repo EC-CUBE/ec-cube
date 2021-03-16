@@ -400,9 +400,7 @@ class CartService
             $this->entityManager->persist($Cart);
             foreach ($Cart->getCartItems() as $item) {
                 $this->entityManager->persist($item);
-                $this->entityManager->flush();
             }
-            $this->entityManager->persist($Cart);
             $this->entityManager->flush();
             $cartKeys[] = $Cart->getCartKey();
         }
