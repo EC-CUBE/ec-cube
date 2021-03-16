@@ -306,7 +306,7 @@ class EditController extends AbstractController
                         // 会員の場合、購入回数、購入金額などを更新
                         if ($Customer = $TargetOrder->getCustomer()) {
                             $this->orderRepository->updateOrderSummary($Customer);
-                            $this->entityManager->flush($Customer);
+                            $this->entityManager->flush();
                         }
 
                         $event = new EventArgs(

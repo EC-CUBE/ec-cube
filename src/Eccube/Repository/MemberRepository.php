@@ -51,7 +51,9 @@ class MemberRepository extends AbstractRepository
         $Member2->setSortNo($sortNo);
 
         $em = $this->getEntityManager();
-        $em->flush([$Member, $Member2]);
+        $em->persist($Member);
+        $em->persist($Member2);
+        $em->flush();
     }
 
     /**
@@ -74,7 +76,9 @@ class MemberRepository extends AbstractRepository
         $Member2->setSortNo($sortNo);
 
         $em = $this->getEntityManager();
-        $em->flush([$Member, $Member2]);
+        $em->persist($Member);
+        $em->persist($Member2);
+        $em->flush();
     }
 
     /**
@@ -95,7 +99,7 @@ class MemberRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->persist($Member);
-        $em->flush($Member);
+        $em->flush();
     }
 
     /**
@@ -118,6 +122,6 @@ class MemberRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->remove($Member);
-        $em->flush($Member);
+        $em->flush();
     }
 }

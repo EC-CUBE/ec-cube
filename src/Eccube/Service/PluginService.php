@@ -540,7 +540,7 @@ class PluginService
                 ->setCode($meta['code']);
 
             $this->entityManager->persist($p);
-            $this->entityManager->flush($p);
+            $this->entityManager->flush();
 
             $this->pluginApiService->pluginInstalled($p);
         } catch (\Exception $e) {
