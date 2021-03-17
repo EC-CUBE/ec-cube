@@ -71,16 +71,16 @@ file that was distributed with this source code.
             </tr>
             <tr>
                 {% for day in NextMonthCalendar %}
-                <td>
-                    {% if day.holiday == 1 %}
-                        <span style="color:red">{{ day.day }}</span>
-                    {% else %}
-                        {{ day.day }}
+                    <td>
+                        {% if day.holiday == 1 %}
+                            <span style="color:red">{{ day.day }}</span>
+                        {% else %}
+                            {{ day.day }}
+                        {% endif %}
+                    </td>
+                    {% if loop.index % 7 == 0 and loop.index != NextMonthCalendar|length %}
+                        </tr><tr>
                     {% endif %}
-                </td>
-                {% if loop.index % 7 == 0 and loop.index != NextMonthCalendar|length %}
-            </tr><tr>
-                {% endif %}
                 {% endfor %}
             </tr>
         </table>
