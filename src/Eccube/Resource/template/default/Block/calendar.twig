@@ -47,7 +47,7 @@ file that was distributed with this source code.
                             {{ day.day }}
                         {% endif %}
                     </td>
-                    {% if loop.index % 7 == 0 %}
+                    {% if loop.index % 7 == 0 and loop.index != ThisMonthCalendar|length %}
                         </tr><tr>
                     {% endif %}
                 {% endfor %}
@@ -78,7 +78,7 @@ file that was distributed with this source code.
                         {{ day.day }}
                     {% endif %}
                 </td>
-                {% if loop.index % 7 == 0 %}
+                {% if loop.index % 7 == 0 and loop.index != NextMonthCalendar|length %}
             </tr><tr>
                 {% endif %}
                 {% endfor %}

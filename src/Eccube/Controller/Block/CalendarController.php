@@ -142,6 +142,11 @@ class CalendarController extends AbstractController
         }
 
         // 1日目の曜日の位置＋月の日数に合わせて後に空文字を追加
+        // 7日*4週=28日(日曜始まりでうるう年じゃない2月)
+        if ($loopCount === 28) {
+            // 後に空文字追加はスキップ
+            return $targetMonthCalendar;
+        }
         // 7日*6週=42日、7日*5週=35日
         $paddingLoopCount = 35;
         if ($loopCount > 35) {
