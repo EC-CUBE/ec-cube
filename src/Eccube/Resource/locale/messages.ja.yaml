@@ -968,7 +968,7 @@ admin.content.file.upload_complete: '%success%件のファイルをアップロ�
 admin.content.file.upload_error: '%file_name% のアップロードに失敗しました。(%error%)'
 admin.content.file.folder_name_symbol_error: 使用できない文字が含まれています。
 admin.content.file.folder_name_period_error: ピリオド(.)で始まる名前は使用できません。
-admin.content.file.dir_exists: %file_name% は既に使用されています。別のフォルダ名を入力してください
+admin.content.file.dir_exists: '%file_name% は既に使用されています。別のフォルダ名を入力してください'
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
