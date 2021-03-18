@@ -15,6 +15,8 @@ namespace Eccube\Repository;
 
 use Carbon\Carbon;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Eccube\Entity\Calendar;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -38,6 +40,7 @@ class CalendarRepository extends AbstractRepository
      * @param int $id
      *
      * @return Calendar
+     * @throws \Exception
      */
     public function get($id = 1)
     {
@@ -91,9 +94,11 @@ class CalendarRepository extends AbstractRepository
     /**
      * delete.
      *
-     * @param int|\Eccube\Entity\Calend $Calendar
+     * @param int|Calend $Calendar
      *
      * @throws NoResultException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete($Calendar)
     {
