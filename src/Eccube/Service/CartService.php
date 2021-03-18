@@ -177,7 +177,7 @@ class CartService
             return [];
         }
 
-        return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
+        return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'ASC']);
     }
 
     /**
@@ -459,7 +459,7 @@ class CartService
                 $this->session->set('cart_keys', $cartKeys);
                 // 注文完了のカートキーをセッションから削除する
                 $this->session->remove('cart_key');
-                $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
+                $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'ASC']);
             }
         }
 
