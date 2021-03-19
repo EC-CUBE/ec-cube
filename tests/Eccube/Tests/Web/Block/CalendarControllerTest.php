@@ -23,11 +23,11 @@ class CalendarControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testTodayStile()
-    {
-        // TODO スタイルが当たっってからテスト実装開始
-        $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
-        $node = $crawler->filter('');
-        $this->assertEquals('', $node->attr(''));
-    }
+//    public function testTodayStile()
+//    {
+//        // TODO スタイルが当たってからテスト実装開始
+//        $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
+//        $node = $crawler->filter('');
+//        $this->assertEquals('', $node->attr(''));
+//    }
 }
