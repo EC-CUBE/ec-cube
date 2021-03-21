@@ -43,16 +43,22 @@ class IpAddrListener implements EventSubscriberInterface
             return;
         }
 
-        $allowHosts = $this->eccubeConfig['eccube_admin_allow_hosts'];
-
-        if (empty($allowHosts)) {
+        if (!$this->requestContext->isAdmin()) {
             return;
         }
 
-        if ($this->requestContext->isAdmin()) {
-            if (array_search($event->getRequest()->getClientIp(), $allowHosts) === false) {
-                throw new AccessDeniedHttpException();
-            }
+        // IPアドレス許可リストを確認
+        $allowHosts = $this->eccubeConfig['eccube_admin_allow_hosts'];
+
+        if (!empty($allowHosts) && array_search($event->getRequest()->getClientIp(), $allowHosts) === false) {
+            throw new AccessDeniedHttpException();
+        }
+
+        // IPアドレス拒否リストを確認
+        $denyHosts = $this->eccubeConfig['eccube_admin_deny_hosts'];
+
+        if (array_search($event->getRequest()->getClientIp(), $denyHosts) !== false) {
+            throw new AccessDeniedHttpException();
         }
     }
 

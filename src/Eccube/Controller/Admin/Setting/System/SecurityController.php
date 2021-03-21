@@ -66,8 +66,15 @@ class SecurityController extends AbstractController
                     return StringUtil::isNotBlank($str);
                 })
             );
+            $adminDenyHosts = \json_encode(
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_deny_hosts'])), function ($str) {
+                    return StringUtil::isNotBlank($str);
+                })
+            );
+
             $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
+                'ECCUBE_ADMIN_DENY_HOSTS' => "'{$adminDenyHosts}'",
                 'ECCUBE_FORCE_SSL' => $data['force_ssl'] ? 'true' : 'false',
             ]);
 
