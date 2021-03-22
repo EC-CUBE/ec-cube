@@ -45,9 +45,6 @@ jobs:
           rm -rf $GITHUB_WORKSPACE/.gitignore
           rm -rf $GITHUB_WORKSPACE/.buildpath
           rm -rf $GITHUB_WORKSPACE/.gitmodules
-          rm -rf $GITHUB_WORKSPACE/.scrutinizer.yml
-          rm -rf $GITHUB_WORKSPACE/appveyor.yml
-          rm -rf $GITHUB_WORKSPACE/.coveralls.yml
           rm -rf $GITHUB_WORKSPACE/.php_cs.dist
           rm -rf $GITHUB_WORKSPACE/phpunit.xml.dist
           rm -rf $GITHUB_WORKSPACE/phpstan.neon.dist
