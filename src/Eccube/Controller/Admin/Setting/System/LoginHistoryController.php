@@ -18,7 +18,7 @@ use Eccube\Form\Type\Admin\SearchLoginHistoryType;
 use Eccube\Repository\LoginHistoryRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Util\FormUtil;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,7 +61,7 @@ class LoginHistoryController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response|array
      */
-    public function index(Request $request, Paginator $paginator, $page_no = null)
+    public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $session = $request->getSession();
         $pageNo = $page_no;
@@ -85,7 +85,7 @@ class LoginHistoryController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $searchForm->handleRequest($request);
-            if ($searchForm->isValid()) {
+            if ($searchForm->isSubmitted() && $searchForm->isValid()) {
                 $searchData = $searchForm->getData();
                 $pageNo = 1;
                 $session->set('eccube.admin.login_history.search', FormUtil::getViewData($searchForm));

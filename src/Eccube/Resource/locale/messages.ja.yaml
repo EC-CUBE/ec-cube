@@ -1245,7 +1245,7 @@ admin.setting.system.security__card_title: セキュリティ設定
 admin.setting.system.security.admin_url: 管理画面URL
 admin.setting.system.security.admin_url_description: 推測されにくいURLを設定することを推奨します。
 admin.setting.system.security.admin_url_changed: 管理画面のURLを変更しました。再度ログインを行ってください。
-admin.setting.system.security.ip_limit: IP制限
+admin.setting.system.security.ip_limit: IP制限(許可リスト)
 admin.setting.system.security.ip_limit_description: |
   管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
   アクセスを許可するIPアドレスを1行ずつ入力してください。何も入力しない場合は全てを許可します。

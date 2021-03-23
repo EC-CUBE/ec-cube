@@ -39,13 +39,13 @@ if (!class_exists('\Eccube\Entity\LoginHistory')) {
 
         /**
          * @var string
-         * @ORM\Column( type="text",nullable=true)
+         * @ORM\Column(type="text",nullable=true)
          */
         private $user_name;
 
         /**
          * @var string
-         * @ORM\Column( type="text",nullable=true)
+         * @ORM\Column(type="text",nullable=true)
          */
         private $client_ip;
 
@@ -116,14 +116,6 @@ if (!class_exists('\Eccube\Entity\LoginHistory')) {
         }
 
         /**
-         * @return LoginHistoryStatus
-         */
-        public function getStatus()
-        {
-            return $this->Status;
-        }
-
-        /**
          * @param LoginHistoryStatus $Status
          *
          * @return LoginHistory
@@ -133,6 +125,14 @@ if (!class_exists('\Eccube\Entity\LoginHistory')) {
             $this->Status = $Status;
 
             return $this;
+        }
+
+        /**
+         * @return LoginHistoryStatus
+         */
+        public function getStatus()
+        {
+            return $this->Status;
         }
 
         /**
