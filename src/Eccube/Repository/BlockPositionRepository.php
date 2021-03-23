@@ -74,7 +74,7 @@ class BlockPositionRepository extends AbstractRepository
                 ->setLayout($Layout);
             $Layout->addBlockPosition($BlockPosition);
             $em->persist($BlockPosition);
-            $em->flush($BlockPosition);
+            $em->flush();
         }
     }
 }

@@ -517,19 +517,23 @@ class OrderController extends AbstractController
                         foreach ($Order->getOrderItems() as $OrderItem) {
                             $ProductClass = $OrderItem->getProductClass();
                             if ($OrderItem->isProduct() && !$ProductClass->isStockUnlimited()) {
-                                $this->entityManager->flush($ProductClass);
+                                $this->entityManager->persist($ProductClass);
+                                $this->entityManager->flush();
                                 $ProductStock = $this->productStockRepository->findOneBy(['ProductClass' => $ProductClass]);
-                                $this->entityManager->flush($ProductStock);
+                                $this->entityManager->persist($ProductStock);
+                                $this->entityManager->flush();
                             }
                         }
                     }
-                    $this->entityManager->flush($Order);
-                    $this->entityManager->flush($Shipping);
+                    $this->entityManager->persist($Order);
+                    $this->entityManager->persist($Shipping);
+                    $this->entityManager->flush();
 
                     // 会員の場合、購入回数、購入金額などを更新
                     if ($Customer = $Order->getCustomer()) {
                         $this->orderRepository->updateOrderSummary($Customer);
-                        $this->entityManager->flush($Customer);
+                        $this->entityManager->persist($Customer);
+                        $this->entityManager->flush();
                     }
                 } else {
                     $from = $Order->getOrderStatus()->getName();
@@ -593,7 +597,8 @@ class OrderController extends AbstractController
 
         try {
             $shipping->setTrackingNumber($trackingNumber);
-            $this->entityManager->flush($shipping);
+            $this->entityManager->persist($shipping);
+            $this->entityManager->flush();
             log_info('送り状番号変更処理完了', [$shipping->getId()]);
             $message = ['status' => 'OK', 'shipping_id' => $shipping->getId(), 'tracking_number' => $trackingNumber];
 
