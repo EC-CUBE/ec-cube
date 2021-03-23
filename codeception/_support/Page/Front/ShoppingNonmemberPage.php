@@ -54,6 +54,9 @@ class ShoppingNonmemberPage extends AbstractFrontPage
     public function 入力_郵便番号($value)
     {
         $this->tester->fillField(['id' => 'nonmember_postal_code'], $value);
+        if ($value) {
+            $this->tester->wait(5);
+        }
 
         return $this;
     }
