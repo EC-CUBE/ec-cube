@@ -54,10 +54,16 @@ class SearchLoginHistoryType extends AbstractType
             ->add('user_name', TextType::class, [
                 'label' => 'admin.setting.system.login_history.user_name',
                 'required' => false,
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                ],
             ])
             ->add('client_ip', TextType::class, [
                 'label' => 'admin.setting.system.login_history.client_ip',
                 'required' => false,
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                ],
             ])
             ->add('Status', LoginHistoryStatusType::class, [
                 'label' => 'admin.setting.system.login_history.status',

@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 if (!class_exists(LoginHistoryStatus::class, false)) {
     /**
-     * Work
+     * LoginHistoryStatus
      *
      * @ORM\Table(name="mtb_login_history_status")
      * @ORM\InheritanceType("SINGLE_TABLE")

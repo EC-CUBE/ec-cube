@@ -1245,7 +1245,7 @@ admin.setting.system.security__card_title: Security Settings
 admin.setting.system.security.admin_url: Admin Console URL
 admin.setting.system.security.admin_url_description: It is recommended to set the URL which would NOT be easily guessed.
 admin.setting.system.security.admin_url_changed: The URL of Admin Console has been changed. Please sign in again.
-admin.setting.system.security.ip_limit: IP Restrictions
+admin.setting.system.security.ip_limit: IP Restrictions(Allow List)
 admin.setting.system.security.ip_limit_description: |
  This will restrict the access to the Admin Console to specified IP addresses.
  Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Admin Console.
