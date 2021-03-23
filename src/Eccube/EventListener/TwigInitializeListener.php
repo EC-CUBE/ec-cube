@@ -23,12 +23,13 @@ use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
 use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\BlockPositionRepository;
 use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
-use Eccube\Repository\PageRepository;
 use Eccube\Repository\PageLayoutRepository;
-use Eccube\Repository\BlockPositionRepository;
+use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
+use Eccube\Service\SystemService;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -104,20 +105,12 @@ class TwigInitializeListener implements EventSubscriberInterface
     private $layoutRepository;
 
     /**
+     * @var SystemService
+     */
+    protected $systemService;
+
+    /**
      * TwigInitializeListener constructor.
-     *
-     * @param Environment $twig
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PageRepository $pageRepository
-     * @param PageLayoutRepository $pageLayoutRepository
-     * @param BlockPositionRepository $blockPositionRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
-     * @param AuthorityRoleRepository $authorityRoleRepository
-     * @param EccubeConfig $eccubeConfig
-     * @param Context $context
-     * @param MobileDetector $mobileDetector
-     * @param UrlGeneratorInterface $router
-     * @param LayoutRepository $layoutRepository
      */
     public function __construct(
         Environment $twig,
@@ -131,7 +124,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         Context $context,
         MobileDetector $mobileDetector,
         UrlGeneratorInterface $router,
-        LayoutRepository $layoutRepository
+        LayoutRepository $layoutRepository,
+        SystemService $systemService
     ) {
         $this->twig = $twig;
         $this->baseInfoRepository = $baseInfoRepository;
@@ -145,11 +139,10 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->mobileDetector = $mobileDetector;
         $this->router = $router;
         $this->layoutRepository = $layoutRepository;
+        $this->systemService = $systemService;
     }
 
     /**
-     * @param GetResponseEvent $event
-     *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -171,8 +164,6 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
-     * @param GetResponseEvent $event
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function setFrontVariables(GetResponseEvent $event)
@@ -243,11 +234,9 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('Layout', $Layout);
         $this->twig->addGlobal('Page', $Page);
         $this->twig->addGlobal('title', $Page->getName());
+        $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
     public function setAdminGlobals(GetResponseEvent $event)
     {
         // メニュー表示用配列.
