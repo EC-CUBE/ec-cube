@@ -28,8 +28,8 @@ final class Version20210319122142 extends AbstractMigration
     {
         $lang = env('ECCUBE_LOCALE');
         $statuses = [
-            LoginHistoryStatus::FAILURE => $lang === 'ja' ? '失敗' : 'Failure',
-            LoginHistoryStatus::SUCCESS => $lang === 'ja' ? '成功' : 'Success',
+            LoginHistoryStatus::FAILURE => $lang === 'en' ? 'Failure' : '失敗',
+            LoginHistoryStatus::SUCCESS => $lang === 'en' ? 'Success' : '成功',
         ];
 
         $sortNo = $this->connection->fetchColumn('SELECT MAX(sort_no) + 1 FROM mtb_login_history_status');
