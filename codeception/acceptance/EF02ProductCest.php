@@ -183,6 +183,19 @@ class EF02ProductCest
         $I->assertRegExp('/\/upload\/save_image\/sand-2\.png$/', $img, $img.' が見つかりません');
     }
 
+    /**
+     * @group EF0202-UC01-T04
+     */
+    public function product_商品詳細構造化データ(\AcceptanceTester $I)
+    {
+        $I->wantTo('EF0202-UC01-T04 商品詳細 構造化データ'); // todo
+
+        ProductDetailPage::go($I, 1);
+        $html = $I->grabAttributeFrom('script[type="application/ld+json"]', 'innerHTML');
+        $json_ld = json_decode((string)$html);
+        $I->assertEquals($json_ld->name, '彩のジェラートCUBE');
+    }
+
     public function product_商品詳細カート1(\AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T01 商品詳細 カート 注文数＜販売制限数＜在庫数の注文');
