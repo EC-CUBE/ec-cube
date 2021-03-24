@@ -42,7 +42,7 @@ class CalendarControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
-    public function testTodayAndHolidayStile()
+    public function testTodayAndHolidayStyle()
     {
         $today = new \DateTime();
         $Calendar = new Calendar();
@@ -58,7 +58,7 @@ class CalendarControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
-    public function testHolidayStile()
+    public function testHolidayStyle()
     {
         $holiday = new \DateTime(Carbon::now()->format('Y-m').'-01');
         $Calendar = new Calendar();
@@ -74,7 +74,7 @@ class CalendarControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
-    public function testTodayStile()
+    public function testTodayStyle()
     {
         $today = new \DateTime();
 
