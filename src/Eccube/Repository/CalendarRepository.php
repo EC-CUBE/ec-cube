@@ -112,15 +112,4 @@ class CalendarRepository extends AbstractRepository
         $em->remove($Calendar);
         $em->flush();
     }
-
-    /**
-     * Calendar のキャッシュをクリアする.
-     *
-     * getByRule() をコールすると、結果をキャッシュし、2回目以降はデータベースへアクセスしない.
-     * このメソッドをコールすると、キャッシュをクリアし、再度データベースを参照して結果を取得する.
-     */
-    public function clearCache()
-    {
-        $this->rules = [];
-    }
 }
