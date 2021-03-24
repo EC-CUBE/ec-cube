@@ -5538,6 +5538,78 @@ SP フォーストで記述する。
 Twitter Bootstrap デフォルト準拠
  */
 /*
+見出し
+
+トップページで使用されているカレンダーのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.9.1
+*/
+/* 背景や文字の色調整 */
+.ec-calendar {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap; }
+.ec-calendar__month {
+    border-collapse: collapse; }
+.ec-calendar__month:nth-child(2) {
+      margin-top: 30px; }
+.ec-calendar__month th, .ec-calendar__month td {
+      border-top: 1px solid #f3f3f3;
+      border-bottom: 1px solid #f3f3f3;
+      padding: 8px;
+      text-align: center;
+      vertical-align: middle; }
+.ec-calendar .ec-calendar__title {
+    border: 0; }
+.ec-calendar .ec-calendar__sun {
+    background: #F8F8F8;
+    color: #DE5D50; }
+.ec-calendar .ec-calendar__mon,
+  .ec-calendar .ec-calendar__tue,
+  .ec-calendar .ec-calendar__wed,
+  .ec-calendar .ec-calendar__thu,
+  .ec-calendar .ec-calendar__fri {
+    background: #F8F8F8;
+    color: #333; }
+.ec-calendar .ec-calendar__sat {
+    background: #F8F8F8;
+    color: #5CB1B1; }
+.ec-calendar .ec-calendar__day {
+    background: #FFF;
+    color: #333; }
+.ec-calendar .ec-calendar__holiday {
+    background: #FFF;
+    color: #DE5D50 !important; }
+.ec-calendar .ec-calendar__today {
+    color: #333;
+    position: relative;
+    z-index: 1; }
+.ec-calendar .ec-calendar__today::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #FFFDE7;
+      transform: translate(-50%, -50%);
+      z-index: -1; }
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
 検索ラベル
 
 商品一覧 ヘッダー部 に関する Project コンポーネントを定義します。
@@ -8014,4 +8086,10 @@ Styleguide 22.1
       width: 50%; }
     .ec-off4Grid .ec-off4Grid__cell {
       width: 33.33333%; } }
+@media screen and (min-width: 768px) {
+    .ec-calendar {
+      flex-direction: row; }
+        .ec-calendar__month:nth-child(2) {
+          margin-top: 0;
+          margin-left: 30px; } }
 /*# sourceMappingURL=style.css.map */
