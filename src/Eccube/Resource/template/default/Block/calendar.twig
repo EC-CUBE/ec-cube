@@ -20,11 +20,9 @@ file that was distributed with this source code.
         * 赤字は休業日です。<br>
         <br>
         <div class="ec-calendar">
-            <table class="ec-calendar__month">
+            <table id="this-month-table" class="ec-calendar__month">
                 <tr>
-                    <th colspan="7" class="ec-calendar__title">
-                        {{ ThisMonthTitle }}
-                    </th>
+                    <th id="this-month-title" colspan="7" class="ec-calendar__title">{{ ThisMonthTitle }}</th>
                 </tr>
                 <tr>
                     <th class="ec-calendar__sun">日</th>
@@ -38,16 +36,14 @@ file that was distributed with this source code.
                 <tr>
                     {% for day in ThisMonthCalendar %}
                         {% if day.today == 1 and day.holiday == 1 %}
-                            <td class="ec-calendar__today ec-calendar__holiday">
+                            <td id="today-and-holiday" class="ec-calendar__today ec-calendar__holiday">{{ day.day }}</td>
                         {% elseif day.today == 1 and day.holiday == 0 %}
-                            <td class="ec-calendar__today">
+                            <td id="today" class="ec-calendar__today">{{ day.day }}</td>
                         {% elseif day.today == 0 and day.holiday == 1 %}
-                            <td class="ec-calendar__holiday">
+                            <td class="ec-calendar__holiday">{{ day.day }}</td>
                         {% else %}
-                            <td class="ec-calendar__day">
+                            <td class="ec-calendar__day">{{ day.day }}</td>
                         {% endif %}
-                                {{ day.day }}
-                            </td>
                         {% if loop.index % 7 == 0 and loop.index != ThisMonthCalendar|length %}
                             </tr><tr>
                         {% endif %}
@@ -55,11 +51,9 @@ file that was distributed with this source code.
                 </tr>
             </table>
 
-            <table class="ec-calendar__month">
+            <table id="next-month-table" class="ec-calendar__month">
                 <tr>
-                    <th colspan="7" class="ec-calendar__title">
-                        {{ NextMonthTitle }}
-                    </th>
+                    <th id="next-month-title" colspan="7" class="ec-calendar__title">{{ NextMonthTitle }}</th>
                 </tr>
                 <tr>
                     <th class="ec-calendar__sun">日</th>
@@ -72,17 +66,11 @@ file that was distributed with this source code.
                 </tr>
                 <tr>
                     {% for day in NextMonthCalendar %}
-                        {% if day.today == 1 and day.holiday == 1 %}
-                            <td class="ec-calendar__today ec-calendar__holiday">
-                        {% elseif day.today == 1 and day.holiday == 0 %}
-                            <td class="ec-calendar__today">
-                        {% elseif day.today == 0 and day.holiday == 1 %}
-                            <td class="ec-calendar__holiday">
+                        {% if day.holiday == 1 %}
+                            <td class="ec-calendar__holiday">{{ day.day }}</td>
                         {% else %}
-                            <td class="ec-calendar__day">
+                            <td class="ec-calendar__day">{{ day.day }}</td>
                         {% endif %}
-                                {{ day.day }}
-                            </td>
                         {% if loop.index % 7 == 0 and loop.index != NextMonthCalendar|length %}
                             </tr><tr>
                         {% endif %}
