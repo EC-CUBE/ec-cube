@@ -43,9 +43,6 @@ class CalendarType extends AbstractType
 
     /**
      * CalendarType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param CalendarRepository $calendarRepository
      */
     public function __construct(EccubeConfig $eccubeConfig, CalendarRepository $calendarRepository)
     {
@@ -91,7 +88,12 @@ class CalendarType extends AbstractType
                 ->select('count(c.id)')
                 ->where('c.holiday = :holiday')
                 ->setParameter('holiday', $Calendar->getHoliday());
-
+            if ($Calendar->getId()) {
+                // 更新の場合は自IDを除外してチェック
+                $qb
+                    ->andWhere('c.id <> :id')
+                    ->setParameter('id', $Calendar->getId());
+            }
             $count = $qb->getQuery()
                 ->getSingleScalarResult();
             if ($count > 0) {
