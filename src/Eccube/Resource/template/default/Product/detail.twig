@@ -227,12 +227,12 @@ file that was distributed with this source code.
                 "{{ url('homepage') }}{{ asset(no_image_product, 'save_image') }}"
             {% endfor %}
         ],
-        "description": "{{ Product.description_list | default(Product.description_detail) | striptags | replace({"\n": '', "\r": ''}, '') }}",
+        "description": "{{ Product.description_list | default(Product.description_detail) | striptags | replace({'\n': '', '\r': ''}) }}",
         "sku": "{{ Product.code_min }}",
         "offers": {
             "@type": "Offer",
             "url": "{{ url('product_detail', {'id': Product.id}) }}",
-            "priceCurrency": "JPY",
+            "priceCurrency": "{{ eccube_config.currency }}",
             "price": {{ Product.getPrice02IncTaxMin }},
             "availability": "{{ Product.stock_find ? "InStock" : "OutOfStock" }}"
         }
