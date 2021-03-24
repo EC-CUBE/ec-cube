@@ -52,7 +52,6 @@ jobs:
           rm -rf $GITHUB_WORKSPACE/Procfile
           rm -rf $GITHUB_WORKSPACE/LICENSE.txt
           rm -rf $GITHUB_WORKSPACE/README.md
-          rm -rf $GITHUB_WORKSPACE/codeception.sh
           rm -rf $GITHUB_WORKSPACE/codeception.yml
           rm -rf $GITHUB_WORKSPACE/app/Plugin/*
           rm -rf $GITHUB_WORKSPACE/codeception
