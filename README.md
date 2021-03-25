@@ -1,6 +1,9 @@
 # EC-CUBE 4.0
 
-[![Build Status](https://travis-ci.com/EC-CUBE/ec-cube.svg?branch=4.0)](https://travis-ci.com/EC-CUBE/ec-cube)
+[![Unit test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml/badge.svg?branch=4.0)](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml)
+[![E2E test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml/badge.svg?branch=4.0)](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml)
+[![Plugin test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml/badge.svg?branch=4.0)](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml)
+[![PHPStan](https://github.com/EC-CUBE/ec-cube/actions/workflows/phpstan.yml/badge.svg?branch=4.0)](https://github.com/EC-CUBE/ec-cube/actions/workflows/phpstan.yml)
 [![codecov](https://codecov.io/gh/EC-CUBE/ec-cube/branch/4.0/graph/badge.svg?token=BhnPjjvfwd)](https://codecov.io/gh/EC-CUBE/ec-cube)
 
 [![Slack](https://img.shields.io/badge/slack-join%5fchat-brightgreen.svg?style=flat)](https://join.slack.com/t/ec-cube/shared_invite/enQtNDA1MDYzNDQxMTIzLTY5MTRhOGQ2MmZhMjQxYTAwMmVlMDc5MDU2NjJlZmFiM2E3M2Q0M2Y3OTRlMGY4NTQzN2JiZDBkNmQwNTUzYzc)
