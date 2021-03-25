@@ -66,7 +66,7 @@ class AcceptanceTester extends \Codeception\Actor
         $isLogin = $I->grabTextFrom('header.c-headerBar div.c-headerBar__container a.c-headerBar__userMenu span');
         if ($isLogin == '管理者 様') {
             $I->click('header.c-headerBar div.c-headerBar__container a.c-headerBar__userMenu');
-            $I->click('#page_admin_homepage div.popover .popover-body a:last-child');
+            $I->click('body div.popover .popover-body a:last-child');
             $config = Fixtures::get('config');
             $I->amOnPage('/'.$config['eccube_admin_route'].'/logout');
             $I->see('ログイン', '#form1 > button');
