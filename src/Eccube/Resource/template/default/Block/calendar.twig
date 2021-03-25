@@ -40,10 +40,10 @@ file that was distributed with this source code.
                         {% elseif day.today == 1 and day.holiday == 0 %}
                             <td id="today" class="ec-calendar__today">{{ day.day }}</td>
                         {% elseif day.today == 0 and day.holiday == 1 %}
-                            <td class="ec-calendar__holiday">{{ day.day }}</td>
+                            <td id="this-month-holiday-{{ day.day }}" class="ec-calendar__holiday">{{ day.day }}</td>
                         {# 土日は定休日表示にしています。不要な場合は削除して下さい。ここから #}
                         {% elseif day.dayOfWeek == 'Sun' or day.dayOfWeek == 'Sat' %}
-                            <td class="ec-calendar__holiday">{{ day.day }}</td>
+                            <td id="this-month-holiday-{{ day.day }}" class="ec-calendar__holiday">{{ day.day }}</td>
                         {# 土日は定休日表示にしています。不要な場合は削除して下さい。ここまで #}
                         {% else %}
                             <td class="ec-calendar__day">{{ day.day }}</td>
@@ -71,10 +71,10 @@ file that was distributed with this source code.
                 <tr>
                     {% for day in NextMonthCalendar %}
                         {% if day.holiday == 1 %}
-                            <td class="ec-calendar__holiday">{{ day.day }}</td>
+                            <td id="next-month-holiday-{{ day.day }}" class="ec-calendar__holiday">{{ day.day }}</td>
                         {# 土日は定休日表示にしています。不要な場合は削除して下さい。ここから #}
                         {% elseif day.dayOfWeek == 'Sun' or day.dayOfWeek == 'Sat' %}
-                            <td class="ec-calendar__holiday">{{ day.day }}</td>
+                            <td id="next-month-holiday-{{ day.day }}" class="ec-calendar__holiday">{{ day.day }}</td>
                         {# 土日は定休日表示にしています。不要な場合は削除して下さい。ここまで #}
                         {% else %}
                             <td class="ec-calendar__day">{{ day.day }}</td>
