@@ -50,11 +50,10 @@ $calander-border: #f3f3f3;//カレンダーの線の色
 
   &__month{
     border-collapse: collapse;
-      margin-top: 30px;
-      @media screen and (min-width:768px){
-        margin-top: 0;
-        margin-left: 30px;
-      }
+    margin-top: 30px;
+    @media screen and (min-width:768px){
+      margin-top: 0;
+      margin-left: 30px;
     }
 
     th,td{

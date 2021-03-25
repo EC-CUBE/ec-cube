@@ -5558,9 +5558,8 @@ Styleguide 12.9.1
   flex-direction: column;
   flex-wrap: wrap; }
 .ec-calendar__month {
-    border-collapse: collapse; }
-.ec-calendar__month:nth-child(2) {
-      margin-top: 30px; }
+    border-collapse: collapse;
+    margin-top: 30px; }
 .ec-calendar__month th, .ec-calendar__month td {
       border-top: 1px solid #f3f3f3;
       border-bottom: 1px solid #f3f3f3;
@@ -8088,8 +8087,9 @@ Styleguide 22.1
       width: 33.33333%; } }
 @media screen and (min-width: 768px) {
     .ec-calendar {
-      flex-direction: row; }
-        .ec-calendar__month:nth-child(2) {
-          margin-top: 0;
-          margin-left: 30px; } }
+      flex-direction: row;
+      margin-left: -30px; }
+      .ec-calendar__month {
+        margin-top: 0;
+        margin-left: 30px; } }
 /*# sourceMappingURL=style.css.map */

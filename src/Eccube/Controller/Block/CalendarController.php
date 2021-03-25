@@ -129,16 +129,25 @@ class CalendarController extends AbstractController
         // 1日目の曜日の位置手前まで空文字を追加
         for ($i = 0; $i <= $firstDayOfWeek; $i++) {
             $targetMonthCalendar[$i]['day'] = '';
+            $targetMonthCalendar[$i]['dayOfWeek'] = '';
         }
 
         // 1日目の曜日の位置＋月の日数
         $loopCount = $firstDayOfWeek + $firstDateOfTargetMonth->daysInMonth;
 
-        // 月の日数に合わせて日を追加
+        // 月の日数に合わせて日と曜日を追加
         $dayNumber = 1;
+        $dayOfWeekNumber = $firstDayOfWeek;
         for ($i = $firstDayOfWeek; $i < $loopCount; $i++) {
             $targetMonthCalendar[$i]['day'] = $dayNumber;
+            $targetMonthCalendar[$i]['dayOfWeek'] = $this->getDayOfWeekString($dayOfWeekNumber);
             $dayNumber++;
+            $dayOfWeekNumber++;
+
+            // 曜日のおりかえし： 0 (日曜)へ
+            if ($dayOfWeekNumber == 7) {
+                $dayOfWeekNumber = 0;
+            }
         }
 
         // 1日目の曜日の位置＋月の日数に合わせて後に空文字を追加
@@ -154,8 +163,23 @@ class CalendarController extends AbstractController
         }
         for ($i = $loopCount; $i < $paddingLoopCount; $i++) {
             $targetMonthCalendar[$i]['day'] = '';
+            $targetMonthCalendar[$i]['dayOfWeek'] = '';
         }
 
         return $targetMonthCalendar;
+    }
+
+    /**
+     * 曜日を数値から文字列へ変換します
+     *
+     * @param int $dayOfWeekNumber 曜日の番号 : 0 (日曜)から 6 (土曜)
+     *
+     * @return string 曜日の文字 : Sun(日曜)からSat(土曜)
+     */
+    private function getDayOfWeekString($dayOfWeekNumber)
+    {
+        $weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        return $weekday[$dayOfWeekNumber];
     }
 }
