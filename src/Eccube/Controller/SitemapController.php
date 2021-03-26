@@ -13,25 +13,35 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\Master\ProductListMaxRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\PageRepository;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SitemapController extends AbstractController
 {
+    /**
+     * @var ProductRepository
+     */
     private $productRepository;
+
+    /**
+     * @var CategoryRepository
+     */
     private $categoryRepository;
+
+    /**
+     * @var PageRepository
+     */
     private $pageRepository;
 
     /**
      * SitemapController constructor.
      *
      * @param ProductRepository $productRepository
+     * @param CategoryRepository $categoryRepository
+     * @param PageRepository $pageRepository
      */
     public function __construct(
         ProductRepository $productRepository,
@@ -43,17 +53,17 @@ class SitemapController extends AbstractController
         $this->categoryRepository= $categoryRepository;
         $this->pageRepository = $pageRepository;
     }
+
     /**
      * Output sitemap index
-     * 
+     *
      * @Route("/sitemap.xml", name="sitemap_xml")
-     * @Template("sitemap_index.xml.twig")
      */
     public function index()
     {
         $qb = $this->pageRepository->createQueryBuilder('p');
         $Page = $qb->select('p')
-            ->where("(p.meta_robots not like '%noindex%' or p.meta_robots IS NULL)")
+            ->where("(p.meta_robots not like '%noindex%' or p.meta_robots not like '%none%' or p.meta_robots IS NULL)")
             ->andWhere('p.id <> 0')
             ->andWhere('p.MasterPage is null')
             ->orderBy("p.update_date","DESC")
@@ -72,11 +82,11 @@ class SitemapController extends AbstractController
             'sitemap_index.xml.twig'
         );
     }
+
     /**
      * Output sitemap of product categories
-     * 
+     *
      * @Route("/sitemap_category.xml", name="sitemap_category_xml")
-     * @Template("sitemap.xml.twig")
      */
     public function category()
     {
@@ -86,11 +96,10 @@ class SitemapController extends AbstractController
 
     /**
      * Output sitemap of products
-     * 
+     *
      * Output sitemap of products as status is 1
-     * 
+     *
      * @Route("/sitemap_product.xml", name="sitemap_product_xml")
-     * @Template("sitemap.xml.twig")
      */
     public function product()
     {
@@ -100,30 +109,29 @@ class SitemapController extends AbstractController
 
     /**
      * Output sitemap of pages
-     * 
-     * Output sitemap of pages without 'noindex' in meta robots. 
-     * 
+     *
+     * Output sitemap of pages without 'noindex' in meta robots.
+     *
      * @Route("/sitemap_page.xml", name="sitemap_page_xml")
-     * @Template("sitemap.xml.twig")
      */
     public function page()
     {
-        $Pages = $this->pageRepository->getPageList("(p.meta_robots not like '%noindex%' or p.meta_robots IS NULL)");
+        $Pages = $this->pageRepository->getPageList("(p.meta_robots not like '%noindex%' or p.meta_robots not like '%none%' or p.meta_robots IS NULL)");
         return $this->outputXml(["Pages"=>$Pages]);
     }
 
     /**
-     * Output XML responce by data.
+     * Output XML response by data.
      *
-     * @param Array $data
+     * @param array $data
      * @param String $template_name
      * @return Response
      */
     private function outputXml(Array $data, $template_name = 'sitemap.xml.twig')
     {
         $response = new Response();
-        $response->headers->set('Content-Type', 'application/xml');//Content-Typeを設定
-        
+        $response->headers->set('Content-Type', 'application/xml'); //Content-Typeを設定
+
         return $this->render(
             $template_name,
             $data,
