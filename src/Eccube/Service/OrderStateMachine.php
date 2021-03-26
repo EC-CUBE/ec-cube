@@ -13,6 +13,8 @@
 
 namespace Eccube\Service;
 
+use Doctrine\DBAL\LockMode;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -39,17 +41,30 @@ class OrderStateMachine implements EventSubscriberInterface
      * @var PointProcessor
      */
     private $pointProcessor;
+
     /**
      * @var StockReduceProcessor
      */
     private $stockReduceProcessor;
 
-    public function __construct(StateMachine $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(
+        StateMachine $_orderStateMachine,
+        OrderStatusRepository $orderStatusRepository,
+        PointProcessor $pointProcessor,
+        StockReduceProcessor $stockReduceProcessor,
+        EntityManagerInterface $entityManager
+    )
     {
         $this->machine = $_orderStateMachine;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->pointProcessor = $pointProcessor;
         $this->stockReduceProcessor = $stockReduceProcessor;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -60,6 +75,11 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     public function apply(Order $Order, OrderStatus $OrderStatus)
     {
+        $Customer = $Order->getCustomer();
+        if ($Customer) {
+            $this->entityManager->lock($Customer, LockMode::PESSIMISTIC_WRITE);
+            $this->entityManager->refresh($Customer);
+        }
         $context = $this->newContext($Order);
         $transition = $this->getTransition($context, $OrderStatus);
         if ($transition) {
