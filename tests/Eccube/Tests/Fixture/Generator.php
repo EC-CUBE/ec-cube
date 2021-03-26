@@ -35,6 +35,7 @@ use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
+use Eccube\Entity\ProductTag;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
@@ -46,6 +47,7 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\PaymentRepository;
+use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -79,6 +81,11 @@ class Generator
     protected $memberRepository;
 
     /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+
+    /**
      * @var CustomerRepository
      */
     protected $customerRepository;
@@ -109,6 +116,11 @@ class Generator
     protected $paymentRepository;
 
     /**
+     * @var TagRepository
+     */
+    private $tagRepository;
+
+    /**
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
@@ -122,6 +134,11 @@ class Generator
      * @var PrefRepository
      */
     protected $PrefRepository;
+
+    /**
+     * @var PrefRepository
+     */
+    private $prefRepository;
 
     /**
      * @var SessionInterface
@@ -146,6 +163,7 @@ class Generator
         PaymentRepository $paymentRepository,
         PageRepository $pageRepository,
         PrefRepository $prefRepository,
+        TagRepository $tagRepository,
         TaxRuleRepository $taxRuleRepository,
         PurchaseFlow $orderPurchaseFlow,
         SessionInterface $session,
@@ -164,6 +182,7 @@ class Generator
         $this->paymentRepository = $paymentRepository;
         $this->pageRepository = $pageRepository;
         $this->prefRepository = $prefRepository;
+        $this->tagRepository = $tagRepository;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->orderPurchaseFlow = $orderPurchaseFlow;
         $this->session = $session;
@@ -516,6 +535,19 @@ class Generator
             $this->entityManager->persist($ProductCategory);
             $this->entityManager->flush($ProductCategory);
             $Product->addProductCategory($ProductCategory);
+        }
+
+        $Tags = $this->tagRepository->findAll();
+        foreach ($Tags as $Tag) {
+            $ProductTag = new ProductTag();
+            $ProductTag
+                ->setProduct($Product)
+                ->setTag($Tag)
+                ->setCreateDate(new \DateTime()) // FIXME
+                ->setCreator($Member);
+            $this->entityManager->persist($ProductTag);
+            $this->entityManager->flush($ProductTag);
+            $Product->addProductTag($ProductTag);
         }
 
         $this->entityManager->flush($Product);
