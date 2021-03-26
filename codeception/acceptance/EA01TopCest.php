@@ -82,10 +82,10 @@ class EA01TopCest
         // お知らせの記事をクリックすると設定されたURLに遷移することを確認
         $I->switchToIFrame('information');
         $selector = '.news_area .link_list .tableish a:nth-child(1)';
-        $url = $I->grabAttributeFrom($selector, 'href');
+        $url = $I->executeJS('return location.href');
         $I->click(['css' => $selector]);
         $I->switchToNewWindow();
-        $I->assertEquals($url, $I->executeJS('return location.href'), $url.' が一致しません');
+        $I->assertNotEquals($url, $I->executeJS('return location.href'), $url.' から遷移していません。');
         $I->switchToWindow();
 
         // ショップ情報の在庫切れ商品をクリックすると商品管理ページに遷移することを確認
