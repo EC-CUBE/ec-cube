@@ -354,6 +354,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
             'dtb_product_stock',
             'dtb_product_class',
             'dtb_product_category',
+            'dtb_product_tag',
             'dtb_product',
         ];
         $this->deleteAllRows($tables);
