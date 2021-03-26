@@ -269,9 +269,7 @@ class Generator
             ->setUpdateDate(new \DateTime())
             ->setPoint($faker->randomNumber(5));
         $this->entityManager->persist($Customer);
-        $this->entityManager->flush($Customer);
-
-        $this->entityManager->flush($Customer);
+        $this->entityManager->flush();
 
         return $Customer;
     }
@@ -314,7 +312,7 @@ class Generator
             $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
         } else {
             $this->entityManager->persist($CustomerAddress);
-            $this->entityManager->flush($CustomerAddress);
+            $this->entityManager->flush();
         }
 
         return $CustomerAddress;
@@ -399,7 +397,7 @@ class Generator
         $Product->extendedParameter = 'aaaa';
 
         $this->entityManager->persist($Product);
-        $this->entityManager->flush($Product);
+        $this->entityManager->flush();
 
         $faker2 = Faker::create($this->locale);
         $faker2->addProvider(new ImagesGeneratorProvider($faker2));
@@ -430,7 +428,7 @@ class Generator
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setProduct($Product);
             $this->entityManager->persist($ProductImage);
-            $this->entityManager->flush($ProductImage);
+            $this->entityManager->flush();
             $Product->addProductImage($ProductImage);
         }
 
@@ -455,7 +453,7 @@ class Generator
                 ->setCreator($Member)
                 ->setStock($faker->numberBetween(100, 999));
             $this->entityManager->persist($ProductStock);
-            $this->entityManager->flush($ProductStock);
+            $this->entityManager->flush();
             $ProductClass = new ProductClass();
             $ProductClass
                 ->setCode($faker->word)
@@ -479,11 +477,11 @@ class Generator
             }
 
             $this->entityManager->persist($ProductClass);
-            $this->entityManager->flush($ProductClass);
+            $this->entityManager->flush();
 
             $ProductStock->setProductClass($ProductClass);
             $ProductStock->setProductClassId($ProductClass->getId());
-            $this->entityManager->flush($ProductStock);
+            $this->entityManager->flush();
             $Product->addProductClass($ProductClass);
         }
 
@@ -495,7 +493,7 @@ class Generator
             ->setCreator($Member)
             ->setStock($faker->randomNumber(3));
         $this->entityManager->persist($ProductStock);
-        $this->entityManager->flush($ProductStock);
+        $this->entityManager->flush();
         $ProductClass = new ProductClass();
         if ($product_class_num > 0) {
             $ProductClass->setVisible(false);
@@ -516,11 +514,11 @@ class Generator
             ->setUpdateDate(new \DateTime())
             ->setProduct($Product);
         $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush($ProductClass);
+        $this->entityManager->flush();
 
         $ProductStock->setProductClass($ProductClass);
         $ProductStock->setProductClassId($ProductClass->getId());
-        $this->entityManager->flush($ProductStock);
+        $this->entityManager->flush();
 
         $Product->addProductClass($ProductClass);
 
@@ -533,7 +531,7 @@ class Generator
                 ->setCategoryId($Category->getId())
                 ->setProductId($Product->getId());
             $this->entityManager->persist($ProductCategory);
-            $this->entityManager->flush($ProductCategory);
+            $this->entityManager->flush();
             $Product->addProductCategory($ProductCategory);
         }
 
@@ -546,11 +544,11 @@ class Generator
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setCreator($Member);
             $this->entityManager->persist($ProductTag);
-            $this->entityManager->flush($ProductTag);
+            $this->entityManager->flush();
             $Product->addProductTag($ProductTag);
         }
 
-        $this->entityManager->flush($Product);
+        $this->entityManager->flush();
 
         return $Product;
     }
@@ -593,7 +591,7 @@ class Generator
         ;
 
         $this->entityManager->persist($Order);
-        $this->entityManager->flush($Order);
+        $this->entityManager->flush();
         if (!is_object($Delivery)) {
             $Delivery = $this->createDelivery();
             foreach ($Payments as $Payment) {
@@ -605,9 +603,9 @@ class Generator
                     ->setPayment($Payment);
                 $Payment->addPaymentOption($PaymentOption);
                 $this->entityManager->persist($PaymentOption);
-                $this->entityManager->flush($PaymentOption);
+                $this->entityManager->flush();
             }
-            $this->entityManager->flush($Payment);
+            $this->entityManager->flush();
         }
         $DeliveryFee = $this->deliveryFeeRepository->findOneBy(
             [
@@ -629,7 +627,7 @@ class Generator
         $Order->addShipping($Shipping);
 
         $this->entityManager->persist($Shipping);
-        $this->entityManager->flush($Shipping);
+        $this->entityManager->flush();
 
         if (empty($ProductClasses)) {
             $Product = $this->createProduct();
@@ -749,7 +747,7 @@ class Generator
             ->setCreator($Member)
             ->setVisible(true);
         $this->entityManager->persist($Payment);
-        $this->entityManager->flush($Payment);
+        $this->entityManager->flush();
 
         $PaymentOption = new PaymentOption();
         $PaymentOption
@@ -760,10 +758,10 @@ class Generator
         $Payment->addPaymentOption($PaymentOption);
 
         $this->entityManager->persist($PaymentOption);
-        $this->entityManager->flush($PaymentOption);
+        $this->entityManager->flush();
 
         $Delivery->addPaymentOption($PaymentOption);
-        $this->entityManager->flush($Delivery);
+        $this->entityManager->flush();
 
         return $Payment;
     }
@@ -794,7 +792,7 @@ class Generator
             ->setSaleType($SaleType)
             ->setVisible(true);
         $this->entityManager->persist($Delivery);
-        $this->entityManager->flush($Delivery);
+        $this->entityManager->flush();
 
         $delivery_time_patten = $faker->numberBetween(0, $delivery_time_max_pattern);
         for ($i = 0; $i < $delivery_time_patten; $i++) {
@@ -805,7 +803,7 @@ class Generator
                 ->setSortNo($i + 1)
                 ->setVisible(true);
             $this->entityManager->persist($DeliveryTime);
-            $this->entityManager->flush($DeliveryTime);
+            $this->entityManager->flush();
             $Delivery->addDeliveryTime($DeliveryTime);
         }
 
@@ -818,11 +816,11 @@ class Generator
                 ->setPref($Pref)
                 ->setDelivery($Delivery);
             $this->entityManager->persist($DeliveryFee);
-            $this->entityManager->flush($DeliveryFee);
+            $this->entityManager->flush();
             $Delivery->addDeliveryFee($DeliveryFee);
         }
 
-        $this->entityManager->flush($Delivery);
+        $this->entityManager->flush();
 
         return $Delivery;
     }
@@ -848,7 +846,7 @@ class Generator
             ->setMetaTags('<meta name="meta_tags_test" content="'.str_replace('\'', '', $faker->word).'" />')
         ;
         $this->entityManager->persist($Page);
-        $this->entityManager->flush($Page);
+        $this->entityManager->flush();
 
         return $Page;
     }
