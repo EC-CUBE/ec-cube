@@ -316,12 +316,6 @@ class EA08SysteminfoCest
     {
         $I->wantTo('EA0804-UC01-T05 セキュリティ管理 - IP制限（拒否リスト）');
 
-        $findPlugins = Fixtures::get('findPlugins');
-        $Plugins = $findPlugins();
-        if (is_array($Plugins) && count($Plugins) > 0) {
-            $I->getScenario()->skip('プラグインのアンインストールが必要なため、テストをスキップします');
-        }
-
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
@@ -404,7 +398,7 @@ class EA08SysteminfoCest
 
     public function systeminfo_ログイン履歴検索(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0807-UC01-T01 ログイン履歴 - 検索');
+        $I->wantTo('EA0808-UC01-T01 ログイン履歴 - 検索');
 
         LoginHistoryPage::go($I)->検索('admin');
 
