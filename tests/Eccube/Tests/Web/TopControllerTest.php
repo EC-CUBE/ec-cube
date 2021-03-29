@@ -44,8 +44,7 @@ class TopControllerTest extends AbstractWebTestCase
         $this->entityManager->flush();
 
         $shopName = $this->container->get(BaseInfoRepository::class)->get()->getShopName();
-        $url = $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $expected_desc = mb_substr($description, 0, 120);
+        $expected_desc = mb_substr($description, 0, 120, 'utf-8');
 
         $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
 
@@ -53,7 +52,5 @@ class TopControllerTest extends AbstractWebTestCase
         $this->assertEquals('website', $crawler->filter('meta[property="og:type"]')->attr('content'));
         $this->assertEquals($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
         $this->assertEquals($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
-        $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
-        $this->assertEquals($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
     }
 }
