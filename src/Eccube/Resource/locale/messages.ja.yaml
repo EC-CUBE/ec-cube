@@ -1018,6 +1018,7 @@ admin.content.page_meta_description: description
 admin.content.page_meta_keyword: keyword
 admin.content.page_meta_robot: robot
 admin.content.page_meta_metatag: metatag
+# Deprecated https://github.com/EC-CUBE/ec-cube/pull/4987
 admin.content.page_meta_metatag_placeholder: |
   商品詳細ページでの記載例
     <meta property="og:type" content="og:product" />
@@ -1579,7 +1580,7 @@ tooltip.content.page_file_name: ページの内容を記述したtwigテンプ�
 tooltip.content.page_source_code: テンプレートファイルを編集します。twigで記述します。
 tooltip.content.page_layout: このページに適用するレイアウトを選択します。
 tooltip.content.page_meta: ページのMETAタグの内容を指定できます。
-tooltip.content.page_meta_tags: 自由にMETAタグを追加できます。twig内で利用されている変数も利用できます。
+tooltip.content.page_meta_tags: METAタグの出力をカスタマイズできます。twig内で利用されている変数も利用可能です。空欄の場合は、テンプレートフォルダの meta.twig ファイルが読み込まれます。
 tooltip.content.css_source_code: カスタマイズ用CSSファイルを編集します。CSSで記述します。
 tooltip.content.js_source_code: カスタマイズ用JavaScriptファイルを編集します。JavaScriptで記述します。
 tooltip.content.block_name: ブロックの管理用名称です。
