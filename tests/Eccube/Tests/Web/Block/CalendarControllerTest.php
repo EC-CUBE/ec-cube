@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web\Block;
 
 use Carbon\Carbon;
 use Eccube\Entity\Calendar;
-use Eccube\Repository\CalendarRepository;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
 class CalendarControllerTest extends AbstractWebTestCase
@@ -44,16 +43,15 @@ class CalendarControllerTest extends AbstractWebTestCase
 
     public function testTodayAndHolidayStyle()
     {
-        $today = new \DateTime();
         $Calendar = new Calendar();
         $Calendar->setTitle('今日かつ定休日のパターン')
-            ->setHoliday($today);
-        $this->container->get(CalendarRepository::class);
+            ->setHoliday(new \DateTime(Carbon::now()->format('Y-m-d')));
         $this->entityManager->persist($Calendar);
         $this->entityManager->flush();
+        dump($Calendar);
 
         $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
-        $this->expected = $today->format('j');
+        $this->expected = Carbon::now()->format('j');
         $this->actual = $crawler->filter('#today-and-holiday')->text();
         $this->verify();
     }
@@ -62,6 +60,7 @@ class CalendarControllerTest extends AbstractWebTestCase
     {
         // 土日以外の日を取得
         $targetHoliday = Carbon::now()->addDay(1);
+
         if ($targetHoliday->isSaturday()) {
             if (!$targetHoliday->copy()->addDay(2)->isCurrentMonth()) {
                 $targetHoliday = $targetHoliday->addDay(-1);
@@ -79,7 +78,6 @@ class CalendarControllerTest extends AbstractWebTestCase
         $Calendar = new Calendar();
         $Calendar->setTitle('今日ではない定休日のパターン')
             ->setHoliday(new \DateTime($targetHoliday->format('Y-m-d')));
-        $this->container->get(CalendarRepository::class);
         $this->entityManager->persist($Calendar);
         $this->entityManager->flush();
 

@@ -41,9 +41,10 @@ class CalendarController extends AbstractController
      */
     public function index(Request $request)
     {
-        $firstDateOfThisMonth = Carbon::now()->startOfMonth();
-        $firstDateOfNextMonth = Carbon::now()->addMonth(1)->startOfMonth();
-        $endDateOfNextMonth = Carbon::now()->addMonth(1)->endOfMonth();
+        $today = Carbon::now();
+        $firstDateOfThisMonth = $today->copy()->startOfMonth();
+        $firstDateOfNextMonth = $today->copy()->addMonth(1)->startOfMonth();
+        $endDateOfNextMonth = $today->copy()->addMonth(1)->endOfMonth();
 
         // 2ヶ月間の定休日を取得
         $HolidaysOfTwoMonths = $this->calendarRepository->getHolidayList($firstDateOfThisMonth, $endDateOfNextMonth);
@@ -57,18 +58,18 @@ class CalendarController extends AbstractController
         // 定休日リストを取得
         $holidayListOfTwoMonths = [];
         foreach ($HolidaysOfTwoMonths as $Holiday) {
-            $holidayListOfTwoMonths[] = $Holiday->getHoliday()->format('Ynj'); // 前ゼロなし年月日 例:202131
+            $holidayListOfTwoMonths[] = $Holiday->getHoliday();
         }
 
         // 今月のカレンダー配列に定休日フラグを設定
-        $thisMonthCalendar = $this->setHolidayAndTodayFlag($thisMonthCalendar, $holidayListOfTwoMonths, Carbon::now());
+        $thisMonthCalendar = $this->setHolidayAndTodayFlag($thisMonthCalendar, $holidayListOfTwoMonths, $today->copy());
 
         // 来月のカレンダー配列に定休日フラグを設定
-        $nextMonthCalendar = $this->setHolidayAndTodayFlag($nextMonthCalendar, $holidayListOfTwoMonths, Carbon::now()->addMonth(1));
+        $nextMonthCalendar = $this->setHolidayAndTodayFlag($nextMonthCalendar, $holidayListOfTwoMonths, $today->copy()->addMonth(1));
 
         // 各カレンダータイトルを作成
-        $thisMonthTitle = Carbon::now()->format('Y年n月');
-        $nextMonthTitle = Carbon::now()->addMonth(1)->format('Y年n月');
+        $thisMonthTitle = $firstDateOfThisMonth->format('Y年n月');
+        $nextMonthTitle = $firstDateOfNextMonth->format('Y年n月');
 
         return [
             'ThisMonthTitle' => $thisMonthTitle,
@@ -90,10 +91,17 @@ class CalendarController extends AbstractController
     private function setHolidayAndTodayFlag($targetMonthCalendar, $holidayListOfTwoMonths, Carbon $targetDate)
     {
         for ($i = 0; $i < count($targetMonthCalendar); $i++) {
-            $targetYmd = $targetDate->format('Yn').$targetMonthCalendar[$i]['day'];
+            // カレンダー配列の日が空の場合は処理をスキップ
+            if ($targetMonthCalendar[$i]['day'] == '') {
+                $targetMonthCalendar[$i]['holiday'] = false;
+                $targetMonthCalendar[$i]['today'] = false;
+                continue;
+            }
+
+            $targetYmdDateTime = new \DateTime($targetDate->copy()->format('Y-n').'-'.$targetMonthCalendar[$i]['day']);
 
             // カレンダーの日付が定休日リストに存在するかを確認
-            $result = array_search($targetYmd, $holidayListOfTwoMonths);
+            $result = array_search($targetYmdDateTime, $holidayListOfTwoMonths);
             // 定休日フラグを設定
             if ($result !== false) {
                 $targetMonthCalendar[$i]['holiday'] = true;
@@ -102,7 +110,7 @@ class CalendarController extends AbstractController
             }
 
             // 今日フラグを設定
-            if ($targetYmd === Carbon::now()->format('Ynj')) {
+            if ($targetYmdDateTime == new \DateTime($targetDate->copy()->format('Y-n-j'))) {
                 $targetMonthCalendar[$i]['today'] = true;
             } else {
                 $targetMonthCalendar[$i]['today'] = false;
