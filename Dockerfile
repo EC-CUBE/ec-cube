@@ -54,6 +54,7 @@ EXPOSE 443
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Override with custom configuration settings
 COPY dockerbuild/php.ini $PHP_INI_DIR/conf.d/
+COPY dockerbuild/docker-php-entrypoint /usr/local/bin/
 
 RUN chown www-data:www-data /var/www \
   && mkdir -p ${APACHE_DOCUMENT_ROOT}/vendor \
