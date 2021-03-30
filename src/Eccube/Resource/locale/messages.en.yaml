@@ -138,6 +138,7 @@ front.block.login.to_cart: Proceed to Cart
 front.block.login.to_home: Back to Home
 front.block.calendar.title__en: 'CALENDAR'
 front.block.calendar.title__ja: 'Calendar'
+front.block.calendar.holiday_notice: '* The red characters are closed.'
 
 
 #------------------------------------------------------------------------------------
