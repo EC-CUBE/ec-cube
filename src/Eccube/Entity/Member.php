@@ -275,9 +275,9 @@ if (!class_exists('\Eccube\Entity\Member')) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getPlainPassword(): string
+        public function getPlainPassword(): ?string
         {
             return $this->plainPassword;
         }
