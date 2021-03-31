@@ -26,7 +26,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         'name' => 'タカハシ',
         'department' => 'EC-CUBE事業部',
         'login_id' => 'takahashi',
-        'password' => [
+        'plain_password' => [
             'first' => 'password',
             'second' => 'password',
         ],
