@@ -132,8 +132,7 @@ class ProductRepository extends AbstractRepository
      */
     public function getQueryBuilderBySearchData($searchData)
     {
-        $qb = $this->createQueryBuilder('p')
-            ->andWhere('p.Status = 1');
+        $qb = $this->createQueryBuilder('p');
 
         // category
         $categoryJoin = false;
