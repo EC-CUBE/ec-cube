@@ -174,7 +174,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $formData = $this->createFormData();
-        $formData['password'] = [
+        $formData['plain_password'] = [
             'first' => '**********',
             'second' => '**********',
         ];
@@ -342,7 +342,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             'name' => $faker->word,
             'department' => $faker->word,
             'login_id' => 'logintest',
-            'password' => [
+            'plain_password' => [
                 'first' => 'password',
                 'second' => 'password',
             ],
