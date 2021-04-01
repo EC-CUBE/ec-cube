@@ -26,17 +26,12 @@ use Eccube\Entity\TaxRule;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
-use Symfony\Component\DomCrawler\Crawler;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ProductTagRepository;
 use Eccube\Repository\TaxRuleRepository;
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Response;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
