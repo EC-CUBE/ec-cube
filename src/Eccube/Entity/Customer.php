@@ -30,6 +30,8 @@ if (!class_exists('\Eccube\Entity\Customer')) {
      */
     class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface, \Serializable
     {
+        protected static $usernameField = 'phone_number';
+
         /**
          * @var int
          *
@@ -318,7 +320,9 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         }
 
         /**
-         * {@inheritdoc}
+         * Get username.
+         *
+         * @return string
          */
         public function getUsername()
         {
@@ -1171,7 +1175,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
             // CustomerRepository::loadUserByUsername() で Status をチェックしているため、ここでは不要
             return serialize([
                 $this->id,
-                $this->email,
+                $this->getUsername(),
                 $this->password,
                 $this->salt,
             ]);
@@ -1194,7 +1198,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         {
             list(
                 $this->id,
-                $this->email,
+                $this->{static::getUsernameField()},
                 $this->password,
                 $this->salt) = unserialize($serialized);
         }
