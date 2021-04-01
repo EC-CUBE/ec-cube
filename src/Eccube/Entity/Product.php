@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -495,14 +496,14 @@ if (!class_exists('\Eccube\Entity\Product')) {
         private $free_area;
 
         /**
-         * @var \DateTime
+         * @var DateTime
          *
          * @ORM\Column(name="create_date", type="datetimetz")
          */
         private $create_date;
 
         /**
-         * @var \DateTime
+         * @var DateTime
          *
          * @ORM\Column(name="update_date", type="datetimetz")
          */
@@ -565,6 +566,21 @@ if (!class_exists('\Eccube\Entity\Product')) {
          * })
          */
         private $Status;
+
+
+        /**
+         * @var DateTime
+         *
+         * @ORM\Column(name="publish_start", type="datetimetz", nullable=true)
+         */
+        private $publishStart;
+
+        /**
+         * @var DateTime
+         *
+         * @ORM\Column(name="publish_end", type="datetimetz", nullable=true)
+         */
+        private $publishEnd;
 
         /**
          * Constructor
@@ -780,7 +796,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
+         * @param DateTime $createDate
          *
          * @return Product
          */
@@ -794,7 +810,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return DateTime
          */
         public function getCreateDate()
         {
@@ -804,7 +820,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
+         * @param DateTime $updateDate
          *
          * @return Product
          */
@@ -818,7 +834,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return DateTime
          */
         public function getUpdateDate()
         {
@@ -1072,6 +1088,38 @@ if (!class_exists('\Eccube\Entity\Product')) {
         public function getStatus()
         {
             return $this->Status;
+        }
+
+        /**
+         * @return DateTime
+         */
+        public function getPublishStart()
+        {
+            return $this->publishStart;
+        }
+
+        /**
+         * @param DateTime $publishStart
+         */
+        public function setPublishStart(DateTime $publishStart)
+        {
+            $this->publishStart = $publishStart;
+        }
+
+        /**
+         * @return DateTime
+         */
+        public function getPublishEnd()
+        {
+            return $this->publishEnd;
+        }
+
+        /**
+         * @param DateTime $publishEnd
+         */
+        public function setPublishEnd(DateTime $publishEnd)
+        {
+            $this->publishEnd = $publishEnd;
         }
     }
 }
