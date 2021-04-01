@@ -13,11 +13,13 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Repository\ProductRepository;
+use Eccube\Entity\Page;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 class SitemapController extends AbstractController
 {
@@ -37,21 +39,23 @@ class SitemapController extends AbstractController
     private $pageRepository;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * SitemapController constructor.
-     *
-     * @param ProductRepository $productRepository
-     * @param CategoryRepository $categoryRepository
-     * @param PageRepository $pageRepository
      */
     public function __construct(
         ProductRepository $productRepository,
         CategoryRepository $categoryRepository,
-        PageRepository $pageRepository
-    )
-    {
+        PageRepository $pageRepository,
+        RouterInterface $router
+    ) {
         $this->productRepository = $productRepository;
-        $this->categoryRepository= $categoryRepository;
+        $this->categoryRepository = $categoryRepository;
         $this->pageRepository = $pageRepository;
+        $this->router = $router;
     }
 
     /**
@@ -63,21 +67,22 @@ class SitemapController extends AbstractController
     {
         $qb = $this->pageRepository->createQueryBuilder('p');
         $Page = $qb->select('p')
-            ->where("(p.meta_robots not like '%noindex%' or p.meta_robots not like '%none%' or p.meta_robots IS NULL)")
+            ->where("((p.meta_robots not like '%noindex%' and p.meta_robots not like '%none%') or p.meta_robots IS NULL)")
             ->andWhere('p.id <> 0')
             ->andWhere('p.MasterPage is null')
-            ->orderBy("p.update_date","DESC")
+            ->orderBy('p.update_date', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getSingleResult();
 
-        $Product = $this->productRepository->findOneBy(["Status"=>1],["update_date"=>"DESC"]);
-        $Category = $this->categoryRepository->findOneBy([],["update_date"=>"DESC"]);
+        $Product = $this->productRepository->findOneBy(['Status' => 1], ['update_date' => 'DESC']);
+        $Category = $this->categoryRepository->findOneBy([], ['update_date' => 'DESC']);
+
         return $this->outputXml(
             [
-                "Category"    =>  $Category,
-                "Product"    =>  $Product,
-                "Page"         =>  $Page
+                'Category' => $Category,
+                'Product' => $Product,
+                'Page' => $Page,
             ],
             'sitemap_index.xml.twig'
         );
@@ -90,8 +95,9 @@ class SitemapController extends AbstractController
      */
     public function category()
     {
-        $Categories = $this->categoryRepository->getList(null,true);
-        return $this->outputXml(["Categories"=>$Categories]);
+        $Categories = $this->categoryRepository->getList(null, true);
+
+        return $this->outputXml(['Categories' => $Categories]);
     }
 
     /**
@@ -103,8 +109,9 @@ class SitemapController extends AbstractController
      */
     public function product()
     {
-        $Products = $this->productRepository->findBy(["Status"=>1],["update_date"=>"DESC"]);
-        return $this->outputXml(["Products"=>$Products]);
+        $Products = $this->productRepository->findBy(['Status' => 1], ['update_date' => 'DESC']);
+
+        return $this->outputXml(['Products' => $Products]);
     }
 
     /**
@@ -116,18 +123,29 @@ class SitemapController extends AbstractController
      */
     public function page()
     {
-        $Pages = $this->pageRepository->getPageList("(p.meta_robots not like '%noindex%' or p.meta_robots not like '%none%' or p.meta_robots IS NULL)");
-        return $this->outputXml(["Pages"=>$Pages]);
+        $Pages = $this->pageRepository->getPageList("((p.meta_robots not like '%noindex%' and p.meta_robots not like '%none%') or p.meta_robots IS NULL)");
+
+        // URL に変数が含まれる場合は URL の生成ができないためここで除外する
+        $Pages = array_filter($Pages, function (Page $Page) {
+            $route = $this->router->getRouteCollection()->get($Page->getUrl());
+            if (is_null($route)) {
+                return false;
+            }
+            return count($route->compile()->getPathVariables()) < 1;
+        });
+
+        return $this->outputXml(['Pages' => $Pages]);
     }
 
     /**
      * Output XML response by data.
      *
      * @param array $data
-     * @param String $template_name
+     * @param string $template_name
+     *
      * @return Response
      */
-    private function outputXml(Array $data, $template_name = 'sitemap.xml.twig')
+    private function outputXml(array $data, $template_name = 'sitemap.xml.twig')
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/xml'); //Content-Typeを設定
