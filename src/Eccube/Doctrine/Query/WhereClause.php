@@ -287,6 +287,52 @@ class WhereClause
     }
 
     /**
+     * AND演算子のファクトリメソッド。
+     * Example:
+     *      WhereClause::and(
+     *          WhereClause::eq('status', ':status', '1'),
+     *          WhereClause::eq('price', ':price', 1000),
+     *      )
+     * @param WhereClause ...$list
+     * @return WhereClause
+     */
+    public static function and(WhereClause ...$list)
+    {
+        $expr = array_map(function(WhereClause  $wc) {
+            return $wc->expr;
+        }, $list);
+
+        $params = array_reduce($list, function($result, WhereClause $wc) {
+            return $wc->params ? array_merge($result, $wc->params) : $result;
+        }, []);
+
+        return new WhereClause(self::expr()->andX(...$expr), $params);
+    }
+
+    /**
+     * OR演算子のファクトリメソッド。
+     * Example:
+     *      WhereClause::or(
+     *          WhereClause::eq('status', ':status1', '1'),
+     *          WhereClause::eq('status', ':status2', '2'),
+     *      )
+     * @param WhereClause ...$list
+     * @return WhereClause
+     */
+    public static function or(WhereClause ...$list)
+    {
+        $expr = array_map(function(WhereClause  $wc) {
+            return $wc->expr;
+        }, $list);
+
+        $params = array_reduce($list, function($result, WhereClause $wc) {
+            return $wc->params ? array_merge($result, $wc->params) : $result;
+        }, []);
+
+        return new WhereClause(self::expr()->orX(...$expr), $params);
+    }
+
+    /**
      * @return Expr
      */
     private static function expr()
