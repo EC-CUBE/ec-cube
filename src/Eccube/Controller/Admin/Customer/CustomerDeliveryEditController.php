@@ -144,7 +144,7 @@ class CustomerDeliveryEditController extends AbstractController
             $this->customerAddressRepository->delete($CustomerAddress);
             $this->addSuccess('admin.common.delete_complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
-            log_error('お届け先削除失敗', [$e], 'admin');
+            log_error('お届け先削除失敗', [$e]);
 
             $message = trans('admin.common.delete_error_foreign_key', ['%name%' => trans('admin.customer.customer_address')]);
             $this->addError($message, 'admin');

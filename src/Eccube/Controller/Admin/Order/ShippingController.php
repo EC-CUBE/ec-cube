@@ -184,7 +184,6 @@ class ShippingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             // 削除された項目の削除
             /** @var Shipping $OriginShipping */
             foreach ($OriginShippings as $key => $OriginShipping) {

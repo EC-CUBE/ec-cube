@@ -45,7 +45,7 @@ common.mail_address: Email
 common.mail_address_sample: e.g. ec-cube@example.com
 common.repeated_confirm: Please re-enter
 common.password: Password
-common.password_sample: Alphabets, numbers and symbols %min% - %max%chars
+common.password_sample: 'Alphabets, numbers and symbols %min% - %max%chars'
 common.password_eq_email: Password cannot be set to the same value as email address.
 common.password_for_confirmation: Password (Re-enter)
 common.gender: Gender
@@ -76,7 +76,7 @@ common.login: Sign in
 common.remember_me: Remember me
 common.signup: Sign up
 common.forgot_login: Unable to sign in?
-common.customer_address_count_is_over: You already have max number of addresses (%count% items). If you want to add a new one, please delete or overwrite the item(s) you have on the list.
+common.customer_address_count_is_over: 'You already have max number of addresses (%count% items). If you want to add a new one, please delete or overwrite the item(s) you have on the list.'
 common.search_keyword: Enter keywords
 common.delete_confirm: Do you want to continue?
 common.pagetop: Page top
@@ -210,9 +210,9 @@ front.guide.title: Shopping Guide
 # マイページ
 #------------------------------------------------------------------------------------
 
-front.mypage.welcome: Hi %last_name% %first_name%
+front.mypage.welcome: 'Hi %last_name% %first_name%'
 front.mypage.title: My Account
-front.mypage.welcome__point: You have %point%points
+front.mypage.welcome__point: 'You have %point%points'
 front.mypage.nav__history: Order History
 front.mypage.nav__history_detail: Order History Details
 front.mypage.nav__favorite: Favorites
@@ -220,7 +220,7 @@ front.mypage.nav__customer: Edit Customer Information
 front.mypage.nav__customer_complete: Edit Customer Information (Completed)
 front.mypage.nav__customer_address: Shipping Addresses
 front.mypage.nav__withdrow: Cancel Membership
-front.mypage.history_count: You have '%count% item(s) in the order history.'
+front.mypage.history_count: 'You have %count% item(s) in the order history.'
 front.mypage.history_not_found: No order history found.
 front.mypage.message_not_found: Not found
 front.mypage.view_detail: See details
@@ -270,7 +270,7 @@ front.product.all_products: All Products
 
 front.product.search__category_not_found: No category is found
 front.product.search__product_not_found: No product is found
-front.product.search_result__keyword:  Search results for ''%name%''
+front.product.search_result__keyword:  'Search results for %name%'
 front.product.search_result__detail: '<span class="ec-font-bold">%count% item(s)</span><span> found</span>'
 front.product.add_cart: Add to Cart
 front.product.add_cart_complete: The item has been added to the cart.
@@ -307,9 +307,9 @@ front.cart.checkout: Proceed to Checkout
 front.cart.continue: Continue shopping
 front.cart.no_items: Your cart is empty.
 front.cart.delivery_fee_free__now: Shipping charge is waived.
-front.cart.delivery_fee_free__price_and_quantity: <strong class="ec-color-red">Free shipping</strong> with the purchase of <strong>%price%</strong>, or <strong>%quantity% item(s)</strong>.
-front.cart.delivery_fee_free__price: <strong class="ec-color-red">Free shipping</strong> with the purchase of <strong>%price%</strong>.
-front.cart.delivery_fee_free__quantity: <strong class="ec-color-red">Free shipping</strong> with the purchase of <strong>%quantity% item(s)</strong>.
+front.cart.delivery_fee_free__price_and_quantity: '<strong class="ec-color-red">Free shipping</strong> with the purchase of <strong>%price%</strong>, or <strong>%quantity% item(s)</strong>.'
+front.cart.delivery_fee_free__price: '<strong class="ec-color-red">Free shipping</strong> with the purchase of <strong>%price%</strong>.'
+front.cart.delivery_fee_free__quantity: '<strong class="ec-color-red">Free shipping</strong> with the purchase of <strong>%quantity% item(s)</strong>.'
 
 #------------------------------------------------------------------------------------
 # Shopping
@@ -363,13 +363,13 @@ front.shopping.error: Error in the checkout
 front.shopping.order_error: An error occurred during the checkout process.
 front.shopping.system_error: Sorry, we have faced an unexpected error during the checkout process. Please contact us from the inquiry form. We are sorry for the inconvenience.
 front.shopping.empty_items_error: Sorry, the checkout process have not completed in good order. Please place an order once again. We are sorry for the inconvenience.
-front.shopping.out_of_stock: Sorry, there is no enough stock for %product%. You are not able to purchase more than the stock quantity.
-front.shopping.over_sale_limit: Sorry, we are limiting the sales of %product%. You are not able to purchase more than the max. purchase quantity.
-front.shopping.out_of_stock_zero: Sorry, we do not have enough stock for %product%. We have deleted this item from the cart.
+front.shopping.out_of_stock: 'Sorry, there is no enough stock for %product%. You are not able to purchase more than the stock quantity.'
+front.shopping.over_sale_limit: 'Sorry, we are limiting the sales of %product%. You are not able to purchase more than the max. purchase quantity.'
+front.shopping.out_of_stock_zero: 'Sorry, we do not have enough stock for %product%. We have deleted this item from the cart.'
 front.shopping.over_price_limit: Sorry, the quantity exceeds the max. purchase amount. Please reduce the purchase quantity.
-front.shopping.in_preparation: Sorry, %product% is not ready for shipment. Please contact us from the inquiry form. We are sorry for the inconvenience.
+front.shopping.in_preparation: 'Sorry, %product% is not ready for shipment. Please contact us from the inquiry form. We are sorry for the inconvenience.'
 front.shopping.not_purchase: Sorry, your order includes item(s) currently unavailable. It has been deleted from your cart.
-front.shopping.price_changed: The selling price of %product% has been changed.
+front.shopping.price_changed: 'The selling price of %product% has been changed.'
 front.shopping.payment_total_invalid: The total amount is invalid.
 front.shopping.different_payment_methods: Sorry, your order includes items with different purchase methods, which are unable to be processed in one order.
 front.shopping.payment_method_unselected: Please select the payment method.
@@ -384,7 +384,7 @@ admin.common.save_complete: Saved
 admin.common.save_error: Failed to save
 admin.common.delete_complete: Deleted
 admin.common.delete_error: Failed to delete
-admin.common.delete_error_foreign_key: Sorry, we are unable to delete %name%, because it has related data.
+admin.common.delete_error_foreign_key: 'Sorry, we are unable to delete %name%, because it has related data.'
 admin.common.delete_error_already_deleted: No data to delete
 admin.common.move_complete: The order is updated
 admin.common.move_error: Failed to update the order
@@ -396,8 +396,8 @@ admin.common.send_complete: Email has been sent
 admin.common.send_error: Failed to send an Email
 admin.common.create_complete: Created
 admin.common.system_error: System error occurred
-admin.common.to_show_complete: %name% is displayed
-admin.common.to_hide_complete: %name% is hidden
+admin.common.to_show_complete: '%name% is displayed'
+admin.common.to_hide_complete: '%name% is hidden'
 
 # action labels
 admin.common.save: Save
@@ -472,12 +472,12 @@ admin.common.csv_invalid_description_detail_upper_limit: '%name% should be less 
 admin.common.drag_and_drop_description: You can change the order of the items by drag & drop.
 admin.common.drag_and_drop_image_description: Drag & drop the images or
 admin.common.delete_modal__title: Delete
-admin.common.delete_modal__message: You can not revert this action. Are you sure to delete ''%name%''?
+admin.common.delete_modal__message: 'You can not revert this action. Are you sure to delete %name%?'
 admin.common.move_to_confirm_title: Move to another page
 admin.common.move_to_confirm_message: 'Will move to %name% Setting page. Do you want to save current editing?'
 admin.common.move_to_confirm_move_only: Move
 admin.common.move_to_confirm_save_and_move: Save & Move
-admin.common.admin_url_warning: Please set the Admin Console URL that is hard to guess for security. You can set it at "<a href="%url%">Security</a>".
+admin.common.admin_url_warning: 'Please set the Admin Console URL that is hard to guess for security. You can set it at "<a href="%url%">Security</a>".'
 
 
 # Labels related to entity
@@ -788,7 +788,7 @@ admin.order.add_shipping: Add Shipping Info
 admin.order.delete_shipping: Delete Shipping Info
 admin.order.delete_shipping_error__confirm_title: Unable to delete shipping info
 admin.order.delete_shipping_error__confirm_message: To delete shipping information, please delete the order items in the ''Shipping Info''.
-admin.order.delete_shipping__confirm_message: Shipping information will be deleted from the order. Are you sure to delete shipping information(%num%)？
+admin.order.delete_shipping__confirm_message: 'Shipping information will be deleted from the order. Are you sure to delete shipping information(%num%)?'
 admin.order.order_item_info: Ordered Product Info
 admin.order.order_item_type: Item Type
 admin.order.add_product_item: Add a Product
@@ -863,7 +863,7 @@ admin.order.not_payment: Unpaid
 admin.order.unshipped: Unshipped
 admin.order.delete__confirm_title: Deleting Order Info
 admin.order.delete__confirm_message: Are you sure to delete the order information?
-admin.order.delete_item__confirm_message: 'The item will be deleted from the order. Are you sure to delete %name%？'
+admin.order.delete_item__confirm_message: 'The item will be deleted from the order. Are you sure to delete %name%?'
 admin.order.change_payment_method_message: If the payment charge changes, please update it manually.
 admin.order.non_member: Non-Member
 admin.order.search_from_customer: Search by Customer
@@ -919,7 +919,7 @@ admin.customer.purchase_history__not_found: No order history is found
 admin.customer.customer_address: Delivery Address
 admin.customer.customer_address__not_found: No delivery address is found
 admin.customer.customer_address__add: Add a Delivery Address
-admin.customer.customer_address_count_is_over: You have already reached the max number (%eccube_deliv_addr_max%) of delivery addresses. If you want to add more, either delete or overwrite a registered address.
+admin.customer.customer_address_count_is_over: 'You have already reached the max number (%eccube_deliv_addr_max%) of delivery addresses. If you want to add more, either delete or overwrite a registered address.'
 admin.customer.customer_address_id: Delivery Address ID
 admin.customer.customer_address_info: Delivery Address Info
 admin.customer.multi_search_label: Customer ID / Email / Name
@@ -955,8 +955,8 @@ admin.content.file.directory_name: Folder Name
 admin.content.file.file_list__card_title: Files in This Directory
 admin.content.file.updated: Update
 admin.content.file.directory_tree: Directories
-admin.content.file.upload_complete: %success% file upload completed. (%success%/%count%)
-admin.content.file.upload_error: Failed to upload %file_name%. (%error%)
+admin.content.file.upload_complete: '%success% file upload completed. (%success%/%count%)'
+admin.content.file.upload_error: 'Failed to upload %file_name%. (%error%)'
 admin.content.layout_delete: Delete Layouts
 admin.content.layout_no_page: Page not registered
 admin.content.layout__card_title: Layout Overview
@@ -1296,14 +1296,14 @@ admin.store.plugin.installed: Installed
 admin.store.plugin.update: Update
 admin.store.plugin.install.complete: A plugin has been installed.
 admin.store.plugin.install.failed: Failed to install plugin.
-admin.store.plugin.enable.complete: %plugin_name% is enabled.
-admin.store.plugin.already.enabled: %plugin_name% has already been enabled.
-admin.store.plugin.disable.complete: %plugin_name% is disabled.
-admin.store.plugin.already.disabled: %plugin_name% has already been disabled.
+admin.store.plugin.enable.complete: '%plugin_name% is enabled.'
+admin.store.plugin.already.enabled: '%plugin_name% has already been enabled.'
+admin.store.plugin.disable.complete: '%plugin_name% is disabled.'
+admin.store.plugin.already.disabled: '%plugin_name% has already been disabled.'
 admin.store.plugin.uninstall.complete: The plugin has been deleted.
-admin.store.plugin.update.complete: %plugin_name% has been updated.
-admin.store.plugin.update.failed: Failed to update %plugin_name% .
-admin.store.plugin.mkdir.error: Failed to creat a directory '%dir_name%'.
+admin.store.plugin.update.complete: '%plugin_name% has been updated.'
+admin.store.plugin.update.failed: 'Failed to update %plugin_name% .'
+admin.store.plugin.mkdir.error: 'Failed to creat a directory %dir_name%.'
 admin.store.setting: Authentication Key Settings
 admin.store.setting.api_key_setting: Set API authentication Key
 admin.store.setting.api_key_setting_info: Please set the authentication key.
@@ -1359,7 +1359,7 @@ admin.store.plugin_confirm.title: Installation Confirmation
 admin.store.plugin_confirm.subtitle: Owner's Store
 admin.store.plugin_confirm.header: We are going to install the following plugins.
 admin.store.plugin_confirm.header.upgrade: The following plugins will be updated to the latest versions.
-admin.store.plugin_confirm.require.header: %name% requires following additional plugins. They will also be installed.
+admin.store.plugin_confirm.require.header: '%name% requires following additional plugins. They will also be installed.'
 admin.store.plugin_confirm_uninstall.823: Owner's Store
 admin.store.plugin_confirm_uninstall.824: Delete Plugins
 admin.store.plugin_confirm_uninstall.825: The following plugins will be deleted.
@@ -1418,7 +1418,7 @@ admin.store.plugin_owners_search.form.sort.new: Latest
 admin.store.plugin_owners_search.form.sort.price: Lowest
 admin.store.plugin_owners_search.form.sort.dl: DL
 admin.store.plugin_owners_search.search_button: Search
-admin.store.plugin_owners_search.search_results: Search Results（%number% / %total% pages）
+admin.store.plugin_owners_search.search_results: 'Search Results（%number% / %total% pages）'
 admin.store.plugin_owners_search.latest: 'Latest Version:'
 admin.store.plugin_owners_search.dl: Downloads
 admin.store.plugin_owners_search.support: Supported Version
@@ -1623,10 +1623,10 @@ install.member_name: Administrator
 install.member_department:
 install.shop_name: Store Name
 install.mail_address: Email (To receive orders etc.)
-install.login_id: ID for Admin Console (alphanumeric %min% - %max% chars）
-install.login_password: Admin Console Password (alphanumeric %min% - %max% chars）
+install.login_id: 'ID for Admin Console (alphanumeric %min% - %max% chars）'
+install.login_password: 'Admin Console Password (alphanumeric %min% - %max% chars）'
 install.security_configuration: Security Settings
-install.directory_name: Admin Console Directory Name (alphanumeric %min% - %max% chars）
+install.directory_name: 'Admin Console Directory Name (alphanumeric %min% - %max% chars）'
 install.directory_name_notice: To ensure the security, please enter a directory name hard to guess.
 install.https_only: Restricting the access to the site to via SSL(https) only.
 install.https_only_notice: Only the https access is allowed to set SSL restrictions.
@@ -1650,6 +1650,8 @@ install.database_connection_error: Unable to access the database.
 install.database_do_initialize: Initializing the database. It may take a while to complete.<br>It will be suspended if you have already created tables etc.
 install.database_skip_notice: Please check here if you do not want to delete the existing data from the older versions.
 install.database_skip: Do not initialize the database
+install.installing_plugin: Installing the plugin
+install.clearing_cache: Clearing the cache
 install.completed: Successfully installed!
 install.access_admin_page: Let's access the Admin Console.
 install.perform_initial_setting: You can login the Admin Console with the ID and password you have just registered. Try your favorite design and upload products!
@@ -1680,4 +1682,4 @@ purchase_flow.over_stock: '%name% does not have enough stock.'
 # Command
 #------------------------------------------------------------------------------------
 
-command.composer_require_already_installed.not_supported_plugin: %name% %plugin_version% does not support EC-CUBE %eccube_version% . Do you want to continue?
+command.composer_require_already_installed.not_supported_plugin: '%name% %plugin_version% does not support EC-CUBE %eccube_version% . Do you want to continue?'

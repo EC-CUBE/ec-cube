@@ -13,8 +13,8 @@
 
 namespace Eccube\Doctrine\Query;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * WHERE句を組み立てるクラス。
@@ -45,15 +45,11 @@ class WhereClause
      */
     private static function newWhereClause($expr, $x, $y)
     {
-        if ($y) {
-            if (is_array($y)) {
-                return new WhereClause($expr, $y);
-            } else {
-                return new WhereClause($expr, [$x => $y]);
-            }
+        if (is_array($y)) {
+            return new WhereClause($expr, $y);
+        } else {
+            return new WhereClause($expr, [$x => $y]);
         }
-
-        return new WhereClause($expr);
     }
 
     /**

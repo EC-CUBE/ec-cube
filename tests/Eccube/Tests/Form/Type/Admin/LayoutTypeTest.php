@@ -49,7 +49,7 @@ class LayoutTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidName_NotBlank()
+    public function testInvalidNameNotBlank()
     {
         $this->formData['name'] = '';
         $this->form->submit($this->formData);
@@ -57,7 +57,7 @@ class LayoutTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidDeviceType_NotBlank()
+    public function testInvalidDeviceTypeNotBlank()
     {
         $this->formData['DeviceType'] = null;
         $this->form->submit($this->formData);
@@ -65,7 +65,7 @@ class LayoutTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPage_Invalid()
+    public function testInvalidPageInvalid()
     {
         $PageLayout = $this->entityManager->getRepository('Eccube\Entity\PageLayout')
             ->findOneBy([], ['page_id' => 'DESC']);

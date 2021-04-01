@@ -81,7 +81,7 @@ class AbstractCsvImportController extends AbstractController
         set_time_limit(0);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request, $columns) {
+        $response->setCallback(function () use ($columns) {
             // ヘッダ行の出力
             $row = [];
             foreach ($columns as $column) {

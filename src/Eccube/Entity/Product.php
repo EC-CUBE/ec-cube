@@ -198,7 +198,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return max($this->stockFinds);
+            return count($this->stockFinds)
+                ? max($this->stockFinds)
+                : null;
         }
 
         /**
@@ -210,7 +212,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return min($this->stocks);
+            return count($this->stocks)
+                ? min($this->stocks)
+                : null;
         }
 
         /**
@@ -222,7 +226,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return max($this->stocks);
+            return count($this->stocks)
+                ? max($this->stocks)
+                : null;
         }
 
         /**
@@ -234,7 +240,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return min($this->stockUnlimiteds);
+            return count($this->stockUnlimiteds)
+                ? min($this->stockUnlimiteds)
+                : null;
         }
 
         /**
@@ -246,7 +254,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return max($this->stockUnlimiteds);
+            return count($this->stockUnlimiteds)
+                ? max($this->stockUnlimiteds)
+                : null;
         }
 
         /**
@@ -290,7 +300,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return min($this->price02);
+            return count($this->price02)
+                ? min($this->price02)
+                : null;
         }
 
         /**
@@ -302,7 +314,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return max($this->price02);
+            return count($this->price02)
+                ? max($this->price02)
+                : null;
         }
 
         /**
@@ -314,7 +328,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return min($this->price01IncTaxs);
+            return count($this->price01IncTaxs)
+                ? min($this->price01IncTaxs)
+                : null;
         }
 
         /**
@@ -326,7 +342,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return max($this->price01IncTaxs);
+            return count($this->price01IncTaxs)
+                ? max($this->price01IncTaxs)
+                : null;
         }
 
         /**
@@ -338,7 +356,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return min($this->price02IncTaxs);
+            return count($this->price02IncTaxs)
+                ? min($this->price02IncTaxs)
+                : null;
         }
 
         /**
@@ -350,7 +370,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return max($this->price02IncTaxs);
+            return count($this->price02IncTaxs)
+                ? max($this->price02IncTaxs)
+                : null;
         }
 
         /**
@@ -810,7 +832,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return Product
          */
-        public function addProductCategory(\Eccube\Entity\ProductCategory $productCategory)
+        public function addProductCategory(ProductCategory $productCategory)
         {
             $this->ProductCategories[] = $productCategory;
 
@@ -824,7 +846,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductCategory(\Eccube\Entity\ProductCategory $productCategory)
+        public function removeProductCategory(ProductCategory $productCategory)
         {
             return $this->ProductCategories->removeElement($productCategory);
         }
@@ -846,7 +868,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return Product
          */
-        public function addProductClass(\Eccube\Entity\ProductClass $productClass)
+        public function addProductClass(ProductClass $productClass)
         {
             $this->ProductClasses[] = $productClass;
 
@@ -860,7 +882,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductClass(\Eccube\Entity\ProductClass $productClass)
+        public function removeProductClass(ProductClass $productClass)
         {
             return $this->ProductClasses->removeElement($productClass);
         }
@@ -882,7 +904,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return Product
          */
-        public function addProductImage(\Eccube\Entity\ProductImage $productImage)
+        public function addProductImage(ProductImage $productImage)
         {
             $this->ProductImage[] = $productImage;
 
@@ -896,7 +918,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductImage(\Eccube\Entity\ProductImage $productImage)
+        public function removeProductImage(ProductImage $productImage)
         {
             return $this->ProductImage->removeElement($productImage);
         }
@@ -918,7 +940,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return Product
          */
-        public function addProductTag(\Eccube\Entity\ProductTag $productTag)
+        public function addProductTag(ProductTag $productTag)
         {
             $this->ProductTag[] = $productTag;
 
@@ -932,7 +954,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductTag(\Eccube\Entity\ProductTag $productTag)
+        public function removeProductTag(ProductTag $productTag)
         {
             return $this->ProductTag->removeElement($productTag);
         }
@@ -975,7 +997,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return Product
          */
-        public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct)
+        public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
         {
             $this->CustomerFavoriteProducts[] = $customerFavoriteProduct;
 
@@ -989,7 +1011,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct)
+        public function removeCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
         {
             return $this->CustomerFavoriteProducts->removeElement($customerFavoriteProduct);
         }
@@ -1011,7 +1033,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return Product
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -1035,7 +1057,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          *
          * @return Product
          */
-        public function setStatus(\Eccube\Entity\Master\ProductStatus $status = null)
+        public function setStatus(Master\ProductStatus $status = null)
         {
             $this->Status = $status;
 

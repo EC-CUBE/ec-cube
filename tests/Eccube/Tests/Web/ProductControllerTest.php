@@ -36,8 +36,8 @@ class ProductControllerTest extends AbstractWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
-        $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->classCategoryRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
     }
 
     public function testRoutingList()
@@ -202,7 +202,6 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertContains('カートに入れる', $html);
         $this->assertContains('お気に入りに追加済です', $html);
     }
-
 
     /**
      * 商品詳細 → ログイン画面 → お気に入り追加 → 商品詳細(お気に入り登録済み)

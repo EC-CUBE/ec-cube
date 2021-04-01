@@ -1,0 +1,180 @@
+name: Deploy for EC-CUBE
+on:
+  release:
+    types: [ published ]
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-18.04
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: '7.3'
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install to Composer
+        run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
+
+      - name: Translate to templates
+        run: php bin/template_jp.php
+
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 11
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+
+      - name: Install Plugins
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 11
+        run: |
+          bin/console eccube:composer:require "ec-cube/Api:^2.0"
+
+      - name: Pre Install Plugins
+        env:
+          PGPASSWORD: 'password'
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "select * from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
+
+      - name: Packaging
+        working-directory: ../
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+          PATH_NAME: eccube-${{ github.event.release.tag_name }}
+        run: |
+          rm -rf $GITHUB_WORKSPACE/.editorconfig
+          rm -rf $GITHUB_WORKSPACE/.gitignore
+          rm -rf $GITHUB_WORKSPACE/.buildpath
+          rm -rf $GITHUB_WORKSPACE/.gitmodules
+          rm -rf $GITHUB_WORKSPACE/.scrutinizer.yml
+          rm -rf $GITHUB_WORKSPACE/.travis.yml
+          rm -rf $GITHUB_WORKSPACE/appveyor.yml
+          rm -rf $GITHUB_WORKSPACE/.coveralls.yml
+          rm -rf $GITHUB_WORKSPACE/.php_cs.dist
+          rm -rf $GITHUB_WORKSPACE/phpunit.xml.dist
+          rm -rf $GITHUB_WORKSPACE/app.json
+          rm -rf $GITHUB_WORKSPACE/Procfile
+          rm -rf $GITHUB_WORKSPACE/LICENSE.txt
+          rm -rf $GITHUB_WORKSPACE/README.md
+          rm -rf $GITHUB_WORKSPACE/codeception.sh
+          rm -rf $GITHUB_WORKSPACE/codeception.yml
+          rm -rf $GITHUB_WORKSPACE/var/*
+          rm -rf $GITHUB_WORKSPACE/.env
+          rm -rf $GITHUB_WORKSPACE/codeception
+          rm -rf $GITHUB_WORKSPACE/tests
+          rm -rf $GITHUB_WORKSPACE/.github
+          find $GITHUB_WORKSPACE -name "dummy" -print0 | xargs -0 rm -rf
+          find $GITHUB_WORKSPACE -name ".git*" -and ! -name ".gitkeep" -print0 | xargs -0 rm -rf
+          find $GITHUB_WORKSPACE -name ".git*" -type d -print0 | xargs -0 rm -rf
+
+          echo "set permissions..."
+          chmod -R o+w $GITHUB_WORKSPACE
+
+          echo "complession files..."
+          mv $REPOSITORY_NAME $PATH_NAME
+          tar czfp eccube-$TAG_NAME.tar.gz $PATH_NAME
+          zip -ry eccube-$TAG_NAME.zip $PATH_NAME 1> /dev/null
+          md5sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.md5
+          md5sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.md5
+          sha1sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.sha1
+          sha1sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.sha1
+          sha256sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.sha256
+          sha256sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.sha256
+          mv $PATH_NAME $REPOSITORY_NAME
+          ls -al
+
+      - name: Upload binaries to release of TGZ
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz
+          asset_name: eccube-${{ github.event.release.tag_name }}.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
+      - name: Upload binaries to release of ZIP
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip
+          asset_name: eccube-${{ github.event.release.tag_name }}.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+      - name: Upload binaries to release of TGZ md5 checksum
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.md5
+          asset_name: eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.md5
+          tag: ${{ github.ref }}
+          overwrite: true
+      - name: Upload binaries to release of TGZ sha1 checksum
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha1
+          asset_name: eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha1
+          tag: ${{ github.ref }}
+          overwrite: true
+      - name: Upload binaries to release of TGZ sha256 checksum
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha256
+          asset_name: eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha256
+          tag: ${{ github.ref }}
+          overwrite: true
+      - name: Upload binaries to release of ZIP md5 checksum
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.md5
+          asset_name: eccube-${{ github.event.release.tag_name }}.zip.checksum.md5
+          tag: ${{ github.ref }}
+          overwrite: true
+      - name: Upload binaries to release of ZIP sha1 checksum
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.sha1
+          asset_name: eccube-${{ github.event.release.tag_name }}.zip.checksum.sha1
+          tag: ${{ github.ref }}
+          overwrite: true
+      - name: Upload binaries to release of ZIP sha256 checksum
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.sha256
+          asset_name: eccube-${{ github.event.release.tag_name }}.zip.checksum.sha256
+          tag: ${{ github.ref }}
+          overwrite: true

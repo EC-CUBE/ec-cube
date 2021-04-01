@@ -14,8 +14,8 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\CustomerFavoriteProduct;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\ProductRepository;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * ProductRepository test cases.
@@ -36,7 +36,7 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->productRepository = $this->container->get(ProductRepository::class);
+        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
 
         $tables = [
             'dtb_product_image',

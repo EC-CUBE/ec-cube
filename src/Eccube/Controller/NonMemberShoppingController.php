@@ -106,22 +106,9 @@ class NonMemberShoppingController extends AbstractShoppingController
             log_info('非会員お客様情報登録開始');
 
             $data = $form->getData();
-            $Customer = new Customer();
-            $Customer
-                ->setName01($data['name01'])
-                ->setName02($data['name02'])
-                ->setKana01($data['kana01'])
-                ->setKana02($data['kana02'])
-                ->setCompanyName($data['company_name'])
-                ->setEmail($data['email'])
-                ->setPhonenumber($data['phone_number'])
-                ->setPostalcode($data['postal_code'])
-                ->setPref($data['pref'])
-                ->setAddr01($data['addr01'])
-                ->setAddr02($data['addr02']);
 
             // 非会員用セッションを作成
-            $this->session->set(OrderHelper::SESSION_NON_MEMBER, $Customer);
+            $this->session->set(OrderHelper::SESSION_NON_MEMBER, $data);
             $this->session->set(OrderHelper::SESSION_NON_MEMBER_ADDRESSES, serialize([]));
 
             $event = new EventArgs(

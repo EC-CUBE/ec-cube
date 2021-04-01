@@ -55,7 +55,7 @@ eccube_setup: &eccube_setup |
 
 package_api_setup: &package_api_setup |
   mkdir ${PWD}/repos
-  docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+  docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
 install:
   - &composer_install composer install --dev --no-interaction -o --apcu-autoloader

@@ -301,9 +301,9 @@ class PluginController extends AbstractController
             if ($Plugin->getSource()) {
                 $requires = $this->pluginService->getPluginRequired($Plugin);
                 $requires = array_filter($requires, function ($req) {
-                    $code = preg_replace('/^ec-cube\//', '', $req['name']);
+                    $code = preg_replace('/^ec-cube\//i', '', $req['name']);
                     /** @var Plugin $DependPlugin */
-                    $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+                    $DependPlugin = $this->pluginRepository->findByCode($code);
 
                     return $DependPlugin->isEnabled() == false;
                 });

@@ -26,7 +26,7 @@ class FunctionsTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->twig = $this->container->get('twig');
+        $this->twig = self::$container->get('twig');
     }
 
     /**

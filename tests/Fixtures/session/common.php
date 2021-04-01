@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Dotenv\Dotenv;
 use Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler;
 use Symfony\Component\HttpFoundation\Request;
@@ -84,7 +95,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     private $handler;
     private $data;
 
-    public function __construct(\SessionHandlerInterface $handler)
+    public function __construct(SessionHandlerInterface $handler)
     {
         parent::__construct($handler);
         $this->data = $handler->getData();

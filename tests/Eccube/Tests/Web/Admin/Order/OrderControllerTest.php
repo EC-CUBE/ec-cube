@@ -62,12 +62,12 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->orderStatusRepository = $this->container->get(OrderStatusRepository::class);
-        $this->paymentRepository = $this->container->get(PaymentRepository::class);
-        $this->sexRepository = $this->container->get(SexRepository::class);
-        $this->csvTypeRepository = $this->container->get(CsvTypeRepository::class);
-        $this->orderRepository = $this->container->get(OrderRepository::class);
-        $this->customerRepository = $this->container->get(CustomerRepository::class);
+        $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
+        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
+        $this->sexRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Sex::class);
+        $this->csvTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\CsvType::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
 
         // FIXME: Should remove exist data before generate data for test
         $this->deleteAllRows(['dtb_order_item']);
@@ -262,7 +262,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             ['ids' => $orderIds]
         );
 
-        $Orders = $this->container->get(OrderRepository::class)->findBy(['id' => $orderIds]);
+        $Orders = $this->entityManager->getRepository(\Eccube\Entity\Order::class)->findBy(['id' => $orderIds]);
         $this->assertCount(0, $Orders);
     }
 

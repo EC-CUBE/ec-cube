@@ -61,6 +61,18 @@ services:
     Eccube\Service\Composer\ComposerServiceInterface:
         factory: ['Eccube\Service\Composer\ComposerServiceFactory', createService]
 
+    Eccube\Service\Composer\ComposerApiService:
+        lazy: true
+        public: true
+
+    Eccube\Repository\PluginRepository:
+        lazy: true
+        public: true
+
+    Eccube\Service\PluginService:
+        lazy: true
+        public: true
+
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
     Eccube\Controller\:
@@ -180,3 +192,12 @@ services:
     Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
         arguments:
             - '@native_file_session_handler'
+
+    Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
+        public: true
+
+    SunCat\MobileDetectBundle\DeviceDetector\MobileDetector:
+        tags:
+          - { name: mobile_detect.mobile_detector.default }
+          - { name: mobile_detect.mobile_detector }
+        public: true

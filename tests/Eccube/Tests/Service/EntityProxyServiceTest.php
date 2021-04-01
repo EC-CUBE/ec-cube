@@ -15,11 +15,11 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Annotation\EntityExtension;
 use Eccube\Service\EntityProxyService;
+use Eccube\Tests\EccubeTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
-use Eccube\Tests\EccubeTestCase;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class EntityProxyServiceTest extends EccubeTestCase
 {
@@ -40,7 +40,7 @@ class EntityProxyServiceTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->entityProxyService = $this->container->get(EntityProxyService::class);
+        $this->entityProxyService = self::$container->get(EntityProxyService::class);
 
         $this->tempOutputDir = tempnam(sys_get_temp_dir(), 'ProxyGeneratorTest');
         unlink($this->tempOutputDir);
