@@ -20,10 +20,10 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
 use Eccube\Repository\DeliveryDurationRepository;
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Faker\Generator;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Faker\Generator;
 
 /**
  * Class ProductCommon

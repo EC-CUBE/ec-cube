@@ -18,7 +18,7 @@ use Eccube\Tests\EccubeTestCase;
 
 class CartRepositoryTest extends EccubeTestCase
 {
-    public function test__construct()
+    public function testConstruct()
     {
         /** @var CartRepository $CartRepository */
         $CartRepository = $this->entityManager->getRepository(\Eccube\Entity\Cart::class);

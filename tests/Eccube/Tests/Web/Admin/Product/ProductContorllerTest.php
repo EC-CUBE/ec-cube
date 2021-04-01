@@ -14,8 +14,10 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductTag;
@@ -25,12 +27,13 @@ use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
+use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ProductTagRepository;
-use Eccube\Entity\BaseInfo;
 use Eccube\Repository\TaxRuleRepository;
-use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Entity\Product;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Util\StringUtil;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -759,6 +762,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param string|null $currentRoundingTypeId 現在の RoundingType ID
      * @param string|null $expected RoundingType ID の期待値
      * @param bool $isNew 商品を新規作成の場合 true
+     *
      * @see https://github.com/EC-CUBE/ec-cube/issues/2114
      *
      * @dataProvider dataEditRoundingTypeProvider
@@ -916,7 +920,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -945,7 +949,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -954,7 +958,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testAddImage_NotAjax()
+    public function testAddImageNotAjax()
     {
         $formData = $this->createFormData();
 
@@ -968,7 +972,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(400, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testAddImage_MineNotSupported()
+    public function testAddImageMineNotSupported()
     {
         $formData = $this->createFormData();
         copy(
@@ -988,7 +992,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',

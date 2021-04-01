@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Store;
 
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**

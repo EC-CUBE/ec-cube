@@ -422,9 +422,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
                     $ProductClass->getStock(),
                     $ProductClass->isStockUnlimited(),
                     $ProductClass->getSaleLimit(),
-                    (int)$ProductClass->getPrice01(),
-                    (int)$ProductClass->getPrice02(),
-                    $ProductClass->getDeliveryFee()
+                    (int) $ProductClass->getPrice01(),
+                    (int) $ProductClass->getPrice02(),
+                    $ProductClass->getDeliveryFee(),
                 ];
             }
         }
@@ -870,6 +870,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     /**
      * @dataProvider dataDescriptionDetailProvider
+     *
      * @see https://github.com/EC-CUBE/ec-cube/pull/4218
      */
     public function testImportDescriptionetail($length, $selector, $pattern)
@@ -900,6 +901,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param $optionTaxRule
      * @param $preTaxRate
      * @param $postTaxRate
+     *
      * @throws \Exception
      */
     public function testImportTaxRule($optionTaxRule, $preTaxRate, $postTaxRate)

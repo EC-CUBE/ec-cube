@@ -16,11 +16,9 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Controller\Admin\Setting\Shop\DeliveryController;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
-use Eccube\Entity\Master\Pref;
-use Eccube\Repository\DeliveryFeeRepository;
-use Eccube\Repository\Master\PrefRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**

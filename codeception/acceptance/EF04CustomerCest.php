@@ -20,7 +20,7 @@ use Codeception\Util\Fixtures;
  */
 class EF04CustomerCest
 {
-    public function customer_会員登録正常(\AcceptanceTester $I)
+    public function customer_会員登録正常(AcceptanceTester $I)
     {
         $I->wantTo('EF0401-UC01-T01 会員登録 正常パターン');
         $I->amOnPage('/entry');
@@ -93,7 +93,7 @@ class EF04CustomerCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
-    public function customer_会員登録異常1(\AcceptanceTester $I)
+    public function customer_会員登録異常1(AcceptanceTester $I)
     {
         $I->wantTo('EF0401-UC01-T02 会員登録 異常パターン 重複');
         $I->amOnPage('/entry');
@@ -123,7 +123,7 @@ class EF04CustomerCest
         $I->see('このメールアドレスは利用できません', '.ec-registerRole form .ec-borderedDefs dl:nth-child(6) dd');
     }
 
-    public function customer_会員登録異常2(\AcceptanceTester $I)
+    public function customer_会員登録異常2(AcceptanceTester $I)
     {
         $I->wantTo('EF0401-UC01-T03 会員登録 異常パターン 入力ミス');
         $I->amOnPage('/entry');
@@ -155,7 +155,7 @@ class EF04CustomerCest
         // TODO [fixture] 確認画面のあとでのメールアドレス重複エラー
     }
 
-    public function customer_会員登録同意しない(\AcceptanceTester $I)
+    public function customer_会員登録同意しない(AcceptanceTester $I)
     {
         $I->wantTo('EF0401-UC01-T04 会員登録 同意しないボタン');
         $I->amOnPage('/entry');
@@ -164,7 +164,7 @@ class EF04CustomerCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
-    public function customer_会員登録戻る(\AcceptanceTester $I)
+    public function customer_会員登録戻る(AcceptanceTester $I)
     {
         $I->wantTo('EF0401-UC01-T05 会員登録 戻るボタン');
         $I->amOnPage('/entry');
@@ -204,7 +204,7 @@ class EF04CustomerCest
         $I->see('新規会員登録', '.ec-pageHeader h1');
     }
 
-    public function customer_会員登録利用規約(\AcceptanceTester $I)
+    public function customer_会員登録利用規約(AcceptanceTester $I)
     {
         $I->wantTo('EF0404-UC01-T01 会員登録 利用規約');
         $I->amOnPage('/entry');

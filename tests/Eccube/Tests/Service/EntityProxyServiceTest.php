@@ -15,12 +15,12 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Annotation\EntityExtension;
 use Eccube\Service\EntityProxyService;
+use Eccube\Tests\EccubeTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use Eccube\Tests\EccubeTestCase;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class EntityProxyServiceTest extends EccubeTestCase
 {

@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
-use Eccube\Repository\ProductClassRepository;
 use Eccube\Util\StringUtil;
 
 /**

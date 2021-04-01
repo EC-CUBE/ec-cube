@@ -65,7 +65,7 @@ class DeliveryDurationTypeTest extends AbstractTypeTestCase
     /**
      * 範囲外の値のテスト
      */
-    public function testInvalidData_Int()
+    public function testInvalidDataInt()
     {
         $this->form->submit(50);
         $this->assertFalse($this->form->isValid());
@@ -74,7 +74,7 @@ class DeliveryDurationTypeTest extends AbstractTypeTestCase
     /**
      * 範囲外の値のテスト
      */
-    public function testInvalidData_String()
+    public function testInvalidDataString()
     {
         $this->form->submit('a');
         $this->assertFalse($this->form->isValid());

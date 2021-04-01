@@ -21,9 +21,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginUninstallCommand extends Command
 {
-    protected static $defaultName = 'eccube:plugin:uninstall';
-
     use PluginCommandTrait;
+    protected static $defaultName = 'eccube:plugin:uninstall';
 
     protected function configure()
     {

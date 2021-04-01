@@ -16,9 +16,9 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor;
 
 class PaymentChargePreprocessorTest extends EccubeTestCase
 {

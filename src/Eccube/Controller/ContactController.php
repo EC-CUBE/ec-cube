@@ -100,7 +100,6 @@ class ContactController extends AbstractController
                     ]);
 
                 case 'complete':
-
                     $data = $form->getData();
 
                     $event = new EventArgs(

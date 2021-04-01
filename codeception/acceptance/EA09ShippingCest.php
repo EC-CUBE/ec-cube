@@ -28,18 +28,18 @@ use Page\Admin\ShippingEditPage;
  */
 class EA09ShippingCest
 {
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         // すべてのテストケース実施前にログインしておく
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function shipping出荷編集(\AcceptanceTester $I)
+    public function shipping出荷編集(AcceptanceTester $I)
     {
         $I->wantTo('EA0901-UC03-T01(& UC03-T02) 出荷編集');
 
@@ -97,7 +97,7 @@ class EA09ShippingCest
             ->出荷日を確認();
     }
 
-    public function shippingお届け先追加(\AcceptanceTester $I)
+    public function shippingお届け先追加(AcceptanceTester $I)
     {
         $I->wantTo('EA0901-UC03-T03 お届け先追加');
 
@@ -159,7 +159,7 @@ class EA09ShippingCest
         // TODO ステータス変更スキップしました
     }
 
-    public function shipping_出荷CSV登録(\AcceptanceTester $I)
+    public function shipping_出荷CSV登録(AcceptanceTester $I)
     {
         $I->wantTo('EA0903-UC04-T01 出荷CSV登録');
 
@@ -243,7 +243,7 @@ class EA09ShippingCest
         }
     }
 
-    public function shipping_出荷CSV登録失敗(\AcceptanceTester $I)
+    public function shipping_出荷CSV登録失敗(AcceptanceTester $I)
     {
         $I->wantTo('EA0903-UC04-T02 出荷CSV登録失敗');
 
@@ -310,7 +310,7 @@ class EA09ShippingCest
         }
     }
 
-    public function shipping_出荷CSV雛形ファイルダウンロード(\AcceptanceTester $I)
+    public function shipping_出荷CSV雛形ファイルダウンロード(AcceptanceTester $I)
     {
         $I->wantTo('EA0093-UC04-T02 出荷CSV雛形ファイルのダウンロード');
 

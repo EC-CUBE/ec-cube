@@ -48,7 +48,7 @@ class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidEmail_Blank()
+    public function testInvalidEmailBlank()
     {
         $this->formData['login_email'] = '';
 
@@ -56,7 +56,7 @@ class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPass_Blank()
+    public function testInvalidPassBlank()
     {
         $this->formData['login_pass'] = '';
 

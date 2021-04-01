@@ -246,9 +246,9 @@ class OrderHelper
     /**
      * 購入処理中の受注を取得する.
      *
-     * @param null|string $preOrderId
+     * @param string|null $preOrderId
      *
-     * @return null|Order
+     * @return Order|null
      */
     public function getPurchaseProcessingOrder($preOrderId = null)
     {
@@ -267,6 +267,7 @@ class OrderHelper
      * 非会員購入時に入力されたお客様情報を返す.
      *
      * @param string $session_key
+     *
      * @return Customer|null
      */
     public function getNonMember($session_key = self::SESSION_NON_MEMBER)

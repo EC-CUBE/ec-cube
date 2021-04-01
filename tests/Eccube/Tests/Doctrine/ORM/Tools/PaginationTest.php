@@ -17,11 +17,11 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\ProductTag;
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Repository\ProductRepository;
-use Knp\Component\Pager\PaginatorInterface;
-use Eccube\Repository\TagRepository;
 use Eccube\Repository\MemberRepository;
+use Eccube\Repository\ProductRepository;
+use Eccube\Repository\TagRepository;
+use Eccube\Tests\EccubeTestCase;
+use Knp\Component\Pager\PaginatorInterface;
 
 class PaginationTest extends EccubeTestCase
 {
