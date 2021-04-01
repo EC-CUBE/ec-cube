@@ -161,7 +161,7 @@ class EntryController extends AbstractController
                         'Entry/confirm.twig',
                         [
                             'form' => $form->createView(),
-                            'Page' => $this->pageRepository->getPageByRoute('entry_confirm')
+                            'Page' => $this->pageRepository->getPageByRoute('entry_confirm'),
                         ]
                     );
 

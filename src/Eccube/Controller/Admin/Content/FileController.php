@@ -180,7 +180,7 @@ class FileController extends AbstractController
                 : $topDir;
             $newFilePath = $nowDir.'/'.$filename;
             if (file_exists($newFilePath)) {
-                throw new IOException(trans('admin.content.file.dir_exists', [ '%file_name%' => $filename, ]));
+                throw new IOException(trans('admin.content.file.dir_exists', ['%file_name%' => $filename]));
             }
             $fs->mkdir($newFilePath);
 

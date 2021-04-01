@@ -119,7 +119,7 @@ class WithdrawController extends AbstractController
                         'Mypage/withdraw_confirm.twig',
                         [
                             'form' => $form->createView(),
-                            'Page' => $this->pageRepository->getPageByRoute('mypage_withdraw_confirm')
+                            'Page' => $this->pageRepository->getPageByRoute('mypage_withdraw_confirm'),
                         ]
                     );
 
