@@ -16,6 +16,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Annotation\EntityExtension;
 use Eccube\Service\EntityProxyService;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Finder\Finder;
@@ -82,6 +83,54 @@ class EntityProxyServiceTest extends EccubeTestCase
             [T_STRING, 'EntityProxyServiceTest_ProductTrait'],
         ]);
         self::assertNotNull($sequence);
+    }
+
+    public function testGenerateFromOriginalFile()
+    {
+        $this->markTestSkipped();
+
+        $findSequence = static function (Tokens $tokens) {
+            return $tokens->findSequence([
+                [T_PRIVATE, 'private'],
+                [T_VARIABLE, '$hoge'],
+            ]);
+        };
+
+        $this->entityProxyService->generate([__DIR__], [], $this->tempOutputDir);
+
+        $generatedFile = $this->tempOutputDir.'/src/Eccube/Entity/Product.php';
+        self::assertTrue(file_exists($generatedFile));
+
+        $tokens = Tokens::fromCode(file_get_contents($generatedFile));
+        // private $hoge;がないことを確認
+        self::assertNull($findSequence($tokens));
+
+        // private $hoge;を挿入
+        $additionalVariableTokens = [
+            new Token([T_WHITESPACE, PHP_EOL . '    ']),
+            new Token([T_PRIVATE, 'private']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_VARIABLE, '$hoge']),
+            new Token(';'),
+            new Token([T_WHITESPACE, PHP_EOL])
+        ];
+
+        $classTokens = $tokens->findSequence([[T_CLASS], [T_STRING]]);
+        $classTokenEnd = $tokens->getNextTokenOfKind(array_keys($classTokens)[0], ['{']);
+        $tokens->insertAt($classTokenEnd + 1, $additionalVariableTokens);
+        $newCode = $tokens->generateCode();
+        $newTokens = Tokens::fromCode($newCode);
+
+        // private $hoge;が存在することを確認
+        self::assertNotNull($findSequence($newTokens));
+
+        // 再生成する
+        file_put_contents($generatedFile, $newCode);
+        $this->entityProxyService->generate([__DIR__], [], $this->tempOutputDir);
+        $regeneratedTokens = Tokens::fromCode(file_get_contents($generatedFile));
+
+        // private $hoge;が存在しないことを確認
+        self::assertNull($findSequence($regeneratedTokens));
     }
 
     public function testGenerateExcluded()

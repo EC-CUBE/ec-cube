@@ -83,7 +83,9 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: composer install
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+        run: |
+          sudo composer selfupdate --1
+          composer install --dev --no-interaction -o --apcu-autoloader
 
       - name: Setup to EC-CUBE
         env:
@@ -225,7 +227,10 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Install to Composer
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+        run: |
+          sudo composer selfupdate --1
+          composer install --dev --no-interaction -o --apcu-autoloader
+
       - name: Setup to EC-CUBE
         env:
           APP_ENV: 'codeception'
@@ -366,7 +371,10 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Install to Composer
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+        run: |
+          sudo composer selfupdate --1
+          composer install --dev --no-interaction -o --apcu-autoloader
+
       - name: Setup to EC-CUBE
         env:
           APP_ENV: 'codeception'
@@ -510,7 +518,10 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Install to Composer
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+        run: |
+          sudo composer selfupdate --1
+          composer install --dev --no-interaction -o --apcu-autoloader
+
       - name: Setup to EC-CUBE
         env:
           APP_ENV: 'codeception'

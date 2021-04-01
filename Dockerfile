@@ -54,10 +54,7 @@ EXPOSE 443
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Override with custom configuration settings
 COPY dockerbuild/php.ini $PHP_INI_DIR/conf.d/
-
-COPY . ${APACHE_DOCUMENT_ROOT}
-
-WORKDIR ${APACHE_DOCUMENT_ROOT}
+COPY dockerbuild/docker-php-entrypoint /usr/local/bin/
 
 RUN curl -sS https://getcomposer.org/installer \
   | php \
@@ -70,14 +67,29 @@ RUN curl -sS https://getcomposer.org/installer \
   | xargs -0 chmod g+s \
   ;
 
+# 全体コピー前にcomposer installを先行完了させる(docker cache利用によるリビルド速度向上)
 USER www-data
-
+COPY composer.json ${APACHE_DOCUMENT_ROOT}/composer.json
+COPY composer.lock ${APACHE_DOCUMENT_ROOT}/composer.lock
 RUN composer install \
   --no-scripts \
   --no-autoloader \
   -d ${APACHE_DOCUMENT_ROOT} \
   ;
 
+##################################################################
+# ファイル変更時、以後のステップにはキャッシュが効かなくなる
+USER root
+COPY . ${APACHE_DOCUMENT_ROOT}
+WORKDIR ${APACHE_DOCUMENT_ROOT}
+
+RUN find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or -print0 \
+  | xargs -0 chown www-data:www-data \
+  && find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or \( -type d -print0 \) \
+  | xargs -0 chmod g+s \
+  ;
+
+USER www-data
 RUN composer dumpautoload -o --apcu
 
 RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/.env ]; then \

@@ -13,7 +13,7 @@
 
 namespace Eccube\EventListener;
 
-use Doctrine\Dbal\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\TransactionIsolationLevel;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;

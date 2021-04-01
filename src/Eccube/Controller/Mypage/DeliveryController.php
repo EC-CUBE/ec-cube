@@ -141,8 +141,6 @@ class DeliveryController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
 
-            $this->addSuccess('mypage.delivery.add.complete');
-
             return $this->redirect($this->generateUrl('mypage_delivery'));
         }
 
@@ -179,8 +177,6 @@ class DeliveryController extends AbstractController
             ], $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
-
-        $this->addSuccess('mypage.address.delete.complete');
 
         log_info('お届け先削除完了', [$CustomerAddress->getId()]);
 

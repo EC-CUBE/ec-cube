@@ -15,7 +15,7 @@ namespace Page\Admin;
 
 class ProductCsvUploadPage extends AbstractAdminPageStyleGuide
 {
-    public static $完了メッセージ = 'div.c-container > div.c-contentsArea > div.alert-success';
+    public static $完了メッセージ = '#importCsvModal > div > div > div.modal-body.text-left > p';
 
     /**
      * ProductCsvUploadPage constructor.
@@ -32,6 +32,13 @@ class ProductCsvUploadPage extends AbstractAdminPageStyleGuide
         return $page->goPage('/product/product_csv_upload', '商品CSV登録商品管理');
     }
 
+    public static function at($I)
+    {
+        $page = new self($I);
+
+        return $page->atPage('商品CSV登録商品管理');
+    }
+
     public function 入力_CSVファイル($fileName)
     {
         $this->tester->attachFile(['id' => 'admin_csv_import_import_file'], $fileName);
@@ -42,6 +49,44 @@ class ProductCsvUploadPage extends AbstractAdminPageStyleGuide
     public function CSVアップロード()
     {
         $this->tester->click(['id' => 'upload-button']);
+
+        return $this;
+    }
+
+    public function アップロードボタン有効化()
+    {
+        // $this->tester->attachFileでイベントが効かずボタンが有効化されないので、テストコードで有効化する.
+        $this->tester->waitForJS('return $("#upload-button").prop("disabled", false);', 1);
+
+        return $this;
+    }
+
+    public function モーダルを表示()
+    {
+        $this->tester->click(['id' => 'upload-button']);
+
+        return $this;
+    }
+
+    public function CSVアップロード実行()
+    {
+        $this->tester->wait(1);
+        $this->tester->click(['id' => 'importCsv']);
+
+        return $this;
+    }
+
+    public function CSVアップロード確認()
+    {
+        $this->tester->wait(1);
+        $this->tester->see('CSVファイルをアップロードしました', ProductCsvUploadPage::$完了メッセージ);
+
+        return $this;
+    }
+
+    public function モーダルを閉じる()
+    {
+        $this->tester->click(['id' => 'importCsvDone']);
 
         return $this;
     }

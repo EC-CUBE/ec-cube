@@ -67,9 +67,13 @@ class EccubeExtensionTest extends EccubeTestCase
                 if ($ProductClass->getPrice01IncTax()) {
                     $this->assertEquals(number_format($ProductClass->getPrice01()), $actual['price01']);
                     $this->assertEquals(number_format($ProductClass->getPrice01IncTax()), $actual['price01_inc_tax']);
+                    $this->assertEquals($this->Extension->getPriceFilter($ProductClass->getPrice01()), $actual['price01_with_currency']);
+                    $this->assertEquals($this->Extension->getPriceFilter($ProductClass->getPrice01IncTax()), $actual['price01_inc_tax_with_currency']);
                 }
                 $this->assertEquals(number_format($ProductClass->getPrice02()), $actual['price02']);
                 $this->assertEquals(number_format($ProductClass->getPrice02IncTax()), $actual['price02_inc_tax']);
+                $this->assertEquals($this->Extension->getPriceFilter($ProductClass->getPrice02()), $actual['price02_with_currency']);
+                $this->assertEquals($this->Extension->getPriceFilter($ProductClass->getPrice02IncTax()), $actual['price02_inc_tax_with_currency']);
                 $this->assertEquals($ProductClass->getCode(), $actual['product_code']);
                 $this->assertEquals($ProductClass->getSaleType()->getId(), $actual['sale_type']);
                 $this->assertEquals($ProductClass->getStockFind(), $actual['stock_find']);

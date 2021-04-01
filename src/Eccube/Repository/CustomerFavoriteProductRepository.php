@@ -99,6 +99,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     {
         $em = $this->getEntityManager();
         $em->remove($CustomerFavoriteProduct);
-        $em->flush($CustomerFavoriteProduct);
+        $em->flush();
     }
 }

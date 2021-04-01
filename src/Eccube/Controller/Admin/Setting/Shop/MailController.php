@@ -24,8 +24,10 @@ use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
+
 
 /**
  * Class MailController
@@ -177,9 +179,9 @@ class MailController extends AbstractController
     protected function getHtmlFileName($fileName)
     {
         // HTMLテンプレートファイルの取得
-        $targetTemplate = explode('.', $fileName);
+        $targetTemplate = pathinfo($fileName);
         $suffix = '.html';
 
-        return $targetTemplate[0].$suffix.'.'.$targetTemplate[1];
+        return $targetTemplate['dirname'].DIRECTORY_SEPARATOR.$targetTemplate['filename'].$suffix.'.'.$targetTemplate['extension'];
     }
 }

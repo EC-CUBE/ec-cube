@@ -33,56 +33,54 @@ file that was distributed with this source code.
 {% endblock stylesheet %}
 
 {% block javascript %}
+    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}"></script>
+
     <script>
         $(function() {
 
             // datetimepicker と競合するため HTML5 のカレンダ入力を無効に
             $('input[type="date"]').attr('type','text');
 
-            $.when(
-                $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
-                $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
-                $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
-            ).done(function() {
-                // datetimepicker で value が消えてしまうので data-value に保持しておく
-                $('input.datetimepicker-input').each(function() {
-                    $(this).data('value', $(this).val());
-                });
+            // datetimepicker で value が消えてしまうので data-value に保持しておく
+            $('input.datetimepicker-input').each(function() {
+                $(this).data('value', $(this).val());
+            });
 
-                $('input.datetimepicker-input').not('#admin_search_customer_birth_start').not('#admin_search_customer_birth_end').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD HH:mm:ss',
-                    useCurrent: false,
-                    buttons: {
-                        showToday: true,
-                        showClose: true
-                    },
-                });
+            $('input.datetimepicker-input').not('#admin_search_customer_birth_start').not('#admin_search_customer_birth_end').datetimepicker({
+                locale: '{{ eccube_config.locale }}',
+                format: 'YYYY-MM-DD HH:mm:ss',
+                useCurrent: false,
+                buttons: {
+                    showToday: true,
+                    showClose: true
+                },
+            });
 
-                $('#admin_search_customer_birth_start').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    buttons: {
-                        showToday: true,
-                        showClose: true
-                    }
-                });
+            $('#admin_search_customer_birth_start').datetimepicker({
+                locale: '{{ eccube_config.locale }}',
+                format: 'YYYY-MM-DD',
+                useCurrent: false,
+                buttons: {
+                    showToday: true,
+                    showClose: true
+                }
+            });
 
-                $('#admin_search_customer_birth_end').datetimepicker({
-                    locale: '{{ eccube_config.locale }}',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false,
-                    buttons: {
-                        showToday: true,
-                        showClose: true
-                    }
-                });
+            $('#admin_search_customer_birth_end').datetimepicker({
+                locale: '{{ eccube_config.locale }}',
+                format: 'YYYY-MM-DD',
+                useCurrent: false,
+                buttons: {
+                    showToday: true,
+                    showClose: true
+                }
+            });
 
-                // datetimepicker で value が消えてしまうので更新
-                $('input.datetimepicker-input').each(function() {
-                    $(this).val($(this).data('value'));
-                });
+            // datetimepicker で value が消えてしまうので更新
+            $('input.datetimepicker-input').each(function() {
+                $(this).val($(this).data('value'));
             });
         });
 
@@ -272,7 +270,7 @@ file that was distributed with this source code.
                 </div>
 
                 {# エンティティ拡張の自動出力 #}
-                {% for f in searchForm if f.vars.eccube_form_options.auto_render %}
+                {% for f in searchForm|filter(f => f.vars.eccube_form_options.auto_render) %}
                     {# TODO 1項目1行になるのを改善 #}
                     <div class="row mb-2">
                         {% if f.vars.eccube_form_options.form_theme %}

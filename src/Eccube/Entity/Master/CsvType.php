@@ -15,40 +15,42 @@ namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CsvType
- *
- * @ORM\Table(name="mtb_csv_type")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\CsvTypeRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
- */
-class CsvType extends \Eccube\Entity\Master\AbstractMasterEntity
-{
+if (!class_exists(CsvType::class, false)) {
     /**
-     * @var integer
+     * CsvType
+     *
+     * @ORM\Table(name="mtb_csv_type")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\CsvTypeRepository")
+     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    const CSV_TYPE_PRODUCT = 1;
+    class CsvType extends \Eccube\Entity\Master\AbstractMasterEntity
+    {
+        /**
+         * @var integer
+         */
+        const CSV_TYPE_PRODUCT = 1;
 
-    /**
-     * @var integer
-     */
-    const CSV_TYPE_CUSTOMER = 2;
+        /**
+         * @var integer
+         */
+        const CSV_TYPE_CUSTOMER = 2;
 
-    /**
-     * @var integer
-     */
-    const CSV_TYPE_ORDER = 3;
+        /**
+         * @var integer
+         */
+        const CSV_TYPE_ORDER = 3;
 
-    /**
-     * @var integer
-     */
-    const CSV_TYPE_SHIPPING = 4;
+        /**
+         * @var integer
+         */
+        const CSV_TYPE_SHIPPING = 4;
 
-    /**
-     * @var integer
-     */
-    const CSV_TYPE_CATEGORY = 5;
+        /**
+         * @var integer
+         */
+        const CSV_TYPE_CATEGORY = 5;
+    }
 }

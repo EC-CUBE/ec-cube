@@ -68,7 +68,7 @@ class ClassNameRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->persist($ClassName);
-        $em->flush([$ClassName]);
+        $em->flush();
     }
 
     /**
@@ -92,6 +92,6 @@ class ClassNameRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->remove($ClassName);
-        $em->flush($ClassName);
+        $em->flush();
     }
 }
