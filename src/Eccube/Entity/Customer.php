@@ -30,8 +30,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
      */
     class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface, \Serializable
     {
-        protected static $usernameField = 'phone_number';
-
         /**
          * @var int
          *
