@@ -18,7 +18,7 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 "18","会員登録(入力ページ)","entry","Entry/index","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
 "20","会員登録(完了ページ)","entry_complete","Entry/complete","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
 "21","特定商取引に関する法律に基づく表記","help_tradelaw","Help/tradelaw","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
-"22","本会員登録(完了ページ)","entry_activate","Entry/activate","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
+"22","本会員登録(完了ページ)","entry_activate","Entry/activate","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page",
 "24","商品購入/お届け先の指定","shopping_shipping","Shopping/shipping","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page",
 "28","商品購入/ご注文完了","shopping_complete","Shopping/complete","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page",
 "29","プライバシーポリシー","help_privacy","Help/privacy","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
