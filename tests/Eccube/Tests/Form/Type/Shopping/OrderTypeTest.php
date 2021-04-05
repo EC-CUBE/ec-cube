@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Form\Type\Shopping;
 
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Payment;
 use Eccube\Form\Type\Shopping\OrderType;
@@ -29,7 +28,7 @@ class OrderTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
         $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
-        $this->orderType = $this->container->get(OrderType::class);
+        $this->orderType = self::$container->get(OrderType::class);
     }
 
     /**

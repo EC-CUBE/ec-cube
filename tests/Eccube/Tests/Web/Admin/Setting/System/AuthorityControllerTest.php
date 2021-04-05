@@ -42,9 +42,9 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->memberRepository = $this->container->get(MemberRepository::class);
-        $this->authorityMasterRepository = $this->container->get(AuthorityRepository::class);
-        $this->authorityRoleRepository = $this->container->get(AuthorityRoleRepository::class);
+        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
+        $this->authorityMasterRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Authority::class);
+        $this->authorityRoleRepository = $this->entityManager->getRepository(\Eccube\Entity\AuthorityRole::class);
     }
 
     /**

@@ -30,8 +30,7 @@ class NavCompilerPass implements CompilerPassInterface
             $def = $container->getDefinition($id);
             $class = $container->getParameterBag()->resolveValue($def->getClass());
             if (!is_subclass_of($class, EccubeNav::class)) {
-                throw new \InvalidArgumentException(
-                    sprintf('Service "%s" must implement interface "%s".', $id, EccubeNav::class));
+                throw new \InvalidArgumentException(sprintf('Service "%s" must implement interface "%s".', $id, EccubeNav::class));
             }
 
             /** @var $class EccubeNav */

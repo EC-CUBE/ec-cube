@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Repository\BaseInfoRepository;
 
 class EntryControllerTest extends AbstractWebTestCase
 {
@@ -140,7 +139,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testCompleteWithActivate()
     {
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $BaseInfo->setOptionCustomerActivate(1);
         $this->entityManager->flush();
 
@@ -174,7 +173,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivate()
     {
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
         $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);

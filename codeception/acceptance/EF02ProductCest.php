@@ -23,7 +23,7 @@ use Page\Front\TopPage;
  */
 class EF02ProductCest
 {
-    public function product_商品一覧初期表示(\AcceptanceTester $I)
+    public function product_商品一覧初期表示(AcceptanceTester $I)
     {
         $I->wantTo('EF0201-UC01-T01 商品一覧ページ 初期表示');
         $topPage = TopPage::go($I);
@@ -38,7 +38,7 @@ class EF02ProductCest
         $I->see('チェリーアイスサンド', '.ec-shelfGrid');
     }
 
-    public function product_商品一覧ヘッダ以外のカテゴリリンク(\AcceptanceTester $I)
+    public function product_商品一覧ヘッダ以外のカテゴリリンク(AcceptanceTester $I)
     {
         $I->wantTo('EF0201-UC01-T02 商品一覧ページ ヘッダ以外のカテゴリリンク');
         $I->amOnPage('/');
@@ -46,7 +46,7 @@ class EF02ProductCest
         // MEMO: EF0201-UC01-T02... テスト項目の記述が意味不明なのでskip
     }
 
-    public function product_商品一覧ソート(\AcceptanceTester $I)
+    public function product_商品一覧ソート(AcceptanceTester $I)
     {
         $I->wantTo('EF0201-UC03-T01 商品一覧ページ ソート');
         $topPage = TopPage::go($I);
@@ -92,7 +92,7 @@ class EF02ProductCest
         //$I->assertTrue(($pPos > $fPos));
     }
 
-    public function product_商品一覧表示件数(\AcceptanceTester $I)
+    public function product_商品一覧表示件数(AcceptanceTester $I)
     {
         $I->wantTo('EF0201-UC04-T01 商品一覧ページ 表示件数');
         $topPage = TopPage::go($I);
@@ -115,7 +115,7 @@ class EF02ProductCest
         $I->assertEquals($expected, $listPage->一覧件数取得());
     }
 
-    public function product_商品一覧ページング(\AcceptanceTester $I)
+    public function product_商品一覧ページング(AcceptanceTester $I)
     {
         $I->wantTo('EF0201-UC04-T02 商品一覧ページ ページング');
         $topPage = TopPage::go($I);
@@ -143,7 +143,7 @@ class EF02ProductCest
         $I->see('2', ['css' => 'li.ec-pager__item--active']);
     }
 
-    public function product_商品詳細初期表示(\AcceptanceTester $I)
+    public function product_商品詳細初期表示(AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC01-T01 商品詳細 初期表示');
         $I->setStock(2, 0);
@@ -153,7 +153,7 @@ class EF02ProductCest
         $I->see('ただいま品切れ中です', '#form1 button');
     }
 
-    public function product_商品詳細カテゴリリンク(\AcceptanceTester $I)
+    public function product_商品詳細カテゴリリンク(AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC01-T02 商品詳細 カテゴリリンク');
         $productPage = ProductDetailPage::go($I, 2);
@@ -168,7 +168,7 @@ class EF02ProductCest
         $I->see('チェリーアイスサンド', '.ec-shelfGrid');
     }
 
-    public function product_商品詳細サムネイル(\AcceptanceTester $I)
+    public function product_商品詳細サムネイル(AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC01-T03 商品詳細 サムネイル');
         $productPage = ProductDetailPage::go($I, 2);
@@ -183,7 +183,7 @@ class EF02ProductCest
         $I->assertRegExp('/\/upload\/save_image\/sand-2\.png$/', $img, $img.' が見つかりません');
     }
 
-    public function product_商品詳細カート1(\AcceptanceTester $I)
+    public function product_商品詳細カート1(AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T01 商品詳細 カート 注文数＜販売制限数＜在庫数の注文');
         $I->setStock(2, 10);
@@ -205,7 +205,7 @@ class EF02ProductCest
         $cartPage->商品削除(1);
     }
 
-    public function product_商品詳細カート2(\AcceptanceTester $I)
+    public function product_商品詳細カート2(AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T02 商品詳細 カート 販売制限数＜注文数＜在庫数の注文');
         $I->setStock(2, 10);
@@ -228,7 +228,7 @@ class EF02ProductCest
         $cartPage->商品削除(1);
     }
 
-    public function product_商品詳細カート3(\AcceptanceTester $I)
+    public function product_商品詳細カート3(AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T03 商品詳細 カート 販売制限数＜在庫数＜注文数の注文');
         $I->setStock(2, 10);
@@ -251,7 +251,7 @@ class EF02ProductCest
         $cartPage->商品削除(1);
     }
 
-    public function product_商品詳細カート4(\AcceptanceTester $I)
+    public function product_商品詳細カート4(AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T04 商品詳細(規格あり) カート 注文数＜販売制限数＜在庫数の注文');
         $I->setStock(1, [10, 10, 10, 10, 10, 10, 10, 10, 10]);
@@ -274,7 +274,7 @@ class EF02ProductCest
         $cartPage->商品削除(1);
     }
 
-    public function product_商品詳細カート5(\AcceptanceTester $I)
+    public function product_商品詳細カート5(AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T05 商品詳細(規格あり) カート 販売制限数＜注文数＜在庫数の注文');
         $I->setStock(1, [10, 10, 10, 10, 10, 10, 10, 10, 10]);
@@ -297,7 +297,7 @@ class EF02ProductCest
         $cartPage->商品削除(1);
     }
 
-    public function product_商品詳細カート6(\AcceptanceTester $I)
+    public function product_商品詳細カート6(AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T06 商品詳細(規格あり) カート 販売制限数＜在庫数＜注文数の注文');
         $I->setStock(1, [10, 10, 10, 10, 10, 10, 10, 10, 10]);

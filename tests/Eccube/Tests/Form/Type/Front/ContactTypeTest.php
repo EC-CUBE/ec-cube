@@ -59,7 +59,7 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Name01()
+    public function testInvalidBlankName01()
     {
         $this->formData['name']['name01'] = '';
 
@@ -67,7 +67,7 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Name02()
+    public function testInvalidBlankName02()
     {
         $this->formData['name']['name02'] = '';
 
@@ -75,7 +75,7 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Kana01()
+    public function testInvalidBlankKana01()
     {
         $this->formData['kana']['kana01'] = '';
 
@@ -83,7 +83,7 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Kana02()
+    public function testInvalidBlankKana02()
     {
         $this->formData['kana']['kana02'] = '';
 
@@ -91,7 +91,7 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidPhoneNumber_Blank()
+    public function testValidPhoneNumberBlank()
     {
         $this->formData['phone_number'] = '';
 
@@ -99,7 +99,7 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Contents()
+    public function testInvalidBlankContents()
     {
         $this->formData['contents'] = '';
 

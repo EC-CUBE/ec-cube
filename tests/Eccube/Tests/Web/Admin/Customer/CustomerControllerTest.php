@@ -15,8 +15,6 @@ namespace Eccube\Tests\Web\Admin\Customer;
 
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
@@ -135,7 +133,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchById()
     {
-        $Customer = $this->container->get(CustomerRepository::class)->findOneBy([], ['id' => 'DESC']);
+        $Customer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->findOneBy([], ['id' => 'DESC']);
 
         $crawler = $this->client->request(
             'POST', $this->generateUrl('admin_customer'),
@@ -155,11 +153,11 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchByProductName(int $orderStatusId, string $expected)
     {
-        $Customer = $this->container->get(CustomerRepository::class)->findOneBy([], ['id' => 'DESC']);
+        $Customer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->findOneBy([], ['id' => 'DESC']);
         $Order = $this->createOrder($Customer);
 
         /** @var OrderStatus $OrderStatus */
-        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find($orderStatusId);
+        $OrderStatus = self::$container->get(OrderStatusRepository::class)->find($orderStatusId);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
 
@@ -212,7 +210,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         /** @var \Swift_Message $Message */
         $Message = $Messages[0];
 
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
@@ -235,7 +233,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer_page',
                 ['page_no' => 1]).'?resume=1'));
 
-        $DeletedCustomer = $this->container->get(CustomerRepository::class)->find($id);
+        $DeletedCustomer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->find($id);
 
         $this->assertNull($DeletedCustomer);
     }

@@ -13,6 +13,7 @@
 
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
+use Facebook\WebDriver\WebDriverBy;
 use Interactions\DragAndDropBy;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
@@ -222,7 +223,7 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function dragAndDropBy($selector, $x_offset, $y_offset)
     {
-        $this->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset) {
+        $this->executeInSelenium(function (Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset) {
             $node = $webDriver->findElement(WebDriverBy::cssSelector($selector));
             $action = new DragAndDropBy($webDriver, $node, $x_offset, $y_offset);
             $action->perform();

@@ -52,7 +52,7 @@ class OrderRepository extends AbstractRepository
      * @param int $orderId
      * @param OrderStatus $Status
      */
-    public function changeStatus($orderId, \Eccube\Entity\Master\OrderStatus $Status)
+    public function changeStatus($orderId, OrderStatus $Status)
     {
         $Order = $this
             ->find($orderId)
@@ -363,7 +363,7 @@ class OrderRepository extends AbstractRepository
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer)
+    public function getQueryBuilderByCustomer(Customer $Customer)
     {
         $qb = $this->createQueryBuilder('o')
             ->where('o.Customer = :Customer')

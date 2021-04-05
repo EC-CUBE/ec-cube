@@ -15,11 +15,11 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Util\StringUtil;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use function explode;
 use function file_exists;
 use function file_get_contents;

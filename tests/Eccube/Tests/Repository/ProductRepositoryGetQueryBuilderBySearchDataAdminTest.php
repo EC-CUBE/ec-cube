@@ -17,8 +17,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
-use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 
 /**
  * ProductRepository#getQueryBuilderBySearchDataAdmin test cases.
@@ -54,8 +54,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     {
         parent::setUp();
 
-        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
-        $this->categoryRepository = $this->container->get(CategoryRepository::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
+        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
     }
 
     public function scenario()

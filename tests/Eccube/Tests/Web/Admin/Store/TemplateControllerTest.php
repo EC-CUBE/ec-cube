@@ -62,8 +62,8 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->templateRepository = $this->container->get(TemplateRepository::class);
-        $this->deviceTypeRepository = $this->container->get(DeviceTypeRepository::class);
+        $this->templateRepository = $this->entityManager->getRepository(\Eccube\Entity\Template::class);
+        $this->deviceTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\DeviceType::class);
 
         $this->dir = \tempnam(\sys_get_temp_dir(), 'TemplateControllerTest');
         $fs = new Filesystem();
@@ -80,7 +80,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
 
         $this->code = StringUtil::random(6);
 
-        $this->envFile = $this->container->getParameter('kernel.project_dir').'/.env';
+        $this->envFile = self::$container->getParameter('kernel.project_dir').'/.env';
         if (file_exists($this->envFile)) {
             $this->env = file_get_contents($this->envFile);
         }
@@ -91,7 +91,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $fs = new Filesystem();
         $fs->remove($this->dir);
 
-        $templatePath = $this->container->getParameter('kernel.project_dir').'/app/template/'.$this->code;
+        $templatePath = self::$container->getParameter('kernel.project_dir').'/app/template/'.$this->code;
         if ($fs->exists($templatePath)) {
             $fs->remove($templatePath);
         }
@@ -207,7 +207,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
 
         $Template = $this->templateRepository->find($id);
         self::assertNull($Template);
-        self::assertFalse(file_exists($this->container->getParameter('kernel.project_dir').'/app/template/'.$code));
+        self::assertFalse(file_exists(self::$container->getParameter('kernel.project_dir').'/app/template/'.$code));
     }
 
     protected function scenarioUpload($uppercase = false)
@@ -252,6 +252,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
             $zip->close();
             $this->file = new UploadedFile($file, 'dummy.ZIP', 'application/zip');
         }
+
         return [
             'file' => $this->file,
         ];

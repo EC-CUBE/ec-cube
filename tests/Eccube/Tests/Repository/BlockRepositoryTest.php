@@ -16,7 +16,6 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\BlockRepository;
-use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -47,9 +46,9 @@ class BlockRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->blockRepository = $this->container->get(BlockRepository::class);
+        $this->blockRepository = $this->entityManager->getRepository(\Eccube\Entity\Block::class);
         $this->removeBlock();
-        $this->DeviceType = $this->container->get(DeviceTypeRepository::class)
+        $this->DeviceType = $this->entityManager->getRepository(\Eccube\Entity\Master\DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         for ($i = 0; $i < 10; $i++) {

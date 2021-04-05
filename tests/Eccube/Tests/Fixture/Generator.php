@@ -830,6 +830,7 @@ class Generator
      * @param string|null $client_ip
      * @param int|null $status
      * @param Member|null $Member
+     *
      * @return LoginHistory
      */
     public function createLoginHistory($user_name, $client_ip = null, $status = null, $Member = null)

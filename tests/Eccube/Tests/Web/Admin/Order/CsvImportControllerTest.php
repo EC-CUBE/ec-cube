@@ -42,7 +42,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
     }
 
-    public function testLoadCsv_FlippedColumns()
+    public function testLoadCsvFlippedColumns()
     {
         $Shipping = $this->createOrder($this->createCustomer())->getShippings()[0];
         self::assertNull($Shipping->getTrackingNumber());
@@ -62,7 +62,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     /**
      * @dataProvider loadCsvInvalidFormatProvider
      */
-    public function testLoadCsv_InvalidFormat($csv, $errorMessage)
+    public function testLoadCsvInvalidFormat($csv, $errorMessage)
     {
         $Shipping = $this->createOrder($this->createCustomer())->getShippings()[0];
         self::assertNull($Shipping->getTrackingNumber());
@@ -130,7 +130,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $csv = new CsvImportService(new \SplFileObject($tempFile));
         $csv->setHeaderRowNumber(0);
 
-        $controller = $this->container->get(CsvImportController::class);
+        $controller = self::$container->get(CsvImportController::class);
         $rc = new \ReflectionClass(CsvImportController::class);
         $method = $rc->getMethod('loadCsv');
         $method->setAccessible(true);

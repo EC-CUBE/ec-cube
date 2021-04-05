@@ -21,8 +21,8 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Repository\TaxRuleRepository;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\Processor\TaxProcessor;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class TaxProcessorTest extends EccubeTestCase
@@ -30,7 +30,7 @@ class TaxProcessorTest extends EccubeTestCase
     /** @var TaxProcessor */
     private $processor;
 
-    /** @var Order  */
+    /** @var Order */
     private $Order;
 
     /** @var Product */
@@ -49,8 +49,8 @@ class TaxProcessorTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->processor = $this->container->get(TaxProcessor::class);
-        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
+        $this->processor = self::$container->get(TaxProcessor::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
 
         /** @var RoundingType $RoundingType */
         $RoundingType = $this->entityManager->find(RoundingType::class, RoundingType::ROUND);
@@ -150,7 +150,6 @@ class TaxProcessorTest extends EccubeTestCase
         $this->taxRuleRepository->clearCache();
         $actual = $this->taxRuleRepository->getByRule($this->Product, $this->ProductClass);
         self::assertEquals($TaxRule, $actual);
-
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrderWithProductClasses($Customer, $this->Product->getProductClasses()->toArray());
