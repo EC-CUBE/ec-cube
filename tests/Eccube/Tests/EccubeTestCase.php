@@ -226,6 +226,16 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
+     * LoginHistory オブジェクトを生成して返す
+     *
+     * @return \Eccube\Entity\LoginHistory
+     */
+    public function createLoginHistory($user_name, $client_ip = null, $status = 0, $Member = null)
+    {
+        return $this->container->get(Generator::class)->createLoginHistory($user_name, $client_ip , $status, $Member);
+    }
+
+    /**
      * テーブルのデータを全て削除する.
      *
      * このメソッドは、参照制約の関係で、 Doctrine ORM ではデータ削除できない場合に使用する.

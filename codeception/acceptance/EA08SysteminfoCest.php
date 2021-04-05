@@ -13,6 +13,7 @@
 
 use Codeception\Util\Fixtures;
 use Page\Admin\AuthorityManagePage;
+use Page\Admin\LoginHistoryPage;
 
 /**
  * @group admin
@@ -308,6 +309,24 @@ class EA08SysteminfoCest
         $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
     }
 
+    /**
+     * GitHub Actions は IPv6で実行されており、アクセス拒否のテストはできない
+     */
+    public function systeminfo_セキュリティ管理IP制限_拒否リスト(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0804-UC01-T05 セキュリティ管理 - IP制限（拒否リスト）');
+
+        // 表示
+        $config = Fixtures::get('config');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
+        $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
+
+        $I->fillField(['id' => 'admin_security_admin_deny_hosts'], '1.1.1.1');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
+
+        $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
+    }
+
     public function systeminfo_権限管理追加(\AcceptanceTester $I)
     {
         $I->wantTo('EA0805-UC01-T01 権限管理 - 追加');
@@ -377,12 +396,56 @@ class EA08SysteminfoCest
         $I->see('無回答', '#customer_form #admin_customer_sex');
     }
 
+    public function systeminfo_ログイン履歴検索(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0808-UC01-T01 ログイン履歴 - 検索');
+
+        LoginHistoryPage::go($I)->検索('admin');
+
+        // １項目目をチェック
+        $I->see('admin', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody/tr[1]/td[2]');
+        $I->see('成功', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody/tr[1]/td[5]/span');
+
+        LoginHistoryPage::go($I)->検索('admin-failure');
+
+        $I->see('検索結果：0件が該当しました', LoginHistoryPage::$検索結果_メッセージ);
+
+        $I->logoutAsAdmin();
+
+        // ログインに失敗する
+        $I->submitForm('#form1', [
+            'login_id' => 'admin-failure',
+            'password' => 'password',
+        ]);
+
+        $I->loginAsAdmin();
+
+        LoginHistoryPage::go($I)->検索('admin-failure');
+
+        // １項目目をチェック
+        $I->see('admin-failure', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody/tr[1]/td[2]');
+        $I->see('失敗', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody/tr[1]/td[5]/span');
+
+
+        // ステータスで詳細検索
+
+        LoginHistoryPage::go($I)->検索();
+
+        $I->see('失敗', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody');
+        $I->see('成功', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody');
+
+        LoginHistoryPage::go($I)->詳細検索_ステータス('0');
+
+        $I->see('失敗', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody');
+        $I->dontSee('成功', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody');
+    }
+
     /**
      * ATTENTION 後続のテストが失敗するため、最後に実行する必要がある
      */
-    public function systeminfo_セキュリティ管理IP制限(\AcceptanceTester $I)
+    public function systeminfo_セキュリティ管理IP制限_許可リスト(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - IP制限');
+        $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - IP制限（許可リスト）');
 
         $findPlugins = Fixtures::get('findPlugins');
         $Plugins = $findPlugins();

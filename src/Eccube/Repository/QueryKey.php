@@ -22,4 +22,6 @@ final class QueryKey
 
     const ORDER_SEARCH_ADMIN = 'Order.getQueryBuilderBySearchDataForAdmin';
     const ORDER_SEARCH_BY_CUSTOMER = 'Order.getQueryBuilderByCustomer';
+
+    const LOGIN_HISTORY_SEARCH_ADMIN = 'LoginHistory.getQueryBuilderBySearchDataForAdmin';
 }
