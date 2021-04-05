@@ -101,6 +101,10 @@ services:
 
     eccube.security.logout.success_handler:
         class: Eccube\Security\Http\Authentication\EccubeLogoutSuccessHandler
+        arguments:
+          - '@security.http_utils'
+          - '@Eccube\Request\Context'
+          - 'admin_login'
 
     # Autowiring can't guess the constructor arguments that are not type-hinted with
     # classes (e.g. container parameters) so you must define those arguments explicitly
