@@ -23,6 +23,7 @@ RUN apt-get update \
     ssl-cert \
     unzip \
     zlib1g-dev \
+    libwebp-dev \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && echo "en_US.UTF-8 UTF-8" >/etc/locale.gen \
@@ -30,7 +31,7 @@ RUN apt-get update \
   ;
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-  && docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include \
+  && docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-webp-dir=/usr/include \
   && docker-php-ext-install -j$(nproc) zip gd mysqli pdo_mysql opcache intl pgsql pdo_pgsql \
   ;
 
@@ -55,30 +56,43 @@ EXPOSE 443
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Override with custom configuration settings
 COPY dockerbuild/php.ini $PHP_INI_DIR/conf.d/
+COPY dockerbuild/docker-php-entrypoint /usr/local/bin/
 
-COPY . ${APACHE_DOCUMENT_ROOT}
-
-WORKDIR ${APACHE_DOCUMENT_ROOT}
+RUN chown www-data:www-data /var/www \
+  && mkdir -p ${APACHE_DOCUMENT_ROOT}/vendor \
+  && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
+  && chown www-data:www-data ${APACHE_DOCUMENT_ROOT}/vendor \
+  && chmod g+s ${APACHE_DOCUMENT_ROOT}/vendor
 
 RUN curl -sS https://getcomposer.org/installer \
   | php \
-  && mv composer.phar /usr/bin/composer \
-  && composer config -g repos.packagist composer https://packagist.jp \
-  && chown www-data:www-data /var/www \
-  && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
-  && chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT} \
-  && find ${APACHE_DOCUMENT_ROOT} -type d -print0 \
-  | xargs -0 chmod g+s \
-  ;
+  && mv composer.phar /usr/bin/composer
 
+# 全体コピー前にcomposer installを先行完了させる(docker cache利用によるリビルド速度向上)
 USER www-data
-
+RUN composer config -g repos.packagist composer https://packagist.jp \
+  && composer global require hirak/prestissimo
+COPY composer.json ${APACHE_DOCUMENT_ROOT}/composer.json
+COPY composer.lock ${APACHE_DOCUMENT_ROOT}/composer.lock
 RUN composer install \
   --no-scripts \
   --no-autoloader \
   -d ${APACHE_DOCUMENT_ROOT} \
   ;
 
+##################################################################
+# ファイル変更時、以後のステップにはキャッシュが効かなくなる
+USER root
+COPY . ${APACHE_DOCUMENT_ROOT}
+WORKDIR ${APACHE_DOCUMENT_ROOT}
+
+RUN find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or -print0 \
+  | xargs -0 chown www-data:www-data \
+  && find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or \( -type d -print0 \) \
+  | xargs -0 chmod g+s \
+  ;
+
+USER www-data
 RUN composer dumpautoload -o --apcu
 
 RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/.env ]; then \

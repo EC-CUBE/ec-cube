@@ -343,8 +343,11 @@ class ShippingMultipleController extends AbstractShoppingController
                     }
                 }
 
-                $this->cartPurchaseFlow->validate($Cart, new PurchaseContext());
-                $this->cartService->save();
+                $this->cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
+
+                // 注文フローで取得されるカートの入れ替わりを防止する
+                // @see https://github.com/EC-CUBE/ec-cube/issues/4293
+                $this->cartService->setPrimary($Cart->getCartKey());
             }
 
             return $this->redirectToRoute('shopping');
@@ -417,7 +420,7 @@ class ShippingMultipleController extends AbstractShoppingController
 
                 $CustomerAddress->setCustomer($Customer);
                 $this->entityManager->persist($CustomerAddress);
-                $this->entityManager->flush($CustomerAddress);
+                $this->entityManager->flush();
             } else {
                 // 非会員用のセッションに追加
                 $CustomerAddresses = $this->session->get(OrderHelper::SESSION_NON_MEMBER_ADDRESSES);

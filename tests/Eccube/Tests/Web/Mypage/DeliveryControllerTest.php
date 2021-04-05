@@ -156,10 +156,6 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
         $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->find($id);
         $this->assertNull($CustomerAddress);
-
-        $this->expected = ['mypage.address.delete.complete'];
-        $this->actual = self::$container->get('session')->getFlashBag()->get('eccube.front.success');
-        $this->verify();
     }
 
     public function testDeleteWithFailure()

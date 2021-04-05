@@ -15,7 +15,7 @@ namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -56,7 +56,7 @@ class PostalType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $eccubeConfig = $this->eccubeConfig;
-        $constraints = function (Options $options) use ($eccubeConfig) {
+        $constraints = function(Options $options) use ($eccubeConfig) {
             $constraints = [];
             // requiredがtrueに指定されている場合, NotBlankを追加
             if (isset($options['required']) && true === $options['required']) {
@@ -91,7 +91,7 @@ class PostalType extends AbstractType
      */
     public function getParent()
     {
-        return TextType::class;
+        return TelType::class;
     }
 
     /**

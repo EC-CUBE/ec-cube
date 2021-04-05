@@ -47,3 +47,6 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 "42","商品購入/遷移","shopping_redirect_to","Shopping/index","2",,,,"2017-03-07 01:15:03","2017-03-07 01:15:03","noindex",,"page",
 "44","MYページ/お届け先編集","mypage_delivery_edit","Mypage/delivery_edit","2",,,,"2017-03-07 01:15:05","2017-03-07 01:15:05","noindex",8,"page",
 "45","商品購入/ご注文確認","shopping_confirm","Shopping/confirm","2",,,,"2017-03-07 01:15:03","2017-03-07 01:15:03","noindex",,"page",
+"46","会員登録(確認ページ)","entry_confirm","Entry/confirm","3",,,,"2020-01-12 01:15:03","2020-01-12 01:15:03","noindex",18,"page",
+"47","MYページ/退会手続き(確認ページ)","mypage_withdraw_confirm","Mypage/withdraw_confirm","3",,,,"2020-01-12 10:14:52","2020-01-12 10:14:52","noindex",12,"page",
+"48","お問い合わせ(確認ページ)","contact_confirm","Contact/confirm","3",,,,"2020-01-12 10:14:52","2020-01-12 10:14:52","noindex",16,"page",

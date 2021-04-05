@@ -20,7 +20,9 @@ use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
+use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
@@ -351,7 +353,8 @@ class Generator
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param integer $product_class_num 商品規格の生成数
      * @param string $image_type 生成する画像タイプ.
-     *        abstract, animals, business, cats, city, food, night, life, fashion, people, nature, sports, technics, transport から選択可能
+     *        cats の場合は猫の画像を生成する(時間がかかる).
+     *        not null の場合はダミー画像を自動生成する(GD Extension が必要).
      *        null の場合は、画像を生成せずにファイル名のみを設定する.
      *
      * @return \Eccube\Entity\Product
@@ -386,12 +389,20 @@ class Generator
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
             if ($image_type) {
-                $image = $faker2->imageGenerator(
-                    __DIR__.'/../../../../html/upload/save_image',
-                    $faker->numberBetween(480, 640),
-                    $faker->numberBetween(480, 640),
-                    'png', false, true, '#cccccc', '#ffffff'
-                );
+                $width = $faker->numberBetween(480, 640);
+                $height = $faker->numberBetween(480, 640);
+                if ($image_type == 'cats') {
+                    $image = $faker->uuid.'.jpg';
+                    $src = file_get_contents('https://placekitten.com/'.$width.'/'.$height);
+                    file_put_contents(__DIR__.'/../../../../html/upload/save_image/'.$image, $src);
+                } else {
+                    $image = $faker2->imageGenerator(
+                        __DIR__.'/../../../../html/upload/save_image',
+                        $width,
+                        $height,
+                        'png', false, true, '#cccccc', '#ffffff'
+                    );
+                }
             } else {
                 $image = $faker->word.'.jpg';
             }
@@ -810,6 +821,34 @@ class Generator
         $this->entityManager->flush($Page);
 
         return $Page;
+    }
+
+    /**
+     * ログイン履歴を生成する
+     *
+     * @param string $user_name
+     * @param string|null $client_ip
+     * @param int|null $status
+     * @param Member|null $Member
+     * @return LoginHistory
+     */
+    public function createLoginHistory($user_name, $client_ip = null, $status = null, $Member = null)
+    {
+        $faker = $this->getFaker();
+        $LoginHistory = new LoginHistory();
+        $LoginHistory
+            ->setUserName($user_name)
+            ->setClientIp($client_ip ?? $faker->ipv4)
+            ->setLoginUser($Member);
+
+        $LoginHistory->setStatus(
+            $this->entityManager->find(LoginHistoryStatus::class, $status ?? LoginHistoryStatus::FAILURE)
+        );
+
+        $this->entityManager->persist($LoginHistory);
+        $this->entityManager->flush();
+
+        return $LoginHistory;
     }
 
     /**
