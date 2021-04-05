@@ -181,6 +181,32 @@ class WhereClauseTest extends EccubeTestCase
         self::assertEquals([new Parameter('Name', '0')], $this->getParams($actual));
     }
 
+    public function testAnd()
+    {
+        $actual = WhereClause::and(
+            WhereClause::eq('name', ':Name', '0'),
+            WhereClause::eq('price', ':Price', 1000)
+        );
+        self::assertEquals('name = :Name AND price = :Price', $this->asString($actual));
+        self::assertEquals(
+            [new Parameter('Name', '0'), new Parameter('Price', 1000)],
+            $this->getParams($actual)
+        );
+    }
+
+    public function testOr()
+    {
+        $actual = WhereClause::or(
+            WhereClause::eq('name', ':Name', '0'),
+            WhereClause::eq('price', ':Price', 1000)
+        );
+        self::assertEquals('name = :Name OR price = :Price', $this->asString($actual));
+        self::assertEquals(
+            [new Parameter('Name', '0'), new Parameter('Price', 1000)],
+            $this->getParams($actual)
+        );
+    }
+
     /*
      * Helper methods.
      */

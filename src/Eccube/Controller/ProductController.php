@@ -13,8 +13,8 @@
 
 namespace Eccube\Controller;
 
+use ArrayObject;
 use Eccube\Entity\BaseInfo;
-use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -27,6 +27,7 @@ use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\Master\ProductListMaxRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\Product\ProductVisibility;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
@@ -76,6 +77,11 @@ class ProductController extends AbstractController
      */
     protected $productListMaxRepository;
 
+    /**
+     * @var ArrayObject
+     */
+    protected $productVisibilities;
+
     private $title = '';
 
     /**
@@ -88,6 +94,7 @@ class ProductController extends AbstractController
      * @param BaseInfoRepository $baseInfoRepository
      * @param AuthenticationUtils $helper
      * @param ProductListMaxRepository $productListMaxRepository
+     * @param ArrayObject $productVisibilities
      */
     public function __construct(
         PurchaseFlow $cartPurchaseFlow,
@@ -96,7 +103,8 @@ class ProductController extends AbstractController
         ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
         AuthenticationUtils $helper,
-        ProductListMaxRepository $productListMaxRepository
+        ProductListMaxRepository $productListMaxRepository,
+        ArrayObject $productVisibilities
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
@@ -105,6 +113,7 @@ class ProductController extends AbstractController
         $this->BaseInfo = $baseInfoRepository->get();
         $this->helper = $helper;
         $this->productListMaxRepository = $productListMaxRepository;
+        $this->productVisibilities = $productVisibilities;
     }
 
     /**
@@ -509,22 +518,10 @@ class ProductController extends AbstractController
      */
     protected function checkVisibility(Product $Product)
     {
-        $is_admin = $this->session->has('_security_admin');
+        $invisible = array_filter($this->productVisibilities->getArrayCopy(), function (ProductVisibility $productVisibility) use ($Product) {
+            return $productVisibility->checkVisibility($Product) === false;
+        });
 
-        // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
-        if (!$is_admin) {
-            // 在庫なし商品の非表示オプションが有効な場合.
-            // if ($this->BaseInfo->isOptionNostockHidden()) {
-            //     if (!$Product->getStockFind()) {
-            //         return false;
-            //     }
-            // }
-            // 公開ステータスでない商品は表示しない.
-            if ($Product->getStatus()->getId() !== ProductStatus::DISPLAY_SHOW) {
-                return false;
-            }
-        }
-
-        return true;
+        return $invisible == null;
     }
 }
