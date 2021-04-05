@@ -420,7 +420,7 @@ class ShippingMultipleController extends AbstractShoppingController
 
                 $CustomerAddress->setCustomer($Customer);
                 $this->entityManager->persist($CustomerAddress);
-                $this->entityManager->flush($CustomerAddress);
+                $this->entityManager->flush();
             } else {
                 // 非会員用のセッションに追加
                 $CustomerAddresses = $this->session->get(OrderHelper::SESSION_NON_MEMBER_ADDRESSES);

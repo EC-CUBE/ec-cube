@@ -179,7 +179,7 @@ class PageController extends AbstractController
             foreach ($Page->getPageLayouts() as $PageLayout) {
                 $Page->removePageLayout($PageLayout);
                 $this->entityManager->remove($PageLayout);
-                $this->entityManager->flush($PageLayout);
+                $this->entityManager->flush();
             }
 
             $Layout = $form['PcLayout']->getData();
@@ -195,7 +195,7 @@ class PageController extends AbstractController
                 $PageLayout->setPage($Page);
 
                 $this->entityManager->persist($PageLayout);
-                $this->entityManager->flush($PageLayout);
+                $this->entityManager->flush();
             }
 
             $Layout = $form['SpLayout']->getData();
@@ -208,7 +208,7 @@ class PageController extends AbstractController
                 $PageLayout->setPage($Page);
 
                 $this->entityManager->persist($PageLayout);
-                $this->entityManager->flush($PageLayout);
+                $this->entityManager->flush();
             }
 
             $event = new EventArgs(

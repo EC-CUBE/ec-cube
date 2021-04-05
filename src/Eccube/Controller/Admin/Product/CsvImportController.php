@@ -1616,7 +1616,7 @@ class CsvImportController extends AbstractCsvImportController
 
             $data = $form['import_file']->getData();
             $src = new \SplFileObject($data->getRealPath());
-            $src->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY | \SplFileObject::DROP_NEW_LINE);
+            $src->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
 
             $fileNo = 1;
             $fileName = StringUtil::random(8);

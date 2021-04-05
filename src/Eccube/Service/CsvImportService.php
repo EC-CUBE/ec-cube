@@ -104,8 +104,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         $this->file->setFlags(
             \SplFileObject::READ_CSV |
             \SplFileObject::SKIP_EMPTY |
-            \SplFileObject::READ_AHEAD |
-            \SplFileObject::DROP_NEW_LINE
+            \SplFileObject::READ_AHEAD
         );
         $this->file->setCsvControl(
             $delimiter,

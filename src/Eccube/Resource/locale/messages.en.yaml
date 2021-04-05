@@ -396,8 +396,8 @@ admin.common.send_complete: Email has been sent
 admin.common.send_error: Failed to send an Email
 admin.common.create_complete: Created
 admin.common.system_error: System error occurred
-admin.common.to_show_complete: %name% is displayed
-admin.common.to_hide_complete: %name% is hidden
+admin.common.to_show_complete: '%name% is displayed'
+admin.common.to_hide_complete: '%name% is hidden'
 
 # action labels
 admin.common.save: Save
@@ -964,11 +964,11 @@ admin.content.file.directory_name: Folder Name
 admin.content.file.file_list__card_title: Files in This Directory
 admin.content.file.updated: Update
 admin.content.file.directory_tree: Directories
-admin.content.file.upload_complete: %success% file upload completed. (%success%/%count%)
+admin.content.file.upload_complete: '%success% file upload completed. (%success%/%count%)'
 admin.content.file.upload_error: Failed to upload %file_name%. (%error%)
 admin.content.file.folder_name_symbol_error: The folder name contains invalid characters.
 admin.content.file.folder_name_period_error: Folder names beginning with a period(.) are not allowed.
-admin.content.file.dir_exists: %file_name% is already exists.
+admin.content.file.dir_exists: '%file_name% is already exists.'
 admin.content.layout_delete: Delete Layouts
 admin.content.layout_no_page: Page not registered
 admin.content.layout__card_title: Layout Overview
@@ -1339,12 +1339,12 @@ admin.store.plugin.installed: Installed
 admin.store.plugin.update: Update
 admin.store.plugin.install.complete: A plugin has been installed.
 admin.store.plugin.install.failed: Failed to install plugin.
-admin.store.plugin.enable.complete: %plugin_name% is enabled.
-admin.store.plugin.already.enabled: %plugin_name% has already been enabled.
-admin.store.plugin.disable.complete: %plugin_name% is disabled.
-admin.store.plugin.already.disabled: %plugin_name% has already been disabled.
+admin.store.plugin.enable.complete: '%plugin_name% is enabled.'
+admin.store.plugin.already.enabled: '%plugin_name% has already been enabled.'
+admin.store.plugin.disable.complete: '%plugin_name% is disabled.'
+admin.store.plugin.already.disabled: '%plugin_name% has already been disabled.'
 admin.store.plugin.uninstall.complete: The plugin has been deleted.
-admin.store.plugin.update.complete: %plugin_name% has been updated.
+admin.store.plugin.update.complete: '%plugin_name% has been updated.'
 admin.store.plugin.update.failed: Failed to update %plugin_name% .
 admin.store.plugin.mkdir.error: Failed to creat a directory '%dir_name%'.
 admin.store.setting: Authentication Key Settings
@@ -1402,7 +1402,7 @@ admin.store.plugin_confirm.title: Installation Confirmation
 admin.store.plugin_confirm.subtitle: Owner's Store
 admin.store.plugin_confirm.header: We are going to install the following plugins.
 admin.store.plugin_confirm.header.upgrade: The following plugins will be updated to the latest versions.
-admin.store.plugin_confirm.require.header: %name% requires following additional plugins. They will also be installed.
+admin.store.plugin_confirm.require.header: '%name% requires following additional plugins. They will also be installed.'
 admin.store.plugin_confirm_uninstall.823: Owner's Store
 admin.store.plugin_confirm_uninstall.824: Delete Plugins
 admin.store.plugin_confirm_uninstall.825: The following plugins will be deleted.
@@ -1733,4 +1733,4 @@ purchase_flow.over_stock: '%name% does not have enough stock.'
 # Command
 #------------------------------------------------------------------------------------
 
-command.composer_require_already_installed.not_supported_plugin: %name% %plugin_version% does not support EC-CUBE %eccube_version% . Do you want to continue?
+command.composer_require_already_installed.not_supported_plugin: '%name% %plugin_version% does not support EC-CUBE %eccube_version% . Do you want to continue?'
