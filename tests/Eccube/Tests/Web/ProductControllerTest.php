@@ -259,6 +259,33 @@ class ProductControllerTest extends AbstractWebTestCase
     }
 
     /**
+     * 商品詳細ページの構造化データ
+     */
+    public function testProductStructureData()
+    {
+        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => 2]));
+        $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
+        $this->assertEquals('Product', $json->{'@type'});
+        $this->assertEquals('チェリーアイスサンド', $json->name);
+        $this->assertEquals(3080, $json->offers->price);
+        $this->assertEquals('InStock', $json->offers->availability);
+
+        // 在庫なし商品のテスト
+        $Product = $this->createProduct('Product no stock', 1);
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStockUnlimited(false);
+        $ProductClass->setStock(0);
+        $ProductStock = $ProductClass->getProductStock();
+        $ProductStock->setStock(0);
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
+        $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
+        $this->assertEquals('Product no stock', $json->name);
+        $this->assertEquals('OutOfStock', $json->offers->availability);
+    }
+
+    /**
      * 一覧ページ metaタグのテスト
      */
     public function testMetaTagsInListPage()
