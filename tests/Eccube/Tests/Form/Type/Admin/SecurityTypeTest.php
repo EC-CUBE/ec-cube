@@ -29,6 +29,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
     protected $formData = [
         'admin_route_dir' => 'admin',
         'admin_allow_hosts' => '',
+        'admin_deny_hosts' => '',
     ];
 
     public function setUp()
@@ -64,6 +65,27 @@ class SecurityTypeTest extends AbstractTypeTestCase
     public function testValidAdminAllowHost_NotIp()
     {
         $this->formData['admin_allow_hosts'] = '255.255.255,256';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidAdminDenyHost_OneLineIp()
+    {
+        $this->formData['admin_deny_hosts'] = '127.0.0.1';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testValidAdminDenyHost_MultiLineIps()
+    {
+        $this->formData['admin_deny_hosts'] = "127.0.0.1\n1.1.1.1";
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testValidAdminDenyHost_NotIp()
+    {
+        $this->formData['admin_deny_hosts'] = '255.255.255,256';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

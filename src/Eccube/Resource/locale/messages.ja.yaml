@@ -968,7 +968,7 @@ admin.content.file.upload_complete: '%success%件のファイルをアップロ�
 admin.content.file.upload_error: '%file_name% のアップロードに失敗しました。(%error%)'
 admin.content.file.folder_name_symbol_error: 使用できない文字が含まれています。
 admin.content.file.folder_name_period_error: ピリオド(.)で始まる名前は使用できません。
-admin.content.file.dir_exists: %file_name% は既に使用されています。別のフォルダ名を入力してください
+admin.content.file.dir_exists: '%file_name% は既に使用されています。別のフォルダ名を入力してください'
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
@@ -1018,6 +1018,7 @@ admin.content.page_meta_description: description
 admin.content.page_meta_keyword: keyword
 admin.content.page_meta_robot: robot
 admin.content.page_meta_metatag: metatag
+# Deprecated https://github.com/EC-CUBE/ec-cube/pull/4987
 admin.content.page_meta_metatag_placeholder: |
   商品詳細ページでの記載例
     <meta property="og:type" content="og:product" />
@@ -1082,6 +1083,7 @@ admin.setting.system.member_password_change: パスワード変更
 admin.setting.system.authority_management: 権限管理
 admin.setting.system.security_management: セキュリティ管理
 admin.setting.system.log_display: ログ表示
+admin.setting.system.login_history: ログイン履歴
 admin.setting.system.master_data_management: マスタデータ管理
 admin.setting.system.system_info: システム情報
 
@@ -1244,19 +1246,35 @@ admin.setting.system.security__card_title: セキュリティ設定
 admin.setting.system.security.admin_url: 管理画面URL
 admin.setting.system.security.admin_url_description: 推測されにくいURLを設定することを推奨します。
 admin.setting.system.security.admin_url_changed: 管理画面のURLを変更しました。再度ログインを行ってください。
-admin.setting.system.security.ip_limit: IP制限
+admin.setting.system.security.ip_limit: IP制限(許可リスト)
 admin.setting.system.security.ip_limit_description: |
   管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
   アクセスを許可するIPアドレスを1行ずつ入力してください。何も入力しない場合は全てを許可します。
 admin.setting.system.security.ip_limit_sample: |
   127.0.0.1
   192.0.2.1
+admin.setting.system.security.ip_limit_deny: IP制限(拒否リスト)
+admin.setting.system.security.ip_limit_description_deny: |
+  特定のIPアドレスからの管理機能へのアクセスを拒否します。
+  アクセスを拒否するIPアドレスを1行ずつ入力してください。
 admin.setting.system.security.force_ssl: SSLを強制
 admin.setting.system.security.force_ssl_description: httpsからの接続でなければSSL制限を設定できません。
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
 admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
 admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
 admin.setting.system.security.not_found_env_file: .envファイルが見つかりません。.envを利用していない場合はセキュリティ設定を管理画面から変更できません。
+
+#------------------------------------------------------------------------------------
+# 設定：システム設定：セキュリティ管理
+#------------------------------------------------------------------------------------
+
+admin.setting.system.login_history.multi_search_label: ログインID・IPアドレス
+admin.setting.system.login_history.create_date: ログイン試行日
+admin.setting.system.login_history.create_date__start: ログイン試行日(開始)
+admin.setting.system.login_history.create_date__end: ログイン試行日(終了)
+admin.setting.system.login_history.user_name: ログインID
+admin.setting.system.login_history.client_ip: IPアドレス
+admin.setting.system.login_history.status: ステータス
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：ログ表示
@@ -1579,7 +1597,7 @@ tooltip.content.page_file_name: ページの内容を記述したtwigテンプ�
 tooltip.content.page_source_code: テンプレートファイルを編集します。twigで記述します。
 tooltip.content.page_layout: このページに適用するレイアウトを選択します。
 tooltip.content.page_meta: ページのMETAタグの内容を指定できます。
-tooltip.content.page_meta_tags: 自由にMETAタグを追加できます。twig内で利用されている変数も利用できます。
+tooltip.content.page_meta_tags: METAタグの出力をカスタマイズできます。twig内で利用されている変数も利用可能です。空欄の場合は、テンプレートフォルダの meta.twig ファイルが読み込まれます。
 tooltip.content.css_source_code: カスタマイズ用CSSファイルを編集します。CSSで記述します。
 tooltip.content.js_source_code: カスタマイズ用JavaScriptファイルを編集します。JavaScriptで記述します。
 tooltip.content.block_name: ブロックの管理用名称です。
@@ -1619,7 +1637,9 @@ tooltip.setting.system.member.authority: 権限管理で設定した権限を選
 tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
 tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
 tooltip.setting.system.security.ip_limit: 管理画面にログインできる接続元のIPアドレスを制限します。
+tooltip.setting.system.security.ip_limit_deny: 管理画面へのアクセスを拒否する接続元のIPアドレスを指定します。
 tooltip.setting.system.security.force_ssl: ショップサイトと管理画面への接続をSSL(https)での接続に制限します。
+tooltip.setting.system.login_history.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
 tooltip.setting.system.log_display: アクセスやエラー状況などのログを確認できます。
 tooltip.setting.system.master_data_management: 各種マスターデータを管理します。
 tooltip.setting.system.system_info: このEC-CUBEに関係しているシステム環境の情報を表示しています。

@@ -3,6 +3,7 @@ parameters:
     env(ECCUBE_ADMIN_ROUTE): 'admin'
     env(ECCUBE_USER_DATA_ROUTE): 'user_data'
     env(ECCUBE_ADMIN_ALLOW_HOSTS): '[]'
+    env(ECCUBE_ADMIN_DENY_HOSTS): '[]'
     env(ECCUBE_FORCE_SSL): false
     env(ECCUBE_TEMPLATE_CODE): 'default'
     env(ECCUBE_AUTH_MAGIC): '<change.me>'
@@ -20,6 +21,7 @@ parameters:
     eccube_admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     eccube_user_data_route: '%env(ECCUBE_USER_DATA_ROUTE)%'
     eccube_admin_allow_hosts: '%env(json:ECCUBE_ADMIN_ALLOW_HOSTS)%'
+    eccube_admin_deny_hosts: '%env(json:ECCUBE_ADMIN_DENY_HOSTS)%'
     eccube_force_ssl: '%env(bool:ECCUBE_FORCE_SSL)%'
     eccube.theme: '%env(ECCUBE_TEMPLATE_CODE)%'
     eccube_theme_code: '%eccube.theme%'

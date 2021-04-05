@@ -65,7 +65,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         /**
          * @var \Eccube\Entity\Cart
          *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Cart", inversedBy="CartItems")
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Cart", inversedBy="CartItems", cascade={"persist"})
          * @ORM\JoinColumns({
          *   @ORM\JoinColumn(name="cart_id", referencedColumnName="id", onDelete="CASCADE")
          * })
@@ -91,7 +91,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         {
             return $this->id;
         }
-        
+
         /**
          * @param  integer  $price
          *

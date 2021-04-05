@@ -17,6 +17,7 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\ProductRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -29,6 +30,11 @@ class ProductControllerTest extends AbstractWebTestCase
     private $baseInfoRepository;
 
     /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    /**
      * @var ClassCategoryRepository
      */
     private $classCategoryRepository;
@@ -37,6 +43,7 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
         $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
+        $this->productRepository = $this->container->get(ProductRepository::class);
         $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
     }
 
@@ -276,5 +283,63 @@ class ProductControllerTest extends AbstractWebTestCase
         $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
         $this->assertEquals('Product no stock', $json->name);
         $this->assertEquals('OutOfStock', $json->offers->availability);
+    }
+
+    /**
+     * 一覧ページ metaタグのテスト
+     */
+    public function testMetaTagsInListPage()
+    {
+        // カテゴリ指定なし
+        $url = $this->generateUrl('product_list', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $crawler = $this->client->request('GET', $url);
+        $this->assertEquals('article', $crawler->filter('meta[property="og:type"]')->attr('content'));
+        $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
+        $this->assertEquals($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
+
+        // カテゴリ指定あり
+        $url = $this->generateUrl('product_list', ['category_id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
+        $crawler = $this->client->request('GET', $url);
+        $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
+    }
+
+    /**
+     * 詳細ページ metaタグのテスト
+     */
+    public function testMetaTagsInDetailPage()
+    {
+        $product = $this->productRepository->find(2);   /** @var Product $product */
+        $description_detail = 'またそのなかでいっしょになったたくさんのひとたち、ファゼーロとロザーロ、羊飼のミーロや、顔の赤いこどもたち、地主のテーモ、山猫博士のボーガント・デストゥパーゴなど、いまこの暗い巨きな石の建物のなかで考えていると、みんなむかし風のなつかしい青い幻燈のように思われます。';
+        $description_list = 'では、わたくしはいつかの小さなみだしをつけながら、しずかにあの年のイーハトーヴォの五月から十月までを書きつけましょう。';
+
+        // 商品に description_list と description_detail を設定
+        //  → meta descriotion には description_listが設定される
+        $product->setDescriptionList($description_list);
+        $product->setDescriptionDetail($description_detail);
+        $this->entityManager->flush();
+        $expected_desc = mb_substr($description_list, 0, 120, 'utf-8');
+
+        $url = $this->generateUrl('product_detail', ['id' => 2], UrlGeneratorInterface::ABSOLUTE_URL);
+        $imgPath = $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL) . 'html/upload/save_image/' . $product->getMainListImage()->getFileName();
+
+        $crawler = $this->client->request('GET', $url);
+
+        $this->assertEquals($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
+        $this->assertEquals($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
+        $this->assertEquals('og:product', $crawler->filter('meta[property="og:type"]')->attr('content'));
+        $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
+        $this->assertEquals($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
+        $this->assertEquals($imgPath, $crawler->filter('meta[property="og:image"]')->attr('content'));
+
+        // 商品の description_list を削除
+        //   → meta description には description_detail が設定される
+        $product->setDescriptionList(null);
+        $this->entityManager->flush();
+        $expected_desc = mb_substr($description_detail, 0, 120, 'utf-8');
+
+        $crawler = $this->client->request('GET', $url);
+
+        $this->assertEquals($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
+        $this->assertEquals($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
     }
 }
