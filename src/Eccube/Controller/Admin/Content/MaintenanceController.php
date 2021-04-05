@@ -48,18 +48,16 @@ class MaintenanceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $changeTo = $request->request->get('maintenance');
-            $path = $this->container->getParameter('eccube_content_maintenance_file_path');
 
             if ($isMaintenance === false && $changeTo == 'on') {
                 // 現在メンテナンスモードではない　かつ　メンテナンスモードを有効　にした場合
                 // メンテナンスモードを有効にする
-                file_put_contents($path, null);
-
+                $this->systemService->enableMaintenance('', true);
                 $this->addSuccess('admin.content.maintenance_switch__on_message', 'admin');
             } elseif ($isMaintenance && $changeTo == 'off') {
                 // 現在メンテナンスモード　かつ　メンテナンスモードを無効　にした場合
                 // メンテナンスモードを無効にする
-                unlink($path);
+                $this->systemService->disableMaintenanceNow('', true);
 
                 $this->addSuccess('admin.content.maintenance_switch__off_message', 'admin');
             }
