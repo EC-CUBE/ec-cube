@@ -159,7 +159,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $Order = $this->createOrder($Customer);
 
         /** @var OrderStatus $OrderStatus */
-        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find($orderStatusId);
+        $OrderStatus = self::$container->get(OrderStatusRepository::class)->find($orderStatusId);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
 

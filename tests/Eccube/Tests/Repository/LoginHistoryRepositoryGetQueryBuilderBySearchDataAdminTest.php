@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Repository\LoginHistoryRepository;
 use Eccube\Tests\EccubeTestCase;
@@ -44,7 +45,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
     {
         parent::setUp();
 
-        $this->loginHistoryRepository = $this->container->get(LoginHistoryRepository::class);
+        $this->loginHistoryRepository = $this->entityManager->getRepository(LoginHistory::class);
         $this->Member1 = $this->createMember('member1');
         $this->LoginHistory1 = $this->createLoginHistory('member1', '127.0.0.1', LoginHistoryStatus::SUCCESS, $this->Member1);
         $this->LoginHistory2 = $this->createLoginHistory('member1', '127.0.0.1', LoginHistoryStatus::FAILURE, $this->Member1);

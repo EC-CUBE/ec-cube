@@ -26,7 +26,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $loginHistoryStatusRepository = $this->container->get(LoginHistoryStatusRepository::class);
+        $loginHistoryStatusRepository = $this->entityManager->getRepository(LoginHistoryStatus::class);
 
         // 履歴を10個生成しておく
         for ($i = 0; $i < 10; $i++) {

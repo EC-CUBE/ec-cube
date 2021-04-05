@@ -949,7 +949,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function testDeleteImage()
     {
         /** @var \Eccube\Tests\Fixture\Generator $generator */
-        $generator = $this->container->get(\Eccube\Tests\Fixture\Generator::class);
+        $generator = self::$container->get(\Eccube\Tests\Fixture\Generator::class);
         $Product1 = $generator->createProduct(null, 0, 'abstract');
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 

@@ -1059,7 +1059,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDeleteImage()
     {
         /** @var Generator $generator */
-        $generator = $this->container->get(Generator::class);
+        $generator = self::$container->get(Generator::class);
         $Product1 = $generator->createProduct(null, 0, 'abstract');
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 
@@ -1098,7 +1098,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDeleteAndDeleteProductImage()
     {
         /** @var Generator $generator */
-        $generator = $this->container->get(Generator::class);
+        $generator = self::$container->get(Generator::class);
         $Product1 = $generator->createProduct(null, 0, 'abstract');
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 

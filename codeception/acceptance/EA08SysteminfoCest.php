@@ -443,7 +443,7 @@ class EA08SysteminfoCest
     /**
      * ATTENTION 後続のテストが失敗するため、最後に実行する必要がある
      */
-n    public function systeminfo_セキュリティ管理IP制限_許可リスト(AcceptanceTester $I)
+    public function systeminfo_セキュリティ管理IP制限_許可リスト(AcceptanceTester $I)
     {
         $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - IP制限（許可リスト）');
 
