@@ -273,7 +273,7 @@ class EA07BasicinfoCest
         $I->see('保存しました', CsvSettingsPage::$登録完了メッセージ);
     }
 
-    public function basicinfo_受注対応状況設定(\AcceptanceTester $I)
+    public function basicinfo_受注対応状況設定(AcceptanceTester $I)
     {
         $I->wantTo('EA0711-UC01-T01  受注対応状況設定');
 
@@ -281,7 +281,7 @@ class EA07BasicinfoCest
         OrderStatusSettingsPage::go($I)
             ->入力_名称_管理('新規受付')
             ->入力_名称_マイページ('注文受付')
-            ->入力_色("#19406C")
+            ->入力_色('#19406C')
             ->登録();
 
         $I->see('保存しました', OrderStatusSettingsPage::$登録完了メッセージ);

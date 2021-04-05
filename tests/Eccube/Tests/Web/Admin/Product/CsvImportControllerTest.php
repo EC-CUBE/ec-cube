@@ -973,9 +973,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->filepath = $this->createCsvFromArray($csv);
         $this->scenario();
 
-        $dir = __DIR__ . '/../../../../../../html/upload/save_image/';
-        $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
-        $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
+        $dir = __DIR__.'/../../../../../../html/upload/save_image/';
+        $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
+        $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
     }
 
     /**
@@ -1057,7 +1057,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_csv_split_import'),
             [
                 'file_name' => $fileName,
-                'file_no' => $fileNo
+                'file_no' => $fileNo,
             ],
             [],
             ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']

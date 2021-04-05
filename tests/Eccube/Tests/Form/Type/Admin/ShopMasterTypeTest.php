@@ -129,28 +129,28 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidBasicPointRateRange_Min()
+    public function testValidBasicPointRateRangeMin()
     {
         $this->formData['basic_point_rate'] = '0';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidBasicPointRateRange_Max()
+    public function testValidBasicPointRateRangeMax()
     {
         $this->formData['basic_point_rate'] = '100';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidBasicPointRateRange_Min()
+    public function testInValidBasicPointRateRangeMin()
     {
         $this->formData['basic_point_rate'] = '-1';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidBasicPointRateRange_Max()
+    public function testInValidBasicPointRateRangeMax()
     {
         $this->formData['basic_point_rate'] = '101';
         $this->form->submit($this->formData);

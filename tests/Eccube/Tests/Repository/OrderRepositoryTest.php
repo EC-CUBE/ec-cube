@@ -137,7 +137,7 @@ class OrderRepositoryTest extends EccubeTestCase
     /**
      * @dataProvider dataGetQueryBuilderBySearchDataForAdmin_nameProvider
      */
-    public function testGetQueryBuilderBySearchDataForAdmin_name(string $formName, string $searchWord, int $expected)
+    public function testGetQueryBuilderBySearchDataForAdminName(string $formName, string $searchWord, int $expected)
     {
         $this->Order
             ->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW))

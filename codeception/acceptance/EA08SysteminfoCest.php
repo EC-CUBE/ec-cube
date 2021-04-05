@@ -327,7 +327,7 @@ class EA08SysteminfoCest
         $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
     }
 
-    public function systeminfo_権限管理追加(\AcceptanceTester $I)
+    public function systeminfo_権限管理追加(AcceptanceTester $I)
     {
         $I->wantTo('EA0805-UC01-T01 権限管理 - 追加');
 
@@ -396,7 +396,7 @@ class EA08SysteminfoCest
         $I->see('無回答', '#customer_form #admin_customer_sex');
     }
 
-    public function systeminfo_ログイン履歴検索(\AcceptanceTester $I)
+    public function systeminfo_ログイン履歴検索(AcceptanceTester $I)
     {
         $I->wantTo('EA0808-UC01-T01 ログイン履歴 - 検索');
 
@@ -425,7 +425,6 @@ class EA08SysteminfoCest
         // １項目目をチェック
         $I->see('admin-failure', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody/tr[1]/td[2]');
         $I->see('失敗', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody/tr[1]/td[5]/span');
-
 
         // ステータスで詳細検索
 

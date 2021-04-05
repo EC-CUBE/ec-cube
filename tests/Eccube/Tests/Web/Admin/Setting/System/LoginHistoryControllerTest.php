@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Entity\Master\LoginHistoryStatus;
-use Eccube\Repository\Master\LoginHistoryStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class LoginHistoryControllerTest extends AbstractAdminWebTestCase

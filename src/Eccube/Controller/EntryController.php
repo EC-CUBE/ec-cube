@@ -21,8 +21,8 @@ use Eccube\Form\Type\Front\EntryType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CustomerStatusRepository;
-use Eccube\Service\CartService;
 use Eccube\Repository\PageRepository;
+use Eccube\Service\CartService;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -161,7 +161,7 @@ class EntryController extends AbstractController
                         'Entry/confirm.twig',
                         [
                             'form' => $form->createView(),
-                            'Page' => $this->pageRepository->getPageByRoute('entry_confirm')
+                            'Page' => $this->pageRepository->getPageByRoute('entry_confirm'),
                         ]
                     );
 

@@ -57,7 +57,7 @@ class PhoneNumberType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $eccubeConfig = $this->eccubeConfig;
-        $constraints = function(Options $options) use ($eccubeConfig) {
+        $constraints = function (Options $options) use ($eccubeConfig) {
             $constraints = [];
             // requiredがtrueに指定されている場合, NotBlankを追加
             if (isset($options['required']) && true === $options['required']) {

@@ -551,12 +551,11 @@ class ProductController extends AbstractController
 
                         // 他に同じ画像を参照する商品がなければ画像ファイルを削除
                         if (!$this->productImageRepository->findOneBy(['file_name' => $delete_image])) {
-                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'] . '/' . $delete_image);
+                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$delete_image);
                         }
-
                     } else {
                         // 追加してすぐに削除した画像は、Entityに追加されない
-                        $fs->remove($this->eccubeConfig['eccube_temp_image_dir'] . '/' . $delete_image);
+                        $fs->remove($this->eccubeConfig['eccube_temp_image_dir'].'/'.$delete_image);
                     }
                 }
 

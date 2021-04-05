@@ -107,12 +107,12 @@ class EntityProxyServiceTest extends EccubeTestCase
 
         // private $hoge;を挿入
         $additionalVariableTokens = [
-            new Token([T_WHITESPACE, PHP_EOL . '    ']),
+            new Token([T_WHITESPACE, PHP_EOL.'    ']),
             new Token([T_PRIVATE, 'private']),
             new Token([T_WHITESPACE, ' ']),
             new Token([T_VARIABLE, '$hoge']),
             new Token(';'),
-            new Token([T_WHITESPACE, PHP_EOL])
+            new Token([T_WHITESPACE, PHP_EOL]),
         ];
 
         $classTokens = $tokens->findSequence([[T_CLASS], [T_STRING]]);

@@ -891,10 +891,10 @@ class CsvImportController extends AbstractCsvImportController
                 'success' => !$this->hasErrors(),
                 'success_message' => trans('admin.common.csv_upload_line_success', [
                     '%from%' => $this->convertLineNo(2),
-                    '%to%' => $this->currentLineNo]),
+                    '%to%' => $this->currentLineNo, ]),
                 'errors' => $this->errors,
-                'error_message' => trans('admin.common.csv_upload_line_error',[
-                    '%from%' => $this->convertLineNo(2)])
+                'error_message' => trans('admin.common.csv_upload_line_error', [
+                    '%from%' => $this->convertLineNo(2), ]),
             ]);
         }
 
@@ -1593,7 +1593,9 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * @Route("/%eccube_admin_route%/product/csv_split", name="admin_product_csv_split")
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function splitCsv(Request $request)
@@ -1608,7 +1610,6 @@ class CsvImportController extends AbstractCsvImportController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $dir = $this->eccubeConfig['eccube_csv_temp_realdir'];
             if (!file_exists($dir)) {
                 $fs = new Filesystem();
@@ -1642,12 +1643,14 @@ class CsvImportController extends AbstractCsvImportController
             return $this->json(['success' => true, 'file_name' => $fileName, 'max_file_no' => $fileNo]);
         }
 
-        return $this->json(['success' => false, 'message' => $form->getErrors(true ,true)]);
+        return $this->json(['success' => false, 'message' => $form->getErrors(true, true)]);
     }
 
     /**
      * @Route("/%eccube_admin_route%/product/csv_split_import", name="admin_product_csv_split_import")
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager)
@@ -1687,7 +1690,9 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * @Route("/%eccube_admin_route%/product/csv_split_cleanup", name="admin_product_csv_split_cleanup")
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function cleanupSplitCsv(Request $request)
@@ -1727,7 +1732,8 @@ class CsvImportController extends AbstractCsvImportController
         return $choices;
     }
 
-    protected function convertLineNo($currentLineNo) {
+    protected function convertLineNo($currentLineNo)
+    {
         if ($this->isSplitCsv) {
             return ($this->eccubeConfig['eccube_csv_split_lines']) * ($this->csvFileNo - 1) + $currentLineNo;
         }

@@ -28,7 +28,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-
 /**
  * Class MailController
  */

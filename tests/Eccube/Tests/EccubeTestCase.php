@@ -226,7 +226,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createLoginHistory($user_name, $client_ip = null, $status = 0, $Member = null)
     {
-        return self::$container->get(Generator::class)->createLoginHistory($user_name, $client_ip , $status, $Member);
+        return self::$container->get(Generator::class)->createLoginHistory($user_name, $client_ip, $status, $Member);
     }
 
     /**

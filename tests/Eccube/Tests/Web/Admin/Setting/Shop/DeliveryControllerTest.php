@@ -288,6 +288,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
             $Payment->setRuleMin($rule['min']);
             $Payment->setRuleMax($rule['max']);
             $Payment->setCharge($rule['charge']);
+
             return $Payment;
         }, $rules);
 
@@ -311,7 +312,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
                     ['min' => 1001, 'max' => 2000, 'charge' => 0],
                     ['min' => 2001, 'max' => 3000, 'charge' => 0],
                 ],
-                1
+                1,
             ],
             // 利用不可の金額帯あり(2001〜2499)
             [
@@ -320,8 +321,8 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
                     ['min' => 1001, 'max' => 2000, 'charge' => 0],
                     ['min' => 2500, 'max' => 2000, 'charge' => 0],
                 ],
-                2
-            ]
+                2,
+            ],
         ];
     }
 }

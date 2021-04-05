@@ -15,8 +15,6 @@ namespace Eccube\Tests\Web\Admin\Customer;
 
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
