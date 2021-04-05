@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+    <context>
+        <name>front_guest</name>
+        <desc/>
+        <inscope>true</inscope>
+        <incregexes>\Qhttps://ec-cube\E.*</incregexes>
+        <excregexes>\Qhttps://ec-cube/_wdt\E.*</excregexes>
+        <excregexes>\Qhttps://ec-cube/_profile\E.*</excregexes>
+        <excregexes>\Qhttps://ec-cube/admin\E.*</excregexes>
+        <excregexes>\Qhttps://ec-cube/html\E.*</excregexes>
+        <tech>
+            <include>Db.MySQL</include>
+            <include>Db.PostgreSQL</include>
+            <include>Db.SQLite</include>
+            <include>Language.JavaScript</include>
+            <include>Language.PHP</include>
+            <include>OS.Linux</include>
+            <include>OS.MacOS</include>
+            <include>SCM.Git</include>
+            <include>WS.Apache</include>
+            <exclude>Db</exclude>
+            <exclude>Db.CouchDB</exclude>
+            <exclude>Db.Firebird</exclude>
+            <exclude>Db.HypersonicSQL</exclude>
+            <exclude>Db.IBM DB2</exclude>
+            <exclude>Db.Microsoft Access</exclude>
+            <exclude>Db.Microsoft SQL Server</exclude>
+            <exclude>Db.MongoDB</exclude>
+            <exclude>Db.Oracle</exclude>
+            <exclude>Db.SAP MaxDB</exclude>
+            <exclude>Db.Sybase</exclude>
+            <exclude>Language</exclude>
+            <exclude>Language.ASP</exclude>
+            <exclude>Language.C</exclude>
+            <exclude>Language.JSP/Servlet</exclude>
+            <exclude>Language.Java</exclude>
+            <exclude>Language.Python</exclude>
+            <exclude>Language.Ruby</exclude>
+            <exclude>Language.XML</exclude>
+            <exclude>OS</exclude>
+            <exclude>OS.Windows</exclude>
+            <exclude>SCM</exclude>
+            <exclude>SCM.SVN</exclude>
+            <exclude>WS</exclude>
+            <exclude>WS.IIS</exclude>
+            <exclude>WS.Tomcat</exclude>
+        </tech>
+        <urlparser>
+            <class>org.zaproxy.zap.model.StandardParameterParser</class>
+            <config>{"kvps":"&amp;","kvs":"=","struct":[]}</config>
+        </urlparser>
+        <postparser>
+            <class>org.zaproxy.zap.model.StandardParameterParser</class>
+            <config>{"kvps":"&amp;","kvs":"=","struct":[]}</config>
+        </postparser>
+        <authentication>
+            <type>0</type>
+        </authentication>
+        <forceduser>-1</forceduser>
+        <session>
+            <type>0</type>
+        </session>
+        <authorization>
+            <type>0</type>
+            <basic>
+                <header/>
+                <body/>
+                <logic>AND</logic>
+                <code>-1</code>
+            </basic>
+        </authorization>
+    </context>
+</configuration>

@@ -87,7 +87,11 @@ file that was distributed with this source code.
             });
         });
 
-        $('.ec-modal-overlay, .ec-modal .ec-inlineBtn--cancel').on('click', function() {
+        $('.ec-modal-wrap').on('click', function(e) {
+            // モーダル内の処理は外側にバブリングさせない
+            e.stopPropagation();
+        });
+        $('.ec-modal-overlay, .ec-modal, .ec-modal-close, .ec-inlineBtn--cancel').on('click', function() {
             $('.ec-modal').hide()
         });
     </script>
@@ -150,7 +154,7 @@ file that was distributed with this source code.
                         <li class="ec-shelfGrid__item">
                             <a href="{{ url('product_detail', {'id': Product.id}) }}">
                                 <p class="ec-shelfGrid__item-image">
-                                    <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
+                                    <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" loading="lazy">
                                 </p>
                                 <p>{{ Product.name }}</p>
                                 {% if Product.description_list %}

@@ -16,10 +16,13 @@ namespace Eccube\Tests\Web\Admin\Product;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductImage;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CsvImportControllerTest extends AbstractAdminWebTestCase
@@ -43,6 +46,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->categoryRepo = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
         $this->filepath = __DIR__.'/products.csv';
         copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+
+        $fs = new Filesystem();
+        $fs->mkdir($this->eccubeConfig['eccube_csv_temp_realdir']);
+        $fs->remove($this->getCsvTempFiles());
     }
 
     public function tearDown()
@@ -50,6 +57,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         if (file_exists($this->filepath)) {
             unlink($this->filepath);
         }
+
+        $fs = new Filesystem();
+        $fs->remove($this->getCsvTempFiles());
+
         parent::tearDown();
     }
 
@@ -797,7 +808,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @return \Symfony\Component\DomCrawler\Crawler
      */
-    protected function scenario($bind = 'admin_product_csv_import', $original_name = 'products.csv')
+    protected function scenario($bind = 'admin_product_csv_import', $original_name = 'products.csv', $isXmlHttpRequest = false)
     {
         $file = new UploadedFile(
             $this->filepath,    // file path
@@ -817,7 +828,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
                     'import_file' => $file,
                 ],
             ],
-            ['import_file' => $file]
+            ['import_file' => $file],
+            $isXmlHttpRequest ? ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'] : []
         );
 
         return $crawler;
@@ -929,5 +941,164 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             [false, 12, null],
             [false, '', null],
         ];
+    }
+
+    /**
+     * 商品を削除する際に、他の商品画像が参照しているファイルは削除せず、それ以外は削除することをテスト
+     */
+    public function testDeleteImage()
+    {
+        /** @var \Eccube\Tests\Fixture\Generator $generator */
+        $generator = self::$container->get(\Eccube\Tests\Fixture\Generator::class);
+        $Product1 = $generator->createProduct(null, 0, 'abstract');
+        $Product2 = $generator->createProduct(null, 0, 'abstract');
+
+        $DuplicatedImage = $Product1->getProductImage()->first();
+        assert($DuplicatedImage instanceof ProductImage);
+
+        $NotDuplicatedImage = $Product1->getProductImage()->last();
+        assert($NotDuplicatedImage instanceof ProductImage);
+
+        $NewProduct2Image = new ProductImage();
+        $NewProduct2Image
+            ->setProduct($Product2)
+            ->setFileName($DuplicatedImage->getFileName())
+            ->setSortNo(999);
+        $Product2->addProductImage($NewProduct2Image);
+        $this->entityManager->persist($NewProduct2Image);
+        $this->entityManager->flush();
+
+        $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '商品削除フラグ', '販売種別(ID)', '販売価格'];
+        $csv[] = [$Product1->getId(), '1', 'hoge', '1', '1', '1000'];
+        $this->filepath = $this->createCsvFromArray($csv);
+        $this->scenario();
+
+        $dir = __DIR__.'/../../../../../../html/upload/save_image/';
+        $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
+        $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/4781
+     */
+    public function testSjisWinCsvTest()
+    {
+        // CSV生成
+        $csv = $this->createCsvAsArray();
+        $csv[1][2] = 'テスト①'; // 商品名：機種依存文字で設定
+        $csv[1][3] = 'sjis-win-test';
+        $this->filepath = $this->createCsvFromArray($csv);
+
+        // sjis-winに変換
+        $content = file_get_contents($this->filepath);
+        $content = mb_convert_encoding($content, 'sjis-win', 'UTF-8');
+        file_put_contents($this->filepath, $content);
+
+        $this->scenario();
+
+        $Product = $this->productRepo->findOneBy(['note' => 'sjis-win-test']);
+
+        // 文字化けしないことを確認
+        $this->expected = 'テスト①';
+        $this->actual = $Product->getName();
+        $this->verify();
+    }
+
+    /**
+     * @dataProvider splitCsvDataProvider
+     */
+    public function testSplitCsv($lineNo, $expecedFileNo)
+    {
+        list($header, $row) = $this->createCsvAsArray();
+        $csv = [$header];
+        for ($i = 0; $i < $lineNo; $i++) {
+            $csv[] = $row;
+        }
+        $this->filepath = $this->createCsvFromArray($csv);
+
+        $this->scenario('admin_product_csv_split', 'products.csv', true);
+
+        $response = $this->client->getResponse();
+        $this->assertTrue($response->isSuccessful());
+
+        $json = \json_decode($response->getContent(), true);
+        $this->assertTrue($json['success']);
+        $this->assertNotEmpty($json['file_name']);
+        $this->assertEquals($expecedFileNo, $json['max_file_no']);
+
+        $files = $this->getCsvTempFiles();
+        $this->assertEquals($expecedFileNo, count($files), $expecedFileNo.'ファイル生成されているはず');
+    }
+
+    public function splitCsvDataProvider()
+    {
+        return [
+            [0, 1],
+            [1, 1],
+            [99, 1],
+            [100, 1],
+            [101, 2],
+            [199, 2],
+            [200, 2],
+            [201, 3],
+        ];
+    }
+
+    public function testImportCsv()
+    {
+        $fileName = 'product.csv';
+        $fileNo = 1;
+
+        $this->filepath = $this->createCsvFromArray($this->createCsvAsArray());
+        copy($this->filepath, $this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName);
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_csv_split_import'),
+            [
+                'file_name' => $fileName,
+                'file_no' => $fileNo,
+            ],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertTrue($response->isSuccessful());
+
+        $json = \json_decode($response->getContent(), true);
+        $this->assertTrue($json['success']);
+        $this->assertEquals('2行目〜2行目を登録しました', $json['success_message']);
+    }
+
+    public function testCleanupCsv()
+    {
+        $fileName = 'product.csv';
+        touch($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName);
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_csv_split_cleanup'),
+            [
+                'files' => [$fileName],
+            ],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertTrue($response->isSuccessful());
+
+        $json = \json_decode($response->getContent(), true);
+        $this->assertTrue($json['success']);
+        $this->assertFalse(file_exists($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName));
+    }
+
+    private function getCsvTempFiles()
+    {
+        return Finder::create()
+            ->in($this->eccubeConfig['eccube_csv_temp_realdir'])
+            ->name('*.csv')
+            ->files();
     }
 }

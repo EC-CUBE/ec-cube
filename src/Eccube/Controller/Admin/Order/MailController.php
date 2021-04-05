@@ -165,7 +165,7 @@ class MailController extends AbstractController
                             ->setOrder($Order);
 
                         $this->entityManager->persist($MailHistory);
-                        $this->entityManager->flush($MailHistory);
+                        $this->entityManager->flush();
 
                         $event = new EventArgs(
                             [

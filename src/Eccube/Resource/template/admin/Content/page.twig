@@ -16,12 +16,12 @@ file that was distributed with this source code.
 {% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% block javascript %}
-<script>
-    // searchWordの実行
-    $('#search-page').on('input', function () {
-        searchWord($(this).val(), $('table.table tbody tr'));
-    });
-</script>
+    <script>
+        // searchWordの実行
+        $('#search-page').on('input', function() {
+            searchWord($(this).val(), $('table.table tbody tr'));
+        });
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -52,6 +52,9 @@ file that was distributed with this source code.
                         <table class="table table-sm">
                             <thead>
                             <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page_name'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page_route_name'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page_url'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page_file_name'|trans }}</th>
                             <th class="border-0 pt-2 pb-2">{{ 'admin.content.layout_name'|trans }}</th>
                             <th class="border-0 pt-2 pb-2 pr-3"></th>
                             </thead>
@@ -60,8 +63,21 @@ file that was distributed with this source code.
                                     <td class="align-middle pl-3">
                                         <a href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">{{ Page.name }}</a>
                                     </td>
+                                    <td class="align-middle pl-3 text-break">
+                                        {{ Page.url }}
+                                    </td>
+                                    <td class="align-middle pl-3 text-break">
+                                        {% if router.routecollection.get(Page.url) %}
+                                            {{ router.routecollection.get(Page.url).path }}
+                                        {% else %}
+                                            {{ Page.url }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="align-middle pl-3 text-break">
+                                        {% if Page.file_name %}{{ Page.file_name }}.twig{% endif %}
+                                    </td>
                                     {# TODO レイアウトの数にかかわらず高さを揃えたい #}
-                                    <td class="align-middle{{ Page.layouts|length < 2 ? ' pb-4' }}">
+                                    <td class="align-middle{{ Page.layouts|length < 2 ? ' pb-4' }} text-nowrap">
                                         {% for Layout in Page.layouts %}
                                             {% if Layout.device_type.id == constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') %}
                                                 {% set icon = 'fa-desktop' %}
@@ -83,7 +99,7 @@ file that was distributed with this source code.
                                                     </a>
                                                 </div>
                                                 <div class="modal fade" id="delete_{{ Page.id }}" tabindex="-1" role="dialog"
-                                                    aria-labelledby="delete_{{ Page.id }}" aria-hidden="true">
+                                                     aria-labelledby="delete_{{ Page.id }}" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -98,7 +114,7 @@ file that was distributed with this source code.
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                 <a class="btn btn-ec-delete" href="{{ url('admin_content_page_delete', {'id' : Page.id}) }}"
-                                                                    {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">{{ 'admin.common.delete'|trans }}</a>
+                                                                        {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">{{ 'admin.common.delete'|trans }}</a>
                                                             </div>
                                                         </div>
                                                     </div>

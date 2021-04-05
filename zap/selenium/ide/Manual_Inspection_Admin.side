@@ -1,0 +1,4655 @@
+{
+  "id": "773de04e-e5ff-47e2-b7b4-f25612459238",
+  "version": "2.0",
+  "name": "[WIP]Manual_Inspection_Admin",
+  "url": "https://ec-cube/admin",
+  "tests": [{
+    "id": "af12755b-95df-4a47-ba6d-b9ea45cb4ea7",
+    "name": "商品管理",
+    "commands": [{
+      "id": "e54e183a-2cc3-43e1-adaf-fdb333d50358",
+      "comment": "",
+      "command": "open",
+      "target": "https://ec-cube/admin/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6b0f9261-bba0-4c11-969a-0a8c46b7f746",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1160x821",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4ec9526c-7e1e-497b-823d-23680444023a",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=商品管理",
+      "targets": [
+        ["linkText=商品管理", "linkText"],
+        ["css=.c-mainNavArea__navItem:nth-child(2) > .c-mainNavArea__navItemTitle", "css:finder"],
+        ["xpath=//body[@id='page_admin_homepage']/div/div/nav/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '#nav-product')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,' 商品管理')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c84d90a4-4cae-4fe3-a871-d6f5d500bbd0",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=商品登録",
+      "targets": [
+        ["linkText=商品登録", "linkText"],
+        ["css=#nav-product > li:nth-child(2) > a", "css:finder"],
+        ["xpath=//ul[@id='nav-product']/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/product/new')]", "xpath:href"],
+        ["xpath=//li[2]/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'商品登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "46ffb765-fe51-4c4f-b271-c4756dba9ff1",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_product_name",
+      "targets": [
+        ["id=admin_product_name", "id"],
+        ["name=admin_product[name]", "name"],
+        ["css=#admin_product_name", "css:finder"],
+        ["xpath=//input[@id='admin_product_name']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "51197b99-ec9f-410e-8556-9b79edbe2b14",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_product_name",
+      "targets": [
+        ["id=admin_product_name", "id"],
+        ["name=admin_product[name]", "name"],
+        ["css=#admin_product_name", "css:finder"],
+        ["xpath=//input[@id='admin_product_name']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "テスト商品"
+    }, {
+      "id": "11b21b4d-d90b-4472-bd4b-7550049335ae",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=ファイルを選択",
+      "targets": [
+        ["linkText=ファイルを選択", "linkText"],
+        ["css=.btn:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'ファイルを選択')]", "xpath:link"],
+        ["xpath=//a[@onclick=\"$('#admin_product_product_image').click()\"]", "xpath:attributes"],
+        ["xpath=//div[@id='upload-zone']/div/a", "xpath:idRelative"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'ファイルを選択')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d3dcbdd7-272f-4670-abbd-191fbcf3ebe8",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_product_description_detail",
+      "targets": [
+        ["id=admin_product_description_detail", "id"],
+        ["name=admin_product[description_detail]", "name"],
+        ["css=#admin_product_description_detail", "css:finder"],
+        ["xpath=//textarea[@id='admin_product_description_detail']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[4]/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d7635d40-db43-4998-acb4-2186517c28f9",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_product_description_detail",
+      "targets": [
+        ["id=admin_product_description_detail", "id"],
+        ["name=admin_product[description_detail]", "name"],
+        ["css=#admin_product_description_detail", "css:finder"],
+        ["xpath=//textarea[@id='admin_product_description_detail']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[4]/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "テスト商品の説明"
+    }, {
+      "id": "cc5edef6-e202-402c-8e29-884bf84cc876",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_product_class_price02",
+      "targets": [
+        ["id=admin_product_class_price02", "id"],
+        ["name=admin_product[class][price02]", "name"],
+        ["css=#admin_product_class_price02", "css:finder"],
+        ["xpath=//input[@id='admin_product_class_price02']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[6]/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[6]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a552fad9-7052-4b12-ab0c-590702efbc9a",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_product_class_price02",
+      "targets": [
+        ["id=admin_product_class_price02", "id"],
+        ["name=admin_product[class][price02]", "name"],
+        ["css=#admin_product_class_price02", "css:finder"],
+        ["xpath=//input[@id='admin_product_class_price02']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[6]/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[6]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "1000"
+    }, {
+      "id": "04284054-f748-4c2c-a5d1-1aa90d92fc58",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_product_class_price01",
+      "targets": [
+        ["id=admin_product_class_price01", "id"],
+        ["name=admin_product[class][price01]", "name"],
+        ["css=#admin_product_class_price01", "css:finder"],
+        ["xpath=//input[@id='admin_product_class_price01']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[7]/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[7]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "1000"
+    }, {
+      "id": "0fba28fe-84cb-4ff2-9bee-0bec18d5dd78",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col .form-check-label",
+      "targets": [
+        ["css=.col .form-check-label", "css:finder"],
+        ["xpath=//div[@id='basicConfig']/div/div[8]/div[2]/div/div/label", "xpath:idRelative"],
+        ["xpath=//label", "xpath:position"],
+        ["xpath=//label[contains(.,'無制限')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "909153cc-b8a7-491b-b54e-c0988307d308",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_product_class_stock",
+      "targets": [
+        ["id=admin_product_class_stock", "id"],
+        ["name=admin_product[class][stock]", "name"],
+        ["css=#admin_product_class_stock", "css:finder"],
+        ["xpath=//input[@id='admin_product_class_stock']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[8]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7faf5a3f-b395-472d-a549-0a1a7b531c05",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_product_class_stock",
+      "targets": [
+        ["id=admin_product_class_stock", "id"],
+        ["name=admin_product[class][stock]", "name"],
+        ["css=#admin_product_class_stock", "css:finder"],
+        ["xpath=//input[@id='admin_product_class_stock']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[8]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "10000"
+    }, {
+      "id": "727dfa0e-7c31-4738-9004-f352786ab993",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_product_search_word",
+      "targets": [
+        ["id=admin_product_search_word", "id"],
+        ["name=admin_product[search_word]", "name"],
+        ["css=#admin_product_search_word", "css:finder"],
+        ["xpath=//input[@id='admin_product_search_word']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[9]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[9]/div[2]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a3e7ee25-40b5-441e-8d49-049340dd4ac5",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_product_search_word",
+      "targets": [
+        ["id=admin_product_search_word", "id"],
+        ["name=admin_product[search_word]", "name"],
+        ["css=#admin_product_search_word", "css:finder"],
+        ["xpath=//input[@id='admin_product_search_word']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[9]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[9]/div[2]/div/input", "xpath:position"]
+      ],
+      "value": "テスト,商品"
+    }, {
+      "id": "22be237a-de15-46fc-a36d-1c9505739b8e",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_product_class_code",
+      "targets": [
+        ["id=admin_product_class_code", "id"],
+        ["name=admin_product[class][code]", "name"],
+        ["css=#admin_product_class_code", "css:finder"],
+        ["xpath=//input[@id='admin_product_class_code']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[10]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[10]/div[2]/div/input", "xpath:position"]
+      ],
+      "value": "testing-01"
+    }, {
+      "id": "acb7efd2-41a7-4805-8dc0-46ba8b4208a0",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_product_class_sale_limit",
+      "targets": [
+        ["id=admin_product_class_sale_limit", "id"],
+        ["name=admin_product[class][sale_limit]", "name"],
+        ["css=#admin_product_class_sale_limit", "css:finder"],
+        ["xpath=//input[@id='admin_product_class_sale_limit']", "xpath:attributes"],
+        ["xpath=//div[@id='basicConfig']/div/div[11]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[11]/div[2]/div/input", "xpath:position"]
+      ],
+      "value": "100"
+    }, {
+      "id": "6b1084b3-7178-4b8a-85d7-e5fa06be2af3",
+      "comment": "",
+      "command": "select",
+      "target": "id=admin_product_class_delivery_duration",
+      "targets": [],
+      "value": "label=即日"
+    }, {
+      "id": "4260b61f-7d64-4414-92d4-106942b19739",
+      "comment": "",
+      "command": "click",
+      "target": "css=#admin_product_class_delivery_duration > option:nth-child(2)",
+      "targets": [
+        ["css=#admin_product_class_delivery_duration > option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='1'])[2]", "xpath:attributes"],
+        ["xpath=//select[@id='admin_product_class_delivery_duration']/option[2]", "xpath:idRelative"],
+        ["xpath=//div[12]/div[2]/div/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'即日')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e0e9f606-4a18-4a1e-b70a-63b888189ad4",
+      "comment": "",
+      "command": "click",
+      "target": "id=wysiwyg-area",
+      "targets": [
+        ["id=wysiwyg-area", "id"],
+        ["name=admin_product[free_area]", "name"],
+        ["css=#wysiwyg-area", "css:finder"],
+        ["xpath=//textarea[@id='wysiwyg-area']", "xpath:attributes"],
+        ["xpath=//div[@id='freeArea']/div/div/div[2]/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4fb60435-8431-40f6-b559-5b96ad449574",
+      "comment": "",
+      "command": "type",
+      "target": "id=wysiwyg-area",
+      "targets": [
+        ["id=wysiwyg-area", "id"],
+        ["name=admin_product[free_area]", "name"],
+        ["css=#wysiwyg-area", "css:finder"],
+        ["xpath=//textarea[@id='wysiwyg-area']", "xpath:attributes"],
+        ["xpath=//div[@id='freeArea']/div/div/div[2]/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/textarea", "xpath:position"]
+      ],
+      "value": "<a href=\"https://ec-cube.net\">ec-cube</a>"
+    }, {
+      "id": "7cbc21de-57a6-4b1a-b549-91663b5f9704",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_product_note",
+      "targets": [
+        ["id=admin_product_note", "id"],
+        ["name=admin_product[note]", "name"],
+        ["css=#admin_product_note", "css:finder"],
+        ["xpath=//textarea[@id='admin_product_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shopMemo']/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e1011f1d-292f-43cf-b15c-1e900cef35f7",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_product_note",
+      "targets": [
+        ["id=admin_product_note", "id"],
+        ["name=admin_product[note]", "name"],
+        ["css=#admin_product_note", "css:finder"],
+        ["xpath=//textarea[@id='admin_product_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shopMemo']/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/textarea", "xpath:position"]
+      ],
+      "value": "ショップ要メモ"
+    }, {
+      "id": "bdab2416-c24d-4013-bf78-1f12306743a6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ladda-label",
+      "targets": [
+        ["css=.ladda-label", "css:finder"],
+        ["xpath=//div[@id='ex-conversion-action']/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//div[2]/button/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d37ef617-491b-45d0-9328-6acf78cabf27",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.ladda-label",
+      "targets": [
+        ["css=.ladda-label", "css:finder"],
+        ["xpath=//div[@id='ex-conversion-action']/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//div[2]/button/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ef825608-913e-484f-91a1-32420bc147b3",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_product_category_2",
+      "targets": [
+        ["id=admin_product_category_2", "id"],
+        ["name=admin_product[Category][]", "name"],
+        ["css=#admin_product_category_2", "css:finder"],
+        ["xpath=//input[@id='admin_product_category_2']", "xpath:attributes"],
+        ["xpath=//div[@id='category']/div/div[2]/ul/li/input", "xpath:idRelative"],
+        ["xpath=//li/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e9e04064-4de6-4572-94ac-a383e7d85d71",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_product_Status",
+      "targets": [
+        ["id=admin_product_Status", "id"],
+        ["name=admin_product[Status]", "name"],
+        ["css=#admin_product_Status", "css:finder"],
+        ["xpath=//select[@id='admin_product_Status']", "xpath:attributes"],
+        ["xpath=//div[@id='ex-conversion-action']/div/select", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8177723a-cccc-4481-93c1-51542b6ccd7f",
+      "comment": "",
+      "command": "select",
+      "target": "id=admin_product_Status",
+      "targets": [],
+      "value": "label=公開"
+    }, {
+      "id": "9a036c46-7159-4246-88b5-c145793e305c",
+      "comment": "",
+      "command": "click",
+      "target": "css=#admin_product_Status > option:nth-child(1)",
+      "targets": [
+        ["css=#admin_product_Status > option:nth-child(1)", "css:finder"],
+        ["xpath=(//option[@value='1'])[3]", "xpath:attributes"],
+        ["xpath=//select[@id='admin_product_Status']/option", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/select/option", "xpath:position"],
+        ["xpath=//option[contains(.,'公開')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "80e8428b-401d-40d2-80e0-4e68f35f7c39",
+      "comment": "",
+      "command": "click",
+      "target": "css=.px-5",
+      "targets": [
+        ["css=.px-5", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='ex-conversion-action']/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a17fbdb5-c5ca-47ca-9aaa-fed16193ab94",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.px-5",
+      "targets": [
+        ["css=.px-5", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='ex-conversion-action']/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e9bb07bc-d44d-4846-99d1-29bfb9987c88",
+      "comment": "",
+      "command": "click",
+      "target": "css=.d-block .font-weight-bold:nth-child(2)",
+      "targets": [
+        ["css=.d-block .font-weight-bold:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='tag']/div/div/a/span", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'タグ登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e7c81c3d-cd1e-4114-b83e-bf3c438b65f4",
+      "comment": "",
+      "command": "click",
+      "target": "css=.d-inline-block:nth-child(3) > .btn",
+      "targets": [
+        ["css=.d-inline-block:nth-child(3) > .btn", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='allTags']/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'おすすめ商品')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "991c5212-00ec-433b-82da-8f544f7c41f9",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,488.9333190917969)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a9c60312-7b91-4450-a47c-3e2d62f7161e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.px-5",
+      "targets": [
+        ["css=.px-5", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='ex-conversion-action']/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6b499b85-63b6-44e2-bca1-1562136a1413",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=この商品の規格を確認",
+      "targets": [
+        ["linkText=この商品の規格を確認", "linkText"],
+        ["css=#standardConfig .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'この商品の規格を確認')]", "xpath:link"],
+        ["xpath=//div[@id='standardConfig']/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/product/product/class/4')]", "xpath:href"],
+        ["xpath=//div[2]/div[2]/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'この商品の規格を確認')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "10502d07-82a1-4bf2-a304-eb891806d93c",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=この商品の規格を確認",
+      "targets": [
+        ["linkText=この商品の規格を確認", "linkText"],
+        ["css=#standardConfig .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'この商品の規格を確認')]", "xpath:link"],
+        ["xpath=//div[@id='standardConfig']/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/product/product/class/4')]", "xpath:href"],
+        ["xpath=//div[2]/div[2]/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'この商品の規格を確認')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e68616ff-314c-495c-a0ca-5f4fbd360de8",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "linkText=この商品の規格を確認",
+      "targets": [
+        ["linkText=この商品の規格を確認", "linkText"],
+        ["css=#standardConfig .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'この商品の規格を確認')]", "xpath:link"],
+        ["xpath=//div[@id='standardConfig']/div/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/admin/product/product/class/4')])[2]", "xpath:href"],
+        ["xpath=//div[2]/div[2]/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'この商品の規格を確認')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "50c9519a-fb37-43df-94af-5e58033f9667",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=保存せずに移動",
+      "targets": [
+        ["linkText=保存せずに移動", "linkText"],
+        ["css=.btn-ec-sub", "css:finder"],
+        ["xpath=//a[contains(text(),'保存せずに移動')]", "xpath:link"],
+        ["xpath=//div[@id='confirmFormChangeModal']/div/div/div[3]/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/product/product/class/4')]", "xpath:href"],
+        ["xpath=//div[3]/a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'保存せずに移動')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3c2461a1-06ef-4c64-8d57-8690531c86fc",
+      "comment": "",
+      "command": "select",
+      "target": "id=product_class_matrix_class_name1",
+      "targets": [],
+      "value": "label=サイズ (CUBE用サイズ)"
+    }, {
+      "id": "dcbd18f0-ee1f-4c05-9407-72ac896795e9",
+      "comment": "",
+      "command": "click",
+      "target": "css=#product_class_matrix_class_name1 > option:nth-child(2)",
+      "targets": [
+        ["css=#product_class_matrix_class_name1 > option:nth-child(2)", "css:finder"],
+        ["xpath=//option[@value='2']", "xpath:attributes"],
+        ["xpath=//select[@id='product_class_matrix_class_name1']/option[2]", "xpath:idRelative"],
+        ["xpath=//option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'サイズ (CUBE用サイズ)')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b3e3973f-2229-4805-8fe0-4085af12f566",
+      "comment": "",
+      "command": "select",
+      "target": "id=product_class_matrix_class_name2",
+      "targets": [],
+      "value": "label=フレーバー (CUBE用味)"
+    }, {
+      "id": "cc5f149b-8633-45e7-a64e-f2bf1c46a369",
+      "comment": "",
+      "command": "click",
+      "target": "css=#product_class_matrix_class_name2 > option:nth-child(3)",
+      "targets": [
+        ["css=#product_class_matrix_class_name2 > option:nth-child(3)", "css:finder"],
+        ["xpath=(//option[@value='1'])[2]", "xpath:attributes"],
+        ["xpath=//select[@id='product_class_matrix_class_name2']/option[3]", "xpath:idRelative"],
+        ["xpath=//div[2]/select/option[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0321b51f-9a53-42ce-b713-bedbd69038d7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ladda-label",
+      "targets": [
+        ["css=.ladda-label", "css:finder"],
+        ["xpath=//body[@id='page_admin_product_product_class']/div/div[3]/div[2]/div/div/div/form/div/div/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'商品規格の設定')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "40553273-9dab-4d78-a62b-a04393b638bb",
+      "comment": "",
+      "command": "click",
+      "target": "id=check-all",
+      "targets": [
+        ["id=check-all", "id"],
+        ["css=#check-all", "css:finder"],
+        ["xpath=//input[@id='check-all']", "xpath:attributes"],
+        ["xpath=//div[@id='ex-product_class']/table/thead/tr/th/input", "xpath:idRelative"],
+        ["xpath=//th/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eeb25565-f106-46cd-b170-169eda93361e",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_0_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_code", "id"],
+        ["name=product_class_matrix[product_classes][0][code]", "name"],
+        ["css=#product_class_matrix_product_classes_0_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//td[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "04936e6a-89f8-40ac-aed3-604c4fde90f4",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_0_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_code", "id"],
+        ["name=product_class_matrix[product_classes][0][code]", "name"],
+        ["css=#product_class_matrix_product_classes_0_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//td[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8ce52cef-b2e1-49b7-bc10-ef7021f2e84c",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_0_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_code", "id"],
+        ["name=product_class_matrix[product_classes][0][code]", "name"],
+        ["css=#product_class_matrix_product_classes_0_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//td[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "50dc7ca5-a433-4a26-986b-efe49ae7d44b",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=product_class_matrix_product_classes_0_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_code", "id"],
+        ["name=product_class_matrix[product_classes][0][code]", "name"],
+        ["css=#product_class_matrix_product_classes_0_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//td[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f052e74d-45eb-4e0f-8bf9-3dbd7f6d266d",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_0_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_code", "id"],
+        ["name=product_class_matrix[product_classes][0][code]", "name"],
+        ["css=#product_class_matrix_product_classes_0_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//td[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "741383da-adc1-4894-89f4-8f58c3608acd",
+      "comment": "",
+      "command": "type",
+      "target": "id=product_class_matrix_product_classes_0_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_code", "id"],
+        ["name=product_class_matrix[product_classes][0][code]", "name"],
+        ["css=#product_class_matrix_product_classes_0_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//td[4]/input", "xpath:position"]
+      ],
+      "value": "testing-01"
+    }, {
+      "id": "4a2f42ed-c3aa-453b-bcec-3ced3dec479d",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_0_stock",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_stock", "id"],
+        ["name=product_class_matrix[product_classes][0][stock]", "name"],
+        ["css=#product_class_matrix_product_classes_0_stock", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_stock']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[5]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2c2c87fa-7ef1-415b-9b23-306420de9c96",
+      "comment": "",
+      "command": "type",
+      "target": "id=product_class_matrix_product_classes_0_stock",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_stock", "id"],
+        ["name=product_class_matrix[product_classes][0][stock]", "name"],
+        ["css=#product_class_matrix_product_classes_0_stock", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_stock']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[5]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/div/input", "xpath:position"]
+      ],
+      "value": "1000"
+    }, {
+      "id": "6d8e06d1-eac1-44f3-b0f7-b44914e17ff7",
+      "comment": "",
+      "command": "type",
+      "target": "id=product_class_matrix_product_classes_0_sale_limit",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_sale_limit", "id"],
+        ["name=product_class_matrix[product_classes][0][sale_limit]", "name"],
+        ["css=#product_class_matrix_product_classes_0_sale_limit", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_sale_limit']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[6]/div/div/input", "xpath:idRelative"],
+        ["xpath=//td[6]/div/div/input", "xpath:position"]
+      ],
+      "value": "100"
+    }, {
+      "id": "43d3f380-6d58-4458-8825-72d864812144",
+      "comment": "",
+      "command": "type",
+      "target": "id=product_class_matrix_product_classes_0_price01",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_price01", "id"],
+        ["name=product_class_matrix[product_classes][0][price01]", "name"],
+        ["css=#product_class_matrix_product_classes_0_price01", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_price01']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[7]/div/input", "xpath:idRelative"],
+        ["xpath=//td[7]/div/input", "xpath:position"]
+      ],
+      "value": "1000"
+    }, {
+      "id": "ba7bc95f-b9b1-48aa-84e9-a46235df7752",
+      "comment": "",
+      "command": "type",
+      "target": "id=product_class_matrix_product_classes_0_price02",
+      "targets": [
+        ["id=product_class_matrix_product_classes_0_price02", "id"],
+        ["name=product_class_matrix[product_classes][0][price02]", "name"],
+        ["css=#product_class_matrix_product_classes_0_price02", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_0_price02']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[8]/div/input", "xpath:idRelative"],
+        ["xpath=//td[8]/div/input", "xpath:position"]
+      ],
+      "value": "1000"
+    }, {
+      "id": "4e383450-abfe-4dd3-8caa-f3e58608994a",
+      "comment": "",
+      "command": "select",
+      "target": "id=product_class_matrix_product_classes_0_delivery_duration",
+      "targets": [],
+      "value": "label=即日"
+    }, {
+      "id": "39775784-30d9-4551-9454-37d2f7886fe7",
+      "comment": "",
+      "command": "click",
+      "target": "css=#product_class_matrix_product_classes_0_delivery_duration > option:nth-child(2)",
+      "targets": [
+        ["css=#product_class_matrix_product_classes_0_delivery_duration > option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='1'])[3]", "xpath:attributes"],
+        ["xpath=//select[@id='product_class_matrix_product_classes_0_delivery_duration']/option[2]", "xpath:idRelative"],
+        ["xpath=//td[9]/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'即日')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "76e866ac-38c6-4fbb-9eba-8e1650d2186d",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ex-product_class-0 > .pr-3",
+      "targets": [
+        ["css=#ex-product_class-0 > .pr-3", "css:finder"],
+        ["xpath=//tr[@id='ex-product_class-0']/td[10]", "xpath:idRelative"],
+        ["xpath=//td[10]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "55c296aa-d393-4476-9747-98755586ac27",
+      "comment": "",
+      "command": "click",
+      "target": "css=#copy > span",
+      "targets": [
+        ["css=#copy > span", "css:finder"],
+        ["xpath=//button[@id='copy']/span", "xpath:idRelative"],
+        ["xpath=//div/div/div/div[2]/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'1行目をすべての行に複製')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e526ee21-a380-45f8-a002-afe5edb52cb6",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_1_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_1_code", "id"],
+        ["name=product_class_matrix[product_classes][1][code]", "name"],
+        ["css=#product_class_matrix_product_classes_1_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_1_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-1']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2c14b95c-dd80-480b-b92b-af0693c13ea6",
+      "comment": "",
+      "command": "type",
+      "target": "id=product_class_matrix_product_classes_1_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_1_code", "id"],
+        ["name=product_class_matrix[product_classes][1][code]", "name"],
+        ["css=#product_class_matrix_product_classes_1_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_1_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-1']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[4]/input", "xpath:position"]
+      ],
+      "value": "testing-02"
+    }, {
+      "id": "78cde8ef-63cb-4681-ac11-1ca208e8c869",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_2_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_2_code", "id"],
+        ["name=product_class_matrix[product_classes][2][code]", "name"],
+        ["css=#product_class_matrix_product_classes_2_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_2_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-2']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7ae89485-7f66-4d5f-837b-cd865d2c4b5b",
+      "comment": "",
+      "command": "type",
+      "target": "id=product_class_matrix_product_classes_2_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_2_code", "id"],
+        ["name=product_class_matrix[product_classes][2][code]", "name"],
+        ["css=#product_class_matrix_product_classes_2_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_2_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-2']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[4]/input", "xpath:position"]
+      ],
+      "value": "testing-03"
+    }, {
+      "id": "6234b7f4-1554-431c-99f2-eef8278617d3",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_3_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_3_code", "id"],
+        ["name=product_class_matrix[product_classes][3][code]", "name"],
+        ["css=#product_class_matrix_product_classes_3_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_3_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-3']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//tr[4]/td[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "abca796c-9cdd-47db-ba35-fb5c7dc817a8",
+      "comment": "",
+      "command": "type",
+      "target": "id=product_class_matrix_product_classes_3_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_3_code", "id"],
+        ["name=product_class_matrix[product_classes][3][code]", "name"],
+        ["css=#product_class_matrix_product_classes_3_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_3_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-3']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//tr[4]/td[4]/input", "xpath:position"]
+      ],
+      "value": "testing-04"
+    }, {
+      "id": "9c4afc20-a073-445d-b3e5-2d673c4195cc",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_4_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_4_code", "id"],
+        ["name=product_class_matrix[product_classes][4][code]", "name"],
+        ["css=#product_class_matrix_product_classes_4_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_4_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-4']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//tr[5]/td[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d0ea3120-c4cc-4b96-a51a-f15bac9cb2b8",
+      "comment": "",
+      "command": "type",
+      "target": "id=product_class_matrix_product_classes_4_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_4_code", "id"],
+        ["name=product_class_matrix[product_classes][4][code]", "name"],
+        ["css=#product_class_matrix_product_classes_4_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_4_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-4']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//tr[5]/td[4]/input", "xpath:position"]
+      ],
+      "value": "testing-05"
+    }, {
+      "id": "774fc981-2faf-4bfa-83ec-4747a9c8f68d",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_5_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_5_code", "id"],
+        ["name=product_class_matrix[product_classes][5][code]", "name"],
+        ["css=#product_class_matrix_product_classes_5_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_5_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-5']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//tr[6]/td[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "99aa209c-ec95-4691-986c-604524b49b90",
+      "comment": "",
+      "command": "type",
+      "target": "id=product_class_matrix_product_classes_5_code",
+      "targets": [
+        ["id=product_class_matrix_product_classes_5_code", "id"],
+        ["name=product_class_matrix[product_classes][5][code]", "name"],
+        ["css=#product_class_matrix_product_classes_5_code", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_5_code']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-5']/td[4]/input", "xpath:idRelative"],
+        ["xpath=//tr[6]/td[4]/input", "xpath:position"]
+      ],
+      "value": "testing-06"
+    }, {
+      "id": "70af2b05-d081-4592-a8e3-c435ab064502",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_6_checked",
+      "targets": [
+        ["id=product_class_matrix_product_classes_6_checked", "id"],
+        ["name=product_class_matrix[product_classes][6][checked]", "name"],
+        ["css=#product_class_matrix_product_classes_6_checked", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_6_checked']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-6']/td/div/input", "xpath:idRelative"],
+        ["xpath=//tr[7]/td/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3c23ceb8-722a-4940-9afb-f9cb75584525",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_7_checked",
+      "targets": [
+        ["id=product_class_matrix_product_classes_7_checked", "id"],
+        ["name=product_class_matrix[product_classes][7][checked]", "name"],
+        ["css=#product_class_matrix_product_classes_7_checked", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_7_checked']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-7']/td/div/input", "xpath:idRelative"],
+        ["xpath=//tr[8]/td/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "123313a9-622c-4b87-a4a6-20a645a72ed1",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ex-product_class-8 > .pl-3",
+      "targets": [
+        ["css=#ex-product_class-8 > .pl-3", "css:finder"],
+        ["xpath=//tr[@id='ex-product_class-8']/td", "xpath:idRelative"],
+        ["xpath=//tr[9]/td", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2c3788b9-4cc5-4e94-b46c-a07b2286f9d5",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ex-product_class-8 > .pl-3",
+      "targets": [
+        ["css=#ex-product_class-8 > .pl-3", "css:finder"],
+        ["xpath=//tr[@id='ex-product_class-8']/td", "xpath:idRelative"],
+        ["xpath=//tr[9]/td", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c2aed2a9-5903-42f3-bb89-7ad904d0ef17",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "css=#ex-product_class-8 > .pl-3",
+      "targets": [
+        ["css=#ex-product_class-8 > .pl-3", "css:finder"],
+        ["xpath=//tr[@id='ex-product_class-8']/td", "xpath:idRelative"],
+        ["xpath=//tr[9]/td", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bcf527a1-410c-4494-b620-fd3820f26f8b",
+      "comment": "",
+      "command": "click",
+      "target": "id=product_class_matrix_product_classes_8_checked",
+      "targets": [
+        ["id=product_class_matrix_product_classes_8_checked", "id"],
+        ["name=product_class_matrix[product_classes][8][checked]", "name"],
+        ["css=#product_class_matrix_product_classes_8_checked", "css:finder"],
+        ["xpath=//input[@id='product_class_matrix_product_classes_8_checked']", "xpath:attributes"],
+        ["xpath=//tr[@id='ex-product_class-8']/td/div/input", "xpath:idRelative"],
+        ["xpath=//tr[9]/td/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "957b0c77-843d-4908-ba84-70835867fe72",
+      "comment": "",
+      "command": "click",
+      "target": "name=product_class_matrix[save]",
+      "targets": [
+        ["name=product_class_matrix[save]", "name"],
+        ["css=.px-5", "css:finder"],
+        ["xpath=//button[@name='product_class_matrix[save]']", "xpath:attributes"],
+        ["xpath=//div[@id='ex-conversion-action']/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d9ced51a-2239-4f81-9700-e5014b9fb709",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=規格管理",
+      "targets": [
+        ["linkText=規格管理", "linkText"],
+        ["css=#nav-product > li:nth-child(3) > a", "css:finder"],
+        ["xpath=//ul[@id='nav-product']/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/class_name')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'規格管理')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "35aacfde-ce52-4666-96d1-aebc3ce79438",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_class_name_name",
+      "targets": [
+        ["id=admin_class_name_name", "id"],
+        ["name=admin_class_name[name]", "name"],
+        ["css=#admin_class_name_name", "css:finder"],
+        ["xpath=//input[@id='admin_class_name_name']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div[2]/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5140af68-f48c-48e1-ab17-48e0942d5f53",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_class_name_name",
+      "targets": [
+        ["id=admin_class_name_name", "id"],
+        ["name=admin_class_name[name]", "name"],
+        ["css=#admin_class_name_name", "css:finder"],
+        ["xpath=//input[@id='admin_class_name_name']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div[2]/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "色"
+    }, {
+      "id": "703ac5f9-1c4a-4c0c-9082-f6203ea08e25",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_class_name_backend_name",
+      "targets": [
+        ["id=admin_class_name_backend_name", "id"],
+        ["name=admin_class_name[backend_name]", "name"],
+        ["css=#admin_class_name_backend_name", "css:finder"],
+        ["xpath=//input[@id='admin_class_name_backend_name']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "色01"
+    }, {
+      "id": "497d7967-8d20-480b-adcb-fc9d9174fcd6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-ec-regular > .ladda-label",
+      "targets": [
+        ["css=.btn-ec-regular > .ladda-label", "css:finder"],
+        ["xpath=//form[@id='form1']/div[5]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f2a3fd47-82a8-4419-b1c2-ca4e9ae4f0c8",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.btn-ec-regular > .ladda-label",
+      "targets": [
+        ["css=.btn-ec-regular > .ladda-label", "css:finder"],
+        ["xpath=//form[@id='form1']/div[5]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "69876e5a-47e1-4ed6-8d72-da7704950017",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.btn-ec-regular > .ladda-label",
+      "targets": [
+        ["css=.btn-ec-regular > .ladda-label", "css:finder"],
+        ["xpath=//form[@id='form1']/div[5]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "63080b33-ceb0-47cd-b062-04f55d38e5fe",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "linkText=色［管理名：色01］ (0)",
+      "targets": [
+        ["linkText=色［管理名：色01］ (0)", "linkText"],
+        ["css=#ex-class_name-3 .col > a", "css:finder"],
+        ["xpath=//a[contains(text(),'色［管理名：色01］ (0)')]", "xpath:link"],
+        ["xpath=//li[@id='ex-class_name-3']/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/class_category/3')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'色［管理名：色01］ (0)')]", "xpath:innerText"]
+      ],
+      "value": "117.61666870117188,-78.63333129882812"
+    }, {
+      "id": "724f8c1f-ae9f-451b-88ae-d191e14e1e45",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "css=#ex-class_name-3 .col",
+      "targets": [
+        ["css=#ex-class_name-3 .col", "css:finder"],
+        ["xpath=//li[@id='ex-class_name-3']/div/div[3]", "xpath:idRelative"],
+        ["xpath=//li[3]/div/div[3]", "xpath:position"]
+      ],
+      "value": "126.61666870117188,24"
+    }, {
+      "id": "501c876d-b9c2-4a0d-b268-6228c8ed50f0",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "css=#ex-class_name-3 .col",
+      "targets": [
+        ["css=#ex-class_name-3 .col", "css:finder"],
+        ["xpath=//li[@id='ex-class_name-3']/div/div[3]", "xpath:idRelative"],
+        ["xpath=//li[3]/div/div[3]", "xpath:position"]
+      ],
+      "value": "126.61666870117188,24"
+    }, {
+      "id": "6148b10f-c3bb-4912-8f22-48a1be649e6b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=色［管理名：色01］ (0)",
+      "targets": [
+        ["linkText=色［管理名：色01］ (0)", "linkText"],
+        ["css=#ex-class_name-3 .col > a", "css:finder"],
+        ["xpath=//a[contains(text(),'色［管理名：色01］ (0)')]", "xpath:link"],
+        ["xpath=//li[@id='ex-class_name-3']/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/class_category/3')]", "xpath:href"],
+        ["xpath=//li[5]/div/div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'色［管理名：色01］ (0)')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3e101d11-939f-4a8d-99b7-8f3ebfc56f78",
+      "comment": "",
+      "command": "click",
+      "target": "id=class_name_3_backend_name",
+      "targets": [
+        ["id=class_name_3_backend_name", "id"],
+        ["name=class_name_3[backend_name]", "name"],
+        ["css=#class_name_3_backend_name", "css:finder"],
+        ["xpath=//input[@id='class_name_3_backend_name']", "xpath:attributes"],
+        ["xpath=//li[@id='ex-class_name-3']/form/div[4]/input", "xpath:idRelative"],
+        ["xpath=//li[5]/form/div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c2d39dc1-ad06-4f0e-aa17-0ca74ad7d3d1",
+      "comment": "",
+      "command": "type",
+      "target": "id=class_name_3_backend_name",
+      "targets": [
+        ["id=class_name_3_backend_name", "id"],
+        ["name=class_name_3[backend_name]", "name"],
+        ["css=#class_name_3_backend_name", "css:finder"],
+        ["xpath=//input[@id='class_name_3_backend_name']", "xpath:attributes"],
+        ["xpath=//li[@id='ex-class_name-3']/form/div[4]/input", "xpath:idRelative"],
+        ["xpath=//li[5]/form/div[4]/input", "xpath:position"]
+      ],
+      "value": "色02"
+    }, {
+      "id": "60606cfb-c3c1-45fe-8228-847011e98ab7",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ex-class_name-3 .ladda-label",
+      "targets": [
+        ["css=#ex-class_name-3 .ladda-label", "css:finder"],
+        ["xpath=//li[@id='ex-class_name-3']/form/div[5]/button/span", "xpath:idRelative"],
+        ["xpath=//li[5]/form/div[5]/button/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "73524631-d498-41e6-934a-82c57287f866",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=カテゴリ管理",
+      "targets": [
+        ["linkText=カテゴリ管理", "linkText"],
+        ["css=#nav-product > li:nth-child(4) > a", "css:finder"],
+        ["xpath=//ul[@id='nav-product']/li[4]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/category')]", "xpath:href"],
+        ["xpath=//li[4]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'カテゴリ管理')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c896d056-b5e8-45bb-a81a-1177ac218dc5",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_category_name",
+      "targets": [
+        ["id=admin_category_name", "id"],
+        ["name=admin_category[name]", "name"],
+        ["css=#admin_category_name", "css:finder"],
+        ["xpath=//input[@id='admin_category_name']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b89af73a-aec9-4c40-8966-f89e30fb903e",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_category_name",
+      "targets": [
+        ["id=admin_category_name", "id"],
+        ["name=admin_category[name]", "name"],
+        ["css=#admin_category_name", "css:finder"],
+        ["xpath=//input[@id='admin_category_name']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "テスト"
+    }, {
+      "id": "1f0c27b5-ff9a-4acd-a3f2-4888be737890",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-ec-regular > .ladda-label",
+      "targets": [
+        ["css=.btn-ec-regular > .ladda-label", "css:finder"],
+        ["xpath=//form[@id='form1']/div/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e98d386a-f311-4373-aaa6-835868e9e8a3",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.btn-ec-regular > .ladda-label",
+      "targets": [
+        ["css=.btn-ec-regular > .ladda-label", "css:finder"],
+        ["xpath=//form[@id='form1']/div/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "26300d8a-c1b6-401c-b72f-c6b113b47526",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=#ex-category-7 .action-edit",
+      "targets": [
+        ["css=#ex-category-7 .action-edit", "css:finder"],
+        ["xpath=//li[@id='ex-category-7']/div/div[4]/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/category/7/edit')]", "xpath:href"],
+        ["xpath=//div[4]/a[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3dc6465d-de2d-4c56-a689-08df61f7f407",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=#ex-category-7 .action-edit",
+      "targets": [
+        ["css=#ex-category-7 .action-edit", "css:finder"],
+        ["xpath=//li[@id='ex-category-7']/div/div[4]/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/category/7/edit')]", "xpath:href"],
+        ["xpath=//div[4]/a[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6e647eef-6e9c-42f6-a94d-652d1ee145d4",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ex-category-7 .btn:nth-child(3) > .fa",
+      "targets": [
+        ["css=#ex-category-7 .btn:nth-child(3) > .fa", "css:finder"],
+        ["xpath=//li[@id='ex-category-7']/div/div[4]/a[3]/i", "xpath:idRelative"],
+        ["xpath=//div[4]/a[3]/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fe0d1bc5-5ebc-4e71-b838-e0270b1d54f2",
+      "comment": "",
+      "command": "click",
+      "target": "id=category_7_name",
+      "targets": [
+        ["id=category_7_name", "id"],
+        ["name=category_7[name]", "name"],
+        ["css=#category_7_name", "css:finder"],
+        ["xpath=//input[@id='category_7_name']", "xpath:attributes"],
+        ["xpath=//li[@id='ex-category-7']/form/div/input", "xpath:idRelative"],
+        ["xpath=//form/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7057b160-9867-444e-9dfa-67125b06ac08",
+      "comment": "",
+      "command": "type",
+      "target": "id=category_7_name",
+      "targets": [
+        ["id=category_7_name", "id"],
+        ["name=category_7[name]", "name"],
+        ["css=#category_7_name", "css:finder"],
+        ["xpath=//input[@id='category_7_name']", "xpath:attributes"],
+        ["xpath=//li[@id='ex-category-7']/form/div/input", "xpath:idRelative"],
+        ["xpath=//form/div/input", "xpath:position"]
+      ],
+      "value": "テスト01"
+    }, {
+      "id": "8436bb12-be28-457a-bcf5-0835d346c8fe",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "css=#ex-category-7 .col",
+      "targets": [
+        ["css=#ex-category-7 .col", "css:finder"],
+        ["xpath=//li[@id='ex-category-7']/div/div[3]", "xpath:idRelative"],
+        ["xpath=//li[3]/div/div[3]", "xpath:position"]
+      ],
+      "value": "169.41668701171875,19.5"
+    }, {
+      "id": "2d40c91e-cbd6-41e6-884a-a28d18253c36",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "css=#ex-category-7 .col",
+      "targets": [
+        ["css=#ex-category-7 .col", "css:finder"],
+        ["xpath=//li[@id='ex-category-7']/div/div[3]", "xpath:idRelative"],
+        ["xpath=//li[3]/div/div[3]", "xpath:position"]
+      ],
+      "value": "169.41668701171875,19.5"
+    }, {
+      "id": "40cfd921-1303-497b-a020-637690c8a369",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "css=#ex-category-7 .col",
+      "targets": [
+        ["css=#ex-category-7 .col", "css:finder"],
+        ["xpath=//li[@id='ex-category-7']/div/div[3]", "xpath:idRelative"],
+        ["xpath=//li[3]/div/div[3]", "xpath:position"]
+      ],
+      "value": "169.41668701171875,19.5"
+    }, {
+      "id": "3159f891-7196-41fd-9cd6-ada096b222b9",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ex-category-7 .col",
+      "targets": [
+        ["css=#ex-category-7 .col", "css:finder"],
+        ["xpath=//li[@id='ex-category-7']/div/div[3]", "xpath:idRelative"],
+        ["xpath=//li[6]/div/div[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c28b49f5-cb2e-4ecf-a99b-f0046cb872ad",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=テスト",
+      "targets": [
+        ["linkText=テスト", "linkText"],
+        ["css=#ex-category-7 .col > a", "css:finder"],
+        ["xpath=//a[contains(text(),'テスト')]", "xpath:link"],
+        ["xpath=//li[@id='ex-category-7']/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/category/7')]", "xpath:href"],
+        ["xpath=//li[6]/div/div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'テスト')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a50dd304-a4b6-4a3d-8edb-3798066b9480",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_category_name",
+      "targets": [
+        ["id=admin_category_name", "id"],
+        ["name=admin_category[name]", "name"],
+        ["css=#admin_category_name", "css:finder"],
+        ["xpath=//input[@id='admin_category_name']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5a5fa0b4-8c1c-46d0-8130-a717b0af1b57",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_category_name",
+      "targets": [
+        ["id=admin_category_name", "id"],
+        ["name=admin_category[name]", "name"],
+        ["css=#admin_category_name", "css:finder"],
+        ["xpath=//input[@id='admin_category_name']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "テスト02"
+    }, {
+      "id": "658909bf-1441-49f3-a106-3335af4358ec",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ladda-button",
+      "targets": [
+        ["css=.ladda-button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e4fbea57-6071-4572-bc57-b958cd54ea57",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.ladda-button",
+      "targets": [
+        ["css=.ladda-button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6c1db7f5-3244-4230-99ad-76545b4d6db3",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.action-edit",
+      "targets": [
+        ["css=.action-edit", "css:finder"],
+        ["xpath=//li[@id='ex-category-8']/div/div[4]/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/category/8/edit')]", "xpath:href"],
+        ["xpath=//div[4]/a[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cf2b68bf-ed06-45d4-8a8c-14926f6810b3",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.action-edit",
+      "targets": [
+        ["css=.action-edit", "css:finder"],
+        ["xpath=//li[@id='ex-category-8']/div/div[4]/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/category/8/edit')]", "xpath:href"],
+        ["xpath=//div[4]/a[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a0cb67ae-7314-4784-87f6-6ec28aec1605",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=テスト02",
+      "targets": [
+        ["linkText=テスト02", "linkText"],
+        ["css=.col > a", "css:finder"],
+        ["xpath=//a[contains(text(),'テスト02')]", "xpath:link"],
+        ["xpath=//li[@id='ex-category-8']/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/category/8')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'テスト02')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3a596b99-a66e-42d9-b697-aae3efa46404",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_category_name",
+      "targets": [
+        ["id=admin_category_name", "id"],
+        ["name=admin_category[name]", "name"],
+        ["css=#admin_category_name", "css:finder"],
+        ["xpath=//input[@id='admin_category_name']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "89b7f499-654c-4c81-9970-8f331e02421b",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_category_name",
+      "targets": [
+        ["id=admin_category_name", "id"],
+        ["name=admin_category[name]", "name"],
+        ["css=#admin_category_name", "css:finder"],
+        ["xpath=//input[@id='admin_category_name']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "テスト03"
+    }, {
+      "id": "38b15837-0493-4daf-bde9-f37da6bd9493",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ladda-label",
+      "targets": [
+        ["css=.ladda-label", "css:finder"],
+        ["xpath=//form[@id='form1']/div/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fb852373-1e69-44db-bd0a-43f561ceb5cb",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.ladda-label",
+      "targets": [
+        ["css=.ladda-label", "css:finder"],
+        ["xpath=//form[@id='form1']/div/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "817ef252-57f5-49f2-9d62-d137d00a448b",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.ladda-label",
+      "targets": [
+        ["css=.ladda-label", "css:finder"],
+        ["xpath=//form[@id='form1']/div/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "1ad6019d-9956-4edc-80f7-f75fcb8f6706",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.action-edit",
+      "targets": [
+        ["css=.action-edit", "css:finder"],
+        ["xpath=//li[@id='ex-category-9']/div/div[4]/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/category/9/edit')]", "xpath:href"],
+        ["xpath=//div[4]/a[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "36fa7ff4-b4a8-4d4d-b5d9-887c9bdc4728",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.action-edit",
+      "targets": [
+        ["css=.action-edit", "css:finder"],
+        ["xpath=//li[@id='ex-category-9']/div/div[4]/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/category/9/edit')]", "xpath:href"],
+        ["xpath=//div[4]/a[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ecce9bd1-6b6b-4026-a6ff-8f0a3f2520e0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.fa-close",
+      "targets": [
+        ["css=.fa-close", "css:finder"],
+        ["xpath=//li[@id='ex-category-9']/div/div[4]/div/a/i", "xpath:idRelative"],
+        ["xpath=//div[4]/div/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bb40c5a9-61ae-431c-ba24-691a32f4134d",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=削除",
+      "targets": [
+        ["linkText=削除", "linkText"],
+        ["css=.btn-ec-delete", "css:finder"],
+        ["xpath=//a[contains(text(),'削除')]", "xpath:link"],
+        ["xpath=//div[@id='DeleteModal']/div/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/category/9/delete')]", "xpath:href"],
+        ["xpath=//div/div/div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'削除')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "835df1f6-2607-45db-8d02-c00a3ccdbdb5",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=タグ管理",
+      "targets": [
+        ["linkText=タグ管理", "linkText"],
+        ["css=#nav-product > li:nth-child(5) > a", "css:finder"],
+        ["xpath=//ul[@id='nav-product']/li[5]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/tag')]", "xpath:href"],
+        ["xpath=//li[5]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'タグ管理')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "539042e4-9bfe-467e-b3b6-efcb81ddf055",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_product_tag_name",
+      "targets": [
+        ["id=admin_product_tag_name", "id"],
+        ["name=admin_product_tag[name]", "name"],
+        ["css=#admin_product_tag_name", "css:finder"],
+        ["xpath=//input[@id='admin_product_tag_name']", "xpath:attributes"],
+        ["xpath=//body[@id='page_admin_product_tag']/div/div[3]/div[2]/div/div/div/div/div/ul/li/form/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "70bf8e16-be2e-47a2-abae-2c63d488f23d",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_product_tag_name",
+      "targets": [
+        ["id=admin_product_tag_name", "id"],
+        ["name=admin_product_tag[name]", "name"],
+        ["css=#admin_product_tag_name", "css:finder"],
+        ["xpath=//input[@id='admin_product_tag_name']", "xpath:attributes"],
+        ["xpath=//body[@id='page_admin_product_tag']/div/div[3]/div[2]/div/div/div/div/div/ul/li/form/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "テストタグ"
+    }, {
+      "id": "0b31608f-73e5-49a8-84c5-7fd3d93cc19e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-ec-regular > .ladda-label",
+      "targets": [
+        ["css=.btn-ec-regular > .ladda-label", "css:finder"],
+        ["xpath=//body[@id='page_admin_product_tag']/div/div[3]/div[2]/div/div/div/div/div/ul/li/form/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5c421b48-f031-48cd-b881-f4418e7dfd38",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.btn-ec-regular > .ladda-label",
+      "targets": [
+        ["css=.btn-ec-regular > .ladda-label", "css:finder"],
+        ["xpath=//body[@id='page_admin_product_tag']/div/div[3]/div[3]/div/div/div/div/div/ul/li/form/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//form/div[2]/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'新規作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6cc1d8c5-dbe8-4455-bb3c-82b6d0f27e20",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "css=#ex-tag-4 .col",
+      "targets": [
+        ["css=#ex-tag-4 .col", "css:finder"],
+        ["xpath=//li[@id='ex-tag-4']/div/div[3]", "xpath:idRelative"],
+        ["xpath=//li[3]/div/div[3]", "xpath:position"]
+      ],
+      "value": "128.38333129882812,18"
+    }, {
+      "id": "8d7a7de6-f320-49ef-8624-870f75273a78",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "css=#ex-tag-4 .col",
+      "targets": [
+        ["css=#ex-tag-4 .col", "css:finder"],
+        ["xpath=//li[@id='ex-tag-4']/div/div[3]", "xpath:idRelative"],
+        ["xpath=//li[3]/div/div[3]", "xpath:position"]
+      ],
+      "value": "128.38333129882812,18"
+    }, {
+      "id": "3b3e5115-9565-482c-a2aa-9d27e0ee2e25",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "css=#ex-tag-4 .col",
+      "targets": [
+        ["css=#ex-tag-4 .col", "css:finder"],
+        ["xpath=//li[@id='ex-tag-4']/div/div[3]", "xpath:idRelative"],
+        ["xpath=//li[3]/div/div[3]", "xpath:position"]
+      ],
+      "value": "128.38333129882812,18"
+    }, {
+      "id": "05de52a7-cfab-49a5-8c39-6d2a71cbb7b8",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ex-tag-4 .col",
+      "targets": [
+        ["css=#ex-tag-4 .col", "css:finder"],
+        ["xpath=//li[@id='ex-tag-4']/div/div[3]", "xpath:idRelative"],
+        ["xpath=//li[5]/div/div[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7e205980-b3ab-4701-800a-73c2aef82432",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ex-tag-4 .d-inline-block .fa",
+      "targets": [
+        ["css=#ex-tag-4 .d-inline-block .fa", "css:finder"],
+        ["xpath=//li[@id='ex-tag-4']/div/div[4]/div/a/i", "xpath:idRelative"],
+        ["xpath=//li[5]/div/div[4]/div/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d62f6466-0667-4a8b-acff-051384399b98",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=削除",
+      "targets": [
+        ["linkText=削除", "linkText"],
+        ["css=.btn-ec-delete", "css:finder"],
+        ["xpath=//a[contains(text(),'削除')]", "xpath:link"],
+        ["xpath=//div[@id='DeleteModal']/div/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/tag/4/delete')]", "xpath:href"],
+        ["xpath=//div/div/div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'削除')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2f3d5431-b99c-461c-901c-f829e39a6f55",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=削除",
+      "targets": [
+        ["linkText=削除", "linkText"],
+        ["css=.btn-ec-delete", "css:finder"],
+        ["xpath=//a[contains(text(),'削除')]", "xpath:link"],
+        ["xpath=//div[@id='DeleteModal']/div/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/product/tag/4/delete')]", "xpath:href"],
+        ["xpath=//div/div/div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'削除')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "80f49145-53ca-4fe0-ab0b-b63db4b09017",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=#ex-tag-3 .action-down",
+      "targets": [
+        ["css=#ex-tag-3 .action-down", "css:finder"],
+        ["xpath=//li[@id='ex-tag-3']/div/div[4]/a[2]", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '#')])[13]", "xpath:href"],
+        ["xpath=//div[4]/a[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2bdb2423-01cf-4fcf-8edb-fbc1614520bf",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=#ex-tag-3 .action-down",
+      "targets": [
+        ["css=#ex-tag-3 .action-down", "css:finder"],
+        ["xpath=//li[@id='ex-tag-3']/div/div[4]/a[2]", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '#')])[13]", "xpath:href"],
+        ["xpath=//div[4]/a[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "03a1c2ee-b888-4f75-a34f-85a55f46b9df",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ex-tag-3 .action-edit",
+      "targets": [
+        ["css=#ex-tag-3 .action-edit", "css:finder"],
+        ["xpath=//li[@id='ex-tag-3']/div/div[4]/a[3]", "xpath:idRelative"],
+        ["xpath=//div[4]/a[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "db840b3e-1264-4b21-823c-546eb2aed359",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ex-tag-3 .ladda-label",
+      "targets": [
+        ["css=#ex-tag-3 .ladda-label", "css:finder"],
+        ["xpath=//li[@id='ex-tag-3']/form/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//li[3]/form/div[2]/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'決定')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "05d132d0-dbb4-4ef0-8482-e4eb7c6137e2",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=#ex-tag-3 .ladda-label",
+      "targets": [
+        ["css=#ex-tag-3 .ladda-label", "css:finder"],
+        ["xpath=//li[@id='ex-tag-3']/form/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//li[3]/form/div[2]/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'決定')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "93cadc3b-359e-440c-97b4-a69a41f7c12d",
+    "name": "受注管理",
+    "commands": [{
+      "id": "2323aade-d77a-415d-8eb1-98988122a67b",
+      "comment": "",
+      "command": "open",
+      "target": "https://ec-cube/admin/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "708266cf-87e2-42a9-b706-029508a5a7de",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1160x821",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "77cf7e8f-3620-4c35-905b-0e369ea5ded0",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=受注管理",
+      "targets": [
+        ["linkText=受注管理", "linkText"],
+        ["css=.c-mainNavArea__navItem:nth-child(3) > .c-mainNavArea__navItemTitle", "css:finder"],
+        ["xpath=//body[@id='page_admin_homepage']/div/div/nav/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '#nav-order')]", "xpath:href"],
+        ["xpath=//nav/ul/li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,' 受注管理')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "11e67ad6-7853-4201-a6a3-9f55b9e1bb19",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=受注一覧",
+      "targets": [
+        ["linkText=受注一覧", "linkText"],
+        ["css=#nav-order > li:nth-child(1) > a", "css:finder"],
+        ["xpath=//ul[@id='nav-order']/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/order')]", "xpath:href"],
+        ["xpath=//li[3]/ul/li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'受注一覧')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8865a6f5-b806-44fb-8fb8-2856a5a6e291",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=受注登録",
+      "targets": [
+        ["linkText=受注登録", "linkText"],
+        ["css=.is-active", "css:finder"],
+        ["xpath=//ul[@id='nav-order']/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/order/new')]", "xpath:href"],
+        ["xpath=//li[3]/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'受注登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9c92cb52-4b77-4acc-8ba3-0d92a4256802",
+      "comment": "",
+      "command": "select",
+      "target": "id=order_Payment",
+      "targets": [],
+      "value": "label=郵便振替"
+    }, {
+      "id": "b75bb272-b344-4eb8-bb25-b472571dac33",
+      "comment": "",
+      "command": "click",
+      "target": "css=#order_Payment > option:nth-child(4)",
+      "targets": [
+        ["css=#order_Payment > option:nth-child(4)", "css:finder"],
+        ["xpath=//option[@value='1']", "xpath:attributes"],
+        ["xpath=//select[@id='order_Payment']/option[4]", "xpath:idRelative"],
+        ["xpath=//option[4]", "xpath:position"],
+        ["xpath=//option[contains(.,'郵便振替')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "020513f3-e368-4706-9948-aa6c451c4a4e",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_name_name01",
+      "targets": [
+        ["id=order_name_name01", "id"],
+        ["name=order[name][name01]", "name"],
+        ["css=#order_name_name01", "css:finder"],
+        ["xpath=//input[@id='order_name_name01']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div/div[2]/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div[2]/div/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "504b9fe8-9c91-48df-8850-7f1e37eaa2f4",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_name_name01",
+      "targets": [
+        ["id=order_name_name01", "id"],
+        ["name=order[name][name01]", "name"],
+        ["css=#order_name_name01", "css:finder"],
+        ["xpath=//input[@id='order_name_name01']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div/div[2]/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div[2]/div/div/div/input", "xpath:position"]
+      ],
+      "value": "石"
+    }, {
+      "id": "1f96f4fc-0b42-431c-82b0-8b91d0c69ba4",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_name_name02",
+      "targets": [
+        ["id=order_name_name02", "id"],
+        ["name=order[name][name02]", "name"],
+        ["css=#order_name_name02", "css:finder"],
+        ["xpath=//input[@id='order_name_name02']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div/div[2]/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div[2]/div/div/div[2]/input", "xpath:position"]
+      ],
+      "value": "給部"
+    }, {
+      "id": "9000dcbd-8f34-4cbf-9ecf-b34c2a734e43",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_kana_kana01",
+      "targets": [
+        ["id=order_kana_kana01", "id"],
+        ["name=order[kana][kana01]", "name"],
+        ["css=#order_kana_kana01", "css:finder"],
+        ["xpath=//input[@id='order_kana_kana01']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div/div[3]/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div[3]/div/div/div/input", "xpath:position"]
+      ],
+      "value": "イーシー"
+    }, {
+      "id": "0cafb072-8940-4cd6-9902-e58d22daa1f1",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_kana_kana02",
+      "targets": [
+        ["id=order_kana_kana02", "id"],
+        ["name=order[kana][kana02]", "name"],
+        ["css=#order_kana_kana02", "css:finder"],
+        ["xpath=//input[@id='order_kana_kana02']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div/div[3]/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div[2]/input", "xpath:position"]
+      ],
+      "value": "キューブ"
+    }, {
+      "id": "7b56c03e-f515-496d-b93e-931d90526a4d",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_postal_code",
+      "targets": [
+        ["id=order_postal_code", "id"],
+        ["name=order[postal_code]", "name"],
+        ["css=#order_postal_code", "css:finder"],
+        ["xpath=//input[@id='order_postal_code']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div/div[4]/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/div/input", "xpath:position"]
+      ],
+      "value": "5300001"
+    }, {
+      "id": "0f235bb5-4b5a-46df-a8db-7c2e4684fb40",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_address_addr02",
+      "targets": [
+        ["id=order_address_addr02", "id"],
+        ["name=order[address][addr02]", "name"],
+        ["css=#order_address_addr02", "css:finder"],
+        ["xpath=//input[@id='order_address_addr02']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div/div[4]/div/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d69af810-7069-4c34-9543-d9fe1a6a30af",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_address_addr02",
+      "targets": [
+        ["id=order_address_addr02", "id"],
+        ["name=order[address][addr02]", "name"],
+        ["css=#order_address_addr02", "css:finder"],
+        ["xpath=//input[@id='order_address_addr02']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div/div[4]/div/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/input", "xpath:position"]
+      ],
+      "value": "2"
+    }, {
+      "id": "43048b45-1bda-4746-b641-d2557ca08ded",
+      "comment": "",
+      "command": "click",
+      "target": "css=.card-body:nth-child(2)",
+      "targets": [
+        ["css=.card-body:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='ordererInfo']/div", "xpath:idRelative"],
+        ["xpath=//form/div/div/div/div[2]/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "61ff5889-0ace-4944-b9b1-af99b91c17c6",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_email",
+      "targets": [
+        ["id=order_email", "id"],
+        ["name=order[email]", "name"],
+        ["css=#order_email", "css:finder"],
+        ["xpath=//input[@id='order_email']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5dbc8c65-3845-44b5-8e57-37bc9acffb93",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_email",
+      "targets": [
+        ["id=order_email", "id"],
+        ["name=order[email]", "name"],
+        ["css=#order_email", "css:finder"],
+        ["xpath=//input[@id='order_email']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "ec-cube-guest@example.com"
+    }, {
+      "id": "ec027f10-fe40-43cc-9f1b-293c393c6421",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_phone_number",
+      "targets": [
+        ["id=order_phone_number", "id"],
+        ["name=order[phone_number]", "name"],
+        ["css=#order_phone_number", "css:finder"],
+        ["xpath=//input[@id='order_phone_number']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div[2]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "333333333"
+    }, {
+      "id": "e33e8da6-9e22-45ae-b12e-c9a28652bef0",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_company_name",
+      "targets": [
+        ["id=order_company_name", "id"],
+        ["name=order[company_name]", "name"],
+        ["css=#order_company_name", "css:finder"],
+        ["xpath=//input[@id='order_company_name']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div[2]/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[3]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "90ed8f2e-3106-4dbf-8661-9d7cfc10ef6c",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_company_name",
+      "targets": [
+        ["id=order_company_name", "id"],
+        ["name=order[company_name]", "name"],
+        ["css=#order_company_name", "css:finder"],
+        ["xpath=//input[@id='order_company_name']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div[2]/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[3]/div/input", "xpath:position"]
+      ],
+      "value": "イーシーキューブ"
+    }, {
+      "id": "cf1f8a78-83dc-48b1-b8b1-8b43329c038b",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_message",
+      "targets": [
+        ["id=order_message", "id"],
+        ["name=order[message]", "name"],
+        ["css=#order_message", "css:finder"],
+        ["xpath=//textarea[@id='order_message']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div[2]/div[4]/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "お問い合わせ内容"
+    }, {
+      "id": "8e48b5e8-bfe4-40b8-9798-efcac2d3a612",
+      "comment": "",
+      "command": "click",
+      "target": "css=.copy-customer",
+      "targets": [
+        ["css=.copy-customer", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div/div/div[3]/div[2]/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'注文者情報をコピー')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "864be4c7-d5f0-4259-91f2-41ed7da4ecd8",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_Shipping_address_addr02",
+      "targets": [
+        ["id=order_Shipping_address_addr02", "id"],
+        ["name=order[Shipping][address][addr02]", "name"],
+        ["css=#order_Shipping_address_addr02", "css:finder"],
+        ["xpath=//input[@id='order_Shipping_address_addr02']", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div[2]/div/div[3]/div/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div[4]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e3912008-a704-4e3a-8887-bb210c512843",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_Shipping_address_addr02",
+      "targets": [
+        ["id=order_Shipping_address_addr02", "id"],
+        ["name=order[Shipping][address][addr02]", "name"],
+        ["css=#order_Shipping_address_addr02", "css:finder"],
+        ["xpath=//input[@id='order_Shipping_address_addr02']", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div[2]/div/div[3]/div/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div[4]/div/input", "xpath:position"]
+      ],
+      "value": "2333"
+    }, {
+      "id": "33af45ed-2b53-40dc-9407-c06d3230157f",
+      "comment": "",
+      "command": "select",
+      "target": "id=order_Shipping_shipping_delivery_date_year",
+      "targets": [],
+      "value": "label=2015"
+    }, {
+      "id": "498ec859-1f9d-4ad3-b88b-d0092749c319",
+      "comment": "",
+      "command": "click",
+      "target": "css=#order_Shipping_shipping_delivery_date_year > option:nth-child(2)",
+      "targets": [
+        ["css=#order_Shipping_shipping_delivery_date_year > option:nth-child(2)", "css:finder"],
+        ["xpath=//option[@value='2015']", "xpath:attributes"],
+        ["xpath=//select[@id='order_Shipping_shipping_delivery_date_year']/option[2]", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'2015')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a4318c2e-30ae-4d94-95a8-4598d675898a",
+      "comment": "",
+      "command": "select",
+      "target": "id=order_Shipping_shipping_delivery_date_year",
+      "targets": [],
+      "value": "label=2020"
+    }, {
+      "id": "d195e485-09c7-4ecc-a2fa-4e27924e5ab4",
+      "comment": "",
+      "command": "click",
+      "target": "css=#order_Shipping_shipping_delivery_date_year > option:nth-child(7)",
+      "targets": [
+        ["css=#order_Shipping_shipping_delivery_date_year > option:nth-child(7)", "css:finder"],
+        ["xpath=//option[@value='2020']", "xpath:attributes"],
+        ["xpath=//select[@id='order_Shipping_shipping_delivery_date_year']/option[7]", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/select/option[7]", "xpath:position"],
+        ["xpath=//option[contains(.,'2020')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e20bc0e2-6ec7-4614-bdfc-8dbf70624e58",
+      "comment": "",
+      "command": "select",
+      "target": "id=order_Shipping_shipping_delivery_date_month",
+      "targets": [],
+      "value": "label=08"
+    }, {
+      "id": "0d880539-a273-42ec-87b2-e59b082a8671",
+      "comment": "",
+      "command": "click",
+      "target": "css=#order_Shipping_shipping_delivery_date_month > option:nth-child(9)",
+      "targets": [
+        ["css=#order_Shipping_shipping_delivery_date_month > option:nth-child(9)", "css:finder"],
+        ["xpath=(//option[@value='8'])[3]", "xpath:attributes"],
+        ["xpath=//select[@id='order_Shipping_shipping_delivery_date_month']/option[9]", "xpath:idRelative"],
+        ["xpath=//select[2]/option[9]", "xpath:position"],
+        ["xpath=//option[contains(.,'08')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "574b250e-e3a6-4439-b42d-ba4a3f82823a",
+      "comment": "",
+      "command": "select",
+      "target": "id=order_Shipping_shipping_delivery_date_day",
+      "targets": [],
+      "value": "label=19"
+    }, {
+      "id": "1404e420-c197-41f9-9f9a-1d939e5b3320",
+      "comment": "",
+      "command": "click",
+      "target": "css=#order_Shipping_shipping_delivery_date_day > option:nth-child(20)",
+      "targets": [
+        ["css=#order_Shipping_shipping_delivery_date_day > option:nth-child(20)", "css:finder"],
+        ["xpath=(//option[@value='19'])[3]", "xpath:attributes"],
+        ["xpath=//select[@id='order_Shipping_shipping_delivery_date_day']/option[20]", "xpath:idRelative"],
+        ["xpath=//select[3]/option[20]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a49d78c4-7c45-4457-8ae2-fd19d699b919",
+      "comment": "",
+      "command": "select",
+      "target": "id=order_Shipping_DeliveryTime",
+      "targets": [],
+      "value": "label=午前"
+    }, {
+      "id": "367c6906-7558-42ee-bf72-613930bc016b",
+      "comment": "",
+      "command": "click",
+      "target": "css=#order_Shipping_DeliveryTime > option:nth-child(2)",
+      "targets": [
+        ["css=#order_Shipping_DeliveryTime > option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='1'])[7]", "xpath:attributes"],
+        ["xpath=//select[@id='order_Shipping_DeliveryTime']/option[2]", "xpath:idRelative"],
+        ["xpath=//div[5]/div[2]/div/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'午前')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ffd5b0c9-bcf9-4623-9781-f67511a6823a",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_Shipping_note",
+      "targets": [
+        ["id=order_Shipping_note", "id"],
+        ["name=order[Shipping][note]", "name"],
+        ["css=#order_Shipping_note", "css:finder"],
+        ["xpath=//textarea[@id='order_Shipping_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div[2]/div[4]/div[3]/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/div/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "384d30fe-506d-4ccb-ade1-07cab31dce2f",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_Shipping_note",
+      "targets": [
+        ["id=order_Shipping_note", "id"],
+        ["name=order[Shipping][note]", "name"],
+        ["css=#order_Shipping_note", "css:finder"],
+        ["xpath=//textarea[@id='order_Shipping_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div[2]/div[4]/div[3]/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/div/textarea", "xpath:position"]
+      ],
+      "value": "出荷メモ"
+    }, {
+      "id": "c9d2994f-11b2-4363-a058-7637af46d9c8",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=商品を追加",
+      "targets": [
+        ["linkText=商品を追加", "linkText"],
+        ["css=.add", "css:finder"],
+        ["xpath=//a[contains(text(),'商品を追加')]", "xpath:link"],
+        ["xpath=//div[@id='orderItem']/div/div/div/a", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'商品を追加')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "174106af-2729-4324-a681-80a67d59b2a1",
+      "comment": "",
+      "command": "click",
+      "target": "id=searchProductModalButton",
+      "targets": [
+        ["id=searchProductModalButton", "id"],
+        ["css=#searchProductModalButton", "css:finder"],
+        ["xpath=//button[@id='searchProductModalButton']", "xpath:attributes"],
+        ["xpath=//div[@id='addProduct']/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/div/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6b58a636-2d05-4fd4-86b6-18adb489ca70",
+      "comment": "",
+      "command": "select",
+      "target": "id=classcategory_id14",
+      "targets": [],
+      "value": "label=16mm × 16mm"
+    }, {
+      "id": "47b135c7-6bbd-4c23-9816-f104b60016b7",
+      "comment": "",
+      "command": "click",
+      "target": "css=#classcategory_id14 > option:nth-child(2)",
+      "targets": [
+        ["css=#classcategory_id14 > option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='4'])[7]", "xpath:attributes"],
+        ["xpath=//select[@id='classcategory_id14']/option[2]", "xpath:idRelative"],
+        ["xpath=//td[3]/div/div[2]/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'16mm × 16mm')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b637fa81-1f35-48cc-918a-fe557b9282d4",
+      "comment": "",
+      "command": "select",
+      "target": "name=classcategory_id2",
+      "targets": [],
+      "value": "label=バニラ"
+    }, {
+      "id": "a951fc89-36a9-4ade-b83a-23fad34b556f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.row:nth-child(2) > .col-8 option:nth-child(2)",
+      "targets": [
+        ["css=.row:nth-child(2) > .col-8 option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='3'])[7]", "xpath:attributes"],
+        ["xpath=//div[@id='searchProductModalList']/table/tbody/tr/td[3]/div[2]/div[2]/select/option[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'バニラ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "431ad801-1e14-43bc-9b4b-3c42ae64d986",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(2) .fa",
+      "targets": [
+        ["css=tr:nth-child(2) .fa", "css:finder"],
+        ["xpath=//div[@id='searchProductModalList']/table/tbody/tr/td[4]/button/i", "xpath:idRelative"],
+        ["xpath=//button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e5375fe7-9bd3-4d78-bfce-fb0614997286",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=その他の明細を追加",
+      "targets": [
+        ["linkText=その他の明細を追加", "linkText"],
+        ["css=.btn-ec-regular:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'その他の明細を追加')]", "xpath:link"],
+        ["xpath=//div[@id='orderItem']/div/div/div/a[2]", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div/div/a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'その他の明細を追加')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d53aff3b-a7fe-4a1e-9a92-e3b022f856ab",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(4) .fa",
+      "targets": [
+        ["css=tr:nth-child(4) .fa", "css:finder"],
+        ["xpath=//div[@id='searchOrderItemTypeList']/table/tbody/tr[2]/td[3]/button/i", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[3]/button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c629cc5d-d145-485d-ab67-90601af72b88",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_OrderItems_2_price",
+      "targets": [
+        ["id=order_OrderItems_2_price", "id"],
+        ["name=order[OrderItems][2][price]", "name"],
+        ["css=#order_OrderItems_2_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_2_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[2]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f4da6357-2aa3-4317-8a74-cf9fce7631fa",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_OrderItems_2_price",
+      "targets": [
+        ["id=order_OrderItems_2_price", "id"],
+        ["name=order[OrderItems][2][price]", "name"],
+        ["css=#order_OrderItems_2_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_2_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[2]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e93f429a-639e-451b-a80b-1538da17cf7e",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=order_OrderItems_2_price",
+      "targets": [
+        ["id=order_OrderItems_2_price", "id"],
+        ["name=order[OrderItems][2][price]", "name"],
+        ["css=#order_OrderItems_2_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_2_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[2]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "89f9652a-af62-44fc-bbb9-17ce75eac42f",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_OrderItems_2_price",
+      "targets": [
+        ["id=order_OrderItems_2_price", "id"],
+        ["name=order[OrderItems][2][price]", "name"],
+        ["css=#order_OrderItems_2_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_2_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[2]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "1000"
+    }, {
+      "id": "0cf60fbe-95e7-4525-960e-78e64a7df4b9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.justify-content-end:nth-child(4)",
+      "targets": [
+        ["css=.justify-content-end:nth-child(4)", "css:finder"],
+        ["xpath=//div[@id='orderItem']/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6eadf4ac-1bda-4971-a4a9-8b3680ff186f",
+      "comment": "",
+      "command": "click",
+      "target": "css=#calculate > .ladda-label",
+      "targets": [
+        ["css=#calculate > .ladda-label", "css:finder"],
+        ["xpath=//button[@id='calculate']/span", "xpath:idRelative"],
+        ["xpath=//div[2]/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'計算結果を更新')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c989a63d-e334-4c66-ba6b-e63e8074e6c1",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=#calculate > .ladda-label",
+      "targets": [
+        ["css=#calculate > .ladda-label", "css:finder"],
+        ["xpath=//button[@id='calculate']/span", "xpath:idRelative"],
+        ["xpath=//div[2]/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'計算結果を更新')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fa3a1efc-7ab6-4b09-9c1b-6628fd60e8e1",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_note",
+      "targets": [
+        ["id=order_note", "id"],
+        ["name=order[note]", "name"],
+        ["css=#order_note", "css:finder"],
+        ["xpath=//textarea[@id='order_note']", "xpath:attributes"],
+        ["xpath=//div[@id='freeArea']/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[2]/div/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e3c207ab-8364-42a6-b93e-5f9334afb639",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_note",
+      "targets": [
+        ["id=order_note", "id"],
+        ["name=order[note]", "name"],
+        ["css=#order_note", "css:finder"],
+        ["xpath=//textarea[@id='order_note']", "xpath:attributes"],
+        ["xpath=//div[@id='freeArea']/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[2]/div/textarea", "xpath:position"]
+      ],
+      "value": "ショップ用メモ"
+    }, {
+      "id": "eea2a21a-8e3d-4db8-b82f-cb32efc3fee5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.px-5:nth-child(1)",
+      "targets": [
+        ["css=.px-5:nth-child(1)", "css:finder"],
+        ["xpath=(//button[@name='mode'])[2]", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div[2]/div/div/div[2]/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8c5c9245-6d80-4792-8f17-d5642a31333e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.c-baseLink > span",
+      "targets": [
+        ["css=.c-baseLink > span", "css:finder"],
+        ["xpath=//form[@id='form1']/div[2]/div/div/div/div/a/span", "xpath:idRelative"],
+        ["xpath=//div/div/a/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d08d18dc-1e1d-4417-98c7-8750488fdfe3",
+      "comment": "",
+      "command": "click",
+      "target": "css=#admin_search_order_status > .form-check:nth-child(1) > .form-check-label",
+      "targets": [
+        ["css=#admin_search_order_status > .form-check:nth-child(1) > .form-check-label", "css:finder"],
+        ["xpath=//div[@id='admin_search_order_status']/div/label", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/label", "xpath:position"],
+        ["xpath=//label[contains(.,'新規受付')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "dbfa1195-7d64-464f-9679-d850a4ede401",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ladda-label",
+      "targets": [
+        ["css=.ladda-label", "css:finder"],
+        ["xpath=//button[@id='search_submit']/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "68852b37-3d8c-4d07-b8c4-a9258a949192",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3",
+      "targets": [
+        ["css=.mb-3", "css:finder"],
+        ["xpath=//form[@id='search_form']/div/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//form/div/div/div/div[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6904dd1c-6a28-405f-a5c7-0c4a7849bc18",
+      "comment": "",
+      "command": "click",
+      "target": "css=#admin_search_order_status > .form-check:nth-child(1) > .form-check-label",
+      "targets": [
+        ["css=#admin_search_order_status > .form-check:nth-child(1) > .form-check-label", "css:finder"],
+        ["xpath=//div[@id='admin_search_order_status']/div/label", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/label", "xpath:position"],
+        ["xpath=//label[contains(.,'新規受付')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "33975424-5595-4f59-b193-f9b999d91079",
+      "comment": "",
+      "command": "click",
+      "target": "css=.c-outsideBlock__contents:nth-child(3) > .row",
+      "targets": [
+        ["css=.c-outsideBlock__contents:nth-child(3) > .row", "css:finder"],
+        ["xpath=//form[@id='search_form']/div[3]/div", "xpath:idRelative"],
+        ["xpath=//form/div[3]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1bdbad2c-6b7b-4ddb-853c-de2a0f678bfb",
+      "comment": "",
+      "command": "click",
+      "target": "id=search_submit",
+      "targets": [
+        ["id=search_submit", "id"],
+        ["css=#search_submit", "css:finder"],
+        ["xpath=//button[@id='search_submit']", "xpath:attributes"],
+        ["xpath=//form[@id='search_form']/div[3]/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'検索')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f9a2d10c-285e-4c6f-a236-2d18d0686853",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=search_submit",
+      "targets": [
+        ["id=search_submit", "id"],
+        ["css=#search_submit", "css:finder"],
+        ["xpath=//button[@id='search_submit']", "xpath:attributes"],
+        ["xpath=//form[@id='search_form']/div[3]/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'検索')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e3822151-431f-496e-b164-aa3c08519a0e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=受注登録",
+      "targets": [
+        ["linkText=受注登録", "linkText"],
+        ["css=#nav-order > li:nth-child(2) > a", "css:finder"],
+        ["xpath=//ul[@id='nav-order']/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/order/new')]", "xpath:href"],
+        ["xpath=//li[3]/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'受注登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "30c6aaae-6a67-4739-909b-e6ccd6773fc1",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,200.13333129882812)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2896e79c-a705-4918-b406-ca07de071087",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=会員から検索・入力",
+      "targets": [
+        ["linkText=会員から検索・入力", "linkText"],
+        ["css=.px-3", "css:finder"],
+        ["xpath=//a[contains(text(),'会員から検索・入力')]", "xpath:link"],
+        ["xpath=//div[@id='ordererInfo']/div/div/div/a", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'会員から検索・入力')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d935888e-b2b2-44bc-ae88-76cea38b8426",
+      "comment": "",
+      "command": "click",
+      "target": "id=searchCustomerModalButton",
+      "targets": [
+        ["id=searchCustomerModalButton", "id"],
+        ["css=#searchCustomerModalButton", "css:finder"],
+        ["xpath=//button[@id='searchCustomerModalButton']", "xpath:attributes"],
+        ["xpath=//div[@id='searchCustomerModal']/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'検索')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "368ca419-c115-44ed-913b-95774a1aba3b",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(1) .btn",
+      "targets": [
+        ["css=tr:nth-child(1) .btn", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='searchCustomerModalList']/table/tbody/tr/td[5]/div/button", "xpath:idRelative"],
+        ["xpath=//td[5]/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ce4bb159-1c9f-4055-abd7-97bd39fa484c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.copy-customer",
+      "targets": [
+        ["css=.copy-customer", "css:finder"],
+        ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div/div/div[3]/div[2]/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'注文者情報をコピー')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "538fb061-9b4f-4e57-8182-327ae17e7ca7",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,953.7999877929688)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3b91c647-b9c6-450f-86de-c26b8e31674c",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_Shipping_tracking_number",
+      "targets": [
+        ["id=order_Shipping_tracking_number", "id"],
+        ["name=order[Shipping][tracking_number]", "name"],
+        ["css=#order_Shipping_tracking_number", "css:finder"],
+        ["xpath=//input[@id='order_Shipping_tracking_number']", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div[2]/div[4]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0ec5b72b-0a37-40e2-9065-a46db640dcbd",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_Shipping_tracking_number",
+      "targets": [
+        ["id=order_Shipping_tracking_number", "id"],
+        ["name=order[Shipping][tracking_number]", "name"],
+        ["css=#order_Shipping_tracking_number", "css:finder"],
+        ["xpath=//input[@id='order_Shipping_tracking_number']", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div[2]/div[4]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/input", "xpath:position"]
+      ],
+      "value": "999999999"
+    }, {
+      "id": "16976b7d-c1b7-43b8-b724-7c655783a6f8",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_Shipping_note",
+      "targets": [
+        ["id=order_Shipping_note", "id"],
+        ["name=order[Shipping][note]", "name"],
+        ["css=#order_Shipping_note", "css:finder"],
+        ["xpath=//textarea[@id='order_Shipping_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div[2]/div[4]/div[3]/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/div/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "378bed17-c663-4bed-8b61-c72ff1008476",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_Shipping_note",
+      "targets": [
+        ["id=order_Shipping_note", "id"],
+        ["name=order[Shipping][note]", "name"],
+        ["css=#order_Shipping_note", "css:finder"],
+        ["xpath=//textarea[@id='order_Shipping_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div[2]/div[4]/div[3]/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/div/textarea", "xpath:position"]
+      ],
+      "value": "出荷メモ"
+    }, {
+      "id": "3401e07f-7b52-4d29-85c5-ce080a0779bc",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=商品を追加",
+      "targets": [
+        ["linkText=商品を追加", "linkText"],
+        ["css=.add", "css:finder"],
+        ["xpath=//a[contains(text(),'商品を追加')]", "xpath:link"],
+        ["xpath=//div[@id='orderItem']/div/div/div/a", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'商品を追加')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "bc82da26-3f8d-4e01-b304-c4b1b66af21e",
+      "comment": "",
+      "command": "click",
+      "target": "id=searchProductModalButton",
+      "targets": [
+        ["id=searchProductModalButton", "id"],
+        ["css=#searchProductModalButton", "css:finder"],
+        ["xpath=//button[@id='searchProductModalButton']", "xpath:attributes"],
+        ["xpath=//div[@id='addProduct']/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/div/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f516fdea-3609-4013-92ef-8561b5942818",
+      "comment": "",
+      "command": "select",
+      "target": "id=classcategory_id14",
+      "targets": [],
+      "value": "label=32mm × 32mm"
+    }, {
+      "id": "ef7bc3c7-feac-4c5d-8454-5152c5ecb106",
+      "comment": "",
+      "command": "click",
+      "target": "css=#classcategory_id14 > option:nth-child(2)",
+      "targets": [
+        ["css=#classcategory_id14 > option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='5'])[6]", "xpath:attributes"],
+        ["xpath=//select[@id='classcategory_id14']/option[2]", "xpath:idRelative"],
+        ["xpath=//td[3]/div/div[2]/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'32mm × 32mm')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ece13a31-1122-43e3-984f-54a52f7f984f",
+      "comment": "",
+      "command": "select",
+      "target": "name=classcategory_id2",
+      "targets": [],
+      "value": "label=チョコ"
+    }, {
+      "id": "2953a4d2-2774-44b5-b04c-9ce7b0364948",
+      "comment": "",
+      "command": "click",
+      "target": "css=.row:nth-child(2) > .col-8 option:nth-child(2)",
+      "targets": [
+        ["css=.row:nth-child(2) > .col-8 option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='1'])[9]", "xpath:attributes"],
+        ["xpath=//div[@id='searchProductModalList']/table/tbody/tr/td[3]/div[2]/div[2]/select/option[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'チョコ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d7dbf528-05fd-4e8a-8e8c-aee55d023964",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(2) > .align-middle .fa",
+      "targets": [
+        ["css=tr:nth-child(2) > .align-middle .fa", "css:finder"],
+        ["xpath=//div[@id='searchProductModalList']/table/tbody/tr/td[4]/button/i", "xpath:idRelative"],
+        ["xpath=//td[4]/button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e82ba8b3-8921-477e-92f3-67fc9fdf0570",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=tr:nth-child(2) > .align-middle .fa",
+      "targets": [
+        ["css=tr:nth-child(2) > .align-middle .fa", "css:finder"],
+        ["xpath=//div[@id='searchProductModalList']/table/tbody/tr/td[4]/button/i", "xpath:idRelative"],
+        ["xpath=//td[4]/button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c0f58415-6edf-4f41-b699-27ebf512d0a0",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_note",
+      "targets": [
+        ["id=order_note", "id"],
+        ["name=order[note]", "name"],
+        ["css=#order_note", "css:finder"],
+        ["xpath=//textarea[@id='order_note']", "xpath:attributes"],
+        ["xpath=//div[@id='freeArea']/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[2]/div/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "16aac390-9d39-48c4-a9c6-5b03fbbadb91",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_note",
+      "targets": [
+        ["id=order_note", "id"],
+        ["name=order[note]", "name"],
+        ["css=#order_note", "css:finder"],
+        ["xpath=//textarea[@id='order_note']", "xpath:attributes"],
+        ["xpath=//div[@id='freeArea']/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[2]/div/textarea", "xpath:position"]
+      ],
+      "value": "ショップメモ"
+    }, {
+      "id": "ee35d224-8e2f-4694-8101-7ae327d86df1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.px-5:nth-child(1)",
+      "targets": [
+        ["css=.px-5:nth-child(1)", "css:finder"],
+        ["xpath=(//button[@name='mode'])[2]", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div[2]/div/div/div[2]/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b006fc9b-6c87-4610-8195-c29da4ae5030",
+      "comment": "",
+      "command": "click",
+      "target": "css=.fa-angle-down:nth-child(1)",
+      "targets": [
+        ["css=.fa-angle-down:nth-child(1)", "css:finder"],
+        ["xpath=//form[@id='form1']/div/div/div/div[2]/div/div/div[3]/a/i", "xpath:idRelative"],
+        ["xpath=//div[3]/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b3ad842a-2214-4864-aa5b-4a69c1547512",
+      "comment": "",
+      "command": "click",
+      "target": "id=shipping-add",
+      "targets": [
+        ["id=shipping-add", "id"],
+        ["linkText=出荷情報の追加", "linkText"],
+        ["css=#shipping-add", "css:finder"],
+        ["xpath=//a[contains(text(),'出荷情報の追加')]", "xpath:link"],
+        ["xpath=//a[@id='shipping-add']", "xpath:attributes"],
+        ["xpath=//div[@id='shippingInfo']/div/div/div[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/shipping/3/edit')]", "xpath:href"],
+        ["xpath=//div[2]/div/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'出荷情報の追加')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "32d01e56-baa9-44a7-87f4-d24304ec94e5",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=保存せずに移動",
+      "targets": [
+        ["linkText=保存せずに移動", "linkText"],
+        ["css=.btn-ec-sub:nth-child(2)", "css:finder"],
+        ["xpath=//a[contains(text(),'保存せずに移動')]", "xpath:link"],
+        ["xpath=//div[@id='confirmFormChangeModal']/div/div/div[3]/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/shipping/3/edit')]", "xpath:href"],
+        ["xpath=//div[3]/a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'保存せずに移動')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f6aa4f27-08dc-4ea0-b78a-fcf1f2b2c382",
+      "comment": "",
+      "command": "click",
+      "target": "id=addShipping",
+      "targets": [
+        ["id=addShipping", "id"],
+        ["css=#addShipping", "css:finder"],
+        ["xpath=//button[@id='addShipping']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div[4]/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'出荷情報の追加')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b12eeaab-854d-4317-9a1b-7cdac0151e44",
+      "comment": "",
+      "command": "click",
+      "target": "css=#shipmentOverview_1 .col-6 > .row:nth-child(1) .col:nth-child(1)",
+      "targets": [
+        ["css=#shipmentOverview_1 .col-6 > .row:nth-child(1) .col:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div/div/div/div/div", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div/div/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d4d5dfb8-907f-4992-9af4-13df2ecf43ed",
+      "comment": "",
+      "command": "click",
+      "target": "id=form_shippings_1_name_name01",
+      "targets": [
+        ["id=form_shippings_1_name_name01", "id"],
+        ["name=form[shippings][1][name][name01]", "name"],
+        ["css=#form_shippings_1_name_name01", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_name_name01']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b82f1b71-8dc4-4fbc-b6cb-6451c26a4b3f",
+      "comment": "",
+      "command": "type",
+      "target": "id=form_shippings_1_name_name01",
+      "targets": [
+        ["id=form_shippings_1_name_name01", "id"],
+        ["name=form[shippings][1][name][name01]", "name"],
+        ["css=#form_shippings_1_name_name01", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_name_name01']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": "石井"
+    }, {
+      "id": "d1c4669c-8562-48e2-a1e9-c2b5ef09eed6",
+      "comment": "",
+      "command": "type",
+      "target": "id=form_shippings_1_name_name02",
+      "targets": [
+        ["id=form_shippings_1_name_name02", "id"],
+        ["name=form[shippings][1][name][name02]", "name"],
+        ["css=#form_shippings_1_name_name02", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_name_name02']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div/div/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div/div/div/div/div[2]/input", "xpath:position"]
+      ],
+      "value": "キューブ"
+    }, {
+      "id": "8183ee82-caf3-45be-a010-e42206ba546f",
+      "comment": "",
+      "command": "type",
+      "target": "id=form_shippings_1_kana_kana01",
+      "targets": [
+        ["id=form_shippings_1_kana_kana01", "id"],
+        ["name=form[shippings][1][kana][kana01]", "name"],
+        ["css=#form_shippings_1_kana_kana01", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_kana_kana01']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div/div[2]/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div/div[2]/div/div/div/input", "xpath:position"]
+      ],
+      "value": "イシイ"
+    }, {
+      "id": "5f3080be-d012-49db-9459-92cf8150fe46",
+      "comment": "",
+      "command": "type",
+      "target": "id=form_shippings_1_kana_kana02",
+      "targets": [
+        ["id=form_shippings_1_kana_kana02", "id"],
+        ["name=form[shippings][1][kana][kana02]", "name"],
+        ["css=#form_shippings_1_kana_kana02", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_kana_kana02']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div/div[2]/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div/div[2]/div/div/div[2]/input", "xpath:position"]
+      ],
+      "value": "キューブ"
+    }, {
+      "id": "21f72fe4-d2dd-4460-85dd-3c4aa9359408",
+      "comment": "",
+      "command": "type",
+      "target": "id=form_shippings_1_postal_code",
+      "targets": [
+        ["id=form_shippings_1_postal_code", "id"],
+        ["name=form[shippings][1][postal_code]", "name"],
+        ["css=#form_shippings_1_postal_code", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_postal_code']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div/div[3]/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div/div[3]/div/div/div/input", "xpath:position"]
+      ],
+      "value": "5300002"
+    }, {
+      "id": "fad77f5b-01dd-4956-83f2-80aa79dc8773",
+      "comment": "",
+      "command": "click",
+      "target": "id=form_shippings_1_address_addr02",
+      "targets": [
+        ["id=form_shippings_1_address_addr02", "id"],
+        ["name=form[shippings][1][address][addr02]", "name"],
+        ["css=#form_shippings_1_address_addr02", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_address_addr02']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div/div[3]/div/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div/div[3]/div/div[4]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ad4fcefd-3e8e-417c-867d-ed1050f75810",
+      "comment": "",
+      "command": "type",
+      "target": "id=form_shippings_1_address_addr02",
+      "targets": [
+        ["id=form_shippings_1_address_addr02", "id"],
+        ["name=form[shippings][1][address][addr02]", "name"],
+        ["css=#form_shippings_1_address_addr02", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_address_addr02']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div/div[3]/div/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div/div[3]/div/div[4]/div/input", "xpath:position"]
+      ],
+      "value": "2"
+    }, {
+      "id": "a2924fde-f0c9-4f8b-b069-570f289c1604",
+      "comment": "",
+      "command": "type",
+      "target": "id=form_shippings_1_phone_number",
+      "targets": [
+        ["id=form_shippings_1_phone_number", "id"],
+        ["name=form[shippings][1][phone_number]", "name"],
+        ["css=#form_shippings_1_phone_number", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_phone_number']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "999999999"
+    }, {
+      "id": "d9a48246-7e84-4d1c-b9e6-1d36da14f593",
+      "comment": "",
+      "command": "type",
+      "target": "id=form_shippings_1_company_name",
+      "targets": [
+        ["id=form_shippings_1_company_name", "id"],
+        ["name=form[shippings][1][company_name]", "name"],
+        ["css=#form_shippings_1_company_name", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_company_name']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[2]/div[2]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/div[2]/div[2]/div/input", "xpath:position"]
+      ],
+      "value": "イーシーキューブ"
+    }, {
+      "id": "a5f75dfe-573b-419e-98ca-6b20e904b63b",
+      "comment": "",
+      "command": "click",
+      "target": "id=form_shippings_1_tracking_number",
+      "targets": [
+        ["id=form_shippings_1_tracking_number", "id"],
+        ["name=form[shippings][1][tracking_number]", "name"],
+        ["css=#form_shippings_1_tracking_number", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_tracking_number']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[4]/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[4]/div/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "82e621a3-76f7-447d-9f52-11897e296a3a",
+      "comment": "",
+      "command": "type",
+      "target": "id=form_shippings_1_tracking_number",
+      "targets": [
+        ["id=form_shippings_1_tracking_number", "id"],
+        ["name=form[shippings][1][tracking_number]", "name"],
+        ["css=#form_shippings_1_tracking_number", "css:finder"],
+        ["xpath=//input[@id='form_shippings_1_tracking_number']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[4]/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[4]/div/div/div/input", "xpath:position"]
+      ],
+      "value": "888888888"
+    }, {
+      "id": "ddabf73e-a5fe-4d9b-8248-c0423bfc71ba",
+      "comment": "",
+      "command": "select",
+      "target": "id=form_shippings_1_Delivery",
+      "targets": [],
+      "value": "label=サンプル宅配"
+    }, {
+      "id": "16ff4f07-efed-409f-a865-51fcebacda1f",
+      "comment": "",
+      "command": "click",
+      "target": "css=#form_shippings_1_Delivery > option:nth-child(2)",
+      "targets": [
+        ["css=#form_shippings_1_Delivery > option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='2'])[8]", "xpath:attributes"],
+        ["xpath=//select[@id='form_shippings_1_Delivery']/option[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[4]/div/div[2]/div/select/option[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "03672bc2-0c25-4b50-b072-a679247cd24c",
+      "comment": "",
+      "command": "click",
+      "target": "id=form_shippings_1_DeliveryTime",
+      "targets": [
+        ["id=form_shippings_1_DeliveryTime", "id"],
+        ["name=form[shippings][1][DeliveryTime]", "name"],
+        ["css=#form_shippings_1_DeliveryTime", "css:finder"],
+        ["xpath=//select[@id='form_shippings_1_DeliveryTime']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[4]/div[2]/div[2]/div/select", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[4]/div[2]/div[2]/div/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bc779ac3-77c5-413f-8bd2-1a829383ae0f",
+      "comment": "",
+      "command": "click",
+      "target": "css=#form_shippings_1_shipping_delivery_date_year > option:nth-child(1)",
+      "targets": [
+        ["css=#form_shippings_1_shipping_delivery_date_year > option:nth-child(1)", "css:finder"],
+        ["xpath=(//option[@value=''])[8]", "xpath:attributes"],
+        ["xpath=//select[@id='form_shippings_1_shipping_delivery_date_year']/option", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[4]/div[2]/div/div/div/select/option", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "434a9be4-c7ca-456c-9ac2-6ddcf5da38f6",
+      "comment": "",
+      "command": "select",
+      "target": "id=form_shippings_1_shipping_delivery_date_year",
+      "targets": [],
+      "value": "label=2016"
+    }, {
+      "id": "0bcd0afb-1888-461b-8300-fb4c58d66649",
+      "comment": "",
+      "command": "click",
+      "target": "css=#form_shippings_1_shipping_delivery_date_year > option:nth-child(3)",
+      "targets": [
+        ["css=#form_shippings_1_shipping_delivery_date_year > option:nth-child(3)", "css:finder"],
+        ["xpath=(//option[@value='2016'])[2]", "xpath:attributes"],
+        ["xpath=//select[@id='form_shippings_1_shipping_delivery_date_year']/option[3]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[4]/div[2]/div/div/div/select/option[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c76bc4b9-2d9e-4bbc-95a2-40c41cab44a0",
+      "comment": "",
+      "command": "select",
+      "target": "id=form_shippings_1_shipping_delivery_date_month",
+      "targets": [],
+      "value": "label=05"
+    }, {
+      "id": "e7e9404d-6f78-4fc2-9c30-25dd8cfc2beb",
+      "comment": "",
+      "command": "click",
+      "target": "css=#form_shippings_1_shipping_delivery_date_month > option:nth-child(6)",
+      "targets": [
+        ["css=#form_shippings_1_shipping_delivery_date_month > option:nth-child(6)", "css:finder"],
+        ["xpath=(//option[@value='5'])[6]", "xpath:attributes"],
+        ["xpath=//select[@id='form_shippings_1_shipping_delivery_date_month']/option[6]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[4]/div[2]/div/div/div/select[2]/option[6]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ed2b3088-261e-4b98-a3d2-af592b5941c6",
+      "comment": "",
+      "command": "select",
+      "target": "id=form_shippings_1_shipping_delivery_date_day",
+      "targets": [],
+      "value": "label=06"
+    }, {
+      "id": "b1851e0a-4a49-4b18-8c5f-7316bc39afdb",
+      "comment": "",
+      "command": "click",
+      "target": "css=#form_shippings_1_shipping_delivery_date_day > option:nth-child(7)",
+      "targets": [
+        ["css=#form_shippings_1_shipping_delivery_date_day > option:nth-child(7)", "css:finder"],
+        ["xpath=(//option[@value='6'])[7]", "xpath:attributes"],
+        ["xpath=//select[@id='form_shippings_1_shipping_delivery_date_day']/option[7]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[4]/div[2]/div/div/div/select[3]/option[7]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0eb43402-8f24-422a-80c7-518d4ee03f79",
+      "comment": "",
+      "command": "click",
+      "target": "css=#shipping-product_1 .addProduct-button",
+      "targets": [
+        ["css=#shipping-product_1 .addProduct-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[17]", "xpath:attributes"],
+        ["xpath=//div[@id='shipping-product_1']/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[6]/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b64cb154-fb5d-487a-9cda-0c73e98969e9",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=#shipping-product_1 .addProduct-button",
+      "targets": [
+        ["css=#shipping-product_1 .addProduct-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[17]", "xpath:attributes"],
+        ["xpath=//div[@id='shipping-product_1']/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[6]/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "219b8e17-3c07-44b5-9a76-be5ed688bc18",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=#shipping-product_1 .addProduct-button",
+      "targets": [
+        ["css=#shipping-product_1 .addProduct-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[17]", "xpath:attributes"],
+        ["xpath=//div[@id='shipping-product_1']/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[6]/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "79a51688-af21-4319-b30b-5109c5f23c58",
+      "comment": "",
+      "command": "click",
+      "target": "id=searchProductModalButton",
+      "targets": [
+        ["id=searchProductModalButton", "id"],
+        ["css=#searchProductModalButton", "css:finder"],
+        ["xpath=//button[@id='searchProductModalButton']", "xpath:attributes"],
+        ["xpath=//div[@id='addProduct']/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'検索')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4918367b-c1ab-4503-a228-7305bb945179",
+      "comment": "",
+      "command": "select",
+      "target": "id=classcategory_id14",
+      "targets": [],
+      "value": "label=32mm × 32mm"
+    }, {
+      "id": "49ee4d7c-aac9-44f3-b136-c51572a31b4b",
+      "comment": "",
+      "command": "click",
+      "target": "css=#classcategory_id14 > option:nth-child(2)",
+      "targets": [
+        ["css=#classcategory_id14 > option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='5'])[2]", "xpath:attributes"],
+        ["xpath=//select[@id='classcategory_id14']/option[2]", "xpath:idRelative"],
+        ["xpath=//td[3]/div/div[2]/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'32mm × 32mm')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6bc9f9dc-53fe-44b5-be2e-95e042cbaab9",
+      "comment": "",
+      "command": "select",
+      "target": "name=classcategory_id2",
+      "targets": [],
+      "value": "label=抹茶"
+    }, {
+      "id": "f2d6b40f-2321-4f4a-8393-4430fc828ac1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.row:nth-child(2) > .col-8 option:nth-child(2)",
+      "targets": [
+        ["css=.row:nth-child(2) > .col-8 option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='2'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='searchProductModalList']/table/tbody/tr/td[3]/div[2]/div[2]/select/option[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'抹茶')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c5697bc1-f2f1-4c76-9d08-daf31e63cec1",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(2) .fa",
+      "targets": [
+        ["css=tr:nth-child(2) .fa", "css:finder"],
+        ["xpath=//div[@id='searchProductModalList']/table/tbody/tr/td[4]/button/i", "xpath:idRelative"],
+        ["xpath=//button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fbd977d4-8b8b-4ebd-bd1b-07b49f76d57d",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=tr:nth-child(2) .fa",
+      "targets": [
+        ["css=tr:nth-child(2) .fa", "css:finder"],
+        ["xpath=//div[@id='searchProductModalList']/table/tbody/tr/td[4]/button/i", "xpath:idRelative"],
+        ["xpath=//button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c9d2ffff-df21-46e1-8f26-5c7f3316c428",
+      "comment": "",
+      "command": "click",
+      "target": "id=form_shippings_0_note",
+      "targets": [
+        ["id=form_shippings_0_note", "id"],
+        ["name=form[shippings][0][note]", "name"],
+        ["css=#form_shippings_0_note", "css:finder"],
+        ["xpath=//textarea[@id='form_shippings_0_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_0']/div/div[9]/div/div/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5dceae02-ecf7-493a-ae89-41140675af75",
+      "comment": "",
+      "command": "click",
+      "target": "id=form_shippings_1_note",
+      "targets": [
+        ["id=form_shippings_1_note", "id"],
+        ["name=form[shippings][1][note]", "name"],
+        ["css=#form_shippings_1_note", "css:finder"],
+        ["xpath=//textarea[@id='form_shippings_1_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[9]/div/div/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[9]/div/div/div/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e031ee06-35b4-4701-b0e5-8b79ebf0339f",
+      "comment": "",
+      "command": "type",
+      "target": "id=form_shippings_1_note",
+      "targets": [
+        ["id=form_shippings_1_note", "id"],
+        ["name=form[shippings][1][note]", "name"],
+        ["css=#form_shippings_1_note", "css:finder"],
+        ["xpath=//textarea[@id='form_shippings_1_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shipmentOverview_1']/div/div[9]/div/div/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[9]/div/div/div/textarea", "xpath:position"]
+      ],
+      "value": "出荷メモ2"
+    }, {
+      "id": "3380b17f-47d5-4a48-bb42-51643a11b5de",
+      "comment": "",
+      "command": "click",
+      "target": "css=#shipping-product_1 .addOtherProduct-button",
+      "targets": [
+        ["css=#shipping-product_1 .addOtherProduct-button", "css:finder"],
+        ["xpath=(//a[contains(text(),'その他の明細を追加')])[2]", "xpath:link"],
+        ["xpath=//div[@id='shipping-product_1']/div/a", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[6]/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a4f10e27-58c6-4b2b-83a2-5188a647bb3f",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(4) .fa",
+      "targets": [
+        ["css=tr:nth-child(4) .fa", "css:finder"],
+        ["xpath=//div[@id='searchOrderItemTypeList']/table/tbody/tr[2]/td[3]/button/i", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[3]/button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "072cd5b1-0177-45b0-8753-07eea8594b13",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=tr:nth-child(4) .fa",
+      "targets": [
+        ["css=tr:nth-child(4) .fa", "css:finder"],
+        ["xpath=//div[@id='searchOrderItemTypeList']/table/tbody/tr[2]/td[3]/button/i", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[3]/button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7b772945-53fe-4689-802f-e76669613a27",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=tr:nth-child(4) .fa",
+      "targets": [
+        ["css=tr:nth-child(4) .fa", "css:finder"],
+        ["xpath=//div[@id='searchOrderItemTypeList']/table/tbody/tr[2]/td[3]/button/i", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[3]/button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2cb2997c-c906-4f60-b805-dde1c9cd336f",
+      "comment": "",
+      "command": "click",
+      "target": "id=btn_save",
+      "targets": [
+        ["id=btn_save", "id"],
+        ["name=mode", "name"],
+        ["css=#btn_save", "css:finder"],
+        ["xpath=//button[@id='btn_save']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div[5]/div/div/div[2]/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div[2]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2efff5ca-32c4-4b25-8797-5b5ee574f65c",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=btn_save",
+      "targets": [
+        ["id=btn_save", "id"],
+        ["name=mode", "name"],
+        ["css=#btn_save", "css:finder"],
+        ["xpath=//button[@id='btn_save']", "xpath:attributes"],
+        ["xpath=//form[@id='form1']/div[5]/div/div/div[2]/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div[2]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5c12f634-8dbf-46e0-8143-10742ec6677a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.c-baseLink > span",
+      "targets": [
+        ["css=.c-baseLink > span", "css:finder"],
+        ["xpath=//form[@id='form1']/div[5]/div/div/div/div/a/span", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div/a/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "423985bd-b2b5-4fed-b012-f7053a735868",
+      "comment": "",
+      "command": "click",
+      "target": "css=.c-baseLink > span",
+      "targets": [
+        ["css=.c-baseLink > span", "css:finder"],
+        ["xpath=//form[@id='form1']/div[5]/div/div/div/div/a/span", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div/a/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5849bb6e-c174-4f1b-9d7d-6c21fa3e2e09",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "css=.c-baseLink > span",
+      "targets": [
+        ["css=.c-baseLink > span", "css:finder"],
+        ["xpath=//form[@id='form1']/div[5]/div/div/div/div/a/span", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div/a/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "20ccf336-7e35-471f-8f0f-b98433bcee2a",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=その他の明細を追加",
+      "targets": [
+        ["linkText=その他の明細を追加", "linkText"],
+        ["css=.col-6 > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'その他の明細を追加')]", "xpath:link"],
+        ["xpath=//div[@id='orderItem']/div/div/div/a", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'その他の明細を追加')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3c8def23-902f-46a3-9915-ca34a7912601",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(4) .fa",
+      "targets": [
+        ["css=tr:nth-child(4) .fa", "css:finder"],
+        ["xpath=//div[@id='searchOrderItemTypeList']/table/tbody/tr[2]/td[3]/button/i", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[3]/button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4d355047-4e97-4f30-b9a7-1a756a396716",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_OrderItems_2_price",
+      "targets": [
+        ["id=order_OrderItems_2_price", "id"],
+        ["name=order[OrderItems][2][price]", "name"],
+        ["css=#order_OrderItems_2_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_2_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[3]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dc85d203-464b-45df-94ba-16eea738a67f",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_OrderItems_2_price",
+      "targets": [
+        ["id=order_OrderItems_2_price", "id"],
+        ["name=order[OrderItems][2][price]", "name"],
+        ["css=#order_OrderItems_2_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_2_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[3]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "109c74ce-6255-4d12-992a-f64bc01912ed",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=order_OrderItems_2_price",
+      "targets": [
+        ["id=order_OrderItems_2_price", "id"],
+        ["name=order[OrderItems][2][price]", "name"],
+        ["css=#order_OrderItems_2_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_2_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[3]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a58ad46a-e7a6-42a3-a2df-6dcc6774d629",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_OrderItems_2_price",
+      "targets": [
+        ["id=order_OrderItems_2_price", "id"],
+        ["name=order[OrderItems][2][price]", "name"],
+        ["css=#order_OrderItems_2_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_2_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[3]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "1000"
+    }, {
+      "id": "cbb7c6cd-6e6b-45f3-b060-e0a591c98519",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_OrderItems_4_price",
+      "targets": [
+        ["id=order_OrderItems_4_price", "id"],
+        ["name=order[OrderItems][4][price]", "name"],
+        ["css=#order_OrderItems_4_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_4_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[4]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[4]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "83f19bd1-993f-474b-b0b2-588e8c169dc7",
+      "comment": "",
+      "command": "click",
+      "target": "id=order_OrderItems_4_price",
+      "targets": [
+        ["id=order_OrderItems_4_price", "id"],
+        ["name=order[OrderItems][4][price]", "name"],
+        ["css=#order_OrderItems_4_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_4_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[4]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[4]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "61dc8c45-9c74-4488-994f-7d281e39429c",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=order_OrderItems_4_price",
+      "targets": [
+        ["id=order_OrderItems_4_price", "id"],
+        ["name=order[OrderItems][4][price]", "name"],
+        ["css=#order_OrderItems_4_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_4_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[4]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[4]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a2527b54-c0ba-487e-8dec-cb06c4dd7245",
+      "comment": "",
+      "command": "type",
+      "target": "id=order_OrderItems_4_price",
+      "targets": [
+        ["id=order_OrderItems_4_price", "id"],
+        ["name=order[OrderItems][4][price]", "name"],
+        ["css=#order_OrderItems_4_price", "css:finder"],
+        ["xpath=//input[@id='order_OrderItems_4_price']", "xpath:attributes"],
+        ["xpath=//table[@id='table-form-field']/tbody/tr[4]/td[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[4]/td[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "1000"
+    }, {
+      "id": "3bae2c1a-67a4-4859-a77b-20c709c5f81d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.row:nth-child(10)",
+      "targets": [
+        ["css=.row:nth-child(10)", "css:finder"],
+        ["xpath=//div[@id='orderItem']/div/div[7]", "xpath:idRelative"],
+        ["xpath=//div[7]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ed24d815-1778-4cfa-b46f-f6a9dbb05f29",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-ec-conversion > .ladda-label",
+      "targets": [
+        ["css=.btn-ec-conversion > .ladda-label", "css:finder"],
+        ["xpath=//form[@id='form1']/div[2]/div/div/div[2]/div/div/button/span", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/button/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "176e36ac-f4eb-4c2d-92f6-a2861d0093e8",
+      "comment": "",
+      "command": "click",
+      "target": "css=#mailHistory > .card-body",
+      "targets": [
+        ["css=#mailHistory > .card-body", "css:finder"],
+        ["xpath=//div[@id='mailHistory']/div", "xpath:idRelative"],
+        ["xpath=//div[6]/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0aacdb15-1b20-48ac-93b3-a5594898e057",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=メールを作成",
+      "targets": [
+        ["linkText=メールを作成", "linkText"],
+        ["css=.text-center > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'メールを作成')]", "xpath:link"],
+        ["xpath=//div[@id='mailHistory']/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/order/3/mail')]", "xpath:href"],
+        ["xpath=//div[6]/div[2]/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'メールを作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6e412281-4b8f-4667-86ab-c736068d777e",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=メールを作成",
+      "targets": [
+        ["linkText=メールを作成", "linkText"],
+        ["css=.text-center > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'メールを作成')]", "xpath:link"],
+        ["xpath=//div[@id='mailHistory']/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/order/3/mail')]", "xpath:href"],
+        ["xpath=//div[6]/div[2]/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'メールを作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7d8cfa7a-4302-4426-ad84-efa5a0cb419c",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "linkText=メールを作成",
+      "targets": [
+        ["linkText=メールを作成", "linkText"],
+        ["css=.text-center > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'メールを作成')]", "xpath:link"],
+        ["xpath=//div[@id='mailHistory']/div/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/admin/order/3/mail')])[2]", "xpath:href"],
+        ["xpath=//div[6]/div[2]/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'メールを作成')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2bd7dd2f-dfca-42d7-9bce-186e99106d7b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=保存せずに移動",
+      "targets": [
+        ["linkText=保存せずに移動", "linkText"],
+        ["css=.btn-ec-sub:nth-child(2)", "css:finder"],
+        ["xpath=//a[contains(text(),'保存せずに移動')]", "xpath:link"],
+        ["xpath=//div[@id='confirmFormChangeModal']/div/div/div[3]/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/order/3/mail')]", "xpath:href"],
+        ["xpath=//div[3]/a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'保存せずに移動')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "cd85f991-48f5-4bac-bf29-0b8e0f61320a",
+      "comment": "",
+      "command": "click",
+      "target": "css=option:nth-child(2)",
+      "targets": [
+        ["css=option:nth-child(2)", "css:finder"],
+        ["xpath=//option[@value='1']", "xpath:attributes"],
+        ["xpath=//select[@id='template-change']/option[2]", "xpath:idRelative"],
+        ["xpath=//option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'注文受付メール')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0b84df8b-e863-4230-b31b-3591ca2c5e32",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ladda-label",
+      "targets": [
+        ["css=.ladda-label", "css:finder"],
+        ["xpath=//form[@id='order-mail-form']/div[2]/div/div/div[2]/div/div/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'送信内容を確認')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f81b83a5-a92d-4a98-bb08-66ceeb9277bf",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@name='mode']", "xpath:attributes"],
+        ["xpath=//form[@id='order-mail-form']/div/div[3]/div/div/div[2]/div/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'送信')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c44f984a-88c9-4b28-95cb-4e037b8878b3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.c-baseLink > span",
+      "targets": [
+        ["css=.c-baseLink > span", "css:finder"],
+        ["xpath=//form[@id='form1']/div[2]/div/div/div/div/a/span", "xpath:idRelative"],
+        ["xpath=//div/div/a/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a4c7ab56-b824-4491-be12-5fa230630e4e",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=tr:nth-child(3) > .align-middle > .btn",
+      "targets": [
+        ["css=tr:nth-child(3) > .align-middle > .btn", "css:finder"],
+        ["xpath=//table[@id='search_result']/tbody/tr[3]/td[6]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/order/2/edit#order_message')]", "xpath:href"],
+        ["xpath=//tr[3]/td[6]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8ba852c7-68d0-4d3e-9db8-ea75f4a1671a",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=tr:nth-child(3) > .align-middle > .btn",
+      "targets": [
+        ["css=tr:nth-child(3) > .align-middle > .btn", "css:finder"],
+        ["xpath=//table[@id='search_result']/tbody/tr[3]/td[6]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/order/2/edit#order_message')]", "xpath:href"],
+        ["xpath=//tr[3]/td[6]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3c6e2619-917a-4464-b188-990d1987144e",
+      "comment": "",
+      "command": "click",
+      "target": "id=tracking_number_2",
+      "targets": [
+        ["id=tracking_number_2", "id"],
+        ["css=#tracking_number_2", "css:finder"],
+        ["xpath=//input[@id='tracking_number_2']", "xpath:attributes"],
+        ["xpath=//table[@id='search_result']/tbody/tr[3]/td[8]/div/input", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[8]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e8463776-972d-490e-bec8-dd8690a01d30",
+      "comment": "",
+      "command": "type",
+      "target": "id=tracking_number_2",
+      "targets": [
+        ["id=tracking_number_2", "id"],
+        ["css=#tracking_number_2", "css:finder"],
+        ["xpath=//input[@id='tracking_number_2']", "xpath:attributes"],
+        ["xpath=//table[@id='search_result']/tbody/tr[3]/td[8]/div/input", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[8]/div/input", "xpath:position"]
+      ],
+      "value": "333333333"
+    }, {
+      "id": "52fc839d-1669-4462-b8a4-b73908780fdc",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=tr:nth-child(2) .input-group .btn",
+      "targets": [
+        ["css=tr:nth-child(2) .input-group .btn", "css:finder"],
+        ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
+        ["xpath=//table[@id='search_result']/tbody/tr[2]/td[8]/div/span/button", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[8]/div/span/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bce7756f-260b-49db-b24b-4f7b7173d803",
+      "comment": "",
+      "command": "click",
+      "target": "id=toggle_check_all",
+      "targets": [
+        ["id=toggle_check_all", "id"],
+        ["name=filter", "name"],
+        ["css=#toggle_check_all", "css:finder"],
+        ["xpath=//input[@id='toggle_check_all']", "xpath:attributes"],
+        ["xpath=//table[@id='search_result']/thead/tr/th/input", "xpath:idRelative"],
+        ["xpath=//th/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a74d3236-f5d7-4a15-b286-d70d6d01d178",
+      "comment": "",
+      "command": "select",
+      "target": "id=option_bulk_status",
+      "targets": [],
+      "value": "label=発送済み"
+    }, {
+      "id": "1b946eef-5b9a-4a8d-a2e2-01193eeb4b59",
+      "comment": "",
+      "command": "click",
+      "target": "css=#option_bulk_status > option:nth-child(6)",
+      "targets": [
+        ["css=#option_bulk_status > option:nth-child(6)", "css:finder"],
+        ["xpath=//option[@value='5']", "xpath:attributes"],
+        ["xpath=//select[@id='option_bulk_status']/option[6]", "xpath:idRelative"],
+        ["xpath=//option[6]", "xpath:position"],
+        ["xpath=//option[contains(.,'発送済み')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "29a37fff-719e-4541-8590-d80e957880e9",
+      "comment": "",
+      "command": "click",
+      "target": "id=btn_bulk_status",
+      "targets": [
+        ["id=btn_bulk_status", "id"],
+        ["css=#btn_bulk_status", "css:finder"],
+        ["xpath=//button[@id='btn_bulk_status']", "xpath:attributes"],
+        ["xpath=//form[@id='form_bulk']/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'決定')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e2c32a7e-0af3-45cb-b1ae-225359d3c953",
+      "comment": "",
+      "command": "click",
+      "target": "id=bulkChangeComplete",
+      "targets": [
+        ["id=bulkChangeComplete", "id"],
+        ["css=#bulkChangeComplete", "css:finder"],
+        ["xpath=//button[@id='bulkChangeComplete']", "xpath:attributes"],
+        ["xpath=//div[@id='sentUpdateModal']/div/div/div[3]/button[3]", "xpath:idRelative"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'閉じる')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "93d61621-ee6a-4a04-9815-cc2893c6b8da",
+      "comment": "",
+      "command": "click",
+      "target": "id=toggle_check_all",
+      "targets": [
+        ["id=toggle_check_all", "id"],
+        ["name=filter", "name"],
+        ["css=#toggle_check_all", "css:finder"],
+        ["xpath=//input[@id='toggle_check_all']", "xpath:attributes"],
+        ["xpath=//table[@id='search_result']/thead/tr/th/input", "xpath:idRelative"],
+        ["xpath=//th/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "62901e89-47aa-4104-9778-b6a7aff916d1",
+      "comment": "",
+      "command": "click",
+      "target": "id=bulkSendMail",
+      "targets": [
+        ["id=bulkSendMail", "id"],
+        ["css=#bulkSendMail", "css:finder"],
+        ["xpath=//button[@id='bulkSendMail']", "xpath:attributes"],
+        ["xpath=//form[@id='form_bulk']/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/form/div/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'メールする')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8a7c1fbd-d262-4df5-9537-6bf1ad27bf64",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=bulkSendMail",
+      "targets": [
+        ["id=bulkSendMail", "id"],
+        ["css=#bulkSendMail", "css:finder"],
+        ["xpath=//button[@id='bulkSendMail']", "xpath:attributes"],
+        ["xpath=//form[@id='form_bulk']/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/form/div/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'メールする')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "66cf628d-8ec8-48aa-898c-8eb483ca575d",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "id=bulkSendMail",
+      "targets": [
+        ["id=bulkSendMail", "id"],
+        ["css=#bulkSendMail", "css:finder"],
+        ["xpath=//button[@id='bulkSendMail']", "xpath:attributes"],
+        ["xpath=//form[@id='form_bulk']/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/form/div/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'メールする')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c95fe319-9e28-41ee-83e4-ba1cde806e59",
+      "comment": "",
+      "command": "click",
+      "target": "css=a > .font-weight-bold:nth-child(2)",
+      "targets": [
+        ["css=a > .font-weight-bold:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='bulk-options']/div[3]/div/a/span", "xpath:idRelative"],
+        ["xpath=//div[3]/div/a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'メールの文面を確認')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a70fe589-b1f0-484d-ad77-e1c969a9daf3",
+      "comment": "",
+      "command": "click",
+      "target": "id=bulkChange",
+      "targets": [
+        ["id=bulkChange", "id"],
+        ["css=#bulkChange", "css:finder"],
+        ["xpath=//button[@id='bulkChange']", "xpath:attributes"],
+        ["xpath=//div[@id='sentUpdateModal']/div/div/div[3]/button[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'送信')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "75ef8790-fd73-48e2-87f5-59b03032dc27",
+      "comment": "",
+      "command": "click",
+      "target": "id=bulkChangeComplete",
+      "targets": [
+        ["id=bulkChangeComplete", "id"],
+        ["css=#bulkChangeComplete", "css:finder"],
+        ["xpath=//button[@id='bulkChangeComplete']", "xpath:attributes"],
+        ["xpath=//div[@id='sentUpdateModal']/div/div/div[3]/button[3]", "xpath:idRelative"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'閉じる')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "41832942-3f1d-4c60-ad11-09cd45d46d9f",
+      "comment": "",
+      "command": "click",
+      "target": "id=bulkChangeComplete",
+      "targets": [
+        ["id=bulkChangeComplete", "id"],
+        ["css=#bulkChangeComplete", "css:finder"],
+        ["xpath=//button[@id='bulkChangeComplete']", "xpath:attributes"],
+        ["xpath=//div[@id='sentUpdateModal']/div/div/div[3]/button[3]", "xpath:idRelative"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'閉じる')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5190e5f1-00fa-4eb2-be1f-11ef7b1a549e",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=bulkChangeComplete",
+      "targets": [
+        ["id=bulkChangeComplete", "id"],
+        ["css=#bulkChangeComplete", "css:finder"],
+        ["xpath=//button[@id='bulkChangeComplete']", "xpath:attributes"],
+        ["xpath=//div[@id='sentUpdateModal']/div/div/div[3]/button[3]", "xpath:idRelative"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'閉じる')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "72004182-0333-4101-8bdc-25c6e2eb91f1",
+    "name": "会員管理",
+    "commands": [{
+      "id": "ccaf088d-8090-491d-9c51-bbe5bd4b2a9a",
+      "comment": "",
+      "command": "open",
+      "target": "https://ec-cube/admin/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "fe4e8c55-4646-43df-b6d6-9054ccdaf74e",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1160x821",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c9b7c6a6-a5e9-4823-a556-e5fe2b1518d4",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=会員管理",
+      "targets": [
+        ["linkText=会員管理", "linkText"],
+        ["css=.c-mainNavArea__navItem:nth-child(4) > .c-mainNavArea__navItemTitle", "css:finder"],
+        ["xpath=//body[@id='page_admin_homepage']/div/div/nav/ul/li[4]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '#nav-customer')]", "xpath:href"],
+        ["xpath=//nav/ul/li[4]/a", "xpath:position"],
+        ["xpath=//a[contains(.,' 会員管理')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2b315ddb-b0b7-43e0-a44a-f242b187f743",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=会員一覧",
+      "targets": [
+        ["linkText=会員一覧", "linkText"],
+        ["css=#nav-customer > li:nth-child(1) > a", "css:finder"],
+        ["xpath=//ul[@id='nav-customer']/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/customer')]", "xpath:href"],
+        ["xpath=//li[4]/ul/li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'会員一覧')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "33c0d106-c3f7-4b0a-994b-1c7acbf694dd",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=会員登録",
+      "targets": [
+        ["linkText=会員登録", "linkText"],
+        ["css=#nav-customer > li:nth-child(2) > a", "css:finder"],
+        ["xpath=//ul[@id='nav-customer']/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/customer/new')]", "xpath:href"],
+        ["xpath=//li[4]/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'会員登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ab44b3ca-92c9-40dd-b893-0bb64d9a0420",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_name_name01",
+      "targets": [
+        ["id=admin_customer_name_name01", "id"],
+        ["name=admin_customer[name][name01]", "name"],
+        ["css=#admin_customer_name_name01", "css:finder"],
+        ["xpath=//input[@id='admin_customer_name_name01']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5c3c4516-611c-43cb-9533-8b449180733e",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_name_name01",
+      "targets": [
+        ["id=admin_customer_name_name01", "id"],
+        ["name=admin_customer[name][name01]", "name"],
+        ["css=#admin_customer_name_name01", "css:finder"],
+        ["xpath=//input[@id='admin_customer_name_name01']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "石"
+    }, {
+      "id": "30efafb7-4a50-4cd7-b674-2ee930786f6a",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_name_name02",
+      "targets": [
+        ["id=admin_customer_name_name02", "id"],
+        ["name=admin_customer[name][name02]", "name"],
+        ["css=#admin_customer_name_name02", "css:finder"],
+        ["xpath=//input[@id='admin_customer_name_name02']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div/div[2]/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "九部"
+    }, {
+      "id": "3dabb035-b073-4135-a9f2-cd3090879c5c",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_kana_kana01",
+      "targets": [
+        ["id=admin_customer_kana_kana01", "id"],
+        ["name=admin_customer[kana][kana01]", "name"],
+        ["css=#admin_customer_kana_kana01", "css:finder"],
+        ["xpath=//input[@id='admin_customer_kana_kana01']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[2]/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "イシ"
+    }, {
+      "id": "74678c2c-8e13-403c-a77d-ba03fc3dbf59",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_kana_kana02",
+      "targets": [
+        ["id=admin_customer_kana_kana02", "id"],
+        ["name=admin_customer[kana][kana02]", "name"],
+        ["css=#admin_customer_kana_kana02", "css:finder"],
+        ["xpath=//input[@id='admin_customer_kana_kana02']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[2]/div[2]/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div[2]/input", "xpath:position"]
+      ],
+      "value": "キューブ"
+    }, {
+      "id": "4e7a0392-57f7-4bb7-a4f9-c93d866666d9",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_company_name",
+      "targets": [
+        ["id=admin_customer_company_name", "id"],
+        ["name=admin_customer[company_name]", "name"],
+        ["css=#admin_customer_company_name", "css:finder"],
+        ["xpath=//input[@id='admin_customer_company_name']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[3]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div[2]/input", "xpath:position"]
+      ],
+      "value": "イーシーキューブ"
+    }, {
+      "id": "55d7b0e5-f160-44f7-bf0c-4c594a5ab906",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_postal_code",
+      "targets": [
+        ["id=admin_customer_postal_code", "id"],
+        ["name=admin_customer[postal_code]", "name"],
+        ["css=#admin_customer_postal_code", "css:finder"],
+        ["xpath=//input[@id='admin_customer_postal_code']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[4]/div[2]/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div/div[2]/input", "xpath:position"]
+      ],
+      "value": "5"
+    }, {
+      "id": "9ca12c07-f425-4518-8033-19c0d7c38bbe",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_postal_code",
+      "targets": [
+        ["id=admin_customer_postal_code", "id"],
+        ["name=admin_customer[postal_code]", "name"],
+        ["css=#admin_customer_postal_code", "css:finder"],
+        ["xpath=//input[@id='admin_customer_postal_code']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[4]/div[2]/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div/div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ca6281de-9aef-475b-a672-35d5bd43885c",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_postal_code",
+      "targets": [
+        ["id=admin_customer_postal_code", "id"],
+        ["name=admin_customer[postal_code]", "name"],
+        ["css=#admin_customer_postal_code", "css:finder"],
+        ["xpath=//input[@id='admin_customer_postal_code']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[4]/div[2]/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div/div[2]/input", "xpath:position"]
+      ],
+      "value": "5300003"
+    }, {
+      "id": "249eff04-d59c-4362-be02-db0e2580d54c",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_address_addr02",
+      "targets": [
+        ["id=admin_customer_address_addr02", "id"],
+        ["name=admin_customer[address][addr02]", "name"],
+        ["css=#admin_customer_address_addr02", "css:finder"],
+        ["xpath=//input[@id='admin_customer_address_addr02']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[4]/div[2]/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bfd4e46b-b155-4438-959d-254c3f596b33",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_address_addr02",
+      "targets": [
+        ["id=admin_customer_address_addr02", "id"],
+        ["name=admin_customer[address][addr02]", "name"],
+        ["css=#admin_customer_address_addr02", "css:finder"],
+        ["xpath=//input[@id='admin_customer_address_addr02']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[4]/div[2]/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "2"
+    }, {
+      "id": "15657c30-8359-4eee-8af9-d82bad850e97",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_email",
+      "targets": [
+        ["id=admin_customer_email", "id"],
+        ["name=admin_customer[email]", "name"],
+        ["css=#admin_customer_email", "css:finder"],
+        ["xpath=//input[@id='admin_customer_email']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[5]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d3996f7-d9d7-44b0-b553-f90ee8a8024c",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_email",
+      "targets": [
+        ["id=admin_customer_email", "id"],
+        ["name=admin_customer[email]", "name"],
+        ["css=#admin_customer_email", "css:finder"],
+        ["xpath=//input[@id='admin_customer_email']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[5]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/div[2]/input", "xpath:position"]
+      ],
+      "value": "ec-cube-cube@example.com"
+    }, {
+      "id": "3d878741-b012-43ab-bcea-4950f0f42d69",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_phone_number",
+      "targets": [
+        ["id=admin_customer_phone_number", "id"],
+        ["name=admin_customer[phone_number]", "name"],
+        ["css=#admin_customer_phone_number", "css:finder"],
+        ["xpath=//input[@id='admin_customer_phone_number']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[6]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[6]/div[2]/input", "xpath:position"]
+      ],
+      "value": "222222222"
+    }, {
+      "id": "32028c70-0a9d-4e03-847b-44a0fcaf6254",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_password_first",
+      "targets": [
+        ["id=admin_customer_password_first", "id"],
+        ["name=admin_customer[password][first]", "name"],
+        ["css=#admin_customer_password_first", "css:finder"],
+        ["xpath=//input[@id='admin_customer_password_first']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[7]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[7]/div[2]/input", "xpath:position"]
+      ],
+      "value": "password"
+    }, {
+      "id": "3785b746-4b91-447f-9c32-b388d96aa1d0",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_password_second",
+      "targets": [
+        ["id=admin_customer_password_second", "id"],
+        ["name=admin_customer[password][second]", "name"],
+        ["css=#admin_customer_password_second", "css:finder"],
+        ["xpath=//input[@id='admin_customer_password_second']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[8]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[8]/div[2]/input", "xpath:position"]
+      ],
+      "value": "password"
+    }, {
+      "id": "10699b01-3faa-4444-9f35-0433ec8967a4",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_password_first",
+      "targets": [
+        ["id=admin_customer_password_first", "id"],
+        ["name=admin_customer[password][first]", "name"],
+        ["css=#admin_customer_password_first", "css:finder"],
+        ["xpath=//input[@id='admin_customer_password_first']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[7]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[7]/div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eebfe387-a0e9-4948-805c-d82b4d0200b9",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_password_first",
+      "targets": [
+        ["id=admin_customer_password_first", "id"],
+        ["name=admin_customer[password][first]", "name"],
+        ["css=#admin_customer_password_first", "css:finder"],
+        ["xpath=//input[@id='admin_customer_password_first']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[7]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[7]/div[2]/input", "xpath:position"]
+      ],
+      "value": "password123"
+    }, {
+      "id": "034b442f-ca52-4cf4-b27b-73ec29e413ee",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_password_second",
+      "targets": [
+        ["id=admin_customer_password_second", "id"],
+        ["name=admin_customer[password][second]", "name"],
+        ["css=#admin_customer_password_second", "css:finder"],
+        ["xpath=//input[@id='admin_customer_password_second']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[8]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[8]/div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "653245c4-1a16-48f2-8a8f-08056f92967f",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_password_second",
+      "targets": [
+        ["id=admin_customer_password_second", "id"],
+        ["name=admin_customer[password][second]", "name"],
+        ["css=#admin_customer_password_second", "css:finder"],
+        ["xpath=//input[@id='admin_customer_password_second']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[8]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[8]/div[2]/input", "xpath:position"]
+      ],
+      "value": "password12"
+    }, {
+      "id": "2dd753c3-b248-4afe-ae4f-1838eaef4be8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-check:nth-child(1) > .form-check-label",
+      "targets": [
+        ["css=.form-check:nth-child(1) > .form-check-label", "css:finder"],
+        ["xpath=//div[@id='admin_customer_sex']/div/label", "xpath:idRelative"],
+        ["xpath=//label", "xpath:position"],
+        ["xpath=//label[contains(.,'男性')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "48b7d593-7020-4bd2-86ff-17ab7bd9c8ca",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_job",
+      "targets": [
+        ["id=admin_customer_job", "id"],
+        ["name=admin_customer[job]", "name"],
+        ["css=#admin_customer_job", "css:finder"],
+        ["xpath=//select[@id='admin_customer_job']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[10]/div[2]/select", "xpath:idRelative"],
+        ["xpath=//div[2]/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8f242f85-a429-4e4a-9382-652c4ed6a6a8",
+      "comment": "",
+      "command": "select",
+      "target": "id=admin_customer_job",
+      "targets": [],
+      "value": "label=コンピューター関連技術職"
+    }, {
+      "id": "4483bb32-a088-4883-974b-bf68cb8a1801",
+      "comment": "",
+      "command": "click",
+      "target": "css=#admin_customer_job > option:nth-child(4)",
+      "targets": [
+        ["css=#admin_customer_job > option:nth-child(4)", "css:finder"],
+        ["xpath=(//option[@value='3'])[2]", "xpath:attributes"],
+        ["xpath=//select[@id='admin_customer_job']/option[4]", "xpath:idRelative"],
+        ["xpath=//div[2]/select/option[4]", "xpath:position"],
+        ["xpath=//option[contains(.,'コンピューター関連技術職')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f6c5ce2a-5601-4634-8764-f511cd3da15c",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_birth",
+      "targets": [
+        ["id=admin_customer_birth", "id"],
+        ["name=admin_customer[birth]", "name"],
+        ["css=#admin_customer_birth", "css:finder"],
+        ["xpath=//input[@id='admin_customer_birth']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[11]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[11]/div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fba068ce-052d-4558-bd13-a271b8ed36ed",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_birth",
+      "targets": [
+        ["id=admin_customer_birth", "id"],
+        ["name=admin_customer[birth]", "name"],
+        ["css=#admin_customer_birth", "css:finder"],
+        ["xpath=//input[@id='admin_customer_birth']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[11]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[11]/div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "424626c5-5912-4033-81bd-1b8b6d2562e3",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_birth",
+      "targets": [
+        ["id=admin_customer_birth", "id"],
+        ["name=admin_customer[birth]", "name"],
+        ["css=#admin_customer_birth", "css:finder"],
+        ["xpath=//input[@id='admin_customer_birth']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[11]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[11]/div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fcee8983-89f2-43b2-8c08-5370969d75da",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=admin_customer_birth",
+      "targets": [
+        ["id=admin_customer_birth", "id"],
+        ["name=admin_customer[birth]", "name"],
+        ["css=#admin_customer_birth", "css:finder"],
+        ["xpath=//input[@id='admin_customer_birth']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[11]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[11]/div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "044843e6-a5ee-4ee2-92cd-a59ed7ffc9d7",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_birth",
+      "targets": [
+        ["id=admin_customer_birth", "id"],
+        ["name=admin_customer[birth]", "name"],
+        ["css=#admin_customer_birth", "css:finder"],
+        ["xpath=//input[@id='admin_customer_birth']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[11]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[11]/div[2]/input", "xpath:position"]
+      ],
+      "value": "2006-09-01"
+    }, {
+      "id": "d85b1dec-bde7-4a28-9bfa-6ac2f5cb8693",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_point",
+      "targets": [
+        ["id=admin_customer_point", "id"],
+        ["name=admin_customer[point]", "name"],
+        ["css=#admin_customer_point", "css:finder"],
+        ["xpath=//input[@id='admin_customer_point']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[12]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[12]/div[2]/input", "xpath:position"]
+      ],
+      "value": "10000"
+    }, {
+      "id": "d8093263-2c31-408e-87e4-6cf8ee94a16c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.row:nth-child(11) > .col-3",
+      "targets": [
+        ["css=.row:nth-child(11) > .col-3", "css:finder"],
+        ["xpath=//div[@id='ordererInfo']/div/div[11]/div", "xpath:idRelative"],
+        ["xpath=//div[11]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "67818cc8-4816-47fb-a1f5-97c877d4a9da",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_note",
+      "targets": [
+        ["id=admin_customer_note", "id"],
+        ["name=admin_customer[note]", "name"],
+        ["css=#admin_customer_note", "css:finder"],
+        ["xpath=//textarea[@id='admin_customer_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shopMemo']/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4a45f0ec-cc2b-4d84-af82-77ac9a15f5b1",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_note",
+      "targets": [
+        ["id=admin_customer_note", "id"],
+        ["name=admin_customer[note]", "name"],
+        ["css=#admin_customer_note", "css:finder"],
+        ["xpath=//textarea[@id='admin_customer_note']", "xpath:attributes"],
+        ["xpath=//div[@id='shopMemo']/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "ショップ用メモ"
+    }, {
+      "id": "b0b204ca-f0bc-42fb-902d-c8b2070fabf2",
+      "comment": "",
+      "command": "click",
+      "target": "id=admin_customer_status",
+      "targets": [
+        ["id=admin_customer_status", "id"],
+        ["name=admin_customer[status]", "name"],
+        ["css=#admin_customer_status", "css:finder"],
+        ["xpath=//select[@id='admin_customer_status']", "xpath:attributes"],
+        ["xpath=//div[@id='ex-conversion-action']/div/select", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4e383bc6-4fe2-4fe8-b43a-2f856e845a83",
+      "comment": "",
+      "command": "select",
+      "target": "id=admin_customer_status",
+      "targets": [],
+      "value": "label=本会員"
+    }, {
+      "id": "d4215ab0-0ab4-4eee-bff0-913feaef2416",
+      "comment": "",
+      "command": "click",
+      "target": "css=#admin_customer_status > option:nth-child(2)",
+      "targets": [
+        ["css=#admin_customer_status > option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='2'])[3]", "xpath:attributes"],
+        ["xpath=//select[@id='admin_customer_status']/option[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'本会員')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "34507518-2cbf-4ac9-838d-251449db652b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='ex-conversion-action']/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ce87d86c-d859-4566-bc36-e487959f4824",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_password_first",
+      "targets": [
+        ["id=admin_customer_password_first", "id"],
+        ["name=admin_customer[password][first]", "name"],
+        ["css=#admin_customer_password_first", "css:finder"],
+        ["xpath=//input[@id='admin_customer_password_first']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[7]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[7]/div[2]/input", "xpath:position"]
+      ],
+      "value": "password.123"
+    }, {
+      "id": "23b6727b-f1ab-4bce-bf8b-1238041fdd78",
+      "comment": "",
+      "command": "type",
+      "target": "id=admin_customer_password_second",
+      "targets": [
+        ["id=admin_customer_password_second", "id"],
+        ["name=admin_customer[password][second]", "name"],
+        ["css=#admin_customer_password_second", "css:finder"],
+        ["xpath=//input[@id='admin_customer_password_second']", "xpath:attributes"],
+        ["xpath=//div[@id='ordererInfo']/div/div[8]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[8]/div[2]/input", "xpath:position"]
+      ],
+      "value": "password.123"
+    }, {
+      "id": "3f783397-0ddc-48d8-b70c-4f2983f85aa8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='ex-conversion-action']/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'登録')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "1f35bc75-ea0a-44bc-a9ca-2118529bf1fa",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=会員一覧",
+      "targets": [
+        ["linkText=会員一覧", "linkText"],
+        ["css=#nav-customer > li:nth-child(1) > a", "css:finder"],
+        ["xpath=//ul[@id='nav-customer']/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/customer')]", "xpath:href"],
+        ["xpath=//li[4]/ul/li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'会員一覧')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "19614483-9e4e-4d56-8d5e-cbee7bdd1e90",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=石 九部",
+      "targets": [
+        ["linkText=石 九部", "linkText"],
+        ["css=#ex-customer-4 > .align-middle > a", "css:finder"],
+        ["xpath=//a[contains(text(),'石 九部')]", "xpath:link"],
+        ["xpath=//tr[@id='ex-customer-4']/td[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://ec-cube/admin/customer/4/edit')]", "xpath:href"],
+        ["xpath=//td[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'石 九部')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a6efbfed-44d2-47d7-8e83-1654b7513770",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ladda-label",
+      "targets": [
+        ["css=.ladda-label", "css:finder"],
+        ["xpath=//div[@id='ex-conversion-action']/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "afa3be7f-721b-44ee-a6f7-374feb1e1d93",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.ladda-label",
+      "targets": [
+        ["css=.ladda-label", "css:finder"],
+        ["xpath=//div[@id='ex-conversion-action']/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//button/span", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "9a93a5e6-e470-42fc-821f-e58d86b64905",
+    "name": "管理画面マニュアル探査",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["72004182-0333-4101-8bdc-25c6e2eb91f1", "af12755b-95df-4a47-ba6d-b9ea45cb4ea7", "93cadc3b-359e-440c-97b4-a69a41f7c12d"]
+  }],
+  "urls": ["https://ec-cube/admin"],
+  "plugins": []
+}

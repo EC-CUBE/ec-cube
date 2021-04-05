@@ -42,7 +42,7 @@ class NewsRepository extends AbstractRepository
     {
         $em = $this->getEntityManager();
         $em->persist($News);
-        $em->flush($News);
+        $em->flush();
     }
 
     /**
@@ -57,7 +57,7 @@ class NewsRepository extends AbstractRepository
     {
         $em = $this->getEntityManager();
         $em->remove($News);
-        $em->flush($News);
+        $em->flush();
     }
 
     /**

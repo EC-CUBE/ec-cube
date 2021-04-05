@@ -112,6 +112,9 @@ parameters:
                         shop_csv:
                             name: admin.setting.shop.csv_setting
                             url: admin_setting_shop_csv
+                        shop_order_status:
+                            name: admin.setting.shop.order_status_setting
+                            url: admin_setting_shop_order_status
                 system:
                     name: admin.setting.system
                     children:
@@ -124,6 +127,9 @@ parameters:
                         security:
                             name: admin.setting.system.security_management
                             url: admin_setting_system_security
+                        login_history:
+                            name: admin.setting.system.login_history
+                            url: admin_setting_system_login_history
                         log:
                             name: admin.setting.system.log_display
                             url: admin_setting_system_log
