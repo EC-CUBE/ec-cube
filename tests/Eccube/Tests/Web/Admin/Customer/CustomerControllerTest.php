@@ -103,7 +103,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_customer'),
-            ['admin_search_customer' => ['_token' => 'dummy', 'sex' => 2]]
+            ['admin_search_customer' => ['_token' => 'dummy', 'sex' => [2]]]
         );
         $this->expected = '検索';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
