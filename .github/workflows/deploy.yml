@@ -58,7 +58,7 @@ jobs:
           rm -rf $GITHUB_WORKSPACE/tests
           rm -rf $GITHUB_WORKSPACE/.github
           rm -rf $GITHUB_WORKSPACE/zap
-          rm -rf $GITHUB_WORKSPACE/docker-compose-owaspzap.yml
+          rm -rf $GITHUB_WORKSPACE/docker-compose.owaspzap.yml
           find $GITHUB_WORKSPACE -name "dummy" -print0 | xargs -0 rm -rf
           find $GITHUB_WORKSPACE -name ".git*" -and ! -name ".gitkeep" -print0 | xargs -0 rm -rf
           find $GITHUB_WORKSPACE -name ".git*" -type d -print0 | xargs -0 rm -rf
