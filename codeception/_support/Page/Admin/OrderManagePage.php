@@ -18,7 +18,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public static $検索条件_受注ステータス = ['id' => 'admin_search_order_status'];
     public static $検索結果_メッセージ = '#search_form #search_total_count';
     public static $検索結果_エラーメッセージ = '//*[@id="page_admin_order"]/div[1]/div[3]/div[3]/div/div/div[1]/div/div[1]';
-    public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[3]/a/i/span';
+    public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[3]/a/i';
     public static $タイトル要素 = '.c-container .c-contentsArea .c-pageTitle .c-pageTitle__titles';
 
     /**
