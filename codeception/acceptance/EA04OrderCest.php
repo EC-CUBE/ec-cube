@@ -236,7 +236,9 @@ class EA04OrderCest
         OrderManagePage::go($I)
             ->一覧_メール通知(1);
 
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
 
         $I->seeInLastEmailSubjectTo('admin@example.com', '[EC-CUBE SHOP] 商品出荷のお知らせ');
     }
@@ -252,7 +254,9 @@ class EA04OrderCest
             ->一覧_全選択()
             ->一括メール送信();
 
-        $I->seeEmailCount(20);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(10);
     }
 
     public function order_受注登録(AcceptanceTester $I)
@@ -439,7 +443,9 @@ class EA04OrderCest
             ->出荷済にする(1);
 
         $I->wait(5);
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         $I->seeInLastEmailSubjectTo('admin@example.com', '[EC-CUBE SHOP] 商品出荷のお知らせ');
 
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::NEW);
