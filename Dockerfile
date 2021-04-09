@@ -70,8 +70,7 @@ RUN curl -sS https://getcomposer.org/installer \
 
 # 全体コピー前にcomposer installを先行完了させる(docker cache利用によるリビルド速度向上)
 USER www-data
-RUN composer config -g repos.packagist composer https://packagist.jp \
-  && composer global require hirak/prestissimo
+RUN composer config -g repos.packagist composer https://packagist.jp
 COPY composer.json ${APACHE_DOCUMENT_ROOT}/composer.json
 COPY composer.lock ${APACHE_DOCUMENT_ROOT}/composer.lock
 RUN composer install \
