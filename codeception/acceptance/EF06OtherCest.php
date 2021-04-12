@@ -187,7 +187,9 @@ class EF06OtherCest
         $I->see('お問い合わせ(完了)', 'div.ec-pageHeader h1');
 
         // メールチェック
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'お問い合わせを受け付けました');
             $I->seeInLastEmailTo($email, '姓 名 様');
