@@ -159,7 +159,12 @@ class PageController extends AbstractController
             if ($isUserDataPage) {
                 $templatePath = $this->getParameter('eccube_theme_user_data_dir');
             } else {
-                $templatePath = $this->getParameter('eccube_theme_front_dir');
+                if (preg_match('/^@/', $Page->getFileName(), $matches)) {
+                    // file_nameが@で始まる場合プラグインの名前空間とみなす
+                    $templatePath = $this->getParameter('eccube_theme_app_dir').'/plugin';
+                } else {
+                    $templatePath = $this->getParameter('eccube_theme_front_dir');
+                }
             }
             $filePath = $templatePath.'/'.$Page->getFileName().'.twig';
 
@@ -235,7 +240,12 @@ class PageController extends AbstractController
             $templatePath = $this->getParameter('eccube_theme_user_data_dir');
             $url = '';
         } else {
-            $templatePath = $this->getParameter('eccube_theme_front_dir');
+            if (preg_match('/^@/', $PrevPage->getFileName())) {
+                // file_nameが@で始まる場合プラグインの名前空間とみなす
+                $templatePath = $this->getParameter('eccube_theme_app_dir').'/plugin';
+            } else {
+                $templatePath = $this->getParameter('eccube_theme_front_dir');
+            }
             $url = $router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
         }
         $projectDir = $this->getParameter('kernel.project_dir');
