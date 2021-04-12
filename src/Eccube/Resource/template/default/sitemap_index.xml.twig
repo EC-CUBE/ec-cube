@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <sitemap>
+        <loc>{{url('sitemap_page_xml')}}</loc>
+        <lastmod>{{Page.update_date|date_format('','c')}}</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>{{url('sitemap_category_xml')}}</loc>
+        <lastmod>{{Category.update_date|date_format('','c')}}</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>{{url('sitemap_product_xml')}}</loc>
+        <lastmod>{{Product.update_date|date_format('','c')}}</lastmod>
+    </sitemap>
+</sitemapindex>

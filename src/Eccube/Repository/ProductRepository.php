@@ -158,8 +158,18 @@ class ProductRepository extends AbstractRepository
                 $qb
                     ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR
                         NORMALIZE(p.search_word) LIKE NORMALIZE(:%s) OR
-                        EXISTS (SELECT wpc%d FROM \Eccube\Entity\ProductClass wpc%d WHERE p = wpc%d.Product AND NORMALIZE(wpc%d.code) LIKE NORMALIZE(:%s))',
-                        $key, $key, $index, $index, $index, $index, $key))
+                        EXISTS (SELECT wpc%d FROM \Eccube\Entity\ProductClass wpc%d WHERE p = wpc%d.Product AND NORMALIZE(wpc%d.code) LIKE NORMALIZE(:%s)) OR
+                        EXISTS (
+                            SELECT wpt%d from \Eccube\Entity\ProductTag wpt%d
+                            WHERE p = wpt%d.Product AND
+                                wpt%d.Tag IN (
+                                    SELECT wt%d FROM \Eccube\Entity\Tag wt%d
+                                    WHERE NORMALIZE(wt%d.name) LIKE NORMALIZE(:%s)
+                                )
+                        )',
+                        $key, $key,
+                        $index, $index, $index, $index, $key,
+                        $index, $index, $index, $index, $index, $index, $index, $key))
                     ->setParameter($key, '%'.$keyword.'%');
             }
         }
@@ -301,6 +311,14 @@ class ProductRepository extends AbstractRepository
                 default:
                     // 共に選択された場合は全権該当するので検索条件に含めない
             }
+        }
+
+        // tag
+        if (!empty($searchData['tag_id']) && $searchData['tag_id']) {
+            $qb
+                ->innerJoin('p.ProductTag', 'pt')
+                ->andWhere('pt.Tag = :tag_id')
+                ->setParameter('tag_id', $searchData['tag_id']);
         }
 
         // crate_date

@@ -374,6 +374,7 @@ front.shopping.payment_total_invalid: The total amount is invalid.
 front.shopping.different_payment_methods: Sorry, your order includes items with different purchase methods, which are unable to be processed in one order.
 front.shopping.payment_method_unselected: Please select the payment method.
 front.shopping.payment_method_not_fount: Sorry, you have no payment options. If you have selected multiple delivery methods, you can only select the same payment option for them all.
+front.under_maintenance: The site is currently under maintenance.
 
 #====================================================================================
 # Admin Console
@@ -1018,6 +1019,7 @@ admin.content.page_meta_description: description
 admin.content.page_meta_keyword: keyword
 admin.content.page_meta_robot: robot
 admin.content.page_meta_metatag: metatag
+# Deprecated https://github.com/EC-CUBE/ec-cube/pull/4987
 admin.content.page_meta_metatag_placeholder: |
   商品詳細ページでの記載例
     <meta property="og:type" content="og:product" />
@@ -1596,7 +1598,7 @@ tooltip.content.page_file_name: This is the name of a twig template file which h
 tooltip.content.page_source_code: Editing the template file. Coding has to be with twig.
 tooltip.content.page_layout: Selecting the layouts to be applied to this page.
 tooltip.content.page_meta: You can enter the META tag contents of the page.
-tooltip.content.page_meta_tags: You can add META tag freely. You can also use variables used within twig.
+tooltip.content.page_meta_tags: You can modify META tags freely. You can also use variables used within twig. If unspecified, meta.twig file in the template folder will be loaded.
 tooltip.content.js_source_code: Editing the JavaScript file. Coding has to be with JavaScript.
 tooltip.content.css_source_code: Editing the CSS file. Coding has to be with CSS.
 tooltip.content.block_name: This is a name of a block for management use.

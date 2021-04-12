@@ -214,6 +214,30 @@ file that was distributed with this source code.
             $('.ec-modal').hide()
         });
     </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": "{{ Product.name }}",
+        "image": [
+            {% for img in Product.ProductImage %}
+                "{{ url('homepage') }}{{ asset(img, 'save_image') }}" {% if not loop.last %},{% endif %}
+
+            {% else %}
+                "{{ url('homepage') }}{{ asset(no_image_product, 'save_image') }}"
+            {% endfor %}
+        ],
+        "description": "{{ Product.description_list | default(Product.description_detail) | striptags | replace({'\n': '', '\r': ''}) }}",
+        "sku": "{{ Product.code_min }}",
+        "offers": {
+            "@type": "Offer",
+            "url": "{{ url('product_detail', {'id': Product.id}) }}",
+            "priceCurrency": "{{ eccube_config.currency }}",
+            "price": {{ Product.getPrice02IncTaxMin }},
+            "availability": "{{ Product.stock_find ? "InStock" : "OutOfStock" }}"
+        }
+    }
+    </script>
 {% endblock %}
 
 {% block main %}
