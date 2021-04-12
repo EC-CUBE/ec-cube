@@ -1,4 +1,10 @@
-FROM php:7.3-apache-stretch
+#######################################################
+# ベース環境(base)
+#   各環境のベースとして、基本動作に必要なツール類をインストール
+#   中間ステージとしての利用
+#######################################################
+FROM php:7.3-apache-stretch as base
+ENV CONTAINER_BUILD_STAGE Base
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
 
@@ -10,8 +16,6 @@ RUN apt-get update \
     curl \
     debconf-utils \
     gcc \
-    git \
-    vim \
     gnupg2 \
     libfreetype6-dev \
     libicu-dev \
@@ -23,8 +27,9 @@ RUN apt-get update \
     ssl-cert \
     unzip \
     zlib1g-dev \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* \
+  # 次ステージでもaptを使用する可能性があるため、中間イメージのサイズは増えるが、cleanは行わない
+  # && apt-get clean \
+  # && rm -rf /var/lib/apt/lists/* \
   && echo "en_US.UTF-8 UTF-8" >/etc/locale.gen \
   && locale-gen \
   ;
@@ -34,11 +39,6 @@ RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
   ;
 
 RUN pecl install apcu && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apc.ini
-
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-  && apt-get install -y nodejs \
-  && apt-get clean \
-  ;
 
 RUN mkdir -p ${APACHE_DOCUMENT_ROOT} \
   && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
@@ -56,16 +56,47 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY dockerbuild/php.ini $PHP_INI_DIR/conf.d/
 COPY dockerbuild/docker-php-entrypoint /usr/local/bin/
 
-RUN chown www-data:www-data /var/www \
-  && mkdir -p ${APACHE_DOCUMENT_ROOT}/vendor \
-  && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
-  && chown www-data:www-data ${APACHE_DOCUMENT_ROOT}/vendor \
-  && chmod g+s ${APACHE_DOCUMENT_ROOT}/vendor
 
+
+#######################################################
+# ビルダー環境(builder)
+#   ビルドツール類をインストール
+#   ソースコード・成果物は含まない
+#   中間ステージとしての利用
+#######################################################
+FROM base as builder
+ENV CONTAINER_BUILD_STAGE Builder
+
+# nodeツールインストール
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+  && apt-get install -y nodejs \
+  # 次ステージでもaptを使用する可能性があるため、中間イメージのサイズは増えるが、cleanは行わない
+  # && apt-get clean \
+  ;
+
+# composerツールインストール
 RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer \
   && composer selfupdate --1
+
+RUN chown www-data:www-data /var/www
+
+
+
+#######################################################
+# 成果物ビルド環境(build-artifacts)
+#   ビルダー環境をベースにソースコード搭載・成果物ビルドまで実施した環境
+#   中間ステージとしての利用
+#######################################################
+FROM builder as build-artifacts
+ENV CONTAINER_BUILD_STAGE "Build Artifact"
+
+# vendor配下のパーミッション設定を先行実施
+RUN mkdir -p ${APACHE_DOCUMENT_ROOT}/vendor \
+  && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
+  && chown www-data:www-data ${APACHE_DOCUMENT_ROOT}/vendor \
+  && chmod g+s ${APACHE_DOCUMENT_ROOT}/vendor
 
 # 全体コピー前にcomposer installを先行完了させる(docker cache利用によるリビルド速度向上)
 USER www-data
@@ -79,8 +110,7 @@ RUN composer install \
   -d ${APACHE_DOCUMENT_ROOT} \
   ;
 
-##################################################################
-# ファイル変更時、以後のステップにはキャッシュが効かなくなる
+# ----- ファイル変更時、以後のステップにはキャッシュが効かなくなる ------
 USER root
 COPY . ${APACHE_DOCUMENT_ROOT}
 WORKDIR ${APACHE_DOCUMENT_ROOT}
@@ -106,4 +136,40 @@ RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/var/eccube.db ] && [ ! ${SKIP_INSTALL_SCRI
         composer run-script installer-scripts && composer run-script auto-scripts \
         ; fi
 
+
+#######################################################
+# ランタイム環境(runtime)
+#   コンテナによるアプリ配布を想定した環境
+#   composer/node等使用不可
+#######################################################
+FROM base as runtime
+ENV CONTAINER_BUILD_STAGE Runtime
 USER root
+
+RUN apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
+  ;
+
+COPY --from=build-artifacts /var/www/html /var/www/html
+
+
+
+#######################################################
+# 開発環境(develop)
+#   ビルダー環境に開発用ツール類を追加した環境
+#   通常の開発に使用する
+#######################################################
+FROM builder as develop
+ENV CONTAINER_BUILD_STAGE Develop
+USER root
+# 開発ツールインストール
+RUN apt-get install --no-install-recommends -y \
+    git \
+    vim \
+    sudo \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
+  ;
+
+# 各ファイル変更の度に上記aptが実行される事を防ぐため、成果物を含まない環境をベースとし、ビルド成果物はbuild-artifactsから取得する
+COPY --from=build-artifacts /var/www/html /var/www/html
