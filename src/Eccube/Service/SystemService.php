@@ -15,15 +15,15 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Util\StringUtil;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use function explode;
 use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use function unlink;
 
 class SystemService implements EventSubscriberInterface
@@ -58,9 +58,6 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * SystemService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param ContainerInterface $container
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -147,9 +144,8 @@ class SystemService implements EventSubscriberInterface
      *
      * @param bool $isEnable
      * @param string $mode
-     * @param bool $force
      */
-    public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE, bool $force = false): void
+    public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE, bool $force = false)
     {
         if ($isEnable) {
             $this->enableMaintenance($mode, $force);
@@ -166,13 +162,12 @@ class SystemService implements EventSubscriberInterface
         }
 
         $contents = file_get_contents($path);
+
         return explode(':', $contents)[1] ?? null;
     }
 
     /**
      * KernelEvents::TERMINATE で設定されるEvent
-     *
-     * @param PostResponseEvent $event
      */
     public function disableMaintenanceEvent(PostResponseEvent $event)
     {
