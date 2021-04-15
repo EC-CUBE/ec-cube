@@ -242,7 +242,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         $this->tester->click(['css' => '#form_bulk button.btn-ec-delete']);
         $this->tester->waitForElementVisible(['id' => 'bulkDelete']);
         $this->tester->click(['id' => 'bulkDelete']);
-        $this->tester->waitForElementVisible(['id' => 'bulkDeleteDone']);
+        $this->tester->waitForElementVisible(['id' => 'bulkDeleteDone'], 30);
 
         return $this;
     }
