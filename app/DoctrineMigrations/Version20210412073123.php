@@ -39,7 +39,7 @@ final class Version20210412073123 extends AbstractMigration
             $env = file_get_contents($envFile);
 
             $env = StringUtil::replaceOrAddEnv($env, [
-                'ECCUBE_ADMIN_DENY_HOSTS' => "'{$denyHosts}'",
+                'ECCUBE_ADMIN_DENY_HOSTS' => "'${denyHosts}'",
             ]);
 
             file_put_contents($envFile, $env);
