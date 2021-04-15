@@ -290,6 +290,9 @@
     "react/promise": {
         "version": "v2.8.0"
     },
+    "robthree/twofactorauth": {
+        "version": "1.8.0"
+    },
     "sebastian/code-unit-reverse-lookup": {
         "version": "1.0.1"
     },
