@@ -19,3 +19,4 @@ coverage:
             - src/Eccube/*
         exclude:
             - src/Eccube/Resource/*
+            - src/Eccube/Command/*
