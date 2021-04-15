@@ -48,6 +48,7 @@
         "psr/log": "^1.0",
         "psr/simple-cache": "^1.0",
         "sensio/framework-extra-bundle": "^5.5",
+        "robthree/twofactorauth": "^1.8",
         "setasign/fpdi": "^2.2",
         "setasign/fpdi-tcpdf": "^2.2",
         "skorp/detect-incompatible-samesite-useragents": "^1.0",
