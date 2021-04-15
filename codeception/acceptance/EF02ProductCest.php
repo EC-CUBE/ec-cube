@@ -183,6 +183,9 @@ class EF02ProductCest
         $I->assertRegExp('/\/upload\/save_image\/sand-2\.png$/', $img, $img.' が見つかりません');
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function product_商品詳細カート1(\AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T01 商品詳細 カート 注文数＜販売制限数＜在庫数の注文');
@@ -205,6 +208,9 @@ class EF02ProductCest
         $cartPage->商品削除(1);
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function product_商品詳細カート2(\AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T02 商品詳細 カート 販売制限数＜注文数＜在庫数の注文');
@@ -228,6 +234,9 @@ class EF02ProductCest
         $cartPage->商品削除(1);
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function product_商品詳細カート3(\AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T03 商品詳細 カート 販売制限数＜在庫数＜注文数の注文');
@@ -251,6 +260,9 @@ class EF02ProductCest
         $cartPage->商品削除(1);
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function product_商品詳細カート4(\AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T04 商品詳細(規格あり) カート 注文数＜販売制限数＜在庫数の注文');
@@ -274,6 +286,9 @@ class EF02ProductCest
         $cartPage->商品削除(1);
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function product_商品詳細カート5(\AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T05 商品詳細(規格あり) カート 販売制限数＜注文数＜在庫数の注文');
@@ -297,6 +312,9 @@ class EF02ProductCest
         $cartPage->商品削除(1);
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function product_商品詳細カート6(\AcceptanceTester $I)
     {
         $I->wantTo('EF0202-UC02-T06 商品詳細(規格あり) カート 販売制限数＜在庫数＜注文数の注文');

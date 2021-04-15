@@ -90,6 +90,9 @@ class EF05MypageCest
         $I->see('合計', 'div.ec-orderRole__summary div.ec-totalBox .ec-totalBox__total');
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function mypage_お気に入り一覧(\AcceptanceTester $I)
     {
         $I->wantTo('EF0508-UC01-T01 Mypage お気に入り一覧');
@@ -236,6 +239,9 @@ class EF05MypageCest
         $I->see('大阪市南区', 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function mypage_お届け先編集削除(\AcceptanceTester $I)
     {
         $I->wantTo('EF0503-UC01-T01 Mypage お届け先編集削除');
