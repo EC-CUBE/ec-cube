@@ -69,6 +69,9 @@ file that was distributed with this source code.
                                     <th class="border-top-0 pt-2 pb-2 text-center">
                                         {{ 'admin.setting.system.member.work'|trans }}
                                     </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.system.member.two_factor_auth_enabled'|trans }}
+                                    </th>
                                     <th class="border-top-0 pt-2 pb-2 text-center"></th>
                                 </tr>
                                 </thead>
@@ -86,6 +89,9 @@ file that was distributed with this source code.
                                         </td>
                                         <td class="align-middle text-center">
                                             {{ Member.Work.name }}
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            {{ (Member.two_factor_auth_enabled ? 'common.enabled' : 'common.disabled')|trans }}
                                         </td>
                                         <td class="align-middle pr-3">
                                             <div class="text-right">
