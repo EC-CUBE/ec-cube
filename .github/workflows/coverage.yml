@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -76,16 +76,168 @@ jobs:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
         continue-on-error: true
         run: |
           bin/phpunit --version
           phpdbg -dmemory_limit=-1 -qrr bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
+      - name: Upload report
+        if: success()
+        uses: actions/upload-artifact@v2
+        with:
+          name: phpunit-reports
+          path: coverage1.xml
+  codeception:
+    name: Codeception
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.3 ]
+        db: [ pgsql ]
+        group: [ admin01, admin02, admin03, front, installer ]
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 11
+          - group: admin01
+            app_env: 'codeception'
+          - group: admin02
+            app_env: 'codeception'
+          - group: admin03
+            app_env: 'codeception'
+          - group: front
+            app_env: 'codeception'
+          - group: installer
+            app_env: 'install'
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: composer install
+        run: |
+          sudo composer selfupdate --1
+          composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: ${{ matrix.app_env }}
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+
+      - name: setup-chromedriver
+        uses: nanasess/setup-chromedriver@master
+
+      - name: Run chromedriver
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          echo ">>> Started chrome-driver"
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+          echo ">>> Started xvfb"
+
+      - name: Setup xdebug
+        run: |
+          composer require --dev codeception/c3 "2.*"
+          sudo phpenmod -s cli xdebug
+          sed -i "7a include __DIR__.'/c3.php';" index.php
+
+      - name: Start PHP Development Server
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          XDEBUG_MODE: coverage
+        run: php -S 127.0.0.1:8000 &
+
+      - name: Codeception
+        env:
+          APP_ENV: ${{ matrix.app_env }}
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          GROUP: ${{ matrix.group }}
+          SYMFONY_DEPRECATIONS_HELPER: weak
+          XDEBUG_MODE: coverage
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group excludeCoverage --coverage --coverage-xml
+      - name: Upload outputs
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-${{ matrix.group }}-evidence
+          path: codeception/_output/
+      - name: Upload report
+        if: success()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-${{ matrix.group }}-reports
+          path: codeception/_output/**/*.xml
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-${{ matrix.group }}-logs
+          path: var/log/
+
+  upload:
+    name: Upload coverage reports
+    runs-on: ubuntu-latest
+    needs: [ phpunit, codeception ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          path: reports
+      - run: |
+          mv reports/codeception-admin01-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.admin01.coverage.xml
+          mv reports/codeception-admin02-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.admin02.coverage.xml
+          mv reports/codeception-admin03-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.admin03.coverage.xml
+          mv reports/codeception-front-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.front.coverage.xml
+          mv reports/codeception-installer-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.installer.coverage.xml
       - name: Upload coverage
         uses: codecov/codecov-action@v1
         with:
-          files: ./coverage1.xml
-          # token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./reports/phpunit-reports/coverage1.xml,./reports/acceptance.admin01.coverage.xml,./reports/acceptance.admin02.coverage.xml,./reports/acceptance.admin03.coverage.xml,./reports/acceptance.front.coverage.xml,./reports/acceptance.installer.coverage.xml
           flags: tests
-          # yml: ./codecov.yml
           fail_ci_if_error: true

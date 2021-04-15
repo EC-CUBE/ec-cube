@@ -12,3 +12,10 @@ extensions:
         - Codeception\Extension\RunFailed
 params:
     - .env
+coverage:
+    enabled: true
+    whitelist:
+        include:
+            - src/Eccube/*
+        exclude:
+            - src/Eccube/Resource/*
