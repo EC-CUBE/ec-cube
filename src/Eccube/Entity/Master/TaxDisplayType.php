@@ -15,29 +15,33 @@ namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * TaxDisplayType
- *
- * @ORM\Table(name="mtb_tax_display_type")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\TaxDisplayTypeRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
- */
-class TaxDisplayType extends \Eccube\Entity\Master\AbstractMasterEntity
-{
+if (!class_exists(TaxDisplayType::class, false)) {
     /**
-     * 税抜.
+     * TaxDisplayType
      *
-     * @var integer
+     * 税抜表示 / 税込表示
+     *
+     * @ORM\Table(name="mtb_tax_display_type")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\TaxDisplayTypeRepository")
+     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    const EXCLUDED = 1;
+    class TaxDisplayType extends \Eccube\Entity\Master\AbstractMasterEntity
+    {
+        /**
+         * 税抜.
+         *
+         * @var integer
+         */
+        const EXCLUDED = 1;
 
-    /**
-     * 税込.
-     *
-     * @var integer
-     */
-    const INCLUDED = 2;
+        /**
+         * 税込.
+         *
+         * @var integer
+         */
+        const INCLUDED = 2;
+    }
 }

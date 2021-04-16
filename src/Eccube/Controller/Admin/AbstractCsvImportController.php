@@ -54,7 +54,7 @@ class AbstractCsvImportController extends AbstractController
             }
         } else {
             // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = StringUtil::characterEncoding($file);
+            $encode = StringUtil::characterEncoding($file, $this->eccubeConfig['eccube_csv_import_encoding']);
             if (!empty($encode) && $encode != 'UTF-8') {
                 $file = mb_convert_encoding($file, 'UTF-8', $encode);
             }
@@ -81,7 +81,7 @@ class AbstractCsvImportController extends AbstractController
         set_time_limit(0);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request, $columns) {
+        $response->setCallback(function () use ($columns) {
             // ヘッダ行の出力
             $row = [];
             foreach ($columns as $column) {

@@ -15,71 +15,75 @@ namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * OrderItemType
- *
- * @ORM\Table(name="mtb_order_item_type")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\OrderItemTypeRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
- */
-class OrderItemType extends \Eccube\Entity\Master\AbstractMasterEntity
-{
+if (!class_exists(OrderItemType::class, false)) {
     /**
-     * 商品.
+     * OrderItemType
      *
-     * @var integer
-     */
-    const PRODUCT = 1;
-
-    /**
-     * 送料.
+     * 受注明細種別
      *
-     * @var integer
+     * @ORM\Table(name="mtb_order_item_type")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\OrderItemTypeRepository")
+     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    const DELIVERY_FEE = 2;
-
-    /**
-     * 手数料.
-     *
-     * @var integer
-     */
-    const CHARGE = 3;
-
-    /**
-     * 値引き.
-     *
-     * @var integer
-     */
-    const DISCOUNT = 4;
-
-    /**
-     * 税.
-     *
-     * @var integer
-     */
-    const TAX = 5;
-
-    /**
-     * ポイント.
-     *
-     * @var integer
-     */
-    const POINT = 6;
-
-    /**
-     * 商品かどうか
-     *
-     * @return bool
-     */
-    public function isProduct()
+    class OrderItemType extends \Eccube\Entity\Master\AbstractMasterEntity
     {
-        if ($this->id == self::PRODUCT) {
-            return true;
-        }
+        /**
+         * 商品.
+         *
+         * @var integer
+         */
+        const PRODUCT = 1;
 
-        return false;
+        /**
+         * 送料.
+         *
+         * @var integer
+         */
+        const DELIVERY_FEE = 2;
+
+        /**
+         * 手数料.
+         *
+         * @var integer
+         */
+        const CHARGE = 3;
+
+        /**
+         * 値引き.
+         *
+         * @var integer
+         */
+        const DISCOUNT = 4;
+
+        /**
+         * 税.
+         *
+         * @var integer
+         */
+        const TAX = 5;
+
+        /**
+         * ポイント.
+         *
+         * @var integer
+         */
+        const POINT = 6;
+
+        /**
+         * 商品かどうか
+         *
+         * @return bool
+         */
+        public function isProduct()
+        {
+            if ($this->id == self::PRODUCT) {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

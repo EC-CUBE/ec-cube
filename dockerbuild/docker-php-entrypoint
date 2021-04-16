@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+if [ -n "${APP_ENV}" ]; then
+    echo "SetEnv APP_ENV ${APP_ENV}" >> /etc/apache2/conf-enabled/app_env.conf
+fi
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- apache2-foreground "$@"
+fi
+
+exec "$@"

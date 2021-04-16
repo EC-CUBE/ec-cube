@@ -428,6 +428,8 @@ admin.common.next: 次へ
 admin.common.first: 最初へ
 admin.common.last: 最後へ
 admin.common.back: 戻る
+admin.common.open_detail: '詳細を表示'
+admin.common.close_detail: '詳細を閉じる'
 
 # 汎用ラベル, メッセージ
 admin.common.show: 表示
@@ -469,6 +471,9 @@ admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません
 admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
 admin.common.csv_invalid_foreign_key: '%line%行目の%name%は関連するデータがあるため削除できません'
 admin.common.csv_invalid_description_detail_upper_limit: '%line%行目の%name%は%max%文字以下の文字列を指定してください。'
+admin.common.csv_upload_in_progress: 'CSVファイルのアップロード中...'
+admin.common.csv_upload_line_success: '%from%行目〜%to%行目を登録しました'
+admin.common.csv_upload_line_error: 'エラーが発生しました。%from%行目以降の登録処理はキャンセルされました'
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 admin.common.delete_modal__title: 削除します
@@ -608,6 +613,7 @@ admin.product.name: 商品名
 admin.product.image: 商品画像
 admin.product.image__short: 画像
 admin.product.image_size: '推奨サイズ : 600px x 600px以上'
+admin.product.image__invalid_path: 画像のパスが不正です。
 admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
@@ -742,6 +748,10 @@ admin.product.category_csv.parent_category_id_col: 親カテゴリID
 admin.product.category_csv.parent_category_id_description: ''
 admin.product.category_csv.delete_flag_col: カテゴリ削除フラグ
 admin.product.category_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
+
+# 商品CSV
+admin.product.product_csv_upload__title: '商品CSVをアップロードします'
+admin.product.product_csv_upload__message: '商品CSVファイルをアップロードします。よろしいですか？'
 
 #------------------------------------------------------------------------------------
 # 受注
@@ -954,8 +964,11 @@ admin.content.file.directory_name: フォルダ名
 admin.content.file.file_list__card_title: このフォルダ内のファイル
 admin.content.file.updated: 更新
 admin.content.file.directory_tree: フォルダ構成
-admin.content.file.upload_complete: %success%件のファイルをアップロードしました。(%success%/%count%)
-admin.content.file.upload_error: %file_name% のアップロードに失敗しました。(%error%)
+admin.content.file.upload_complete: '%success%件のファイルをアップロードしました。(%success%/%count%)'
+admin.content.file.upload_error: '%file_name% のアップロードに失敗しました。(%error%)'
+admin.content.file.folder_name_symbol_error: 使用できない文字が含まれています。
+admin.content.file.folder_name_period_error: ピリオド(.)で始まる名前は使用できません。
+admin.content.file.dir_exists: '%file_name% は既に使用されています。別のフォルダ名を入力してください'
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
@@ -991,6 +1004,7 @@ admin.content.layout_section__drawer: '#drawer'
 admin.content.layout_section__close_body_before: '</body>タグ直前'
 admin.content.page_name: ページ名
 admin.content.page__card_title: ページ設定
+admin.content.page_route_name: ルーティング名
 admin.content.page_url: URL
 admin.content.page_url_exists: 既にURLが存在しています。
 admin.content.page_file_name: ファイル名
@@ -1014,7 +1028,7 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
     <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
-    <meta property="product:retailer_title" content="{{ Product.name }}"/>
+    <meta property="product:retailer_title" content="{{ BaseInfo.shop_name }}"/>
 admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
 admin.content.css__card_title: CSS設定
 admin.content.js__card_title: JavaScript設定
@@ -1061,6 +1075,7 @@ admin.setting.shop.delivery_setting: 配送方法設定
 admin.setting.shop.tax_setting: 税率設定
 admin.setting.shop.mail_setting: メール設定
 admin.setting.shop.csv_setting: CSV出力項目設定
+admin.setting.shop.order_status_setting: 受注対応状況設定
 admin.setting.system: システム設定
 admin.setting.system.member_management: メンバー管理
 admin.setting.system.member_password_change: パスワード変更
@@ -1132,6 +1147,7 @@ admin.setting.shop.delivery.delivery_fee_by_pref: 都道府県別送料設定
 admin.setting.shop.delivery.apply_to_pref__title: 全国一律に設定
 admin.setting.shop.delivery.apply_to_pref__button: 各都道府県に適用
 admin.setting.shop.delivery.fee.invalid: 数字で入力してください。
+admin.setting.shop.delivery.payment_warning: '税込%min% ~ %max%の購入で選択できる支払い方法がありません。支払方法の利用条件をご確認ください。'
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：税率設定
@@ -1177,6 +1193,17 @@ admin.setting.shop.csv.how_to_use: |
   任意の項目を押して選択してから［項目操作］ボタンで移動し、CSV出力する項目を設定してください。
   出力する項目の順序は［項目順序］ボタンで変更することができます。
   複数の項目を選択する場合はctrlキー（Macの場合はcommandキー）を押しながら項目を押します。shiftキーを押しながら選択すると範囲選択ができます。
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：受注対応状況設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.order_status.order_status: 受注対応状況
+admin.setting.shop.order_status.id: ID
+admin.setting.shop.order_status.admin_order_status_name: 名称(受注管理)
+admin.setting.shop.order_status.customer_order_status_name: 名称(マイページ)
+admin.setting.shop.order_status.color: 色
+admin.setting.shop.order_status.display_order_count: 件数表示
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：メンバー管理 / パスワード変更
@@ -1574,6 +1601,7 @@ tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に�
 tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。
 tooltip.setting.shop.shop.option_point_rate: 購入金額に対するポイント付与率を編集できます。
 tooltip.setting.shop.shop.option_point_conversion_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
+tooltip.setting.shop.payment.rule: お支払い方法の利用条件を設定できます。自身の手数料を含む支払総額(税込)が条件に一致する場合、購入フローのお支払い方法の選択肢に表示されまます。
 tooltip.setting.shop.payment.logo_image: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
 tooltip.setting.shop.delivery.tracking_number_url: 配送業者のお問い合わせページURLを指定します。
 tooltip.setting.shop.delivery.sale_type: この配送方法で取り扱える販売種別を指定します。
@@ -1583,6 +1611,10 @@ tooltip.setting.shop.tax_setting: 商品共通の税率を設定できます。�
 tooltip.setting.shop.mail.mail_template: 既存のメールテンプレートを選択してください。以下に内容が表示されます。
 tooltip.setting.shop.csv.csv_columns: 各種のデータをCSVで出力できます。出力したい項目をこちらで設定することが可能です。
 tooltip.setting.shop.csv.csv_type: 設定したいCSVの種類を指定してください。
+tooltip.setting.shop.order_status.order_status: 受注管理およびマイページで表示される対応状況の設定を行います。名称、色、件数表示の設定が可能です。
+tooltip.setting.shop.order_status.customer_order_status_name: 対応状況の名称を設定できます。ここで設定した名称は会員ログイン後のマイページで表示されます。
+tooltip.setting.shop.order_status.color: 受注管理の対応状況の色を設定できます。
+tooltip.setting.shop.order_status.display_order_count: 受注管理の対応状況ごとの受注件数の表示・非表示を設定できます。
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。
 tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
 tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
@@ -1592,6 +1624,9 @@ tooltip.setting.system.log_display: アクセスやエラー状況などのロ�
 tooltip.setting.system.master_data_management: 各種マスターデータを管理します。
 tooltip.setting.system.system_info: このEC-CUBEに関係しているシステム環境の情報を表示しています。
 tooltip.setting.system.system.php_info: このEC-CUBEに関係しているPHPの詳細な情報を表示しています。
+tooltip.store.template.template_code: テンプレートの格納先のディレクトリ名になります。
+tooltip.store.template.template_name: 管理画面で表示するテンプレートの名前を設定します。
+tooltip.store.template.template_file: テンプレート一式となるアーカイブをアップロードします。
 
 #====================================================================================
 # インストール画面
@@ -1679,4 +1714,4 @@ purchase_flow.over_stock: 「%name%」の在庫が足りません。
 # Command
 #------------------------------------------------------------------------------------
 
-command.composer_require_already_installed.not_supported_plugin: %name% %plugin_version% は EC-CUBE %eccube_version% には対応していません。続行しますか？
+command.composer_require_already_installed.not_supported_plugin: '%name% %plugin_version% は EC-CUBE %eccube_version% には対応していません。続行しますか？'

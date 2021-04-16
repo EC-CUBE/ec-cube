@@ -268,7 +268,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             {# エンティティ拡張の自動出力 #}
-                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                            {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                 {% if f.vars.eccube_form_options.form_theme %}
                                     {% form_theme f f.vars.eccube_form_options.form_theme %}
                                     {{ form_row(f) }}
@@ -298,7 +298,7 @@ file that was distributed with this source code.
                         <div id="ex-delivery-time" class="card-body p-0">
                             <div class="card rounded border-0 mb-2">
                                 <ul id="delivery-time-group" class="list-group list-group-flush sortable-container"
-                                    data-prototype="{% filter escape %}{{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': form.delivery_times.vars.prototype}) }}{% endfilter %}">
+                                    data-prototype="{% apply escape %}{{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': form.delivery_times.vars.prototype}) }}{% endapply %}">
                                     <li class="list-group-item">
                                         <div class="form-row">
                                             <div class="col-auto d-flex align-items-center">

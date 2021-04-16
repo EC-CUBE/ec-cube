@@ -68,7 +68,7 @@ $(function() {
                         </a>
                         <span>{{ Plugin.name }}</span>
                     </td>
-                    <td class="align-middle" style="width: 136px">{{ Plugin.version }}</td>
+                    <td class="align-middle">{{ Plugin.version }}</td>
                     <td class="align-middle"><p class="mb-0">{{ Plugin.code }}</p></td>
                     <td class="align-middle">
                         {% if Plugin.id %}
@@ -107,48 +107,46 @@ $(function() {
                     </td>
                     <td class="align-middle">
                         {% if Plugin.id %}
-                            <div class="col-12 col-xs-11 col-md-10 col-lg-8 pull-right text-center">
-                                <div class="row">
-                                    <div class="col-4 px-0">
-                                        {% if Plugin.enabled == false %}
-                                            <a href="#"
-                                               data-toggle="modal"
-                                               data-target="#officialPluginDeleteModal"
-                                               data-id="{{ Plugin.id }}"
-                                               data-delete-url="{{ url('admin_store_plugin_api_uninstall', { id: Plugin.id }) }}"
-                                               data-name="{{ Plugin.name }}"
-                                               data-version="{{ Plugin.version }}"
-                                               class="btn btn-ec-actionIcon">
-                                                <i class="fa fa-close fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}"></i>
-                                            </a>
+                            <div class="row m-0">
+                                <div class="col-4">
+                                    {% if Plugin.enabled == false %}
+                                        <a href="#"
+                                           data-toggle="modal"
+                                           data-target="#officialPluginDeleteModal"
+                                           data-id="{{ Plugin.id }}"
+                                           data-delete-url="{{ url('admin_store_plugin_api_uninstall', { id: Plugin.id }) }}"
+                                           data-name="{{ Plugin.name }}"
+                                           data-version="{{ Plugin.version }}"
+                                           class="btn btn-ec-actionIcon">
+                                            <i class="fa fa-close fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}"></i>
+                                        </a>
 
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-4 px-0">
-                                        {% if Plugin.enabled %}
-                                            <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
-                                               class="btn btn-ec-actionIcon"
-                                               data-method="post" data-confirm="false">
-                                                <i class="fa fa-pause fa-lg text-secondary" data-tooltip="true"
-                                                   data-placement="top" title="{{ 'admin.store.plugin_table_official.925'|trans }}"></i>
-                                            </a>
-                                        {% else %}
-                                            <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
-                                               class="btn btn-ec-actionIcon"
-                                               data-method="post" data-confirm="false">
-                                                <i class="fa fa-play fa-lg text-secondary" data-tooltip="true"
-                                                   data-placement="top" title="{{ 'admin.store.plugin_table_official.924'|trans }}"></i>
-                                            </a>
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-4 pl-0">
-                                        {% if configPages[Plugin.code] is defined %}
-                                            <a class="btn btn-ec-actionIcon" href="{{ configPages[Plugin.code] }}">
-                                                <i class="fa fa-cog fa-lg text-secondary" data-tooltip="true"
-                                                   data-placement="top" title="{{ 'admin.store.plugin_table_official.906'|trans }}"></i>
-                                            </a>
-                                        {% endif %}
-                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-4">
+                                    {% if Plugin.enabled %}
+                                        <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
+                                           class="btn btn-ec-actionIcon"
+                                           data-method="post" data-confirm="false">
+                                            <i class="fa fa-pause fa-lg text-secondary" data-tooltip="true"
+                                               data-placement="top" title="{{ 'admin.store.plugin_table_official.925'|trans }}"></i>
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
+                                           class="btn btn-ec-actionIcon"
+                                           data-method="post" data-confirm="false">
+                                            <i class="fa fa-play fa-lg text-secondary" data-tooltip="true"
+                                               data-placement="top" title="{{ 'admin.store.plugin_table_official.924'|trans }}"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <div class="col-4">
+                                    {% if configPages[Plugin.code] is defined %}
+                                        <a class="btn btn-ec-actionIcon" href="{{ configPages[Plugin.code] }}">
+                                            <i class="fa fa-cog fa-lg text-secondary" data-tooltip="true"
+                                               data-placement="top" title="{{ 'admin.store.plugin_table_official.906'|trans }}"></i>
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endif %}
@@ -159,7 +157,7 @@ $(function() {
         </table>
     </div>
     {% if officialPluginsDetail|length == 0 %}
-    <p class="ml-3">{{ 'admin.store.plugin.help'|trans }}</p>
+        <p class="ml-3">{{ 'admin.store.plugin.help'|trans }}</p>
     {% endif %}
 {% else %}
     <div class="card-body">

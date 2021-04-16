@@ -42,6 +42,7 @@ class OrderNoProcessorTest extends EccubeTestCase
 
         $config = $this->createMock(EccubeConfig::class);
         $config->method('offsetGet')->willReturn($orderNoFormat);
+        $config->method('get')->willReturn('Asia/Tokyo');
         $processor = new OrderNoProcessor($config, $this->container->get(OrderRepository::class));
 
         $processor->process($Order, new PurchaseContext());
@@ -53,10 +54,10 @@ class OrderNoProcessorTest extends EccubeTestCase
     {
         return [
             ['', '/^123$/'],
-            ['{yyyy}', '/^'.(new \DateTime())->format('Y').'$/'],
-            ['{yy}', '/^'.(new \DateTime())->format('y').'$/'],
-            ['{mm}', '/^'.(new \DateTime())->format('m').'$/'],
-            ['{dd}', '/^'.(new \DateTime())->format('d').'$/'],
+            ['{yyyy}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('Y').'$/'],
+            ['{yy}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('y').'$/'],
+            ['{mm}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('m').'$/'],
+            ['{dd}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('d').'$/'],
             ['{id}', '/^123$/'],
             ['{id,0}', '/^123$/'],
             ['{id,1}', '/^123$/'],
@@ -74,9 +75,9 @@ class OrderNoProcessorTest extends EccubeTestCase
             ['ORDER_{yy}_{mm}_{dd}_{id,5}_{random,5}_{random_alnum,10}',
                 '/^'.
                 'ORDER_'.
-                (new \DateTime())->format('y').'_'.
-                (new \DateTime())->format('m').'_'.
-                (new \DateTime())->format('d').'_'.
+                (new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('y').'_'.
+                (new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('m').'_'.
+                (new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('d').'_'.
                 '00123_'.
                 '\d{5}_'.
                 '[[:alnum:]]{10}'.

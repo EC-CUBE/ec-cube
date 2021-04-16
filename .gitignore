@@ -1,7 +1,6 @@
 !dummy
 !.gitmodule
 composer.phar
-gulpconfig.js
 /vendor/
 /node_modules/
 /var/*
@@ -19,6 +18,7 @@ gulpconfig.js
 !/app/template/admin
 !/app/template/default
 !/app/template/user_data
+!/app/template/smartphone
 /app/proxy/entity/*
 !/app/proxy/entity/.gitkeep
 /html/plugin/*
@@ -45,6 +45,7 @@ gulpconfig.js
 *.php~
 .env
 .maintenance
+*.neon
 
 ###> symfony/phpunit-bridge ###
 .phpunit

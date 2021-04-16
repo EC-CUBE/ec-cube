@@ -17,6 +17,7 @@ use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ContactType;
+use Eccube\Repository\PageRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,20 +31,29 @@ class ContactController extends AbstractController
     protected $mailService;
 
     /**
+     * @var PageRepository
+     */
+    private $pageRepository;
+
+    /**
      * ContactController constructor.
      *
      * @param MailService $mailService
+     * @param PageRepository $pageRepository
      */
     public function __construct(
-        MailService $mailService)
+        MailService $mailService,
+        PageRepository $pageRepository)
     {
         $this->mailService = $mailService;
+        $this->pageRepository = $pageRepository;
     }
 
     /**
      * お問い合わせ画面.
      *
      * @Route("/contact", name="contact")
+     * @Route("/contact", name="contact_confirm")
      * @Template("Contact/index.twig")
      */
     public function index(Request $request)
@@ -84,11 +94,9 @@ class ContactController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             switch ($request->get('mode')) {
                 case 'confirm':
-                    $form = $builder->getForm();
-                    $form->handleRequest($request);
-
                     return $this->render('Contact/confirm.twig', [
                         'form' => $form->createView(),
+                        'Page' => $this->pageRepository->getPageByRoute('contact_confirm')
                     ]);
 
                 case 'complete':

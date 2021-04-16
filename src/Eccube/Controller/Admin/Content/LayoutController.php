@@ -131,13 +131,13 @@ class LayoutController extends AbstractController
 
         /** @var Layout $Layout */
         if (!$Layout->isDeletable()) {
-            $this->deleteMessage();
+            $this->addWarning(trans('admin.common.delete_error_foreign_key', ['%name%' => $Layout->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_content_layout');
         }
 
         $this->entityManager->remove($Layout);
-        $this->entityManager->flush($Layout);
+        $this->entityManager->flush();
 
         $this->addSuccess('admin.common.delete_complete', 'admin');
 
@@ -180,7 +180,7 @@ class LayoutController extends AbstractController
             // Layoutの更新
             $Layout = $form->getData();
             $this->entityManager->persist($Layout);
-            $this->entityManager->flush($Layout);
+            $this->entityManager->flush();
 
             // BlockPositionの更新
             // delete/insertのため、一度削除する.
@@ -188,7 +188,7 @@ class LayoutController extends AbstractController
             foreach ($BlockPositions as $BlockPosition) {
                 $Layout->removeBlockPosition($BlockPosition);
                 $this->entityManager->remove($BlockPosition);
-                $this->entityManager->flush($BlockPosition);
+                $this->entityManager->flush();
             }
 
             // ブロックの個数分登録を行う.
@@ -207,7 +207,7 @@ class LayoutController extends AbstractController
                     throw new NotFoundHttpException();
                 }
 
-                if ($Page->getEditType() == \Eccube\Entity\Page::EDIT_TYPE_DEFAULT) {
+                if ($Page->getEditType() >= \Eccube\Entity\Page::EDIT_TYPE_DEFAULT) {
                     if ($Page->getUrl() === 'product_detail') {
                         $product = $this->productRepository->findOneBy(['Status' => ProductStatus::DISPLAY_SHOW]);
                         if (is_null($product)) {

@@ -91,6 +91,36 @@ class OrderHelper
      */
     protected $orderItemTypeRepository;
 
+    /**
+     * @var OrderStatusRepository
+     */
+    protected $orderStatusRepository;
+
+    /**
+     * @var DeliveryRepository
+     */
+    protected $deliveryRepository;
+
+    /**
+     * @var PaymentRepository
+     */
+    protected $paymentRepository;
+
+    /**
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
+    /**
+     * @var MobileDetector
+     */
+    protected $mobileDetector;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
     public function __construct(
         ContainerInterface $container,
         EntityManagerInterface $entityManager,
@@ -435,6 +465,7 @@ class OrderHelper
         $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
 
         // 利用可能な支払い方法を抽出.
+        // ここでは支払総額が決まっていないため、利用条件に合致しないものも選択対象になる場合がある
         $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);
 
         // 初期の支払い方法を設定.

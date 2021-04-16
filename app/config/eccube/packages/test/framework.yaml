@@ -2,3 +2,4 @@ framework:
     test: ~
     session:
         storage_id: session.storage.mock_file
+        cookie_lifetime: 1440

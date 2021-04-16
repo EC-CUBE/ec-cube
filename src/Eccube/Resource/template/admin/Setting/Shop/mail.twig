@@ -166,7 +166,7 @@ file that was distributed with this source code.
                                         <div class="col-1">
                                             <div class="d-inline-block">
                                                 <div class="btn-group" role="group">
-                                                    <button type="button" id="preview_button" class="btn btn-block btn-ec-regular" style="display:none;" data-toggle="modal" data-target="#htmlPreviewModal">
+                                                    <button type="button" id="preview_button" class="btn btn-block text-nowrap btn-ec-regular" style="display:none;" data-toggle="modal" data-target="#htmlPreviewModal">
                                                         {{ 'admin.setting.shop.mail.preview'|trans }}
                                                     </button>
                                                 </div>
@@ -193,7 +193,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             {# エンティティ拡張の自動出力 #}
-                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                            {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                 {% if f.vars.eccube_form_options.form_theme %}
                                     {% form_theme f f.vars.eccube_form_options.form_theme %}
                                     {{ form_row(f) }}
