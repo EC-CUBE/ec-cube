@@ -154,6 +154,8 @@ class TwoFactorAuthController extends AbstractController
         $error = null;
         $Member = $this->getUser();
         $builder = $this->formFactory->createBuilder(TwoFactorAuthType::class);
+        $form = null;
+        $auth_key = null;
 
         if ('GET' === $request->getMethod()) {
             if ($Member->getTwoFactorAuthKey()) {
