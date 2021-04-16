@@ -14,6 +14,9 @@ parameters:
     env(ECCUBE_PACKAGE_API_URL): 'https://package-api-41beta.ec-cube.net'
     env(ECCUBE_OWNERS_STORE_URL): 'https://www.ec-cube.net'
     env(ECCUBE_MAINTENANCE_FILE_PATH): '%kernel.project_dir%/.maintenance'
+    env(ECCUBE_2FA_ENABLED): true
+    env(ECCUBE_2FA_COOKIE_NAME): 'eccube_2fa'
+    env(ECCUBE_2FA_EXPIRE): 14
 
     # EC-CUBE parameter
     eccube_database_url: '%env(DATABASE_URL)%'
@@ -129,3 +132,6 @@ parameters:
     eccube_result_cache_lifetime: 3600 # doctrineのresult cacheのlifetime.
     eccube_result_cache_lifetime_short: 10  # doctrineのresult cacheのlifetime. 商品一覧画面など長期間キャッシュできない箇所で使用する.
     eccube_content_maintenance_file_path: '%env(ECCUBE_MAINTENANCE_FILE_PATH)%'
+    eccube_2fa_enabled: '%env(ECCUBE_2FA_ENABLED)%'
+    eccube_2fa_cookie_name: '%env(ECCUBE_2FA_COOKIE_NAME)%'
+    eccube_2fa_expire: '%env(ECCUBE_2FA_EXPIRE)%'
