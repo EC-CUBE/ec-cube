@@ -17,7 +17,9 @@ use Eccube\Entity\Page;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -42,6 +44,11 @@ class SitemapController extends AbstractController
      * @var RouterInterface
      */
     private $router;
+
+    /**
+     * @var int
+     */
+    private $item_per_page = 1000;
 
     /**
      * SitemapController constructor.
@@ -76,12 +83,15 @@ class SitemapController extends AbstractController
             ->getSingleResult();
 
         $Product = $this->productRepository->findOneBy(['Status' => 1], ['update_date' => 'DESC']);
+        $ProductCount = $this->productRepository->count(['Status' => 1]);
+
         $Category = $this->categoryRepository->findOneBy([], ['update_date' => 'DESC']);
 
         return $this->outputXml(
             [
                 'Category' => $Category,
                 'Product' => $Product,
+                'ProductPageCount' => ceil($ProductCount / $this->item_per_page),
                 'Page' => $Page,
             ],
             'sitemap_index.xml.twig'
@@ -105,11 +115,24 @@ class SitemapController extends AbstractController
      *
      * Output sitemap of products as status is 1
      *
-     * @Route("/sitemap_product.xml", name="sitemap_product_xml")
+     * @Route("/sitemap_product_{page}.xml", name="sitemap_product_xml", requirements={"page" = "\d+"})
+     * @param Request $request
+     * @return Response
      */
-    public function product()
+    public function product(Request $request)
     {
-        $Products = $this->productRepository->findBy(['Status' => 1], ['update_date' => 'DESC']);
+        $page = (int)$request->get('page');
+
+        $Products = $this->productRepository->findBy(
+            ['Status' => 1],
+            ['update_date' => 'DESC'],
+            $this->item_per_page,
+            ($page - 1) * $this->item_per_page
+        );
+
+        if (!$Products) {
+            throw new NotFoundHttpException();
+        }
 
         return $this->outputXml(['Products' => $Products]);
     }

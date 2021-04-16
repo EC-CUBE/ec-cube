@@ -8,8 +8,10 @@
         <loc>{{url('sitemap_category_xml')}}</loc>
         <lastmod>{{Category.update_date|date_format('','c')}}</lastmod>
     </sitemap>
-    <sitemap>
-        <loc>{{url('sitemap_product_xml')}}</loc>
-        <lastmod>{{Product.update_date|date_format('','c')}}</lastmod>
-    </sitemap>
+    {% for p in 1..ProductPageCount %}
+        <sitemap>
+            <loc>{{url('sitemap_product_xml', {page: p})}}</loc>
+            <lastmod>{{Product.update_date|date_format('','c')}}</lastmod>
+        </sitemap>
+    {% endfor %}
 </sitemapindex>
