@@ -33,7 +33,7 @@ jobs:
       image: centos:7
     steps:
     - name: Checkout
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
     - name: Setup
       run: |
         yum -y install epel-release
@@ -64,6 +64,7 @@ jobs:
       run: |
         php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
         php composer-setup.php
+        php composer.phar selfupdate --1
         php composer.phar install
 
     - name: Setup EC-CUBE
