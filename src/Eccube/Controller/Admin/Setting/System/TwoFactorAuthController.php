@@ -136,6 +136,10 @@ class TwoFactorAuthController extends AbstractController
      */
     public function edit(Request $request)
     {
+        $Member = $this->getUser();
+        if ($this->twoFactorAuthService->isAuth($Member)) {
+            return $this->redirectToRoute('admin_homepage');
+        }
         $res = $this->createResponse($request);
         if (is_array($res) && isset($res['error'])) {
             $this->addError($res['error']);
