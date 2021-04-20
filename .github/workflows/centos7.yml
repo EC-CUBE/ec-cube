@@ -34,6 +34,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Create user
+      run: |
+        adduser runner --home `pwd`
+        chown -R runner:runner .
     - name: Setup
       run: |
         yum -y install epel-release
@@ -52,29 +56,34 @@ jobs:
         curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py > /usr/bin/systemctl
         chmod +x /usr/bin/systemctl
 
-    - name: Initialize Database
+    - name: Initialize Database for pgsql
+      if: matrix.db == 'pgsql'
       run: |
-        systemctl start mariadb.service
         su - postgres -c "initdb --no-locale -E utf8"
         sed -i "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/" /var/lib/pgsql/data/postgresql.conf
         systemctl restart postgresql.service
+
+    - name: Initialize Database for mysql
+      if: matrix.db == 'mysql'
+      run: |
+        systemctl start mariadb.service
         mysql --user=root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;FLUSH PRIVILEGES;"
 
     - name: Setup composer
       run: |
-        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-        php composer-setup.php
-        php composer.phar selfupdate --1
-        php composer.phar install
+        su - runner -c 'curl -o composer-setup.php https://getcomposer.org/installer'
+        su - runner -c 'php composer-setup.php'
+        su - runner -c 'php composer.phar selfupdate --1'
+        su - runner -c 'php composer.phar install'
 
     - name: Setup EC-CUBE
       env:
         DATABASE_URL: ${{ matrix.database_url }}
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
       run: |
-        bin/console doctrine:database:create
-        bin/console doctrine:schema:create
-        bin/console eccube:fixtures:load
+        su runner -c 'bin/console doctrine:database:create'
+        su runner -c 'bin/console doctrine:schema:create'
+        su runner -c 'bin/console eccube:fixtures:load'
 
     - name: PHPUnit
       env:
@@ -83,14 +92,19 @@ jobs:
         DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         MAILER_URL: 'smtp://localhost:1025'
       run: |
-        bin/phpunit -dmemory_limit=-1 --exclude-group cache-clear,cache-clear-install,update-schema-doctrine
-        bin/phpunit -dmemory_limit=-1 --group cache-clear
-        bin/phpunit -dmemory_limit=-1 --group cache-clear-install
-        bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine --exclude-group update-schema-doctrine-install
-        bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy
-        bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testInstallPluginWithProxy
-        bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy
-        bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
-        bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
-        bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
-        bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
+        echo "APP_ENV=${APP_ENV}" > .env
+        echo "DATABASE_URL=${DATABASE_URL}" >> .env
+        echo "DATABASE_SERVER_VERSION=${DATABASE_SERVER_VERSION}" >> .env
+        echo "MAILER_URL=${MAILER_URL}" >> .env
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --exclude-group cache-clear,cache-clear-install,update-schema-doctrine'
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --group cache-clear'
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --group cache-clear-install'
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine --exclude-group update-schema-doctrine-install'
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy'
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testInstallPluginWithProxy'
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy'
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testEnablePluginWithProxy'
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy'
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testDisablePluginWithProxy'
+        su runner -c 'bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testCreateEntityAndTrait'
+
