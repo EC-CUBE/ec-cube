@@ -21,6 +21,8 @@ modules:
             capabilities:
                 unexpectedAlertBehaviour: 'accept'
                 elementScrollBehavior: 1
+                chromeOptions:
+                    args: ["--allow-insecure-localhost", "--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"]
         MailCatcher:
             url: '%MAILCATCHER_HOST%'
             port: 1080

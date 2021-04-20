@@ -108,3 +108,143 @@ jobs:
         su runner -c 'bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testDisablePluginWithProxy'
         su runner -c 'bin/phpunit -dmemory_limit=-1 --group update-schema-doctrine-install --filter=testCreateEntityAndTrait'
 
+
+  codeception:
+    name: Codeception
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 7.3 ]
+        db: [ mysql, pgsql ]
+        group: [ admin01, admin02, admin03, front, installer ]
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@localhost:5432/eccube_db
+            database_server_version: 9.2
+          - db: mysql
+            database_url: mysql://root:password@localhost:3306/eccube_db
+            database_server_version: 5.5
+          - group: admin01
+            app_env: 'codeception'
+          - group: admin02
+            app_env: 'codeception'
+          - group: admin03
+            app_env: 'codeception'
+          - group: front
+            app_env: 'codeception'
+          - group: installer
+            app_env: 'install'
+
+    container:
+      image: centos:7
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Create user
+      run: |
+        adduser runner --home `pwd`
+        chown -R runner:runner .
+    - name: Setup
+      run: |
+        yum -y install epel-release
+        yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+        yum -y install mariadb-server mysql-devel postgresql-server httpd httpd-devel mod_ssl
+        yum -y install --enablerepo=epel,remi,remi-safe,remi-php73 php-mbstring php-devel php-mhash php-pgsql php-mysql php-xml php-gd  php-intl php-curl php-zip php73-php-pecl-apcu php-opcache php-pecl-apcu
+        yum -y install xorg-x11-server-Xvfb
+        yum -y install ruby ruby-devel sqlite-devel
+        gem install mime-types -v 2.99.1
+        gem install mailcatcher -v "0.6.5"
+        mailcatcher &
+
+    - name: Replace to systemctl
+      ## see https://github.com/DDoSolitary/LxRunOffline/issues/88#issuecomment-525923925
+      run: |
+        mv /usr/bin/systemctl /usr/bin/systemctl.old
+        curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py > /usr/bin/systemctl
+        chmod +x /usr/bin/systemctl
+
+    - name: Initialize Database for pgsql
+      if: matrix.db == 'pgsql'
+      run: |
+        su - postgres -c "initdb --no-locale -E utf8"
+        sed -i "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/" /var/lib/pgsql/data/postgresql.conf
+        systemctl restart postgresql.service
+
+    - name: Initialize Database for mysql
+      if: matrix.db == 'mysql'
+      run: |
+        systemctl start mariadb.service
+        mysql --user=root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;FLUSH PRIVILEGES;"
+
+    - name: Setup composer
+      run: |
+        su - runner -c 'curl -o composer-setup.php https://getcomposer.org/installer'
+        su - runner -c 'php composer-setup.php'
+        su - runner -c 'php composer.phar selfupdate --1'
+        su - runner -c 'php composer.phar install'
+
+    - name: Setup EC-CUBE
+      env:
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+      run: |
+        su runner -c 'bin/console doctrine:database:create'
+        su runner -c 'bin/console doctrine:schema:create'
+        su runner -c 'bin/console eccube:fixtures:load'
+    - name: Setup chromedriver
+      run: |
+        yum install -y ipa-gothic-fonts ipa-mincho-fonts ipa-pgothic-fonts ipa-pmincho-fonts zip unzip
+        yum install -y https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+        CHROME_VERSION=$(google-chrome --version | cut -f 3 -d ' ' | cut -d '.' -f 1)
+        VERSION=$(curl --location --fail --retry 10 http://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION})
+        wget -c -nc --retry-connrefused --tries=0 https://chromedriver.storage.googleapis.com/${VERSION}/chromedriver_linux64.zip
+        unzip -o -q chromedriver_linux64.zip
+        mv chromedriver /usr/local/bin/chromedriver
+
+    - name: Run chromedriver
+      run: |
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        echo ">>> Started chrome-driver"
+        Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        echo ">>> Started xvfb"
+
+    - name: Start PHP Development Server
+      env:
+        APP_ENV: 'codeception'
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+      run: su runner -c 'php -S localhost:8000 &'
+
+    - name: Codeception
+      env:
+        APP_ENV: ${{ matrix.app_env }}
+        DATABASE_URL: ${{ matrix.database_url }}
+        DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        MAILER_URL: 'smtp://localhost:1025'
+        ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+        GROUP: ${{ matrix.group }}
+        SYMFONY_DEPRECATIONS_HELPER: weak
+      run: |
+        echo "APP_ENV=${APP_ENV}" > .env
+        echo "DATABASE_URL=${DATABASE_URL}" >> .env
+        echo "DATABASE_SERVER_VERSION=${DATABASE_SERVER_VERSION}" >> .env
+        echo "MAILER_URL=${MAILER_URL}" >> .env
+        echo "ECCUBE_PACKAGE_API_URL=${ECCUBE_PACKAGE_API_URL}" >> .env
+        echo "SYMFONY_DEPRECATIONS_HELPER=${SYMFONY_DEPRECATIONS_HELPER}" >> .env
+        su runner -c "vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}"
+    - name: Upload evidence
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: codeception-${{ matrix.group }}-evidence
+        path: codeception/_output/
+    - name: Upload logs
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: codeception-${{ matrix.group }}-logs
+        path: var/log/
