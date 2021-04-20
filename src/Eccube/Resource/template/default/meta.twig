@@ -8,10 +8,16 @@
     <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
     <meta property="product:retailer_title" content="{{ BaseInfo.shop_name }}"/>
+    {% if not Product.stock_find %}
+        <meta name="robots" content="noindex">
+    {% endif %}
 {% elseif Category is defined %}
     {% set meta_og_type = 'article' %}
     {% set meta_description = Page.description %}
     {% set meta_canonical = url('product_list', {'category_id': Category.id|default(null)}) %}
+    {% if pagination|length == 0 %}
+        <meta name="robots" content="noindex">
+    {% endif %}
 {% elseif Page is defined %}
     {% set meta_og_type = (app.request.get('_route') == 'homepage') ? 'website' : 'article' %}
     {% set meta_description = Page.description %}

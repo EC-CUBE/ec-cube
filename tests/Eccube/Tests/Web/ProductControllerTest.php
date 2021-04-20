@@ -296,11 +296,18 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertEquals('article', $crawler->filter('meta[property="og:type"]')->attr('content'));
         $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
         $this->assertEquals($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
+        $this->assertCount(0, $crawler->filter('meta[name="robots"]'));
 
         // カテゴリ指定あり
         $url = $this->generateUrl('product_list', ['category_id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
         $crawler = $this->client->request('GET', $url);
         $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
+
+        // 検索 0件 → noindex 確認
+        $url = $this->generateUrl('product_list', ['category_id' => 1, 'name' => 'notfoundquery'], UrlGeneratorInterface::ABSOLUTE_URL);
+        $crawler = $this->client->request('GET', $url);
+        $this->assertContains('お探しの商品は見つかりませんでした', $crawler->html());
+        $this->assertEquals('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
     }
 
     /**
@@ -330,6 +337,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
         $this->assertEquals($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
         $this->assertEquals($imgPath, $crawler->filter('meta[property="og:image"]')->attr('content'));
+        $this->assertCount(0, $crawler->filter('meta[name="robots"]'));
 
         // 商品の description_list を削除
         //   → meta description には description_detail が設定される
@@ -341,5 +349,27 @@ class ProductControllerTest extends AbstractWebTestCase
 
         $this->assertEquals($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
         $this->assertEquals($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
+    }
+
+    /**
+     * 詳細ページ 在庫なし時の metaタグのテスト
+     */
+    public function testMetaTagsInOutOfStockDetailPage()
+    {
+        $Product = $this->createProduct('Product out of stock', 1);
+        $id = $Product->getId();
+        $productUrl = $this->generateUrl('product_detail', ['id' => $id], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        // 在庫切れ商品
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStockUnlimited(false);
+        $ProductClass->setStock(0);
+        $ProductStock = $ProductClass->getProductStock();
+        $ProductStock->setStock(0);
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request('GET', $productUrl);
+
+        $this->assertEquals('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
     }
 }
