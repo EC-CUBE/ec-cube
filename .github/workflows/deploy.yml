@@ -45,10 +45,6 @@ jobs:
           rm -rf $GITHUB_WORKSPACE/.gitignore
           rm -rf $GITHUB_WORKSPACE/.buildpath
           rm -rf $GITHUB_WORKSPACE/.gitmodules
-          rm -rf $GITHUB_WORKSPACE/.scrutinizer.yml
-          rm -rf $GITHUB_WORKSPACE/.travis.yml
-          rm -rf $GITHUB_WORKSPACE/appveyor.yml
-          rm -rf $GITHUB_WORKSPACE/.coveralls.yml
           rm -rf $GITHUB_WORKSPACE/.php_cs.dist
           rm -rf $GITHUB_WORKSPACE/phpunit.xml.dist
           rm -rf $GITHUB_WORKSPACE/phpstan.neon.dist
@@ -56,7 +52,6 @@ jobs:
           rm -rf $GITHUB_WORKSPACE/Procfile
           rm -rf $GITHUB_WORKSPACE/LICENSE.txt
           rm -rf $GITHUB_WORKSPACE/README.md
-          rm -rf $GITHUB_WORKSPACE/codeception.sh
           rm -rf $GITHUB_WORKSPACE/codeception.yml
           rm -rf $GITHUB_WORKSPACE/app/Plugin/*
           rm -rf $GITHUB_WORKSPACE/codeception

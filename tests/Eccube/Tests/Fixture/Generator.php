@@ -20,7 +20,9 @@ use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
+use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
@@ -819,6 +821,34 @@ class Generator
         $this->entityManager->flush($Page);
 
         return $Page;
+    }
+
+    /**
+     * ログイン履歴を生成する
+     *
+     * @param string $user_name
+     * @param string|null $client_ip
+     * @param int|null $status
+     * @param Member|null $Member
+     * @return LoginHistory
+     */
+    public function createLoginHistory($user_name, $client_ip = null, $status = null, $Member = null)
+    {
+        $faker = $this->getFaker();
+        $LoginHistory = new LoginHistory();
+        $LoginHistory
+            ->setUserName($user_name)
+            ->setClientIp($client_ip ?? $faker->ipv4)
+            ->setLoginUser($Member);
+
+        $LoginHistory->setStatus(
+            $this->entityManager->find(LoginHistoryStatus::class, $status ?? LoginHistoryStatus::FAILURE)
+        );
+
+        $this->entityManager->persist($LoginHistory);
+        $this->entityManager->flush();
+
+        return $LoginHistory;
     }
 
     /**

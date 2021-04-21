@@ -270,7 +270,7 @@ file that was distributed with this source code.
                                     {% for product_class_form in form.product_classes %}
                                         {# product_class_formはcollection typeなので, 1行目だけ出力する #}
                                         {% if loop.first %}
-                                            {% for f in product_class_form if f.vars.eccube_form_options.auto_render %}
+                                            {% for f in product_class_form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                                 <th class="pt-2 pb-2">{{ f.vars.label|trans }}</th>
                                             {% endfor %}
                                         {% endif %}
@@ -344,7 +344,7 @@ file that was distributed with this source code.
                                                 {{ form_errors(product_class_form.sale_type) }}
                                             </td>
                                             {# エンティティ拡張の自動出力 #}
-                                            {% for f in product_class_form if f.vars.eccube_form_options.auto_render %}
+                                            {% for f in product_class_form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                                 {% if f.vars.eccube_form_options.form_theme %}
                                                     {% form_theme f f.vars.eccube_form_options.form_theme %}
                                                     {{ form_row(f) }}

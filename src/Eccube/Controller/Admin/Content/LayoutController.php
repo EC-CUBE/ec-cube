@@ -137,7 +137,7 @@ class LayoutController extends AbstractController
         }
 
         $this->entityManager->remove($Layout);
-        $this->entityManager->flush($Layout);
+        $this->entityManager->flush();
 
         $this->addSuccess('admin.common.delete_complete', 'admin');
 
@@ -180,7 +180,7 @@ class LayoutController extends AbstractController
             // Layoutの更新
             $Layout = $form->getData();
             $this->entityManager->persist($Layout);
-            $this->entityManager->flush($Layout);
+            $this->entityManager->flush();
 
             // BlockPositionの更新
             // delete/insertのため、一度削除する.
@@ -188,7 +188,7 @@ class LayoutController extends AbstractController
             foreach ($BlockPositions as $BlockPosition) {
                 $Layout->removeBlockPosition($BlockPosition);
                 $this->entityManager->remove($BlockPosition);
-                $this->entityManager->flush($BlockPosition);
+                $this->entityManager->flush();
             }
 
             // ブロックの個数分登録を行う.

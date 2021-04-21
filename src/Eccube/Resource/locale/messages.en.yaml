@@ -396,8 +396,8 @@ admin.common.send_complete: Email has been sent
 admin.common.send_error: Failed to send an Email
 admin.common.create_complete: Created
 admin.common.system_error: System error occurred
-admin.common.to_show_complete: %name% is displayed
-admin.common.to_hide_complete: %name% is hidden
+admin.common.to_show_complete: '%name% is displayed'
+admin.common.to_hide_complete: '%name% is hidden'
 
 # action labels
 admin.common.save: Save
@@ -964,11 +964,11 @@ admin.content.file.directory_name: Folder Name
 admin.content.file.file_list__card_title: Files in This Directory
 admin.content.file.updated: Update
 admin.content.file.directory_tree: Directories
-admin.content.file.upload_complete: %success% file upload completed. (%success%/%count%)
+admin.content.file.upload_complete: '%success% file upload completed. (%success%/%count%)'
 admin.content.file.upload_error: Failed to upload %file_name%. (%error%)
 admin.content.file.folder_name_symbol_error: The folder name contains invalid characters.
 admin.content.file.folder_name_period_error: Folder names beginning with a period(.) are not allowed.
-admin.content.file.dir_exists: %file_name% is already exists.
+admin.content.file.dir_exists: '%file_name% is already exists.'
 admin.content.layout_delete: Delete Layouts
 admin.content.layout_no_page: Page not registered
 admin.content.layout__card_title: Layout Overview
@@ -1082,6 +1082,7 @@ admin.setting.system.member_password_change: Passwords
 admin.setting.system.authority_management: Permission
 admin.setting.system.security_management: Security
 admin.setting.system.log_display: Logs
+admin.setting.system.login_history: Login History
 admin.setting.system.master_data_management: Master Data
 admin.setting.system.system_info: System Info
 
@@ -1244,19 +1245,35 @@ admin.setting.system.security__card_title: Security Settings
 admin.setting.system.security.admin_url: Admin Console URL
 admin.setting.system.security.admin_url_description: It is recommended to set the URL which would NOT be easily guessed.
 admin.setting.system.security.admin_url_changed: The URL of Admin Console has been changed. Please sign in again.
-admin.setting.system.security.ip_limit: IP Restrictions
+admin.setting.system.security.ip_limit: IP Restrictions(Allow List)
 admin.setting.system.security.ip_limit_description: |
  This will restrict the access to the Admin Console to specified IP addresses.
  Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Admin Console.
 admin.setting.system.security.ip_limit_sample: |
  127.0.0.1
  192.0.2.1
+admin.setting.system.security.ip_limit_deny: IP Restrictions(Deny List)
+admin.setting.system.security.ip_limit_description_deny: |
+  This will deny the access to the Admin Console from specified IP addresses.
+  Please enter the URLs one by one which you deny the access to.
 admin.setting.system.security.force_ssl: SSL is mandatory
 admin.setting.system.security.force_ssl_description: Only https access is allowed to set SSL restrictions.
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip% is not an IPv4 address.'
 admin.setting.system.security.ip_limit_invalid_https: 'http is not allowed to do this setting.'
 admin.setting.system.security.admin_url_warning: Please set the Admin Console URL that is hard to guess for security.
 admin.setting.system.security.not_found_env_file: .env file not found. If you do not use the .env file you can not change security config in Admin Console.
+
+#------------------------------------------------------------------------------------
+# Settings : System : Login History
+#------------------------------------------------------------------------------------
+
+admin.setting.system.login_history.multi_search_label: ID / IP Address
+admin.setting.system.login_history.create_date: Login Attempt Date
+admin.setting.system.login_history.create_date__start: Login Attempt Date (Start)
+admin.setting.system.login_history.create_date__end: Login Attempt Date (End)
+admin.setting.system.login_history.user_name: ID
+admin.setting.system.login_history.client_ip: IP Address
+admin.setting.system.login_history.status: Status
 
 #------------------------------------------------------------------------------------
 # Settings : System : Logs
@@ -1322,12 +1339,12 @@ admin.store.plugin.installed: Installed
 admin.store.plugin.update: Update
 admin.store.plugin.install.complete: A plugin has been installed.
 admin.store.plugin.install.failed: Failed to install plugin.
-admin.store.plugin.enable.complete: %plugin_name% is enabled.
-admin.store.plugin.already.enabled: %plugin_name% has already been enabled.
-admin.store.plugin.disable.complete: %plugin_name% is disabled.
-admin.store.plugin.already.disabled: %plugin_name% has already been disabled.
+admin.store.plugin.enable.complete: '%plugin_name% is enabled.'
+admin.store.plugin.already.enabled: '%plugin_name% has already been enabled.'
+admin.store.plugin.disable.complete: '%plugin_name% is disabled.'
+admin.store.plugin.already.disabled: '%plugin_name% has already been disabled.'
 admin.store.plugin.uninstall.complete: The plugin has been deleted.
-admin.store.plugin.update.complete: %plugin_name% has been updated.
+admin.store.plugin.update.complete: '%plugin_name% has been updated.'
 admin.store.plugin.update.failed: Failed to update %plugin_name% .
 admin.store.plugin.mkdir.error: Failed to creat a directory '%dir_name%'.
 admin.store.setting: Authentication Key Settings
@@ -1385,7 +1402,7 @@ admin.store.plugin_confirm.title: Installation Confirmation
 admin.store.plugin_confirm.subtitle: Owner's Store
 admin.store.plugin_confirm.header: We are going to install the following plugins.
 admin.store.plugin_confirm.header.upgrade: The following plugins will be updated to the latest versions.
-admin.store.plugin_confirm.require.header: %name% requires following additional plugins. They will also be installed.
+admin.store.plugin_confirm.require.header: '%name% requires following additional plugins. They will also be installed.'
 admin.store.plugin_confirm_uninstall.823: Owner's Store
 admin.store.plugin_confirm_uninstall.824: Delete Plugins
 admin.store.plugin_confirm_uninstall.825: The following plugins will be deleted.
@@ -1619,7 +1636,9 @@ tooltip.setting.system.member.authority: You can select the authorization you ha
 tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
 tooltip.setting.system.security.ip_limit: Restricting IP addresses which are allowed to sign in to the Admin Console.
+tooltip.setting.system.security.ip_limit_deny: IP addresses where access to the Admin Console is denied.
 tooltip.setting.system.security.force_ssl: Restricting the access to the storefront and Admin Console to via SSL(https).
+tooltip.setting.system.login_history.multi_search_label: You can filter the list with keywords. For more search options, open [Advanced Search].
 tooltip.setting.system.log_display: Here you can check logs such as access logs and error logs etc.
 tooltip.setting.system.master_data_management: Manage all Master Data here.
 tooltip.setting.system.system_info: System environment information relevant to EC-CUBE.
@@ -1714,4 +1733,4 @@ purchase_flow.over_stock: '%name% does not have enough stock.'
 # Command
 #------------------------------------------------------------------------------------
 
-command.composer_require_already_installed.not_supported_plugin: %name% %plugin_version% does not support EC-CUBE %eccube_version% . Do you want to continue?
+command.composer_require_already_installed.not_supported_plugin: '%name% %plugin_version% does not support EC-CUBE %eccube_version% . Do you want to continue?'
