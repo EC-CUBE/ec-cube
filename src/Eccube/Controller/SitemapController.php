@@ -54,11 +54,6 @@ class SitemapController extends AbstractController
     private $router;
 
     /**
-     * @var int
-     */
-    private $item_per_page = 1000;
-
-    /**
      * SitemapController constructor.
      */
     public function __construct(
@@ -101,7 +96,7 @@ class SitemapController extends AbstractController
         $pagination = $paginator->paginate(
             $productQueryBuilder,
             1,
-            $this->item_per_page
+            $this->eccubeConfig['eccube_sitemap_products_per_page']
         );
         $paginationData = $pagination->getPaginationData();
 
@@ -148,7 +143,7 @@ class SitemapController extends AbstractController
         $pagination = $paginator->paginate(
             $productQueryBuilder,
             $request->get('page'),
-            $this->item_per_page
+            $this->eccubeConfig['eccube_sitemap_products_per_page']
         );
         $paginationData = $pagination->getPaginationData();
 
