@@ -171,7 +171,12 @@ class SitemapController extends AbstractController
         $Pages = $this->pageRepository->getPageList("((p.meta_robots not like '%noindex%' and p.meta_robots not like '%none%') or p.meta_robots IS NULL)");
 
         // URL に変数が含まれる場合は URL の生成ができないためここで除外する
-        $Pages = array_filter($Pages, function (Page $Page) {
+        $DefaultPages = array_filter($Pages, function (Page $Page) {
+            // 管理画面から作成されたページは除外
+            if ($Page->getEditType() === Page::EDIT_TYPE_USER) {
+                return false;
+            }
+
             $route = $this->router->getRouteCollection()->get($Page->getUrl());
             if (is_null($route)) {
                 return false;
@@ -179,7 +184,15 @@ class SitemapController extends AbstractController
             return count($route->compile()->getPathVariables()) < 1;
         });
 
-        return $this->outputXml(['Pages' => $Pages]);
+        // 管理画面から作成されたページ
+        $UserPages = array_filter($Pages, function (Page $Page) {
+            return $Page->getEditType() === Page::EDIT_TYPE_USER;
+        });
+
+        return $this->outputXml([
+            'DefaultPages' => $DefaultPages,
+            'UserPages' => $UserPages,
+        ]);
     }
 
     /**
