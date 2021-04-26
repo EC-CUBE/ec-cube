@@ -1,13 +1,13 @@
 modules:
     config:
         WebDriver:
-            host: 'localhost'
+            host: '127.0.0.1'
             port: 9515
-            url: 'http://localhost:8000'
+            url: 'http://127.0.0.1:8000'
             capabilities:
                 chromeOptions:
                     prefs:
                         download.default_directory: '%GITHUB_WORKSPACE%/codeception/_support/_downloads'
         MailCatcher:
-            url: 'localhost'
+            url: '127.0.0.1'
             port: 1080
