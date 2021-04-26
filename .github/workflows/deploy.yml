@@ -13,7 +13,7 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '7.3'
+          php-version: '7.4'
 
       - name: Get Composer Cache Directory
         id: composer-cache
