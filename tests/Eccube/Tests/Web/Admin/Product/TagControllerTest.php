@@ -18,7 +18,7 @@ use Eccube\Repository\TagRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class TagContorllerTest extends AbstractAdminWebTestCase
+class TagControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * @var TagRepository
