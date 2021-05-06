@@ -256,6 +256,13 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $point_conversion_rate = '1';
 
         /**
+         * @var string|null
+         *
+         * @ORM\Column(name="tracking_id", type="string", length=255, nullable=true)
+         */
+        private $tracking_id;
+
+        /**
          * @var \Eccube\Entity\Master\Country
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
@@ -1073,6 +1080,26 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         public function setPhpPath($php_path)
         {
             $this->php_path = $php_path;
+
+            return $this;
+        }
+
+        /**
+         * @return null|string
+         */
+        public function getTrackingId()
+        {
+            return $this->tracking_id;
+        }
+
+        /**
+         * @param null|string $tracking_id
+         *
+         * @return $this
+         */
+        public function setTrackingId($tracking_id)
+        {
+            $this->tracking_id = $tracking_id;
 
             return $this;
         }

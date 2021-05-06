@@ -331,6 +331,24 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.option_google_analytics'|trans }}</span></div>
+                        <div id="ex-shop-point" class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"><span>{{ 'admin.setting.shop.shop.option_tracking_id'|trans }}</span></div>
+                                </div>
+                                <div class="col mb-2">
+                                    <div class="input-group col-2 pl-0">
+                                        <div class="input-group">
+                                            {{ form_widget(form.tracking_id) }}
+                                            {{ form_errors(form.tracking_id) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
