@@ -810,7 +810,6 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-18.04
-    needs: [ phpunit, codeception ]
     steps:
     - name: Checkout
       if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
