@@ -74,7 +74,9 @@ jobs:
         php-version: ${{ matrix.php }}
 
     - name: composer install
-      run: composer install --dev --no-interaction -o --apcu-autoloader
+      run: |
+        sudo composer selfupdate --1
+        composer install --dev --no-interaction -o --apcu-autoloader
 
     - name: Setup EC-CUBE
       env:
@@ -166,7 +168,10 @@ jobs:
         php-version: ${{ matrix.php }}
 
     - name: composer install
-      run: composer install --dev --no-interaction -o --apcu-autoloader
+      run: |
+        sudo composer selfupdate --1
+        composer install --dev --no-interaction -o --apcu-autoloader
+
     - name: Setup to EC-CUBE
       env:
         APP_ENV: ${{ matrix.app_env }}
@@ -291,7 +296,9 @@ jobs:
         php-version: ${{ matrix.php }}
 
     - name: composer install
-      run: composer install --dev --no-interaction -o --apcu-autoloader
+      run: |
+        sudo composer selfupdate --1
+        composer install --dev --no-interaction -o --apcu-autoloader
 
     - name: Setup to EC-CUBE
       env:
@@ -433,7 +440,10 @@ jobs:
         php-version: ${{ matrix.php }}
 
     - name: Install to Composer
-      run: composer install --dev --no-interaction -o --apcu-autoloader
+      run: |
+        sudo composer selfupdate --1
+        composer install --dev --no-interaction -o --apcu-autoloader
+
     - name: Setup to EC-CUBE
       env:
         APP_ENV: 'codeception'
@@ -574,7 +584,10 @@ jobs:
         php-version: ${{ matrix.php }}
 
     - name: Install to Composer
-      run: composer install --dev --no-interaction -o --apcu-autoloader
+      run: |
+        sudo composer selfupdate --1
+        composer install --dev --no-interaction -o --apcu-autoloader
+
     - name: Setup to EC-CUBE
       env:
         APP_ENV: 'codeception'
@@ -718,7 +731,10 @@ jobs:
         php-version: ${{ matrix.php }}
 
     - name: Install to Composer
-      run: composer install --dev --no-interaction -o --apcu-autoloader
+      run: |
+        sudo composer selfupdate --1
+        composer install --dev --no-interaction -o --apcu-autoloader
+
     - name: Setup to EC-CUBE
       env:
         APP_ENV: 'codeception'
@@ -794,7 +810,6 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-18.04
-    needs: [ phpunit, codeception ]
     steps:
     - name: Checkout
       if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
@@ -821,7 +836,9 @@ jobs:
 
     - name: Install to Composer
       if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
-      run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
+      run: |
+        sudo composer selfupdate --1
+        composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
 
     - name: Dump GitHub context
       env:
