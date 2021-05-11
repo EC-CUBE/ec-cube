@@ -515,6 +515,7 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.message_short'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.shipping_id'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.order.shipping_status'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.delivery'|trans }}</th>
@@ -555,6 +556,9 @@ file that was distributed with this source code.
                                                             <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
                                                     {% endif %}
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    {{ Shipping.id }}
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     {% if Order.is_multiple %}
