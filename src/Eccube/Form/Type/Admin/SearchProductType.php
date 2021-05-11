@@ -26,6 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class SearchProductType extends AbstractType
 {
@@ -191,6 +192,15 @@ class SearchProductType extends AbstractType
                     'data-target' => '#'.$this->getBlockPrefix().'_update_datetime_end',
                     'data-toggle' => 'datetimepicker',
                 ],
+            ])
+            // ソート用
+            ->add('sortkey', HiddenType::class, [
+                'label' => 'admin.list.sort.key',
+                'required' => false,
+            ])
+            ->add('sorttype', HiddenType::class, [
+                'label' => 'admin.list.sort.type',
+                'required' => false,
             ])
         ;
     }

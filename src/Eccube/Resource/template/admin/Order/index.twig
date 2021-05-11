@@ -175,6 +175,13 @@ file that was distributed with this source code.
     });
 
 });
+
+    // 一覧のソート
+    function listSort( sortkey, sorttype ){
+        $('#admin_search_order_sortkey').val(sortkey);
+        $('#admin_search_order_sorttype').val(sorttype);
+        $('#search_form').submit();
+    }
 </script>
 
 {{ include('@admin/Order/confirmationModal_js.twig') }}
@@ -420,6 +427,8 @@ file that was distributed with this source code.
             <div class="c-outsideBlock__contents mb-5">
                 {{ include('@admin/search_items.twig', { 'form': searchForm }, ignore_missing = true) }}
             </div>
+            {{ form_widget(searchForm.sortkey) }}
+            {{ form_widget(searchForm.sorttype) }}
         </form>
     </div>
     <!--検索条件設定テーブルここまで-->
@@ -510,14 +519,14 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center pl-3">
                                             <input type="checkbox" id="toggle_check_all" name="filter" value="open">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.orderer'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.common.payment_method'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.orderer'|trans }} <a href="#" onClick="listSort('orderer', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('orderer', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.common.payment_method'|trans }}<a href="#" onClick="listSort('payment_method', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('payment_method', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}<a href="#" onClick="listSort('order_status', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('order_status', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}<a href="#" onClick="listSort('purchase_price', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('purchase_price', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.message_short'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.order.shipping_status'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.delivery'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.order.shipping_status'|trans }}<a href="#" onClick="listSort('shipping_status', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('shipping_status', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}<a href="#" onClick="listSort('tracking_number', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('tracking_number', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.delivery'|trans }}<a href="#" onClick="listSort('delivery', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('delivery', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>
                                     </tr>
                                     </thead>

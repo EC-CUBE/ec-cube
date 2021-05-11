@@ -1715,3 +1715,11 @@ purchase_flow.over_stock: '%name% does not have enough stock.'
 #------------------------------------------------------------------------------------
 
 command.composer_require_already_installed.not_supported_plugin: '%name% %plugin_version% does not support EC-CUBE %eccube_version% . Do you want to continue?'
+
+#------------------------------------------------------------------------------------
+# ソート機能
+#------------------------------------------------------------------------------------
+admin.list.sort.key: listSortKey
+admin.list.sort.type: listSortType
+admin.list.sort.asc: ▲
+admin.list.sort.desc: ▼
