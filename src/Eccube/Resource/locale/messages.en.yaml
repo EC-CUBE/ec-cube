@@ -596,6 +596,8 @@ admin.product.class_category_management: Option Groups
 admin.product.category_management: Categories
 admin.product.tag_management: Tags
 admin.product.product_csv_upload: Product CSV
+admin.product.class_name_csv_upload: Class Name CSV
+admin.product.class_category_csv_upload: Class Category CSV
 admin.product.category_csv_upload: Category CSV
 
 # flash messages
@@ -763,6 +765,28 @@ admin.product.category_csv.parent_category_id_col: Parent Category ID
 admin.product.category_csv.parent_category_id_description: ''
 admin.product.category_csv.delete_flag_col: Category Deletion Flag
 admin.product.category_csv.delete_flag_description: 'Specify 0: Upload or 1: Delete. If unspecified, it is set to 0.'
+
+# Class Name CSV Templates
+admin.product.class_name_csv.class_name_id_col: Class Name ID
+admin.product.class_name_csv.class_name_id_description: For a new class name registration, please leave it empty. To update the registered class name, please specify the class name ID.
+admin.product.class_name_csv.class_name_col: Class Name
+admin.product.class_name_csv.class_name_description: ''
+admin.product.class_name_csv.class_backend_name_col: Backend Name
+admin.product.class_name_csv.class_backend_name_description: ''
+admin.product.class_name_csv.delete_flag_col: Class Name Deletion Flag
+admin.product.class_name_csv.delete_flag_description: 'Specify 0: Upload or 1: Delete. If unspecified, it is set to 0.'
+
+# Class Category CSV Templates
+admin.product.class_category_csv.class_name_id_col: Class Name ID
+admin.product.class_category_csv.class_name_id_description: Specify an existing Class Name ID.
+admin.product.class_category_csv.class_category_id_col: Class Category ID
+admin.product.class_category_csv.class_category_id_description: For a new class category registration, please leave it empty. To update the registered class category, please specify the class category ID.
+admin.product.class_category_csv.class_category_name_col: Class Category Name
+admin.product.class_category_csv.class_category_name_description: ''
+admin.product.class_category_csv.class_category_backend_name_col: Class Category Backend Name
+admin.product.class_category_csv.class_category_backend_name_description: ''
+admin.product.class_category_csv.delete_flag_col: Class Category Deletion Flag
+admin.product.class_category_csv.delete_flag_description: 'Specify 0: Upload or 1: Delete. If unspecified, it is set to 0.'
 
 # Product CSV
 admin.product.product_csv_upload__title: 'Upload product CSV'
@@ -1698,6 +1722,8 @@ tooltip.setting.system.system.php_info: PHP details relevant to EC-CUBE.
 tooltip.store.template.template_code: This code will be used as the directory name where the template is saved.
 tooltip.store.template.template_name: Set the name of the template to be displayed in the Admin Console.
 tooltip.store.template.template_file: Upload an archive file that contains a set of templates.
+tooltip.class_name.csv_upload: Standards can be registered in a batch using the specified type of CSV data.
+tooltip.class_name.csv_format: You can easily create CSV data of the specified type by downloading and editing the template file.
 
 #====================================================================================
 # Installation

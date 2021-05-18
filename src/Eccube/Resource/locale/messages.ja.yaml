@@ -596,6 +596,8 @@ admin.product.class_category_management: 規格分類管理
 admin.product.category_management: カテゴリ管理
 admin.product.tag_management: タグ管理
 admin.product.product_csv_upload: 商品CSV登録
+admin.product.class_name_csv_upload: 規格CSV登録
+admin.product.class_category_csv_upload: 規格分類CSV登録
 admin.product.category_csv_upload: カテゴリCSV登録
 
 # flashメッセージ
@@ -763,6 +765,28 @@ admin.product.category_csv.parent_category_id_col: 親カテゴリID
 admin.product.category_csv.parent_category_id_description: ''
 admin.product.category_csv.delete_flag_col: カテゴリ削除フラグ
 admin.product.category_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
+
+# 規格CSV雛形
+admin.product.class_name_csv.class_name_id_col: 規格ID
+admin.product.class_name_csv.class_name_id_description: 新規登録の場合は空にしてください。既存の規格を更新する場合は、規格IDを指定してください。
+admin.product.class_name_csv.class_name_col: 規格名
+admin.product.class_name_csv.class_name_description: ''
+admin.product.class_name_csv.class_backend_name_col: 管理名
+admin.product.class_name_csv.class_backend_name_description: ''
+admin.product.class_name_csv.delete_flag_col: 規格削除フラグ
+admin.product.class_name_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
+
+# 規格分類CSV雛形
+admin.product.class_category_csv.class_name_id_col: 規格ID
+admin.product.class_category_csv.class_name_id_description: 既存の規格IDを指定してください。
+admin.product.class_category_csv.class_category_id_col: 規格分類ID
+admin.product.class_category_csv.class_category_id_description: 新規登録の場合は空にしてください。既存の規格分類を更新する場合は、規格分類IDを指定してください。
+admin.product.class_category_csv.class_category_name_col: 規格分類名
+admin.product.class_category_csv.class_category_name_description: ''
+admin.product.class_category_csv.class_category_backend_name_col: 規格分類管理名
+admin.product.class_category_csv.class_category_backend_name_description: ''
+admin.product.class_category_csv.delete_flag_col: 規格分類削除フラグ
+admin.product.class_category_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
 
 # 商品CSV
 admin.product.product_csv_upload__title: '商品CSVをアップロードします'
@@ -1698,6 +1722,8 @@ tooltip.setting.system.system.php_info: このEC-CUBEに関係しているPHPの
 tooltip.store.template.template_code: テンプレートの格納先のディレクトリ名になります。
 tooltip.store.template.template_name: 管理画面で表示するテンプレートの名前を設定します。
 tooltip.store.template.template_file: テンプレート一式となるアーカイブをアップロードします。
+tooltip.class_name.csv_upload: 所定の型のCSVデータを用いて規格を一括で登録することができます。
+tooltip.class_name.csv_format: 雛形ファイルをダウンロードして編集すれば、簡単に所定の型のCSVデータを作成できます。
 
 #====================================================================================
 # インストール画面

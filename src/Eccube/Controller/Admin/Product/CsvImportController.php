@@ -18,6 +18,8 @@ use Eccube\Common\Constant;
 use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Category;
+use Eccube\Entity\ClassName;
+use Eccube\Entity\ClassCategory;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
@@ -27,6 +29,7 @@ use Eccube\Entity\ProductTag;
 use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\ClassNameRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
@@ -80,6 +83,11 @@ class CsvImportController extends AbstractCsvImportController
     protected $classCategoryRepository;
 
     /**
+     * @var ClassNameRepository
+     */
+    protected $classNameRepository;
+
+    /**
      * @var ProductImageRepository
      */
     protected $productImageRepository;
@@ -124,6 +132,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param SaleTypeRepository $saleTypeRepository
      * @param TagRepository $tagRepository
      * @param CategoryRepository $categoryRepository
+     * @param ClassNameRepository $classNameRepository
      * @param ClassCategoryRepository $classCategoryRepository
      * @param ProductImageRepository $productImageRepository
      * @param ProductStatusRepository $productStatusRepository
@@ -139,6 +148,7 @@ class CsvImportController extends AbstractCsvImportController
         SaleTypeRepository $saleTypeRepository,
         TagRepository $tagRepository,
         CategoryRepository $categoryRepository,
+        ClassNameRepository $classNameRepository,
         ClassCategoryRepository $classCategoryRepository,
         ProductImageRepository $productImageRepository,
         ProductStatusRepository $productStatusRepository,
@@ -151,6 +161,7 @@ class CsvImportController extends AbstractCsvImportController
         $this->saleTypeRepository = $saleTypeRepository;
         $this->tagRepository = $tagRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->classNameRepository = $classNameRepository;
         $this->classCategoryRepository = $classCategoryRepository;
         $this->productImageRepository = $productImageRepository;
         $this->productStatusRepository = $productStatusRepository;
@@ -842,6 +853,270 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
+     * 規格登録CSVアップロード
+     *
+     * @Route("/%eccube_admin_route%/product/class_name_csv_upload", name="admin_product_class_name_csv_import")
+     * @Template("@admin/Product/csv_class_name.twig")
+     */
+    public function csvClassName(Request $request, CacheUtil $cacheUtil)
+    {
+        $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
+
+        $headers = $this->getClassNameCsvHeader();
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $formFile = $form['import_file']->getData();
+                if (!empty($formFile)) {
+                    log_info('規格CSV登録開始');
+                    $data = $this->getImportData($formFile);
+                    if ($data === false) {
+                        $this->addErrors(trans('admin.common.csv_invalid_format'));
+
+                        return $this->renderWithError($form, $headers, false);
+                    }
+
+                    $getId = function ($item) {
+                        return $item['id'];
+                    };
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
+                        return $value['required'];
+                    })));
+
+                    $headerByKey = array_flip(array_map($getId, $headers));
+
+                    $columnHeaders = $data->getColumnHeaders();
+                    if (count(array_diff($requireHeader, $columnHeaders)) > 0) {
+                        $this->addErrors(trans('admin.common.csv_invalid_format'));
+
+                        return $this->renderWithError($form, $headers, false);
+                    }
+
+                    $size = count($data);
+                    if ($size < 1) {
+                        $this->addErrors(trans('admin.common.csv_invalid_no_data'));
+
+                        return $this->renderWithError($form, $headers, false);
+                    }
+                    $this->entityManager->getConfiguration()->setSQLLogger(null);
+                    $this->entityManager->getConnection()->beginTransaction();
+                    // CSVファイルの登録処理
+                    foreach ($data as $row) {
+                        // dump($row,$headerByKey);exit;
+                        /** @var $ClassName ClassName */
+                        $ClassName = new ClassName();
+                        if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
+                            if (!preg_match('/^\d+$/', $row[$headerByKey['id']])) {
+                                $this->addErrors(($data->key() + 1).'行目の規格IDが存在しません。');
+
+                                return $this->renderWithError($form, $headers);
+                            }
+                            $ClassName = $this->classNameRepository->find($row[$headerByKey['id']]);
+                            if (!$ClassName) {
+                                $this->addErrors(($data->key() + 1).'行目の更新対象の規格IDが存在しません。新規登録の場合は、規格IDの値を空で登録してください。');
+
+                                return $this->renderWithError($form, $headers);
+                            }
+                        }
+
+                        if (isset($row[$headerByKey['class_name_del_flg']]) && StringUtil::isNotBlank($row[$headerByKey['class_name_del_flg']])) {
+                            if (StringUtil::trimAll($row[$headerByKey['class_name_del_flg']]) == 1) {
+                                if ($ClassName->getId()) {
+                                    log_info('規格削除開始', [$ClassName->getId()]);
+                                    try {
+                                        $this->classNameRepository->delete($ClassName);
+                                        log_info('規格削除完了', [$ClassName->getId()]);
+                                    } catch (ForeignKeyConstraintViolationException $e) {
+                                        log_info('規格削除エラー', [$ClassName->getId(), $e]);
+                                        $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $ClassName->getName()]);
+                                        $this->addError($message, 'admin');
+
+                                        return $this->renderWithError($form, $headers);
+                                    }
+                                }
+
+                                continue;
+                            }
+                        }
+
+                        if (!isset($row[$headerByKey['name']]) || StringUtil::isBlank($row[$headerByKey['name']])) {
+                            $this->addErrors(($data->key() + 1).'行目規格名が設定されていません。');
+
+                            return $this->renderWithError($form, $headers);
+                        } else {
+                            $ClassName->setName(StringUtil::trimAll($row[$headerByKey['name']]));
+                        }
+
+                        if (!isset($row[$headerByKey['backend_name']]) || StringUtil::isBlank($row[$headerByKey['backend_name']])) {
+                            $this->addErrors(($data->key() + 1).'行目規格名が設定されていません。');
+
+                            return $this->renderWithError($form, $headers);
+                        } else {
+                            $ClassName->setBackendName(StringUtil::trimAll($row[$headerByKey['backend_name']]));
+                        }
+
+                        if ($this->hasErrors()) {
+                            return $this->renderWithError($form, $headers);
+                        }
+                        $this->entityManager->persist($ClassName);
+                        $this->classNameRepository->save($ClassName);
+                    }
+
+                    $this->entityManager->getConnection()->commit();
+                    log_info('規格CSV登録完了');
+                    $message = 'admin.common.csv_upload_complete';
+                    $this->session->getFlashBag()->add('eccube.admin.success', $message);
+
+                    $cacheUtil->clearDoctrineCache();
+                }
+            }
+        }
+
+        return $this->renderWithError($form, $headers);
+    }
+
+
+    /**
+     * カテゴリ登録CSVアップロード
+     *
+     * @Route("/%eccube_admin_route%/product/class_category_csv_upload", name="admin_product_class_category_csv_import")
+     * @Template("@admin/Product/csv_class_category.twig")
+     */
+    public function csvClassCategory(Request $request, CacheUtil $cacheUtil)
+    {
+        $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
+
+        $headers = $this->getClassCategoryCsvHeader();
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $formFile = $form['import_file']->getData();
+                if (!empty($formFile)) {
+                    log_info('規格分類CSV登録開始');
+                    $data = $this->getImportData($formFile);
+                    if ($data === false) {
+                        $this->addErrors(trans('admin.common.csv_invalid_format'));
+
+                        return $this->renderWithError($form, $headers, false);
+                    }
+
+                    $getId = function ($item) {
+                        return $item['id'];
+                    };
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
+                        return $value['required'];
+                    })));
+
+                    $headerByKey = array_flip(array_map($getId, $headers));
+
+                    $columnHeaders = $data->getColumnHeaders();
+                    if (count(array_diff($requireHeader, $columnHeaders)) > 0) {
+                        $this->addErrors(trans('admin.common.csv_invalid_format'));
+
+                        return $this->renderWithError($form, $headers, false);
+                    }
+
+                    $size = count($data);
+                    if ($size < 1) {
+                        $this->addErrors(trans('admin.common.csv_invalid_no_data'));
+
+                        return $this->renderWithError($form, $headers, false);
+                    }
+                    $this->entityManager->getConfiguration()->setSQLLogger(null);
+                    $this->entityManager->getConnection()->beginTransaction();
+                    // CSVファイルの登録処理
+                    foreach ($data as $row) {
+                        // dump($row,$headerByKey);exit;
+                        /** @var $ClassCategory ClassCategory */
+                        $ClassCategory = new ClassCategory();
+
+                        if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
+                            if (!preg_match('/^\d+$/', $row[$headerByKey['id']])) {
+                                $this->addErrors(($data->key() + 1).'行目の規格分類IDが存在しません。');
+
+                                return $this->renderWithError($form, $headers);
+                            }
+                            $ClassCategory = $this->classCategoryRepository->find($row[$headerByKey['id']]);
+                            if (!$ClassCategory) {
+                                $this->addErrors(($data->key() + 1).'行目の更新対象の規格分類IDが存在しません。新規登録の場合は、規格分類IDの値を空で登録してください。');
+
+                                return $this->renderWithError($form, $headers);
+                            }
+                        }
+
+                        if (isset($row[$headerByKey['class_name_id']]) && strlen($row[$headerByKey['class_name_id']]) > 0) {
+                            if (!preg_match('/^\d+$/', $row[$headerByKey['class_name_id']])) {
+                                $this->addErrors(($data->key() + 1).'行目の規格IDが存在しません。');
+
+                                return $this->renderWithError($form, $headers);
+                            }
+                            $ClassName = $this->classNameRepository->find($row[$headerByKey['class_name_id']]);
+                            if (!$ClassName) {
+                                $this->addErrors(($data->key() + 1).'行目の更新対象の規格IDが存在しません。');
+
+                                return $this->renderWithError($form, $headers);
+                            }
+                            $ClassCategory->setClassName($ClassName);
+                        }
+
+                        if (isset($row[$headerByKey['class_category_del_flg']]) && StringUtil::isNotBlank($row[$headerByKey['class_category_del_flg']])) {
+                            if (StringUtil::trimAll($row[$headerByKey['class_category_del_flg']]) == 1) {
+                                if ($ClassCategory->getId()) {
+                                    log_info('規格分類削除開始', [$ClassCategory->getId()]);
+                                    try {
+                                        $this->classCategoryRepository->delete($ClassCategory);
+                                        log_info('規格分類削除完了', [$ClassCategory->getId()]);
+                                    } catch (ForeignKeyConstraintViolationException $e) {
+                                        log_info('規格分類削除エラー', [$ClassCategory->getId(), $e]);
+                                        $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $ClassCategory->getName()]);
+                                        $this->addError($message, 'admin');
+
+                                        return $this->renderWithError($form, $headers);
+                                    }
+                                }
+
+                                continue;
+                            }
+                        }
+
+                        if (!isset($row[$headerByKey['name']]) || StringUtil::isBlank($row[$headerByKey['name']])) {
+                            $this->addErrors(($data->key() + 1).'行目規格分類名が設定されていません。');
+
+                            return $this->renderWithError($form, $headers);
+                        } else {
+                            $ClassCategory->setName(StringUtil::trimAll($row[$headerByKey['name']]));
+                        }
+
+                        if (!isset($row[$headerByKey['backend_name']]) || StringUtil::isBlank($row[$headerByKey['backend_name']])) {
+                            $this->addErrors(($data->key() + 1).'行目規格分類管理名が設定されていません。');
+
+                            return $this->renderWithError($form, $headers);
+                        } else {
+                            $ClassCategory->setBackendName(StringUtil::trimAll($row[$headerByKey['backend_name']]));
+                        }
+
+                        if ($this->hasErrors()) {
+                            return $this->renderWithError($form, $headers);
+                        }
+                        $this->entityManager->persist($ClassCategory);
+                        $this->classCategoryRepository->save($ClassCategory);
+                    }
+
+                    $this->entityManager->getConnection()->commit();
+                    log_info('規格分類CSV登録完了');
+                    $message = 'admin.common.csv_upload_complete';
+                    $this->session->getFlashBag()->add('eccube.admin.success', $message);
+
+                    $cacheUtil->clearDoctrineCache();
+                }
+            }
+        }
+
+        return $this->renderWithError($form, $headers);
+    }
+
+
+    /**
      * アップロード用CSV雛形ファイルダウンロード
      *
      * @Route("/%eccube_admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template", methods={"GET"})
@@ -858,6 +1133,12 @@ class CsvImportController extends AbstractCsvImportController
         } elseif ($type == 'category') {
             $headers = $this->getCategoryCsvHeader();
             $filename = 'category.csv';
+        } elseif ($type == 'class_name') {
+            $headers = $this->getClassNameCsvHeader();
+            $filename = 'class_name.csv';
+        } elseif ($type == 'class_category') {
+            $headers = $this->getClassCategoryCsvHeader();
+            $filename = 'class_category.csv';
         } else {
             throw new NotFoundHttpException();
         }
@@ -1581,6 +1862,69 @@ class CsvImportController extends AbstractCsvImportController
             trans('admin.product.category_csv.delete_flag_col') => [
                 'id' => 'category_del_flg',
                 'description' => 'admin.product.category_csv.delete_flag_description',
+                'required' => false,
+            ],
+        ];
+    }
+
+    /**
+     * 規格CSVヘッダー定義
+     */
+    protected function getClassNameCsvHeader()
+    {
+        return [
+            trans('admin.product.class_name_csv.class_name_id_col') => [
+                'id' => 'id',
+                'description' => 'admin.product.class_name_csv.class_name_id_description',
+                'required' => false,
+            ],
+            trans('admin.product.class_name_csv.class_name_col') => [
+                'id' => 'name',
+                'description' => 'admin.product.class_name_csv.class_name_description',
+                'required' => true,
+            ],
+            trans('admin.product.class_name_csv.class_backend_name_col') => [
+                'id' => 'backend_name',
+                'description' => 'admin.product.class_name_csv.class_backend_name_description',
+                'required' => false,
+            ],
+            trans('admin.product.class_name_csv.delete_flag_col') => [
+                'id' => 'class_name_del_flg',
+                'description' => 'admin.product.class_name_csv.delete_flag_description',
+                'required' => false,
+            ],
+        ];
+    }
+
+    /**
+     * 規格分類CSVヘッダー定義
+     */
+    protected function getClassCategoryCsvHeader()
+    {
+        return [
+            trans('admin.product.class_category_csv.class_name_id_col') => [
+                'id' => 'class_name_id',
+                'description' => 'admin.product.class_category_csv.class_name_id_description',
+                'required' => true,
+            ],
+            trans('admin.product.class_category_csv.class_category_id_col') => [
+                'id' => 'id',
+                'description' => 'admin.product.class_category_csv.class_category_id_description',
+                'required' => false,
+            ],
+            trans('admin.product.class_category_csv.class_category_name_col') => [
+                'id' => 'name',
+                'description' => 'admin.product.class_category_csv.class_category_name_description',
+                'required' => true,
+            ],
+            trans('admin.product.class_category_csv.class_category_backend_name_col') => [
+                'id' => 'backend_name',
+                'description' => 'admin.product.class_category_csv.class_category_backend_name_description',
+                'required' => false,
+            ],
+            trans('admin.product.class_category_csv.delete_flag_col') => [
+                'id' => 'class_category_del_flg',
+                'description' => 'admin.product.class_category_csv.delete_flag_description',
                 'required' => false,
             ],
         ];
