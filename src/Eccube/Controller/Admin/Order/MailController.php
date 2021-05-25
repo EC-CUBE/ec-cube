@@ -195,38 +195,6 @@ class MailController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/order/mail/view", name="admin_order_mail_view")
-     * @Template("@admin/Order/mail_view.twig")
-     */
-    public function view(Request $request)
-    {
-        if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
-        }
-
-        $id = $request->get('id');
-        $MailHistory = $this->mailHistoryRepository->find($id);
-
-        if (null === $MailHistory) {
-            throw new NotFoundHttpException();
-        }
-
-        $event = new EventArgs(
-            [
-                'MailHistory' => $MailHistory,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_VIEW_COMPLETE, $event);
-
-        return [
-            'mail_subject' => $MailHistory->getMailSubject(),
-            'body' => $MailHistory->getMailBody(),
-            'html_body' => $MailHistory->getMailHtmlBody(),
-        ];
-    }
-
     private function createBody($Order, $twig = 'Mail/order.twig')
     {
         return $this->renderView($twig, [
