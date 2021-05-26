@@ -14,8 +14,17 @@ file that was distributed with this source code.
         {{ form_errors(form.Authority) }}
     </td>
     <td>
-        {{ form_widget(form.deny_url) }}
-        {{ form_errors(form.deny_url) }}
+        {% if form.read_only_url.vars.value %}
+            {{ form_widget(form.read_only_url) }}
+            {{ form_errors(form.read_only_url) }}
+        {% else %}
+            {{ form_widget(form.deny_url) }}
+            {{ form_errors(form.deny_url) }}
+        {% endif %}
+    </td>
+    <td>
+        {{ form_widget(form.Role) }}
+        {{ form_errors(form.Role) }}
     </td>
     <td class="text-center">
         <button type="button" class="btn btn-ec-regular delete">{{ 'admin.common.delete'|trans }}</button>

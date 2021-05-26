@@ -92,6 +92,17 @@ class CustomerController extends AbstractController
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
     {
+        // 表示のみ制限の引数準備
+        $raedOnlyFlag = false;
+        $pathInfo = $request->getPathInfo();
+        $adminRoute = '/'.$this->eccubeConfig['eccube_admin_route'];
+        $checkUrl = str_replace($adminRoute, '', $pathInfo);
+        $Authority = $this->getUser()->getAuthority();
+
+        $AuthorityRoleRepository = $this->entityManager->getRepository('Eccube\Entity\AuthorityRole');
+        // 表示のみ制限をチェック
+        $raedOnlyFlag = $AuthorityRoleRepository->checkReadOnly($Authority, $checkUrl);
+
         $session = $this->session;
         $builder = $this->formFactory->createBuilder(SearchCustomerType::class);
 
@@ -178,6 +189,7 @@ class CustomerController extends AbstractController
             'page_no' => $page_no,
             'page_count' => $pageCount,
             'has_errors' => false,
+            'read_only' => $raedOnlyFlag,
         ];
     }
 

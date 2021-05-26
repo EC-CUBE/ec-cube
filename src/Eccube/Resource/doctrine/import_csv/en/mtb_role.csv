@@ -1,0 +1,3 @@
+id,name,sort_no,discriminator_type
+"1","display","0","role"
+"2","hide","1","role"

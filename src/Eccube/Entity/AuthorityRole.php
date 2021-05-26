@@ -39,9 +39,16 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="deny_url", type="string", length=4000)
+         * @ORM\Column(name="deny_url", type="string", length=4000, nullable=true)
          */
         private $deny_url;
+
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="read_only_url", type="string", length=4000, nullable=true)
+         */
+        private $read_only_url;
 
         /**
          * @var \DateTime
@@ -66,6 +73,16 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
          * })
          */
         private $Authority;
+
+        /**
+         * @var \Eccube\Entity\Master\Role
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Role")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+         * })
+         */
+        private $Role;
 
         /**
          * @var \Eccube\Entity\Member
@@ -109,6 +126,30 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
         public function getDenyUrl()
         {
             return $this->deny_url;
+        }
+
+        /**
+         * Set readOnlyUrl.
+         *
+         * @param string $readOnlyUrl
+         *
+         * @return AuthorityRole
+         */
+        public function setReadOnlyUrl($readOnlyUrl)
+        {
+            $this->read_only_url = $readOnlyUrl;
+
+            return $this;
+        }
+
+        /**
+         * Get readOnlyUrl.
+         *
+         * @return string
+         */
+        public function getReadOnlyUrl()
+        {
+            return $this->read_only_url;
         }
 
         /**
@@ -181,6 +222,30 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
         public function getAuthority()
         {
             return $this->Authority;
+        }
+
+        /**
+         * Set role.
+         *
+         * @param \Eccube\Entity\Master\Role|null $role
+         *
+         * @return AuthorityRole
+         */
+        public function setRole(\Eccube\Entity\Master\Role $role = null)
+        {
+            $this->Role = $role;
+
+            return $this;
+        }
+
+        /**
+         * Get role.
+         *
+         * @return \Eccube\Entity\Master\Role|null
+         */
+        public function getRole()
+        {
+            return $this->Role;
         }
 
         /**
