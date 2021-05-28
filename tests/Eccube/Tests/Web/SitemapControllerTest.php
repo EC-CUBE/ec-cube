@@ -27,6 +27,12 @@ class SitemapControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    public function testProduct404()
+    {
+        $this->client->request('GET', $this->generateUrl('sitemap_product_xml', ['page' => 9999]));
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testCategory()
     {
         $this->client->request('GET', $this->generateUrl('sitemap_category_xml'));

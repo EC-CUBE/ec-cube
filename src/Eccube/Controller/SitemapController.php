@@ -15,8 +15,11 @@ namespace Eccube\Controller;
 
 use Eccube\Entity\Page;
 use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\Master\ProductListOrderByRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
+use Knp\Component\Pager\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -25,11 +28,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SitemapController extends AbstractController
 {
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-
     /**
      * @var CategoryRepository
      */
@@ -41,27 +39,34 @@ class SitemapController extends AbstractController
     private $pageRepository;
 
     /**
+     * @var ProductListOrderByRepository
+     */
+    private $productListOrderByRepository;
+
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    /**
      * @var RouterInterface
      */
     private $router;
 
     /**
-     * @var int
-     */
-    private $item_per_page = 1000;
-
-    /**
      * SitemapController constructor.
      */
     public function __construct(
-        ProductRepository $productRepository,
         CategoryRepository $categoryRepository,
         PageRepository $pageRepository,
+        ProductListOrderByRepository $productListOrderByRepository,
+        ProductRepository $productRepository,
         RouterInterface $router
     ) {
-        $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->pageRepository = $pageRepository;
+        $this->productListOrderByRepository = $productListOrderByRepository;
+        $this->productRepository = $productRepository;
         $this->router = $router;
     }
 
@@ -70,10 +75,10 @@ class SitemapController extends AbstractController
      *
      * @Route("/sitemap.xml", name="sitemap_xml")
      */
-    public function index()
+    public function index(Paginator $paginator)
     {
-        $qb = $this->pageRepository->createQueryBuilder('p');
-        $Page = $qb->select('p')
+        $pageQueryBuilder = $this->pageRepository->createQueryBuilder('p');
+        $Page = $pageQueryBuilder->select('p')
             ->where("((p.meta_robots not like '%noindex%' and p.meta_robots not like '%none%') or p.meta_robots IS NULL)")
             ->andWhere('p.id <> 0')
             ->andWhere('p.MasterPage is null')
@@ -83,7 +88,17 @@ class SitemapController extends AbstractController
             ->getSingleResult();
 
         $Product = $this->productRepository->findOneBy(['Status' => 1], ['update_date' => 'DESC']);
-        $ProductCount = $this->productRepository->count(['Status' => 1]);
+
+        // フロントの商品一覧の条件で商品情報を取得
+        $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
+        $productQueryBuilder = $this->productRepository->getQueryBuilderBySearchData(['orderby' => $ProductListOrder]);
+        /** @var SlidingPagination $pagination */
+        $pagination = $paginator->paginate(
+            $productQueryBuilder,
+            1,
+            $this->eccubeConfig['eccube_sitemap_products_per_page']
+        );
+        $paginationData = $pagination->getPaginationData();
 
         $Category = $this->categoryRepository->findOneBy([], ['update_date' => 'DESC']);
 
@@ -91,7 +106,7 @@ class SitemapController extends AbstractController
             [
                 'Category' => $Category,
                 'Product' => $Product,
-                'ProductPageCount' => ceil($ProductCount / $this->item_per_page),
+                'productPageCount' => $paginationData['pageCount'],
                 'Page' => $Page,
             ],
             'sitemap_index.xml.twig'
@@ -116,25 +131,27 @@ class SitemapController extends AbstractController
      * Output sitemap of products as status is 1
      *
      * @Route("/sitemap_product_{page}.xml", name="sitemap_product_xml", requirements={"page" = "\d+"})
-     * @param Request $request
+     *
      * @return Response
      */
-    public function product(Request $request)
+    public function product(Request $request, Paginator $paginator)
     {
-        $page = (int)$request->get('page');
-
-        $Products = $this->productRepository->findBy(
-            ['Status' => 1],
-            ['update_date' => 'DESC'],
-            $this->item_per_page,
-            ($page - 1) * $this->item_per_page
+        // フロントの商品一覧の条件で商品情報を取得
+        $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
+        $productQueryBuilder = $this->productRepository->getQueryBuilderBySearchData(['orderby' => $ProductListOrder]);
+        /** @var SlidingPagination $pagination */
+        $pagination = $paginator->paginate(
+            $productQueryBuilder,
+            $request->get('page'),
+            $this->eccubeConfig['eccube_sitemap_products_per_page']
         );
+        $paginationData = $pagination->getPaginationData();
 
-        if (!$Products) {
+        if ($paginationData['currentItemCount'] === 0) {
             throw new NotFoundHttpException();
         }
 
-        return $this->outputXml(['Products' => $Products]);
+        return $this->outputXml(['Products' => $pagination]);
     }
 
     /**
@@ -149,7 +166,12 @@ class SitemapController extends AbstractController
         $Pages = $this->pageRepository->getPageList("((p.meta_robots not like '%noindex%' and p.meta_robots not like '%none%') or p.meta_robots IS NULL)");
 
         // URL に変数が含まれる場合は URL の生成ができないためここで除外する
-        $Pages = array_filter($Pages, function (Page $Page) {
+        $DefaultPages = array_filter($Pages, function (Page $Page) {
+            // 管理画面から作成されたページは除外
+            if ($Page->getEditType() === Page::EDIT_TYPE_USER) {
+                return false;
+            }
+
             $route = $this->router->getRouteCollection()->get($Page->getUrl());
             if (is_null($route)) {
                 return false;
@@ -157,13 +179,20 @@ class SitemapController extends AbstractController
             return count($route->compile()->getPathVariables()) < 1;
         });
 
-        return $this->outputXml(['Pages' => $Pages]);
+        // 管理画面から作成されたページ
+        $UserPages = array_filter($Pages, function (Page $Page) {
+            return $Page->getEditType() === Page::EDIT_TYPE_USER;
+        });
+
+        return $this->outputXml([
+            'DefaultPages' => $DefaultPages,
+            'UserPages' => $UserPages,
+        ]);
     }
 
     /**
      * Output XML response by data.
      *
-     * @param array $data
      * @param string $template_name
      *
      * @return Response
