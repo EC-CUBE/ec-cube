@@ -18,7 +18,7 @@ if (!file_exists($autoload) && !is_readable($autoload)) {
 require $autoload;
 
 // The check is to ensure we don't use .env in production
-if (!isset($_SERVER['APP_ENV'])) {
+if (!isset($_SERVER['APP_ENV']) && !getenv('APP_ENV')) {
     if (!class_exists(Dotenv::class)) {
         throw new \RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
     }
@@ -34,8 +34,8 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
 }
 
-$env = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : 'dev';
-$debug = isset($_SERVER['APP_DEBUG']) ? $_SERVER['APP_DEBUG'] : ('prod' !== $env);
+$env = isset($_SERVER['APP_ENV']) || getenv('APP_ENV') !== null ? ($_SERVER['APP_ENV'] ? $_SERVER['APP_ENV'] : getenv('APP_ENV')) : 'dev';
+$debug = isset($_SERVER['APP_DEBUG']) || getenv('APP_DEBUG') !== null ? ($_SERVER['APP_DEBUG'] ? $_SERVER['APP_DEBUG'] : getenv('APP_DEBUG')) : ('prod' !== $env);
 
 if ($debug) {
     umask(0000);
