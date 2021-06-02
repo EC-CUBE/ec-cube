@@ -4,7 +4,7 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 "2","商品一覧ページ","product_list","Product/list","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
 "3","商品詳細ページ","product_detail","Product/detail","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page","<meta property=""og:type"" content=""og:product"" />
 <meta property=""og:title"" content=""{{ Product.name }}"" />
-<meta property=""og:image"" content=""{{ url('homepage') }}{{ asset(Product.main_list_image|no_image_product, 'save_image') }}"" />
+<meta property=""og:image"" content=""{{ absolute_url(asset(Product.main_list_image|no_image_product, 'save_image')) }}"" />
 <meta property=""og:description"" content=""{{ Product.description_list|striptags }}"" />
 <meta property=""og:url"" content=""{{ url('product_detail', {'id': Product.id}) }}"" />
 <meta property=""product:price:amount"" content=""{{ Product.getPrice02IncTaxMin }}""/>
