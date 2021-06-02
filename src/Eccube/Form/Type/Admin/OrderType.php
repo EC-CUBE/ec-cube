@@ -165,14 +165,6 @@ class OrderType extends AbstractType
                     new Assert\NotBlank(),
                 ],
             ])
-            ->add('company_name', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
-                ],
-            ])
             ->add('message', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
