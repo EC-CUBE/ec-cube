@@ -301,6 +301,7 @@ class ProductController extends AbstractController
             $Customer = $this->getUser();
             $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
         }
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_COMPLETE, $event);
 
         return [
             'title' => $this->title,
