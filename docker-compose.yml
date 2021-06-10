@@ -5,10 +5,6 @@ networks:
     driver: bridge
 
 volumes:
-  pg-database:
-    driver: local
-  mysql-database:
-    driver: local
   mailcatcher-data:
     driver: local
 
@@ -33,40 +29,32 @@ services:
       - 8080:80
       - 4430:443
     volumes:
-      - ".:/var/www/html:cached"
       ### 同期対象からコストの重いフォルダを除外 #####################
       - "var:/var/www/html/var"
       - "vendor:/var/www/html/vendor"
       - "node_modules:/var/www/html/node_modules"
-    networks:
-      - backend
-
-  ### Postgres ################################
-  postgres:
-    image: postgres:10
     environment:
-      - POSTGRES_DB=eccubedb
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=secret
-    ports:
-      - 15432:5432
-    volumes:
-      - pg-database:/var/lib/postgresql/data
-    networks:
-      - backend
-
-  ### MySQL ##################################
-  mysql:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: eccubedb
-      MYSQL_USER: dbuser
-      MYSQL_PASSWORD: secret
-    volumes:
-      - mysql-database:/var/lib/mysql
-    ports:
-      - 13306:3306
+      # EC-CUBE environments
+      APP_ENV: "dev"
+      APP_DEBUG: 1
+      DATABASE_URL: "sqlite:///var/eccube.db"
+      DATABASE_SERVER_VERSION: 3
+      MAILER_URL: "smtp://mailcatcher:1025"
+      ECCUBE_AUTH_MAGIC: "<change.me>"
+      # ECCUBE_LOCALE: "ja"
+      # ECCUBE_TIMEZONE: "Asia/Tokyo"
+      # ECCUBE_CURRENCY: "JPY"
+      # ECCUBE_ADMIN_ROUTE: "admin"
+      # ECCUBE_USER_DATA_ROUTE: "user_data"
+      # ECCUBE_ADMIN_ALLOW_HOSTS: []
+      # ECCUBE_FORCE_SSL: false
+      # ECCUBE_TEMPLATE_CODE: "default"
+      # ECCUBE_COOKIE_NAME: "eccube"
+      # ECCUBE_COOKIE_PATH: "/"
+      # ECCUBE_COOKIE_LIFETIME: 0
+      # ECCUBE_GC_MAXLIFETIME: 1440
+      # ECCUBE_ADMIN_USER: "admin"
+      # ECCUBE_ADMIN_PASS: "password"
     networks:
       - backend
 

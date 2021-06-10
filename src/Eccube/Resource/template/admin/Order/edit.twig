@@ -323,7 +323,7 @@ file that was distributed with this source code.
                                 </div>
 
                                 {# エンティティ拡張の自動出力 #}
-                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                     {% if f.vars.eccube_form_options.form_theme %}
                                         {% form_theme f f.vars.eccube_form_options.form_theme %}
                                         {{ form_row(f) }}
@@ -715,7 +715,7 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                                 <table id="table-form-field" class="table table-striped table-sm mb-0"
-                                       data-prototype="{% filter escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': form.OrderItems.vars.prototype}) }}{% endfilter %}">
+                                       data-prototype="{% apply escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': form.OrderItems.vars.prototype}) }}{% endapply %}">
                                     <thead class="table-active">
                                     <tr class="text-nowrap">
                                         <th class="pt-2 pb-2 pl-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
