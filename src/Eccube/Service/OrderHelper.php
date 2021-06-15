@@ -302,7 +302,6 @@ class OrderHelper
     public function removeSession()
     {
         $this->session->remove(self::SESSION_ORDER_ID);
-        $this->session->remove(self::SESSION_ORDER_ID);
         $this->session->remove(self::SESSION_NON_MEMBER);
         $this->session->remove(self::SESSION_NON_MEMBER_ADDRESSES);
     }
