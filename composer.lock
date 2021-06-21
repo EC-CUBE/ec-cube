@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f81a4ee1dee61c0afd44c5500bd18b12",
+    "content-hash": "ae13bcf64841b5eeb7d7950a4c2cc3d0",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -2095,16 +2095,16 @@
         },
         {
             "name": "ec-cube/plugin-installer",
-            "version": "2.0.x-dev",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EC-CUBE/eccube-plugin-installer.git",
-                "reference": "b4b881d822455ef64c29c0e273d8b9a5941c0325"
+                "reference": "f794599afd3e66b1fc74e102abb2836391077afd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EC-CUBE/eccube-plugin-installer/zipball/b4b881d822455ef64c29c0e273d8b9a5941c0325",
-                "reference": "b4b881d822455ef64c29c0e273d8b9a5941c0325",
+                "url": "https://api.github.com/repos/EC-CUBE/eccube-plugin-installer/zipball/f794599afd3e66b1fc74e102abb2836391077afd",
+                "reference": "f794599afd3e66b1fc74e102abb2836391077afd",
                 "shasum": ""
             },
             "require": {
@@ -2125,9 +2125,9 @@
             ],
             "description": "EC-CUBE plugin installer.",
             "support": {
-                "source": "https://github.com/EC-CUBE/eccube-plugin-installer/tree/2.0"
+                "source": "https://github.com/EC-CUBE/eccube-plugin-installer/tree/2.0.0"
             },
-            "time": "2020-10-07T05:12:37+00:00"
+            "time": "2021-06-15T07:41:17+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -12374,9 +12374,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "ec-cube/plugin-installer": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
