@@ -46,7 +46,7 @@ file that was distributed with this source code.
                 }
             };
 
-            var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');">' +
+            var proto_img = '<div class="c-form__fileUploadThumbnail">' +
                 '<a class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></a>' +
                 '</div>';
             var payment_image = $('#{{ form.payment_image.vars.id }}').val();
@@ -57,7 +57,7 @@ file that was distributed with this source code.
                 } else {
                     var path = '{{ asset('', 'temp_image') }}' + filename;
                 }
-                var $img = $(proto_img.replace(/__path__/g, path));
+                var $img = $(proto_img).css('background-image', 'url(' + path + ')');
                 $('#{{ form.payment_image.vars.id }}').val(filename);
 
                 $('#thumb').append($img);
@@ -73,7 +73,7 @@ file that was distributed with this source code.
                 done: function(e, data) {
                     $('.progress').hide();
                     var path = '{{ asset('', 'temp_image') }}/' + data.result.filename;
-                    var $img = $(proto_img.replace(/__path__/g, path));
+                    var $img = $(proto_img).css('background-image', 'url(' + path + ')');;
                     $('#{{ form.payment_image.vars.id }}').val(data.result.filename);
 
                     $('#thumb').append($img);

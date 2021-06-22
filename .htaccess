@@ -5,10 +5,17 @@ DirectoryIndex index.php index.html .ht
     deny from all
 </FilesMatch>
 
-<Files ~ "index.php">
+<Files ~ "/index.php">
     order deny,allow
     allow from all
 </Files>
+
+<FilesMatch "(?<!\.gif|\.png|\.jpg|\.jpeg|\.css|\.ico|\.js|\.svg|\.map)$">
+    SetEnvIf Request_URI "/vendor/" deny_dir
+    Order allow,deny
+    Deny from env=deny_dir
+    Allow from all
+</FilesMatch>
 
 <IfModule mod_headers.c>
     # クリックジャッキング対策
