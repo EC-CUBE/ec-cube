@@ -12,23 +12,72 @@ file that was distributed with this source code.
 
 {% set current = 6 %}
 
+{% block script %}
+    <script>
+     $(function() {
+         $('.btn-toggle').on('click', function () {
+             $(this).find('.btn').toggleClass('active');
+             $(this).find('.btn').toggleClass('btn-success');
+             $(this).find('.btn').toggleClass('btn-default');
+
+             /* var modal = $('#officialPluginDeleteModal');
+              * var progress = $('div.progress', modal).show(); */
+             $.ajax({url: $(this).data('url'), type: 'put'}).then(
+                 function(data) {
+                     console.log('完了しました');
+                     /* message.text('完了しました。');
+                      * progress.hide(); */
+                 },
+                 function(res) {
+                     if (res.responseJSON.message) {
+                         /* message.text(res.responseJSON.message); */
+                         console.log(res.responseJSON.message);
+                     } else {
+                         console.log('有効化に失敗しました。');
+                         /* message.text('有効化に失敗しました。'); */
+                     }
+                     if (res.responseJSON.log) {
+                         console.log(res.responseJSON.log);
+                             /* $('#deleteLog').text(res.responseJSON.log); */
+                     }
+                     /* progress.hide();
+                      * $('#deleteLogPane').show();
+                      * footer.show().find('button').toggle(); */
+                 }
+             );
+         });
+     });
+    </script>
+{% endblock %}
+
 {% block main %}
 <div id="main" class="step7">
     <div class="container-fluid">
         <div class="row">
-            <div id="plugin-enable" class="col-md-12">
-                <div class="page-header">
-                    <h1>{{ 'install.installing_plugin'|trans }}</h1>
-                </div>
-            </div>
-            <div id="cache-clear" class="col-md-12" style="display: none;">
-                <div class="page-header">
-                    <h1>{{ 'install.clearing_cache'|trans }}</h1>
-                </div>
-            </div>
-            <div id="completed" class="col-md-12" style="display: none;">
+            <div class="col-md-12">
                 <div class="page-header">
                     <h1>{{ 'install.completed'|trans }}</h1>
+                </div>
+                <div class="column">
+                    <h2>以下のプラグインは有効化してすぐにご利用可能です</h2>
+                    <p><small>あとから管理画面→オーナーズストア→プラグイン一覧より有効化も可能です</small></p>
+                    <div class="card-body p-0">
+                        <table class="table table-sm">
+                            <tbody>
+                                {% for Plugin in Plugins %}
+                                <tr>
+                                    <td class="text-left pl-3">{{ Plugin.name }}</td>
+                                    <td class="align-middle">
+                                        <div class="btn-group btn-toggle" data-url="{{ url('install_plugin_enable', {'code': Plugin.code }) }}">
+                                            <button class="btn btn-xs btn-default">有効</button>
+                                            <button class="btn btn-xs btn-success active">無効</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="column">
                     <h2>{{ 'install.access_admin_page'|trans}}</h2>
@@ -40,24 +89,4 @@ file that was distributed with this source code.
         </div>
     </div>
 </div>
-
-<script>
-    $(function(){
-        $.ajax({
-            type: "POST",
-            url: "{{ url('install_plugin_enable') }}"
-        }).then(function () {
-            $('#plugin-enable').hide();
-            $('#cache-clear').show();
-        }).then(function() {
-            return $.ajax({
-                type: "POST",
-                url: "{{ url('install_cache_clear') }}"
-            });
-        }).then(function () {
-            $('#cache-clear').hide();
-            $('#completed').show();
-        });
-    });
-</script>
 {% endblock %}

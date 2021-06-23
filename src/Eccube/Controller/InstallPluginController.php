@@ -28,20 +28,21 @@ class InstallPluginController extends InstallController
     /**
      * プラグインを有効にします。
      *
-     * @Route("/install/plugin/enable", name="install_plugin_enable")
+     * @Route("/install/plugin/{code}/enable", requirements={"code" = "\w+"}, name="install_plugin_enable")
      *
      * @return JsonResponse
      *
      * @throws PluginException
      */
-    public function pluginEnable(SystemService $systemService, PluginService $pluginService)
+    public function pluginEnable(SystemService $systemService, PluginService $pluginService, $code)
     {
         // トランザクションチェックファイルの有効期限を確認する
         if (!$this->isValidTransaction()) {
             throw new NotFoundHttpException();
         }
 
-        $Plugin = $this->entityManager->getRepository(Plugin::class)->findOneBy(['code' => 'Api']);
+        /** @var Plugin $Plugin */
+        $Plugin = $this->entityManager->getRepository(Plugin::class)->findOneBy(['code' => $code]);
         $log = null;
         // プラグインが存在しない場合は無視する
         if ($Plugin !== null) {
@@ -51,18 +52,22 @@ class InstallPluginController extends InstallController
             try {
                 ob_start();
 
-                $pluginService->installWithCode($Plugin->getCode());
+                if ($Plugin->isEnabled()) {
+                    $pluginService->disable($Plugin);
+                } else {
+                    $pluginService->enable($Plugin);
+                }
 
-                $pluginService->enable($Plugin);
             } finally {
                 $log = ob_get_clean();
                 while (ob_get_level() > 0) {
                     ob_end_flush();
                 }
             }
+            return $this->json(['success' => true, 'log' => $log]);
+        } else {
+            return $this->json(['success' => false, 'log' => $log]);
         }
-
-        return $this->json(['success' => true, 'log' => $log]);
     }
 
     /**

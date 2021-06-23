@@ -34,6 +34,7 @@ use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
+use Eccube\Repository\PluginRepository;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
@@ -102,10 +103,16 @@ class InstallController extends AbstractController
      */
     protected $cacheUtil;
 
-    public function __construct(PasswordEncoder $encoder, CacheUtil $cacheUtil)
+    /**
+     * @var PluginRepository
+     */
+    protected $pluginRepository;
+
+    public function __construct(PasswordEncoder $encoder, CacheUtil $cacheUtil, PluginRepository $pluginRepository)
     {
         $this->encoder = $encoder;
         $this->cacheUtil = $cacheUtil;
+        $this->pluginRepository = $pluginRepository;
     }
 
     /**
@@ -501,10 +508,14 @@ class InstallController extends AbstractController
         // 有効化URLのトランザクションチェックファイルを生成する
         file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10));
 
+        // プレインストールプラグインを取得
+        $Plugins = $this->pluginRepository->findBy([], ['code' => 'ASC']);
+
         $this->cacheUtil->clearCache('prod');
 
         return [
             'admin_url' => $adminUrl,
+            'Plugins' => $Plugins
         ];
     }
 
