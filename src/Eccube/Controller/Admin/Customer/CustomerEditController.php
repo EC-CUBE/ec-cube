@@ -72,6 +72,7 @@ class CustomerEditController extends AbstractController
             $Customer = $this->customerRepository->newCustomer();
 
             $oldStatusId = null;
+            $previous_password = null;
         }
 
         // 会員登録フォーム

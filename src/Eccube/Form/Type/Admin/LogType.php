@@ -18,6 +18,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -82,6 +83,9 @@ class LogType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Range(['min' => 1, 'max' => 50000]),
                 ],
+            ])
+            ->add('download', SubmitType::class, [
+                'label' => 'admin.common.download'
             ]);
     }
 

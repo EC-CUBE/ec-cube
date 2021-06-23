@@ -1,0 +1,6 @@
+parameters:
+  level: 1
+  ignoreErrors:
+    -
+      message: "#^Function twig_localized_date_filter not found\\.$#"
+      path: src/Eccube/Twig/Extension/IntlExtension.php

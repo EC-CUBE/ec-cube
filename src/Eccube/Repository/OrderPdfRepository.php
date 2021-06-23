@@ -59,7 +59,7 @@ class OrderPdfRepository extends AbstractRepository
             ->setNote3($arrData['note3'])
             ->setVisible(true);
         $this->getEntityManager()->persist($OrderPdf);
-        $this->getEntityManager()->flush($OrderPdf);
+        $this->getEntityManager()->flush();
 
         return true;
     }

@@ -306,7 +306,7 @@ class EditController extends AbstractController
                         // 会員の場合、購入回数、購入金額などを更新
                         if ($Customer = $TargetOrder->getCustomer()) {
                             $this->orderRepository->updateOrderSummary($Customer);
-                            $this->entityManager->flush($Customer);
+                            $this->entityManager->flush();
                         }
 
                         $event = new EventArgs(
@@ -408,7 +408,7 @@ class EditController extends AbstractController
      * 顧客情報を検索する.
      *
      * @Route("/%eccube_admin_route%/order/search/customer/html", name="admin_order_search_customer_html")
-     * @Route("/%eccube_admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_No" = "\d+"}, name="admin_order_search_customer_html_page")
+     * @Route("/%eccube_admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_customer_html_page")
      * @Template("@admin/Order/search_customer.twig")
      *
      * @param Request $request
@@ -629,7 +629,7 @@ class EditController extends AbstractController
             foreach ($Products as $Product) {
                 /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
                 $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, [
-                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId()),
+                    'product' => $Product,
                 ]);
                 $addCartForm = $builder->getForm();
                 $forms[$Product->getId()] = $addCartForm->createView();

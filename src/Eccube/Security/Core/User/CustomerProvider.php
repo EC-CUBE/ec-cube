@@ -89,6 +89,6 @@ class CustomerProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return Customer::class === $class;
+        return Customer::class === $class || is_subclass_of($class, Customer::class);
     }
 }

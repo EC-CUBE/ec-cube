@@ -396,8 +396,8 @@ admin.common.send_complete: Email has been sent
 admin.common.send_error: Failed to send an Email
 admin.common.create_complete: Created
 admin.common.system_error: System error occurred
-admin.common.to_show_complete: %name% is displayed
-admin.common.to_hide_complete: %name% is hidden
+admin.common.to_show_complete: '%name% is displayed'
+admin.common.to_hide_complete: '%name% is hidden'
 
 # action labels
 admin.common.save: Save
@@ -428,6 +428,8 @@ admin.common.next: Next
 admin.common.first: Go to First
 admin.common.last: Go to Last
 admin.common.back: Go back
+admin.common.open_detail: 'Show details'
+admin.common.close_detail: 'Close details'
 
 # Generic Labels, Messages
 admin.common.show: Display
@@ -469,6 +471,9 @@ admin.common.csv_invalid_can_not: '%name% is invalid in the line %line%'
 admin.common.csv_invalid_image: 'Your are not allowed to use "/" or "../" as suffix in %name% in the %line%'
 admin.common.csv_invalid_foreign_key: 'You are unable to delete %name% in the line %line% because it has related data'
 admin.common.csv_invalid_description_detail_upper_limit: '%name% should be less than %max% characters in the line %line%.'
+admin.common.csv_upload_in_progress: 'Uploading CSV file ...'
+admin.common.csv_upload_line_success: 'The %from% to %to% lines have been registered.'
+admin.common.csv_upload_line_error: 'An error has occurred. The registration process after the %from% line has been cancelled.'
 admin.common.drag_and_drop_description: You can change the order of the items by drag & drop.
 admin.common.drag_and_drop_image_description: Drag & drop the images or
 admin.common.delete_modal__title: Delete
@@ -603,7 +608,7 @@ admin.product.permanently_delete__complete_message: Product has been deleted suc
 admin.product.permanently_delete__complete: Completed
 admin.product.permanently_delete__system_error: System error occurred
 admin.product.copy__confirm_title: Duplicate a product
-admin.product.copy__confirm_message: Are you sure to delete this product?
+admin.product.copy__confirm_message: Are you sure you want to duplicate the product?
 admin.product.name: Product Name
 admin.product.image: Product Images
 admin.product.image__short: Images
@@ -743,6 +748,10 @@ admin.product.category_csv.parent_category_id_col: Parent Category ID
 admin.product.category_csv.parent_category_id_description: ''
 admin.product.category_csv.delete_flag_col: Category Deletion Flag
 admin.product.category_csv.delete_flag_description: 'Specify 0: Upload or 1: Delete. If unspecified, it is set to 0.'
+
+# Product CSV
+admin.product.product_csv_upload__title: 'Upload product CSV'
+admin.product.product_csv_upload__message: 'Upload the product CSV file. Is it OK?'
 
 #------------------------------------------------------------------------------------
 # Orders
@@ -955,8 +964,11 @@ admin.content.file.directory_name: Folder Name
 admin.content.file.file_list__card_title: Files in This Directory
 admin.content.file.updated: Update
 admin.content.file.directory_tree: Directories
-admin.content.file.upload_complete: %success% file upload completed. (%success%/%count%)
+admin.content.file.upload_complete: '%success% file upload completed. (%success%/%count%)'
 admin.content.file.upload_error: Failed to upload %file_name%. (%error%)
+admin.content.file.folder_name_symbol_error: The folder name contains invalid characters.
+admin.content.file.folder_name_period_error: Folder names beginning with a period(.) are not allowed.
+admin.content.file.dir_exists: '%file_name% is already exists.'
 admin.content.layout_delete: Delete Layouts
 admin.content.layout_no_page: Page not registered
 admin.content.layout__card_title: Layout Overview
@@ -992,6 +1004,7 @@ admin.content.layout_section__drawer: '#drawer'
 admin.content.layout_section__close_body_before: 'Right before the </body> tags'
 admin.content.page_name: Page Name
 admin.content.page__card_title: Page Settings
+admin.content.page_route_name: Route Name
 admin.content.page_url: URL
 admin.content.page_url_exists: The URL already exists.
 admin.content.page_file_name: File Name
@@ -1062,6 +1075,7 @@ admin.setting.shop.delivery_setting: Delivery Settings
 admin.setting.shop.tax_setting: Taxes
 admin.setting.shop.mail_setting: Emails
 admin.setting.shop.csv_setting: CSV Outputs
+admin.setting.shop.order_status_setting: Order Status
 admin.setting.system: System Settings
 admin.setting.system.member_management: Users
 admin.setting.system.member_password_change: Passwords
@@ -1133,6 +1147,7 @@ admin.setting.shop.delivery.delivery_fee_by_pref: Shipping Charge by Prefecture
 admin.setting.shop.delivery.apply_to_pref__title: Flat Rate (Nationwide)
 admin.setting.shop.delivery.apply_to_pref__button: Apply to All Prefectures
 admin.setting.shop.delivery.fee.invalid: Please enter with numbers.
+admin.setting.shop.delivery.payment_warning: 'There is no payment method that can be selected for purchases of %min% to %max% including tax. Please check the payment method condition settings.'
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : Tax Rate
@@ -1178,6 +1193,17 @@ admin.setting.shop.csv.how_to_use: |
  To add the output items, please select the item(s) on the left pane and press [Add].
  The item orders can be changed with [Item Orders] menus.
  To select multiple items, hold Ctrl (Windows) or Command (Mac) and select. Or hold Shift to select a range of items.
+
+#------------------------------------------------------------------------------------
+# Settings：Store Settings : Order Status
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.order_status.order_status: Order Status
+admin.setting.shop.order_status.id: ID
+admin.setting.shop.order_status.admin_order_status_name: Name(Order management)
+admin.setting.shop.order_status.customer_order_status_name: Name(My page)
+admin.setting.shop.order_status.color: Color
+admin.setting.shop.order_status.display_order_count: Number display
 
 #------------------------------------------------------------------------------------
 # Settings : Customers : Change Password
@@ -1296,12 +1322,12 @@ admin.store.plugin.installed: Installed
 admin.store.plugin.update: Update
 admin.store.plugin.install.complete: A plugin has been installed.
 admin.store.plugin.install.failed: Failed to install plugin.
-admin.store.plugin.enable.complete: %plugin_name% is enabled.
-admin.store.plugin.already.enabled: %plugin_name% has already been enabled.
-admin.store.plugin.disable.complete: %plugin_name% is disabled.
-admin.store.plugin.already.disabled: %plugin_name% has already been disabled.
+admin.store.plugin.enable.complete: '%plugin_name% is enabled.'
+admin.store.plugin.already.enabled: '%plugin_name% has already been enabled.'
+admin.store.plugin.disable.complete: '%plugin_name% is disabled.'
+admin.store.plugin.already.disabled: '%plugin_name% has already been disabled.'
 admin.store.plugin.uninstall.complete: The plugin has been deleted.
-admin.store.plugin.update.complete: %plugin_name% has been updated.
+admin.store.plugin.update.complete: '%plugin_name% has been updated.'
 admin.store.plugin.update.failed: Failed to update %plugin_name% .
 admin.store.plugin.mkdir.error: Failed to creat a directory '%dir_name%'.
 admin.store.setting: Authentication Key Settings
@@ -1359,7 +1385,7 @@ admin.store.plugin_confirm.title: Installation Confirmation
 admin.store.plugin_confirm.subtitle: Owner's Store
 admin.store.plugin_confirm.header: We are going to install the following plugins.
 admin.store.plugin_confirm.header.upgrade: The following plugins will be updated to the latest versions.
-admin.store.plugin_confirm.require.header: %name% requires following additional plugins. They will also be installed.
+admin.store.plugin_confirm.require.header: '%name% requires following additional plugins. They will also be installed.'
 admin.store.plugin_confirm_uninstall.823: Owner's Store
 admin.store.plugin_confirm_uninstall.824: Delete Plugins
 admin.store.plugin_confirm_uninstall.825: The following plugins will be deleted.
@@ -1575,6 +1601,7 @@ tooltip.setting.shop.shop.option_product_tax: If turned on, you can set the tax 
 tooltip.setting.shop.shop.option_point_enabled: If turned on, the point system is enabled.
 tooltip.setting.shop.shop.option_point_rate: You can change the point return rate by purchase amount.
 tooltip.setting.shop.shop.option_point_conversion_rate: Conversion rate per 1 point. E.g. If you set ''1'', the point becomes available to shoppers with the rate of 1 point = 1 yen.
+tooltip.setting.shop.payment.rule: You can set the terms of use for the payment method. If the total payment amount (tax included) including your own fee matches the conditions, it will be displayed in the payment method options of the purchase flow.
 tooltip.setting.shop.payment.logo_image: You can upload the payment option icons displayed in the payment methods during the checkout process. If not registered, the payment methods will be displayed w/o images.
 tooltip.setting.shop.delivery.tracking_number_url: Enter the URL of the shipping tracker of the delivery company.
 tooltip.setting.shop.delivery.sale_type: Specify the sales type(s) available for this delivery method.
@@ -1584,6 +1611,10 @@ tooltip.setting.shop.tax_setting: You can set the tax rates applicable to all pr
 tooltip.setting.shop.mail.mail_template: Please select an existing email template. Contents are displayed in the text field below.
 tooltip.setting.shop.csv.csv_columns: You can output various data in CSV format. You can specify the items for CSV output.
 tooltip.setting.shop.csv.csv_type: Specify the CSV file type.
+tooltip.setting.shop.order_status.order_status: Set the order status used in order management and my page. You can set the name, color, and number display.
+tooltip.setting.shop.order_status.customer_order_status_name: You can set the name of the order status. The name set here will be displayed on My Page after logging in as a customer.
+tooltip.setting.shop.order_status.color: You can set the color of the order status used in order management.
+tooltip.setting.shop.order_status.display_order_count: You can set the display / non-display of the number of orders for each order status used in order management.
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
 tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
@@ -1593,6 +1624,9 @@ tooltip.setting.system.log_display: Here you can check logs such as access logs 
 tooltip.setting.system.master_data_management: Manage all Master Data here.
 tooltip.setting.system.system_info: System environment information relevant to EC-CUBE.
 tooltip.setting.system.system.php_info: PHP details relevant to EC-CUBE.
+tooltip.store.template.template_code: This code will be used as the directory name where the template is saved.
+tooltip.store.template.template_name: Set the name of the template to be displayed in the Admin Console.
+tooltip.store.template.template_file: Upload an archive file that contains a set of templates.
 
 #====================================================================================
 # Installation
@@ -1680,4 +1714,4 @@ purchase_flow.over_stock: '%name% does not have enough stock.'
 # Command
 #------------------------------------------------------------------------------------
 
-command.composer_require_already_installed.not_supported_plugin: %name% %plugin_version% does not support EC-CUBE %eccube_version% . Do you want to continue?
+command.composer_require_already_installed.not_supported_plugin: '%name% %plugin_version% does not support EC-CUBE %eccube_version% . Do you want to continue?'

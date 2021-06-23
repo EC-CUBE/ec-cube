@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin;
 
+use DateTime;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Member;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -59,9 +60,9 @@ class IndexControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithSales($hour)
     {
         $Customer = $this->createCustomer();
-        $Today = new \DateTime();
+        $Today = new DateTime();
         $Today->setTime($hour, 0);
-        $Yesterday = new \DateTime('-1 days');
+        $Yesterday = new DateTime('-1 days');
 
         $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
         $OrderPending = $this->orderStatusRepository->find(OrderStatus::PENDING);
@@ -121,11 +122,11 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->verify('昨日の売上件数');
 
         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(1) > div')->text()), $match);
-        $this->expected = $todaysSales + $yesterdaysSales;
+        $this->expected = (new DateTime('today'))->format('m') === (new DateTime('yesterday'))->format('m') ? $todaysSales + $yesterdaysSales : $todaysSales;
         $this->actual = str_replace(',', '', $match[1]);
         $this->verify('今月の売上');
 
-        $this->expected = 6;
+        $this->expected = (new DateTime('today'))->format('m') === (new DateTime('yesterday'))->format('m') ? 6 : 3;
         $this->actual = str_replace(',', '', $match[2]);
         $this->verify('今月の売上件数');
     }
