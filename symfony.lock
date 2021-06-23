@@ -395,6 +395,9 @@
     "symfony/dependency-injection": {
         "version": "v3.4.1"
     },
+    "symfony/deprecation-contracts": {
+        "version": "v2.4.0"
+    },
     "symfony/doctrine-bridge": {
         "version": "v3.4.1"
     },
@@ -493,6 +496,9 @@
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.17.1"
+    },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.22.1"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
