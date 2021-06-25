@@ -320,7 +320,9 @@ file that was distributed with this source code.
                                 <div class="d-inline-block">
                                     <div class="btn-group" role="group">
                                         <a class="btn btn-ec-regular" href="{{ url('admin_customer_export') }}"><i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.common.csv_download'|trans }}</span></a>
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}"><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span></a>
+                                        {% if read_only is empty %}
+                                            <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}"><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span></a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -342,7 +344,13 @@ file that was distributed with this source code.
                                     {% for Customer in pagination %}
                                         <tr id="ex-customer-{{ Customer.id }}">
                                             <td class="align-middle pl-3">{{ Customer.id }}</td>
-                                            <td class="align-middle"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
+                                            <td class="align-middle">
+                                                {% if read_only %}
+                                                    {{ Customer.name01 }}&nbsp;{{ Customer.name02 }}
+                                                {% else %}
+                                                    <a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a>
+                                                {% endif %}
+                                            </td>
                                             <td class="align-middle">{{ Customer.phone_number }}</td>
                                             <td class="align-middle">{{ Customer.email }}</td>
                                             <td class="align-middle"></td>

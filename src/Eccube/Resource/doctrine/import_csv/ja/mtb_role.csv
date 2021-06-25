@@ -1,0 +1,3 @@
+id,name,sort_no,discriminator_type
+"1","表示のみ","0","role"
+"2","非表示","1","role"

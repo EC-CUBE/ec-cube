@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\Role;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\AuthorityRoleType;
@@ -90,7 +91,20 @@ class AuthorityController extends AbstractController
             foreach ($data['AuthorityRoles'] as $AuthorityRole) {
                 $Authority = $AuthorityRole->getAuthority();
                 $denyUrl = $AuthorityRole->getDenyUrl();
-                if ($Authority && !empty($denyUrl)) {
+                $readOnlyUrl = $AuthorityRole->getReadOnlyUrl();
+                $Role = $AuthorityRole->getRole()->getId();
+
+                // どちらかのURLが登録される
+                if ($Authority && $Role && (!empty($denyUrl) || !empty($readOnlyUrl))) {
+                    if (Role::READ_ONLY == $Role && empty($readOnlyUrl)) {
+                        // 新規登録時は、deny_urlのformを使用している為、入れ替える
+                        $AuthorityRole->setReadOnlyUrl($denyUrl);
+                        $AuthorityRole->setDenyUrl(NULL);
+                    } elseif (Role::HIDE == $Role && !empty($readOnlyUrl)) {
+                        // 表示のみから非表示に変更の際は入れ替える
+                        $AuthorityRole->setDenyUrl($readOnlyUrl);
+                        $AuthorityRole->setReadOnlyUrl(NULL);
+                    }
                     $this->entityManager->persist($AuthorityRole);
                 } else {
                     $id = $AuthorityRole->getId();
