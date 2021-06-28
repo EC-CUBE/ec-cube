@@ -1,10 +1,5 @@
 DirectoryIndex index.php index.html .ht
 
-<FilesMatch "^composer|^COPYING|^\.env|^\.maintenance|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|^Dockerfile|^\.editorconfig|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml|dockerignore|sample)$">
-    order allow,deny
-    deny from all
-</FilesMatch>
-
 <Files ~ "/index.php">
     order deny,allow
     allow from all
@@ -15,6 +10,11 @@ DirectoryIndex index.php index.html .ht
     Order allow,deny
     Deny from env=deny_dir
     Allow from all
+</FilesMatch>
+
+<FilesMatch "^composer|^COPYING|^\.env|^\.maintenance|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|^Dockerfile|^\.editorconfig|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml|dockerignore|sample)$">
+    order allow,deny
+    deny from all
 </FilesMatch>
 
 <IfModule mod_headers.c>
