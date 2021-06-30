@@ -39,6 +39,16 @@ class ProductRepository extends AbstractRepository
      */
     protected $eccubeConfig;
 
+    public const COLUMNS = [
+        'product_id' => 'p.id'
+        ,'name' => 'p.name'
+        ,'product_code' => 'pc.code'
+        ,'stock' => 'pc.stock'
+        ,'status' => 'p.Status'
+        ,'create_date' => 'p.create_date'
+        ,'update_date' => 'p.update_date'
+    ];
+
     /**
      * ProductRepository constructor.
      *
@@ -358,8 +368,14 @@ class ProductRepository extends AbstractRepository
         }
 
         // Order By
-        $qb
-            ->orderBy('p.update_date', 'DESC');
+        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
+            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
+
+            $qb->orderBy(self::COLUMNS[$searchData['sortkey']] , $sortOrder);
+
+        } else {
+            $qb->orderBy('p.update_date', 'DESC');
+        }
 
         return $this->queries->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
     }
