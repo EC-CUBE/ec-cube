@@ -201,3 +201,9 @@ services:
           - { name: mobile_detect.mobile_detector.default }
           - { name: mobile_detect.mobile_detector }
         public: true
+
+    Eccube\Form\Extension\HTMLPurifierTextTypeExtension:
+        arguments:
+            - '@Eccube\Request\Context'
+        tags:
+            - { name: form.type_extension, priority: -99, extended_type: Symfony\Component\Form\Extension\Core\Type\TextType }
