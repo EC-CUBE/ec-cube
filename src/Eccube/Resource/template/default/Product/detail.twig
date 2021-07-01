@@ -224,11 +224,13 @@ file that was distributed with this source code.
                 "{{ app.request.schemeAndHttpHost }}{{ asset(img, 'save_image') }}"{% if not loop.last %},{% endif %}
 
             {% else %}
-                "{{ app.request.schemeAndHttpHost }}{{ asset(no_image_product, 'save_image') }}"
+                "{{ app.request.schemeAndHttpHost }}{{ asset(''|no_image_product, 'save_image') }}"
             {% endfor %}
         ],
-        "description": "{{ Product.description_list | default(Product.description_detail) | striptags | replace({'\n': '', '\r': ''}) }}",
+        "description": "{{ Product.description_list | default(Product.description_detail) | replace({'\n': '', '\r': ''}) | slice(0,300) }}",
+        {% if Product.code_min %}
         "sku": "{{ Product.code_min }}",
+        {% endif %}
         "offers": {
             "@type": "Offer",
             "url": "{{ url('product_detail', {'id': Product.id}) }}",
