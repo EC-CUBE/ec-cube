@@ -392,4 +392,51 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         }
         $this->verify();
     }
+
+    public function testTagSearch()
+    {
+        // データの事前準備
+        // * 商品1 に タグ 1 を設定
+        // * 商品2 に タグ 1, 2 を設定
+        $Products = $this->productRepository->findAll();
+        $Products[0]->setName('りんご');
+        $this->setProductTags($Products[0], [1]);
+        $this->setProductTags($Products[1], [1, 2]);
+        $this->entityManager->flush();
+
+        // タグ 1 で検索
+        $this->searchData = [
+            'name' => '新商品',
+        ];
+        $this->scenario();
+        $this->assertCount(2, $this->Results);
+
+        // タグ 2 で検索
+        $this->searchData = [
+            'name' => 'おすすめ商品',
+        ];
+        $this->scenario();
+        $this->assertCount(1, $this->Results);
+
+        // タグ 1 and タグ 2 で検索
+        $this->searchData = [
+            'name' => '新商品 おすすめ商品',
+        ];
+        $this->scenario();
+        $this->assertCount(1, $this->Results);
+
+        // タグ 1 and 商品名 で検索
+        $this->searchData = [
+            'name' => '新商品 りんご',
+        ];
+        $this->scenario();
+        $this->assertCount(1, $this->Results);
+
+        // タグ 3 で検索
+        $this->searchData = [
+            'name' => '限定品',
+        ];
+        $this->scenario();
+        $this->assertCount(0, $this->Results);
+    }
 }

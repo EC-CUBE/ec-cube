@@ -15,16 +15,18 @@ namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Job
- *
- * @ORM\Table(name="mtb_job")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\JobRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
- */
-class Job extends \Eccube\Entity\Master\AbstractMasterEntity
-{
+if (!class_exists(Job::class, false)) {
+    /**
+     * Job
+     *
+     * @ORM\Table(name="mtb_job")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\JobRepository")
+     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+     */
+    class Job extends \Eccube\Entity\Master\AbstractMasterEntity
+    {
+    }
 }

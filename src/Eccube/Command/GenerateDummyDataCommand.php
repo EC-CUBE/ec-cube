@@ -63,7 +63,7 @@ class GenerateDummyDataCommand extends Command
             ->setDescription('Dummy data generator')
             ->addOption('with-locale', null, InputOption::VALUE_REQUIRED, 'Set to the locale.', 'ja_JP')
             ->addOption('without-image', null, InputOption::VALUE_NONE, 'Do not generate images.')
-            ->addOption('with-image', null, InputOption::VALUE_REQUIRED, 'Generate image type of abstract|animals|business|cats|city|food|nightlife|fashion|people|nature|sports|technics|transport', 'cats')
+            ->addOption('with-image', null, InputOption::VALUE_REQUIRED, 'Generate image type of cats or notnull', 'cats')
             ->addOption('products', null, InputOption::VALUE_REQUIRED, 'Number of Products.', 100)
             ->addOption('orders', null, InputOption::VALUE_REQUIRED, 'Number of Orders.', 10)
             ->addOption('customers', null, InputOption::VALUE_REQUIRED, 'Number of Customers.', 100)
@@ -181,7 +181,7 @@ EOF
                         $output->writeln('Order: id='.$Order->getId());
                         break;
                 }
-                $this->entityManager->flush($Order);
+                $this->entityManager->flush();
                 $j++;
                 if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL && ($j % 100) === 0 && $j > 0) {
                     $output->writeln(' ...'.$j);

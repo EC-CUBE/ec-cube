@@ -153,7 +153,11 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.payment.terms_of_use'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.payment.rule'|trans }}">
+                                        <span><span>{{ 'admin.setting.shop.payment.terms_of_use'|trans }}</span></span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
+                                </div>
                                 <div class="col mb-2">
                                     <div class="row justify-content-start">
                                         <div class="col-4">
@@ -196,7 +200,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             {# エンティティ拡張の自動出力 #}
-                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                            {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                 {% if f.vars.eccube_form_options.form_theme %}
                                     {% form_theme f f.vars.eccube_form_options.form_theme %}
                                     {{ form_row(f) }}
