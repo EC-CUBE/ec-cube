@@ -80,6 +80,7 @@ USER www-data
 RUN composer install \
   --no-scripts \
   --no-autoloader \
+  --no-plugins \
   -d ${APACHE_DOCUMENT_ROOT} \
   ;
 
