@@ -23,4 +23,35 @@ class BlockControllerTest extends AbstractWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    /**
+     * SNSボタンの表示テスト
+     */
+    public function testSocialButtons()
+    {
+        // TOPページはSNSボタンが表示される
+        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $node = $crawler->filter('.ec-socialButtons');
+        $this->assertNotEmpty($node);
+
+        // 商品詳細ページはSNSボタンが表示される
+        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => '1']));
+        $node = $crawler->filter('.ec-socialButtons');
+        $this->assertNotEmpty($node);
+
+        // マイページはSNSボタンが表示されない
+        $crawler = $this->client->request('GET', $this->generateUrl('mypage_login'));
+        $node = $crawler->filter('.ec-socialButtons');
+        $this->assertEmpty($node);
+
+        // カートページはSNSボタンが表示されない
+        $crawler = $this->client->request('GET', $this->generateUrl('cart'));
+        $node = $crawler->filter('.ec-socialButtons');
+        $this->assertEmpty($node);
+
+        // 会員登録ページはSNSボタンが表示されない
+        $crawler = $this->client->request('GET', $this->generateUrl('entry'));
+        $node = $crawler->filter('.ec-socialButtons');
+        $this->assertEmpty($node);
+    }
 }

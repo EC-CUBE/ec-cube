@@ -1,0 +1,13 @@
+{% if body_class is not defined or (body_class != 'mypage' and body_class != 'cart_page' and body_class != 'registration_page') %}
+    <div class="ec-socialButtons">
+        <div class="ec-socialButtons__btn ec-socialButtons--twitter">
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+        <div class="ec-socialButtons__btn ec-socialButtons--facebook">
+            <div id="fb-root"></div>
+            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v9.0" nonce="akhQXdmn"></script>
+            <div class="fb-share-button" data-href="{{ app.request.uri }}" data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?src=sdkpreparse" class="fb-xfbml-parse-ignore">シェア</a></div>
+        </div>
+    </div>
+{% endif %}
