@@ -1,0 +1,195 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['setting', 'shop', 'shop_calendar'] %}
+
+{% block title %}{{ 'admin.setting.shop.calendar_setting'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
+
+{#{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}#}
+
+{% block stylesheet %}
+    <style type="text/css">
+        .edit {
+            display: none;
+        }
+
+        .has-error .list {
+            display: none;
+        }
+
+        .has-error .edit {
+            display: block;
+        }
+    </style>
+{% endblock stylesheet %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(function() {
+            $('.calendar_list_item td.action a.edit-button').click(function() {
+                var id = $(this).data('id');
+                var tr = $('#ex-calendar-' + id);
+                $(tr).find('.list').hide();
+                $(tr).find('.edit').show();
+            });
+
+            $('.calendar_list_item .cancel').click(function() {
+                var id = $(this).data('id');
+                var tr = $('#ex-calendar-' + id);
+                $(tr).find('.edit').hide();
+                $(tr).find('.list').show();
+            });
+        });
+    </script>
+{% endblock javascript %}
+
+{% block main %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.calendar_setting'|trans }}">
+                            <span>{{ 'admin.setting.shop.calendar_setting'|trans }}</span>
+                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table tabel-sm">
+                            <colgroup>
+                                <col width="5%">
+                                <col width="35%">
+                                <col width="20%">
+                                <col width="">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.common.id'|trans }}</th>
+                                    <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.calendar.title'|trans }}</th>
+                                    <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.calendar.holiday'|trans }}</th>
+                                    <th class="border-top-0 pt-2 pb-2 pl-3 pr-5"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="calendar_item_new">
+                                    <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="{{ url('admin_setting_shop_calendar_new') }}">
+                                        {{ form_widget(form._token) }}
+                                        <td class="align-middle pl-3"></td>
+                                        <td class="align-middle" style="width:230px;">
+                                            <div class="input-group">
+                                                {{ form_widget(form.title) }}
+                                                {{ form_errors(form.title) }}
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ form_widget(form.holiday) }}
+                                            {{ form_errors(form.holiday) }}
+                                        </td>
+                                        <td class="align-middle"></td>
+                                        <td class="align-middle pr-5">
+                                            <div class="row justify-content-end">
+                                                <button class="btn btn-ec-regular px-4" type="submit">{{ 'admin.common.create__new'|trans }}</button>
+                                            </div>
+                                        </td>
+                                    </form>
+                                </tr>
+
+                                {% for Calendar in Calendars %}
+                                    <tr id="ex-calendar-{{ Calendar.id }}" class="calendar_list_item {% if errors[Calendar.id] %}has-error{% endif %}">
+                                        <form name="edit-form" id="edit-form_{{ Calendar.id }}" method="post" action="{{ url('admin_setting_shop_calendar') }}">
+                                            {{ form_widget(forms[Calendar.id]._token) }}
+                                            <input type="hidden" value="{{ Calendar.id }}" name="calendar_id">
+                                            <input type="hidden" value="edit_inline" name="mode"/>
+                                            <td class="align-middle pl-3"><span>{{ Calendar.id }}</span></td>
+                                            <td class="align-middle">
+                                                <div class="edit">
+                                                    {{ form_widget(forms[Calendar.id].title) }}
+                                                </div>
+                                                <div class="list">
+                                                    <span>{{ Calendar.title }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="edit">
+                                                    {{ form_widget(forms[Calendar.id].holiday) }}
+                                                    {{ form_errors(forms[Calendar.id].holiday) }}
+                                                </div>
+                                                <div class="list">
+                                                    <span>{{ Calendar.holiday|date_day }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="edit">
+                                                    <button type="submit" class="btn text-nowrap btn-ec-conversion">{{ 'admin.common.decision'|trans }}</button>
+                                                    <button type="button" class="btn text-nowrap btn-ec-sub cancel" data-id="{{ Calendar.id }}">{{ 'admin.common.cancel'|trans }}</button>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle action">
+                                                <div class="col-12 col-sm-10 col-md-8 col-lg-6 pull-right">
+                                                    <div class="row pr-2">
+                                                        <div class="col-6 text-center pr-0">
+                                                            <a class="btn btn-ec-actionIcon edit-button" data-tooltip="true" data-id="{{ Calendar.id }}" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                                <i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="col-6 text-center">
+                                                            <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top"
+                                                                 title="{{ 'admin.common.delete'|trans }}">
+                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal_{{ Calendar.id }}">
+                                                                    <i class="fa fa-close fa-lg text-secondary"></i>
+                                                                </a>
+                                                            </div>
+                                                            <!-- 削除モーダル -->
+                                                            <div class="modal fade" id="DeleteModal_{{ Calendar.id }}" tabindex="-1" role="dialog"
+                                                                 aria-labelledby="DeleteModal_{{ Calendar.id }}" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title font-weight-bold">
+                                                                                {{ 'admin.common.delete_modal__title'|trans }}
+                                                                            </h5>
+                                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">×</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body text-left">
+                                                                            <p class="text-left modal-message">{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Calendar.title }) }}</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                                                {{ 'admin.common.cancel'|trans }}
+                                                                            </button>
+                                                                            <a class="btn btn-ec-delete" href="{{ url('admin_setting_shop_calendar_delete', { id : Calendar.id }) }}"
+                                                                                {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
+                                                                                {{ 'admin.common.delete'|trans }}
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
