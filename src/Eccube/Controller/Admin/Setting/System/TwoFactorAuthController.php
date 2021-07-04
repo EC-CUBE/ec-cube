@@ -96,7 +96,6 @@ class TwoFactorAuthController extends AbstractController
                 if ($Member->getTwoFactorAuthKey()) {
                     if ($this->twoFactorAuthService->verifyCode($Member->getTwoFactorAuthKey(),$form->get('device_token')->getData())) {
                         $response = new RedirectResponse($this->generateUrl('admin_homepage'));
-                        dump($this->twoFactorAuthService->createAuthedCookie($Member));
                         $response->headers->setCookie($this->twoFactorAuthService->createAuthedCookie($Member));
                         return $response;
                     } else {
