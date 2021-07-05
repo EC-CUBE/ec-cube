@@ -1221,6 +1221,8 @@ admin.setting.system.member.password: Password
 admin.setting.system.member.password_confirm: Re-enter Password
 admin.setting.system.member.work: Status
 admin.setting.system.member.two_factor_auth_enabled: Two-factor auth
+admin.setting.system.member.two_factor_auth_completed: Two-factor authentication settings are complete.
+admin.setting.system.member.two_factor_auth_incompleted: Two-factor authentication settings are incomplete. Please log in as this user to complete the settings.
 admin.setting.system.member.delete__confirm_title: Delete a user
 admin.setting.system.member.delete__confirm_message: Are you sure to delete this user?
 admin.setting.system.member.work_can_not_change: You are not allowed to change to ''Inactive''.
@@ -1235,7 +1237,7 @@ admin.setting.system.two_factor_auth.device_token: Token
 admin.setting.system.two_factor_auth.auth: Authentication
 admin.setting.system.two_factor_auth.configured_warning: Two-factor authentication has already been set. If you reset it, you will not be able to use the registered device.
 admin.setting.system.two_factor_auth.complete_message: Two-factor authentication setting is complete.
-admin.setting.system.two_factor_auth.invalid_message__reinput: There is an error in the token. Please try again. 
+admin.setting.system.two_factor_auth.invalid_message__reinput: There is an error in the token. Please try again.
 admin.setting.system.two_factor_auth.invalid_message__invalid: There is an error in the token. Please enter in 6 digits.
 
 #------------------------------------------------------------------------------------
