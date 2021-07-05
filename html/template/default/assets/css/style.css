@@ -4836,6 +4836,28 @@ Styleguide 11.2.7
 */
 .ec-itemNavAccordion {
   display: none; }
+.ec-maintenanceAlert {
+  background: steelblue;
+  height: 5rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  color: white;
+  z-index: 9999;
+  display: flex;
+  font-weight: bold; }
+.ec-maintenanceAlert > * {
+    margin: auto; }
+.ec-maintenanceAlert .ec-maintenanceAlert__icon {
+    display: inline-block;
+    margin-right: 1rem;
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    fill: #fff;
+    vertical-align: top; }
+.ec-maintenanceAlert + * {
+    margin-top: 5rem; }
 /**
 メディアクエリ
 SP フォーストで記述する。

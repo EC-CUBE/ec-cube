@@ -1,6 +1,7 @@
 <?php
 
 use Eccube\Kernel;
+use Eccube\Service\SystemService;
 use Symfony\Component\Debug\Debug;
 use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,13 +63,18 @@ if (file_exists($maintenanceFile)) {
     $adminPath = env('ECCUBE_ADMIN_ROUTE', 'admin');
     $adminPath = '/'.\trim($adminPath, '/').'/';
     if (\strpos($pathInfo, $adminPath) !== 0) {
-        $locale = env('ECCUBE_LOCALE');
-        $templateCode = env('ECCUBE_TEMPLATE_CODE');
-        $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
+        $maintenanceContents = file_get_contents($maintenanceFile);
+        $maintenanceToken = explode(':', $maintenanceContents)[1] ?? null;
+        $tokenInCookie = $request->cookies->get(SystemService::MAINTENANCE_TOKEN_KEY);
+        if ($tokenInCookie === null || $tokenInCookie !== $maintenanceToken) {
+            $locale = env('ECCUBE_LOCALE');
+            $templateCode = env('ECCUBE_TEMPLATE_CODE');
+            $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
 
-        header('HTTP/1.1 503 Service Temporarily Unavailable');
-        require __DIR__.'/maintenance.php';
-        return;
+            header('HTTP/1.1 503 Service Temporarily Unavailable');
+            require __DIR__.'/maintenance.php';
+            return;
+        }
     }
 }
 
