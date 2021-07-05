@@ -18,6 +18,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -273,7 +274,9 @@ class CustomerRepository extends AbstractRepository
                 ->leftJoin('c.Orders', 'o')
                 ->leftJoin('o.OrderItems', 'oi')
                 ->andWhere('oi.product_name LIKE :buy_product_name')
-                ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
+                ->andWhere($qb->expr()->notIn('o.OrderStatus', ':order_status'))
+                ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%')
+                ->setParameter('order_status', [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         }
 
         // Order By
@@ -317,7 +320,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @param $secretKey
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getProvisionalCustomerBySecretKey($secretKey)
     {
@@ -332,7 +335,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @param $email
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getRegularCustomerByEmail($email)
     {
@@ -348,7 +351,7 @@ class CustomerRepository extends AbstractRepository
      * @param $resetKey
      * @param $email
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getRegularCustomerByResetKey($resetKey, $email = null)
     {

@@ -227,10 +227,6 @@ class Kernel extends BaseKernel
         // twigのurl,path関数を差し替え
         $container->addCompilerPass(new TwigExtensionPass());
 
-        $container->register('app', Application::class)
-            ->setSynthetic(true)
-            ->setPublic(true);
-
         // クエリカスタマイズの拡張.
         $container->registerForAutoconfiguration(QueryCustomizer::class)
             ->addTag(QueryCustomizerPass::QUERY_CUSTOMIZER_TAG);

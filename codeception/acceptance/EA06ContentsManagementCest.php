@@ -32,18 +32,18 @@ use Symfony\Component\Finder\Finder;
  */
 class EA06ContentsManagementCest
 {
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         // すべてのテストケース実施前にログインしておく
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function contentsmanagement_新着情報管理(\AcceptanceTester $I)
+    public function contentsmanagement_新着情報管理(AcceptanceTester $I)
     {
         $I->getScenario()->incomplete('未実装：新着情報管理は未実装');
 
@@ -84,7 +84,7 @@ class EA06ContentsManagementCest
      * @env firefox
      * @env chrome
      */
-    public function contentsmanagement_ファイル管理(\AcceptanceTester $I)
+    public function contentsmanagement_ファイル管理(AcceptanceTester $I)
     {
         $I->wantTo('EA0602-UC01-T01(& UC01-T02/UC01-T03/UC01-T04/UC01-T05/UC01-T06/UC01-T07) ファイル管理');
 
@@ -112,7 +112,7 @@ class EA06ContentsManagementCest
 
             $FileManagePage->一覧_パスをコピー(1);
             $I->wait(5);
-            $returnText = $I->grabValueFrom("#fileList table > tbody > tr:nth-child(1) > td:nth-child(4) span.copy-file-path input.form-control");
+            $returnText = $I->grabValueFrom('#fileList table > tbody > tr:nth-child(1) > td:nth-child(4) span.copy-file-path input.form-control');
             $I->assertEquals('/html/user_data/upload.txt', $returnText);
 
             $FileManagePage->一覧_表示(1);
@@ -145,7 +145,7 @@ class EA06ContentsManagementCest
         }
     }
 
-    public function contentsmanagement_ページ管理(\AcceptanceTester $I)
+    public function contentsmanagement_ページ管理(AcceptanceTester $I)
     {
         $I->wantTo('EA0603-UC01-T01(& UC01-T02/UC01-T03/UC01-T04/UC01-T05) ページ管理');
         $faker = Fixtures::get('faker');
@@ -225,7 +225,7 @@ class EA06ContentsManagementCest
         $I->see('削除しました', PageEditPage::$登録完了メッセージ);
     }
 
-    public function contentsmanagement_レイアウト管理(\AcceptanceTester $I)
+    public function contentsmanagement_レイアウト管理(AcceptanceTester $I)
     {
         // レイアウト名を未入力で登録
         LayoutManagePage::go($I)->新規登録();
@@ -244,7 +244,7 @@ class EA06ContentsManagementCest
         $I->see('保存しました');
     }
 
-    public function contentsmanagement_検索未使用ブロック(\AcceptanceTester $I)
+    public function contentsmanagement_検索未使用ブロック(AcceptanceTester $I)
     {
         $I->wantTo('EA0603-UC01-T06 検索未使用ブロック');
         $layoutName = '下層ページ用レイアウト';
@@ -263,7 +263,7 @@ class EA06ContentsManagementCest
         $I->seeNumberOfElements(LayoutEditPage::$未使用ブロックアイテム, count($items));
     }
 
-    public function contentsmanagement_ブロック管理(\AcceptanceTester $I)
+    public function contentsmanagement_ブロック管理(AcceptanceTester $I)
     {
         $I->wantTo('EA0603-UC01-T01(& UC01-T02/UC01-T03) ブロック管理');
         $faker = Fixtures::get('faker');

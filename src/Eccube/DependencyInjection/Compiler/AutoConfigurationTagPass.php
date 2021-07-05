@@ -17,7 +17,6 @@ use Doctrine\Common\EventSubscriber;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\Form\AbstractTypeExtension;
 
 /**
  * サービスタグの自動設定を行う

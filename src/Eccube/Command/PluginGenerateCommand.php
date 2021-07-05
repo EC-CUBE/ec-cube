@@ -193,7 +193,6 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/composer.json', $source);
     }
 
-
     /**
      * @param string $pluginDir
      */
@@ -232,7 +231,6 @@ jobs:
 
         $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
     }
-
 
     /**
      * @param string $pluginDir
@@ -373,7 +371,7 @@ class ConfigController extends AbstractController
         if (\$form->isSubmitted() && \$form->isValid()) {
             \$Config = \$form->getData();
             \$this->entityManager->persist(\$Config);
-            \$this->entityManager->flush(\$Config);
+            \$this->entityManager->flush();
             \$this->addSuccess('登録しました。', 'admin');
 
             return \$this->redirectToRoute('${snakecased}_admin_config');
@@ -396,56 +394,58 @@ namespace Plugin\\${code}\\Entity;
 
 use Doctrine\\ORM\\Mapping as ORM;
 
-/**
- * Config
- *
- * @ORM\Table(name="plg_${snakecased}_config")
- * @ORM\Entity(repositoryClass="Plugin\\${code}\\Repository\\ConfigRepository")
- */
-class Config
-{
+if (!class_exists('\\Plugin\\${code}\\Entity\\Config', false)) {
     /**
-     * @var int
+     * Config
      *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Table(name="plg_${snakecased}_config")
+     * @ORM\Entity(repositoryClass="Plugin\\${code}\\Repository\\ConfigRepository")
      */
-    private \$id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private \$name;
-
-    /**
-     * @return int
-     */
-    public function getId()
+    class Config
     {
-        return \$this->id;
-    }
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private \$id;
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return \$this->name;
-    }
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="name", type="string", length=255)
+         */
+        private \$name;
 
-    /**
-     * @param string \$name
-     *
-     * @return \$this;
-     */
-    public function setName(\$name)
-    {
-        \$this->name = \$name;
+        /**
+         * @return int
+         */
+        public function getId()
+        {
+            return \$this->id;
+        }
 
-        return \$this;
+        /**
+         * @return string
+         */
+        public function getName()
+        {
+            return \$this->name;
+        }
+
+        /**
+         * @param string \$name
+         *
+         * @return \$this;
+         */
+        public function setName(\$name)
+        {
+            \$this->name = \$name;
+
+            return \$this;
+        }
     }
 }
 

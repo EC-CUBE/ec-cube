@@ -86,6 +86,6 @@ class MemberProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return Member::class === $class;
+        return Member::class === $class || is_subclass_of($class, Member::class);
     }
 }

@@ -16,7 +16,6 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\BlockRepository;
-use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Tests\EccubeTestCase;
 
 /**

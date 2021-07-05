@@ -536,6 +536,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
     /**
      * 個別税率設定をした場合に現在適用されている丸め規則が設定される
+     *
      * @see https://github.com/EC-CUBE/ec-cube/issues/2114
      */
     public function testProductClassEditWhenProductTaxRuleEnableAndCurrentRoundingType()

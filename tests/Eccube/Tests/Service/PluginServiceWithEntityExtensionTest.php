@@ -20,7 +20,6 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Yaml;
 
 class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 {
@@ -220,7 +219,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
     /**
      * インストール済み(無効)のプラグインがある状態で別のプラグインをインストールして有効化する
      */
-    public function testInstallWithEntityExtension_with_disabled_plugin()
+    public function testInstallWithEntityExtensionWithDisabledPlugin()
     {
         list($configDisabled, $fileDisabled) = $this->createDummyPluginWithEntityExtension();
         list($configEnabled, $fileEnabled) = $this->createDummyPluginWithEntityExtension();

@@ -14,12 +14,11 @@
 namespace Eccube\Form\Type\Front;
 
 use Eccube\Common\EccubeConfig;
-use Eccube\Entity\Customer;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -49,7 +48,7 @@ class PasswordResetType extends AbstractType
     {
         $builder->add('login_email', EmailType::class, [
             'attr' => [
-                'max_length' => $this->eccubeConfig['eccube_stext_len'],
+                'maxlength' => $this->eccubeConfig['eccube_stext_len'],
             ],
             'constraints' => [
                 new Assert\NotBlank(),

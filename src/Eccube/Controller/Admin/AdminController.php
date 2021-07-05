@@ -285,6 +285,15 @@ class AdminController extends AbstractController
             return $this->json(['status' => 'NG'], 400);
         }
 
+        $event = new EventArgs(
+            [
+                'excludes' => $this->excludes,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
+        $this->excludes = $event->getArgument('excludes');
+
         // 週間の売上金額
         $toDate = Carbon::now();
         $fromDate = Carbon::today()->subWeek();
@@ -415,7 +424,7 @@ class AdminController extends AbstractController
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param array $excludes
      *
-     * @return null|Request
+     * @return Request|null
      */
     protected function getOrderEachStatus(array $excludes)
     {

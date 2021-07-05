@@ -25,7 +25,7 @@ final class Version20190821081036 extends AbstractMigration
 {
     const NAME = 'dtb_csv';
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         if (!$schema->hasTable(self::NAME)) {
@@ -38,9 +38,8 @@ final class Version20190821081036 extends AbstractMigration
         }
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

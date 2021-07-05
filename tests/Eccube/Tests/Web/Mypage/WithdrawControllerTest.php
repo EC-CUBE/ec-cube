@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Web\Mypage;
 
 use Eccube\Entity\Customer;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
 class WithdrawControllerTest extends AbstractWebTestCase

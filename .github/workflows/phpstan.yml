@@ -1,0 +1,32 @@
+name: PHPStan
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+
+jobs:
+  phpstan:
+    name: PHPStan
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+    - name: Setup PHP
+      uses: nanasess/setup-php@master
+      with:
+        php-version: '7.4'
+    - name: composer install
+      run: composer install --dev --no-interaction -o --apcu-autoloader
+    - name: PHPStan
+      run: vendor/bin/phpstan analyze src/ --error-format=github

@@ -21,9 +21,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginInstallCommand extends Command
 {
-    protected static $defaultName = 'eccube:plugin:install';
-
     use PluginCommandTrait;
+    protected static $defaultName = 'eccube:plugin:install';
 
     protected function configure()
     {

@@ -16,8 +16,6 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Common\Constant;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
-use Eccube\Repository\CsvRepository;
-use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CsvControllerTest extends AbstractAdminWebTestCase

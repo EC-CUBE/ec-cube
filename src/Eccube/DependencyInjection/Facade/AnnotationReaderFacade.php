@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\DependencyInjection\Facade;
 
 use Doctrine\Common\Annotations\Reader;
@@ -31,7 +42,7 @@ class AnnotationReaderFacade
     /**
      * @param ContainerInterface $container
      *
-     * @return null|AnnotationReaderFacade
+     * @return AnnotationReaderFacade|null
      */
     public static function init(ContainerInterface $container, Reader $Reader)
     {
@@ -44,12 +55,13 @@ class AnnotationReaderFacade
 
     /**
      * @return Reader
+     *
      * @throws \Exception
      */
     public static function create()
     {
         if (null === self::$instance) {
-            throw new \Exception("Facade is not instantiated");
+            throw new \Exception('Facade is not instantiated');
         }
 
         return self::$Reader;

@@ -31,7 +31,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class CacheUtil implements EventSubscriberInterface
 {
-
     const DOCTRINE_APP_CACHE_KEY = 'doctrine.app_cache_pool';
 
     private $clearCacheAfterResponse = false;

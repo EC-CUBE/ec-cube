@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Repository\BaseInfoRepository;
 
 class EntryControllerTest extends AbstractWebTestCase
 {

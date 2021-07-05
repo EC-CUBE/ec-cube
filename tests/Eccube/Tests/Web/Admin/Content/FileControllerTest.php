@@ -68,7 +68,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             'DELETE',
             $this->generateUrl('admin_content_file_delete').'?select_file='.$this->getJailDir($filepath)
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file', array('tree_select_file' => dirname($this->getJailDir($filepath))))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file', ['tree_select_file' => dirname($this->getJailDir($filepath))])));
         $this->assertFalse(file_exists($filepath));
     }
 
@@ -90,6 +90,45 @@ class FileControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertTrue(is_dir($this->getUserDataDir().'/'.$folder));
+    }
+
+    /**
+     * 名前の重複するディレクトリを作る
+     */
+    public function testIndexWithCreateDuplicateDir()
+    {
+        $folder = 'create_folder';
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_content_file'),
+            [
+                'form' => [
+                    '_token' => 'dummy',
+                    'create_file' => $folder,
+                    'file' => '',
+                ],
+                'mode' => 'create',
+                'now_dir' => $this->getUserDataDir(),
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue(is_dir($this->getUserDataDir().'/'.$folder));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_content_file'),
+            [
+                'form' => [
+                    '_token' => 'dummy',
+                    'create_file' => $folder,
+                    'file' => '',
+                ],
+                'mode' => 'create',
+                'now_dir' => $this->getUserDataDir(),
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue(is_dir($this->getUserDataDir().'/'.$folder));
+        $this->assertCount(1, $crawler->filter('p.errormsg'));
     }
 
     public function testIndexWithUpload()

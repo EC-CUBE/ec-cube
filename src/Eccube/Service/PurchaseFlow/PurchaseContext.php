@@ -13,8 +13,8 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Customer;
+use Eccube\Entity\ItemHolderInterface;
 
 /**
  * PurchaseFlowの実行中コンテキスト.
@@ -33,7 +33,7 @@ class PurchaseContext extends \SplObjectStorage
 
     const CART_FLOW = 'cart';
 
-    public function __construct(ItemHolderInterface $originHolder = null, Customer $user = null)
+    public function __construct(ItemHolderInterface $originHolder = null, ?Customer $user = null)
     {
         $this->originHolder = $originHolder;
         $this->user = $user;

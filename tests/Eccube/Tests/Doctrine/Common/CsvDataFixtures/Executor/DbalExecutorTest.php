@@ -14,9 +14,9 @@
 namespace Eccube\Tests\Doctrine\Common\CsvDataFixtures\Executor;
 
 use Eccube\Doctrine\Common\CsvDataFixtures\CsvFixture;
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Repository\Master\JobRepository;
 use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
+use Eccube\Repository\Master\JobRepository;
+use Eccube\Tests\EccubeTestCase;
 
 class DbalExecutorTest extends EccubeTestCase
 {

@@ -14,7 +14,6 @@
 namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
@@ -306,7 +305,7 @@ class EditController extends AbstractController
                         // 会員の場合、購入回数、購入金額などを更新
                         if ($Customer = $TargetOrder->getCustomer()) {
                             $this->orderRepository->updateOrderSummary($Customer);
-                            $this->entityManager->flush($Customer);
+                            $this->entityManager->flush();
                         }
 
                         $event = new EventArgs(
@@ -629,7 +628,7 @@ class EditController extends AbstractController
             foreach ($Products as $Product) {
                 /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
                 $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, [
-                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId()),
+                    'product' => $Product,
                 ]);
                 $addCartForm = $builder->getForm();
                 $forms[$Product->getId()] = $addCartForm->createView();
@@ -679,7 +678,7 @@ class EditController extends AbstractController
                 ['OrderItemType' => $Charge, 'TaxType' => $Taxation],
                 ['OrderItemType' => $DeliveryFee, 'TaxType' => $Taxation],
                 ['OrderItemType' => $Discount, 'TaxType' => $Taxation],
-                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable]
+                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable],
             ];
 
             return [

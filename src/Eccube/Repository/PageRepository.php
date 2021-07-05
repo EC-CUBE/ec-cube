@@ -138,8 +138,9 @@ class PageRepository extends AbstractRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.id <> 0')
-            ->andWhere('p.MasterPage is null')
-            ->orderBy('p.id', 'ASC');
+            ->andWhere('(p.MasterPage is null OR p.edit_type = :edit_type)')
+            ->orderBy('p.id', 'ASC')
+            ->setParameter('edit_type', Page::EDIT_TYPE_DEFAULT_CONFIRM);
         if (!is_null($where)) {
             $qb->andWhere($where);
             foreach ($parameters as $key => $val) {

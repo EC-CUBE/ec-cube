@@ -19,7 +19,6 @@ use Eccube\Entity\ClassName;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
-use Eccube\Entity\TaxRule;
 use Eccube\Form\Type\Admin\ProductClassMatrixType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;

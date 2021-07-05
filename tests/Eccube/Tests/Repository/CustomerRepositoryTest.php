@@ -13,12 +13,12 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Eccube\Entity\Customer;
 
 /**
  * CustomerRepository test cases.

@@ -527,7 +527,7 @@ file that was distributed with this source code.
                                     <!-- 明細 -->
                                     <div class="row">
                                         <table id="table-form-field_{{ loop.index0 }}" class="table table-striped table-sm mb-0"
-                                               data-prototype="{% filter escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': shippingForm.OrderItems.vars.prototype}) }}{% endfilter %}">
+                                               data-prototype="{% apply escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': shippingForm.OrderItems.vars.prototype}) }}{% endapply %}">
                                             <thead class="table-active">
                                             <tr class="text-nowrap">
                                                 <th class="pt-2 pb-2 pl-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
