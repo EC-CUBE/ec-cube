@@ -140,7 +140,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-edit');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-edit');
         $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator');
@@ -163,7 +163,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-edit');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-edit');
         $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator2');
@@ -182,7 +182,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-edit');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-edit');
         $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], '');
@@ -200,7 +200,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-down');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-down');
 
         $I->waitForElementNotVisible(['css' => '.modal-backdrop']);
 
@@ -216,7 +216,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(2) td:nth-child(5) .action-up');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(2) td:nth-child(6) .action-up');
 
         $I->waitForElementNotVisible(['css' => '.modal-backdrop']);
 
@@ -232,7 +232,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-delete');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-delete');
         $I->waitForElementVisible(['css' => '.c-primaryCol .card-body table tbody tr:nth-child(1) .modal']);
         $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) .modal .btn-ec-delete');
 
@@ -249,7 +249,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $href = $I->grabAttributeFrom('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-delete', 'href');
+        $href = $I->grabAttributeFrom('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-delete', 'href');
         $I->assertEquals('', $href, $href.' が一致しません');
     }
 
