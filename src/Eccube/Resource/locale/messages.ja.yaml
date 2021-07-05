@@ -1221,6 +1221,8 @@ admin.setting.system.member.password: パスワード
 admin.setting.system.member.password_confirm: パスワード(確認)
 admin.setting.system.member.work: 稼働
 admin.setting.system.member.two_factor_auth_enabled: 2段階認証
+admin.setting.system.member.two_factor_auth_completed: 2段階認証の設定は完了しています。
+admin.setting.system.member.two_factor_auth_incompleted: 2段階認証の設定が未完了です。このユーザでログインし、設定を完了させてください。
 admin.setting.system.member.delete__confirm_title: メンバーを削除します。
 admin.setting.system.member.delete__confirm_message: メンバーを削除してよろしいですか？
 admin.setting.system.member.work_can_not_change: 非稼働に変更することはできません。
@@ -1235,7 +1237,7 @@ admin.setting.system.two_factor_auth.device_token: トークン
 admin.setting.system.two_factor_auth.auth: 認証
 admin.setting.system.two_factor_auth.configured_warning: 既に2段階認証の設定が行われています。再設定すると登録済みのデバイスが使用出来なくなります。
 admin.setting.system.two_factor_auth.complete_message: 2段階認証の設定が完了しました。
-admin.setting.system.two_factor_auth.invalid_message__reinput: トークンに誤りがあります。再度入力してください。 
+admin.setting.system.two_factor_auth.invalid_message__reinput: トークンに誤りがあります。再度入力してください。
 admin.setting.system.two_factor_auth.invalid_message__invalid: トークンに誤りがあります。数字6桁で入力してください。
 
 #------------------------------------------------------------------------------------

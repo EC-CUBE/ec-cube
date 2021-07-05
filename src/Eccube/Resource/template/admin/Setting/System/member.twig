@@ -91,7 +91,18 @@ file that was distributed with this source code.
                                             {{ Member.Work.name }}
                                         </td>
                                         <td class="align-middle text-center">
-                                            {{ (Member.two_factor_auth_enabled ? 'common.enabled' : 'common.disabled')|trans }}
+                                            {% if Member.two_factor_auth_enabled %}
+                                                {{ 'common.enabled'|trans }}
+                                                <span data-tooltip="true" data-placement="top" data-original-title="{{ Member.two_factor_auth_key
+                                                    ? 'admin.setting.system.member.two_factor_auth_completed'|trans
+                                                    : 'admin.setting.system.member.two_factor_auth_incompleted'|trans }}">
+                                                    <i class="fa fa-check fa-lg {{ Member.two_factor_auth_key ? 'text-success' : 'text-danger' }}"
+                                                       aria-hidden="true"></i>
+                                                </span>
+                                            </span>
+                                            {% else %}
+                                                {{ 'common.disabled'|trans }}
+                                            {% endif %}
                                         </td>
                                         <td class="align-middle pr-3">
                                             <div class="text-right">
