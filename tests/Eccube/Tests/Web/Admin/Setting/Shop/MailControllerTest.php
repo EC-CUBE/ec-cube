@@ -27,6 +27,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         if (file_exists($themeDir.'/Mail/order.twig')) {
             unlink($themeDir.'/Mail/order.twig');
         }
+        if (file_exists($themeDir.'/Mail/order.html.twig')) {
+            unlink($themeDir.'/Mail/order.html.twig');
+        }
         parent::tearDown();
     }
 
