@@ -92,7 +92,7 @@ class TwoFactorAuthController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 if ($Member->getTwoFactorAuthKey()) {
                     if ($this->twoFactorAuthService->verifyCode($Member->getTwoFactorAuthKey(),$form->get('device_token')->getData())) {
                         $response = new RedirectResponse($this->generateUrl('admin_homepage'));
@@ -148,8 +148,6 @@ class TwoFactorAuthController extends AbstractController
 
     private function createResponse(Request $request)
     {
-        $Member = $this->getUser();
-
         $error = null;
         $Member = $this->getUser();
         $builder = $this->formFactory->createBuilder(TwoFactorAuthType::class);
@@ -169,7 +167,7 @@ class TwoFactorAuthController extends AbstractController
             $form->handleRequest($request);
             $auth_key = $form->get('auth_key')->getData();
             $device_token = $form->get('device_token')->getData();
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 if ($this->twoFactorAuthService->verifyCode($auth_key, $device_token, 2)) {
                     $Member->setTwoFactorAuthKey($auth_key);
                     $this->memberRepository->save($Member);
