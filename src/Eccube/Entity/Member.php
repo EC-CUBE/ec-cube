@@ -122,7 +122,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
 
         /**
          * @var string
-         * 
+         *
          * @ORM\Column(name="two_factor_auth_key",type="string",length=255,nullable=true,options={"fixed":false})
          */
         private $two_factor_auth_key;
@@ -132,7 +132,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
          *
          * @var integer
          */
-        private $two_factor_auth_enabled;
+        private $two_factor_auth_enabled = false;
 
         /**
          * @var \DateTime
