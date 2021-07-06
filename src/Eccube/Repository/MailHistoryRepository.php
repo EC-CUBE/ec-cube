@@ -13,9 +13,9 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Entity\MailHistory;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Eccube\Entity\MailHistory;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**

@@ -1,0 +1,28 @@
+{% if Product is defined %}
+    {% set meta_og_type = "og:product" %}
+    {% set meta_description = Product.description_list | default(Product.description_detail) | default(Page.description) %}
+    {% set meta_canonical = url('product_detail', {'id': Product.id}) %}
+    <meta property="og:title" content="{{ Product.name }}" />
+    <meta property="og:image" content="{{ absolute_url(asset(Product.main_list_image|no_image_product, 'save_image')) }}" />
+    <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
+    <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
+    <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
+    <meta property="product:retailer_title" content="{{ BaseInfo.shop_name }}"/>
+{% elseif Category is defined %}
+    {% set meta_og_type = 'article' %}
+    {% set meta_description = Page.description %}
+    {% set meta_canonical = url('product_list', {'category_id': Category.id|default(null)}) %}
+{% elseif Page is defined %}
+    {% set meta_og_type = (app.request.get('_route') == 'homepage') ? 'website' : 'article' %}
+    {% set meta_description = Page.description %}
+{% endif %}
+<meta property="og:type" content="{{ meta_og_type }}"/>
+<meta property="og:site_name" content="{{ BaseInfo.shop_name }}"/>
+{% if meta_description|default() %}
+    <meta name="description" content="{{ meta_description|striptags|slice(0,120) }}">
+    <meta property="og:description" content="{{ meta_description|striptags|slice(0,120) }}"/>
+{% endif %}
+{% if meta_canonical|default() %}
+    <meta property="og:url" content="{{ meta_canonical }}"/>
+    <link rel="canonical" href="{{ meta_canonical }}"/>
+{% endif %}

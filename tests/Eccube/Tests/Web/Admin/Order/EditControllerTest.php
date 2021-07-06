@@ -23,7 +23,6 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Repository\CustomerRepository;
-use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\TaxRuleService;
@@ -65,9 +64,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
-        $this->customerRepository = $this->container->get(CustomerRepository::class);
-        $this->orderRepository = $this->container->get(OrderRepository::class);
-        $this->cartService = $this->container->get(CartService::class);
+        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->cartService = self::$container->get(CartService::class);
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->entityManager->flush($BaseInfo);
     }
@@ -407,7 +406,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         foreach ($formDataForEdit['OrderItems'] as $indx => $orderItem) {
             //商品数変更3個追加
             $formDataForEdit['OrderItems'][$indx]['quantity'] = $orderItem['quantity'] + 3;
-            $tax = $this->container->get(TaxRuleService::class)->getTax($orderItem['price']);
+            $tax = self::$container->get(TaxRuleService::class)->getTax($orderItem['price']);
             $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
         }
 
@@ -508,7 +507,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($this->Customer, $this->Product);
         // まずお届け時間に何か指定する(便宜上、最初に取得できたものを利用)
-        $Delivery = $this->container->get(DeliveryRepository::class)->find($formData['Shipping']['Delivery']);
+        $Delivery = $this->entityManager->getRepository(\Eccube\Entity\Delivery::class)->find($formData['Shipping']['Delivery']);
         $DeliveryTime = $Delivery->getDeliveryTimes()[0];
         $delivery_time_id = $DeliveryTime->getId();
         $delivery_time = $DeliveryTime->getDeliveryTime();

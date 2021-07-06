@@ -28,7 +28,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
      * @ORM\HasLifecycleCallbacks()
      * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerRepository")
      */
-    class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
+    class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface, \Serializable
     {
         /**
          * @var int
@@ -904,7 +904,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return Customer
          */
-        public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct)
+        public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
         {
             $this->CustomerFavoriteProducts[] = $customerFavoriteProduct;
 
@@ -918,7 +918,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct)
+        public function removeCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
         {
             return $this->CustomerFavoriteProducts->removeElement($customerFavoriteProduct);
         }
@@ -940,7 +940,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return Customer
          */
-        public function addCustomerAddress(\Eccube\Entity\CustomerAddress $customerAddress)
+        public function addCustomerAddress(CustomerAddress $customerAddress)
         {
             $this->CustomerAddresses[] = $customerAddress;
 
@@ -954,7 +954,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeCustomerAddress(\Eccube\Entity\CustomerAddress $customerAddress)
+        public function removeCustomerAddress(CustomerAddress $customerAddress)
         {
             return $this->CustomerAddresses->removeElement($customerAddress);
         }
@@ -976,7 +976,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return Customer
          */
-        public function addOrder(\Eccube\Entity\Order $order)
+        public function addOrder(Order $order)
         {
             $this->Orders[] = $order;
 
@@ -990,7 +990,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeOrder(\Eccube\Entity\Order $order)
+        public function removeOrder(Order $order)
         {
             return $this->Orders->removeElement($order);
         }
@@ -1012,7 +1012,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return Customer
          */
-        public function setStatus(\Eccube\Entity\Master\CustomerStatus $status = null)
+        public function setStatus(Master\CustomerStatus $status = null)
         {
             $this->Status = $status;
 
@@ -1036,7 +1036,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return Customer
          */
-        public function setSex(\Eccube\Entity\Master\Sex $sex = null)
+        public function setSex(Master\Sex $sex = null)
         {
             $this->Sex = $sex;
 
@@ -1060,7 +1060,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return Customer
          */
-        public function setJob(\Eccube\Entity\Master\Job $job = null)
+        public function setJob(Master\Job $job = null)
         {
             $this->Job = $job;
 
@@ -1084,7 +1084,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return Customer
          */
-        public function setCountry(\Eccube\Entity\Master\Country $country = null)
+        public function setCountry(Master\Country $country = null)
         {
             $this->Country = $country;
 
@@ -1108,7 +1108,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return Customer
          */
-        public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+        public function setPref(Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 
@@ -1147,6 +1147,49 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         public function getPoint()
         {
             return $this->point;
+        }
+
+        /**
+         * String representation of object
+         *
+         * @see http://php.net/manual/en/serializable.serialize.php
+         *
+         * @return string the string representation of the object or null
+         *
+         * @since 5.1.0
+         */
+        public function serialize()
+        {
+            // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
+            // CustomerRepository::loadUserByUsername() で Status をチェックしているため、ここでは不要
+            return serialize([
+                $this->id,
+                $this->email,
+                $this->password,
+                $this->salt,
+            ]);
+        }
+
+        /**
+         * Constructs the object
+         *
+         * @see http://php.net/manual/en/serializable.unserialize.php
+         *
+         * @param string $serialized <p>
+         * The string representation of the object.
+         * </p>
+         *
+         * @return void
+         *
+         * @since 5.1.0
+         */
+        public function unserialize($serialized)
+        {
+            list(
+                $this->id,
+                $this->email,
+                $this->password,
+                $this->salt) = unserialize($serialized);
         }
     }
 }

@@ -386,6 +386,7 @@ class DeliveryController extends AbstractController
      * 利用条件の金額範囲を生成する.
      *
      * @param Payment[] $PaymentsData
+     *
      * @return array
      */
     private function getMergeRules(array $PaymentsData)
@@ -431,6 +432,7 @@ class DeliveryController extends AbstractController
             if ($a['min'] == $b['min']) {
                 return 0;
             }
+
             return ($a['min'] < $b['min']) ? -1 : 1;
         });
 

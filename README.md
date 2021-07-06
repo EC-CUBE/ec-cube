@@ -1,15 +1,16 @@
-# EC-CUBE 4.0
+# EC-CUBE 4.1
 
-[![Unit test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml/badge.svg?branch=4.0)](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml)
-[![E2E test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml/badge.svg?branch=4.0)](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml)
-[![Plugin test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml/badge.svg?branch=4.0)](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml)
-[![PHPStan](https://github.com/EC-CUBE/ec-cube/actions/workflows/phpstan.yml/badge.svg?branch=4.0)](https://github.com/EC-CUBE/ec-cube/actions/workflows/phpstan.yml)
-[![codecov](https://codecov.io/gh/EC-CUBE/ec-cube/branch/4.0/graph/badge.svg?token=BhnPjjvfwd)](https://codecov.io/gh/EC-CUBE/ec-cube)
+[![Unit test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml)
+[![E2E test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml)
+[![Plugin test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml)
+[![PHPStan](https://github.com/EC-CUBE/ec-cube/actions/workflows/phpstan.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/phpstan.yml)
+[![codecov](https://codecov.io/gh/EC-CUBE/ec-cube/branch/4.1/graph/badge.svg?token=BhnPjjvfwd)](https://codecov.io/gh/EC-CUBE/ec-cube)
 
 [![Slack](https://img.shields.io/badge/slack-join%5fchat-brightgreen.svg?style=flat)](https://join.slack.com/t/ec-cube/shared_invite/enQtNDA1MDYzNDQxMTIzLTY5MTRhOGQ2MmZhMjQxYTAwMmVlMDc5MDU2NjJlZmFiM2E3M2Q0M2Y3OTRlMGY4NTQzN2JiZDBkNmQwNTUzYzc)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
+**EC-CUBE 4.1は現在β版です。4.0からの更新内容は[リリースノート](https://github.com/EC-CUBE/ec-cube/releases/tag/4.1-beta)をご確認ください。**
 
 + 本ドキュメントはEC-CUBEの開発者を主要な対象者としております。
 + パッケージ版は正式リリース後に[EC-CUBEオフィシャルサイト](https://www.ec-cube.net)で配布します。
@@ -20,7 +21,7 @@
 
 ## インストール
 
-### EC-CUBE 4.0のインストール方法
+### EC-CUBE 4.1のインストール方法
 
 開発ドキュメントの [インストール方法](https://doc4.ec-cube.net/quickstart_install) の手順に従ってインストールしてください。
 
@@ -48,17 +49,17 @@ npm run build # Sass のビルド
 
 ## ドキュメント
 
-### [EC-CUBE 4.0 開発ドキュメント@doc4.ec-cube.net](https://doc4.ec-cube.net/)
+### [EC-CUBE 4.x 開発ドキュメント@doc4.ec-cube.net](https://doc4.ec-cube.net/)
 
 
-EC-CUBE 4.0 の仕様や手順、開発Tipsに関するドキュメントを掲載しています。
+EC-CUBE 4.x 系の仕様や手順、開発Tipsに関するドキュメントを掲載しています。
 修正や追記、新規ドキュメントの作成をいただく場合、以下のレポジトリからPullRequestをお送りください。
 [https://github.com/EC-CUBE/doc4.ec-cube.net](https://github.com/EC-CUBE/doc4.ec-cube.net)
 
 ## 開発への参加
 
-EC-CUBE 4.0の不具合の修正、機能のブラッシュアップを目的として、継続的に開発を行っております。
-コードのリファクタリング、不具合修正以外のPull Requestを送る際は、Pull Requestのコメントなどに意図を明確に記載してください。
+EC-CUBE 4.1の不具合の修正、機能のブラッシュアップを目的として、継続的に開発を行っております。  
+コードのリファクタリング、不具合修正以外のPullRequestを送る際は、Pull Requestのコメントなどに意図を明確に記載してください。  
 
 Pull Requestの送信前に、Issueにて提議いただく事も可能です。
 Issuesの利用方法については、[こちら](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご確認ください。

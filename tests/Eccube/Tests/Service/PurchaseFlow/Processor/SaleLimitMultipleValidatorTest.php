@@ -62,7 +62,7 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->validator = $this->container->get(SaleLimitMultipleValidator::class);
+        $this->validator = self::$container->get(SaleLimitMultipleValidator::class);
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
         $ItemType = new OrderItemType();

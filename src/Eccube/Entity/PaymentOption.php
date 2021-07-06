@@ -120,7 +120,7 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
          *
          * @return PaymentOption
          */
-        public function setDelivery(\Eccube\Entity\Delivery $delivery = null)
+        public function setDelivery(Delivery $delivery = null)
         {
             $this->Delivery = $delivery;
 
@@ -144,7 +144,7 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
          *
          * @return PaymentOption
          */
-        public function setPayment(\Eccube\Entity\Payment $payment = null)
+        public function setPayment(Payment $payment = null)
         {
             $this->Payment = $payment;
 

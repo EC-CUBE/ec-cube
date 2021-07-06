@@ -53,7 +53,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidName_NotBlank()
+    public function testInvalidNameNotBlank()
     {
         $this->formData['name'] = '';
         $this->form->submit($this->formData);
@@ -61,7 +61,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName_MaxLengthInvalid()
+    public function testInvalidNameMaxLengthInvalid()
     {
         $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']).'S';
 
@@ -71,7 +71,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName_MaxLengthValid()
+    public function testInvalidNameMaxLengthValid()
     {
         $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']);
 
@@ -81,7 +81,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidDepartment_MaxLengthInvalid()
+    public function testInvalidDepartmentMaxLengthInvalid()
     {
         $department = str_repeat('S', $this->eccubeConfig['eccube_stext_len']).'S';
 
@@ -91,7 +91,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidDepartment_MaxLengthValid()
+    public function testInvalidDepartmentMaxLengthValid()
     {
         $department = str_repeat('S', $this->eccubeConfig['eccube_stext_len']);
 
@@ -101,7 +101,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidLoginId_NotBlank()
+    public function testInvalidLoginIdNotBlank()
     {
         $this->formData['login_id'] = '';
         $this->form->submit($this->formData);
@@ -109,7 +109,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidLoginId_AlnumCheck()
+    public function testInvalidLoginIdAlnumCheck()
     {
         $this->formData['login_id'] = 'あいうえお';
         $this->form->submit($this->formData);
@@ -117,7 +117,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPassword_NoBlank()
+    public function testInvalidPasswordNoBlank()
     {
         $this->formData['password']['first'] = '';
         $this->formData['password']['second'] = '';
@@ -126,7 +126,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPassword_Invalid()
+    public function testInvalidPasswordInvalid()
     {
         $this->formData['password']['first'] = '12345';
         $this->formData['password']['second'] = '54321';
@@ -135,7 +135,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPassword_Graph()
+    public function testInvalidPasswordGraph()
     {
         $this->formData['password']['first'] = 'あいうえお';
         $this->formData['password']['second'] = 'あいうえお';
@@ -144,7 +144,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidAuthority_NotBlank()
+    public function testInvalidAuthorityNotBlank()
     {
         $this->formData['Authority'] = null;
         $this->form->submit($this->formData);
@@ -152,7 +152,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidAuthority_Invalid()
+    public function testInvalidAuthorityInvalid()
     {
         $Authority = $this->entityManager->getRepository('Eccube\Entity\Master\Authority')
             ->findOneBy([], ['id' => 'DESC']);
@@ -164,7 +164,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidWork_NotBlank()
+    public function testInvalidWorkNotBlank()
     {
         $this->formData['Work'] = null;
         $this->form->submit($this->formData);
@@ -172,7 +172,7 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidWork_Invalid()
+    public function testInvalidWorkInvalid()
     {
         $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
             ->findOneBy([], ['id' => 'DESC']);

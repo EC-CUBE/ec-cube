@@ -193,6 +193,7 @@ class SitemapController extends AbstractController
     /**
      * Output XML response by data.
      *
+     * @param array $data
      * @param string $template_name
      *
      * @return Response

@@ -13,14 +13,13 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
-use Eccube\Repository\MailHistoryRepository;
-use Eccube\Repository\MemberRepository;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Entity\Member;
-use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
+use Eccube\Repository\MailHistoryRepository;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * MailHistoryRepository test cases.
@@ -61,9 +60,9 @@ class MailHistoryRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
         $faker = $this->getFaker();
-        $this->mailHistoryRepo = $this->container->get(MailHistoryRepository::class);
+        $this->mailHistoryRepo = $this->entityManager->getRepository(\Eccube\Entity\MailHistory::class);
 
-        $this->Member = $this->container->get(MemberRepository::class)->find(2);
+        $this->Member = $this->entityManager->getRepository(\Eccube\Entity\Member::class)->find(2);
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
         $MailTemplate = new MailTemplate();

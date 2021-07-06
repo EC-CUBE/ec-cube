@@ -37,6 +37,7 @@ security:
             logout:
                 path: admin_logout
                 target: admin_login
+                success_handler: eccube.security.logout.success_handler
         customer:
             pattern: ^/
             anonymous: true

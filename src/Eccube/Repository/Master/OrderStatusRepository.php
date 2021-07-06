@@ -13,9 +13,9 @@
 
 namespace Eccube\Repository\Master;
 
-use Eccube\Entity\Master\OrderStatus;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\AbstractRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

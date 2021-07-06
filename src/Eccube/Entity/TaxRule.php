@@ -312,7 +312,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          *
          * @return TaxRule
          */
-        public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
+        public function setProductClass(ProductClass $productClass = null)
         {
             $this->ProductClass = $productClass;
 
@@ -336,7 +336,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          *
          * @return TaxRule
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -360,7 +360,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          *
          * @return TaxRule
          */
-        public function setCountry(\Eccube\Entity\Master\Country $country = null)
+        public function setCountry(Master\Country $country = null)
         {
             $this->Country = $country;
 
@@ -384,7 +384,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          *
          * @return TaxRule
          */
-        public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+        public function setPref(Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 
@@ -408,7 +408,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          *
          * @return TaxRule
          */
-        public function setProduct(\Eccube\Entity\Product $product = null)
+        public function setProduct(Product $product = null)
         {
             $this->Product = $product;
 
@@ -430,7 +430,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          *
          * @return TaxRule
          */
-        public function setRoundingType(\Eccube\Entity\Master\RoundingType $RoundingType = null)
+        public function setRoundingType(Master\RoundingType $RoundingType = null)
         {
             $this->RoundingType = $RoundingType;
 
@@ -499,7 +499,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          */
         public function isProductTaxRule()
         {
-            return ($this->getProductClass() !== null || $this->getProduct() !== null);
+            return $this->getProductClass() !== null || $this->getProduct() !== null;
         }
     }
 }
