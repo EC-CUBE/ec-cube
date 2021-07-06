@@ -1,4 +1,4 @@
-{% if Product is defined %}
+{% if app.request.get('_route') == 'product_detail' %}
     {% set meta_og_type = "og:product" %}
     {% set meta_description = Product.description_list | default(Product.description_detail) | default(Page.description) %}
     {% set meta_canonical = url('product_detail', {'id': Product.id}) %}
@@ -11,20 +11,20 @@
     {% if not Product.stock_find %}
         <meta name="robots" content="noindex">
     {% endif %}
-{% elseif Category is defined %}
-    {% set meta_og_type = 'article' %}
-    {% set meta_description = Page.description %}
+{% elseif app.request.get('_route') == 'product_list' %}
     {% set meta_canonical = url('product_list', {'category_id': Category.id|default(null)}) %}
     {% if pagination|length == 0 %}
         <meta name="robots" content="noindex">
     {% endif %}
-{% elseif Page is defined %}
-    {% set meta_og_type = (app.request.get('_route') == 'homepage') ? 'website' : 'article' %}
-    {% set meta_description = Page.description %}
+{% elseif app.request.get('_route') == 'homepage' %}
+    {% set meta_og_type = 'website' %}
+    {% set meta_canonical = url('homepage') %}
 {% endif %}
-<meta property="og:type" content="{{ meta_og_type }}"/>
+
+<meta property="og:type" content="{{ meta_og_type|default('article') }}"/>
 <meta property="og:site_name" content="{{ BaseInfo.shop_name }}"/>
-{% if meta_description|default() %}
+{% set meta_description = meta_description | default(Page.description) %}
+{% if meta_description %}
     <meta name="description" content="{{ meta_description|striptags|slice(0,120) }}">
     <meta property="og:description" content="{{ meta_description|striptags|slice(0,120) }}"/>
 {% endif %}
