@@ -63,7 +63,9 @@ class EF04CustomerCest
         // 「会員登録をする」ボタンを押下する
         $I->click('.ec-registerRole form button.ec-blockBtn--action');
 
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, '会員登録のご確認');
             $I->seeInLastEmailTo($email, '姓 名 様');
@@ -82,7 +84,9 @@ class EF04CustomerCest
         $I->amOnPage($activateUrl);
         $I->see('新規会員登録(完了)', 'div.ec-pageHeader h1');
 
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, '会員登録が完了しました。');
             $I->seeInLastEmailTo($email, '姓 名 様');
