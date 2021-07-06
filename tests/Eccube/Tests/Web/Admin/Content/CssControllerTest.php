@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -32,7 +33,7 @@ class CssControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->dir = $this->container->getParameter('eccube_html_dir').'/user_data/assets/css/';
+        $this->dir = self::$container->getParameter('eccube_html_dir').'/user_data/assets/css/';
         $this->contents = file_get_contents($this->dir.self::CSS_FILE);
         $fs = new Filesystem();
         $fs->dumpFile($this->dir.self::CSS_FILE, '');
@@ -45,13 +46,14 @@ class CssControllerTest extends AbstractAdminWebTestCase
         $fs->dumpFile($this->dir.self::CSS_FILE, $this->contents);
         parent::tearDown();
     }
-    public function test_routing_AdminContentCss_index()
+
+    public function testRoutingAdminContentCssIndex()
     {
         $this->client->request('GET', $this->generateUrl('admin_content_css'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function test_routing_AdminContentCss_edit()
+    public function testRoutingAdminContentCssEdit()
     {
         $css = <<<__CSS_CONTENTS__
 .title {
@@ -61,21 +63,20 @@ __CSS_CONTENTS__;
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_css'),
-            ['form' =>
-             [
-                 'css' => $css
-             ]
+            ['form' => [
+                 'css' => $css,
+             ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
-        $form["form[css]"] = $css;
+        $form['form[css]'] = $css;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
         $contents = file_get_contents($this->dir.self::CSS_FILE);
         $this->assertEquals($css, $contents);
     }
 
-    public function test_routing_AdminContentCss_edit_failure()
+    public function testRoutingAdminContentCssEditFailure()
     {
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->markTestSkipped('Nothing support for Windows');
@@ -90,20 +91,18 @@ __CSS_CONTENTS__;
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_css'),
-            ['form' =>
-             [
-                 'css' => $css
-             ]
+            ['form' => [
+                 'css' => $css,
+             ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
-        $form["form[css]"] = $css;
+        $form['form[css]'] = $css;
         $this->client->submit($form);
         $this->assertFalse($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
     }
 
-
-    public function test_routing_AdminContentCss_deleted()
+    public function testRoutingAdminContentCssDeleted()
     {
         if (file_exists($this->dir.self::CSS_FILE)) {
             unlink($this->dir.self::CSS_FILE);
@@ -117,14 +116,13 @@ __CSS_CONTENTS__;
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_css'),
-            ['form' =>
-             [
-                 'css' => $css
-             ]
+            ['form' => [
+                 'css' => $css,
+             ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
-        $form["form[css]"] = $css;
+        $form['form[css]'] = $css;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
         $contents = file_get_contents($this->dir.self::CSS_FILE);

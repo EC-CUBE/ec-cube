@@ -35,7 +35,7 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->customerAddressRepository = $this->container->get(CustomerAddressRepository::class);
+        $this->customerAddressRepository = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class);
     }
 
     public function testDelete()

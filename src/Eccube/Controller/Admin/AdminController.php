@@ -424,7 +424,7 @@ class AdminController extends AbstractController
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param array $excludes
      *
-     * @return null|Request
+     * @return Request|null
      */
     protected function getOrderEachStatus(array $excludes)
     {

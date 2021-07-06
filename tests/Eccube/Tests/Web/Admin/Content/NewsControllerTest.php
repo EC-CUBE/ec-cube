@@ -30,7 +30,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->newsRepository = $this->container->get(NewsRepository::class);
+        $this->newsRepository = $this->entityManager->getRepository(\Eccube\Entity\News::class);
     }
 
     public function testRoutingAdminContentNews()

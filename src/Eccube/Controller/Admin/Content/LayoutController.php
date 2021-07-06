@@ -16,24 +16,24 @@ namespace Eccube\Controller\Admin\Content;
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Layout;
-use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Entity\Master\ProductStatus;
-use Eccube\Repository\BlockRepository;
+use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Repository\BlockPositionRepository;
+use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
-use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment as Twig;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class LayoutController extends AbstractController
 {

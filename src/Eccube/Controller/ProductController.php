@@ -30,7 +30,7 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,7 +113,7 @@ class ProductController extends AbstractController
      * @Route("/products/list", name="product_list")
      * @Template("Product/list.twig")
      */
-    public function index(Request $request, Paginator $paginator)
+    public function index(Request $request, PaginatorInterface $paginator)
     {
         // Doctrine SQLFilter
         if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -485,7 +485,7 @@ class ProductController extends AbstractController
     /**
      * ページタイトルの設定
      *
-     * @param  null|array $searchData
+     * @param  array|null $searchData
      *
      * @return str
      */

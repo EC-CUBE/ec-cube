@@ -18,13 +18,13 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class BlockControllerTest extends AbstractAdminWebTestCase
 {
-    public function test_routing_AdminContentBlock_index()
+    public function testRoutingAdminContentBlockIndex()
     {
         $this->client->request('GET', $this->generateUrl('admin_content_block'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function test_routing_AdminContentBlock_edit()
+    public function testRoutingAdminContentBlockEdit()
     {
         $this->client->request('GET',
             $this->generateUrl(
@@ -35,7 +35,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function test_routing_AdminContentBlock_editWithPost()
+    public function testRoutingAdminContentBlockEditWithPost()
     {
         $this->client->request(
             'POST',
@@ -56,8 +56,8 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         ));
 
         $dir = sprintf('%s/app/template/%s/Block',
-            $this->container->getParameter('kernel.project_dir'),
-            $this->container->getParameter('eccube.theme'));
+            self::$container->getParameter('kernel.project_dir'),
+            self::$container->getParameter('eccube.theme'));
 
         $this->expected = '<p>test</p>';
         $this->actual = file_get_contents($dir.'/file_name.twig');
@@ -69,7 +69,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public function test_routing_AdminContentBlock_defaultBlockDelete()
+    public function testRoutingAdminContentBlockDefaultBlockDelete()
     {
         $this->loginTo($this->createMember());
 

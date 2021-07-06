@@ -193,7 +193,6 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/composer.json', $source);
     }
 
-
     /**
      * @param string $pluginDir
      */
@@ -232,7 +231,6 @@ jobs:
 
         $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
     }
-
 
     /**
      * @param string $pluginDir

@@ -36,7 +36,7 @@ class EA10PluginCest
     /** @var EccubeConfig */
     private $config;
 
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
 
@@ -47,7 +47,7 @@ class EA10PluginCest
         FileSystem::doEmptyDir('repos');
     }
 
-    public function test_install_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_enable_disable_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -56,7 +56,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_enable_disable_remove_local(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -65,7 +65,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_disable_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_enable_disable_enable_disable_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -76,7 +76,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_disable_enable_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_enable_disable_enable_disable_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -87,21 +87,21 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_remove_local(\AcceptanceTester $I)
+    public function test_install_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
             ->削除();
     }
 
-    public function test_install_remove_store(\AcceptanceTester $I)
+    public function test_install_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
             ->削除();
     }
 
-    public function test_install_update_remove_store(\AcceptanceTester $I)
+    public function test_install_update_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -109,7 +109,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_update_remove_local(\AcceptanceTester $I)
+    public function test_install_update_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -117,7 +117,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_disable_update_enable_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_enable_disable_update_enable_disable_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -129,7 +129,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_disable_update_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_enable_disable_update_enable_disable_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -141,7 +141,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_update_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_enable_update_disable_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -150,7 +150,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_update_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_enable_update_disable_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -160,7 +160,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_update_enable_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_update_enable_disable_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -170,7 +170,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_update_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_update_enable_disable_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -180,7 +180,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_enable(\AcceptanceTester $I)
+    public function test_install_enable_enable(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -190,7 +190,7 @@ class EA10PluginCest
             ->既に有効なものを有効化();
     }
 
-    public function test_install_disable_disable(\AcceptanceTester $I)
+    public function test_install_disable_disable(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -201,7 +201,7 @@ class EA10PluginCest
             ->既に無効なものを無効化();
     }
 
-    public function test_install_assets_local(\AcceptanceTester $I)
+    public function test_install_assets_local(AcceptanceTester $I)
     {
         $this->publishPlugin('Assets-1.0.0.tgz');
 
@@ -232,7 +232,7 @@ class EA10PluginCest
         $I->assertFileNotExists($updatedPath);
     }
 
-    public function test_install_assets_store(\AcceptanceTester $I)
+    public function test_install_assets_store(AcceptanceTester $I)
     {
         // 最初のバージョンを作成
         $this->publishPlugin('Assets-1.0.0.tgz');
@@ -269,7 +269,7 @@ class EA10PluginCest
         $I->assertFileNotExists($updatedPath);
     }
 
-    public function test_extend_same_table_store(\AcceptanceTester $I)
+    public function test_extend_same_table_store(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Boomerang = Boomerang_Store::start($I);
@@ -281,7 +281,7 @@ class EA10PluginCest
         $Boomerang->検証()->無効化()->削除();
     }
 
-    public function test_extend_same_table_disabled_remove_store(\AcceptanceTester $I)
+    public function test_extend_same_table_disabled_remove_store(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Boomerang = Boomerang_Store::start($I);
@@ -293,7 +293,7 @@ class EA10PluginCest
         $Boomerang->検証()->削除();
     }
 
-    public function test_extend_same_table_local(\AcceptanceTester $I)
+    public function test_extend_same_table_local(AcceptanceTester $I)
     {
         $Horizon = Horizon_Local::start($I);
         $Boomerang = Boomerang_Local::start($I);
@@ -305,7 +305,7 @@ class EA10PluginCest
         $Boomerang->検証()->無効化()->削除();
     }
 
-    public function test_extend_same_table_disabled_remove_local(\AcceptanceTester $I)
+    public function test_extend_same_table_disabled_remove_local(AcceptanceTester $I)
     {
         $Horizon = Horizon_Local::start($I);
         $Boomerang = Boomerang_Local::start($I);
@@ -317,7 +317,7 @@ class EA10PluginCest
         $Boomerang->検証()->削除();
     }
 
-    public function test_extend_same_table_crossed_store(\AcceptanceTester $I)
+    public function test_extend_same_table_crossed_store(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Boomerang = Boomerang_Store::start($I);
@@ -329,7 +329,7 @@ class EA10PluginCest
         $Boomerang->検証()->無効化()->削除();
     }
 
-    public function test_extend_same_table_crossed_local(\AcceptanceTester $I)
+    public function test_extend_same_table_crossed_local(AcceptanceTester $I)
     {
         $Horizon = Horizon_Local::start($I);
         $Boomerang = Boomerang_Local::start($I);
@@ -341,7 +341,7 @@ class EA10PluginCest
         $Boomerang->検証()->無効化()->削除();
     }
 
-    public function test_dependency_each_install_plugin(\AcceptanceTester $I)
+    public function test_dependency_each_install_plugin(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Emperor = Emperor_Store::start($I);
@@ -350,7 +350,7 @@ class EA10PluginCest
         $Emperor->インストール()->有効化();
     }
 
-    public function test_dependency_plugin_install(\AcceptanceTester $I)
+    public function test_dependency_plugin_install(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Emperor = Emperor_Store::start($I, $Horizon);
@@ -371,7 +371,7 @@ class EA10PluginCest
         $Horizon->削除();
     }
 
-    public function test_dependency_plugin_update(\AcceptanceTester $I)
+    public function test_dependency_plugin_update(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Emperor = Emperor_Store::start($I, $Horizon);
@@ -389,7 +389,7 @@ class EA10PluginCest
         $Horizon->検証();
     }
 
-    public function test_install_error(\AcceptanceTester $I)
+    public function test_install_error(AcceptanceTester $I)
     {
         $this->publishPlugin('InstallError.tgz');
         $Horizon = Horizon_Store::start($I);
@@ -405,7 +405,7 @@ class EA10PluginCest
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/4527
      */
-    public function test_template_overwrite(\AcceptanceTester $I)
+    public function test_template_overwrite(AcceptanceTester $I)
     {
         $plugin = new Local_Plugin($I, 'Template');
         $plugin->インストール();
@@ -439,7 +439,7 @@ class EA10PluginCest
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/4638
      */
-    public function test_enhance_plugin_entity(\AcceptanceTester $I)
+    public function test_enhance_plugin_entity(AcceptanceTester $I)
     {
         $Boomerang = Boomerang_Store::start($I)
             ->インストール()
@@ -456,7 +456,7 @@ class EA10PluginCest
         $I->see('[1]');
     }
 
-    public function test_bundle_install_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_bundle_install_enable_disable_remove_store(AcceptanceTester $I)
     {
         $Bundle = Bundle_Store::start($I);
         $Bundle->インストール()
@@ -465,7 +465,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_bundle_install_update_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_bundle_install_update_enable_disable_remove_store(AcceptanceTester $I)
     {
         $Bundle = Bundle_Store::start($I);
         $Bundle->インストール()
@@ -511,7 +511,7 @@ abstract class Abstract_Plugin
 
     protected $traits = [];
 
-    public function __construct(\AcceptanceTester $I)
+    public function __construct(AcceptanceTester $I)
     {
         $this->I = $I;
         $this->em = Fixtures::get('entityManager');
@@ -873,6 +873,7 @@ class Horizon_Local extends Local_Plugin
     {
         // アップデートで新たしいカラムが追加される
         $this->columns[] = 'dtb_dash.new_column';
+
         return parent::アップデート();
     }
 
@@ -897,6 +898,7 @@ class Horizon_Store extends Store_Plugin
     {
         // アップデートで新たしいカラムが追加される
         $this->columns[] = 'dtb_dash.new_column';
+
         return parent::アップデート();
     }
 
@@ -998,6 +1000,7 @@ class Boomerang_Store extends Store_Plugin
     {
         $this->I->amOnPage('/boomerang/new');
         $this->I->seeCurrentUrlMatches('/^\/boomerang$/');
+
         return $this;
     }
 }
@@ -1056,6 +1059,7 @@ class Bundle_Store extends Store_Plugin
 
         return $this;
     }
+
     public static function start(AcceptanceTester $I)
     {
         return new self($I);

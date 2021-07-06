@@ -61,11 +61,7 @@ class UTCDateTimeTzType extends DateTimeTzType
         );
 
         if (!$converted) {
-            throw ConversionException::conversionFailedFormat(
-                $value,
-                $this->getName(),
-                $platform->getDateTimeTzFormatString()
-            );
+            throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateTimeTzFormatString());
         }
 
         $converted->setTimezone(self::getTimezone());

@@ -16,7 +16,17 @@ file that was distributed with this source code.
 <div id="main" class="step7">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div id="plugin-enable" class="col-md-12">
+                <div class="page-header">
+                    <h1>{{ 'install.installing_plugin'|trans }}</h1>
+                </div>
+            </div>
+            <div id="cache-clear" class="col-md-12" style="display: none;">
+                <div class="page-header">
+                    <h1>{{ 'install.clearing_cache'|trans }}</h1>
+                </div>
+            </div>
+            <div id="completed" class="col-md-12" style="display: none;">
                 <div class="page-header">
                     <h1>{{ 'install.completed'|trans }}</h1>
                 </div>
@@ -30,4 +40,24 @@ file that was distributed with this source code.
         </div>
     </div>
 </div>
+
+<script>
+    $(function(){
+        $.ajax({
+            type: "POST",
+            url: "{{ url('install_plugin_enable') }}"
+        }).then(function () {
+            $('#plugin-enable').hide();
+            $('#cache-clear').show();
+        }).then(function() {
+            return $.ajax({
+                type: "POST",
+                url: "{{ url('install_cache_clear') }}"
+            });
+        }).then(function () {
+            $('#cache-clear').hide();
+            $('#completed').show();
+        });
+    });
+</script>
 {% endblock %}

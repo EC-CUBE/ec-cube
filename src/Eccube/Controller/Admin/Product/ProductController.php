@@ -42,7 +42,7 @@ use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -151,7 +151,7 @@ class ProductController extends AbstractController
      * @Route("/%eccube_admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
      * @Template("@admin/Product/index.twig")
      */
-    public function index(Request $request, $page_no = null, Paginator $paginator)
+    public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
         $builder = $this->formFactory
             ->createBuilder(SearchProductType::class);
@@ -551,12 +551,11 @@ class ProductController extends AbstractController
 
                         // 他に同じ画像を参照する商品がなければ画像ファイルを削除
                         if (!$this->productImageRepository->findOneBy(['file_name' => $delete_image])) {
-                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'] . '/' . $delete_image);
+                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$delete_image);
                         }
-
                     } else {
                         // 追加してすぐに削除した画像は、Entityに追加されない
-                        $fs->remove($this->eccubeConfig['eccube_temp_image_dir'] . '/' . $delete_image);
+                        $fs->remove($this->eccubeConfig['eccube_temp_image_dir'].'/'.$delete_image);
                     }
                 }
 

@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Entity\Master\LoginHistoryStatus;
-use Eccube\Repository\Master\LoginHistoryStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class LoginHistoryControllerTest extends AbstractAdminWebTestCase
@@ -26,7 +25,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $loginHistoryStatusRepository = $this->container->get(LoginHistoryStatusRepository::class);
+        $loginHistoryStatusRepository = $this->entityManager->getRepository(LoginHistoryStatus::class);
 
         // 履歴を10個生成しておく
         for ($i = 0; $i < 10; $i++) {

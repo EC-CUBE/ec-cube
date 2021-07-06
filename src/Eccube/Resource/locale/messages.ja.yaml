@@ -45,7 +45,7 @@ common.mail_address: メールアドレス
 common.mail_address_sample: 例：ec-cube@example.com
 common.repeated_confirm: 確認のためもう一度入力してください
 common.password: パスワード
-common.password_sample: 半角英数記号%min%〜%max%文字
+common.password_sample: '半角英数記号%min%〜%max%文字'
 common.password_eq_email: パスワードはメールアドレスと同じ値を設定できません。
 common.password_for_confirmation: パスワード(確認)
 common.gender: 性別
@@ -76,7 +76,7 @@ common.login: ログイン
 common.remember_me: 次回から自動的にログインする
 common.signup: 新規会員登録
 common.forgot_login: ログイン情報をお忘れですか？
-common.customer_address_count_is_over: お届け先登録の上限の%count%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
+common.customer_address_count_is_over: 'お届け先登録の上限の%count%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。'
 common.search_keyword: キーワードを入力
 common.delete_confirm: 削除してもよろしいですか?
 common.pagetop: ページトップへ
@@ -210,9 +210,9 @@ front.guide.title: ご利用ガイド
 # マイページ
 #------------------------------------------------------------------------------------
 
-front.mypage.welcome: ようこそ%last_name% %first_name%さん
+front.mypage.welcome: 'ようこそ%last_name% %first_name%さん'
 front.mypage.title: マイページ
-front.mypage.welcome__point: 現在の所持ポイントは %point%pt です。
+front.mypage.welcome__point: '現在の所持ポイントは %point%pt です。'
 front.mypage.nav__history: ご注文履歴
 front.mypage.nav__history_detail: ご注文履歴詳細
 front.mypage.nav__favorite: お気に入り一覧
@@ -270,7 +270,7 @@ front.product.all_products: 全商品
 
 front.product.search__category_not_found: ご指定のカテゴリは存在しません
 front.product.search__product_not_found: お探しの商品は見つかりませんでした
-front.product.search_result__keyword: 「%name%」の検索結果
+front.product.search_result__keyword: '「%name%」の検索結果'
 front.product.search_result__detail: '<span class="ec-font-bold">%count%件</span><span>の商品が見つかりました</span>'
 front.product.add_cart: カートに入れる
 front.product.add_cart_complete: カートに追加しました。
@@ -298,7 +298,7 @@ front.cart.nav__customer_info: お客様情報
 front.cart.nav__order: ご注文手続き
 front.cart.nav__confirm: ご注文内容確認
 front.cart.nav__complete: 完了
-front.cart.total_price: 商品の合計金額は「<strong>%price%</strong>」です。
+front.cart.total_price: '商品の合計金額は「<strong>%price%</strong>」です。'
 front.cart.divide_cart: 同時購入できない商品がカートに含まれています。
 front.cart.delete: 削除
 front.cart.delete__confirm: カートから商品を削除してよろしいですか？
@@ -307,9 +307,9 @@ front.cart.checkout: レジに進む
 front.cart.continue: お買い物を続ける
 front.cart.no_items: 現在カート内に商品はございません。
 front.cart.delivery_fee_free__now: 現在送料無料です。
-front.cart.delivery_fee_free__price_and_quantity: あと「<strong>%price%</strong>」または「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
-front.cart.delivery_fee_free__price: あと「<strong>%price%</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
-front.cart.delivery_fee_free__quantity: あと「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。
+front.cart.delivery_fee_free__price_and_quantity: 'あと「<strong>%price%</strong>」または「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。'
+front.cart.delivery_fee_free__price: 'あと「<strong>%price%</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。'
+front.cart.delivery_fee_free__quantity: 'あと「<strong>%quantity%個</strong>」のお買い上げで<strong class="ec-color-red">送料無料</strong>になります。'
 
 #------------------------------------------------------------------------------------
 # ショッピング
@@ -363,17 +363,18 @@ front.shopping.error: 購入エラー
 front.shopping.order_error: 購入処理でエラーが発生しました。
 front.shopping.system_error: 購入処理で予期しないエラーが発生しました。恐れ入りますがお問い合わせページよりご連絡ください。
 front.shopping.empty_items_error: ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。
-front.shopping.out_of_stock: 「%product%」の在庫が不足しております。一度に在庫数を超える購入はできません。
-front.shopping.over_sale_limit: 「%product%」は販売制限しております。一度に販売制限数を超える購入はできません。
-front.shopping.out_of_stock_zero: 「%product%」の在庫が不足しております。該当商品をカートから削除しました。
+front.shopping.out_of_stock: '「%product%」の在庫が不足しております。一度に在庫数を超える購入はできません。'
+front.shopping.over_sale_limit: '「%product%」は販売制限しております。一度に販売制限数を超える購入はできません。'
+front.shopping.out_of_stock_zero: '「%product%」の在庫が不足しております。該当商品をカートから削除しました。'
 front.shopping.over_price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。
-front.shopping.in_preparation: 「%product%」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。
+front.shopping.in_preparation: '「%product%」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。'
 front.shopping.not_purchase: 現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。
-front.shopping.price_changed: 「%product%」の販売価格が変更されました。
+front.shopping.price_changed: '「%product%」の販売価格が変更されました。'
 front.shopping.payment_total_invalid: 合計金額が不正です。
 front.shopping.different_payment_methods: 支払い方法が異なる商品が含まれているため、同時に購入することはできません。
 front.shopping.payment_method_unselected: お支払い方法を選択してください。
 front.shopping.payment_method_not_fount: 選択できるお支払い方法がありません。配送方法が異なる場合は同じ配送方法を選んでください。
+front.under_maintenance: メンテナンスモードが有効になっています。
 
 #====================================================================================
 # 管理画面
@@ -384,7 +385,7 @@ admin.common.save_complete: 保存しました
 admin.common.save_error: 保存に失敗しました
 admin.common.delete_complete: 削除しました
 admin.common.delete_error: 削除に失敗しました
-admin.common.delete_error_foreign_key: 関連するデータがあるため「%name%」を削除できませんでした
+admin.common.delete_error_foreign_key: '関連するデータがあるため「%name%」を削除できませんでした'
 admin.common.delete_error_already_deleted: 既に削除されています
 admin.common.move_complete: 並び順を更新しました
 admin.common.move_error: 並び順の更新に失敗しました
@@ -396,8 +397,8 @@ admin.common.send_complete: メールを送信しました
 admin.common.send_error: メールの送信に失敗しました
 admin.common.create_complete: 作成しました
 admin.common.system_error: システムエラーが発生しました
-admin.common.to_show_complete: 「%name%」を表示にしました。
-admin.common.to_hide_complete: 「%name%」を非表示にしました。
+admin.common.to_show_complete: '「%name%」を表示にしました。'
+admin.common.to_hide_complete: '「%name%」を非表示にしました。'
 
 # action系のラベル
 admin.common.save: 保存
@@ -446,7 +447,7 @@ admin.common.separator__range: 〜
 admin.common.separator__colon: ：
 admin.common.count: '%count%件'
 admin.common.search_detail: 詳細検索
-admin.common.search_result: 検索結果：%count%件が該当しました
+admin.common.search_result: '検索結果：%count%件が該当しました'
 admin.common.search_invalid_condition: 検索条件に誤りがあります
 admin.common.search_no_result: 検索条件に合致するデータが見つかりませんでした
 admin.common.search_try_change_condition: 検索条件を変えて、再度検索をお試しください
@@ -482,7 +483,7 @@ admin.common.move_to_confirm_title: ページを移動します
 admin.common.move_to_confirm_message: '%name%に移動します。編集内容を保存してから移動しますか？'
 admin.common.move_to_confirm_move_only: 保存せずに移動
 admin.common.move_to_confirm_save_and_move: 保存して移動
-admin.common.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。
+admin.common.admin_url_warning: '管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。'
 
 
 # エンティティに関連するラベル
@@ -709,11 +710,11 @@ admin.product.product_csv.free_area_description: ''
 admin.product.product_csv.delete_flag_col: 商品削除フラグ
 admin.product.product_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
 admin.product.product_csv.product_image_col: 商品画像
-admin.product.product_csv.product_image_description: 画像のファイル名を指定します。複数画像の場合、画像ファイル名をカンマ区切りで「"」で囲んでください。
+admin.product.product_csv.product_image_description: '画像のファイル名を指定します。複数画像の場合、画像ファイル名をカンマ区切りで「"」で囲んでください。'
 admin.product.product_csv.category_col: 商品カテゴリ(ID)
-admin.product.product_csv.category_description: カテゴリIDを指定します。複数カテゴリの場合、商品カテゴリIDをカンマ区切りで「"」で囲んでください。
+admin.product.product_csv.category_description: 'カテゴリIDを指定します。複数カテゴリの場合、商品カテゴリIDをカンマ区切りで「"」で囲んでください。'
 admin.product.product_csv.tag_col: タグ(ID)
-admin.product.product_csv.tag_description: タグIDを指定します。複数タグの場合、タグIDをカンマ区切りで「"」で囲んでください。
+admin.product.product_csv.tag_description: 'タグIDを指定します。複数タグの場合、タグIDをカンマ区切りで「"」で囲んでください。'
 admin.product.product_csv.sale_type_col: 販売種別(ID)
 admin.product.product_csv.sale_type_description: ''
 admin.product.product_csv.class_category1_col: 規格分類1(ID)
@@ -928,7 +929,7 @@ admin.customer.purchase_history__not_found: 注文履歴がありません
 admin.customer.customer_address: お届け先住所
 admin.customer.customer_address__not_found: お届け先住所がありません
 admin.customer.customer_address__add: お届け先住所を追加
-admin.customer.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
+admin.customer.customer_address_count_is_over: 'お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。'
 admin.customer.customer_address_id: お届け先ID
 admin.customer.customer_address_info: お届け先情報
 admin.customer.multi_search_label: 会員ID・メールアドレス・お名前
@@ -1340,14 +1341,14 @@ admin.store.plugin.installed: インストール済み
 admin.store.plugin.update: アップデート
 admin.store.plugin.install.complete: プラグインをインストールしました。
 admin.store.plugin.install.failed: プラグインのインストールに失敗しました。
-admin.store.plugin.enable.complete: 「%plugin_name%」を有効にしました。
-admin.store.plugin.already.enabled: 「%plugin_name%」は既に有効です。
-admin.store.plugin.disable.complete: 「%plugin_name%」を無効にしました。
-admin.store.plugin.already.disabled: 「%plugin_name%」は既に無効です。
+admin.store.plugin.enable.complete: '「%plugin_name%」を有効にしました。'
+admin.store.plugin.already.enabled: '「%plugin_name%」は既に有効です。'
+admin.store.plugin.disable.complete: '「%plugin_name%」を無効にしました。'
+admin.store.plugin.already.disabled: '「%plugin_name%」は既に無効です。'
 admin.store.plugin.uninstall.complete: プラグインを削除しました。
-admin.store.plugin.update.complete: 「%plugin_name%」をアップデートしました。
-admin.store.plugin.update.failed: 「%plugin_name%」のアップデートに失敗しました。
-admin.store.plugin.mkdir.error: ディレクトリ「%dir_name%」の作成に失敗しました。
+admin.store.plugin.update.complete: '「%plugin_name%」をアップデートしました。'
+admin.store.plugin.update.failed: '「%plugin_name%」のアップデートに失敗しました。'
+admin.store.plugin.mkdir.error: 'ディレクトリ「%dir_name%」の作成に失敗しました。'
 admin.store.setting: 認証キー設定
 admin.store.setting.api_key_setting: 認証キー設定
 admin.store.setting.api_key_setting_info: 認証キーをお持ちの場合は入力後、「登録」ボタンを押して下さい。
@@ -1395,7 +1396,7 @@ admin.store.plugin.detail.support: EC-CUBE対応バージョン
 admin.store.plugin.detail.public_date: 公開日
 admin.store.plugin.detail.update_date: 最終更新日
 admin.store.plugin.detail.size: ファイルサイズ
-admin.store.plugin.detail.size.format: 約 %size% KB
+admin.store.plugin.detail.size.format: '約 %size% KB'
 admin.store.plugin.detail.license: ライセンス
 admin.store.plugin.detail.develop: 制作者
 admin.store.plugin_confirm.title.upgrade: アップデート
@@ -1403,7 +1404,7 @@ admin.store.plugin_confirm.title: インストール確認
 admin.store.plugin_confirm.subtitle: オーナーズストア
 admin.store.plugin_confirm.header: 以下のプラグインをインストールします
 admin.store.plugin_confirm.header.upgrade: 以下のプラグインを最新版にアップデートします
-admin.store.plugin_confirm.require.header: 「%name%」には以下のプラグインが必須です。同時にインストールされます
+admin.store.plugin_confirm.require.header: '「%name%」には以下のプラグインが必須です。同時にインストールされます'
 admin.store.plugin_confirm_uninstall.823: オーナーズストア
 admin.store.plugin_confirm_uninstall.824: プラグイン削除
 admin.store.plugin_confirm_uninstall.825: 以下のプラグインを削除します。
@@ -1462,7 +1463,7 @@ admin.store.plugin_owners_search.form.sort.new: 新着順
 admin.store.plugin_owners_search.form.sort.price: 価格が低い順
 admin.store.plugin_owners_search.form.sort.dl: DL
 admin.store.plugin_owners_search.search_button: 検索
-admin.store.plugin_owners_search.search_results: 検索結果（%number%／%total%件）
+admin.store.plugin_owners_search.search_results: '検索結果（%number%／%total%件）'
 admin.store.plugin_owners_search.latest: 最新バージョン：
 admin.store.plugin_owners_search.dl: DL数
 admin.store.plugin_owners_search.support: 対応バージョン
@@ -1512,9 +1513,9 @@ admin.store.plugin_table_official.913: アップロード
 admin.store.plugin_table_official.914: 新バージョンのプラグインが利用可能です。
 admin.store.plugin_table_official.915: 無効にする状態で利用可能
 admin.store.plugin_table_official.916: アップデート
-admin.store.plugin_table_official.917: プラグインバージョン：%version%
-admin.store.plugin_table_official.918: EC-CUBE対応バージョン：%versions%
-admin.store.plugin_table_official.919: 更新日：%update_date%
+admin.store.plugin_table_official.917: 'プラグインバージョン：%version%'
+admin.store.plugin_table_official.918: 'EC-CUBE対応バージョン：%versions%'
+admin.store.plugin_table_official.919: '更新日：%update_date%'
 admin.store.plugin_table_official.920: アップデート対象プラグインはありません
 admin.store.plugin_table_official.921: 詳細情報
 admin.store.plugin_table_official.924: 有効化
@@ -1677,10 +1678,10 @@ install.member_name: 管理者
 install.member_department:
 install.shop_name: あなたの店名
 install.mail_address: メールアドレス（受注メールなどの宛先になります）
-install.login_id: 管理画面ログインID（半角英数字%min%～%max%文字）
-install.login_password: 管理画面パスワード（半角英数字%min%～%max%文字）
+install.login_id: '管理画面ログインID（半角英数字%min%～%max%文字）'
+install.login_password: '管理画面パスワード（半角英数字%min%～%max%文字）'
 install.security_configuration: セキュリティの設定
-install.directory_name: 管理画面のディレクトリ名（半角英数字%min%～%max%文字）
+install.directory_name: '管理画面のディレクトリ名（半角英数字%min%～%max%文字）'
 install.directory_name_notice: セキュリティのため推測されにくいディレクトリ名を入力して下さい
 install.https_only: サイトへのアクセスを、SSL（https）経由に制限します
 install.https_only_notice: httpsからの接続でなければSSL制限を設定できません。
@@ -1704,6 +1705,8 @@ install.database_connection_error: データベースに接続できませんで
 install.database_do_initialize: データベースの初期化を行います。初期化には少し時間がかかる場合があります。<br>すでにテーブル等が作成されている場合は中断されます。
 install.database_skip_notice: 旧バージョンをインストールしていて、既存の情報を削除したくない場合はチェックをいれてください
 install.database_skip: データベースの初期化を行わない
+install.installing_plugin: プラグインを有効化しています
+install.clearing_cache: キャッシュを削除しています
 install.completed: インストールが完了しました！
 install.access_admin_page: 管理画面にアクセスしてみましょう
 install.perform_initial_setting: 先ほど登録したログインID・パスワードで、管理画面にログインすることができます。デザインの編集や商品を登録してみましょう！
@@ -1728,7 +1731,7 @@ purchase_flow.delivery_fee_update: 送料が更新されました。金額をご
 purchase_flow.charge_update: 手数料が更新されました。金額をご確認ください。
 purchase_flow.over_customer_point: 利用ポイントが所有ポイントを上回っています。
 purchase_flow.over_payment_total: 利用ポイントがお支払い金額を上回っています。
-purchase_flow.over_stock: 「%name%」の在庫が足りません。
+purchase_flow.over_stock: '「%name%」の在庫が足りません。'
 
 #------------------------------------------------------------------------------------
 # Command

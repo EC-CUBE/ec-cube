@@ -31,7 +31,7 @@ RUN apt-get update \
   ;
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-  && docker-php-ext-configure gd --with-webp-dir=/usr/include/  --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
+  && docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-webp-dir=/usr/include \
   && docker-php-ext-install -j$(nproc) zip gd mysqli pdo_mysql opcache intl pgsql pdo_pgsql \
   ;
 
@@ -62,22 +62,25 @@ RUN chown www-data:www-data /var/www \
   && mkdir -p ${APACHE_DOCUMENT_ROOT}/vendor \
   && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
   && chown www-data:www-data ${APACHE_DOCUMENT_ROOT}/vendor \
-  && chmod g+s ${APACHE_DOCUMENT_ROOT}/vendor
+  && chmod g+s ${APACHE_DOCUMENT_ROOT}/vendor \
+  && chown www-data:www-data ${APACHE_DOCUMENT_ROOT}/var
 
 RUN curl -sS https://getcomposer.org/installer \
   | php \
-  && mv composer.phar /usr/bin/composer \
-  && composer selfupdate --1
+  && mv composer.phar /usr/bin/composer
 
 # 全体コピー前にcomposer installを先行完了させる(docker cache利用によるリビルド速度向上)
-USER www-data
-RUN composer config -g repos.packagist composer https://packagist.jp \
-  && composer global require hirak/prestissimo
+
+RUN composer config -g repos.packagist composer https://packagist.jp
 COPY composer.json ${APACHE_DOCUMENT_ROOT}/composer.json
 COPY composer.lock ${APACHE_DOCUMENT_ROOT}/composer.lock
+RUN chown www-data:www-data ${APACHE_DOCUMENT_ROOT}/composer.*
+
+USER www-data
 RUN composer install \
   --no-scripts \
   --no-autoloader \
+  --no-plugins \
   -d ${APACHE_DOCUMENT_ROOT} \
   ;
 

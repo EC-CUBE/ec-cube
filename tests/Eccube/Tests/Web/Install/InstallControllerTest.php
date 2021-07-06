@@ -14,9 +14,9 @@
 namespace Eccube\Tests\Web\Install;
 
 use Eccube\Common\Constant;
-use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Controller\Install\InstallController;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
+use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Util\CacheUtil;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -58,20 +58,20 @@ class InstallControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
 
-        $this->envFile = $this->container->getParameter('kernel.project_dir').'/.env';
+        $this->envFile = self::$container->getParameter('kernel.project_dir').'/.env';
         $this->envFileBackup = $this->envFile.'.'.date('YmdHis');
         if (file_exists($this->envFile)) {
             rename($this->envFile, $this->envFileBackup);
         }
 
-        $favicon = $this->container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
+        $favicon = self::$container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
         if (file_exists($favicon)) {
             unlink($favicon);
         }
 
-        $formFactory = $this->container->get('form.factory');
-        $encoder = $this->container->get(PasswordEncoder::class);
-        $cacheUtil = $this->container->get(CacheUtil::class);
+        $formFactory = self::$container->get('form.factory');
+        $encoder = self::$container->get(PasswordEncoder::class);
+        $cacheUtil = self::$container->get(CacheUtil::class);
 
         $this->session = new Session(new MockArraySessionStorage());
         $this->controller = new InstallController($encoder, $cacheUtil);
@@ -81,7 +81,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setAccessible(true);
-        $propContainer->setValue($this->controller, $this->container);
+        $propContainer->setValue($this->controller, self::$container);
 
         $this->request = $this->createMock(Request::class);
     }
@@ -111,8 +111,8 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->actual = $this->controller->step2($this->request);
         $this->assertArrayHasKey('noWritePermissions', $this->actual);
 
-        $this->assertFileExists($this->container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
-        $this->assertFileExists($this->container->getParameter('eccube_html_dir').'/user_data/assets/pdf/logo.png');
+        $this->assertFileExists(self::$container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
+        $this->assertFileExists(self::$container->getParameter('eccube_html_dir').'/user_data/assets/pdf/logo.png');
     }
 
     public function testStep3()

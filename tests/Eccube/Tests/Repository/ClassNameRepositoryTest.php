@@ -18,7 +18,6 @@ use Eccube\Entity\ClassName;
 use Eccube\Entity\Member;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
-use Eccube\Repository\MemberRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\EccubeTestCase;
 
@@ -56,11 +55,11 @@ class ClassNameRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->productClassRepository = $this->container->get(ProductClassRepository::class);
-        $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
-        $this->classNameRepository = $this->container->get(ClassNameRepository::class);
+        $this->productClassRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);
+        $this->classCategoryRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
+        $this->classNameRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassName::class);
         $this->removeClass();
-        $this->Member = $this->container->get(MemberRepository::class)->find(2);
+        $this->Member = $this->entityManager->getRepository(\Eccube\Entity\Member::class)->find(2);
 
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();

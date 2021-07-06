@@ -21,9 +21,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginDisableCommand extends Command
 {
-    protected static $defaultName = 'eccube:plugin:disable';
-
     use PluginCommandTrait;
+    protected static $defaultName = 'eccube:plugin:disable';
 
     protected function configure()
     {

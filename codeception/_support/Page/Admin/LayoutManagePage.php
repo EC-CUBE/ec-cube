@@ -42,6 +42,6 @@ class LayoutManagePage extends AbstractAdminPageStyleGuide
 
     public function 新規登録()
     {
-        $this->tester->click(['xpath' => "//*[@id=\"page_admin_content_layout\"]/div[1]/div[3]/div[2]/div/div/div[1]/a"]);
+        $this->tester->click(['xpath' => '//*[@id="page_admin_content_layout"]/div[1]/div[3]/div[2]/div/div/div[1]/a']);
     }
 }

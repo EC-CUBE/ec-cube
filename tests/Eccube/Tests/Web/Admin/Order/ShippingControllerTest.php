@@ -34,7 +34,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->shippingRepository = $this->container->get(ShippingRepository::class);
+        $this->shippingRepository = $this->entityManager->getRepository(\Eccube\Entity\Shipping::class);
     }
 
     public function testIndex()
@@ -234,7 +234,6 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
      */
     public function testCalculateTax()
     {
-
         /** @var Product $Product */
         $Product = $this->createProduct('test', 2);
         /** @var ProductClass $ProductClass1 */
