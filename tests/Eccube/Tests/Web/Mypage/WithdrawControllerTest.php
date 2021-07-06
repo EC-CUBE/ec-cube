@@ -93,6 +93,46 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
+    public function testIndexWithPostCompleteWithSanitize()
+    {
+        $this->Customer->setName01('<Sanitize&>');
+        $this->entityManager->flush();
+
+        $this->client->enableProfiler();
+        $this->logInTo($this->Customer);
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('mypage_withdraw'),
+            [
+                'form' => ['_token' => 'dummy'],
+                'mode' => 'complete',
+            ]
+        );
+
+        $this->assertRegExp('/@dummy.dummy/', $this->Customer->getEmail());
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_withdraw_complete')));
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $Messages[0];
+
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $this->expected = '['.$BaseInfo->getShopName().'] 退会手続きのご完了';
+        $this->actual = $Message->getSubject();
+        $this->verify();
+
+        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+
+        $MultiPart = $Message->getChildren();
+        foreach ($MultiPart as $Part) {
+            if ($Part->getContentType() == 'text/html') {
+                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
+            }
+        }
+    }
+
     public function testComplete()
     {
         $this->client->request(

@@ -572,6 +572,69 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
+     * カート→購入確認画面→完了画面(テキストメールサニタイズ)
+     */
+    public function testCompleteWithSanitize()
+    {
+        $Customer = $this->createCustomer();
+        $Customer->setName01('<Sanitize&>');
+        $this->entityManager->flush();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // 手続き画面
+        $crawler = $this->scenarioConfirm($Customer);
+        $this->expected = 'ご注文手続き';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
+
+        // 完了画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_checkout'),
+            [],
+            true
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
+
+        $BaseInfo = $this->baseInfoRepository->get();
+        $mailCollector = $this->getMailCollector(false);
+        $Messages = $mailCollector->getMessages();
+        $Message = $Messages[0];
+
+        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
+        $this->actual = $Message->getSubject();
+        $this->verify();
+
+        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+
+        $MultiPart = $Message->getChildren();
+        foreach ($MultiPart as $Part) {
+            if ($Part->getContentType() == 'text/html') {
+                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
+            }
+        }
+    }
+
+    /**
      * Check can use point when has payment limit
      *
      * https://github.com/EC-CUBE/ec-cube/issues/3916
