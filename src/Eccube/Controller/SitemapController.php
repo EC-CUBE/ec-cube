@@ -19,7 +19,7 @@ use Eccube\Repository\Master\ProductListOrderByRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -75,7 +75,7 @@ class SitemapController extends AbstractController
      *
      * @Route("/sitemap.xml", name="sitemap_xml")
      */
-    public function index(Paginator $paginator)
+    public function index(PaginatorInterface $paginator)
     {
         $pageQueryBuilder = $this->pageRepository->createQueryBuilder('p');
         $Page = $pageQueryBuilder->select('p')
@@ -134,7 +134,7 @@ class SitemapController extends AbstractController
      *
      * @return Response
      */
-    public function product(Request $request, Paginator $paginator)
+    public function product(Request $request, PaginatorInterface $paginator)
     {
         // フロントの商品一覧の条件で商品情報を取得
         $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
