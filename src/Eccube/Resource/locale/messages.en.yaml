@@ -555,6 +555,7 @@ admin.header.user_name: 'Hi %name%!'
 admin.header.logout: Sign out
 admin.header.last_login: Last sign-in
 admin.header.change_password: Change Password
+admin.header.two_factor_auth: Two-Factor Auth
 
 admin.login.enable_javascript: Please enable JavaScript
 admin.login.login: Sign in
@@ -1219,9 +1220,25 @@ admin.setting.system.member.login_id: ID
 admin.setting.system.member.password: Password
 admin.setting.system.member.password_confirm: Re-enter Password
 admin.setting.system.member.work: Status
+admin.setting.system.member.two_factor_auth_enabled: Two-factor auth
+admin.setting.system.member.two_factor_auth_completed: Two-factor authentication settings are complete.
+admin.setting.system.member.two_factor_auth_incompleted: Two-factor authentication settings are incomplete. Please log in as this user to complete the settings.
 admin.setting.system.member.delete__confirm_title: Delete a user
 admin.setting.system.member.delete__confirm_message: Are you sure to delete this user?
 admin.setting.system.member.work_can_not_change: You are not allowed to change to ''Inactive''.
+
+#------------------------------------------------------------------------------------
+# Settings : Members : Two-Factor Auth
+#------------------------------------------------------------------------------------
+
+admin.setting.system.two_factor_auth_title: Two-factor auth
+admin.setting.system.two_factor_auth.qr: QR code
+admin.setting.system.two_factor_auth.device_token: Token
+admin.setting.system.two_factor_auth.auth: Authentication
+admin.setting.system.two_factor_auth.configured_warning: Two-factor authentication has already been set. If you reset it, you will not be able to use the registered device.
+admin.setting.system.two_factor_auth.complete_message: Two-factor authentication setting is complete.
+admin.setting.system.two_factor_auth.invalid_message__reinput: There is an error in the token. Please try again.
+admin.setting.system.two_factor_auth.invalid_message__invalid: There is an error in the token. Please enter in 6 digits.
 
 #------------------------------------------------------------------------------------
 # Settings : System : Authorizations
@@ -1636,6 +1653,8 @@ tooltip.setting.shop.order_status.color: You can set the color of the order stat
 tooltip.setting.shop.order_status.display_order_count: You can set the display / non-display of the number of orders for each order status used in order management.
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
 tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
+tooltip.setting.system.member.two_factor_auth_enabled: If enabled, you must log in using two-factor authentication. You will be able to login after setting up two-factor authentication.
+tooltip.setting.system.two_factor_auth.qr_code: Please read the QR code with the two-factor authentication app.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
 tooltip.setting.system.security.ip_limit: Restricting IP addresses which are allowed to sign in to the Admin Console.
 tooltip.setting.system.security.ip_limit_deny: IP addresses where access to the Admin Console is denied.

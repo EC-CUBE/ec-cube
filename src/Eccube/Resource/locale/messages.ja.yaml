@@ -555,6 +555,7 @@ admin.header.user_name: '%name% 様'
 admin.header.logout: ログアウト
 admin.header.last_login: 最終ログイン
 admin.header.change_password: パスワード変更
+admin.header.two_factor_auth: 2段階認証 設定
 
 admin.login.enable_javascript: JavaScript を有効にしてご利用ください
 admin.login.login: ログイン
@@ -1219,9 +1220,25 @@ admin.setting.system.member.login_id: ログインID
 admin.setting.system.member.password: パスワード
 admin.setting.system.member.password_confirm: パスワード(確認)
 admin.setting.system.member.work: 稼働
+admin.setting.system.member.two_factor_auth_enabled: 2段階認証
+admin.setting.system.member.two_factor_auth_completed: 2段階認証の設定は完了しています。
+admin.setting.system.member.two_factor_auth_incompleted: 2段階認証の設定が未完了です。このユーザでログインし、設定を完了させてください。
 admin.setting.system.member.delete__confirm_title: メンバーを削除します。
 admin.setting.system.member.delete__confirm_message: メンバーを削除してよろしいですか？
 admin.setting.system.member.work_can_not_change: 非稼働に変更することはできません。
+
+#------------------------------------------------------------------------------------
+# 設定：システム設定：メンバー管理 / 2段階認証
+#------------------------------------------------------------------------------------
+
+admin.setting.system.two_factor_auth_title: 2段階認証
+admin.setting.system.two_factor_auth.qr: QRコード
+admin.setting.system.two_factor_auth.device_token: トークン
+admin.setting.system.two_factor_auth.auth: 認証
+admin.setting.system.two_factor_auth.configured_warning: 既に2段階認証の設定が行われています。再設定すると登録済みのデバイスが使用出来なくなります。
+admin.setting.system.two_factor_auth.complete_message: 2段階認証の設定が完了しました。
+admin.setting.system.two_factor_auth.invalid_message__reinput: トークンに誤りがあります。再度入力してください。
+admin.setting.system.two_factor_auth.invalid_message__invalid: トークンに誤りがあります。数字6桁で入力してください。
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：権限管理
@@ -1636,6 +1653,8 @@ tooltip.setting.shop.order_status.color: 受注管理の対応状況の色を設
 tooltip.setting.shop.order_status.display_order_count: 受注管理の対応状況ごとの受注件数の表示・非表示を設定できます。
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。
 tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
+tooltip.setting.system.member.two_factor_auth_enabled: 有効にすると2段階認証でのログインが必要になります。2段階認証のデバイス設定をしていない状態でログインした場合、設定後にログインできるようになります。
+tooltip.setting.system.two_factor_auth.qr_code: QRコードを2段階認証用スマートフォンアプリで読み込み、表示された6桁の数字を入力してください。
 tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
 tooltip.setting.system.security.ip_limit: 管理画面にログインできる接続元のIPアドレスを制限します。
 tooltip.setting.system.security.ip_limit_deny: 管理画面へのアクセスを拒否する接続元のIPアドレスを指定します。

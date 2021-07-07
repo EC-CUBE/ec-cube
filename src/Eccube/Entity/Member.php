@@ -121,6 +121,20 @@ if (!class_exists('\Eccube\Entity\Member')) {
         private $sort_no;
 
         /**
+         * @var string
+         *
+         * @ORM\Column(name="two_factor_auth_key",type="string",length=255,nullable=true,options={"fixed":false})
+         */
+        private $two_factor_auth_key;
+
+        /**
+         * @ORM\Column(name="two_factor_auth_enabled",type="boolean",nullable=false,options={"default":false})
+         *
+         * @var integer
+         */
+        private $two_factor_auth_enabled = false;
+
+        /**
          * @var \DateTime
          *
          * @ORM\Column(name="create_date", type="datetimetz")
@@ -323,6 +337,54 @@ if (!class_exists('\Eccube\Entity\Member')) {
         public function getSortNo()
         {
             return $this->sort_no;
+        }
+
+        /**
+         * Set twoFactorAuthKey.
+         *
+         * @param string $two_factor_auth_key
+         *
+         * @return Member
+         */
+        public function setTwoFactorAuthKey($two_factor_auth_key)
+        {
+            $this->two_factor_auth_key = $two_factor_auth_key;
+
+            return $this;
+        }
+
+        /**
+         * Get twoFactorAuthKey.
+         *
+         * @return string
+         */
+        public function getTwoFactorAuthKey()
+        {
+            return $this->two_factor_auth_key;
+        }
+
+        /**
+         * Set twoFactorAuthEnabled.
+         *
+         * @param boolean $two_factor_auth_enabled
+         *
+         * @return Member
+         */
+        public function setTwoFactorAuthEnabled($two_factor_auth_enabled)
+        {
+            $this->two_factor_auth_enabled = $two_factor_auth_enabled;
+
+            return $this;
+        }
+
+        /**
+         * Get twoFactorAuthEnabled.
+         *
+         * @return boolean
+         */
+        public function isTwoFactorAuthEnabled()
+        {
+            return $this->two_factor_auth_enabled;
         }
 
         /**
