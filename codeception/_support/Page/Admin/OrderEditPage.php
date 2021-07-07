@@ -207,4 +207,9 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
 
         return $this;
     }
+
+    public function 注文番号()
+    {
+        return $this->tester->grabTextFrom(['css' => '#orderOverview > div > div > div:nth-child(1) > div:nth-child(1) > div.col']);
+    }
 }

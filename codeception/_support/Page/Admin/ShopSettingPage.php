@@ -36,6 +36,17 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 切替_カナ必須項目($value)
+    {
+        $cssClass = $this->tester->grabAttributeFrom(['css' => 'span.shop_master_option_require_kana-on'], 'class');
+        $optionOn = strpos($cssClass, 'd-none') === false;
+        $this->tester->scrollTo(['xpath' => '//label[@for="shop_master_option_require_kana"]'], 0, 100);
+        if (($optionOn && !$value) || (!$optionOn && $value)) {
+            $this->tester->click(['xpath' => '//label[@for="shop_master_option_require_kana"]']);
+        }
+        return $this;
+    }
+
     public function 登録()
     {
         $this->tester->click('#point_form > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');

@@ -187,7 +187,7 @@ file that was distributed with this source code.
                             <dl>
                                 <dt>
                                     <label class="ec-label required">{{ 'common.kana'|trans }}</label>
-                                    <span class="ec-required">{{ 'common.required'|trans }}</span>
+                                    <span class="{{ BaseInfo.option_require_kana ? 'ec-required' }}">{{ BaseInfo.option_require_kana ? 'common.required'|trans }}</span>
                                 </dt>
                                 <dd>
                                     <div class="ec-halfInput">
