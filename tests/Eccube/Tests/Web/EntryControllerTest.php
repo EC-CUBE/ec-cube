@@ -225,4 +225,21 @@ class EntryControllerTest extends AbstractWebTestCase
         self::assertCount(1, $crawler->filter('.ec-errorMessage'));
         self::assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    public function testConfirmWithAmpersand()
+    {
+        $formData = $this->createFormData();
+        $formData['company_name'] = '&';
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('entry'),
+            [
+                'entry' => $formData,
+                'mode' => 'confirm',
+            ]
+        );
+
+        self::assertEquals('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        self::assertEquals('＆', $crawler->filter('#entry_company_name')->attr('value'));
+    }
 }

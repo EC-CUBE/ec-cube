@@ -14,9 +14,11 @@
 namespace Eccube\Form\Extension;
 
 
+use Eccube\Form\EventListener\HTMLPurifierListener;
 use Eccube\Request\Context;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
@@ -52,5 +54,14 @@ class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
     public static function getExtendedTypes(): iterable
     {
         yield TextType::class;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if ($options['purify_html']) {
+            $builder->addEventSubscriber(
+                new HTMLPurifierListener()
+            );
+        }
     }
 }
