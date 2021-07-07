@@ -1118,6 +1118,8 @@ admin.setting.shop.shop.option_point: Point Settings
 admin.setting.shop.shop.option_point_enabled: Points
 admin.setting.shop.shop.option_point_rate: Point Return Rate
 admin.setting.shop.shop.option_point_conversion_rate: Point Conversion Rate
+admin.setting.shop.shop.option_google_analytics: Google Analytics
+admin.setting.shop.shop.option_tracking_id: Tracking ID
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : Payment Methods

@@ -1118,6 +1118,8 @@ admin.setting.shop.shop.option_point: ポイント設定
 admin.setting.shop.shop.option_point_enabled: ポイント機能
 admin.setting.shop.shop.option_point_rate: ポイント付与率
 admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レート
+admin.setting.shop.shop.option_google_analytics: Google アナリティクス
+admin.setting.shop.shop.option_tracking_id: トラッキングID
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：支払方法設定

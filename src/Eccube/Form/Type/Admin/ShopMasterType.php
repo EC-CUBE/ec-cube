@@ -201,6 +201,15 @@ class ShopMasterType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('tracking_id', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
+                'attr' => ['placeholder' => 'UA-XXXXXXXXX-X'],
+            ])
         ;
 
         $builder->add(
