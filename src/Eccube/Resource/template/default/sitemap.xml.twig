@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 {# Pages #}
-{% if Pages is defined %}
-{% for Page in Pages %}
-  {% if Page.url != 'product_detail' and Page.url != 'product_list' %}
+{% if DefaultPages is defined %}
+{% for DefaultPage in DefaultPages %}
+  {% if DefaultPage.url != 'product_detail' and DefaultPage.url != 'product_list' %}
   <url>
-    <loc>{{url(Page.url)}}</loc>
-    <lastmod>{{Page.update_date|date_format('','c')}}</lastmod>
+    <loc>{{url(DefaultPage.url)}}</loc>
+    <lastmod>{{DefaultPage.update_date|date_format('','c')}}</lastmod>
     <changefreq>daily</changefreq>
   </url>
   {% endif %}
+{% endfor %}
+{% endif %}
+{% if UserPages is defined %}
+{% for UserPage in UserPages %}
+  <url>
+    <loc>{{url('user_data', {route: UserPage.url})}}</loc>
+    <lastmod>{{UserPage.update_date|date_format('','c')}}</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
 {% endfor %}
 {% endif %}
 {# Categories #}
@@ -37,4 +46,4 @@
   </url>
 {% endfor %}
 {% endif %}
-</urlset> 
+</urlset>
