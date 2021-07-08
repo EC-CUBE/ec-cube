@@ -11,7 +11,7 @@ parameters:
     env(ECCUBE_COOKIE_PATH): '/'
     env(ECCUBE_COOKIE_LIFETIME): 0
     env(ECCUBE_GC_MAXLIFETIME): 1440
-    env(ECCUBE_PACKAGE_API_URL): 'https://package-api-41beta.ec-cube.net'
+    env(ECCUBE_PACKAGE_API_URL): 'https://package-api-c2.ec-cube.net'
     env(ECCUBE_OWNERS_STORE_URL): 'https://www.ec-cube.net'
     env(ECCUBE_MAINTENANCE_FILE_PATH): '%kernel.project_dir%/.maintenance'
     env(ECCUBE_2FA_ENABLED): true
