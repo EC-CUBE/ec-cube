@@ -515,7 +515,8 @@ class InstallController extends AbstractController
 
         return [
             'admin_url' => $adminUrl,
-            'Plugins' => $Plugins
+            'Plugins' => $Plugins,
+            'is_sqlite' => strpos('sqlite', $databaseUrl) !== false
         ];
     }
 

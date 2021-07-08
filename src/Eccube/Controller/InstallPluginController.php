@@ -20,15 +20,28 @@ use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class InstallPluginController extends InstallController
 {
+    /** @var CacheUtil */
+    protected $cacheUtil;
+
+    public function __construct(CacheUtil $cacheUtil)
+    {
+        $this->cacheUtil = $cacheUtil;
+    }
+
     /**
      * プラグインを有効にします。
      *
-     * @Route("/install/plugin/{code}/enable", requirements={"code" = "\w+"}, name="install_plugin_enable")
+     * @Route("/install/plugin/{code}/enable", requirements={"code" = "\w+"}, name="install_plugin_enable",  methods={"PUT"})
+     *
+     * @param SystemService $systemService
+     * @param PluginService $pluginService
+     * @param string $code
      *
      * @return JsonResponse
      *
@@ -36,6 +49,7 @@ class InstallPluginController extends InstallController
      */
     public function pluginEnable(SystemService $systemService, PluginService $pluginService, $code)
     {
+        $this->isTokenValid();
         // トランザクションチェックファイルの有効期限を確認する
         if (!$this->isValidTransaction()) {
             throw new NotFoundHttpException();
@@ -64,6 +78,8 @@ class InstallPluginController extends InstallController
                     ob_end_flush();
                 }
             }
+
+            $this->cacheUtil->clearCache();
             return $this->json(['success' => true, 'log' => $log]);
         } else {
             return $this->json(['success' => false, 'log' => $log]);
@@ -71,26 +87,24 @@ class InstallPluginController extends InstallController
     }
 
     /**
-     * プラグインを有効にします。
+     * トランザクションファイルを削除し, 管理画面に遷移します.
      *
-     * @Route("/install/cache/clear", name="install_cache_clear")
+     * @Route("/install/plugin/redirect", name="install_plugin_redirect")
      *
-     * @return JsonResponse
+     * @return RedirectResponse
      */
-    public function cacheClear(CacheUtil $cacheUtil)
+    public function redirectAdmin()
     {
-        // トランザクションチェックファイルの有効期限を確認する
-        if (!$this->isValidTransaction()) {
-            throw new NotFoundHttpException();
-        }
-
-        $cacheUtil->clearCache();
+        $this->cacheUtil->clearCache();
 
         // トランザクションファイルを削除する
         $projectDir = $this->getParameter('kernel.project_dir');
-        unlink($projectDir.parent::TRANSACTION_CHECK_FILE);
+        $transaction = $projectDir.parent::TRANSACTION_CHECK_FILE;
+        if (file_exists($transaction)) {
+            unlink($transaction);
+        }
 
-        return $this->json(['success' => true]);
+        return $this->redirectToRoute('admin_homepage');
     }
 
     /**
