@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileControllerTest extends AbstractAdminWebTestCase
@@ -175,6 +176,61 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertTrue(file_exists($this->getUserDataDir().'/aaa.html'));
         $this->assertTrue(file_exists($this->getUserDataDir().'/bbb.html'));
+    }
+
+    public function testUploadIgnoreFiles()
+    {
+        $php = $this->getUserDataDir().'/../test.php';
+        touch($php);
+
+        $dot = $this->getUserDataDir().'/../.dotfile';
+        touch($dot);
+
+        $phpfile = new UploadedFile(
+            realpath($php),          // file path
+            'test.php',         // original name
+            'x-php',        // mimeType
+            null,               // file size
+            null,               // error
+            true                // test mode
+        );
+
+        $dotfile = new UploadedFile(
+            realpath($dot),          // file path
+            '.dotfile',         // original name
+            'text/plain',        // mimeType
+            null,               // file size
+            null,               // error
+            true                // test mode
+        );
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_content_file'),
+            [
+                'form' => [
+                    '_token' => 'dummy',
+                    'create_file' => '',
+                    'file' => [$phpfile, $dotfile],
+                ],
+                'mode' => 'upload',
+                'now_dir' => '/',
+            ],
+            ['file' => [$phpfile, $dotfile]]
+        );
+
+        $messages = $crawler->filter('p.errormsg')->each(function (Crawler $node) {
+            return $node->text();
+        });
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertContains('phpファイルはアップロードできません。', $messages);
+        $this->assertContains('.で始まるファイルはアップロードできません。', $messages);
+        $this->assertFalse(file_exists($this->getUserDataDir().'/test.php'));
+        $this->assertFalse(file_exists($this->getUserDataDir().'/.dotfile'));
+
+        unlink($php);
+        unlink($dot);
     }
 
     protected function getUserDataDir()
