@@ -5538,6 +5538,42 @@ SP フォーストで記述する。
 Twitter Bootstrap デフォルト準拠
  */
 /*
+最近チェックした商品
+
+「最近チェックした商品」ブロックのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.9.1
+*/
+.ec-browsingHistoryRole {
+  padding: 40px 0; }
+.ec-browsingHistoryRole .ec-browsingHistoryRole__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; }
+.ec-browsingHistoryRole .ec-browsingHistoryRole__listItem {
+    margin-bottom: 4%;
+    width: 48%;
+    height: auto; }
+.ec-browsingHistoryRole .ec-browsingHistoryRole__listItem a {
+      color: black; }
+.ec-browsingHistoryRole .ec-browsingHistoryRole__listItemTitle {
+    margin: 8px 0;
+    font-size: 14px;
+    font-weight: bold; }
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
 検索ラベル
 
 商品一覧 ヘッダー部 に関する Project コンポーネントを定義します。
@@ -7839,6 +7875,18 @@ Styleguide 22.1
         line-height: 1.8; }
       .ec-newsRole__newsItem.is_active .ec-newsRole__newsDescription {
         margin: 20px 0 0; }
+    .ec-browsingHistoryRole {
+      padding: 60px 0; }
+      .ec-browsingHistoryRole .ec-browsingHistoryRole__list {
+        flex-wrap: nowrap;
+        justify-content: flex-start; }
+      .ec-browsingHistoryRole .ec-browsingHistoryRole__listItem {
+        margin-bottom: 15px;
+        width: calc((100% - 30px * 5) / 6); }
+        .ec-browsingHistoryRole .ec-browsingHistoryRole__listItem:not(:last-of-type) {
+          margin-right: 30px; }
+      .ec-browsingHistoryRole .ec-browsingHistoryRole__listItemTitle {
+        margin: 20px 0 10px; }
     .ec-searchnavRole {
       margin: 0 auto;
       padding-left: 20px;

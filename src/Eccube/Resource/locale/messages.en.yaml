@@ -129,6 +129,8 @@ front.block.news.title__en: WHAT'S NEW
 front.block.news.title__ja: What's New
 front.block.news.read_more: More
 front.block.news.see_details: Read details
+front.block.browsing_history.title__en: 'BROWSING HISTORY'
+front.block.browsing_history.title__ja: 'Browsing History'
 front.block.login.customer_registration: Sign up
 front.block.login.mypage: My Account
 front.block.login.favorite: Favorites

@@ -1,0 +1,65 @@
+@import "../mixins/media";
+@import "../mixins/clearfix";
+
+/*
+最近チェックした商品
+
+「最近チェックした商品」ブロックのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.9.1
+*/
+
+.ec-browsingHistoryRole {
+  padding: 40px 0;
+
+  @include media_desktop {
+    padding: 60px 0;
+  }
+
+  & &__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    @include media_desktop {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+    }
+  }
+
+  & &__listItem {
+    margin-bottom: 4%;
+    width: 48%;
+    height: auto;
+
+    @include media_desktop {
+      margin-bottom: 15px;
+      width: calc((100% - 30px * 5) / 6); // gutter: 30px * 5
+      &:not(:last-of-type) {
+        margin-right: 30px;
+      }
+    }
+
+    a {
+      color: black;
+    }
+  }
+
+  & &__listItemTitle {
+    margin: 8px 0;
+    font-size: 14px;
+    font-weight: bold;
+
+    @include media_desktop {
+      margin: 20px 0 10px;
+    }
+  }
+}

@@ -12,6 +12,7 @@
  */
 
 use Codeception\Util\Fixtures;
+use Page\Front\ProductDetailPage;
 use Page\Front\TopPage;
 
 /**
@@ -178,5 +179,34 @@ class EF01TopCest
         // カテゴリに分類されている商品のみ表示される
         $I->dontSee('チェリーアイスサンド', '.ec-topicpath');
         $I->see('彩のジェラートCUBE', '.ec-shelfGrid');
+    }
+
+    public function topページ_最近チェックした商品(\AcceptanceTester $I)
+    {
+        $I->wantTo('EF0101-UC04-T01 TOPページ 最近チェックした商品ブロック');
+
+        // 商品1 にアクセス
+        // 初期状態では、最近チェックした商品ブロックは表示されない
+        ProductDetailPage::go($I, 1);
+        $I->dontsee('最近チェックしたアイテム', '.ec-layoutRole__contentBottom');
+
+        // 商品2 にアクセス
+        // 商品1 が、最近チェックした商品として表示されていることを確認
+        ProductDetailPage::go($I, 2);
+        $I->see('最近チェックしたアイテム', '.ec-layoutRole__contentBottom');
+        $I->see('彩のジェラートCUBE', '#ex-block-browsingHistory');
+
+        // 商品1 にアクセス
+        // 商品2 が、最近チェックした商品として表示されていることを確認
+        // 商品1 は表示されないことを確認 (閲覧中ページと同じ商品は表示しない)
+        ProductDetailPage::go($I, 1);
+        $I->see('チェリーアイスサンド', '#ex-block-browsingHistory');
+        $I->dontsee('彩のジェラートCUBE', '#ex-block-browsingHistory');
+
+        // TOP にアクセス
+        // 商品1と2 が、最近チェックした商品として表示されていることを確認
+        TopPage::go($I);
+        $I->see('彩のジェラートCUBE', '#ex-block-browsingHistory');
+        $I->see('チェリーアイスサンド', '#ex-block-browsingHistory');
     }
 }

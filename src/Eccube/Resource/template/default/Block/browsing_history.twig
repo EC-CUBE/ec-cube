@@ -1,0 +1,85 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% block javascript %}
+<script>
+$(function() {
+    var localStorageKey = 'block_browsing_history';
+    var display_limit = 6;
+    var product = null;
+
+{% if app.request.attributes.get('_route') == 'product_detail' %}
+    product = {
+        id: {{ Product.id }},
+        name: "{{ Product.name }}",
+        url: "{{ url('product_detail', {'id': Product.id}) }}",
+        image: "{{ asset(Product.main_list_image|no_image_product, 'save_image') }}"
+    };
+{% endif %}
+
+    var getHistory = function () {
+        try {
+            return JSON.parse(localStorage.getItem(localStorageKey)) || [];
+        }
+        catch (e) {
+            localStorage.setItem(localStorageKey, null);
+            return [];
+        }
+    }
+
+    var updateHistory = function (history, product) {
+        var newHistory = [product];
+        for (var i in history) {
+            if (history[i].id && history[i].id !== product.id) {
+                newHistory.push(history[i])
+            }
+        }
+        newHistory = newHistory.slice(0, display_limit + 1);
+        localStorage.setItem(localStorageKey, JSON.stringify(newHistory));
+        return newHistory;
+    };
+
+    var appendHtml = function (history, product) {
+        var html = '';
+        var counter = 0;
+        for (var i in history) {
+            if (product && history[i].id === product.id) {
+                continue;
+            }
+            if (++counter > display_limit) {
+                break;
+            }
+            html += '<div class="ec-browsingHistoryRole__listItem"><a href="' + history[i].url + '"><img src="' + history[i].image + '"><p class="ec-browsingHistoryRole__listItemTitle">' + history[i].name + '</p></a></div>';
+        }
+        if (html) {
+            $('#ex-block-browsingHistory_products').append(html);
+            $('#ex-block-browsingHistory').css('display', 'block');
+        }
+    }
+
+    var history = getHistory();
+    if (product) {
+        history = updateHistory(history, product);
+    }
+    appendHtml(history, product);
+});
+</script>
+{% endblock %}
+
+<div id="ex-block-browsingHistory" class="ec-role" style="display:none">
+    <div class="ec-browsingHistoryRole">
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">{{ 'front.block.browsing_history.title__en'|trans }}</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">{{ 'front.block.browsing_history.title__ja'|trans }}</span>
+        </div>
+        <div id="ex-block-browsingHistory_products" class="ec-browsingHistoryRole__list"></div>
+    </div>
+</div>
