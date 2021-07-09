@@ -190,12 +190,12 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+        $this->assertContains('＜Sanitize＆＞', $Message->getBody(), 'テキストメールがサニタイズされている');
 
         $MultiPart = $Message->getChildren();
         foreach ($MultiPart as $Part) {
             if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
+                $this->assertContains('＜Sanitize＆＞', $Part->getBody(), 'HTMLメールがサニタイズされている');
             }
         }
     }
@@ -274,5 +274,39 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->expected = 404;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
+    }
+
+    public function testConfirmWithDangerousText()
+    {
+        $formData = $this->createFormData();
+        $formData['company_name'] = '<script>alert()</script>';
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('entry'),
+            [
+                'entry' => $formData,
+                'mode' => 'confirm',
+            ]
+        );
+
+        self::assertEquals('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        self::assertEquals('＜script＞alert()＜/script＞', $crawler->filter('#entry_company_name')->attr('value'));
+    }
+
+    public function testConfirmWithAmpersand()
+    {
+        $formData = $this->createFormData();
+        $formData['company_name'] = '&';
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('entry'),
+            [
+                'entry' => $formData,
+                'mode' => 'confirm',
+            ]
+        );
+
+        self::assertEquals('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        self::assertEquals('＆', $crawler->filter('#entry_company_name')->attr('value'));
     }
 }
