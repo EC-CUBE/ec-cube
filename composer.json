@@ -186,23 +186,12 @@
     },
     "config": {
         "platform": {
-            "php": "7.4.20"
+            "php": "7.1.3"
         },
         "preferred-install": {
             "*": "dist"
         },
         "optimize-autoloader": true,
         "sort-packages": true
-    },
-    "repositories": {
-        "eccube": {
-            "type": "composer",
-            "url": "https://package-api-41beta.ec-cube.net",
-            "options": {
-                "http": {
-                    "header": ["X-ECCUBE-KEY: abcxyzABCXYZ123098"]
-                }
-            }
-        }
     }
 }
