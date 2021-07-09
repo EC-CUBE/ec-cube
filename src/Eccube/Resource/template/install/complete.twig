@@ -15,33 +15,59 @@ file that was distributed with this source code.
 {% block script %}
     <script>
      $(function() {
-         $('.btn-toggle').on('click', function () {
-             var btn = $(this).find('.btn');
-             btn.toggleClass('active');
-             btn.toggleClass('btn-success');
-             btn.toggleClass('btn-default');
-             var statusText = $(this).find('.btn-success').text();
-             var modal = $('#PluginProgressModal');
-             modal.modal();
-             var progress = $('div.progress', modal).show();
-             var progress_message = $('#progress_message');
-             modal.find('.modal-footer').hide();
-             progress_message.text('プラグインを' + statusText + '化しています...');
-             $.ajax(
-                 {
-                     headers: {
-                         'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content')
-                     },
-                     url: $(this).data('url'),
-                     type: 'put'
-                 }
-             )
-              .done(
-                  function(data, textStatus, jqXHR) {
-                      progress.hide();
-                      modal.modal('hide');
-              }).fail(
-                  function(jqXHR, textStatus, errorThrown) {
+         var is_sqlite = {% if is_sqlite %}true{% else %}false{% endif %};
+         var plugin_content = $('#plugins').children().remove();
+         $.get({ url: '{{ url('install_plugins') }}' },
+               function (data) {
+                   data.forEach(function (plugin) {
+                       var content = $(plugin_content).clone();
+                       var url = '{{ url('install_plugin_enable', { 'code': '__code__' }) }}';
+                       content.find('.btn-toggle').data('url', url.replace(/__code__/, encodeURIComponent(plugin.code)));
+                       content.find('.plugin_name').text(plugin.name);
+                       if (plugin.enabled) {
+                           content.find('.btn-enable')
+                                  .addClass('btn-success')
+                                  .addClass('active');
+                           content.find('.btn-disable')
+                                  .addClass('btn-default')
+                       } else {
+                           content.find('.btn-enable')
+                                  .addClass('btn-default');
+                           content.find('.btn-disable')
+                                  .addClass('btn-success')
+                                  .addClass('active');
+                       }
+                       if (is_sqlite && plugin.code == 'Api') {
+                           content.find('.btn-toggle').text('SQLite3 には対応していません');
+                       }
+                       content.appendTo('#plugins');
+                   });
+               }
+         ).then(function () {
+             $('.btn-toggle').on('click', function () {
+                 var btn = $(this).find('.btn');
+                 btn.toggleClass('active');
+                 btn.toggleClass('btn-success');
+                 btn.toggleClass('btn-default');
+                 var statusText = $(this).find('.btn-success').text();
+                 var modal = $('#PluginProgressModal');
+                 modal.modal();
+                 var progress = $('div.progress', modal).show();
+                 var progress_message = $('#progress_message');
+                 modal.find('.modal-footer').hide();
+                 progress_message.text('プラグインを' + statusText + '化しています...');
+                 $.ajax(
+                     {
+                         headers: {
+                             'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content')
+                         },
+                         url: $(this).data('url'),
+                         type: 'put'
+                     }
+                 ).done(function(data, textStatus, jqXHR) {
+                     progress.hide();
+                     modal.modal('hide');
+                  }).fail(function(jqXHR, textStatus, errorThrown) {
                       modal.find('.modal-footer').show();
                       btn.toggleClass('active');
                       btn.toggleClass('btn-success');
@@ -54,8 +80,8 @@ file that was distributed with this source code.
                       } else {
                           progress_message.text(statusText + '化に失敗しました。');
                       }
-                  }
-              );
+                  });
+             })
          });
      });
     </script>
@@ -74,22 +100,16 @@ file that was distributed with this source code.
                     <p><small>あとから管理画面→オーナーズストア→プラグイン一覧より有効化も可能です</small></p>
                     <div class="card-body p-0">
                         <table class="table table-sm">
-                            <tbody>
-                                {% for Plugin in Plugins %}
+                            <tbody id="plugins">
                                 <tr>
-                                    <td class="text-left pl-3">{{ Plugin.name }}</td>
-                                    <td class="align-middle">
-                                        <div class="btn-group btn-toggle" data-url="{{ url('install_plugin_enable', {'code': Plugin.code }) }}">
-                                            {% if Plugin.code == 'Api' and is_sqlite %}
-                                                SQLite3 には対応していません
-                                            {% else %}
-                                                <button class="btn btn-xs {% if Plugin.enabled == true %}btn-success active{% else %}btn-default{% endif %}">有効</button>
-                                                <button class="btn btn-xs {% if Plugin.enabled == false %}btn-success active{% else %}btn-default{% endif %}">無効</button>
-                                            {% endif %}
+                                    <td class="text-left pl-3 plugin_name">__name__</td>
+                                    <td class="align-middle plugin_status">
+                                        <div class="btn-group btn-toggle" data-url="__url__">
+                                            <button class="btn btn-xs btn-enable">有効</button>
+                                            <button class="btn btn-xs btn-disable">無効</button>
                                         </div>
                                     </td>
                                 </tr>
-                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

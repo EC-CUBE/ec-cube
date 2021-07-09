@@ -30,6 +30,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Entity\Plugin;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
@@ -103,16 +104,10 @@ class InstallController extends AbstractController
      */
     protected $cacheUtil;
 
-    /**
-     * @var PluginRepository
-     */
-    protected $pluginRepository;
-
-    public function __construct(PasswordEncoder $encoder, CacheUtil $cacheUtil, PluginRepository $pluginRepository)
+    public function __construct(PasswordEncoder $encoder, CacheUtil $cacheUtil)
     {
         $this->encoder = $encoder;
         $this->cacheUtil = $cacheUtil;
-        $this->pluginRepository = $pluginRepository;
     }
 
     /**
@@ -508,14 +503,10 @@ class InstallController extends AbstractController
         // 有効化URLのトランザクションチェックファイルを生成する
         file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10));
 
-        // プレインストールプラグインを取得
-        $Plugins = $this->pluginRepository->findBy([], ['code' => 'ASC']);
-
         $this->cacheUtil->clearCache('prod');
 
         return [
             'admin_url' => $adminUrl,
-            'Plugins' => $Plugins,
             'is_sqlite' => strpos('sqlite', $databaseUrl) !== false
         ];
     }
