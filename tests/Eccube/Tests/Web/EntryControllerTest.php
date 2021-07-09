@@ -279,7 +279,7 @@ class EntryControllerTest extends AbstractWebTestCase
     public function testConfirmWithDangerousText()
     {
         $formData = $this->createFormData();
-        $formData['address']['addr01'] = '<script>alert()</script>';
+        $formData['company_name'] = '<script>alert()</script>';
 
         $crawler = $this->client->request('POST',
             $this->generateUrl('entry'),
@@ -289,9 +289,8 @@ class EntryControllerTest extends AbstractWebTestCase
             ]
         );
 
-        self::assertEquals('新規会員登録', $crawler->filter('.ec-pageHeader > h1')->text());
-        self::assertCount(1, $crawler->filter('.ec-errorMessage'));
-        self::assertTrue($this->client->getResponse()->isSuccessful());
+        self::assertEquals('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        self::assertEquals('＜script＞alert()＜/script＞', $crawler->filter('#entry_company_name')->attr('value'));
     }
 
     public function testConfirmWithAmpersand()
