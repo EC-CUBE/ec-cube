@@ -125,12 +125,12 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertNotContains('<Sanitize&>', $Message->getBody(), 'テキストメールがサニタイズされている');
+        $this->assertContains('＜Sanitize＆＞', $Message->getBody(), 'テキストメールがサニタイズされている');
 
         $MultiPart = $Message->getChildren();
         foreach ($MultiPart as $Part) {
             if ($Part->getContentType() == 'text/html') {
-                $this->assertNotContains('<Sanitize&>', $Part->getBody(), 'HTMLメールがサニタイズされている');
+                $this->assertContains('＜Sanitize＆＞', $Part->getBody(), 'HTMLメールがサニタイズされている');
             }
         }
     }
