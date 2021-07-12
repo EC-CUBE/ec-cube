@@ -76,8 +76,8 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_name'], 'admintest');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
         $I->fillField(['id' => 'admin_member_login_id'], 'admintest');
-        $I->fillField(['id' => 'admin_member_password_first'], 'password');
-        $I->fillField(['id' => 'admin_member_password_second'], 'password');
+        $I->fillField(['id' => 'admin_member_plain_password_first'], 'password');
+        $I->fillField(['id' => 'admin_member_plain_password_second'], 'password');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#member_form .c-conversionArea__container button');
@@ -104,8 +104,8 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_name'], 'admintest2');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
         $I->fillField(['id' => 'admin_member_login_id'], 'admintest');
-        $I->fillField(['id' => 'admin_member_password_first'], 'password');
-        $I->fillField(['id' => 'admin_member_password_second'], 'password');
+        $I->fillField(['id' => 'admin_member_plain_password_first'], 'password');
+        $I->fillField(['id' => 'admin_member_plain_password_second'], 'password');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
