@@ -17,8 +17,15 @@ file that was distributed with this source code.
      $(function() {
          var is_sqlite = {% if is_sqlite %}true{% else %}false{% endif %};
          var plugin_content = $('#plugins').children().remove();
+         $('<tr><td>プラグインを読み込んでいます。しばらくお待ちください...</td></tr>').appendTo('#plugins');
+         $.ajaxSetup({
+             'headers': {
+                 'ECCUBE-CSRF-TOKEN': '{{ token }}'
+             }
+         });
          $.get({ url: '{{ url('install_plugins') }}' },
                function (data) {
+                   $('#plugins').children().remove();
                    data.forEach(function (plugin) {
                        var content = $(plugin_content).clone();
                        var url = '{{ url('install_plugin_enable', { 'code': '__code__' }) }}';
@@ -58,9 +65,6 @@ file that was distributed with this source code.
                  progress_message.text('プラグインを' + statusText + '化しています...');
                  $.ajax(
                      {
-                         headers: {
-                             'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content')
-                         },
                          url: $(this).data('url'),
                          type: 'put'
                      }

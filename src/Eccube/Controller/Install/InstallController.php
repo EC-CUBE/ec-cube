@@ -501,13 +501,15 @@ class InstallController extends AbstractController
         $this->removeSessionData($this->session);
 
         // 有効化URLのトランザクションチェックファイルを生成する
-        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10));
+        $token = StringUtil::random(32);
+        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10).':'.$token.':'.$databaseUrl);
 
         $this->cacheUtil->clearCache('prod');
 
         return [
             'admin_url' => $adminUrl,
-            'is_sqlite' => strpos('sqlite', $databaseUrl) !== false
+            'is_sqlite' => strpos($databaseUrl, 'sqlite') !== false,
+            'token' => $token
         ];
     }
 

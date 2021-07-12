@@ -58,7 +58,8 @@ class InstallPluginController extends InstallController
         }
 
         // トランザクションチェックファイルの有効期限を確認する
-        if (!$this->isValidTransaction()) {
+        $token = $request->headers->get('ECCUBE-CSRF-TOKEN');
+        if (!$this->isValidTransaction($token)) {
             throw new NotFoundHttpException();
         }
 
@@ -89,11 +90,9 @@ class InstallPluginController extends InstallController
             throw new BadRequestHttpException();
         }
 
-        // FIXME APP_ENV=install と別のセッションとなるため使用できない.他の実装を検討する
-        // $this->isTokenValid();
-
         // トランザクションチェックファイルの有効期限を確認する
-        if (!$this->isValidTransaction()) {
+        $token = $request->headers->get('ECCUBE-CSRF-TOKEN');
+        if (!$this->isValidTransaction($token)) {
             throw new NotFoundHttpException();
         }
 
@@ -154,7 +153,7 @@ class InstallPluginController extends InstallController
      *
      * @return bool
      */
-    public function isValidTransaction()
+    public function isValidTransaction($token)
     {
         $projectDir = $this->getParameter('kernel.project_dir');
         if (!file_exists($projectDir.parent::TRANSACTION_CHECK_FILE)) {
@@ -162,7 +161,11 @@ class InstallPluginController extends InstallController
         }
 
         $transaction_checker = file_get_contents($projectDir.parent::TRANSACTION_CHECK_FILE);
+        list($expire, $validToken) = explode(':', $transaction_checker);
+        if ($token !== $validToken) {
+            return false;
+        }
 
-        return $transaction_checker >= time();
+        return $expire >= time();
     }
 }
