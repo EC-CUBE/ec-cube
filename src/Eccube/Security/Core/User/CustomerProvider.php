@@ -48,7 +48,7 @@ class CustomerProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         $Customer = $this->customerRepository->findOneBy([
-            'email' => $username,
+            Customer::getUsernameField() => $username,
             'Status' => CustomerStatus::REGULAR,
         ]);
 

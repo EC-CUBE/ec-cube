@@ -310,12 +310,21 @@ if (!class_exists('\Eccube\Entity\Customer')) {
             return ['ROLE_USER'];
         }
 
+        public static function getUsernameField(): string
+        {
+            return property_exists(static::class, 'usernameField')
+                ? static::$usernameField
+                : 'email';
+        }
+
         /**
-         * {@inheritdoc}
+         * Get username.
+         *
+         * @return string
          */
         public function getUsername()
         {
-            return $this->email;
+            return $this->{static::getUsernameField()};
         }
 
         /**
@@ -1164,7 +1173,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
             // CustomerRepository::loadUserByUsername() で Status をチェックしているため、ここでは不要
             return serialize([
                 $this->id,
-                $this->email,
+                $this->getUsername(),
                 $this->password,
                 $this->salt,
             ]);
@@ -1187,7 +1196,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         {
             list(
                 $this->id,
-                $this->email,
+                $this->{static::getUsernameField()},
                 $this->password,
                 $this->salt) = unserialize($serialized);
         }
