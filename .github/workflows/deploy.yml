@@ -53,18 +53,18 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
-      - name: Install Plugins
-        env:
-          APP_ENV: 'prod'
-          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
-        run: |
-          bin/console eccube:composer:require "ec-cube/Api:^2.0"
-
-      - name: Pre Install Plugins
-        env:
-          PGPASSWORD: 'password'
-        run: psql eccube_db -h 127.0.0.1 -U postgres -c "select * from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
+#      - name: Install Plugins
+#        env:
+#          APP_ENV: 'prod'
+#          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+#          DATABASE_SERVER_VERSION: 11
+#        run: |
+#          bin/console eccube:composer:require "ec-cube/Api:^2.0"
+#
+#      - name: Pre Install Plugins
+#        env:
+#          PGPASSWORD: 'password'
+#        run: psql eccube_db -h 127.0.0.1 -U postgres -c "select * from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
 
       - name: Packaging
         working-directory: ../
