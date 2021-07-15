@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -26,15 +27,14 @@ class CacheController extends AbstractController
      * @Route("/%eccube_admin_route%/content/cache", name="admin_content_cache")
      * @Template("@admin/Content/cache.twig")
      */
-    public function index(Request $request, CacheUtil $cacheUtil)
+    public function index(Request $request, CacheUtil $cacheUtil, SystemService $systemService)
     {
         $builder = $this->formFactory->createBuilder(FormType::class);
         $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $path = $this->container->getParameter('eccube_content_maintenance_file_path');
-            file_put_contents($path, null);
+            $systemService->switchMaintenance(true);
 
             $cacheUtil->clearCache();
 

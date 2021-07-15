@@ -20,7 +20,7 @@ file that was distributed with this source code.
     $(function() {
         {% for message in app.flashes('eccube.admin.disable_maintenance') %}
         // メンテナンスモード解除
-        $.post("{{ url('admin_disable_maintenance', { 'mode': 'manual' }) }}");
+        $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}");
         {% endfor %}
     })
 </script>
