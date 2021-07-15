@@ -22,27 +22,36 @@ $(function() {
         var progress = $('div.progress', modal).show();
         $.ajax({url: currentPlugin['deleteUrl'], type: 'delete'}).then(
             function(data) {
-                message.text('削除が完了しました。');
-                $('#deleteLog').text(data.log);
-                $('#deleteLogPane').show();
-                progress.hide();
-                footer.show().find('button').toggle();
+                $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}").then(function() {
+                    message.text('削除が完了しました。');
+                    $('#deleteLog').text(data.log);
+                    $('#deleteLogPane').show();
+                    progress.hide();
+                    footer.show().find('button').toggle();
+                });
             },
             function(res) {
-                if (res.responseJSON.message) {
-                    message.text(res.responseJSON.message);
-                } else {
-                    message.text('削除に失敗しました。');
-                }
-                if (res.responseJSON.log) {
-                    $('#deleteLog').text(res.responseJSON.log);
-                }
-                progress.hide();
-                $('#deleteLogPane').show();
-                footer.show().find('button').toggle();
+                $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}").then(function() {
+                    if (res.responseJSON.message) {
+                        message.text(res.responseJSON.message);
+                    } else {
+                        message.text('削除に失敗しました。');
+                    }
+                    if (res.responseJSON.log) {
+                        $('#deleteLog').text(res.responseJSON.log);
+                    }
+                    $('#deleteLogPane').show();
+                    progress.hide();
+                    footer.show().find('button').toggle();
+                });
             }
         );
     });
+
+    {% for message in app.flashes('eccube.admin.disable_maintenance') %}
+        // メンテナンスモード解除
+        $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}");
+    {% endfor %}
 });
 </script>
 {% if Plugins|length > 0 %}

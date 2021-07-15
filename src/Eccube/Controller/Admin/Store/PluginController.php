@@ -277,13 +277,8 @@ class PluginController extends AbstractController
         if (!$request->query->has('maintenance_mode')) {
             // プラグイン管理の有効ボタンを押したとき
             $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
-            // TERMINATE時のイベントを設定
-            $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
-        } else {
-            // プラグイン管理のアップデートを実行したとき
-            // TERMINATE時のイベントを設定
-            $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE_UPDATE);
         }
+
         $cacheUtil->clearCache();
 
         $log = null;
@@ -318,6 +313,8 @@ class PluginController extends AbstractController
                     } else {
                         $this->addError($message, 'admin');
 
+                        $this->addFlash('eccube.admin.disable_maintenance', '');
+
                         return $this->redirectToRoute('admin_store_plugin');
                     }
                 }
@@ -343,6 +340,8 @@ class PluginController extends AbstractController
             return $this->json(['success' => true, 'log' => $log]);
         } else {
             $this->addSuccess(trans('admin.store.plugin.enable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
+            $this->addFlash('eccube.admin.disable_maintenance', '');
 
             return $this->redirectToRoute('admin_store_plugin');
         }
@@ -372,8 +371,6 @@ class PluginController extends AbstractController
         } else {
             // プラグイン管理で無効ボタンを押したとき
             $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
-            // TERMINATE時のイベントを設定
-            $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
         }
 
         $cacheUtil->clearCache();
@@ -393,6 +390,8 @@ class PluginController extends AbstractController
                     return $this->json(['message' => $message], 400);
                 } else {
                     $this->addError($message, 'admin');
+
+                    $this->addFlash('eccube.admin.disable_maintenance', '');
 
                     return $this->redirectToRoute('admin_store_plugin');
                 }
@@ -421,6 +420,8 @@ class PluginController extends AbstractController
             return $this->json(['success' => true, 'log' => $log]);
         } else {
             $this->addSuccess(trans('admin.store.plugin.disable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
+            $this->addFlash('eccube.admin.disable_maintenance', '');
 
             return $this->redirectToRoute('admin_store_plugin');
         }
