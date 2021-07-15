@@ -33,7 +33,12 @@ class CacheController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $path = $this->container->getParameter('eccube_content_maintenance_file_path');
+            file_put_contents($path, null);
+
             $cacheUtil->clearCache();
+
+            $this->addFlash('eccube.admin.disable_maintenance', '');
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
         }
