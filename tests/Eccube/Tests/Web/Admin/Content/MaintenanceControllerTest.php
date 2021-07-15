@@ -15,9 +15,6 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
-/**
- * @group cache-clear
- */
 class MaintenanceControllerTest extends AbstractAdminWebTestCase
 {
     private $maintenance_file_path;
