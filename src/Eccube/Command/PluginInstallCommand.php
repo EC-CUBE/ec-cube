@@ -58,5 +58,7 @@ class PluginInstallCommand extends Command
         }
 
         $io->error('path or code is required.');
+
+        return 1;
     }
 }

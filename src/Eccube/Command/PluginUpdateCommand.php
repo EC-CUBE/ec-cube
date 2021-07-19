@@ -52,5 +52,7 @@ class PluginUpdateCommand extends Command
         $this->clearCache($io);
 
         $io->success('Updated.');
+
+        return 0;
     }
 }

@@ -46,6 +46,7 @@ use Eccube\Service\TaxRuleService;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -413,7 +414,7 @@ class EditController extends AbstractController
      * @param Request $request
      * @param integer $page_no
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return array
      */
     public function searchCustomerHtml(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
@@ -497,6 +498,8 @@ class EditController extends AbstractController
                 'pagination' => $pagination,
             ];
         }
+
+        throw new BadRequestHttpException();
     }
 
     /**
@@ -560,6 +563,8 @@ class EditController extends AbstractController
 
             return $this->json($data);
         }
+
+        throw new BadRequestHttpException();
     }
 
     /**
@@ -685,5 +690,7 @@ class EditController extends AbstractController
                 'OrderItemTypes' => $OrderItemTypes,
             ];
         }
+
+        throw new BadRequestHttpException();
     }
 }

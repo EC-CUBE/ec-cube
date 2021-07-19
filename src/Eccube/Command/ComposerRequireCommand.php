@@ -47,5 +47,7 @@ class ComposerRequireCommand extends Command
             $packageName .= ':'.$input->getArgument('version');
         }
         $this->composerService->execRequire($packageName, $output);
+
+        return 0;
     }
 }

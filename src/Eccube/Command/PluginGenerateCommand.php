@@ -120,6 +120,8 @@ class PluginGenerateCommand extends Command
         $this->createGithubActions($pluginDir);
 
         $this->io->success(sprintf('Plugin was successfully created: %s %s %s', $name, $code, $version));
+
+        return 0;
     }
 
     public function validateCode($code)

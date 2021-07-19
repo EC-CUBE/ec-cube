@@ -115,7 +115,7 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
                 }
             }, $generateAllFiles, $tmpProxyOutputDir, $tmpMetaDataOutputDir);
 
-            return $result;
+            return (int) $result;
         } finally {
             $this->removeOutputDir($tmpMetaDataOutputDir);
             $this->removeOutputDir($tmpProxyOutputDir);

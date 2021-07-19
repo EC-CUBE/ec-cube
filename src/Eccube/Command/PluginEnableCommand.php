@@ -39,14 +39,14 @@ class PluginEnableCommand extends Command
         if (empty($code)) {
             $io->error('code is required.');
 
-            return;
+            return 1;
         }
 
         $plugin = $this->pluginRepository->findByCode($code);
         if (is_null($plugin)) {
             $io->error("Plugin `$code` is not found.");
 
-            return;
+            return 1;
         }
 
         if (!$plugin->isInitialized()) {
@@ -57,5 +57,7 @@ class PluginEnableCommand extends Command
         $this->clearCache($io);
 
         $io->success('Plugin Enabled.');
+
+        return 0;
     }
 }
