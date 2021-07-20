@@ -145,7 +145,7 @@ class InstallPluginController extends InstallController
             unlink($transaction);
         }
 
-        return $this->redirectToRoute('admin_homepage');
+        return $this->redirectToRoute('admin_login');
     }
 
     /**
