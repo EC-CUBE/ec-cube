@@ -26,6 +26,10 @@ file that was distributed with this source code.
          $.get({ url: '{{ url('install_plugins') }}' },
                function (data) {
                    $('#plugins').children().remove();
+                   if (data.length === 0) {
+                       $('#plugins_switch').hide();
+                       return;
+                   }
                    data.forEach(function (plugin) {
                        var content = $(plugin_content).clone();
                        var url = '{{ url('install_plugin_enable', { 'code': '__code__' }) }}';
@@ -76,7 +80,7 @@ file that was distributed with this source code.
                       btn.toggleClass('active');
                       btn.toggleClass('btn-success');
                       btn.toggleClass('btn-default');
-                      console.log(jqXHR);;
+                      console.log(jqXHR);
                       console.log(textStatus);
                       console.log(errorThrown);
                       if (jqXHR.status == 404) {
@@ -99,7 +103,7 @@ file that was distributed with this source code.
                 <div class="page-header">
                     <h1>{{ 'install.completed'|trans }}</h1>
                 </div>
-                <div class="column">
+                <div class="column" id="plugins_switch">
                     <h2>以下のプラグインは有効化してすぐにご利用可能です</h2>
                     <p><small>あとから管理画面→オーナーズストア→プラグイン一覧より有効化も可能です</small></p>
                     <div class="card-body p-0">
