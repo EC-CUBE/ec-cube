@@ -502,7 +502,7 @@ class InstallController extends AbstractController
 
         // 有効化URLのトランザクションチェックファイルを生成する
         $token = StringUtil::random(32);
-        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10).':'.$token.':'.$databaseUrl);
+        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10).':'.$token);
 
         $this->cacheUtil->clearCache('prod');
 
