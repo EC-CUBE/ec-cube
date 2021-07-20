@@ -30,10 +30,12 @@ use Eccube\Controller\AbstractController;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Entity\Plugin;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
+use Eccube\Repository\PluginRepository;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
@@ -499,12 +501,15 @@ class InstallController extends AbstractController
         $this->removeSessionData($this->session);
 
         // 有効化URLのトランザクションチェックファイルを生成する
-        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10));
+        $token = StringUtil::random(32);
+        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10).':'.$token);
 
         $this->cacheUtil->clearCache('prod');
 
         return [
             'admin_url' => $adminUrl,
+            'is_sqlite' => strpos($databaseUrl, 'sqlite') !== false,
+            'token' => $token
         ];
     }
 

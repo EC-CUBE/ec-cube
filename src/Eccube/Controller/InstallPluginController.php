@@ -16,32 +16,88 @@ namespace Eccube\Controller;
 use Eccube\Controller\Install\InstallController;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
+use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class InstallPluginController extends InstallController
 {
+    /** @var CacheUtil */
+    protected $cacheUtil;
+
+    /** @var PluginRepository */
+    protected $pluginReposigoty;
+
+    public function __construct(CacheUtil $cacheUtil, PluginRepository $pluginRespository)
+    {
+        $this->cacheUtil = $cacheUtil;
+        $this->pluginReposigoty = $pluginRespository;
+    }
+
     /**
-     * プラグインを有効にします。
+     * 有効化可能なプラグイン一覧を返します.
      *
-     * @Route("/install/plugin/enable", name="install_plugin_enable")
+     * @Route("/install/plugins", name="install_plugins",  methods={"GET"})
+     *
+     * @param Request $request
+     * @param string $code
      *
      * @return JsonResponse
-     *
-     * @throws PluginException
      */
-    public function pluginEnable(SystemService $systemService, PluginService $pluginService)
+    public function plugins(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
         // トランザクションチェックファイルの有効期限を確認する
-        if (!$this->isValidTransaction()) {
+        $token = $request->headers->get('ECCUBE-CSRF-TOKEN');
+        if (!$this->isValidTransaction($token)) {
             throw new NotFoundHttpException();
         }
 
-        $Plugin = $this->entityManager->getRepository(Plugin::class)->findOneBy(['code' => 'Api']);
+        $Plugins = $this->pluginReposigoty->findAll();
+
+        return $this->json($Plugins);
+    }
+
+    /**
+     * プラグインを有効にします。
+     *
+     * @Route("/install/plugin/{code}/enable", requirements={"code" = "\w+"}, name="install_plugin_enable",  methods={"PUT"})
+     *
+     * @param Request $request
+     * @param SystemService $systemService
+     * @param PluginService $pluginService
+     * @param string $code
+     *
+     * @return JsonResponse
+     *
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     * @throws PluginException
+     */
+    public function pluginEnable(Request $request, SystemService $systemService, PluginService $pluginService, $code)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        // トランザクションチェックファイルの有効期限を確認する
+        $token = $request->headers->get('ECCUBE-CSRF-TOKEN');
+        if (!$this->isValidTransaction($token)) {
+            throw new NotFoundHttpException();
+        }
+
+        /** @var Plugin $Plugin */
+        $Plugin = $this->entityManager->getRepository(Plugin::class)->findOneBy(['code' => $code]);
         $log = null;
         // プラグインが存在しない場合は無視する
         if ($Plugin !== null) {
@@ -51,41 +107,45 @@ class InstallPluginController extends InstallController
             try {
                 ob_start();
 
-                $pluginService->installWithCode($Plugin->getCode());
+                if ($Plugin->isEnabled()) {
+                    $pluginService->disable($Plugin);
+                } else {
+                    $pluginService->enable($Plugin);
+                }
 
-                $pluginService->enable($Plugin);
             } finally {
                 $log = ob_get_clean();
                 while (ob_get_level() > 0) {
                     ob_end_flush();
                 }
             }
-        }
 
-        return $this->json(['success' => true, 'log' => $log]);
+            $this->cacheUtil->clearCache();
+            return $this->json(['success' => true, 'log' => $log]);
+        } else {
+            return $this->json(['success' => false, 'log' => $log]);
+        }
     }
 
     /**
-     * プラグインを有効にします。
+     * トランザクションファイルを削除し, 管理画面に遷移します.
      *
-     * @Route("/install/cache/clear", name="install_cache_clear")
+     * @Route("/install/plugin/redirect", name="install_plugin_redirect")
      *
-     * @return JsonResponse
+     * @return RedirectResponse
      */
-    public function cacheClear(CacheUtil $cacheUtil)
+    public function redirectAdmin()
     {
-        // トランザクションチェックファイルの有効期限を確認する
-        if (!$this->isValidTransaction()) {
-            throw new NotFoundHttpException();
-        }
-
-        $cacheUtil->clearCache();
+        $this->cacheUtil->clearCache();
 
         // トランザクションファイルを削除する
         $projectDir = $this->getParameter('kernel.project_dir');
-        unlink($projectDir.parent::TRANSACTION_CHECK_FILE);
+        $transaction = $projectDir.parent::TRANSACTION_CHECK_FILE;
+        if (file_exists($transaction)) {
+            unlink($transaction);
+        }
 
-        return $this->json(['success' => true]);
+        return $this->redirectToRoute('admin_login');
     }
 
     /**
@@ -93,7 +153,7 @@ class InstallPluginController extends InstallController
      *
      * @return bool
      */
-    public function isValidTransaction()
+    public function isValidTransaction($token)
     {
         $projectDir = $this->getParameter('kernel.project_dir');
         if (!file_exists($projectDir.parent::TRANSACTION_CHECK_FILE)) {
@@ -101,7 +161,11 @@ class InstallPluginController extends InstallController
         }
 
         $transaction_checker = file_get_contents($projectDir.parent::TRANSACTION_CHECK_FILE);
+        list($expire, $validToken) = explode(':', $transaction_checker);
+        if ($token !== $validToken) {
+            return false;
+        }
 
-        return $transaction_checker >= time();
+        return $expire >= time();
     }
 }
