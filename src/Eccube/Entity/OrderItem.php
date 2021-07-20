@@ -18,7 +18,7 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxDisplayType;
 
-if (!class_exists('\Eccube\Entity\OrderItem')) {
+if (!class_exists('\Eccube\Entity\OrderItem', false)) {
     /**
      * OrderItem
      *

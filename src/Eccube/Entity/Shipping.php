@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
-if (!class_exists('\Eccube\Entity\Shipping')) {
+if (!class_exists('\Eccube\Entity\Shipping', false)) {
     /**
      * Shipping
      *

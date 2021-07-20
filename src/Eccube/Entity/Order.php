@@ -20,7 +20,7 @@ use Eccube\Entity\Master\TaxType;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
-if (!class_exists('\Eccube\Entity\Order')) {
+if (!class_exists('\Eccube\Entity\Order', false)) {
     /**
      * Order
      *

@@ -18,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-if (!class_exists('\Eccube\Entity\Member')) {
+if (!class_exists('\Eccube\Entity\Member', false)) {
     /**
      * Member
      *

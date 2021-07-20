@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\CustomerAddress')) {
+if (!class_exists('\Eccube\Entity\CustomerAddress', false)) {
     /**
      * CustomerAddress
      *
