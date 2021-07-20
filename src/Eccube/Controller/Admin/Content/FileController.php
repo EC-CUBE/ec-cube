@@ -24,9 +24,11 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -285,9 +287,18 @@ class FileController extends AbstractController
         $uploadCount = count($data['file']);
         $successCount = 0;
 
+        /** @var UploadedFile $file */
         foreach ($data['file'] as $file) {
             $filename = $this->convertStrToServer($file->getClientOriginalName());
             try {
+                // phpファイルはアップロード不可
+                if ($file->getClientOriginalExtension() === 'php') {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.phpfile_error'));
+                }
+                // dotファイルはアップロード不可
+                if (strpos($filename, '.') === 0) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
+                }
                 $file->move($nowDir, $filename);
                 $successCount++;
             } catch (FileException $e) {
@@ -295,6 +306,8 @@ class FileController extends AbstractController
                     '%file_name%' => $filename,
                     '%error%' => $e->getMessage(),
                 ])];
+            } catch (UnsupportedMediaTypeHttpException $e) {
+                $this->errors[] = ['message' => $e->getMessage()];
             }
         }
         if ($successCount > 0) {
