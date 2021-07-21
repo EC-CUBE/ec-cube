@@ -16,14 +16,14 @@ file that was distributed with this source code.
 {% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% block javascript %}
+{% if app.flashes('eccube.admin.disable_maintenance') %}
 <script>
-    $(function() {
-        {% for message in app.flashes('eccube.admin.disable_maintenance') %}
-        // メンテナンスモード解除
-        $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}");
-        {% endfor %}
-    })
+$(function() {
+    // メンテナンスモード解除
+    $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}");
+})
 </script>
+{% endif %}
 {% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
