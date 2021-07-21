@@ -42,6 +42,9 @@ $(function() {
                         ctx.progressBar.css('width', ((ctx.currentCount/ctx.totalCount + 0.5/ctx.totalCount)*100) + '%');
                         ctx.log(data.log);
                     })
+                }).then(function() {
+                    // メンテナンスモード解除
+                    return $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}", ctx.plugin);
                 });
             }
         },
@@ -81,6 +84,9 @@ $(function() {
                         ctx.progressBar.css('width', '80%');
                         ctx.log(data.log);
                     })
+                }).then(function() {
+                    // メンテナンスモード解除
+                    return $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance_update' }) }}", ctx.plugin);
                 });
             }
         }
