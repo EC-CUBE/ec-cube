@@ -378,16 +378,15 @@ class OrderType extends AbstractType
             $Order->setPaymentMethod($Payment->getMethod());
         }
 
-        // 会員受注の場合、会員の性別/職業/誕生日をエンティティにコピーする
-        if ($Customer = $Order->getCustomer()) {
-            $Order->setSex($Customer->getSex());
-            $Order->setJob($Customer->getJob());
-            $Order->setBirth($Customer->getBirth());
-        }
-
         // 新規登録時は, 新規受付ステータスで登録する.
         if (null === $Order->getOrderStatus()) {
             $Order->setOrderStatus($this->orderStatusRepository->find(OrderStatus::NEW));
+            // 会員受注の場合、会員の性別/職業/誕生日をエンティティにコピーする
+            if ($Customer = $Order->getCustomer()) {
+                $Order->setSex($Customer->getSex());
+                $Order->setJob($Customer->getJob());
+                $Order->setBirth($Customer->getBirth());
+            }
         } else {
             // 編集時は, mapped => falseで定義しているため, フォームから変更後データを取得する.
             $form = $event->getForm();
