@@ -244,6 +244,8 @@ class InstallerCommand extends Command
         }
 
         $this->io->success('EC-CUBE installation successful.');
+
+        return 0;
     }
 
     protected function getDatabaseName($databaseUrl)

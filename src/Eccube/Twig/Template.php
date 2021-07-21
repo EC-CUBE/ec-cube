@@ -55,6 +55,7 @@ class Template extends \Twig\Template
     public function getDebugInfo()
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
+        return [];
     }
 
     protected function doDisplay(array $context, array $blocks = [])

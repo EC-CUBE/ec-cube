@@ -39,19 +39,21 @@ class PluginDisableCommand extends Command
         if (empty($code)) {
             $io->error('code is required.');
 
-            return;
+            return 1;
         }
 
         $plugin = $this->pluginRepository->findByCode($code);
         if (is_null($plugin)) {
             $io->error("Plugin `$code` is not found.");
 
-            return;
+            return 1;
         }
 
         $this->pluginService->disable($plugin);
         $this->clearCache($io);
 
         $io->success('Plugin Disabled.');
+
+        return 0;
     }
 }

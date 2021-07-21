@@ -52,5 +52,7 @@ class PluginSchemaUpdateCommand extends Command
         $this->clearCache($io);
 
         $io->success('Schema Updated.');
+
+        return 0;
     }
 }

@@ -130,7 +130,7 @@ class CartController extends AbstractController
     /**
      * @param $Carts
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
      */
     protected function execPurchaseFlow($Carts)
     {
@@ -170,6 +170,8 @@ class CartController extends AbstractController
                 }
             }
         }
+
+        return null;
     }
 
     /**

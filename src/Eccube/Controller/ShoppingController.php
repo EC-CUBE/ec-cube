@@ -768,7 +768,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @param PaymentMethodInterface $paymentMethod
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
      */
     protected function executeCheckout(PaymentMethodInterface $paymentMethod)
     {
@@ -793,5 +793,7 @@ class ShoppingController extends AbstractShoppingController
 
             return $this->redirectToRoute('shopping_error');
         }
+
+        return null;
     }
 }
