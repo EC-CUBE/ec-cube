@@ -42,8 +42,6 @@ $(function() {
                 $('#deleteLogPane').show();
                 progress.hide();
                 footer.show().find('button').toggle();
-
-                $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}");
             }
         );
     });
