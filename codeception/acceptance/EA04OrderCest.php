@@ -55,6 +55,9 @@ class EA04OrderCest
         $I->see('検索条件に誤りがあります', OrderManagePage::$検索結果_エラーメッセージ);
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function order_受注CSVダウンロード(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC02-T01 受注CSVダウンロード');
@@ -92,6 +95,9 @@ class EA04OrderCest
         $I->assertEquals(3, $value);
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function order_配送CSVダウンロード(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC02-T01 配送CSVダウンロード');

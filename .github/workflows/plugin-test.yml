@@ -124,9 +124,9 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        run: php -S localhost:8000 &
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -139,9 +139,9 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
@@ -266,9 +266,9 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        run: php -S localhost:8000 &
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -281,9 +281,9 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
@@ -408,9 +408,9 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        run: php -S localhost:8000 &
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -423,9 +423,9 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
@@ -553,9 +553,9 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        run: php -S localhost:8000 &
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -568,9 +568,9 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence

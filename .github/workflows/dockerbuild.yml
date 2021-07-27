@@ -92,7 +92,7 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: |

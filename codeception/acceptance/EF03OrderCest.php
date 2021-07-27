@@ -77,6 +77,9 @@ class EF03OrderCest
         $I->assertEquals(1, $CartPage->商品数量(1));
     }
 
+    /**
+     * @group excludeCoverage
+     */
     public function order_カート削除(AcceptanceTester $I)
     {
         $I->wantTo('EF0301-UC01-T02 カート 削除');

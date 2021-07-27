@@ -210,7 +210,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
         $this->tester->click(['id' => 'bulkSendMail']);
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
         $this->tester->click(['id' => 'bulkChange']);
-        $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
+        $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete'], 30);
 
         return $this;
     }
