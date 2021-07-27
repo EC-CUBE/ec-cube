@@ -148,7 +148,7 @@ jobs:
 
       - name: composer install
         run: |
-          sudo composer selfupdate --1
+          sudo composer selfupdate
           composer install --dev --no-interaction -o --apcu-autoloader
       - name: Setup to EC-CUBE
         env:
