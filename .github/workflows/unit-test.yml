@@ -72,9 +72,7 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: composer install
-        run: |
-          sudo composer selfupdate --1
-          composer install --dev --no-interaction -o --apcu-autoloader
+        run: composer install --dev --no-interaction -o --apcu-autoloader
 
       - name: Setup EC-CUBE
         env:

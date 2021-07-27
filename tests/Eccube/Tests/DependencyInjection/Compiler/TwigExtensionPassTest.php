@@ -23,35 +23,37 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
+use Twig\Loader\LoaderInterface;
 
 class TwigExtensionPassTest extends TestCase
 {
-    protected $contailer;
+    /** @var ContainerBuilder */
+    protected $containerBuilder;
 
     public function setUp()
     {
-        $this->container = new ContainerBuilder();
+        $this->containerBuilder = new ContainerBuilder();
 
-        $this->container->register(RouteCollection::class);
-        $this->container->register(RequestContext::class);
-        $this->container->register(UrlGeneratorInterface::class, UrlGenerator::class)
+        $this->containerBuilder->register(RouteCollection::class);
+        $this->containerBuilder->register(RequestContext::class);
+        $this->containerBuilder->register(UrlGeneratorInterface::class, UrlGenerator::class)
             ->setAutowired(true);
-        $this->container->register(IgnoreRoutingNotFoundExtension::class)
+        $this->containerBuilder->register(IgnoreRoutingNotFoundExtension::class)
             ->setAutowired(true);
-        $this->container->register(\Twig_LoaderInterface::class, ArrayLoader::class);
-        $this->container->register('twig', Environment::class)
+        $this->containerBuilder->register(LoaderInterface::class, ArrayLoader::class);
+        $this->containerBuilder->register('twig', Environment::class)
             ->setPublic(true)
             ->setAutowired(true);
     }
 
     public function testProcess()
     {
-        $this->container->setParameter('kernel.debug', false);
-        $this->container->addCompilerPass(new TwigExtensionPass());
-        $this->container->compile();
+        $this->containerBuilder->setParameter('kernel.debug', false);
+        $this->containerBuilder->addCompilerPass(new TwigExtensionPass());
+        $this->containerBuilder->compile();
 
         /** @var Environment $twig */
-        $twig = $this->container->get('twig');
+        $twig = $this->containerBuilder->get('twig');
         self::assertTrue($twig->hasExtension(IgnoreRoutingNotFoundExtension::class));
         self::assertInstanceOf(
             IgnoreRoutingNotFoundExtension::class,

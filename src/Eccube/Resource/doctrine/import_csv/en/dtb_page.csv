@@ -2,15 +2,7 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 0,Preview,preview,,1,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
 1,Home,homepage,index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
 2,All Products,product_list,Product/list,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
-3,Product Details,product_detail,Product/detail,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,"<meta property=""og:type"" content=""og:product"" />
-<meta property=""og:title"" content=""{{ Product.name }}"" />
-<meta property=""og:image"" content=""{{ url('homepage') }}{{ asset(Product.main_list_image|no_image_product, 'save_image') }}"" />
-<meta property=""og:description"" content=""{{ Product.description_list|striptags }}"" />
-<meta property=""og:url"" content=""{{ url('product_detail', {'id': Product.id}) }}"" />
-<meta property=""product:price:amount"" content=""{{ Product.getPrice02IncTaxMin }}""/>
-<meta property=""product:price:currency"" content=""{{ eccube_config.currency }}""/>
-<meta property=""product:product_link"" content=""{{ url('product_detail', {'id': Product.id}) }}""/>
-<meta property=""product:retailer_title"" content=""{{ BaseInfo.shop_name }}""/>"
+3,Product Details,product_detail,Product/detail,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
 4,My Account,mypage,Mypage/index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
 5,My Account / Edit Customer Info (Form),mypage_change,Mypage/change,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
 6,My Account / Edit Customer Info (Thank-you),mypage_change_complete,Mypage/change_complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
@@ -26,7 +18,7 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 18,Registration (Form),entry,Entry/index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
 20,Registration (Thank-you),entry_complete,Entry/complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
 21,Shipping & Returns,help_tradelaw,Help/tradelaw,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
-22,Regular Customer Registration (Thank-you),entry_activate,Entry/activate,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
+22,Regular Customer Registration (Thank-you),entry_activate,Entry/activate,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,"noindex",,page,
 24,Shopping / Delivery Address,shopping_shipping,Shopping/shipping,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
 28,Shopping / Thank you for your order,shopping_complete,Shopping/complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
 29,Privacy Policy,help_privacy,Help/privacy,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,

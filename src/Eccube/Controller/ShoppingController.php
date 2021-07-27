@@ -33,8 +33,8 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -768,7 +768,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @param PaymentMethodInterface $paymentMethod
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
      */
     protected function executeCheckout(PaymentMethodInterface $paymentMethod)
     {
@@ -793,5 +793,7 @@ class ShoppingController extends AbstractShoppingController
 
             return $this->redirectToRoute('shopping_error');
         }
+
+        return null;
     }
 }

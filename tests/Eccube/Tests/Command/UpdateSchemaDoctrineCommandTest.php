@@ -24,10 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @group update-schema-doctrine
@@ -61,14 +58,14 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             $this->markTestSkipped('does not support of '.$platform);
         }
         $files = Finder::create()
-            ->in($this->container->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->in(self::$container->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);
 
-        $this->pluginRepository = $this->container->get(PluginRepository::class);
-        $this->pluginService = $this->container->get(PluginService::class);
-        $this->schemaService = $this->container->get(SchemaService::class);
+        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
+        $this->pluginService = self::$container->get(PluginService::class);
+        $this->schemaService = self::$container->get(SchemaService::class);
     }
 
     public function tearDown()
@@ -106,7 +103,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $tester->execute(
             [
                 'command' => self::NAME,
-                '--no-proxy' => true
+                '--no-proxy' => true,
             ]
         );
         $display = $tester->getDisplay();
@@ -129,7 +126,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             [
                 'command' => self::NAME,
                 '--no-proxy' => true,
-                '--dump-sql' => true
+                '--dump-sql' => true,
             ]
         );
         $display = $commandTester->getDisplay();
@@ -169,7 +166,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $commandTester->execute(
             [
                 'command' => self::NAME,
-                '--dump-sql' => true
+                '--dump-sql' => true,
             ]
         );
         $display = $commandTester->getDisplay();
@@ -213,7 +210,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             [
                 'command' => self::NAME,
                 '--no-proxy' => true,
-                '--dump-sql' => true
+                '--dump-sql' => true,
             ]
         );
         $display = $commandTester->getDisplay();
@@ -251,7 +248,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $commandTester->execute(
             [
                 'command' => self::NAME,
-                '--dump-sql' => true
+                '--dump-sql' => true,
             ]
         );
         $display = $commandTester->getDisplay();
@@ -294,7 +291,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             [
                 'command' => self::NAME,
                 '--no-proxy' => true,
-                '--dump-sql' => true
+                '--dump-sql' => true,
             ]
         );
         $display = $commandTester->getDisplay();
@@ -339,7 +336,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $commandTester->execute(
             [
                 'command' => self::NAME,
-                '--dump-sql' => true
+                '--dump-sql' => true,
             ]
         );
         $display = $commandTester->getDisplay();
@@ -363,6 +360,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     /**
      * @param string $name
+     *
      * @return CommandTester
      */
     private function getCommandTester($name)
@@ -375,6 +373,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         );
         $application = new Application($kernel);
         $application->add($command);
+
         return new CommandTester($application->find($name));
     }
 
@@ -403,7 +402,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $config = [
             'name' => $tmpname.'_name',
             'code' => $tmpname,
-            'version' => $tmpname
+            'version' => $tmpname,
         ];
 
         return $config;
@@ -477,6 +476,7 @@ EOT
      * Ignore exceptions.
      *
      * @param string $command
+     *
      * @return string output
      */
     private function executeExternalProcess($command)
@@ -486,6 +486,7 @@ EOT
         try {
             $process = new Process($command);
             $process->mustRun();
+
             return $process->getOutput();
         } catch (\Exception $e) {
             // ignore Fatal error: Cannot declare class

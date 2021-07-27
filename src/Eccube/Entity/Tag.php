@@ -153,7 +153,7 @@ if (!class_exists('\Eccube\Entity\Tag')) {
          *
          * @return Tag
          */
-        public function addProductTag(\Eccube\Entity\ProductTag $productTag)
+        public function addProductTag(ProductTag $productTag)
         {
             $this->ProductTag[] = $productTag;
 
@@ -167,7 +167,7 @@ if (!class_exists('\Eccube\Entity\Tag')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductTag(\Eccube\Entity\ProductTag $productTag)
+        public function removeProductTag(ProductTag $productTag)
         {
             return $this->ProductTag->removeElement($productTag);
         }

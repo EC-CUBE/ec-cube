@@ -30,7 +30,7 @@ class TaxRuleTest extends EccubeTestCase
         $TaxRules = [
             $this->createTaxRule('1', 3, new \DateTime()),
             $this->createTaxRule('2', 2, new \DateTime()),
-            $this->createTaxRule('3', 1, new \DateTime())
+            $this->createTaxRule('3', 1, new \DateTime()),
         ];
         $this->expected = $TaxRules;
 
@@ -50,7 +50,7 @@ class TaxRuleTest extends EccubeTestCase
             $this->createTaxRule('2', 2, new \DateTime('+1 days')),
             $this->createTaxRule('3', 1, new \DateTime('+1 days')),
             $this->createTaxRule('4', 3, new \DateTime()),
-            $this->createTaxRule('5', 4, new \DateTime('-1 days'))
+            $this->createTaxRule('5', 4, new \DateTime('-1 days')),
         ];
         $this->expected = $TaxRules;
 
@@ -69,7 +69,7 @@ class TaxRuleTest extends EccubeTestCase
             $this->createTaxRule('1', 1, new \DateTime('-1 days'), new ProductClass()),
             $this->createTaxRule('2', 1, new \DateTime('+2 days')),
             $this->createTaxRule('3', 2, new \DateTime()),
-            $this->createTaxRule('4', 3, new \DateTime('-1 days'))
+            $this->createTaxRule('4', 3, new \DateTime('-1 days')),
         ];
         $this->expected = $TaxRules;
 
@@ -88,7 +88,7 @@ class TaxRuleTest extends EccubeTestCase
             $this->createTaxRule('1', 1, new \DateTime('-1 days'), null, new Product()),
             $this->createTaxRule('2', 1, new \DateTime('+2 days')),
             $this->createTaxRule('3', 2, new \DateTime()),
-            $this->createTaxRule('4', 3, new \DateTime('-1 days'))
+            $this->createTaxRule('4', 3, new \DateTime('-1 days')),
         ];
         $this->expected = $TaxRules;
 
@@ -107,7 +107,7 @@ class TaxRuleTest extends EccubeTestCase
             $this->createTaxRule('1', 1, new \DateTime('-1 days'), new ProductClass(), new Product()),
             $this->createTaxRule('2', 1, new \DateTime('+2 days')),
             $this->createTaxRule('3', 2, new \DateTime()),
-            $this->createTaxRule('4', 3, new \DateTime('-1 days'))
+            $this->createTaxRule('4', 3, new \DateTime('-1 days')),
         ];
         $this->expected = $TaxRules;
 
@@ -126,6 +126,7 @@ class TaxRuleTest extends EccubeTestCase
      * @param \DateTime|null $applyDate
      * @param ProductClass|null $ProductClass
      * @param Product|null $Product;
+     *
      * @return TaxRule
      */
     private function createTaxRule($taxRate, $sortNo = 0, \DateTime $applyDate = null, ProductClass $ProductClass = null, Product $Product = null)
@@ -140,6 +141,7 @@ class TaxRuleTest extends EccubeTestCase
             ->setProductClass($ProductClass)
             ->setProduct($Product)
             ->setSortNo($sortNo);
+
         return $TaxRule;
     }
 }

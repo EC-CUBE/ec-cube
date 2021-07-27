@@ -30,10 +30,12 @@ use Eccube\Controller\AbstractController;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Entity\Plugin;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
+use Eccube\Repository\PluginRepository;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
@@ -51,6 +53,9 @@ class InstallController extends AbstractController
      * default value of auth magic
      */
     const DEFAULT_AUTH_MAGIC = '<change.me>';
+
+    /** @var string */
+    const TRANSACTION_CHECK_FILE = '/var/.httransaction';
 
     protected $requiredModules = [
         'pdo',
@@ -131,8 +136,6 @@ class InstallController extends AbstractController
      *
      * @Route("/install/step1", name="install_step1")
      * @Template("step1.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -250,8 +253,6 @@ class InstallController extends AbstractController
      * @Route("/install/step3", name="install_step3")
      * @Template("step3.twig")
      *
-     * @param Request $request
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Doctrine\DBAL\DBALException
@@ -324,8 +325,6 @@ class InstallController extends AbstractController
      * @Route("/install/step4", name="install_step4")
      * @Template("step4.twig")
      *
-     * @param Request $request
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
@@ -374,8 +373,6 @@ class InstallController extends AbstractController
      *
      * @Route("/install/step5", name="install_step5")
      * @Template("step5.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
@@ -503,10 +500,16 @@ class InstallController extends AbstractController
 
         $this->removeSessionData($this->session);
 
+        // 有効化URLのトランザクションチェックファイルを生成する
+        $token = StringUtil::random(32);
+        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10).':'.$token);
+
         $this->cacheUtil->clearCache('prod');
 
         return [
             'admin_url' => $adminUrl,
+            'is_sqlite' => strpos($databaseUrl, 'sqlite') !== false,
+            'token' => $token
         ];
     }
 
@@ -607,8 +610,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array $params
-     *
      * @return string
      */
     public function createDatabaseUrl(array $params)
@@ -679,8 +680,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array $params
-     *
      * @return string
      *
      * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
@@ -956,7 +955,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array $params
-     * @param EntityManager $em
      *
      * @return array
      */
@@ -978,7 +976,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array $params
-     * @param EntityManager $em
      */
     protected function sendAppData($params, EntityManager $em)
     {
@@ -1007,8 +1004,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param EntityManager $em
-     *
      * @return string
      */
     public function getDatabaseVersion(EntityManager $em)

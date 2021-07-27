@@ -83,9 +83,7 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: composer install
-        run: |
-          sudo composer selfupdate --1
-          composer install --dev --no-interaction -o --apcu-autoloader
+        run: composer install --dev --no-interaction -o --apcu-autoloader
 
       - name: Setup to EC-CUBE
         env:
@@ -134,7 +132,7 @@ jobs:
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
-          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Codeception
         env:
@@ -227,9 +225,7 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Install to Composer
-        run: |
-          sudo composer selfupdate --1
-          composer install --dev --no-interaction -o --apcu-autoloader
+        run: composer install --dev --no-interaction -o --apcu-autoloader
 
       - name: Setup to EC-CUBE
         env:
@@ -278,7 +274,7 @@ jobs:
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
-          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Run to Codeception
         env:
@@ -371,9 +367,7 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Install to Composer
-        run: |
-          sudo composer selfupdate --1
-          composer install --dev --no-interaction -o --apcu-autoloader
+        run: composer install --dev --no-interaction -o --apcu-autoloader
 
       - name: Setup to EC-CUBE
         env:
@@ -422,7 +416,7 @@ jobs:
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
-          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Run to Codeception
         env:
@@ -518,9 +512,7 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Install to Composer
-        run: |
-          sudo composer selfupdate --1
-          composer install --dev --no-interaction -o --apcu-autoloader
+        run: composer install --dev --no-interaction -o --apcu-autoloader
 
       - name: Setup to EC-CUBE
         env:
@@ -569,7 +561,7 @@ jobs:
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
-          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Run to Codeception
         env:

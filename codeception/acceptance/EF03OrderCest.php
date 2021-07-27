@@ -31,16 +31,16 @@ use Page\Front\TopPage;
  */
 class EF03OrderCest
 {
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         $I->setStock(2, 20);
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function order_カート買い物を続ける(\AcceptanceTester $I)
+    public function order_カート買い物を続ける(AcceptanceTester $I)
     {
         $I->wantTo('EF0301-UC01-T01 カート 買い物を続ける');
         $createCustomer = Fixtures::get('createCustomer');
@@ -59,7 +59,7 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
-    public function order_一覧からカートに入れる(\AcceptanceTester $I)
+    public function order_一覧からカートに入れる(AcceptanceTester $I)
     {
         $I->wantTo('EF0301-UC01-T02 カート 買い物を続ける');
 
@@ -80,7 +80,7 @@ class EF03OrderCest
     /**
      * @group excludeCoverage
      */
-    public function order_カート削除(\AcceptanceTester $I)
+    public function order_カート削除(AcceptanceTester $I)
     {
         $I->wantTo('EF0301-UC01-T02 カート 削除');
         $createCustomer = Fixtures::get('createCustomer');
@@ -95,7 +95,7 @@ class EF03OrderCest
             ->商品削除(1);
     }
 
-    public function order_カート数量増やす(\AcceptanceTester $I)
+    public function order_カート数量増やす(AcceptanceTester $I)
     {
         $I->wantTo('EF0301-UC01-T03 カート 数量増やす');
 
@@ -115,7 +115,7 @@ class EF03OrderCest
         $I->assertEquals('2', $cartPage->商品数量(1));
     }
 
-    public function order_カート数量減らす(\AcceptanceTester $I)
+    public function order_カート数量減らす(AcceptanceTester $I)
     {
         $I->wantTo('EF0301-UC01-T04 カート 数量減らす');
         $createCustomer = Fixtures::get('createCustomer');
@@ -134,7 +134,7 @@ class EF03OrderCest
         $I->assertEquals('1', $cartPage->商品数量(1));
     }
 
-    public function order_ログインユーザ購入(\AcceptanceTester $I)
+    public function order_ログインユーザ購入(AcceptanceTester $I)
     {
         $I->wantTo('EF0302-UC01-T01 ログインユーザ購入');
         $I->logoutAsMember();
@@ -161,7 +161,9 @@ class EF03OrderCest
         $I->wait(1);
 
         // メール確認
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
@@ -179,7 +181,7 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
-    public function order_ゲスト購入(\AcceptanceTester $I)
+    public function order_ゲスト購入(AcceptanceTester $I)
     {
         $I->wantTo('EF0302-UC02-T01 ゲスト購入');
         $I->logoutAsMember();
@@ -225,7 +227,9 @@ class EF03OrderCest
         $I->wait(1);
 
         // 確認
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
@@ -243,7 +247,7 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
-    public function order_ゲスト購入情報変更(\AcceptanceTester $I)
+    public function order_ゲスト購入情報変更(AcceptanceTester $I)
     {
         $I->wantTo('EF0305-UC02-T01 ゲスト購入 情報変更'); // EF0305-UC04-T01も一緒にテスト
         $I->logoutAsMember();
@@ -305,7 +309,9 @@ class EF03OrderCest
         ShoppingPage::at($I)->確認する();
         ShoppingConfirmPage::at($I)->注文する();
 
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
@@ -325,7 +331,7 @@ class EF03OrderCest
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/3133
      */
-    public function order_ログインしてカートをマージ(\AcceptanceTester $I)
+    public function order_ログインしてカートをマージ(AcceptanceTester $I)
     {
         $I->wantTo('EF0305-UC07-T01 ログインしてカートをマージ');
         $I->logoutAsMember();
@@ -367,7 +373,9 @@ class EF03OrderCest
         $I->wait(1);
 
         // メール確認
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -387,7 +395,7 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
-    public function order_ログインユーザ購入複数配送(\AcceptanceTester $I)
+    public function order_ログインユーザ購入複数配送(AcceptanceTester $I)
     {
         // チェック用変数
         // 追加するお届け作の名前
@@ -506,7 +514,9 @@ class EF03OrderCest
         $I->wait(1);
 
         // メール確認
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -528,7 +538,7 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
-    public function order_ログイン後に複数カートになればカートに戻す(\AcceptanceTester $I)
+    public function order_ログイン後に複数カートになればカートに戻す(AcceptanceTester $I)
     {
         $I->wantTo('EF0303-UC01-T01_購入フローでログインしたタイミングで複数カートになったらログイン後にカート画面に戻す');
         $I->logoutAsMember();
@@ -582,7 +592,7 @@ class EF03OrderCest
     /**
      * カートに変更が無ければ、お届け先の設定が引き継がれる.
      */
-    public function order_購入確認画面からカートに戻る(\AcceptanceTester $I)
+    public function order_購入確認画面からカートに戻る(AcceptanceTester $I)
     {
         // チェック用変数
         // 追加するお届け作の名前
@@ -713,7 +723,9 @@ class EF03OrderCest
         $I->wait(1);
 
         // メール確認
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -738,7 +750,7 @@ class EF03OrderCest
     /**
      * カートに変更があれば、お届け先の設定は初期化される.
      */
-    public function order_購入確認画面からカートに戻るWithお届け先初期化(\AcceptanceTester $I)
+    public function order_購入確認画面からカートに戻るWithお届け先初期化(AcceptanceTester $I)
     {
         // チェック用変数
         // 追加するお届け作の名前
@@ -873,7 +885,9 @@ class EF03OrderCest
         $I->wait(1);
 
         // メール確認
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -893,7 +907,7 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
-    public function order_複数配送設定画面での販売制限エラー(\AcceptanceTester $I)
+    public function order_複数配送設定画面での販売制限エラー(AcceptanceTester $I)
     {
         /* @var Customer $Customer */
         $Customer = (Fixtures::get('createCustomer'))();
@@ -920,7 +934,7 @@ class EF03OrderCest
         $I->see('「チェリーアイスサンド」の在庫が不足しております。一度に在庫数を超える購入はできません。', 'div:nth-child(2) > div > div.ec-alert-warning__text');
     }
 
-    public function order_複数ブラウザでログインしてカートに追加する(\AcceptanceTester $I)
+    public function order_複数ブラウザでログインしてカートに追加する(AcceptanceTester $I)
     {
         $I->logoutAsMember();
         $I->saveSessionSnapshot('not_login');
@@ -961,7 +975,7 @@ class EF03OrderCest
         $I->assertEquals('チェリーアイスサンド', $CartPage->商品名(1));
     }
 
-    public function order_複数ブラウザ_片方でログインしてカートに追加しもう一方にログインして別の商品を追加する(\AcceptanceTester $I)
+    public function order_複数ブラウザ_片方でログインしてカートに追加しもう一方にログインして別の商品を追加する(AcceptanceTester $I)
     {
         $I->logoutAsMember();
         $I->saveSessionSnapshot('not_login');

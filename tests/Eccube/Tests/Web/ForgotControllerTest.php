@@ -33,8 +33,8 @@ class ForgotControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
         $this->client->enableProfiler();
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
-        $this->customerRepository = $this->container->get(CustomerRepository::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
         $this->client->disableReboot();
     }
 

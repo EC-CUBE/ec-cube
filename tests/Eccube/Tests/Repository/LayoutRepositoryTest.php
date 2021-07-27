@@ -16,7 +16,6 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\LayoutRepository;
-use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -45,8 +44,8 @@ class LayoutRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->layoutRepository = $this->container->get(LayoutRepository::class);
-        $this->DeviceType = $this->container->get(DeviceTypeRepository::class)
+        $this->layoutRepository = $this->entityManager->getRepository(\Eccube\Entity\Layout::class);
+        $this->DeviceType = $this->entityManager->getRepository(\Eccube\Entity\Master\DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         $Layout = new Layout();

@@ -13,16 +13,16 @@
 
 class EA02AuthenticationCest
 {
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function authentication_パスワード認証(\AcceptanceTester $I)
+    public function authentication_パスワード認証(AcceptanceTester $I)
     {
         $I->wantTo('EA0201-UC01-T01 パスワード認証');
 
@@ -38,7 +38,7 @@ class EA02AuthenticationCest
         $I->see('ログインできませんでした。', '#form1 > div:nth-child(5) > span');
     }
 
-    public function authentication_最終ログイン日時確認(\AcceptanceTester $I)
+    public function authentication_最終ログイン日時確認(AcceptanceTester $I)
     {
         $I->wantTo('EA0201-UC01-T01 最終ログイン日時確認');
 

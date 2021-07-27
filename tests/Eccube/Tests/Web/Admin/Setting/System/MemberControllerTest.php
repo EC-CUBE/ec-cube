@@ -13,8 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Repository\MemberRepository;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class MemberControllerTest extends AbstractAdminWebTestCase
 {
@@ -30,7 +30,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->memberRepository = $this->container->get(MemberRepository::class);
+        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
     }
 
     public function testRoutingAdminSettingSystemMember()

@@ -25,18 +25,18 @@ class EA01TopCest
 {
     const ページタイトル = '.c-pageTitle h2.c-pageTitle__title';
 
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         // すべてのテストケース実施前にログインしておく
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function top_001(\AcceptanceTester $I)
+    public function top_001(AcceptanceTester $I)
     {
         $I->wantTo('EA0101-UC01-T01 TOPページ 初期表示');
 
@@ -54,7 +54,7 @@ class EA01TopCest
         // 購入された商品が受注管理画面のページにて反映されていることを確認
         $config = Fixtures::get('config');
         $findOrders = Fixtures::get('findOrders');
-        $NewOrders = array_filter($findOrders(), function ($Order) use ($config) {
+        $NewOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == \Eccube\Entity\Master\OrderStatus::NEW;
         });
         $I->see(count($NewOrders), TopPage::$受付状況_新規受付数);

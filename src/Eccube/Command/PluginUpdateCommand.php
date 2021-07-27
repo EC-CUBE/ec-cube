@@ -22,9 +22,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginUpdateCommand extends Command
 {
-    protected static $defaultName = 'eccube:plugin:update';
-
     use PluginCommandTrait;
+    protected static $defaultName = 'eccube:plugin:update';
 
     protected function configure()
     {
@@ -53,5 +52,7 @@ class PluginUpdateCommand extends Command
         $this->clearCache($io);
 
         $io->success('Updated.');
+
+        return 0;
     }
 }

@@ -17,10 +17,11 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\Authority;
 use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
+use Eccube\Form\Type\RepeatedPasswordType;
+use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Eccube\Form\Type\RepeatedPasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -111,6 +112,8 @@ class MemberType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
+            ])
+            ->add('two_factor_auth_enabled', ToggleSwitchType::class, [
             ]);
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {

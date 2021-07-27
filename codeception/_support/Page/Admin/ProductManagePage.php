@@ -29,7 +29,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     public static $検索結果_一覧 = '#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody';
     public static $一括削除エラー = ['id' => 'bulkErrors'];
 
-    /** @var \AcceptanceTester $tester */
+    /** @var \AcceptanceTester */
     protected $tester;
 
     /**

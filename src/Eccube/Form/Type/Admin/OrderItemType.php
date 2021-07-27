@@ -188,7 +188,6 @@ class OrderItemType extends AbstractType
                     if (!isset($OrderItem['tax_type']) || StringUtil::isBlank($OrderItem['tax_type'])) {
                         $OrderItem['tax_type'] = TaxType::TAXATION;
                     }
-
                 } else {
                     if ($orderItemTypeId == OrderItemTypeMaster::DISCOUNT && $OrderItem['tax_type'] == TaxType::NON_TAXABLE) {
                         $OrderItem['tax_rate'] = '0';

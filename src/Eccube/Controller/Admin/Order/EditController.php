@@ -14,7 +14,6 @@
 namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
@@ -44,9 +43,10 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -414,9 +414,9 @@ class EditController extends AbstractController
      * @param Request $request
      * @param integer $page_no
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return array
      */
-    public function searchCustomerHtml(Request $request, $page_no = null, Paginator $paginator)
+    public function searchCustomerHtml(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer start.');
@@ -498,6 +498,8 @@ class EditController extends AbstractController
                 'pagination' => $pagination,
             ];
         }
+
+        throw new BadRequestHttpException();
     }
 
     /**
@@ -561,6 +563,8 @@ class EditController extends AbstractController
 
             return $this->json($data);
         }
+
+        throw new BadRequestHttpException();
     }
 
     /**
@@ -568,7 +572,7 @@ class EditController extends AbstractController
      * @Route("/%eccube_admin_route%/order/search/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_product_page")
      * @Template("@admin/Order/search_product.twig")
      */
-    public function searchProduct(Request $request, $page_no = null, Paginator $paginator)
+    public function searchProduct(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search product start.');
@@ -679,12 +683,14 @@ class EditController extends AbstractController
                 ['OrderItemType' => $Charge, 'TaxType' => $Taxation],
                 ['OrderItemType' => $DeliveryFee, 'TaxType' => $Taxation],
                 ['OrderItemType' => $Discount, 'TaxType' => $Taxation],
-                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable]
+                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable],
             ];
 
             return [
                 'OrderItemTypes' => $OrderItemTypes,
             ];
         }
+
+        throw new BadRequestHttpException();
     }
 }

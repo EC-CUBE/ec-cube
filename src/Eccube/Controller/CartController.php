@@ -20,10 +20,10 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
-use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -130,7 +130,7 @@ class CartController extends AbstractController
     /**
      * @param $Carts
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
      */
     protected function execPurchaseFlow($Carts)
     {
@@ -170,6 +170,8 @@ class CartController extends AbstractController
                 }
             }
         }
+
+        return null;
     }
 
     /**

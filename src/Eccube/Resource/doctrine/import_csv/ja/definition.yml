@@ -6,6 +6,7 @@
 - mtb_device_type.csv
 - mtb_product_status.csv
 - mtb_job.csv
+- mtb_login_history_status.csv
 - mtb_order_item_type.csv
 - mtb_order_status.csv
 - mtb_order_status_color.csv

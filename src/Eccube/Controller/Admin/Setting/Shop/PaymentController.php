@@ -288,5 +288,7 @@ class PaymentController extends AbstractController
 
             return new Response();
         }
+
+        throw new BadRequestHttpException();
     }
 }

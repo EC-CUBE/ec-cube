@@ -21,7 +21,6 @@ use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Service\CartService;
 use Symfony\Component\HttpKernel\Client;
 
@@ -42,8 +41,8 @@ class CartValidationTest extends AbstractWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
-        $this->cartService = $this->container->get(CartService::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
+        $this->cartService = self::$container->get(CartService::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
@@ -450,7 +449,7 @@ class CartValidationTest extends AbstractWebTestCase
         $productName = $this->getFaker()->word;
         /** @var Product $Product */
         $Product = $this->createProduct($productName, 1, $stock);
-        $SaleType = $this->container->get(SaleTypeRepository::class)->find(2);
+        $SaleType = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class)->find(2);
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setSaleType($SaleType);
         $productClassId = $ProductClass->getId();
