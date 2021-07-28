@@ -226,7 +226,6 @@ class InstallerCommand extends Command
             'doctrine:schema:create',
             'eccube:fixtures:load',
             'cache:clear --no-warmup',
-            'eccube:plugin:enable --code=Api || true', // APIプラグインはデフォルトで有効化
         ];
 
         // コンテナを再ロードするため別プロセスで実行する.
