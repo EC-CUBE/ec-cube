@@ -22,11 +22,13 @@ $(function() {
         var progress = $('div.progress', modal).show();
         $.ajax({url: currentPlugin['deleteUrl'], type: 'delete'}).then(
             function(data) {
-                message.text('削除が完了しました。');
-                $('#deleteLog').text(data.log);
-                $('#deleteLogPane').show();
-                progress.hide();
-                footer.show().find('button').toggle();
+                $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}").then(function() {
+                    message.text('削除が完了しました。');
+                    $('#deleteLog').text(data.log);
+                    $('#deleteLogPane').show();
+                    progress.hide();
+                    footer.show().find('button').toggle();
+                });
             },
             function(res) {
                 if (res.responseJSON.message) {
@@ -37,12 +39,17 @@ $(function() {
                 if (res.responseJSON.log) {
                     $('#deleteLog').text(res.responseJSON.log);
                 }
-                progress.hide();
                 $('#deleteLogPane').show();
+                progress.hide();
                 footer.show().find('button').toggle();
             }
         );
     });
+
+    {% if app.flashes('eccube.admin.disable_maintenance') %}
+        // メンテナンスモード解除
+        $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}");
+    {% endif %}
 });
 </script>
 {% if Plugins|length > 0 %}

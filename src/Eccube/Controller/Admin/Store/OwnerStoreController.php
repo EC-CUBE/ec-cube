@@ -259,9 +259,6 @@ class OwnerStoreController extends AbstractController
         // .maintenanceファイルを設置
         $this->systemService->switchMaintenance(true);
 
-        // TERMINATE時のイベントを設定
-        $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
-
         $this->cacheUtil->clearCache();
 
         $pluginCode = $request->get('pluginCode');
@@ -294,9 +291,6 @@ class OwnerStoreController extends AbstractController
 
         // .maintenanceファイルを設置
         $this->systemService->switchMaintenance(true);
-
-        // TERMINATE時のイベントを設定
-        $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
 
         $this->cacheUtil->clearCache();
 
@@ -426,9 +420,6 @@ class OwnerStoreController extends AbstractController
     public function apiUpdate(Request $request)
     {
         $this->isTokenValid();
-
-        // TERMINATE時のイベントを設定
-        $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE_UPDATE);
 
         $this->cacheUtil->clearCache();
 
