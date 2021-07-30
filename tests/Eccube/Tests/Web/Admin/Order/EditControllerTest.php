@@ -165,8 +165,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testOrderCustomerInfo()
     {
-        $this->markTestIncomplete('顧客の購入回数と購入金額の実装が完了するまでスキップ');
-        $this->markTestIncomplete('EditController is not implemented.');
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
