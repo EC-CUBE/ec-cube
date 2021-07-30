@@ -40,6 +40,7 @@ class EF02ProductCest
 
     public function product_商品一覧ヘッダ以外のカテゴリリンク(AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('テスト項目を要確認');
         $I->wantTo('EF0201-UC01-T02 商品一覧ページ ヘッダ以外のカテゴリリンク');
         $I->amOnPage('/');
 

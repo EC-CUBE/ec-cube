@@ -39,7 +39,7 @@ class PluginDevelopEntityFromYamlTest extends AbstractCommandTest
     {
         // TODO question helperのunit testの実装方法を変更
         // http://symfony.com/doc/current/components/console/helpers/questionhelper.html
-        $this->markTestSkipped();
+        $this->markTestIncomplete();
 
         $code = 'PluginUnittestSample';
 
