@@ -71,7 +71,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail")
+     * @Route("/%eccube_admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail", methods={"GET", "POST"})
      * @Template("@admin/Order/mail.twig")
      */
     public function index(Request $request, Order $Order)

@@ -147,8 +147,8 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product", name="admin_product")
-     * @Route("/%eccube_admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
+     * @Route("/%eccube_admin_route%/product", name="admin_product", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page", methods={"GET", "POST"})
      * @Template("@admin/Product/index.twig")
      */
     public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
@@ -272,7 +272,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", methods={"GET"}, requirements={"id" = "\d+"})
+     * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", methods={"GET"}, requirements={"id" = "\d+"}, methods={"GET"})
      * @Template("@admin/Product/product_class_popup.twig")
      * @ParamConverter("Product")
      */
@@ -351,8 +351,8 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/product/new", name="admin_product_product_new")
-     * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
+     * @Route("/%eccube_admin_route%/product/product/new", name="admin_product_product_new", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit", methods={"GET", "POST"})
      * @Template("@admin/Product/product.twig")
      */
     public function edit(Request $request, $id = null, RouterInterface $router, CacheUtil $cacheUtil)
@@ -895,7 +895,7 @@ class ProductController extends AbstractController
     /**
      * 商品CSVの出力.
      *
-     * @Route("/%eccube_admin_route%/product/export", name="admin_product_export")
+     * @Route("/%eccube_admin_route%/product/export", name="admin_product_export", methods={"GET"})
      *
      * @param Request $request
      *

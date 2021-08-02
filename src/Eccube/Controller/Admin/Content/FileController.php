@@ -51,7 +51,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/file_manager", name="admin_content_file")
+     * @Route("/%eccube_admin_route%/content/file_manager", name="admin_content_file", methods={"GET", "POST"})
      * @Template("@admin/Content/file.twig")
      */
     public function index(Request $request)
@@ -117,7 +117,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/file_view", name="admin_content_file_view")
+     * @Route("/%eccube_admin_route%/content/file_view", name="admin_content_file_view", methods={"GET"})
      */
     public function view(Request $request)
     {
@@ -219,7 +219,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/file_download", name="admin_content_file_download")
+     * @Route("/%eccube_admin_route%/content/file_download", name="admin_content_file_download", methods={"GET"})
      */
     public function download(Request $request)
     {

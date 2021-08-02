@@ -44,8 +44,8 @@ class ClassNameController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/class_name", name="admin_product_class_name")
-     * @Route("/%eccube_admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit")
+     * @Route("/%eccube_admin_route%/product/class_name", name="admin_product_class_name", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit", methods={"GET", "POST"})
      * @Template("@admin/Product/class_name.twig")
      */
     public function index(Request $request, $id = null)

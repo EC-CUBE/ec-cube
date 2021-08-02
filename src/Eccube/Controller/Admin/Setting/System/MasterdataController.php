@@ -26,8 +26,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class MasterdataController extends AbstractController
 {
     /**
-     * @Route("/%eccube_admin_route%/setting/system/masterdata", name="admin_setting_system_masterdata")
-     * @Route("/%eccube_admin_route%/setting/system/masterdata/{entity}/edit", name="admin_setting_system_masterdata_view")
+     * @Route("/%eccube_admin_route%/setting/system/masterdata", name="admin_setting_system_masterdata", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/setting/system/masterdata/{entity}/edit", name="admin_setting_system_masterdata_view", methods={"GET", "POST"})
      * @Template("@admin/Setting/System/masterdata.twig")
      */
     public function index(Request $request, $entity = null)
@@ -108,7 +108,7 @@ class MasterdataController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/system/masterdata/edit", name="admin_setting_system_masterdata_edit")
+     * @Route("/%eccube_admin_route%/setting/system/masterdata/edit", name="admin_setting_system_masterdata_edit", methods={"GET", "POST"})
      * @Template("@admin/Setting/System/masterdata.twig")
      */
     public function edit(Request $request)

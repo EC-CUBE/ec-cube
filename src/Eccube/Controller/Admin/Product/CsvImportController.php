@@ -163,7 +163,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品登録CSVアップロード
      *
-     * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import")
+     * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import", methods={"GET", "POST"})
      * @Template("@admin/Product/csv_product.twig")
      *
      * @return array
@@ -684,7 +684,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * カテゴリ登録CSVアップロード
      *
-     * @Route("/%eccube_admin_route%/product/category_csv_upload", name="admin_product_category_csv_import")
+     * @Route("/%eccube_admin_route%/product/category_csv_upload", name="admin_product_category_csv_import", methods={"GET", "POST"})
      * @Template("@admin/Product/csv_category.twig")
      */
     public function csvCategory(Request $request, CacheUtil $cacheUtil)
@@ -844,7 +844,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * アップロード用CSV雛形ファイルダウンロード
      *
-     * @Route("/%eccube_admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template")
+     * @Route("/%eccube_admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template", methods={"GET"})
      *
      * @param $type
      *
@@ -1592,8 +1592,7 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/csv_split", name="admin_product_csv_split")
-     *
+     * @Route("/%eccube_admin_route%/product/csv_split", name="admin_product_csv_split", methods={"POST"})
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -1647,8 +1646,7 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/csv_split_import", name="admin_product_csv_split_import")
-     *
+     * @Route("/%eccube_admin_route%/product/csv_split_import", name="admin_product_csv_split_import", methods={"POST"})
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -1689,7 +1687,7 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/csv_split_cleanup", name="admin_product_csv_split_cleanup")
+     * @Route("/%eccube_admin_route%/product/csv_split_cleanup", name="admin_product_csv_split_cleanup", methods={"POST"})
      *
      * @param Request $request
      *

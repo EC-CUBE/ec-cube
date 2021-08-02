@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LogController extends AbstractController
 {
     /**
-     * @Route("/%eccube_admin_route%/setting/system/log", name="admin_setting_system_log")
+     * @Route("/%eccube_admin_route%/setting/system/log", name="admin_setting_system_log", methods={"GET", "POST"})
      * @Template("@admin/Setting/System/log.twig")
      *
      * @return array|Symfony\Component\HttpFoundation\StreamedResponse

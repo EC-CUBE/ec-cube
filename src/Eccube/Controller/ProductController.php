@@ -110,7 +110,7 @@ class ProductController extends AbstractController
     /**
      * 商品一覧画面.
      *
-     * @Route("/products/list", name="product_list")
+     * @Route("/products/list", name="product_list", methods={"GET"})
      * @Template("Product/list.twig")
      */
     public function index(Request $request, PaginatorInterface $paginator)
@@ -314,7 +314,7 @@ class ProductController extends AbstractController
     /**
      * お気に入り追加.
      *
-     * @Route("/products/add_favorite/{id}", name="product_add_favorite", requirements={"id" = "\d+"})
+     * @Route("/products/add_favorite/{id}", name="product_add_favorite", requirements={"id" = "\d+"}, methods={"GET", "POST"})
      */
     public function addFavorite(Request $request, Product $Product)
     {

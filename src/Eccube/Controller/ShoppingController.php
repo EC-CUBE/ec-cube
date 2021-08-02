@@ -84,7 +84,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * purchaseFlowの集計処理実行後, warningがある場合はカートど同期をとるため, カートのPurchaseFlowを実行する.
      *
-     * @Route("/shopping", name="shopping")
+     * @Route("/shopping", name="shopping", methods={"GET"})
      * @Template("Shopping/index.twig")
      */
     public function index(PurchaseFlow $cartPurchaseFlow)
@@ -432,7 +432,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入完了画面を表示する.
      *
-     * @Route("/shopping/complete", name="shopping_complete")
+     * @Route("/shopping/complete", name="shopping_complete", methods={"GET"})
      * @Template("Shopping/complete.twig")
      */
     public function complete(Request $request)
@@ -481,7 +481,7 @@ class ShoppingController extends AbstractShoppingController
      * 会員ログイン時, お届け先を選択する画面を表示する
      * 非会員の場合はこの画面は使用しない。
      *
-     * @Route("/shopping/shipping/{id}", name="shopping_shipping", requirements={"id" = "\d+"})
+     * @Route("/shopping/shipping/{id}", name="shopping_shipping", requirements={"id" = "\d+"}, methods={"GET", "POST"})
      * @Template("Shopping/shipping.twig")
      */
     public function shipping(Request $request, Shipping $Shipping)
@@ -555,7 +555,7 @@ class ShoppingController extends AbstractShoppingController
      * 会員時は新しいお届け先を作成し, 作成したお届け先を選択状態にして注文手続き画面へ遷移する.
      * 非会員時は選択されたお届け先の編集を行う.
      *
-     * @Route("/shopping/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id" = "\d+"})
+     * @Route("/shopping/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id" = "\d+"}, methods={"GET", "POST"})
      * @Template("Shopping/shipping_edit.twig")
      */
     public function shippingEdit(Request $request, Shipping $Shipping)
@@ -642,7 +642,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * ログイン画面.
      *
-     * @Route("/shopping/login", name="shopping_login")
+     * @Route("/shopping/login", name="shopping_login", methods={"GET"})
      * @Template("Shopping/login.twig")
      */
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
@@ -680,7 +680,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入エラー画面.
      *
-     * @Route("/shopping/error", name="shopping_error")
+     * @Route("/shopping/error", name="shopping_error", methods={"GET"})
      * @Template("Shopping/shopping_error.twig")
      */
     public function error(Request $request, PurchaseFlow $cartPurchaseFlow)

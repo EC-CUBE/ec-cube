@@ -56,7 +56,8 @@ class CsvController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/csv/{id}",
      *     requirements={"id" = "\d+"},
      *     defaults={"id" = CsvType::CSV_TYPE_ORDER},
-     *     name="admin_setting_shop_csv"
+     *     name="admin_setting_shop_csv",
+     *     methods={"GET", "POST"}
      * )
      * @Template("@admin/Setting/Shop/csv.twig")
      */

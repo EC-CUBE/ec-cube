@@ -73,7 +73,7 @@ class CartController extends AbstractController
     /**
      * カート画面.
      *
-     * @Route("/cart", name="cart")
+     * @Route("/cart", name="cart", methods={"GET"})
      * @Template("Cart/index.twig")
      */
     public function index(Request $request)
@@ -235,7 +235,7 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "[a-zA-Z0-9]+[_][\x20-\x7E]+"})
+     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "[a-zA-Z0-9]+[_][\x20-\x7E]+"}, methods={"GET"})
      */
     public function buystep(Request $request, $cart_key)
     {

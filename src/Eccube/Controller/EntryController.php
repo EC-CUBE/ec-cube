@@ -119,8 +119,8 @@ class EntryController extends AbstractController
     /**
      * 会員登録画面.
      *
-     * @Route("/entry", name="entry")
-     * @Route("/entry", name="entry_confirm")
+     * @Route("/entry", name="entry", methods={"GET", "POST"})
+     * @Route("/entry", name="entry_confirm", methods={"GET", "POST"})
      * @Template("Entry/index.twig")
      */
     public function index(Request $request)
@@ -230,7 +230,7 @@ class EntryController extends AbstractController
     /**
      * 会員登録完了画面.
      *
-     * @Route("/entry/complete", name="entry_complete")
+     * @Route("/entry/complete", name="entry_complete", methods={"GET"})
      * @Template("Entry/complete.twig")
      */
     public function complete()
@@ -241,7 +241,7 @@ class EntryController extends AbstractController
     /**
      * 会員のアクティベート（本会員化）を行う.
      *
-     * @Route("/entry/activate/{secret_key}/{qtyInCart}", name="entry_activate")
+     * @Route("/entry/activate/{secret_key}/{qtyInCart}", name="entry_activate", methods={"GET"})
      * @Template("Entry/activate.twig")
      */
     public function activate(Request $request, $secret_key, $qtyInCart = null)

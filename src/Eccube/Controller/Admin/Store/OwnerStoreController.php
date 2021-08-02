@@ -108,8 +108,8 @@ class OwnerStoreController extends AbstractController
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
-     * @Route("/search", name="admin_store_plugin_owners_search")
-     * @Route("/search/page/{page_no}", name="admin_store_plugin_owners_search_page", requirements={"page_no" = "\d+"})
+     * @Route("/search", name="admin_store_plugin_owners_search", methods={"GET", "POST"})
+     * @Route("/search/page/{page_no}", name="admin_store_plugin_owners_search_page", requirements={"page_no" = "\d+"}, methods={"GET", "POST"})
      * @Template("@admin/Store/plugin_search.twig")
      *
      * @param Request     $request
@@ -215,7 +215,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
+     * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm", methods={"GET"})
      * @Template("@admin/Store/plugin_confirm.twig")
      *
      * @param Request $request
@@ -461,7 +461,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm update page
      *
-     * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
+     * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm", methods={"GET"})
      * @Template("@admin/Store/plugin_confirm.twig")
      *
      * @param Plugin $Plugin

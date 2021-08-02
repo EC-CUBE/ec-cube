@@ -72,7 +72,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * 非会員処理
      *
-     * @Route("/shopping/nonmember", name="shopping_nonmember")
+     * @Route("/shopping/nonmember", name="shopping_nonmember", methods={"GET", "POST"})
      * @Template("Shopping/nonmember.twig")
      */
     public function index(Request $request)
@@ -136,7 +136,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * お客様情報の変更(非会員)
      *
-     * @Route("/shopping/customer", name="shopping_customer")
+     * @Route("/shopping/customer", name="shopping_customer", methods={"POST"})
      */
     public function customer(Request $request)
     {
