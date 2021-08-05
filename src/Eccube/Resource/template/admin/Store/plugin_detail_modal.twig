@@ -59,7 +59,7 @@
                 {% elseif item.update_status == 2 %}
                     <a href="#" class="btn btn-ec-regular">{{ 'admin.store.plugin.installed'|trans }}</a>
                 {% elseif item.update_status == 3 %}
-                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">
+                    <a href="{{ url('admin_store_plugin_update_confirm', {'id': item.plugin_id}) }}" class="btn btn-primary">
                         {{ 'admin.store.plugin.update'|trans }}
                     </a>
                 {% elseif item.update_status == 4 %}

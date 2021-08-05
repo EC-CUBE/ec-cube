@@ -183,6 +183,7 @@ class PluginApiService
                     if ($this->isUpdate($plugin->getVersion(), $item['version'])) {
                         // Need update
                         $item['update_status'] = 3;
+                        $item['plugin_id'] = $plugin->getId();
                     }
                 }
             }
