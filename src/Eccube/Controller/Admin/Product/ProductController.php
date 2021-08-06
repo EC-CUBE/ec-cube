@@ -876,24 +876,6 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
-     */
-    public function display(Request $request, $id = null)
-    {
-        $event = new EventArgs(
-            [],
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE, $event);
-
-        if (!is_null($id)) {
-            return $this->redirectToRoute('product_detail', ['id' => $id, 'admin' => '1']);
-        }
-
-        return $this->redirectToRoute('admin_product');
-    }
-
-    /**
      * 商品CSVの出力.
      *
      * @Route("/%eccube_admin_route%/product/export", name="admin_product_export")
