@@ -201,7 +201,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->client->enableProfiler();
         $Customer = $this->createCustomer();
         $this->client->request(
-            'PUT',
+            'GET',
             $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
@@ -246,7 +246,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/user-[0-9]@example.com/');
 
         $this->client->request(
-            'POST',
+            'GET',
             $this->generateUrl('admin_customer_export'),
             ['admin_search_customer' => ['_token' => 'dummy']]
         );
