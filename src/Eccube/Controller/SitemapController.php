@@ -73,7 +73,7 @@ class SitemapController extends AbstractController
     /**
      * Output sitemap index
      *
-     * @Route("/sitemap.xml", name="sitemap_xml")
+     * @Route("/sitemap.xml", name="sitemap_xml", methods={"GET"})
      */
     public function index(PaginatorInterface $paginator)
     {
@@ -116,7 +116,7 @@ class SitemapController extends AbstractController
     /**
      * Output sitemap of product categories
      *
-     * @Route("/sitemap_category.xml", name="sitemap_category_xml")
+     * @Route("/sitemap_category.xml", name="sitemap_category_xml", methods={"GET"})
      */
     public function category()
     {
@@ -130,7 +130,7 @@ class SitemapController extends AbstractController
      *
      * Output sitemap of products as status is 1
      *
-     * @Route("/sitemap_product_{page}.xml", name="sitemap_product_xml", requirements={"page" = "\d+"})
+     * @Route("/sitemap_product_{page}.xml", name="sitemap_product_xml", requirements={"page" = "\d+"}, methods={"GET"})
      *
      * @return Response
      */
@@ -159,7 +159,7 @@ class SitemapController extends AbstractController
      *
      * Output sitemap of pages without 'noindex' in meta robots.
      *
-     * @Route("/sitemap_page.xml", name="sitemap_page_xml")
+     * @Route("/sitemap_page.xml", name="sitemap_page_xml", methods={"GET"})
      */
     public function page()
     {

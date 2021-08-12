@@ -35,7 +35,7 @@ class MaintenanceController extends AbstractController
     /**
      * メンテナンス管理ページを表示
      *
-     * @Route("/%eccube_admin_route%/content/maintenance", name="admin_content_maintenance")
+     * @Route("/%eccube_admin_route%/content/maintenance", name="admin_content_maintenance", methods={"GET", "POST"})
      * @Template("@admin/Content/maintenance.twig")
      */
     public function index(Request $request)

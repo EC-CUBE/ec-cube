@@ -105,7 +105,7 @@ class PluginController extends AbstractController
     /**
      * インストール済プラグイン画面
      *
-     * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")
+     * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin", methods={"GET"})
      * @Template("@admin/Store/plugin.twig")
      *
      * @return array
@@ -474,7 +474,7 @@ class PluginController extends AbstractController
     /**
      * プラグインファイルアップロード画面
      *
-     * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install")
+     * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install", methods={"GET", "POST"})
      * @Template("@admin/Store/plugin_install.twig")
      *
      * @param Request $request
@@ -539,7 +539,7 @@ class PluginController extends AbstractController
     /**
      * 認証キー設定画面
      *
-     * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
+     * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting", methods={"GET", "POST"})
      * @Template("@admin/Store/authentication_setting.twig")
      *
      * @param Request $request

@@ -100,7 +100,7 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/layout", name="admin_content_layout")
+     * @Route("/%eccube_admin_route%/content/layout", name="admin_content_layout", methods={"GET"})
      * @Template("@admin/Content/layout_list.twig")
      */
     public function index()
@@ -148,8 +148,8 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/layout/new", name="admin_content_layout_new")
-     * @Route("/%eccube_admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit")
+     * @Route("/%eccube_admin_route%/content/layout/new", name="admin_content_layout_new", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit", methods={"GET", "POST"})
      * @Template("@admin/Content/layout.twig")
      */
     public function edit(Request $request, $id = null, $previewPageId = null, CacheUtil $cacheUtil)
@@ -272,7 +272,7 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/layout/{id}/preview", requirements={"id" = "\d+"}, name="admin_content_layout_preview")
+     * @Route("/%eccube_admin_route%/content/layout/{id}/preview", requirements={"id" = "\d+"}, name="admin_content_layout_preview", methods={"POST"})
      */
     public function preview(Request $request, $id, CacheUtil $cacheUtil)
     {

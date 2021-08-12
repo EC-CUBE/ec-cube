@@ -130,7 +130,7 @@ class InstallPluginController extends InstallController
     /**
      * トランザクションファイルを削除し, 管理画面に遷移します.
      *
-     * @Route("/install/plugin/redirect", name="install_plugin_redirect")
+     * @Route("/install/plugin/redirect", name="install_plugin_redirect", methods={"GET"})
      *
      * @return RedirectResponse
      */
