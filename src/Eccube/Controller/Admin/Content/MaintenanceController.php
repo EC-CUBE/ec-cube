@@ -18,6 +18,7 @@ use Eccube\Service\SystemService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MaintenanceController extends AbstractController
@@ -69,5 +70,37 @@ class MaintenanceController extends AbstractController
             'form' => $form->createView(),
             'isMaintenance' => $isMaintenance,
         ];
+    }
+
+    /**
+     * メンテナンス解除
+     *
+     * キャッシュ管理やプラグインのインストール等の操作時にajax経由で解除する
+     * 権限管理設定でアクセス不可になるのを避けるため、ルーティングは/admin/disable_maintenanceで設定しています
+     *
+     * @Route("/%eccube_admin_route%/disable_maintenance/{mode}", requirements={"mode": "manual|auto_maintenance|auto_maintenance_update"}, name="admin_disable_maintenance", methods={"POST"})
+     */
+    public function disableMaintenance(Request $request, $mode, SystemService $systemService)
+    {
+        $this->isTokenValid();
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        if ($mode === 'manual') {
+            $path = $this->container->getParameter('eccube_content_maintenance_file_path');
+            if (file_exists($path)) {
+                unlink($this->container->getParameter('eccube_content_maintenance_file_path'));
+            }
+        } else {
+            $maintenanceMode = [
+                'auto_maintenance' => SystemService::AUTO_MAINTENANCE,
+                'auto_maintenance_update' => SystemService::AUTO_MAINTENANCE_UPDATE
+            ];
+            $systemService->disableMaintenance($maintenanceMode[$mode]);
+        }
+
+        return $this->json(['success' => true]);
     }
 }
