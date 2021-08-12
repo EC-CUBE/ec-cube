@@ -110,6 +110,7 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->dragAndDropBy("body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child($rowNum)", 0, -75);
         $this->tester->wait(1);
+
         return $this;
     }
 
@@ -117,6 +118,7 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->dragAndDropBy("body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child($rowNum)", 0, 75);
         $this->tester->wait(1);
+
         return $this;
     }
 

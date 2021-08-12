@@ -112,7 +112,6 @@ class InstallPluginController extends InstallController
                 } else {
                     $pluginService->enable($Plugin);
                 }
-
             } finally {
                 $log = ob_get_clean();
                 while (ob_get_level() > 0) {
@@ -121,6 +120,7 @@ class InstallPluginController extends InstallController
             }
 
             $this->cacheUtil->clearCache();
+
             return $this->json(['success' => true, 'log' => $log]);
         } else {
             return $this->json(['success' => false, 'log' => $log]);

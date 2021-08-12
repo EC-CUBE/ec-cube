@@ -15,15 +15,15 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Util\StringUtil;
+use function explode;
+use function file_exists;
+use function file_get_contents;
+use function file_put_contents;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use function explode;
-use function file_exists;
-use function file_get_contents;
-use function file_put_contents;
 use function unlink;
 
 class SystemService implements EventSubscriberInterface
@@ -166,6 +166,7 @@ class SystemService implements EventSubscriberInterface
         }
 
         $contents = file_get_contents($path);
+
         return explode(':', $contents)[1] ?? null;
     }
 

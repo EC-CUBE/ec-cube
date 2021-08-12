@@ -16,12 +16,12 @@ namespace Eccube\Service;
 use Eccube\Common\EccubeConfig;
 use RobThree\Auth\TwoFactorAuth;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class TwoFactorAuthService 
+class TwoFactorAuthService
 {
     /**
      * @var int デフォルトの認証の有効日数
@@ -111,38 +111,40 @@ class TwoFactorAuthService
 
     /**
      * @param Eccube\Entity\Member
+     *
      * @return boolean
      */
     public function isAuth($Member)
     {
-
         if (($json = $this->request->cookies->get($this->cookieName))) {
             $configs = json_decode($json);
-            $encodedString = $this->encoder->encodePassword($Member->getId() . $Member->getTwoFactorAuthKey(), $Member->getSalt());
+            $encodedString = $this->encoder->encodePassword($Member->getId().$Member->getTwoFactorAuthKey(), $Member->getSalt());
             if (
                 $configs
                 && isset($configs->{$Member->getId()})
                 && ($config = $configs->{$Member->getId()})
-                && property_exists($config,'key')
+                && property_exists($config, 'key')
                 && $config->key === $encodedString
                 && (
                     $this->expire == 0
-                    || (property_exists($config,'date') && ($config->date && $config->date > date('U', strtotime('-' . $this->expire . ' day'))))
+                    || (property_exists($config, 'date') && ($config->date && $config->date > date('U', strtotime('-'.$this->expire.' day'))))
                 )
             ) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * @param Eccube\Entity\Member
+     *
      * @return Cookie
      */
     public function createAuthedCookie($Member)
     {
-        $encodedString = $this->encoder->encodePassword($Member->getId() . $Member->getTwoFactorAuthKey(), $Member->getSalt());
+        $encodedString = $this->encoder->encodePassword($Member->getId().$Member->getTwoFactorAuthKey(), $Member->getSalt());
 
         $configs = json_decode('{}');
         if (($json = $this->request->cookies->get($this->cookieName))) {
@@ -157,7 +159,7 @@ class TwoFactorAuthService
             $this->cookieName, // name
             json_encode($configs), // value
             ($this->expire == 0 ? 0 : time() + ($this->expire * 24 * 60 * 60)), // expire
-            '/' . $this->eccubeConfig->get('eccube_admin_route'), // path
+            '/'.$this->eccubeConfig->get('eccube_admin_route'), // path
             null, // domain
             ($this->eccubeConfig->get('eccube_force_ssl') ? true : false), // secure
             true, // httpOnly
@@ -166,16 +168,17 @@ class TwoFactorAuthService
         );
 
         return $cookie;
-    } 
+    }
 
     /**
      * @param Eccube\Entity\Member
-     * @param string 
+     * @param string
+     *
      * @return boolean
      */
-    public function verifyCode($authKey,$token)
+    public function verifyCode($authKey, $token)
     {
-        return $this->tfa->verifyCode($authKey,$token,2);
+        return $this->tfa->verifyCode($authKey, $token, 2);
     }
 
     /**
@@ -189,11 +192,13 @@ class TwoFactorAuthService
     /**
      * @return bool
      */
-    public function isEnabled() {
+    public function isEnabled()
+    {
         $enabled = $this->eccubeConfig->get('eccube_2fa_enabled');
         if (is_string($enabled) && $enabled === 'false' || $enabled === false) {
             return false;
         }
+
         return true;
     }
 }

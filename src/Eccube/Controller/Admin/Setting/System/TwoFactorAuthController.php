@@ -13,25 +13,16 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Member;
-use Eccube\Event\EccubeEvents;
-use Eccube\Event\EventArgs;
-use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Form\Type\Admin\TwoFactorAuthType;
 use Eccube\Repository\MemberRepository;
 use Eccube\Service\TwoFactorAuthService;
-
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TwoFactorAuthController extends AbstractController
 {
@@ -94,9 +85,10 @@ class TwoFactorAuthController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 if ($Member->getTwoFactorAuthKey()) {
-                    if ($this->twoFactorAuthService->verifyCode($Member->getTwoFactorAuthKey(),$form->get('device_token')->getData())) {
+                    if ($this->twoFactorAuthService->verifyCode($Member->getTwoFactorAuthKey(), $form->get('device_token')->getData())) {
                         $response = new RedirectResponse($this->generateUrl('admin_homepage'));
                         $response->headers->setCookie($this->twoFactorAuthService->createAuthedCookie($Member));
+
                         return $response;
                     } else {
                         $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
@@ -126,6 +118,7 @@ class TwoFactorAuthController extends AbstractController
             return $this->redirectToRoute('admin_homepage');
         }
         $res = $this->createResponse($request);
+
         return $res;
     }
 
@@ -143,6 +136,7 @@ class TwoFactorAuthController extends AbstractController
         if (is_array($res) && isset($res['error'])) {
             $this->addError($res['error']);
         }
+
         return $res;
     }
 
@@ -161,8 +155,7 @@ class TwoFactorAuthController extends AbstractController
             $auth_key = $this->twoFactorAuthService->createSecret();
             $builder->get('auth_key')->setData($auth_key);
             $form = $builder->getForm();
-        }
-        else if ('POST' === $request->getMethod()) {
+        } elseif ('POST' === $request->getMethod()) {
             $form = $builder->getForm();
             $form->handleRequest($request);
             $auth_key = $form->get('auth_key')->getData();
@@ -174,9 +167,10 @@ class TwoFactorAuthController extends AbstractController
                     $this->addSuccess('admin.setting.system.two_factor_auth.complete_message', 'admin');
                     $response = new RedirectResponse($this->generateUrl('admin_homepage'));
                     $response->headers->setCookie($this->twoFactorAuthService->createAuthedCookie($Member));
+
                     return $response;
                 } else {
-                    $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput' );
+                    $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
                 }
             } else {
                 $error = trans('admin.setting.system.two_factor_auth.invalid_message__invalid');
