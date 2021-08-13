@@ -48,6 +48,7 @@ jobs:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
           DATABASE_SERVER_VERSION: 11
         run: |
+          rm -rf $GITHUB_WORKSPACE/app/Plugin/*
           echo "APP_ENV=${APP_ENV}" > .env
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
@@ -59,7 +60,16 @@ jobs:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
           DATABASE_SERVER_VERSION: 11
         run: |
-          bin/console eccube:composer:require "ec-cube/Api:^2.0"
+          bin/console eccube:composer:require "ec-cube/recommend4"
+          bin/console eccube:composer:require "ec-cube/coupon4"
+          bin/console eccube:composer:require "ec-cube/mailmagazine4"
+          bin/console eccube:composer:require "ec-cube/salesreport4"
+          bin/console eccube:composer:require "ec-cube/relatedproduct4"
+          bin/console eccube:composer:require "ec-cube/securitychecker4"
+          bin/console eccube:composer:require "ec-cube/productreview4"
+          bin/console eccube:composer:require "ec-cube/api"
+          bin/console eccube:composer:require "ec-cube/sitekit"
+          bin/console eccube:composer:require "ec-cube/gmc"
 
       - name: Pre Install Plugins
         env:
