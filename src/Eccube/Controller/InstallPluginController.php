@@ -110,6 +110,9 @@ class InstallPluginController extends InstallController
                 if ($Plugin->isEnabled()) {
                     $pluginService->disable($Plugin);
                 } else {
+                    if (!$Plugin->isInitialized()) {
+                        $pluginService->installWithCode($Plugin->getCode());
+                    }
                     $pluginService->enable($Plugin);
                 }
 
