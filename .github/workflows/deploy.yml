@@ -68,8 +68,8 @@ jobs:
           bin/console eccube:composer:require "ec-cube/securitychecker4"
           bin/console eccube:composer:require "ec-cube/productreview4"
           bin/console eccube:composer:require "ec-cube/api"
-#          bin/console eccube:composer:require "ec-cube/sitekit"
-#          bin/console eccube:composer:require "ec-cube/gmc"
+          bin/console eccube:composer:require "ec-cube/sitekit"
+          bin/console eccube:composer:require "ec-cube/gmc"
 
       - name: Pre Install Plugins
         env:
