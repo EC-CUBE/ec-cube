@@ -30,12 +30,10 @@ use Eccube\Controller\AbstractController;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Eccube\Entity\Plugin;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
-use Eccube\Repository\PluginRepository;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
@@ -509,7 +507,7 @@ class InstallController extends AbstractController
         return [
             'admin_url' => $adminUrl,
             'is_sqlite' => strpos($databaseUrl, 'sqlite') !== false,
-            'token' => $token
+            'token' => $token,
         ];
     }
 

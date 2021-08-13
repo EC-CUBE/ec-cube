@@ -13,7 +13,6 @@
 
 namespace Eccube\Form\Extension;
 
-
 use Eccube\Form\EventListener\HTMLPurifierListener;
 use Eccube\Request\Context;
 use Symfony\Component\Form\AbstractTypeExtension;

@@ -326,7 +326,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $expected_desc = mb_substr($description_list, 0, 120, 'utf-8');
 
         $url = $this->generateUrl('product_detail', ['id' => 2], UrlGeneratorInterface::ABSOLUTE_URL);
-        $imgPath = $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL) . 'html/upload/save_image/' . $product->getMainListImage()->getFileName();
+        $imgPath = $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL).'html/upload/save_image/'.$product->getMainListImage()->getFileName();
 
         $crawler = $this->client->request('GET', $url);
 
