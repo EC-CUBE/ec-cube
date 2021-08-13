@@ -108,8 +108,6 @@ class MypageControllerTest extends AbstractWebTestCase
 
     public function testHistory()
     {
-        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
-
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
         // 後方互換のため最初の1つのみ渡す

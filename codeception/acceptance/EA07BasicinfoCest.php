@@ -81,7 +81,7 @@ class EA07BasicinfoCest
 
     public function basicinfo_支払方法登録(AcceptanceTester $I)
     {
-        $I->getScenario()->skip('EA0705-UC01-T01 支払方法 登録');
+        $I->getScenario()->incomplete('EA0705-UC01-T01 支払方法 登録');
         $I->wantTo('EA0705-UC01-T01 支払方法 登録');
 
         // 表示
@@ -105,7 +105,7 @@ class EA07BasicinfoCest
 
     public function basicinfo_支払方法編集(AcceptanceTester $I)
     {
-        $I->getScenario()->skip('EA0705-UC01-T01 支払方法 登録');
+        $I->getScenario()->incomplete('EA0705-UC01-T01 支払方法 登録');
         $I->wantTo('EA0705-UC02-T01 支払方法 編集');
 
         // 表示
