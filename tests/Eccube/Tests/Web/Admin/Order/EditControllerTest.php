@@ -165,8 +165,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testOrderCustomerInfo()
     {
-        $this->markTestSkipped('顧客の購入回数と購入金額の実装が完了するまでスキップ');
-        $this->markTestIncomplete('EditController is not implemented.');
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
@@ -304,7 +302,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->actual = $EditedOrder->getOrderStatus()->getId();
         $this->verify();
 
-        $this->markTestSkipped('フロントとのセッション管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('フロントとのセッション管理の実装が完了するまでスキップ');
         // フロント側から, product_class_id = 1 をカート投入
         $client = $this->createClient();
         $client->request(

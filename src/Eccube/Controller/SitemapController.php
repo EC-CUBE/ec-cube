@@ -176,6 +176,7 @@ class SitemapController extends AbstractController
             if (is_null($route)) {
                 return false;
             }
+
             return count($route->compile()->getPathVariables()) < 1;
         });
 
