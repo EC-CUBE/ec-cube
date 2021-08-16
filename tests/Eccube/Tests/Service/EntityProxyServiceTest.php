@@ -87,7 +87,7 @@ class EntityProxyServiceTest extends EccubeTestCase
 
     public function testGenerateFromOriginalFile()
     {
-        $this->markTestSkipped();
+        $this->markTestIncomplete();
 
         $findSequence = static function (Tokens $tokens) {
             return $tokens->findSequence([

@@ -1593,6 +1593,7 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * @Route("/%eccube_admin_route%/product/csv_split", name="admin_product_csv_split", methods={"POST"})
+     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -1647,6 +1648,7 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * @Route("/%eccube_admin_route%/product/csv_split_import", name="admin_product_csv_split_import", methods={"POST"})
+     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse

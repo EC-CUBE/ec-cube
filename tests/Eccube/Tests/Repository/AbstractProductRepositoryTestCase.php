@@ -79,6 +79,7 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
 
     /**
      * 商品にタグをつける
+     *
      * @param Product $Product
      * @param array $tagIds
      */
