@@ -233,9 +233,15 @@ jobs:
           mv reports/codeception-admin03-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.admin03.coverage.xml
           mv reports/codeception-front-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.front.coverage.xml
           mv reports/codeception-installer-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.installer.coverage.xml
-      - name: Upload coverage
+      - name: Upload unit test coverage
         uses: codecov/codecov-action@v1
         with:
-          files: ./reports/phpunit-reports/coverage1.xml,./reports/acceptance.admin01.coverage.xml,./reports/acceptance.admin02.coverage.xml,./reports/acceptance.admin03.coverage.xml,./reports/acceptance.front.coverage.xml,./reports/acceptance.installer.coverage.xml
-          flags: tests
+          files: ./reports/phpunit-reports/coverage1.xml
+          flags: Unit
+          fail_ci_if_error: true
+      - name: Upload E2E coverage
+        uses: codecov/codecov-action@v1
+        with:
+          files: ./reports/acceptance.admin01.coverage.xml,./reports/acceptance.admin02.coverage.xml,./reports/acceptance.admin03.coverage.xml,./reports/acceptance.front.coverage.xml,./reports/acceptance.installer.coverage.xml
+          flags: E2E
           fail_ci_if_error: true
