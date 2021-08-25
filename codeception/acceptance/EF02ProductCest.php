@@ -47,6 +47,9 @@ class EF02ProductCest
         // MEMO: EF0201-UC01-T02... テスト項目の記述が意味不明なのでskip
     }
 
+    /**
+     * @group vaddy
+     */
     public function product_商品一覧ソート(AcceptanceTester $I)
     {
         $I->wantTo('EF0201-UC03-T01 商品一覧ページ ソート');
@@ -92,7 +95,6 @@ class EF02ProductCest
         // 修正されたら以下を追加
         //$I->assertTrue(($pPos > $fPos));
     }
-
     public function product_商品一覧表示件数(AcceptanceTester $I)
     {
         $I->wantTo('EF0201-UC04-T01 商品一覧ページ 表示件数');
@@ -263,6 +265,7 @@ class EF02ProductCest
 
     /**
      * @group excludeCoverage
+     * @group vaddy
      */
     public function product_商品詳細カート4(AcceptanceTester $I)
     {

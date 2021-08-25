@@ -64,6 +64,9 @@ class EF06OtherCest
         $I->see('ログインできませんでした。', 'div.ec-login p.ec-errorMessage');
     }
 
+    /**
+     * @group vaddy
+     */
     public function other_パスワード再発行(AcceptanceTester $I)
     {
         $I->wantTo('EF0602-UC01-T01 パスワード再発行');
@@ -109,6 +112,9 @@ class EF06OtherCest
         $I->loginAsMember($customer->getEmail(), $password);
     }
 
+    /**
+     * @group vaddy
+     */
     public function other_ログアウト(AcceptanceTester $I)
     {
         $I->wantTo('EF0603-UC01-T01 ログアウト');
@@ -121,6 +127,9 @@ class EF06OtherCest
         $I->logoutAsMember();
     }
 
+    /**
+     * @group vaddy
+     */
     public function other_当サイトについて(AcceptanceTester $I)
     {
         $I->wantTo('EF0604-UC01-T01 当サイトについて');
@@ -133,6 +142,9 @@ class EF06OtherCest
         $I->see($baseinfo->getShopName(), '#help_about_box__shop_name');
     }
 
+    /**
+     * @group vaddy
+     */
     public function other_プライバシーポリシー(AcceptanceTester $I)
     {
         $I->wantTo('EF0605-UC01-T01 プライバシーポリシー');
@@ -144,6 +156,9 @@ class EF06OtherCest
         $I->see('個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。', 'div.ec-layoutRole__main p:nth-child(1)');
     }
 
+    /**
+     * @group vaddy
+     */
     public function other_特定商取引法に基づく表記(AcceptanceTester $I)
     {
         $I->wantTo('EF0606-UC01-T01 特定商取引法に基づく表記');
@@ -154,6 +169,9 @@ class EF06OtherCest
         $I->see('特定商取引法に基づく表記', 'div.ec-pageHeader h1');
     }
 
+    /**
+     * @group vaddy
+     */
     public function other_お問い合わせ1(AcceptanceTester $I)
     {
         $I->wantTo('EF0607-UC01-T01 お問い合わせ');

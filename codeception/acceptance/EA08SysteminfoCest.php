@@ -32,6 +32,9 @@ class EA08SysteminfoCest
     {
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_システム情報(AcceptanceTester $I)
     {
         $I->wantTo('EA0801-UC01-T01 システム情報');
@@ -62,6 +65,9 @@ class EA08SysteminfoCest
         $I->see('新規登録', '#ex-member-new > a');
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_メンバー管理登録実施(AcceptanceTester $I)
     {
         $I->wantTo('EA0803-UC01-T01 メンバー管理 - 登録 - 登録実施');
@@ -131,6 +137,9 @@ class EA08SysteminfoCest
         $I->see('入力されていません。', '#member_form div:nth-child(1) div');
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_メンバー管理編集実施(AcceptanceTester $I)
     {
         $I->wantTo('EA0803-UC02-T01 メンバー管理 - 編集 - 編集実施');
@@ -191,6 +200,9 @@ class EA08SysteminfoCest
         $I->see('入力されていません。', '#member_form div:nth-child(1) div');
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_メンバー管理登録下へ(AcceptanceTester $I)
     {
         $I->wantTo('EA0802-UC01-T02 メンバー管理 - 下へ');
@@ -207,6 +219,9 @@ class EA08SysteminfoCest
         $I->see('管理者', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_メンバー管理登録上へ(AcceptanceTester $I)
     {
         $I->wantTo('EA0802-UC01-T03 メンバー管理 - 上へ');
@@ -223,6 +238,9 @@ class EA08SysteminfoCest
         $I->see('管理者', '.c-primaryCol .card-body table tbody tr:nth-child(2) td:nth-child(1)');
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_メンバー管理削除(AcceptanceTester $I)
     {
         $I->wantTo('EA0802-UC01-T06 メンバー管理 - 削除');
@@ -327,6 +345,9 @@ class EA08SysteminfoCest
         $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_権限管理追加(AcceptanceTester $I)
     {
         $I->wantTo('EA0805-UC01-T01 権限管理 - 追加');
@@ -342,6 +363,9 @@ class EA08SysteminfoCest
         $I->dontSee('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_権限管理削除(AcceptanceTester $I)
     {
         $I->wantTo('EA0805-UC02-T01 権限管理 - 削除');
@@ -356,6 +380,9 @@ class EA08SysteminfoCest
         $I->see('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_ログ表示(AcceptanceTester $I)
     {
         $I->wantTo('EA0806-UC01-T01 ログ表示');
@@ -374,6 +401,9 @@ class EA08SysteminfoCest
         $I->seeInField(['id' => 'admin_system_log_line_max'], '1');
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_マスターデータ管理(AcceptanceTester $I)
     {
         $I->wantTo('EA0807-UC01-T01 マスターデータ管理');
@@ -396,6 +426,9 @@ class EA08SysteminfoCest
         $I->see('無回答', '#customer_form #admin_customer_sex');
     }
 
+    /**
+     * @group vaddy
+     */
     public function systeminfo_ログイン履歴検索(AcceptanceTester $I)
     {
         $I->wantTo('EA0808-UC01-T01 ログイン履歴 - 検索');

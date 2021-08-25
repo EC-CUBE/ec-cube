@@ -95,6 +95,9 @@ class EF03OrderCest
             ->商品削除(1);
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_カート数量増やす(AcceptanceTester $I)
     {
         $I->wantTo('EF0301-UC01-T03 カート 数量増やす');
@@ -115,6 +118,9 @@ class EF03OrderCest
         $I->assertEquals('2', $cartPage->商品数量(1));
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_カート数量減らす(AcceptanceTester $I)
     {
         $I->wantTo('EF0301-UC01-T04 カート 数量減らす');
@@ -134,6 +140,9 @@ class EF03OrderCest
         $I->assertEquals('1', $cartPage->商品数量(1));
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_ログインユーザ購入(AcceptanceTester $I)
     {
         $I->wantTo('EF0302-UC01-T01 ログインユーザ購入');
@@ -181,6 +190,9 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_ゲスト購入(AcceptanceTester $I)
     {
         $I->wantTo('EF0302-UC02-T01 ゲスト購入');
@@ -247,6 +259,9 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_ゲスト購入情報変更(AcceptanceTester $I)
     {
         $I->wantTo('EF0305-UC02-T01 ゲスト購入 情報変更'); // EF0305-UC04-T01も一緒にテスト
@@ -330,6 +345,7 @@ class EF03OrderCest
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/3133
+     * @vaddy
      */
     public function order_ログインしてカートをマージ(AcceptanceTester $I)
     {
@@ -395,6 +411,9 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_ログインユーザ購入複数配送(AcceptanceTester $I)
     {
         // チェック用変数

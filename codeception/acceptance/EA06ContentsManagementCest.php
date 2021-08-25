@@ -83,6 +83,7 @@ class EA06ContentsManagementCest
     /**
      * @env firefox
      * @env chrome
+     * @group vaddy
      */
     public function contentsmanagement_ファイル管理(AcceptanceTester $I)
     {
@@ -145,6 +146,9 @@ class EA06ContentsManagementCest
         }
     }
 
+    /**
+     * @group vaddy
+     */
     public function contentsmanagement_ページ管理(AcceptanceTester $I)
     {
         $I->wantTo('EA0603-UC01-T01(& UC01-T02/UC01-T03/UC01-T04/UC01-T05) ページ管理');
@@ -263,6 +267,9 @@ class EA06ContentsManagementCest
         $I->seeNumberOfElements(LayoutEditPage::$未使用ブロックアイテム, count($items));
     }
 
+    /**
+     * @group vaddy
+     */
     public function contentsmanagement_ブロック管理(AcceptanceTester $I)
     {
         $I->wantTo('EA0603-UC01-T01(& UC01-T02/UC01-T03) ブロック管理');
