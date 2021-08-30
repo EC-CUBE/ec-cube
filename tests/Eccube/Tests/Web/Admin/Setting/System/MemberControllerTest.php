@@ -179,6 +179,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             'second' => '**********',
         ];
         $Member = $this->createMember();
+        $loginId = $Member->getLoginId();
         $Member->setPassword('**********');
         $this->entityManager->persist($Member);
         $this->entityManager->flush();
@@ -193,16 +194,19 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $this->actual = $Member->getLoginId();
-        $this->expected = $formData['login_id'];
+        $this->actual = $Member->getName();
+        $this->expected = $formData['name'];
         $this->verify();
+
+        // login_idが変更されないことを確認
+        $this->assertSame($Member->getLoginId(), $loginId);
     }
 
     public function testMemberEditSubmitFail()
     {
         // before
         $formData = $this->createFormData();
-        $formData['login_id'] = '';
+        $formData['name'] = '';
         $Member = $this->createMember();
         $Member->setPassword('**********');
         $this->entityManager->persist($Member);

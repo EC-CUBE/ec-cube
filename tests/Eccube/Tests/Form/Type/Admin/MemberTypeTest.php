@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Entity\Member;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
@@ -40,7 +41,7 @@ class MemberTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(MemberType::class, null, [
+            ->createBuilder(MemberType::class, new Member(), [
                 'csrf_protection' => false,
             ])
             ->getForm();
@@ -182,5 +183,24 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
+    }
+
+    public function testLoginIdNotChanged()
+    {
+        $Member = $this->createMember();
+        $loginId = $Member->getLoginId();
+
+        $this->form = $this->formFactory
+            ->createBuilder(MemberType::class, $Member, [
+                'csrf_protection' => false,
+            ])
+            ->getForm();
+
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+
+        // login_idが変更されないことを確認
+        $this->assertSame($Member->getLoginId(), $loginId);
     }
 }
