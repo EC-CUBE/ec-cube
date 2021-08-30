@@ -75,20 +75,7 @@ class MemberType extends AbstractType
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
-            ->add('login_id', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length([
-                        'min' => $this->eccubeConfig['eccube_id_min_len'],
-                        'max' => $this->eccubeConfig['eccube_id_max_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form_error.graph_only',
-                    ]),
-                ],
-            ])
-            ->add('password', RepeatedPasswordType::class, [
+            ->add('plain_password', RepeatedPasswordType::class, [
                 'first_options' => [
                     'label' => 'admin.setting.system.member.password',
                 ],
@@ -115,6 +102,38 @@ class MemberType extends AbstractType
             ])
             ->add('two_factor_auth_enabled', ToggleSwitchType::class, [
             ]);
+
+        // login idの入力は新規登録時のみとし、編集時はdisabledにする
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $form = $event->getForm();
+            $data = $event->getData();
+
+            $options = [
+                'constraints' => [
+                    new Assert\Length([
+                        'min' => $this->eccubeConfig['eccube_id_min_len'],
+                        'max' => $this->eccubeConfig['eccube_id_max_len'],
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form_error.graph_only',
+                    ]),
+                ],
+            ];
+
+            if ($data->getId() === null) {
+                $options['constraints'][] = new Assert\NotBlank();
+            } else {
+                $options['required'] = false;
+                $options['mapped'] = false;
+                $options['attr'] = [
+                    'disabled' => 'disabled'
+                ];
+                $options['data'] = $data->getLoginId();
+            }
+
+            $form->add('login_id', TextType::class, $options);
+        });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var Member $Member */
