@@ -74,7 +74,7 @@ final class Version20210412073123 extends AbstractMigration
     public function down(Schema $schema): void
     {
         if ($schema->hasTable('dtb_login_history')) {
-            $this->addSql('DROP TABLE dtb_login_history');
+            $this->addSql('DELETE FROM dtb_login_history');
         }
     }
 }
