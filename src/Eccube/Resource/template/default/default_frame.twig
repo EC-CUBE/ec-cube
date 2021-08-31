@@ -62,15 +62,6 @@ file that was distributed with this source code.
     {{ include('block.twig', {'Blocks': Layout.BodyAfter}) }}
 {% endif %}
 
-{% if isMaintenance %}
-    <div class="ec-maintenanceAlert">
-        <div>
-            <div class="ec-maintenanceAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-            {{ 'front.under_maintenance'|trans }}
-        </div>
-    </div>
-{% endif %}
-
 <div class="ec-layoutRole">
     {# Layout: HEADER #}
     {% if Layout.Header %}
