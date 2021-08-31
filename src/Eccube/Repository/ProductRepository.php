@@ -313,14 +313,6 @@ class ProductRepository extends AbstractRepository
             }
         }
 
-        // tag
-        if (!empty($searchData['tag_id']) && $searchData['tag_id']) {
-            $qb
-                ->innerJoin('p.ProductTag', 'pt')
-                ->andWhere('pt.Tag = :tag_id')
-                ->setParameter('tag_id', $searchData['tag_id']);
-        }
-
         // crate_date
         if (!empty($searchData['create_datetime_start']) && $searchData['create_datetime_start']) {
             $date = $searchData['create_datetime_start'];
