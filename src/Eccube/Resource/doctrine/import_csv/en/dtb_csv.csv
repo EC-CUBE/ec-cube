@@ -117,10 +117,9 @@ id,csv_type_id,creator_id,entity_name,field_name,reference_field_name,disp_name,
 116,3,,Eccube\\Entity\\Shipping,phone_number,,Recipient Phone,60,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 117,3,,Eccube\\Entity\\Shipping,Delivery,id,Delivery Company (ID),61,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 118,3,,Eccube\\Entity\\Shipping,shipping_delivery_name,,Delivery Company (Name),62,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
-119,3,,Eccube\\Entity\\Shipping,DeliveryTime,id,Delivery Time ID,63,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+119,3,,Eccube\\Entity\\Shipping,time_id,,Delivery Time ID,63,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 120,3,,Eccube\\Entity\\Shipping,shipping_delivery_time,,Delivery Time (Name),64,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 121,3,,Eccube\\Entity\\Shipping,shipping_delivery_date,,Preferred Delivery Date,65,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
-122,3,,Eccube\\Entity\\Shipping,DeliveryFee,id,Shipping Charge ID,66,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 123,3,,Eccube\\Entity\\Shipping,shipping_delivery_fee,,Shipping Charge,67,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 124,3,,Eccube\\Entity\\Shipping,shipping_date,,Shipping Date,68,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 125,3,,Eccube\\Entity\\Shipping,tracking_number,,Tracking No. ,69,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
@@ -188,10 +187,9 @@ id,csv_type_id,creator_id,entity_name,field_name,reference_field_name,disp_name,
 187,4,,Eccube\\Entity\\Shipping,phone_number,,Recipient Phone,60,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 188,4,,Eccube\\Entity\\Shipping,Delivery,id,Delivery Company (ID),61,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 189,4,,Eccube\\Entity\\Shipping,shipping_delivery_name,,Delivery Company (Name),62,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
-190,4,,Eccube\\Entity\\Shipping,DeliveryTime,id,Delivery Time (ID),63,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+190,4,,Eccube\\Entity\\Shipping,time_id,,Delivery Time (ID),63,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 191,4,,Eccube\\Entity\\Shipping,shipping_delivery_time,,Delivery Time (Name),64,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 192,4,,Eccube\\Entity\\Shipping,shipping_delivery_date,,Preferred Delivery Date,65,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
-193,4,,Eccube\\Entity\\Shipping,DeliveryFee,id,Shipping Charge ID,66,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 194,4,,Eccube\\Entity\\Shipping,shipping_delivery_fee,,Shipping Charge,67,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 195,4,,Eccube\\Entity\\Shipping,shipping_date,,Shipping Date,68,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 196,4,,Eccube\\Entity\\Shipping,tracking_number,,Tracking No. ,69,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
