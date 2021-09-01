@@ -121,6 +121,12 @@ class MemberRepository extends AbstractRepository
             ->execute();
 
         $em = $this->getEntityManager();
+
+        // ログインしたメンバーの外部参照制約を解除する
+        // https://github.com/EC-CUBE/ec-cube/issues/5119
+        $Member->setCreator(null);
+        $em->flush();
+
         $em->remove($Member);
         $em->flush();
     }

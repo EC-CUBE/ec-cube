@@ -172,4 +172,18 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->memberRepo->delete($Member1);
         $this->fail();
     }
+
+    /**
+     * https://github.com/EC-CUBE/ec-cube/issues/5119
+     */
+    public function testDeleteWithException_SelfForeignKey()
+    {
+        $Member1 = $this->createMember();
+        $Member1->setCreator($Member1);
+        $this->entityManager->flush();
+
+        // 削除できることを確認
+        $this->memberRepo->delete($Member1);
+        self::assertNull($Member1->getId());
+    }
 }
