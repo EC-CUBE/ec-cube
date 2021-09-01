@@ -278,7 +278,7 @@ class OrderController extends AbstractController
                 $viewData = [];
 
                 if ($statusId = (int) $request->get('order_status_id')) {
-                    $viewData = ['status' => $statusId];
+                    $viewData = ['status' => [$statusId]];
                 }
 
                 $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
