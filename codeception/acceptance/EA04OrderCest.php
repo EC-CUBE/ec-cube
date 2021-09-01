@@ -397,6 +397,8 @@ class EA04OrderCest
             ->一覧_全選択()
             ->受注ステータス変更('発送済み');
 
+        $I->waitForElementVisible(['id' => 'bulkChangeComplete']);
+
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::DELIVERED);
         $I->comment('発送済みに変更した件数を確認します。新規受付: '.count($NewOrders).'件 +  発送済み: '.count($DeliveredOrders).'件');
         $I->see('検索結果：'.(count($DeliveredOrders) + count($NewOrders)).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
