@@ -19,7 +19,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\TaxRule;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -51,14 +51,14 @@ class TaxRuleRepository extends AbstractRepository
     /**
      * TaxRuleRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      * @param TokenStorageInterface $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param BaseInfoRepository $baseInfoRepository
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
-        RegistryInterface $registry,
+        ManagerRegistry $registry,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         BaseInfoRepository $baseInfoRepository,

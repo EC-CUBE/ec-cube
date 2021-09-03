@@ -20,7 +20,7 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
@@ -59,7 +59,7 @@ class CustomerRepository extends AbstractRepository
     /**
      * CustomerRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      * @param Queries $queries
      * @param EntityManagerInterface $entityManager
      * @param OrderRepository $orderRepository
@@ -67,7 +67,7 @@ class CustomerRepository extends AbstractRepository
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
-        RegistryInterface $registry,
+        ManagerRegistry $registry,
         Queries $queries,
         EntityManagerInterface $entityManager,
         OrderRepository $orderRepository,

@@ -19,7 +19,7 @@ use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductStock;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * ProductRepository
@@ -42,12 +42,12 @@ class ProductRepository extends AbstractRepository
     /**
      * ProductRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      * @param Queries $queries
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
-        RegistryInterface $registry,
+        ManagerRegistry $registry,
         Queries $queries,
         EccubeConfig $eccubeConfig
     ) {
