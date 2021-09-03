@@ -159,7 +159,7 @@ class TwoFactorAuthService
             $this->cookieName, // name
             json_encode($configs), // value
             ($this->expire == 0 ? 0 : time() + ($this->expire * 24 * 60 * 60)), // expire
-            '/'.$this->eccubeConfig->get('eccube_admin_route'), // path
+            $this->request->getBasePath().'/'.$this->eccubeConfig->get('eccube_admin_route'), //path
             null, // domain
             ($this->eccubeConfig->get('eccube_force_ssl') ? true : false), // secure
             true, // httpOnly
