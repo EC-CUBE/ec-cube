@@ -52,7 +52,6 @@ class PurchaseFlowPass implements CompilerPassInterface
                         foreach ($flowTypes as $flowType => $purchaseFlowDef) {
                             if ($flowType === $attributes['flow_type']) {
                                 $purchaseFlowDef->addMethodCall($methodName, [new Reference($id)]);
-                                $purchaseFlowDef->setPublic(true);
                             }
                         }
                     }
@@ -61,9 +60,9 @@ class PurchaseFlowPass implements CompilerPassInterface
         }
 
         $flowDefs = [
-            CartFlow::class => $container->getDefinition('eccube.purchase.flow.cart'),
-            ShoppingFlow::class => $container->getDefinition('eccube.purchase.flow.shopping'),
-            OrderFlow::class => $container->getDefinition('eccube.purchase.flow.order'),
+            CartFlow::class => $container->findDefinition('eccube.purchase.flow.cart'),
+            ShoppingFlow::class => $container->findDefinition('eccube.purchase.flow.shopping'),
+            OrderFlow::class => $container->findDefinition('eccube.purchase.flow.order'),
         ];
 
         AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__.'/../../../../src');
