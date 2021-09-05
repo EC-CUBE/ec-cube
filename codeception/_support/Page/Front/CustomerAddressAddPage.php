@@ -20,6 +20,14 @@ class CustomerAddressAddPage extends AbstractFrontPage
         parent::__construct($I);
     }
 
+    public static function go($I)
+    {
+        $page = new self($I);
+        $page->goPage('/mypage/delivery/new');
+
+        return $page;
+    }
+
     public static function at($I)
     {
         $page = new self($I);
@@ -30,69 +38,69 @@ class CustomerAddressAddPage extends AbstractFrontPage
 
     public function 入力_姓($value)
     {
-        $this->tester->fillField(['id' => 'shopping_shipping_name_name01'], $value);
+        $this->tester->fillField(['id' => 'customer_address_name_name01'], $value);
 
         return $this;
     }
 
     public function 入力_名($value)
     {
-        $this->tester->fillField(['id' => 'shopping_shipping_name_name02'], $value);
+        $this->tester->fillField(['id' => 'customer_address_name_name02'], $value);
 
         return $this;
     }
 
     public function 入力_セイ($value)
     {
-        $this->tester->fillField(['id' => 'shopping_shipping_kana_kana01'], $value);
+        $this->tester->fillField(['id' => 'customer_address_kana_kana02'], $value);
 
         return $this;
     }
 
     public function 入力_メイ($value)
     {
-        $this->tester->fillField(['id' => 'shopping_shipping_kana_kana02'], $value);
+        $this->tester->fillField(['id' => 'customer_address_kana_kana02'], $value);
 
         return $this;
     }
 
     public function 入力_郵便番号($value)
     {
-        $this->tester->fillField(['id' => 'shopping_shipping_postal_code'], $value);
+        $this->tester->fillField(['id' => 'customer_address_postal_code'], $value);
 
         return $this;
     }
 
     public function 入力_都道府県($value)
     {
-        $this->tester->selectOption(['id' => 'shopping_shipping_address_pref'], $value);
+        $this->tester->selectOption(['id' => 'customer_address_address_pref'], $value);
 
         return $this;
     }
 
     public function 入力_市区町村名($value)
     {
-        $this->tester->fillField(['id' => 'shopping_shipping_address_addr01'], $value);
+        $this->tester->fillField(['id' => 'customer_address_address_addr01'], $value);
 
         return $this;
     }
 
     public function 入力_番地_ビル名($value)
     {
-        $this->tester->fillField(['id' => 'shopping_shipping_address_addr02'], $value);
+        $this->tester->fillField(['id' => 'customer_address_address_addr02'], $value);
 
         return $this;
     }
 
     public function 入力_電話番号($value)
     {
-        $this->tester->fillField(['id' => 'shopping_shipping_phone_number'], $value);
+        $this->tester->fillField(['id' => 'customer_address_phone_number'], $value);
 
         return $this;
     }
 
     public function 登録する()
     {
-        $this->tester->click('div.ec-registerRole button.ec-blockBtn--action');
+        $this->tester->click('button.ec-blockBtn--cancel');
     }
 }

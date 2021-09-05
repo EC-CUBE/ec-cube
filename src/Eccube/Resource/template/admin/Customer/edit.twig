@@ -87,7 +87,9 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <span>{{ 'admin.common.kana'|trans }}</span>
+                                        {% if BaseInfo.option_require_kana %}
                                         <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        {% endif %}
                                     </div>
                                     <div class="col">
                                         <div class="row">

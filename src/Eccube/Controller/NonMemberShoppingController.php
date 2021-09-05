@@ -13,7 +13,9 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\NonMemberType;
@@ -50,20 +52,28 @@ class NonMemberShoppingController extends AbstractShoppingController
     protected $cartService;
 
     /**
+     * @var BaseInfo
+     */
+    protected $baseInfo;
+
+    /**
      * NonMemberShoppingController constructor.
      *
      * @param ValidatorInterface $validator
+     * @param BaseInfoRepository $baseInfoRepository
      * @param PrefRepository $prefRepository
      * @param OrderHelper $orderHelper
      * @param CartService $cartService
      */
     public function __construct(
         ValidatorInterface $validator,
+        BaseInfoRepository $baseInfoRepository,
         PrefRepository $prefRepository,
         OrderHelper $orderHelper,
         CartService $cartService
     ) {
         $this->validator = $validator;
+        $this->baseInfo = $baseInfoRepository->get();
         $this->prefRepository = $prefRepository;
         $this->orderHelper = $orderHelper;
         $this->cartService = $cartService;
@@ -256,24 +266,20 @@ class NonMemberShoppingController extends AbstractShoppingController
             ]
         );
 
-        $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
-        $errors[] = $this->validator->validate(
-            $data['customer_kana01'],
-            [
-                new Assert\NotBlank(),
+        $kanaValidators = [
                 new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
                 new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
-            ]
-        );
-        $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
-        $errors[] = $this->validator->validate(
-            $data['customer_kana02'],
-            [
-                new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
-                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
-            ]);
+        ];
 
+        if ($this->baseInfo->isOptionRequireKana()) {
+            $kanaValidators []= new Assert\NotBlank();
+        }
+
+        $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
+        $errors[] = $this->validator->validate($data['customer_kana01'], $kanaValidators);
+
+        $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
+        $errors[] = $this->validator->validate($data['customer_kana02'], $kanaValidators);
         $errors[] = $this->validator->validate(
             $data['customer_company_name'],
             [

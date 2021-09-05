@@ -260,6 +260,15 @@ file that was distributed with this source code.
                                     {{ form_errors(form.option_remember_me) }}
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_require_kana'|trans }}"><span>{{ 'admin.setting.shop.shop.option_require_kana'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_require_kana) }}
+                                    {{ form_errors(form.option_require_kana) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">

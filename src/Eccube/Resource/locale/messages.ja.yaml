@@ -1115,6 +1115,7 @@ admin.setting.shop.shop.option_customer_activate: 仮会員機能
 admin.setting.shop.shop.option_mypage_order_status_display: マイページに注文状況を表示
 admin.setting.shop.shop.option_favorite_product: お気に入り商品機能
 admin.setting.shop.shop.option_remember_me: 自動ログイン機能
+admin.setting.shop.shop.option_require_kana: カナを必須項目にする
 admin.setting.shop.shop.option_product: 商品設定
 admin.setting.shop.shop.nostock_hidden: 在庫切れ商品の非表示
 admin.setting.shop.shop.option_tax: 税設定
@@ -1634,6 +1635,7 @@ tooltip.setting.shop.shop.option_delivery_fee_by_product: ここをオンにす�
 tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後は仮会員とし、メールアドレスの確認などを経て本会員として登録できる機能です。
 tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
 tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
+tooltip.setting.shop.shop.option_require_kana: 顧客登録時にカナの入力を必須にします。
 tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に税率を設定することができるようになります。
 tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。
 tooltip.setting.shop.shop.option_point_rate: 購入金額に対するポイント付与率を編集できます。

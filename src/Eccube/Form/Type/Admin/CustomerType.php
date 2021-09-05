@@ -64,9 +64,7 @@ class CustomerType extends AbstractType
             ->add('name', NameType::class, [
                 'required' => true,
             ])
-            ->add('kana', KanaType::class, [
-                'required' => true,
-            ])
+            ->add('kana', KanaType::class)
             ->add('company_name', TextType::class, [
                 'required' => false,
                 'constraints' => [
