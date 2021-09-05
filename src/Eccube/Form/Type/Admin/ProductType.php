@@ -27,10 +27,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -171,6 +167,16 @@ class ProductType extends AbstractType
             ])
             ->add('delete_images', CollectionType::class, [
                 'entry_type' => HiddenType::class,
+                'entry_options' => [
+                    'constraints' => [
+                        new Assert\Regex([
+                            'pattern' => '#(?:\A|/)\.{1,2}(?:\z|/)#u',
+                            'match' => false,
+                            'message' => 'admin.product.image__invalid_path',
+                        ]),
+                        new Assert\NotBlank(),
+                    ],
+                ],
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
@@ -180,35 +186,6 @@ class ProductType extends AbstractType
                 'mapped' => false,
             ])
         ;
-
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            /** @var FormInterface $form */
-            $form = $event->getForm();
-            $saveImgDir = $this->eccubeConfig['eccube_save_image_dir'];
-            $tempImgDir = $this->eccubeConfig['eccube_temp_image_dir'];
-            $this->validateFilePath($form->get('delete_images'), [$saveImgDir, $tempImgDir]);
-            $this->validateFilePath($form->get('add_images'), [$tempImgDir]);
-        });
-    }
-
-    /**
-     * 指定された複数ディレクトリのうち、いずれかのディレクトリ以下にファイルが存在するかを確認。
-     *
-     * @param $form FormInterface
-     * @param $dirs array
-     */
-    private function validateFilePath($form, $dirs)
-    {
-        foreach ($form->getData() as $fileName) {
-            $fileInDir = array_filter($dirs, function ($dir) use ($fileName) {
-                $filePath = realpath($dir.'/'.$fileName);
-                $topDirPath = realpath($dir);
-                return strpos($filePath, $topDirPath) === 0 && $filePath !== $topDirPath;
-            });
-            if (!$fileInDir) {
-                $form->getRoot()['product_image']->addError(new FormError(trans('admin.product.image__invalid_path')));
-            }
-        }
     }
 
     /**
