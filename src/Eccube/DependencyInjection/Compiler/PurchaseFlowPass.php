@@ -52,6 +52,7 @@ class PurchaseFlowPass implements CompilerPassInterface
                         foreach ($flowTypes as $flowType => $purchaseFlowDef) {
                             if ($flowType === $attributes['flow_type']) {
                                 $purchaseFlowDef->addMethodCall($methodName, [new Reference($id)]);
+                                $purchaseFlowDef->setPublic(true);
                             }
                         }
                     }
