@@ -53,11 +53,15 @@ services:
     # addItemHolderValidator
     eccube.purchase.flow.item.holder.validator.stock.multiple.validator:
         class: Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator
+        arguments:
+            - '@Eccube\Repository\ProductClassRepository'
         tags:
             - { name: eccube.item.holder.validator, flow_type: shopping, priority: 100 }
 
     eccube.purchase.flow.item.holder.validator.sale.limit.multiple.validator:
         class: Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator
+        arguments:
+            - '@Eccube\Repository\ProductClassRepository'
         tags:
             - { name: eccube.item.holder.validator, flow_type: shopping, priority: 90 }
 
@@ -71,11 +75,16 @@ services:
 
     eccube.purchase.flow.item.holder.validator.stock.diff.processor:
         class: Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor
+        arguments:
+            - '@Eccube\Repository\ProductClassRepository'
         tags:
             - { name: eccube.item.holder.validator, flow_type: order, priority: 100 }
 
     eccube.purchase.flow.item.holder.validator.point.diff.processor:
         class: Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Service\PointHelper'
         tags:
             - { name: eccube.item.holder.validator, flow_type: order, priority: 90 }
 
@@ -84,32 +93,54 @@ services:
     # addItemHolderPreprocessor
     eccube.purchase.flow.item.holder.preprocessor.tax.processor.before: # 税額の計算(商品明細に対して税額計算)
         class: Eccube\Service\PurchaseFlow\Processor\TaxProcessor
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Repository\TaxRuleRepository'
+            - '@Eccube\Service\TaxRuleService'
         tags:
             - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 100 }
             - { name: eccube.item.holder.preprocessor, flow_type: order, priority: 100 }
 
     eccube.purchase.flow.item.holder.preprocessor.order.no.processor:
         class: Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor
+        arguments:
+            - '@Eccube\Common\EccubeConfig'
+            - '@Eccube\Repository\OrderRepository'
         tags:
             - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 90 }
 
     eccube.purchase.flow.item.holder.preprocessor.delivery.fee.preprocessor:
         class: Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor
+        arguments:
+            - '@Eccube\Repository\BaseInfoRepository'
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Repository\TaxRuleRepository'
+            - '@Eccube\Repository\DeliveryFeeRepository'
         tags:
             - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 80 }
 
     eccube.purchase.flow.item.holder.preprocessor.delivery.fee.free.by.shipping.preprocessor:
         class: Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor
+        arguments:
+            - '@Eccube\Repository\BaseInfoRepository'
         tags:
             - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 70 }
 
     eccube.purchase.flow.item.holder.preprocessor.pyament.charge.preprocessor:
         class: Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor
+        arguments:
+            - '@Eccube\Repository\Master\OrderItemTypeRepository'
+            - '@Eccube\Repository\Master\TaxDisplayTypeRepository'
+            - '@Eccube\Repository\Master\TaxTypeRepository'
         tags:
             - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 50 }
 
     eccube.purchase.flow.item.holder.preprocessor.tax.processor.after: # 税額の計算(商品明細に対して税額計算)
         class: Eccube\Service\PurchaseFlow\Processor\TaxProcessor
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Repository\TaxRuleRepository'
+            - '@Eccube\Service\TaxRuleService'
         tags:
             - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 40 }
 
@@ -133,6 +164,8 @@ services:
 
     eccube.purchase.flow.item.holder.post.validator.add.point.processor:
         class: Eccube\Service\PurchaseFlow\Processor\AddPointProcessor
+        arguments:
+            - '@Eccube\Repository\BaseInfoRepository'
         tags:
             - { name: eccube.item.holder.post.validator, flow_type: shopping, priority: 100 }
             - { name: eccube.item.holder.post.validator, flow_type: order, priority: 100 }
@@ -194,15 +227,22 @@ services:
 
     eccube.purchase.flow.purchase.processor.order.update.processor:
         class: Eccube\Service\PurchaseFlow\Processor\OrderUpdateProcessor
+        arguments:
+            - '@Eccube\Repository\Master\OrderStatusRepository'
         tags:
             - { name: eccube.purchase.processor, flow_type: shopping, priority: 70 }
 
     eccube.purchase.flow.purchase.processor.stock.diff.processor:
         class: Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor
+        arguments:
+            - '@Eccube\Repository\ProductClassRepository'
         tags:
             - { name: eccube.purchase.processor, flow_type: order, priority: 100 }
 
     eccube.purchase.flow.purchase.processor.point.diff.processor:
         class: Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Service\PointHelper'
         tags:
             - { name: eccube.purchase.processor, flow_type: order, priority: 90 }
