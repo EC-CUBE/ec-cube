@@ -46,8 +46,8 @@ class PurchaseFlowPass implements CompilerPassInterface
 
         foreach ($this->getProcessorTags() as $tag => $methodName) {
             foreach ($this->findAndSortTaggedServices($tag, $container) as $id) {
-                $definition = $container->findDefinition($id);
-                foreach ($definition->getTag($tag) as $attributes) {
+                $def = $container->findDefinition($id);
+                foreach ($def->getTag($tag) as $attributes) {
                     if (isset($attributes['flow_type'])) {
                         foreach ($flowTypes as $flowType => $purchaseFlowDef) {
                             if ($flowType === $attributes['flow_type']) {
