@@ -48,11 +48,17 @@ class EA03ProductCest
     {
         $I->wantTo('EA0301-UC01-T01 (& UC01-T02) 商品検索');
 
+        // 商品検索
         ProductManagePage::go($I)->検索('ジェラート');
-
         $I->see('検索結果：1件が該当しました', ProductManagePage::$検索結果_メッセージ);
         $I->see('彩のジェラートCUBE', ProductManagePage::$検索結果_一覧);
 
+        // 検索条件入力フォームが未入力の場合は、全件表示される
+        ProductManagePage::go($I)->検索('');
+        $products_count = count(Fixtures::get('findProducts')());
+        $I->see("検索結果：{$products_count}件が該当しました", ProductManagePage::$検索結果_メッセージ);
+
+        // 検索結果 0 件
         ProductManagePage::go($I)->検索('gege@gege.com');
         $I->see('検索結果：0件が該当しました', ProductManagePage::$検索結果_メッセージ);
     }
@@ -85,7 +91,7 @@ class EA03ProductCest
 
     public function product_規格確認のポップアップ表示(AcceptanceTester $I)
     {
-        $I->wantTo('EA0301-UC01-T03 規格確認のポップアップを表示');
+        $I->wantTo('EA0301-UC01-T04 規格確認のポップアップを表示');
 
         ProductManagePage::go($I)
             ->検索(1)
@@ -97,7 +103,7 @@ class EA03ProductCest
 
     public function product_ポップアップから規格編集画面に遷移(AcceptanceTester $I)
     {
-        $I->wantTo('EA0301-UC01-T04 ポップアップから規格編集画面に遷移');
+        $I->wantTo('EA0301-UC01-T05 ポップアップから規格編集画面に遷移');
 
         ProductManagePage::go($I)
             ->検索(1)
@@ -433,7 +439,14 @@ class EA03ProductCest
 
     public function product_規格登録_(AcceptanceTester $I)
     {
-        $I->wantTo('EA0303-UC01-T01 規格登録');
+        $I->wantTo('EA0303-UC01-T01 規格登録 / EA0303-UC01-T02 規格登録 未登録時');
+
+        // フォーム未入力だと登録できないことを確認する
+        ClassNameManagePage::go($I)
+            ->入力_管理名('')
+            ->入力_表示名('')
+            ->規格作成();
+        $I->dontSeeElement(ClassNameManagePage::$登録完了メッセージ);
 
         ClassNameManagePage::go($I)
             ->入力_管理名('backend test class1')
@@ -441,12 +454,6 @@ class EA03ProductCest
             ->規格作成();
 
         $I->see('保存しました', ClassNameManagePage::$登録完了メッセージ);
-    }
-
-    public function product_規格登録未登録時(AcceptanceTester $I)
-    {
-        $I->wantTo('EA0303-UC01-T02 規格登録 未登録時');
-        // TODO [fixture] 規格が1件も登録されていない状態にする
     }
 
     public function product_規格編集(AcceptanceTester $I)
@@ -594,7 +601,7 @@ class EA03ProductCest
         // csv EA0305-UC04-T01
         $CategoryPage
             ->CSVダウンロード実行();
-        /* csvがダウンロードされたかは確認不可 */
+        $I->getLastDownloadFile('/^category_\d{14}\.csv$/');
 
         // csv EA0305-UC04-T02
         $CategoryPage->CSV出力項目設定();
@@ -673,6 +680,16 @@ class EA03ProductCest
 
         ProductManagePage::go($I)->検索('アップロード商品');
         $I->see('検索結果：3件が該当しました', ProductManagePage::$検索結果_メッセージ);
+
+        // アップロード失敗 (フォーマットの異なるcsvをアップロードする)
+        ProductCsvUploadPage::go($I)
+            ->入力_CSVファイル('category.csv')
+            ->アップロードボタン有効化()
+            ->モーダルを表示()
+            ->CSVアップロード実行()
+        ;
+        $I->wait(3);
+        $I->see('エラーが発生しました', '#importCsvModal');
     }
 
     /**
@@ -706,6 +723,13 @@ class EA03ProductCest
         $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ1')]);
         $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ2')]);
         $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ3')]);
+
+        // アップロード失敗 (フォーマットの異なるcsvをアップロードする)
+        CategoryCsvUploadPage::go($I)
+            ->入力_CSVファイル('product.csv')
+            ->CSVアップロード();
+        $I->wait(3);
+        $I->see('CSVのフォーマットが一致しません', '#upload-form');
     }
 
     /**
