@@ -48,6 +48,9 @@ class EA04OrderCest
         OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
+        OrderManagePage::go($I)->検索($TargetOrders[0]->getName01());
+        $I->dontSee('検索結果：0件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
         OrderManagePage::go($I)->検索('gege@gege.com');
         $I->see('検索結果：0件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
@@ -296,9 +299,9 @@ class EA04OrderCest
         $I->see('保存しました', OrderEditPage::$登録完了メッセージ);
     }
 
-    public function order_pdfページをエクスポートする(AcceptanceTester $I)
+    public function order_納品書の出力(AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC02-T01 pdfページをエクスポートする');
+        $I->wantTo('EA0405-UC06-T02 納品書の出力');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -316,12 +319,17 @@ class EA04OrderCest
         // Check redirect to form pdf information
         $I->see('納品書出力受注管理', OrderManagePage::$タイトル要素);
 
+        $I->click('.btn-ec-conversion');
+        $I->wait(2);
+        $filename = $I->getLastDownloadFile('/^nouhinsyo.pdf$/');
+        $I->assertTrue(file_exists($filename));
+
         $I->closeTab();
     }
 
-    public function order_出力pdfダウンロード(AcceptanceTester $I)
+    public function order_納品書の一括出力(AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC02-T01 出力pdfダウンロード');
+        $I->wantTo('EA0405-UC06-T03 納品書の一括出力');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -406,7 +414,7 @@ class EA04OrderCest
 
     public function order_個別出荷済みステータス変更(AcceptanceTester $I)
     {
-        $I->wantTo('EA0405-UC06-T02_個別出荷済みステータス変更');
+        $I->wantTo('EA0401-UC08-T02_個別出荷済みステータス変更');
 
         $I->resetEmails();
 
