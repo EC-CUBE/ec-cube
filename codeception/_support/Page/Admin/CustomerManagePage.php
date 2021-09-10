@@ -91,11 +91,16 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     /**
      * @param integer $rowNum
      */
-    public function 一覧_仮会員メール再送($rowNum)
+    public function 一覧_仮会員メール再送($rowNum, $execute = true)
     {
         $this->tester->click(['xpath' => "//*[@id='search_form']//div/table/tbody/tr[${rowNum}]/td[6]/div/div[1]/a"]);
         $this->tester->wait(5);
-        $this->tester->click('送信');
+        if ($execute) {
+            $this->tester->click('送信');
+        }
+        else {
+            $this->tester->click('キャンセル');
+        }
 
         return $this;
     }
