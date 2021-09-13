@@ -65,6 +65,12 @@ class PaymentManagePage extends AbstractAdminPageStyleGuide
         // accept modal
         $this->tester->waitForElementVisible('#DeleteModal');
         $this->tester->click('#DeleteModal > div > div > div.modal-footer > a');
+        $this->tester->wait(1);
+    }
+
+    public function 一覧_件数取得()
+    {
+        return count($this->tester->grabMultiple('.c-contentsArea__primaryCol li.sortable-item'));
     }
 
     public function 新規入力()

@@ -43,11 +43,22 @@ class EA07BasicinfoCest
     {
         $I->wantTo('EA0701-UC01-T01 基本設定');
 
-        ShopSettingPage::go($I)
-            ->入力_会社名('会社名')
-            ->登録();
+        $page = ShopSettingPage::go($I)
+            ->入力_会社名('サンプル会社名')
+            ->入力_店名('サンプルショップ')
+            ->入力_郵便番号('100-0001')
+            ->入力_電話番号('050-5555-5555');
+        $I->wait(1);
+        $page->登録();
 
         $I->see('保存しました', ShopSettingPage::$登録完了メッセージ);
+
+        $I->amOnPage('/help/about');
+        $I->see('サンプル会社名', '#help_about_box__company_name dd');
+        $I->see('サンプルショップ', '#help_about_box__shop_name dd');
+        $I->see('1000001', '#help_about_box__address dd');
+        $I->see('東京都千代田区千代田', '#help_about_box__address dd');
+        $I->see('05055555555', '#help_about_box__phone_number dd');
     }
 
     public function basicinfo_支払方法一覧(AcceptanceTester $I)
@@ -129,10 +140,14 @@ class EA07BasicinfoCest
     {
         $I->wantTo('EA0704-UC03-T01 支払方法 削除');
 
-        // 表示
         // 削除
-        PaymentManagePage::go($I)
-            ->一覧_削除(1);
+        $page = PaymentManagePage::go($I);
+        $before = $page->一覧_件数取得();
+        $page->一覧_削除(1);
+        $I->see('削除しました', PaymentEditPage::$登録完了メッセージ);
+
+        $after =  PaymentManagePage::go($I)->一覧_件数取得();
+        $I->assertEquals($before - 1, $after);
     }
 
     public function basicinfo_配送方法一覧(AcceptanceTester $I)
@@ -194,6 +209,8 @@ class EA07BasicinfoCest
 
         DeliveryManagePage::go($I)
             ->一覧_削除(2);
+
+        // todo 結果確認
     }
 
     public function basicinfo_配送方法一覧順序変更(AcceptanceTester $I)
@@ -248,7 +265,7 @@ class EA07BasicinfoCest
 
     public function basicinfo_メール設定(AcceptanceTester $I)
     {
-        $I->wantTo('EA0709-UC02-T01  メール設定'); // EA0709-UC01-T01 はメールテンプレート登録機能がないのでテスト不可
+        $I->wantTo('EA0709-UC02-T01  メール設定');
 
         // 表示
         MailSettingsPage::go($I)
@@ -257,6 +274,8 @@ class EA07BasicinfoCest
             ->登録();
 
         $I->see('保存しました', MailSettingsPage::$登録完了メッセージ);
+
+        // todo 結果確認
     }
 
     public function basicinfo_CSV出力項目(AcceptanceTester $I)
@@ -271,6 +290,8 @@ class EA07BasicinfoCest
             ->設定();
 
         $I->see('保存しました', CsvSettingsPage::$登録完了メッセージ);
+
+        // todo 結果確認
     }
 
     public function basicinfo_受注対応状況設定(AcceptanceTester $I)
@@ -285,6 +306,8 @@ class EA07BasicinfoCest
             ->登録();
 
         $I->see('保存しました', OrderStatusSettingsPage::$登録完了メッセージ);
+
+        // todo 結果確認
     }
 
     /**
