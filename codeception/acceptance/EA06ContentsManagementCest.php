@@ -86,7 +86,7 @@ class EA06ContentsManagementCest
      */
     public function contentsmanagement_ファイル管理(AcceptanceTester $I)
     {
-        $I->wantTo('EA0602-UC01-T01(& UC01-T02/UC01-T03/UC01-T04/UC01-T05/UC01-T06/UC01-T07) ファイル管理');
+        $I->wantTo('EA0602-UC01-T01(& UC01-T02/UC01-T03/UC01-T04/UC01-T05/UC01-T06/UC01-T07/UC01-T08) ファイル管理');
 
         $backupDir = sys_get_temp_dir().'/'.random_int(0, 1000);
         $user_data = __DIR__.'/../../html/user_data';
@@ -140,6 +140,7 @@ class EA06ContentsManagementCest
             FileManagePage::go($I)
                 ->一覧_削除(1)
                 ->一覧_削除_accept(1);
+            $I->dontSee('folder1', $FileManagePage->ファイル名(1));
         } finally {
             $fs->mirror($backupDir, $user_data);
         }
@@ -147,7 +148,7 @@ class EA06ContentsManagementCest
 
     public function contentsmanagement_ページ管理(AcceptanceTester $I)
     {
-        $I->wantTo('EA0603-UC01-T01(& UC01-T02/UC01-T03/UC01-T04/UC01-T05) ページ管理');
+        $I->wantTo('EA0603-UC01-T01(& UC01-T02/UC01-T03) ページ管理');
         $faker = Fixtures::get('faker');
         $page = 'page_'.$faker->word;
         PageManagePage::go($I)->新規入力();
@@ -223,10 +224,14 @@ class EA06ContentsManagementCest
         /* 削除 */
         PageManagePage::go($I)->削除($page);
         $I->see('削除しました', PageEditPage::$登録完了メッセージ);
+        $I->amOnPage('/user_data/'.$page);
+        $I->seeInTitle('ページがみつかりません');
     }
 
     public function contentsmanagement_レイアウト管理(AcceptanceTester $I)
     {
+        $I->wantTo('EA0605-UC01-T01_レイアウト管理（新規作成）');
+
         // レイアウト名を未入力で登録
         LayoutManagePage::go($I)->新規登録();
         LayoutEditPage::at($I)
@@ -246,7 +251,7 @@ class EA06ContentsManagementCest
 
     public function contentsmanagement_検索未使用ブロック(AcceptanceTester $I)
     {
-        $I->wantTo('EA0603-UC01-T06 検索未使用ブロック');
+        $I->wantTo('EA0605-UC01-T04_レイアウト管理（未使用ブロックの検索）');
         $layoutName = '下層ページ用レイアウト';
         /* レイアウト編集 */
         LayoutManagePage::go($I)->レイアウト編集($layoutName);
@@ -283,11 +288,11 @@ class EA06ContentsManagementCest
             ->ブロックを移動($block, '#position_3')
             ->登録();
 
-        $I->getScenario()->incomplete('未実装：ブロックの更新は未実装');
         $I->amOnPage('/');
         $I->see('block1', ['id' => $block]);
 
         /* 編集 */
+        $I->getScenario()->incomplete('未実装：ブロックの更新は未実装');
         BlockManagePage::go($I)->編集(1);
         BlockEditPage::at($I)
             ->入力_データ('<div id='.$block.'>welcome</div>')
