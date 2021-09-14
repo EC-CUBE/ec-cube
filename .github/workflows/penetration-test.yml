@@ -1,0 +1,56 @@
+name: Penetration testing for EC-CUBE
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+jobs:
+  PenetrationTest:
+    name: Penetration testing
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        group:
+          - contact
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup to EC-CUBE
+        run: |
+          mkdir zap/sessions
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml up -d
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube  bin/console doctrine:schema:create --env=dev
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=dev
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube bin/console eccube:fixtures:generate --products=5 --customers=1 --orders=5
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube bin/console doctrine:query:sql "UPDATE dtb_customer SET email = 'zap_user@example.com' WHERE id = 1;"
+          sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml up -d ec-cube 
+
+
+      - name: yarn install
+        working-directory: zap/selenium/ci/TypeScript
+        run: yarn install
+
+      - name: Penetration testing
+        working-directory: zap/selenium/ci/TypeScript
+        env:
+          GROUP: ${{ matrix.group }}
+        run: yarn jest --group=${GROUP}
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: zap-${{ matrix.group }}-session
+          path: zap/sessions
