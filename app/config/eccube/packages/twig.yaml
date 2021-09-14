@@ -21,3 +21,4 @@ twig:
     date:
       timezone: '%timezone%'
     base_template_class: 'Eccube\Twig\Template'
+    exception_controller: null
