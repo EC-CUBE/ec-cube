@@ -76,7 +76,7 @@ class PaymentManagePage extends AbstractAdminPageStyleGuide
 
     public function 新規入力()
     {
-        $this->tester->click('.c-contentsArea__primaryCol  button.btn-ec-regular');
+        $this->tester->click('.c-contentsArea__primaryCol .btn-ec-regular');
     }
 
     public function 一覧_上に($rowNum)
