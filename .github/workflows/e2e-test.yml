@@ -98,6 +98,12 @@ jobs:
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
 
+      - name: Run package-api
+        run: |
+          if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
+          cp codeception/_data/plugins/*-1.0.0.tgz repos
+
       - name: Start PHP Development Server
         env:
           APP_ENV: 'codeception'
