@@ -214,10 +214,14 @@ class EA07BasicinfoCest
     {
         $I->wantTo('EA0706-UC03-T01 配送方法 削除');
 
-        DeliveryManagePage::go($I)
-            ->一覧_削除(2);
+        // 削除
+        $page = DeliveryManagePage::go($I);
+        $before = $page->一覧_件数取得();
+        $page->一覧_削除(2);
+        $I->see('削除しました', DeliveryManagePage::$登録完了メッセージ);
 
-        // todo 結果確認
+        $after = DeliveryManagePage::go($I)->一覧_件数取得();
+        $I->assertEquals($before - 1, $after);
     }
 
     public function basicinfo_配送方法一覧順序変更(AcceptanceTester $I)
