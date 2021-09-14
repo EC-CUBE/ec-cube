@@ -40,7 +40,7 @@ test('example', async () => {
       return JSON.parse(result.forcedModeEnabled);
     };
 
-    if (await isForcedUserModeEnabled()) {
+    if (!await isForcedUserModeEnabled()) {
       await zaproxy.forcedUser.setForcedUserModeEnabled(true);
       expect(await isForcedUserModeEnabled()).toBeTruthy();
     }
