@@ -42,12 +42,15 @@ jobs:
       - name: yarn install
         working-directory: zap/selenium/ci/TypeScript
         run: yarn install
-
+      - name: Debug
+        if: ${{ always() }}
+        uses: mxschmitt/action-tmate@v3
       - name: Penetration testing
         working-directory: zap/selenium/ci/TypeScript
         env:
           GROUP: ${{ matrix.group }}
-        run: yarn jest --group=${GROUP}
+        # run: yarn jest --group=${GROUP}
+        run: yarn jest
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v2
