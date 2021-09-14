@@ -61,6 +61,7 @@ class PaymentManagePage extends AbstractAdminPageStyleGuide
     {
         $rowNum = $rowNum + 1;
         $this->tester->click(".c-contentsArea__primaryCol .list-group-flush .list-group-item:nth-child(${rowNum}) > div > div.col-3.text-right > div > a");
+        $this->tester->wait(1);
 
         // accept modal
         $this->tester->waitForElementVisible('#DeleteModal');
