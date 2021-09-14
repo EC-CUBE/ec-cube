@@ -116,7 +116,7 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --html report.html
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
