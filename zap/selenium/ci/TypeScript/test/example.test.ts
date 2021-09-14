@@ -33,7 +33,7 @@ test('example', async () => {
 
   try {
     await zaproxy.core.setMode('protect');
-    await zaproxy.core.newSession('/zap/wrk/front_login_contact', true);
+    await zaproxy.core.newSession('/zap/wrk/sessions/front_login_contact', true);
     await zaproxy.context.importContext('/zap/wrk/front_login.context');
 
     if (!await zaproxy.forcedUser.isForcedUserModeEnabled()) {
