@@ -72,7 +72,8 @@ class EA05CustomerCest
 
     public function customer_会員登録(AcceptanceTester $I)
     {
-        $I->wantTo('EA0502-UC01-T02(& UC01-T02) 会員登録');
+        $I->wantTo('EA0502-UC01-T01 会員登録');
+
         $faker = Fixtures::get('faker');
         $email = microtime(true).'.'.$faker->safeEmail;
 
@@ -98,7 +99,6 @@ class EA05CustomerCest
         }
 
         $CustomerRegisterPage->登録();
-        /* ブラウザによるhtml5のエラーなのでハンドリング不可 */
         $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
     }
 
@@ -138,10 +138,6 @@ class EA05CustomerCest
 
         $CustomerRegisterPage->登録();
         $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
-
-        $CustomerRegisterPage
-            ->入力_姓('')
-            ->登録();
     }
 
     public function customer_会員編集_必須項目未入力(AcceptanceTester $I)
@@ -239,6 +235,7 @@ class EA05CustomerCest
 
         CustomerManagePage::go($I)
             ->検索($customer->getEmail())
+            ->一覧_仮会員メール再送(1, false)
             ->一覧_仮会員メール再送(1);
         $I->wait(5);
 
