@@ -22,7 +22,7 @@ jobs:
         operating-system: [ ubuntu-18.04 ]
         php: [ 7.3 ]
         db: [ pgsql ]
-        group: [ admin01, admin02, admin03, front, installer ]
+        group: [ admin01 ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db

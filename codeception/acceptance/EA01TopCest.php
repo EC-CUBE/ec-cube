@@ -119,10 +119,15 @@ class EA01TopCest
 
         $I->goToAdminPage();
 
+        $I->makeHtmlSnapshot();
+        $I->makeScreenshot();
+
         // TOP画面でおすすめのプラグインの項目を押下すると、プラグインの詳細情報がモーダルで表示されることを確認
         $I->dontSee('.modal');
         $I->click(['css' => '#ec-cube-plugin a:first-child']);
         $I->wait(5);
+        $I->makeHtmlSnapshot();
+        $I->makeScreenshot();
         $I->see('商品詳細', '#ec-cube-plugin .show #exampleModalLabel');
     }
 }
