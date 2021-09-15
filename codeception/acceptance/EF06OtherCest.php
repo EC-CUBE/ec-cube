@@ -71,8 +71,7 @@ class EF06OtherCest
 
         // TOPページ→ログイン（「ログイン情報をお忘れですか？」リンクを押下する）→パスワード再発行
         $I->amOnPage('/mypage/login');
-        //$I->click('ログイン情報をお忘れですか', '#login_mypage #login_box .btn_area ul li a');
-        $I->amOnPage('/forgot');
+        $I->click('#login_mypage a:first-child');
 
         // TOPページ>ログイン>パスワード再発行
         $I->see('パスワードの再発行', 'div.ec-pageHeader h1');
@@ -195,5 +194,80 @@ class EF06OtherCest
             $I->seeInLastEmailTo($email, '姓 名 様');
             $I->seeInLastEmailTo($email, 'お問い合わせ内容の送信');
         }
+    }
+
+    public function other_お問い合わせ2(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0607-UC01-T02 お問い合わせ 戻るボタン');
+        $I->amOnPage('/');
+        $I->resetEmails();
+        $faker = Fixtures::get('faker');
+        $new_email = microtime(true).'.'.$faker->safeEmail;
+        $BaseInfo = Fixtures::get('baseinfo');
+
+        $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a', 0, 200);
+        $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a');
+        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+
+        $I->fillField(['id' => 'contact_name_name01'], '姓');
+        $I->fillField(['id' => 'contact_name_name02'], '名');
+        $I->fillField(['id' => 'contact_kana_kana01'], 'セイ');
+        $I->fillField(['id' => 'contact_kana_kana02'], 'メイ');
+        $I->fillField(['id' => 'contact_postal_code'], '530-0001');
+        $I->selectOption(['id' => 'contact_address_pref'], ['value' => '27']);
+        $I->wait(1); // 郵便番号の自動入力を待つ
+        $I->fillField(['id' => 'contact_address_addr02'], '2-4-9 ブリーゼタワー13F');
+        $I->fillField(['id' => 'contact_phone_number'], '111-111-111');
+        $I->fillField(['id' => 'contact_email'], $new_email);
+        $I->fillField(['id' => 'contact_contents'], 'お問い合わせ内容の送信');
+        $I->click('div.ec-RegisterRole__actions button.ec-blockBtn--action');
+
+        // 確認画面 → 戻る
+        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+        $I->click('div.ec-contactConfirmRole div.ec-RegisterRole__actions button.ec-blockBtn--cancel');
+
+        // 入力画面 → フォーム入力内容の再チェック
+        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+        $I->seeInFormFields('.ec-contactRole form', [
+            'contact[name][name01]' => '姓',
+            'contact[name][name02]' => '名',
+            'contact[postal_code]' => '5300001',
+            'contact[address][pref]' => 27,
+            'contact[address][addr01]' => '大阪市北区梅田',
+            'contact[phone_number]' => '111111111',
+            'contact[contents]' => 'お問い合わせ内容の送信',
+        ]);
+        $I->click('div.ec-RegisterRole__actions button.ec-blockBtn--action');
+
+        // 確認画面 → 送信
+        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+        $I->click('div.ec-contactConfirmRole div.ec-RegisterRole__actions button.ec-blockBtn--action');
+
+        // 完了ページ
+        $I->see('お問い合わせ(完了)', 'div.ec-pageHeader h1');
+
+        // メールチェック
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
+        foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
+            $I->seeInLastEmailSubjectTo($email, 'お問い合わせを受け付けました');
+            $I->seeInLastEmailTo($email, '姓 名 様');
+            $I->seeInLastEmailTo($email, 'お問い合わせ内容の送信');
+        }
+    }
+
+    public function other_お問い合わせ_異常(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0607-UC01-T03 お問い合わせ 異常');
+        $I->amOnPage('/');
+
+        $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a', 0, 200);
+        $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a');
+        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+
+        $I->click('div.ec-RegisterRole__actions button.ec-blockBtn--action');
+
+        $I->see('入力されていません', '.ec-contactRole .error .ec-errorMessage:last-child');
     }
 }
