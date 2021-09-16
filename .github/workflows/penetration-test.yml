@@ -48,9 +48,12 @@ jobs:
         env:
           GROUP: ${{ matrix.group }}
         run: yarn jest ${GROUP}
+      - env:
+          GROUP: ${{ matrix.group }}
+        run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: zap-${{ matrix.group }}-session
+          name: zap-${{ env.ARTIFACT_NAME }}-session
           path: zap/sessions
