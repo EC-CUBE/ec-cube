@@ -1,7 +1,7 @@
-import { Builder, By, Key, until } from 'selenium-webdriver'
-import { ZapClient, Mode, ContextType, Risk } from '../utils/ZapClient';
-import { intervalRepeater } from '../utils/Progress';
-import { SeleniumCapabilities } from '../utils/SeleniumCapabilities';
+import { Builder, By, until } from 'selenium-webdriver'
+import { ZapClient, Mode, ContextType, Risk } from '../../utils/ZapClient';
+import { intervalRepeater } from '../../utils/Progress';
+import { SeleniumCapabilities } from '../../utils/SeleniumCapabilities';
 const zapClient = new ZapClient('http://127.0.0.1:8090');
 
 jest.setTimeout(6000000);
