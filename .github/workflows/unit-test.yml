@@ -1,0 +1,103 @@
+name: Unit test for EC-CUBE
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+jobs:
+  phpunit:
+    name: PHPUnit
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.1, 7.2, 7.3, 7.4 ]
+        db: [ mysql, pgsql, sqlite3 ]
+        include:
+          - db: mysql
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: 5
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 11
+          - db: sqlite3
+            database_url: sqlite:///var/eccube.db
+            database_server_version: 3
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: composer install
+        run: composer install --dev --no-interaction -o --apcu-autoloader
+
+      - name: Setup EC-CUBE
+        env:
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        run: |
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
+
+      - name: PHPUnit
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_URL: 'smtp://127.0.0.11025'
+        run: |
+          bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine
+          bin/phpunit --group cache-clear
+          bin/phpunit --group cache-clear-install
+          bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
+          bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy
+          bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithProxy
+          bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy
+          bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
+          bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
+          bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
+          bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
