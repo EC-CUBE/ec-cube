@@ -32,7 +32,7 @@ test('受注管理>メール通知 - GET', async () => {
       , 10000).getText();
     expect(title).toBe('メール通知');
 
-    const scanId = await zapClient.activeScan(url, false, false, null, 'GET', null, 1);
+    const scanId = await zapClient.activeScanAsUser(url, 2, 55, false, null, 'GET');
 
     await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
