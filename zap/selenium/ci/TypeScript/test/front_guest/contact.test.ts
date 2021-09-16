@@ -15,10 +15,6 @@ beforeAll(async () => {
   await zapClient.importContext(ContextType.FrontGuest);
 });
 
-afterEach(async () => {
-  await zapClient.snapshotSession();
-});
-
 test('お問い合わせ - GET', async () => {
   const driver = await new Builder()
     .withCapabilities(SeleniumCapabilities)
@@ -36,9 +32,9 @@ test('お問い合わせ - GET', async () => {
     await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
     await zapClient.getAlerts(url, 0, 1, Risk.High)
-    .then(alerts => alerts.forEach((alert: any) => {
-      throw new Error(alert.name);
-    }));;
+      .then(alerts => alerts.forEach((alert: any) => {
+        throw new Error(alert.name);
+      }));;
   } finally {
     driver && await driver.quit()
   }
@@ -74,9 +70,9 @@ test('お問い合わせ(入力ページ→確認ページ) - POST', async () =>
     await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
     await zapClient.getAlerts(url, 0, 1, Risk.High)
-    .then(alerts => alerts.forEach((alert: any) => {
-      throw new Error(alert.name);
-    }));;
+      .then(alerts => alerts.forEach((alert: any) => {
+        throw new Error(alert.name);
+      }));;
   } finally {
     driver && await driver.quit()
   }
@@ -103,7 +99,7 @@ test('お問い合わせ(確認ページ→完了ページ) - POST', async () =>
     await driver.findElement(By.id('contact_phone_number')).sendKeys('999999999');
     await driver.findElement(By.id('contact_email')).sendKeys('zap_user@example.com');
     await driver.findElement(By.id('contact_contents')).sendKeys('お問い合わせ入力');
-        await driver.findElement(By.xpath('//*[@id="page_contact"]/div[1]/div[2]/div/div/div[2]/div/form/div[2]/div/div/button')).click();
+    await driver.findElement(By.xpath('//*[@id="page_contact"]/div[1]/div[2]/div/div/div[2]/div/form/div[2]/div/div/button')).click();
 
     const message = await zapClient.getLastMessage(url);
     // 確認画面→完了画面に requestBody を書き換える
@@ -119,9 +115,9 @@ test('お問い合わせ(確認ページ→完了ページ) - POST', async () =>
     await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
     await zapClient.getAlerts(url, 0, 1, Risk.High)
-    .then(alerts => alerts.forEach((alert: any) => {
-      throw new Error(alert.name);
-    }));;
+      .then(alerts => alerts.forEach((alert: any) => {
+        throw new Error(alert.name);
+      }));;
   } finally {
     driver && await driver.quit()
   }
