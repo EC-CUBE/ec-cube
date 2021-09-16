@@ -54,7 +54,7 @@ class PaymentManagePage extends AbstractAdminPageStyleGuide
     public function 一覧_編集($rowNum)
     {
         $rowNum = $rowNum + 1;
-        $this->tester->click(".c-contentsArea__primaryCol .list-group-flush .list-group-item:nth-child(${rowNum})> div > div:nth-child(2) a ");
+        $this->tester->click(".c-contentsArea__primaryCol .list-group-flush .list-group-item:nth-child(${rowNum}) a:first-child");
     }
 
     public function 一覧_削除($rowNum)
