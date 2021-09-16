@@ -83,6 +83,11 @@ export class ZapClient {
     return result.scan;
   }
 
+  public async activeScan(url: string, recurse?: boolean, inScopeOnly?: boolean, scanPolicyName?: string | null, method?: 'GET' | 'POST' | 'PUT' | 'DELETE', postData?: string | null, contextId?: number | null): Promise<number> {
+    const result = await this.zaproxy.ascan.scan(url, recurse ?? false, inScopeOnly ?? true, scanPolicyName ?? null, method ?? 'GET', postData ?? null, contextId ?? null)
+    return result.scan;
+  }
+
   public async getActiveScanStatus(scanId: number): Promise<number> {
     const result = await this.zaproxy.ascan.status(scanId);
     return result.status;
