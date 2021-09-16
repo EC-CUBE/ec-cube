@@ -15,6 +15,8 @@ namespace Page\Admin;
 
 class LayoutManagePage extends AbstractAdminPageStyleGuide
 {
+    public static $登録完了メッセージ = ['css' => '.c-contentsArea .alert'];
+
     public function __construct(\AcceptanceTester $I)
     {
         parent::__construct($I);
@@ -34,10 +36,10 @@ class LayoutManagePage extends AbstractAdminPageStyleGuide
 
     public function 削除($layoutName)
     {
-        $this->tester->getScenario()->incomplete('未実装：レイアウトの削除は未実装');
-
-        $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/span"]);
-        $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/ul/li[2]/span"]);
+        $this->tester->click(['xpath' => "//button[contains(@data-message, '「{$layoutName}」を削除')]"]);
+        $this->tester->waitForElementVisible(['css' => '.modal.show']);
+        $this->tester->wait(1);
+        $this->tester->click('.modal.show .btn-ec-delete');
     }
 
     public function 新規登録()

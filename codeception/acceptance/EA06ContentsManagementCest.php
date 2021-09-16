@@ -235,7 +235,10 @@ class EA06ContentsManagementCest
 
     public function contentsmanagement_レイアウト管理(AcceptanceTester $I)
     {
-        $I->wantTo('EA0605-UC01-T01_レイアウト管理（新規作成）');
+        $I->wantTo('EA0605-UC01-T01 (& UC01-T02 / UC01-T03) レイアウト管理（新規作成・編集・削除）');
+
+        $layoutName = 'layout'.uniqid();
+        $pageName = 'page'.uniqid();
 
         // レイアウト名を未入力で登録
         LayoutManagePage::go($I)->新規登録();
@@ -248,10 +251,49 @@ class EA06ContentsManagementCest
 
         // レイアウト名を入力して登録
         LayoutEditPage::at($I)
-            ->レイアウト名('あたらしいレイアウト')
+            ->レイアウト名($layoutName)
+            ->端末種別('PC')
+            ->ブロックを移動('ロゴ', '#position_3')
             ->登録();
-
         $I->see('保存しました');
+
+        // レイアウトを適用した新規ページを作成
+        PageManagePage::go($I)->新規入力();
+        PageEditPage::at($I)
+            ->入力_名称($pageName)
+            ->入力_ファイル名($pageName)
+            ->入力_URL($pageName)
+            ->入力_PC用レイアウト($layoutName)
+            ->登録();
+        $I->see('保存しました', PageEditPage::$登録完了メッセージ);
+
+        // 作成したページの表示確認
+        $I->amOnPage('/user_data/'.$pageName);
+        $I->grabTextFrom('.ec-layoutRole__header .ec-headerTitle');
+
+        // 編集
+        LayoutManagePage::go($I)->レイアウト編集($layoutName);
+        LayoutEditPage::at($I)
+            ->ブロックを移動('ロゴ', '#position_4')
+            ->登録();
+        $I->see('保存しました', LayoutEditPage::$登録完了メッセージ);
+
+        // 編集したページの表示確認 (ブロックの位置が移動されていることを確認)
+        $I->amOnPage('/user_data/'.$pageName);
+        $I->grabTextFrom('.ec-layoutRole__contentTop .ec-headerTitle');
+
+        // レイアウトの削除 → レイアウトを適用したページがあるため削除できない
+        LayoutManagePage::go($I)->削除($layoutName);
+        $I->see('削除できませんでした', LayoutManagePage::$登録完了メッセージ);
+
+        // レイアウトを適用したページを削除
+        PageManagePage::go($I)->削除($pageName);
+        $I->see('削除しました', PageEditPage::$登録完了メッセージ);
+
+        // レイアウトの削除
+        LayoutManagePage::go($I)->削除($layoutName);
+        $I->see('削除しました', LayoutManagePage::$登録完了メッセージ);
+        $I->cantSee($layoutName, '.contentsArea');
     }
 
     public function contentsmanagement_検索未使用ブロック(AcceptanceTester $I)
