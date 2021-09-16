@@ -39,7 +39,7 @@ test('お問い合わせ - GET', async () => {
     await zapClient.getAlerts(url, 0, 1, Risk.High)
       .then(alerts => alerts.forEach((alert: any) => {
         throw new Error(alert.name);
-      }));;
+      }));
   } finally {
     driver && await driver.quit()
   }
@@ -72,7 +72,7 @@ test('お問い合わせ(入力ページ→確認ページ) - POST', async () =>
     await zapClient.getAlerts(url, 0, 1, Risk.High)
       .then(alerts => alerts.forEach((alert: any) => {
         throw new Error(alert.name);
-      }));;
+      }));
   } finally {
     driver && await driver.quit()
   }
@@ -112,7 +112,7 @@ test('お問い合わせ(確認ページ→完了ページ) - POST', async () =>
     await zapClient.getAlerts(url, 0, 1, Risk.High)
       .then(alerts => alerts.forEach((alert: any) => {
         throw new Error(alert.name);
-      }));;
+      }));
   } finally {
     driver && await driver.quit()
   }
