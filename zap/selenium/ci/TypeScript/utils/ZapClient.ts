@@ -58,6 +58,11 @@ export class ZapClient {
     await this.zaproxy.forcedUser.setForcedUserModeEnabled(bool ?? true);
   }
 
+  public async sendRequest(request: string, followRedirects?: boolean): Promise<any> {
+    const result = await this.zaproxy.core.sendRequest(request, followRedirects ?? false);
+    return result.sendRequest;
+  }
+
   public async getNumberOfMessages(url: string): Promise<number> {
     const result = await this.zaproxy.core.numberOfMessages(url);
     return JSON.parse(result.numberOfMessages);
