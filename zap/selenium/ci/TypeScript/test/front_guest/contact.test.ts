@@ -27,14 +27,14 @@ test('お問い合わせ - GET', async () => {
       , 10000).getText();
     expect(title).toBe('お問い合わせ');
 
-    const scanId = await zapClient.activeScan(url, false, false, null, 'GET', null, 1);
+    const scanId = await zapClient.activeScan(url, false, true, null, 'GET', null);
 
     await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
     await zapClient.getAlerts(url, 0, 1, Risk.High)
       .then(alerts => alerts.forEach((alert: any) => {
         throw new Error(alert.name);
-      }));;
+      }));
   } finally {
     driver && await driver.quit()
   }
@@ -65,14 +65,14 @@ test('お問い合わせ(入力ページ→確認ページ) - POST', async () =>
     await driver.findElement(By.xpath('//*[@id="page_contact"]/div[1]/div[2]/div/div/div[2]/div/form/div[2]/div/div/button')).click();
 
     const message = await zapClient.getLastMessage(url);
-    const scanId = await zapClient.activeScan(url, false, false, null, 'GET', message.requestBody, 1);
+    const scanId = await zapClient.activeScan(url, false, true, null, 'POST', message.requestBody);
 
     await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
     await zapClient.getAlerts(url, 0, 1, Risk.High)
       .then(alerts => alerts.forEach((alert: any) => {
         throw new Error(alert.name);
-      }));;
+      }));
   } finally {
     driver && await driver.quit()
   }
@@ -110,14 +110,14 @@ test('お問い合わせ(確認ページ→完了ページ) - POST', async () =>
     );
 
     const completeMessage = await zapClient.getLastMessage(url);
-    const scanId = await zapClient.activeScan(url, false, false, null, 'GET', completeMessage.requestBody, 1);
+    const scanId = await zapClient.activeScan(url, false, true, null, 'POST', completeMessage.requestBody);
 
     await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
     await zapClient.getAlerts(url, 0, 1, Risk.High)
       .then(alerts => alerts.forEach((alert: any) => {
         throw new Error(alert.name);
-      }));;
+      }));
   } finally {
     driver && await driver.quit()
   }
