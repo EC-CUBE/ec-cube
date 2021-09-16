@@ -1,51 +1,36 @@
-import { Builder, By, Capabilities, Key, until, ProxyConfig } from 'selenium-webdriver'
-const ClientApi = require('zaproxy');
-const zaproxy = new ClientApi({
-  apiKey: null,
-  proxy: 'http://127.0.0.1:8090'
-});
+import { Builder, By, Key, until } from 'selenium-webdriver'
+import { ZapClient, Mode, ContextType, Risk } from '../utils/ZapClient';
+import { intervalRepeater } from '../utils/Progress';
+import { SeleniumCapabilities } from '../utils/SeleniumCapabilities';
+const zapClient = new ZapClient('http://127.0.0.1:8090');
 
-const proxy : ProxyConfig = {
-  proxyType: 'manual',
-  httpProxy: 'localhost:8090',
-  sslProxy: 'localhost:8090'
-};
-const capabilities = Capabilities.chrome();
 jest.setTimeout(6000000);
 
-capabilities.set('chromeOptions', {
-  args: [
-    '--headless',
-    '--disable-gpu',
-    '--window-size=1024,768'
-  ],
-  w3c: false
-})
-  .setAcceptInsecureCerts(true)
-  .setProxy(proxy);
-
 const baseURL = 'https://ec-cube';
+const url = baseURL + '/contact';
 
-test('example', async () => {
+beforeAll(async () => {
+  await zapClient.setMode(Mode.Protect);
+  await zapClient.newSession('/zap/wrk/sessions/front_login_contact', true);
+  await zapClient.importContext(ContextType.FrontLogin);
+
+  if (!await zapClient.isForcedUserModeEnabled()) {
+    await zapClient.setForcedUserModeEnabled();
+    expect(await zapClient.isForcedUserModeEnabled()).toBeTruthy();
+  }
+});
+
+afterEach(async () => {
+  await zapClient.snapshotSession();
+});
+
+test('contact', async () => {
   const driver = await new Builder()
-    .withCapabilities(capabilities)
+    .withCapabilities(SeleniumCapabilities)
     .build();
 
   try {
-    await zaproxy.core.setMode('protect');
-    await zaproxy.core.newSession('/zap/wrk/sessions/front_login_contact', true);
-    await zaproxy.context.importContext('/zap/wrk/front_login.context');
-    const isForcedUserModeEnabled = async (): Promise<boolean> => {
-      const result: any = await zaproxy.forcedUser.isForcedUserModeEnabled();
-      return JSON.parse(result.forcedModeEnabled);
-    };
-
-    if (!await isForcedUserModeEnabled()) {
-      await zaproxy.forcedUser.setForcedUserModeEnabled(true);
-      expect(await isForcedUserModeEnabled()).toBeTruthy();
-    }
-
-    await driver.get(baseURL + '/contact');
+    await driver.get(url);
     const title = await driver.wait(
       until.elementLocated(By.className('ec-pageHeader'))
       , 10000).getText();
@@ -57,39 +42,16 @@ test('example', async () => {
     expect(await driver.findElement(By.id('contact_email')).getAttribute('value')).toBe('zap_user@example.com');
     await driver.findElement(By.xpath('//*[@id="page_contact"]/div[1]/div[2]/div/div/div[2]/div/form/div[2]/div/div/button')).click();
 
-    const numberOfMessagesResult = await zaproxy.core.numberOfMessages(baseURL + '/contact');
-    const messages = await zaproxy.core.messages(baseURL + '/contact', numberOfMessagesResult.numberOfMessages, 10);
-    const requestBody = messages.messages.pop().requestBody;
+    const message = await zapClient.getLastMessage(url);
+    const scanId = await zapClient.activeScanAsUser(url, 2, 110, false, null, 'POST', message.requestBody);
 
-    const scanResult = await zaproxy.ascan.scanAsUser(baseURL + '/contact', 2, 110, false, null, 'POST', requestBody);
+    await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
-    let progress = async () => {
-      const status = await zaproxy.ascan.status(scanResult.scan);
-      return status.status;
-    }
-
-    await intervalRepeater(progress, 5000);
-
-    await zaproxy.core.snapshotSession();
-    const alertsResult = await zaproxy.core.alerts(baseURL);
-    alertsResult.alerts.forEach((alert: any) => {
-      if (alert.risk == 'High') {
-        console.log(alert);
-        throw new Error(alert.name);
-      }
-    });
+    await zapClient.getAlerts(url, 0, 1, Risk.High)
+    .then(alerts => alerts.forEach((alert: any) => {
+      throw new Error(alert.name);
+    }));;
   } finally {
     driver && await driver.quit()
   }
 });
-
-const sleep = (msec: number) => new Promise(resolve => setTimeout(resolve, msec));
-const intervalRepeater = async (callback: any, interval: number) => {
-  let progress = await callback();
-
-  while (progress < 100) {
-    progress = await callback();
-    console.log(`Active Scan progress : ${progress}%`);
-    await sleep(interval);
-  }
-}
