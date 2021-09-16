@@ -21,7 +21,8 @@ jobs:
       matrix:
         operating-system: [ ubuntu-18.04 ]
         group:
-          - contact
+          - 'test/front_login/contact.test.ts'
+          - 'test/front_guest/contact.test.ts'
 
     steps:
       - name: Checkout
@@ -46,8 +47,7 @@ jobs:
         working-directory: zap/selenium/ci/TypeScript
         env:
           GROUP: ${{ matrix.group }}
-        # run: yarn jest --group=${GROUP}
-        run: yarn jest
+        run: yarn jest ${GROUP}
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v2
