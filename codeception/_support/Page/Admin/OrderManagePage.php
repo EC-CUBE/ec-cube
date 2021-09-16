@@ -215,6 +215,17 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 一括メール送信_キャンセル()
+    {
+        $this->tester->click(['id' => 'bulkSendMail']);
+        $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
+        $this->tester->wait(1);
+        $this->tester->click(['css' => '.modal.show .btn-ec-sub']);
+        $this->tester->waitForElementNotVisible(['id' => 'sentUpdateModal'], 10);
+
+        return $this;
+    }
+
     public function 一覧_注文番号($rowNum)
     {
         return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child($rowNum) a.action-edit");
