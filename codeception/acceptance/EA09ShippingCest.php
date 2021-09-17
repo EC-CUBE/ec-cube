@@ -69,7 +69,6 @@ class EA09ShippingCest
             ->出荷情報登録();
 
         /* 異常系 */
-        // FIXME お届け先編集が閉じてしまうため、エラーメッセージが表示されない
         $I->see('入力されていません。', ShippingEditPage::$姓_エラーメッセージ);
 
         /* 正常系 */
@@ -158,8 +157,8 @@ class EA09ShippingCest
         // 出荷済みに変更
         $ShippingRegisterPage
             ->出荷完了にする(1)
-            ->変更を確定(1);
-        // TODO ステータス変更スキップしました
+            ->変更を確定(1)
+            ->出荷日を確認(1);
     }
 
     public function shipping_出荷CSV登録(AcceptanceTester $I)
