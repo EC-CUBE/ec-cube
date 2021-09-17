@@ -23,6 +23,11 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     public static $検索条件_プロダクト = ['id' => 'admin_search_product_id'];
     public static $検索ボタン = '#search_form .c-outsideBlock__contents button';
     public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[2]/a/span';
+    public static $検索条件_在庫あり = ['id' => 'admin_search_product_stock_0'];
+    public static $検索条件_在庫なし = ['id' => 'admin_search_product_stock_1'];
+    public static $検索条件_入金済み = ['id' => 'admin_search_order_status_6'];
+    public static $検索条件_新規受付 = ['id' => 'admin_search_order_status_1'];
+    public static $検索条件_対応中 = ['id' => 'admin_search_order_status_4'];
     public static $検索結果_メッセージ = '#search_form > div.c-outsideBlock__contents.mb-5 > span';
     public static $検索結果_結果なしメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
     public static $検索結果_エラーメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
