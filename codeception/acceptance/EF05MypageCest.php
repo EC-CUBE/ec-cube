@@ -255,7 +255,7 @@ class EF05MypageCest
      */
     public function mypage_お届け先編集削除(AcceptanceTester $I)
     {
-        $I->wantTo('EF0503-UC01-T01 Mypage お届け先編集削除');
+        $I->wantTo('EF0506-UC03-T01 Mypage お届け先編集削除');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
