@@ -101,6 +101,9 @@ class EA03ProductCest
         $I->dontSeeElement(['css' => 'div.modal.show']);
     }
 
+    /**
+     * @group vaddy
+     */
     public function product_ポップアップから規格編集画面に遷移(AcceptanceTester $I)
     {
         $I->wantTo('EA0301-UC01-T05 ポップアップから規格編集画面に遷移');
@@ -125,6 +128,7 @@ class EA03ProductCest
     /**
      * @env firefox
      * @env chrome
+     * @group vaddy
      */
     public function product_CSV出力(AcceptanceTester $I)
     {

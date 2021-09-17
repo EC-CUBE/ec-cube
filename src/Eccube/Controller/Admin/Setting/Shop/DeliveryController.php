@@ -34,6 +34,7 @@ use Eccube\Twig\Extension\EccubeExtension;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -134,6 +135,9 @@ class DeliveryController extends AbstractController
                 ->setSaleType($SaleType);
         } else {
             $Delivery = $this->deliveryRepository->find($id);
+            if (is_null($Delivery)) {
+                throw new NotFoundHttpException();
+            }
         }
 
         $originalDeliveryTimes = new ArrayCollection();

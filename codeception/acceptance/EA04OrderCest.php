@@ -60,6 +60,7 @@ class EA04OrderCest
 
     /**
      * @group excludeCoverage
+     * @group vaddy
      */
     public function order_受注CSVダウンロード(AcceptanceTester $I)
     {
@@ -138,6 +139,9 @@ class EA04OrderCest
         $I->assertEquals(4, $value);
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_受注編集(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC05-T01(& UC05-T02/UC05-T03/UC06-T01) 受注編集');
@@ -203,6 +207,45 @@ class EA04OrderCest
         $I->see('保存しました', OrderEditPage::$登録完了メッセージ);
     }
 
+    /**
+     * @group vaddy
+     */
+    public function order_受注削除(AcceptanceTester $I)
+    {
+        $I->getScenario()->incomplete('未実装：受注削除は未実装');
+        $I->wantTo('EA0401-UC08-T01(& UC08-T02) 受注削除');
+
+        $findOrders = Fixtures::get('findOrders'); // Closure
+        $TargetOrders = array_filter($findOrders(), function ($Order) {
+            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
+        });
+
+        $OrderListPage = OrderManagePage::go($I)->検索();
+        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        // 削除
+        $OrderNumForDel = $OrderListPage->一覧_注文番号(1);
+        $OrderListPage
+            ->一覧_選択(1)
+            ->一覧_削除()
+            ->Accept_削除();
+
+        $I->see('削除しました', ['css' => '#page_admin_order > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span']);
+        $I->assertNotEquals($OrderNumForDel, $OrderListPage->一覧_注文番号(1));
+
+        // 削除キャンセル
+        $OrderNumForDontDel = $OrderListPage->一覧_注文番号(1);
+        $OrderListPage
+            ->一覧_選択(1)
+            ->一覧_削除()
+            ->Cancel_削除();
+
+        $I->assertEquals($OrderNumForDontDel, $OrderListPage->一覧_注文番号(1));
+    }
+
+    /**
+     * @group vaddy
+     */
     public function order_受注メール通知(AcceptanceTester $I)
     {
         $I->wantTo('EA0402-UC01-T01 受注メール通知');
@@ -219,6 +262,9 @@ class EA04OrderCest
         $I->seeInLastEmailSubjectTo('admin@example.com', '[EC-CUBE SHOP] 商品出荷のお知らせ');
     }
 
+    /**
+     * @param AcceptanceTester $I
+     */
     public function order_一括メール通知(AcceptanceTester $I)
     {
         $I->wantTo('EA0402-UC02-T01 一括メール通知');
@@ -249,6 +295,9 @@ class EA04OrderCest
         $I->seeEmailCount(0);
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_受注登録(AcceptanceTester $I)
     {
         $I->wantTo('EA0405-UC01-T01(& UC01-T02) 受注登録');
@@ -308,6 +357,9 @@ class EA04OrderCest
         $I->closeTab();
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_納品書の一括出力(AcceptanceTester $I)
     {
         $I->wantTo('EA0405-UC06-T03 納品書の一括出力');
@@ -393,6 +445,9 @@ class EA04OrderCest
         $I->see('検索結果：'.(count($DeliveredOrders) + count($NewOrders)).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_個別出荷済みステータス変更(AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC06-T02_個別出荷済みステータス変更');
