@@ -42,6 +42,7 @@ jobs:
         run: yarn jest ${GROUP}
       - env:
           GROUP: ${{ matrix.group }}
+        if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
       - name: Upload evidence
         if: always()
