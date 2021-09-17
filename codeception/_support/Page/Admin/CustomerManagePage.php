@@ -22,8 +22,9 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     public static $検索結果メッセージ = '#search_form > div.c-outsideBlock__contents.mb-5 > span';
     public static $検索結果_結果なしメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
     public static $検索結果_エラーメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
-    public static $検索条件_仮会員 = ['id' => 'admin_search_customer_customer_status_0'];
-    public static $検索条件_本会員 = ['id' => 'admin_search_customer_customer_status_1'];
+    public static $検索条件_仮会員 = ['id' => 'admin_search_customer_customer_status_1'];
+    public static $検索条件_本会員 = ['id' => 'admin_search_customer_customer_status_2'];
+    public static $検索条件_退会 = ['id' => 'admin_search_customer_customer_status_3'];
 
     /**
      * CustomerListPage constructor.

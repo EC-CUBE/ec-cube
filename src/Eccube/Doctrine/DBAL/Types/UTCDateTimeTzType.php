@@ -100,4 +100,9 @@ class UTCDateTimeTzType extends DateTimeTzType
     {
         self::$timezone = new \DateTimeZone($timezone);
     }
+
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
 }

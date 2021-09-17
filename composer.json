@@ -174,7 +174,8 @@
     },
     "conflict": {
         "symfony/symfony": "*",
-        "easycorp/easy-log-handler": "1.0.4|1.0.5"
+        "easycorp/easy-log-handler": "1.0.4|1.0.5",
+        "doctrine/inflector": "^1.4"
     },
     "extra": {
         "symfony": {
