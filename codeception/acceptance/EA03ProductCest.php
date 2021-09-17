@@ -293,12 +293,23 @@ class EA03ProductCest
     {
         $I->wantTo('EA302-UC05-T03 商品の削除');
 
+        // 削除用商品の作成
+        ProductEditPage::go($I)
+            ->入力_商品名('削除用商品')
+            ->入力_販売価格('1000')
+            ->入力_公開()
+            ->登録();
+
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
+
         ProductManagePage::go($I)
             ->検索結果_チェックボックスON(1)
             ->検索結果_削除()
             ->Accept_削除();
-
         $I->see('商品の削除処理が完了しました', '.modal.show .modal-body');
+
+        ProductManagePage::go($I);
+        $I->dontSee('削除用商品', ProductManagePage::$検索結果_一覧);
     }
 
     public function product_商品の廃止(AcceptanceTester $I)

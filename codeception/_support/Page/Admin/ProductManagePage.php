@@ -220,6 +220,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     public function Accept_削除()
     {
         $this->tester->click('#bulkDelete');
+        $this->tester->wait(3);
 
         return $this;
     }
