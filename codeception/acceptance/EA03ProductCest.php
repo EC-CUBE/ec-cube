@@ -151,13 +151,39 @@ class EA03ProductCest
     {
         $I->wantTo('EA0301-UC02-T02 CSV出力項目設定');
 
-        ProductManagePage::go($I)
-            ->検索()
-            ->CSV出力項目設定();
+        ProductManagePage::go($I)->CSV出力項目設定();
 
         $I->see('CSV出力項目設定店舗設定', self::ページタイトルStyleGuide);
         $value = $I->grabValueFrom(CsvSettingsPage::$CSVタイプ);
         $I->assertEquals('1', $value);
+
+        // 全項目を出力
+        CsvSettingsPage::at($I)
+            ->すべて出力()
+            ->設定();
+
+        // CSVダウンロードして確認
+        $csvHeader = ProductManagePage::go($I)
+            ->CSVダウンロード()
+            ->CSVヘッダ取得();
+        $I->assertContains('商品ID', $csvHeader);
+        $I->assertContains('ショップ用メモ欄', $csvHeader);
+        $I->assertContains('フリーエリア', $csvHeader);
+
+        // 一部項目を出力対象から解除
+        CsvSettingsPage::go($I)
+            ->入力_CSVタイプ(1)
+            ->選択_出力項目(['ショップ用メモ欄', 'フリーエリア'])
+            ->削除()
+            ->設定();
+
+        // CSVダウンロードして確認
+        $csvHeader = ProductManagePage::go($I)
+            ->CSVダウンロード()
+            ->CSVヘッダ取得();
+        $I->assertContains('商品ID', $csvHeader);
+        $I->assertNotContains('ショップ用メモ欄', $csvHeader);
+        $I->assertNotContains('フリーエリア', $csvHeader);
     }
 
     public function product_一覧からの規格編集規格なし失敗(AcceptanceTester $I)

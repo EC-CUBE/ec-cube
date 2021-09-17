@@ -245,6 +245,13 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function CSVヘッダ取得()
+    {
+        $this->tester->wait(5);
+        $csv = $this->tester->getLastDownloadFile('/^product_\d{14}\.csv$/');
+        return mb_convert_encoding(file($csv)[0], 'UTF-8', 'SJIS-win');
+    }
+
     public function すべて選択()
     {
         $this->tester->checkOption(['id' => 'trigger_check_all']);
