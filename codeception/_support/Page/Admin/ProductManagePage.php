@@ -33,6 +33,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     public static $検索結果_エラーメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
     public static $検索結果_一覧 = '#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody';
     public static $一括削除エラー = ['id' => 'bulkErrors'];
+    public static $アラートメッセージ = ['css' => '.c-contentsArea > .alert'];
 
     /** @var \AcceptanceTester */
     protected $tester;
@@ -184,16 +185,25 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    /**
-     * 検索結果の指定した行を削除。
-     *
-     * @param int $rowNum 検索結果の行番号(1から始まる)
-     *
-     * @return $this
-     */
-    public function 検索結果_削除($rowNum)
+    public function 検索結果_チェックボックスON($rowNum)
     {
-        $this->tester->click("#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(3) > a");
+        $this->tester->checkOption(['css' => "#form_bulk table tbody tr:nth-child($rowNum) input[type=checkbox]"]);
+        $this->tester->waitForElementVisible('#btn_bulk');
+
+        return $this;
+    }
+
+    public function 検索結果_削除()
+    {
+        $this->tester->click(['css' => '#btn_bulk button[data-target="#bulkDeleteModal"]']);
+        $this->tester->wait(1);
+
+        return $this;
+    }
+
+    public function 検索結果_廃止()
+    {
+        $this->tester->click(['css' => '#btn_bulk > button:nth-of-type(1)']);
 
         return $this;
     }
@@ -207,7 +217,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function Accept_削除($rowNum)
+    public function Accept_削除()
     {
         $this->tester->click('#bulkDelete');
 

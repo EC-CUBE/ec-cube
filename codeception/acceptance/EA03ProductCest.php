@@ -233,9 +233,21 @@ class EA03ProductCest
         $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
     }
 
-    public function product_一覧からの商品複製(AcceptanceTester $I)
+    public function product_商品の確認(AcceptanceTester $I)
     {
-        $I->wantTo('EA0310-UC05-T02 一覧からの商品複製');
+        $I->wantTo('EA302-UC05-T01 商品の確認');
+
+        $page = ProductManagePage::go($I);
+        $productId = $I->grabTextFrom('.c-primaryCol table tbody tr:first-child td:nth-child(2)');
+        $page->検索結果_確認(1);
+
+        $I->switchToNewWindow();
+        $I->seeInCurrentUrl("/products/detail/{$productId}");
+    }
+
+    public function product_商品の複製(AcceptanceTester $I)
+    {
+        $I->wantTo('EA302-UC05-T02 商品の複製');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
@@ -248,6 +260,29 @@ class EA03ProductCest
             ->Accept_複製する(1);
 
         $I->see('商品を複製しました', ProductEditPage::$登録結果メッセージ);
+    }
+
+    public function product_商品の削除(AcceptanceTester $I)
+    {
+        $I->wantTo('EA302-UC05-T03 商品の削除');
+
+        ProductManagePage::go($I)
+            ->検索結果_チェックボックスON(1)
+            ->検索結果_削除()
+            ->Accept_削除();
+
+        $I->see('商品の削除処理が完了しました', '.modal.show .modal-body');
+    }
+
+    public function product_商品の廃止(AcceptanceTester $I)
+    {
+        $I->wantTo('EA302-UC05-T04 商品の廃止');
+
+        ProductManagePage::go($I)
+            ->検索結果_チェックボックスON(1)
+            ->検索結果_廃止();
+
+        $I->see('廃止: 1件が正常に適用されました', ProductManagePage::$アラートメッセージ);
     }
 
     /**
