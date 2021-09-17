@@ -16,6 +16,7 @@ use Page\Admin\CsvSettingsPage;
 use Page\Admin\DeliveryEditPage;
 use Page\Admin\DeliveryManagePage;
 use Page\Admin\MailSettingsPage;
+use Page\Admin\OrderManagePage;
 use Page\Admin\OrderStatusSettingsPage;
 use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
@@ -47,11 +48,22 @@ class EA07BasicinfoCest
     {
         $I->wantTo('EA0701-UC01-T01 基本設定');
 
-        ShopSettingPage::go($I)
-            ->入力_会社名('会社名')
-            ->登録();
+        $page = ShopSettingPage::go($I)
+            ->入力_会社名('サンプル会社名')
+            ->入力_店名('サンプルショップ')
+            ->入力_郵便番号('100-0001')
+            ->入力_電話番号('050-5555-5555');
+        $I->wait(1);
+        $page->登録();
 
         $I->see('保存しました', ShopSettingPage::$登録完了メッセージ);
+
+        $I->amOnPage('/help/about');
+        $I->see('サンプル会社名', '#help_about_box__company_name dd');
+        $I->see('サンプルショップ', '#help_about_box__shop_name dd');
+        $I->see('1000001', '#help_about_box__address dd');
+        $I->see('東京都千代田区千代田', '#help_about_box__address dd');
+        $I->see('05055555555', '#help_about_box__phone_number dd');
     }
 
     public function basicinfo_支払方法一覧(AcceptanceTester $I)
@@ -93,7 +105,6 @@ class EA07BasicinfoCest
      */
     public function basicinfo_支払方法登録(AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('EA0705-UC01-T01 支払方法 登録');
         $I->wantTo('EA0705-UC01-T01 支払方法 登録');
 
         // 表示
@@ -121,7 +132,6 @@ class EA07BasicinfoCest
      */
     public function basicinfo_支払方法編集(AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('EA0705-UC01-T01 支払方法 登録');
         $I->wantTo('EA0705-UC02-T01 支払方法 編集');
 
         // 表示
@@ -149,10 +159,21 @@ class EA07BasicinfoCest
     {
         $I->wantTo('EA0704-UC03-T01 支払方法 削除');
 
-        // 表示
-        // 削除
+        // 削除用の支払い方法の登録
         PaymentManagePage::go($I)
-            ->一覧_削除(1);
+            ->新規入力();
+        PaymentEditPage::at($I)
+            ->入力_支払方法('dummy payment')
+            ->登録();
+
+        // 削除
+        $page = PaymentManagePage::go($I);
+        $before = $page->一覧_件数取得();
+        $page->一覧_削除(1);
+        $I->see('削除しました', PaymentEditPage::$登録完了メッセージ);
+
+        $after = PaymentManagePage::go($I)->一覧_件数取得();
+        $I->assertEquals($before - 1, $after);
     }
 
     public function basicinfo_配送方法一覧(AcceptanceTester $I)
@@ -224,8 +245,14 @@ class EA07BasicinfoCest
     {
         $I->wantTo('EA0706-UC03-T01 配送方法 削除');
 
-        DeliveryManagePage::go($I)
-            ->一覧_削除(2);
+        // 削除
+        $page = DeliveryManagePage::go($I);
+        $before = $page->一覧_件数取得();
+        $page->一覧_削除(2);
+        $I->see('削除しました', DeliveryManagePage::$登録完了メッセージ);
+
+        $after = DeliveryManagePage::go($I)->一覧_件数取得();
+        $I->assertEquals($before - 1, $after);
     }
 
     /**
@@ -292,15 +319,24 @@ class EA07BasicinfoCest
      */
     public function basicinfo_メール設定(AcceptanceTester $I)
     {
-        $I->wantTo('EA0709-UC02-T01  メール設定'); // EA0709-UC01-T01 はメールテンプレート登録機能がないのでテスト不可
+        $I->wantTo('EA0709-UC02-T01 メール設定');
 
         // 表示
+        $title = '商品出荷のお知らせ ' . uniqid();
         MailSettingsPage::go($I)
-            ->入力_テンプレート('注文受付メール')
-            ->入力_件名('ご注文有難うございました')
+            ->入力_テンプレート('出荷通知メール')
+            ->入力_件名($title)
             ->登録();
 
         $I->see('保存しました', MailSettingsPage::$登録完了メッセージ);
+
+        // 結果確認
+        $I->resetEmails();
+
+        OrderManagePage::go($I)
+            ->一覧_メール通知(1);
+
+        $I->seeInLastEmailSubject("[サンプルショップ] {$title}");
     }
 
     /**
@@ -309,7 +345,7 @@ class EA07BasicinfoCest
      */
     public function basicinfo_CSV出力項目(AcceptanceTester $I)
     {
-        $I->wantTo('EA0710-UC01-T01  CSV出力項目設定');
+        $I->wantTo('EA0710-UC01-T01 CSV出力項目設定');
 
         // 表示
         CsvSettingsPage::go($I)
@@ -319,6 +355,14 @@ class EA07BasicinfoCest
             ->設定();
 
         $I->see('保存しました', CsvSettingsPage::$登録完了メッセージ);
+
+        // CSVダウンロード
+        OrderManagePage::go($I)->受注CSVダウンロード実行();
+        $I->wait(10);
+        $csv = $I->getLastDownloadFile('/^order_\d{14}\.csv$/');
+        $csvHeader = mb_convert_encoding(file($csv)[0], 'UTF-8', 'SJIS-win');
+        $I->assertContains('注文ID', $csvHeader);
+        $I->assertNotContains('誕生日', $csvHeader);
     }
 
     /**
@@ -327,7 +371,7 @@ class EA07BasicinfoCest
      */
     public function basicinfo_受注対応状況設定(AcceptanceTester $I)
     {
-        $I->wantTo('EA0711-UC01-T01  受注対応状況設定');
+        $I->wantTo('EA0711-UC01-T01 受注対応状況設定');
 
         // 表示
         OrderStatusSettingsPage::go($I)
@@ -337,6 +381,10 @@ class EA07BasicinfoCest
             ->登録();
 
         $I->see('保存しました', OrderStatusSettingsPage::$登録完了メッセージ);
+
+        OrderStatusSettingsPage::go($I);
+        $I->seeInField(OrderStatusSettingsPage::$名称_マイページ, '注文受付');
+        $I->seeInField(OrderStatusSettingsPage::$名称_管理, '新規受付');
     }
 
     /**
