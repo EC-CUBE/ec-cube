@@ -21,6 +21,7 @@ use Page\Admin\ProductClassEditPage;
 use Page\Admin\ProductCsvUploadPage;
 use Page\Admin\ProductEditPage;
 use Page\Admin\ProductManagePage;
+use Page\Admin\ProductTagPage;
 
 /**
  * @group admin
@@ -782,6 +783,57 @@ class EA03ProductCest
         CategoryCsvUploadPage::go($I)->雛形ダウンロード();
         $CategoryTemplateCSV = $I->getLastDownloadFile('/^category\.csv$/');
         $I->assertEquals(1, count(file($CategoryTemplateCSV)), 'ヘッダ行だけのファイル');
+    }
+
+    public function product_タグ登録(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0308-UC01-T01 / UC01-T02 タグ登録');
+
+        ProductTagPage::go($I)
+            ->入力_タグ名('')
+            ->新規作成();
+
+        // タグが作成されていないことを確認
+        $I->dontSee('保存しました', ProductTagPage::$アラートメッセージ);
+
+        $tagName = 'new-tag ' . uniqid();
+
+        ProductTagPage::go($I)
+            ->入力_タグ名($tagName)
+            ->新規作成();
+
+        $I->see('保存しました', ProductTagPage::$アラートメッセージ);
+        $I->see($tagName, ProductTagPage::$タグ一覧);
+    }
+
+    public function product_タグ編集(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0308-UC02-T01 タグ編集');
+
+        $tagName = 'edit-tag ' . uniqid();
+
+        ProductTagPage::go($I)
+            ->タグ編集_開始(1)
+            ->タグ編集_入力(1, $tagName)
+            ->タグ編集_決定(1);
+
+        $I->see('保存しました', ProductTagPage::$アラートメッセージ);
+        $I->see($tagName, ProductTagPage::$タグ一覧);
+    }
+
+    public function product_タグ削除(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0308-UC04-T01 タグ削除');
+
+        $page = ProductTagPage::go($I);
+        $tagName = $I->grabTextFrom(['css' => '.c-primaryCol .list-group li:nth-child(3) > div > div:nth-child(3)']);
+        $I->see($tagName, ProductTagPage::$タグ一覧);
+
+        $page->タグ削除(1)
+            ->タグ削除_決定();
+
+        $I->see('削除しました', ProductTagPage::$アラートメッセージ);
+        $I->dontSee($tagName, ProductTagPage::$タグ一覧);
     }
 
     public function product_一覧からの商品確認(AcceptanceTester $I)
