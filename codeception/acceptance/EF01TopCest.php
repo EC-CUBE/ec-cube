@@ -42,6 +42,9 @@ class EF01TopCest
         }
     }
 
+    /**
+     * @group vaddy
+     */
     public function topページ_初期表示(AcceptanceTester $I)
     {
         $I->wantTo('EF0101-UC01-T01 TOPページ 初期表示');

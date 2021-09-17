@@ -39,6 +39,10 @@ class EA07BasicinfoCest
     {
     }
 
+    /**
+     * @group vaddy
+     * @group basicsetting
+     */
     public function basicinfo_基本設定(AcceptanceTester $I)
     {
         $I->wantTo('EA0701-UC01-T01 基本設定');
@@ -60,6 +64,10 @@ class EA07BasicinfoCest
         $I->see('郵便振替', $PaymentManagePage->一覧_支払方法(1));
     }
 
+    /**
+     * @group vaddy
+     * @group paymentmethod
+     */
     public function basicinfo_支払方法入れ替え(AcceptanceTester $I)
     {
         $I->wantTo('EA0704-UC02-T01 支払方法 入れ替え');
@@ -79,6 +87,10 @@ class EA07BasicinfoCest
         $I->see('郵便振替', $PaymentManagePage->一覧_支払方法(1));
     }
 
+    /**
+     * @group vaddy
+     * @group paymentmethod
+     */
     public function basicinfo_支払方法登録(AcceptanceTester $I)
     {
         $I->getScenario()->incomplete('EA0705-UC01-T01 支払方法 登録');
@@ -103,6 +115,10 @@ class EA07BasicinfoCest
         $I->see('payment method1', $PaymentManagePage->一覧_支払方法(1));
     }
 
+    /**
+     * @group vaddy
+     * @group paymentmethod
+     */
     public function basicinfo_支払方法編集(AcceptanceTester $I)
     {
         $I->getScenario()->incomplete('EA0705-UC01-T01 支払方法 登録');
@@ -125,6 +141,10 @@ class EA07BasicinfoCest
         $I->see('payment method2', $PaymentManagePage->一覧_支払方法(1));
     }
 
+    /**
+     * @group vaddy
+     * @group paymentmethod
+     */
     public function basicinfo_支払方法削除(AcceptanceTester $I)
     {
         $I->wantTo('EA0704-UC03-T01 支払方法 削除');
@@ -145,6 +165,10 @@ class EA07BasicinfoCest
         $I->see('サンプル宅配', $DeliveryManagePage->一覧_名称(2));
     }
 
+    /**
+     * @group vaddy
+     * @group delivery
+     */
     public function basicinfo_配送方法登録(AcceptanceTester $I)
     {
         $I->wantTo('EA0707-UC01-T01 配送方法 登録');
@@ -168,6 +192,10 @@ class EA07BasicinfoCest
         $I->see('配送業者名', $DeliveryManagePage->一覧_名称(2));
     }
 
+    /**
+     * @group vaddy
+     * @group delivery
+     */
     public function basicinfo_配送方法編集(AcceptanceTester $I)
     {
         $I->wantTo('EA0707-UC02-T01 配送方法 編集');
@@ -188,6 +216,10 @@ class EA07BasicinfoCest
         $I->see('配送業者名1', $DeliveryManagePage->一覧_名称(2));
     }
 
+    /**
+     * @group vaddy
+     * @group delivery
+     */
     public function basicinfo_配送方法削除(AcceptanceTester $I)
     {
         $I->wantTo('EA0706-UC03-T01 配送方法 削除');
@@ -196,6 +228,10 @@ class EA07BasicinfoCest
             ->一覧_削除(2);
     }
 
+    /**
+     * @group vaddy
+     * @group delivery
+     */
     public function basicinfo_配送方法一覧順序変更(AcceptanceTester $I)
     {
         $I->wantTo('EA0706-UC02-T01 配送方法一覧順序変更');
@@ -213,6 +249,10 @@ class EA07BasicinfoCest
         $I->see('サンプル業者 / サンプル業者', $DeliveryManagePage->一覧_名称(3));
     }
 
+    /**
+     * @group vaddy
+     * @group taxrule
+     */
     public function basicinfo_税率設定(AcceptanceTester $I)
     {
         $I->wantTo('EA0708-UC01-T01 税率設定');
@@ -246,6 +286,10 @@ class EA07BasicinfoCest
         $I->see('削除しました', TaxManagePage::$登録完了メッセージ);
     }
 
+    /**
+     * @group vaddy
+     * @group mailsetting
+     */
     public function basicinfo_メール設定(AcceptanceTester $I)
     {
         $I->wantTo('EA0709-UC02-T01  メール設定'); // EA0709-UC01-T01 はメールテンプレート登録機能がないのでテスト不可
@@ -259,6 +303,10 @@ class EA07BasicinfoCest
         $I->see('保存しました', MailSettingsPage::$登録完了メッセージ);
     }
 
+    /**
+     * @group vaddy
+     * @group csvsetting
+     */
     public function basicinfo_CSV出力項目(AcceptanceTester $I)
     {
         $I->wantTo('EA0710-UC01-T01  CSV出力項目設定');
@@ -273,6 +321,10 @@ class EA07BasicinfoCest
         $I->see('保存しました', CsvSettingsPage::$登録完了メッセージ);
     }
 
+    /**
+     * @group vaddy
+     * @group orderstatus
+     */
     public function basicinfo_受注対応状況設定(AcceptanceTester $I)
     {
         $I->wantTo('EA0711-UC01-T01  受注対応状況設定');
@@ -289,6 +341,8 @@ class EA07BasicinfoCest
 
     /**
      * EA10PluginCestではテストが失敗するため、ここでテストを行う
+     * @group vaddy
+     * @group pluginauth
      */
     public function basicinfo_認証キー設定(AcceptanceTester $I)
     {

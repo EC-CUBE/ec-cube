@@ -97,6 +97,9 @@ class EA09ShippingCest
             ->出荷日を確認();
     }
 
+    /**
+     * @group vaddy
+     */
     public function shippingお届け先追加(AcceptanceTester $I)
     {
         $I->wantTo('EA0901-UC03-T03 お届け先追加');
