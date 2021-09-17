@@ -546,4 +546,29 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->actual = $Result['messages'][0];
         $this->verify();
     }
+
+    /**
+     * Test for PR 5133
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/pull/5133
+     */
+    public function testIndexWithOrderStatus()
+    {
+        // 対応中の受注を追加しておく
+        $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::IN_PROGRESS);
+        $Order->setOrderStatus($OrderStatus);
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_order').'?order_status_id=4'
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果：1件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
+        $this->verify();
+    }
 }
