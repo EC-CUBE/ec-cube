@@ -104,7 +104,7 @@ class EA04OrderCest
      */
     public function order_配送CSVダウンロード(AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC02-T01 配送CSVダウンロード');
+        $I->wantTo('EA0401-UC03-T01 配送CSVダウンロード');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -122,7 +122,7 @@ class EA04OrderCest
 
     public function order_配送情報のCSV出力項目変更設定(AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC02-T02 配送情報のCSV出力項目変更設定');
+        $I->wantTo('EA0401-UC03-T02 配送情報のCSV出力項目変更設定');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -267,7 +267,7 @@ class EA04OrderCest
      */
     public function order_一括メール通知(AcceptanceTester $I)
     {
-        $I->wantTo('EA0402-UC02-T01(& UC02-T02) 一括メール通知');
+        $I->wantTo('EA0402-UC02-T01 一括メール通知');
 
         $I->resetEmails();
 
@@ -279,6 +279,20 @@ class EA04OrderCest
         $message = $I->lastMessage();
         $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(10);
+    }
+
+    public function order_一括メール通知_キャンセル(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0402-UC02-T01 一括メール通知 (キャンセル)');
+
+        $I->resetEmails();
+
+        OrderManagePage::go($I)
+            ->件数変更(10)
+            ->一覧_全選択()
+            ->一括メール送信_キャンセル();
+
+        $I->seeEmailCount(0);
     }
 
     /**
@@ -436,7 +450,7 @@ class EA04OrderCest
      */
     public function order_個別出荷済みステータス変更(AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC08-T02_個別出荷済みステータス変更');
+        $I->wantTo('EA0401-UC06-T02_個別出荷済みステータス変更');
 
         $I->resetEmails();
 
