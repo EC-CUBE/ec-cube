@@ -260,7 +260,7 @@ class EA06ContentsManagementCest
         LayoutEditPage::at($I)
             ->レイアウト名($layoutName)
             ->端末種別('PC')
-            ->ブロックを移動('ロゴ', '#position_3')
+            ->ブロックを移動('新着情報', '#position_3')
             ->登録();
         $I->see('保存しました');
 
@@ -274,20 +274,21 @@ class EA06ContentsManagementCest
             ->登録();
         $I->see('保存しました', PageEditPage::$登録完了メッセージ);
 
-        // 作成したページの表示確認
+        // 作成したページの表示確認 (新着情報がヘッダエリアに表示されていることを確認)
         $I->amOnPage('/user_data/'.$pageName);
-        $I->grabTextFrom('.ec-layoutRole__header .ec-headerTitle');
+        $I->seeElement('.ec-layoutRole__header .ec-newsRole');
 
         // 編集
         LayoutManagePage::go($I)->レイアウト編集($layoutName);
         LayoutEditPage::at($I)
-            ->ブロックを移動('ロゴ', '#position_4')
+            ->ブロックを移動('新着情報', '#position_10')
             ->登録();
         $I->see('保存しました', LayoutEditPage::$登録完了メッセージ);
 
-        // 編集したページの表示確認 (ブロックの位置が移動されていることを確認)
+        // 編集したページの表示確認 (新着情報がフッタエリアに表示されていることを確認)
         $I->amOnPage('/user_data/'.$pageName);
-        $I->grabTextFrom('.ec-layoutRole__contentTop .ec-headerTitle');
+        $I->seeElement('.ec-layoutRole__footer .ec-newsRole');
+        $I->dontSeeElement('.ec-layoutRole__header .ec-newsRole');
 
         // レイアウトの削除 → レイアウトを適用したページがあるため削除できない
         LayoutManagePage::go($I)->削除($layoutName);
