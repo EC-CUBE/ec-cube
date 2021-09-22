@@ -169,6 +169,7 @@ class EF04CustomerCest
 
         $I->click('.ec-layoutRole__main form a.ec-blockBtn--cancel');
         $I->see('新着情報', '.ec-secHeading__ja');
+        $I->seeInCurrentUrl('/');
     }
 
     public function customer_会員登録戻る(AcceptanceTester $I)
