@@ -316,11 +316,16 @@ class EA03ProductCest
     {
         $I->wantTo('EA302-UC05-T04 商品の廃止');
 
-        ProductManagePage::go($I)
-            ->検索結果_チェックボックスON(1)
+        $page = ProductManagePage::go($I);
+        $productName = $I->grabTextFrom(ProductManagePage::$検索結果_1行目_商品名);
+        $page->検索結果_チェックボックスON(1)
             ->検索結果_廃止();
 
         $I->see('廃止: 1件が正常に適用されました', ProductManagePage::$アラートメッセージ);
+
+        // 廃止商品を対象に検索し、廃止した商品が表示されることを確認
+        $page->詳細検索_ステータス(3);
+        $I->see($productName, ProductManagePage::$検索結果_一覧);
     }
 
     /**

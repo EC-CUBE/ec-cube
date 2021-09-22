@@ -32,6 +32,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     public static $検索結果_結果なしメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
     public static $検索結果_エラーメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
     public static $検索結果_一覧 = '#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody';
+    public static $検索結果_1行目_商品名 = ['css' => '#form_bulk table tbody > tr:nth-child(1) > td:nth-child(4)'];
     public static $一括削除エラー = ['id' => 'bulkErrors'];
     public static $アラートメッセージ = ['css' => '.c-contentsArea > .alert'];
 
