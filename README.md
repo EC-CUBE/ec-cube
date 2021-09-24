@@ -23,7 +23,7 @@
 
 ### EC-CUBE 4.1のインストール方法
 
-開発ドキュメントの [インストール方法](https://doc4.ec-cube.net/quickstart_install) の手順に従ってインストールしてください。
+開発ドキュメントの [インストール方法](https://doc4.ec-cube.net/quickstart/install) の手順に従ってインストールしてください。
 
 ### CSS の編集・ビルド方法
 
@@ -45,7 +45,7 @@ npm run build # Sass のビルド
 * PostgreSQL 10.x / MySQL 5.7.x
 * ブラウザー：Google Chrome
 
-詳しくは開発ドキュメントの [システム要件](https://doc4.ec-cube.net/quickstart_requirement) をご確認ください。
+詳しくは開発ドキュメントの [システム要件](https://doc4.ec-cube.net/quickstart/requirement) をご確認ください。
 
 ## ドキュメント
 
