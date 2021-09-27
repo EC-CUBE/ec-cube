@@ -10,10 +10,10 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-**EC-CUBE 4.1は現在β版です。4.0からの更新内容は[リリースノート](https://github.com/EC-CUBE/ec-cube/releases/tag/4.1-beta)をご確認ください。**
+**4.0からの更新内容は[リリースノート](https://github.com/EC-CUBE/ec-cube/releases/tag/4.1.0)をご確認ください。**
 
 + 本ドキュメントはEC-CUBEの開発者を主要な対象者としております。
-+ パッケージ版は正式リリース後に[EC-CUBEオフィシャルサイト](https://www.ec-cube.net)で配布します。
++ パッケージ版は[EC-CUBEオフィシャルサイト](https://www.ec-cube.net)で配布しています。
 + カスタマイズやEC-CUBEの利用、仕様に関しては[開発コミュニティ](https://xoops.ec-cube.net)をご利用ください。
 + 本体開発にあたって不明点などあれば[Issue](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご利用下さい。
 + EC-CUBE 3系の保守については、 [EC-CUBE/ec-cube3](https://github.com/EC-CUBE/ec-cube3/)にて開発を行っております。
@@ -41,7 +41,7 @@ npm run build # Sass のビルド
 ### 動作確認環境
 
 * Apache 2.4.x (mod_rewrite / mod_ssl 必須)
-* PHP 7.3.x
+* PHP 7.3.x / 7.4.x
 * PostgreSQL 10.x / MySQL 5.7.x
 * ブラウザー：Google Chrome
 
