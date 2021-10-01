@@ -344,7 +344,7 @@ file that was distributed with this source code.
                         <button type="button" class="ec-inlineBtn" data-trigger="click" data-path="{{ path('shopping_shipping_multiple') }}">{{ 'front.shopping.to_multiple'|trans }}</button>
                     </div>
                 </div>
-                <div class="ec-orderPayment">
+                <div class="ec-orderPayment" id="payment-method">
                     <div class="ec-rectHeading">
                         <h2>{{ 'front.shopping.payment_info'|trans }}</h2>
                     </div>
@@ -352,7 +352,7 @@ file that was distributed with this source code.
                         {% for key, child in form.Payment %}
                             <div style="display: block;">
                                 {% set Payment = form.Payment.vars.choices[key].data %}
-                                {{ form_widget(child, { 'attr': { 'data-trigger': 'change' }}) }}
+                                {{ form_widget(child, { 'attr': { 'data-trigger': 'change', 'data-path': '/shopping#payment-method' }}) }}
                                 {% if Payment.payment_image is not null %}
                                     <p><img src="{{ asset(Payment.payment_image, 'save_image') }}"></p>
                                 {% endif %}

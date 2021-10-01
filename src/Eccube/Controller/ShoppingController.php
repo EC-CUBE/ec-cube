@@ -205,11 +205,17 @@ class ShoppingController extends AbstractShoppingController
                 // リダイレクト先のチェック.
                 $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
                 $redirectTo = preg_replace($pattern, '', $redirectTo);
+                //リダイレクト先にアンカーが設定されてたらflagmentに設定
+                $redirectTo = explode("#",$redirectTo);
+                $fragment = $redirectTo[1];
+                $redirectTo = $redirectTo[0];
+
                 $result = $router->match($redirectTo);
                 // パラメータのみ抽出
                 $params = array_filter($result, function ($key) {
                     return 0 !== \strpos($key, '_');
                 }, ARRAY_FILTER_USE_KEY);
+                $params['_fragment'] = $fragment;
 
                 log_info('[リダイレクト] リダイレクトを実行します.', [$result['_route'], $params]);
 
