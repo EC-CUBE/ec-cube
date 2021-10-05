@@ -12,7 +12,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.3 || ^8.0",
         "ext-intl": "*",
         "ext-mbstring": "*",
         "composer/ca-bundle": "^1.1",
@@ -20,18 +20,16 @@
         "doctrine/annotations": "^1.6",
         "doctrine/cache": "^1.7",
         "doctrine/collections": "^1.5",
-        "doctrine/common": "^2.9",
+        "doctrine/common": "^3.0",
         "doctrine/data-fixtures": "^1.3",
         "doctrine/dbal": "^2.9",
-        "doctrine/doctrine-bundle": "^1.9",
-        "doctrine/doctrine-cache-bundle": "^1.3",
+        "doctrine/doctrine-bundle": "^2.0",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
-        "doctrine/doctrine-migrations-bundle": "^1.3",
+        "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/inflector": "^1.3",
         "doctrine/instantiator": "^1.1",
         "doctrine/lexer": "^1.0",
-        "doctrine/migrations": "^1.8",
-        "doctrine/orm": "^2.6",
+        "doctrine/orm": ">=2.8 <2.9",
         "easycorp/easy-log-handler": "^1.0",
         "ec-cube/plugin-installer": "^2.0",
         "egulias/email-validator": "^2.1",
@@ -62,7 +60,6 @@
         "symfony/css-selector": "^4.4",
         "symfony/debug": "^4.4",
         "symfony/debug-bundle": "^4.4",
-        "symfony/debug-pack": "^1.0",
         "symfony/dependency-injection": "^4.4",
         "symfony/doctrine-bridge": "^4.4",
         "symfony/dom-crawler": "^4.4",
@@ -82,7 +79,6 @@
         "symfony/monolog-bridge": "^4.4",
         "symfony/monolog-bundle": "^3.1",
         "symfony/options-resolver": "^4.4",
-        "symfony/orm-pack": "^1.0",
         "symfony/process": "^4.4",
         "symfony/property-access": "^4.4",
         "symfony/proxy-manager-bridge": "^4.4",
@@ -108,15 +104,14 @@
         "vlucas/phpdotenv": "v2.4.0"
     },
     "require-dev": {
-        "bheller/images-generator": "^1.0",
         "captbaritone/mailcatcher-codeception-module": "^1.2",
         "codeception/codeception": "^4.1",
         "codeception/module-asserts": "^1.3",
         "codeception/module-phpbrowser": "^1.0",
         "codeception/module-rest": "^1.3",
         "codeception/module-webdriver": "^1.2",
-        "dama/doctrine-test-bundle": "^5.0",
-        "fzaninotto/faker": "^1.7",
+        "dama/doctrine-test-bundle": "^6.6",
+        "fakerphp/faker": "^1.16",
         "mikey179/vfsstream": "^1.6",
         "phpstan/phpstan": "^0.12",
         "symfony/browser-kit": "^4.4",
@@ -174,8 +169,7 @@
     },
     "conflict": {
         "symfony/symfony": "*",
-        "easycorp/easy-log-handler": "1.0.4|1.0.5",
-        "doctrine/inflector": "^1.4"
+        "easycorp/easy-log-handler": "1.0.4|1.0.5"
     },
     "extra": {
         "symfony": {
@@ -190,7 +184,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.1.3"
+            "php": "8.0.0"
         },
         "preferred-install": {
             "*": "dist"
