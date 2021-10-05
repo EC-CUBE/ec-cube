@@ -18,9 +18,9 @@ use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\MigrationException;
+// use Doctrine\DBAL\Migrations\Configuration\Configuration;
+// use Doctrine\DBAL\Migrations\Migration;
+// use Doctrine\DBAL\Migrations\MigrationException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -398,7 +398,7 @@ class InstallController extends AbstractController
             try {
                 $conn = $this->createConnection(['url' => $url]);
                 $em = $this->createEntityManager($conn);
-                $migration = $this->createMigration($conn);
+                // $migration = $this->createMigration($conn);
 
                 if ($noUpdate) {
                     $this->update($conn, [
@@ -412,7 +412,7 @@ class InstallController extends AbstractController
                     $this->dropTables($em);
                     $this->createTables($em);
                     $this->importCsv($em);
-                    $this->migrate($migration);
+                    // $this->migrate($migration);
                     $this->insert($conn, [
                         'auth_magic' => $sessionData['authmagic'],
                         'login_id' => $sessionData['login_id'],
@@ -798,19 +798,19 @@ class InstallController extends AbstractController
         return $options;
     }
 
-    protected function createMigration(Connection $conn)
-    {
-        $config = new Configuration($conn);
-        $config->setMigrationsNamespace('DoctrineMigrations');
-        $migrationDir = $this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/migration';
-        $config->setMigrationsDirectory($migrationDir);
-        $config->registerMigrationsFromDirectory($migrationDir);
+    // protected function createMigration(Connection $conn)
+    // {
+    //     $config = new Configuration($conn);
+    //     $config->setMigrationsNamespace('DoctrineMigrations');
+    //     $migrationDir = $this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/migration';
+    //     $config->setMigrationsDirectory($migrationDir);
+    //     $config->registerMigrationsFromDirectory($migrationDir);
 
-        $migration = new Migration($config);
-        $migration->setNoMigrationException(true);
+    //     $migration = new Migration($config);
+    //     $migration->setNoMigrationException(true);
 
-        return $migration;
-    }
+    //     return $migration;
+    // }
 
     protected function dropTables(EntityManager $em)
     {
@@ -942,14 +942,14 @@ class InstallController extends AbstractController
         }
     }
 
-    public function migrate(Migration $migration)
-    {
-        try {
-            // nullを渡すと最新バージョンまでマイグレートする
-            $migration->migrate(null, false);
-        } catch (MigrationException $e) {
-        }
-    }
+    // public function migrate(Migration $migration)
+    // {
+    //     try {
+    //         // nullを渡すと最新バージョンまでマイグレートする
+    //         $migration->migrate(null, false);
+    //     } catch (MigrationException $e) {
+    //     }
+    // }
 
     /**
      * @param array $params

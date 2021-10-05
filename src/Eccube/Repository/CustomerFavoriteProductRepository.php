@@ -14,8 +14,8 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\CustomerFavoriteProduct;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * CustomerFavoriteProductRepository
