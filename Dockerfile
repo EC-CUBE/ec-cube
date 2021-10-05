@@ -2,8 +2,9 @@ FROM php:7.4-apache-bullseye
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
 
-RUN apt-get update \
-  && apt-get install --no-install-recommends -y \
+RUN apt update \
+  && apt upgrade -y \
+  && apt install --no-install-recommends -y \
     apt-transport-https \
     apt-utils \
     build-essential \
@@ -24,8 +25,8 @@ RUN apt-get update \
     unzip \
     zlib1g-dev \
     libwebp-dev \
-  && apt-get upgrade -y ca-certificates \
-  && apt-get clean \
+  && apt upgrade -y ca-certificates \
+  && apt clean \
   && rm -rf /var/lib/apt/lists/* \
   && echo "en_US.UTF-8 UTF-8" >/etc/locale.gen \
   && locale-gen \
@@ -39,8 +40,9 @@ RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
 RUN pecl install apcu && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apc.ini
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-  && apt-get install -y nodejs \
-  && apt-get clean \
+  && apt update \
+  && apt install -y nodejs \
+  && apt clean \
   ;
 
 RUN mkdir -p ${APACHE_DOCUMENT_ROOT} \
