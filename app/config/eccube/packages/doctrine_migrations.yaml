@@ -1,4 +1,4 @@
-doctrine_migrations:
-    migrations_paths:
-        'DoctrineMigrations': '%kernel.project_dir%/app/DoctrineMigrations'
-    organize_migrations: false
+#doctrine_migrations:
+#    migrations_paths:
+#        'DoctrineMigrations': '%kernel.project_dir%/app/DoctrineMigrations'
+#    organize_migrations: false
