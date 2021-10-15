@@ -22,6 +22,54 @@ export const Risk = {
 } as const;
 type Risk = typeof Risk[keyof typeof Risk];
 
+// see https://github.com/zaproxy/zaproxy/blob/main/zap/src/main/java/org/zaproxy/zap/extension/api/ApiResponseConversionUtils.java#L80-L122
+export type HttpMessage = {
+  id: string,
+  type: string,
+  timestamp: string,
+  rtt: string,
+  cookieParams: string,
+  note: string,
+  requestHeader: string,
+  requestBody: string,
+  responseHeader: string,
+  responseBody: string,
+  tags: string[]
+};
+
+// see https://github.com/zaproxy/zaproxy/blob/main/zap/src/main/java/org/parosproxy/paros/core/scanner/Alert.java#L198
+export type Alert = {
+  alertId?: string,
+  pluginId?: string
+  name: string,
+  risk: string,
+  confidence?: string,
+  description?: string,
+  uri?: string,
+  param?: string,
+  attack?: string,
+  otherInfo?: string,
+  solution?: string,
+  reference?: string,
+  evidence?: string,
+  cweId?: string,
+  wascId?: string,
+  message?: any,
+  sourceHistoryId?: string,
+  historyRef?: any;
+  method?: string,
+  postData?: string,
+  msgUri?: string
+  source?: string,
+  alertRef?: string
+};
+
+export class ZapClientError extends Error {
+  constructor(message?: string) {
+    super(message);
+  };
+}
+
 export class ZapClient {
 
   private apiKey: string | null;
@@ -58,7 +106,7 @@ export class ZapClient {
     await this.zaproxy.forcedUser.setForcedUserModeEnabled(bool ?? true);
   }
 
-  public async sendRequest(request: string, followRedirects?: boolean): Promise<any> {
+  public async sendRequest(request: string, followRedirects?: boolean): Promise<HttpMessage> {
     const result = await this.zaproxy.core.sendRequest(request, followRedirects ?? false);
     return result.sendRequest;
   }
@@ -68,14 +116,19 @@ export class ZapClient {
     return JSON.parse(result.numberOfMessages);
   }
 
-  public async getMessages(url: string, start?: number, count?: number): Promise<Array<any>> {
+  public async getMessages(url: string, start?: number, count?: number): Promise<HttpMessage[]> {
     const result = await this.zaproxy.core.messages(url, start, count);
     return result.messages;
   }
 
-  public async getLastMessage(url: string): Promise<any> {
+  public async getLastMessage(url: string): Promise<HttpMessage> {
     const result = await this.getMessages(url, await this.getNumberOfMessages(url), 10);
-    return result.pop();
+    const message = result.pop();
+    if (message === undefined) {
+      throw new ZapClientError('Invalid response');
+    }
+
+    return message;
   }
 
   public async activeScanAsUser(url: string, contextId: number, userId: number, recurse?: boolean, scanPolicyName?: string | null, method?: 'GET' | 'POST' | 'PUT' | 'DELETE', postData?: string | null): Promise<number> {
@@ -97,7 +150,7 @@ export class ZapClient {
     await this.zaproxy.core.snapshotSession();
   }
 
-  public async getAlerts(url: string, start?: number, count?:number, riskid?: Risk): Promise<Array<any>> {
+  public async getAlerts(url: string, start?: number, count?:number, riskid?: Risk): Promise<Alert[]> {
     const result = await this.zaproxy.core.alerts(url, start, count, riskid);
     return result.alerts;
   }
