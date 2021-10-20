@@ -26,6 +26,9 @@ use Eccube\DependencyInjection\Compiler\TwigBlockPass;
 use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
+use Eccube\DependencyInjection\Facade\AnnotationReaderFacade;
+use Eccube\DependencyInjection\Facade\LoggerFacade;
+use Eccube\DependencyInjection\Facade\TranslatorFacade;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -125,13 +128,21 @@ class Kernel extends BaseKernel
                 ->asSharedInstanceOf(NoRFCEmailValidator::class);
         }
 
-        // Activate to $app
-        $app = Application::getInstance(['debug' => $this->isDebug()]);
-        $app->setParentContainer($container);
-        $app->initialize();
-        $app->boot();
+        $Logger = $container->get('eccube.logger');
+        if ($Logger !== null && $Logger instanceof \Eccube\Log\Logger) {
+            LoggerFacade::init($container, $Logger);
+        }
+        $Translator = $container->get('translator');
+        if ($Translator !== null && $Translator instanceof \Symfony\Component\Translation\TranslatorInterface) {
+            TranslatorFacade::init($container, $Translator);
+        }
 
-        $container->set('app', $app);
+        /** @var AnnotationReaderFacade $AnnotationReaderFacade */
+        $AnnotationReaderFacade = $container->get(AnnotationReaderFacade::class);
+        $AnnotationReader = $AnnotationReaderFacade->getAnnotationReader();
+        if ($AnnotationReader !== null && $AnnotationReader instanceof \Doctrine\Common\Annotations\Reader) {
+            AnnotationReaderFacade::init($container, $AnnotationReader);
+        }
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
@@ -215,10 +226,6 @@ class Kernel extends BaseKernel
 
         // twigのurl,path関数を差し替え
         $container->addCompilerPass(new TwigExtensionPass());
-
-        $container->register('app', Application::class)
-            ->setSynthetic(true)
-            ->setPublic(true);
 
         // クエリカスタマイズの拡張.
         $container->registerForAutoconfiguration(QueryCustomizer::class)

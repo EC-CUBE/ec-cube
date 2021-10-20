@@ -35,8 +35,8 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->classNameRepository = $this->container->get(ClassNameRepository::class);
-        $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
+        $this->classNameRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassName::class);
+        $this->classCategoryRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
     }
 
     public function testRoutingAdminProductClassCategory()

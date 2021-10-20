@@ -60,7 +60,7 @@ file that was distributed with this source code.
                                         {{ form_errors(form.admin_route_dir) }}
                                     </div>
                                 </div>
-                                <!-- IP制限 -->
+                                <!-- IP制限 許可リスト -->
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.security.ip_limit'|trans }}">
@@ -71,6 +71,19 @@ file that was distributed with this source code.
                                         {{ form_widget(form.admin_allow_hosts, { 'attr': { 'rows': '8', 'placeholder': 'admin.setting.system.security.ip_limit_sample'|trans }}) }}
                                         {{ form_errors(form.admin_allow_hosts) }}
                                         <p>{{ 'admin.setting.system.security.ip_limit_description'|trans|nl2br }}</p>
+                                    </div>
+                                </div>
+                                <!-- IP制限 拒否リスト -->
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.security.ip_limit_deny'|trans }}">
+                                            <span>{{ 'admin.setting.system.security.ip_limit_deny'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.admin_deny_hosts, { 'attr': { 'rows': '8', 'placeholder': 'admin.setting.system.security.ip_limit_sample'|trans }}) }}
+                                        {{ form_errors(form.admin_deny_hosts) }}
+                                        <p>{{ 'admin.setting.system.security.ip_limit_description_deny'|trans|nl2br }}</p>
                                     </div>
                                 </div>
                                 <!-- 強制SSL -->

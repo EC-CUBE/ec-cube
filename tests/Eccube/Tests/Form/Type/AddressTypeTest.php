@@ -47,7 +47,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidData_Addr01_MaxLength()
+    public function testInvalidDataAddr01MaxLength()
     {
         $data = [
             'address' => [
@@ -60,7 +60,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_Addr02_MaxLength()
+    public function testInvalidDataAddr02MaxLength()
     {
         $data = [
             'address' => [
@@ -73,7 +73,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_Pref_String()
+    public function testInvalidDataPrefString()
     {
         $this->formData['address']['pref'] = 'aa';
 
@@ -81,7 +81,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_Pref_NonexistentValue()
+    public function testInvalidDataPrefNonexistentValue()
     {
         $this->formData['address']['pref'] = '99'; // smallint以上の値だとpostgresが落ちる
 
@@ -89,7 +89,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testRequiredAddNotBlank_Pref()
+    public function testRequiredAddNotBlankPref()
     {
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
@@ -104,7 +104,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testRequiredAddNotBlank_Addr01()
+    public function testRequiredAddNotBlankAddr01()
     {
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
@@ -119,7 +119,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testRequiredAddNotBlank_Addr02()
+    public function testRequiredAddNotBlankAddr02()
     {
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])

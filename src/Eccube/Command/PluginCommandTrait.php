@@ -15,9 +15,9 @@ namespace Eccube\Command;
 
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 trait PluginCommandTrait
 {
@@ -51,14 +51,13 @@ trait PluginCommandTrait
 
     protected function clearCache(SymfonyStyle $io)
     {
+        $command = 'cache:clear --no-warmup';
         try {
-            /* @var Command $command */
-            $command = $this->getApplication()->get('cache:clear');
-            $command->run(new ArrayInput([
-                'command' => 'cache:clear',
-                '--no-warmup' => true,
-            ]), $io);
-        } catch (\Exception $e) {
+            $io->text(sprintf('<info>Run %s</info>...', $command));
+            $process = new Process('bin/console '.$command);
+            $process->mustRun();
+            $io->text($process->getOutput());
+        } catch (ProcessFailedException $e) {
             $io->error($e->getMessage());
         }
     }

@@ -1,0 +1,34 @@
+{% if app.request.get('_route') == 'product_detail' %}
+    {% set meta_og_type = "og:product" %}
+    {% set meta_description = Product.description_list | default(Product.description_detail) | default(Page.description) %}
+    {% set meta_canonical = url('product_detail', {'id': Product.id}) %}
+    <meta property="og:title" content="{{ Product.name }}" />
+    <meta property="og:image" content="{{ absolute_url(asset(Product.main_list_image|no_image_product, 'save_image')) }}" />
+    <meta property="product:price:amount" content="{{ Product.getPrice02IncTaxMin }}"/>
+    <meta property="product:price:currency" content="{{ eccube_config.currency }}"/>
+    <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
+    <meta property="product:retailer_title" content="{{ BaseInfo.shop_name }}"/>
+    {% if not Product.stock_find %}
+        <meta name="robots" content="noindex">
+    {% endif %}
+{% elseif app.request.get('_route') == 'product_list' %}
+    {% set meta_canonical = url('product_list', {'category_id': Category.id|default(null)}) %}
+    {% if pagination|length == 0 %}
+        <meta name="robots" content="noindex">
+    {% endif %}
+{% elseif app.request.get('_route') == 'homepage' %}
+    {% set meta_og_type = 'website' %}
+    {% set meta_canonical = url('homepage') %}
+{% endif %}
+
+<meta property="og:type" content="{{ meta_og_type|default('article') }}"/>
+<meta property="og:site_name" content="{{ BaseInfo.shop_name }}"/>
+{% set meta_description = meta_description | default(Page.description) %}
+{% if meta_description %}
+    <meta name="description" content="{{ meta_description|striptags|slice(0,120) }}">
+    <meta property="og:description" content="{{ meta_description|striptags|slice(0,120) }}"/>
+{% endif %}
+{% if meta_canonical|default() %}
+    <meta property="og:url" content="{{ meta_canonical }}"/>
+    <link rel="canonical" href="{{ meta_canonical }}"/>
+{% endif %}

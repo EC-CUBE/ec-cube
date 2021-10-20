@@ -55,7 +55,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidStock_NotNumeric()
+    public function testInvalidStockNotNumeric()
     {
         $this->formData['stock'] = 'abcde';
 
@@ -63,7 +63,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidStock_HasMinus()
+    public function testInvalidStockHasMinus()
     {
         $this->formData['stock'] = '-12345';
 
@@ -71,7 +71,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidSaleLimit_OverMaxLength()
+    public function testInvalidSaleLimitOverMaxLength()
     {
         $this->formData['sale_limit'] = '12345678910'; //Max 10
 
@@ -79,7 +79,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidSaleLimit_NotNumeric()
+    public function testInvalidSaleLimitNotNumeric()
     {
         $this->formData['sale_limit'] = 'abcde';
 
@@ -87,7 +87,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidSaleLimit_HasMinus()
+    public function testInvalidSaleLimitHasMinus()
     {
         $this->formData['sale_limit'] = '-12345';
 
@@ -95,7 +95,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPrice01_OverMaxLength()
+    public function testInvalidPrice01OverMaxLength()
     {
         $this->formData['price01'] = '12345678910'; //Max 10
 
@@ -103,7 +103,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPrice01_NotNumeric()
+    public function testInvalidPrice01NotNumeric()
     {
         $this->formData['price01'] = 'abcde';
 
@@ -111,7 +111,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPrice01_HasMinus()
+    public function testInvalidPrice01HasMinus()
     {
         $this->formData['price01'] = '-12345';
 
@@ -119,7 +119,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPrice02_Blank()
+    public function testInvalidPrice02Blank()
     {
         $this->formData['price02'] = ''; //Max 10
 
@@ -127,7 +127,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPrice02_OverMaxLength()
+    public function testInvalidPrice02OverMaxLength()
     {
         $this->formData['price02'] = '12345678910'; //Max 10
 
@@ -135,7 +135,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPrice02_NotNumeric()
+    public function testInvalidPrice02NotNumeric()
     {
         $this->formData['price02'] = 'abcde';
 
@@ -143,7 +143,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPrice02_HasMinus()
+    public function testInvalidPrice02HasMinus()
     {
         $this->formData['price02'] = '-12345';
 
@@ -151,7 +151,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidTaxRate_OverMinLength()
+    public function testInvalidTaxRateOverMinLength()
     {
         $this->formData['tax_rate'] = str_repeat('2', 101);
 
@@ -159,7 +159,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidTaxRate_NotNumeric()
+    public function testInvalidTaxRateNotNumeric()
     {
         $this->formData['tax_rate'] = 'abcde';
 
@@ -167,7 +167,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidTaxRate_HasMinus()
+    public function testInvalidTaxRateHasMinus()
     {
         $this->formData['tax_rate'] = '-12345';
 
@@ -175,7 +175,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidDeliveryFee_NotNumeric()
+    public function testInvalidDeliveryFeeNotNumeric()
     {
         $this->formData['delivery_fee'] = 'abcde';
 
@@ -183,7 +183,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidDeliveryFee_HasMinus()
+    public function testInvalidDeliveryFeeHasMinus()
     {
         $this->formData['delivery_fee'] = '-12345';
 

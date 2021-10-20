@@ -16,8 +16,8 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\ItemInterface;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemValidator;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 販売種別に配送業者が設定されているかどうか.

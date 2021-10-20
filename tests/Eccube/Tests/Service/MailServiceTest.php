@@ -63,11 +63,11 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->mailService = $this->container->get(MailService::class);
+        $this->mailService = self::$container->get(MailService::class);
 
         $request = Request::createFromGlobals();
-        $this->container->get('request_stack')->push($request);
-        $twig = $this->container->get('twig');
+        self::$container->get('request_stack')->push($request);
+        $twig = self::$container->get('twig');
         $twig->addGlobal('BaseInfo', $this->BaseInfo);
     }
 
@@ -391,7 +391,7 @@ class MailServiceTest extends AbstractServiceTestCase
     public function testConvertMessageISO()
     {
         // TODO  https://github.com/EC-CUBE/ec-cube/issues/2402#issuecomment-362487022
-        $this->markTestSkipped('実装確認中のためスキップ');
+        $this->markTestIncomplete('実装確認中のためスキップ');
         $config = $this->app['config'];
         $config['mail']['charset_iso_2022_jp'] = true;
         $this->app['config'] = $config;
@@ -426,7 +426,7 @@ class MailServiceTest extends AbstractServiceTestCase
     public function testConvertMessageUTF()
     {
         // TODO  https://github.com/EC-CUBE/ec-cube/issues/2402#issuecomment-362487022
-        $this->markTestSkipped('実装確認中のためスキップ');
+        $this->markTestIncomplete('実装確認中のためスキップ');
 
         $config = $this->app['config'];
         $config['mail']['charset_iso_2022_jp'] = false;
@@ -460,7 +460,7 @@ class MailServiceTest extends AbstractServiceTestCase
      */
     public function testSendShippingNotifyMail()
     {
-        $this->markTestSkipped('実装確認中のためスキップ');
+        $this->markTestIncomplete('実装確認中のためスキップ');
         $Order = $this->Order;
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
@@ -476,7 +476,7 @@ class MailServiceTest extends AbstractServiceTestCase
         self::assertEquals([$Order->getEmail() => 0], $message->getTo(), '受注者にメールが送られているはず');
 
         /** @var MailHistoryRepository $mailHistoryRepository */
-        $mailHistoryRepository = $this->container->get(MailHistoryRepository::class);
+        $mailHistoryRepository = $this->entityManager->getRepository(\Eccube\Entity\MailHistory::class);
         $histories = $mailHistoryRepository->findBy(['Order' => $Order]);
         self::assertEquals(1, count($histories), 'メール履歴が作成されているはず');
 

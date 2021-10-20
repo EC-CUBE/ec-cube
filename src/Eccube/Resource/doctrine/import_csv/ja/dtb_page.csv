@@ -2,15 +2,7 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 "0","プレビューデータ","preview",,"1",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
 "1","TOPページ","homepage","index","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
 "2","商品一覧ページ","product_list","Product/list","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
-"3","商品詳細ページ","product_detail","Product/detail","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page","<meta property=""og:type"" content=""og:product"" />
-<meta property=""og:title"" content=""{{ Product.name }}"" />
-<meta property=""og:image"" content=""{{ url('homepage') }}{{ asset(Product.main_list_image|no_image_product, 'save_image') }}"" />
-<meta property=""og:description"" content=""{{ Product.description_list|striptags }}"" />
-<meta property=""og:url"" content=""{{ url('product_detail', {'id': Product.id}) }}"" />
-<meta property=""product:price:amount"" content=""{{ Product.getPrice02IncTaxMin }}""/>
-<meta property=""product:price:currency"" content=""{{ eccube_config.currency }}""/>
-<meta property=""product:product_link"" content=""{{ url('product_detail', {'id': Product.id}) }}""/>
-<meta property=""product:retailer_title"" content=""{{ BaseInfo.shop_name }}""/>"
+"3","商品詳細ページ","product_detail","Product/detail","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
 "4","MYページ","mypage","Mypage/index","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page",
 "5","MYページ/会員登録内容変更(入力ページ)","mypage_change","Mypage/change","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page",
 "6","MYページ/会員登録内容変更(完了ページ)","mypage_change_complete","Mypage/change_complete","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page",
@@ -26,7 +18,7 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 "18","会員登録(入力ページ)","entry","Entry/index","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
 "20","会員登録(完了ページ)","entry_complete","Entry/complete","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
 "21","特定商取引に関する法律に基づく表記","help_tradelaw","Help/tradelaw","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
-"22","本会員登録(完了ページ)","entry_activate","Entry/activate","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",
+"22","本会員登録(完了ページ)","entry_activate","Entry/activate","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page",
 "24","商品購入/お届け先の指定","shopping_shipping","Shopping/shipping","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page",
 "28","商品購入/ご注文完了","shopping_complete","Shopping/complete","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52","noindex",,"page",
 "29","プライバシーポリシー","help_privacy","Help/privacy","2",,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,,"page",

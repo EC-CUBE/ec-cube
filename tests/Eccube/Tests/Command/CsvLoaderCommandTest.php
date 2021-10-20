@@ -18,7 +18,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CsvLoaderCommandTest extends AbstractCommandTest
 {
-    /** @var $file \SplFileObject */
+    /** @var \SplFileObject */
     protected $file;
 
     public static function setUpBeforeClass()

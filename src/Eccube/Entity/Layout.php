@@ -365,7 +365,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
          *
          * @return Layout
          */
-        public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
+        public function addBlockPosition(BlockPosition $blockPosition)
         {
             $this->BlockPositions[] = $blockPosition;
 
@@ -377,7 +377,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
          *
          * @param \Eccube\Entity\BlockPosition $blockPosition
          */
-        public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
+        public function removeBlockPosition(BlockPosition $blockPosition)
         {
             $this->BlockPositions->removeElement($blockPosition);
         }
@@ -399,7 +399,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
          *
          * @return Layout
          */
-        public function addPageLayout(\Eccube\Entity\PageLayout $PageLayout)
+        public function addPageLayout(PageLayout $PageLayout)
         {
             $this->PageLayouts[] = $PageLayout;
 
@@ -411,7 +411,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
          *
          * @param \Eccube\Entity\PageLayout $PageLayout
          */
-        public function removePageLayout(\Eccube\Entity\PageLayout $PageLayout)
+        public function removePageLayout(PageLayout $PageLayout)
         {
             $this->PageLayouts->removeElement($PageLayout);
         }
@@ -433,7 +433,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
          *
          * @return Layout
          */
-        public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
+        public function setDeviceType(Master\DeviceType $deviceType = null)
         {
             $this->DeviceType = $deviceType;
 

@@ -1,0 +1,6 @@
+RemoveType .php
+AddType text/plain .php
+<FilesMatch \.php$>
+    SetHandler none
+    Deny from all
+</FilesMatch>

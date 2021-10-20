@@ -159,11 +159,27 @@
         },
         getPromises: {
             value: function (progress) {
-                return $('input[data-id]:checked').map(function () {
-                    var url = $(this).data('update-status-url');
-                    var data = {'order_status': $('#option_bulk_status').val()};
-                    return ConfirmationModal.prototype.getPromises.call(this, progress, url, data);
+                var statuses = [];
+                $('input[data-id]:checked').each(function () {
+                    statuses.push({
+                        'url': $(this).data('update-status-url'),
+                        'data': {'order_status': $('#option_bulk_status').val()}
+                    });
                 });
+                // ポイントや在庫の加算・減算は非同期で実行できないため、同期処理で実行
+                var callback = function () {
+                    var status = statuses.shift();
+                    var url = status.url;
+                    var data = status.data;
+
+                    ConfirmationModal.prototype.getPromises.call(this, progress, url, data)
+                        .done(function () {
+                            if (statuses.length) {
+                                callback();
+                            }
+                        })
+                }
+                callback();
             }
         }
     });

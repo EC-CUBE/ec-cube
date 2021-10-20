@@ -73,7 +73,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPhoneNumber_Blank()
+    public function testInvalidPhoneNumberBlank()
     {
         $this->formData['phone_number'] = '';
 
@@ -81,7 +81,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName01_Blank()
+    public function testInvalidName01Blank()
     {
         $this->formData['name']['name01'] = '';
 
@@ -89,7 +89,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName02_Blank()
+    public function testInvalidName02Blank()
     {
         $this->formData['name']['name02'] = '';
 
@@ -97,7 +97,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidKana01_Blank()
+    public function testInvalidKana01Blank()
     {
         $this->formData['kana']['kana01'] = '';
 
@@ -105,7 +105,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidKana02_Blank()
+    public function testInvalidKana02Blank()
     {
         $this->formData['kana']['kana02'] = '';
 
@@ -113,7 +113,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidKana01_NotKana()
+    public function testInvalidKana01NotKana()
     {
         $this->formData['kana']['kana01'] = 'aaaa';
 
@@ -121,7 +121,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidKana02_NotKana()
+    public function testInvalidKana02NotKana()
     {
         $this->formData['kana']['kana02'] = 'aaaaa';
 
@@ -129,7 +129,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidCompanyName_Blank()
+    public function testValidCompanyNameBlank()
     {
         $this->formData['company_name'] = '';
 
@@ -137,7 +137,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPostalCode_Blank()
+    public function testInvalidPostalCodeBlank()
     {
         $this->formData['postal_code'] = '';
 
@@ -145,7 +145,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPref_Blank()
+    public function testInvalidPrefBlank()
     {
         $this->formData['address']['pref'] = '';
 
@@ -153,7 +153,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidAddr01_Blank()
+    public function testInvalidAddr01Blank()
     {
         $this->formData['address']['addr01'] = '';
 
@@ -161,7 +161,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidAddr02_Blank()
+    public function testInvalidAddr02Blank()
     {
         $this->formData['address']['addr02'] = '';
 
@@ -169,7 +169,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidemail_Blank()
+    public function testInvalidemailBlank()
     {
         $this->formData['email']['first'] = '';
         $this->formData['email']['second'] = '';
@@ -178,7 +178,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPassword_EqualEmail()
+    public function testInvalidPasswordEqualEmail()
     {
         $this->formData['password']['first'] = $this->formData['email']['first'];
         $this->formData['password']['second'] = $this->formData['email']['first'];

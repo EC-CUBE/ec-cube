@@ -26,8 +26,8 @@ class NewsEditPage extends AbstractAdminPage
     public static function of($I)
     {
         $page = new self($I);
-        $page->atPage('コンテンツ管理新着情報管理');
-        $page->tester->see('新着情報登録・編集', '.c-container .c-contentsArea .c-contentsArea__cols .card-header');
+        $page->atPage('新着情報管理コンテンツ管理');
+        $page->tester->see('新着情報', '.c-container .c-contentsArea .c-contentsArea__cols .card-header');
 
         return $page;
     }

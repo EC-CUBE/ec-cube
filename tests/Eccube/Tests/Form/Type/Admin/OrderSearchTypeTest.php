@@ -32,7 +32,7 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             ->getForm();
     }
 
-    public function testPhoneNumber_ValidData()
+    public function testPhoneNumberValidData()
     {
         $formData = [
             'phone_number' => '012345',
@@ -42,7 +42,7 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testPhoneNumberWithHyphenMiddle_ValidData()
+    public function testPhoneNumberWithHyphenMiddleValidData()
     {
         $formData = [
             'phone_number' => '012-345',
@@ -52,7 +52,7 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testPhoneNumberWithHyphenBefore_ValidData()
+    public function testPhoneNumberWithHyphenBeforeValidData()
     {
         $formData = [
             'phone_number' => '-345',
@@ -62,7 +62,7 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testPhoneNumberWithHyphenAfter_ValidData()
+    public function testPhoneNumberWithHyphenAfterValidData()
     {
         $formData = [
             'phone_number' => '012-',
@@ -72,7 +72,7 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testPhoneNumber_NotValidData()
+    public function testPhoneNumberNotValidData()
     {
         //意味あんだか良くわからんが一応書いとく
         $formData = [
@@ -83,7 +83,7 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testKana_NotValidData()
+    public function testKanaNotValidData()
     {
         $formData = [
             'kana' => 'a',
