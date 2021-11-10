@@ -14,10 +14,12 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\Page;
+use Eccube\Entity\BaseInfo;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductListOrderByRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Repository\BaseInfoRepository;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,6 +56,11 @@ class SitemapController extends AbstractController
     private $router;
 
     /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
+
+    /**
      * SitemapController constructor.
      */
     public function __construct(
@@ -61,12 +68,14 @@ class SitemapController extends AbstractController
         PageRepository $pageRepository,
         ProductListOrderByRepository $productListOrderByRepository,
         ProductRepository $productRepository,
+        BaseInfoRepository $baseInfoRepository,
         RouterInterface $router
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->pageRepository = $pageRepository;
         $this->productListOrderByRepository = $productListOrderByRepository;
         $this->productRepository = $productRepository;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->router = $router;
     }
 
@@ -136,6 +145,11 @@ class SitemapController extends AbstractController
      */
     public function product(Request $request, PaginatorInterface $paginator)
     {
+        // 在庫切表示の非表示が有効の場合、在庫切の商品情報は取得しない
+        if ($this->BaseInfo->isOptionNostockHidden()) {
+            $this->entityManager->getFilters()->enable('option_nostock_hidden');
+        }
+
         // フロントの商品一覧の条件で商品情報を取得
         $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
         $productQueryBuilder = $this->productRepository->getQueryBuilderBySearchData(['orderby' => $ProductListOrder]);
