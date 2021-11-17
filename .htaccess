@@ -26,7 +26,7 @@ DirectoryIndex index.php index.html .ht
     Header set X-Content-Type-Options nosniff
 </IfModule>
 
-# デザインテンプレートを適用するため10Mで設定 
+# デザインテンプレートを適用するため10Mで設定
 <IfModule mod_php7.c>
     php_value upload_max_filesize 10M
 </IfModule>
@@ -60,6 +60,11 @@ DirectoryIndex index.php index.html .ht
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+<IfModule mod_env.c>
+    # 管理画面等でのコンテナ種類の確認用
+    PassEnv CONTAINER_BUILD_STAGE
 </IfModule>
 
 # 管理画面へのBasic認証サンプル
