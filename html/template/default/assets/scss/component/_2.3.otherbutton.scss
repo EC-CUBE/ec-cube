@@ -46,3 +46,34 @@ Styleguide 2.3.1
     bottom: 30px;
   }
 }
+
+/*
+SNSボタン
+
+全ページで使用される、SNS共有ボタンのコンポーネントです。
+
+ex [トップページ　フッター](http://demo3.ec-cube.net/)
+
+Markup:
+.ec-socialButtons
+
+Styleguide 2.3.2
+*/
+.ec-socialButtons {
+  display: flex;
+  justify-content: flex-end;
+  line-height: 1;
+  width: 100%;
+  max-width: 1150px;
+  margin: 16px auto 0;
+  padding-right: 20px;
+  padding-left: 20px;
+
+  .ec-socialButtons__btn:not(:last-of-type) {
+    margin-right: 16px;
+  }
+}
+
+.front_page .ec-socialButtons {
+  margin-top: 60px;
+}
