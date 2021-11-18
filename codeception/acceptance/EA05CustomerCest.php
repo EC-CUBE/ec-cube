@@ -24,18 +24,18 @@ use Page\Admin\CustomerManagePage;
  */
 class EA05CustomerCest
 {
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         // すべてのテストケース実施前にログインしておく
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function customer_検索(\AcceptanceTester $I)
+    public function customer_検索(AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC01-T01 検索');
 
@@ -48,7 +48,7 @@ class EA05CustomerCest
         $I->see('検索結果：1件が該当しました', CustomerManagePage::$検索結果メッセージ);
     }
 
-    public function customer_検索結果なし(\AcceptanceTester $I)
+    public function customer_検索結果なし(AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC01-T02 検索 結果なし');
         $faker = Fixtures::get('faker');
@@ -60,7 +60,7 @@ class EA05CustomerCest
         $I->see('検索条件に合致するデータが見つかりませんでした', CustomerManagePage::$検索結果_結果なしメッセージ);
     }
 
-    public function customer_検索エラー(\AcceptanceTester $I)
+    public function customer_検索エラー(AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC01-T03 検索 エラー');
 
@@ -70,9 +70,13 @@ class EA05CustomerCest
         $I->see('検索条件に誤りがあります', CustomerManagePage::$検索結果_エラーメッセージ);
     }
 
-    public function customer_会員登録(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function customer_会員登録(AcceptanceTester $I)
     {
-        $I->wantTo('EA0502-UC01-T02(& UC01-T02) 会員登録');
+        $I->wantTo('EA0502-UC01-T01 会員登録');
+
         $faker = Fixtures::get('faker');
         $email = microtime(true).'.'.$faker->safeEmail;
 
@@ -98,11 +102,10 @@ class EA05CustomerCest
         }
 
         $CustomerRegisterPage->登録();
-        /* ブラウザによるhtml5のエラーなのでハンドリング不可 */
         $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
     }
 
-    public function customer_会員登録_必須項目未入力(\AcceptanceTester $I)
+    public function customer_会員登録_必須項目未入力(AcceptanceTester $I)
     {
         $I->wantTo('EA0502-UC01-T02 会員登録_必須項目未入力');
 
@@ -112,7 +115,10 @@ class EA05CustomerCest
         $I->dontSeeElement(CustomerEditPage::$登録完了メッセージ);
     }
 
-    public function customer_会員編集(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function customer_会員編集(AcceptanceTester $I)
     {
         $I->wantTo('EA0502-UC02-T01 会員編集');
 
@@ -138,13 +144,9 @@ class EA05CustomerCest
 
         $CustomerRegisterPage->登録();
         $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
-
-        $CustomerRegisterPage
-            ->入力_姓('')
-            ->登録();
     }
 
-    public function customer_会員編集_必須項目未入力(\AcceptanceTester $I)
+    public function customer_会員編集_必須項目未入力(AcceptanceTester $I)
     {
         $I->wantTo('EA0502-UC02-T02 会員編集_必須項目未入力');
 
@@ -166,7 +168,10 @@ class EA05CustomerCest
         $I->dontSeeElement(CustomerEditPage::$登録完了メッセージ);
     }
 
-    public function customer_会員削除(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function customer_会員削除(AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC03-T01 会員削除');
 
@@ -181,7 +186,7 @@ class EA05CustomerCest
         $I->see('検索条件に合致するデータが見つかりませんでした', CustomerManagePage::$検索結果_結果なしメッセージ);
     }
 
-    public function customer_会員削除キャンセル(\AcceptanceTester $I)
+    public function customer_会員削除キャンセル(AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC03-T02 会員削除キャンセル');
 
@@ -200,8 +205,9 @@ class EA05CustomerCest
     /**
      * @env firefox
      * @env chrome
+     * @group vaddy
      */
-    public function customer_CSV出力(\AcceptanceTester $I)
+    public function customer_CSV出力(AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC05-T01 CSV出力');
 
@@ -214,7 +220,7 @@ class EA05CustomerCest
         $I->assertEquals(count($findCustomers()) + 1, count(file($CustomerCSV)));
     }
 
-    public function customer_CSV出力項目設定(\AcceptanceTester $I)
+    public function customer_CSV出力項目設定(AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC04-T01 CSV出力項目設定');
 
@@ -227,7 +233,10 @@ class EA05CustomerCest
         $I->assertEquals('2', $value);
     }
 
-    public function customer_仮会員メール再送(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function customer_仮会員メール再送(AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC06-T01(& UC06-T02) 仮会員メール再送');
 
@@ -239,10 +248,14 @@ class EA05CustomerCest
 
         CustomerManagePage::go($I)
             ->検索($customer->getEmail())
+            ->一覧_仮会員メール再送(1, false)
             ->一覧_仮会員メール再送(1);
         $I->wait(5);
 
-        $I->seeEmailCount(2);
+        $message = $I->lastMessage();
+        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(1);
+
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, '会員登録のご確認');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');

@@ -37,11 +37,22 @@ class BlockManagePage extends AbstractAdminPageStyleGuide
 
     public function 編集($rowNum)
     {
-        $this->tester->click("#page_admin_content_block > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col-auto.text-right > a:nth-child(1)");
+        $rowNum++;
+        $this->tester->click(".c-contentsArea .list-group > li:nth-child(${rowNum}) a[data-original-title=編集]");
     }
 
     public function 削除($rowNum)
     {
-        $this->tester->click("#page_admin_content_block > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col-auto.text-right > a.btn.btn-ec-actionIcon.mr-3.disabled");
+        $rowNum++;
+        $this->tester->click(".c-contentsArea .list-group > li:nth-child(${rowNum}) [data-original-title=削除] a");
+        return $this;
+    }
+
+    public function ポップアップを受け入れます()
+    {
+        $this->tester->waitForElementVisible(['css' => '.modal.show']);
+        $this->tester->click('.modal.show .btn-ec-delete');
+
+        return $this;
     }
 }

@@ -31,7 +31,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->session = $this->container->get('session');
+        $this->session = self::$container->get('session');
     }
 
     protected $entityTest = 'Eccube-Entity-Master-Sex';

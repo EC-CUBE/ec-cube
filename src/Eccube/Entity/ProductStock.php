@@ -198,7 +198,7 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
          *
          * @return ProductStock
          */
-        public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
+        public function setProductClass(ProductClass $productClass = null)
         {
             $this->ProductClass = $productClass;
 
@@ -222,7 +222,7 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
          *
          * @return ProductStock
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

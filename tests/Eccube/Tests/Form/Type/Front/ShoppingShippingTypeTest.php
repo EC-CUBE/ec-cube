@@ -61,7 +61,7 @@ class ShoppingShippingTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestC
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPhoneNumber_Blank()
+    public function testInvalidPhoneNumberBlank()
     {
         $this->formData['phone_number'] = '';
 

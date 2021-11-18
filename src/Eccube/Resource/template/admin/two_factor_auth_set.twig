@@ -1,0 +1,79 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/login_frame.twig' %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js" integrity="sha512-NFUcDlm4V+a2sjPX7gREIXgCSFja9cHtKPOL1zj6QhnE0vcY695MODehqkaGYTLyL2wxe/wtr4Z49SvqXq12UQ==" crossorigin="anonymous"></script>
+<script>
+$(function () {
+    $("#qrcode").qrcode({
+        size: 200,
+        fill: '#000',
+        text: 'otpauth://totp/{{ 'EC-CUBE:'|url_encode }}{{ BaseInfo.shop_name|url_encode }}{{ ' - '|url_encode }}{{ Member.name|url_encode }}?secret={{ auth_key }}&issuer={{ 'EC-CUBE'|url_encode }}',
+        radius: 0,
+        quiet: 0,
+        mode: 0, // 0: normal , 1: label strip , 2: label box , 3: image strip , 4: image box
+        mSize: 0.1,
+        mPosX: 0.5,
+        mPosY: 0.5,
+        label: 'no label',
+        fontname: 'sans',
+        fontcolor: '#000',
+        image: null
+    });
+});
+</script>
+{% endblock %}
+
+{% block main %}
+        <style>
+        #qrcode canvas { width: 150px; }
+        </style>
+    <div class="container" style="margin-top: 150px;">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                <div class="text-center p-5 bg-white">
+                    {{ include('@admin/alert.twig') }}
+                    <form name="form1" id="form1" method="post" action="{{ path('admin_two_factor_auth_set') }}">
+                        {{ form_widget(form._token) }}
+                        {{ form_widget(form.auth_key) }}
+                        <h5 class="mb-3">{{ 'admin.setting.system.two_factor_auth_title'|trans }}</h5>
+                        <p class="mb-3 text-left">{{ 'tooltip.setting.system.two_factor_auth.qr_code'|trans }}</p>
+                        <div id="qrcode" class="mb-3"></div>
+                        {% if error is not empty %}
+                            <div class="text-danger mb-3 text-left small">{{ error }}</div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group d-flex justify-content-center">
+                                    {{ form_widget(form.device_token, {'attr': {'class':'w-100','placeholder': 'admin.setting.system.two_factor_auth.device_token', 'autofocus': true}}) }}
+                                </div>
+                                <p class="mb-3 text-left">{{ form_errors(form.device_token) }}</p>
+                            </div>
+                            <div class="col-12">
+                            	<button type="submit" class="btn btn-primary btn-block">{{ 'admin.common.registration'|trans }}</button>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+            <div class="col-12">
+                <p class="text-center mt-3">
+                    <small>Copyright &copy; 2000-{{ "now"|date("Y") }} EC-CUBE CO.,LTD. All Rights Reserved.</small>
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

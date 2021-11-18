@@ -61,6 +61,7 @@ class PurchaseFlowPass implements CompilerPassInterface
                     $anno = $reader->getClassAnnotation(new \ReflectionClass($def->getClass()), $annotationName);
                     if ($anno) {
                         $purchaseFlowDef->addMethodCall($methodName, [new Reference($id)]);
+                        $purchaseFlowDef->setPublic(true);
                     }
                 }
             }

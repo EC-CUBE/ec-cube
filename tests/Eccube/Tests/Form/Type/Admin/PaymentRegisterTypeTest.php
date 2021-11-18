@@ -40,7 +40,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
                 'csrf_protection' => false,
             ])
             ->getForm();
-        $this->container->get('request_stack')->push(new Request());
+        self::$container->get('request_stack')->push(new Request());
     }
 
     public function testValidData()
@@ -49,7 +49,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidCharge_Blank()
+    public function testInvalidChargeBlank()
     {
         $this->formData['charge'] = '';
 
@@ -57,7 +57,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidCharge_NotNumeric()
+    public function testInvalidChargeNotNumeric()
     {
         $this->formData['charge'] = 'abc';
 
@@ -65,7 +65,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidCharge_HasMinus()
+    public function testInvalidChargeHasMinus()
     {
         $this->formData['charge'] = '-123456';
 
@@ -73,7 +73,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidCharge_TooLarge()
+    public function testInvalidChargeTooLarge()
     {
         $this->formData['charge'] = $this->eccubeConfig['eccube_price_max'] + 1;
 
@@ -81,7 +81,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidRuleMin_NotNumeric()
+    public function testInvalidRuleMinNotNumeric()
     {
         $this->formData['rule_min'] = 'abc';
 
@@ -89,7 +89,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidRuleMin_HasMinus()
+    public function testInvalidRuleMinHasMinus()
     {
         $this->formData['rule_min'] = '-123456';
 
@@ -97,7 +97,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidRuleMin_TooLarge()
+    public function testInvalidRuleMinTooLarge()
     {
         $this->formData['rule_min'] = $this->eccubeConfig['eccube_price_max'] + 1;
         $this->formData['rule_max'] = '100';
@@ -106,7 +106,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidRuleMax_NotNumeric()
+    public function testInvalidRuleMaxNotNumeric()
     {
         $this->formData['rule_max'] = 'abc';
 
@@ -114,7 +114,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidRuleMax_HasMinus()
+    public function testInvalidRuleMaxHasMinus()
     {
         $this->formData['rule_max'] = '-123456';
 
@@ -122,7 +122,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidRuleMax_TooLarge()
+    public function testInvalidRuleMaxTooLarge()
     {
         $this->formData['rule_max'] = $this->eccubeConfig['eccube_price_max'] + 1;
 

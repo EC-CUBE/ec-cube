@@ -1,14 +1,25 @@
 DirectoryIndex index.php index.html .ht
 
+<Files ~ "/index.php">
+    order deny,allow
+    allow from all
+</Files>
+
+<FilesMatch "(?<!\.gif|\.png|\.jpg|\.jpeg|\.css|\.ico|\.js|\.svg|\.map)$">
+    SetEnvIf Request_URI "/vendor/" deny_dir
+    Order allow,deny
+    Deny from env=deny_dir
+    Allow from all
+</FilesMatch>
+
 <FilesMatch "^composer|^COPYING|^\.env|^\.maintenance|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|^Dockerfile|^\.editorconfig|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml|dockerignore|sample)$">
     order allow,deny
     deny from all
 </FilesMatch>
 
-<Files ~ "index.php">
-    order deny,allow
-    allow from all
-</Files>
+<IfModule mod_setenvif.c>
+  SetEnvIf Request_URI "\.(jpe?g|png)$" _image_request
+</IfModule>
 
 <IfModule mod_headers.c>
     # クリックジャッキング対策
@@ -17,9 +28,12 @@ DirectoryIndex index.php index.html .ht
     # XSS対策
     Header set X-XSS-Protection "1; mode=block"
     Header set X-Content-Type-Options nosniff
+
+    #webpにvaray
+    Header append Vary Accept env=_image_request
 </IfModule>
 
-# デザインテンプレートを適用するため10Mで設定 
+# デザインテンプレートを適用するため10Mで設定
 <IfModule mod_php7.c>
     php_value upload_max_filesize 10M
 </IfModule>
@@ -31,6 +45,12 @@ DirectoryIndex index.php index.html .ht
     #Options +FollowSymLinks +SymLinksIfOwnerMatch
 
     RewriteEngine On
+
+    # Acceptヘッダがimage/webpを含む場合
+    RewriteCond %{HTTP_ACCEPT} image/webp
+    RewriteCond %{SCRIPT_FILENAME}.webp -f
+    # *.jpg、*.pngファイルを*.webpファイルに内部的にルーティングする
+    RewriteRule .(jpe?g|png)$ %{SCRIPT_FILENAME}.webp [T=image/webp]
 
     # Authorization ヘッダが取得できない環境への対応
     RewriteCond %{HTTP:Authorization} ^(.*)
@@ -53,6 +73,10 @@ DirectoryIndex index.php index.html .ht
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+<IfModule mod_mime.c>
+  # 拡張子.webpファイルはContent-Typeとしてimage/webpを返す
+  AddType image/webp .webp
 </IfModule>
 
 # 管理画面へのBasic認証サンプル

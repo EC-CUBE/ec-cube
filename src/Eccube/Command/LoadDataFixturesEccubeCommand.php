@@ -135,5 +135,7 @@ EOF
         }
 
         $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', 'Finished Successful!'));
+
+        return 0;
     }
 }

@@ -59,7 +59,7 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalid_NotSameValue()
+    public function testInvalidNotSameValue()
     {
         $this->formData['email']['second'] = 'eccube3@example.com';
         $this->form->submit($this->formData);
@@ -67,7 +67,7 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_NotBlank()
+    public function testInvalidNotBlank()
     {
         $this->formData['email']['first'] = '';
         $this->formData['email']['second'] = '';
@@ -76,7 +76,7 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidEmail_Nihongo()
+    public function testInvalidEmailNihongo()
     {
         $this->formData['email']['first'] = 'あいうえお@example.com';
         $this->formData['email']['second'] = 'あいうえお@example.com';
@@ -94,9 +94,9 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidEmail_MaxLength()
+    public function testInvalidEmailMaxLength()
     {
-        $mail = str_repeat("a", $this->eccubeConfig['eccube_stext_len'] - strlen('@example.com') + 1) . '@example.com';
+        $mail = str_repeat('a', $this->eccubeConfig['eccube_stext_len'] - strlen('@example.com') + 1).'@example.com';
         $this->formData['email']['first'] = $mail;
         $this->formData['email']['second'] = $mail;
         $this->form->submit($this->formData);

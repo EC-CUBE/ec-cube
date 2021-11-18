@@ -166,7 +166,7 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
          *
          * @return AuthorityRole
          */
-        public function setAuthority(\Eccube\Entity\Master\Authority $authority = null)
+        public function setAuthority(Master\Authority $authority = null)
         {
             $this->Authority = $authority;
 
@@ -190,7 +190,7 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
          *
          * @return AuthorityRole
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

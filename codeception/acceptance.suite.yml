@@ -5,6 +5,8 @@
 # If you need both WebDriver and PHPBrowser tests - create a separate suite.
 
 class_name: AcceptanceTester
+coverage:
+    remote: true
 modules:
     enabled:
         - \Helper\Acceptance

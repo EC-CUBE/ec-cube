@@ -13,8 +13,8 @@
 
 namespace Eccube\Repository\Master;
 
-use Eccube\Repository\AbstractRepository;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Repository\AbstractRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**

@@ -30,7 +30,7 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,10 +110,10 @@ class ProductController extends AbstractController
     /**
      * 商品一覧画面.
      *
-     * @Route("/products/list", name="product_list")
+     * @Route("/products/list", name="product_list", methods={"GET"})
      * @Template("Product/list.twig")
      */
-    public function index(Request $request, Paginator $paginator)
+    public function index(Request $request, PaginatorInterface $paginator)
     {
         // Doctrine SQLFilter
         if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -314,7 +314,7 @@ class ProductController extends AbstractController
     /**
      * お気に入り追加.
      *
-     * @Route("/products/add_favorite/{id}", name="product_add_favorite", requirements={"id" = "\d+"})
+     * @Route("/products/add_favorite/{id}", name="product_add_favorite", requirements={"id" = "\d+"}, methods={"GET", "POST"})
      */
     public function addFavorite(Request $request, Product $Product)
     {
@@ -485,7 +485,7 @@ class ProductController extends AbstractController
     /**
      * ページタイトルの設定
      *
-     * @param  null|array $searchData
+     * @param  array|null $searchData
      *
      * @return str
      */

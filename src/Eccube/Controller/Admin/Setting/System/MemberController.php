@@ -20,9 +20,9 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
@@ -54,14 +54,15 @@ class MemberController extends AbstractController
         EncoderFactoryInterface $encoderFactory,
         MemberRepository $memberRepository,
         TokenStorageInterface $tokenStorage
-    ) {
+    )
+    {
         $this->encoderFactory = $encoderFactory;
         $this->memberRepository = $memberRepository;
         $this->tokenStorage = $tokenStorage;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/system/member", name="admin_setting_system_member")
+     * @Route("/%eccube_admin_route%/setting/system/member", name="admin_setting_system_member", methods={"GET", "PUT"})
      * @Template("@admin/Setting/System/member.twig")
      */
     public function index(Request $request)
@@ -88,14 +89,11 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/system/member/new", name="admin_setting_system_member_new")
+     * @Route("/%eccube_admin_route%/setting/system/member/new", name="admin_setting_system_member_new", methods={"GET", "POST"})
      * @Template("@admin/Setting/System/member_edit.twig")
      */
     public function create(Request $request)
     {
-        $LoginMember = clone $this->tokenStorage->getToken()->getUser();
-        $this->entityManager->detach($LoginMember);
-
         $Member = new Member();
         $builder = $this->formFactory
             ->createBuilder(MemberType::class, $Member);
@@ -112,11 +110,11 @@ class MemberController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $encoder = $this->encoderFactory->getEncoder($Member);
             $salt = $encoder->createSalt();
-            $rawPassword = $Member->getPassword();
-            $encodedPassword = $encoder->encodePassword($rawPassword, $salt);
+            $password = $Member->getPlainPassword();
+            $password = $encoder->encodePassword($password, $salt);
             $Member
                 ->setSalt($salt)
-                ->setPassword($encodedPassword);
+                ->setPassword($password);
 
             $this->memberRepository->save($Member);
 
@@ -134,8 +132,6 @@ class MemberController extends AbstractController
             return $this->redirectToRoute('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         }
 
-        $this->tokenStorage->getToken()->setUser($LoginMember);
-
         return [
             'form' => $form->createView(),
             'Member' => $Member,
@@ -143,16 +139,12 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit", methods={"GET", "POST"})
      * @Template("@admin/Setting/System/member_edit.twig")
      */
     public function edit(Request $request, Member $Member)
     {
-        $LoginMember = clone $this->tokenStorage->getToken()->getUser();
-        $this->entityManager->detach($LoginMember);
-
-        $previousPassword = $Member->getPassword();
-        $Member->setPassword($this->eccubeConfig['eccube_default_password']);
+        $Member->setPlainPassword($this->eccubeConfig['eccube_default_password']);
 
         $builder = $this->formFactory
             ->createBuilder(MemberType::class, $Member);
@@ -170,11 +162,7 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($Member->getpassword() === $this->eccubeConfig['eccube_default_password']) {
-                // 編集時にパスワードを変更していなければ
-                // 変更前のパスワード(暗号化済み)をセット
-                $Member->setPassword($previousPassword);
-            } else {
+            if ($Member->getPlainPassword() !== $this->eccubeConfig['eccube_default_password']) {
                 $salt = $Member->getSalt();
                 // 2系からのデータ移行でsaltがセットされていない場合はsaltを生成.
                 if (empty($salt)) {
@@ -182,10 +170,10 @@ class MemberController extends AbstractController
                     $Member->setSalt($salt);
                 }
 
-                $rawPassword = $Member->getPassword();
+                $password = $Member->getPlainPassword();
                 $encoder = $this->encoderFactory->getEncoder($Member);
-                $encodedPassword = $encoder->encodePassword($rawPassword, $salt);
-                $Member->setPassword($encodedPassword);
+                $password = $encoder->encodePassword($password, $salt);
+                $Member->setPassword($password);
             }
 
             $this->memberRepository->save($Member);
@@ -203,8 +191,6 @@ class MemberController extends AbstractController
 
             return $this->redirectToRoute('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         }
-
-        $this->tokenStorage->getToken()->setUser($LoginMember);
 
         return [
             'form' => $form->createView(),

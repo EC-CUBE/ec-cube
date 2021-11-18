@@ -62,12 +62,12 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->orderStatusRepository = $this->container->get(OrderStatusRepository::class);
-        $this->paymentRepository = $this->container->get(PaymentRepository::class);
-        $this->sexRepository = $this->container->get(SexRepository::class);
-        $this->csvTypeRepository = $this->container->get(CsvTypeRepository::class);
-        $this->orderRepository = $this->container->get(OrderRepository::class);
-        $this->customerRepository = $this->container->get(CustomerRepository::class);
+        $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
+        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
+        $this->sexRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Sex::class);
+        $this->csvTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\CsvType::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
 
         // FIXME: Should remove exist data before generate data for test
         $this->deleteAllRows(['dtb_order_item']);
@@ -262,7 +262,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             ['ids' => $orderIds]
         );
 
-        $Orders = $this->container->get(OrderRepository::class)->findBy(['id' => $orderIds]);
+        $Orders = $this->entityManager->getRepository(\Eccube\Entity\Order::class)->findBy(['id' => $orderIds]);
         $this->assertCount(0, $Orders);
     }
 
@@ -336,7 +336,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
      */
     public function testBulkOrderStatus($orderStatusId)
     {
-        $this->markTestSkipped('使用していないルーティングのためスキップ.');
+        $this->markTestIncomplete('使用していないルーティングのためスキップ.');
         // case true
         $orderIds = [];
         /** @var Order[] $Orders */
@@ -544,6 +544,31 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = 'お問い合わせ番号は半角英数字かハイフンのみを入力してください。';
         $this->actual = $Result['messages'][0];
+        $this->verify();
+    }
+
+    /**
+     * Test for PR 5133
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/pull/5133
+     */
+    public function testIndexWithOrderStatus()
+    {
+        // 対応中の受注を追加しておく
+        $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::IN_PROGRESS);
+        $Order->setOrderStatus($OrderStatus);
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_order').'?order_status_id=4'
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果：1件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
     }
 }

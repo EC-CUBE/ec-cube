@@ -71,7 +71,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail")
+     * @Route("/%eccube_admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail", methods={"GET", "POST"})
      * @Template("@admin/Order/mail.twig")
      */
     public function index(Request $request, Order $Order)
@@ -134,7 +134,7 @@ class MailController extends AbstractController
                     }
                     break;
                 case 'confirm':
-                    if ($form->isValid()) {
+                    if ($form->isSubmitted() && $form->isValid()) {
                         $builder->setAttribute('freeze', true);
                         $builder->setAttribute('freeze_display_text', false);
                         $form = $builder->getForm();
@@ -148,7 +148,7 @@ class MailController extends AbstractController
                     }
                     break;
                 case 'complete':
-                    if ($form->isValid()) {
+                    if ($form->isSubmitted() && $form->isValid()) {
                         $data = $form->getData();
                         $data['tpl_data'] = $form->get('tpl_data')->getData();
 

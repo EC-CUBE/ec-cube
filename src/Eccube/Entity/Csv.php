@@ -321,7 +321,7 @@ if (!class_exists('\Eccube\Entity\Csv')) {
          *
          * @return Csv
          */
-        public function setCsvType(\Eccube\Entity\Master\CsvType $csvType = null)
+        public function setCsvType(Master\CsvType $csvType = null)
         {
             $this->CsvType = $csvType;
 
@@ -345,7 +345,7 @@ if (!class_exists('\Eccube\Entity\Csv')) {
          *
          * @return Csv
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

@@ -90,9 +90,10 @@ class CsvImportServiceTest extends AbstractServiceTestCase
     public function testReadCsvFileWithTrailingBlankLines()
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_blank_lines.csv');
+
         $CsvImportService = new CsvImportService($file);
         $CsvImportService->setColumnHeaders(['id', 'number', 'description']);
-        $blank_line = [ 0 => null ];
+        $blank_line = [0 => null];
         foreach ($CsvImportService as $row) {
             if ($row === $blank_line) {
                 continue;

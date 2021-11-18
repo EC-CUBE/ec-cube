@@ -13,63 +13,8 @@
 
 namespace Eccube\Util;
 
-use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\Proxy\Proxy;
-
 class EntityUtil
 {
-    /**
-     * LAZY loading したエンティティの有無をチェックする.
-     *
-     * 削除済みのエンティティを LAZY loading した場合、 soft_delete filter で
-     * フィルタリングされてしまい、正常に取得することができない.
-     * しかし、 Proxy オブジェクトとして取得されるため、この関数を使用して
-     * 有無をチェックする.
-     * この関数を使用せず、該当のオブジェクトのプロパティを取得しようとすると、
-     * EntityNotFoundException がスローされてしまう.
-     *
-     * @param $entity LAZY loading したエンティティ
-     *
-     * @return bool エンティティが削除済みの場合 true
-     *
-     * @see https://github.com/EC-CUBE/ec-cube/pull/602#issuecomment-125431246
-     * @deprecated
-     */
-    public static function isEmpty($entity)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        if ($entity instanceof Proxy) {
-            try {
-                $entity->__load();
-            } catch (EntityNotFoundException $e) {
-                return true;
-            }
-
-            return false;
-        } else {
-            return empty($entity);
-        }
-    }
-
-    /**
-     * LAZY loading したエンティティの有無をチェックする.
-     *
-     * EntityUtil::isEmpty() の逆の結果を返します.
-     *
-     * @param $entity
-     *
-     * @return bool
-     *
-     * @see EntityUtil::isEmpty()
-     * @deprecated
-     */
-    public static function isNotEmpty($entity)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-
-        return !self::isEmpty($entity);
-    }
-
     /**
      * エンティティのプロパティを配列で返す.
      *

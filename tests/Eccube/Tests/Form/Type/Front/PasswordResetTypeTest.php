@@ -20,7 +20,7 @@ class PasswordResetTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    /** @var array $formData */
+    /** @var array */
     protected $formData = [
         'login_email' => 'hideki_okajima@ec-cube.co.jp',
         'password' => [
@@ -47,7 +47,7 @@ class PasswordResetTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPassword_EqualEmail()
+    public function testInvalidPasswordEqualEmail()
     {
         $this->formData['password']['first'] = $this->formData['login_email'];
         $this->formData['password']['second'] = $this->formData['login_email'];

@@ -389,9 +389,9 @@ class PurchaseFlow
             'ItemPreprocessor' => $this->itemPreprocessors->map($callback)->toArray(),
             'ItemHolderPreprocessor' => $this->itemHolderPreprocessors->map($callback)->toArray(),
             'DiscountProcessor' => $this->discountProcessors->map($callback)->toArray(),
-            'ItemHolderPostValidator' => $this->itemHolderPostValidators->map($callback)->toArray()
+            'ItemHolderPostValidator' => $this->itemHolderPostValidators->map($callback)->toArray(),
         ];
-        $tree  = new \RecursiveTreeIterator(new \RecursiveArrayIterator($flows));
+        $tree = new \RecursiveTreeIterator(new \RecursiveArrayIterator($flows));
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_RIGHT, ' ');
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_LAST, '　');
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_HAS_NEXT, '│');
@@ -405,6 +405,7 @@ class PurchaseFlow
                 $out .= $key.PHP_EOL;
             }
         }
+
         return $out;
     }
 

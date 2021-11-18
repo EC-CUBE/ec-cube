@@ -47,7 +47,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 出荷CSVアップロード
      *
-     * @Route("/%eccube_admin_route%/order/shipping_csv_upload", name="admin_shipping_csv_import")
+     * @Route("/%eccube_admin_route%/order/shipping_csv_upload", name="admin_shipping_csv_import", methods={"GET", "POST"})
      * @Template("@admin/Order/csv_shipping.twig")
      *
      * @throws \Doctrine\DBAL\ConnectionException
@@ -186,7 +186,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * アップロード用CSV雛形ファイルダウンロード
      *
-     * @Route("/%eccube_admin_route%/order/csv_template", name="admin_shipping_csv_template")
+     * @Route("/%eccube_admin_route%/order/csv_template", name="admin_shipping_csv_template", methods={"GET"})
      */
     public function csvTemplate(Request $request)
     {

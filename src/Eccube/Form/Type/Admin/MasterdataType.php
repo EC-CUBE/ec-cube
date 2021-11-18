@@ -66,7 +66,7 @@ class MasterdataType extends AbstractType
 
                     // OrderStatus/OrderStatusColorは対象外
                     // @see https://github.com/EC-CUBE/ec-cube/pull/4844
-                    if (in_array($meta->getName(), [OrderStatus::class, OrderStatusColor::class, CustomerOrderStatus::class,])) {
+                    if (in_array($meta->getName(), [OrderStatus::class, OrderStatusColor::class, CustomerOrderStatus::class])) {
                         continue;
                     }
 

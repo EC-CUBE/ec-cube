@@ -44,7 +44,7 @@ class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidName_NotBlank()
+    public function testInvalidNameNotBlank()
     {
         $this->formData['name'] = '';
         $this->form->submit($this->formData);
@@ -52,14 +52,14 @@ class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName_SptabCheck()
+    public function testInvalidNameSptabCheck()
     {
         $this->formData['name'] = '     ';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName_MaxLengthInvalid()
+    public function testInvalidNameMaxLengthInvalid()
     {
         $str = str_repeat('S', $this->eccubeConfig['eccube_stext_len']).'S';
 
@@ -69,7 +69,7 @@ class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName_MaxLengthValid()
+    public function testInvalidNameMaxLengthValid()
     {
         $str = str_repeat('S', $this->eccubeConfig['eccube_stext_len']);
 
