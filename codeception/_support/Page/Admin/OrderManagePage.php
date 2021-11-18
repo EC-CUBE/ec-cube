@@ -261,12 +261,12 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 取得_出荷伝票番号($rowNum)
     {
-        return $this->tester->grabValueFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(8) > div > input");
+        return $this->tester->grabValueFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(9) > div > input");
     }
 
     public function 取得_出荷日($rowNum)
     {
-        return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(7)");
+        return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(8)");
     }
 
     public function 取得_ステータス($rowNum)
