@@ -37,7 +37,7 @@ test('お問い合わせ - GET', async () => {
     await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
     await zapClient.getAlerts(url, 0, 1, Risk.High)
-      .then(alerts => alerts.forEach((alert: any) => {
+      .then(alerts => alerts.forEach(alert => {
         throw new Error(alert.name);
       }));
   } finally {
@@ -70,7 +70,7 @@ test('お問い合わせ(入力ページ→確認ページ) - POST', async () =>
     await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
     await zapClient.getAlerts(url, 0, 1, Risk.High)
-      .then(alerts => alerts.forEach((alert: any) => {
+      .then(alerts => alerts.forEach(alert => {
         throw new Error(alert.name);
       }));
   } finally {
@@ -110,7 +110,7 @@ test('お問い合わせ(確認ページ→完了ページ) - POST', async () =>
     await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
 
     await zapClient.getAlerts(url, 0, 1, Risk.High)
-      .then(alerts => alerts.forEach((alert: any) => {
+      .then(alerts => alerts.forEach(alert => {
         throw new Error(alert.name);
       }));
   } finally {

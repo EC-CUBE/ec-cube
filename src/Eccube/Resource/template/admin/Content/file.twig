@@ -167,7 +167,7 @@ file that was distributed with this source code.
                                         {% endif %}
                                         {% for file in arrFileList %}
                                             <tr id="{{ loop.index }}">
-                                                <td class="align-middle text-center" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ file.file_path }}', {% if file.is_dir %}true{% else %}false{% endif %} '{{ tpl_now_dir }}', false)">
+                                                <td class="align-middle text-center" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ file.file_path }}', {% if file.is_dir %}true{% else %}false{% endif %}, '{{ tpl_now_dir }}', false)">
                                                     {% if file.is_dir %}
                                                         <i class="fa fa-folder-o fa-2x"></i>
                                                     {% else %}
