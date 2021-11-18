@@ -26,7 +26,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 13
+            database_server_version: 14
           - group: admin01
             app_env: 'codeception'
           - group: admin02
@@ -39,7 +39,7 @@ jobs:
             app_env: 'install'
     services:
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password

@@ -34,7 +34,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 13
+            database_server_version: 14
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
@@ -48,7 +48,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -176,7 +176,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 13
+            database_server_version: 14
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
@@ -190,7 +190,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -318,7 +318,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 13
+            database_server_version: 14
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
@@ -332,7 +332,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -460,7 +460,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 13
+            database_server_version: 14
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
@@ -477,7 +477,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
