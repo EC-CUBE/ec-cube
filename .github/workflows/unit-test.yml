@@ -28,7 +28,7 @@ jobs:
             database_server_version: 5
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 11
+            database_server_version: 14
           - db: sqlite3
             database_url: sqlite:///var/eccube.db
             database_server_version: 3
@@ -42,7 +42,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:11
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
