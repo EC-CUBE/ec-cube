@@ -48,7 +48,7 @@ file that was distributed with this source code.
                                   .addClass('btn-success')
                                   .addClass('active');
                        }
-                       if (is_sqlite && plugin.code == 'Api') {
+                       if (is_sqlite && ['Api', 'GMC', 'SiteKit'].includes(plugin.code)) {
                            content.find('.btn-toggle').text('SQLite3 には対応していません');
                        }
                        content.appendTo('#plugins');
