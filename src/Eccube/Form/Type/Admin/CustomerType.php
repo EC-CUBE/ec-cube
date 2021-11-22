@@ -114,7 +114,7 @@ class CustomerType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('password', RepeatedPasswordType::class, [
+            ->add('plain_password', RepeatedPasswordType::class, [
                 // 'type' => 'password',
                 'first_options' => [
                     'label' => 'member.label.pass',
@@ -155,8 +155,8 @@ class CustomerType extends AbstractType
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
-            if ($Customer->getPassword() != '' && $Customer->getPassword() == $Customer->getEmail()) {
-                $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            if ($Customer->getPlainPassword() != '' && $Customer->getPlainPassword() == $Customer->getEmail()) {
+                $form['plain_password']['first']->addError(new FormError(trans('common.password_eq_email')));
             }
         });
 
