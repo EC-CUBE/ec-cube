@@ -18,7 +18,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\ProductTag;
 use Eccube\Entity\Tag;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\MemberRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
