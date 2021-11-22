@@ -22,7 +22,7 @@ class TopPage extends AbstractFrontPage
     {
         $page = new self($I);
 
-        return $page->goPage('');
+        return $page->goPage('/');
     }
 
     public function 新着情報選択($rowNum)
