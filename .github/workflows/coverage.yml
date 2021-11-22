@@ -25,10 +25,10 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 13
+            database_server_version: 14
     services:
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -92,13 +92,13 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        php: [ 7.4 ]
         db: [ pgsql ]
         group: [ admin01, admin02, admin03, front, installer ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 13
+            database_server_version: 14
           - group: admin01
             app_env: 'codeception'
           - group: admin02
@@ -111,7 +111,7 @@ jobs:
             app_env: 'install'
     services:
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password

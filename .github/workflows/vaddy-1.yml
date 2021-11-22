@@ -21,7 +21,7 @@ jobs:
             command1: '-x admin -x plugin'
     services:
       postgres:
-        image: postgres:11
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -41,7 +41,7 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '7.3'
+          php-version: '7.4'
 
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
@@ -76,7 +76,7 @@ jobs:
       - name: "EC-CUBE: setup"
         env:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
+          DATABASE_SERVER_VERSION: 14
         run: |
           composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
           php bin/template_jp.php
@@ -108,7 +108,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
+          DATABASE_SERVER_VERSION: 14
         run: |
           bin/console eccube:composer:require "ec-cube/recommend4"
           bin/console eccube:composer:require "ec-cube/coupon4"
@@ -124,7 +124,7 @@ jobs:
       - name: Pre Install Plugins
         env:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
+          DATABASE_SERVER_VERSION: 14
           PGPASSWORD: 'password'
         run: |
           psql eccube_db -h 127.0.0.1 -U postgres -c "select id,name,code,0 as enabled,version,source,0 as initialized,'2021-08-13 00:00:00' as create_date,'2021-08-13 00:00:00' as update_date,discriminator_type from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
@@ -171,7 +171,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=11 \
+            -e DATABASE_SERVER_VERSION=14 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -190,7 +190,7 @@ jobs:
         env:
           APP_ENV: "codeception"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "11"
+          DATABASE_SERVER_VERSION: "14"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -236,7 +236,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=11 \
+            -e DATABASE_SERVER_VERSION=14 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -257,7 +257,7 @@ jobs:
         env:
           APP_ENV: "codeception"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "11"
+          DATABASE_SERVER_VERSION: "14"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -305,7 +305,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=11 \
+            -e DATABASE_SERVER_VERSION=14 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -326,7 +326,7 @@ jobs:
         env:
           APP_ENV: "codeception"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "11"
+          DATABASE_SERVER_VERSION: "14"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -374,7 +374,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=11 \
+            -e DATABASE_SERVER_VERSION=14 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -395,7 +395,7 @@ jobs:
         env:
           APP_ENV: "codeception"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "11"
+          DATABASE_SERVER_VERSION: "14"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -443,7 +443,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=11 \
+            -e DATABASE_SERVER_VERSION=14 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -464,7 +464,7 @@ jobs:
         env:
           APP_ENV: "codeception"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "11"
+          DATABASE_SERVER_VERSION: "14"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
