@@ -152,9 +152,6 @@ final class EccubeEvents
     const ADMIN_ORDER_MAIL_INDEX_CONFIRM = 'admin.order.mail.index.confirm';
     const ADMIN_ORDER_MAIL_INDEX_COMPLETE = 'admin.order.mail.index.complete';
 
-    // view
-    const ADMIN_ORDER_MAIL_VIEW_COMPLETE = 'admin.order.mail.view.complete';
-
     // mailAll
     const ADMIN_ORDER_MAIL_MAIL_ALL_INITIALIZE = 'admin.order.mail.mail.all.initialize';
     const ADMIN_ORDER_MAIL_MAIL_ALL_CHANGE = 'admin.order.mail.mail.all.change';
