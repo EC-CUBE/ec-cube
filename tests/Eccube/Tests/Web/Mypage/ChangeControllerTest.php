@@ -108,7 +108,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $form = $this->createFormData();
-        $form['password'] = [
+        $form['plain_password'] = [
             'first' => $this->eccubeConfig['eccube_default_password'],
             'second' => $this->eccubeConfig['eccube_default_password'],
         ];
