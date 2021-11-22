@@ -54,7 +54,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             'address' => ['pref' => '5', 'addr01' => $faker->city, 'addr02' => $faker->streetAddress],
             'phone_number' => $faker->phoneNumber,
             'email' => $email,
-            'password' => ['first' => $password, 'second' => $password],
+            'plain_password' => ['first' => $password, 'second' => $password],
             'birth' => $birth->format('Y').'-'.$birth->format('n').'-'.$birth->format('j'),
             'sex' => 1,
             'job' => 1,

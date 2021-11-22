@@ -44,8 +44,8 @@ class EF04CustomerCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
-            'entry[password][first]' => 'password',
-            'entry[password][second]' => 'password',
+            'entry[plain_password][first]' => 'password',
+            'entry[plain_password][second]' => 'password',
             'entry[job]' => ['value' => '1'],
             'entry[user_policy_check]' => '1',
         ];
@@ -122,8 +122,8 @@ class EF04CustomerCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $customer->getEmail(), // 会員登録済みのメールアドレスを入力する
             'entry[email][second]' => $customer->getEmail(),
-            'entry[password][first]' => 'password',
-            'entry[password][second]' => 'password',
+            'entry[plain_password][first]' => 'password',
+            'entry[plain_password][second]' => 'password',
         ], ['css' => 'button.ec-blockBtn--action']);
 
         // 入力した会員情報を確認する。
@@ -152,8 +152,8 @@ class EF04CustomerCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
-            'entry[password][first]' => 'password',
-            'entry[password][second]' => 'password',
+            'entry[plain_password][first]' => 'password',
+            'entry[plain_password][second]' => 'password',
         ], ['css' => 'button.ec-blockBtn--action']);
 
         // 入力した会員情報を確認する。
@@ -194,8 +194,8 @@ class EF04CustomerCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
-            'entry[password][first]' => 'password',
-            'entry[password][second]' => 'password',
+            'entry[plain_password][first]' => 'password',
+            'entry[plain_password][second]' => 'password',
             'entry[job]' => ['value' => '1'],
             'entry[user_policy_check]' => '1',
         ];
