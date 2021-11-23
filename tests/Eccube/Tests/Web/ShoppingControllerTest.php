@@ -648,7 +648,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $price = 27777;
         $pointUse = 27777;
         /** @var ProductClass $ProductClass */
-        $ProductClass = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class)->find(1);
+        $ProductClass = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class)->find(2);
         $ProductClass->setPrice02($price);
         $this->entityManager->flush($ProductClass);
 
@@ -660,7 +660,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $COD2 = self::$container->get(Generator::class)->createPayment($Delivery, 'COD2', 0, 30001, 300000);
 
         // カート画面
-        $this->scenarioCartIn($Customer, 1);
+        $this->scenarioCartIn($Customer, 2);
 
         // 確認画面
         $this->scenarioConfirm($Customer);
