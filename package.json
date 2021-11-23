@@ -52,6 +52,7 @@
     "normalize.css": "^5.0.0",
     "postcss-import": "^12.0.1",
     "process": "^0.11.10",
+    "sass": "^1.42.1",
     "sort-css-media-queries": "^1.4.3"
   }
 }
