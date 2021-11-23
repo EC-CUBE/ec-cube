@@ -369,6 +369,7 @@ front.shopping.out_of_stock_zero: 'Sorry, we do not have enough stock for %produ
 front.shopping.over_price_limit: Sorry, the quantity exceeds the max. purchase amount. Please reduce the purchase quantity.
 front.shopping.in_preparation: 'Sorry, %product% is not ready for shipment. Please contact us from the inquiry form. We are sorry for the inconvenience.'
 front.shopping.not_purchase: Sorry, your order includes item(s) currently unavailable. It has been deleted from your cart.
+front.shopping.not_purchase_product_class: 'Sorry, %product% is currently unavailable. It has been deleted from your cart.'
 front.shopping.price_changed: 'The selling price of %product% has been changed.'
 front.shopping.payment_total_invalid: The total amount is invalid.
 front.shopping.different_payment_methods: Sorry, your order includes items with different purchase methods, which are unable to be processed in one order.
