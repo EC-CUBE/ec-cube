@@ -274,7 +274,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", methods={"GET"}, requirements={"id" = "\d+"}, methods={"GET"})
      * @Template("@admin/Product/product_class_popup.twig")
-     * @ParamConverter("Product")
+     * @ParamConverter("Product", options={"repository_method":"findWithSortedClassCategories"})
      */
     public function loadProductClasses(Request $request, Product $Product)
     {
@@ -291,9 +291,7 @@ class ProductController extends AbstractController
         if ($Product->hasProductClass()) {
             $class = $Product->getProductClasses();
             foreach ($class as $item) {
-                if ($item['visible']) {
-                    $data[] = $item;
-                }
+                $data[] = $item;
             }
         }
 
@@ -373,7 +371,7 @@ class ProductController extends AbstractController
             $ProductClass->setProductStock($ProductStock);
             $ProductStock->setProductClass($ProductClass);
         } else {
-            $Product = $this->productRepository->find($id);
+            $Product = $this->productRepository->findWithSortedClassCategories($id);
             $ProductClass = null;
             $ProductStock = null;
             if (!$Product) {
