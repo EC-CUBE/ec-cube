@@ -138,6 +138,14 @@ front.block.login.to_cart: Proceed to Cart
 front.block.login.to_home: Back to Home
 front.block.calendar.title__en: 'CALENDAR'
 front.block.calendar.title__ja: 'Calendar'
+front.block.calendar.month_format: 'M. Y'
+front.block.calendar.sunday: 'Su'
+front.block.calendar.monday: 'Mo'
+front.block.calendar.tuesday: 'Tu'
+front.block.calendar.wednesday: 'We'
+front.block.calendar.thursday: 'Th'
+front.block.calendar.friday: 'Fr'
+front.block.calendar.saturday: 'Sa'
 front.block.calendar.holiday_notice: '* The red characters are closed.'
 
 

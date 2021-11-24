@@ -28,7 +28,7 @@ if (!class_exists('\Eccube\Entity\Calendar')) {
     class Calendar extends \Eccube\Entity\AbstractEntity
     {
         /**
-         * @var integer
+         * @var int
          */
         const DEFAULT_CALENDAR_ID = 1;
 

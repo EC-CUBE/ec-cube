@@ -138,6 +138,14 @@ front.block.login.to_cart: カートを見る
 front.block.login.to_home: ホームに戻る
 front.block.calendar.title__en: 'CALENDAR'
 front.block.calendar.title__ja: 'カレンダー'
+front.block.calendar.month_format: 'Y年n月'
+front.block.calendar.sunday: '日'
+front.block.calendar.monday: '月'
+front.block.calendar.tuesday: '火'
+front.block.calendar.wednesday: '水'
+front.block.calendar.thursday: '木'
+front.block.calendar.friday: '金'
+front.block.calendar.saturday: '土'
 front.block.calendar.holiday_notice: '* 赤字は休業日です。'
 
 

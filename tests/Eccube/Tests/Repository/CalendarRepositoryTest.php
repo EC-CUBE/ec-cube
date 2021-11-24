@@ -19,9 +19,9 @@ use Eccube\Repository\CalendarRepository;
 use Eccube\Tests\EccubeTestCase;
 
 /**
- * TaxRuleRepository test cases.
+ * CalendarRepository test cases.
  *
- * @author Kentaro Ohkouchi
+ * @author Yuko Kajihara
  */
 class CalendarRepositoryTest extends EccubeTestCase
 {

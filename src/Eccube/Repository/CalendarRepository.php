@@ -50,7 +50,7 @@ class CalendarRepository extends AbstractRepository
             throw new \Exception('Calendar not found. id = '.$id);
         }
 
-        return $this->find($id);
+        return $calendar;
     }
 
     /**
@@ -94,7 +94,7 @@ class CalendarRepository extends AbstractRepository
     /**
      * delete.
      *
-     * @param int|Calend $Calendar
+     * @param int|Calendar $Calendar
      *
      * @throws NoResultException
      * @throws ORMException

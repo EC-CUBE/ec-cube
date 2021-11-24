@@ -36,7 +36,7 @@ class CalendarController extends AbstractController
     }
 
     /**
-     * @Route("/block/calendar", name="block_calendar")
+     * @Route("/block/calendar", name="block_calendar", methods={"GET"})
      * @Template("Block/calendar.twig")
      */
     public function index(Request $request)
@@ -68,8 +68,9 @@ class CalendarController extends AbstractController
         $nextMonthCalendar = $this->setHolidayAndTodayFlag($nextMonthCalendar, $holidayListOfTwoMonths, $today->copy()->addMonth(1));
 
         // 各カレンダータイトルを作成
-        $thisMonthTitle = $firstDateOfThisMonth->format('Y年n月');
-        $nextMonthTitle = $firstDateOfNextMonth->format('Y年n月');
+        $monthFormat = $this->translator->trans('front.block.calendar.month_format');
+        $thisMonthTitle = $firstDateOfThisMonth->format($monthFormat);
+        $nextMonthTitle = $firstDateOfNextMonth->format($monthFormat);
 
         return [
             'ThisMonthTitle' => $thisMonthTitle,

@@ -44,8 +44,8 @@ class CalendarController extends AbstractController
     /**
      * カレンダー設定の初期表示・登録
      *
-     * @Route("/%eccube_admin_route%/setting/shop/calendar", name="admin_setting_shop_calendar")
-     * @Route("/%eccube_admin_route%/setting/shop/calendar/new", name="admin_setting_shop_calendar_new")
+     * @Route("/%eccube_admin_route%/setting/shop/calendar", name="admin_setting_shop_calendar", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/setting/shop/calendar/new", name="admin_setting_shop_calendar_new", methods={"GET", "POST"})
      * @Template("@admin/Setting/Shop/calendar.twig")
      */
     public function index(Request $request)
