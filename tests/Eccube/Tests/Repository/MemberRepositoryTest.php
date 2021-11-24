@@ -36,8 +36,8 @@ class MemberRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->encoderFactory = $this->container->get('security.encoder_factory');
-        $this->memberRepo = $this->container->get(MemberRepository::class);
+        $this->encoderFactory = self::$container->get('security.encoder_factory');
+        $this->memberRepo = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
         $this->Member = $this->memberRepo->find(1);
         $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
             ->find(\Eccube\Entity\Master\Work::ACTIVE);
@@ -171,5 +171,19 @@ class MemberRepositoryTest extends EccubeTestCase
         // 参照制約で例外となる
         $this->memberRepo->delete($Member1);
         $this->fail();
+    }
+
+    /**
+     * https://github.com/EC-CUBE/ec-cube/issues/5119
+     */
+    public function testDeleteWithException_SelfForeignKey()
+    {
+        $Member1 = $this->createMember();
+        $Member1->setCreator($Member1);
+        $this->entityManager->flush();
+
+        // 削除できることを確認
+        $this->memberRepo->delete($Member1);
+        self::assertNull($Member1->getId());
     }
 }

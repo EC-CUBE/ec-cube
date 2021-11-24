@@ -1,0 +1,507 @@
+name: VAddy
+on:
+  schedule:
+    - cron: '0 15 * * 0'
+
+jobs:
+  vaddy:
+    name: VAddy
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        include:
+          - vaddy_project: 'ADMIN01'
+            command1: 'EA03ProductCest'
+            command2: 'EA05CustomerCest'
+            command3: 'EA08SysteminfoCest'
+            command4: 'EA09ShippingCest'
+          - vaddy_project: 'ADMIN02'
+            command1: 'EA04OrderCest'
+          - vaddy_project: 'FRONT'
+            command1: '-x admin -x plugin'
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: '7.4'
+
+      - name: setup-chromedriver
+        uses: nanasess/setup-chromedriver@master
+
+      - name: "VAddy: install"
+        working-directory: /tmp
+        run: |
+          wget -q https://github.com/vaddy/go-vaddy/archive/master.zip
+          unzip master.zip
+          echo 'export VADDY_AUTH_KEY="${{ secrets.VADDY_AUTH_KEY }}"
+          export VADDY_FQDN="${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+          export VADDY_VERIFICATION_CODE="${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          export VADDY_USER="${{ secrets.VADDY_USER }}"
+          export VADDY_YOUR_LOCAL_IP="127.0.0.1"
+          export VADDY_YOUR_LOCAL_PORT="8080"
+          export VADDY_HTTPS_PROXY=""' > go-vaddy-master/privatenet/conf/vaddy.conf
+          mkdir -p ${HOME}/.ssh
+          echo 'Host *.vaddy.net
+              StrictHostKeyChecking no' >> ${HOME}/.ssh/config
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: "EC-CUBE: setup"
+        env:
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 14
+        run: |
+          composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
+          php bin/template_jp.php
+          rm -rf app/Plugin/*
+          echo '<?php
+          namespace Eccube\Doctrine\EventSubscriber;
+          use Doctrine\Common\EventSubscriber;
+          use Doctrine\ORM\Event\LifecycleEventArgs;
+          use Doctrine\ORM\Events;
+          class CancelDeletionEventSubscriber implements EventSubscriber
+          {
+            public function getSubscribedEvents()
+            {
+              return [Events::preRemove];
+            }
+            public function preRemove(LifecycleEventArgs $event)
+            {
+              $event->getEntityManager()->detach($event->getEntity());
+            }
+          }' > CancelDeletionEventSubscriber.php
+          sed -i.bak -e 's_$fs->remove_// $fs->remove_' src/Eccube/Controller/Admin/Content/PageController.php
+          rm -f app/config/eccube/packages/dev/web_profiler.yaml
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+          chmod -R 777 html
+
+      - name: Install Plugins
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 14
+        run: |
+          bin/console eccube:composer:require "ec-cube/recommend4"
+          bin/console eccube:composer:require "ec-cube/coupon4"
+          bin/console eccube:composer:require "ec-cube/mailmagazine4"
+          bin/console eccube:composer:require "ec-cube/salesreport4"
+          bin/console eccube:composer:require "ec-cube/relatedproduct4"
+          bin/console eccube:composer:require "ec-cube/securitychecker4"
+          bin/console eccube:composer:require "ec-cube/productreview4"
+          bin/console eccube:composer:require "ec-cube/api"
+          bin/console eccube:composer:require "ec-cube/sitekit"
+          bin/console eccube:composer:require "ec-cube/gmc"
+
+      - name: Pre Install Plugins
+        env:
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 14
+          PGPASSWORD: 'password'
+        run: |
+          psql eccube_db -h 127.0.0.1 -U postgres -c "select id,name,code,0 as enabled,version,source,0 as initialized,'2021-08-13 00:00:00' as create_date,'2021-08-13 00:00:00' as update_date,discriminator_type from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
+          for code in Api Coupon4 GMC MailMagazine4 ProductReview4 Recommend4 RelatedProduct4 SalesReport4 Securitychecker4 SiteKit; do bin/console eccube:plugin:enable --code $code; done
+
+      - name: "EC-CUBE: package"
+        working-directory: ../
+        run: ${{ github.event.repository.name }}/package.sh
+
+      - name: "EC-CUBE: build"
+        run: docker build -t ec-cube --build-arg SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD=true .
+      - name: "Codeception: prepare"
+        run: |
+          echo "APP_ENV=codeception" > .env
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          echo ">>> Started chrome-driver"
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+          echo ">>> Started xvfb"
+          composer install --no-scripts --no-interaction --optimize-autoloader
+          sudo echo "127.0.0.1 ${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}" | sudo tee -a /etc/hosts
+          echo "modules:
+              config:
+                  WebDriver:
+                      host: '127.0.0.1'
+                      port: 9515
+                      url: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
+                      browser: chrome
+                      capabilities:
+                          chromeOptions:
+                              args: ["--headless", "--disable-gpu"]
+                              prefs:
+                                  download.default_directory: '%PWD%/codeception/_support/_downloads'
+                  MailCatcher:
+                      url: 'mail'
+                      port: 1080" > codeception/_envs/local.yml
+
+      - name: "Scan 1"
+        run: echo 'Scan 1'
+
+      - name: "EC-CUBE: run"
+        run: |
+          docker run \
+            -e APP_ENV=dev \
+            -e APP_DEBUG=1 \
+            -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
+            -e DATABASE_SERVER_VERSION=14 \
+            -e MAILER_URL="smtp://172.17.0.1:1025" \
+            -v ${PWD}/html:/tmp/html \
+            --rm -d -p 8080:80 --name eccube ec-cube
+          docker cp ../eccube.tar.gz eccube:/tmp/
+          docker exec -w /tmp eccube bash -c "rm -rf /var/www/html; tar xf /tmp/eccube.tar.gz -C /var/www; mv /var/www/ec-cube /var/www/html; chown -R www-data: /var/www/html"
+          docker exec eccube bash -c "rm -rf /var/www/html/html; ln -s /tmp/html /var/www/html/html;"
+          docker exec -u www-data eccube bin/console eccube:install -n
+          docker exec -u www-data -e VADDY_VERIFICATION_CODE=${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }} eccube bash -c 'echo ${VADDY_VERIFICATION_CODE} > vaddy-${VADDY_VERIFICATION_CODE}.html'
+          docker exec -u www-data eccube bash -c 'for code in Api Coupon4 GMC MailMagazine4 ProductReview4 Recommend4 RelatedProduct4 SalesReport4 Securitychecker4 SiteKit; do bin/console eccube:plugin:enable --code $code; done'
+
+      - name: "VAddy: connect"
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh connect
+
+      - name: "VAddy: crawl"
+        env:
+          APP_ENV: "codeception"
+          DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
+          DATABASE_SERVER_VERSION: "14"
+          MAILER_URL: "smtp://127.0.0.1:1025"
+          BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
+          VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
+          VADDY_PROXY_PORT: "${{ secrets.VADDY_PROXY_PORT }}"
+          VADDY_VERIFICATION_CODE: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          VADDY_CRAWL: "${{ matrix.command1 }}"
+        run: |
+          vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:begin
+          vendor/bin/codecept -vvv run -g vaddy acceptance --env chrome,local,vaddy --html report.html ${{ matrix.command1 }} || true
+          vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:commit
+
+      - name: Upload report
+        uses: actions/upload-artifact@v2
+        with:
+          name: crawl-reports
+          path: codeception/_output/**/*
+
+      - name: "VAddy: disconnect"
+        if: ${{ always() }}
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh disconnect
+
+      - name: "VAddy: scan"
+        continue-on-error: true
+        env:
+          VADDY_CRAWL: "${{ matrix.command1 }}"
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh scan
+
+      - name: "EC-CUBE: stop"
+        if: ${{ always() }}
+        continue-on-error: true
+        run: docker rm -f -v eccube
+
+      - name: "Scan 2"
+        if: ${{ matrix.command2 != '' }}
+        run: echo 'Scan 2'
+
+      - name: "EC-CUBE: run"
+        if: ${{ matrix.command2 != '' }}
+        run: |
+          docker run \
+            -e APP_ENV=dev \
+            -e APP_DEBUG=1 \
+            -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
+            -e DATABASE_SERVER_VERSION=14 \
+            -e MAILER_URL="smtp://172.17.0.1:1025" \
+            -v ${PWD}/html:/tmp/html \
+            --rm -d -p 8080:80 --name eccube ec-cube
+          docker cp ../eccube.tar.gz eccube:/tmp/
+          docker exec -w /tmp eccube bash -c "rm -rf /var/www/html; tar xf /tmp/eccube.tar.gz -C /var/www; mv /var/www/ec-cube /var/www/html; chown -R www-data: /var/www/html"
+          docker exec eccube bash -c "rm -rf /var/www/html/html; ln -s /tmp/html /var/www/html/html;"
+          docker exec -u www-data eccube bin/console eccube:install -n
+          docker exec -u www-data -e VADDY_VERIFICATION_CODE=${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }} eccube bash -c 'echo ${VADDY_VERIFICATION_CODE} > vaddy-${VADDY_VERIFICATION_CODE}.html'
+          docker exec -u www-data eccube bash -c 'for code in Api Coupon4 GMC MailMagazine4 ProductReview4 Recommend4 RelatedProduct4 SalesReport4 Securitychecker4 SiteKit; do bin/console eccube:plugin:enable --code $code; done'
+
+      - name: "VAddy: connect"
+        if: ${{ matrix.command2 != '' }}
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh connect
+
+      - name: "VAddy: crawl"
+        if: ${{ matrix.command2 != '' && success() }}
+        env:
+          APP_ENV: "codeception"
+          DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
+          DATABASE_SERVER_VERSION: "14"
+          MAILER_URL: "smtp://127.0.0.1:1025"
+          BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
+          VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
+          VADDY_PROXY_PORT: "${{ secrets.VADDY_PROXY_PORT }}"
+          VADDY_VERIFICATION_CODE: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          VADDY_CRAWL: "${{ matrix.command2 }}"
+        run: |
+          vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:begin
+          vendor/bin/codecept -vvv run -g vaddy acceptance --env chrome,local,vaddy --html report.html ${{ matrix.command2 }} || true
+          vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:commit
+
+      - name: Upload report
+        if: ${{ matrix.command2 != '' && success() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: crawl-reports
+          path: codeception/_output/**/*
+
+      - name: "VAddy: disconnect"
+        if: ${{ matrix.command2 }}
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh disconnect
+
+      - name: "VAddy: scan"
+        if: ${{ matrix.command2 != '' && success() }}
+        continue-on-error: true
+        env:
+          VADDY_CRAWL: "${{ matrix.command2 }}"
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh scan
+
+      - name: "EC-CUBE: stop"
+        if: ${{ matrix.command2 }}
+        continue-on-error: true
+        run: docker rm -f -v eccube
+
+      - name: "Scan 3"
+        if: ${{ matrix.command3 != '' }}
+        run: echo 'Scan 3'
+
+      - name: "EC-CUBE: run"
+        if: ${{ matrix.command3 != '' }}
+        run: |
+          docker run \
+            -e APP_ENV=dev \
+            -e APP_DEBUG=1 \
+            -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
+            -e DATABASE_SERVER_VERSION=14 \
+            -e MAILER_URL="smtp://172.17.0.1:1025" \
+            -v ${PWD}/html:/tmp/html \
+            --rm -d -p 8080:80 --name eccube ec-cube
+          docker cp ../eccube.tar.gz eccube:/tmp/
+          docker exec -w /tmp eccube bash -c "rm -rf /var/www/html; tar xf /tmp/eccube.tar.gz -C /var/www; mv /var/www/ec-cube /var/www/html; chown -R www-data: /var/www/html"
+          docker exec eccube bash -c "rm -rf /var/www/html/html; ln -s /tmp/html /var/www/html/html;"
+          docker exec -u www-data eccube bin/console eccube:install -n
+          docker exec -u www-data -e VADDY_VERIFICATION_CODE=${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }} eccube bash -c 'echo ${VADDY_VERIFICATION_CODE} > vaddy-${VADDY_VERIFICATION_CODE}.html'
+          docker exec -u www-data eccube bash -c 'for code in Api Coupon4 GMC MailMagazine4 ProductReview4 Recommend4 RelatedProduct4 SalesReport4 Securitychecker4 SiteKit; do bin/console eccube:plugin:enable --code $code; done'
+
+      - name: "VAddy: connect"
+        if: ${{ matrix.command3 != '' }}
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh connect
+
+      - name: "VAddy: crawl"
+        if: ${{ matrix.command3 != '' && success() }}
+        env:
+          APP_ENV: "codeception"
+          DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
+          DATABASE_SERVER_VERSION: "14"
+          MAILER_URL: "smtp://127.0.0.1:1025"
+          BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
+          VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
+          VADDY_PROXY_PORT: "${{ secrets.VADDY_PROXY_PORT }}"
+          VADDY_VERIFICATION_CODE: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          VADDY_CRAWL: "${{ matrix.command3 }}"
+        run: |
+          vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:begin
+          vendor/bin/codecept -vvv run -g vaddy acceptance --env chrome,local,vaddy --html report.html ${{ matrix.command3 }} || true
+          vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:commit
+
+      - name: Upload report
+        if: ${{ matrix.command3 != '' && success() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: crawl-reports
+          path: codeception/_output/**/*
+
+      - name: "VAddy: disconnect"
+        if: ${{ matrix.command3 }}
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh disconnect
+
+      - name: "VAddy: scan"
+        if: ${{ matrix.command3 != '' && success() }}
+        continue-on-error: true
+        env:
+          VADDY_CRAWL: "${{ matrix.command3 }}"
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh scan
+
+      - name: "EC-CUBE: stop"
+        if: ${{ matrix.command3 }}
+        continue-on-error: true
+        run: docker rm -f -v eccube
+
+      - name: "Scan 4"
+        if: ${{ matrix.command4 != '' }}
+        run: echo 'Scan 4'
+
+      - name: "EC-CUBE: run"
+        if: ${{ matrix.command4 != '' }}
+        run: |
+          docker run \
+            -e APP_ENV=dev \
+            -e APP_DEBUG=1 \
+            -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
+            -e DATABASE_SERVER_VERSION=14 \
+            -e MAILER_URL="smtp://172.17.0.1:1025" \
+            -v ${PWD}/html:/tmp/html \
+            --rm -d -p 8080:80 --name eccube ec-cube
+          docker cp ../eccube.tar.gz eccube:/tmp/
+          docker exec -w /tmp eccube bash -c "rm -rf /var/www/html; tar xf /tmp/eccube.tar.gz -C /var/www; mv /var/www/ec-cube /var/www/html; chown -R www-data: /var/www/html"
+          docker exec eccube bash -c "rm -rf /var/www/html/html; ln -s /tmp/html /var/www/html/html;"
+          docker exec -u www-data eccube bin/console eccube:install -n
+          docker exec -u www-data -e VADDY_VERIFICATION_CODE=${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }} eccube bash -c 'echo ${VADDY_VERIFICATION_CODE} > vaddy-${VADDY_VERIFICATION_CODE}.html'
+          docker exec -u www-data eccube bash -c 'for code in Api Coupon4 GMC MailMagazine4 ProductReview4 Recommend4 RelatedProduct4 SalesReport4 Securitychecker4 SiteKit; do bin/console eccube:plugin:enable --code $code; done'
+
+      - name: "VAddy: connect"
+        if: ${{ matrix.command4 != '' }}
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh connect
+
+      - name: "VAddy: crawl"
+        if: ${{ matrix.command4 != '' && success() }}
+        env:
+          APP_ENV: "codeception"
+          DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
+          DATABASE_SERVER_VERSION: "14"
+          MAILER_URL: "smtp://127.0.0.1:1025"
+          BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
+          VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
+          VADDY_PROXY_PORT: "${{ secrets.VADDY_PROXY_PORT }}"
+          VADDY_VERIFICATION_CODE: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          VADDY_CRAWL: "${{ matrix.command4 }}"
+        run: |
+          vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:begin
+          vendor/bin/codecept -vvv run -g vaddy acceptance --env chrome,local,vaddy --html report.html ${{ matrix.command4 }} || true
+          vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:commit
+
+      - name: Upload report
+        if: ${{ matrix.command4 != '' && success() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: crawl-reports
+          path: codeception/_output/**/*
+
+      - name: "VAddy: disconnect"
+        if: ${{ matrix.command4 }}
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh disconnect
+
+      - name: "VAddy: scan"
+        if: ${{ matrix.command4 != '' && success() }}
+        continue-on-error: true
+        env:
+          VADDY_CRAWL: "${{ matrix.command4 }}"
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh scan
+
+      - name: "EC-CUBE: stop"
+        if: ${{ matrix.command4 }}
+        continue-on-error: true
+        run: docker rm -f -v eccube
+
+      - name: "Scan 5"
+        if: ${{ matrix.command5 != '' }}
+        run: echo 'Scan 5'
+
+      - name: "EC-CUBE: run"
+        if: ${{ matrix.command5 != '' }}
+        run: |
+          docker run \
+            -e APP_ENV=dev \
+            -e APP_DEBUG=1 \
+            -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
+            -e DATABASE_SERVER_VERSION=14 \
+            -e MAILER_URL="smtp://172.17.0.1:1025" \
+            -v ${PWD}/html:/tmp/html \
+            --rm -d -p 8080:80 --name eccube ec-cube
+          docker cp ../eccube.tar.gz eccube:/tmp/
+          docker exec -w /tmp eccube bash -c "rm -rf /var/www/html; tar xf /tmp/eccube.tar.gz -C /var/www; mv /var/www/ec-cube /var/www/html; chown -R www-data: /var/www/html"
+          docker exec eccube bash -c "rm -rf /var/www/html/html; ln -s /tmp/html /var/www/html/html;"
+          docker exec -u www-data eccube bin/console eccube:install -n
+          docker exec -u www-data -e VADDY_VERIFICATION_CODE=${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }} eccube bash -c 'echo ${VADDY_VERIFICATION_CODE} > vaddy-${VADDY_VERIFICATION_CODE}.html'
+          docker exec -u www-data eccube bash -c 'for code in Api Coupon4 GMC MailMagazine4 ProductReview4 Recommend4 RelatedProduct4 SalesReport4 Securitychecker4 SiteKit; do bin/console eccube:plugin:enable --code $code; done'
+
+      - name: "VAddy: connect"
+        if: ${{ matrix.command5 != '' }}
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh connect
+
+      - name: "VAddy: crawl"
+        if: ${{ matrix.command5 != '' && success() }}
+        env:
+          APP_ENV: "codeception"
+          DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
+          DATABASE_SERVER_VERSION: "14"
+          MAILER_URL: "smtp://127.0.0.1:1025"
+          BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
+          VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
+          VADDY_PROXY_PORT: "${{ secrets.VADDY_PROXY_PORT }}"
+          VADDY_VERIFICATION_CODE: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          VADDY_CRAWL: "${{ matrix.command5 }}"
+        run: |
+          vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:begin
+          vendor/bin/codecept -vvv run -g vaddy acceptance --env chrome,local,vaddy --html report.html ${{ matrix.command5 }} || true
+          vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:commit
+
+      - name: Upload report
+        if: ${{ matrix.command5 != '' && success() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: crawl-reports
+          path: codeception/_output/**/*
+
+      - name: "VAddy: disconnect"
+        if: ${{ matrix.command5 }}
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh disconnect
+
+      - name: "VAddy: scan"
+        if: ${{ matrix.command5 != '' && success() }}
+        continue-on-error: true
+        env:
+          VADDY_CRAWL: "${{ matrix.command5 }}"
+        working-directory: /tmp/go-vaddy-master/privatenet
+        run: ./vaddy_privatenet.sh scan
+
+      - name: "EC-CUBE: stop"
+        if: ${{ matrix.command5 }}
+        continue-on-error: true
+        run: docker rm -f -v eccube
+
+#      - name: VAddy private net logs
+#        if: ${{ always() }}
+#        working-directory: /tmp/go-vaddy-master/privatenet
+#        run: cat vaddy/*.txt

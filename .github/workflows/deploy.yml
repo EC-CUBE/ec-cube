@@ -6,6 +6,16 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-18.04
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -13,7 +23,7 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '7.3'
+          php-version: '7.4'
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -27,62 +37,53 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install to Composer
-        run: |
-          sudo composer selfupdate --1
-          composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
+        run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
 
       - name: Translate to templates
         run: php bin/template_jp.php
+
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 14
+        run: |
+          rm -rf $GITHUB_WORKSPACE/app/Plugin/*
+          echo "APP_ENV=${APP_ENV}" > .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+
+      - name: Install Plugins
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 14
+        run: |
+          bin/console eccube:composer:require "ec-cube/recommend4"
+          bin/console eccube:composer:require "ec-cube/coupon4"
+          bin/console eccube:composer:require "ec-cube/mailmagazine4"
+          bin/console eccube:composer:require "ec-cube/salesreport4"
+          bin/console eccube:composer:require "ec-cube/relatedproduct4"
+          bin/console eccube:composer:require "ec-cube/securitychecker4"
+          bin/console eccube:composer:require "ec-cube/productreview4"
+          bin/console eccube:composer:require "ec-cube/api"
+          bin/console eccube:composer:require "ec-cube/sitekit"
+          bin/console eccube:composer:require "ec-cube/gmc"
+
+      - name: revert to config platform.php
+        run: composer config platform.php 7.3.0
+
+      - name: Pre Install Plugins
+        env:
+          PGPASSWORD: 'password'
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "select id,name,code,0 as enabled,version,source,0 as initialized,'2021-08-13 00:00:00' as create_date,'2021-08-13 00:00:00' as update_date,discriminator_type from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
 
       - name: Packaging
         working-directory: ../
         env:
           TAG_NAME: ${{ github.event.release.tag_name }}
-          REPOSITORY_NAME: ${{ github.event.repository.name }}
-          PATH_NAME: eccube-${{ github.event.release.tag_name }}
-        run: |
-          rm -rf $GITHUB_WORKSPACE/.editorconfig
-          rm -rf $GITHUB_WORKSPACE/.gitignore
-          rm -rf $GITHUB_WORKSPACE/.buildpath
-          rm -rf $GITHUB_WORKSPACE/.gitmodules
-          rm -rf $GITHUB_WORKSPACE/.scrutinizer.yml
-          rm -rf $GITHUB_WORKSPACE/.travis.yml
-          rm -rf $GITHUB_WORKSPACE/appveyor.yml
-          rm -rf $GITHUB_WORKSPACE/.coveralls.yml
-          rm -rf $GITHUB_WORKSPACE/.php_cs.dist
-          rm -rf $GITHUB_WORKSPACE/phpunit.xml.dist
-          rm -rf $GITHUB_WORKSPACE/phpstan.neon.dist
-          rm -rf $GITHUB_WORKSPACE/app.json
-          rm -rf $GITHUB_WORKSPACE/Procfile
-          rm -rf $GITHUB_WORKSPACE/LICENSE.txt
-          rm -rf $GITHUB_WORKSPACE/README.md
-          rm -rf $GITHUB_WORKSPACE/codeception.sh
-          rm -rf $GITHUB_WORKSPACE/codeception.yml
-          rm -rf $GITHUB_WORKSPACE/app/Plugin/*
-          rm -rf $GITHUB_WORKSPACE/codeception
-          rm -rf $GITHUB_WORKSPACE/tests
-          rm -rf $GITHUB_WORKSPACE/.github
-          rm -rf $GITHUB_WORKSPACE/zap
-          rm -rf $GITHUB_WORKSPACE/docker-compose-owaspzap.yml
-          find $GITHUB_WORKSPACE -name "dummy" -print0 | xargs -0 rm -rf
-          find $GITHUB_WORKSPACE -name ".git*" -and ! -name ".gitkeep" -print0 | xargs -0 rm -rf
-          find $GITHUB_WORKSPACE -name ".git*" -type d -print0 | xargs -0 rm -rf
-
-          echo "set permissions..."
-          chmod -R o+w $GITHUB_WORKSPACE
-
-          echo "complession files..."
-          mv $REPOSITORY_NAME $PATH_NAME
-          tar czfp eccube-$TAG_NAME.tar.gz $PATH_NAME
-          zip -ry eccube-$TAG_NAME.zip $PATH_NAME 1> /dev/null
-          md5sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.md5
-          md5sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.md5
-          sha1sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.sha1
-          sha1sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.sha1
-          sha256sum eccube-$TAG_NAME.tar.gz | awk '{ print $1 }' > eccube-$TAG_NAME.tar.gz.checksum.sha256
-          sha256sum eccube-$TAG_NAME.zip | awk '{ print $1 }' > eccube-$TAG_NAME.zip.checksum.sha256
-          mv $PATH_NAME $REPOSITORY_NAME
-          ls -al
+        run: ${{ github.event.repository.name }}/package.sh
 
       - name: Upload binaries to release of TGZ
         uses: svenstaro/upload-release-action@v1-release

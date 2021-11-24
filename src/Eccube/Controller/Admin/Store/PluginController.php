@@ -105,7 +105,7 @@ class PluginController extends AbstractController
     /**
      * インストール済プラグイン画面
      *
-     * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")
+     * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin", methods={"GET"})
      * @Template("@admin/Store/plugin.twig")
      *
      * @return array
@@ -277,13 +277,8 @@ class PluginController extends AbstractController
         if (!$request->query->has('maintenance_mode')) {
             // プラグイン管理の有効ボタンを押したとき
             $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
-            // TERMINATE時のイベントを設定
-            $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
-        } else {
-            // プラグイン管理のアップデートを実行したとき
-            // TERMINATE時のイベントを設定
-            $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE_UPDATE);
         }
+
         $cacheUtil->clearCache();
 
         $log = null;
@@ -301,9 +296,9 @@ class PluginController extends AbstractController
             if ($Plugin->getSource()) {
                 $requires = $this->pluginService->getPluginRequired($Plugin);
                 $requires = array_filter($requires, function ($req) {
-                    $code = preg_replace('/^ec-cube\//', '', $req['name']);
+                    $code = preg_replace('/^ec-cube\//i', '', $req['name']);
                     /** @var Plugin $DependPlugin */
-                    $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+                    $DependPlugin = $this->pluginRepository->findByCode($code);
 
                     return $DependPlugin->isEnabled() == false;
                 });
@@ -317,6 +312,8 @@ class PluginController extends AbstractController
                         return $this->json(['success' => false, 'message' => $message], 400);
                     } else {
                         $this->addError($message, 'admin');
+
+                        $this->addFlash('eccube.admin.disable_maintenance', '');
 
                         return $this->redirectToRoute('admin_store_plugin');
                     }
@@ -343,6 +340,8 @@ class PluginController extends AbstractController
             return $this->json(['success' => true, 'log' => $log]);
         } else {
             $this->addSuccess(trans('admin.store.plugin.enable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
+            $this->addFlash('eccube.admin.disable_maintenance', '');
 
             return $this->redirectToRoute('admin_store_plugin');
         }
@@ -372,8 +371,6 @@ class PluginController extends AbstractController
         } else {
             // プラグイン管理で無効ボタンを押したとき
             $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
-            // TERMINATE時のイベントを設定
-            $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
         }
 
         $cacheUtil->clearCache();
@@ -393,6 +390,8 @@ class PluginController extends AbstractController
                     return $this->json(['message' => $message], 400);
                 } else {
                     $this->addError($message, 'admin');
+
+                    $this->addFlash('eccube.admin.disable_maintenance', '');
 
                     return $this->redirectToRoute('admin_store_plugin');
                 }
@@ -421,6 +420,8 @@ class PluginController extends AbstractController
             return $this->json(['success' => true, 'log' => $log]);
         } else {
             $this->addSuccess(trans('admin.store.plugin.disable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
+            $this->addFlash('eccube.admin.disable_maintenance', '');
 
             return $this->redirectToRoute('admin_store_plugin');
         }
@@ -474,7 +475,7 @@ class PluginController extends AbstractController
     /**
      * プラグインファイルアップロード画面
      *
-     * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install")
+     * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install", methods={"GET", "POST"})
      * @Template("@admin/Store/plugin_install.twig")
      *
      * @param Request $request
@@ -539,7 +540,7 @@ class PluginController extends AbstractController
     /**
      * 認証キー設定画面
      *
-     * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
+     * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting", methods={"GET", "POST"})
      * @Template("@admin/Store/authentication_setting.twig")
      *
      * @param Request $request

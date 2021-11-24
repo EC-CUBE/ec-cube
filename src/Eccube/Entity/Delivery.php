@@ -339,7 +339,7 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
          *
          * @return Delivery
          */
-        public function addPaymentOption(\Eccube\Entity\PaymentOption $paymentOption)
+        public function addPaymentOption(PaymentOption $paymentOption)
         {
             $this->PaymentOptions[] = $paymentOption;
 
@@ -353,7 +353,7 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removePaymentOption(\Eccube\Entity\PaymentOption $paymentOption)
+        public function removePaymentOption(PaymentOption $paymentOption)
         {
             return $this->PaymentOptions->removeElement($paymentOption);
         }
@@ -375,7 +375,7 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
          *
          * @return Delivery
          */
-        public function addDeliveryFee(\Eccube\Entity\DeliveryFee $deliveryFee)
+        public function addDeliveryFee(DeliveryFee $deliveryFee)
         {
             $this->DeliveryFees[] = $deliveryFee;
 
@@ -389,7 +389,7 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeDeliveryFee(\Eccube\Entity\DeliveryFee $deliveryFee)
+        public function removeDeliveryFee(DeliveryFee $deliveryFee)
         {
             return $this->DeliveryFees->removeElement($deliveryFee);
         }
@@ -411,7 +411,7 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
          *
          * @return Delivery
          */
-        public function addDeliveryTime(\Eccube\Entity\DeliveryTime $deliveryTime)
+        public function addDeliveryTime(DeliveryTime $deliveryTime)
         {
             $this->DeliveryTimes[] = $deliveryTime;
 
@@ -425,7 +425,7 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeDeliveryTime(\Eccube\Entity\DeliveryTime $deliveryTime)
+        public function removeDeliveryTime(DeliveryTime $deliveryTime)
         {
             return $this->DeliveryTimes->removeElement($deliveryTime);
         }
@@ -447,7 +447,7 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
          *
          * @return Delivery
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -471,7 +471,7 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
          *
          * @return Delivery
          */
-        public function setSaleType(\Eccube\Entity\Master\SaleType $saleType = null)
+        public function setSaleType(Master\SaleType $saleType = null)
         {
             $this->SaleType = $saleType;
 

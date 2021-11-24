@@ -189,8 +189,8 @@ class OrderController extends AbstractController
      *   - 初期表示
      *      - 検索条件は空配列, ページ番号は1で初期化し, セッションに保存します.
      *
-     * @Route("/%eccube_admin_route%/order", name="admin_order")
-     * @Route("/%eccube_admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page")
+     * @Route("/%eccube_admin_route%/order", name="admin_order", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page", methods={"GET", "POST"})
      * @Template("@admin/Order/index.twig")
      */
     public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
@@ -278,7 +278,7 @@ class OrderController extends AbstractController
                 $viewData = [];
 
                 if ($statusId = (int) $request->get('order_status_id')) {
-                    $viewData = ['status' => $statusId];
+                    $viewData = ['status' => [$statusId]];
                 }
 
                 $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
@@ -344,7 +344,7 @@ class OrderController extends AbstractController
     /**
      * 受注CSVの出力.
      *
-     * @Route("/%eccube_admin_route%/order/export/order", name="admin_order_export_order")
+     * @Route("/%eccube_admin_route%/order/export/order", name="admin_order_export_order", methods={"GET"})
      *
      * @param Request $request
      *
@@ -362,7 +362,7 @@ class OrderController extends AbstractController
     /**
      * 配送CSVの出力.
      *
-     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
+     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping", methods={"GET"})
      *
      * @param Request $request
      *
@@ -517,19 +517,23 @@ class OrderController extends AbstractController
                         foreach ($Order->getOrderItems() as $OrderItem) {
                             $ProductClass = $OrderItem->getProductClass();
                             if ($OrderItem->isProduct() && !$ProductClass->isStockUnlimited()) {
-                                $this->entityManager->flush($ProductClass);
+                                $this->entityManager->persist($ProductClass);
+                                $this->entityManager->flush();
                                 $ProductStock = $this->productStockRepository->findOneBy(['ProductClass' => $ProductClass]);
-                                $this->entityManager->flush($ProductStock);
+                                $this->entityManager->persist($ProductStock);
+                                $this->entityManager->flush();
                             }
                         }
                     }
-                    $this->entityManager->flush($Order);
-                    $this->entityManager->flush($Shipping);
+                    $this->entityManager->persist($Order);
+                    $this->entityManager->persist($Shipping);
+                    $this->entityManager->flush();
 
                     // 会員の場合、購入回数、購入金額などを更新
                     if ($Customer = $Order->getCustomer()) {
                         $this->orderRepository->updateOrderSummary($Customer);
-                        $this->entityManager->flush($Customer);
+                        $this->entityManager->persist($Customer);
+                        $this->entityManager->flush();
                     }
                 } else {
                     $from = $Order->getOrderStatus()->getName();
@@ -593,7 +597,8 @@ class OrderController extends AbstractController
 
         try {
             $shipping->setTrackingNumber($trackingNumber);
-            $this->entityManager->flush($shipping);
+            $this->entityManager->persist($shipping);
+            $this->entityManager->flush();
             log_info('送り状番号変更処理完了', [$shipping->getId()]);
             $message = ['status' => 'OK', 'shipping_id' => $shipping->getId(), 'tracking_number' => $trackingNumber];
 
@@ -606,7 +611,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/order/export/pdf", name="admin_order_export_pdf")
+     * @Route("/%eccube_admin_route%/order/export/pdf", name="admin_order_export_pdf", methods={"GET", "POST"})
      * @Template("@admin/Order/order_pdf.twig")
      *
      * @param Request $request
@@ -654,7 +659,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/order/export/pdf/download", name="admin_order_pdf_download")
+     * @Route("/%eccube_admin_route%/order/export/pdf/download", name="admin_order_pdf_download", methods={"POST"})
      * @Template("@admin/Order/order_pdf.twig")
      *
      * @param Request $request

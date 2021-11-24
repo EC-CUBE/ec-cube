@@ -37,7 +37,7 @@ class OrderRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->orderRepository = $this->container->get(OrderRepository::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
 
         $this->createProduct();
         $this->Customer = $this->createCustomer();
@@ -120,7 +120,7 @@ class OrderRepositoryTest extends EccubeTestCase
         self::assertEquals($Order1->getTotal() + $Order2->getTotal(), $Customer->getBuyTotal());
     }
 
-    public function testGetQueryBuilderBySearchDataForAdmin_multi_2147483648()
+    public function testGetQueryBuilderBySearchDataForAdminMulti2147483648()
     {
         $Order = $this->createOrder($this->createCustomer('2147483648@example.com'));
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
@@ -137,7 +137,7 @@ class OrderRepositoryTest extends EccubeTestCase
     /**
      * @dataProvider dataGetQueryBuilderBySearchDataForAdmin_nameProvider
      */
-    public function testGetQueryBuilderBySearchDataForAdmin_name(string $formName, string $searchWord, int $expected)
+    public function testGetQueryBuilderBySearchDataForAdminName(string $formName, string $searchWord, int $expected)
     {
         $this->Order
             ->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW))

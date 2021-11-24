@@ -34,7 +34,7 @@ class RoundingTypeTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    public function test_getName_is_rounding_type()
+    public function testGetNameIsRoundingType()
     {
         $this->assertSame('rounding_type', $this->form->getName());
     }

@@ -23,7 +23,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20201127000000 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $count = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_page WHERE url = 'entry_confirm'");
         if ($count > 0) {
@@ -67,9 +67,8 @@ final class Version20201127000000 extends AbstractMigration
         }
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

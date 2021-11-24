@@ -13,12 +13,12 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Eccube\Controller\Admin\Setting\Shop\DeliveryController;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
-use Eccube\Repository\DeliveryFeeRepository;
-use Eccube\Repository\Master\PrefRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -39,10 +39,10 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($Delivery);
         $this->entityManager->flush();
 
-        $Prefs = $this->container->get(PrefRepository::class)->findAll();
+        $Prefs = $this->entityManager->getRepository(Pref::class)->findAll();
 
         foreach ($Prefs as $Pref) {
-            $DeliveryFee = $this->container->get(DeliveryFeeRepository::class)
+            $DeliveryFee = $this->entityManager->getRepository(DeliveryFee::class)
                 ->findOneBy([
                     'Delivery' => $Delivery,
                     'Pref' => $Pref,
@@ -278,5 +278,51 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    //    TO DO : implement
+    /**
+     * @dataProvider getMergeRulesProvider
+     */
+    public function testGetMergeRules($rules, $expected)
+    {
+        $Payments = array_map(function ($rule) {
+            $Payment = new Payment();
+            $Payment->setRuleMin($rule['min']);
+            $Payment->setRuleMax($rule['max']);
+            $Payment->setCharge($rule['charge']);
+
+            return $Payment;
+        }, $rules);
+
+        $class = new \ReflectionClass(DeliveryController::class);
+        $controller = $class->newInstanceWithoutConstructor();
+        $object = new \ReflectionObject($controller);
+        $method = $object->getMethod('getMergeRules');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($controller, [$Payments]);
+
+        $this->assertCount($expected, $result);
+    }
+
+    public function getMergeRulesProvider()
+    {
+        return [
+            // 利用不可の金額帯なし
+            [
+                [
+                    ['min' => 0, 'max' => 1000, 'charge' => 0],
+                    ['min' => 1001, 'max' => 2000, 'charge' => 0],
+                    ['min' => 2001, 'max' => 3000, 'charge' => 0],
+                ],
+                1,
+            ],
+            // 利用不可の金額帯あり(2001〜2499)
+            [
+                [
+                    ['min' => 0, 'max' => 1000, 'charge' => 0],
+                    ['min' => 1001, 'max' => 2000, 'charge' => 0],
+                    ['min' => 2500, 'max' => 2000, 'charge' => 0],
+                ],
+                2,
+            ],
+        ];
+    }
 }

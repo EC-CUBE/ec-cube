@@ -35,7 +35,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->orderStatusRepository = $this->container->get(OrderStatusRepository::class);
+        $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
     }
 
     public function testFindNotContainsBy()

@@ -32,6 +32,7 @@ $(function() {
             <tbody>
             {% for Plugin in Plugins %}
                 {% set form = plugin_forms[Plugin.id] %}
+                {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
                 <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action=""
                       enctype="multipart/form-data">
                     <tr class="{% if Plugin.enabled == false %}active{% endif %}">

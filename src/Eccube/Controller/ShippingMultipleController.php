@@ -26,9 +26,9 @@ use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,7 +95,7 @@ class ShippingMultipleController extends AbstractShoppingController
     /**
      * 複数配送処理
      *
-     * @Route("/shopping/shipping_multiple", name="shopping_shipping_multiple")
+     * @Route("/shopping/shipping_multiple", name="shopping_shipping_multiple", methods={"GET", "POST"})
      * @Template("Shopping/shipping_multiple.twig")
      */
     public function index(Request $request)
@@ -344,7 +344,10 @@ class ShippingMultipleController extends AbstractShoppingController
                 }
 
                 $this->cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
-                $this->cartService->save();
+
+                // 注文フローで取得されるカートの入れ替わりを防止する
+                // @see https://github.com/EC-CUBE/ec-cube/issues/4293
+                $this->cartService->setPrimary($Cart->getCartKey());
             }
 
             return $this->redirectToRoute('shopping');
@@ -364,7 +367,7 @@ class ShippingMultipleController extends AbstractShoppingController
      * 会員ログイン時は会員のお届け先に追加する
      * 非会員時はセッションに追加する
      *
-     * @Route("/shopping/shipping_multiple_edit", name="shopping_shipping_multiple_edit")
+     * @Route("/shopping/shipping_multiple_edit", name="shopping_shipping_multiple_edit", methods={"GET", "POST"})
      * @Template("Shopping/shipping_multiple_edit.twig")
      */
     public function shippingMultipleEdit(Request $request)
@@ -417,7 +420,7 @@ class ShippingMultipleController extends AbstractShoppingController
 
                 $CustomerAddress->setCustomer($Customer);
                 $this->entityManager->persist($CustomerAddress);
-                $this->entityManager->flush($CustomerAddress);
+                $this->entityManager->flush();
             } else {
                 // 非会員用のセッションに追加
                 $CustomerAddresses = $this->session->get(OrderHelper::SESSION_NON_MEMBER_ADDRESSES);

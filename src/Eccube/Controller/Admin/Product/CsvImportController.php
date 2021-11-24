@@ -131,6 +131,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param TaxRuleRepository $taxRuleRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param ValidatorInterface $validator
+     *
      * @throws \Exception
      */
     public function __construct(
@@ -162,7 +163,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品登録CSVアップロード
      *
-     * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import")
+     * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import", methods={"GET", "POST"})
      * @Template("@admin/Product/csv_product.twig")
      *
      * @return array
@@ -683,7 +684,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * カテゴリ登録CSVアップロード
      *
-     * @Route("/%eccube_admin_route%/product/category_csv_upload", name="admin_product_category_csv_import")
+     * @Route("/%eccube_admin_route%/product/category_csv_upload", name="admin_product_category_csv_import", methods={"GET", "POST"})
      * @Template("@admin/Product/csv_category.twig")
      */
     public function csvCategory(Request $request, CacheUtil $cacheUtil)
@@ -843,7 +844,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * アップロード用CSV雛形ファイルダウンロード
      *
-     * @Route("/%eccube_admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template")
+     * @Route("/%eccube_admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template", methods={"GET"})
      *
      * @param $type
      *
@@ -890,10 +891,10 @@ class CsvImportController extends AbstractCsvImportController
                 'success' => !$this->hasErrors(),
                 'success_message' => trans('admin.common.csv_upload_line_success', [
                     '%from%' => $this->convertLineNo(2),
-                    '%to%' => $this->currentLineNo]),
+                    '%to%' => $this->currentLineNo, ]),
                 'errors' => $this->errors,
-                'error_message' => trans('admin.common.csv_upload_line_error',[
-                    '%from%' => $this->convertLineNo(2)])
+                'error_message' => trans('admin.common.csv_upload_line_error', [
+                    '%from%' => $this->convertLineNo(2), ]),
             ]);
         }
 
@@ -1591,8 +1592,10 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/csv_split", name="admin_product_csv_split")
+     * @Route("/%eccube_admin_route%/product/csv_split", name="admin_product_csv_split", methods={"POST"})
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function splitCsv(Request $request)
@@ -1607,7 +1610,6 @@ class CsvImportController extends AbstractCsvImportController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $dir = $this->eccubeConfig['eccube_csv_temp_realdir'];
             if (!file_exists($dir)) {
                 $fs = new Filesystem();
@@ -1616,7 +1618,7 @@ class CsvImportController extends AbstractCsvImportController
 
             $data = $form['import_file']->getData();
             $src = new \SplFileObject($data->getRealPath());
-            $src->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY | \SplFileObject::DROP_NEW_LINE);
+            $src->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
 
             $fileNo = 1;
             $fileName = StringUtil::random(8);
@@ -1641,12 +1643,14 @@ class CsvImportController extends AbstractCsvImportController
             return $this->json(['success' => true, 'file_name' => $fileName, 'max_file_no' => $fileNo]);
         }
 
-        return $this->json(['success' => false, 'message' => $form->getErrors(true ,true)]);
+        return $this->json(['success' => false, 'message' => $form->getErrors(true, true)]);
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/csv_split_import", name="admin_product_csv_split_import")
+     * @Route("/%eccube_admin_route%/product/csv_split_import", name="admin_product_csv_split_import", methods={"POST"})
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager)
@@ -1685,8 +1689,10 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/csv_split_cleanup", name="admin_product_csv_split_cleanup")
+     * @Route("/%eccube_admin_route%/product/csv_split_cleanup", name="admin_product_csv_split_cleanup", methods={"POST"})
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function cleanupSplitCsv(Request $request)
@@ -1726,7 +1732,8 @@ class CsvImportController extends AbstractCsvImportController
         return $choices;
     }
 
-    protected function convertLineNo($currentLineNo) {
+    protected function convertLineNo($currentLineNo)
+    {
         if ($this->isSplitCsv) {
             return ($this->eccubeConfig['eccube_csv_split_lines']) * ($this->csvFileNo - 1) + $currentLineNo;
         }

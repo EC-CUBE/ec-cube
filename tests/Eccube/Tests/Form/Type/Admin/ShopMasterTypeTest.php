@@ -81,7 +81,7 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidPhoneNumber_Blank()
+    public function testValidPhoneNumberBlank()
     {
         $this->formData['phone_number'] = '';
 
@@ -89,7 +89,7 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidDeliveryFreeAmount_OverMaxLength()
+    public function testInValidDeliveryFreeAmountOverMaxLength()
     {
         $this->formData['delivery_free_amount'] = '12345678900';
 
@@ -97,7 +97,7 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidDeliveryFreeAmount_NotNumeric()
+    public function testInValidDeliveryFreeAmountNotNumeric()
     {
         $this->formData['delivery_free_amount'] = 'abcde';
 
@@ -105,7 +105,7 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidDeliveryFreeAmount_HasMinus()
+    public function testInValidDeliveryFreeAmountHasMinus()
     {
         $this->formData['delivery_free_amount'] = '-12345';
 
@@ -113,7 +113,7 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidDeliveryFreeQuantity_NotNumeric()
+    public function testInValidDeliveryFreeQuantityNotNumeric()
     {
         $this->formData['delivery_free_quantity'] = 'abcde';
 
@@ -121,7 +121,7 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidDeliveryFreeQuantity_HasMinus()
+    public function testInValidDeliveryFreeQuantityHasMinus()
     {
         $this->formData['delivery_free_quantity'] = '-12345';
 
@@ -129,28 +129,28 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidBasicPointRateRange_Min()
+    public function testValidBasicPointRateRangeMin()
     {
         $this->formData['basic_point_rate'] = '0';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidBasicPointRateRange_Max()
+    public function testValidBasicPointRateRangeMax()
     {
         $this->formData['basic_point_rate'] = '100';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidBasicPointRateRange_Min()
+    public function testInValidBasicPointRateRangeMin()
     {
         $this->formData['basic_point_rate'] = '-1';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidBasicPointRateRange_Max()
+    public function testInValidBasicPointRateRangeMax()
     {
         $this->formData['basic_point_rate'] = '101';
         $this->form->submit($this->formData);

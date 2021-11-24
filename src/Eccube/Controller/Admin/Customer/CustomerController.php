@@ -28,7 +28,7 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
 use Eccube\Util\FormUtil;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -86,11 +86,11 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/customer", name="admin_customer")
-     * @Route("/%eccube_admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page")
+     * @Route("/%eccube_admin_route%/customer", name="admin_customer", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page", methods={"GET", "POST"})
      * @Template("@admin/Customer/index.twig")
      */
-    public function index(Request $request, $page_no = null, Paginator $paginator)
+    public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
         $session = $this->session;
         $builder = $this->formFactory->createBuilder(SearchCustomerType::class);
@@ -182,7 +182,7 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend")
+     * @Route("/%eccube_admin_route%/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend", methods={"GET"})
      */
     public function resend(Request $request, $id)
     {
@@ -242,7 +242,7 @@ class CustomerController extends AbstractController
 
         try {
             $this->entityManager->remove($Customer);
-            $this->entityManager->flush($Customer);
+            $this->entityManager->flush();
             $this->addSuccess('admin.common.delete_complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
             log_error('会員削除失敗', [$e]);
@@ -268,7 +268,7 @@ class CustomerController extends AbstractController
     /**
      * 会員CSVの出力.
      *
-     * @Route("/%eccube_admin_route%/customer/export", name="admin_customer_export")
+     * @Route("/%eccube_admin_route%/customer/export", name="admin_customer_export", methods={"GET"})
      *
      * @param Request $request
      *

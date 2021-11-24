@@ -23,9 +23,12 @@ class MailControllerTest extends AbstractAdminWebTestCase
 {
     public function tearDown()
     {
-        $themeDir = $this->container->getParameter('eccube_theme_front_dir');
+        $themeDir = self::$container->getParameter('eccube_theme_front_dir');
         if (file_exists($themeDir.'/Mail/order.twig')) {
             unlink($themeDir.'/Mail/order.twig');
+        }
+        if (file_exists($themeDir.'/Mail/order.html.twig')) {
+            unlink($themeDir.'/Mail/order.html.twig');
         }
         parent::tearDown();
     }
@@ -139,7 +142,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $outPut = $this->container->get('session')->getFlashBag()->get('eccube.admin.error');
+        $outPut = self::$container->get('session')->getFlashBag()->get('eccube.admin.error');
         $this->actual = array_shift($outPut);
         $this->expected = 'admin.common.save_error';
         $this->verify();

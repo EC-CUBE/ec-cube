@@ -27,10 +27,6 @@ jobs:
       with:
         php-version: '7.4'
     - name: composer install
-      run: |
-        sudo composer selfupdate --1
-        composer install --dev --no-interaction -o --apcu-autoloader
+      run: composer install --dev --no-interaction -o --apcu-autoloader
     - name: PHPStan
-      run: |
-        composer require phpstan/phpstan --dev
-        vendor/bin/phpstan analyze src/ --error-format=github
+      run: vendor/bin/phpstan analyze src/ --error-format=github

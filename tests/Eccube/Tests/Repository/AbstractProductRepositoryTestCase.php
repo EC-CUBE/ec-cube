@@ -36,7 +36,7 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->productRepository = $this->container->get(ProductRepository::class);
+        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
 
         $tables = [
             'dtb_product_image',

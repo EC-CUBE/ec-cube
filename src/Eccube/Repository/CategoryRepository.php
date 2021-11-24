@@ -136,7 +136,7 @@ class CategoryRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->persist($Category);
-        $em->flush($Category);
+        $em->flush();
     }
 
     /**
@@ -160,6 +160,6 @@ class CategoryRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->remove($Category);
-        $em->flush($Category);
+        $em->flush();
     }
 }

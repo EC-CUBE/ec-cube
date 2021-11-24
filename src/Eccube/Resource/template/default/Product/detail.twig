@@ -206,9 +206,39 @@ file that was distributed with this source code.
             });
         });
 
-        $('.ec-modal-overlay, .ec-modal .ec-inlineBtn--cancel').on('click', function() {
+        $('.ec-modal-wrap').on('click', function(e) {
+            // モーダル内の処理は外側にバブリングさせない
+            e.stopPropagation();
+        });
+        $('.ec-modal-overlay, .ec-modal, .ec-modal-close, .ec-inlineBtn--cancel').on('click', function() {
             $('.ec-modal').hide()
         });
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": "{{ Product.name }}",
+        "image": [
+            {% for img in Product.ProductImage %}
+                "{{ app.request.schemeAndHttpHost }}{{ asset(img, 'save_image') }}"{% if not loop.last %},{% endif %}
+
+            {% else %}
+                "{{ app.request.schemeAndHttpHost }}{{ asset(''|no_image_product, 'save_image') }}"
+            {% endfor %}
+        ],
+        "description": "{{ Product.description_list | default(Product.description_detail) | replace({'\n': '', '\r': ''}) | slice(0,300) }}",
+        {% if Product.code_min %}
+        "sku": "{{ Product.code_min }}",
+        {% endif %}
+        "offers": {
+            "@type": "Offer",
+            "url": "{{ url('product_detail', {'id': Product.id}) }}",
+            "priceCurrency": "{{ eccube_config.currency }}",
+            "price": {{ Product.getPrice02IncTaxMin }},
+            "availability": "{{ Product.stock_find ? "InStock" : "OutOfStock" }}"
+        }
+    }
     </script>
 {% endblock %}
 
@@ -220,14 +250,14 @@ file that was distributed with this source code.
 
                     <div class="item_visual">
                         {% for ProductImage in Product.ProductImage %}
-                            <div class="slide-item"><img src="{{ asset(ProductImage, 'save_image') }}"></div>
+                            <div class="slide-item"><img src="{{ asset(ProductImage, 'save_image') }}" alt="{{ loop.first ? Product.name : '' }}"></div>
                         {% else %}
-                            <div class="slide-item"><img src="{{ asset(''|no_image_product, 'save_image') }}"/></div>
+                            <div class="slide-item"><img src="{{ asset(''|no_image_product, 'save_image') }}" alt="{{ loop.first ? Product.name : '' }}" /></div>
                         {% endfor %}
                     </div>
                     <div class="item_nav">
                         {% for ProductImage in Product.ProductImage %}
-                            <div class="slideThumb" data-index="{{ loop.index0 }}"><img src="{{ asset(ProductImage, 'save_image') }}"></div>
+                            <div class="slideThumb" data-index="{{ loop.index0 }}"><img src="{{ asset(ProductImage, 'save_image') }}" alt=""></div>
                         {% endfor %}
                     </div>
                 </div>

@@ -58,7 +58,7 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Name01()
+    public function testInvalidBlankName01()
     {
         $this->formData['name']['name01'] = '';
 
@@ -66,7 +66,7 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Name02()
+    public function testInvalidBlankName02()
     {
         $this->formData['name']['name02'] = '';
 
@@ -74,7 +74,7 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Kana01()
+    public function testInvalidBlankKana01()
     {
         $this->formData['kana']['kana01'] = '';
 
@@ -82,7 +82,7 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Kana02()
+    public function testInvalidBlankKana02()
     {
         $this->formData['kana']['kana02'] = '';
 
@@ -90,7 +90,7 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Pref()
+    public function testInvalidBlankPref()
     {
         $this->formData['address']['pref'] = '';
 
@@ -98,7 +98,7 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Addr01()
+    public function testInvalidBlankAddr01()
     {
         $this->formData['address']['addr01'] = '';
 
@@ -106,7 +106,7 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_Blank_Addr02()
+    public function testInvalidBlankAddr02()
     {
         $this->formData['address']['addr02'] = '';
 
@@ -114,7 +114,7 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPhoneNumber_Blank()
+    public function testInvalidPhoneNumberBlank()
     {
         $this->formData['phone_number'] = '';
         $this->form->submit($this->formData);

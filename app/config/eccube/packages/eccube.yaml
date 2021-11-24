@@ -3,6 +3,7 @@ parameters:
     env(ECCUBE_ADMIN_ROUTE): 'admin'
     env(ECCUBE_USER_DATA_ROUTE): 'user_data'
     env(ECCUBE_ADMIN_ALLOW_HOSTS): '[]'
+    env(ECCUBE_ADMIN_DENY_HOSTS): '[]'
     env(ECCUBE_FORCE_SSL): false
     env(ECCUBE_TEMPLATE_CODE): 'default'
     env(ECCUBE_AUTH_MAGIC): '<change.me>'
@@ -10,9 +11,12 @@ parameters:
     env(ECCUBE_COOKIE_PATH): '/'
     env(ECCUBE_COOKIE_LIFETIME): 0
     env(ECCUBE_GC_MAXLIFETIME): 1440
-    env(ECCUBE_PACKAGE_API_URL): 'https://package-api.ec-cube.net'
+    env(ECCUBE_PACKAGE_API_URL): 'https://package-api-c2.ec-cube.net'
     env(ECCUBE_OWNERS_STORE_URL): 'https://www.ec-cube.net'
     env(ECCUBE_MAINTENANCE_FILE_PATH): '%kernel.project_dir%/.maintenance'
+    env(ECCUBE_2FA_ENABLED): true
+    env(ECCUBE_2FA_COOKIE_NAME): 'eccube_2fa'
+    env(ECCUBE_2FA_EXPIRE): 14
 
     # EC-CUBE parameter
     eccube_database_url: '%env(DATABASE_URL)%'
@@ -20,6 +24,7 @@ parameters:
     eccube_admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     eccube_user_data_route: '%env(ECCUBE_USER_DATA_ROUTE)%'
     eccube_admin_allow_hosts: '%env(json:ECCUBE_ADMIN_ALLOW_HOSTS)%'
+    eccube_admin_deny_hosts: '%env(json:ECCUBE_ADMIN_DENY_HOSTS)%'
     eccube_force_ssl: '%env(bool:ECCUBE_FORCE_SSL)%'
     eccube.theme: '%env(ECCUBE_TEMPLATE_CODE)%'
     eccube_theme_code: '%eccube.theme%'
@@ -62,6 +67,7 @@ parameters:
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
     eccube_price_len: 8                                                    # 最大値で制御したい
     eccube_search_pmax: 12
+    eccube_sitemap_products_per_page: 1000
     eccube_stext_len: 255
     eccube_sltext_len: 500
     eccube_smtext_len: 100
@@ -127,3 +133,6 @@ parameters:
     eccube_result_cache_lifetime: 3600 # doctrineのresult cacheのlifetime.
     eccube_result_cache_lifetime_short: 10  # doctrineのresult cacheのlifetime. 商品一覧画面など長期間キャッシュできない箇所で使用する.
     eccube_content_maintenance_file_path: '%env(ECCUBE_MAINTENANCE_FILE_PATH)%'
+    eccube_2fa_enabled: '%env(ECCUBE_2FA_ENABLED)%'
+    eccube_2fa_cookie_name: '%env(ECCUBE_2FA_COOKIE_NAME)%'
+    eccube_2fa_expire: '%env(ECCUBE_2FA_EXPIRE)%'

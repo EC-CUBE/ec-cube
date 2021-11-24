@@ -8,7 +8,7 @@
         {
             "plan": "heroku-postgresql",
             "options": {
-              "version": "9.6"
+              "version": "12"
             }
         }
     ],
@@ -23,7 +23,7 @@
         },
         "DATABASE_SERVER_VERSION": {
             "description": "Database server version.",
-            "value": "9.6"
+            "value": "12"
         },
         "ECCUBE_AUTH_MAGIC": {
             "description": "Secret key for login password.",

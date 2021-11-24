@@ -4,7 +4,7 @@ const plumber = require('gulp-plumber')
 const notify = require('gulp-notify')
 const browserSync = require('browser-sync')
 const rename = require('gulp-rename')
-const sass = require('gulp-sass')
+const sass = require('gulp-sass')(require('sass'))
 const postcss = require('gulp-postcss')
 const atImport = require('postcss-import');
 const autoprefixer = require('autoprefixer')
@@ -19,7 +19,7 @@ module.exports = () => {
     .pipe(plumber({
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
-    .pipe(sass())
+    .pipe(sass)
     .pipe(postcss([
       atImport(),
       autoprefixer(),

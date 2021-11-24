@@ -13,15 +13,15 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Eccube\Entity\Master\DeviceType;
-use Eccube\Repository\PageLayoutRepository;
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Eccube\Repository\LayoutRepository;
-use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Entity\Layout;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
+use Eccube\Repository\LayoutRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class LayoutControllerTest extends AbstractAdminWebTestCase
 {
@@ -51,10 +51,10 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->PageLayoutRepo = $this->container->get(PageLayoutRepository::class);
-        $this->layoutRepository = $this->container->get(LayoutRepository::class);
-        $this->deviceTypeRepository = $this->container->get(DeviceTypeRepository::class);
-        $this->pageRepository = $this->container->get(PageRepository::class);
+        $this->PageLayoutRepo = $this->entityManager->getRepository(\Eccube\Entity\PageLayout::class);
+        $this->layoutRepository = $this->entityManager->getRepository(\Eccube\Entity\Layout::class);
+        $this->deviceTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\DeviceType::class);
+        $this->pageRepository = $this->entityManager->getRepository(\Eccube\Entity\Page::class);
     }
 
     public function testIndex()
