@@ -32,7 +32,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->calendarRepository = $this->container->get(CalendarRepository::class);
+        $this->calendarRepository = $this->entityManager->getRepository(Calendar::class);
     }
 
     /**

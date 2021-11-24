@@ -59,7 +59,7 @@ class CalendarRepositoryTest extends EccubeTestCase
 
         parent::setUp();
 
-        $this->calendarRepository = $this->container->get(CalendarRepository::class);
+        $this->calendarRepository = $this->entityManager->getRepository(Calendar::class);
         $this->Calendar1 = $this->createCalendar('春分の日', new \DateTime('2021-03-20 00:00:00'));
         $this->Calendar2 = $this->createCalendar('昭和の日', new \DateTime('2021-04-29 00:00:00'));
         $this->Calendar3 = $this->createCalendar('憲法記念日', new \DateTime('2021-05-03 00:00:00'));
