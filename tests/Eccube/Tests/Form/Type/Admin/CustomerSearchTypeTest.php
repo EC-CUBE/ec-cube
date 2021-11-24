@@ -32,7 +32,7 @@ class CustomerSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
             ->getForm();
     }
 
-    public function testPhoneNumber_ValidData()
+    public function testPhoneNumberValidData()
     {
         $formData = [
             'phone_number' => '12345',
@@ -42,7 +42,7 @@ class CustomerSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testPhoneNumber_NotValidData()
+    public function testPhoneNumberNotValidData()
     {
         //意味あんだか良くわからんが一応書いとく
         $formData = [

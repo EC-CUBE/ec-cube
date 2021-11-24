@@ -38,7 +38,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->paymentRepository = $this->container->get(PaymentRepository::class);
+        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
         $this->imageDir = sys_get_temp_dir().'/'.sha1(mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);
@@ -147,7 +147,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->assertNull($Payment);
     }
 
-    public function testDeleteFail_NotFound()
+    public function testDeleteFailNotFound()
     {
         $pid = 9999;
         $this->client->request(
@@ -177,7 +177,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
                 'payment_register' => $formData,
             ],
             [
-                'payment_register' => ['payment_image_file' => $image]
+                'payment_register' => ['payment_image_file' => $image],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -206,7 +206,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
                 'payment_register' => $formData,
             ],
             [
-                'payment_register' => ['payment_image_file' => $image]
+                'payment_register' => ['payment_image_file' => $image],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -215,7 +215,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testAddImage_NotAjax()
+    public function testAddImageNotAjax()
     {
         $formData = $this->createFormData();
 
@@ -229,7 +229,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(400, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testAddImage_MineNotSupported()
+    public function testAddImageMineNotSupported()
     {
         $formData = $this->createFormData();
         copy(
@@ -249,7 +249,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
                'payment_register' => $formData,
            ],
            [
-               'payment_register' => ['payment_image_file' => $image]
+               'payment_register' => ['payment_image_file' => $image],
            ],
            [
                'HTTP_X-Requested-With' => 'XMLHttpRequest',

@@ -1,0 +1,112 @@
+name: Testing dockerbuild
+on:
+  push:
+    paths:
+      - 'Dockerfile'
+      - 'dockerbuild/*'
+      - 'docker-compose*.yml'
+      - '.github/workflows/dockerbuild.yml'
+  pull_request:
+    paths:
+      - 'Dockerfile'
+      - 'dockerbuild/*'
+      - 'docker-compose*.yml'
+      - '.github/workflows/dockerbuild.yml'
+
+jobs:
+  dockerbuild:
+    name: dockerbuild
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        php: [ 7.4 ]
+        db: [ pgsql ]
+        group: [ admin01 ]
+        include:
+          - db: pgsql
+            database_url: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
+            database_server_version: 14
+          - group: admin01
+            app_env: 'codeception'
+          # - group: admin02
+          #   app_env: 'codeception'
+          # - group: admin03
+          #   app_env: 'codeception'
+          # - group: front
+          #   app_env: 'codeception'
+          # - group: installer
+          #   app_env: 'install'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: docker build
+        run: docker-compose build
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: composer install
+        run: composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: ${{ matrix.app_env }}
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=dev
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=dev
+          sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
+
+      - name: setup-chromedriver
+        uses: nanasess/setup-chromedriver@master
+
+      - name: Run chromedriver
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          echo ">>> Started chrome-driver"
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+          echo ">>> Started xvfb"
+
+      - name: Codeception
+        env:
+          APP_ENV: ${{ matrix.app_env }}
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          GROUP: ${{ matrix.group }}
+          SYMFONY_DEPRECATIONS_HELPER: weak
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker -g ${GROUP}
+      - name: Upload evidence
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-${{ matrix.group }}-evidence
+          path: codeception/_output/
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-${{ matrix.group }}-logs
+          path: var/log/

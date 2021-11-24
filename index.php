@@ -1,14 +1,13 @@
 <?php
 
 use Eccube\Kernel;
-use Eccube\Service\SystemService;
 use Symfony\Component\Debug\Debug;
 use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 
 // システム要件チェック
-if (version_compare(PHP_VERSION, '7.1.3') < 0) {
-    die('Your PHP installation is too old. EC-CUBE requires at least PHP 7.1.3. See the <a href="http://www.ec-cube.net/product/system.php" target="_blank">system requirements</a> page for more information.');
+if (version_compare(PHP_VERSION, '7.3.0') < 0) {
+    die('Your PHP installation is too old. EC-CUBE requires at least PHP 7.3.0. See the <a href="http://www.ec-cube.net/product/system.php" target="_blank">system requirements</a> page for more information.');
 }
 
 $autoload = __DIR__.'/vendor/autoload.php';
@@ -63,18 +62,13 @@ if (file_exists($maintenanceFile)) {
     $adminPath = env('ECCUBE_ADMIN_ROUTE', 'admin');
     $adminPath = '/'.\trim($adminPath, '/').'/';
     if (\strpos($pathInfo, $adminPath) !== 0) {
-        $maintenanceContents = file_get_contents($maintenanceFile);
-        $maintenanceToken = explode(':', $maintenanceContents)[1] ?? null;
-        $tokenInCookie = $request->cookies->get(SystemService::MAINTENANCE_TOKEN_KEY);
-        if ($tokenInCookie === null || $tokenInCookie !== $maintenanceToken) {
-            $locale = env('ECCUBE_LOCALE');
-            $templateCode = env('ECCUBE_TEMPLATE_CODE');
-            $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
+        $locale = env('ECCUBE_LOCALE');
+        $templateCode = env('ECCUBE_TEMPLATE_CODE');
+        $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
 
-            header('HTTP/1.1 503 Service Temporarily Unavailable');
-            require __DIR__.'/maintenance.php';
-            return;
-        }
+        header('HTTP/1.1 503 Service Temporarily Unavailable');
+        require __DIR__.'/maintenance.php';
+        return;
     }
 }
 

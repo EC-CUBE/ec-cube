@@ -44,7 +44,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidName_NotBlank()
+    public function testInvalidNameNotBlank()
     {
         $this->formData['name'] = '';
         $this->form->submit($this->formData);
@@ -52,7 +52,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName_SptabCheck()
+    public function testInvalidNameSptabCheck()
     {
         $this->formData['name'] = '     ';
         $this->form->submit($this->formData);
@@ -60,7 +60,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName_MaxLengthInvalid()
+    public function testInvalidNameMaxLengthInvalid()
     {
         $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']).'S';
 
@@ -70,7 +70,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidName_MaxLengthValid()
+    public function testInvalidNameMaxLengthValid()
     {
         $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']);
 

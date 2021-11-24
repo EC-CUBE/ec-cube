@@ -42,7 +42,7 @@ use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -147,11 +147,11 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product", name="admin_product")
-     * @Route("/%eccube_admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
+     * @Route("/%eccube_admin_route%/product", name="admin_product", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page", methods={"GET", "POST"})
      * @Template("@admin/Product/index.twig")
      */
-    public function index(Request $request, $page_no = null, Paginator $paginator)
+    public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
         $builder = $this->formFactory
             ->createBuilder(SearchProductType::class);
@@ -272,7 +272,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", methods={"GET"}, requirements={"id" = "\d+"})
+     * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", methods={"GET"}, requirements={"id" = "\d+"}, methods={"GET"})
      * @Template("@admin/Product/product_class_popup.twig")
      * @ParamConverter("Product")
      */
@@ -351,8 +351,8 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/product/new", name="admin_product_product_new")
-     * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
+     * @Route("/%eccube_admin_route%/product/product/new", name="admin_product_product_new", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit", methods={"GET", "POST"})
      * @Template("@admin/Product/product.twig")
      */
     public function edit(Request $request, $id = null, RouterInterface $router, CacheUtil $cacheUtil)
@@ -537,25 +537,28 @@ class ProductController extends AbstractController
 
                 // 画像の削除
                 $delete_images = $form->get('delete_images')->getData();
+                $fs = new Filesystem();
                 foreach ($delete_images as $delete_image) {
-                    $ProductImage = $this->productImageRepository
-                        ->findOneBy(['file_name' => $delete_image]);
+                    $ProductImage = $this->productImageRepository->findOneBy([
+                        'Product' => $Product,
+                        'file_name' => $delete_image,
+                    ]);
 
-                    // 追加してすぐに削除した画像は、Entityに追加されない
                     if ($ProductImage instanceof ProductImage) {
                         $Product->removeProductImage($ProductImage);
                         $this->entityManager->remove($ProductImage);
-                    }
-                    $this->entityManager->persist($Product);
-                    $this->entityManager->flush();
+                        $this->entityManager->flush();
 
-                    if (!$this->productImageRepository->findOneBy(['file_name' => $delete_image])) {
-                        // 削除
-                        $fs = new Filesystem();
-                        $fs->remove($this->eccubeConfig['eccube_save_image_dir'] . '/' . $delete_image);
+                        // 他に同じ画像を参照する商品がなければ画像ファイルを削除
+                        if (!$this->productImageRepository->findOneBy(['file_name' => $delete_image])) {
+                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$delete_image);
+                        }
+                    } else {
+                        // 追加してすぐに削除した画像は、Entityに追加されない
+                        $fs->remove($this->eccubeConfig['eccube_temp_image_dir'].'/'.$delete_image);
                     }
                 }
-                $this->entityManager->persist($Product);
+
                 $this->entityManager->flush();
 
                 $sortNos = $request->get('sort_no_images');
@@ -872,27 +875,9 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
-     */
-    public function display(Request $request, $id = null)
-    {
-        $event = new EventArgs(
-            [],
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE, $event);
-
-        if (!is_null($id)) {
-            return $this->redirectToRoute('product_detail', ['id' => $id, 'admin' => '1']);
-        }
-
-        return $this->redirectToRoute('admin_product');
-    }
-
-    /**
      * 商品CSVの出力.
      *
-     * @Route("/%eccube_admin_route%/product/export", name="admin_product_export")
+     * @Route("/%eccube_admin_route%/product/export", name="admin_product_export", methods={"GET"})
      *
      * @param Request $request
      *

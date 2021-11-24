@@ -44,7 +44,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     public function testIndexWithCartNotFound()
     {
         // お客様情報を入力済の状態にするため, セッションにエンティティをセット.
-        $session = $this->container->get('session');
+        $session = self::$container->get('session');
         $session->set(OrderHelper::SESSION_NON_MEMBER, new Customer());
 
         $this->client->request('GET', '/shopping');
@@ -138,9 +138,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $Nonmember = $this->container->get('session')->get('eccube.front.shopping.nonmember');
+        $Nonmember = self::$container->get(OrderHelper::class)->getNonMember('eccube.front.shopping.nonmember');
         $this->assertNotNull($Nonmember);
-        $this->assertNotNull($this->container->get('session')->get('eccube.front.shopping.nonmember.customeraddress'));
+        $this->assertNotNull(self::$container->get('session')->get('eccube.front.shopping.nonmember.customeraddress'));
 
         $this->expected = $formData['name']['name01'];
         $this->actual = $Nonmember->getName01();

@@ -134,7 +134,7 @@ class CartService
                         $cartKeys[] = $Cart->getCartKey();
                     } else {
                         $this->entityManager->remove($this->carts[$index]);
-                        $this->entityManager->flush($this->carts[$index]);
+                        $this->entityManager->flush();
                         unset($this->carts[$index]);
                     }
                 }
@@ -177,7 +177,7 @@ class CartService
             return [];
         }
 
-        return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
+        return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'ASC']);
     }
 
     /**
@@ -281,10 +281,10 @@ class CartService
         foreach ($this->getCarts() as $Cart) {
             foreach ($Cart->getCartItems() as $i) {
                 $this->entityManager->remove($i);
-                $this->entityManager->flush($i);
+                $this->entityManager->flush();
             }
             $this->entityManager->remove($Cart);
-            $this->entityManager->flush($Cart);
+            $this->entityManager->flush();
         }
         $this->carts = [];
 
@@ -305,10 +305,10 @@ class CartService
                 if ($Cart) {
                     foreach ($Cart->getCartItems() as $i) {
                         $this->entityManager->remove($i);
-                        $this->entityManager->flush($i);
+                        $this->entityManager->flush();
                     }
                     $this->entityManager->remove($Cart);
-                    $this->entityManager->flush($Cart);
+                    $this->entityManager->flush();
                 }
                 $Cart = new Cart();
                 $Cart->setCartKey($cartKey);
@@ -400,9 +400,8 @@ class CartService
             $this->entityManager->persist($Cart);
             foreach ($Cart->getCartItems() as $item) {
                 $this->entityManager->persist($item);
-                $this->entityManager->flush($item);
             }
-            $this->entityManager->flush($Cart);
+            $this->entityManager->flush();
             $cartKeys[] = $Cart->getCartKey();
         }
 
@@ -446,7 +445,7 @@ class CartService
             $removed = $this->getCart();
             if ($removed && UnitOfWork::STATE_MANAGED === $this->entityManager->getUnitOfWork()->getEntityState($removed)) {
                 $this->entityManager->remove($removed);
-                $this->entityManager->flush($removed);
+                $this->entityManager->flush();
 
                 $cartKeys = [];
                 foreach ($Carts as $key => $Cart) {
@@ -459,7 +458,7 @@ class CartService
                 $this->session->set('cart_keys', $cartKeys);
                 // 注文完了のカートキーをセッションから削除する
                 $this->session->remove('cart_key');
-                $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
+                $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'ASC']);
             }
         }
 

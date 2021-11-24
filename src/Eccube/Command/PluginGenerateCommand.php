@@ -120,6 +120,8 @@ class PluginGenerateCommand extends Command
         $this->createGithubActions($pluginDir);
 
         $this->io->success(sprintf('Plugin was successfully created: %s %s %s', $name, $code, $version));
+
+        return 0;
     }
 
     public function validateCode($code)
@@ -193,7 +195,6 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/composer.json', $source);
     }
 
-
     /**
      * @param string $pluginDir
      */
@@ -232,7 +233,6 @@ jobs:
 
         $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
     }
-
 
     /**
      * @param string $pluginDir
@@ -373,7 +373,7 @@ class ConfigController extends AbstractController
         if (\$form->isSubmitted() && \$form->isValid()) {
             \$Config = \$form->getData();
             \$this->entityManager->persist(\$Config);
-            \$this->entityManager->flush(\$Config);
+            \$this->entityManager->flush();
             \$this->addSuccess('登録しました。', 'admin');
 
             return \$this->redirectToRoute('${snakecased}_admin_config');

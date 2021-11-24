@@ -28,7 +28,6 @@ use function unlink;
 
 class SystemService implements EventSubscriberInterface
 {
-    const MAINTENANCE_TOKEN_KEY = 'maintenance_token';
     const AUTO_MAINTENANCE = 'auto_maintenance';
     const AUTO_MAINTENANCE_UPDATE = 'auto_maintenance_update';
 
@@ -156,10 +155,8 @@ class SystemService implements EventSubscriberInterface
 
     public function getMaintenanceToken(): ?string
     {
+        $isMaintenanceMode = $this->isMaintenanceMode();
         $path = $this->container->getParameter('eccube_content_maintenance_file_path');
-        if (!file_exists($path)) {
-            return null;
-        }
 
         $contents = file_get_contents($path);
 
@@ -176,15 +173,6 @@ class SystemService implements EventSubscriberInterface
         }
     }
 
-    public function enableMaintenance($mode = self::AUTO_MAINTENANCE, bool $force = false): void
-    {
-        if ($force || !$this->isMaintenanceMode()) {
-            $path = $this->container->getParameter('eccube_content_maintenance_file_path');
-            $token = StringUtil::random(32);
-            file_put_contents($path, "{$mode}:{$token}");
-        }
-    }
-
     /**
      * メンテナンスモードを解除する
      *
@@ -196,21 +184,6 @@ class SystemService implements EventSubscriberInterface
     {
         $this->disableMaintenanceAfterResponse = true;
         $this->maintenanceMode = $mode;
-    }
-
-    public function disableMaintenanceNow($mode = self::AUTO_MAINTENANCE, bool $force = false): void
-    {
-        if (!$this->isMaintenanceMode()) {
-            return;
-        }
-
-        $path = $this->container->getParameter('eccube_content_maintenance_file_path');
-        $contents = file_get_contents($path);
-        $currentMode = explode(':', $contents)[0] ?? null;
-
-        if ($force || $currentMode === $mode) {
-            unlink($path);
-        }
     }
 
     /**

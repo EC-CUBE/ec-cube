@@ -46,7 +46,7 @@ class DeleteCartsCommandTest extends EccubeTestCase
         self::assertNotNull($this->entityManager->find(Cart::class, $id));
 
         /** @var DeleteCartsCommand $command */
-        $command = $this->container->get(DeleteCartsCommand::class);
+        $command = self::$container->get(DeleteCartsCommand::class);
 
         $tester = new CommandTester($command);
         $tomorrow = new \DateTime('+2day');
@@ -81,7 +81,7 @@ class DeleteCartsCommandTest extends EccubeTestCase
         self::assertNotNull($this->entityManager->find(Cart::class, $id));
 
         /** @var DeleteCartsCommand $command */
-        $command = $this->container->get(DeleteCartsCommand::class);
+        $command = self::$container->get(DeleteCartsCommand::class);
 
         $tester = new CommandTester($command);
         $tomorrow = new \DateTime('yesterday');

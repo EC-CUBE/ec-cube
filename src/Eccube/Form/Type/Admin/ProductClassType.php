@@ -13,6 +13,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\ClassCategory;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\Master\DeliveryDurationType;
 use Eccube\Form\Type\Master\SaleTypeType;
@@ -27,8 +29,6 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Entity\ClassCategory;
 
 class ProductClassType extends AbstractType
 {

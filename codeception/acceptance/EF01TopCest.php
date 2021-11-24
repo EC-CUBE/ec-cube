@@ -21,11 +21,11 @@ use Page\Front\TopPage;
  */
 class EF01TopCest
 {
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
@@ -42,7 +42,10 @@ class EF01TopCest
         }
     }
 
-    public function topページ_初期表示(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function topページ_初期表示(AcceptanceTester $I)
     {
         $I->wantTo('EF0101-UC01-T01 TOPページ 初期表示');
         TopPage::go($I);
@@ -87,7 +90,7 @@ class EF01TopCest
         $em->flush([$News1, $News2]);
     }
 
-    public function topページ_新着情報(\AcceptanceTester $I)
+    public function topページ_新着情報(AcceptanceTester $I)
     {
         $I->wantTo('EF0101-UC01-T02 TOPページ 新着情報');
 
@@ -115,7 +118,7 @@ class EF01TopCest
         $em->flush($News);
     }
 
-    public function topページ_カテゴリ検索(\AcceptanceTester $I)
+    public function topページ_カテゴリ検索(AcceptanceTester $I)
     {
         $I->wantTo('EF0101-UC02-T01 TOPページ カテゴリ検索');
         $topPage = TopPage::go($I);
@@ -128,7 +131,7 @@ class EF01TopCest
         $I->see('チェリーアイスサンド', '.ec-shelfGrid');
     }
 
-    public function topページ_全件検索(\AcceptanceTester $I)
+    public function topページ_全件検索(AcceptanceTester $I)
     {
         $I->wantTo('EF0101-UC03-T01 TOPページ 全件検索');
         $topPage = TopPage::go($I);
@@ -142,7 +145,7 @@ class EF01TopCest
         $I->assertTrue((count($products) >= 2));
     }
 
-    public function topページ_カテゴリ絞込検索(\AcceptanceTester $I)
+    public function topページ_カテゴリ絞込検索(AcceptanceTester $I)
     {
         $I->wantTo('EF0101-UC03-T02 TOPページ カテゴリ絞込検索');
         $topPage = TopPage::go($I);
@@ -161,7 +164,7 @@ class EF01TopCest
         $I->dontSee('彩のジェラートCUBE', '.ec-shelfGrid');
     }
 
-    public function topページ_キーワード絞込検索(\AcceptanceTester $I)
+    public function topページ_キーワード絞込検索(AcceptanceTester $I)
     {
         $I->wantTo('EF0101-UC03-T02 TOPページ キーワード絞込検索');
         $topPage = TopPage::go($I);

@@ -25,15 +25,15 @@ use Page\Front\ProductDetailPage;
  */
 class EF05MypageCest
 {
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function mypage_初期表示(\AcceptanceTester $I)
+    public function mypage_初期表示(AcceptanceTester $I)
     {
         $I->wantTo('EF0501-UC01-T01 Mypage 初期表示');
         $createCustomer = Fixtures::get('createCustomer');
@@ -44,7 +44,7 @@ class EF05MypageCest
         MyPage::at($I);
     }
 
-    public function mypage_ご注文履歴_(\AcceptanceTester $I)
+    public function mypage_ご注文履歴_(AcceptanceTester $I)
     {
         $I->wantTo('EF0502-UC01-T01 Mypage ご注文履歴');
         $createCustomer = Fixtures::get('createCustomer');
@@ -63,7 +63,10 @@ class EF05MypageCest
         $I->see('詳細を見る', 'div.ec-historyRole p.ec-historyListHeader__action a');
     }
 
-    public function mypage_ご注文履歴詳細(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function mypage_ご注文履歴詳細(AcceptanceTester $I)
     {
         $I->wantTo('EF0503-UC01-T01 Mypage ご注文履歴詳細');
         $createCustomer = Fixtures::get('createCustomer');
@@ -90,7 +93,11 @@ class EF05MypageCest
         $I->see('合計', 'div.ec-orderRole__summary div.ec-totalBox .ec-totalBox__total');
     }
 
-    public function mypage_お気に入り一覧(\AcceptanceTester $I)
+    /**
+     * @group excludeCoverage
+     * @group vaddy
+     */
+    public function mypage_お気に入り一覧(AcceptanceTester $I)
     {
         $I->wantTo('EF0508-UC01-T01 Mypage お気に入り一覧');
         $createCustomer = Fixtures::get('createCustomer');
@@ -115,7 +122,10 @@ class EF05MypageCest
         $I->acceptPopup();
     }
 
-    public function mypage_会員情報編集(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function mypage_会員情報編集(AcceptanceTester $I)
     {
         $I->wantTo('EF0504-UC01-T01 Mypage 会員情報編集');
         $createCustomer = Fixtures::get('createCustomer');
@@ -166,7 +176,7 @@ class EF05MypageCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
-    public function mypage_お届け先編集表示(\AcceptanceTester $I)
+    public function mypage_お届け先編集表示(AcceptanceTester $I)
     {
         $I->wantTo('EF0506-UC01-T01 Mypage お届け先編集表示');
         $createCustomer = Fixtures::get('createCustomer');
@@ -179,7 +189,10 @@ class EF05MypageCest
         $I->see('お届け先一覧', 'div.ec-pageHeader h1');
     }
 
-    public function mypage_お届け先編集作成変更(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function mypage_お届け先編集作成変更(AcceptanceTester $I)
     {
         $I->wantTo('EF0506-UC01-T02 Mypage お届け先編集作成変更');
         $createCustomer = Fixtures::get('createCustomer');
@@ -236,9 +249,13 @@ class EF05MypageCest
         $I->see('大阪市南区', 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
     }
 
-    public function mypage_お届け先編集削除(\AcceptanceTester $I)
+    /**
+     * @group excludeCoverage
+     * @vaddy
+     */
+    public function mypage_お届け先編集削除(AcceptanceTester $I)
     {
-        $I->wantTo('EF0503-UC01-T01 Mypage お届け先編集削除');
+        $I->wantTo('EF0506-UC03-T01 Mypage お届け先編集削除');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -269,7 +286,7 @@ class EF05MypageCest
         $I->see('お届け先は登録されていません。', '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > div > div > div:nth-child(2) > p');
     }
 
-    public function mypage_退会手続き未実施(\AcceptanceTester $I)
+    public function mypage_退会手続き未実施(AcceptanceTester $I)
     {
         $I->wantTo('EF0507-UC03-T01 Mypage 退会手続き 未実施');
         $createCustomer = Fixtures::get('createCustomer');
@@ -289,7 +306,10 @@ class EF05MypageCest
         MyPage::at($I);
     }
 
-    public function mypage_退会手続き(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function mypage_退会手続き(AcceptanceTester $I)
     {
         $I->wantTo('EF0507-UC03-T02 Mypage 退会手続き');
         $createCustomer = Fixtures::get('createCustomer');

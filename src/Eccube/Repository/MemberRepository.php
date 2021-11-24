@@ -51,7 +51,9 @@ class MemberRepository extends AbstractRepository
         $Member2->setSortNo($sortNo);
 
         $em = $this->getEntityManager();
-        $em->flush([$Member, $Member2]);
+        $em->persist($Member);
+        $em->persist($Member2);
+        $em->flush();
     }
 
     /**
@@ -74,7 +76,9 @@ class MemberRepository extends AbstractRepository
         $Member2->setSortNo($sortNo);
 
         $em = $this->getEntityManager();
-        $em->flush([$Member, $Member2]);
+        $em->persist($Member);
+        $em->persist($Member2);
+        $em->flush();
     }
 
     /**
@@ -95,7 +99,7 @@ class MemberRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->persist($Member);
-        $em->flush($Member);
+        $em->flush();
     }
 
     /**
@@ -117,7 +121,13 @@ class MemberRepository extends AbstractRepository
             ->execute();
 
         $em = $this->getEntityManager();
+
+        // ログインしたメンバーの外部参照制約を解除する
+        // https://github.com/EC-CUBE/ec-cube/issues/5119
+        $Member->setCreator(null);
+        $em->flush();
+
         $em->remove($Member);
-        $em->flush($Member);
+        $em->flush();
     }
 }

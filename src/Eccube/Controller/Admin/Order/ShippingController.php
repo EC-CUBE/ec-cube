@@ -125,7 +125,7 @@ class ShippingController extends AbstractController
     /**
      * 出荷登録/編集画面.
      *
-     * @Route("/%eccube_admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit")
+     * @Route("/%eccube_admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit", methods={"GET", "POST"})
      * @Template("@admin/Order/shipping.twig")
      */
     public function index(Request $request, Order $Order)
@@ -184,7 +184,6 @@ class ShippingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             // 削除された項目の削除
             /** @var Shipping $OriginShipping */
             foreach ($OriginShippings as $key => $OriginShipping) {
@@ -294,7 +293,7 @@ class ShippingController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail")
+     * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail", methods={"GET"})
      *
      * @param Shipping $Shipping
      *

@@ -57,25 +57,25 @@ class PriceTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidData_PriceLen()
+    public function testValidDataPriceLen()
     {
         $this->form->submit(str_repeat('1', $this->eccubeConfig['eccube_price_len']));
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidData_Blank()
+    public function testInvalidDataBlank()
     {
         $this->form->submit('');
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_Minus()
+    public function testInvalidDataMinus()
     {
         $this->form->submit('-1');
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_PriceLen()
+    public function testInvalidDataPriceLen()
     {
         $this->form->submit($this->eccubeConfig['eccube_price_max'] + 1);
         $this->assertFalse($this->form->isValid());

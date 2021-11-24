@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.1, 7.2, 7.3, 7.4 ]
+        php: [ '7.3', '7.4' ]
         db: [ mysql, pgsql, sqlite3 ]
         include:
           - db: mysql
@@ -28,7 +28,7 @@ jobs:
             database_server_version: 5
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 11
+            database_server_version: 14
           - db: sqlite3
             database_url: sqlite:///var/eccube.db
             database_server_version: 3
@@ -42,7 +42,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:11
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -72,9 +72,7 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: composer install
-        run: |
-          sudo composer selfupdate --1
-          composer install --dev --no-interaction -o --apcu-autoloader
+        run: composer install --dev --no-interaction -o --apcu-autoloader
 
       - name: Setup EC-CUBE
         env:
@@ -90,7 +88,7 @@ jobs:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.11025'
         run: |
           bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine
           bin/phpunit --group cache-clear

@@ -99,10 +99,10 @@ class TaxRuleRepository extends AbstractRepository
     /**
      * 現在有効な税率設定情報を返す
      *
-     * @param  int|null|\Eccube\Entity\Product        $Product      商品
-     * @param  int|null|\Eccube\Entity\ProductClass   $ProductClass 商品規格
-     * @param  int|null|\Eccube\Entity\Master\Pref    $Pref         都道府県
-     * @param  int|null|\Eccube\Entity\Master\Country $Country      国
+     * @param  int|\Eccube\Entity\Product|null        $Product      商品
+     * @param  int|\Eccube\Entity\ProductClass|null   $ProductClass 商品規格
+     * @param  int|\Eccube\Entity\Master\Pref|null    $Pref         都道府県
+     * @param  int|\Eccube\Entity\Master\Country|null $Country      国
      *
      * @return \Eccube\Entity\TaxRule                 税設定情報
      *

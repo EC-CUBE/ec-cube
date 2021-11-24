@@ -15,12 +15,12 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Annotation\EntityExtension;
 use Eccube\Service\EntityProxyService;
+use Eccube\Tests\EccubeTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use Eccube\Tests\EccubeTestCase;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class EntityProxyServiceTest extends EccubeTestCase
 {
@@ -41,7 +41,7 @@ class EntityProxyServiceTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->entityProxyService = $this->container->get(EntityProxyService::class);
+        $this->entityProxyService = self::$container->get(EntityProxyService::class);
 
         $this->tempOutputDir = tempnam(sys_get_temp_dir(), 'ProxyGeneratorTest');
         unlink($this->tempOutputDir);
@@ -87,7 +87,7 @@ class EntityProxyServiceTest extends EccubeTestCase
 
     public function testGenerateFromOriginalFile()
     {
-        $this->markTestSkipped();
+        $this->markTestIncomplete();
 
         $findSequence = static function (Tokens $tokens) {
             return $tokens->findSequence([
@@ -107,12 +107,12 @@ class EntityProxyServiceTest extends EccubeTestCase
 
         // private $hoge;を挿入
         $additionalVariableTokens = [
-            new Token([T_WHITESPACE, PHP_EOL . '    ']),
+            new Token([T_WHITESPACE, PHP_EOL.'    ']),
             new Token([T_PRIVATE, 'private']),
             new Token([T_WHITESPACE, ' ']),
             new Token([T_VARIABLE, '$hoge']),
             new Token(';'),
-            new Token([T_WHITESPACE, PHP_EOL])
+            new Token([T_WHITESPACE, PHP_EOL]),
         ];
 
         $classTokens = $tokens->findSequence([[T_CLASS], [T_STRING]]);

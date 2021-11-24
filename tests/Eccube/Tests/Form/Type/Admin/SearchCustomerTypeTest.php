@@ -36,7 +36,7 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
             ->getForm();
     }
 
-    public function testPhoneNumber_NotValidData()
+    public function testPhoneNumberNotValidData()
     {
         $formData = [
             'phone_number' => str_repeat('A', 55),
@@ -46,7 +46,7 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testBuyProductName_NotValiedData()
+    public function testBuyProductNameNotValiedData()
     {
         $formData = [
             'buy_product_name' => str_repeat('A', $this->eccubeConfig['eccube_stext_len'] + 1),

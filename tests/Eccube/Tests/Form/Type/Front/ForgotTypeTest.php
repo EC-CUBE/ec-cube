@@ -79,7 +79,7 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_Blank()
+    public function testInvalidBlank()
     {
         $this->formData['login_email'] = 'example@example.com';
 

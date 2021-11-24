@@ -25,8 +25,8 @@ use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class PluginService
 {
@@ -220,9 +220,9 @@ class PluginService
             // 依存プラグインが有効になっていない場合はエラー
             $requires = $this->getPluginRequired($config);
             $notInstalledOrDisabled = array_filter($requires, function ($req) {
-                $code = preg_replace('/^ec-cube\//', '', $req['name']);
+                $code = preg_replace('/^ec-cube\//i', '', $req['name']);
                 /** @var Plugin $DependPlugin */
-                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+                $DependPlugin = $this->pluginRepository->findByCode($code);
 
                 return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
             });
@@ -540,7 +540,7 @@ class PluginService
                 ->setCode($meta['code']);
 
             $this->entityManager->persist($p);
-            $this->entityManager->flush($p);
+            $this->entityManager->flush();
 
             $this->pluginApiService->pluginInstalled($p);
         } catch (\Exception $e) {
@@ -793,7 +793,7 @@ class PluginService
 
         $results = [];
 
-        $this->composerService->foreachRequires('ec-cube/'.$pluginCode, $pluginVersion, function ($package) use (&$results) {
+        $this->composerService->foreachRequires('ec-cube/'.strtolower($pluginCode), $pluginVersion, function ($package) use (&$results) {
             $results[] = $package;
         }, 'eccube-plugin');
 
@@ -845,7 +845,8 @@ class PluginService
                 if (!isset($json['require'])) {
                     continue;
                 }
-                if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require'])) {
+                if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require']) // 前方互換用
+                    || array_key_exists(self::VENDOR_NAME.'/'.strtolower($pluginCode), $json['require'])) {
                     $dependents[] = $plugin->getCode();
                 }
             }
@@ -967,7 +968,10 @@ class PluginService
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
         }
         // Find plugin in array
-        $index = array_search($pluginCode, array_column($plugins, 'product_code'));
+        $index = array_search($pluginCode, array_column($plugins, 'product_code')); // 前方互換用
+        if (false === $index) {
+            $index = array_search(strtolower($pluginCode), array_column($plugins, 'product_code'));
+        }
 
         return $index;
     }

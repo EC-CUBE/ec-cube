@@ -18,8 +18,8 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
 use Eccube\Repository\Master\OrderStatusRepository;
-use Eccube\Repository\OrderRepository;
 use Eccube\Repository\OrderPdfRepository;
+use Eccube\Repository\OrderRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
 use Symfony\Component\DomCrawler\Crawler;
@@ -42,9 +42,9 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->orderStatusRepo = $this->container->get(OrderStatusRepository::class);
-        $this->orderRepo = $this->container->get(OrderRepository::class);
-        $this->orderPdfRepository = $this->container->get(OrderPdfRepository::class);
+        $this->orderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
+        $this->orderRepo = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->orderPdfRepository = $this->entityManager->getRepository(\Eccube\Entity\OrderPdf::class);
     }
 
     /**
@@ -390,7 +390,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertCount(1, $OrderPdfs, '1件保存されているはず');
 
         $OrderPdf = current($OrderPdfs);
-        $token = $this->container->get('security.token_storage')->getToken();
+        $token = self::$container->get('security.token_storage')->getToken();
         $adminTest = $token->getUser();
         $this->assertEquals($adminTest->getId(), $OrderPdf->getMemberId(), '管理ユーザーのIDと一致するはず');
 

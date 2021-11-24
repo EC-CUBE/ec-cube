@@ -80,4 +80,9 @@ class DeliveryManagePage extends AbstractAdminPageStyleGuide
 
         return $this;
     }
+
+    public function 一覧_件数取得()
+    {
+        return count($this->tester->grabMultiple('.c-contentsArea__primaryCol li.sortable-item'));
+    }
 }

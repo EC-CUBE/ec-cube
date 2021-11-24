@@ -146,14 +146,9 @@ file that was distributed with this source code.
                                             {{ form_widget(form.name) }}
                                             {{ form_errors(form.name) }}
                                         </div>
-                                        <div class="col-auto align-items-center">
-                                            <button class="btn btn-ec-regular" type="submit">
-                                                {{ 'admin.common.create__new'|trans }}
-                                            </button>
-                                        </div>
 
                                         {# エンティティ拡張の自動出力 #}
-                                        {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                        {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                             {% if f.vars.eccube_form_options.form_theme %}
                                                 {% form_theme f f.vars.eccube_form_options.form_theme %}
                                                 {{ form_row(f) }}
@@ -167,7 +162,13 @@ file that was distributed with this source code.
                                                 </div>
                                             {% endif %}
                                         {% endfor %}
-                                    </form>
+
+                                        <div class="col-auto align-items-center">
+                                            <button class="btn btn-ec-regular" type="submit">
+                                                {{ 'admin.common.create__new'|trans }}
+                                            </button>
+                                        </div>
+                                  </form>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="row">
@@ -212,7 +213,7 @@ file that was distributed with this source code.
                                             </div>
 
                                             {# エンティティ拡張の自動出力 #}
-                                            {% for f in forms[Tag.id] if f.vars.eccube_form_options.auto_render %}
+                                            {% for f in forms[Tag.id]|filter(f => f.vars.eccube_form_options.auto_render) %}
                                                 {% if f.vars.eccube_form_options.form_theme %}
                                                     {% form_theme f f.vars.eccube_form_options.form_theme %}
                                                     {{ form_row(f) }}

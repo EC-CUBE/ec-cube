@@ -27,7 +27,13 @@ file that was distributed with this source code.
                         <div class="card-header"><span class="card-title">{{ 'admin.store.template.upload_new_template'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row mb-2">
-                                <div class="col-2"><span>{{ 'admin.store.template.template_code'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                <div class="col-2">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                         title="{{ 'tooltip.store.template.template_code'|trans }}">
+                                        <span>{{ 'admin.store.template.template_code'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
+                                </div>
                                 <div class="col-10">
                                     {{ form_widget(form.code) }}
                                     {{ form_errors(form.code) }}
@@ -35,7 +41,13 @@ file that was distributed with this source code.
                             </div>
 
                             <div class="row mb-2">
-                                <div class="col-2"><span>{{ 'admin.store.template.template_name'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                <div class="col-2">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                         title="{{ 'tooltip.store.template.template_name'|trans }}">
+                                        <span>{{ 'admin.store.template.template_name'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
+                                </div>
                                 <div class="col-10">
                                     {{ form_widget(form.name) }}
                                     {{ form_errors(form.name) }}
@@ -43,7 +55,12 @@ file that was distributed with this source code.
                             </div>
 
                             <div class="row mb-2">
-                                <div class="col-2"><span>{{ 'admin.store.template.template_file'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                <div class="col-2">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                         title="{{ 'tooltip.store.template.template_file'|trans }}">
+                                        <span>{{ 'admin.store.template.template_file'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
                                     <br>{{ 'admin.store.template.file_format'|trans }}
                                 </div>
                                 <div class="col-10">

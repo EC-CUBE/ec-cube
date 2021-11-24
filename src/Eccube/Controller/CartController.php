@@ -20,10 +20,10 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
-use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,7 +73,7 @@ class CartController extends AbstractController
     /**
      * カート画面.
      *
-     * @Route("/cart", name="cart")
+     * @Route("/cart", name="cart", methods={"GET"})
      * @Template("Cart/index.twig")
      */
     public function index(Request $request)
@@ -130,7 +130,7 @@ class CartController extends AbstractController
     /**
      * @param $Carts
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
      */
     protected function execPurchaseFlow($Carts)
     {
@@ -170,6 +170,8 @@ class CartController extends AbstractController
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -233,7 +235,7 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "[a-zA-Z0-9]+[_][\x20-\x7E]+"})
+     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "[a-zA-Z0-9]+[_][\x20-\x7E]+"}, methods={"GET"})
      */
     public function buystep(Request $request, $cart_key)
     {

@@ -52,6 +52,9 @@ class InstallController extends AbstractController
      */
     const DEFAULT_AUTH_MAGIC = '<change.me>';
 
+    /** @var string */
+    const TRANSACTION_CHECK_FILE = '/var/.httransaction';
+
     protected $requiredModules = [
         'pdo',
         'phar',
@@ -108,8 +111,8 @@ class InstallController extends AbstractController
     /**
      * 最初からやり直す場合、SESSION情報をクリア.
      *
-     * @Route("/", name="homepage")
-     * @Route("/install", name="install")
+     * @Route("/", name="homepage", methods={"GET"})
+     * @Route("/install", name="install", methods={"GET"})
      *
      * @Template("index.twig")
      *
@@ -129,10 +132,8 @@ class InstallController extends AbstractController
     /**
      * ようこそ.
      *
-     * @Route("/install/step1", name="install_step1")
+     * @Route("/install/step1", name="install_step1", methods={"GET", "POST"})
      * @Template("step1.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -171,7 +172,7 @@ class InstallController extends AbstractController
     /**
      * ディレクトリとファイルの書き込み権限をチェック.
      *
-     * @Route("/install/step2", name="install_step2")
+     * @Route("/install/step2", name="install_step2", methods={"GET"})
      * @Template("step2.twig")
      *
      * @return array
@@ -247,10 +248,8 @@ class InstallController extends AbstractController
     /**
      * サイトの設定.
      *
-     * @Route("/install/step3", name="install_step3")
+     * @Route("/install/step3", name="install_step3", methods={"GET", "POST"})
      * @Template("step3.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
@@ -321,10 +320,8 @@ class InstallController extends AbstractController
     /**
      * データベースの設定.
      *
-     * @Route("/install/step4", name="install_step4")
+     * @Route("/install/step4", name="install_step4", methods={"GET", "POST"})
      * @Template("step4.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
@@ -372,10 +369,8 @@ class InstallController extends AbstractController
     /**
      * データベースの初期化.
      *
-     * @Route("/install/step5", name="install_step5")
+     * @Route("/install/step5", name="install_step5", methods={"GET", "POST"})
      * @Template("step5.twig")
-     *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
@@ -458,7 +453,7 @@ class InstallController extends AbstractController
     /**
      * インストール完了
      *
-     * @Route("/install/complete", name="install_complete")
+     * @Route("/install/complete", name="install_complete", methods={"GET"})
      * @Template("complete.twig")
      */
     public function complete(Request $request)
@@ -503,10 +498,16 @@ class InstallController extends AbstractController
 
         $this->removeSessionData($this->session);
 
+        // 有効化URLのトランザクションチェックファイルを生成する
+        $token = StringUtil::random(32);
+        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10).':'.$token);
+
         $this->cacheUtil->clearCache('prod');
 
         return [
             'admin_url' => $adminUrl,
+            'is_sqlite' => strpos($databaseUrl, 'sqlite') !== false,
+            'token' => $token,
         ];
     }
 
@@ -607,8 +608,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array $params
-     *
      * @return string
      */
     public function createDatabaseUrl(array $params)
@@ -679,8 +678,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array $params
-     *
      * @return string
      *
      * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
@@ -956,7 +953,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array $params
-     * @param EntityManager $em
      *
      * @return array
      */
@@ -978,7 +974,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array $params
-     * @param EntityManager $em
      */
     protected function sendAppData($params, EntityManager $em)
     {
@@ -1007,8 +1002,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param EntityManager $em
-     *
      * @return string
      */
     public function getDatabaseVersion(EntityManager $em)
