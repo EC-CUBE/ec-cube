@@ -19,8 +19,10 @@ use Page\Admin\LayoutEditPage;
 use Page\Admin\LayoutManagePage;
 use Page\Admin\NewsEditPage;
 use Page\Admin\NewsManagePage;
+use Page\Admin\MaintenanceManagePage;
 use Page\Admin\PageEditPage;
 use Page\Admin\PageManagePage;
+use Page\Front\TopPage;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -366,5 +368,48 @@ class EA06ContentsManagementCest
 
         $I->amOnPage('/');
         $I->dontSeeElement(['id' => $block]);
+    }
+
+    public function contentsmanagement_メンテナンス管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0607-UC08-T01_メンテナンス管理');
+
+        $I->expect('メンテナンスモードを有効にします');
+        MaintenanceManagePage::go($I)
+            ->メンテナンス有効無効();
+        $I->see('メンテナンスモードを有効にしました。', MaintenanceManagePage::$完了メッセージ);
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->see('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->see('全ての商品', TopPage::$検索_カテゴリ選択);
+
+        $I->expect('ログアウトします');
+        $config = Fixtures::get('config');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/logout');
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->see('ただいまメンテナンス中です。', 'body > div > div > div > div > p.ec-404Role__title.ec-reportHeading');
+
+        // 画面遷移がスムーズにいかない場合があるため、ログイン画面に遷移させておく
+        $account = Fixtures::get('admin_account');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/login');
+        $I->submitForm('#form1', [
+            'login_id' => $account['member'],
+            'password' => $account['password'],
+        ]);
+
+        $I->expect('メンテナンスモードを無効にします');
+
+        MaintenanceManagePage::go($I)
+            ->メンテナンス有効無効();
+        $I->see('メンテナンスモードを無効にしました。', MaintenanceManagePage::$完了メッセージ);
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->see('全ての商品', TopPage::$検索_カテゴリ選択);
     }
 }
