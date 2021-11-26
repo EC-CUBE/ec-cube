@@ -82,9 +82,8 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
-        run: |
-          bin/phpunit --version
-          bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
+        continue-on-error: true
+        run: bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
       - name: Upload report
         if: success()
         uses: actions/upload-artifact@v2
@@ -210,6 +209,7 @@ jobs:
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
           XDEBUG_MODE: coverage
+        continue-on-error: true
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group excludeCoverage --coverage --coverage-xml
       - name: Upload outputs
         uses: actions/upload-artifact@v2
