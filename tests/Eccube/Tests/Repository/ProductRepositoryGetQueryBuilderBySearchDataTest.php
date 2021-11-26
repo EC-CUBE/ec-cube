@@ -401,8 +401,9 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         // * 商品B に タグ 2, 2 を設定
         $Products = $this->productRepository->findAll();
         $Products[1]->setName('りんご');
-        $this->setProductTags($Products[1], [1]);
-        $this->setProductTags($Products[2], [1, 2]);
+        $this->setProductTags($Products[0], [1]);
+        $this->setProductTags($Products[1], [1, 2]);
+        $this->setProductTags($Products[2], []);
         $this->entityManager->flush();
 
         // タグ 1 で検索
