@@ -22,9 +22,6 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
-use Eccube\Repository\Master\OrderStatusRepository;
-use Eccube\Repository\Master\SaleTypeRepository;
-use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
 
@@ -46,13 +43,13 @@ class OrderTest extends EccubeTestCase
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
-        $TaxRule = $this->container->get(TaxRuleRepository::class)->getByRule();
+        $TaxRule = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class)->getByRule();
         $this->rate = $TaxRule->getTaxRate();
     }
 
     public function testConstructor()
     {
-        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::PROCESSING);
+        $OrderStatus = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class)->find(OrderStatus::PROCESSING);
         $Order = new Order($OrderStatus);
 
         $this->expected = 0;
@@ -113,7 +110,7 @@ class OrderTest extends EccubeTestCase
 
     public function testGetSaleTypes()
     {
-        $this->expected = [$this->container->get(SaleTypeRepository::class)->find(1)];
+        $this->expected = [$this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class)->find(1)];
         $this->actual = $this->Order->getSaleTypes();
         $this->verify();
     }
@@ -122,7 +119,7 @@ class OrderTest extends EccubeTestCase
     {
         $faker = $this->getFaker();
         /** @var Order $Order */
-        $Order = $this->container->get(Generator::class)->createOrder(
+        $Order = self::$container->get(Generator::class)->createOrder(
             $this->Customer,
             [],
             null,
@@ -195,7 +192,7 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableTotalByTaxRate()
     {
         $Order = $this->createTestOrder();
-        self::assertArraySubset([10 => 220, 8 => 216,], $Order->getTaxableTotalByTaxRate());
+        self::assertArraySubset([10 => 220, 8 => 216], $Order->getTaxableTotalByTaxRate());
     }
 
     public function testGetTaxableDiscountItems()

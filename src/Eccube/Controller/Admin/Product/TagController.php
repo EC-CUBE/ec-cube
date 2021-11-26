@@ -38,7 +38,7 @@ class TagController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/tag", name="admin_product_tag")
+     * @Route("/%eccube_admin_route%/product/tag", name="admin_product_tag", methods={"GET", "POST"})
      * @Template("@admin/Product/tag.twig")
      *
      * @param Request $request

@@ -98,6 +98,43 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
+    public function testCompleteWithSanitize()
+    {
+        $this->client->enableProfiler();
+        $form = $this->createFormData();
+        $form['name']['name01'] .= '<Sanitize&>';
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('contact'),
+            ['contact' => $form,
+                  'mode' => 'complete', ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
+
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+
+        $mailCollector = $this->getMailCollector(false);
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+
+        $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
+        $this->actual = $Message->getSubject();
+        $this->verify();
+
+        $this->assertContains('＜Sanitize＆＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+
+        $MultiPart = $Message->getChildren();
+        foreach ($MultiPart as $Part) {
+            if ($Part->getContentType() == 'text/html') {
+                $this->assertContains('＜Sanitize＆＞', $Part->getBody(), 'HTMLメールがサニタイズされている');
+            }
+        }
+    }
+
     /**
      * 必須項目のみのテストケース
      *

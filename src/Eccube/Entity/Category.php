@@ -368,7 +368,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
          *
          * @return Category
          */
-        public function addProductCategory(\Eccube\Entity\ProductCategory $productCategory)
+        public function addProductCategory(ProductCategory $productCategory)
         {
             $this->ProductCategories[] = $productCategory;
 
@@ -382,7 +382,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductCategory(\Eccube\Entity\ProductCategory $productCategory)
+        public function removeProductCategory(ProductCategory $productCategory)
         {
             return $this->ProductCategories->removeElement($productCategory);
         }
@@ -404,7 +404,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
          *
          * @return Category
          */
-        public function addChild(\Eccube\Entity\Category $child)
+        public function addChild(Category $child)
         {
             $this->Children[] = $child;
 
@@ -418,7 +418,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeChild(\Eccube\Entity\Category $child)
+        public function removeChild(Category $child)
         {
             return $this->Children->removeElement($child);
         }
@@ -440,7 +440,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
          *
          * @return Category
          */
-        public function setParent(\Eccube\Entity\Category $parent = null)
+        public function setParent(Category $parent = null)
         {
             $this->Parent = $parent;
 
@@ -464,7 +464,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
          *
          * @return Category
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

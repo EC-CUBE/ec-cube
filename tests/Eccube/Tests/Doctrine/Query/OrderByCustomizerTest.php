@@ -29,7 +29,7 @@ class OrderByCustomizerTest extends EccubeTestCase
         self::assertEquals('SELECT p FROM Product p', $builder->getDQL());
     }
 
-    public function testCustomizeNop_Should_not_Override()
+    public function testCustomizeNopShouldNotOverride()
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
@@ -39,7 +39,7 @@ class OrderByCustomizerTest extends EccubeTestCase
         self::assertEquals('SELECT p FROM Product p ORDER BY name desc', $builder->getDQL());
     }
 
-    public function testCustomize_Override()
+    public function testCustomizeOverride()
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
@@ -53,7 +53,7 @@ class OrderByCustomizerTest extends EccubeTestCase
         self::assertEquals('SELECT p FROM Product p ORDER BY productId asc', $builder->getDQL());
     }
 
-    public function testCustomize_Override_with_multi_clause()
+    public function testCustomizeOverrideWithMultiClause()
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');

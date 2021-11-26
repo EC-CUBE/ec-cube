@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class AuthenticationHandlerTest extends AbstractWebTestCase
 {
-    /** @var Entity\Customer  */
+    /** @var Entity\Customer */
     private $Customer;
 
     public function setUp()

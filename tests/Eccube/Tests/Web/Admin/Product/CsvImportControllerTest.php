@@ -42,8 +42,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->productRepo = $this->container->get(ProductRepository::class);
-        $this->categoryRepo = $this->container->get(CategoryRepository::class);
+        $this->productRepo = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $this->categoryRepo = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
         $this->filepath = __DIR__.'/products.csv';
         copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
@@ -373,7 +373,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->eccubeConfig;
         $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
-        $this->container->setParameter('eccube.constants', $config);
+        self::$container->setParameter('eccube.constants', $config);
 
         $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,税率'."\n");
 
@@ -422,9 +422,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
                     $ProductClass->getStock(),
                     $ProductClass->isStockUnlimited(),
                     $ProductClass->getSaleLimit(),
-                    (int)$ProductClass->getPrice01(),
-                    (int)$ProductClass->getPrice02(),
-                    $ProductClass->getDeliveryFee()
+                    (int) $ProductClass->getPrice01(),
+                    (int) $ProductClass->getPrice02(),
+                    $ProductClass->getDeliveryFee(),
                 ];
             }
         }
@@ -597,7 +597,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->eccubeConfig;
         $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
-        $this->container->setParameter('eccube.constants', $config);
+        self::$container->setParameter('eccube.constants', $config);
 
         $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID,カテゴリ削除フラグ'."\n");
 
@@ -870,6 +870,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     /**
      * @dataProvider dataDescriptionDetailProvider
+     *
      * @see https://github.com/EC-CUBE/ec-cube/pull/4218
      */
     public function testImportDescriptionetail($length, $selector, $pattern)
@@ -900,6 +901,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param $optionTaxRule
      * @param $preTaxRate
      * @param $postTaxRate
+     *
      * @throws \Exception
      */
     public function testImportTaxRule($optionTaxRule, $preTaxRate, $postTaxRate)
@@ -947,7 +949,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function testDeleteImage()
     {
         /** @var \Eccube\Tests\Fixture\Generator $generator */
-        $generator = $this->container->get(\Eccube\Tests\Fixture\Generator::class);
+        $generator = self::$container->get(\Eccube\Tests\Fixture\Generator::class);
         $Product1 = $generator->createProduct(null, 0, 'abstract');
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 
@@ -971,9 +973,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->filepath = $this->createCsvFromArray($csv);
         $this->scenario();
 
-        $dir = __DIR__ . '/../../../../../../html/upload/save_image/';
-        $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
-        $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
+        $dir = __DIR__.'/../../../../../../html/upload/save_image/';
+        $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
+        $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
     }
 
     /**
@@ -1055,7 +1057,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_csv_split_import'),
             [
                 'file_name' => $fileName,
-                'file_no' => $fileNo
+                'file_no' => $fileNo,
             ],
             [],
             ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']

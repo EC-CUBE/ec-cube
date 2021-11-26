@@ -13,8 +13,8 @@
 
 namespace Eccube\Repository\Master;
 
-use Eccube\Repository\AbstractRepository;
 use Eccube\Entity\Master\Authority;
+use Eccube\Repository\AbstractRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**

@@ -14,23 +14,23 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductTag;
 use Eccube\Entity\Tag;
 use Eccube\Entity\TaxRule;
+use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Repository\ProductRepository;
+use Eccube\Repository\ProductTagRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
-use Eccube\Repository\ProductRepository;
-use Eccube\Repository\ProductTagRepository;
-use Eccube\Entity\BaseInfo;
-use Eccube\Repository\TaxRuleRepository;
-use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Entity\Product;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,11 +73,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->productRepository = $this->container->get(ProductRepository::class);
+        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
         $this->baseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
-        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
-        $this->productTagRepository = $this->container->get(ProductTagRepository::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
+        $this->productTagRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductTag::class);
 
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {
@@ -129,7 +129,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'description_detail' => $faker->realText,
             'description_list' => $faker->paragraph,
             'Category' => null,
-            'Tag' => 1,
+            'Tag' => [1],
             'search_word' => $faker->word,
             'free_area' => $faker->realText,
             'Status' => 1,
@@ -759,6 +759,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param string|null $currentRoundingTypeId 現在の RoundingType ID
      * @param string|null $expected RoundingType ID の期待値
      * @param bool $isNew 商品を新規作成の場合 true
+     *
      * @see https://github.com/EC-CUBE/ec-cube/issues/2114
      *
      * @dataProvider dataEditRoundingTypeProvider
@@ -916,7 +917,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -945,7 +946,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -954,7 +955,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testAddImage_NotAjax()
+    public function testAddImageNotAjax()
     {
         $formData = $this->createFormData();
 
@@ -968,7 +969,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(400, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testAddImage_MineNotSupported()
+    public function testAddImageMineNotSupported()
     {
         $formData = $this->createFormData();
         copy(
@@ -988,7 +989,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'admin_product' => $formData,
             ],
             [
-                'admin_product' => ['product_image' => [$image]]
+                'admin_product' => ['product_image' => [$image]],
             ],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -1058,7 +1059,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDeleteImage()
     {
         /** @var Generator $generator */
-        $generator = $this->container->get(Generator::class);
+        $generator = self::$container->get(Generator::class);
         $Product1 = $generator->createProduct(null, 0, 'abstract');
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 
@@ -1090,14 +1091,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $dir = __DIR__.'/../../../../../../html/upload/save_image/';
-        $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
-        $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
+        $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
+        $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
     }
 
     public function testDeleteAndDeleteProductImage()
     {
         /** @var Generator $generator */
-        $generator = $this->container->get(Generator::class);
+        $generator = self::$container->get(Generator::class);
         $Product1 = $generator->createProduct(null, 0, 'abstract');
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 
@@ -1129,7 +1130,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
         $dir = __DIR__.'/../../../../../../html/upload/save_image/';
-        $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
-        $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
+        $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
+        $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
     }
 }

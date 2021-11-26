@@ -29,6 +29,9 @@ services:
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
           $_orderStateMachine: '@state_machine.order'
 
+    event_dispatcher:
+        class: Eccube\Event\EventDispatcherWrapper
+        public: true
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -60,6 +63,18 @@ services:
 
     Eccube\Service\Composer\ComposerServiceInterface:
         factory: ['Eccube\Service\Composer\ComposerServiceFactory', createService]
+
+    Eccube\Service\Composer\ComposerApiService:
+        lazy: true
+        public: true
+
+    Eccube\Repository\PluginRepository:
+        lazy: true
+        public: true
+
+    Eccube\Service\PluginService:
+        lazy: true
+        public: true
 
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
@@ -180,3 +195,18 @@ services:
     Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
         arguments:
             - '@native_file_session_handler'
+
+    Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
+        public: true
+
+    SunCat\MobileDetectBundle\DeviceDetector\MobileDetector:
+        tags:
+          - { name: mobile_detect.mobile_detector.default }
+          - { name: mobile_detect.mobile_detector }
+        public: true
+
+    Eccube\Form\Extension\HTMLPurifierTextTypeExtension:
+        arguments:
+            - '@Eccube\Request\Context'
+        tags:
+            - { name: form.type_extension, priority: -99, extended_type: Symfony\Component\Form\Extension\Core\Type\TextType }

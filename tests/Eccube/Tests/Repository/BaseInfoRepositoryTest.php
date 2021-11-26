@@ -67,7 +67,7 @@ class BaseInfoRepositoryTest extends EccubeTestCase
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush();
         $this->id = $BaseInfo->getId();
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
     }
 
     public function testGetBaseInfoWithId()

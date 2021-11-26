@@ -47,8 +47,8 @@ class CustomerEditController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/customer/new", name="admin_customer_new")
-     * @Route("/%eccube_admin_route%/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit")
+     * @Route("/%eccube_admin_route%/customer/new", name="admin_customer_new", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit", methods={"GET", "POST"})
      * @Template("@admin/Customer/edit.twig")
      */
     public function index(Request $request, $id = null)

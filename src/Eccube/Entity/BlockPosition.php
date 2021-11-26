@@ -184,7 +184,7 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
          *
          * @return BlockPosition
          */
-        public function setBlock(\Eccube\Entity\Block $block = null)
+        public function setBlock(Block $block = null)
         {
             $this->Block = $block;
 
@@ -208,7 +208,7 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
          *
          * @return BlockPosition
          */
-        public function setLayout(\Eccube\Entity\Layout $Layout = null)
+        public function setLayout(Layout $Layout = null)
         {
             $this->Layout = $Layout;
 

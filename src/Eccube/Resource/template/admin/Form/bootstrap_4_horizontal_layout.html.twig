@@ -45,3 +45,7 @@ file that was distributed with this source code.
     {% endif %}
 {% endblock %}
 
+{%- block file_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control-file')|trim}) -%}
+    <input type="file" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock -%}

@@ -229,6 +229,13 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="col-6">
+                        <div class="form-row mb-2">
+                            <div class="col-6">
+                                <label class="col-form-label">{{ 'admin.product.tag'|trans }}</label>
+                                {{ form_widget(searchForm.tag_id) }}
+                                {{ form_errors(searchForm.tag_id) }}
+                            </div>
+                        </div>
                         <div class="mb-2">
                             <label class="col-form-label">
                                 {{ 'admin.common.create_date'|trans }}

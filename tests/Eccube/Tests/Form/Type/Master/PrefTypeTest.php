@@ -28,7 +28,7 @@ class PrefTypeTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->prefRepo = $this->container->get(PrefRepository::class);
+        $this->prefRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Pref::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
@@ -71,7 +71,7 @@ class PrefTypeTest extends AbstractTypeTestCase
     /**
      * 範囲外の値のテスト
      */
-    public function testInvalidData_Int()
+    public function testInvalidDataInt()
     {
         $this->form->submit(50);
         $this->assertFalse($this->form->isValid());
@@ -80,7 +80,7 @@ class PrefTypeTest extends AbstractTypeTestCase
     /**
      * 範囲外の値のテスト
      */
-    public function testInvalidData_String()
+    public function testInvalidDataString()
     {
         $this->form->submit('a');
         $this->assertFalse($this->form->isValid());
