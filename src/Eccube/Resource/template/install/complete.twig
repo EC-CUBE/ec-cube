@@ -12,6 +12,89 @@ file that was distributed with this source code.
 
 {% set current = 6 %}
 
+{% block script %}
+    <script>
+     $(function() {
+         var is_sqlite = {% if is_sqlite %}true{% else %}false{% endif %};
+         var plugin_content = $('#plugins').children().remove();
+         $('<tr><td>プラグインを読み込んでいます。しばらくお待ちください...</td></tr>').appendTo('#plugins');
+         $.ajaxSetup({
+             'headers': {
+                 'ECCUBE-CSRF-TOKEN': '{{ token }}'
+             }
+         });
+         $.get({ url: '{{ url('install_plugins') }}' },
+               function (data) {
+                   $('#plugins').children().remove();
+                   if (data.length === 0) {
+                       $('#plugins_switch').hide();
+                       return;
+                   }
+                   data.forEach(function (plugin) {
+                       var content = $(plugin_content).clone();
+                       var url = '{{ url('install_plugin_enable', { 'code': '__code__' }) }}';
+                       content.find('.btn-toggle').data('url', url.replace(/__code__/, encodeURIComponent(plugin.code)));
+                       content.find('.plugin_name').text(plugin.name);
+                       if (plugin.enabled) {
+                           content.find('.btn-enable')
+                                  .addClass('btn-success')
+                                  .addClass('active');
+                           content.find('.btn-disable')
+                                  .addClass('btn-default')
+                       } else {
+                           content.find('.btn-enable')
+                                  .addClass('btn-default');
+                           content.find('.btn-disable')
+                                  .addClass('btn-success')
+                                  .addClass('active');
+                       }
+                       if (is_sqlite && ['Api', 'GMC', 'SiteKit'].includes(plugin.code)) {
+                           content.find('.btn-toggle').text('SQLite3 には対応していません');
+                       }
+                       content.appendTo('#plugins');
+                   });
+               }
+         ).then(function () {
+             $('.btn-toggle').on('click', function () {
+                 var btn = $(this).find('.btn');
+                 btn.toggleClass('active');
+                 btn.toggleClass('btn-success');
+                 btn.toggleClass('btn-default');
+                 var statusText = $(this).find('.btn-success').text();
+                 var modal = $('#PluginProgressModal');
+                 modal.modal();
+                 var progress = $('div.progress', modal).show();
+                 var progress_message = $('#progress_message');
+                 modal.find('.modal-footer').hide();
+                 progress_message.text('プラグインを' + statusText + '化しています...');
+                 $.ajax(
+                     {
+                         url: $(this).data('url'),
+                         type: 'put'
+                     }
+                 ).done(function(data, textStatus, jqXHR) {
+                     progress.hide();
+                     modal.modal('hide');
+                  }).fail(function(jqXHR, textStatus, errorThrown) {
+                      modal.find('.modal-footer').show();
+                      btn.toggleClass('active');
+                      btn.toggleClass('btn-success');
+                      btn.toggleClass('btn-default');
+                      console.log(jqXHR);
+                      console.log(textStatus);
+                      console.log(errorThrown);
+                      if (jqXHR.status == 404) {
+                          progress_message.text('一定時間経過したため' + statusText + '化ができません。管理画面にログインし、オーナーズストア→プラグイン→プラグイン一覧から再度お試しください。');
+                      } else {
+                          progress_message.text(statusText + '化に失敗しました。');
+                      }
+                  });
+             })
+         });
+     });
+    </script>
+{% endblock %}
+
 {% block main %}
 <div id="main" class="step7">
     <div class="container-fluid">
@@ -20,14 +103,53 @@ file that was distributed with this source code.
                 <div class="page-header">
                     <h1>{{ 'install.completed'|trans }}</h1>
                 </div>
+                <div class="column" id="plugins_switch">
+                    <h2>以下のプラグインは有効化してすぐにご利用可能です</h2>
+                    <p><small>あとから管理画面→オーナーズストア→プラグイン一覧より有効化も可能です</small></p>
+                    <div class="card-body p-0">
+                        <table class="table table-sm">
+                            <tbody id="plugins">
+                                <tr>
+                                    <td class="text-left pl-3 plugin_name">__name__</td>
+                                    <td class="align-middle plugin_status">
+                                        <div class="btn-group btn-toggle" data-url="__url__">
+                                            <button class="btn btn-xs btn-enable">有効</button>
+                                            <button class="btn btn-xs btn-disable">無効</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="column">
                     <h2>{{ 'install.access_admin_page'|trans}}</h2>
                     <p>{{ 'install.perform_initial_setting'|trans }}</p>
-                    <div class="btn_area"><a href="{{ admin_url }}" class="btn btn-primary btn-block btn-lg">{{ 'install.go_to_admin_page'|trans }}</a></div>
+                    <div class="btn_area"><a href="{{ url('install_plugin_redirect') }}" class="btn btn-primary btn-block btn-lg">{{ 'install.go_to_admin_page'|trans }}</a></div>
                 </div>
             </div>
             <!-- /.col -->
         </div>
     </div>
 </div>
+<div class="modal fade" id="PluginProgressModal" tabindex="-1" role="dialog"
+     aria-labelledby="PluginProgressModal" aria-hidden="true"
+     data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="progress_message"></h5>
+            </div>
+            <div class="modal-body text-left">
+                <div class="progress" style="display: none">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

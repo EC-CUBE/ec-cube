@@ -41,7 +41,7 @@ class FormUtilTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->formFactory = $this->container->get('form.factory');
+        $this->formFactory = self::$container->get('form.factory');
         $this->form = $this->formFactory
             ->createBuilder(
                 FormType::class,

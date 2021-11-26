@@ -11,18 +11,18 @@
  * file that was distributed with this source code.
  */
 
+use Eccube\DependencyInjection\Facade\TranslatorFacade;
+
 function trans($id, array $parameters = [], $domain = null, $locale = null)
 {
-    $app = \Eccube\Application::getInstance();
-    if (isset($app['translator'])) {
-        return $app['translator']->trans($id, $parameters, $domain, $locale);
-    }
+    $Translator = TranslatorFacade::create();
+
+    return $Translator->trans($id, $parameters, $domain, $locale);
 }
 
 function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
 {
-    $app = \Eccube\Application::getInstance();
-    if (isset($app['translator'])) {
-        return $app['translator']->transChoice($id, $number, $parameters, $domain, $locale);
-    }
+    $Translator = TranslatorFacade::create();
+
+    return $Translator->transChoice($id, $number, $parameters, $domain, $locale);
 }

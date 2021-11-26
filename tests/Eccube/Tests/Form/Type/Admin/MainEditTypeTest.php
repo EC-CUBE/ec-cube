@@ -52,70 +52,70 @@ class MainEditTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidName_Blank()
+    public function testInValidNameBlank()
     {
         $this->formData['name'] = '';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidName_MaxLength()
+    public function testInValidNameMaxLength()
     {
         $this->formData['name'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidUrl_Slash()
+    public function testValidUrlSlash()
     {
         $this->formData['url'] = 'hoge/fuga/piyo';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidUrl_Symbol()
+    public function testValidUrlSymbol()
     {
         $this->formData['url'] = '-_';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidUrl_Blank()
+    public function testInValidUrlBlank()
     {
         $this->formData['url'] = '';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidUrl_StartsWithSlash()
+    public function testInValidUrlStartsWithSlash()
     {
         $this->formData['url'] = '/hoge/fuga/piyo';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidUrl_EndsWithSlash()
+    public function testInValidUrlEndsWithSlash()
     {
         $this->formData['url'] = 'hoge/fuga/piyo/';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidUrl_ContinuousSlash()
+    public function testInValidUrlContinuousSlash()
     {
         $this->formData['url'] = 'hoge/fuga//piyo';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidUrl_MaxLength()
+    public function testInValidUrlMaxLength()
     {
         $this->formData['url'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidUrl_DuplicateUrl()
+    public function testInValidUrlDuplicateUrl()
     {
         $Page = $this->createPage();
         $this->formData['url'] = $Page->getUrl();
@@ -123,142 +123,142 @@ class MainEditTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidFileName_Slash()
+    public function testValidFileNameSlash()
     {
         $this->formData['file_name'] = 'hoge/fuga/piyo';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidFileName_Symbol()
+    public function testValidFileNameSymbol()
     {
         $this->formData['file_name'] = '-_';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidFileName_EndsWithSlash()
+    public function testValidFileNameEndsWithSlash()
     {
         $this->formData['file_name'] = 'hoge/fuga/piyo/';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidFileName_Blank()
+    public function testInValidFileNameBlank()
     {
         $this->formData['file_name'] = '';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidFileName_StartsWithSlash()
+    public function testInValidFileNameStartsWithSlash()
     {
         $this->formData['file_name'] = '/hoge/fuga/piyo';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidFileName_ContinuousSlash()
+    public function testInValidFileNameContinuousSlash()
     {
         $this->formData['file_name'] = 'hoge/fuga//piyo';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidFileName_DuplicateSlash()
+    public function testInValidFileNameDuplicateSlash()
     {
         $this->formData['file_name'] = 'hoge/fuga//piyo';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidFileName_MaxLength()
+    public function testInValidFileNameMaxLength()
     {
         $this->formData['file_name'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidTplData_Blank()
+    public function testInValidTplDataBlank()
     {
         $this->formData['tpl_data'] = '';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidAuthor_Blank()
+    public function testValidAuthorBlank()
     {
         $this->formData['author'] = '';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidAuthor_MaxLength()
+    public function testInValidAuthorMaxLength()
     {
         $this->formData['author'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidDescription_Blank()
+    public function testValidDescriptionBlank()
     {
         $this->formData['description'] = '';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidDescription_MaxLength()
+    public function testInValidDescriptionMaxLength()
     {
         $this->formData['description'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidKeyword_Blank()
+    public function testValidKeywordBlank()
     {
         $this->formData['keyword'] = '';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidKeyword_MaxLength()
+    public function testInValidKeywordMaxLength()
     {
         $this->formData['keyword'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidMetaRobots_Blank()
+    public function testValidMetaRobotsBlank()
     {
         $this->formData['meta_robots'] = '';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidMetaRobots_MaxLength()
+    public function testInValidMetaRobotsMaxLength()
     {
         $this->formData['meta_robots'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidMetaTags_Blank()
+    public function testValidMetaTagsBlank()
     {
         $this->formData['meta_tags'] = '';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidMetaTags_FreeLength()
+    public function testValidMetaTagsFreeLength()
     {
         $this->formData['meta_tags'] = '<meta name="meta_tags_test" content="test" />';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidMetaTags_MaxLength()
+    public function testInValidMetaTagsMaxLength()
     {
-        $this->formData['meta_tags'] = str_repeat('1', $this->eccubeConfig['eccube_lltext_len'] + 1);
+        $this->formData['meta_tags'] = str_repeat('1', $this->eccubeConfig['eccube_ltext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

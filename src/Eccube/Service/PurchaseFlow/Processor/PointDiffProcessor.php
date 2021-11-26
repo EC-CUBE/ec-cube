@@ -91,7 +91,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc}
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
@@ -99,7 +99,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc}
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {

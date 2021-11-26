@@ -155,6 +155,8 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         public function setCartKey(string $cartKey)
         {
             $this->cart_key = $cartKey;
+
+            return $this;
         }
 
         /**
@@ -360,6 +362,8 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         public function setCustomer(Customer $Customer = null)
         {
             $this->Customer = $Customer;
+
+            return $this;
         }
 
         /**

@@ -14,12 +14,12 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
 
 class StockValidatorTest extends EccubeTestCase
 {
@@ -52,7 +52,7 @@ class StockValidatorTest extends EccubeTestCase
 
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
-        $this->validator = $this->container->get(StockValidator::class);
+        $this->validator = self::$container->get(StockValidator::class);
         $this->cartItem = new CartItem();
         $this->cartItem->setProductClass($this->ProductClass);
     }
@@ -82,7 +82,7 @@ class StockValidatorTest extends EccubeTestCase
     public function testValidStockOrder()
     {
         $Customer = $this->createCustomer();
-        $Order = $this->container->get(Generator::class)->createOrder($Customer, [$this->ProductClass]);
+        $Order = self::$container->get(Generator::class)->createOrder($Customer, [$this->ProductClass]);
 
         self::assertEquals($Order->getOrderItems()[0]->getProductClass(), $this->ProductClass);
 

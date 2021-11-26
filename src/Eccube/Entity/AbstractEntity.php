@@ -13,12 +13,12 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Proxy\Proxy;
+use Eccube\DependencyInjection\Facade\AnnotationReaderFacade;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
@@ -27,8 +27,6 @@ use Symfony\Component\Serializer\Serializer;
 /** @MappedSuperclass */
 abstract class AbstractEntity implements \ArrayAccess
 {
-    private $AnnotationReader;
-
     public function offsetExists($offset)
     {
         $method = Inflector::classify($offset);
@@ -106,7 +104,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return array
      */
-    public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'], \ReflectionClass $parentClass = null)
+    public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'], \ReflectionClass $parentClass = null)
     {
         $objReflect = null;
         if (is_object($parentClass)) {
@@ -152,7 +150,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return array
      */
-    public function toNormalizedArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'])
+    public function toNormalizedArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
     {
         $arrResult = $this->toArray($excludeAttribute);
         foreach ($arrResult as &$value) {
@@ -183,7 +181,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return string
      */
-    public function toJSON(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'])
+    public function toJSON(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
     {
         return json_encode($this->toNormalizedArray($excludeAttribute));
     }
@@ -195,7 +193,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return string
      */
-    public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'])
+    public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
     {
         $ReflectionClass = new \ReflectionClass($this);
         $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder($ReflectionClass->getShortName())]);
@@ -225,34 +223,6 @@ abstract class AbstractEntity implements \ArrayAccess
     }
 
     /**
-     * Set AnnotationReader.
-     *
-     * @param Reader $Reader
-     *
-     * @return AbstractEntity
-     */
-    public function setAnnotationReader(Reader $Reader)
-    {
-        $this->AnnotationReader = $Reader;
-
-        return $this;
-    }
-
-    /**
-     * Get AnnotationReader.
-     *
-     * @return Reader
-     */
-    public function getAnnotationReader()
-    {
-        if ($this->AnnotationReader) {
-            return $this->AnnotationReader;
-        }
-
-        return new \Doctrine\Common\Annotations\AnnotationReader();
-    }
-
-    /**
      * Convert to Entity of Identity value to associative array.
      *
      * @param AbstractEntity $Entity
@@ -270,7 +240,8 @@ abstract class AbstractEntity implements \ArrayAccess
         $Properties = $PropReflect->getProperties();
 
         foreach ($Properties as $Property) {
-            $anno = $this->getAnnotationReader()->getPropertyAnnotation($Property, Id::class);
+            $AnnotationReader = AnnotationReaderFacade::create();
+            $anno = $AnnotationReader->getPropertyAnnotation($Property, Id::class);
             if ($anno) {
                 $Property->setAccessible(true);
                 $Result[$Property->getName()] = $Property->getValue($Entity);

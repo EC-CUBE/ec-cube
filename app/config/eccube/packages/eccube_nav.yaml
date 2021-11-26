@@ -127,6 +127,9 @@ parameters:
                         security:
                             name: admin.setting.system.security_management
                             url: admin_setting_system_security
+                        login_history:
+                            name: admin.setting.system.login_history
+                            url: admin_setting_system_login_history
                         log:
                             name: admin.setting.system.log_display
                             url: admin_setting_system_log

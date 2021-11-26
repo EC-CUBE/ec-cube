@@ -18,8 +18,8 @@ use Eccube\Annotation\OrderFlow;
 use Eccube\Annotation\ShoppingFlow;
 use Eccube\Entity\ItemInterface;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemValidator;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 商品を１個のみしか購入できないようにするサンプル
