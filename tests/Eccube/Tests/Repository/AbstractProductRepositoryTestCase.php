@@ -85,6 +85,12 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
      */
     protected function setProductTags(Product $Product, array $tagIds)
     {
+        $ProductTags = $Product->getProductTag();
+        foreach ($ProductTags as $ProductTag) {
+            $Product->removeProductTag($ProductTag);
+            $this->entityManager->remove($ProductTag);
+        }
+
         $Tags = $this->tagRepository->findBy(['id' => $tagIds]);
         foreach ($Tags as $Tag) {
             $ProductTag = new ProductTag();
