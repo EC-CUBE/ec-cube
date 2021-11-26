@@ -134,7 +134,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_lltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     ]),
                 ],
             ])
@@ -142,7 +142,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_lltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     ]),
                 ],
             ])
