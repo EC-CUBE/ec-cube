@@ -44,8 +44,8 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
     {
         parent::setUp();
 
-        $this->pluginRepository = $this->container->get(PluginRepository::class);
-        $this->pluginService = $this->container->get(PluginService::class);
+        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
+        $this->pluginService = self::$container->get(PluginService::class);
     }
 
     // インストーラが例外を上げた場合ロールバックできるか

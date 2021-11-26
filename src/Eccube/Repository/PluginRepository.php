@@ -35,12 +35,22 @@ class PluginRepository extends AbstractRepository
     }
 
     /**
-     * @param $code string プラグインコード
+     * プラグインコードから, プラグインを検索する.
+     *
+     * このメソッドは、プラグインコードをすべて小文字に正規化してから検索します.
+     *
+     * @param string $code プラグインコード
      *
      * @return Plugin
      */
     public function findByCode($code)
     {
-        return $this->findOneBy(['code' => $code]);
+        $qb = $this->createQueryBuilder('p')
+            ->where('LOWER(p.code) = :code')
+            ->setParameter('code', strtolower($code));
+
+        return $qb->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

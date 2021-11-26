@@ -13,6 +13,7 @@
 
 use Codeception\Util\Fixtures;
 use Page\Admin\AuthorityManagePage;
+use Page\Admin\LoginHistoryPage;
 
 /**
  * @group admin
@@ -22,16 +23,19 @@ use Page\Admin\AuthorityManagePage;
  */
 class EA08SysteminfoCest
 {
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function systeminfo_システム情報(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function systeminfo_システム情報(AcceptanceTester $I)
     {
         $I->wantTo('EA0801-UC01-T01 システム情報');
 
@@ -41,6 +45,12 @@ class EA08SysteminfoCest
         $I->see('システム情報システム設定', '.c-pageTitle__titles');
 
         $I->see('システム情報', '#server_info_box__header > div > span');
+        $I->see('EC-CUBE', '#server_info_box__body_inner > div:nth-child(1) > div:first-child');
+        $I->see('サーバーOS', '#server_info_box__body_inner > div:nth-child(2) > div:first-child');
+        $I->see('DBサーバー', '#server_info_box__body_inner > div:nth-child(3) > div:first-child');
+        $I->see('WEBサーバー', '#server_info_box__body_inner > div:nth-child(4) > div:first-child');
+        $I->see('PHP', '#server_info_box__body_inner > div:nth-child(5) > div:first-child');
+        $I->see('User Agent', '#server_info_box__body_inner > div:nth-child(6) > div:first-child');
         $I->see('PHP情報', '#php_info_box__header > div > span');
 
         $I->expect('session.save_path をチェックします');
@@ -49,7 +59,7 @@ class EA08SysteminfoCest
         $I->see(realpath(__DIR__.'/../../var/sessions/'.env('APP_ENV')));
     }
 
-    public function systeminfo_メンバー管理表示(\AcceptanceTester $I)
+    public function systeminfo_メンバー管理表示(AcceptanceTester $I)
     {
         $I->wantTo('EA0802-UC01-T01 メンバー管理 - 表示');
 
@@ -61,7 +71,10 @@ class EA08SysteminfoCest
         $I->see('新規登録', '#ex-member-new > a');
     }
 
-    public function systeminfo_メンバー管理登録実施(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function systeminfo_メンバー管理登録実施(AcceptanceTester $I)
     {
         $I->wantTo('EA0803-UC01-T01 メンバー管理 - 登録 - 登録実施');
 
@@ -76,8 +89,8 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_name'], 'admintest');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
         $I->fillField(['id' => 'admin_member_login_id'], 'admintest');
-        $I->fillField(['id' => 'admin_member_password_first'], 'password');
-        $I->fillField(['id' => 'admin_member_password_second'], 'password');
+        $I->fillField(['id' => 'admin_member_plain_password_first'], 'password');
+        $I->fillField(['id' => 'admin_member_plain_password_second'], 'password');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#member_form .c-conversionArea__container button');
@@ -89,7 +102,7 @@ class EA08SysteminfoCest
         $I->see('admintest', '.card-body tbody tr:nth-child(1) td:nth-child(1)');
     }
 
-    public function systeminfo_メンバー管理登録未実施(\AcceptanceTester $I)
+    public function systeminfo_メンバー管理登録未実施(AcceptanceTester $I)
     {
         $I->wantTo('EA0803-UC01-T02 メンバー管理 - 登録 - 登録未実施');
 
@@ -104,8 +117,8 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_name'], 'admintest2');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
         $I->fillField(['id' => 'admin_member_login_id'], 'admintest');
-        $I->fillField(['id' => 'admin_member_password_first'], 'password');
-        $I->fillField(['id' => 'admin_member_password_second'], 'password');
+        $I->fillField(['id' => 'admin_member_plain_password_first'], 'password');
+        $I->fillField(['id' => 'admin_member_plain_password_second'], 'password');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
@@ -114,7 +127,7 @@ class EA08SysteminfoCest
         $I->dontSee('admintest2', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
     }
 
-    public function systeminfo_メンバー管理登録異常(\AcceptanceTester $I)
+    public function systeminfo_メンバー管理登録異常(AcceptanceTester $I)
     {
         $I->wantTo('EA0803-UC01-T03 メンバー管理 - 登録 - 異常パターン');
 
@@ -130,7 +143,10 @@ class EA08SysteminfoCest
         $I->see('入力されていません。', '#member_form div:nth-child(1) div');
     }
 
-    public function systeminfo_メンバー管理編集実施(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function systeminfo_メンバー管理編集実施(AcceptanceTester $I)
     {
         $I->wantTo('EA0803-UC02-T01 メンバー管理 - 編集 - 編集実施');
 
@@ -139,7 +155,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-edit');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-edit');
         $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator');
@@ -153,7 +169,7 @@ class EA08SysteminfoCest
         $I->see('administrator', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
     }
 
-    public function systeminfo_メンバー管理編集未実施(\AcceptanceTester $I)
+    public function systeminfo_メンバー管理編集未実施(AcceptanceTester $I)
     {
         $I->wantTo('EA0803-UC02-T02 メンバー管理 - 編集 - 編集未実施');
 
@@ -162,7 +178,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-edit');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-edit');
         $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator2');
@@ -172,7 +188,7 @@ class EA08SysteminfoCest
         $I->dontSee('administrator2', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
     }
 
-    public function systeminfo_メンバー管理編集異常(\AcceptanceTester $I)
+    public function systeminfo_メンバー管理編集異常(AcceptanceTester $I)
     {
         $I->wantTo('EA0803-UC03-T01 メンバー管理 - 編集 - 異常パターン');
 
@@ -181,7 +197,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-edit');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-edit');
         $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], '');
@@ -190,7 +206,10 @@ class EA08SysteminfoCest
         $I->see('入力されていません。', '#member_form div:nth-child(1) div');
     }
 
-    public function systeminfo_メンバー管理登録下へ(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function systeminfo_メンバー管理登録下へ(AcceptanceTester $I)
     {
         $I->wantTo('EA0802-UC01-T02 メンバー管理 - 下へ');
 
@@ -199,14 +218,17 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-down');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-down');
 
         $I->waitForElementNotVisible(['css' => '.modal-backdrop']);
 
         $I->see('管理者', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
     }
 
-    public function systeminfo_メンバー管理登録上へ(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function systeminfo_メンバー管理登録上へ(AcceptanceTester $I)
     {
         $I->wantTo('EA0802-UC01-T03 メンバー管理 - 上へ');
 
@@ -215,14 +237,17 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(2) td:nth-child(5) .action-up');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(2) td:nth-child(6) .action-up');
 
         $I->waitForElementNotVisible(['css' => '.modal-backdrop']);
 
         $I->see('管理者', '.c-primaryCol .card-body table tbody tr:nth-child(2) td:nth-child(1)');
     }
 
-    public function systeminfo_メンバー管理削除(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function systeminfo_メンバー管理削除(AcceptanceTester $I)
     {
         $I->wantTo('EA0802-UC01-T06 メンバー管理 - 削除');
 
@@ -230,8 +255,9 @@ class EA08SysteminfoCest
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
+        $I->see('administrator', '.card-body tbody tr:nth-child(1) td:nth-child(1)');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-delete');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-delete');
         $I->waitForElementVisible(['css' => '.c-primaryCol .card-body table tbody tr:nth-child(1) .modal']);
         $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) .modal .btn-ec-delete');
 
@@ -239,7 +265,7 @@ class EA08SysteminfoCest
         $I->see('管理者', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
     }
 
-    public function systeminfo_メンバー管理自ユーザー削除(\AcceptanceTester $I)
+    public function systeminfo_メンバー管理自ユーザー削除(AcceptanceTester $I)
     {
         $I->wantTo('EA0802-UC01-T07 メンバー管理 - 自ユーザー削除');
 
@@ -248,11 +274,11 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
-        $href = $I->grabAttributeFrom('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-delete', 'href');
+        $href = $I->grabAttributeFrom('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(6) .action-delete', 'href');
         $I->assertEquals('', $href, $href.' が一致しません');
     }
 
-    public function systeminfo_セキュリティ管理表示(\AcceptanceTester $I)
+    public function systeminfo_セキュリティ管理表示(AcceptanceTester $I)
     {
         $I->wantTo('EA0804-UC01-T01 セキュリティ管理 - 表示');
 
@@ -263,7 +289,7 @@ class EA08SysteminfoCest
         $I->see('セキュリティ設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea > form > div > div.c-contentsArea__primaryCol > div > div > div.card-header > div > div.col-8 > span');
     }
 
-    public function systeminfo_セキュリティ管理ディレクトリ名(\AcceptanceTester $I)
+    public function systeminfo_セキュリティ管理ディレクトリ名(AcceptanceTester $I)
     {
         $I->wantTo('EA0804-UC01-T02 セキュリティ管理 - ディレクトリ名変更');
 
@@ -282,11 +308,11 @@ class EA08SysteminfoCest
         $I->loginAsAdmin();
     }
 
-    public function systeminfo_セキュリティ管理SSL(\AcceptanceTester $I)
+    public function systeminfo_セキュリティ管理SSL(AcceptanceTester $I)
     {
         $I->wantTo('EA0804-UC01-T04 セキュリティ管理 - SSL強制');
 
-        $I->getScenario()->skip('このテストを通すと以降のテストが通らなくなってしまっているので一時的にスキップ');
+        $I->getScenario()->incomplete('このテストを通すと以降のテストが通らなくなってしまっているので一時的にスキップ');
 
         $httpBaseUrl = $I->getBaseUrl();
         $I->amOnUrl($httpBaseUrl);
@@ -308,9 +334,30 @@ class EA08SysteminfoCest
         $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
     }
 
-    public function systeminfo_権限管理追加(\AcceptanceTester $I)
+    /**
+     * GitHub Actions は IPv6で実行されており、アクセス拒否のテストはできない
+     */
+    public function systeminfo_セキュリティ管理IP制限_拒否リスト(AcceptanceTester $I)
     {
-        $I->wantTo('EA0805-UC01-T01 権限管理 - 追加');
+        $I->wantTo('EA0804-UC01-T05 セキュリティ管理 - IP制限（拒否リスト）');
+
+        // 表示
+        $config = Fixtures::get('config');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
+        $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
+
+        $I->fillField(['id' => 'admin_security_admin_deny_hosts'], '1.1.1.1');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
+
+        $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
+    }
+
+    /**
+     * @group vaddy
+     */
+    public function systeminfo_権限管理追加(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0805-UC03-T01 / UC03-T02 権限管理 - 追加');
 
         AuthorityManagePage::go($I)
             ->行追加()
@@ -321,11 +368,19 @@ class EA08SysteminfoCest
         $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
         $I->dontSee('コンテンツ管理', 'nav .c-mainNavArea__nav');
         $I->dontSee('オーナーズストア', 'nav .c-mainNavArea__nav');
+
+        // アクセスして確認
+        $config = Fixtures::get('config');
+        $I->amOnPage("/${config['eccube_admin_route']}/content/news");
+        $I->seeInTitle('アクセスできません');
     }
 
-    public function systeminfo_権限管理削除(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function systeminfo_権限管理削除(AcceptanceTester $I)
     {
-        $I->wantTo('EA0805-UC02-T01 権限管理 - 削除');
+        $I->wantTo('EA0805-UC03-T03 権限管理 - 削除');
 
         AuthorityManagePage::go($I)
             ->行削除(2)
@@ -335,11 +390,19 @@ class EA08SysteminfoCest
         $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
         $I->see('コンテンツ管理', 'nav .c-mainNavArea__nav');
         $I->see('オーナーズストア', 'nav .c-mainNavArea__nav');
+
+        // アクセスして確認
+        $config = Fixtures::get('config');
+        $I->amOnPage("/${config['eccube_admin_route']}/content/news");
+        $I->seeInTitle('コンテンツ管理');
     }
 
-    public function systeminfo_ログ表示(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function systeminfo_ログ表示(AcceptanceTester $I)
     {
-        $I->wantTo('EA0806-UC01-T01 ログ表示');
+        $I->wantTo('EA0806-UC02-T01 ログ表示');
 
         // 表示
         $config = Fixtures::get('config');
@@ -349,13 +412,40 @@ class EA08SysteminfoCest
         $option = $I->grabTextFrom('#admin_system_log_files option:nth-child(1)');
         $I->selectOption('#admin_system_log_files', $option);
 
-        $I->fillField(['id' => 'admin_system_log_line_max'], '1');
+        $I->fillField(['id' => 'admin_system_log_line_max'], '10');
         $I->click(['css' => '#form1 button']);
 
-        $I->seeInField(['id' => 'admin_system_log_line_max'], '1');
+        $logs = $I->grabTextFrom('.c-contentsArea textarea');
+        $I->assertLessThanOrEqual(10, count(explode("\n", $logs)), "ログ件数を確認");
+        $I->seeInField(['id' => 'admin_system_log_line_max'], '10');
     }
 
-    public function systeminfo_マスターデータ管理(\AcceptanceTester $I)
+    public function systeminfo_ログ表示_異常(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0806-UC02-T02 / UC02-T03 / UC02-T04 ログ表示異常');
+
+        $config = Fixtures::get('config');
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/log');
+        $I->fillField(['id' => 'admin_system_log_line_max'], '0');
+        $I->click(['css' => '#form1 button']);
+        $I->see('エラー', '#form1 .invalid-feedback');
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/log');
+        $I->fillField(['id' => 'admin_system_log_line_max'], '-1');
+        $I->click(['css' => '#form1 button']);
+        $I->see('エラー', '#form1 .invalid-feedback');
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/log');
+        $I->fillField(['id' => 'admin_system_log_line_max'], 'a');
+        $I->click(['css' => '#form1 button']);
+        $I->see('エラー', '#form1 .invalid-feedback');
+    }
+
+    /**
+     * @group vaddy
+     */
+    public function systeminfo_マスターデータ管理(AcceptanceTester $I)
     {
         $I->wantTo('EA0807-UC01-T01 マスターデータ管理');
 
@@ -378,11 +468,57 @@ class EA08SysteminfoCest
     }
 
     /**
+     * @group vaddy
+     */
+    public function systeminfo_ログイン履歴検索(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0808-UC01-T01 ログイン履歴 - 検索');
+
+        LoginHistoryPage::go($I)->検索('admin');
+
+        // １項目目をチェック
+        $I->see('admin', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody/tr[1]/td[2]');
+        $I->see('成功', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody/tr[1]/td[5]/span');
+
+        LoginHistoryPage::go($I)->検索('admin-failure');
+
+        $I->see('検索結果：0件が該当しました', LoginHistoryPage::$検索結果_メッセージ);
+
+        $I->logoutAsAdmin();
+
+        // ログインに失敗する
+        $I->submitForm('#form1', [
+            'login_id' => 'admin-failure',
+            'password' => 'password',
+        ]);
+
+        $I->loginAsAdmin();
+
+        LoginHistoryPage::go($I)->検索('admin-failure');
+
+        // １項目目をチェック
+        $I->see('admin-failure', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody/tr[1]/td[2]');
+        $I->see('失敗', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody/tr[1]/td[5]/span');
+
+        // ステータスで詳細検索
+
+        LoginHistoryPage::go($I)->検索();
+
+        $I->see('失敗', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody');
+        $I->see('成功', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody');
+
+        LoginHistoryPage::go($I)->詳細検索_ステータス('0');
+
+        $I->see('失敗', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody');
+        $I->dontSee('成功', '//*[@id="search_form"]/div[4]/div/div/div[2]/div/table/tbody');
+    }
+
+    /**
      * ATTENTION 後続のテストが失敗するため、最後に実行する必要がある
      */
-    public function systeminfo_セキュリティ管理IP制限(\AcceptanceTester $I)
+    public function systeminfo_セキュリティ管理IP制限_許可リスト(AcceptanceTester $I)
     {
-        $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - IP制限');
+        $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - IP制限（許可リスト）');
 
         $findPlugins = Fixtures::get('findPlugins');
         $Plugins = $findPlugins();

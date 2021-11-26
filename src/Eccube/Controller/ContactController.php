@@ -52,8 +52,8 @@ class ContactController extends AbstractController
     /**
      * お問い合わせ画面.
      *
-     * @Route("/contact", name="contact")
-     * @Route("/contact", name="contact_confirm")
+     * @Route("/contact", name="contact", methods={"GET", "POST"})
+     * @Route("/contact", name="contact_confirm", methods={"GET", "POST"})
      * @Template("Contact/index.twig")
      */
     public function index(Request $request)
@@ -96,11 +96,10 @@ class ContactController extends AbstractController
                 case 'confirm':
                     return $this->render('Contact/confirm.twig', [
                         'form' => $form->createView(),
-                        'Page' => $this->pageRepository->getPageByRoute('contact_confirm')
+                        'Page' => $this->pageRepository->getPageByRoute('contact_confirm'),
                     ]);
 
                 case 'complete':
-
                     $data = $form->getData();
 
                     $event = new EventArgs(
@@ -129,7 +128,7 @@ class ContactController extends AbstractController
     /**
      * お問い合わせ完了画面.
      *
-     * @Route("/contact/complete", name="contact_complete")
+     * @Route("/contact/complete", name="contact_complete", methods={"GET"})
      * @Template("Contact/complete.twig")
      */
     public function complete()

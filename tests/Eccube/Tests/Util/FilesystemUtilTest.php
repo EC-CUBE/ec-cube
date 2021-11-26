@@ -13,8 +13,8 @@
 
 namespace Eccube\Tests\Util;
 
-use PHPUnit\Framework\TestCase;
 use Eccube\Util\FilesystemUtil;
+use PHPUnit\Framework\TestCase;
 
 class FilesystemUtilTest extends TestCase
 {

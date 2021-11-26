@@ -34,6 +34,7 @@ use Eccube\Twig\Extension\EccubeExtension;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -90,7 +91,7 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery", name="admin_setting_shop_delivery")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery", name="admin_setting_shop_delivery", methods={"GET"})
      * @Template("@admin/Setting/Shop/delivery.twig")
      */
     public function index(Request $request)
@@ -112,8 +113,8 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/new", name="admin_setting_shop_delivery_new")
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery/new", name="admin_setting_shop_delivery_new", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit", methods={"GET", "POST"})
      * @Template("@admin/Setting/Shop/delivery_edit.twig")
      */
     public function edit(Request $request, $id = null, EccubeExtension $extension)
@@ -134,6 +135,9 @@ class DeliveryController extends AbstractController
                 ->setSaleType($SaleType);
         } else {
             $Delivery = $this->deliveryRepository->find($id);
+            if (is_null($Delivery)) {
+                throw new NotFoundHttpException();
+            }
         }
 
         $originalDeliveryTimes = new ArrayCollection();
@@ -386,6 +390,7 @@ class DeliveryController extends AbstractController
      * 利用条件の金額範囲を生成する.
      *
      * @param Payment[] $PaymentsData
+     *
      * @return array
      */
     private function getMergeRules(array $PaymentsData)
@@ -431,6 +436,7 @@ class DeliveryController extends AbstractController
             if ($a['min'] == $b['min']) {
                 return 0;
             }
+
             return ($a['min'] < $b['min']) ? -1 : 1;
         });
 

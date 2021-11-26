@@ -78,7 +78,7 @@ class ProductCsvUploadPage extends AbstractAdminPageStyleGuide
 
     public function CSVアップロード確認()
     {
-        $this->tester->wait(1);
+        $this->tester->wait(5);
         $this->tester->see('CSVファイルをアップロードしました', ProductCsvUploadPage::$完了メッセージ);
 
         return $this;

@@ -36,6 +36,27 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_店名($value)
+    {
+        $this->tester->fillField(['id' => 'shop_master_shop_name'], $value);
+
+        return $this;
+    }
+
+    public function 入力_郵便番号($value)
+    {
+        $this->tester->fillField(['id' => 'shop_master_postal_code'], $value);
+
+        return $this;
+    }
+
+    public function 入力_電話番号($value)
+    {
+        $this->tester->fillField(['id' => 'shop_master_phone_number'], $value);
+
+        return $this;
+    }
+
     public function 登録()
     {
         $this->tester->click('#point_form > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');

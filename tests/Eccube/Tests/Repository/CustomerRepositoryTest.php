@@ -13,12 +13,12 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Eccube\Entity\Customer;
 
 /**
  * CustomerRepository test cases.
@@ -57,8 +57,8 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->email = 'customer@example.com';
         $this->Customer = $this->createCustomer($this->email);
 
-        $this->customerRepo = $this->container->get(CustomerRepository::class);
-        $this->masterOrderStatusRepo = $this->container->get(OrderStatusRepository::class);
+        $this->customerRepo = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
+        $this->masterOrderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
     }
 
     public function testNewCustomer()

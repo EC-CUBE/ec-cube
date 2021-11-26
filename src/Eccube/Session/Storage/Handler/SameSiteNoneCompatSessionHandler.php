@@ -87,6 +87,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
 
     /**
      * {@inheritdoc}
+     *
      * @see https://github.com/symfony/symfony/blob/2adc85d49cbe14e346068fa7e9c2e1f08ab31de6/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/AbstractSessionHandler.php#L126-L167
      */
     public function destroy($sessionId)
@@ -199,6 +200,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     public function getCookieSecure()
     {
         $request = Request::createFromGlobals();
+
         return $request->isSecure() ? '1' : '0';
     }
 
@@ -208,6 +210,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     private function shouldSendSameSiteNone()
     {
         $userAgent = array_key_exists('HTTP_USER_AGENT', $_SERVER) ? $_SERVER['HTTP_USER_AGENT'] : null;
+
         return SameSite::handle($userAgent);
     }
 }

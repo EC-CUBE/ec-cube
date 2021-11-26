@@ -16,10 +16,10 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\PaymentOption;
-use Eccube\Repository\PaymentRepository;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\PaymentOptionRepository;
+use Eccube\Repository\PaymentRepository;
+use Eccube\Tests\EccubeTestCase;
 
 class PaymentRepositoryTest extends EccubeTestCase
 {
@@ -45,12 +45,12 @@ class PaymentRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->deliveryRepository = $this->container->get(DeliveryRepository::class);
-        $this->paymentRepository = $this->container->get(PaymentRepository::class);
-        $this->paymentOptionRepository = $this->container->get(PaymentOptionRepository::class);
+        $this->deliveryRepository = $this->entityManager->getRepository(\Eccube\Entity\Delivery::class);
+        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
+        $this->paymentOptionRepository = $this->entityManager->getRepository(\Eccube\Entity\PaymentOption::class);
     }
 
-    public function test_findAllowedPaymentEmpty()
+    public function testFindAllowedPaymentEmpty()
     {
         $saleTypes = [7, 6];
         $saleTypes = array_unique($saleTypes);
@@ -135,7 +135,7 @@ class PaymentRepositoryTest extends EccubeTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/pull/2325
      */
-    public function testFindAllowedPayment_SameSaleType()
+    public function testFindAllowedPaymentSameSaleType()
     {
         $typeA = $this->createSaleType('テスト種別A', 100);
 
@@ -168,7 +168,7 @@ class PaymentRepositoryTest extends EccubeTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/pull/2325
      */
-    public function testFindAllowedPayment_DifferentSaleType()
+    public function testFindAllowedPaymentDifferentSaleType()
     {
         $typeA = $this->createSaleType('テスト種別A', 100);
         $typeB = $this->createSaleType('テスト種別B', 101);

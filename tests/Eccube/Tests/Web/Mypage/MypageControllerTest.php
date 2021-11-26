@@ -16,7 +16,6 @@ namespace Eccube\Tests\Web\Mypage;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
@@ -109,12 +108,10 @@ class MypageControllerTest extends AbstractWebTestCase
 
     public function testHistory()
     {
-        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
-
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
         // 後方互換のため最初の1つのみ渡す
-        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
+        $Order = self::$container->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
             0, 0, OrderStatus::NEW);
         $this->loginTo($this->Customer);
         $client = $this->client;
@@ -131,7 +128,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
         // 後方互換のため最初の1つのみ渡す
-        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
+        $Order = self::$container->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
             0, 0, OrderStatus::PROCESSING);
         $this->loginTo($this->Customer);
 
@@ -209,7 +206,7 @@ class MypageControllerTest extends AbstractWebTestCase
     {
         $CustomerFavoriteProduct = new CustomerFavoriteProduct();
         $CustomerFavoriteProduct->setCustomer($this->Customer);
-        $Product = $this->container->get(ProductRepository::class)->find(1);
+        $Product = $this->entityManager->getRepository(\Eccube\Entity\Product::class)->find(1);
         $CustomerFavoriteProduct->setCreateDate(new \DateTime());
         $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
         $CustomerFavoriteProduct->setProduct($Product);

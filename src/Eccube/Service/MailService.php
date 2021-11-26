@@ -101,7 +101,7 @@ class MailService
      * @param $Customer 会員情報
      * @param string $activateUrl アクティベート用url
      */
-    public function sendCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
+    public function sendCustomerConfirmMail(Customer $Customer, $activateUrl)
     {
         log_info('仮会員登録メール送信開始');
 
@@ -161,7 +161,7 @@ class MailService
      *
      * @param $Customer 会員情報
      */
-    public function sendCustomerCompleteMail(\Eccube\Entity\Customer $Customer)
+    public function sendCustomerCompleteMail(Customer $Customer)
     {
         log_info('会員登録完了メール送信開始');
 
@@ -337,7 +337,7 @@ class MailService
      *
      * @return \Swift_Message
      */
-    public function sendOrderMail(\Eccube\Entity\Order $Order)
+    public function sendOrderMail(Order $Order)
     {
         log_info('受注メール送信開始');
 
@@ -408,7 +408,7 @@ class MailService
      * @param $Customer 会員情報
      * @param string $activateUrl アクティベート用url
      */
-    public function sendAdminCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
+    public function sendAdminCustomerConfirmMail(Customer $Customer, $activateUrl)
     {
         log_info('仮会員登録再送メール送信開始');
 
@@ -513,7 +513,7 @@ class MailService
      * @param $Customer 会員情報
      * @param string $reset_url
      */
-    public function sendPasswordResetNotificationMail(\Eccube\Entity\Customer $Customer, $reset_url)
+    public function sendPasswordResetNotificationMail(Customer $Customer, $reset_url)
     {
         log_info('パスワード再発行メール送信開始');
 
@@ -574,7 +574,7 @@ class MailService
      * @param $Customer 会員情報
      * @param string $password
      */
-    public function sendPasswordResetCompleteMail(\Eccube\Entity\Customer $Customer, $password)
+    public function sendPasswordResetCompleteMail(Customer $Customer, $password)
     {
         log_info('パスワード変更完了メール送信開始');
 

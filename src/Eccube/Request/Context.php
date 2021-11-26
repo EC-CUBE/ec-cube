@@ -17,7 +17,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Member;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class Context
 {
@@ -32,11 +32,11 @@ class Context
     protected $eccubeConfig;
 
     /**
-     * @var TokenStorage
+     * @var TokenStorageInterface
      */
     private $tokenStorage;
 
-    public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig, TokenStorage $tokenStorage)
+    public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig, TokenStorageInterface $tokenStorage)
     {
         $this->requestStack = $requestStack;
         $this->eccubeConfig = $eccubeConfig;

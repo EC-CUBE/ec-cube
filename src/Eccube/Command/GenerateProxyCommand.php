@@ -62,5 +62,7 @@ class GenerateProxyCommand extends ContainerAwareCommand
             $projectDir.'/app/proxy/entity',
             $output
         );
+
+        return 0;
     }
 }
