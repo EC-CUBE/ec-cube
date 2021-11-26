@@ -1759,6 +1759,7 @@ Styleguide 3.1.1
 .ec-input select, .ec-halfInput select, .ec-numberInput select, .ec-zipInput select, .ec-telInput select, .ec-select select, .ec-birth select {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: 34px;
   padding: 6px 12px;
   font-size: 16px;
@@ -2502,6 +2503,7 @@ Styleguide 3.2.4
 .ec-select select {
     display: inline-block;
     width: auto;
+    max-width: 100%;
     background-color: #f8f8f8;
     -webkit-appearance: menulist;
     -moz-appearance: menulist; }
