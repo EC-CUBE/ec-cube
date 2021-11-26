@@ -60,6 +60,13 @@ jobs:
       - name: composer install
         run: composer install --dev --no-interaction -o --apcu-autoloader
 
+      - name: Setup pcov
+        run: |
+          sudo apt-fast install -y php7.4-pcov
+          sudo phpenmod -s cli pcov
+          composer require pcov/clobber --dev
+          vendor/bin/pcov clobber
+
       - name: Setup EC-CUBE
         env:
           DATABASE_URL: ${{ matrix.database_url }}
@@ -75,10 +82,9 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
-        continue-on-error: true
         run: |
           bin/phpunit --version
-          phpdbg -dmemory_limit=-1 -qrr bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
+          bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
       - name: Upload report
         if: success()
         uses: actions/upload-artifact@v2
