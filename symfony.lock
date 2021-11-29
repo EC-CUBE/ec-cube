@@ -443,9 +443,6 @@
             "ref": "de31e687f3964939abd1f66817bd96ed34bc2eee"
         }
     },
-    "symfony/debug-pack": {
-        "version": "v1.0.4"
-    },
     "symfony/dependency-injection": {
         "version": "v3.4.1"
     },
@@ -536,9 +533,6 @@
     "symfony/options-resolver": {
         "version": "v3.4.1"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.4"
-    },
     "symfony/phpunit-bridge": {
         "version": "3.3",
         "recipe": {
@@ -583,9 +577,6 @@
     },
     "symfony/process": {
         "version": "v3.4.1"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.3"
     },
     "symfony/property-access": {
         "version": "v3.4.1"
