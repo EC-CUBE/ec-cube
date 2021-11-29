@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Repository\BaseInfoRepository;
 
 class EntryControllerTest extends AbstractWebTestCase
 {
@@ -140,7 +139,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testCompleteWithActivate()
     {
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $BaseInfo->setOptionCustomerActivate(1);
         $this->entityManager->flush();
 
@@ -164,6 +163,43 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
+    public function testCompleteWithActivateWithMultipartSanitize()
+    {
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $BaseInfo->setOptionCustomerActivate(1);
+        $this->entityManager->flush();
+
+        $client = $this->client;
+        $form = $this->createFormData();
+        $form['name']['name01'] .= '<Sanitize&>'; // サニタイズ対象の文字列
+        $crawler = $client->request('POST',
+            $this->generateUrl('entry'),
+            [
+                'entry' => $form,
+                'mode' => 'complete',
+            ]
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('entry_complete')));
+
+        $collectedMessages = $this->getMailCollector(false)->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+
+        $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
+        $this->actual = $Message->getSubject();
+        $this->verify();
+
+        $this->assertContains('＜Sanitize＆＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+
+        $MultiPart = $Message->getChildren();
+        foreach ($MultiPart as $Part) {
+            if ($Part->getContentType() == 'text/html') {
+                $this->assertContains('＜Sanitize＆＞', $Part->getBody(), 'HTMLメールがサニタイズされている');
+            }
+        }
+    }
+
     public function testRoutingComplete()
     {
         $client = $this->client;
@@ -174,7 +210,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivate()
     {
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
         $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
@@ -193,6 +229,37 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
+    public function testActivateWithSanitize()
+    {
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $Customer = $this->createCustomer();
+        $Customer->setName01('<Sanitize&>');
+        $secret_key = $Customer->getSecretKey();
+        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Customer->setStatus($Status);
+        $this->entityManager->flush();
+
+        $client = $this->client;
+        $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $collectedMessages = $this->getMailCollector(false)->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+        $this->expected = '['.$BaseInfo->getShopName().'] 会員登録が完了しました。';
+        $this->actual = $Message->getSubject();
+        $this->verify();
+
+        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+
+        $MultiPart = $Message->getChildren();
+        foreach ($MultiPart as $Part) {
+            if ($Part->getContentType() == 'text/html') {
+                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
+            }
+        }
+    }
+
     public function testActivateWithNotFound()
     {
         $this->client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => 'aaaaa']));
@@ -207,5 +274,39 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->expected = 404;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
+    }
+
+    public function testConfirmWithDangerousText()
+    {
+        $formData = $this->createFormData();
+        $formData['company_name'] = '<script>alert()</script>';
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('entry'),
+            [
+                'entry' => $formData,
+                'mode' => 'confirm',
+            ]
+        );
+
+        self::assertEquals('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        self::assertEquals('＜script＞alert()＜/script＞', $crawler->filter('#entry_company_name')->attr('value'));
+    }
+
+    public function testConfirmWithAmpersand()
+    {
+        $formData = $this->createFormData();
+        $formData['company_name'] = '&';
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('entry'),
+            [
+                'entry' => $formData,
+                'mode' => 'confirm',
+            ]
+        );
+
+        self::assertEquals('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        self::assertEquals('＆', $crawler->filter('#entry_company_name')->attr('value'));
     }
 }

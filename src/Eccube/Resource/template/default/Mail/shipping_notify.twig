@@ -8,7 +8,7 @@ http://www.ec-cube.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% autoescape false %}
+{% autoescape 'safe_textmail' %}
 {{ Order.name01 }} {{ Order.name02 }} 様
 
 お客さまがご注文された以下の商品を発送いたしました。商品の到着まで、今しばらくお待ちください。

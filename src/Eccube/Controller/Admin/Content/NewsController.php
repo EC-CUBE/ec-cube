@@ -20,7 +20,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\NewsType;
 use Eccube\Repository\NewsRepository;
 use Eccube\Util\CacheUtil;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,17 +46,17 @@ class NewsController extends AbstractController
     /**
      * 新着情報一覧を表示する。
      *
-     * @Route("/%eccube_admin_route%/content/news", name="admin_content_news")
-     * @Route("/%eccube_admin_route%/content/news/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_content_news_page")
+     * @Route("/%eccube_admin_route%/content/news", name="admin_content_news", methods={"GET"})
+     * @Route("/%eccube_admin_route%/content/news/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_content_news_page", methods={"GET"})
      * @Template("@admin/Content/news.twig")
      *
      * @param Request $request
      * @param int $page_no
-     * @param Paginator $paginator
+     * @param PaginatorInterface $paginator
      *
      * @return array
      */
-    public function index(Request $request, $page_no = 1, Paginator $paginator)
+    public function index(Request $request, $page_no = 1, PaginatorInterface $paginator)
     {
         $qb = $this->newsRepository->getQueryBuilderAll();
 
@@ -82,8 +82,8 @@ class NewsController extends AbstractController
     /**
      * 新着情報を登録・編集する。
      *
-     * @Route("/%eccube_admin_route%/content/news/new", name="admin_content_news_new")
-     * @Route("/%eccube_admin_route%/content/news/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_news_edit")
+     * @Route("/%eccube_admin_route%/content/news/new", name="admin_content_news_new", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/content/news/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_news_edit", methods={"GET", "POST"})
      * @Template("@admin/Content/news_edit.twig")
      *
      * @param Request $request

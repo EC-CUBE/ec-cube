@@ -21,19 +21,19 @@ jobs:
       matrix:
         version: [ 4.0.0, 4.0.1, 4.0.2, 4.0.3, 4.0.4, 4.0.5 ]
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        php: [ 7.4 ]
         db: [ pgsql ]
         group: [ front ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 11
+            database_server_version: 14
           - group: front
             app_env: 'codeception'
 
     services:
       postgres:
-        image: postgres:11
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -78,9 +78,7 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: composer install
-        run: |
-          sudo composer selfupdate --1
-          composer install --dev --no-interaction -o --apcu-autoloader
+        run: composer install --dev --no-interaction -o --apcu-autoloader
       - name: Setup to EC-CUBE
         env:
           APP_ENV: ${{ matrix.app_env }}
@@ -108,17 +106,17 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        run: php -S localhost:8000 &
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 &
 
       - name: Codeception
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}

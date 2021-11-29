@@ -14,8 +14,6 @@
 namespace Eccube\Tests\Util;
 
 use Eccube\Entity\AbstractEntity;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Util\EntityUtil;
 
@@ -26,57 +24,9 @@ use Eccube\Util\EntityUtil;
  */
 class EntityUtilTest extends EccubeTestCase
 {
-    private $Product;
-    private $ProductClass;
-
     public function setUp()
     {
         parent::setUp();
-        // eccube_install.sh で追加される Member
-        $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 1);
-
-        $Product = new Product();
-        $ProductClass = new ProductClass();
-        $ProductStatus = $this->entityManager->find(\Eccube\Entity\Master\ProductStatus::class,
-            \Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
-        $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
-        $Product
-            ->setName('test')
-            ->setCreator($Member)
-            ->addProductClass($ProductClass)
-            ->setStatus($ProductStatus);
-        $ProductClass
-            ->setPrice02(1000)
-            ->setCreator($Member)
-            ->setVisible(true)
-            ->setStockUnlimited(true)
-            ->setSaleType($SaleType)
-            ->setProduct($Product);
-        $ProductStock = new \Eccube\Entity\ProductStock();
-        $ProductStock->setCreator($Member);
-        $ProductClass->setProductStock($ProductStock);
-        $ProductStock->setProductClass($ProductClass);
-
-        $this->entityManager->persist($Product);
-        $this->entityManager->persist($ProductClass);
-        $this->entityManager->persist($ProductStock);
-        $this->entityManager->flush();
-
-        $this->Product = $Product;
-        $this->ProductClass = $ProductClass;
-    }
-
-    public function testIsEmptyWithFalse()
-    {
-        // setUp() で追加したサンプル商品
-        $Product = $this->entityManager->find(Product::class, $this->Product->getId());
-        // eccube_install.sh で追加される Member
-        $Member = $Product->getCreator();
-        /*
-         * member.del_flg = 0 になっているので、soft_delete filter が適用されず
-         * LAZY loading で取得できる
-         */
-        $this->assertFalse(EntityUtil::isEmpty($Member));
     }
 
     public function testDumpToArray()

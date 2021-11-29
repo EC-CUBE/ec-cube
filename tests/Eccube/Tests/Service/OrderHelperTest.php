@@ -29,12 +29,12 @@ class OrderHelperTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->helper = $this->container->get(OrderHelper::class);
+        $this->helper = self::$container->get(OrderHelper::class);
     }
 
     public function testNewInstance()
     {
-        $this->assertInstanceOf(OrderHelper::class, $this->helper = $this->container->get(OrderHelper::class));
+        $this->assertInstanceOf(OrderHelper::class, $this->helper = self::$container->get(OrderHelper::class));
     }
 
     /**

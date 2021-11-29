@@ -296,7 +296,7 @@ class OrderType extends AbstractType
                 return false;
             }
 
-            if (null !== $max && ($total + $charge)  > $max) {
+            if (null !== $max && ($total + $charge) > $max) {
                 return false;
             }
 

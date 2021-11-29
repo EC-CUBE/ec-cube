@@ -97,5 +97,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
         if ($packageNames) {
             $this->composerService->execRequire(implode(' ', $packageNames), $this->io);
         }
+
+        return 0;
     }
 }

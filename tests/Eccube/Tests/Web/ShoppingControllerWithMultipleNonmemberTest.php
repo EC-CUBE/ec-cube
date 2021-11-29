@@ -33,8 +33,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     public function setUp()
     {
         parent::setUp();
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
-        $this->orderRepository = $this->container->get(OrderRepository::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
     }
 
     public function tearDown()
@@ -198,8 +198,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
      */
     public function testAddMultiShippingWithOneAddressOneItemTwoQuantities()
     {
-        $this->scenarioCartIn(null, 1);
-        $this->scenarioCartIn(null, 1);
+        $this->scenarioCartIn(null, 2);
+        $this->scenarioCartIn(null, 2);
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);

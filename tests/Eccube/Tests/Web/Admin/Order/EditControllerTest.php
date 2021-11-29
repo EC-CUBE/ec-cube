@@ -16,6 +16,8 @@ namespace Eccube\Tests\Web\Admin\Order;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\Job;
+use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Order;
@@ -23,7 +25,6 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Repository\CustomerRepository;
-use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\TaxRuleService;
@@ -65,9 +66,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
-        $this->customerRepository = $this->container->get(CustomerRepository::class);
-        $this->orderRepository = $this->container->get(OrderRepository::class);
-        $this->cartService = $this->container->get(CartService::class);
+        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->cartService = self::$container->get(CartService::class);
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->entityManager->flush($BaseInfo);
     }
@@ -166,8 +167,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testOrderCustomerInfo()
     {
-        $this->markTestSkipped('顧客の購入回数と購入金額の実装が完了するまでスキップ');
-        $this->markTestIncomplete('EditController is not implemented.');
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
@@ -305,7 +304,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->actual = $EditedOrder->getOrderStatus()->getId();
         $this->verify();
 
-        $this->markTestSkipped('フロントとのセッション管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('フロントとのセッション管理の実装が完了するまでスキップ');
         // フロント側から, product_class_id = 1 をカート投入
         $client = $this->createClient();
         $client->request(
@@ -407,7 +406,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         foreach ($formDataForEdit['OrderItems'] as $indx => $orderItem) {
             //商品数変更3個追加
             $formDataForEdit['OrderItems'][$indx]['quantity'] = $orderItem['quantity'] + 3;
-            $tax = $this->container->get(TaxRuleService::class)->getTax($orderItem['price']);
+            $tax = self::$container->get(TaxRuleService::class)->getTax($orderItem['price']);
             $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
         }
 
@@ -508,7 +507,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($this->Customer, $this->Product);
         // まずお届け時間に何か指定する(便宜上、最初に取得できたものを利用)
-        $Delivery = $this->container->get(DeliveryRepository::class)->find($formData['Shipping']['Delivery']);
+        $Delivery = $this->entityManager->getRepository(\Eccube\Entity\Delivery::class)->find($formData['Shipping']['Delivery']);
         $DeliveryTime = $Delivery->getDeliveryTimes()[0];
         $delivery_time_id = $DeliveryTime->getId();
         $delivery_time = $DeliveryTime->getDeliveryTime();
@@ -610,5 +609,38 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $Order = $this->orderRepository->findBy([], ['create_date' => 'DESC'])[0];
         self::assertEquals(10, $Order->getProductOrderItems()[0]->getTaxRate());
         self::assertEquals(100, $Order->getProductOrderItems()[0]->getTax());
+    }
+
+    public function testRoutingAdminOrderEditPostWithCustomerInfo()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $Order->setSex(null);
+        $Order->setJob(null);
+        $Order->setBirth(null);
+
+        $this->entityManager->flush($Order);
+
+        $Customer->setSex($this->entityManager->find(Sex::class, 1));
+        $Customer->setJob($this->entityManager->find(Job::class, 1));
+        $Customer->setBirth(new \DateTime());
+        $this->entityManager->flush($Customer);
+
+        $formData = $this->createFormData($Customer, $this->Product);
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
+            [
+                'order' => $formData,
+                'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
+
+        $EditedOrder = $this->orderRepository->find($Order->getId());
+        $this->assertNull($EditedOrder->getSex());
+        $this->assertNull($EditedOrder->getJob());
+        $this->assertNull($EditedOrder->getBirth());
     }
 }

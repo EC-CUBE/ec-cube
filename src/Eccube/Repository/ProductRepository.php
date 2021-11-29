@@ -226,7 +226,7 @@ class ProductRepository extends AbstractRepository
 
         // id
         if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
-            $id = preg_match('/^\d{0,10}$/', $searchData['id'])  ? $searchData['id'] : null;
+            $id = preg_match('/^\d{0,10}$/', $searchData['id']) ? $searchData['id'] : null;
             if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
                 $id = null;
             }
@@ -301,6 +301,14 @@ class ProductRepository extends AbstractRepository
                 default:
                     // 共に選択された場合は全権該当するので検索条件に含めない
             }
+        }
+
+        // tag
+        if (!empty($searchData['tag_id']) && $searchData['tag_id']) {
+            $qb
+                ->innerJoin('p.ProductTag', 'pt')
+                ->andWhere('pt.Tag = :tag_id')
+                ->setParameter('tag_id', $searchData['tag_id']);
         }
 
         // crate_date

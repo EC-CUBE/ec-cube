@@ -100,7 +100,7 @@ class KanaTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid(), (string) $this->form->getErrors(true, false));
     }
 
-    public function testInvalidData_Kana01_MaxLength()
+    public function testInvalidDataKana01MaxLength()
     {
         $data = [
             'kana' => [
@@ -112,7 +112,7 @@ class KanaTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidData_Kana02_MaxLength()
+    public function testInvalidDataKana02MaxLength()
     {
         $data = [
             'kana' => [
@@ -124,7 +124,7 @@ class KanaTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testinvaliddata_kana01_haswhitespaceEn()
+    public function testinvaliddataKana01HaswhitespaceEn()
     {
         $data = [
             'kana' => [
@@ -136,7 +136,7 @@ class KanaTypeTest extends AbstractTypeTestCase
         $this->assertfalse($this->form->isvalid());
     }
 
-    public function testinvaliddata_kana02_haswhitespaceEn()
+    public function testinvaliddataKana02HaswhitespaceEn()
     {
         $data = [
             'kana' => [
@@ -148,7 +148,7 @@ class KanaTypeTest extends AbstractTypeTestCase
         $this->assertfalse($this->form->isvalid());
     }
 
-    public function testinvaliddata_kana01_haswhitespaceJa()
+    public function testinvaliddataKana01HaswhitespaceJa()
     {
         $data = [
             'kana' => [
@@ -160,7 +160,7 @@ class KanaTypeTest extends AbstractTypeTestCase
         $this->assertfalse($this->form->isvalid());
     }
 
-    public function testinvaliddata_kana02_haswhitespaceJa()
+    public function testinvaliddataKana02HaswhitespaceJa()
     {
         $data = [
             'kana' => [

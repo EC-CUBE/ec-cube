@@ -25,7 +25,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->validator = $this->container->get('validator');
+        $this->validator = self::$container->get('validator');
     }
 
     /**

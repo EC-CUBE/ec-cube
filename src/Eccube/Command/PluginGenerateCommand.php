@@ -120,6 +120,8 @@ class PluginGenerateCommand extends Command
         $this->createGithubActions($pluginDir);
 
         $this->io->success(sprintf('Plugin was successfully created: %s %s %s', $name, $code, $version));
+
+        return 0;
     }
 
     public function validateCode($code)
@@ -175,14 +177,15 @@ class PluginGenerateCommand extends Command
      */
     protected function createConfig($pluginDir, $name, $code, $version)
     {
+        $lowerCode = mb_strtolower($code);
         $source = <<<EOL
 {
-  "name": "ec-cube/$code",
+  "name": "ec-cube/$lowerCode",
   "version": "$version",
   "description": "$name",
   "type": "eccube-plugin",
   "require": {
-    "ec-cube/plugin-installer": "~0.0.7"
+    "ec-cube/plugin-installer": "~0.0.7 || ^2.0"
   },
   "extra": {
     "code": "$code"
@@ -192,7 +195,6 @@ EOL;
 
         $this->fs->dumpFile($pluginDir.'/composer.json', $source);
     }
-
 
     /**
      * @param string $pluginDir
@@ -232,7 +234,6 @@ jobs:
 
         $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
     }
-
 
     /**
      * @param string $pluginDir

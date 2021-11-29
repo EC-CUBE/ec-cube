@@ -17,11 +17,12 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\ProductTag;
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Repository\ProductRepository;
-use Knp\Component\Pager\PaginatorInterface;
-use Eccube\Repository\TagRepository;
+use Eccube\Entity\Tag;
 use Eccube\Repository\MemberRepository;
+use Eccube\Repository\ProductRepository;
+use Eccube\Repository\TagRepository;
+use Eccube\Tests\EccubeTestCase;
+use Knp\Component\Pager\PaginatorInterface;
 
 class PaginationTest extends EccubeTestCase
 {
@@ -61,10 +62,10 @@ class PaginationTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->productRepository = $this->container->get(ProductRepository::class);
-        $this->paginator = $this->container->get(PaginatorInterface::class);
-        $this->tagRepository = $this->container->get(TagRepository::class);
-        $this->memberRepository = $this->container->get(MemberRepository::class);
+        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $this->paginator = self::$container->get(PaginatorInterface::class);
+        $this->tagRepository = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);
+        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
 
         // mysqlの場合, トランザクション中にcreate tableを行うと暗黙的にcommitされてしまい, テストデータをロールバックできない
         // そのため, create tableを行った後に, 再度トランザクションを開始するようにしている
@@ -230,7 +231,13 @@ class PaginationTest extends EccubeTestCase
     public function testWhereWithJoinEntity()
     {
         // `新商品`のTagが登録されたProductを生成
-        $Tag = $this->tagRepository->find(1);
+        $MaxTag = $this->tagRepository->findOneBy([], ['sort_no' => 'DESC']);
+        $Tag = new Tag();
+        $Tag->setName('join-test');
+        $Tag->setSortNo($MaxTag->getSortNo() + 1);
+        $this->entityManager->persist($Tag);
+        $this->entityManager->flush();
+
         $Member = $this->memberRepository->find(2);
         $Product = $this->productRepository->find(reset($this->expectedIds));
 
@@ -241,7 +248,7 @@ class PaginationTest extends EccubeTestCase
         $Product->addProductTag($ProductTag);
 
         $this->entityManager->persist($ProductTag);
-        $this->entityManager->flush([$Product, $ProductTag]);
+        $this->entityManager->flush();
 
         $qb = $this->productRepository->getQueryBuilderBySearchData([]);
 
@@ -272,7 +279,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = $expectedIds;
         $this->actual = $actualIds;
         // tagが登録されたProductは1件のみ.
-        $this->assertTrue(count($this->actual) === 1);
+        $this->assertSame(count($this->actual), 1);
         $this->verify();
     }
 

@@ -14,8 +14,8 @@
 namespace Eccube\Tests\Doctrine\Common\CsvDataFixtures;
 
 use Eccube\Doctrine\Common\CsvDataFixtures\CsvFixture;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\Master\JobRepository;
+use Eccube\Tests\EccubeTestCase;
 
 class CsvFixtureTest extends EccubeTestCase
 {
@@ -41,7 +41,7 @@ class CsvFixtureTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->jobRepository = $this->container->get(JobRepository::class);
+        $this->jobRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Job::class);
 
         $Jobs = $this->jobRepository->findAll();
         foreach ($Jobs as $Job) {

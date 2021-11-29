@@ -34,7 +34,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->shippingRepository = $this->container->get(ShippingRepository::class);
+        $this->shippingRepository = $this->entityManager->getRepository(\Eccube\Entity\Shipping::class);
     }
 
     public function testIndex()
@@ -208,6 +208,47 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         self::assertEquals([$Order->getEmail() => null], $Message->getTo());
     }
 
+    public function testSendNotifyMailWithSanitize()
+    {
+        $this->client->enableProfiler();
+        $Customer = $this->createCustomer();
+        $Customer->setName01('<Sanitize&>');
+
+        $Order = $this->createOrder($Customer);
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        $shippingDate = new \DateTime();
+        $Shipping->setShippingDate($shippingDate);
+        $this->entityManager->persist($Shipping);
+        $this->entityManager->flush();
+
+        $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_notify_mail', ['id' => $Shipping->getId()])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        self::assertEquals(1, count($Messages));
+
+        /** @var \Swift_Message $Message */
+        $Message = $Messages[0];
+
+        self::assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
+        self::assertEquals([$Order->getEmail() => null], $Message->getTo());
+
+        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+
+        $MultiPart = $Message->getChildren();
+        foreach ($MultiPart as $Part) {
+            if ($Part->getContentType() == 'text/html') {
+                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
+            }
+        }
+    }
+
     public function testNotSendNotifyMail()
     {
         $this->client->enableProfiler();
@@ -234,7 +275,6 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
      */
     public function testCalculateTax()
     {
-
         /** @var Product $Product */
         $Product = $this->createProduct('test', 2);
         /** @var ProductClass $ProductClass1 */

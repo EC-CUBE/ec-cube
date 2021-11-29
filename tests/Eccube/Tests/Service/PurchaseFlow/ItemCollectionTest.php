@@ -15,11 +15,11 @@ namespace Eccube\Tests\Service\PurchaseFlow;
 
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
-use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
 
 class ItemCollectionTest extends EccubeTestCase
 {
@@ -42,7 +42,7 @@ class ItemCollectionTest extends EccubeTestCase
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses()->toArray();
         $Customer = $this->createCustomer();
-        $this->ItemHolder = $this->container->get(Generator::class)->createOrder($Customer, $ProductClasses);
+        $this->ItemHolder = self::$container->get(Generator::class)->createOrder($Customer, $ProductClasses);
         $this->Items = $this->ItemHolder->getItems()->toArray();
     }
 

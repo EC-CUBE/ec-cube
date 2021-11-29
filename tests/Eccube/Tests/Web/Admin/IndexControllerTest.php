@@ -34,8 +34,8 @@ class IndexControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
         $this->Member = $this->createMember();
-        $this->orderStatusRepository = $this->container->get(OrderStatusRepository::class);
-        $this->orderRepository = $this->container->get(OrderRepository::class);
+        $this->orderStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
     }
 
     public function testRoutingAdminIndex()
@@ -154,7 +154,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_change_password')));
 
         $Member = clone $this->Member;
-        $encoder = $this->container->get('security.encoder_factory')->getEncoder($this->Member);
+        $encoder = self::$container->get('security.encoder_factory')->getEncoder($this->Member);
         $this->expected = $encoder->encodePassword($form['change_password']['first'], $this->Member->getSalt());
         $this->actual = $this->Member->getPassword();
 

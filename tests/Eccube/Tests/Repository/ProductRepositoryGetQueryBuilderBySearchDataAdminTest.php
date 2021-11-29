@@ -17,8 +17,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
-use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 
 /**
  * ProductRepository#getQueryBuilderBySearchDataAdmin test cases.
@@ -54,8 +54,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     {
         parent::setUp();
 
-        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
-        $this->categoryRepository = $this->container->get(CategoryRepository::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
+        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
     }
 
     public function scenario()
@@ -365,5 +365,55 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
             $this->verify();
         }
+    }
+
+    public function testTagSearch()
+    {
+        // データの事前準備
+        // * 商品1 に タグ 1 を設定
+        // * 商品2 に タグ 1, 2 を設定
+        $Products = $this->productRepository->findAll();
+        $Products[0]->setName('りんご');
+        $this->setProductTags($Products[0], [1]);
+        $this->setProductTags($Products[1], [1, 2]);
+        $this->setProductTags($Products[2], []);
+        $this->entityManager->flush();
+
+        // タグ 1 で検索
+        $this->searchData = [
+            'tag_id' => 1,
+        ];
+        $this->scenario();
+        $this->assertCount(2, $this->Results);
+
+        // タグ 2 で検索
+        $this->searchData = [
+            'tag_id' => 2,
+        ];
+        $this->scenario();
+        $this->assertCount(1, $this->Results);
+
+        // タグ 3 で検索
+        $this->searchData = [
+            'tag_id' => 3,
+        ];
+        $this->scenario();
+        $this->assertCount(0, $this->Results);
+
+        // 文字列とのAND検索 → 結果あり
+        $this->searchData = [
+            'id' => 'りんご',
+            'tag_id' => 1,
+        ];
+        $this->scenario();
+        $this->assertCount(1, $this->Results);
+
+        // 文字列とのAND検索 → 結果0件
+        $this->searchData = [
+            'id' => 'りんご',
+            'tag_id' => 2,
+        ];
+        $this->scenario();
+        $this->assertCount(0, $this->Results);
     }
 }

@@ -14,8 +14,8 @@
 namespace Eccube\Tests\Doctrine;
 
 use Eccube\Entity\Product;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\ProductRepository;
+use Eccube\Tests\EccubeTestCase;
 
 class TimeZoneTest extends EccubeTestCase
 {
@@ -33,7 +33,7 @@ class TimeZoneTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->productRepository = $this->container->get(ProductRepository::class);
+        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
 
         // 2000-01-01 00:00:00 +09 (jst)
         // 1999-12-31 15:00:00 +00 (utc)
@@ -81,7 +81,7 @@ class TimeZoneTest extends EccubeTestCase
         $this->entityManager->flush($product);
 
         // jstでcreate dateを登録
-        $timezone = new \DateTimeZone($this->container->getParameter('timezone'));
+        $timezone = new \DateTimeZone(self::$container->getParameter('timezone'));
         $createDate = new \DateTime('2000-01-01 00:00:00', $timezone);
 
         $product->setCreateDate($createDate);
@@ -123,7 +123,7 @@ class TimeZoneTest extends EccubeTestCase
         $this->assertEquals($expected, $actual->format('Y-m-d H:i:s'));
 
         // convertToPHPValueでjst時刻に変換可能
-        $timezone = new \DateTimeZone($this->container->getParameter('timezone'));
+        $timezone = new \DateTimeZone(self::$container->getParameter('timezone'));
         $expected = new \DateTime('2000-01-01 00:00:00', $timezone);
         $actual = $this->entityManager->getConnection()->convertToPHPValue($product['create_date'], 'datetimetz');
 
@@ -133,7 +133,7 @@ class TimeZoneTest extends EccubeTestCase
     public function testDbalInsert()
     {
         // jstで登録
-        $timezone = new \DateTimeZone($this->container->getParameter('timezone'));
+        $timezone = new \DateTimeZone(self::$container->getParameter('timezone'));
         $createDate = new \DateTime('2000-01-01 00:00:00', $timezone);
         $updateDate = new \DateTime('2000-01-01 00:00:00', $timezone);
 
