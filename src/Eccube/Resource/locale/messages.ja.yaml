@@ -369,6 +369,7 @@ front.shopping.out_of_stock_zero: '「%product%」の在庫が不足しており
 front.shopping.over_price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。
 front.shopping.in_preparation: '「%product%」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。'
 front.shopping.not_purchase: 現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。
+front.shopping.not_purchase_product_class: '「%product%」は現時点で購入できません。該当商品をカートから削除しました。'
 front.shopping.price_changed: '「%product%」の販売価格が変更されました。'
 front.shopping.payment_total_invalid: 合計金額が不正です。
 front.shopping.different_payment_methods: 支払い方法が異なる商品が含まれているため、同時に購入することはできません。
