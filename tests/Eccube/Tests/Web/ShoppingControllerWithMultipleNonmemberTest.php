@@ -198,8 +198,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
      */
     public function testAddMultiShippingWithOneAddressOneItemTwoQuantities()
     {
-        $this->scenarioCartIn(null, 1);
-        $this->scenarioCartIn(null, 1);
+        $this->scenarioCartIn(null, 2);
+        $this->scenarioCartIn(null, 2);
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);

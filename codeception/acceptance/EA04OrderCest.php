@@ -48,7 +48,8 @@ class EA04OrderCest
         OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
-        OrderManagePage::go($I)->検索($TargetOrders[0]->getName01());
+        $TargetOrder = array_values($TargetOrders)[0];
+        OrderManagePage::go($I)->検索($TargetOrder->getName01());
         $I->dontSee('検索結果：0件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         OrderManagePage::go($I)->検索('gege@gege.com');

@@ -10,10 +10,10 @@ services:
       - postgres
     environment:
       DATABASE_URL: "postgres://dbuser:secret@postgres/eccubedb"
-      DATABASE_SERVER_VERSION: 10
+      DATABASE_SERVER_VERSION: 14
 
   postgres:
-    image: postgres:10
+    image: postgres:14
     environment:
       POSTGRES_DB: eccubedb
       POSTGRES_USER: dbuser
