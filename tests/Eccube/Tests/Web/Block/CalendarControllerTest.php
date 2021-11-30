@@ -83,7 +83,7 @@ class CalendarControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
         $this->expected = $targetHoliday->format('j');
-        $this->actual = $crawler->filter('#this-month-holiday-'.$this->expected)->text();
+        $this->actual = $crawler->filter(($targetHoliday->isCurrentMonth() ? '#this-month-holiday-' : '#next-month-holiday-').$this->expected)->text();
         $this->verify();
     }
 
