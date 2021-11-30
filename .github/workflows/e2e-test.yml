@@ -20,13 +20,21 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.4 ]
-        db: [ pgsql ]
+#        php: [ 7.4 ]
+#        db: [ 'postgres:14' ]
+        php: [ 7.3, 7.4 ]
+        db: [ 'postgres:9.6', 'postgres:14', 'mysql:5.7' ]
         group: [ admin01, admin02, admin03, front, installer ]
         include:
-          - db: pgsql
+          - db: 'postgres:9.6'
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 9
+          - db: 'postgres:14'
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 14
+          - db: 'mysql:5.7'
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: 5.7
           - group: admin01
             app_env: 'codeception'
           - group: admin02
@@ -38,16 +46,6 @@ jobs:
           - group: installer
             app_env: 'install'
     services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
       mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -55,6 +53,16 @@ jobs:
           - 1025:1025
 
     steps:
+      - name: Setup PostgreSQL
+        if: startsWith(matrix.db, 'postgres')
+        run: |
+          docker run -d --rm -p 5432:5432 -e POSTGRES_PASSWORD=password ${{ matrix.db }}
+
+      - name: Setup MySQL
+        if: startsWith(matrix.db, 'mysql')
+        run: |
+          docker run -d --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password ${{ matrix.db }}
+
       - name: Checkout
         uses: actions/checkout@master
 
