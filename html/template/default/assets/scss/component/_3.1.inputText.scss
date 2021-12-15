@@ -108,8 +108,19 @@ Styleguide 3.1.2
       width: 45%;
     }
   }
-  input[type='text']:first-child{
-    margin-left: 0;
+  .ec-errorMessage {
+    display: inline-block;
+    width: 47%;
+    @include media_desktop {
+      margin-left: 15px;
+      width: 45%;
+    }
+  }
+  input[type='text'],
+  .ec-errorMessage {
+    &:first-of-type {
+      margin-left: 0;
+    }
   }
 }
 
@@ -167,9 +178,9 @@ Styleguide 3.1.4
   display: inline-block;
   input{
     display: inline-block;
-        text-align: left;
+    text-align: left;
     width: auto;
-        max-width: 8em;
+    max-width: 9em;
     font-size: 16px;
   }
   span{
@@ -233,7 +244,7 @@ Styleguide 3.1.5
 .ec-telInput{
   @extend .ec-input;
   input {
-    max-width: 10em;
+    max-width: 12em;
     text-align: left;
   }
 }

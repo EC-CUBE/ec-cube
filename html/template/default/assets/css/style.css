@@ -1759,7 +1759,6 @@ Styleguide 3.1.1
 .ec-input select, .ec-halfInput select, .ec-numberInput select, .ec-zipInput select, .ec-telInput select, .ec-select select, .ec-birth select {
   display: block;
   width: 100%;
-  max-width: 100%;
   height: 34px;
   padding: 6px 12px;
   font-size: 16px;
@@ -1905,7 +1904,11 @@ Styleguide 3.1.2
   display: inline-block;
   width: 47%;
   margin-left: 2%; }
-.ec-halfInput input[type='text']:first-child {
+.ec-halfInput .ec-errorMessage {
+  display: inline-block;
+  width: 47%; }
+.ec-halfInput input[type='text']:first-of-type,
+.ec-halfInput .ec-errorMessage:first-of-type {
   margin-left: 0; }
 /*
 数量ボタン
@@ -1958,7 +1961,7 @@ Styleguide 3.1.4
     display: inline-block;
     text-align: left;
     width: auto;
-    max-width: 8em;
+    max-width: 9em;
     font-size: 16px; }
 .ec-zipInput span {
     display: inline-block;
@@ -2011,7 +2014,7 @@ Markup:
 Styleguide 3.1.5
 */
 .ec-telInput input {
-  max-width: 10em;
+  max-width: 12em;
   text-align: left; }
 /**
  * ECCUBE 固有のスタイルユーティリティ
@@ -2290,7 +2293,11 @@ Styleguide 3.1.2
   display: inline-block;
   width: 47%;
   margin-left: 2%; }
-.ec-halfInput input[type='text']:first-child {
+.ec-halfInput .ec-errorMessage {
+  display: inline-block;
+  width: 47%; }
+.ec-halfInput input[type='text']:first-of-type,
+.ec-halfInput .ec-errorMessage:first-of-type {
   margin-left: 0; }
 /*
 数量ボタン
@@ -2343,7 +2350,7 @@ Styleguide 3.1.4
     display: inline-block;
     text-align: left;
     width: auto;
-    max-width: 8em;
+    max-width: 9em;
     font-size: 16px; }
 .ec-zipInput span {
     display: inline-block;
@@ -2396,7 +2403,7 @@ Markup:
 Styleguide 3.1.5
 */
 .ec-telInput input {
-  max-width: 10em;
+  max-width: 12em;
   text-align: left; }
 /*
 フォーム部品(その他)
@@ -7492,6 +7499,9 @@ Styleguide 22.1
     .ec-halfInput input[type='text'] {
       margin-left: 15px;
       width: 45%; }
+    .ec-halfInput .ec-errorMessage {
+      margin-left: 15px;
+      width: 45%; }
     .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
       font-size: 14px; }
     .ec-input select, .ec-halfInput select, .ec-numberInput select, .ec-zipInput select, .ec-telInput select, .ec-select select, .ec-birth select {
@@ -7501,6 +7511,9 @@ Styleguide 22.1
     .ec-input input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input, .ec-select input, .ec-birth input {
       margin-bottom: 16px; }
     .ec-halfInput input[type='text'] {
+      margin-left: 15px;
+      width: 45%; }
+    .ec-halfInput .ec-errorMessage {
       margin-left: 15px;
       width: 45%; }
     .ec-select__delivery {
@@ -8070,8 +8083,6 @@ Styleguide 22.1
       font-size: 20px; }
       .ec-historyListHeader .ec-historyListHeader__action a {
         font-size: 14px; }
-      .ec-registerRole .ec-registerRole__actions {
-        text-align: left; }
       .ec-customerRole .ec-blockBtn--action {
         margin-bottom: 16px; }
       .ec-userEditCompleteRole .ec-userEditCompleteRole__title {
