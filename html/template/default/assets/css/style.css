@@ -1759,7 +1759,6 @@ Styleguide 3.1.1
 .ec-input select, .ec-halfInput select, .ec-numberInput select, .ec-zipInput select, .ec-telInput select, .ec-select select, .ec-birth select {
   display: block;
   width: 100%;
-  max-width: 100%;
   height: 34px;
   padding: 6px 12px;
   font-size: 16px;
@@ -6594,15 +6593,14 @@ Styleguide 15.2.6
 .ec-AddAddress .ec-AddAddress__select {
     margin-bottom: 5px; }
 .ec-AddAddress .ec-AddAddress__selectAddress {
-    display: inline-block; }
+    display: block; }
 .ec-AddAddress .ec-AddAddress__selectAddress label {
       font-size: 16px;
       font-weight: normal; }
 .ec-AddAddress .ec-AddAddress__selectAddress select {
       min-width: 100%; }
 .ec-AddAddress .ec-AddAddress__selectNumber {
-    display: inline-block;
-    margin-left: 30px; }
+    display: block; }
 .ec-AddAddress .ec-AddAddress__selectNumber label {
       font-size: 16px;
       font-weight: normal; }
@@ -8056,8 +8054,17 @@ Styleguide 22.1
       margin-bottom: 0; }
     .ec-AddAddress {
       margin: 0 10%; }
+      .ec-AddAddress .ec-AddAddress__selectAddress {
+        display: inline-block; }
         .ec-AddAddress .ec-AddAddress__selectAddress select {
           min-width: 350px; }
+      .ec-AddAddress .ec-AddAddress__selectNumber {
+        display: inline-block;
+        margin-left: 30px; }
+    .ec-AddAddress .ec-AddAddress__actions {
+      width: 33.3333%;
+      min-width: 250px;
+      margin: 0 auto; }
     .ec-historyRole .ec-historyRole__contents {
       flex-direction: row; }
     .ec-historyRole .ec-historyRole__header {
