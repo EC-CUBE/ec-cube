@@ -3,14 +3,14 @@
 OWASP ZAP のアクティブスキャンを自動化するプログラムです。
 OWASP ZAP を使用したペネトレーションテストを自動化する手段として、 [OWASP ZAP Full Scan
 ](https://github.com/marketplace/actions/owasp-zap-full-scan) がありますが、EC-CUBE の場合は日本語入力が必須であったり、[特殊な遷移パターン](https://doc4.ec-cube.net/penetration-testing/testing/attention#%E7%89%B9%E6%AE%8A%E3%81%AA%E9%81%B7%E7%A7%BB%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3)があるため、十分にスキャンできません。
-この対策として、Selenium と連携させて自動化します。
+この対策として、Playwright と連携させて自動化します。
 
 ## スキャンの流れ
 
 以下のような流れでスキャンを実行します。
 
 1. OWASP ZAP の API を使用して、コンテキストや自動ログインを設定する
-2. Selenium で OWASP ZAP の Proxy を通してクロールする
+2. Playwright で OWASP ZAP の Proxy を通してクロールする
 3. クロールしたページに対してアクティブスキャンを実行する
 4. OWASP ZAP のセッションを保存する
 
@@ -18,9 +18,6 @@ High 以上のアラートが出た場合はテストが失敗します。
 アラートが誤検知の場合は alertfilter に追加して、アラートを抑制する必要があります。
 
 ### ローカル環境での実行方法
-
-*前提として [chromedriverをインストール](https://chromedriver.chromium.org)し、 PATH を通しておく必要があります。*
-ローカル環境で実行する場合は以下のコマンドを使用します。
 
 ```shell
 ## docker-compose を使用して EC-CUBE をインストールします
@@ -41,11 +38,11 @@ docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compo
 
 ## yarn でテストを実行します。
 cd zap/selenium/ci/TypeScript
-yarn install
-yarn jest
+yarn install && yarn create playwright # (初回のみ)
+HTTP_PROXY=127.0.0.1:8090 HTTPS_PROXY=127.0.0.1:8090 yarn playwright test
 
 ## (Optional) 個別にテストする場合は、テストのファイル名を指定してください。
-yarn jest test/admin/order_mail.test.ts
+yarn playwright test test/front_guest/contact.test.ts
 ```
 
 ####  実行中に OWASP ZAP を操作したい場合

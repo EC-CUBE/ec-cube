@@ -1,5 +1,13 @@
 name: Penetration testing for EC-CUBE
 on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
   schedule:
     - cron: '0 15 * * 1'
 
@@ -12,9 +20,9 @@ jobs:
       matrix:
         operating-system: [ ubuntu-18.04 ]
         group:
-          - 'test/front_login/contact.test.ts'
+          # - 'test/front_login/contact.test.ts'
           - 'test/front_guest/contact.test.ts'
-          - 'test/admin/order_mail.test.ts'
+          # - 'test/admin/order_mail.test.ts'
 
     steps:
       - name: Checkout
@@ -34,12 +42,19 @@ jobs:
 
       - name: yarn install
         working-directory: zap/selenium/ci/TypeScript
-        run: yarn install
+        run: |
+          yarn install
+          yarn run playwright install --with-deps chromium
+          yarn playwright install-deps chromium
       - name: Penetration testing
         working-directory: zap/selenium/ci/TypeScript
         env:
           GROUP: ${{ matrix.group }}
-        run: yarn jest ${GROUP}
+          HTTP_PROXY: 127.0.0.1:8090
+          HTTPS_PROXY: 127.0.0.1:8090
+          CI: 1
+          FORCE_COLOR: 1
+        run: yarn playwright test ${GROUP}
       - env:
           GROUP: ${{ matrix.group }}
         if: always()
