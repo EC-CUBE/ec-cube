@@ -6,7 +6,7 @@ const zapClient = new ZapClient('http://127.0.0.1:8090');
 const baseURL = 'https://ec-cube';
 const url = baseURL + '/contact';
 
-test.describe('お問い合わせフォームのテストをします', () => {
+test.describe.serial('お問い合わせフォームのテストをします', () => {
   let page: Page;
   test.beforeAll(async () => {
     await zapClient.setMode(Mode.Protect);
@@ -54,9 +54,30 @@ test.describe('お問い合わせフォームのテストをします', () => {
     await page.click('button >> text=確認ページへ');
   });
 
+  test('入力内容を確認します', async () => {
+    await expect(page.locator('#contact_email')).toBeHidden();
+    await expect(page.locator('#contact_email')).toHaveValue('zap_user@example.com');
+  });
+
   let message: HttpMessage;
   test('HttpMessage を取得します', async () => {
     message = await zapClient.getLastMessage(url);
+  });
+
+  let completeRequestBody: string;
+  test('確認→完了画面の requestBody に書き換えます', async () => {
+    completeRequestBody = message.requestBody.replace(/mode=confirm/, 'mode=complete&mode_complete=dummy');
+    expect(completeRequestBody).toContain('mode=complete');
+  });
+
+  let completeMessage: HttpMessage;
+  test('content-length を書き換えて手動リクエストを送信します', async () => {
+    const requestHeader = message.requestHeader.replace(
+      'Content-Length: ' + message.requestBody.length,
+      'Content-Length: ' + completeRequestBody.length
+    );
+    await zapClient.sendRequest(requestHeader + completeRequestBody);
+    completeMessage = await zapClient.getLastMessage(url);
   });
 
   test.describe('テストを実行します[POST][入力→確認] @attack', () => {
@@ -72,24 +93,9 @@ test.describe('お問い合わせフォームのテストをします', () => {
     });
   });
 
-  let completeRequestBody: string;
-  test('確認→完了画面の requestBody に書き換えます', async () => {
-    completeRequestBody = message.requestBody.replace(/mode=confirm/, 'mode=complete&mode_complete=dummy');
-    expect(completeRequestBody).toContain('mode=complete');
-  });
-
-  test('content-length を書き換えて手動リクエストを送信します', async () => {
-    const requestHeader = message.requestHeader.replace(
-      'Content-Length: ' + message.requestBody.length,
-      'Content-Length: ' + completeRequestBody.length
-    );
-    await zapClient.sendRequest(requestHeader + completeRequestBody);
-  });
-
   test.describe('テストを実行します[POST][確認→完了] @attack', () => {
     let scanId: number;
     test('アクティブスキャンを実行します', async () => {
-      const completeMessage = await zapClient.getLastMessage(url);
       expect(completeMessage.responseHeader).toContain('HTTP/1.1 302 Found');
       expect(completeMessage.responseHeader).toContain('Location: /contact/complete');
 

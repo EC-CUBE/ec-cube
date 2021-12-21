@@ -6,7 +6,7 @@ const zapClient = new ZapClient('http://127.0.0.1:8090');
 const baseURL = 'https://ec-cube/admin';
 const url = baseURL + '/order/4/mail';
 
-test.describe('受注管理>メール通知のテストをします', () => {
+test.describe.serial('受注管理>メール通知のテストをします', () => {
   let page: Page;
   test.beforeAll(async () => {
     await zapClient.setMode(Mode.Protect);
