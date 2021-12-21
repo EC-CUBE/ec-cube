@@ -51,17 +51,49 @@ test.describe('お問い合わせフォームのテストをします', () => {
     await page.fill('#contact_phone_number', '9999999999');
     await page.fill('#contact_email', 'zap_user@example.com');
     await page.fill('#contact_contents', 'お問い合わせ入力');
-    await page.click('button.ec-blockBtn--action[type=submit][name=mode][value=confirm]');
+    await page.click('button >> text=確認ページへ');
   });
 
-  test.describe('テストを実行します[POST][入力→g確認] @attack', () => {
-    let message: HttpMessage;
-    test('HttpMessage を取得します', async () => {
-      message = await zapClient.getLastMessage(url);
-    });
+  let message: HttpMessage;
+  test('HttpMessage を取得します', async () => {
+    message = await zapClient.getLastMessage(url);
+  });
+
+  test.describe('テストを実行します[POST][入力→確認] @attack', () => {
     let scanId: number;
     test('アクティブスキャンを実行します', async () => {
       scanId = await zapClient.activeScan(url, false, true, null, 'POST', message.requestBody);
+      await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
+    });
+
+    test('結果を確認します', async () => {
+      await zapClient.getAlerts(url, 0, 1, Risk.High)
+        .then(alerts => expect(alerts).toEqual([]));
+    });
+  });
+
+  let completeRequestBody: string;
+  test('確認→完了画面の requestBody に書き換えます', async () => {
+    completeRequestBody = message.requestBody.replace(/mode=confirm/, 'mode=complete&mode_complete=dummy');
+    expect(completeRequestBody).toContain('mode=complete');
+  });
+
+  test('content-length を書き換えて手動リクエストを送信します', async () => {
+    const requestHeader = message.requestHeader.replace(
+      'Content-Length: ' + message.requestBody.length,
+      'Content-Length: ' + completeRequestBody.length
+    );
+    await zapClient.sendRequest(requestHeader + completeRequestBody);
+  });
+
+  test.describe('テストを実行します[POST][確認→完了] @attack', () => {
+    let scanId: number;
+    test('アクティブスキャンを実行します', async () => {
+      const completeMessage = await zapClient.getLastMessage(url);
+      expect(completeMessage.responseHeader).toContain('HTTP/1.1 302 Found');
+      expect(completeMessage.responseHeader).toContain('Location: /contact/complete');
+
+      scanId = await zapClient.activeScan(url, false, true, null, 'POST', completeMessage.requestBody);
       await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
     });
 
