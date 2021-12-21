@@ -20,7 +20,7 @@ jobs:
       matrix:
         operating-system: [ ubuntu-18.04 ]
         group:
-          # - 'test/front_login/contact.test.ts'
+          - 'test/front_login/contact.test.ts'
           - 'test/front_guest/contact.test.ts'
           # - 'test/admin/order_mail.test.ts'
 
