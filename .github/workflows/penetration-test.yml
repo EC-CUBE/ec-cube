@@ -22,7 +22,7 @@ jobs:
         group:
           - 'test/front_login/contact.test.ts'
           - 'test/front_guest/contact.test.ts'
-          # - 'test/admin/order_mail.test.ts'
+          - 'test/admin/order_mail.test.ts'
 
     steps:
       - name: Checkout
