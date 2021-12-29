@@ -38,7 +38,7 @@ docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compo
 
 ## yarn でテストを実行します。
 cd zap/selenium/ci/TypeScript
-yarn install && yarn create playwright # (初回のみ)
+yarn install && yarn playwright install # (初回のみ)
 HTTP_PROXY=127.0.0.1:8090 HTTPS_PROXY=127.0.0.1:8090 yarn playwright test
 
 ## (Optional) 個別にテストする場合は、テストのファイル名を指定してください。
@@ -63,7 +63,13 @@ yarn playwright test test/front_guest/contact.test.ts
 
 ##### Chrome を GUI モードで起動する
 
-`./utils/SeleniumCapabilities.ts` にある `chromeOptions` の `--headless` をコメントアウトすることで、 Chrome が実際に起動するようになり、 Selenium の実行を確認できます。
+以下のように playwright に `--headed` オプションを付与することで Chrome が実際に起動し、実行状況を確認できます。
+
+``` shell
+yarn playwright test test/front_guest/contact.test.ts --headed
+```
+
+また、 [`page.pause()`](https://playwright.dev/docs/api/class-page#page-pause)をテストコードに埋め込めばステップ実行も可能です。
 
 ##### OWASP ZAP を GUI モードで起動する
 
