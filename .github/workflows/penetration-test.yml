@@ -34,12 +34,19 @@ jobs:
 
       - name: yarn install
         working-directory: zap/selenium/ci/TypeScript
-        run: yarn install
+        run: |
+          yarn install
+          yarn run playwright install --with-deps chromium
+          yarn playwright install-deps chromium
       - name: Penetration testing
         working-directory: zap/selenium/ci/TypeScript
         env:
           GROUP: ${{ matrix.group }}
-        run: yarn jest ${GROUP}
+          HTTP_PROXY: 127.0.0.1:8090
+          HTTPS_PROXY: 127.0.0.1:8090
+          CI: 1
+          FORCE_COLOR: 1
+        run: yarn playwright test ${GROUP}
       - env:
           GROUP: ${{ matrix.group }}
         if: always()
