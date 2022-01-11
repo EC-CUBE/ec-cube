@@ -701,6 +701,9 @@ class OrderController extends AbstractController
             ]);
         }
 
+        // TCPDF::Outputを実行するとプロパティが初期化されるため、ファイル名を事前に取得しておく
+        $pdfFileName = $orderPdfService->getPdfFileName();
+
         // ダウンロードする
         $response = new Response(
             $orderPdfService->outputPdf(),
@@ -712,9 +715,9 @@ class OrderController extends AbstractController
 
         // レスポンスヘッダーにContent-Dispositionをセットし、ファイル名を指定
         if ($downloadKind == 1) {
-            $response->headers->set('Content-Disposition', 'attachment; filename="'.$orderPdfService->getPdfFileName().'"');
+            $response->headers->set('Content-Disposition', 'attachment; filename="'.$pdfFileName.'"');
         } else {
-            $response->headers->set('Content-Disposition', 'inline; filename="'.$orderPdfService->getPdfFileName().'"');
+            $response->headers->set('Content-Disposition', 'inline; filename="'.$pdfFileName.'"');
         }
 
         log_info('OrderPdf download success!', ['Order ID' => implode(',', $request->get('ids', []))]);
