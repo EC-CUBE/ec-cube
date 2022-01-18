@@ -20,21 +20,24 @@ High 以上のアラートが出た場合はテストが失敗します。
 ### ローカル環境での実行方法
 
 ```shell
+# COMPOSE_FILE 環境変数を使用して docker-compose コマンドでロードする Yaml ファイルを設定します
+export COMPOSE_FILE=docker-compose.yml:docker-compose.pgsql.yml:docker-compose.dev.yml:docker-compose.owaspzap.yml:docker-compose.owaspzap.daemon.yml
+
 ## docker-compose を使用して EC-CUBE をインストールします
 cd path/to/ec-cube
-docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml up -d
-docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube  bin/console doctrine:schema:create --env=dev
-docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=dev
+docker-compose up -d
+docker-compose exec -T ec-cube bin/console doctrine:schema:create --env=dev
+docker-compose exec -T ec-cube bin/console eccube:fixtures:load --env=dev
 
 ## テスト用のダミーデータを生成します
-docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube bin/console eccube:fixtures:generate --products=5 --customers=1 --orders=5
-docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube bin/console doctrine:query:sql "UPDATE dtb_customer SET email = 'zap_user@example.com' WHERE id = 1;"
+docker-compose exec -T ec-cube bin/console eccube:fixtures:generate --products=5 --customers=1 --orders=5
+docker-compose exec -T ec-cube bin/console doctrine:query:sql "UPDATE dtb_customer SET email = 'zap_user@example.com' WHERE id = 1;"
 
 ## 環境変数 APP_ENV=prod に設定します
 sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
 
 ## ec-cube コンテナを再起動し、設定を反映します。
-docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml up -d ec-cube
+docker-compose up -d ec-cube
 
 ## yarn でテストを実行します。
 cd zap/selenium/ci/TypeScript
@@ -73,7 +76,7 @@ yarn playwright test test/front_guest/contact.test.ts --headed
 
 ##### OWASP ZAP を GUI モードで起動する
 
-上記 docker-compose コマンドの `docker-compose.owaspzap.daemon.yml` を `docker-compose.owaspzap.yml` とすることで、 OWASP ZAP を GUI モードで起動できます。
+上記 `COMPOSE_FILE` 環境変数の `docker-compose.owaspzap.daemon.yml` を `docker-compose.owaspzap.yml` とすることで、 OWASP ZAP を GUI モードで起動できます。
 OWASP ZAP の Docker コンテナ起動後、Firefox 以外のブラウザで http://localhost:8081/zap/ へアクセスすると、OWASP ZAP の管理画面が表示されます。
 **ツール→オプション→API** を開き、 Addresses permitted to use the API の**追加**をクリック、以下の内容を登録することで、yarn のテストが実行できます。
 
