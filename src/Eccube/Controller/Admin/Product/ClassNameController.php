@@ -167,7 +167,7 @@ class ClassNameController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 

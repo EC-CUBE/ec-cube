@@ -278,7 +278,7 @@ class ProductController extends AbstractController
      */
     public function loadProductClasses(Request $request, Product $Product)
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -305,7 +305,7 @@ class ProductController extends AbstractController
      */
     public function addImage(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
