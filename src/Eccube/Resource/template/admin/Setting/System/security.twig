@@ -104,6 +104,19 @@ file that was distributed with this source code.
                                         {% endif %}
                                     </div>
                                 </div>
+                                <!-- TRUSTED_HOSTS -->
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.security.trusted_hosts'|trans }}">
+                                            <span>{{ 'admin.setting.system.security.trusted_hosts'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.trusted_hosts, { 'attr': { 'placeholder': 'admin.setting.system.security.trusted_hosts_sample'|trans }}) }}
+                                        {{ form_errors(form.trusted_hosts) }}
+                                        <p>{{ 'admin.setting.system.security.trusted_hosts_description'|trans|nl2br }}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div><!-- /.card -->

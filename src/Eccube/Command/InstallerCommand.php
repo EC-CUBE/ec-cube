@@ -63,6 +63,7 @@ class InstallerCommand extends Command
             public $adminRoute;
             public $templateCode;
             public $locale;
+            public $trustedHosts;
 
             public $envDir;
 
@@ -78,6 +79,7 @@ class InstallerCommand extends Command
                             'ECCUBE_ADMIN_ROUTE' => $this->adminRoute,
                             'ECCUBE_TEMPLATE_CODE' => $this->templateCode,
                             'ECCUBE_LOCALE' => $this->locale,
+                            'TRUSTED_HOSTS' => $this->trustedHosts,
                         ];
             }
 
@@ -123,6 +125,10 @@ class InstallerCommand extends Command
             ' $ php bin/console eccube:install --no-interaction',
             '',
         ]);
+
+        // TRUSTED_HOSTS
+        $trustedHosts = env('TRUSTED_HOSTS', '^127\\.0\\.0\\.1$,^localhost$');
+        $this->envFileUpdater->trustedHosts = $this->io->ask('Trusted hosts. ex) www.example.com, localhost ...etc', $trustedHosts);
 
         // DATABASE_URL
         $databaseUrl = $this->container->getParameter('eccube_database_url');

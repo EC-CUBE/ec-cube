@@ -485,6 +485,7 @@ class InstallController extends AbstractController
             'ECCUBE_COOKIE_PATH' => $request->getBasePath() ? $request->getBasePath() : '/',
             'ECCUBE_TEMPLATE_CODE' => 'default',
             'ECCUBE_LOCALE' => 'ja',
+            'TRUSTED_HOSTS' => '^'.str_replace('.', '\\.', $request->getHost()).'$',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);
