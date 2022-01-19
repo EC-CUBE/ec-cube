@@ -149,7 +149,7 @@ class MailController extends AbstractController
      */
     public function preview(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
