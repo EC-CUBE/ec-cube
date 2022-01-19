@@ -117,6 +117,7 @@
         "fzaninotto/faker": "^1.7",
         "mikey179/vfsstream": "^1.6",
         "phpstan/phpstan": "^0.12",
+        "phpunit/phpunit": "< 8.0",
         "symfony/browser-kit": "^4.4",
         "symfony/phpunit-bridge": "^4.4"
     },
