@@ -32,44 +32,9 @@ file that was distributed with this source code.
     {% if Page.meta_robots is not empty %}
         <meta name="robots" content="{{ Page.meta_robots }}">
     {% endif %}
-<<<<<<< HEAD
     {% if Page.meta_tags is not empty %}
         {{ include(template_from_string(Page.meta_tags)) }}
     {% endif %}
-    {# canonical url #}
-    {# Product list #}
-    {% if Category is defined and Category %}
-        {% if pagination is defined and pagination.paginationData is defined and pagination.paginationData.pageCount > 1 %}
-            {# 最初のページ #}
-            {% if pagination.paginationData.current == 1  %}
-            <link rel="next" href="{{url('product_list')}}?category_id={{Category.id}}&pageno=2" title="{{Category.title}} 2ページ目">
-            <link rel="canonical" href="{{url('product_list')}}?category_id={{Category.id}}" />
-            {# 最後のページ #}
-            {% elseif pagination.paginationData.last == pagination.paginationData.current %}
-            <link rel="prev" href="{{url('product_list')}}?category_id={{Category.id}}&pageno={{pagination.paginationData.previous}}" title="{{Category.title}} {{pagination.paginationData.previous}}ページ目">
-            <link rel="canonical" href="{{url('product_list')}}?category_id={{Category.id}}&pageno={{pagination.paginationData.last}}" />
-            {# 途中のページ #}
-            {% else %}
-            <link rel="next" href="{{url('product_list')}}?category_id={{Category.id}}&pageno={{pagination.paginationData.next}}" title="{{Category.title}} {{pagination.paginationData.next}}ページ目">
-            <link rel="prev" href="{{url('product_list')}}?category_id={{Category.id}}&pageno={{pagination.paginationData.previous}}" title="{{Category.title}} {{pagination.paginationData.previous}}ページ目">
-            <link rel="canonical" href="{{url('product_list')}}?category_id={{Category.id}}&pageno={{pagination.paginationData.current}}" />
-            {% endif %}
-        {% else %}
-        {# ページング無し #}
-        <link rel="canonical" href="{{url('product_list')}}?category_id={{Category.id}}" />
-        {% endif %}
-    {# Product detail #}
-    {% elseif Product is defined and Product %}
-    <link rel="canonical" href="{{url('product_detail',{"id":Product.id})}}" />
-    {# User created page #}
-    {% elseif Page is defined and Page.edit_type == 0 && Page.url is defined %}
-    <link rel="canonical" href="{{ url(eccube_config.eccube_user_data_route, {'route': Page.url}) }}" />
-    {# Static system page #}
-    {% elseif Page is defined and Page && Page.url is defined %}
-    <link rel="canonical" href="{{url(Page.url)}}" />
-    {% endif %}
-=======
->>>>>>> upstream/4.1
     <link rel="icon" href="{{ asset('assets/img/common/favicon.ico', 'user_data') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
