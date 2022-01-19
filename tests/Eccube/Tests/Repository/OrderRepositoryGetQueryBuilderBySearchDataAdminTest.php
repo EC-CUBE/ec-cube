@@ -153,7 +153,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->assertCount(1, $this->Results);
     }
 
-
     public function testMultiWithPhoneNumber()
     {
         /** @var Order[] $Orders */
@@ -174,8 +173,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
         $this->assertCount(1, $this->Results);
     }
-
-
 
     public function testOrderIdEnd()
     {

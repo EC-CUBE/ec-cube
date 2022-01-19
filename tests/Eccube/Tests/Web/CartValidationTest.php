@@ -21,7 +21,6 @@ use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Service\CartService;
 use Symfony\Component\HttpKernel\Client;
 
@@ -2727,6 +2726,7 @@ class CartValidationTest extends AbstractWebTestCase
             'dtb_product_class',
             'dtb_product_image',
             'dtb_product_category',
+            'dtb_product_tag',
             'dtb_customer_favorite_product',
             'dtb_product',
         ]);

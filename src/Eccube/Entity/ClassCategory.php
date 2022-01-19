@@ -243,7 +243,7 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
          *
          * @return ClassCategory
          */
-        public function setClassName(\Eccube\Entity\ClassName $className = null)
+        public function setClassName(ClassName $className = null)
         {
             $this->ClassName = $className;
 
@@ -267,7 +267,7 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
          *
          * @return ClassCategory
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

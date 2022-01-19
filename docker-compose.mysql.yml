@@ -1,0 +1,27 @@
+version: '3'
+
+volumes:
+  mysql-database:
+    driver: local
+
+services:
+  ec-cube:
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_URL: "mysql://dbuser:secret@mysql/eccubedb"
+      DATABASE_SERVER_VERSION: 5.7
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: eccubedb
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql-database:/var/lib/mysql
+    ports:
+      - 13306:3306
+    networks:
+      - backend

@@ -72,6 +72,7 @@ if (!class_exists('\Eccube\Entity\Cart')) {
          * @var \Doctrine\Common\Collections\Collection|CartItem[]
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\CartItem", mappedBy="Cart", cascade={"persist"})
+         * @ORM\OrderBy({"id" = "ASC"})
          */
         private $CartItems;
 
@@ -154,6 +155,8 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         public function setCartKey(string $cartKey)
         {
             $this->cart_key = $cartKey;
+
+            return $this;
         }
 
         /**
@@ -346,9 +349,9 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         }
 
         /**
-         * @return Customer
+         * @return Customer|null
          */
-        public function getCustomer(): Customer
+        public function getCustomer(): ?Customer
         {
             return $this->Customer;
         }
@@ -359,6 +362,8 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         public function setCustomer(Customer $Customer = null)
         {
             $this->Customer = $Customer;
+
+            return $this;
         }
 
         /**

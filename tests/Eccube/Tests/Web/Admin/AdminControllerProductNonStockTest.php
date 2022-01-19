@@ -30,7 +30,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
      */
     public function testAdminNonStockRedirect()
     {
-        $this->client->request('POST', $this->generateUrl('admin_homepage_nonstock'));
+        $this->client->request('GET', $this->generateUrl('admin_homepage_nonstock'));
         $this->assertTrue($this->client->getResponse()->isRedirect());
     }
 
@@ -64,8 +64,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
         $section = trim($crawler->filter($this->target.' .card-body .d-block:nth-child(1) span.h4')->text());
         $this->expected = $showNumber = preg_replace('/\D/', '', $section);
 
-        $client->request('POST', $this->generateUrl('admin_homepage_nonstock'),
-                ['admin_search_product' => ['_token' => 'dummy']]);
+        $client->request('GET', $this->generateUrl('admin_homepage_nonstock'));
 
         $crawler = $client->followRedirect();
         $this->actual = $crawler->filter('.table-sm > tbody > tr')->count();

@@ -134,14 +134,14 @@ class Kernel extends BaseKernel
         }
         $Translator = $container->get('translator');
         if ($Translator !== null && $Translator instanceof \Symfony\Component\Translation\TranslatorInterface) {
-            TranslatorFacade::init($container, $Translator);
+            TranslatorFacade::init($Translator);
         }
 
         /** @var AnnotationReaderFacade $AnnotationReaderFacade */
         $AnnotationReaderFacade = $container->get(AnnotationReaderFacade::class);
         $AnnotationReader = $AnnotationReaderFacade->getAnnotationReader();
         if ($AnnotationReader !== null && $AnnotationReader instanceof \Doctrine\Common\Annotations\Reader) {
-            AnnotationReaderFacade::init($container, $AnnotationReader);
+            AnnotationReaderFacade::init($AnnotationReader);
         }
     }
 
@@ -226,10 +226,6 @@ class Kernel extends BaseKernel
 
         // twigのurl,path関数を差し替え
         $container->addCompilerPass(new TwigExtensionPass());
-
-        $container->register('app', Application::class)
-            ->setSynthetic(true)
-            ->setPublic(true);
 
         // クエリカスタマイズの拡張.
         $container->registerForAutoconfiguration(QueryCustomizer::class)

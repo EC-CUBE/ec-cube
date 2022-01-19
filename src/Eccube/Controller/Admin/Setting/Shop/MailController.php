@@ -24,6 +24,7 @@ use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -48,8 +49,8 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/mail", name="admin_setting_shop_mail")
-     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
+     * @Route("/%eccube_admin_route%/setting/shop/mail", name="admin_setting_shop_mail", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit", methods={"GET", "POST"})
      * @Template("@admin/Setting/Shop/mail.twig")
      */
     public function index(Request $request, MailTemplate $Mail = null, Environment $twig, CacheUtil $cacheUtil)
@@ -143,7 +144,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/mail/preview", name="admin_setting_shop_mail_preview")
+     * @Route("/%eccube_admin_route%/setting/shop/mail/preview", name="admin_setting_shop_mail_preview", methods={"POST"})
      * @Template("@admin/Setting/Shop/mail_view.twig")
      */
     public function preview(Request $request)
@@ -177,9 +178,9 @@ class MailController extends AbstractController
     protected function getHtmlFileName($fileName)
     {
         // HTMLテンプレートファイルの取得
-        $targetTemplate = explode('.', $fileName);
+        $targetTemplate = pathinfo($fileName);
         $suffix = '.html';
 
-        return $targetTemplate[0].$suffix.'.'.$targetTemplate[1];
+        return $targetTemplate['dirname'].DIRECTORY_SEPARATOR.$targetTemplate['filename'].$suffix.'.'.$targetTemplate['extension'];
     }
 }

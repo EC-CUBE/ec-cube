@@ -122,21 +122,4 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->actual = $Message->getSubject();
         $this->verify();
     }
-
-    public function testView()
-    {
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_order_mail_view'),
-            [
-                'id' => $this->MailHistories[0]->getId(),
-            ],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE' => 'application/json',
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
 }

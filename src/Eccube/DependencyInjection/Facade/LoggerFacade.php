@@ -1,13 +1,21 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\DependencyInjection\Facade;
 
 use Eccube\Log\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * XXX ContainerInterface は不要かも
- */
 class LoggerFacade
 {
     /** @var self|null */
@@ -31,7 +39,7 @@ class LoggerFacade
     /**
      * @param ContainerInterface $container
      *
-     * @return null|LoggerFacade
+     * @return LoggerFacade|null
      */
     public static function init(ContainerInterface $container, Logger $Logger)
     {
@@ -44,23 +52,24 @@ class LoggerFacade
 
     /**
      * @return Logger
+     *
      * @throws \Exception
      */
     public static function create()
     {
         if (null === self::$instance) {
-            throw new \Exception("Facade is not instantiated");
+            throw new \Exception('Facade is not instantiated');
         }
 
         return self::$Logger;
     }
 
     /**
-     * @deprecated
-     * @return ContainerInterface
+     * @param string $channel
+     * @return \Symfony\Bridge\Monolog\Logger
      */
-    public static function getContainer()
+    public static function getLoggerBy($channel)
     {
-        return self::$Container;
+        return self::$Container->get('monolog.logger.'.$channel);
     }
 }

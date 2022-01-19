@@ -14,8 +14,6 @@
 namespace Eccube\Tests\Util;
 
 use Eccube\Entity\AbstractEntity;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Util\EntityUtil;
 

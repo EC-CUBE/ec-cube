@@ -11,6 +11,24 @@
     "codeception/codeception": {
         "version": "2.4.1"
     },
+    "codeception/lib-asserts": {
+        "version": "1.13.2"
+    },
+    "codeception/lib-innerbrowser": {
+        "version": "1.5.0"
+    },
+    "codeception/module-asserts": {
+        "version": "1.3.1"
+    },
+    "codeception/module-phpbrowser": {
+        "version": "1.0.2"
+    },
+    "codeception/module-rest": {
+        "version": "1.3.1"
+    },
+    "codeception/module-webdriver": {
+        "version": "1.2.0"
+    },
     "codeception/phpunit-wrapper": {
         "version": "6.0.9"
     },
@@ -22,6 +40,9 @@
     },
     "composer/composer": {
         "version": "1.5.5"
+    },
+    "composer/metadata-minifier": {
+        "version": "1.0.0"
     },
     "composer/semver": {
         "version": "1.4.2"
@@ -64,6 +85,9 @@
     },
     "doctrine/dbal": {
         "version": "v2.6.3"
+    },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
     },
     "doctrine/doctrine-bundle": {
         "version": "1.6",
@@ -128,8 +152,17 @@
     "egulias/email-validator": {
         "version": "1.2.14"
     },
-    "facebook/webdriver": {
-        "version": "1.5.0"
+    "exercise/htmlpurifier-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "4667fd2103dc4645d234591e1c85f727c6fe0d11"
+        }
+    },
+    "ezyang/htmlpurifier": {
+        "version": "v4.13.0"
     },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
@@ -139,6 +172,9 @@
             "version": "2.2",
             "ref": "bb31a3bbec00a8fc8aa1c9fbf9b0ef9fc492f93d"
         }
+    },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.3"
     },
     "fzaninotto/faker": {
         "version": "v1.7.1"
@@ -167,6 +203,15 @@
     "kylekatarnls/update-helper": {
         "version": "1.2.0"
     },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.2.1"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.1.1"
+    },
     "mikey179/vfsstream": {
         "version": "v1.6.5"
     },
@@ -191,9 +236,6 @@
     "ocramius/proxy-manager": {
         "version": "2.1.1"
     },
-    "paragonie/random_compat": {
-        "version": "v2.0.11"
-    },
     "phar-io/manifest": {
         "version": "1.0.1"
     },
@@ -204,10 +246,13 @@
         "version": "7.1.3"
     },
     "php-coveralls/php-coveralls": {
-        "version": "v2.0.0"
+        "version": "v2.4.3"
     },
     "php-cs-fixer/diff": {
         "version": "v1.2.0"
+    },
+    "php-webdriver/webdriver": {
+        "version": "1.10.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -220,6 +265,9 @@
     },
     "phpspec/prophecy": {
         "version": "1.7.5"
+    },
+    "phpstan/phpstan": {
+        "version": "0.12.70"
     },
     "phpunit/php-code-coverage": {
         "version": "5.3.2"
@@ -245,9 +293,6 @@
             "ref": "c276fa48d4713de91eb410289b3b1834acb7e403"
         }
     },
-    "phpunit/phpunit-mock-objects": {
-        "version": "5.0.6"
-    },
     "pimple/pimple": {
         "version": "v1.1.1"
     },
@@ -271,6 +316,9 @@
     },
     "react/promise": {
         "version": "v2.8.0"
+    },
+    "robthree/twofactorauth": {
+        "version": "1.8.0"
     },
     "sebastian/code-unit-reverse-lookup": {
         "version": "1.0.1"
@@ -341,6 +389,9 @@
     "skorp/detect-incompatible-samesite-useragents": {
         "version": "1.0.0"
     },
+    "softcreatr/jsonpath": {
+        "version": "0.7.5"
+    },
     "suncat/mobile-detect-bundle": {
         "version": "1.0",
         "recipe": {
@@ -392,11 +443,11 @@
             "ref": "de31e687f3964939abd1f66817bd96ed34bc2eee"
         }
     },
-    "symfony/debug-pack": {
-        "version": "v1.0.4"
-    },
     "symfony/dependency-injection": {
         "version": "v3.4.1"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.2.0"
     },
     "symfony/doctrine-bridge": {
         "version": "v3.4.1"
@@ -482,9 +533,6 @@
     "symfony/options-resolver": {
         "version": "v3.4.1"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.4"
-    },
     "symfony/phpunit-bridge": {
         "version": "3.3",
         "recipe": {
@@ -524,11 +572,11 @@
     "symfony/polyfill-php80": {
         "version": "v1.17.1"
     },
+    "symfony/polyfill-php81": {
+        "version": "v1.23.0"
+    },
     "symfony/process": {
         "version": "v3.4.1"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.3"
     },
     "symfony/property-access": {
         "version": "v3.4.1"

@@ -16,7 +16,6 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
-use Symfony\Component\BrowserKit\Cookie;
 
 /**
  * 非会員複数配送指定のテストケース.
@@ -199,8 +198,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
      */
     public function testAddMultiShippingWithOneAddressOneItemTwoQuantities()
     {
-        $this->scenarioCartIn(null, 1);
-        $this->scenarioCartIn(null, 1);
+        $this->scenarioCartIn(null, 2);
+        $this->scenarioCartIn(null, 2);
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);

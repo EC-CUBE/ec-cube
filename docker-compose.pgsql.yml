@@ -1,0 +1,26 @@
+version: '3'
+
+volumes:
+  pg-database:
+    driver: local
+
+services:
+  ec-cube:
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: "postgres://dbuser:secret@postgres/eccubedb"
+      DATABASE_SERVER_VERSION: 14
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: eccubedb
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - 15432:5432
+    volumes:
+      - pg-database:/var/lib/postgresql/data
+    networks:
+      - backend

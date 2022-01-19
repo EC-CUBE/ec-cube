@@ -87,9 +87,9 @@ file that was distributed with this source code.
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                {{ form_widget(form.password.first, { type : 'password'}) }}
+                                                {{ form_widget(form.plain_password.first, { type : 'password'}) }}
                                             </div>
-                                            {{ form_errors(form.password.first) }}
+                                            {{ form_errors(form.plain_password.first) }}
                                         </div>
                                     </div>
                                 </div>
@@ -101,9 +101,9 @@ file that was distributed with this source code.
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                {{ form_widget(form.password.second, { type : 'password'}) }}
+                                                {{ form_widget(form.plain_password.second, { type : 'password'}) }}
                                             </div>
-                                            {{ form_errors(form.password.second) }}
+                                            {{ form_errors(form.plain_password.second) }}
                                         </div>
                                     </div>
                                 </div>
@@ -137,8 +137,20 @@ file that was distributed with this source code.
                                         {{ form_errors(form.Work) }}
                                     </div>
                                 </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.member.two_factor_auth_enabled'|trans }}">
+                                            <span>{{ 'admin.setting.system.member.two_factor_auth_enabled'|trans }}</span>
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.two_factor_auth_enabled) }}
+                                        {{ form_errors(form.two_factor_auth_enabled) }}
+                                    </div>
+                                </div>
                                 {# エンティティ拡張の自動出力 #}
-                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                     {% if f.vars.eccube_form_options.form_theme %}
                                         {% form_theme f f.vars.eccube_form_options.form_theme %}
                                         {{ form_row(f) }}

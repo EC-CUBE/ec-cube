@@ -391,7 +391,7 @@ class MailServiceTest extends AbstractServiceTestCase
     public function testConvertMessageISO()
     {
         // TODO  https://github.com/EC-CUBE/ec-cube/issues/2402#issuecomment-362487022
-        $this->markTestSkipped('実装確認中のためスキップ');
+        $this->markTestIncomplete('実装確認中のためスキップ');
         $config = $this->app['config'];
         $config['mail']['charset_iso_2022_jp'] = true;
         $this->app['config'] = $config;
@@ -426,7 +426,7 @@ class MailServiceTest extends AbstractServiceTestCase
     public function testConvertMessageUTF()
     {
         // TODO  https://github.com/EC-CUBE/ec-cube/issues/2402#issuecomment-362487022
-        $this->markTestSkipped('実装確認中のためスキップ');
+        $this->markTestIncomplete('実装確認中のためスキップ');
 
         $config = $this->app['config'];
         $config['mail']['charset_iso_2022_jp'] = false;
@@ -460,7 +460,7 @@ class MailServiceTest extends AbstractServiceTestCase
      */
     public function testSendShippingNotifyMail()
     {
-        $this->markTestSkipped('実装確認中のためスキップ');
+        $this->markTestIncomplete('実装確認中のためスキップ');
         $Order = $this->Order;
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();

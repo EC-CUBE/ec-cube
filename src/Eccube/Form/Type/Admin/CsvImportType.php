@@ -15,7 +15,9 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -52,6 +54,16 @@ class CsvImportType extends AbstractType
                         'maxSize' => $this->csvMaxSize.'M',
                     ]),
                 ],
+            ])
+            ->add('is_split_csv', CheckboxType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+            ])
+            ->add('csv_file_no', IntegerType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
             ]);
     }
 

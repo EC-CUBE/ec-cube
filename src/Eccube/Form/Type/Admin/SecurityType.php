@@ -62,6 +62,10 @@ class SecurityType extends AbstractType
     {
         $allowHosts = $this->eccubeConfig->get('eccube_admin_allow_hosts');
         $allowHosts = implode("\n", $allowHosts);
+
+        $denyHosts = $this->eccubeConfig->get('eccube_admin_deny_hosts');
+        $denyHosts = implode("\n", $denyHosts);
+
         $builder
             ->add('admin_route_dir', TextType::class, [
                 'constraints' => [
@@ -79,6 +83,13 @@ class SecurityType extends AbstractType
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
                 ],
                 'data' => $allowHosts,
+            ])
+            ->add('admin_deny_hosts', TextareaType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                ],
+                'data' => $denyHosts,
             ])
             ->add('force_ssl', CheckboxType::class, [
                 'label' => 'admin.setting.system.security.force_ssl',
@@ -98,6 +109,18 @@ class SecurityType extends AbstractType
                     );
                     if ($errors->count() != 0) {
                         $form['admin_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
+                    }
+                }
+
+                $ips = preg_split("/\R/", $data['admin_deny_hosts'], null, PREG_SPLIT_NO_EMPTY);
+
+                foreach ($ips as $ip) {
+                    $errors = $this->validator->validate($ip, [
+                            new Assert\Ip(),
+                        ]
+                    );
+                    if ($errors->count() != 0) {
+                        $form['admin_deny_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
                     }
                 }
 

@@ -50,7 +50,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment", name="admin_setting_shop_payment")
+     * @Route("/%eccube_admin_route%/setting/shop/payment", name="admin_setting_shop_payment", methods={"GET"})
      * @Template("@admin/Setting/Shop/payment.twig")
      */
     public function index(Request $request)
@@ -75,8 +75,8 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/new", name="admin_setting_shop_payment_new")
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_edit")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/new", name="admin_setting_shop_payment_new", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_edit", methods={"GET", "POST"})
      * @Template("@admin/Setting/Shop/payment_edit.twig")
      */
     public function edit(Request $request, Payment $Payment = null)
@@ -159,7 +159,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/image/add", name="admin_payment_image_add")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/image/add", name="admin_payment_image_add", methods={"POST"})
      */
     public function imageAdd(Request $request)
     {
@@ -288,5 +288,7 @@ class PaymentController extends AbstractController
 
             return new Response();
         }
+
+        throw new BadRequestHttpException();
     }
 }

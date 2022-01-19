@@ -136,6 +136,17 @@ front.block.login.login: Sign in
 front.block.login.logout: Sign out
 front.block.login.to_cart: Proceed to Cart
 front.block.login.to_home: Back to Home
+front.block.calendar.title__en: 'CALENDAR'
+front.block.calendar.title__ja: 'Calendar'
+front.block.calendar.month_format: 'M. Y'
+front.block.calendar.sunday: 'Su'
+front.block.calendar.monday: 'Mo'
+front.block.calendar.tuesday: 'Tu'
+front.block.calendar.wednesday: 'We'
+front.block.calendar.thursday: 'Th'
+front.block.calendar.friday: 'Fr'
+front.block.calendar.saturday: 'Sa'
+front.block.calendar.holiday_notice: '* The red characters are closed.'
 
 
 #------------------------------------------------------------------------------------
@@ -369,6 +380,7 @@ front.shopping.out_of_stock_zero: 'Sorry, we do not have enough stock for %produ
 front.shopping.over_price_limit: Sorry, the quantity exceeds the max. purchase amount. Please reduce the purchase quantity.
 front.shopping.in_preparation: 'Sorry, %product% is not ready for shipment. Please contact us from the inquiry form. We are sorry for the inconvenience.'
 front.shopping.not_purchase: Sorry, your order includes item(s) currently unavailable. It has been deleted from your cart.
+front.shopping.not_purchase_product_class: 'Sorry, %product% is currently unavailable. It has been deleted from your cart.'
 front.shopping.price_changed: 'The selling price of %product% has been changed.'
 front.shopping.payment_total_invalid: The total amount is invalid.
 front.shopping.different_payment_methods: Sorry, your order includes items with different purchase methods, which are unable to be processed in one order.
@@ -428,6 +440,8 @@ admin.common.next: Next
 admin.common.first: Go to First
 admin.common.last: Go to Last
 admin.common.back: Go back
+admin.common.open_detail: 'Show details'
+admin.common.close_detail: 'Close details'
 
 # Generic Labels, Messages
 admin.common.show: Display
@@ -469,6 +483,9 @@ admin.common.csv_invalid_can_not: '%name% is invalid in the line %line%'
 admin.common.csv_invalid_image: 'Your are not allowed to use "/" or "../" as suffix in %name% in the %line%'
 admin.common.csv_invalid_foreign_key: 'You are unable to delete %name% in the line %line% because it has related data'
 admin.common.csv_invalid_description_detail_upper_limit: '%name% should be less than %max% characters in the line %line%.'
+admin.common.csv_upload_in_progress: 'Uploading CSV file ...'
+admin.common.csv_upload_line_success: 'The %from% to %to% lines have been registered.'
+admin.common.csv_upload_line_error: 'An error has occurred. The registration process after the %from% line has been cancelled.'
 admin.common.drag_and_drop_description: You can change the order of the items by drag & drop.
 admin.common.drag_and_drop_image_description: Drag & drop the images or
 admin.common.delete_modal__title: Delete
@@ -549,6 +566,7 @@ admin.header.user_name: 'Hi %name%!'
 admin.header.logout: Sign out
 admin.header.last_login: Last sign-in
 admin.header.change_password: Change Password
+admin.header.two_factor_auth: Two-Factor Auth
 
 admin.login.enable_javascript: Please enable JavaScript
 admin.login.login: Sign in
@@ -603,7 +621,7 @@ admin.product.permanently_delete__complete_message: Product has been deleted suc
 admin.product.permanently_delete__complete: Completed
 admin.product.permanently_delete__system_error: System error occurred
 admin.product.copy__confirm_title: Duplicate a product
-admin.product.copy__confirm_message: Are you sure to delete this product?
+admin.product.copy__confirm_message: Are you sure you want to duplicate the product?
 admin.product.name: Product Name
 admin.product.image: Product Images
 admin.product.image__short: Images
@@ -743,6 +761,10 @@ admin.product.category_csv.parent_category_id_col: Parent Category ID
 admin.product.category_csv.parent_category_id_description: ''
 admin.product.category_csv.delete_flag_col: Category Deletion Flag
 admin.product.category_csv.delete_flag_description: 'Specify 0: Upload or 1: Delete. If unspecified, it is set to 0.'
+
+# Product CSV
+admin.product.product_csv_upload__title: 'Upload product CSV'
+admin.product.product_csv_upload__message: 'Upload the product CSV file. Is it OK?'
 
 #------------------------------------------------------------------------------------
 # Orders
@@ -957,6 +979,11 @@ admin.content.file.updated: Update
 admin.content.file.directory_tree: Directories
 admin.content.file.upload_complete: '%success% file upload completed. (%success%/%count%)'
 admin.content.file.upload_error: 'Failed to upload %file_name%. (%error%)'
+admin.content.file.folder_name_symbol_error: The folder name contains invalid characters.
+admin.content.file.folder_name_period_error: Folder names beginning with a period(.) are not allowed.
+admin.content.file.dir_exists: '%file_name% is already exists.'
+admin.content.file.phpfile_error: 'php files cannot be uploaded.'
+admin.content.file.dotfile_error: 'Dot files cannot be uploaded.'
 admin.content.layout_delete: Delete Layouts
 admin.content.layout_no_page: Page not registered
 admin.content.layout__card_title: Layout Overview
@@ -992,6 +1019,7 @@ admin.content.layout_section__drawer: '#drawer'
 admin.content.layout_section__close_body_before: 'Right before the </body> tags'
 admin.content.page_name: Page Name
 admin.content.page__card_title: Page Settings
+admin.content.page_route_name: Route Name
 admin.content.page_url: URL
 admin.content.page_url_exists: The URL already exists.
 admin.content.page_file_name: File Name
@@ -1005,6 +1033,7 @@ admin.content.page_meta_description: description
 admin.content.page_meta_keyword: keyword
 admin.content.page_meta_robot: robot
 admin.content.page_meta_metatag: metatag
+# Deprecated https://github.com/EC-CUBE/ec-cube/pull/4987
 admin.content.page_meta_metatag_placeholder: |
   商品詳細ページでの記載例
     <meta property="og:type" content="og:product" />
@@ -1062,12 +1091,15 @@ admin.setting.shop.delivery_setting: Delivery Settings
 admin.setting.shop.tax_setting: Taxes
 admin.setting.shop.mail_setting: Emails
 admin.setting.shop.csv_setting: CSV Outputs
+admin.setting.shop.order_status_setting: Order Status
+admin.setting.shop.calendar_setting: 'Calendar'
 admin.setting.system: System Settings
 admin.setting.system.member_management: Users
 admin.setting.system.member_password_change: Passwords
 admin.setting.system.authority_management: Permission
 admin.setting.system.security_management: Security
 admin.setting.system.log_display: Logs
+admin.setting.system.login_history: Login History
 admin.setting.system.master_data_management: Master Data
 admin.setting.system.system_info: System Info
 
@@ -1133,6 +1165,7 @@ admin.setting.shop.delivery.delivery_fee_by_pref: Shipping Charge by Prefecture
 admin.setting.shop.delivery.apply_to_pref__title: Flat Rate (Nationwide)
 admin.setting.shop.delivery.apply_to_pref__button: Apply to All Prefectures
 admin.setting.shop.delivery.fee.invalid: Please enter with numbers.
+admin.setting.shop.delivery.payment_warning: 'There is no payment method that can be selected for purchases of %min% to %max% including tax. Please check the payment method condition settings.'
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : Tax Rate
@@ -1180,6 +1213,25 @@ admin.setting.shop.csv.how_to_use: |
  To select multiple items, hold Ctrl (Windows) or Command (Mac) and select. Or hold Shift to select a range of items.
 
 #------------------------------------------------------------------------------------
+# Settings：Store Settings : Order Status
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.order_status.order_status: Order Status
+admin.setting.shop.order_status.id: ID
+admin.setting.shop.order_status.admin_order_status_name: Name(Order management)
+admin.setting.shop.order_status.customer_order_status_name: Name(My page)
+admin.setting.shop.order_status.color: Color
+admin.setting.shop.order_status.display_order_count: Number display
+
+#------------------------------------------------------------------------------------
+# Settings：Store Settings : Calendar
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.calendar.title: 'Title'
+admin.setting.shop.calendar.holiday: 'Date'
+admin.setting.shop.calendar.holiday.available_error: 'Date is already existed.'
+
+#------------------------------------------------------------------------------------
 # Settings : Customers : Change Password
 #------------------------------------------------------------------------------------
 
@@ -1190,9 +1242,25 @@ admin.setting.system.member.login_id: ID
 admin.setting.system.member.password: Password
 admin.setting.system.member.password_confirm: Re-enter Password
 admin.setting.system.member.work: Status
+admin.setting.system.member.two_factor_auth_enabled: Two-factor auth
+admin.setting.system.member.two_factor_auth_completed: Two-factor authentication settings are complete.
+admin.setting.system.member.two_factor_auth_incompleted: Two-factor authentication settings are incomplete. Please log in as this user to complete the settings.
 admin.setting.system.member.delete__confirm_title: Delete a user
 admin.setting.system.member.delete__confirm_message: Are you sure to delete this user?
 admin.setting.system.member.work_can_not_change: You are not allowed to change to ''Inactive''.
+
+#------------------------------------------------------------------------------------
+# Settings : Members : Two-Factor Auth
+#------------------------------------------------------------------------------------
+
+admin.setting.system.two_factor_auth_title: Two-factor auth
+admin.setting.system.two_factor_auth.qr: QR code
+admin.setting.system.two_factor_auth.device_token: Token
+admin.setting.system.two_factor_auth.auth: Authentication
+admin.setting.system.two_factor_auth.configured_warning: Two-factor authentication has already been set. If you reset it, you will not be able to use the registered device.
+admin.setting.system.two_factor_auth.complete_message: Two-factor authentication setting is complete.
+admin.setting.system.two_factor_auth.invalid_message__reinput: There is an error in the token. Please try again.
+admin.setting.system.two_factor_auth.invalid_message__invalid: There is an error in the token. Please enter in 6 digits.
 
 #------------------------------------------------------------------------------------
 # Settings : System : Authorizations
@@ -1218,19 +1286,35 @@ admin.setting.system.security__card_title: Security Settings
 admin.setting.system.security.admin_url: Admin Console URL
 admin.setting.system.security.admin_url_description: It is recommended to set the URL which would NOT be easily guessed.
 admin.setting.system.security.admin_url_changed: The URL of Admin Console has been changed. Please sign in again.
-admin.setting.system.security.ip_limit: IP Restrictions
+admin.setting.system.security.ip_limit: IP Restrictions(Allow List)
 admin.setting.system.security.ip_limit_description: |
  This will restrict the access to the Admin Console to specified IP addresses.
  Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Admin Console.
 admin.setting.system.security.ip_limit_sample: |
  127.0.0.1
  192.0.2.1
+admin.setting.system.security.ip_limit_deny: IP Restrictions(Deny List)
+admin.setting.system.security.ip_limit_description_deny: |
+  This will deny the access to the Admin Console from specified IP addresses.
+  Please enter the URLs one by one which you deny the access to.
 admin.setting.system.security.force_ssl: SSL is mandatory
 admin.setting.system.security.force_ssl_description: Only https access is allowed to set SSL restrictions.
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip% is not an IPv4 address.'
 admin.setting.system.security.ip_limit_invalid_https: 'http is not allowed to do this setting.'
 admin.setting.system.security.admin_url_warning: Please set the Admin Console URL that is hard to guess for security.
 admin.setting.system.security.not_found_env_file: .env file not found. If you do not use the .env file you can not change security config in Admin Console.
+
+#------------------------------------------------------------------------------------
+# Settings : System : Login History
+#------------------------------------------------------------------------------------
+
+admin.setting.system.login_history.multi_search_label: ID / IP Address
+admin.setting.system.login_history.create_date: Login Attempt Date
+admin.setting.system.login_history.create_date__start: Login Attempt Date (Start)
+admin.setting.system.login_history.create_date__end: Login Attempt Date (End)
+admin.setting.system.login_history.user_name: ID
+admin.setting.system.login_history.client_ip: IP Address
+admin.setting.system.login_history.status: Status
 
 #------------------------------------------------------------------------------------
 # Settings : System : Logs
@@ -1553,7 +1637,7 @@ tooltip.content.page_file_name: This is the name of a twig template file which h
 tooltip.content.page_source_code: Editing the template file. Coding has to be with twig.
 tooltip.content.page_layout: Selecting the layouts to be applied to this page.
 tooltip.content.page_meta: You can enter the META tag contents of the page.
-tooltip.content.page_meta_tags: You can add META tag freely. You can also use variables used within twig.
+tooltip.content.page_meta_tags: You can modify META tags freely. You can also use variables used within twig. If unspecified, meta.twig file in the template folder will be loaded.
 tooltip.content.js_source_code: Editing the JavaScript file. Coding has to be with JavaScript.
 tooltip.content.css_source_code: Editing the CSS file. Coding has to be with CSS.
 tooltip.content.block_name: This is a name of a block for management use.
@@ -1575,6 +1659,7 @@ tooltip.setting.shop.shop.option_product_tax: If turned on, you can set the tax 
 tooltip.setting.shop.shop.option_point_enabled: If turned on, the point system is enabled.
 tooltip.setting.shop.shop.option_point_rate: You can change the point return rate by purchase amount.
 tooltip.setting.shop.shop.option_point_conversion_rate: Conversion rate per 1 point. E.g. If you set ''1'', the point becomes available to shoppers with the rate of 1 point = 1 yen.
+tooltip.setting.shop.payment.rule: You can set the terms of use for the payment method. If the total payment amount (tax included) including your own fee matches the conditions, it will be displayed in the payment method options of the purchase flow.
 tooltip.setting.shop.payment.logo_image: You can upload the payment option icons displayed in the payment methods during the checkout process. If not registered, the payment methods will be displayed w/o images.
 tooltip.setting.shop.delivery.tracking_number_url: Enter the URL of the shipping tracker of the delivery company.
 tooltip.setting.shop.delivery.sale_type: Specify the sales type(s) available for this delivery method.
@@ -1584,15 +1669,27 @@ tooltip.setting.shop.tax_setting: You can set the tax rates applicable to all pr
 tooltip.setting.shop.mail.mail_template: Please select an existing email template. Contents are displayed in the text field below.
 tooltip.setting.shop.csv.csv_columns: You can output various data in CSV format. You can specify the items for CSV output.
 tooltip.setting.shop.csv.csv_type: Specify the CSV file type.
+tooltip.setting.shop.order_status.order_status: Set the order status used in order management and my page. You can set the name, color, and number display.
+tooltip.setting.shop.order_status.customer_order_status_name: You can set the name of the order status. The name set here will be displayed on My Page after logging in as a customer.
+tooltip.setting.shop.order_status.color: You can set the color of the order status used in order management.
+tooltip.setting.shop.order_status.display_order_count: You can set the display / non-display of the number of orders for each order status used in order management.
+tooltip.setting.shop.calendar_setting: 'You can set regular holidays for displaying in the business days calendar.'
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
 tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
+tooltip.setting.system.member.two_factor_auth_enabled: If enabled, you must log in using two-factor authentication. You will be able to login after setting up two-factor authentication.
+tooltip.setting.system.two_factor_auth.qr_code: Please read the QR code with the two-factor authentication app.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
 tooltip.setting.system.security.ip_limit: Restricting IP addresses which are allowed to sign in to the Admin Console.
+tooltip.setting.system.security.ip_limit_deny: IP addresses where access to the Admin Console is denied.
 tooltip.setting.system.security.force_ssl: Restricting the access to the storefront and Admin Console to via SSL(https).
+tooltip.setting.system.login_history.multi_search_label: You can filter the list with keywords. For more search options, open [Advanced Search].
 tooltip.setting.system.log_display: Here you can check logs such as access logs and error logs etc.
 tooltip.setting.system.master_data_management: Manage all Master Data here.
 tooltip.setting.system.system_info: System environment information relevant to EC-CUBE.
 tooltip.setting.system.system.php_info: PHP details relevant to EC-CUBE.
+tooltip.store.template.template_code: This code will be used as the directory name where the template is saved.
+tooltip.store.template.template_name: Set the name of the template to be displayed in the Admin Console.
+tooltip.store.template.template_file: Upload an archive file that contains a set of templates.
 
 #====================================================================================
 # Installation

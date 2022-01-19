@@ -1,6 +1,6 @@
 {
   "name": "eccube",
-  "version": "4.0.5",
+  "version": "4.1.1",
   "description": "EC-CUBE EC open platform.",
   "main": "index.js",
   "directories": {
@@ -37,7 +37,7 @@
     "autoprefixer": "^9.6.4",
     "bootstrap": "^4.3.1",
     "bootstrap-sass": "^3.4.1",
-    "browser-sync": "^2.26.7",
+    "browser-sync": "^2.26.14",
     "cross-env": "^7.0.2",
     "css-mqpacker": "^7.0.0",
     "gulp": "^4.0.2",
@@ -52,6 +52,7 @@
     "normalize.css": "^5.0.0",
     "postcss-import": "^12.0.1",
     "process": "^0.11.10",
+    "sass": "^1.42.1",
     "sort-css-media-queries": "^1.4.3"
   }
 }

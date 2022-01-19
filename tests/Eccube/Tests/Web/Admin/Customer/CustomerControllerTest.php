@@ -14,8 +14,8 @@
 namespace Eccube\Tests\Web\Admin\Customer;
 
 use Eccube\Entity\Master\CsvType;
-use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\CustomerRepository;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -105,7 +105,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_customer'),
-            ['admin_search_customer' => ['_token' => 'dummy', 'sex' => 2]]
+            ['admin_search_customer' => ['_token' => 'dummy', 'sex' => [2]]]
         );
         $this->expected = '検索';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
@@ -148,11 +148,19 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
 
     /**
      * testIndexWithPostSearchByProductName
+     *
+     * @dataProvider indexWithPostSearchByProductNameProvider
      */
-    public function testIndexWithPostSearchByProductName()
+    public function testIndexWithPostSearchByProductName(int $orderStatusId, string $expected)
     {
         $Customer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->findOneBy([], ['id' => 'DESC']);
         $Order = $this->createOrder($Customer);
+
+        /** @var OrderStatus $OrderStatus */
+        $OrderStatus = self::$container->get(OrderStatusRepository::class)->find($orderStatusId);
+        $Order->setOrderStatus($OrderStatus);
+        $this->entityManager->flush();
+
         $ProductName = $Order->getOrderItems()->filter(function ($OrderItems) {
             return $OrderItems->isProduct();
         })->first()->getProductName();
@@ -163,9 +171,26 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果：1件が該当しました';
+        $this->expected = $expected;
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
+    }
+
+    /**
+     * @return array[]
+     */
+    public function indexWithPostSearchByProductNameProvider()
+    {
+        return [
+            [OrderStatus::NEW, '検索結果：1件が該当しました'], // 新規受付
+            [OrderStatus::CANCEL, '検索結果：1件が該当しました'], // 注文取消し
+            [OrderStatus::IN_PROGRESS, '検索結果：1件が該当しました'], // 対応中
+            [OrderStatus::DELIVERED, '検索結果：1件が該当しました'], // 発送済み
+            [OrderStatus::PAID, '検索結果：1件が該当しました'], // 入金済み
+            [OrderStatus::PENDING, '検索結果：0件が該当しました'], // 決済処理中
+            [OrderStatus::PROCESSING, '検索結果：0件が該当しました'], // 購入処理中
+            [OrderStatus::RETURNED, '検索結果：1件が該当しました'], // 返品
+        ];
     }
 
     /**
@@ -176,7 +201,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->client->enableProfiler();
         $Customer = $this->createCustomer();
         $this->client->request(
-            'PUT',
+            'GET',
             $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
@@ -221,7 +246,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/user-[0-9]@example.com/');
 
         $this->client->request(
-            'POST',
+            'GET',
             $this->generateUrl('admin_customer_export'),
             ['admin_search_customer' => ['_token' => 'dummy']]
         );

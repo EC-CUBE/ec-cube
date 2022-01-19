@@ -13,9 +13,9 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\DBALException;
 use Eccube\Entity\AbstractEntity;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 abstract class AbstractRepository extends ServiceEntityRepository
 {
@@ -37,7 +37,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * エンティティの登録/保存します。
      *
-     * @param $entity|AbstractEntity エンティティ
+     * @param AbstractEntity $entity
      */
     public function save($entity)
     {
@@ -55,7 +55,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     /**
      * PostgreSQL環境かどうかを判定します。
+     *
      * @return bool
+     *
      * @throws DBALException
      */
     protected function isPostgreSQL()
@@ -65,7 +67,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     /**
      * MySQL環境かどうかを判定します。
+     *
      * @return bool
+     *
      * @throws DBALException
      */
     protected function isMySQL()

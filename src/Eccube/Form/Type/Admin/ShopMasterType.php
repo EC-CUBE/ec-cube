@@ -16,10 +16,10 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
-use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\PhoneNumberType;
-use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Type\PostalType;
+use Eccube\Form\Type\PriceType;
+use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -134,7 +134,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_lltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     ]),
                 ],
             ])
@@ -142,7 +142,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_lltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     ]),
                 ],
             ])
@@ -183,7 +183,7 @@ class ShopMasterType extends AbstractType
                         'message' => 'form_error.numeric_only',
                     ]),
                     new Assert\Range([
-                        'min' => 1,
+                        'min' => 0,
                         'max' => 100,
                     ]),
                 ],

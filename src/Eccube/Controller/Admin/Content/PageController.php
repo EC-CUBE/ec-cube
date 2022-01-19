@@ -65,10 +65,10 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/page", name="admin_content_page")
+     * @Route("/%eccube_admin_route%/content/page", name="admin_content_page", methods={"GET"})
      * @Template("@admin/Content/page.twig")
      */
-    public function index(Request $request)
+    public function index(Request $request, RouterInterface $router)
     {
         $Pages = $this->pageRepository->getPageList();
 
@@ -82,12 +82,13 @@ class PageController extends AbstractController
 
         return [
             'Pages' => $Pages,
+            'router' => $router,
         ];
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/page/new", name="admin_content_page_new")
-     * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
+     * @Route("/%eccube_admin_route%/content/page/new", name="admin_content_page_new", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit", methods={"GET", "POST"})
      * @Template("@admin/Content/page_edit.twig")
      */
     public function edit(Request $request, $id = null, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil)
@@ -117,12 +118,12 @@ class PageController extends AbstractController
         // 更新時
         $fileName = null;
         $namespace = '@user_data/';
+        $PrevPage = clone $Page;
         if ($id) {
             // 編集不可ページはURL、ページ名、ファイル名を保持
-            if ($Page->getEditType() == Page::EDIT_TYPE_DEFAULT) {
+            if ($Page->getEditType() >= Page::EDIT_TYPE_DEFAULT) {
                 $isUserDataPage = false;
                 $namespace = '';
-                $PrevPage = clone $Page;
             }
             // テンプレートファイルの取得
             $source = $twig->getLoader()
@@ -178,7 +179,7 @@ class PageController extends AbstractController
             foreach ($Page->getPageLayouts() as $PageLayout) {
                 $Page->removePageLayout($PageLayout);
                 $this->entityManager->remove($PageLayout);
-                $this->entityManager->flush($PageLayout);
+                $this->entityManager->flush();
             }
 
             $Layout = $form['PcLayout']->getData();
@@ -194,7 +195,7 @@ class PageController extends AbstractController
                 $PageLayout->setPage($Page);
 
                 $this->entityManager->persist($PageLayout);
-                $this->entityManager->flush($PageLayout);
+                $this->entityManager->flush();
             }
 
             $Layout = $form['SpLayout']->getData();
@@ -207,7 +208,7 @@ class PageController extends AbstractController
                 $PageLayout->setPage($Page);
 
                 $this->entityManager->persist($PageLayout);
-                $this->entityManager->flush($PageLayout);
+                $this->entityManager->flush();
             }
 
             $event = new EventArgs(
@@ -244,6 +245,7 @@ class PageController extends AbstractController
             'form' => $form->createView(),
             'page_id' => $Page->getId(),
             'is_user_data_page' => $isUserDataPage,
+            'is_confirm_page' => $Page->getEditType() == Page::EDIT_TYPE_DEFAULT_CONFIRM,
             'template_path' => $templatePath,
             'url' => $url,
         ];

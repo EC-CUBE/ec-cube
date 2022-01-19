@@ -15,20 +15,22 @@ namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * SaleType
- *
- * @ORM\Table(name="mtb_sale_type")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\SaleTypeRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
- */
-class SaleType extends \Eccube\Entity\Master\AbstractMasterEntity
-{
+if (!class_exists(SaleType::class, false)) {
     /**
-     * @var integer
+     * SaleType
+     *
+     * @ORM\Table(name="mtb_sale_type")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\SaleTypeRepository")
+     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    const SALE_TYPE_NORMAL = 1;
+    class SaleType extends \Eccube\Entity\Master\AbstractMasterEntity
+    {
+        /**
+         * @var integer
+         */
+        const SALE_TYPE_NORMAL = 1;
+    }
 }

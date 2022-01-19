@@ -1,0 +1,59 @@
+name: Penetration testing for EC-CUBE
+on:
+  schedule:
+    - cron: '0 15 * * 1'
+
+jobs:
+  PenetrationTest:
+    name: Penetration testing
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-18.04 ]
+        group:
+          - 'test/front_login/contact.test.ts'
+          - 'test/front_guest/contact.test.ts'
+          - 'test/admin/order_mail.test.ts'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup to EC-CUBE
+        run: |
+          sudo chown -R 1001:1000 zap
+          sudo chmod -R g+w zap
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml up -d
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube  bin/console doctrine:schema:create --env=dev
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=dev
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube bin/console eccube:fixtures:generate --products=5 --customers=1 --orders=5
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml exec -T ec-cube bin/console doctrine:query:sql "UPDATE dtb_customer SET email = 'zap_user@example.com' WHERE id = 1;"
+          sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.dev.yml -f docker-compose.owaspzap.yml -f docker-compose.owaspzap.daemon.yml up -d ec-cube
+
+      - name: yarn install
+        working-directory: zap/selenium/ci/TypeScript
+        run: |
+          yarn install
+          yarn run playwright install --with-deps chromium
+          yarn playwright install-deps chromium
+      - name: Penetration testing
+        working-directory: zap/selenium/ci/TypeScript
+        env:
+          GROUP: ${{ matrix.group }}
+          HTTP_PROXY: 127.0.0.1:8090
+          HTTPS_PROXY: 127.0.0.1:8090
+          CI: 1
+          FORCE_COLOR: 1
+        run: yarn playwright test ${GROUP}
+      - env:
+          GROUP: ${{ matrix.group }}
+        if: always()
+        run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: zap-${{ env.ARTIFACT_NAME }}-session
+          path: zap/sessions

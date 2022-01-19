@@ -48,7 +48,7 @@ class DeliveryController extends AbstractController
     /**
      * お届け先一覧画面.
      *
-     * @Route("/mypage/delivery", name="mypage_delivery")
+     * @Route("/mypage/delivery", name="mypage_delivery", methods={"GET"})
      * @Template("Mypage/delivery.twig")
      */
     public function index(Request $request)
@@ -63,8 +63,8 @@ class DeliveryController extends AbstractController
     /**
      * お届け先編集画面.
      *
-     * @Route("/mypage/delivery/new", name="mypage_delivery_new")
-     * @Route("/mypage/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id" = "\d+"})
+     * @Route("/mypage/delivery/new", name="mypage_delivery_new", methods={"GET", "POST"})
+     * @Route("/mypage/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id" = "\d+"}, methods={"GET", "POST"})
      * @Template("Mypage/delivery_edit.twig")
      */
     public function edit(Request $request, $id = null)
@@ -141,8 +141,6 @@ class DeliveryController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
 
-            $this->addSuccess('mypage.delivery.add.complete');
-
             return $this->redirect($this->generateUrl('mypage_delivery'));
         }
 
@@ -179,8 +177,6 @@ class DeliveryController extends AbstractController
             ], $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
-
-        $this->addSuccess('mypage.address.delete.complete');
 
         log_info('お届け先削除完了', [$CustomerAddress->getId()]);
 

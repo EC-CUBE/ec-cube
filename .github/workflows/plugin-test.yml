@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        php: [ 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_install_enable_disable_remove_store
@@ -34,7 +34,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 11
+            database_server_version: 14
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
@@ -48,7 +48,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:11
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -124,9 +124,9 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        run: php -S localhost:8000 &
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -139,9 +139,9 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
@@ -164,7 +164,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        php: [ 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_install_update_remove_store
@@ -176,7 +176,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 11
+            database_server_version: 14
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
@@ -190,7 +190,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:11
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -226,6 +226,7 @@ jobs:
 
       - name: Install to Composer
         run: composer install --dev --no-interaction -o --apcu-autoloader
+
       - name: Setup to EC-CUBE
         env:
           APP_ENV: 'codeception'
@@ -265,9 +266,9 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        run: php -S localhost:8000 &
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -280,9 +281,9 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
@@ -305,7 +306,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        php: [ 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_extend_same_table_store
@@ -317,7 +318,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 11
+            database_server_version: 14
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
@@ -331,7 +332,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:11
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -367,6 +368,7 @@ jobs:
 
       - name: Install to Composer
         run: composer install --dev --no-interaction -o --apcu-autoloader
+
       - name: Setup to EC-CUBE
         env:
           APP_ENV: 'codeception'
@@ -406,9 +408,9 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        run: php -S localhost:8000 &
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -421,9 +423,9 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
@@ -446,7 +448,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        php: [ 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_dependency_each_install_plugin
@@ -458,7 +460,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 11
+            database_server_version: 14
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
@@ -475,7 +477,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:11
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -511,6 +513,7 @@ jobs:
 
       - name: Install to Composer
         run: composer install --dev --no-interaction -o --apcu-autoloader
+
       - name: Setup to EC-CUBE
         env:
           APP_ENV: 'codeception'
@@ -550,9 +553,9 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
-        run: php -S localhost:8000 &
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -565,9 +568,9 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://localhost:1025'
+          MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
-          ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence

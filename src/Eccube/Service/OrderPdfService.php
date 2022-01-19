@@ -112,6 +112,7 @@ class OrderPdfService extends TcpdfFpdi
 
     /**
      * OrderPdfService constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      * @param OrderRepository $orderRepository
      * @param ShippingRepository $shippingRepository
@@ -119,6 +120,7 @@ class OrderPdfService extends TcpdfFpdi
      * @param BaseInfoRepository $baseInfoRepository
      * @param EccubeExtension $eccubeExtension
      * @param TaxExtension $taxExtension
+     *
      * @throws \Exception
      */
     public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository, ShippingRepository $shippingRepository, TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, EccubeExtension $eccubeExtension, TaxExtension $taxExtension)
@@ -287,6 +289,7 @@ class OrderPdfService extends TcpdfFpdi
 
         // テンプレートに使うテンプレートファイルのページ番号を指定
         $this->useTemplate($tplIdx, null, null, null, null, true);
+        $this->setPageMark();
     }
 
     /**
@@ -413,8 +416,17 @@ class OrderPdfService extends TcpdfFpdi
         $this->lfText(27, 51, $Shipping->getAddr02(), 10); //購入者住所2
 
         // 購入者氏名
-        $text = $Shipping->getName01().'　'.$Shipping->getName02().'　様';
-        $this->lfText(27, 59, $text, 11);
+        if (null !== $Shipping->getCompanyName()) {
+            // 会社名
+            $text = $Shipping->getCompanyName();
+            $this->lfText(27, 57, $text, 11);
+            // 氏名
+            $text = $Shipping->getName01().'　'.$Shipping->getName02().'　様';
+            $this->lfText(27, 63, $text, 11);
+        } else {
+            $text = $Shipping->getName01().'　'.$Shipping->getName02().'　様';
+            $this->lfText(27, 59, $text, 11);
+        }
 
         // =========================================
         // お買い上げ明細部
@@ -461,8 +473,12 @@ class OrderPdfService extends TcpdfFpdi
         // =========================================
         $i = 0;
         $isShowReducedTaxMess = false;
+        $Order = $Shipping->getOrder();
         /* @var OrderItem $OrderItem */
         foreach ($Shipping->getOrderItems() as $OrderItem) {
+            if (!$Order->isMultiple() && !$OrderItem->isProduct()) {
+                continue;
+            }
             // class categoryの生成
             $classCategory = '';
             /** @var OrderItem $OrderItem */
@@ -497,8 +513,6 @@ class OrderPdfService extends TcpdfFpdi
 
             ++$i;
         }
-
-        $Order = $Shipping->getOrder();
 
         if (!$Order->isMultiple()) {
             // =========================================
@@ -559,7 +573,7 @@ class OrderPdfService extends TcpdfFpdi
             $arrOrder[$i][2] = '';
             $arrOrder[$i][3] = '';
 
-            foreach($Order->getTaxFreeDiscountItems() as $Item) {
+            foreach ($Order->getTaxFreeDiscountItems() as $Item) {
                 ++$i;
                 $arrOrder[$i][0] = '';
                 $arrOrder[$i][1] = '';

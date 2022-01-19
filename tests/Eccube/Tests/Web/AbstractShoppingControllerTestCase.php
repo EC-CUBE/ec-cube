@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
-use Eccube\Repository\ProductClassRepository;
 use Eccube\Util\StringUtil;
 
 /**
@@ -64,7 +63,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         return $form;
     }
 
-    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 1)
+    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 2)
     {
         if ($Customer) {
             $this->loginTo($Customer);

@@ -1,0 +1,11 @@
+{
+  "name": "zscan-eccube",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.17.1",
+    "zaproxy": "^1.0.1"
+  },
+  "scripts": {}
+}

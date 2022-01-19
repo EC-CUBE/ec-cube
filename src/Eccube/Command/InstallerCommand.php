@@ -68,7 +68,7 @@ class InstallerCommand extends Command
 
             private function getEnvParameters()
             {
-                return  [
+                return [
                             'APP_ENV' => $this->appEnv,
                             'APP_DEBUG' => $this->appDebug,
                             'DATABASE_URL' => $this->databaseUrl,
@@ -130,6 +130,7 @@ class InstallerCommand extends Command
             $databaseUrl = 'sqlite:///var/eccube.db';
         }
         $this->envFileUpdater->databaseUrl = $this->io->ask('Database Url', $databaseUrl);
+        $databaseUrl = $this->envFileUpdater->databaseUrl;
 
         // DATABASE_SERVER_VERSION
         $this->envFileUpdater->serverVersion = $this->getDatabaseServerVersion($databaseUrl);
@@ -226,7 +227,6 @@ class InstallerCommand extends Command
             'doctrine:schema:create',
             'eccube:fixtures:load',
             'cache:clear --no-warmup',
-            'eccube:plugin:enable --code=Api || true' // APIプラグインはデフォルトで有効化
         ];
 
         // コンテナを再ロードするため別プロセスで実行する.
@@ -244,6 +244,8 @@ class InstallerCommand extends Command
         }
 
         $this->io->success('EC-CUBE installation successful.');
+
+        return 0;
     }
 
     protected function getDatabaseName($databaseUrl)
@@ -251,7 +253,7 @@ class InstallerCommand extends Command
         if (0 === strpos($databaseUrl, 'sqlite')) {
             return 'sqlite';
         }
-        if (0 === strpos($databaseUrl, 'postgres')) {
+        if (0 === strpos($databaseUrl, 'postgres') || 0 === strpos($databaseUrl, 'pgsql')) {
             return 'postgres';
         }
         if (0 === strpos($databaseUrl, 'mysql')) {

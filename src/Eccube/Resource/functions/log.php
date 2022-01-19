@@ -70,7 +70,5 @@ function log_debug($message, array $context = [])
  */
 function logs($channel)
 {
-    // FIXME Container の取得方法を要検討
-    $container = LoggerFacade::getContainer();
-    return $container->get('monolog.logger.'.$channel);
+    return LoggerFacade::getLoggerBy($channel);
 }

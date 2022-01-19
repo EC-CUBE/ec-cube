@@ -13,9 +13,6 @@
 
 namespace Eccube\Util;
 
-use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\Proxy\Proxy;
-
 class EntityUtil
 {
     /**

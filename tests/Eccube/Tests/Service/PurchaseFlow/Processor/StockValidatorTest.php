@@ -14,12 +14,12 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
 
 class StockValidatorTest extends EccubeTestCase
 {

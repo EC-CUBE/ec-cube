@@ -15,16 +15,18 @@ namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Pref
- *
- * @ORM\Table(name="mtb_pref")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\PrefRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
- */
-class Pref extends \Eccube\Entity\Master\AbstractMasterEntity
-{
+if (!class_exists(Pref::class, false)) {
+    /**
+     * Pref
+     *
+     * @ORM\Table(name="mtb_pref")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\PrefRepository")
+     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+     */
+    class Pref extends \Eccube\Entity\Master\AbstractMasterEntity
+    {
+    }
 }

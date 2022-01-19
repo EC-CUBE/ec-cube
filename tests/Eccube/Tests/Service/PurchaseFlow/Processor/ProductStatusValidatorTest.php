@@ -85,4 +85,17 @@ class ProductStatusValidatorTest extends EccubeTestCase
 
         self::assertEquals(0, $this->cartItem->getQuantity());
     }
+
+
+    /**
+     * 無効になっている商品規格の場合は明細の個数を0に設定する.
+     */
+    public function testProductClassVisibleFalse()
+    {
+        $this->ProductClass->setVisible(false);
+
+        $this->validator->execute($this->cartItem, new PurchaseContext());
+
+        self::assertEquals(0, $this->cartItem->getQuantity());
+    }
 }

@@ -113,6 +113,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--prefer-dist' => true,
             '--update-with-dependencies' => true,
             '--no-scripts' => true,
+            '--update-no-dev' => env('APP_ENV') === 'prod',
         ], $output);
     }
 
@@ -141,6 +142,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--no-interaction' => true,
             '--profile' => true,
             '--no-scripts' => true,
+            '--update-no-dev' => env('APP_ENV') === 'prod',
         ], $output);
     }
 
@@ -162,6 +164,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--profile' => true,
             '--no-scripts' => true,
             '--dry-run' => (bool) $dryRun,
+            '--no-dev' => env('APP_ENV') === 'prod',
         ], $output);
     }
 
@@ -183,6 +186,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--profile' => true,
             '--no-scripts' => true,
             '--dry-run' => (bool) $dryRun,
+            '--no-dev' => env('APP_ENV') === 'prod',
         ], $output);
     }
 

@@ -55,7 +55,7 @@ class ChangeController extends AbstractController
     /**
      * 会員情報編集画面.
      *
-     * @Route("/mypage/change", name="mypage_change")
+     * @Route("/mypage/change", name="mypage_change", methods={"GET", "POST"})
      * @Template("Mypage/change.twig")
      */
     public function index(Request $request)
@@ -123,7 +123,7 @@ class ChangeController extends AbstractController
     /**
      * 会員情報編集完了画面.
      *
-     * @Route("/mypage/change_complete", name="mypage_change_complete")
+     * @Route("/mypage/change_complete", name="mypage_change_complete", methods={"GET"})
      * @Template("Mypage/change_complete.twig")
      */
     public function complete(Request $request)

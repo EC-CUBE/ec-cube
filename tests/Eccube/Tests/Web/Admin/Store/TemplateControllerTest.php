@@ -252,6 +252,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
             $zip->close();
             $this->file = new UploadedFile($file, 'dummy.ZIP', 'application/zip');
         }
+
         return [
             'file' => $this->file,
         ];

@@ -63,21 +63,18 @@ class LogTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidData()
     {
-        if (!file_exists($this->logTest)) {
-            $this->markTestSkipped('テスト時には'.$this->fileName.'は存在しないのでテストできない');
-        }
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalid_NonexistentFile()
+    public function testInvalidNonexistentFile()
     {
         $this->formData['files'] = 'hogehogehogehoge';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalid_NotNumber()
+    public function testInvalidNotNumber()
     {
         $this->formData['line_max'] = 'abcdefg';
         $this->form->submit($this->formData);
