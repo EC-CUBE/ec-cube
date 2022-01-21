@@ -41,7 +41,7 @@ docker-compose up -d ec-cube
 
 ## yarn でテストを実行します。
 cd zap/selenium/ci/TypeScript
-yarn install && yarn playwright install # (初回のみ)
+yarn install && yarn run playwright install # (初回のみ)
 HTTP_PROXY=127.0.0.1:8090 HTTPS_PROXY=127.0.0.1:8090 yarn playwright test
 
 ## (Optional) 個別にテストする場合は、テストのファイル名を指定してください。
