@@ -219,9 +219,11 @@ class EccubeExtension extends AbstractExtension
      * Twigでphp関数を使用できるようにする。
      *
      * @return mixed|null
+     * @deprecated since EC-CUBE 4.1
      */
     public function getPhpFunctions()
     {
+        @trigger_error(sprintf('The "%s()" method is deprecated since EC-CUBE 4.1.', __METHOD__), \E_USER_DEPRECATED);
         $arg_list = func_get_args();
         $function = array_shift($arg_list);
 
