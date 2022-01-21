@@ -117,6 +117,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
             'admin_route_dir' => 'admintest',
             'admin_allow_hosts' => '127.0.0.1',
             'admin_deny_hosts' => '127.0.0.1',
+            'trusted_hosts' => '^127\.0\.0\.1$,^localhost$',
         ];
 
         return $formData;
