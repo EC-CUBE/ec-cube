@@ -100,7 +100,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testClear()
     {
-        $this->cartService->addProduct(1);
+        $this->cartService->addProduct(2);
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
@@ -172,7 +172,7 @@ class CartServiceTest extends AbstractServiceTestCase
         // 同じ商品規格で同じ数量なら同じ明細とみなすようにする
         $this->cartService->setCartItemComparator(new CartServiceTest_CartItemComparator());
 
-        $ProductClass = $this->productClassRepository->find(1);
+        $ProductClass = $this->productClassRepository->find(2);
 
         $this->cartService->addProduct($ProductClass, 1);
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
@@ -185,7 +185,7 @@ class CartServiceTest extends AbstractServiceTestCase
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
         self::assertEquals(1, count($CartItems));
-        self::assertEquals(1, $CartItems[0]->getProductClassId());
+        self::assertEquals(2, $CartItems[0]->getProductClassId());
         self::assertEquals(2, $CartItems[0]->getQuantity());
 
         $this->cartService->addProduct($ProductClass, 1);
@@ -195,9 +195,9 @@ class CartServiceTest extends AbstractServiceTestCase
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
         self::assertEquals(2, count($CartItems));
-        self::assertEquals(1, $CartItems[0]->getProductClassId());
+        self::assertEquals(2, $CartItems[0]->getProductClassId());
         self::assertEquals(2, $CartItems[0]->getQuantity());
-        self::assertEquals(1, $CartItems[1]->getProductClassId());
+        self::assertEquals(2, $CartItems[1]->getProductClassId());
         self::assertEquals(1, $CartItems[1]->getQuantity());
     }
 

@@ -376,6 +376,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $Products[0]->setName('りんご');
         $this->setProductTags($Products[0], [1]);
         $this->setProductTags($Products[1], [1, 2]);
+        $this->setProductTags($Products[2], []);
         $this->entityManager->flush();
 
         // タグ 1 で検索

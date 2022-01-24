@@ -349,9 +349,9 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         }
 
         /**
-         * @return Customer
+         * @return Customer|null
          */
-        public function getCustomer(): Customer
+        public function getCustomer(): ?Customer
         {
             return $this->Customer;
         }

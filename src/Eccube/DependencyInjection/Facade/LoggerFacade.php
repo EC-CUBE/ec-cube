@@ -16,9 +16,6 @@ namespace Eccube\DependencyInjection\Facade;
 use Eccube\Log\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * XXX ContainerInterface は不要かも
- */
 class LoggerFacade
 {
     /** @var self|null */
@@ -68,12 +65,11 @@ class LoggerFacade
     }
 
     /**
-     * @deprecated
-     *
-     * @return ContainerInterface
+     * @param string $channel
+     * @return \Symfony\Bridge\Monolog\Logger
      */
-    public static function getContainer()
+    public static function getLoggerBy($channel)
     {
-        return self::$Container;
+        return self::$Container->get('monolog.logger.'.$channel);
     }
 }

@@ -63,7 +63,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         return $form;
     }
 
-    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 1)
+    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 2)
     {
         if ($Customer) {
             $this->loginTo($Customer);

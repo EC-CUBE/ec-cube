@@ -163,7 +163,7 @@ class PaymentController extends AbstractController
      */
     public function imageAdd(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 

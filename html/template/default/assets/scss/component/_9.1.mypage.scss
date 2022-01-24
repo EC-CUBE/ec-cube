@@ -139,12 +139,8 @@ Styleguide 9.1.4
     box-sizing: border-box;
     padding: 10px;
     &-image {
-      height: 150px;
       margin-bottom: 10px;
       text-align: center;
-      @include media_desktop() {
-        height: 250px;
-      }
     }
     img{
       width: auto;

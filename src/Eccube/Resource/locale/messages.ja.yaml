@@ -136,6 +136,17 @@ front.block.login.login: ログイン
 front.block.login.logout: ログアウト
 front.block.login.to_cart: カートを見る
 front.block.login.to_home: ホームに戻る
+front.block.calendar.title__en: 'CALENDAR'
+front.block.calendar.title__ja: 'カレンダー'
+front.block.calendar.month_format: 'Y年n月'
+front.block.calendar.sunday: '日'
+front.block.calendar.monday: '月'
+front.block.calendar.tuesday: '火'
+front.block.calendar.wednesday: '水'
+front.block.calendar.thursday: '木'
+front.block.calendar.friday: '金'
+front.block.calendar.saturday: '土'
+front.block.calendar.holiday_notice: '* 赤字は休業日です。'
 
 
 #------------------------------------------------------------------------------------
@@ -369,6 +380,7 @@ front.shopping.out_of_stock_zero: '「%product%」の在庫が不足しており
 front.shopping.over_price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。
 front.shopping.in_preparation: '「%product%」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。'
 front.shopping.not_purchase: 現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。
+front.shopping.not_purchase_product_class: '「%product%」は現時点で購入できません。該当商品をカートから削除しました。'
 front.shopping.price_changed: '「%product%」の販売価格が変更されました。'
 front.shopping.payment_total_invalid: 合計金額が不正です。
 front.shopping.different_payment_methods: 支払い方法が異なる商品が含まれているため、同時に購入することはできません。
@@ -1080,6 +1092,7 @@ admin.setting.shop.tax_setting: 税率設定
 admin.setting.shop.mail_setting: メール設定
 admin.setting.shop.csv_setting: CSV出力項目設定
 admin.setting.shop.order_status_setting: 受注対応状況設定
+admin.setting.shop.calendar_setting: '定休日カレンダー設定'
 admin.setting.system: システム設定
 admin.setting.system.member_management: メンバー管理
 admin.setting.system.member_password_change: パスワード変更
@@ -1209,6 +1222,14 @@ admin.setting.shop.order_status.admin_order_status_name: 名称(受注管理)
 admin.setting.shop.order_status.customer_order_status_name: 名称(マイページ)
 admin.setting.shop.order_status.color: 色
 admin.setting.shop.order_status.display_order_count: 件数表示
+
+#------------------------------------------------------------------------------------
+# 設定：店舗設定：定休日カレンダー設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.calendar.title: 'タイトル'
+admin.setting.shop.calendar.holiday: '日付'
+admin.setting.shop.calendar.holiday.available_error: '同日の定休日が既に存在しているため、設定できません。'
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：メンバー管理 / パスワード変更
@@ -1652,6 +1673,7 @@ tooltip.setting.shop.order_status.order_status: 受注管理およびマイペ�
 tooltip.setting.shop.order_status.customer_order_status_name: 対応状況の名称を設定できます。ここで設定した名称は会員ログイン後のマイページで表示されます。
 tooltip.setting.shop.order_status.color: 受注管理の対応状況の色を設定できます。
 tooltip.setting.shop.order_status.display_order_count: 受注管理の対応状況ごとの受注件数の表示・非表示を設定できます。
+tooltip.setting.shop.calendar_setting: '定休日カレンダーに表示する定休日を設定できます。'
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。
 tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
 tooltip.setting.system.member.two_factor_auth_enabled: 有効にすると2段階認証でのログインが必要になります。2段階認証のデバイス設定をしていない状態でログインした場合、設定後にログインできるようになります。
