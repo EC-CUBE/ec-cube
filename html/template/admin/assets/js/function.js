@@ -208,3 +208,32 @@ var searchWord = function (searchText, el) {
         }
     });
 };
+
+// 一覧ページのソート機能
+$(function() {
+    if ($('.js-listSort').length < 1) {
+        return;
+    }
+
+    // 現在のソート状況をボタン表示に反映
+    const sortkey = $('.js-listSort-key').val();
+    const target = $('.js-listSort').filter('[data-sortkey="' + sortkey + '"]');
+    if (target.length === 1) {
+        target.addClass('listSort-current');
+        if ($('.js-listSort-type').val() === 'd') {
+            target.find('.fa').addClass('fa-arrow-down').removeClass('fa-arrow-up');
+        }
+    }
+
+    // ソート実施
+    $('.js-listSort').on({
+        click: function (e) {
+            const sortkey = $(e.currentTarget).data('sortkey');
+            const sorttype = ($('.js-listSort-key').val() === sortkey && $('.js-listSort-type').val() !== 'd') ? 'd' : 'a';
+            $('.js-listSort-key').val(sortkey);
+            $('.js-listSort-type').val(sorttype);
+            $('#search_form').submit();
+            e.preventDefault();
+        }
+    });
+});

@@ -179,14 +179,6 @@ file that was distributed with this source code.
                 btnClass.attr('disabled', false);
             }
         });
-
-    // 一覧のソート
-    function listSort( sortkey, sorttype ) {
-        $('#admin_search_product_sortkey').val(sortkey);
-        $('#admin_search_product_sorttype').val(sorttype);
-        $('#search_form').submit();
-    }
-
     </script>
 {% endblock javascript %}
 
@@ -307,8 +299,8 @@ file that was distributed with this source code.
             <div class="c-outsideBlock__contents mb-5">
                 {{ include('@admin/search_items.twig', { 'form': searchForm }, ignore_missing = true) }}
             </div>
-            {{ form_widget(searchForm.sortkey) }}
-            {{ form_widget(searchForm.sorttype) }}
+            {{ form_widget(searchForm.sortkey, {'attr': {'class': 'js-listSort-key'}}) }}
+            {{ form_widget(searchForm.sorttype, {'attr': {'class': 'js-listSort-type'}}) }}
         </form>
     </div>
     <div class="c-contentsArea__cols">
@@ -364,15 +356,15 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pl-3 pt-2 pb-2">
                                             <input type="checkbox" name="filter" value="open" id="trigger_check_all">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_id__short'|trans }}<a href="#" onClick="listSort('product_id', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('product_id', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
+                                        <th class="border-top-0 pt-2 pb-2" nowrap>{{ 'admin.product.product_id__short'|trans }}<a href="#" class="js-listSort" data-sortkey="product_id"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.image__short'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.name'|trans }}<a href="#" onClick="listSort('name', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('name', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}<a href="#" onClick="listSort('product_code', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('product_code', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.name'|trans }}<a href="#" class="js-listSort" data-sortkey="name"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}<a href="#" class="js-listSort" data-sortkey="product_code"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.price'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.stock'|trans }}<a href="#" onClick="listSort('stock', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('stock', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-nowrap">{{ 'admin.product.display_status__short'|trans }}<a href="#" onClick="listSort('status', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('status', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.common.create_date'|trans }}<a href="#" onClick="listSort('create_date', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('create_date', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.common.update_date'|trans }}<a href="#" onClick="listSort('update_date', 'd')">{{ 'admin.list.sort.desc'|trans }}</a><a href="#" onClick="listSort('update_date', 'a')">{{ 'admin.list.sort.asc'|trans }}</a></th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.stock'|trans }}<a href="#" class="js-listSort" data-sortkey="stock"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-nowrap">{{ 'admin.product.display_status__short'|trans }}<a href="#" class="js-listSort" data-sortkey="status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.common.create_date'|trans }}<a href="#" class="js-listSort" data-sortkey="create_date"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.common.update_date'|trans }}<a href="#" class="js-listSort" data-sortkey="update_date"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 pr-3" colspan="3"></th>
                                     </tr>
                                     </thead>

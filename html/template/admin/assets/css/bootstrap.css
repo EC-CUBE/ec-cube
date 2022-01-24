@@ -4477,6 +4477,25 @@ Styleguide 12.7
   color: #999 !important; }
 .text-ec-lightGray {
   color: #ccc !important; }
+/*
+一覧ソートボタン
+
+一覧ページでのソートボタン用のクラスを定義しています
+ */
+.js-listSort {
+  color: #999; }
+.js-listSort:hover {
+    color: #999; }
+.js-listSort.listSort-current {
+    color: rgba(15, 15, 15, 0.85); }
+.js-listSort .fa {
+    display: inline-block;
+    width: 1em;
+    margin-left: 3px; }
+.js-listSort:hover .fa:before {
+    content: "\f0aa"; }
+.js-listSort:hover.listSort-current .fa-arrow-up:before {
+    content: "\f0ab"; }
 @media (min-width: 576px) {
   .container, .container-sm {
     max-width: 540px; }
