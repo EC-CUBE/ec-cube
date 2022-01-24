@@ -322,11 +322,11 @@ Styleguide 12.7
   }
 
   &:hover {
-    .fa:before {
+    .fa-arrow-up:before {
       content: "\f0aa"; // fa-arrow-circle-up
     }
 
-    &.listSort-current .fa-arrow-up:before {
+    .fa-arrow-down:before {
       content: "\f0ab"; // fa-arrow-circle-down
     }
   }
