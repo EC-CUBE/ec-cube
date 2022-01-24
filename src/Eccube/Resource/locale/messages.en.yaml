@@ -1786,5 +1786,3 @@ command.composer_require_already_installed.not_supported_plugin: '%name% %plugin
 #------------------------------------------------------------------------------------
 admin.list.sort.key: listSortKey
 admin.list.sort.type: listSortType
-admin.list.sort.asc: ▲
-admin.list.sort.desc: ▼
