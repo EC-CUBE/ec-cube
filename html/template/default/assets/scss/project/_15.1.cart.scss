@@ -61,7 +61,7 @@ Styleguide 15.1
     text-align: right;
     width: 100%;
     @include media_desktop {
-      width:  20%;
+      width:  30%;
       margin-right: 10%;
     }
   }
@@ -228,6 +228,7 @@ Styleguide 15.1.4
     width: 46%;
     @include media_desktop {
       display: inline-block;
+      width: calc(100% - 130px);
       margin-left: 20px;
       vertical-align: middle;
     }
