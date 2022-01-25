@@ -3955,18 +3955,20 @@ Styleguide 9.1.1
 .ec-navlistRole .ec-navlistRole__navlist a:hover {
     text-decoration: none; }
 .ec-navlistRole .ec-navlistRole__item {
+  display: flex;
   width: 50%;
   border-color: #D0D0D0;
   border-style: solid;
   border-width: 0 1px 1px 0;
   text-align: center;
   font-weight: bold; }
+.ec-navlistRole .ec-navlistRole__item:hover {
+    background: #f5f7f8; }
 .ec-navlistRole .ec-navlistRole__item a {
-    padding: 16px;
+    margin: auto;
+    padding: 16px 10px;
     width: 100%;
     display: inline-block; }
-.ec-navlistRole .ec-navlistRole__item a:hover {
-      background: #f5f7f8; }
 .ec-navlistRole .active a {
   color: #DE5D50; }
 /*
