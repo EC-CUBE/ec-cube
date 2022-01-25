@@ -1303,6 +1303,11 @@ admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスで
 admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
 admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
 admin.setting.system.security.not_found_env_file: .envファイルが見つかりません。.envを利用していない場合はセキュリティ設定を管理画面から変更できません。
+admin.setting.system.security.trusted_hosts: 信頼できるホスト名
+admin.setting.system.security.trusted_hosts_sample: ^example\.com$,^example\.org$
+admin.setting.system.security.trusted_hosts_description: |
+  設定されたホスト名以外でのアクセスを拒否します。
+  複数設定する場合はカンマ区切りで入力してください。正規表現での指定も可能です。
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：セキュリティ管理
@@ -1682,6 +1687,7 @@ tooltip.setting.system.security.admin_url: 管理画面にログインするた�
 tooltip.setting.system.security.ip_limit: 管理画面にログインできる接続元のIPアドレスを制限します。
 tooltip.setting.system.security.ip_limit_deny: 管理画面へのアクセスを拒否する接続元のIPアドレスを指定します。
 tooltip.setting.system.security.force_ssl: ショップサイトと管理画面への接続をSSL(https)での接続に制限します。
+tooltip.setting.system.security.trusted_hosts: 設定されたホスト名以外でのアクセスを拒否します。
 tooltip.setting.system.login_history.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
 tooltip.setting.system.log_display: アクセスやエラー状況などのログを確認できます。
 tooltip.setting.system.master_data_management: 各種マスターデータを管理します。

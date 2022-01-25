@@ -1,9 +1,7 @@
 #!/bin/sh
 set -e
 
-if [ -n "${APP_ENV}" ]; then
-    echo "SetEnv APP_ENV ${APP_ENV}" >> /etc/apache2/conf-enabled/app_env.conf
-fi
+echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS" > /etc/apache2/conf-enabled/eccube_env.conf
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then

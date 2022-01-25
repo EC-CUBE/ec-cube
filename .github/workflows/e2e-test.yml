@@ -83,6 +83,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
+          echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev

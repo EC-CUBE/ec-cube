@@ -30,6 +30,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
         'admin_route_dir' => 'admin',
         'admin_allow_hosts' => '',
         'admin_deny_hosts' => '',
+        'trusted_hosts' => 'localhost',
     ];
 
     public function setUp()
@@ -124,5 +125,12 @@ class SecurityTypeTest extends AbstractTypeTestCase
             ['admin&', false],
             ['admin?', false],
         ];
+    }
+
+    public function testTrustedHosts()
+    {
+        $this->formData['trusted_hosts'] = '^127\.0\.0.1$,^localhost$';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
     }
 }

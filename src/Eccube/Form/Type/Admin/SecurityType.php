@@ -96,6 +96,16 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'data' => $this->eccubeConfig->get('eccube_force_ssl'),
             ])
+            ->add('trusted_hosts', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Regex([
+                        'pattern' => '/^[\x21-\x7e]+$/',
+                    ]),
+                ],
+                'data' => env('TRUSTED_HOSTS'),
+            ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
