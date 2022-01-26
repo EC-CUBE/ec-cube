@@ -21,8 +21,6 @@
     {% set meta_canonical = url('homepage') %}
 {% elseif Page is defined and Page.edit_type == 0 and Page.url is defined %}
     {% set meta_canonical = url(eccube_config.eccube_user_data_route, {'route': Page.url}) %}
-{% elseif Page is defined and Page and Page.url is defined %}
-    {% set meta_canonical = url(Page.url) %}
 {% endif %}
 
 <meta property="og:type" content="{{ meta_og_type|default('article') }}"/>
