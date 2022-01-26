@@ -1,4 +1,4 @@
-const ClientApi = require('zaproxy');
+import ClientApi from 'zaproxy';
 export const Mode = {
   Safe: 'safe',
   Protect: 'protect',
@@ -67,7 +67,7 @@ export type Alert = {
 export class ZapClientError extends Error {
   constructor(message?: string) {
     super(message);
-  };
+  }
 }
 
 export class ZapClient {
