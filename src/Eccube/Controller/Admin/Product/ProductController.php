@@ -257,7 +257,7 @@ class ProductController extends AbstractController
 
         $sortKey = $searchData['sortkey'];
 
-        if(empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
+        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
             $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
@@ -268,7 +268,7 @@ class ProductController extends AbstractController
                 $qb,
                 $page_no,
                 $page_count,
-                array('wrap-queries' => true)
+                ['wrap-queries' => true]
             );
         }
 

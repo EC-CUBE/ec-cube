@@ -302,7 +302,7 @@ class OrderController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
         $sortKey = $searchData['sortkey'];
 
-        if(empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
+        if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
             $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
@@ -313,7 +313,7 @@ class OrderController extends AbstractController
                 $qb,
                 $page_no,
                 $page_count,
-                array('wrap-queries' => true)
+                ['wrap-queries' => true]
             );
         }
 
