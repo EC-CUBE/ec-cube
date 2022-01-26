@@ -70,6 +70,13 @@ test.describe.serial('お問い合わせフォームのテストをします', (
     expect(completeRequestBody).toContain('mode=complete');
   });
 
+  test('CSRFトークン を取得し直します', async () => {
+    await page.goto(url);
+    const token = await page.inputValue('#contact__token');
+    completeRequestBody = completeRequestBody.replace(/contact%5B_token%5D=[a-zA-Z0-9\-_]+/, `contact%5B_token%5D=${token}`);
+    expect(completeRequestBody).toMatch(token);
+  });
+
   let completeMessage: HttpMessage;
   test('content-length を書き換えて手動リクエストを送信します', async () => {
     const requestHeader = message.requestHeader.replace(
