@@ -370,6 +370,7 @@ class OrderRepository extends AbstractRepository
             $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
 
             $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
+            $qb->addOrderBy('o.update_date', 'DESC');
             $qb->addOrderBy('o.id', 'DESC');
         } else {
             $qb->orderBy('o.update_date', 'DESC');
