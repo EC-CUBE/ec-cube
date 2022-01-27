@@ -11,10 +11,14 @@
  * file that was distributed with this source code.
  */
 
+use Carbon\Carbon;
 use Codeception\Util\Fixtures;
+use Page\Admin\CalendarSettingsPage;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\DeliveryEditPage;
 use Page\Admin\DeliveryManagePage;
+use Page\Admin\LayoutEditPage;
+use Page\Admin\LayoutManagePage;
 use Page\Admin\MailSettingsPage;
 use Page\Admin\OrderManagePage;
 use Page\Admin\OrderStatusSettingsPage;
@@ -322,7 +326,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0709-UC02-T01 メール設定');
 
         // 表示
-        $title = '商品出荷のお知らせ ' . uniqid();
+        $title = '商品出荷のお知らせ '.uniqid();
         MailSettingsPage::go($I)
             ->入力_テンプレート('出荷通知メール')
             ->入力_件名($title)
@@ -388,7 +392,50 @@ class EA07BasicinfoCest
     }
 
     /**
+     * @group vaddy
+     * @group calendar
+     */
+    public function basicinfo_定休日カレンダー_表示(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0712-UC01-T01 定休日カレンダー_表示');
+        $I->wantTo('EA0712-UC01-T02 定休日カレンダー_設定');
+
+        // 定休日を設定
+        $holidays = [
+            '定休日1' => Carbon::now()->day(1), // 今月1日
+            '定休日2' => Carbon::now()->addMonth(1)->day(28), // 翌月28日
+        ];
+
+        foreach ($holidays as $title => $date) {
+            CalendarSettingsPage::go($I)
+                ->入力_タイトル($title)
+                ->入力_日付($date->format('Y-m-d'))
+                ->登録();
+            $I->see('保存しました', CalendarSettingsPage::$登録完了メッセージ);
+        }
+
+        // レイアウト設定でカレンダーブロックを登録
+        LayoutManagePage::go($I)->レイアウト編集('トップページ用レイアウト');
+        LayoutEditPage::at($I)
+            ->ブロックを移動('カレンダー', '#position_7')
+            ->登録();
+        $I->see('保存しました', LayoutEditPage::$登録完了メッセージ);
+
+        // フロント画面でカレンダーが表示されていることを確認
+        $I->amOnPage('/');
+        $I->see('カレンダー', ['class' => 'ec-layoutRole__mainBottom']);
+
+        // フロント画面で定休日にクラス .ec-calendar__holiday が設定されていることを確認
+        $I->seeElement(['xpath' => '//table[@id="this-month-table"]//td[@class="ec-calendar__holiday"][text()="'.$holidays['定休日1']->format('j').'"]']);
+        $I->seeElement(['xpath' => '//table[@id="next-month-table"]//td[@class="ec-calendar__holiday"][text()="'.$holidays['定休日2']->format('j').'"]']);
+
+        // 今日の日付にクラス .ec-calendar__today が設定されていることを確認
+        $I->seeElement(['xpath' => '//table[@id="this-month-table"]//td[@class="ec-calendar__today"][text()="'.Carbon::now()->format('j').'"]']);
+    }
+
+    /**
      * EA10PluginCestではテストが失敗するため、ここでテストを行う
+     *
      * @group vaddy
      * @group pluginauth
      */
