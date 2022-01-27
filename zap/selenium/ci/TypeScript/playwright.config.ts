@@ -42,7 +42,10 @@ const config: PlaywrightTestConfig = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    ignoreHTTPSErrors: true
+    ignoreHTTPSErrors: true,
+    proxy: {
+      server: process.env.HTTP_PROXY ? `http://${process.env.HTTP_PROXY}` : 'http://127.0.0.1:8090'
+    }
   },
 
   /* Configure projects for major browsers */
