@@ -19,6 +19,8 @@
 {% elseif app.request.get('_route') == 'homepage' %}
     {% set meta_og_type = 'website' %}
     {% set meta_canonical = url('homepage') %}
+{% elseif Page is defined and Page.edit_type == 0 and Page.url is defined %}
+    {% set meta_canonical = url(eccube_config.eccube_user_data_route, {'route': Page.url}) %}
 {% endif %}
 
 <meta property="og:type" content="{{ meta_og_type|default('article') }}"/>
@@ -29,6 +31,35 @@
     <meta property="og:description" content="{{ meta_description|striptags|slice(0,120) }}"/>
 {% endif %}
 {% if meta_canonical|default() %}
+    {# canonical url #}
+    {# Product list #}
+    {% if Category is defined and Category %}
+        {% if pagination is defined and pagination.paginationData is defined and pagination.paginationData.pageCount > 1 %}
+            {# 最初のページ #}
+            {% if pagination.paginationData.current == 1  %}
+            <meta property="og:url" content="{{ meta_canonical }}"/>
+            <link rel="next" href="{{ meta_canonical }}&pageno=2" title="{{ Category.name }} {{ 'front.product.pageno'|trans({ '%pageno%': 2 }) }}">
+            <link rel="canonical" href="{{ meta_canonical }}" />
+            {# 最後のページ #}
+            {% elseif pagination.paginationData.last == pagination.paginationData.current %}
+            <meta property="og:url" content="{{ meta_canonical }}&pageno={{ pagination.paginationData.last }}"/>
+            <link rel="prev" href="{{ meta_canonical }}&pageno={{ pagination.paginationData.previous }}" title="{{ Category.name }} {{ 'front.product.pageno'|trans({ '%pageno%': pagination.paginationData.previous }) }}">
+            <link rel="canonical" href="{{ meta_canonical }}&pageno={{ pagination.paginationData.last }}" />
+            {# 途中のページ #}
+            {% else %}
+            <meta property="og:url" content="{{ meta_canonical }}&pageno={{ pagination.paginationData.current }}"/>
+            <link rel="next" href="{{ meta_canonical }}&pageno={{ pagination.paginationData.next }}" title="{{ Category.name }} {{ 'front.product.pageno'|trans({ '%pageno%': pagination.paginationData.next }) }}">
+            <link rel="prev" href="{{ meta_canonical }}&pageno={{ pagination.paginationData.previous }}" title="{{ Category.name }} {{ 'front.product.pageno'|trans({ '%pageno%': pagination.paginationData.previous }) }}">
+            <link rel="canonical" href="{{ meta_canonical }}&pageno={{ pagination.paginationData.current }}" />
+            {% endif %}
+        {% else %}
+        {# ページング無し #}
+        <meta property="og:url" content="{{ meta_canonical }}"/>
+        <link rel="canonical" href="{{ meta_canonical }}" />
+        {% endif %}
+    {# Other #}
+    {% else %}
     <meta property="og:url" content="{{ meta_canonical }}"/>
-    <link rel="canonical" href="{{ meta_canonical }}"/>
+    <link rel="canonical" href="{{ meta_canonical }}" />
+    {% endif %}
 {% endif %}
