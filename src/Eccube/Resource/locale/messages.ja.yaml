@@ -1786,3 +1786,9 @@ purchase_flow.over_stock: '「%name%」の在庫が足りません。'
 #------------------------------------------------------------------------------------
 
 command.composer_require_already_installed.not_supported_plugin: '%name% %plugin_version% は EC-CUBE %eccube_version% には対応していません。続行しますか？'
+
+#------------------------------------------------------------------------------------
+# ソート機能
+#------------------------------------------------------------------------------------
+admin.list.sort.key: listSortKey # 検索条件の表示制御に利用
+admin.list.sort.type: listSortType # 検索条件の表示制御に利用

@@ -36,6 +36,20 @@ class OrderRepository extends AbstractRepository
      */
     protected $queries;
 
+    public const COLUMNS = [
+        'order' => 'o.name01'
+        ,'orderer'=> 'o.id'
+        ,'shipping_id'=> 's.id'
+        ,'purchase_product' => 'oi.product_name'
+        ,'quantity' => 'oi.quantity'
+        ,'payment_method' => 'o.payment_method'
+        ,'order_status' => 'o.OrderStatus'
+        ,'purchase_price' => 'o.total'
+        ,'shipping_status' => 's.shipping_date'
+        ,'tracking_number' => 's.tracking_number'
+        ,'delivery'  => 's.name01'
+    ];
+
     /**
      * OrderRepository constructor.
      *
@@ -352,8 +366,16 @@ class OrderRepository extends AbstractRepository
         }
 
         // Order By
-        $qb->orderBy('o.update_date', 'DESC');
-        $qb->addorderBy('o.id', 'DESC');
+        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
+            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
+
+            $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
+            $qb->addOrderBy('o.update_date', 'DESC');
+            $qb->addOrderBy('o.id', 'DESC');
+        } else {
+            $qb->orderBy('o.update_date', 'DESC');
+            $qb->addorderBy('o.id', 'DESC');
+        }
 
         return $this->queries->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
     }

@@ -10,6 +10,7 @@ file that was distributed with this source code.
 #}
 <ul class="list-inline">
     {% for child in form.children if child.vars.name != '_token' and child.vars.data is not empty %}
+        {% if false == (child.vars.label == 'admin.list.sort.key' or child.vars.label == 'admin.list.sort.type') %}{# ソートの選択結果は表示しない #}
         <li class="list-inline-item"><span class="font-weight-bold">{{ child.vars.label|trans }}:&nbsp;</span>
             {%- if child.vars.data is iterable -%}
                 {%- for value in child.vars.value -%}
@@ -41,5 +42,6 @@ file that was distributed with this source code.
                 {%- endif-%}
             {%- endif -%}
         </li>
+        {% endif %}
     {% endfor %}
 </ul>

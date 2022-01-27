@@ -255,11 +255,22 @@ class ProductController extends AbstractController
 
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
 
-        $pagination = $paginator->paginate(
-            $qb,
-            $page_no,
-            $page_count
-        );
+        $sortKey = $searchData['sortkey'];
+
+        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
+            $pagination = $paginator->paginate(
+                $qb,
+                $page_no,
+                $page_count
+            );
+        } else {
+            $pagination = $paginator->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                ['wrap-queries' => true]
+            );
+        }
 
         return [
             'searchForm' => $searchForm->createView(),
