@@ -298,6 +298,7 @@ front.product.related_category: Related Category
 front.product.continue: Continue Shopping
 front.product.invalid_quantity: Please enter more than 1.
 front.product.product_class_unselected: The item is not selected.
+front.product.pageno: 'Page %pageno%'
 
 #------------------------------------------------------------------------------------
 # Cart

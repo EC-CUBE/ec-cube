@@ -298,6 +298,7 @@ front.product.related_category: 関連カテゴリ
 front.product.continue: お買い物を続ける
 front.product.invalid_quantity: 1以上で入力してください。
 front.product.product_class_unselected: 項目が選択されていません
+front.product.pageno: '%pageno%ページ目'
 
 #------------------------------------------------------------------------------------
 # カート
