@@ -76,6 +76,7 @@ class SecurityController extends AbstractController
                 'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
                 'ECCUBE_ADMIN_DENY_HOSTS' => "'{$adminDenyHosts}'",
                 'ECCUBE_FORCE_SSL' => $data['force_ssl'] ? 'true' : 'false',
+                'TRUSTED_HOSTS' => $data['trusted_hosts'],
             ]);
 
             file_put_contents($envFile, $env);

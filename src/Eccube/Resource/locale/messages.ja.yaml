@@ -136,6 +136,17 @@ front.block.login.login: ログイン
 front.block.login.logout: ログアウト
 front.block.login.to_cart: カートを見る
 front.block.login.to_home: ホームに戻る
+front.block.calendar.title__en: 'CALENDAR'
+front.block.calendar.title__ja: 'カレンダー'
+front.block.calendar.month_format: 'Y年n月'
+front.block.calendar.sunday: '日'
+front.block.calendar.monday: '月'
+front.block.calendar.tuesday: '火'
+front.block.calendar.wednesday: '水'
+front.block.calendar.thursday: '木'
+front.block.calendar.friday: '金'
+front.block.calendar.saturday: '土'
+front.block.calendar.holiday_notice: '* 赤字は休業日です。'
 
 
 #------------------------------------------------------------------------------------
@@ -1082,6 +1093,7 @@ admin.setting.shop.tax_setting: 税率設定
 admin.setting.shop.mail_setting: メール設定
 admin.setting.shop.csv_setting: CSV出力項目設定
 admin.setting.shop.order_status_setting: 受注対応状況設定
+admin.setting.shop.calendar_setting: '定休日カレンダー設定'
 admin.setting.system: システム設定
 admin.setting.system.member_management: メンバー管理
 admin.setting.system.member_password_change: パスワード変更
@@ -1213,6 +1225,14 @@ admin.setting.shop.order_status.color: 色
 admin.setting.shop.order_status.display_order_count: 件数表示
 
 #------------------------------------------------------------------------------------
+# 設定：店舗設定：定休日カレンダー設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.calendar.title: 'タイトル'
+admin.setting.shop.calendar.holiday: '日付'
+admin.setting.shop.calendar.holiday.available_error: '同日の定休日が既に存在しているため、設定できません。'
+
+#------------------------------------------------------------------------------------
 # 設定：システム設定：メンバー管理 / パスワード変更
 #------------------------------------------------------------------------------------
 
@@ -1284,6 +1304,11 @@ admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスで
 admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
 admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
 admin.setting.system.security.not_found_env_file: .envファイルが見つかりません。.envを利用していない場合はセキュリティ設定を管理画面から変更できません。
+admin.setting.system.security.trusted_hosts: 信頼できるホスト名
+admin.setting.system.security.trusted_hosts_sample: ^example\.com$,^example\.org$
+admin.setting.system.security.trusted_hosts_description: |
+  設定されたホスト名以外でのアクセスを拒否します。
+  複数設定する場合はカンマ区切りで入力してください。正規表現での指定も可能です。
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：セキュリティ管理
@@ -1654,6 +1679,7 @@ tooltip.setting.shop.order_status.order_status: 受注管理およびマイペ�
 tooltip.setting.shop.order_status.customer_order_status_name: 対応状況の名称を設定できます。ここで設定した名称は会員ログイン後のマイページで表示されます。
 tooltip.setting.shop.order_status.color: 受注管理の対応状況の色を設定できます。
 tooltip.setting.shop.order_status.display_order_count: 受注管理の対応状況ごとの受注件数の表示・非表示を設定できます。
+tooltip.setting.shop.calendar_setting: '定休日カレンダーに表示する定休日を設定できます。'
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。
 tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
 tooltip.setting.system.member.two_factor_auth_enabled: 有効にすると2段階認証でのログインが必要になります。2段階認証のデバイス設定をしていない状態でログインした場合、設定後にログインできるようになります。
@@ -1662,6 +1688,7 @@ tooltip.setting.system.security.admin_url: 管理画面にログインするた�
 tooltip.setting.system.security.ip_limit: 管理画面にログインできる接続元のIPアドレスを制限します。
 tooltip.setting.system.security.ip_limit_deny: 管理画面へのアクセスを拒否する接続元のIPアドレスを指定します。
 tooltip.setting.system.security.force_ssl: ショップサイトと管理画面への接続をSSL(https)での接続に制限します。
+tooltip.setting.system.security.trusted_hosts: 設定されたホスト名以外でのアクセスを拒否します。
 tooltip.setting.system.login_history.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
 tooltip.setting.system.log_display: アクセスやエラー状況などのログを確認できます。
 tooltip.setting.system.master_data_management: 各種マスターデータを管理します。

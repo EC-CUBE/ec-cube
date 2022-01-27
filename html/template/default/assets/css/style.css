@@ -1870,7 +1870,7 @@ Styleguide 3.1.1
   font-size: 12px;
   font-weight: bold;
   color: #DE5D50; }
-.error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select {
+.error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select, .error.ec-input textarea, .error.ec-halfInput textarea, .error.ec-numberInput textarea, .error.ec-zipInput textarea, .error.ec-telInput textarea, .error.ec-select textarea, .error.ec-birth textarea {
   margin-bottom: 5px;
   border-color: #CF3F34;
   background: #FDF1F0; }
@@ -2255,7 +2255,7 @@ Styleguide 3.1.1
   font-size: 12px;
   font-weight: bold;
   color: #DE5D50; }
-.error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select {
+.error.ec-input input, .error.ec-halfInput input, .error.ec-numberInput input, .error.ec-zipInput input, .error.ec-telInput input, .error.ec-select input, .error.ec-birth input, .error.ec-input select, .error.ec-halfInput select, .error.ec-numberInput select, .error.ec-zipInput select, .error.ec-telInput select, .error.ec-select select, .error.ec-birth select, .error.ec-input textarea, .error.ec-halfInput textarea, .error.ec-numberInput textarea, .error.ec-zipInput textarea, .error.ec-telInput textarea, .error.ec-select textarea, .error.ec-birth textarea {
   margin-bottom: 5px;
   border-color: #CF3F34;
   background: #FDF1F0; }
@@ -2502,6 +2502,7 @@ Styleguide 3.2.4
 .ec-select select {
     display: inline-block;
     width: auto;
+    max-width: 100%;
     background-color: #f8f8f8;
     -webkit-appearance: menulist;
     -moz-appearance: menulist; }
@@ -3954,18 +3955,20 @@ Styleguide 9.1.1
 .ec-navlistRole .ec-navlistRole__navlist a:hover {
     text-decoration: none; }
 .ec-navlistRole .ec-navlistRole__item {
+  display: flex;
   width: 50%;
   border-color: #D0D0D0;
   border-style: solid;
   border-width: 0 1px 1px 0;
   text-align: center;
   font-weight: bold; }
+.ec-navlistRole .ec-navlistRole__item:hover {
+    background: #f5f7f8; }
 .ec-navlistRole .ec-navlistRole__item a {
-    padding: 16px;
+    margin: auto;
+    padding: 16px 10px;
     width: 100%;
     display: inline-block; }
-.ec-navlistRole .ec-navlistRole__item a:hover {
-      background: #f5f7f8; }
 .ec-navlistRole .active a {
   color: #DE5D50; }
 /*
@@ -4061,7 +4064,6 @@ Styleguide 9.1.4
   box-sizing: border-box;
   padding: 10px; }
 .ec-favoriteRole .ec-favoriteRole__item-image {
-    height: 150px;
     margin-bottom: 10px;
     text-align: center; }
 .ec-favoriteRole .ec-favoriteRole__item img {
@@ -5560,6 +5562,77 @@ SP フォーストで記述する。
 Twitter Bootstrap デフォルト準拠
  */
 /*
+見出し
+
+トップページで使用されているカレンダーのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.9.1
+*/
+/* 背景や文字の色調整 */
+.ec-calendar {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap; }
+.ec-calendar__month {
+    border-collapse: collapse;
+    margin-top: 30px; }
+.ec-calendar__month th, .ec-calendar__month td {
+      border-top: 1px solid #f3f3f3;
+      border-bottom: 1px solid #f3f3f3;
+      padding: 8px;
+      text-align: center;
+      vertical-align: middle; }
+.ec-calendar .ec-calendar__title {
+    border: 0; }
+.ec-calendar .ec-calendar__sun {
+    background: #F8F8F8;
+    color: #DE5D50; }
+.ec-calendar .ec-calendar__mon,
+  .ec-calendar .ec-calendar__tue,
+  .ec-calendar .ec-calendar__wed,
+  .ec-calendar .ec-calendar__thu,
+  .ec-calendar .ec-calendar__fri {
+    background: #F8F8F8;
+    color: #333; }
+.ec-calendar .ec-calendar__sat {
+    background: #F8F8F8;
+    color: #5CB1B1; }
+.ec-calendar .ec-calendar__day {
+    background: #FFF;
+    color: #333; }
+.ec-calendar .ec-calendar__holiday {
+    background: #FFF;
+    color: #DE5D50 !important; }
+.ec-calendar .ec-calendar__today {
+    color: #333;
+    position: relative;
+    z-index: 1; }
+.ec-calendar .ec-calendar__today::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #FFFDE7;
+      transform: translate(-50%, -50%);
+      z-index: -1; }
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
 検索ラベル
 
 商品一覧 ヘッダー部 に関する Project コンポーネントを定義します。
@@ -5702,7 +5775,6 @@ Styleguide 13.2.1
     display: flex;
     flex-direction: column; }
 .ec-shelfGrid .ec-shelfGrid__item-image {
-      height: 150px;
       margin-bottom: 10px;
       text-align: center; }
 .ec-shelfGrid .ec-shelfGrid__item img {
@@ -5752,7 +5824,6 @@ Styleguide 13.2.2
     margin-bottom: 36px;
     width: 50%; }
 .ec-shelfGridCenter .ec-shelfGridCenter__item-image {
-      height: 150px;
       margin-bottom: 10px;
       text-align: center; }
 .ec-shelfGridCenter .ec-shelfGridCenter__item img {
@@ -7603,8 +7674,6 @@ Styleguide 22.1
     .ec-welcomeMsg {
       padding-left: 26px;
       padding-right: 26px; }
-      .ec-favoriteRole .ec-favoriteRole__item-image {
-        height: 250px; }
     .ec-favoriteRole .ec-favoriteRole__item {
       width: 25%; }
     .ec-mypageRole {
@@ -7904,8 +7973,6 @@ Styleguide 22.1
     .ec-shelfGrid {
       margin-left: -16px;
       margin-right: -16px; }
-        .ec-shelfGrid .ec-shelfGrid__item-image {
-          height: 250px; }
       .ec-shelfGrid .ec-shelfGrid__item {
         padding: 0 16px;
         width: 25%; }
@@ -7916,8 +7983,6 @@ Styleguide 22.1
     .ec-shelfGridCenter {
       margin-left: -16px;
       margin-right: -16px; }
-        .ec-shelfGridCenter .ec-shelfGridCenter__item-image {
-          height: 250px; }
       .ec-shelfGridCenter .ec-shelfGridCenter__item {
         padding: 0 16px;
         width: 25%; }
@@ -7952,7 +8017,7 @@ Styleguide 22.1
       .ec-cartRole .ec-cartRole__cart {
         margin: 0 10%; }
       .ec-cartRole .ec-cartRole__actions {
-        width: 20%;
+        width: 30%;
         margin-right: 10%; }
       .ec-cartRole .ec-cartRole__totalAmount {
         font-size: 24px; }
@@ -7974,6 +8039,7 @@ Styleguide 22.1
         padding-right: 0; }
       .ec-cartRow .ec-cartRow__summary {
         display: inline-block;
+        width: calc(100% - 130px);
         margin-left: 20px;
         vertical-align: middle; }
         .ec-cartRow .ec-cartRow__summary .ec-cartRow__sutbtotalSP {
@@ -8036,4 +8102,11 @@ Styleguide 22.1
       width: 50%; }
     .ec-off4Grid .ec-off4Grid__cell {
       width: 33.33333%; } }
+@media screen and (min-width: 768px) {
+    .ec-calendar {
+      flex-direction: row;
+      margin-left: -30px; }
+      .ec-calendar__month {
+        margin-top: 0;
+        margin-left: 30px; } }
 /*# sourceMappingURL=style.css.map */

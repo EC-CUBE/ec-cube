@@ -16,38 +16,31 @@ namespace Eccube\DependencyInjection\Facade;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * XXX ContainerInterface は不要かも
- */
 class AnnotationReaderFacade
 {
     /** @var self|null */
     private static $instance = null;
 
-    /** @var ContainerInterface */
-    private static $Container;
-
     /** @var Reader */
     private static $Reader;
 
     /**
-     * @param ContainerInterface $container
+     * @param Reader $Reader
      */
-    public function __construct(ContainerInterface $container, Reader $Reader)
+    public function __construct(Reader $Reader)
     {
-        self::$Container = $container;
         self::$Reader = $Reader;
     }
 
     /**
-     * @param ContainerInterface $container
+     * @param Reader $Reader
      *
      * @return AnnotationReaderFacade|null
      */
-    public static function init(ContainerInterface $container, Reader $Reader)
+    public static function init(Reader $Reader)
     {
         if (null === self::$instance) {
-            self::$instance = new self($container, $Reader);
+            self::$instance = new self($Reader);
         }
 
         return self::$instance;
