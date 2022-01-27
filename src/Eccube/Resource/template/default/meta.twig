@@ -38,19 +38,19 @@
             {# 最初のページ #}
             {% if pagination.paginationData.current == 1  %}
             <meta property="og:url" content="{{ meta_canonical }}"/>
-            <link rel="next" href="{{ meta_canonical }}&pageno=2" title="{{Category.name}} {{ 'front.product.pageno'|trans({ '%pageno%': 2 }) }}">
+            <link rel="next" href="{{ meta_canonical }}&pageno=2" title="{{ Category.name }} {{ 'front.product.pageno'|trans({ '%pageno%': 2 }) }}">
             <link rel="canonical" href="{{ meta_canonical }}" />
             {# 最後のページ #}
             {% elseif pagination.paginationData.last == pagination.paginationData.current %}
-            <meta property="og:url" content="{{ meta_canonical }}&pageno={{pagination.paginationData.last}}"/>
-            <link rel="prev" href="{{ meta_canonical }}&pageno={{pagination.paginationData.previous}}" title="{{Category.name}} {{ 'front.product.pageno'|trans({ '%pageno%': pagination.paginationData.previous }) }}">
-            <link rel="canonical" href="{{ meta_canonical }}&pageno={{pagination.paginationData.last}}" />
+            <meta property="og:url" content="{{ meta_canonical }}&pageno={{ pagination.paginationData.last }}"/>
+            <link rel="prev" href="{{ meta_canonical }}&pageno={{ pagination.paginationData.previous }}" title="{{ Category.name }} {{ 'front.product.pageno'|trans({ '%pageno%': pagination.paginationData.previous }) }}">
+            <link rel="canonical" href="{{ meta_canonical }}&pageno={{ pagination.paginationData.last }}" />
             {# 途中のページ #}
             {% else %}
-            <meta property="og:url" content="{{ meta_canonical }}&pageno={{pagination.paginationData.current}}"/>
-            <link rel="next" href="{{ meta_canonical }}&pageno={{pagination.paginationData.next}}" title="{{Category.name}} {{ 'front.product.pageno'|trans({ '%pageno%': pagination.paginationData.next }) }}">
-            <link rel="prev" href="{{ meta_canonical }}&pageno={{pagination.paginationData.previous}}" title="{{Category.name}} {{ 'front.product.pageno'|trans({ '%pageno%': pagination.paginationData.previous }) }}">
-            <link rel="canonical" href="{{ meta_canonical }}&pageno={{pagination.paginationData.current}}" />
+            <meta property="og:url" content="{{ meta_canonical }}&pageno={{ pagination.paginationData.current }}"/>
+            <link rel="next" href="{{ meta_canonical }}&pageno={{ pagination.paginationData.next }}" title="{{ Category.name }} {{ 'front.product.pageno'|trans({ '%pageno%': pagination.paginationData.next }) }}">
+            <link rel="prev" href="{{ meta_canonical }}&pageno={{ pagination.paginationData.previous }}" title="{{ Category.name }} {{ 'front.product.pageno'|trans({ '%pageno%': pagination.paginationData.previous }) }}">
+            <link rel="canonical" href="{{ meta_canonical }}&pageno={{ pagination.paginationData.current }}" />
             {% endif %}
         {% else %}
         {# ページング無し #}
