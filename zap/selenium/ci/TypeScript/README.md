@@ -34,7 +34,7 @@ docker-compose exec -T ec-cube bin/console eccube:fixtures:generate --products=5
 docker-compose exec -T ec-cube bin/console doctrine:query:sql "UPDATE dtb_customer SET email = 'zap_user@example.com' WHERE id = 1;"
 
 ## 環境変数 APP_ENV=prod に設定します
-sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
+sed -i.bak 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
 
 ## ec-cube コンテナを再起動し、設定を反映します。
 docker-compose up -d ec-cube
