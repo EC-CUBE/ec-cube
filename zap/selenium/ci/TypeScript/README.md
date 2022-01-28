@@ -34,7 +34,7 @@ docker-compose exec -T ec-cube bin/console eccube:fixtures:generate --products=5
 docker-compose exec -T ec-cube bin/console doctrine:query:sql "UPDATE dtb_customer SET email = 'zap_user@example.com' WHERE id = 1;"
 
 ## 環境変数 APP_ENV=prod に設定します
-sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
+sed -i.bak 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
 
 ## ec-cube コンテナを再起動し、設定を反映します。
 docker-compose up -d ec-cube
@@ -45,7 +45,7 @@ yarn install && yarn playwright install # (初回のみ)
 HTTP_PROXY=127.0.0.1:8090 HTTPS_PROXY=127.0.0.1:8090 yarn playwright test
 
 ## (Optional) 個別にテストする場合は、テストのファイル名を指定してください。
-yarn playwright test test/front_guest/contact.test.ts
+HTTP_PROXY=127.0.0.1:8090 HTTPS_PROXY=127.0.0.1:8090 yarn playwright test test/front_guest/contact.test.ts
 ```
 
 ####  実行中に OWASP ZAP を操作したい場合
@@ -69,7 +69,7 @@ yarn playwright test test/front_guest/contact.test.ts
 以下のように playwright に `--headed` オプションを付与することで Chrome が実際に起動し、実行状況を確認できます。
 
 ``` shell
-yarn playwright test test/front_guest/contact.test.ts --headed
+HTTP_PROXY=127.0.0.1:8090 HTTPS_PROXY=127.0.0.1:8090 yarn playwright test test/front_guest/contact.test.ts --headed
 ```
 
 また、 [`page.pause()`](https://playwright.dev/docs/api/class-page#page-pause)をテストコードに埋め込めばステップ実行も可能です。
