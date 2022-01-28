@@ -5,7 +5,13 @@
   "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.17.1",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "eslint": "^8.7.0",
+    "typescript": "^4.5.5",
     "zaproxy": "^1.0.1"
   },
-  "scripts": {}
+  "scripts": {
+    "lint:typescript": "eslint --fix --ext .ts ."
+  }
 }
