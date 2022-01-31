@@ -403,7 +403,7 @@ class EA07BasicinfoCest
         // 定休日を設定
         $holidays = [
             '定休日1' => Carbon::now()->day(1), // 今月1日
-            '定休日2' => Carbon::now()->addMonth(1)->day(28), // 翌月28日
+            '定休日2' => Carbon::now()->startOfMonth()->addMonth(1)->day(28), // 翌月28日
         ];
 
         foreach ($holidays as $title => $date) {
