@@ -28,7 +28,7 @@ class CalendarControllerTest extends AbstractWebTestCase
     public function testThisMonthTitle()
     {
         $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
-        $this->expected = Carbon::now()->format('Y年n月');
+        $this->expected = Carbon::now()->startOfMonth()->format('Y年n月');
         $this->actual = $crawler->filter('#this-month-title')->text();
         $this->verify();
     }
@@ -36,7 +36,7 @@ class CalendarControllerTest extends AbstractWebTestCase
     public function testNextMonthTitle()
     {
         $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
-        $this->expected = Carbon::now()->addMonth(1)->format('Y年n月');
+        $this->expected = Carbon::now()->startOfMonth()->addMonth(1)->format('Y年n月');
         $this->actual = $crawler->filter('#next-month-title')->text();
         $this->verify();
     }
@@ -48,7 +48,6 @@ class CalendarControllerTest extends AbstractWebTestCase
             ->setHoliday(new \DateTime(Carbon::now()->format('Y-m-d')));
         $this->entityManager->persist($Calendar);
         $this->entityManager->flush();
-        dump($Calendar);
 
         $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
         $this->expected = Carbon::now()->format('j');
