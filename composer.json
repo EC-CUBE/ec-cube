@@ -195,6 +195,12 @@
             "*": "dist"
         },
         "optimize-autoloader": true,
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/*": true,
+            "kylekatarnls/update-helper": true,
+            "ec-cube/plugin-installer": true,
+            "symfony/flex": true
+        }
     }
 }
