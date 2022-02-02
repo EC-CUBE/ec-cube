@@ -426,11 +426,11 @@ class EA07BasicinfoCest
         $I->see('カレンダー', ['class' => 'ec-layoutRole__mainBottom']);
 
         // フロント画面で定休日にクラス .ec-calendar__holiday が設定されていることを確認
-        $I->seeElement(['xpath' => '//table[@id="this-month-table"]//td[@class="ec-calendar__holiday"][text()="'.$holidays['定休日1']->format('j').'"]']);
-        $I->seeElement(['xpath' => '//table[@id="next-month-table"]//td[@class="ec-calendar__holiday"][text()="'.$holidays['定休日2']->format('j').'"]']);
+        $I->seeElement(['xpath' => '//table[@id="this-month-table"]//td[contains(@class,"ec-calendar__holiday")][text()="'.$holidays['定休日1']->format('j').'"]']);
+        $I->seeElement(['xpath' => '//table[@id="next-month-table"]//td[contains(@class,"ec-calendar__holiday")][text()="'.$holidays['定休日2']->format('j').'"]']);
 
         // 今日の日付にクラス .ec-calendar__today が設定されていることを確認
-        $I->seeElement(['xpath' => '//table[@id="this-month-table"]//td[@class="ec-calendar__today"][text()="'.Carbon::now()->format('j').'"]']);
+        $I->seeElement(['xpath' => '//table[@id="this-month-table"]//td[contains(@class,"ec-calendar__today")][text()="'.Carbon::now()->format('j').'"]']);
     }
 
     /**
