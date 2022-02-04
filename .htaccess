@@ -18,7 +18,7 @@ DirectoryIndex index.php index.html .ht
 </FilesMatch>
 
 <IfModule mod_setenvif.c>
-  SetEnvIf Request_URI "\.(jpe?g|png)$" _image_request
+  SetEnvIf Request_URI "\.(jpe?g|png)$" _image_request [NC]
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -50,7 +50,7 @@ DirectoryIndex index.php index.html .ht
     RewriteCond %{HTTP_ACCEPT} image/webp
     RewriteCond %{SCRIPT_FILENAME}.webp -f
     # *.jpg、*.pngファイルを*.webpファイルに内部的にルーティングする
-    RewriteRule .(jpe?g|png)$ %{SCRIPT_FILENAME}.webp [T=image/webp]
+    RewriteRule .(jpe?g|png)$ %{SCRIPT_FILENAME}.webp [T=image/webp,NC]
 
     # Authorization ヘッダが取得できない環境への対応
     RewriteCond %{HTTP:Authorization} ^(.*)
