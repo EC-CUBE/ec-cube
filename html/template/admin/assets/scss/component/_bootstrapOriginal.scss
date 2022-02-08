@@ -135,10 +135,14 @@ Styleguide 12.2
   color: #262626;
 }
 
-.btn-ec-actionIcon{
+.btn-ec-actionIcon {
   @include button-variant(transparent, transparent, #EFF0F4, transparent, #EFF0F4, transparent );
   padding: 6px 12px;
   cursor:pointer;
+}
+
+a:not([href]):not([tabindex]).btn-ec-actionIcon {
+  color: inherit;
 }
 
 .btn-ec-actionIcon:hover {
