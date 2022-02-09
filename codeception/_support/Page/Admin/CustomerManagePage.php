@@ -132,4 +132,34 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     {
         return $this->tester->grabTextFrom("#search_form > div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pl-3");
     }
+
+    public function assertSortedIdList($order)
+    {
+        $values = $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(1)');
+
+        $expect = $values;
+        if ($order === 'asc') {
+            sort($expect);
+        } else {
+            rsort($expect);
+        }
+
+        $this->tester->assertEquals($expect, $values);
+    }
+    public function assertSortedNameList($order)
+    {
+        $values = array_map(function($s) {
+            // 一覧の会員名の文字列から姓だけを抽出
+            return preg_replace('/ .*$/', '', $s);
+        }, $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(2)'));
+
+        $expect = $values;
+        if ($order === 'asc') {
+            sort($expect);
+        } else {
+            rsort($expect);
+        }
+
+        $this->tester->assertEquals($expect, $values);
+    }
 }
