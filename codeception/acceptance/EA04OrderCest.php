@@ -244,6 +244,32 @@ class EA04OrderCest
         $I->assertEquals($OrderNumForDontDel, $OrderListPage->一覧_注文番号(1));
     }
 
+    public function order_一覧でのソート(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0401-UC09-T01 一覧でのソート');
+        $page = OrderManagePage::go($I);
+
+        // 対応状況横の上矢印をクリック
+        $I->click('a[data-sortkey="order_status"]');
+        $I->seeElement('.listSort-current[data-sortkey="order_status"] .fa-arrow-up');
+        $page->assertSortedStatusList('asc');
+
+        // 対応状況横の下矢印をクリック
+        $I->click('a[data-sortkey="order_status"]');
+        $I->seeElement('.listSort-current[data-sortkey="order_status"] .fa-arrow-down');
+        $page->assertSortedStatusList('desc');
+
+        // 購入金額横の上矢印をクリック
+        $I->click('[data-sortkey="purchase_price"]');
+        $I->seeElement('.listSort-current[data-sortkey="purchase_price"] .fa-arrow-up');
+        $page->assertSortedPriceList('asc');
+
+        // 購入金額横の下矢印をクリック
+        $I->click('a[data-sortkey="purchase_price"]');
+        $I->seeElement('.listSort-current[data-sortkey="purchase_price"] .fa-arrow-down');
+        $page->assertSortedPriceList('desc');
+    }
+
     /**
      * @group vaddy
      */

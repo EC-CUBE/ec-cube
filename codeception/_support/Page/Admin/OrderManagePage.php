@@ -280,4 +280,38 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
         return $this;
     }
+
+    public function assertSortedStatusList($order)
+    {
+        $values = $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(4)');
+        $expect = $values;
+        usort($expect, function ($a, $b) {
+            // order_status でソート
+            $statusList = ['新規受付', '入金済み', '対応中', '注文取消し', '発送済み', '決済処理中', '購入処理中', '返品'];
+            return array_search($a, $statusList) > array_search($b, $statusList);
+        });
+
+        if ($order === 'desc') {
+            $expect = array_reverse($expect);
+        }
+
+        $this->tester->assertEquals($expect, $values);
+    }
+
+    public function assertSortedPriceList($order)
+    {
+        $values = array_map(function($s) {
+            // 一覧の購入金額の文字列から金額だけを抽出
+            return preg_replace('/\D/', '', $s);
+        }, $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(5)'));
+
+        $expect = $values;
+        if ($order === 'asc') {
+            sort($expect);
+        } else {
+            rsort($expect);
+        }
+
+        $this->tester->assertEquals($expect, $values);
+    }
 }
