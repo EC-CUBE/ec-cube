@@ -200,7 +200,7 @@ class FileController extends AbstractController
         $this->isTokenValid();
 
         $selectFile = $request->get('select_file');
-        if (is_null($selectFile) || $selectFile == '/') {
+        if ($selectFile === '' || $selectFile === null || $selectFile == '/') {
             return $this->redirectToRoute('admin_content_file');
         }
 
