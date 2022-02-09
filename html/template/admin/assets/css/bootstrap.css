@@ -4280,6 +4280,8 @@ Styleguide 12.2
 .btn-ec-actionIcon:not(:disabled):not(.disabled):active:focus, .btn-ec-actionIcon:not(:disabled):not(.disabled).active:focus,
     .show > .btn-ec-actionIcon.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5); }
+a:not([href]):not([tabindex]).btn-ec-actionIcon {
+  color: inherit; }
 .btn-ec-actionIcon:hover {
   color: #54687A; }
 /*
