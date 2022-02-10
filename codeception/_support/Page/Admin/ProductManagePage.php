@@ -277,4 +277,18 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
         return $this;
     }
+
+    public function assertSortedList($index, $order)
+    {
+        $values = $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child('.$index.')');
+
+        $expect = $values;
+        if ($order === 'asc') {
+            sort($expect);
+        } else {
+            rsort($expect);
+        }
+
+        $this->tester->assertEquals($expect, $values);
+    }
 }

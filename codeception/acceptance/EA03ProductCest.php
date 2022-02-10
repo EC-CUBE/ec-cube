@@ -186,6 +186,32 @@ class EA03ProductCest
         $I->assertNotContains('フリーエリア', $csvHeader);
     }
 
+    public function product_一覧でのソート(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0301-UC03-T01 一覧でのソート');
+        $page = ProductManagePage::go($I);
+
+        // 商品一覧・ID横の上矢印をクリック
+        $I->click('[data-sortkey="product_id"]');
+        $I->seeElement('.listSort-current[data-sortkey="product_id"] .fa-arrow-up');
+        $page->assertSortedList(2, 'asc');
+
+        // ID横の下矢印をクリック
+        $I->click('[data-sortkey="product_id"]');
+        $I->seeElement('.listSort-current[data-sortkey="product_id"] .fa-arrow-down');
+        $page->assertSortedList(2, 'desc');
+
+        // 更新日横の上矢印をクリック
+        $I->click('[data-sortkey="update_date"]');
+        $I->seeElement('.listSort-current[data-sortkey="update_date"] .fa-arrow-up');
+        $page->assertSortedList(10, 'asc');
+
+        // 更新日横の下矢印をクリック
+        $I->click('[data-sortkey="update_date"]');
+        $I->seeElement('.listSort-current[data-sortkey="update_date"] .fa-arrow-down');
+        $page->assertSortedList(10, 'desc');
+    }
+
     public function product_一覧からの規格編集規格なし失敗(AcceptanceTester $I)
     {
         $I->wantTo('EA0310-UC01-T02 一覧からの規格編集 規格なし 失敗');
