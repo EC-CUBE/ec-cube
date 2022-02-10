@@ -864,7 +864,7 @@ class EA03ProductCest
         // タグが作成されていないことを確認
         $I->dontSee('保存しました', ProductTagPage::$アラートメッセージ);
 
-        $tagName = 'new-tag ' . uniqid();
+        $tagName = 'new-tag '.uniqid();
 
         ProductTagPage::go($I)
             ->入力_タグ名($tagName)
@@ -878,7 +878,7 @@ class EA03ProductCest
     {
         $I->wantTo('EA0308-UC02-T01 タグ編集');
 
-        $tagName = 'edit-tag ' . uniqid();
+        $tagName = 'edit-tag '.uniqid();
 
         ProductTagPage::go($I)
             ->タグ編集_開始(1)
@@ -948,5 +948,54 @@ class EA03ProductCest
 
         $I->switchToNewWindow();
         $I->seeInCurrentUrl('/products/detail/');
+    }
+
+    public function product_詳細検索_タグ(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0311-UC01-T01 詳細検索 (タグ)');
+
+        $name = uniqid();
+        $entityManager = Fixtures::get('entityManager');
+        $createProduct = Fixtures::get('createProduct');
+        /** @var \Eccube\Entity\Product $Product */
+        $Product = $createProduct($name);
+        foreach ($Product->getProductTag() as $ProductTag) {
+            $Product->removeProductTag($ProductTag);
+            $entityManager->remove($ProductTag);
+        }
+        $entityManager->flush();
+
+        // タグを指定して検索 -> 0件
+        ProductManagePage::go($I)
+            ->検索_入力_フリー検索($name)
+            ->詳細検索ボタンをクリック()
+            ->詳細検索_入力_タグ(1)
+            ->検索を実行();
+
+        $I->see('検索結果：0件が該当しました', ProductManagePage::$検索結果_メッセージ);
+
+        // 編集画面へ移動
+        ProductManagePage::go($I)
+            ->検索($name)
+            ->検索結果_選択(1);
+
+        // タグ登録
+        (new ProductEditPage($I))
+            ->クリックして開くタグリスト()
+            ->クリックして選択タグ(2)
+            ->クリックして選択タグ(3)
+            ->クリックして選択タグ(4)
+            ->登録();
+
+        $I->see('保存しました', 'div.c-container > div.c-contentsArea > div.alert');
+
+        // タグを指定して検索 -> 1件
+        ProductManagePage::go($I)
+            ->検索_入力_フリー検索($name)
+            ->詳細検索ボタンをクリック()
+            ->詳細検索_入力_タグ(1)
+            ->検索を実行();
+
+        $I->see('検索結果：1件が該当しました', ProductManagePage::$検索結果_メッセージ);
     }
 }

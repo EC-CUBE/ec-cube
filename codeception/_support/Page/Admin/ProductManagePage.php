@@ -93,6 +93,35 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 検索_入力_フリー検索($value)
+    {
+        $this->tester->fillField(self::$検索条件_プロダクト, $value);
+
+        return $this;
+    }
+
+    public function 詳細検索_入力_タグ($value)
+    {
+        $this->tester->selectOption(['id' => 'admin_search_product_tag_id'], 1);
+
+        return $this;
+    }
+
+    public function 詳細検索ボタンをクリック()
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+
+        return $this;
+    }
+
+    public function 検索を実行()
+    {
+        $this->tester->click(self::$検索ボタン);
+        $this->tester->see('商品一覧商品管理', '.c-pageTitle');
+
+        return $this;
+    }
+
     /**
      * 検索結果の指定した行の規格設定に遷移。
      *
@@ -251,6 +280,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->wait(5);
         $csv = $this->tester->getLastDownloadFile('/^product_\d{14}\.csv$/');
+
         return mb_convert_encoding(file($csv)[0], 'UTF-8', 'SJIS-win');
     }
 
