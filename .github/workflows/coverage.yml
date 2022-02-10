@@ -185,6 +185,7 @@ jobs:
 
       - name: Setup xdebug
         run: |
+          composer config --no-plugins allow-plugins.codeception/c3 true
           composer require --dev codeception/c3 "2.*"
           sudo phpenmod -s cli xdebug
           sed -i "7a include __DIR__.'/c3.php';" index.php
