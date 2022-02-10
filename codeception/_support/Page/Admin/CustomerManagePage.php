@@ -146,6 +146,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
 
         $this->tester->assertEquals($expect, $values);
     }
+
     public function assertSortedNameList($order)
     {
         $values = array_map(function($s) {

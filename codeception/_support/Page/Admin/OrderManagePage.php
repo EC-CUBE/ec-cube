@@ -302,7 +302,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         $values = array_map(function($s) {
             // 一覧の購入金額の文字列から金額だけを抽出
-            return preg_replace('/\D/', '', $s);
+            return (int)preg_replace('/(\n.*|\D)/', '', $s);
         }, $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(5)'));
 
         $expect = $values;
