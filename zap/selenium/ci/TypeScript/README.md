@@ -93,4 +93,5 @@ GitHub Actions のワークフローが完了すると、 OWASP ZAP のセッシ
 ## 参考
 
 - EC-CUBE開発者向けドキュメントの [EC-CUBE Penetration Testing with OWASP ZAP](https://doc4.ec-cube.net/penetration-testing) も併わせてお読みください
+- [脆弱性対応勉強会Expansion 第05回(OWASP ZAP&EC-CUBE)発表資料](https://zenn.dev/nanasess/articles/vulnstudy05-owasp-and-eccube)
 - [Driving OWASP ZAP with Selenium](https://owasp.org/www-chapter-london/assets/slides/OWASPLondon-OWASP-ZAP-Selenium-20180830-PDF.pdf)
