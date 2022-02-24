@@ -15,6 +15,7 @@ jobs:
           - 'test/front_login/contact.test.ts'
           - 'test/front_guest/contact.test.ts'
           - 'test/admin/order_mail.test.ts'
+          - 'test/admin/change_password.test.ts'
 
     steps:
       - name: Checkout
@@ -38,6 +39,14 @@ jobs:
           yarn install
           yarn run playwright install --with-deps chromium
           yarn playwright install-deps chromium
+      - run: |
+          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+      - name: Apply patch to change_password
+        if: matrix.group == 'test/admin/change_password.test.ts'
+        working-directory: zap/selenium/ci/TypeScript
+        run: git am patches/0001-Member.patch
+
       - name: Penetration testing
         working-directory: zap/selenium/ci/TypeScript
         env:
