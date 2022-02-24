@@ -15,6 +15,7 @@ jobs:
           - 'test/front_login/contact.test.ts'
           - 'test/front_guest/contact.test.ts'
           - 'test/admin/order_mail.test.ts'
+          - 'test/admin/setting_shop_payment.test.ts'
 
     steps:
       - name: Checkout
