@@ -29,12 +29,12 @@ test.describe.serial('パスワード変更のテストをします', () => {
 
   test.describe('テストを実行します[GET] @attack', () => {
     let scanId: number;
-    test.skip('アクティブスキャンを実行します', async () => {
+    test('アクティブスキャンを実行します', async () => {
       scanId = await zapClient.activeScanAsUser(url, 2, 55, false, null, 'GET');
       await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
     });
 
-    test.skip('結果を確認します', async () => {
+    test('結果を確認します', async () => {
       await zapClient.getAlerts(url, 0, 1, Risk.High)
         .then(alerts => expect(alerts).toEqual([]));
     });
