@@ -17,9 +17,9 @@ use Page\Admin\BlockManagePage;
 use Page\Admin\FileManagePage;
 use Page\Admin\LayoutEditPage;
 use Page\Admin\LayoutManagePage;
+use Page\Admin\MaintenanceManagePage;
 use Page\Admin\NewsEditPage;
 use Page\Admin\NewsManagePage;
-use Page\Admin\MaintenanceManagePage;
 use Page\Admin\PageEditPage;
 use Page\Admin\PageManagePage;
 use Page\Front\TopPage;
@@ -47,7 +47,7 @@ class EA06ContentsManagementCest
 
     public function contentsmanagement_新着情報管理(AcceptanceTester $I)
     {
-        $I->wantTo('EA0601-UC01-T01(& UC02-T01/UC02-T02/UC03-T01) 新着情報管理（作成・編集・削除）');
+        $I->wantTo('EA0601-UC01-T01(& UC02-T01/UC03-T01) 新着情報管理（作成・編集・削除）');
 
         // EA0601-UC01-T01_新着情報管理（新規作成）
         NewsManagePage::go($I)->新規登録();

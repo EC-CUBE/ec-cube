@@ -441,6 +441,8 @@ class EA07BasicinfoCest
      */
     public function basicinfo_認証キー設定(AcceptanceTester $I)
     {
+        $I->wantTo('EA1101-UC01-T01_認証キー設定');
+
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/store/plugin/authentication_setting');
 
