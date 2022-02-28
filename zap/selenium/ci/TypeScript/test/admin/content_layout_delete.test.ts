@@ -1,4 +1,4 @@
-import { test, expect, chromium, Page } from '@playwright/test';
+import { test, expect, chromium, Page, Locator } from '@playwright/test';
 import { intervalRepeater } from '../../utils/Progress';
 import { ZapClient, Mode, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
 const zapClient = new ZapClient('http://127.0.0.1:8090');
@@ -8,7 +8,7 @@ let url = null
 
 test.describe.serial('レイアウト管理>削除のテスト', () => {
   let page: Page;
-  let deleteButton = null
+  let deleteButton: Locator;
 
   test.beforeAll(async () => {
     await zapClient.setMode(Mode.Protect);
@@ -28,7 +28,7 @@ test.describe.serial('レイアウト管理>削除のテスト', () => {
     await page.fill('#admin_layout_name', layoutNmae)
     await Promise.all([
       page.waitForNavigation(),
-      page.click('.c-conversionArea .btn-ec-conversion')
+      page.click('.c-conversionArea >> text=登録')
     ])
     await expect(page.locator('.c-contentsArea .alert')).toContainText('保存しました')
 
