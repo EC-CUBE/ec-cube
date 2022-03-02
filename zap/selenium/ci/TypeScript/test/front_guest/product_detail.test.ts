@@ -10,7 +10,7 @@ test.describe.serial('商品詳細画面のテストをします', () => {
   let page: Page;
   test.beforeAll(async () => {
     await zapClient.setMode(Mode.Protect);
-    await zapClient.newSession('/zap/wrk/sessions/front_guest_contact', true);
+    await zapClient.newSession('/zap/wrk/sessions/front_guest_product_detail', true);
     await zapClient.importContext(ContextType.FrontGuest);
     const browser = await chromium.launch();
     page = await browser.newPage();
@@ -22,8 +22,7 @@ test.describe.serial('商品詳細画面のテストをします', () => {
   });
 
   test('タイトルを確認します', async () => {
-    await page.textContent('.ec-headingTitle')
-      .then(title => expect(title).toContain('チェリーアイスサンド'));
+    await expect(page.locator('.ec-pageHeader')).toContainText('チェリーアイスサンド');
   });
 
   test.describe('テストを実行します[GET] @attack', () => {
