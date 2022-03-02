@@ -1348,6 +1348,8 @@ class CsvImportController extends AbstractCsvImportController
                 $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['sale_limit']]);
                 $this->addErrors($message);
             }
+        } else {
+            $ProductClass->setSaleLimit(null);
         }
 
         if (isset($row[$headerByKey['price01']]) && $row[$headerByKey['price01']] != '') {
@@ -1359,6 +1361,8 @@ class CsvImportController extends AbstractCsvImportController
                 $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['price01']]);
                 $this->addErrors($message);
             }
+        } else {
+            $ProductClass->setPrice01(null);
         }
 
         if (!isset($row[$headerByKey['price02']]) || $row[$headerByKey['price02']] == '') {
