@@ -1,5 +1,11 @@
 monolog:
     handlers:
+        e_user_deprecated_filter:
+            type: filter
+            accepted_levels: ['info']
+            channels: ['php']
+            handler: blackhole
+            bubble: false
         main:
             type: fingers_crossed
             action_level: error
@@ -10,7 +16,7 @@ monolog:
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/site.log'
             formatter: eccube.log.formatter.line
-            level: debug
+            level: info
         front:
             type: fingers_crossed
             action_level: error
@@ -22,7 +28,7 @@ monolog:
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/front.log'
             formatter: eccube.log.formatter.line
-            level: debug
+            level: info
         admin:
             type: fingers_crossed
             action_level: error
@@ -34,8 +40,11 @@ monolog:
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/admin.log'
             formatter: eccube.log.formatter.line
-            level: debug
+            level: info
         console:
             type: console
             process_psr_3_messages: false
             channels: ['!event', '!doctrine']
+        # keep this last
+        blackhole:
+            type: "null"
