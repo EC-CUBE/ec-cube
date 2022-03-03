@@ -12,6 +12,11 @@
  */
 
 use Codeception\Util\Fixtures;
+use Page\Admin\PageEditPage;
+use Page\Admin\PageManagePage;
+use Page\Admin\ProductEditPage;
+use Page\Admin\ProductManagePage;
+use Page\Admin\ShopSettingPage;
 
 /**
  * @group front
@@ -287,5 +292,98 @@ class EF06OtherCest
         $I->click('div.ec-RegisterRole__actions button.ec-blockBtn--action');
 
         $I->see('入力されていません', '.ec-contactRole .error .ec-errorMessage:last-child');
+    }
+
+    public function other_サイトマップ(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0608-UC01-T01_サイトマップ');
+        $I->amOnPage('/sitemap.xml');
+
+        $I->see('/sitemap_page.xml');
+        $I->see('/sitemap_category.xml');
+        $I->see('/sitemap_product_1.xml');
+    }
+
+    public function other_サイトマップ_ページ(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0608-UC01-T03_サイトマップ(ページ)');
+        $I->loginAsAdmin();
+
+        $sitemapUrl = '/sitemap_page.xml';
+        $topPageLoc = '<loc>' . $I->getBaseUrl() . '/</loc>';
+
+        // 表示確認
+        $I->amOnPage($sitemapUrl);
+        $I->see($topPageLoc);
+
+        // メタ設定 → robots noindex → 非表示になる
+        PageManagePage::go($I)->ページ編集('TOPページ');
+        PageEditPage::at($I)->入力_メタ_robot('noindex')->登録();
+        $I->amOnPage($sitemapUrl);
+        $I->dontSee($topPageLoc);
+
+        // メタ設定 → robots none → 非表示になる
+        PageManagePage::go($I)->ページ編集('TOPページ');
+        PageEditPage::at($I)->入力_メタ_robot('none')->登録();
+        $I->amOnPage($sitemapUrl);
+        $I->dontSee($topPageLoc);
+
+        // メタ設定 → robots 解除 → 表示される
+        PageManagePage::go($I)->ページ編集('TOPページ');
+        PageEditPage::at($I)->入力_メタ_robot('')->登録();
+        $I->amOnPage($sitemapUrl);
+        $I->see($topPageLoc);
+    }
+
+    public function other_サイトマップ_カテゴリ(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0608-UC01-T03_サイトマップ(カテゴリ)');
+        $I->amOnPage('/sitemap_category.xml');
+
+        $I->see('/products/list?category_id=1');
+    }
+
+    public function other_サイトマップ_商品(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0608-UC01-T04_サイトマップ(商品)');
+        $I->loginAsAdmin();
+
+        ProductManagePage::go($I);
+        $productId = 2;
+        $productLoc = '<loc>' . $I->getBaseUrl() . '/products/detail/' . $productId . '</loc>';
+        $productEditUrl = "/admin/product/product/{$productId}/edit";
+        $sitemapUrl = '/sitemap_product_1.xml';
+
+        // 非公開商品は表示されない
+        $I->amOnPage($productEditUrl);
+        ProductEditPage::at($I)->入力_非公開()->登録();
+        $I->amOnPage($sitemapUrl);
+        $I->dontSee($productLoc);
+
+        // 廃止商品は表示されない
+        $I->amOnPage($productEditUrl);
+        ProductEditPage::at($I)->入力_廃止()->登録();
+        $I->amOnPage($sitemapUrl);
+        $I->dontSee($productLoc);
+
+        // 在庫なし商品の準備
+        $I->amOnPage($productEditUrl);
+        ProductEditPage::at($I)->入力_在庫数(0)->登録();
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
+
+        // 公開・在庫切れ商品を表示しない
+        $I->amOnPage($productEditUrl);
+        ProductEditPage::at($I)->入力_公開()->登録();
+        // 在庫切れ商品の非表示設定
+        $page = ShopSettingPage::go($I)
+            ->設定_在庫切れ商品の非表示(true);
+        $I->amOnPage($sitemapUrl);
+        $I->dontSee($productLoc);
+
+        // 公開・在庫切れ商品は表示する
+        $page = ShopSettingPage::go($I)
+            ->設定_在庫切れ商品の非表示(false);
+        $I->amOnPage($sitemapUrl);
+        $I->see($productLoc);
     }
 }
