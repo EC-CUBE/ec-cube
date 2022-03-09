@@ -26,6 +26,7 @@ use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
+use Page\Front\MyPage;
 
 /**
  * @group admin
@@ -68,6 +69,60 @@ class EA07BasicinfoCest
         $I->see('1000001', '#help_about_box__address dd');
         $I->see('東京都千代田区千代田', '#help_about_box__address dd');
         $I->see('05055555555', '#help_about_box__phone_number dd');
+    }
+
+    public function basicinfo_会員設定_マイページ注文状況(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T08_会員設定の設定、編集(マイページに注文状況を表示：無効)');
+
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $createOrders = Fixtures::get('createOrders');
+        $Orders = $createOrders($customer, 5, [], \Eccube\Entity\Master\OrderStatus::NEW);
+
+        $page = ShopSettingPage::go($I)
+            ->入力_マイページに注文状況を表示(false)
+            ->登録();
+
+        $I->loginAsMember($customer->getEmail(), 'password');
+        MyPage::go($I)->注文履歴();
+        $I->dontSee('ご注文状況', '.ec-historyRole');
+
+        $I->wantTo('EA0701-UC01-T07_会員設定の設定、編集(マイページに注文状況を表示：有効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_マイページに注文状況を表示(true)
+            ->登録();
+
+        MyPage::go($I)->注文履歴();
+        $I->see('ご注文状況', '.ec-historyRole');
+    }
+
+    public function basicinfo_会員設定_お気に入り(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T09_会員設定の設定、編集(お気に入り商品機能：無効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_お気に入り商品機能(false)
+            ->登録();
+
+        $I->amOnPage('/');
+        $I->dontSee('お気に入り', '.ec-headerNav');
+
+        $I->amOnPage('/products/detail/1');
+        $I->dontSee('お気に入りに追加', '.ec-productRole__btn');
+
+        $I->wantTo('EA0701-UC01-T09_会員設定の設定、編集(お気に入り商品機能：有効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_お気に入り商品機能(true)
+            ->登録();
+
+        $I->amOnPage('/');
+        $I->see('お気に入り','.ec-headerNav');
+
+        $I->amOnPage('/products/detail/1');
+        $I->see('お気に入りに追加', '.ec-productRole__btn');
     }
 
     public function basicinfo_支払方法一覧(AcceptanceTester $I)
