@@ -13,7 +13,7 @@
 
 namespace Page\Admin;
 
-class CssManagePage extends AbstractAdminPageStyleGuide
+class JavaScriptManagePage extends AbstractAdminPageStyleGuide
 {
     /**
      * MaintenanceManagePage constructor.
@@ -27,7 +27,7 @@ class CssManagePage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
 
-        return $page->goPage('/content/css', 'CSS管理コンテンツ管理');
+        return $page->goPage('/content/js', 'JavaScript管理コンテンツ管理');
     }
 
     public function 入力($value)
