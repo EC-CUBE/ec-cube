@@ -100,7 +100,7 @@ class EA07BasicinfoCest
 
     public function basicinfo_会員設定_お気に入り(AcceptanceTester $I)
     {
-        $I->wantTo('EA0701-UC01-T09_会員設定の設定、編集(お気に入り商品機能：無効)');
+        $I->wantTo('EA0701-UC01-T10_会員設定の設定、編集(お気に入り商品機能：無効)');
 
         $page = ShopSettingPage::go($I)
             ->入力_お気に入り商品機能(false)
@@ -123,6 +123,42 @@ class EA07BasicinfoCest
 
         $I->amOnPage('/products/detail/1');
         $I->see('お気に入りに追加', '.ec-productRole__btn');
+    }
+
+    public function basicinfo_会員設定_自動ログイン(AcceptanceTester $I)
+    {
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+
+        $I->wantTo('EA0701-UC01-T12_会員設定の設定、編集(自動ログイン機能：無効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_自動ログイン機能(false)
+            ->登録();
+
+        $I->openNewTab();
+        $I->logoutAsMember();
+        $I->amOnPage('/mypage/login');
+        $I->dontSee('次回から自動的にログインする', '#login_mypage');
+
+        $I->wantTo('EA0701-UC01-T011_会員設定の設定、編集(自動ログイン機能：有効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_自動ログイン機能(true)
+            ->登録();
+
+        $I->amOnPage('/mypage/login');
+        $I->see('次回から自動的にログインする', '#login_mypage');
+        $I->checkOption('#login_memory');
+        $I->submitForm('#login_mypage', [
+            'login_email' => $customer->getEmail(),
+            'login_pass' => 'password',
+        ]);
+        $I->closeTab();
+
+        $I->amOnPage('/mypage');
+        $I->see('ログアウト', '.ec-headerNaviRole');
+        $I->dontSee('ログイン', '.ec-headerNaviRole');
     }
 
     public function basicinfo_支払方法一覧(AcceptanceTester $I)

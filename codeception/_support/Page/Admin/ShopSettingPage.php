@@ -77,6 +77,16 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_自動ログイン機能($bool)
+    {
+        if ($this->tester->grabAttributeFrom('#shop_master_option_remember_me', 'checked') != $bool) {
+            $this->tester->click('label[for="shop_master_option_remember_me"]');
+            $this->tester->wait(1);
+        }
+
+        return $this;
+    }
+
     public function 登録()
     {
         $this->tester->click('#point_form > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
