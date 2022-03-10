@@ -57,6 +57,7 @@ class PageEditPage extends AbstractAdminPageStyleGuide
 
     public function 入力_内容($value)
     {
+        $value = preg_replace('/\n/', '\n', $value);
         $value = preg_replace("/([^\\\])'/", "$1\\'", $value);
         $this->tester->executeJS("ace.edit('editor').setValue('$value')");
 
