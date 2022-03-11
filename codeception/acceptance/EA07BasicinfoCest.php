@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Codeception\Util\Fixtures;
 use Page\Admin\CalendarSettingsPage;
 use Page\Admin\CsvSettingsPage;
+use Page\Admin\CustomerManagePage;
 use Page\Admin\DeliveryEditPage;
 use Page\Admin\DeliveryManagePage;
 use Page\Admin\LayoutEditPage;
@@ -28,6 +29,7 @@ use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
+use Page\Front\EntryPage;
 use Page\Front\MyPage;
 
 /**
@@ -73,6 +75,53 @@ class EA07BasicinfoCest
         $I->see('05055555555', '#help_about_box__phone_number dd');
     }
 
+    public function basicinfo_会員設定_仮会員機能(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T06_会員設定の設定、編集(仮会員機能：無効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_仮会員機能, false)
+            ->登録();
+
+        // 会員登録
+        $faker = Fixtures::get('faker');
+        $email = microtime(true).'.'.$faker->safeEmail;
+        EntryPage::go($I)->新規会員登録([
+            'entry[email][first]' => $email,
+            'entry[email][second]' => $email,
+        ]);
+
+        // 会員ステータスのチェック
+        $page = CustomerManagePage::go($I);
+        $I->fillField('#admin_search_customer_multi', $email);
+        $page->詳細検索_本会員();
+        $I->see('検索結果：1件が該当しました', CustomerManagePage::$検索結果メッセージ);
+        $I->see($email);
+
+        $I->wantTo('EA0701-UC01-T05_会員設定の設定、編集(仮会員機能：有効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_仮会員機能, true)
+            ->登録();
+
+        // 会員登録
+        $I->logoutAsMember();
+        $email = microtime(true).'.'.$faker->safeEmail;
+        EntryPage::go($I)->新規会員登録([
+            'entry[email][first]' => $email,
+            'entry[email][second]' => $email,
+        ]);
+        $I->logoutAsMember();
+
+        // 会員ステータスのチェック
+        $I->loginAsAdmin();
+        $page = CustomerManagePage::go($I);
+        $I->fillField('#admin_search_customer_multi', $email);
+        $page->詳細検索_仮会員();
+        $I->see('検索結果：1件が該当しました', CustomerManagePage::$検索結果メッセージ);
+        $I->see($email);
+    }
+
     public function basicinfo_会員設定_マイページ注文状況(AcceptanceTester $I)
     {
         $I->wantTo('EA0701-UC01-T08_会員設定の設定、編集(マイページに注文状況を表示：無効)');
@@ -80,7 +129,7 @@ class EA07BasicinfoCest
         $entityManager = Fixtures::get('entityManager');
         $customer = $entityManager->getRepository('Eccube\Entity\Customer')->find(1);
         $page = ShopSettingPage::go($I)
-            ->入力_マイページに注文状況を表示(false)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_マイページに注文状況を表示, false)
             ->登録();
 
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -90,7 +139,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T07_会員設定の設定、編集(マイページに注文状況を表示：有効)');
 
         $page = ShopSettingPage::go($I)
-            ->入力_マイページに注文状況を表示(true)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_マイページに注文状況を表示, true)
             ->登録();
 
         MyPage::go($I)->注文履歴();
@@ -102,7 +151,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T10_会員設定の設定、編集(お気に入り商品機能：無効)');
 
         $page = ShopSettingPage::go($I)
-            ->入力_お気に入り商品機能(false)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_お気に入り商品機能, false)
             ->登録();
 
         $I->amOnPage('/');
@@ -114,7 +163,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T09_会員設定の設定、編集(お気に入り商品機能：有効)');
 
         $page = ShopSettingPage::go($I)
-            ->入力_お気に入り商品機能(true)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_お気に入り商品機能, true)
             ->登録();
 
         $I->amOnPage('/');
@@ -132,7 +181,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T12_会員設定の設定、編集(自動ログイン機能：無効)');
 
         $page = ShopSettingPage::go($I)
-            ->入力_自動ログイン機能(false)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_自動ログイン機能, false)
             ->登録();
 
         $I->openNewTab();
@@ -143,7 +192,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T011_会員設定の設定、編集(自動ログイン機能：有効)');
 
         $page = ShopSettingPage::go($I)
-            ->入力_自動ログイン機能(true)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_自動ログイン機能, true)
             ->登録();
 
         $I->amOnPage('/mypage/login');

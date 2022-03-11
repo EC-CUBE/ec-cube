@@ -16,6 +16,10 @@ namespace Page\Admin;
 class ShopSettingPage extends AbstractAdminPageStyleGuide
 {
     public static $登録完了メッセージ = '#page_admin_setting_shop > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
+    public static $チェックボックス_仮会員機能 = 'shop_master_option_customer_activate';
+    public static $チェックボックス_マイページに注文状況を表示 = 'shop_master_option_mypage_order_status_display';
+    public static $チェックボックス_お気に入り商品機能 = 'shop_master_option_favorite_product';
+    public static $チェックボックス_自動ログイン機能 = 'shop_master_option_remember_me';
 
     public function __construct(\AcceptanceTester $I)
     {
@@ -57,30 +61,10 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 入力_お気に入り商品機能($bool)
+    public function 入力_チェックボックス($id, $bool)
     {
-        if ($this->tester->grabAttributeFrom('#shop_master_option_favorite_product', 'checked') != $bool) {
-            $this->tester->click('label[for="shop_master_option_favorite_product"]');
-            $this->tester->wait(1);
-        }
-
-        return $this;
-    }
-
-    public function 入力_マイページに注文状況を表示($bool)
-    {
-        if ($this->tester->grabAttributeFrom('#shop_master_option_mypage_order_status_display', 'checked') != $bool) {
-            $this->tester->click('label[for="shop_master_option_mypage_order_status_display"]');
-            $this->tester->wait(1);
-        }
-
-        return $this;
-    }
-
-    public function 入力_自動ログイン機能($bool)
-    {
-        if ($this->tester->grabAttributeFrom('#shop_master_option_remember_me', 'checked') != $bool) {
-            $this->tester->click('label[for="shop_master_option_remember_me"]');
+        if ($this->tester->grabAttributeFrom(['id' => $id], 'checked') != $bool) {
+            $this->tester->click("label[for='{$id}']");
             $this->tester->wait(1);
         }
 
