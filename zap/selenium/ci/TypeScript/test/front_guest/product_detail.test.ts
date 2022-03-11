@@ -22,7 +22,7 @@ test.describe.serial('商品詳細画面のテストをします', () => {
   });
 
   test('タイトルを確認します', async () => {
-    await expect(page.locator('.ec-pageHeader')).toContainText('チェリーアイスサンド');
+    await expect(page.locator('.ec-headingTitle')).toContainText('チェリーアイスサンド');
   });
 
   test.describe('テストを実行します[GET] @attack', () => {
