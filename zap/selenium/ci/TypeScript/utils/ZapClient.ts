@@ -1,4 +1,6 @@
 import ClientApi from 'zaproxy';
+import PlaywrightConfig from '../playwright.config';
+
 /**
  * [実行モード](https://www.zaproxy.org/docs/desktop/start/features/modes/)の列挙型.
  * 特別な理由が無い限りは `Protect` を使用してください.
@@ -115,8 +117,8 @@ export class ZapClient {
   /**
    * コンストラクタ.
    */
-  constructor(proxy: string, apiKey?: string | null) {
-    this.proxy = proxy;
+  constructor(proxy?: string | null, apiKey?: string | null) {
+    this.proxy = proxy ?? PlaywrightConfig.use.proxy.server;
     this.apiKey = apiKey != undefined ? apiKey : null;
     this.zaproxy = new ClientApi({
       apiKey: this.apiKey,
