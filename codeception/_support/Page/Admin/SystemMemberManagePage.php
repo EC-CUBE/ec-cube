@@ -22,9 +22,18 @@ class SystemMemberManagePage extends AbstractAdminPageStyleGuide
         return $page->goPage('/setting/system/member', 'メンバー管理システム設定');
     }
 
-    public function 編集($index)
+    public function 編集($name)
     {
-        $this->tester->click(".action-edit:nth-child({$index})");
+        $this->tester->click("//*[@id='form1']//tr/td[1][contains(text(), '{$name}')]/parent::tr//*[@data-original-title='編集']");
+
+        return $this;
+    }
+
+    public function 削除($name)
+    {
+        $this->tester->click("//*[@id='form1']//tr/td[1][contains(text(), '{$name}')]/parent::tr//*[@data-original-title='削除']/a");
+        $this->tester->wait(1);
+        $this->tester->click('.modal .btn-ec-delete');
 
         return $this;
     }
