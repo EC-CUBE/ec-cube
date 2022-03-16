@@ -190,7 +190,7 @@ class EA08SysteminfoCest
 
     public function systeminfo_メンバー管理編集異常(AcceptanceTester $I)
     {
-        $I->wantTo('EA0803-UC03-T01 メンバー管理 - 編集 - 異常パターン');
+        $I->wantTo('EA0803-UC02-T03 メンバー管理 - 編集 - 異常パターン');
 
         // 表示
         $config = Fixtures::get('config');
@@ -380,7 +380,7 @@ class EA08SysteminfoCest
      */
     public function systeminfo_権限管理削除(AcceptanceTester $I)
     {
-        $I->wantTo('EA0805-UC03-T03 権限管理 - 削除');
+        $I->wantTo('EA0805-UC04-T01 権限管理 - 削除');
 
         AuthorityManagePage::go($I)
             ->行削除(2)
