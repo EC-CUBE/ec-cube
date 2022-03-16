@@ -24,8 +24,11 @@ use Page\Admin\OrderManagePage;
 use Page\Admin\OrderStatusSettingsPage;
 use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
+use Page\Admin\ProductEditPage;
+use Page\Admin\ProductManagePage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
+use Page\Front\TopPage;
 
 /**
  * @group admin
@@ -68,6 +71,43 @@ class EA07BasicinfoCest
         $I->see('1000001', '#help_about_box__address dd');
         $I->see('東京都千代田区千代田', '#help_about_box__address dd');
         $I->see('05055555555', '#help_about_box__phone_number dd');
+    }
+
+    public function basicinfo_商品設定の設定、編集_在庫切れ商品の非表示(AcceptanceTester $I)
+    {
+        // 在庫なし商品の準備
+        ProductManagePage::go($I)
+            ->検索('チェリーアイスサンド')
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->入力_在庫数(0)
+            ->登録();
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
+
+        $I->wantTo('EA0701-UC01-T13 商品設定の設定、編集(在庫切れ商品の非表示：有効)');
+
+        // 在庫切れ商品の非表示設定
+        $page = ShopSettingPage::go($I)
+            ->設定_在庫切れ商品の非表示(true);
+
+        // 表示確認
+        $topPage = TopPage::go($I);
+        $I->fillField(['class' => 'search-name'], 'チェリーアイスサンド');
+        $topPage->検索();
+        $I->see('お探しの商品は見つかりませんでした');
+
+        $I->wantTo('EA0701-UC01-T14 商品設定の設定、編集(在庫切れ商品の非表示：無効)');
+
+        // 在庫切れ商品の表示設定
+        $page = ShopSettingPage::go($I)
+            ->設定_在庫切れ商品の非表示(false);
+
+        // 表示確認
+        $topPage = TopPage::go($I);
+        $I->fillField(['class' => 'search-name'], 'チェリーアイスサンド');
+        $topPage->検索();
+        $I->see('チェリーアイスサンド', '.ec-shelfGrid');
     }
 
     public function basicinfo_支払方法一覧(AcceptanceTester $I)
@@ -441,6 +481,8 @@ class EA07BasicinfoCest
      */
     public function basicinfo_認証キー設定(AcceptanceTester $I)
     {
+        $I->wantTo('EA1101-UC01-T01_認証キー設定');
+
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/store/plugin/authentication_setting');
 

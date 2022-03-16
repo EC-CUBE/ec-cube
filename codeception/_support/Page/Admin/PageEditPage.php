@@ -70,6 +70,13 @@ class PageEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_メタ_robot($value)
+    {
+        $this->tester->fillField(['id' => 'main_edit_meta_robots'], $value);
+
+        return $this;
+    }
+
     public function 出力_内容()
     {
         return $this->tester->executeJS("return ace.edit('editor').getValue()");

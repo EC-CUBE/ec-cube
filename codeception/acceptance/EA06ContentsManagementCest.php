@@ -14,12 +14,14 @@
 use Codeception\Util\Fixtures;
 use Page\Admin\BlockEditPage;
 use Page\Admin\BlockManagePage;
+use Page\Admin\CssManagePage;
+use Page\Admin\JavaScriptManagePage;
 use Page\Admin\FileManagePage;
 use Page\Admin\LayoutEditPage;
 use Page\Admin\LayoutManagePage;
+use Page\Admin\MaintenanceManagePage;
 use Page\Admin\NewsEditPage;
 use Page\Admin\NewsManagePage;
-use Page\Admin\MaintenanceManagePage;
 use Page\Admin\PageEditPage;
 use Page\Admin\PageManagePage;
 use Page\Front\TopPage;
@@ -47,7 +49,7 @@ class EA06ContentsManagementCest
 
     public function contentsmanagement_新着情報管理(AcceptanceTester $I)
     {
-        $I->wantTo('EA0601-UC01-T01(& UC02-T01/UC02-T02/UC03-T01) 新着情報管理（作成・編集・削除）');
+        $I->wantTo('EA0601-UC01-T01(& UC02-T01/UC03-T01) 新着情報管理（作成・編集・削除）');
 
         // EA0601-UC01-T01_新着情報管理（新規作成）
         NewsManagePage::go($I)->新規登録();
@@ -368,6 +370,42 @@ class EA06ContentsManagementCest
 
         $I->amOnPage('/');
         $I->dontSeeElement(['id' => $block]);
+    }
+
+    public function contentsmanagement_CSS管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0606-UC01-T01_CSS管理');
+
+        CssManagePage::go($I)->入力(
+            '.ec-headerNaviRole { display: none; }'
+        )->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->dontSee('お気に入り', '.ec-headerNaviRole');
+
+        CssManagePage::go($I)->入力('//')->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->see('お気に入り', '.ec-headerNaviRole');
+    }
+
+    public function contentsmanagement_JavaScript管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0607-UC01-T01_JavaScript管理');
+
+        $test_text = 'テストのテキスト';
+
+        JavaScriptManagePage::go($I)->入力(
+            "$('.ec-headerNaviRole').append('{$test_text}');"
+        )->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->see($test_text, '.ec-headerNaviRole');
+
+        JavaScriptManagePage::go($I)->入力('//')->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->dontSee($test_text, '.ec-headerNaviRole');
     }
 
     public function contentsmanagement_メンテナンス管理(AcceptanceTester $I)
