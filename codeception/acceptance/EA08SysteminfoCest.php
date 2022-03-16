@@ -15,6 +15,7 @@ use Codeception\Util\Fixtures;
 use Page\Admin\AuthorityManagePage;
 use Page\Admin\LoginHistoryPage;
 use Page\Admin\MasterDataManagePage;
+use Page\Admin\SystemMemberEditPage;
 
 /**
  * @group admin
@@ -356,6 +357,63 @@ class EA08SysteminfoCest
     /**
      * @group vaddy
      */
+    public function systeminfo_権限管理登録(AcceptanceTester $I)
+    {
+        // 店舗オーナーアカウントを作成
+        $page = SystemMemberEditPage::go_new($I)
+            ->メンバー登録([
+                'login_id' => 'shop_owner',
+                'authority' => '店舗オーナー',
+            ])
+            ->登録();
+
+        $I->wantTo('EA0805-UC01-T01 権限管理 - 登録');
+
+        // 設定を追加
+        AuthorityManagePage::go($I)
+            ->行追加()
+            ->入力(1, ['1' => '店舗オーナー'], '/setting')
+            ->登録();
+        $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
+
+        $I->wantTo('EA0805-UC01-T02 権限管理 - 登録');
+
+        // 店舗オーナーでログインし、ナビに表示されないことを確認
+        $I->logoutAsAdmin();
+        $I->loginAsAdmin('shop_owner', 'password');
+        $I->click(['css' => 'a[href="#nav-setting"]']);
+        $I->wait(1);
+        $I->dontSee('システム設定', '#nav-setting');
+
+        // URL直でもアクセスできないことを確認
+        $config = Fixtures::get('config');
+        $I->amOnPage("/${config['eccube_admin_route']}/setting/system/member");
+        $I->seeInTitle('アクセスできません');
+
+        // 設定を削除
+        $I->amOnPage("/{$config['eccube_admin_route']}/logout");
+        $I->loginAsAdmin();
+
+        AuthorityManagePage::go($I)
+            ->行削除(1)
+            ->登録();
+        $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
+
+        // 店舗オーナーアカウントでアクセスできることを確認
+        $I->logoutAsAdmin();
+        $I->loginAsAdmin('shop_owner', 'password');
+
+        $I->click(['css' => 'a[href="#nav-setting"]']);
+        $I->wait(1);
+        $I->see('システム設定', '#nav-setting');
+
+        $I->amOnPage("/${config['eccube_admin_route']}/setting/system/member");
+        $I->seeInTitle('メンバー管理');
+    }
+
+    /**
+     * @group vaddy
+     */
     public function systeminfo_権限管理追加(AcceptanceTester $I)
     {
         $I->wantTo('EA0805-UC03-T01 / UC03-T02 権限管理 - 追加');
@@ -417,7 +475,7 @@ class EA08SysteminfoCest
         $I->click(['css' => '#form1 button']);
 
         $logs = $I->grabTextFrom('.c-contentsArea textarea');
-        $I->assertLessThanOrEqual(10, count(explode("\n", $logs)), "ログ件数を確認");
+        $I->assertLessThanOrEqual(10, count(explode("\n", $logs)), 'ログ件数を確認');
         $I->seeInField(['id' => 'admin_system_log_line_max'], '10');
     }
 
