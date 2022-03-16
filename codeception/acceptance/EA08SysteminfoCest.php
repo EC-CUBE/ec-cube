@@ -14,6 +14,7 @@
 use Codeception\Util\Fixtures;
 use Page\Admin\AuthorityManagePage;
 use Page\Admin\LoginHistoryPage;
+use Page\Admin\MasterDataManagePage;
 
 /**
  * @group admin
@@ -447,24 +448,44 @@ class EA08SysteminfoCest
      */
     public function systeminfo_マスターデータ管理(AcceptanceTester $I)
     {
-        $I->wantTo('EA0807-UC01-T01 マスターデータ管理');
+        $I->wantTo('EA0807-UC01-T01 マスターデータ管理(登録/正常)');
 
-        // 表示
-        $config = Fixtures::get('config');
-        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/masterdata');
-        $I->see('マスタデータ管理システム設定', '.c-pageTitle');
-
-        $I->selectOption(['id' => 'admin_system_masterdata_masterdata'], ['Eccube-Entity-Master-Sex' => 'mtb_sex']);
-        $I->click('#form1 button');
-
-        $I->fillField(['css' => '#form2 table tbody tr:nth-child(3) td:nth-child(1) input'], '3');
-        $I->fillField(['css' => '#form2 table tbody tr:nth-child(3) td:nth-child(2) input'], '無回答');
-
-        $I->click(['css' => '#form2 .c-conversionArea .ladda-button']);
-
+        MasterDataManagePage::go($I)->選択('mtb_sex')
+            ->入力_ID(3, '3')
+            ->入力_Name(3, '無回答')
+            ->保存();
         $I->see('保存しました', '.c-contentsArea .alert-success');
+
+        $I->wantTo('EA0807-UC01-T02 マスターデータ管理(登録/正常)');
+        $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/customer/new');
         $I->see('無回答', '#customer_form #admin_customer_sex');
+
+        $I->wantTo('EA0807-UC02-T01 マスターデータ管理(編集/正常)');
+        MasterDataManagePage::go($I)->選択('mtb_sex')
+            ->入力_ID(3, '3')
+            ->入力_Name(3, 'その他')
+            ->保存();
+        $I->see('保存しました', '.c-contentsArea .alert-success');
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/customer/new');
+        $I->see('その他', '#customer_form #admin_customer_sex');
+
+        $I->wantTo('EA0807-UC03-T01 マスターデータ管理(編集/異常)');
+        $page = MasterDataManagePage::go($I)->選択('mtb_sex');
+        $I->seeInField('#form2 input', 'その他');
+
+        $page->入力_ID(3, '3')
+            ->入力_Name(3, '')
+            ->保存();
+        $I->see('入力されていません', '.invalid-feedback');
+
+        $I->wantTo('EA0807-UC04-T01 マスターデータ管理(削除)');
+        $page->入力_ID(3, '')
+            ->入力_Name(3, '')
+            ->保存();
+        $I->see('保存しました', '.c-contentsArea .alert-success');
+        $I->dontSeeInField('#form2 input', 'その他');
     }
 
     /**
