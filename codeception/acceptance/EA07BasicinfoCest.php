@@ -27,10 +27,13 @@ use Page\Admin\PageEditPage;
 use Page\Admin\PageManagePage;
 use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
+use Page\Admin\ProductEditPage;
+use Page\Admin\ProductManagePage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
 use Page\Front\EntryPage;
 use Page\Front\MyPage;
+use Page\Front\TopPage;
 
 /**
  * @group admin
@@ -167,7 +170,7 @@ class EA07BasicinfoCest
             ->登録();
 
         $I->amOnPage('/');
-        $I->see('お気に入り','.ec-headerNav');
+        $I->see('お気に入り', '.ec-headerNav');
 
         $I->amOnPage('/products/detail/1');
         $I->see('お気に入りに追加', '.ec-productRole__btn');
@@ -208,6 +211,43 @@ class EA07BasicinfoCest
         $I->dontSee('ログイン', '.ec-headerNaviRole');
 
         $I->logoutAsMember();
+    }
+
+    public function basicinfo_商品設定の設定、編集_在庫切れ商品の非表示(AcceptanceTester $I)
+    {
+        // 在庫なし商品の準備
+        ProductManagePage::go($I)
+            ->検索('チェリーアイスサンド')
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->入力_在庫数(0)
+            ->登録();
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
+
+        $I->wantTo('EA0701-UC01-T13 商品設定の設定、編集(在庫切れ商品の非表示：有効)');
+
+        // 在庫切れ商品の非表示設定
+        $page = ShopSettingPage::go($I)
+            ->設定_在庫切れ商品の非表示(true);
+
+        // 表示確認
+        $topPage = TopPage::go($I);
+        $I->fillField(['class' => 'search-name'], 'チェリーアイスサンド');
+        $topPage->検索();
+        $I->see('お探しの商品は見つかりませんでした');
+
+        $I->wantTo('EA0701-UC01-T14 商品設定の設定、編集(在庫切れ商品の非表示：無効)');
+
+        // 在庫切れ商品の表示設定
+        $page = ShopSettingPage::go($I)
+            ->設定_在庫切れ商品の非表示(false);
+
+        // 表示確認
+        $topPage = TopPage::go($I);
+        $I->fillField(['class' => 'search-name'], 'チェリーアイスサンド');
+        $topPage->検索();
+        $I->see('チェリーアイスサンド', '.ec-shelfGrid');
     }
 
     public function basicinfo_特定商取引法(AcceptanceTester $I)
@@ -621,6 +661,8 @@ class EA07BasicinfoCest
      */
     public function basicinfo_認証キー設定(AcceptanceTester $I)
     {
+        $I->wantTo('EA1101-UC01-T01_認証キー設定');
+
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/store/plugin/authentication_setting');
 

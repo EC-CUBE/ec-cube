@@ -77,4 +77,19 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
 
         return $this;
     }
+
+    public function 設定_在庫切れ商品の非表示($value)
+    {
+        $checked = $this->tester->grabAttributeFrom('#shop_master_option_nostock_hidden', 'checked');
+
+        if (($value && !$checked) || (!$value && $checked)) {
+            $this->tester->click('label[for="shop_master_option_nostock_hidden"]');
+            $this->tester->wait(1);
+            $this->登録();
+            $this->tester->see('保存しました', ShopSettingPage::$登録完了メッセージ);
+        }
+        $checked = $this->tester->grabAttributeFrom('#shop_master_option_nostock_hidden', 'checked');
+
+        return $this;
+    }
 }

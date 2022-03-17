@@ -1,10 +1,12 @@
 import { test, expect, chromium, Page } from '@playwright/test';
+import PlaywrightConfig from '../../playwright.config';
 import { intervalRepeater } from '../../utils/Progress';
 import { ZapClient, Mode, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
-const zapClient = new ZapClient('http://127.0.0.1:8090');
+import { ECCUBE_ADMIN_ROUTE } from '../../config/default.config';
 
-const baseURL = 'https://ec-cube/admin';
-const url = baseURL + '/order/4/mail';
+const zapClient = new ZapClient();
+
+const url = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/order/4/mail`;
 
 test.describe.serial('受注管理>メール通知のテストをします', () => {
   let page: Page;

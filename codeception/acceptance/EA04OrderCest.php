@@ -214,7 +214,7 @@ class EA04OrderCest
     public function order_受注削除(AcceptanceTester $I)
     {
         $I->getScenario()->incomplete('未実装：受注削除は未実装');
-        $I->wantTo('EA0401-UC08-T01(& UC08-T02) 受注削除');
+        $I->wantTo('EA0401-UC08-T01 受注削除');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -310,7 +310,7 @@ class EA04OrderCest
 
     public function order_一括メール通知_キャンセル(AcceptanceTester $I)
     {
-        $I->wantTo('EA0402-UC02-T01 一括メール通知 (キャンセル)');
+        $I->wantTo('EA0402-UC02-T02 一括メール通知 (キャンセル)');
 
         $I->resetEmails();
 
@@ -477,7 +477,7 @@ class EA04OrderCest
      */
     public function order_個別出荷済みステータス変更(AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC06-T02_個別出荷済みステータス変更');
+        $I->wantTo('EA0405-UC07-T01_個別出荷済みステータス変更');
 
         $I->resetEmails();
 
