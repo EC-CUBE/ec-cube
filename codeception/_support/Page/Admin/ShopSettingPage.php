@@ -16,6 +16,7 @@ namespace Page\Admin;
 class ShopSettingPage extends AbstractAdminPageStyleGuide
 {
     public static $登録完了メッセージ = '#page_admin_setting_shop > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
+    public static $チェックボックス_商品別税率機能 = 'shop_master_option_product_tax_rule';
 
     public function __construct(\AcceptanceTester $I)
     {
@@ -53,6 +54,16 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
     public function 入力_電話番号($value)
     {
         $this->tester->fillField(['id' => 'shop_master_phone_number'], $value);
+
+        return $this;
+    }
+
+    public function 入力_チェックボックス($id, $bool)
+    {
+        if ($this->tester->grabAttributeFrom(['id' => $id], 'checked') != $bool) {
+            $this->tester->click("label[for='{$id}']");
+            $this->tester->wait(1);
+        }
 
         return $this;
     }

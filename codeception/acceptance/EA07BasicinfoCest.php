@@ -24,6 +24,7 @@ use Page\Admin\OrderManagePage;
 use Page\Admin\OrderStatusSettingsPage;
 use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
+use Page\Admin\ProductEditPage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
 
@@ -68,6 +69,27 @@ class EA07BasicinfoCest
         $I->see('1000001', '#help_about_box__address dd');
         $I->see('東京都千代田区千代田', '#help_about_box__address dd');
         $I->see('05055555555', '#help_about_box__phone_number dd');
+    }
+
+    public function basicinfo_税設定(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T15 支払方法 一覧');
+
+        ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_商品別税率機能, true)
+            ->登録();
+
+        ProductEditPage::go($I);
+        $I->see('税率', '.c-contentsArea');
+        $I->seeElement('#admin_product_class_tax_rate');
+
+        ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_商品別税率機能, false)
+            ->登録();
+
+        ProductEditPage::go($I);
+        $I->dontSee('税率', '.c-contentsArea');
+        $I->dontSeeElement('#admin_product_class_tax_rate');
     }
 
     public function basicinfo_支払方法一覧(AcceptanceTester $I)
