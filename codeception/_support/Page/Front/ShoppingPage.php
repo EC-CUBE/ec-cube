@@ -65,7 +65,6 @@ class ShoppingPage extends AbstractFrontPage
 
     public function 入力_利用ポイント($value)
     {
-        // $this->tester->fillField('//input[@id="shopping_order_use_point"]', $value);
         $this->tester->executeJS("$('#shopping_order_use_point').val('{$value}')");
 
         return $this;

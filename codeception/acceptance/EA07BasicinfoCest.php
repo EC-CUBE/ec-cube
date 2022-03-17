@@ -293,6 +293,16 @@ class EA07BasicinfoCest
         $expected_point_text = number_format($expected_point).' pt';
         $expected_discount = '-￥'.number_format($point_conversion_rate * $expected_point);
 
+        $I->amGoingTo('商品を準備');
+        ProductManagePage::go($I)
+            ->検索('チェリーアイスサンド')
+            ->検索結果_選択(1);
+        ProductEditPage::at($I)
+            ->入力_販売価格(2800)
+            ->入力_在庫数(1000)
+            ->登録();
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
+
         $I->amGoingTo('会員を作成');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
@@ -443,7 +453,7 @@ class EA07BasicinfoCest
         OrderManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_編集(1);
-        $I->assertEquals('0', $I->grabTextFrom(OrderEditPage::$加算ポイント));
+        $I->seeInField(OrderEditPage::$加算ポイント, '0');
     }
 
     public function basicinfo_特定商取引法(AcceptanceTester $I)
