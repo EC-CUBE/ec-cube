@@ -412,4 +412,25 @@ class EA06ContentsManagementCest
         $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
         $I->see('全ての商品', TopPage::$検索_カテゴリ選択);
     }
+
+    public function contentsmanagement_キャッシュ管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0608-UC01-T01_キャッシュ管理');
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->see('EC-CUBE SHOP', 'h1');
+
+        $I->expect('キャッシュを削除します');
+        $config = Fixtures::get('config');
+        $I->amOnPage("/{$config['eccube_admin_route']}/content/cache");
+
+        $I->click('.c-contentsArea .btn-ec-conversion');
+        $I->waitForElement('.alert', 10);
+        $I->see('削除しました', '.alert');
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->see('EC-CUBE SHOP', 'h1');
+    }
 }
