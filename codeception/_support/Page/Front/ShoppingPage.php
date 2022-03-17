@@ -15,6 +15,8 @@ namespace Page\Front;
 
 class ShoppingPage extends AbstractFrontPage
 {
+    public static $ポイント値引き額 = '//dt[contains(text(), "ポイント")]/../dd';
+    public static $利用ポイント = '//dt[contains(text(), "ご利用ポイント")]/../dd';
     public static $加算ポイント = '//span[contains(text(), "加算ポイント")]/../../dd/span';
 
     public function __construct(\AcceptanceTester $I)
@@ -57,6 +59,14 @@ class ShoppingPage extends AbstractFrontPage
     public function 入力_姓($value)
     {
         $this->tester->fillField(['id' => 'edit0'], $value);
+
+        return $this;
+    }
+
+    public function 入力_利用ポイント($value)
+    {
+        // $this->tester->fillField('//input[@id="shopping_order_use_point"]', $value);
+        $this->tester->executeJS("$('#shopping_order_use_point').val('{$value}')");
 
         return $this;
     }

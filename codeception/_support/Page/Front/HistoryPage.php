@@ -15,6 +15,8 @@ namespace Page\Front;
 
 class HistoryPage extends AbstractFrontPage
 {
+    public static $ポイント値引き額 = '//dt[contains(text(), "ポイント")]/../dd';
+    public static $利用ポイント = '//dt[contains(text(), "ご利用ポイント")]/../dd';
     public static $加算ポイント = '//dt[contains(text(), "加算ポイント")]/../dd';
 
     public function __construct(\AcceptanceTester $I)
