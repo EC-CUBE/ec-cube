@@ -53,6 +53,32 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 詳細検索_仮会員()
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->wait(1);
+        $this->tester->checkOption('#admin_search_customer_customer_status_1');
+        $this->tester->unCheckOption('#admin_search_customer_customer_status_2');
+        $this->tester->unCheckOption('#admin_search_customer_customer_status_3');
+        $this->tester->click(self::$検索ボタン);
+        $this->tester->see('会員一覧会員管理', '.c-pageTitle');
+
+        return $this;
+    }
+
+    public function 詳細検索_本会員()
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->wait(1);
+        $this->tester->unCheckOption('#admin_search_customer_customer_status_1');
+        $this->tester->checkOption('#admin_search_customer_customer_status_2');
+        $this->tester->unCheckOption('#admin_search_customer_customer_status_3');
+        $this->tester->click(self::$検索ボタン);
+        $this->tester->see('会員一覧会員管理', '.c-pageTitle');
+
+        return $this;
+    }
+
     public function 詳細検索_電話番号($value = '')
     {
         $this->tester->click(self::$詳細検索ボタン);
@@ -99,8 +125,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         $this->tester->wait(5);
         if ($execute) {
             $this->tester->click('送信');
-        }
-        else {
+        } else {
             $this->tester->click('キャンセル');
         }
 
@@ -150,7 +175,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
 
     public function assertSortedNameList($order)
     {
-        $values = array_map(function($s) {
+        $values = array_map(function ($s) {
             // 一覧の会員名の文字列から姓だけを抽出
             return preg_replace('/ .*$/', '', $s);
         }, $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(2)'));

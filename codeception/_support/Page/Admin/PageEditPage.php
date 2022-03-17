@@ -57,6 +57,7 @@ class PageEditPage extends AbstractAdminPageStyleGuide
 
     public function 入力_内容($value)
     {
+        $value = preg_replace('/\n/', '\n', $value);
         $value = preg_replace("/([^\\\])'/", "$1\\'", $value);
         $this->tester->executeJS("ace.edit('editor').setValue('$value')");
 
@@ -66,6 +67,13 @@ class PageEditPage extends AbstractAdminPageStyleGuide
     public function 入力_PC用レイアウト($layoutName)
     {
         $this->tester->selectOption(['id' => 'main_edit_PcLayout'], $layoutName);
+
+        return $this;
+    }
+
+    public function 入力_メタ_robot($value)
+    {
+        $this->tester->fillField(['id' => 'main_edit_meta_robots'], $value);
 
         return $this;
     }
