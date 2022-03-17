@@ -17,6 +17,7 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
 {
     public static $登録完了メッセージ = '#page_admin_setting_shop > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
     public static $チェックボックス_商品別税率機能 = 'shop_master_option_product_tax_rule';
+    public static $チェックボックス_ポイント機能 = 'shop_master_option_point';
 
     public function __construct(\AcceptanceTester $I)
     {

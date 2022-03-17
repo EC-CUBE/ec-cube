@@ -16,8 +16,8 @@ namespace Page\Admin;
 class OrderEditPage extends AbstractAdminPageStyleGuide
 {
     public static $姓_エラーメッセージ = '#ordererInfo > div > div > div:nth-child(1) > div:nth-child(2) > div > div > div:nth-child(1) > span';
-
     public static $登録完了メッセージ = 'div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
+    public static $加算ポイント = '//span[contains(text(), "加算ポイント")]/parent::div/following-sibling::div/span';
 
     /**
      * OrderRegisterPage constructor.

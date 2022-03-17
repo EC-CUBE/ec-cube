@@ -20,6 +20,7 @@ use Page\Admin\DeliveryManagePage;
 use Page\Admin\LayoutEditPage;
 use Page\Admin\LayoutManagePage;
 use Page\Admin\MailSettingsPage;
+use Page\Admin\OrderEditPage;
 use Page\Admin\OrderManagePage;
 use Page\Admin\OrderStatusSettingsPage;
 use Page\Admin\PaymentEditPage;
@@ -27,6 +28,13 @@ use Page\Admin\PaymentManagePage;
 use Page\Admin\ProductEditPage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
+use Page\Front\CartPage;
+use Page\Front\HistoryPage;
+use Page\Front\MyPage;
+use Page\Front\ProductDetailPage;
+use Page\Front\ShoppingConfirmPage;
+use Page\Front\ShoppingLoginPage;
+use Page\Front\ShoppingPage;
 
 /**
  * @group admin
@@ -73,23 +81,70 @@ class EA07BasicinfoCest
 
     public function basicinfo_税設定(AcceptanceTester $I)
     {
-        $I->wantTo('EA0701-UC01-T15 支払方法 一覧');
+        $I->wantTo('EA0701-UC01-T15 税設定');
 
+        $I->amGoingTo('税設定を有効化');
         ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_商品別税率機能, true)
             ->登録();
 
+        $I->expect('商品登録画面で、税率の入力欄が表示されている');
         ProductEditPage::go($I);
         $I->see('税率', '.c-contentsArea');
         $I->seeElement('#admin_product_class_tax_rate');
 
+        $I->amGoingTo('税設定を無効化');
         ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_商品別税率機能, false)
             ->登録();
 
+        $I->expect('商品登録画面で、税率の入力欄が表示されていない');
         ProductEditPage::go($I);
         $I->dontSee('税率', '.c-contentsArea');
         $I->dontSeeElement('#admin_product_class_tax_rate');
+    }
+
+    public function basicinfo_ポイント設定_無効(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T17 ポイント設定(無効)');
+
+        $I->amGoingTo('会員を作成');
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+
+        $I->amGoingTo('ポイント機能を無効化');
+        ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_ポイント機能, false)
+            ->登録();
+
+        $I->amGoingTo('フロントにて注文手続き画面へ');
+        $I->loginAsMember($customer->getEmail(), 'password');
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        $I->expect('注文手続き画面・確認画面にて、加算ポイントが表示されていないこと');
+        CartPage::go($I)
+            ->レジに進む();
+        $I->dontSee('加算ポイント');
+        ShoppingPage::at($I)->確認する();
+        $I->dontSee('加算ポイント');
+
+        $I->amGoingTo('注文完了');
+        ShoppingConfirmPage::at($I)->注文する();
+        $I->see('ご注文ありがとうございました');
+
+        $I->expect('マイベージにて、加算ポイントが表示されていないこと');
+        MyPage::go($I)->注文履歴詳細(0);
+        HistoryPage::at($I);
+        $I->dontSee('加算ポイント');
+
+        $I->expect('管理画面・受注管理にて、加算ポイントが 0であること');
+        OrderManagePage::go($I)
+            ->検索($customer->getEmail())
+            ->一覧_編集(1);
+        $point = $I->grabTextFrom(OrderEditPage::$加算ポイント);
+        $I->assertEquals('0', $point);
     }
 
     public function basicinfo_支払方法一覧(AcceptanceTester $I)
