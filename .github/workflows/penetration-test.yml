@@ -14,8 +14,7 @@ jobs:
         group:
           - 'test/front_login/contact.test.ts'
           - 'test/front_guest/contact.test.ts'
-          - 'test/admin/content_layout.test.ts'
-          - 'test/admin/content_layout_delete.test.ts'
+          - 'test/admin/customer.test.ts'
           - 'test/admin/order_mail.test.ts'
 
     steps:
