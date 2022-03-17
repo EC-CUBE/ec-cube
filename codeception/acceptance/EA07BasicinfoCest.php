@@ -184,7 +184,6 @@ class EA07BasicinfoCest
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_自動ログイン機能, false)
             ->登録();
 
-        $I->openNewTab();
         $I->logoutAsMember();
         $I->amOnPage('/mypage/login');
         $I->dontSee('次回から自動的にログインする', '#login_mypage');
@@ -202,9 +201,9 @@ class EA07BasicinfoCest
             'login_email' => $customer->getEmail(),
             'login_pass' => 'password',
         ]);
-        $I->closeTab();
-
         $I->amOnPage('/mypage');
+
+        $I->seeCookie('eccube_remember_me');
         $I->see('ログアウト', '.ec-headerNaviRole');
         $I->dontSee('ログイン', '.ec-headerNaviRole');
 
