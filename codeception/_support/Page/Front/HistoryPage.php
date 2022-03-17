@@ -15,6 +15,8 @@ namespace Page\Front;
 
 class HistoryPage extends AbstractFrontPage
 {
+    public static $加算ポイント = '//dt[contains(text(), "加算ポイント")]/../dd';
+
     public function __construct(\AcceptanceTester $I)
     {
         parent::__construct($I);

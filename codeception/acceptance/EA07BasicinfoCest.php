@@ -103,6 +103,56 @@ class EA07BasicinfoCest
         $I->dontSee('税率', '.c-contentsArea');
         $I->dontSeeElement('#admin_product_class_tax_rate');
     }
+    public function basicinfo_ポイント設定_有効(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T16 ポイント設定(有効)');
+
+        $price = 2800; // todo
+        $point_rate = 2; // 付与率 2%
+        $expected_point = floor($price * $point_rate / 100);
+
+        $I->amGoingTo('会員を作成');
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+
+        $I->amGoingTo('ポイント機能を有効化・付与率を2%に設定');
+        ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_ポイント機能, true)
+            ->入力_ポイント付与率($point_rate)
+            ->登録();
+
+        $I->amGoingTo('フロントにて注文手続き画面へ');
+        $I->loginAsMember($customer->getEmail(), 'password');
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        $I->expect('注文手続き画面・確認画面にて、加算ポイントが表示されていること');
+        CartPage::go($I)->レジに進む();
+        $I->see('加算ポイント');
+        $I->assertEquals("{$expected_point} pt", $I->grabTextFrom(CartPage::$加算ポイント));
+
+        ShoppingPage::at($I)->確認する();
+        $I->see('加算ポイント');
+        $I->assertEquals("{$expected_point} pt", $I->grabTextFrom(CartPage::$加算ポイント));
+
+        $I->amGoingTo('注文完了');
+        ShoppingConfirmPage::at($I)->注文する();
+        $I->see('ご注文ありがとうございました');
+
+        $I->expect('マイベージにて、ポイントが加算されていること');
+        MyPage::go($I)->注文履歴詳細(0);
+        HistoryPage::at($I);
+        $I->see('加算ポイント');
+        $I->assertEquals("{$expected_point} pt", $I->grabTextFrom(HistoryPage::$加算ポイント));
+
+        $I->expect('管理画面・受注管理にて、ポイントが加算されていること');
+        OrderManagePage::go($I)
+            ->検索($customer->getEmail())
+            ->一覧_編集(1);
+        $point = $I->grabTextFrom(OrderEditPage::$加算ポイント);
+        $I->assertEquals($expected_point, $I->grabTextFrom(OrderEditPage::$加算ポイント));
+    }
 
     public function basicinfo_ポイント設定_無効(AcceptanceTester $I)
     {
@@ -124,9 +174,9 @@ class EA07BasicinfoCest
             ->カートへ進む();
 
         $I->expect('注文手続き画面・確認画面にて、加算ポイントが表示されていないこと');
-        CartPage::go($I)
-            ->レジに進む();
+        CartPage::go($I)->レジに進む();
         $I->dontSee('加算ポイント');
+
         ShoppingPage::at($I)->確認する();
         $I->dontSee('加算ポイント');
 
@@ -143,8 +193,7 @@ class EA07BasicinfoCest
         OrderManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_編集(1);
-        $point = $I->grabTextFrom(OrderEditPage::$加算ポイント);
-        $I->assertEquals('0', $point);
+        $I->assertEquals('0', $I->grabTextFrom(OrderEditPage::$加算ポイント));
     }
 
     public function basicinfo_支払方法一覧(AcceptanceTester $I)

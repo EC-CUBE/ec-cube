@@ -15,6 +15,8 @@ namespace Page\Front;
 
 class ShoppingPage extends AbstractFrontPage
 {
+    public static $加算ポイント = '//span[contains(text(), "加算ポイント")]/../../dd/span';
+
     public function __construct(\AcceptanceTester $I)
     {
         parent::__construct($I);

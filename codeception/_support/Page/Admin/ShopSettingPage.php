@@ -59,6 +59,20 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_ポイント付与率($value)
+    {
+        $this->tester->fillField(['id' => 'shop_master_basic_point_rate'], $value);
+
+        return $this;
+    }
+
+    public function 入力_ポイント換算レート($value)
+    {
+        $this->tester->fillField(['id' => 'shop_master_point_conversion_rate'], $value);
+
+        return $this;
+    }
+
     public function 入力_チェックボックス($id, $bool)
     {
         if ($this->tester->grabAttributeFrom(['id' => $id], 'checked') != $bool) {
