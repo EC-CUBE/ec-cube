@@ -403,7 +403,6 @@ class EA07BasicinfoCest
         $I->seeInField(CustomerManagePage::$ポイント, $customerPoint);
 
         $I->amGoingTo('マイベージ 注文詳細にて、利用ポイントが計算されていること');
-        // todo
         MyPage::go($I)->注文履歴詳細(0);
         HistoryPage::at($I);
         $I->see($expected_discount, HistoryPage::$ポイント値引き額);
@@ -453,7 +452,7 @@ class EA07BasicinfoCest
         OrderManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_編集(1);
-        $I->seeInField(OrderEditPage::$加算ポイント, '0');
+        $I->assertEquals('0', $I->grabTextFrom(OrderEditPage::$加算ポイント));
     }
 
     public function basicinfo_特定商取引法(AcceptanceTester $I)
