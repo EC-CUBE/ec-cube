@@ -117,7 +117,7 @@ class EA02AuthenticationCest
         $I->logoutAsAdmin();
         $I->submitForm('#form1', [
             'login_id' => $login_id,
-            'password' => $password
+            'password' => $password,
         ]);
         $I->see('ログインできませんでした。', '#form1 > div:nth-child(5) > span');
 
@@ -148,7 +148,7 @@ class EA02AuthenticationCest
         $I->logoutAsAdmin();
         $I->submitForm('#form1', [
             'login_id' => $login_id,
-            'password' => $password
+            'password' => $password,
         ]);
         $I->see('ログインできませんでした。', '#form1 > div:nth-child(5) > span');
     }

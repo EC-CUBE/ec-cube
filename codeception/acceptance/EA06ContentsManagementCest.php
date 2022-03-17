@@ -15,8 +15,8 @@ use Codeception\Util\Fixtures;
 use Page\Admin\BlockEditPage;
 use Page\Admin\BlockManagePage;
 use Page\Admin\CssManagePage;
-use Page\Admin\JavaScriptManagePage;
 use Page\Admin\FileManagePage;
+use Page\Admin\JavaScriptManagePage;
 use Page\Admin\LayoutEditPage;
 use Page\Admin\LayoutManagePage;
 use Page\Admin\MaintenanceManagePage;
@@ -64,7 +64,7 @@ class EA06ContentsManagementCest
 
         // EA0601-UC02-T01_新着情報管理（編集）
         NewsManagePage::go($I)->一覧_編集(2);
-        $new_title = 'news_title ' . uniqid();
+        $new_title = 'news_title '.uniqid();
 
         NewsEditPage::of($I)
             ->入力_タイトル($new_title)

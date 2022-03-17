@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Codeception\Util\Fixtures;
 use Page\Admin\CalendarSettingsPage;
 use Page\Admin\CsvSettingsPage;
+use Page\Admin\CustomerManagePage;
 use Page\Admin\DeliveryEditPage;
 use Page\Admin\DeliveryManagePage;
 use Page\Admin\LayoutEditPage;
@@ -22,12 +23,16 @@ use Page\Admin\LayoutManagePage;
 use Page\Admin\MailSettingsPage;
 use Page\Admin\OrderManagePage;
 use Page\Admin\OrderStatusSettingsPage;
+use Page\Admin\PageEditPage;
+use Page\Admin\PageManagePage;
 use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
 use Page\Admin\ProductEditPage;
 use Page\Admin\ProductManagePage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
+use Page\Front\EntryPage;
+use Page\Front\MyPage;
 use Page\Front\TopPage;
 
 /**
@@ -73,6 +78,141 @@ class EA07BasicinfoCest
         $I->see('05055555555', '#help_about_box__phone_number dd');
     }
 
+    public function basicinfo_会員設定_仮会員機能(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T06_会員設定の設定、編集(仮会員機能：無効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_仮会員機能, false)
+            ->登録();
+
+        // 会員登録
+        $faker = Fixtures::get('faker');
+        $email = microtime(true).'.'.$faker->safeEmail;
+        EntryPage::go($I)->新規会員登録([
+            'entry[email][first]' => $email,
+            'entry[email][second]' => $email,
+        ]);
+
+        // 会員ステータスのチェック
+        $page = CustomerManagePage::go($I);
+        $I->fillField('#admin_search_customer_multi', $email);
+        $page->詳細検索_本会員();
+        $I->see('検索結果：1件が該当しました', CustomerManagePage::$検索結果メッセージ);
+        $I->see($email);
+
+        $I->wantTo('EA0701-UC01-T05_会員設定の設定、編集(仮会員機能：有効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_仮会員機能, true)
+            ->登録();
+
+        // 会員登録
+        $I->logoutAsMember();
+        $email = microtime(true).'.'.$faker->safeEmail;
+        EntryPage::go($I)->新規会員登録([
+            'entry[email][first]' => $email,
+            'entry[email][second]' => $email,
+        ]);
+        $I->logoutAsMember();
+
+        // 会員ステータスのチェック
+        $I->loginAsAdmin();
+        $page = CustomerManagePage::go($I);
+        $I->fillField('#admin_search_customer_multi', $email);
+        $page->詳細検索_仮会員();
+        $I->see('検索結果：1件が該当しました', CustomerManagePage::$検索結果メッセージ);
+        $I->see($email);
+    }
+
+    public function basicinfo_会員設定_マイページ注文状況(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T08_会員設定の設定、編集(マイページに注文状況を表示：無効)');
+
+        $entityManager = Fixtures::get('entityManager');
+        $customer = $entityManager->getRepository('Eccube\Entity\Customer')->find(1);
+        $page = ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_マイページに注文状況を表示, false)
+            ->登録();
+
+        $I->loginAsMember($customer->getEmail(), 'password');
+        MyPage::go($I)->注文履歴();
+        $I->dontSee('ご注文状況', '.ec-historyRole');
+
+        $I->wantTo('EA0701-UC01-T07_会員設定の設定、編集(マイページに注文状況を表示：有効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_マイページに注文状況を表示, true)
+            ->登録();
+
+        MyPage::go($I)->注文履歴();
+        $I->see('ご注文状況', '.ec-historyRole');
+    }
+
+    public function basicinfo_会員設定_お気に入り(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T10_会員設定の設定、編集(お気に入り商品機能：無効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_お気に入り商品機能, false)
+            ->登録();
+
+        $I->amOnPage('/');
+        $I->dontSee('お気に入り', '.ec-headerNav');
+
+        $I->amOnPage('/products/detail/1');
+        $I->dontSee('お気に入りに追加', '.ec-productRole__btn');
+
+        $I->wantTo('EA0701-UC01-T09_会員設定の設定、編集(お気に入り商品機能：有効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_お気に入り商品機能, true)
+            ->登録();
+
+        $I->amOnPage('/');
+        $I->see('お気に入り', '.ec-headerNav');
+
+        $I->amOnPage('/products/detail/1');
+        $I->see('お気に入りに追加', '.ec-productRole__btn');
+    }
+
+    public function basicinfo_会員設定_自動ログイン(AcceptanceTester $I)
+    {
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+
+        $I->wantTo('EA0701-UC01-T12_会員設定の設定、編集(自動ログイン機能：無効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_自動ログイン機能, false)
+            ->登録();
+
+        $I->logoutAsMember();
+        $I->amOnPage('/mypage/login');
+        $I->dontSee('次回から自動的にログインする', '#login_mypage');
+
+        $I->wantTo('EA0701-UC01-T011_会員設定の設定、編集(自動ログイン機能：有効)');
+
+        $page = ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_自動ログイン機能, true)
+            ->登録();
+
+        $I->amOnPage('/mypage/login');
+        $I->see('次回から自動的にログインする', '#login_mypage');
+        $I->checkOption('#login_memory');
+        $I->submitForm('#login_mypage', [
+            'login_email' => $customer->getEmail(),
+            'login_pass' => 'password',
+        ]);
+        $I->amOnPage('/mypage');
+
+        $I->seeCookie('eccube_remember_me');
+        $I->see('ログアウト', '.ec-headerNaviRole');
+        $I->dontSee('ログイン', '.ec-headerNaviRole');
+
+        $I->logoutAsMember();
+    }
+
     public function basicinfo_商品設定の設定、編集_在庫切れ商品の非表示(AcceptanceTester $I)
     {
         // 在庫なし商品の準備
@@ -108,6 +248,46 @@ class EA07BasicinfoCest
         $I->fillField(['class' => 'search-name'], 'チェリーアイスサンド');
         $topPage->検索();
         $I->see('チェリーアイスサンド', '.ec-shelfGrid');
+    }
+
+    public function basicinfo_特定商取引法(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0702-UC01-T01 特定商取引法の設定');
+
+        PageManagePage::go($I);
+        $I->click(['xpath' => '//a[contains(text(), "特定商取引")]']);
+
+        $test_text = uniqid('テストテキスト');
+        $before = PageEditPage::at($I)->出力_内容();
+        $after = preg_replace('/(<\/h1>.*?\n)/', "</h1>{$test_text}\n", $before);
+        PageEditPage::at($I)
+            ->入力_内容($after)
+            ->登録();
+
+        $I->see('保存しました', PageEditPage::$登録完了メッセージ);
+
+        $I->amOnPage('/help/tradelaw');
+        $I->see($test_text);
+    }
+
+    public function basicinfo_会員規約(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0703-UC01-T01 会員規約の設定');
+
+        PageManagePage::go($I);
+        $I->click(['xpath' => '//a[contains(text(), "利用規約")]']);
+
+        $test_text = uniqid('テストテキスト');
+        $before = PageEditPage::at($I)->出力_内容();
+        $after = preg_replace('/(<\/h1>.*?\n)/', "</h1>{$test_text}\n", $before);
+        PageEditPage::at($I)
+            ->入力_内容($after)
+            ->登録();
+
+        $I->see('保存しました', PageEditPage::$登録完了メッセージ);
+
+        $I->amOnPage('/help/agreement');
+        $I->see($test_text);
     }
 
     public function basicinfo_支払方法一覧(AcceptanceTester $I)

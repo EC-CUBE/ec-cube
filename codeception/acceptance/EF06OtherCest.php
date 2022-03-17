@@ -310,7 +310,7 @@ class EF06OtherCest
         $I->loginAsAdmin();
 
         $sitemapUrl = '/sitemap_page.xml';
-        $topPageLoc = '<loc>' . $I->getBaseUrl() . '/</loc>';
+        $topPageLoc = '<loc>'.$I->getBaseUrl().'/</loc>';
 
         // 表示確認
         $I->amOnPage($sitemapUrl);
@@ -350,7 +350,7 @@ class EF06OtherCest
 
         ProductManagePage::go($I);
         $productId = 2;
-        $productLoc = '<loc>' . $I->getBaseUrl() . '/products/detail/' . $productId . '</loc>';
+        $productLoc = '<loc>'.$I->getBaseUrl().'/products/detail/'.$productId.'</loc>';
         $productEditUrl = "/admin/product/product/{$productId}/edit";
         $sitemapUrl = '/sitemap_product_1.xml';
 
