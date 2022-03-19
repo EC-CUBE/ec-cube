@@ -8,7 +8,7 @@ const zapClient = new ZapClient();
 
 const url = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/content/cache`;
 
-test.describe.serial('受注管理>メール通知のテストをします', () => {
+test.describe.serial('コンテンツ管理->キャッシュ管理のテストを行います', () => {
   let page: Page;
   test.beforeAll(async () => {
     await zapClient.setMode(Mode.Protect);
@@ -24,7 +24,7 @@ test.describe.serial('受注管理>メール通知のテストをします', () 
     await page.goto(url);
   });
 
-  test('キャッシュ管理 コンテンツ管理をテストします', async () => {
+  test('キャッシュ管理 コンテンツ管理のページを表示します', async () => {
     await expect(page).toHaveTitle(/キャッシュ管理/);
   });
 
