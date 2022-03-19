@@ -1,0 +1,29 @@
+From 0b89000044b0c7da0567e99262823bbbf584761f Mon Sep 17 00:00:00 2001
+From: Kazuaki Yabu <carbuncle.panic@gmail.com>
+Date: Fri, 18 Mar 2022 18:31:14 +0900
+Subject: [PATCH] =?UTF-8?q?[OWASP=20ZAP]=20=E4=BC=9A=E5=93=A1=E7=AE=A1?=
+ =?UTF-8?q?=E7=90=86=20=E4=BC=9A=E5=93=A1=E3=81=AE=E7=99=BB=E9=8C=B2?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ src/Eccube/Controller/Admin/Customer/CustomerEditController.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Eccube/Controller/Admin/Customer/CustomerEditController.php b/src/Eccube/Controller/Admin/Customer/CustomerEditController.php
+index f8beac4f6d..13201f23e4 100644
+--- a/src/Eccube/Controller/Admin/Customer/CustomerEditController.php
++++ b/src/Eccube/Controller/Admin/Customer/CustomerEditController.php
+@@ -69,7 +69,7 @@ class CustomerEditController extends AbstractController
+             $Customer->setPassword($this->eccubeConfig['eccube_default_password']);
+         // 新規登録
+         } else {
+-            $Customer = $this->customerRepository->newCustomer();
++            //$Customer = $this->customerRepository->newCustomer();
+
+             $oldStatusId = null;
+             $previous_password = null;
+--
+2.30.2
+
