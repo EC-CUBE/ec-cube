@@ -17,6 +17,7 @@ jobs:
           - 'test/admin/content_layout.test.ts'
           - 'test/admin/content_layout_delete.test.ts'
           - 'test/admin/order_mail.test.ts'
+          - 'test/admin/product.test.ts'
 
     steps:
       - name: Checkout
