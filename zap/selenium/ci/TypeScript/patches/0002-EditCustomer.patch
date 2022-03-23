@@ -1,0 +1,32 @@
+From 8ef429a0efe81ef1cebcd778170e14f30d1663eb Mon Sep 17 00:00:00 2001
+From: Kazuaki Yabu <carbuncle.panic@gmail.com>
+Date: Wed, 23 Mar 2022 16:10:44 +0900
+Subject: [PATCH] =?UTF-8?q?[OWASP=20ZAP]=20=E4=BC=9A=E5=93=A1=E7=AE=A1?=
+ =?UTF-8?q?=E7=90=86=20=E4=BC=9A=E5=93=A1=E6=83=85=E5=A0=B1=E7=B7=A8?=
+ =?UTF-8?q?=E9=9B=86?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../Controller/Admin/Customer/CustomerEditController.php      | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/Eccube/Controller/Admin/Customer/CustomerEditController.php b/src/Eccube/Controller/Admin/Customer/CustomerEditController.php
+index f8beac4f6d..ef55c7fca9 100644
+--- a/src/Eccube/Controller/Admin/Customer/CustomerEditController.php
++++ b/src/Eccube/Controller/Admin/Customer/CustomerEditController.php
+@@ -113,8 +113,8 @@ class CustomerEditController extends AbstractController
+                 $Customer->setEmail(StringUtil::random(60).'@dummy.dummy');
+             }
+ 
+-            $this->entityManager->persist($Customer);
+-            $this->entityManager->flush();
++//            $this->entityManager->persist($Customer);
++//            $this->entityManager->flush();
+ 
+             log_info('会員登録完了', [$Customer->getId()]);
+ 
+-- 
+2.30.2
+
