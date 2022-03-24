@@ -1,0 +1,30 @@
+From 4a7a33d88f1c908ad804a6e1523e2dd61b844c81 Mon Sep 17 00:00:00 2001
+From: carkn <carbuncle.panic@gmail.com>
+Date: Thu, 24 Mar 2022 18:52:51 +0900
+Subject: [PATCH] =?UTF-8?q?[OWASP=20ZAP]=20=E5=95=86=E5=93=81=E7=AE=A1?=
+ =?UTF-8?q?=E7=90=86=20=E4=BC=81=E7=94=BB=E7=AE=A1=E7=90=86=20=E6=96=B0?=
+ =?UTF-8?q?=E8=A6=8F=E4=BD=9C=E6=88=90?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ src/Eccube/Controller/Admin/Product/ClassNameController.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Eccube/Controller/Admin/Product/ClassNameController.php b/src/Eccube/Controller/Admin/Product/ClassNameController.php
+index f4a57248ab..285b74edd4 100644
+--- a/src/Eccube/Controller/Admin/Product/ClassNameController.php
++++ b/src/Eccube/Controller/Admin/Product/ClassNameController.php
+@@ -89,7 +89,7 @@ class ClassNameController extends AbstractController
+             if ($form->isSubmitted() && $form->isValid()) {
+                 log_info('商品規格登録開始', [$id]);
+ 
+-                $this->classNameRepository->save($TargetClassName);
++//                $this->classNameRepository->save($TargetClassName);
+ 
+                 log_info('商品規格登録完了', [$id]);
+ 
+-- 
+2.30.2
+
