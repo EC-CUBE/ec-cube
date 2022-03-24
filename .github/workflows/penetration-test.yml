@@ -16,6 +16,7 @@ jobs:
           - 'test/front_guest/contact.test.ts'
           - 'test/admin/content_layout.test.ts'
           - 'test/admin/content_layout_delete.test.ts'
+          - 'test/admin/product_class_name.test.ts'
           - 'test/admin/order_mail.test.ts'
 
     steps:
