@@ -13,6 +13,7 @@ jobs:
         operating-system: [ ubuntu-18.04 ]
         group:
           - 'test/front_login/contact.test.ts'
+          - 'test/front_guest/about.test.ts'
           - 'test/front_guest/contact.test.ts'
           - 'test/admin/content_layout.test.ts'
           - 'test/admin/content_layout_delete.test.ts'
