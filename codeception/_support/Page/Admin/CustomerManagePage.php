@@ -52,6 +52,32 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 詳細検索_仮会員()
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->wait(1);
+        $this->tester->checkOption('#admin_search_customer_customer_status_1');
+        $this->tester->unCheckOption('#admin_search_customer_customer_status_2');
+        $this->tester->unCheckOption('#admin_search_customer_customer_status_3');
+        $this->tester->click(self::$検索ボタン);
+        $this->tester->see('会員一覧会員管理', '.c-pageTitle');
+
+        return $this;
+    }
+
+    public function 詳細検索_本会員()
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->wait(1);
+        $this->tester->unCheckOption('#admin_search_customer_customer_status_1');
+        $this->tester->checkOption('#admin_search_customer_customer_status_2');
+        $this->tester->unCheckOption('#admin_search_customer_customer_status_3');
+        $this->tester->click(self::$検索ボタン);
+        $this->tester->see('会員一覧会員管理', '.c-pageTitle');
+
+        return $this;
+    }
+
     public function 詳細検索_電話番号($value = '')
     {
         $this->tester->click(self::$詳細検索ボタン);

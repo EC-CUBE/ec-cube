@@ -1,18 +1,17 @@
 import { test, expect, chromium, Page } from '@playwright/test';
-import PlaywrightConfig from '../../playwright.config';
 import { intervalRepeater } from '../../utils/Progress';
 import { ZapClient, Mode, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
-import { ECCUBE_ADMIN_ROUTE } from '../../config/default.config';
+const zapClient = new ZapClient('http://127.0.0.1:8090');
 
-const zapClient = new ZapClient();
+const baseURL = 'https://ec-cube/admin';
+const url = baseURL + '/change_password';
 
-const url = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/order/4/mail`;
-
-test.describe.serial('受注管理>メール通知のテストをします', () => {
+// path/to/ec-cube/zap/selenium/ci/TypeScript/patches/0001-Member.patch を当てる必要がある
+test.describe.serial('パスワード変更のテストをします', () => {
   let page: Page;
   test.beforeAll(async () => {
     await zapClient.setMode(Mode.Protect);
-    await zapClient.newSession('/zap/wrk/sessions/admin_contact', true);
+    await zapClient.newSession('/zap/wrk/sessions/admin_change_password', true);
     await zapClient.importContext(ContextType.Admin);
 
     if (!await zapClient.isForcedUserModeEnabled()) {
@@ -24,13 +23,8 @@ test.describe.serial('受注管理>メール通知のテストをします', () 
     await page.goto(url);
   });
 
-  test('メール通知ページを表示します', async () => {
-    await expect(page).toHaveTitle(/メール通知/);
-  });
-
-  test('タイトルを確認します', async () => {
-    await page.textContent('.c-pageTitle__title')
-      .then(title => expect(title).toContain('メール通知'));
+  test('パスワード変更ページを表示します', async () => {
+    await expect(page).toHaveTitle(/パスワード変更/);
   });
 
   test.describe('テストを実行します[GET] @attack', () => {
@@ -46,21 +40,26 @@ test.describe.serial('受注管理>メール通知のテストをします', () 
     });
   });
 
-  test('メールテンプレートを選択します', async () => {
-    await page.selectOption('#template-change', { label: '注文受付メール' });
-    await expect(page.locator('#admin_order_mail_mail_subject')).toHaveValue('ご注文ありがとうございます');
+  const changedPassword = 'zHXFl*85.jFib';
+  test('パスワードを変更します', async () => {
+    await page.reload();
+    await page.fill('input[name="admin_change_password[current_password]"]', 'password');
+    await page.fill('input[name="admin_change_password[change_password][first]"]', changedPassword);
+    await page.fill('input[name="admin_change_password[change_password][second]"]', changedPassword);
+    await page.click('#ex-conversion-action >> button >> text=登録');
+
+    await expect(page.locator('.alert-success')).toContainText('パスワードを更新しました');
   });
 
-  test('確認ページへ遷移します', async () => {
-    await page.click('button >> text=送信内容を確認');
-  });
+  test.describe('テストを実行します[POST] @attack', () => {
+    let message: HttpMessage;
+    test('HttpMessage を取得します', async () => {
+      const messages = await zapClient.getMessages(url, await zapClient.getNumberOfMessages(url) - 1, 1);
+      message = messages.pop();
+      expect(message.requestHeader).toContain('POST https://ec-cube/admin/change_password');
+      expect(message.responseHeader).toContain('HTTP/1.1 302 Found');
+    });
 
-  let message: HttpMessage;
-  test('HttpMessage を取得します', async () => {
-    message = await zapClient.getLastMessage(url);
-  });
-
-  test.describe('テストを実行します[POST][入力→確認] @attack', () => {
     let scanId: number;
     test('アクティブスキャンを実行します', async () => {
       scanId = await zapClient.activeScanAsUser(url, 2, 55, false, null, 'POST', message.requestBody);

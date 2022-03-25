@@ -314,7 +314,7 @@ class EA09ShippingCest
 
     public function shipping_出荷CSV雛形ファイルダウンロード(AcceptanceTester $I)
     {
-        $I->wantTo('EA0093-UC04-T02 出荷CSV雛形ファイルのダウンロード');
+        $I->wantTo('EA0903-UC04-T03 出荷CSV雛形ファイルのダウンロード');
 
         ShippingCsvUploadPage::go($I)->雛形ダウンロード();
         $csv = $I->getLastDownloadFile('/^shipping\.csv$/');
