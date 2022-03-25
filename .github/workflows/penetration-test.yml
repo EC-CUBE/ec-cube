@@ -18,6 +18,7 @@ jobs:
           - 'test/admin/content_layout.test.ts'
           - 'test/admin/content_layout_delete.test.ts'
           - 'test/admin/order_mail.test.ts'
+          - 'test/admin/change_password.test.ts'
 
     steps:
       - name: Checkout
@@ -44,6 +45,10 @@ jobs:
       - run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+      - name: Apply patch to change_password
+        if: matrix.group == 'test/admin/change_password.test.ts'
+        working-directory: zap/selenium/ci/TypeScript
+        run: git am patches/0001-Member.patch
       - name: Apply patch to delete_layout
         if: matrix.group == 'test/admin/content_layout_delete.test.ts'
         working-directory: zap/selenium/ci/TypeScript
