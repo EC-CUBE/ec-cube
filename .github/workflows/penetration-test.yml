@@ -13,7 +13,10 @@ jobs:
         operating-system: [ ubuntu-18.04 ]
         group:
           - 'test/front_login/contact.test.ts'
+          - 'test/front_guest/about.test.ts'
           - 'test/front_guest/contact.test.ts'
+          - 'test/admin/content_layout.test.ts'
+          - 'test/admin/content_layout_delete.test.ts'
           - 'test/admin/order_mail.test.ts'
           - 'test/admin/change_password.test.ts'
 
@@ -46,7 +49,10 @@ jobs:
         if: matrix.group == 'test/admin/change_password.test.ts'
         working-directory: zap/selenium/ci/TypeScript
         run: git am patches/0001-Member.patch
-
+      - name: Apply patch to delete_layout
+        if: matrix.group == 'test/admin/content_layout_delete.test.ts'
+        working-directory: zap/selenium/ci/TypeScript
+        run: git am patches/0001-DeleteLayout.patch
       - name: Penetration testing
         working-directory: zap/selenium/ci/TypeScript
         env:
