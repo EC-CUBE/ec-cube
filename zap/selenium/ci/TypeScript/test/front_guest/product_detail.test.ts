@@ -1,17 +1,16 @@
 import { test, expect, chromium, Page } from '@playwright/test';
+import PlaywrightConfig from '../../playwright.config';
 import { intervalRepeater } from '../../utils/Progress';
-import { ZapClient, Mode, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
-const zapClient = new ZapClient('http://127.0.0.1:8090');
+import { ZapClient, ContextType, Risk } from '../../utils/ZapClient';
+const zapClient = new ZapClient();
 
-const baseURL = 'https://ec-cube';
-const url = baseURL + '/products/detail/2';
+const url = `${PlaywrightConfig.use.baseURL}/products/detail/2`;
 
 test.describe.serial('商品詳細画面のテストをします', () => {
   let page: Page;
   test.beforeAll(async () => {
-    await zapClient.setMode(Mode.Protect);
-    await zapClient.newSession('/zap/wrk/sessions/front_guest_product_detail', true);
-    await zapClient.importContext(ContextType.FrontGuest);
+    await zapClient.startSession(ContextType.FrontGuest, 'front_guest_product_detail');
+
     const browser = await chromium.launch();
     page = await browser.newPage();
     await page.goto(url);
