@@ -7,9 +7,6 @@ const baseURL = 'https://ec-cube/admin';
 const url = baseURL + '/product/product_csv_upload';
 
 test.describe.serial('雛形ダウンロードのテストをします', () => {
-
-
-
   let page: Page;
   test.beforeAll(async () => {
     await zapClient.setMode(Mode.Protect);
@@ -47,15 +44,26 @@ test.describe.serial('雛形ダウンロードのテストをします', () => {
     });
   });
 
-  test('プロダクト用雛形テンプレートをダウンロードします。', async () => {
-    const productURL = baseURL + '/product/csv_template/product';
-    await page.goto(url);
+  test('ひな形ファイルのダウンロードします', async () => {
+    const [download] = await Promise.all([
+        page.waitForEvent('download'),
+        page.click('text=雛形ファイルダウンロード')
+    ]);
   });
 
+  let message: HttpMessage;
+  test('HttpMessage を取得します', async () => {
+    const messages = await zapClient.getMessages(url, await zapClient.getNumberOfMessages(url) - 1, 1);
+    message = messages.pop();
+    expect(message.requestHeader).toContain(`GET ${url}`)
+    expect(message.responseHeader).toContain('HTTP/1.1 200 OK');
+  });
+
+  const productURL = baseURL + '/product/csv_template/product';
   test.describe('プロダクト用雛形テンプレートのダウンロード時のテストを実行します[GET] @attack', () => {
     let scanId: number;
     test('プロダクト用雛形テンプレートのダウンロード時のアクティブスキャンを実行します', async () => {
-      scanId = await zapClient.activeScanAsUser(url, 2, 55, false, null, 'GET');
+      scanId = await zapClient.activeScanAsUser(productURL, 2, 55, false, null, 'GET', message.requestBody);
       await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
     });
 
