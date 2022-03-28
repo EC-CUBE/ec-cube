@@ -20,6 +20,7 @@ jobs:
           - 'test/admin/order_mail.test.ts'
           - 'test/admin/content_block.test.ts'
           - 'test/admin/content_page.test.ts'
+          - 'test/admin/product_category_export.test.ts'
           - 'test/admin/change_password.test.ts'
 
     steps:
