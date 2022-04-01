@@ -12,7 +12,7 @@ test.describe.serial('コンテンツ管理->キャッシュ管理のテスト�
   let page: Page;
   test.beforeAll(async () => {
     await zapClient.setMode(Mode.Protect);
-    await zapClient.newSession('/zap/wrk/sessions/admin_contact_cache', true);
+    await zapClient.newSession('/zap/wrk/sessions/admin_content_cache', true);
     await zapClient.importContext(ContextType.Admin);
 
     if (!await zapClient.isForcedUserModeEnabled()) {
