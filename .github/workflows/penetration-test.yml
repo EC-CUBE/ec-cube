@@ -18,10 +18,10 @@ jobs:
           - 'test/admin/content_layout.test.ts'
           - 'test/admin/content_layout_delete.test.ts'
           - 'test/admin/order_mail.test.ts'
+          - 'test/admin/product_csv_template.test.ts'
           - 'test/admin/content_block.test.ts'
           - 'test/admin/content_page.test.ts'
           - 'test/admin/change_password.test.ts'
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
