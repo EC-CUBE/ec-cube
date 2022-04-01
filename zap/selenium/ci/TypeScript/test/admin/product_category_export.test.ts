@@ -48,19 +48,11 @@ test.describe.serial('カテゴリ管理>商品管理からCSVダウンロード
     ]);
   });
 
-  let message: HttpMessage;
-  test('HttpMessage を取得します', async () => {
-    const messages = await zapClient.getMessages(url, await zapClient.getNumberOfMessages(url) - 1, 1);
-    message = messages.pop();
-    expect(message.requestHeader).toContain(`GET ${url}`)
-    expect(message.responseHeader).toContain('HTTP/1.1 200 OK');
-  });
-
-  const ｃｓｖExportURL = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/product/category/export`;
+  const csvExportURL = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/product/category/export`;
   test.describe('プロダクト用雛形テンプレートのダウンロード時のテストを実行します[GET] @attack', () => {
     let scanId: number;
     test('プロダクト用雛形テンプレートのダウンロード時のアクティブスキャンを実行します', async () => {
-      scanId = await zapClient.activeScanAsUser(ｃｓｖExportURL, 2, 55, false, null, 'GET', message.requestBody);
+      scanId = await zapClient.activeScanAsUser(csvExportURL, 2, 55, false, null, 'GET');
       await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
     });
 
