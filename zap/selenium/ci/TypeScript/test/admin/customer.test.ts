@@ -10,7 +10,7 @@ test.describe.serial('会員管理 会員一覧のテストをします', () => 
   let page: Page;
   test.beforeAll(async () => {
     await zapClient.setMode(Mode.Protect);
-    await zapClient.newSession('/zap/wrk/sessions/admin_index', true);
+    await zapClient.newSession('/zap/wrk/sessions/admin_customer', true);
     await zapClient.importContext(ContextType.Admin);
 
     if (!await zapClient.isForcedUserModeEnabled()) {
