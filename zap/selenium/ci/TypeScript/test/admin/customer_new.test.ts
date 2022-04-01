@@ -64,7 +64,7 @@ test.describe.serial('会員管理 会員登録のテストを行います', () 
     await page.locator('id=admin_customer_job').selectOption('3');
     await page.locator('id=admin_customer_birth').fill('1980-04-01');
     await page.locator('id=admin_customer_point').fill('10');
-    await page.locator('id=admin_customer_point').fill('国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語');
+    await page.locator('id=admin_customer_note').fill('国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語');
     await page.click('button >> text=登録');
   });
 
