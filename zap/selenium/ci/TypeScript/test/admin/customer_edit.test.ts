@@ -47,27 +47,25 @@ test.describe.serial('会員登録 会員管理->編集のテストをします'
   });
 
   test('会員情報を更新します', async () => {
-    await page.fill('[placeholder="姓"]', '山田');
-    await page.fill('[placeholder="名"]', '太郎');
-    await page.fill('[placeholder="セイ"]', 'ヤマダ');
-    await page.fill('[placeholder="メイ"]', 'タロウ');
-    await page.fill('input[name="admin_customer\\[company_name\\]"]', 'イーシーキューブ');
-    await page.fill('[placeholder="例：5300001"]', '5300001');
-    await page.click('select[name="admin_customer\\[address\\]\\[pref\\]"]');
-    await page.selectOption('select[name="admin_customer\\[address\\]\\[pref\\]"]', '1');
-    await page.fill('[placeholder="市区町村名\\(例：大阪市北区\\)"]', '大阪市北区梅田');
-    await page.fill('[placeholder="番地・ビル名\\(例：西梅田1丁目6-8\\)"]', '2-4-9');
-    await page.fill('[placeholder="例：ec-cube\\@example\\.com"]', 'test12345@test.local');
-    await page.fill('[placeholder="例：11122223333"]', '0001112222');
-    await page.fill('input[name="admin_customer\\[password\\]\\[first\\]"]', 'password123');
-    await page.fill('input[name="admin_customer\\[password\\]\\[second\\]"]', 'password123');
-    await page.click('input[name="admin_customer\\[sex\\]"]');
-    await page.selectOption('select[name="admin_customer\\[job\\]"]', '3');
-    await page.fill('input[name="admin_customer\\[birth\\]"]', '1980-04-01');
-    await page.fill('input[name="admin_customer\\[point\\]"]', '10');
-    await page.fill('textarea[name="admin_customer\\[note\\]"]', '国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語');
-    await page.click('button:has-text("登録")');
-    await expect(page).toHaveURL(url);
+    await page.locator('id=admin_customer_name_name01').fill('山田');
+    await page.locator('id=admin_customer_name_name02').fill('太郎');
+    await page.locator('id=admin_customer_kana_kana01').fill('ヤマダ');
+    await page.locator('id=admin_customer_kana_kana02').fill('タロウ');
+    await page.locator('id=admin_customer_company_name').fill('イーシーキューブ');
+    await page.locator('id=admin_customer_postal_code').fill('5300001');
+    await page.locator('id=admin_customer_address_pref').selectOption('1');
+    await page.locator('id=admin_customer_address_addr01').fill('大阪市北区梅田');
+    await page.locator('id=admin_customer_address_addr02').fill('2-4-9');
+    await page.locator('id=admin_customer_email').fill('taro_yamada@test.local');
+    await page.locator('id=admin_customer_phone_number').fill('0001112222');
+    await page.locator('id=admin_customer_password_first').fill('password123');
+    await page.locator('id=admin_customer_password_second').fill('password123');
+    await page.locator('id=admin_customer_sex_1').click();
+    await page.locator('id=admin_customer_job').selectOption('3');
+    await page.locator('id=admin_customer_birth').fill('1980-04-01');
+    await page.locator('id=admin_customer_point').fill('10');
+    await page.locator('id=admin_customer_note').fill('国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語国語');
+    await page.click('button >> text=登録');
   });
 
   let message: HttpMessage;
