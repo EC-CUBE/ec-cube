@@ -48,6 +48,10 @@ jobs:
         if: matrix.group == 'test/admin/content_layout_delete.test.ts'
         working-directory: zap/selenium/ci/TypeScript
         run: git am patches/0001-DeleteLayout.patch
+      - name: Apply patch to new_customer
+        if: matrix.group == 'test/admin/customer_new.test.ts'
+        working-directory: zap/selenium/ci/TypeScript
+        run: git am patches/0002-NewCustomer.patch
       - name: Penetration testing
         working-directory: zap/selenium/ci/TypeScript
         env:
