@@ -16,7 +16,7 @@ monolog:
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/site.log'
             formatter: eccube.log.formatter.line
-            level: info
+            level: debug
         front:
             type: fingers_crossed
             action_level: error
@@ -28,7 +28,7 @@ monolog:
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/front.log'
             formatter: eccube.log.formatter.line
-            level: info
+            level: debug
         admin:
             type: fingers_crossed
             action_level: error
@@ -40,7 +40,7 @@ monolog:
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/admin.log'
             formatter: eccube.log.formatter.line
-            level: info
+            level: debug
         console:
             type: console
             process_psr_3_messages: false
