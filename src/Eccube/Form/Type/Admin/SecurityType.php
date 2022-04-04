@@ -22,6 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -43,16 +44,24 @@ class SecurityType extends AbstractType
     protected $requestStack;
 
     /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
      * SecurityType constructor.
      *
      * @param EccubeConfig $eccubeConfig
      * @param ValidatorInterface $validator
+     * @param RequestStack $requestStack
+     * @param RouterInterface $router
      */
-    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, RequestStack $requestStack)
+    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, RequestStack $requestStack, RouterInterface $router)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->validator = $validator;
         $this->requestStack = $requestStack;
+        $this->router = $router;
     }
 
     /**
@@ -66,6 +75,7 @@ class SecurityType extends AbstractType
         $denyHosts = $this->eccubeConfig->get('eccube_admin_deny_hosts');
         $denyHosts = implode("\n", $denyHosts);
 
+        $routes = $this->getRouteCollection();
         $builder
             ->add('admin_route_dir', TextType::class, [
                 'constraints' => [
@@ -73,6 +83,9 @@ class SecurityType extends AbstractType
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                     new Assert\Regex([
                         'pattern' => '/\A\w+\z/',
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => "&\A($routes)\x&i",
                     ]),
                 ],
                 'data' => $this->eccubeConfig->get('eccube_admin_route'),
@@ -140,6 +153,24 @@ class SecurityType extends AbstractType
                 }
             })
         ;
+    }
+
+    private function getRouteCollection()
+    {
+        $fountRoutesUrlList = [];
+        $routes = $this->router->getRouteCollection();
+        foreach ($routes as $routeName => $route) {
+            $path = $route->getPath();
+            // 管理画面以外
+            if (false === stripos($routeName, 'admin')
+                && false === stripos($path, '/_')
+                && false === stripos($path, 'admin')
+            ) {
+                $fountRoutesUrlList[] = $path;
+            }
+        }
+
+        return implode('|', $fountRoutesUrlList);
     }
 
     /**
