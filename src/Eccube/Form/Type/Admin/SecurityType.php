@@ -155,9 +155,13 @@ class SecurityType extends AbstractType
         ;
     }
 
-    private function getRouteCollection()
+    /**
+     * フロントURL一覧を取得
+     * @return string
+     */
+    private function getRouteCollection(): string
     {
-        $fountRoutesUrlList = [];
+        $frontRoutesUrlList = [];
         $routes = $this->router->getRouteCollection();
         foreach ($routes as $routeName => $route) {
             $path = $route->getPath();
@@ -166,11 +170,11 @@ class SecurityType extends AbstractType
                 && false === stripos($path, '/_')
                 && false === stripos($path, 'admin')
             ) {
-                $fountRoutesUrlList[] = $path;
+                $frontRoutesUrlList[] = $path;
             }
         }
 
-        return implode('|', $fountRoutesUrlList);
+        return implode('|', $frontRoutesUrlList);
     }
 
     /**
