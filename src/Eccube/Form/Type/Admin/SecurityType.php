@@ -76,6 +76,7 @@ class SecurityType extends AbstractType
         $denyHosts = implode("\n", $denyHosts);
 
         $routes = $this->getRouteCollection();
+        dump($routes);
         $builder
             ->add('admin_route_dir', TextType::class, [
                 'constraints' => [
@@ -85,7 +86,7 @@ class SecurityType extends AbstractType
                         'pattern' => '/\A\w+\z/',
                     ]),
                     new Assert\Regex([
-                        'pattern' => "&\A($routes)\x&i",
+                        'pattern' => "/\A^(?!($routes)$).*\z/",
                     ]),
                 ],
                 'data' => $this->eccubeConfig->get('eccube_admin_route'),
@@ -170,7 +171,12 @@ class SecurityType extends AbstractType
                 && false === stripos($path, '/_')
                 && false === stripos($path, 'admin')
             ) {
-                $frontRoutesUrlList[] = $path;
+                $arr = explode('/', $path);
+                foreach ($arr as $target) {
+                    if (!empty($target)) {
+                        $frontRoutesUrlList[$target] = $target;
+                    }
+                }
             }
         }
 
