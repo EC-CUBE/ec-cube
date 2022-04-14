@@ -1,9 +1,10 @@
-FROM php:7.3-apache-stretch
+FROM php:7.4-apache-bullseye
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
 
-RUN apt-get update \
-  && apt-get install --no-install-recommends -y \
+RUN apt update \
+  && apt upgrade -y \
+  && apt install --no-install-recommends -y \
     apt-transport-https \
     apt-utils \
     build-essential \
@@ -24,22 +25,24 @@ RUN apt-get update \
     unzip \
     zlib1g-dev \
     libwebp-dev \
-  && apt-get clean \
+  && apt upgrade -y ca-certificates \
+  && apt clean \
   && rm -rf /var/lib/apt/lists/* \
   && echo "en_US.UTF-8 UTF-8" >/etc/locale.gen \
   && locale-gen \
   ;
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-  && docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-webp-dir=/usr/include \
+  && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
   && docker-php-ext-install -j$(nproc) zip gd mysqli pdo_mysql opcache intl pgsql pdo_pgsql \
   ;
 
 RUN pecl install apcu && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apc.ini
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-  && apt-get install -y nodejs \
-  && apt-get clean \
+  && apt update \
+  && apt install -y nodejs \
+  && apt clean \
   ;
 
 RUN mkdir -p ${APACHE_DOCUMENT_ROOT} \

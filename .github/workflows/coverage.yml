@@ -25,10 +25,10 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 13
+            database_server_version: 14
     services:
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -60,6 +60,13 @@ jobs:
       - name: composer install
         run: composer install --dev --no-interaction -o --apcu-autoloader
 
+      - name: Setup pcov
+        run: |
+          sudo apt-fast install -y php7.4-pcov
+          sudo phpenmod -s cli pcov
+          composer require pcov/clobber --dev
+          vendor/bin/pcov clobber
+
       - name: Setup EC-CUBE
         env:
           DATABASE_URL: ${{ matrix.database_url }}
@@ -76,9 +83,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
         continue-on-error: true
-        run: |
-          bin/phpunit --version
-          phpdbg -dmemory_limit=-1 -qrr bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
+        run: bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
       - name: Upload report
         if: success()
         uses: actions/upload-artifact@v2
@@ -92,13 +97,13 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        php: [ 7.4 ]
         db: [ pgsql ]
         group: [ admin01, admin02, admin03, front, installer ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 13
+            database_server_version: 14
           - group: admin01
             app_env: 'codeception'
           - group: admin02
@@ -111,7 +116,7 @@ jobs:
             app_env: 'install'
     services:
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -180,6 +185,7 @@ jobs:
 
       - name: Setup xdebug
         run: |
+          composer config --no-plugins allow-plugins.codeception/c3 true
           composer require --dev codeception/c3 "2.*"
           sudo phpenmod -s cli xdebug
           sed -i "7a include __DIR__.'/c3.php';" index.php
@@ -204,6 +210,7 @@ jobs:
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
           XDEBUG_MODE: coverage
+        continue-on-error: true
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group excludeCoverage --coverage --coverage-xml
       - name: Upload outputs
         uses: actions/upload-artifact@v2

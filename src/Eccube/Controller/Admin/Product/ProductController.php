@@ -255,11 +255,22 @@ class ProductController extends AbstractController
 
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
 
-        $pagination = $paginator->paginate(
-            $qb,
-            $page_no,
-            $page_count
-        );
+        $sortKey = $searchData['sortkey'];
+
+        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
+            $pagination = $paginator->paginate(
+                $qb,
+                $page_no,
+                $page_count
+            );
+        } else {
+            $pagination = $paginator->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                ['wrap-queries' => true]
+            );
+        }
 
         return [
             'searchForm' => $searchForm->createView(),
@@ -274,11 +285,11 @@ class ProductController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", methods={"GET"}, requirements={"id" = "\d+"}, methods={"GET"})
      * @Template("@admin/Product/product_class_popup.twig")
-     * @ParamConverter("Product")
+     * @ParamConverter("Product", options={"repository_method":"findWithSortedClassCategories"})
      */
     public function loadProductClasses(Request $request, Product $Product)
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -291,9 +302,7 @@ class ProductController extends AbstractController
         if ($Product->hasProductClass()) {
             $class = $Product->getProductClasses();
             foreach ($class as $item) {
-                if ($item['visible']) {
-                    $data[] = $item;
-                }
+                $data[] = $item;
             }
         }
 
@@ -307,7 +316,7 @@ class ProductController extends AbstractController
      */
     public function addImage(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -373,7 +382,7 @@ class ProductController extends AbstractController
             $ProductClass->setProductStock($ProductStock);
             $ProductStock->setProductClass($ProductClass);
         } else {
-            $Product = $this->productRepository->find($id);
+            $Product = $this->productRepository->findWithSortedClassCategories($id);
             $ProductClass = null;
             $ProductStock = null;
             if (!$Product) {

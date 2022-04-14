@@ -83,7 +83,6 @@ file that was distributed with this source code.
                 $(this).val($(this).data('value'));
             });
         });
-
     </script>
 {% endblock javascript %}
 
@@ -288,6 +287,8 @@ file that was distributed with this source code.
                     </div>
                 {% endfor %}
             </div>
+            {{ form_widget(searchForm.sortkey, {'attr': {'class': 'js-listSort-key'}}) }}
+            {{ form_widget(searchForm.sorttype, {'attr': {'class': 'js-listSort-type'}}) }}
         </div>
         <div class="c-outsideBlock__contents mb-5">
             <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.common.search'|trans }}</button>
@@ -330,8 +331,8 @@ file that was distributed with this source code.
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th class="border-top-0 pt-2 pb-3 pl-3 text-nowrap">{{ 'admin.customer.customer_id'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.common.name'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3 pl-3 text-nowrap">{{ 'admin.customer.customer_id'|trans }}<a href="#" class="js-listSort" data-sortkey="customer_id"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.common.name'|trans }}<a href="#" class="js-listSort" data-sortkey="name"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-3">{{ 'admin.common.phone_number'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-3">{{ 'admin.common.mail_address'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-3">&nbsp;</th>

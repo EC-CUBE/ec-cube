@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-18.04
     services:
       postgres:
-        image: postgres:11
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -33,7 +33,7 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '7.3'
+          php-version: '7.4'
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -56,7 +56,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
+          DATABASE_SERVER_VERSION: 14
         run: |
           rm -rf $GITHUB_WORKSPACE/app/Plugin/*
           echo "APP_ENV=${APP_ENV}" > .env
@@ -68,7 +68,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
+          DATABASE_SERVER_VERSION: 14
         run: |
           bin/console eccube:composer:require "ec-cube/recommend4"
           bin/console eccube:composer:require "ec-cube/coupon4"
@@ -127,6 +127,6 @@ jobs:
         env:
           APP_ENV: 'codeception'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
+          DATABASE_SERVER_VERSION: 14
         run: |
           vendor/bin/codecept -vvv run acceptance --env chrome,local CL01DenyCest

@@ -242,6 +242,7 @@ class ComposerApiService implements ComposerServiceInterface
             'command' => 'config',
             'setting-key' => $key,
             'setting-value' => $value,
+            '--no-interaction' => true,
         ];
         if ($value) {
             $commands['setting-value'] = $value;

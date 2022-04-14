@@ -10,7 +10,7 @@ services:
       - mysql
     environment:
       DATABASE_URL: "mysql://dbuser:secret@mysql/eccubedb"
-      DATABASE_SERVER_VERSION: 10
+      DATABASE_SERVER_VERSION: 5.7
 
   mysql:
     image: mysql:5.7

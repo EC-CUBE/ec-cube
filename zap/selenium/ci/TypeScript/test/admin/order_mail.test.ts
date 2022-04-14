@@ -1,80 +1,70 @@
-import { Builder, By, until } from 'selenium-webdriver'
-import { ZapClient, Mode, ContextType, Risk } from '../../utils/ZapClient';
+import { test, expect, chromium, Page } from '@playwright/test';
+import PlaywrightConfig from '../../playwright.config';
 import { intervalRepeater } from '../../utils/Progress';
-import { SeleniumCapabilities } from '../../utils/SeleniumCapabilities';
-const zapClient = new ZapClient('http://127.0.0.1:8090');
+import { ZapClient, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
+import { ECCUBE_ADMIN_ROUTE } from '../../config/default.config';
 
-jest.setTimeout(6000000);
+const zapClient = new ZapClient();
 
-const baseURL = 'https://ec-cube/admin';
-const url = baseURL + '/order/4/mail';
+const url = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/order/4/mail`;
 
-beforeAll(async () => {
-  await zapClient.setMode(Mode.Protect);
-  await zapClient.newSession('/zap/wrk/sessions/admin_order_mail', true);
-  await zapClient.importContext(ContextType.Admin);
+test.describe.serial('受注管理>メール通知のテストをします', () => {
+  let page: Page;
+  test.beforeAll(async () => {
+    await zapClient.startSession(ContextType.Admin, 'admin_contact')
+      .then(async () => expect(await zapClient.isForcedUserModeEnabled()).toBeTruthy());
 
-  if (!await zapClient.isForcedUserModeEnabled()) {
-    await zapClient.setForcedUserModeEnabled();
-    expect(await zapClient.isForcedUserModeEnabled()).toBeTruthy();
-  }
-});
+    const browser = await chromium.launch();
+    page = await browser.newPage();
+    await page.goto(url);
+  });
 
-test('受注管理>メール通知 - GET', async () => {
-  const driver = await new Builder()
-    .withCapabilities(SeleniumCapabilities)
-    .build();
+  test('メール通知ページを表示します', async () => {
+    await expect(page).toHaveTitle(/メール通知/);
+  });
 
-  try {
-    await driver.get(url);
-    const title = await driver.wait(
-      until.elementLocated(By.className('c-pageTitle__title'))
-      , 10000).getText();
-    expect(title).toBe('メール通知');
+  test('タイトルを確認します', async () => {
+    await page.textContent('.c-pageTitle__title')
+      .then(title => expect(title).toContain('メール通知'));
+  });
 
-    const scanId = await zapClient.activeScanAsUser(url, 2, 55, false, null, 'GET');
+  test.describe('テストを実行します[GET] @attack', () => {
+    let scanId: number;
+    test('アクティブスキャンを実行します', async () => {
+      scanId = await zapClient.activeScanAsUser(url, 2, 55, false, null, 'GET');
+      await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
+    });
 
-    await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
+    test('結果を確認します', async () => {
+      await zapClient.getAlerts(url, 0, 1, Risk.High)
+        .then(alerts => expect(alerts).toEqual([]));
+    });
+  });
 
-    await zapClient.getAlerts(url, 0, 1, Risk.High)
-      .then(alerts => alerts.forEach((alert: any) => {
-        throw new Error(alert.name);
-      }));
-  } finally {
-    driver && await driver.quit()
-  }
-});
+  test('メールテンプレートを選択します', async () => {
+    await page.selectOption('#template-change', { label: '注文受付メール' });
+    await expect(page.locator('#admin_order_mail_mail_subject')).toHaveValue('ご注文ありがとうございます');
+  });
 
-test('受注管理>メール通知(確認ページ) - POST', async () => {
-  const driver = await new Builder()
-    .withCapabilities(SeleniumCapabilities)
-    .build();
+  test('確認ページへ遷移します', async () => {
+    await page.click('button >> text=送信内容を確認');
+  });
 
-  try {
-    await driver.get(url);
-    const title = await driver.wait(
-      until.elementLocated(By.className('c-pageTitle__title'))
-      , 10000).getText();
-    expect(title).toBe('メール通知');
+  let message: HttpMessage;
+  test('HttpMessage を取得します', async () => {
+    message = await zapClient.getLastMessage(url);
+  });
 
-    await driver.findElement(By.xpath('//*[@id="template-change"]/option[2]')).click();
-    const subject = await driver.wait(
-      until.elementLocated(By.xpath('//*[@id="admin_order_mail_mail_subject"]'))
-      , 10000).getAttribute('value');
-    expect(subject).toBe('ご注文ありがとうございます');
+  test.describe('テストを実行します[POST][入力→確認] @attack', () => {
+    let scanId: number;
+    test('アクティブスキャンを実行します', async () => {
+      scanId = await zapClient.activeScanAsUser(url, 2, 55, false, null, 'POST', message.requestBody);
+      await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
+    });
 
-    await driver.findElement(By.xpath('//*[@id="order-mail-form"]/div[2]/div/div/div[2]/div/div/button')).click();
-
-    const message = await zapClient.getLastMessage(url);
-    const scanId = await zapClient.activeScanAsUser(url, 2, 55, false, null, 'POST', message.requestBody);
-
-    await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
-
-    await zapClient.getAlerts(url, 0, 1, Risk.High)
-      .then(alerts => alerts.forEach((alert: any) => {
-        throw new Error(alert.name);
-      }));
-  } finally {
-    driver && await driver.quit()
-  }
+    test('結果を確認します', async () => {
+      await zapClient.getAlerts(url, 0, 1, Risk.High)
+        .then(alerts => expect(alerts).toEqual([]));
+    });
+  });
 });

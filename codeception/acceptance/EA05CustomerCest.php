@@ -70,6 +70,32 @@ class EA05CustomerCest
         $I->see('検索条件に誤りがあります', CustomerManagePage::$検索結果_エラーメッセージ);
     }
 
+    public function customer_一覧でのソート(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0501-UC07-T01 一覧でのソート');
+        $page = CustomerManagePage::go($I);
+
+        // ID横の上矢印をクリック
+        $I->click('a[data-sortkey="customer_id"]');
+        $I->seeElement('.listSort-current[data-sortkey="customer_id"] .fa-arrow-up');
+        $page->assertSortedIdList('asc');
+
+        // ID横の下矢印をクリック
+        $I->click('a[data-sortkey="customer_id"]');
+        $I->seeElement('.listSort-current[data-sortkey="customer_id"] .fa-arrow-down');
+        $page->assertSortedIdList('desc');
+
+        // 名前横の上矢印をクリック
+        $I->click('[data-sortkey="name"]');
+        $I->seeElement('.listSort-current[data-sortkey="name"] .fa-arrow-up');
+        $page->assertSortedNameList('asc');
+
+        // 名前横の下矢印をクリック
+        $I->click('a[data-sortkey="name"]');
+        $I->seeElement('.listSort-current[data-sortkey="name"] .fa-arrow-down');
+        $page->assertSortedNameList('desc');
+    }
+
     /**
      * @group vaddy
      */

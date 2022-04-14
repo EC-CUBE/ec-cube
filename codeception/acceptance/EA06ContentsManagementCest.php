@@ -14,13 +14,17 @@
 use Codeception\Util\Fixtures;
 use Page\Admin\BlockEditPage;
 use Page\Admin\BlockManagePage;
+use Page\Admin\CssManagePage;
 use Page\Admin\FileManagePage;
+use Page\Admin\JavaScriptManagePage;
 use Page\Admin\LayoutEditPage;
 use Page\Admin\LayoutManagePage;
+use Page\Admin\MaintenanceManagePage;
 use Page\Admin\NewsEditPage;
 use Page\Admin\NewsManagePage;
 use Page\Admin\PageEditPage;
 use Page\Admin\PageManagePage;
+use Page\Front\TopPage;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -45,7 +49,7 @@ class EA06ContentsManagementCest
 
     public function contentsmanagement_新着情報管理(AcceptanceTester $I)
     {
-        $I->wantTo('EA0601-UC01-T01(& UC02-T01/UC02-T02/UC03-T01) 新着情報管理（作成・編集・削除）');
+        $I->wantTo('EA0601-UC01-T01(& UC02-T01/UC03-T01) 新着情報管理（作成・編集・削除）');
 
         // EA0601-UC01-T01_新着情報管理（新規作成）
         NewsManagePage::go($I)->新規登録();
@@ -60,7 +64,7 @@ class EA06ContentsManagementCest
 
         // EA0601-UC02-T01_新着情報管理（編集）
         NewsManagePage::go($I)->一覧_編集(2);
-        $new_title = 'news_title ' . uniqid();
+        $new_title = 'news_title '.uniqid();
 
         NewsEditPage::of($I)
             ->入力_タイトル($new_title)
@@ -366,5 +370,105 @@ class EA06ContentsManagementCest
 
         $I->amOnPage('/');
         $I->dontSeeElement(['id' => $block]);
+    }
+
+    public function contentsmanagement_CSS管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0606-UC01-T01_CSS管理');
+
+        CssManagePage::go($I)->入力(
+            '.ec-headerNaviRole { display: none; }'
+        )->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->dontSee('お気に入り', '.ec-headerNaviRole');
+
+        CssManagePage::go($I)->入力('//')->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->see('お気に入り', '.ec-headerNaviRole');
+    }
+
+    public function contentsmanagement_JavaScript管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0607-UC01-T01_JavaScript管理');
+
+        $test_text = 'テストのテキスト';
+
+        JavaScriptManagePage::go($I)->入力(
+            "$('.ec-headerNaviRole').append('{$test_text}');"
+        )->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->see($test_text, '.ec-headerNaviRole');
+
+        JavaScriptManagePage::go($I)->入力('//')->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->dontSee($test_text, '.ec-headerNaviRole');
+    }
+
+    public function contentsmanagement_メンテナンス管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0607-UC08-T01_メンテナンス管理');
+
+        $I->expect('メンテナンスモードを有効にします');
+        MaintenanceManagePage::go($I)
+            ->メンテナンス有効無効();
+        $I->see('メンテナンスモードを有効にしました。', MaintenanceManagePage::$完了メッセージ);
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->see('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->see('全ての商品', TopPage::$検索_カテゴリ選択);
+
+        $I->expect('ログアウトします');
+        $config = Fixtures::get('config');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/logout');
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->see('ただいまメンテナンス中です。', 'body > div > div > div > div > p.ec-404Role__title.ec-reportHeading');
+
+        // 画面遷移がスムーズにいかない場合があるため、ログイン画面に遷移させておく
+        $account = Fixtures::get('admin_account');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/login');
+        $I->submitForm('#form1', [
+            'login_id' => $account['member'],
+            'password' => $account['password'],
+        ]);
+
+        $I->expect('メンテナンスモードを無効にします');
+
+        MaintenanceManagePage::go($I)
+            ->メンテナンス有効無効();
+        $I->see('メンテナンスモードを無効にしました。', MaintenanceManagePage::$完了メッセージ);
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->see('全ての商品', TopPage::$検索_カテゴリ選択);
+    }
+
+    public function contentsmanagement_キャッシュ管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0608-UC01-T01_キャッシュ管理');
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->see('EC-CUBE SHOP', 'h1');
+
+        $I->expect('キャッシュを削除します');
+        $config = Fixtures::get('config');
+        $I->amOnPage("/{$config['eccube_admin_route']}/content/cache");
+
+        $I->click('.c-contentsArea .btn-ec-conversion');
+        $I->waitForElement('.alert', 10);
+        $I->see('削除しました', '.alert');
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->see('EC-CUBE SHOP', 'h1');
     }
 }

@@ -39,6 +39,16 @@ class ProductRepository extends AbstractRepository
      */
     protected $eccubeConfig;
 
+    public const COLUMNS = [
+        'product_id' => 'p.id'
+        ,'name' => 'p.name'
+        ,'product_code' => 'pc.code'
+        ,'stock' => 'pc.stock'
+        ,'status' => 'p.Status'
+        ,'create_date' => 'p.create_date'
+        ,'update_date' => 'p.update_date'
+    ];
+
     /**
      * ProductRepository constructor.
      *
@@ -303,6 +313,14 @@ class ProductRepository extends AbstractRepository
             }
         }
 
+        // tag
+        if (!empty($searchData['tag_id']) && $searchData['tag_id']) {
+            $qb
+                ->innerJoin('p.ProductTag', 'pt')
+                ->andWhere('pt.Tag = :tag_id')
+                ->setParameter('tag_id', $searchData['tag_id']);
+        }
+
         // crate_date
         if (!empty($searchData['create_datetime_start']) && $searchData['create_datetime_start']) {
             $date = $searchData['create_datetime_start'];
@@ -358,8 +376,16 @@ class ProductRepository extends AbstractRepository
         }
 
         // Order By
-        $qb
-            ->orderBy('p.update_date', 'DESC');
+        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
+            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
+
+            $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
+            $qb->addOrderBy('p.update_date', 'DESC');
+            $qb->addOrderBy('p.id', 'DESC');
+        } else {
+            $qb->orderBy('p.update_date', 'DESC');
+            $qb->addOrderBy('p.id', 'DESC');
+        }
 
         return $this->queries->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
     }

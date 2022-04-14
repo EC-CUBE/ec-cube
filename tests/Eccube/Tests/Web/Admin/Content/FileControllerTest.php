@@ -73,6 +73,20 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $this->assertFalse(file_exists($filepath));
     }
 
+    /**
+     * `select_file` が空の場合は `admin_content_file` へリダイレクトする.
+     *
+     * see https://github.com/EC-CUBE/ec-cube/pull/5298
+     */
+    public function testDeleteWithEmpty()
+    {
+        $this->client->request(
+            'DELETE',
+            $this->generateUrl('admin_content_file_delete').'?select_file='
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file')));
+    }
+
     public function testIndexWithCreate()
     {
         $folder = 'create_folder';

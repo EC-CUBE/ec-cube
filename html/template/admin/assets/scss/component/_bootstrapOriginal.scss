@@ -135,10 +135,14 @@ Styleguide 12.2
   color: #262626;
 }
 
-.btn-ec-actionIcon{
+.btn-ec-actionIcon {
   @include button-variant(transparent, transparent, #EFF0F4, transparent, #EFF0F4, transparent );
   padding: 6px 12px;
   cursor:pointer;
+}
+
+a:not([href]):not([tabindex]).btn-ec-actionIcon {
+  color: inherit;
 }
 
 .btn-ec-actionIcon:hover {
@@ -298,3 +302,36 @@ Styleguide 12.7
 */
 .text-ec-gray { color: #999 !important; }
 .text-ec-lightGray { color: #ccc !important; }
+
+/*
+一覧ソートボタン
+
+一覧ページでのソートボタン用のクラスを定義しています
+ */
+.js-listSort {
+  color: $black40;
+
+  &:hover {
+    color: $black40;
+  }
+
+  &.listSort-current {
+    color: $black85;
+  }
+
+  .fa {
+    display:inline-block;
+    width: 1em;
+    margin-left: 3px;
+  }
+
+  &:hover {
+    .fa-arrow-up:before {
+      content: "\f0aa"; // fa-arrow-circle-up
+    }
+
+    .fa-arrow-down:before {
+      content: "\f0ab"; // fa-arrow-circle-down
+    }
+  }
+}

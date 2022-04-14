@@ -46,17 +46,17 @@ class OrderPdfService extends TcpdfFpdi
     /**
      * @var EccubeConfig
      */
-    private $eccubeConfig;
+    protected $eccubeConfig;
 
     /**
      * @var EccubeExtension
      */
-    private $eccubeExtension;
+    protected $eccubeExtension;
 
     /**
      * @var TaxExtension
      */
-    private $taxExtension;
+    protected $taxExtension;
 
     // ====================================
     // 定数宣言
@@ -80,35 +80,35 @@ class OrderPdfService extends TcpdfFpdi
     /** 購入詳細情報 ラベル配列
      * @var array
      */
-    private $labelCell = [];
+    protected $labelCell = [];
 
     /*** 購入詳細情報 幅サイズ配列
      * @var array
      */
-    private $widthCell = [];
+    protected $widthCell = [];
 
     /** 最後に処理した注文番号 @var string */
-    private $lastOrderId = null;
+    protected $lastOrderId = null;
 
     // --------------------------------------
     // Font情報のバックアップデータ
     /** @var string フォント名 */
-    private $bakFontFamily;
+    protected $bakFontFamily;
     /** @var string フォントスタイル */
-    private $bakFontStyle;
+    protected $bakFontStyle;
     /** @var string フォントサイズ */
-    private $bakFontSize;
+    protected $bakFontSize;
     // --------------------------------------
 
     // lfTextのoffset
-    private $baseOffsetX = 0;
-    private $baseOffsetY = -4;
+    protected $baseOffsetX = 0;
+    protected $baseOffsetY = -4;
 
     /** ダウンロードファイル名 @var string */
-    private $downloadFileName = null;
+    protected $downloadFileName = null;
 
     /** 発行日 @var string */
-    private $issueDate = '';
+    protected $issueDate = '';
 
     /**
      * OrderPdfService constructor.

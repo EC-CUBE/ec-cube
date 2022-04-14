@@ -48,7 +48,8 @@ class EA04OrderCest
         OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
-        OrderManagePage::go($I)->検索($TargetOrders[0]->getName01());
+        $TargetOrder = array_values($TargetOrders)[0];
+        OrderManagePage::go($I)->検索($TargetOrder->getName01());
         $I->dontSee('検索結果：0件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         OrderManagePage::go($I)->検索('gege@gege.com');
@@ -213,7 +214,7 @@ class EA04OrderCest
     public function order_受注削除(AcceptanceTester $I)
     {
         $I->getScenario()->incomplete('未実装：受注削除は未実装');
-        $I->wantTo('EA0401-UC08-T01(& UC08-T02) 受注削除');
+        $I->wantTo('EA0401-UC08-T01 受注削除');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -241,6 +242,32 @@ class EA04OrderCest
             ->Cancel_削除();
 
         $I->assertEquals($OrderNumForDontDel, $OrderListPage->一覧_注文番号(1));
+    }
+
+    public function order_一覧でのソート(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0401-UC09-T01 一覧でのソート');
+        $page = OrderManagePage::go($I);
+
+        // 対応状況横の上矢印をクリック
+        $I->click('a[data-sortkey="order_status"]');
+        $I->seeElement('.listSort-current[data-sortkey="order_status"] .fa-arrow-up');
+        $page->assertSortedStatusList('asc');
+
+        // 対応状況横の下矢印をクリック
+        $I->click('a[data-sortkey="order_status"]');
+        $I->seeElement('.listSort-current[data-sortkey="order_status"] .fa-arrow-down');
+        $page->assertSortedStatusList('desc');
+
+        // 購入金額横の上矢印をクリック
+        $I->click('[data-sortkey="purchase_price"]');
+        $I->seeElement('.listSort-current[data-sortkey="purchase_price"] .fa-arrow-up');
+        $page->assertSortedPriceList('asc');
+
+        // 購入金額横の下矢印をクリック
+        $I->click('a[data-sortkey="purchase_price"]');
+        $I->seeElement('.listSort-current[data-sortkey="purchase_price"] .fa-arrow-down');
+        $page->assertSortedPriceList('desc');
     }
 
     /**
@@ -283,7 +310,7 @@ class EA04OrderCest
 
     public function order_一括メール通知_キャンセル(AcceptanceTester $I)
     {
-        $I->wantTo('EA0402-UC02-T01 一括メール通知 (キャンセル)');
+        $I->wantTo('EA0402-UC02-T02 一括メール通知 (キャンセル)');
 
         $I->resetEmails();
 
@@ -450,7 +477,7 @@ class EA04OrderCest
      */
     public function order_個別出荷済みステータス変更(AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC06-T02_個別出荷済みステータス変更');
+        $I->wantTo('EA0405-UC07-T01_個別出荷済みステータス変更');
 
         $I->resetEmails();
 

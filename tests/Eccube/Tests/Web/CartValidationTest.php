@@ -2726,6 +2726,7 @@ class CartValidationTest extends AbstractWebTestCase
             'dtb_product_class',
             'dtb_product_image',
             'dtb_product_category',
+            'dtb_product_tag',
             'dtb_customer_favorite_product',
             'dtb_product',
         ]);

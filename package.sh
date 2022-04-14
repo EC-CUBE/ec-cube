@@ -26,7 +26,7 @@ rm -rf $WORKSPACE/codeception
 rm -rf $WORKSPACE/tests
 rm -rf $WORKSPACE/.github
 rm -rf $WORKSPACE/zap
-rm -rf $WORKSPACE/docker-compose.owaspzap.yml
+rm -rf $WORKSPACE/docker-compose.owaspzap.*
 rm -rf $WORKSPACE/package.sh
 rm -rf $WORKSPACE/app/PluginData/Api/oauth/private.key
 rm -rf $WORKSPACE/app/PluginData/Api/oauth/public.key
