@@ -108,6 +108,13 @@ class PasswordEncoder implements PasswordEncoderInterface
     }
 
     /**
+     * Checks if an encoded password would benefit from rehashing.
+     */
+    public function needsRehash(string $encoded): bool
+    {
+        return false;
+    }
+    /**
      * saltを生成する.
      *
      * @param int $length
