@@ -1385,6 +1385,13 @@ class CsvImportController extends AbstractCsvImportController
 
         $ProductStock = $ProductClass->getProductStock();
 
+        // 在庫テーブルに存在しない場合、新規作成
+        if (!$ProductStock instanceof ProductStock) {
+            $ProductStock = new ProductStock();
+            $ProductClass->setProductStock($ProductStock);
+            $ProductStock->setProductClass($ProductClass);
+        }
+
         if (!$ProductClass->isStockUnlimited()) {
             $ProductStock->setStock($ProductClass->getStock());
         } else {
