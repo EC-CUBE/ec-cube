@@ -96,7 +96,7 @@
         "tecnickcom/tcpdf": "^6.2",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.4",
-        "vlucas/phpdotenv": "v2.4.0"
+        "vlucas/phpdotenv": "v5.4"
     },
     "require-dev": {
         "captbaritone/mailcatcher-codeception-module": "^1.2",
