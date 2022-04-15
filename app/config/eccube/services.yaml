@@ -169,7 +169,7 @@ services:
 
     Monolog\Processor\IntrospectionProcessor:
         arguments:
-            - '!php/const:Monolog\Logger::DEBUG'
+            - 100               # Logger::DEBUG = 100
             - ['Eccube\\Log', 'Psr\\Log']
         tags:
             - { name: monolog.processor }

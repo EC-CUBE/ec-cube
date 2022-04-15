@@ -38,7 +38,7 @@
         "guzzlehttp/guzzle": "^7.4",
         "knplabs/knp-paginator-bundle": "^5.8",
         "mobiledetect/mobiledetectlib": "^2.8",
-        "monolog/monolog": "^1.23",
+        "monolog/monolog": "^2.5",
         "nesbot/carbon": "^2",
         "pimple/pimple": "^1.1",
         "psr/cache": "^1.0",
