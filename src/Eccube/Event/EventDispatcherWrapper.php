@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class EventDispatcherWrapper extends EventDispatcher
 {
-    public function dispatch($event)
+    public function dispatch($event, $eventName = null): object
     {
         $eventName = 1 < \func_num_args() ? func_get_arg(1) : null;
 
