@@ -35,14 +35,14 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Util\StringUtil;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
+// use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OrderHelper
 {
     // FIXME 必要なメソッドのみ移植する
-    use ControllerTrait;
+    // use ControllerTrait;
 
     /**
      * @var ContainerInterface
