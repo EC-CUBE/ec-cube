@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Detection\MobileDetect;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +35,6 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Util\StringUtil;
-use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -131,7 +131,7 @@ class OrderHelper
         PaymentRepository $paymentRepository,
         DeviceTypeRepository $deviceTypeRepository,
         PrefRepository $prefRepository,
-        MobileDetector $mobileDetector,
+        MobileDetect $mobileDetector,
         SessionInterface $session
     ) {
         $this->container = $container;

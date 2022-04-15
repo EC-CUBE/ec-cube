@@ -13,6 +13,7 @@
 
 namespace Eccube\EventListener;
 
+use Detection\MobileDetect;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
@@ -30,7 +31,6 @@ use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
 use Eccube\Service\SystemService;
-use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -90,7 +90,7 @@ class TwigInitializeListener implements EventSubscriberInterface
     private $eccubeConfig;
 
     /**
-     * @var MobileDetector
+     * @var MobileDetect
      */
     private $mobileDetector;
 
@@ -122,7 +122,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         AuthorityRoleRepository $authorityRoleRepository,
         EccubeConfig $eccubeConfig,
         Context $context,
-        MobileDetector $mobileDetector,
+        MobileDetect $mobileDetector,
         UrlGeneratorInterface $router,
         LayoutRepository $layoutRepository,
         SystemService $systemService

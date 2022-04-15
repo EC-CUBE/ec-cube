@@ -206,7 +206,7 @@ services:
     Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
         public: true
 
-    SunCat\MobileDetectBundle\DeviceDetector\MobileDetector:
+    Detection\MobileDetect:
         tags:
           - { name: mobile_detect.mobile_detector.default }
           - { name: mobile_detect.mobile_detector }
