@@ -12,7 +12,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "ext-intl": "*",
         "ext-mbstring": "*",
         "composer/ca-bundle": "^1.1",
@@ -180,7 +180,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.0.0"
+            "php": "7.4.0"
         },
         "preferred-install": {
             "*": "dist"
