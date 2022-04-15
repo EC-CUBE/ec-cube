@@ -32,7 +32,7 @@ use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
@@ -146,7 +146,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if ($this->initialized) {
             return;
@@ -166,7 +166,7 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function setFrontVariables(GetResponseEvent $event)
+    public function setFrontVariables(RequestEvent $event)
     {
         $request = $event->getRequest();
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */

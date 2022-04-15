@@ -133,7 +133,7 @@ class Kernel extends BaseKernel
             LoggerFacade::init($container, $Logger);
         }
         $Translator = $container->get('translator');
-        if ($Translator !== null && $Translator instanceof \Symfony\Component\Translation\TranslatorInterface) {
+        if ($Translator !== null && $Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
             TranslatorFacade::init($Translator);
         }
 

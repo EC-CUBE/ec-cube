@@ -17,7 +17,7 @@ use Detection\MobileDetect;
 use Eccube\Common\EccubeConfig;
 use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Twig\Environment;
 
 class MobileTemplatePathListener implements EventSubscriberInterface
@@ -50,7 +50,7 @@ class MobileTemplatePathListener implements EventSubscriberInterface
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;
