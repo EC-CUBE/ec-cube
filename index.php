@@ -2,7 +2,7 @@
 
 use Eccube\Kernel;
 use Eccube\Service\SystemService;
-use Symfony\Component\Debug\Debug;
+use Symfony\Component\ErrorHandler\Debug;
 use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 
