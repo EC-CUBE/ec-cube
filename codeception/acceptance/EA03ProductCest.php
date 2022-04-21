@@ -288,7 +288,7 @@ class EA03ProductCest
 
     public function product_商品の確認(AcceptanceTester $I)
     {
-        $I->wantTo('EA302-UC05-T01 商品の確認');
+        $I->wantTo('EA0302-UC05-T01 商品の確認');
 
         $page = ProductManagePage::go($I);
         $productId = $I->grabTextFrom('.c-primaryCol table tbody tr:first-child td:nth-child(2)');
@@ -300,7 +300,7 @@ class EA03ProductCest
 
     public function product_商品の複製(AcceptanceTester $I)
     {
-        $I->wantTo('EA302-UC05-T02 商品の複製');
+        $I->wantTo('EA0302-UC05-T02 商品の複製');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
@@ -317,7 +317,7 @@ class EA03ProductCest
 
     public function product_商品の削除(AcceptanceTester $I)
     {
-        $I->wantTo('EA302-UC05-T03 商品の削除');
+        $I->wantTo('EA0302-UC05-T03 商品の削除');
 
         // 削除用商品の作成
         ProductEditPage::go($I)
@@ -340,7 +340,7 @@ class EA03ProductCest
 
     public function product_商品の廃止(AcceptanceTester $I)
     {
-        $I->wantTo('EA302-UC05-T04 商品の廃止');
+        $I->wantTo('EA0302-UC05-T04 商品の廃止');
 
         $page = ProductManagePage::go($I);
         $productName = $I->grabTextFrom(ProductManagePage::$検索結果_1行目_商品名);
@@ -485,7 +485,7 @@ class EA03ProductCest
 
     public function product_商品の一括削除_正常(AcceptanceTester $I)
     {
-        $I->wantTo('EA0302-UC05-T04 商品の一括削除(正常)');
+        $I->wantTo('EA0302-UC05-T05 商品の一括削除(正常)');
 
         $createProduct = Fixtures::get('createProduct');
         foreach (range(1, 5) as $i) {
@@ -506,7 +506,7 @@ class EA03ProductCest
 
     public function product_商品の一括削除_削除エラー(AcceptanceTester $I)
     {
-        $I->wantTo('EA0302-UC05-T04 商品の一括削除(正常)');
+        $I->wantTo('EA0302-UC05-T05 商品の一括削除(削除エラー)');
 
         $createProduct = Fixtures::get('createProduct');
         $createOrders = Fixtures::get('createOrders');
@@ -602,7 +602,7 @@ class EA03ProductCest
 
     public function product_規格表示順の変更(AcceptanceTester $I)
     {
-        $I->wantTo('EA0308-UC01-T01 規格表示順の変更');
+        $I->wantTo('EA0303-UC04-T01 規格表示順の変更');
 
         $ProductClassPage = ClassNameManagePage::go($I);
         $I->see('サイズ', $ProductClassPage->一覧_名称(3));
@@ -689,7 +689,7 @@ class EA03ProductCest
 
     public function product_カテゴリ登録(AcceptanceTester $I)
     {
-        $I->wantTo('EA0305-UC01-T01(& UC01-T02/UC02-T01/UC04-T01) カテゴリ登録/編集/削除');
+        $I->wantTo('EA0305-UC01-T01(& UC01-T02/UC02-T01/UC02-T02/UC04-T01/UC04-T02) カテゴリ登録/編集/削除');
 
         $CategoryPage = CategoryManagePage::go($I)
             ->入力_カテゴリ名('test category1')
@@ -719,6 +719,7 @@ class EA03ProductCest
         $I->assertEquals('5', $value);
 
         // サブカテゴリ EA0305-UC01-03 & UC01-04
+        $I->wantTo('EA0305-UC01-03 & UC01-04 カテゴリ登録（2階層以下）');
         $CategoryPage = CategoryManagePage::go($I)
             ->一覧_選択(3);
 
@@ -740,7 +741,7 @@ class EA03ProductCest
 
     public function product_カテゴリ表示順の変更(AcceptanceTester $I)
     {
-        $I->wantTo('EA0309-UC01-T01 カテゴリ表示順の変更');
+        $I->wantTo('EA0305-UC03-T01 カテゴリ表示順の変更');
 
         $CategoryPage = CategoryManagePage::go($I);
         $I->see('新入荷', $CategoryPage->一覧_名称(3));
@@ -952,7 +953,7 @@ class EA03ProductCest
 
     public function product_詳細検索_タグ(AcceptanceTester $I)
     {
-        $I->wantTo('EA0311-UC01-T01 詳細検索 (タグ)');
+        $I->wantTo('EA0312-UC01-T01 詳細検索 (タグ)');
 
         $name = uniqid();
         $entityManager = Fixtures::get('entityManager');

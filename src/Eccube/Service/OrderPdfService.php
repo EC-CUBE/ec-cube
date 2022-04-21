@@ -353,6 +353,10 @@ class OrderPdfService extends TcpdfFpdi
 
         $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
 
+        // 行頭近くの場合、表示崩れがあるためもう一個字下げする
+        if (270 <= $this->GetY()) {
+            $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
+        }
         $this->SetFont(self::FONT_GOTHIC, 'B', 9);
         $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 2, 'L', 0, '');
 
@@ -667,6 +671,9 @@ class OrderPdfService extends TcpdfFpdi
             $i = 0;
             $h = 4;
             $this->Cell(5, $h, '', 0, 0, '', 0, '');
+            if ((277 - $this->getY()) < ($h * 4)) {
+                $this->checkPageBreak($this->PageBreakTrigger + 1);
+            }
 
             // Cellの高さを保持
             $cellHeight = 0;
@@ -679,6 +686,8 @@ class OrderPdfService extends TcpdfFpdi
                 // セル高さが最大値を保持する
                 if ($h >= $cellHeight) {
                     $cellHeight = $h;
+                } else {
+                    $this->checkPageBreak($this->PageBreakTrigger + 1);
                 }
 
                 // 最終列の場合は次の行へ移動
