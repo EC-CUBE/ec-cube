@@ -13,12 +13,18 @@ jobs:
         operating-system: [ ubuntu-18.04 ]
         group:
           - 'test/front_login/contact.test.ts'
+          - 'test/front_guest/about.test.ts'
           - 'test/front_guest/contact.test.ts'
           - 'test/admin/content_layout.test.ts'
           - 'test/admin/content_layout_delete.test.ts'
           - 'test/admin/customer_edit.test.ts'
+          - 'test/admin/product_class_name.test.ts'
           - 'test/admin/order_mail.test.ts'
-
+          - 'test/admin/product_csv_template.test.ts'
+          - 'test/admin/content_block.test.ts'
+          - 'test/admin/content_page.test.ts'
+          - 'test/admin/product_category_export.test.ts'
+          - 'test/admin/change_password.test.ts'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -44,6 +50,10 @@ jobs:
       - run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+      - name: Apply patch to change_password
+        if: matrix.group == 'test/admin/change_password.test.ts'
+        working-directory: zap/selenium/ci/TypeScript
+        run: git am patches/0001-Member.patch
       - name: Apply patch to delete_layout
         if: matrix.group == 'test/admin/content_layout_delete.test.ts'
         working-directory: zap/selenium/ci/TypeScript

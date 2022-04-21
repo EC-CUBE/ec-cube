@@ -25,6 +25,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     public static $検索条件_仮会員 = ['id' => 'admin_search_customer_customer_status_1'];
     public static $検索条件_本会員 = ['id' => 'admin_search_customer_customer_status_2'];
     public static $検索条件_退会 = ['id' => 'admin_search_customer_customer_status_3'];
+    public static $ポイント = ['id' => 'admin_customer_point'];
 
     /**
      * CustomerListPage constructor.
@@ -124,8 +125,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         $this->tester->wait(5);
         if ($execute) {
             $this->tester->click('送信');
-        }
-        else {
+        } else {
             $this->tester->click('キャンセル');
         }
 
@@ -175,7 +175,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
 
     public function assertSortedNameList($order)
     {
-        $values = array_map(function($s) {
+        $values = array_map(function ($s) {
             // 一覧の会員名の文字列から姓だけを抽出
             return preg_replace('/ .*$/', '', $s);
         }, $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(2)'));

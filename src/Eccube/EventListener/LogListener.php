@@ -70,7 +70,7 @@ class LogListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->info('INIT');
+        $this->logger->debug('INIT');
     }
 
     /**
@@ -83,7 +83,7 @@ class LogListener implements EventSubscriberInterface
         }
 
         $route = $this->getRoute($event->getRequest());
-        $this->logger->info('PROCESS START', [$route]);
+        $this->logger->debug('PROCESS START', [$route]);
     }
 
     /**
@@ -108,7 +108,7 @@ class LogListener implements EventSubscriberInterface
         }
 
         $route = $this->getRoute($event->getRequest());
-        $this->logger->info('LOGIC START', [$route]);
+        $this->logger->debug('LOGIC START', [$route]);
     }
 
     /**
@@ -121,7 +121,7 @@ class LogListener implements EventSubscriberInterface
         }
 
         $route = $this->getRoute($event->getRequest());
-        $this->logger->info('LOGIC END', [$route]);
+        $this->logger->debug('LOGIC END', [$route]);
     }
 
     /**
@@ -130,7 +130,7 @@ class LogListener implements EventSubscriberInterface
     public function onKernelTerminate(PostResponseEvent $event)
     {
         $route = $this->getRoute($event->getRequest());
-        $this->logger->info('PROCESS END', [$route]);
+        $this->logger->debug('PROCESS END', [$route]);
     }
 
     /**
