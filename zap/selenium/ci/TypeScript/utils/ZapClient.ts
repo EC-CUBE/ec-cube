@@ -294,6 +294,33 @@ export class ZapClient {
   }
 
   /**
+   * セッションを開始します.
+   *
+   * 指定したコンテキストに応じたセッションを開始します.
+   * ログインが有効なコンテキストの場合は Forced user mode を有効にします.
+   *
+   * @param contextType セッションで使用するコンテキスト
+   * @param sessionName セッション名. ここで指定したセッション名で `/zap/wrk/sessions` 以下にセッションファイルを保存します
+   */
+  public async startSession(contextType: ContextType, sessionName: string): Promise<void> {
+    await this.setMode(Mode.Protect);
+    await this.newSession(`/zap/wrk/sessions/${sessionName}`, true);
+    await this.importContext(contextType);
+
+    switch (contextType) {
+      case ContextType.Admin:
+      case ContextType.FrontLogin:
+        if (!await this.isForcedUserModeEnabled()) {
+          await this.setForcedUserModeEnabled();
+        }
+        break;
+
+      default:
+      case ContextType.FrontGuest:
+    }
+  }
+
+  /**
    * スキャン結果のアラートの配列を取得します.
    * [coreViewAlerts API](https://www.zaproxy.org/docs/api/#coreviewalerts) を実行します.
    *

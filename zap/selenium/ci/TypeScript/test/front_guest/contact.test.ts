@@ -1,7 +1,7 @@
 import { test, expect, chromium, Page } from '@playwright/test';
 import PlaywrightConfig from '../../playwright.config';
 import { intervalRepeater } from '../../utils/Progress';
-import { ZapClient, Mode, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
+import { ZapClient, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
 const zapClient = new ZapClient();
 
 const url = `${PlaywrightConfig.use.baseURL}/contact`;
@@ -9,9 +9,8 @@ const url = `${PlaywrightConfig.use.baseURL}/contact`;
 test.describe.serial('お問い合わせフォームのテストをします', () => {
   let page: Page;
   test.beforeAll(async () => {
-    await zapClient.setMode(Mode.Protect);
-    await zapClient.newSession('/zap/wrk/sessions/front_guest_contact', true);
-    await zapClient.importContext(ContextType.FrontGuest);
+    await zapClient.startSession(ContextType.FrontGuest, 'front_guest_contact');
+
     const browser = await chromium.launch();
     page = await browser.newPage();
     await page.goto(url);
