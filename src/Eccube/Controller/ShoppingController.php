@@ -309,7 +309,7 @@ class ShoppingController extends AbstractShoppingController
         log_info('[注文確認] フォームエラーのため, 注文手続画面を表示します.', [$Order->getId()]);
 
         $template = new Template([
-            'owner' => [self::class, 'confirm'],
+            'owner' => [$this, 'confirm'],
             'template' => 'Shopping/index.twig'
         ]);
         $request->attributes->set('_template', $template);
