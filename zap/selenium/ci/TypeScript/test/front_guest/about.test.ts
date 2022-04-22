@@ -1,27 +1,28 @@
 import { test, expect, chromium, Page } from '@playwright/test';
-import PlaywrightConfig from '../../playwright.config';
 import { intervalRepeater } from '../../utils/Progress';
-import { ZapClient, ContextType, Risk } from '../../utils/ZapClient';
-const zapClient = new ZapClient();
+import { ZapClient, Mode, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
+const zapClient = new ZapClient('http://127.0.0.1:8090');
 
-const url = `${PlaywrightConfig.use.baseURL}/products/detail/2`;
+const baseURL = 'https://ec-cube';
+const url = baseURL + '/help/about';
 
-test.describe.serial('商品詳細画面のテストをします', () => {
+test.describe.serial('当サイトについてのテストをします', () => {
   let page: Page;
   test.beforeAll(async () => {
-    await zapClient.startSession(ContextType.FrontGuest, 'front_guest_product_detail');
-
+    await zapClient.setMode(Mode.Protect);
+    await zapClient.newSession('/zap/wrk/sessions/front_guest_about', true);
+    await zapClient.importContext(ContextType.FrontGuest);
     const browser = await chromium.launch();
     page = await browser.newPage();
     await page.goto(url);
   });
 
-  test('商品詳細画面を表示します', async () => {
-    await expect(page).toHaveTitle(/チェリーアイスサンド/);
+  test('当サイトについてのページを表示します', async () => {
+    await expect(page).toHaveTitle(/当サイトについて/);
   });
 
   test('タイトルを確認します', async () => {
-    await expect(page.locator('.ec-headingTitle')).toContainText('チェリーアイスサンド');
+    await expect(page.locator('.ec-pageHeader')).toContainText('当サイトについて');
   });
 
   test.describe('テストを実行します[GET] @attack', () => {
