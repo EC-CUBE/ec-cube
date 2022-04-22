@@ -1340,24 +1340,32 @@ class CsvImportController extends AbstractCsvImportController
             $this->addErrors($message);
         }
 
-        if (isset($row[$headerByKey['sale_limit']]) && $row[$headerByKey['sale_limit']] != '') {
-            $saleLimit = str_replace(',', '', $row[$headerByKey['sale_limit']]);
-            if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
-                $ProductClass->setSaleLimit($saleLimit);
+        if (isset($row[$headerByKey['sale_limit']])) {
+            if ($row[$headerByKey['sale_limit']] != '') {
+                $saleLimit = str_replace(',', '', $row[$headerByKey['sale_limit']]);
+                if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
+                    $ProductClass->setSaleLimit($saleLimit);
+                } else {
+                    $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['sale_limit']]);
+                    $this->addErrors($message);
+                }
             } else {
-                $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['sale_limit']]);
-                $this->addErrors($message);
+                $ProductClass->setSaleLimit(null);
             }
         }
 
-        if (isset($row[$headerByKey['price01']]) && $row[$headerByKey['price01']] != '') {
-            $price01 = str_replace(',', '', $row[$headerByKey['price01']]);
-            $errors = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
-            if ($errors->count() === 0) {
-                $ProductClass->setPrice01($price01);
+        if (isset($row[$headerByKey['price01']])) {
+            if ($row[$headerByKey['price01']] != '') {
+                $price01 = str_replace(',', '', $row[$headerByKey['price01']]);
+                $errors  = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
+                if ($errors->count() === 0) {
+                    $ProductClass->setPrice01($price01);
+                } else {
+                    $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['price01']]);
+                    $this->addErrors($message);
+                }
             } else {
-                $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['price01']]);
-                $this->addErrors($message);
+                $ProductClass->setPrice01(null);
             }
         }
 
@@ -1376,6 +1384,13 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         $ProductStock = $ProductClass->getProductStock();
+
+        // 在庫テーブルに存在しない場合、新規作成
+        if (!$ProductStock instanceof ProductStock) {
+            $ProductStock = new ProductStock();
+            $ProductClass->setProductStock($ProductStock);
+            $ProductStock->setProductClass($ProductClass);
+        }
 
         if (!$ProductClass->isStockUnlimited()) {
             $ProductStock->setStock($ProductClass->getStock());

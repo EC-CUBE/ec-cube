@@ -61,6 +61,13 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_在庫数($value)
+    {
+        $this->tester->fillField(self::$在庫数, $value);
+
+        return $this;
+    }
+
     public function 入力_公開()
     {
         $this->tester->selectOption('#admin_product_Status', '公開');
@@ -71,6 +78,13 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
     public function 入力_非公開()
     {
         $this->tester->selectOption('#admin_product_Status', '非公開');
+
+        return $this;
+    }
+
+    public function 入力_廃止()
+    {
+        $this->tester->selectOption('#admin_product_Status', '廃止');
 
         return $this;
     }

@@ -1,0 +1,47 @@
+From 63c5f589b6cc19e875fd1d6d5742ac497732223c Mon Sep 17 00:00:00 2001
+From: Kentaro Ohkouchi <nanasess@fsm.ne.jp>
+Date: Thu, 24 Feb 2022 11:58:18 +0900
+Subject: [PATCH] =?UTF-8?q?Member=20=E3=81=AE=E5=A4=89=E6=9B=B4=E3=82=92?=
+ =?UTF-8?q?=E9=98=B2=E6=AD=A2=E3=81=99=E3=82=8B=E3=83=91=E3=83=83=E3=83=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ src/Eccube/Controller/Admin/AdminController.php | 6 +++---
+ src/Eccube/Repository/MemberRepository.php      | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/Eccube/Controller/Admin/AdminController.php b/src/Eccube/Controller/Admin/AdminController.php
+index 2591f0623d..12ac73235b 100644
+--- a/src/Eccube/Controller/Admin/AdminController.php
++++ b/src/Eccube/Controller/Admin/AdminController.php
+@@ -352,9 +352,9 @@ class AdminController extends AbstractController
+ 
+             $password = $encoder->encodePassword($password, $salt);
+ 
+-            $Member
+-                ->setPassword($password)
+-                ->setSalt($salt);
++            // $Member
++            //     ->setPassword($password)
++            //     ->setSalt($salt);
+ 
+             $this->memberRepository->save($Member);
+ 
+diff --git a/src/Eccube/Repository/MemberRepository.php b/src/Eccube/Repository/MemberRepository.php
+index 2f372b4f57..bc588be409 100644
+--- a/src/Eccube/Repository/MemberRepository.php
++++ b/src/Eccube/Repository/MemberRepository.php
+@@ -99,7 +99,7 @@ class MemberRepository extends AbstractRepository
+ 
+         $em = $this->getEntityManager();
+         $em->persist($Member);
+-        $em->flush();
++        // $em->flush();
+     }
+ 
+     /**
+-- 
+2.34.1
+
