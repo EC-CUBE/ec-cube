@@ -18,6 +18,7 @@ jobs:
           - 'test/admin/content_layout.test.ts'
           - 'test/admin/content_layout_delete.test.ts'
           - 'test/admin/customer_new.test.ts'
+          - 'test/admin/customer.test.ts'
           - 'test/admin/content_cache.test.ts'
           - 'test/admin/customer_edit.test.ts'
           - 'test/admin/product_class_name.test.ts'
