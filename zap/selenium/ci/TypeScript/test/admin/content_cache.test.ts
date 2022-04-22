@@ -1,31 +1,36 @@
 import { test, expect, chromium, Page } from '@playwright/test';
 import PlaywrightConfig from '../../playwright.config';
 import { intervalRepeater } from '../../utils/Progress';
-import { ZapClient, ContextType, Risk } from '../../utils/ZapClient';
+import { ZapClient, Mode, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
 import { ECCUBE_ADMIN_ROUTE } from '../../config/default.config';
 
 const zapClient = new ZapClient();
 
-const url = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/content/layout`;
+const url = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/content/cache`;
 
-test.describe.serial('レイアウト管理>表示テスト', () => {
+test.describe.serial('コンテンツ管理->キャッシュ管理のテストを行います', () => {
   let page: Page;
   test.beforeAll(async () => {
-    await zapClient.startSession(ContextType.Admin, 'admin_content_layout')
-      .then(async () => expect(await zapClient.isForcedUserModeEnabled()).toBeTruthy());
+    await zapClient.setMode(Mode.Protect);
+    await zapClient.newSession('/zap/wrk/sessions/admin_content_cache', true);
+    await zapClient.importContext(ContextType.Admin);
 
+    if (!await zapClient.isForcedUserModeEnabled()) {
+      await zapClient.setForcedUserModeEnabled();
+      expect(await zapClient.isForcedUserModeEnabled()).toBeTruthy();
+    }
     const browser = await chromium.launch();
     page = await browser.newPage();
     await page.goto(url);
   });
 
-  test('レイアウト管理ページを表示します', async () => {
-    await expect(page).toHaveTitle(/レイアウト管理/);
+  test('キャッシュ管理 コンテンツ管理のページを表示します', async () => {
+    await expect(page).toHaveTitle(/キャッシュ管理/);
   });
 
   test('タイトルを確認します', async () => {
-    await page.textContent('.c-pageTitle__title')
-      .then(title => expect(title).toContain('レイアウト管理'));
+    await page.textContent('.c-pageTitle__subTitle')
+      .then(title => expect(title).toContain('コンテンツ管理'));
   });
 
   test.describe('テストを実行します[GET] @attack', () => {

@@ -21,6 +21,7 @@ use Page\Admin\DeliveryManagePage;
 use Page\Admin\LayoutEditPage;
 use Page\Admin\LayoutManagePage;
 use Page\Admin\MailSettingsPage;
+use Page\Admin\OrderEditPage;
 use Page\Admin\OrderManagePage;
 use Page\Admin\OrderStatusSettingsPage;
 use Page\Admin\PageEditPage;
@@ -31,8 +32,13 @@ use Page\Admin\ProductEditPage;
 use Page\Admin\ProductManagePage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
+use Page\Front\CartPage;
 use Page\Front\EntryPage;
+use Page\Front\HistoryPage;
 use Page\Front\MyPage;
+use Page\Front\ProductDetailPage;
+use Page\Front\ShoppingConfirmPage;
+use Page\Front\ShoppingPage;
 use Page\Front\TopPage;
 
 /**
@@ -248,6 +254,205 @@ class EA07BasicinfoCest
         $I->fillField(['class' => 'search-name'], 'チェリーアイスサンド');
         $topPage->検索();
         $I->see('チェリーアイスサンド', '.ec-shelfGrid');
+    }
+
+    public function basicinfo_税設定(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T15 税設定');
+
+        $I->amGoingTo('税設定を有効化');
+        ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_商品別税率機能, true)
+            ->登録();
+
+        $I->expect('商品登録画面で、税率の入力欄が表示されている');
+        ProductEditPage::go($I);
+        $I->see('税率', '.c-contentsArea');
+        $I->seeElement('#admin_product_class_tax_rate');
+
+        $I->amGoingTo('税設定を無効化');
+        ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_商品別税率機能, false)
+            ->登録();
+
+        $I->expect('商品登録画面で、税率の入力欄が表示されていない');
+        ProductEditPage::go($I);
+        $I->dontSee('税率', '.c-contentsArea');
+        $I->dontSeeElement('#admin_product_class_tax_rate');
+    }
+
+    public function basicinfo_ポイント設定_有効(AcceptanceTester $I)
+    {
+        // "ポイント付与率"に任意の値を設定し、ポイント加算の確認を行う
+        $I->wantTo('EA0701-UC01-T16 ポイント設定(有効) ポイント付与率');
+
+        $price = 2800; // 購入商品の金額
+        $point_rate = 2; // 付与率
+        $point_conversion_rate = 5; // 換算レート
+        $expected_point = floor($price * $point_rate / 100); // 付与されるポイント
+        $expected_point_text = number_format($expected_point).' pt';
+        $expected_discount = '-￥'.number_format($point_conversion_rate * $expected_point);
+
+        $I->amGoingTo('商品を準備');
+        ProductManagePage::go($I)
+            ->検索('チェリーアイスサンド')
+            ->検索結果_選択(1);
+        ProductEditPage::at($I)
+            ->入力_販売価格(2800)
+            ->入力_在庫数(1000)
+            ->登録();
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
+
+        $I->amGoingTo('会員を作成');
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $customerPoint = $customer->getPoint();
+
+        $I->amGoingTo('ポイント機能を有効化・付与率を設定');
+        ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_ポイント機能, true)
+            ->入力_ポイント付与率($point_rate)
+            ->入力_ポイント換算レート($point_conversion_rate)
+            ->登録();
+
+        $I->amGoingTo('フロントにて注文手続き画面へ');
+        $I->loginAsMember($customer->getEmail(), 'password');
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        $I->expect('注文手続き画面・確認画面にて、加算ポイントが表示されていること');
+        CartPage::go($I)->レジに進む();
+        $I->see('加算ポイント');
+        $I->see($expected_point_text, CartPage::$加算ポイント);
+
+        ShoppingPage::at($I)->確認する();
+        $I->see('加算ポイント');
+        $I->see($expected_point_text, CartPage::$加算ポイント);
+
+        $I->amGoingTo('注文完了');
+        ShoppingConfirmPage::at($I)->注文する();
+        $I->see('ご注文ありがとうございました');
+
+        $I->expect('マイベージ 注文詳細にて、加算ポイントが表示されていること');
+        MyPage::go($I)->注文履歴詳細(0);
+        HistoryPage::at($I);
+        $I->see('加算ポイント');
+        $I->see($expected_point_text, HistoryPage::$加算ポイント);
+
+        $I->expect('管理画面・受注管理にて、加算ポイントが表示されていること');
+        OrderManagePage::go($I)
+            ->検索($customer->getEmail())
+            ->一覧_編集(1);
+        $I->see($expected_point, OrderEditPage::$加算ポイント);
+
+        $I->amGoingTo('発送済みにする (ポイントが付与される)');
+        OrderEditPage::at($I)
+            ->入力_受注ステータス('発送済み')
+            ->受注情報登録();
+        $customerPoint += $expected_point;
+
+        $I->expect('管理画面・会員管理にて、ポイントが付与されていること');
+        CustomerManagePage::go($I)
+            ->検索($customer->getEmail())
+            ->一覧_編集(1);
+        $I->seeInField(CustomerManagePage::$ポイント, $customerPoint);
+
+        $I->expect('マイベージにて、ポイントが付与されていること');
+        MyPage::go($I);
+        $I->see('現在の所持ポイントは '.number_format($customerPoint).'pt です。');
+
+        // "ポイント換算レート"に任意の値を設定し、ポイント利用の確認を行う
+        $I->wantTo('EA0701-UC01-T16 ポイント設定(有効) ポイント換算レート');
+
+        $I->amGoingTo('フロントにて注文手続き画面へ');
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        $I->expect('所持ポイントが表示されていること');
+        CartPage::go($I)->レジに進む();
+        $I->see('利用ポイント');
+        $I->see(number_format($customerPoint).' pt が利用可能です。');
+
+        $I->amGoingTo('利用ポイントを設定');
+        ShoppingPage::at($I)
+            ->入力_利用ポイント($expected_point)
+            ->確認する();
+
+        $I->expect('利用ポイントが正しく計算されていること');
+        $I->see($expected_discount, ShoppingPage::$ポイント値引き額);
+        $I->see($expected_point_text, ShoppingPage::$利用ポイント);
+
+        $I->amGoingTo('注文完了 (ポイントが減算される)');
+        ShoppingConfirmPage::at($I)->注文する();
+        $I->see('ご注文ありがとうございました');
+        $customerPoint -= $expected_point;
+
+        $I->expect('管理画面・受注管理にて、利用ポイントが計算されていること');
+        OrderManagePage::go($I)
+            ->検索($customer->getEmail())
+            ->一覧_編集(1);
+        $I->see($expected_discount, OrderEditPage::$ポイント値引き額);
+        $I->seeInField(OrderEditPage::$利用ポイント, $expected_point);
+
+        $I->expect('管理画面・会員管理にて、ポイントが減少していること');
+        CustomerManagePage::go($I)
+            ->検索($customer->getEmail())
+            ->一覧_編集(1);
+        $I->seeInField(CustomerManagePage::$ポイント, $customerPoint);
+
+        $I->amGoingTo('マイベージ 注文詳細にて、利用ポイントが計算されていること');
+        MyPage::go($I)->注文履歴詳細(0);
+        HistoryPage::at($I);
+        $I->see($expected_discount, HistoryPage::$ポイント値引き額);
+        $I->see($expected_point_text, HistoryPage::$利用ポイント);
+
+        $I->expect('マイベージにて、ポイントが減少していること');
+        MyPage::go($I);
+        $I->see('現在の所持ポイントは '.number_format($customerPoint).'pt です。');
+    }
+
+    public function basicinfo_ポイント設定_無効(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0701-UC01-T17 ポイント設定(無効)');
+
+        $I->amGoingTo('会員を作成');
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+
+        $I->amGoingTo('ポイント機能を無効化');
+        ShopSettingPage::go($I)
+            ->入力_チェックボックス(ShopSettingPage::$チェックボックス_ポイント機能, false)
+            ->登録();
+
+        $I->amGoingTo('フロントにて注文手続き画面へ');
+        $I->loginAsMember($customer->getEmail(), 'password');
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        $I->expect('注文手続き画面・確認画面にて、加算ポイントが表示されていないこと');
+        CartPage::go($I)->レジに進む();
+        $I->dontSee('加算ポイント');
+
+        ShoppingPage::at($I)->確認する();
+        $I->dontSee('加算ポイント');
+
+        $I->amGoingTo('注文完了');
+        ShoppingConfirmPage::at($I)->注文する();
+        $I->see('ご注文ありがとうございました');
+
+        $I->expect('マイベージにて、加算ポイントが表示されていないこと');
+        MyPage::go($I)->注文履歴詳細(0);
+        HistoryPage::at($I);
+        $I->dontSee('加算ポイント');
+
+        $I->expect('管理画面・受注管理にて、加算ポイントが 0であること');
+        OrderManagePage::go($I)
+            ->検索($customer->getEmail())
+            ->一覧_編集(1);
+        $I->assertEquals('0', $I->grabTextFrom(OrderEditPage::$加算ポイント));
     }
 
     public function basicinfo_特定商取引法(AcceptanceTester $I)
