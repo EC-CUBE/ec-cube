@@ -6,12 +6,12 @@ import { ECCUBE_ADMIN_ROUTE } from '../../config/default.config';
 
 const zapClient = new ZapClient();
 
-const url = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/order/4/mail`;
+const url = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/product/category`;
 
-test.describe.serial('受注管理>メール通知のテストをします', () => {
+test.describe.serial('カテゴリ管理>商品管理からCSVダウンロードのテストをします', () => {
   let page: Page;
   test.beforeAll(async () => {
-    await zapClient.startSession(ContextType.Admin, 'admin_contact')
+    await zapClient.startSession(ContextType.Admin, 'admin_product_category_export')
       .then(async () => expect(await zapClient.isForcedUserModeEnabled()).toBeTruthy());
 
     const browser = await chromium.launch();
@@ -19,13 +19,13 @@ test.describe.serial('受注管理>メール通知のテストをします', () 
     await page.goto(url);
   });
 
-  test('メール通知ページを表示します', async () => {
-    await expect(page).toHaveTitle(/メール通知/);
+  test('カテゴリ管理>商品管理ページを表示します', async () => {
+    await expect(page).toHaveTitle(/商品管理/);
   });
 
   test('タイトルを確認します', async () => {
     await page.textContent('.c-pageTitle__title')
-      .then(title => expect(title).toContain('メール通知'));
+      .then(title => expect(title).toContain('カテゴリ管理'));
   });
 
   test.describe('テストを実行します[GET] @attack', () => {
@@ -41,28 +41,22 @@ test.describe.serial('受注管理>メール通知のテストをします', () 
     });
   });
 
-  test('メールテンプレートを選択します', async () => {
-    await page.selectOption('#template-change', { label: '注文受付メール' });
-    await expect(page.locator('#admin_order_mail_mail_subject')).toHaveValue('ご注文ありがとうございます');
+  test('CSVファイルのダウンロードします', async () => {
+    const [download] = await Promise.all([
+        page.waitForEvent('download'),
+        page.click('text=CSVダウンロード')
+    ]);
   });
 
-  test('確認ページへ遷移します', async () => {
-    await page.click('button >> text=送信内容を確認');
-  });
-
-  let message: HttpMessage;
-  test('HttpMessage を取得します', async () => {
-    message = await zapClient.getLastMessage(url);
-  });
-
-  test.describe('テストを実行します[POST][入力→確認] @attack', () => {
+  const csvExportURL = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/product/category/export`;
+  test.describe('プロダクト用雛形テンプレートのダウンロード時のテストを実行します[GET] @attack', () => {
     let scanId: number;
-    test('アクティブスキャンを実行します', async () => {
-      scanId = await zapClient.activeScanAsUser(url, 2, 55, false, null, 'POST', message.requestBody);
+    test('プロダクト用雛形テンプレートのダウンロード時のアクティブスキャンを実行します', async () => {
+      scanId = await zapClient.activeScanAsUser(csvExportURL, 2, 55, false, null, 'GET');
       await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
     });
 
-    test('結果を確認します', async () => {
+    test('プロダクト用雛形テンプレートのダウンロード時の結果を確認します', async () => {
       await zapClient.getAlerts(url, 0, 1, Risk.High)
         .then(alerts => expect(alerts).toEqual([]));
     });

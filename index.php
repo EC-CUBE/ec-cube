@@ -2,7 +2,7 @@
 
 use Eccube\Kernel;
 use Eccube\Service\SystemService;
-use Symfony\Component\Debug\Debug;
+use Symfony\Component\ErrorHandler\Debug;
 use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -34,6 +34,7 @@ if (!isset($_SERVER['APP_ENV'])) {
         (new Dotenv(__DIR__, '.env.install'))->overload();
     }
 }
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 $env = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : 'dev';
 $debug = isset($_SERVER['APP_DEBUG']) ? $_SERVER['APP_DEBUG'] : ('prod' !== $env);
