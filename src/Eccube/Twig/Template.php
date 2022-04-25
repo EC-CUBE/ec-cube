@@ -15,6 +15,7 @@ namespace Eccube\Twig;
 
 use Eccube\Event\TemplateEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Twig\Source;
 
 class Template extends \Twig\Template
 {
@@ -61,5 +62,11 @@ class Template extends \Twig\Template
     protected function doDisplay(array $context, array $blocks = [])
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
+    }
+
+    public function getSourceContext()
+    {
+        // FIXME Twig\Loader\FilesystemLoader の実装を持ってきたが,これで問題ないか要確認
+        return new Source('', $this->getTemplateName(), '');
     }
 }

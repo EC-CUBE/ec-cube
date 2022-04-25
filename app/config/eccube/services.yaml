@@ -100,7 +100,7 @@ services:
         tags: ['controller.service_arguments']
 
     twig.extension.stringloader:
-        class: Twig_Extension_StringLoader
+        class: Twig\Extension\StringLoaderExtension
         tags: ['twig.extension']
 
     eccube.collector.core:
