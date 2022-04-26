@@ -58,7 +58,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     protected $env;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -86,7 +86,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove($this->dir);

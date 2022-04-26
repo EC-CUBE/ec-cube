@@ -29,7 +29,7 @@ class TimeZoneTest extends EccubeTestCase
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

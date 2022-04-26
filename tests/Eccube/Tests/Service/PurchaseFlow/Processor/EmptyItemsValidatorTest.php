@@ -52,7 +52,7 @@ class EmptyItemsValidatorTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

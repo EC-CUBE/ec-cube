@@ -48,7 +48,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     const NAME = 'eccube:schema:update';
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $conn = $this->entityManager->getConnection();
@@ -68,7 +68,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->schemaService = self::$container->get(SchemaService::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');

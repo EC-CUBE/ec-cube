@@ -21,7 +21,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -41,7 +41,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
     }
 

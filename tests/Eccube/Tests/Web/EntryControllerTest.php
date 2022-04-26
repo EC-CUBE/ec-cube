@@ -18,7 +18,7 @@ use Eccube\Entity\Master\CustomerStatus;
 
 class EntryControllerTest extends AbstractWebTestCase
 {
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client->enableProfiler();

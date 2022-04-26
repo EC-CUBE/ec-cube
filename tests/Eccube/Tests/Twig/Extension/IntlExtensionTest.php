@@ -25,7 +25,7 @@ class IntlExtensionTest extends TestCase
      */
     protected $twig;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $loader = new ArrayLoader();
         $loader->setTemplate('date_day_template', '{{ date|date_day }}');

@@ -24,7 +24,7 @@ class PluginRepositoryTest extends EccubeTestCase
      */
     protected $pluginRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);

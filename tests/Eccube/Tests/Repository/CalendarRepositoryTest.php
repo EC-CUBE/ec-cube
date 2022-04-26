@@ -53,7 +53,7 @@ class CalendarRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->DateTimeNow = new \DateTime('+1 minutes');
 

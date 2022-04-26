@@ -32,7 +32,7 @@ class CategoryRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);

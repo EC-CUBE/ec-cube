@@ -55,7 +55,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'job' => 1,
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

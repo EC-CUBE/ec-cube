@@ -38,7 +38,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * setup mail
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
@@ -49,7 +49,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * tear down
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }

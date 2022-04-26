@@ -39,7 +39,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     /** @var OrderPdfRepository */
     protected $orderPdfRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->orderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);

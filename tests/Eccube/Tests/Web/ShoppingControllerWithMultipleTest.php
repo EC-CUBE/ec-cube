@@ -52,7 +52,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     /** @var OrderStatusRepository */
     private $orderStatusRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
@@ -63,7 +63,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     /**
      * tearDown: rollback and clear mail
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpMailCatcherMessages();
         parent::tearDown();

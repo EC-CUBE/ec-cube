@@ -40,7 +40,7 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         'phone_number' => '012-345-6789',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

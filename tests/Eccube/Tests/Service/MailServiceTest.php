@@ -57,7 +57,7 @@ class MailServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();

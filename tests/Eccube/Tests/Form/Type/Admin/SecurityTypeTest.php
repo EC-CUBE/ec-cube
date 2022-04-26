@@ -33,7 +33,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
         'trusted_hosts' => 'localhost',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

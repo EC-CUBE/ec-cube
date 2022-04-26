@@ -26,7 +26,7 @@ class PostalTypeTest extends AbstractTypeTestCase
         'postal_code' => '060-0000',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->form = $this->formFactory

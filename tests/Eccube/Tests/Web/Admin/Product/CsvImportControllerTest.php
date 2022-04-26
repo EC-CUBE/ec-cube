@@ -39,7 +39,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     private $categoriesIdList = [];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->productRepo = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
@@ -52,7 +52,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $fs->remove($this->getCsvTempFiles());
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         if (file_exists($this->filepath)) {
             unlink($this->filepath);

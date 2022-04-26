@@ -28,7 +28,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     /** form Data   */
     protected $formData;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -50,7 +50,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     /**
      * rollback
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         if (file_exists($this->logTest)) {

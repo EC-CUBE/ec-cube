@@ -41,7 +41,7 @@ class StockDiffProcessorTest extends EccubeTestCase
     /** @var BaseInfo */
     private $BaseInfo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->processor = self::$container->get(StockDiffProcessor::class);

@@ -38,7 +38,7 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
      */
     private $customerOrderStatusRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);

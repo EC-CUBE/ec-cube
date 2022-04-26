@@ -54,7 +54,7 @@ class InstallControllerTest extends AbstractWebTestCase
      */
     protected $session;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -86,7 +86,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->request = $this->createMock(Request::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         if (file_exists($this->envFileBackup)) {
             rename($this->envFileBackup, $this->envFile);

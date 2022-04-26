@@ -22,7 +22,7 @@ class TwigLintValidatorTest extends AbstractTypeTestCase
     /** @var ValidatorInterface */
     protected $validator;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->validator = self::$container->get('validator');

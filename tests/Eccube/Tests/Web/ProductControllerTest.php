@@ -39,7 +39,7 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     private $classCategoryRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);

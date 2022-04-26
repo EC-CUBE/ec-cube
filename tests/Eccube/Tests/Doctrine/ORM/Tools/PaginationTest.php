@@ -58,7 +58,7 @@ class PaginationTest extends EccubeTestCase
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -104,7 +104,7 @@ class PaginationTest extends EccubeTestCase
         }
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         /** @var EntityManager $em */
         $em = $this->entityManager;

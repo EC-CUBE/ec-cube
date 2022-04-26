@@ -27,7 +27,7 @@ class OrderStateMachineTest extends EccubeTestCase
     /** @var OrderStateMachine */
     private $stateMachine;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->stateMachine = self::$container->get(OrderStateMachine::class);

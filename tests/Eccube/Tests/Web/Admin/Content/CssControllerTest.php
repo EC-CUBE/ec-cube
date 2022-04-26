@@ -30,7 +30,7 @@ class CssControllerTest extends AbstractAdminWebTestCase
      */
     private $contents;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->dir = self::$container->getParameter('eccube_html_dir').'/user_data/assets/css/';
@@ -39,7 +39,7 @@ class CssControllerTest extends AbstractAdminWebTestCase
         $fs->dumpFile($this->dir.self::CSS_FILE, '');
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         chmod($this->dir, 0755);
         $fs = new Filesystem();

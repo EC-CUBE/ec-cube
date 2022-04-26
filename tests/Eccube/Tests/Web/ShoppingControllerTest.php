@@ -37,7 +37,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     private $paymentRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);

@@ -33,7 +33,7 @@ class MemberRepositoryTest extends EccubeTestCase
     /** @var EncoderFactoryInterface */
     protected $encoderFactory;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->encoderFactory = self::$container->get('security.encoder_factory');

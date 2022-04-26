@@ -57,10 +57,9 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Client を生成しトランザクションを開始する.
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        self::bootKernel();
         $this->client = static::createClient();
         $this->entityManager = self::$container->get('doctrine')->getManager();
         $this->eccubeConfig = self::$container->get(EccubeConfig::class);
@@ -69,7 +68,7 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * トランザクションをロールバックする.
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
