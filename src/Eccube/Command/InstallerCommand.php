@@ -216,7 +216,7 @@ class InstallerCommand extends Command
         if ($input->isInteractive()) {
             $envDir = $this->container->getParameter('kernel.project_dir');
             if (file_exists($envDir.'/.env')) {
-                (new Dotenv($envDir))->overload();
+                (Dotenv::createUnsafeMutable($envDir))->load();
             }
         }
 

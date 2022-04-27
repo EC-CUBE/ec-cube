@@ -25,13 +25,13 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
 
     if (file_exists(__DIR__.'/.env')) {
-        (new Dotenv(__DIR__))->overload();
+        (Dotenv::createUnsafeMutable(__DIR__))->load();
 
         if (strpos(getenv('DATABASE_URL'), 'sqlite') !== false && !extension_loaded('pdo_sqlite')) {
-            (new Dotenv(__DIR__, '.env.install'))->overload();
+            (Dotenv::createUnsafeMutable(__DIR__, '.env.install'))->load();
         }
     } else {
-        (new Dotenv(__DIR__, '.env.install'))->overload();
+        (Dotenv::createUnsafeMutable(__DIR__, '.env.install'))->load();
     }
 }
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
