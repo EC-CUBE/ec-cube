@@ -228,24 +228,24 @@ class InstallerCommand extends Command
 
         // データベース作成, スキーマ作成, 初期データの投入を行う.
         $commands = [
-            'doctrine:database:create'.$ifNotExists,
-            'doctrine:schema:drop --force',
-            'doctrine:schema:create',
-            'eccube:fixtures:load',
-            'cache:clear --no-warmup',
+            ['doctrine:database:create'.$ifNotExists],
+            ['doctrine:schema:drop', '--force'],
+            ['doctrine:schema:create'],
+            ['eccube:fixtures:load'],
+            ['cache:clear', '--no-warmup'],
         ];
 
         // コンテナを再ロードするため別プロセスで実行する.
         foreach ($commands as $command) {
             try {
-                $this->io->text(sprintf('<info>Run %s</info>...', $command));
-                $process = new Process('bin/console '.$command);
+                $this->io->text(sprintf('<info>Run %s</info>...', implode($command, ' ')));
+                $process = new Process(array_merge(['bin/console'], $command));
                 $process->mustRun();
                 $this->io->text($process->getOutput());
             } catch (ProcessFailedException $e) {
                 $this->io->error($e->getMessage());
 
-                return;
+                return 1;
             }
         }
 
