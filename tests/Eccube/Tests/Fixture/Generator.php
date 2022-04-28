@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Fixture;
 
-use bheller\ImagesGenerator\ImagesGeneratorProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
@@ -55,7 +54,6 @@ use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
-use Faker\Factory as Faker;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -369,14 +367,11 @@ class Generator
      *
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param integer $product_class_num 商品規格の生成数
-     * @param string $image_type 生成する画像タイプ.
-     *        cats の場合は猫の画像を生成する(時間がかかる).
-     *        not null の場合はダミー画像を自動生成する(GD Extension が必要).
-     *        null の場合は、画像を生成せずにファイル名のみを設定する.
+     * @param bool $with_image 画像を生成する場合 true, 生成しない場合 false
      *
      * @return \Eccube\Entity\Product
      */
-    public function createProduct($product_name = null, $product_class_num = 3, $image_type = null)
+    public function createProduct($product_name = null, $product_class_num = 3, $with_image = false)
     {
         $faker = $this->getFaker();
         $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
@@ -401,25 +396,16 @@ class Generator
         $this->entityManager->persist($Product);
         $this->entityManager->flush();
 
-        $faker2 = Faker::create($this->locale);
-        $faker2->addProvider(new ImagesGeneratorProvider($faker2));
+        $faker2 = \Faker\Factory::create($this->locale);
+
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
-            if ($image_type) {
+            if ($with_image) {
                 $width = $faker->numberBetween(480, 640);
                 $height = $faker->numberBetween(480, 640);
-                if ($image_type == 'cats') {
-                    $image = $faker->uuid.'.jpg';
-                    $src = file_get_contents('https://placekitten.com/'.$width.'/'.$height);
-                    file_put_contents(__DIR__.'/../../../../html/upload/save_image/'.$image, $src);
-                } else {
-                    $image = $faker2->imageGenerator(
-                        __DIR__.'/../../../../html/upload/save_image',
-                        $width,
-                        $height,
-                        'png', false, true, '#cccccc', '#ffffff'
-                    );
-                }
+                $image = $faker->uuid.'.jpg';
+                $src = file_get_contents('https://placekitten.com/'.$width.'/'.$height);
+                file_put_contents(__DIR__.'/../../../../html/upload/save_image/'.$image, $src);
             } else {
                 $image = $faker->word.'.jpg';
             }
@@ -885,64 +871,11 @@ class Generator
     /**
      * Faker を生成する.
      *
-     * @return Faker\Generator
+     * @return \Faker\Generator
      *
-     * @see https://github.com/fzaninotto/Faker
      */
     protected function getFaker()
     {
-        return new Generator_Faker(Faker::create($this->locale));
+        return \Faker\Factory::create($this->locale);
     }
 }
-
-class Generator_Faker extends Faker
-{
-    private $faker;
-
-    public function __construct(\Faker\Generator $faker)
-    {
-        $this->faker = $faker;
-    }
-
-    public function __get($attribute)
-    {
-        return $this->faker->$attribute;
-    }
-
-    public function __call($method, $attributes)
-    {
-        return call_user_func_array([$this->faker, $method], $attributes);
-    }
-
-    public function __isset($name)
-    {
-        if (isset($this->faker->$name)) {
-            return true;
-        }
-
-        foreach ($this->faker->getProviders() as $provider) {
-            if (method_exists($provider, $name)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-
-// class Generator_FakerTest extends EccubeTestCase
-// {
-//     public function testKana01ShouldNotEmptyInJAJP()
-//     {
-//         $generator = new Generator($this->app, 'ja_JP');
-//         $Customer = $generator->createCustomer();
-//         self::assertNotEmpty($Customer->getKana01());
-//     }
-
-//     public function testKana01ShouldEmptyInENUS()
-//     {
-//         $generator = new Generator($this->app, 'en_US');
-//         $Customer = $generator->createCustomer();
-//         self::assertEmpty($Customer->getKana01());
-//     }
-// }
