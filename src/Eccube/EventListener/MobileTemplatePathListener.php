@@ -75,8 +75,8 @@ class MobileTemplatePathListener implements EventSubscriberInterface
             ];
         }
 
-        $loader = new \Twig_Loader_Chain([
-            new \Twig_Loader_Filesystem($paths),
+        $loader = new \Twig\Loader\ChainLoader([
+            new \Twig\Loader\FilesystemLoader($paths),
             $this->twig->getLoader(),
         ]);
 

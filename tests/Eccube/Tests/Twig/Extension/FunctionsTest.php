@@ -18,7 +18,7 @@ use Eccube\Tests\EccubeTestCase;
 class FunctionsTest extends EccubeTestCase
 {
     /**
-     * @var \Twig_Environment
+     * @var \Twig\Environment
      */
     protected $twig;
 

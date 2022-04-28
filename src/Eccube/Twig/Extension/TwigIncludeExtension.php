@@ -13,6 +13,7 @@
 
 namespace Eccube\Twig\Extension;
 
+use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
 
 class TwigIncludeExtension extends AbstractExtension
@@ -27,7 +28,7 @@ class TwigIncludeExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig_Function('include_dispatch', [$this, 'include_dispatch'],
+            new TwigFunction('include_dispatch', [$this, 'include_dispatch'],
                 ['needs_context' => true, 'is_safe' => ['all']]),
         ];
     }

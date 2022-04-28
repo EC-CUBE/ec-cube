@@ -27,7 +27,7 @@ class EccubeBlockExtensionTest extends EccubeTestCase
     ];
 
     /**
-     * @var \Twig_Environment
+     * @var \Twig\Environment
      */
     protected $twig;
 
@@ -43,10 +43,10 @@ class EccubeBlockExtensionTest extends EccubeTestCase
             file_put_contents($this->templateDir.'/'.$twig_file, '');
         }
 
-        $loader = new \Twig_Loader_Filesystem([
+        $loader = new \Twig\Loader\FilesystemLoader([
             $this->templateDir,
         ]);
-        $this->twig = new \Twig_Environment($loader);
+        $this->twig = new \Twig\Environment($loader);
         $this->twig->addExtension(new EccubeBlockExtension($this->twig, $this->blockTwigs));
     }
 

@@ -22,7 +22,7 @@ use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig_Environment;
+use Twig\Environment;
 
 /**
  * Class ShopController
@@ -30,7 +30,7 @@ use Twig_Environment;
 class ShopController extends AbstractController
 {
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
@@ -42,10 +42,10 @@ class ShopController extends AbstractController
     /**
      * ShopController constructor.
      *
-     * @param Twig_Environment $twig
+     * @param Environment $twig
      * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(Twig_Environment $twig, BaseInfoRepository $baseInfoRepository)
+    public function __construct(Environment $twig, BaseInfoRepository $baseInfoRepository)
     {
         $this->baseInfoRepository = $baseInfoRepository;
         $this->twig = $twig;
