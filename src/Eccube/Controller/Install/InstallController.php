@@ -21,7 +21,7 @@ use Doctrine\DBAL\DriverManager;
 // use Doctrine\DBAL\Migrations\Configuration\Configuration;
 // use Doctrine\DBAL\Migrations\Migration;
 // use Doctrine\DBAL\Migrations\MigrationException;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
@@ -865,7 +865,7 @@ class InstallController extends AbstractController
                 'update_date' => new \DateTime(),
                 'discriminator_type' => 'baseinfo',
             ], [
-                'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
+                'update_date' => Types::DATETIMETZ_MUTABLE,
             ]);
 
             $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
@@ -887,8 +887,8 @@ class InstallController extends AbstractController
                 'department' => $data['shop_name'],
                 'discriminator_type' => 'member',
             ], [
-                'update_date' => Type::DATETIME,
-                'create_date' => Type::DATETIME,
+                'update_date' => Types::DATETIMETZ_MUTABLE,
+                'create_date' => Types::DATETIMETZ_MUTABLE,
             ]);
             $conn->commit();
         } catch (\Exception $e) {

@@ -93,8 +93,8 @@ EOF
             'department' => 'EC-CUBE SHOP',
             'discriminator_type' => 'member',
         ], [
-            'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
-            'create_date' => \Doctrine\DBAL\Types\Type::DATETIME,
+            'update_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
+            'create_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
         ]);
 
         $shop_name = env('ECCUBE_SHOP_NAME', 'EC-CUBE SHOP');
@@ -114,7 +114,7 @@ EOF
             'update_date' => new \DateTime(),
             'discriminator_type' => 'baseinfo',
         ], [
-            'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
+            'update_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
         ]);
 
         $faviconPath = '/assets/img/common/favicon.ico';
