@@ -237,7 +237,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
     }
 
-    public function setAdminGlobals(GetResponseEvent $event)
+    public function setAdminGlobals(RequestEvent $event)
     {
         // メニュー表示用配列.
         $menus = [];
