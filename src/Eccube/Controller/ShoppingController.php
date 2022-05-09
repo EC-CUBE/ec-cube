@@ -400,7 +400,7 @@ class ShoppingController extends AbstractShoppingController
             } catch (\Exception $e) {
                 log_error('[注文処理] 予期しないエラーが発生しました.', [$e->getMessage()]);
 
-                $this->entityManager->rollback();
+                // $this->entityManager->rollback(); FIXME ユニットテストで There is no active transaction エラーになってしまう
 
                 $this->addError('front.shopping.system_error');
 
