@@ -33,7 +33,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
      */
     public function testValidateEmailStrict($email, $rfc, $norfc)
     {
-        $constraint = new Email(['strict' => true]);
+        $constraint = new Email(null, null, Email::VALIDATION_MODE_STRICT);
         $validator = $this->validator;
 
         $errors = $validator->validate($email, $constraint);
@@ -45,7 +45,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
      */
     public function testValidateEmailNoStrict($email, $rfc, $norfc)
     {
-        $constraint = new Email(['strict' => false]);
+        $constraint = new Email(null, null, Email::VALIDATION_MODE_LOOSE);
         $validator = $this->validator;
 
         $errors = $validator->validate($email, $constraint);
