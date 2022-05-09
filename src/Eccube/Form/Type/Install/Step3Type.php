@@ -64,7 +64,7 @@ class Step3Type extends AbstractType
                 'label' => trans('install.mail_address'),
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('login_id', TextType::class, [
