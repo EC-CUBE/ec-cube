@@ -20,7 +20,7 @@ use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Currencies;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -368,7 +368,7 @@ class EccubeExtension extends AbstractExtension
         if (is_null($currency)) {
             $currency = $this->eccubeConfig->get('currency');
         }
-        $symbol = Intl::getCurrencyBundle()->getCurrencySymbol($currency);
+        $symbol = Currencies::getSymbol($currency);
 
         return $symbol;
     }
