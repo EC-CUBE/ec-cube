@@ -82,7 +82,6 @@ class EntryType extends AbstractType
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'choice',
-                'format' => 'yyyy/MM/dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\LessThanOrEqual([
