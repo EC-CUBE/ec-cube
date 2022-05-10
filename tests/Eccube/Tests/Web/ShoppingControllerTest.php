@@ -487,7 +487,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $client->request('GET', $url);
 
         // Title
-        $this->assertContains('お届け先の追加', $crawler->html());
+        $this->assertStringContainsString('お届け先の追加', $crawler->html());
     }
 
     /**
@@ -624,12 +624,12 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+        $this->assertStringContainsString('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
 
         $MultiPart = $Message->getChildren();
         foreach ($MultiPart as $Part) {
             if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
+                $this->assertStringContainsString('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
             }
         }
     }
@@ -684,7 +684,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $this->client->followRedirect();
         $html = $crawler->filter('body')->html();
         $this->assertNotContains($COD1->getMethod(), $html);
-        $this->assertContains($COD2->getMethod(), $html);
+        $this->assertStringContainsString($COD2->getMethod(), $html);
 
         // use point with payment: COD1
         $this->scenarioRedirectTo($Customer, [
@@ -705,7 +705,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $this->client->followRedirect();
 
         $html = $crawler->filter('body')->html();
-        $this->assertContains($COD1->getMethod(), $html);
+        $this->assertStringContainsString($COD1->getMethod(), $html);
         $this->assertNotContains($COD2->getMethod(), $html);
     }
 

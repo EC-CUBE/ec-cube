@@ -258,7 +258,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
         $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
 
-        self::assertContains($trait, $useStatement, $message);
+        self::assertStringContainsString($trait, $useStatement, $message);
     }
 
     private static function assertNotContainsTrait($file, $trait, $message = 'Traitが有効になっているはず')

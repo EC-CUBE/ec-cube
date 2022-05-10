@@ -129,7 +129,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertContains($editName, $crawler->filter('ul.sortable-container li:nth-child(3)')->text());
+        $this->assertStringContainsString($editName, $crawler->filter('ul.sortable-container li:nth-child(3)')->text());
     }
 
     public function testRoutingAdminProductClassCategoryDelete()
@@ -234,13 +234,13 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         //チョコ, 抹茶, バニラ sort by rank setup above.
         $this->expected = '抹茶';
         $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(3)')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
         $this->expected = 'バニラ';
         $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(4)')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
         $this->expected = 'チョコ';
         $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(5)')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     private function newTestClassName($TestCreator)

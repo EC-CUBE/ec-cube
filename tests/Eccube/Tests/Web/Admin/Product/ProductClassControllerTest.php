@@ -134,8 +134,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $htmlMessage = $crawler->filter('body')->html();
         // FIXME 以下のメッセージが翻訳されない
         // https://github.com/symfony/validator/blob/4.4/Resources/translations/validators.ja.xlf#L366
-        // $this->assertContains('0以上でなければなりません。', $htmlMessage);
-        $this->assertContains('数字と小数点のみ入力できます。', $htmlMessage);
+        // $this->assertStringContainsString('0以上でなければなりません。', $htmlMessage);
+        $this->assertStringContainsString('数字と小数点のみ入力できます。', $htmlMessage);
     }
 
     /**
@@ -180,7 +180,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertStringContainsString('保存しました', $htmlMessage);
 
         // check database
         $taxRule = $this->taxRuleRepository->findBy(['Product' => $product]);
@@ -228,7 +228,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertStringContainsString('保存しました', $htmlMessage);
 
         // check database
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
@@ -274,7 +274,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertStringContainsString('保存しました', $htmlMessage);
 
         // check database
         /* @var TaxRule $taxRule */
@@ -316,8 +316,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $htmlMessage = $crawler->filter('body')->html();
         // FIXME 以下のメッセージが翻訳されない
         // https://github.com/symfony/validator/blob/4.4/Resources/translations/validators.ja.xlf#L366
-        // $this->assertContains('0以上でなければなりません。', $htmlMessage);
-        $this->assertContains('数字と小数点のみ入力できます。', $htmlMessage);
+        // $this->assertStringContainsString('0以上でなければなりません。', $htmlMessage);
+        $this->assertStringContainsString('数字と小数点のみ入力できます。', $htmlMessage);
     }
 
     /**
@@ -352,7 +352,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertStringContainsString('保存しました', $htmlMessage);
 
         // check database
         $product = $this->productRepository->find($id);
@@ -392,7 +392,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertStringContainsString('保存しました', $htmlMessage);
 
         // check database
         $product = $this->productRepository->find($id);
@@ -431,7 +431,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertStringContainsString('保存しました', $htmlMessage);
 
         // check database
         $product = $this->productRepository->find($id);
@@ -489,7 +489,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check submit
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertStringContainsString('保存しました', $htmlMessage);
 
         // check database
         /* @var TaxRule $taxRule */
@@ -526,7 +526,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertStringContainsString('保存しました', $htmlMessage);
         // check database
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
@@ -589,7 +589,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('保存しました', $htmlMessage);
+        $this->assertStringContainsString('保存しました', $htmlMessage);
         // check database
         $product = $this->productRepository->find($id);
         /* @var ProductTaxRule $taxRule */
@@ -645,12 +645,12 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         //チョコ, 抹茶, バニラ sort by rank setup above.
         $this->expected = 'チョコ';
         $this->actual = $classCategories[1];
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
         $this->expected = '抹茶';
         $this->actual = $classCategories[4];
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
         $this->expected = 'バニラ';
         $this->actual = $classCategories[7];
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 }

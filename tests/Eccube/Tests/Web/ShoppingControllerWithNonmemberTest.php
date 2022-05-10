@@ -203,7 +203,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $this->expected = 'お届け先の変更';
         $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -260,7 +260,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $this->expected = 'お届け先の変更';
         $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
 
         // お届け先設定画面で、入力値を変更しPOST送信
         $formData = $this->createNonmemberFormData();

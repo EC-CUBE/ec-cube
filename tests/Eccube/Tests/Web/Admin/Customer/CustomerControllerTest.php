@@ -109,7 +109,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         );
         $this->expected = '検索';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -216,7 +216,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         //test mail resend to 仮会員.
-        $this->assertContains($BaseInfo->getEmail02(), $Message->toString());
+        $this->assertStringContainsString($BaseInfo->getEmail02(), $Message->toString());
     }
 
     /**

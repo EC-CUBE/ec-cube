@@ -81,11 +81,11 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_order')
         );
 
-        $this->assertContains((string) $shippingId, $crawler->filter('#search_result')->html());
+        $this->assertStringContainsString((string) $shippingId, $crawler->filter('#search_result')->html());
 
         $expectedText = '納品書出力';
         $actualNode = $crawler->filter('.btn-bulk-wrapper')->html();
-        $this->assertContains($expectedText, $actualNode);
+        $this->assertStringContainsString($expectedText, $actualNode);
     }
 
     /**
@@ -108,11 +108,11 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $html = $crawler->filter('#order_pdf_form')->html();
-        $this->assertContains((string) $shippingId, $html);
-        $this->assertContains('お買上げ明細書(納品書)', $html);
-        $this->assertContains('このたびはお買上げいただきありがとうございます。', $html);
-        $this->assertContains('下記の内容にて納品させていただきます。', $html);
-        $this->assertContains('ご確認くださいますよう、お願いいたします。', $html);
+        $this->assertStringContainsString((string) $shippingId, $html);
+        $this->assertStringContainsString('お買上げ明細書(納品書)', $html);
+        $this->assertStringContainsString('このたびはお買上げいただきありがとうございます。', $html);
+        $this->assertStringContainsString('下記の内容にて納品させていただきます。', $html);
+        $this->assertStringContainsString('ご確認くださいますよう、お願いいたします。', $html);
     }
 
     /**
@@ -160,15 +160,15 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
             ]);
         $html = $crawler->filter('#order_pdf_form')->html();
 
-        $this->assertContains((string) $shippingId, $html);
+        $this->assertStringContainsString((string) $shippingId, $html);
 
-        $this->assertContains($form['order_pdf[title]']->getValue(), $html);
-        $this->assertContains($form['order_pdf[message1]']->getValue(), $html);
-        $this->assertContains($form['order_pdf[message2]']->getValue(), $html);
-        $this->assertContains($form['order_pdf[message3]']->getValue(), $html);
-        $this->assertContains($form['order_pdf[note1]']->getValue(), $html);
-        $this->assertContains($form['order_pdf[note2]']->getValue(), $html);
-        $this->assertContains($form['order_pdf[note3]']->getValue(), $html);
+        $this->assertStringContainsString($form['order_pdf[title]']->getValue(), $html);
+        $this->assertStringContainsString($form['order_pdf[message1]']->getValue(), $html);
+        $this->assertStringContainsString($form['order_pdf[message2]']->getValue(), $html);
+        $this->assertStringContainsString($form['order_pdf[message3]']->getValue(), $html);
+        $this->assertStringContainsString($form['order_pdf[note1]']->getValue(), $html);
+        $this->assertStringContainsString($form['order_pdf[note2]']->getValue(), $html);
+        $this->assertStringContainsString($form['order_pdf[note3]']->getValue(), $html);
     }
 
     /**
@@ -184,7 +184,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->followRedirect();
 
         $html = $crawler->filter('.alert')->html();
-        $this->assertContains('出荷IDが指定されていません', $html);
+        $this->assertStringContainsString('出荷IDが指定されていません', $html);
     }
 
     /**
@@ -215,11 +215,11 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $html = $crawler->filter('#order_pdf_form')->html();
-        $this->assertContains((string) $shippingId, $html);
-        $this->assertContains('お買上げ明細書(納品書)', $html);
-        $this->assertContains('このたびはお買上げいただきありがとうございます。', $html);
-        $this->assertContains('下記の内容にて納品させていただきます。', $html);
-        $this->assertContains('ご確認くださいますよう、お願いいたします。', $html);
+        $this->assertStringContainsString((string) $shippingId, $html);
+        $this->assertStringContainsString('お買上げ明細書(納品書)', $html);
+        $this->assertStringContainsString('このたびはお買上げいただきありがとうございます。', $html);
+        $this->assertStringContainsString('下記の内容にて納品させていただきます。', $html);
+        $this->assertStringContainsString('ご確認くださいますよう、お願いいたします。', $html);
 
         $form = $this->getForm($crawler);
         /**
@@ -231,7 +231,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         $html = $crawler->filter('#order_pdf_form')->html();
-        $this->assertContains($message, $html);
+        $this->assertStringContainsString($message, $html);
     }
 
     /**
@@ -275,11 +275,11 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
                 'ids' => [$shippingId],
             ]);
         $html = $crawler->filter('#order_pdf_form')->html();
-        $this->assertContains((string) $shippingId, $html);
-        $this->assertContains('お買上げ明細書(納品書)', $html);
-        $this->assertContains('このたびはお買上げいただきありがとうございます。', $html);
-        $this->assertContains('下記の内容にて納品させていただきます。', $html);
-        $this->assertContains('ご確認くださいますよう、お願いいたします。', $html);
+        $this->assertStringContainsString((string) $shippingId, $html);
+        $this->assertStringContainsString('お買上げ明細書(納品書)', $html);
+        $this->assertStringContainsString('このたびはお買上げいただきありがとうございます。', $html);
+        $this->assertStringContainsString('下記の内容にて納品させていただきます。', $html);
+        $this->assertStringContainsString('ご確認くださいますよう、お願いいたします。', $html);
 
         $form = $this->getForm($crawler);
         $client->submit($form);
@@ -331,14 +331,14 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         );
         $html = $crawler->filter('#order_pdf_form')->html();
 
-        $this->assertContains((string) $shippingId, $html);
-        $this->assertContains($OrderPdf->getTitle(), $html);
-        $this->assertContains($OrderPdf->getMessage1(), $html);
-        $this->assertContains($OrderPdf->getMessage2(), $html);
-        $this->assertContains($OrderPdf->getMessage3(), $html);
-        $this->assertContains($OrderPdf->getNote1(), $html);
-        $this->assertContains($OrderPdf->getNote2(), $html);
-        $this->assertContains($OrderPdf->getNote3(), $html);
+        $this->assertStringContainsString((string) $shippingId, $html);
+        $this->assertStringContainsString($OrderPdf->getTitle(), $html);
+        $this->assertStringContainsString($OrderPdf->getMessage1(), $html);
+        $this->assertStringContainsString($OrderPdf->getMessage2(), $html);
+        $this->assertStringContainsString($OrderPdf->getMessage3(), $html);
+        $this->assertStringContainsString($OrderPdf->getNote1(), $html);
+        $this->assertStringContainsString($OrderPdf->getNote2(), $html);
+        $this->assertStringContainsString($OrderPdf->getNote3(), $html);
 
         $form = $this->getForm($crawler);
         $client->submit($form);

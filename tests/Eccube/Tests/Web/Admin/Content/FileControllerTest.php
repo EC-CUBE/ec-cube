@@ -238,8 +238,8 @@ class FileControllerTest extends AbstractAdminWebTestCase
         });
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertContains('phpファイルはアップロードできません。', $messages);
-        $this->assertContains('.で始まるファイルはアップロードできません。', $messages);
+        $this->assertStringContainsString('phpファイルはアップロードできません。', $messages);
+        $this->assertStringContainsString('.で始まるファイルはアップロードできません。', $messages);
         $this->assertFalse(file_exists($this->getUserDataDir().'/test.php'));
         $this->assertFalse(file_exists($this->getUserDataDir().'/.dotfile'));
 

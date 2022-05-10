@@ -1230,7 +1230,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         // item number on the screen
         $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__item > ul')->text();
-        $this->assertContains('× 3', $shipping);
+        $this->assertStringContainsString('× 3', $shipping);
 
         $deliver = $crawler->filter('#shopping_order_Shippings_0_Delivery > option')->each(
             function ($node, $i) {

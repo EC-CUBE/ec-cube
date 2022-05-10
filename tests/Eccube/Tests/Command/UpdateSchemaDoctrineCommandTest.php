@@ -91,8 +91,8 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         );
         $display = $tester->getDisplay();
 
-        $this->assertContains('eccube:schema:update --force', $display);
-        $this->assertContains('eccube:schema:update --dump-sql', $display);
+        $this->assertStringContainsString('eccube:schema:update --force', $display);
+        $this->assertStringContainsString('eccube:schema:update --dump-sql', $display);
     }
 
     public function testHelpWithNoProxy()
@@ -108,8 +108,8 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         );
         $display = $tester->getDisplay();
 
-        $this->assertContains('eccube:schema:update --force', $display);
-        $this->assertContains('eccube:schema:update --dump-sql', $display);
+        $this->assertStringContainsString('eccube:schema:update --force', $display);
+        $this->assertStringContainsString('eccube:schema:update --dump-sql', $display);
     }
 
     /**
@@ -130,7 +130,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains(
+        $this->assertStringContainsString(
             'ALTER TABLE dtb_customer DROP test_update_schema_command',
             $display,
             '--no-proxy is do not use proxy'
@@ -170,7 +170,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains('[OK] Nothing to update', $display, 'Use proxy');
+        $this->assertStringContainsString('[OK] Nothing to update', $display, 'Use proxy');
 
         /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
@@ -214,7 +214,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains('[OK] Nothing to update', $display, '--no-proxy is do not use proxy');
+        $this->assertStringContainsString('[OK] Nothing to update', $display, '--no-proxy is do not use proxy');
 
         /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
@@ -252,7 +252,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains('[OK] Nothing to update', $display, 'Use proxy');
+        $this->assertStringContainsString('[OK] Nothing to update', $display, 'Use proxy');
 
         /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
@@ -295,7 +295,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains(
+        $this->assertStringContainsString(
             'ALTER TABLE dtb_customer DROP test_update_schema_command',
             $display,
             '--no-proxy is do not use proxy'
@@ -340,7 +340,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains('[OK] Nothing to update', $display, 'Use proxy');
+        $this->assertStringContainsString('[OK] Nothing to update', $display, 'Use proxy');
 
         /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();

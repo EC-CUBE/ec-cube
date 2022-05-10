@@ -61,7 +61,7 @@ class CsvLoaderCommandTest extends AbstractCommandTest
         $CommandTester->execute($commandArg);
 
         $output = $CommandTester->getDisplay();
-        $this->assertContains('CSV Loader complete.', $output);
+        $this->assertStringContainsString('CSV Loader complete.', $output);
 
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
         $this->file->rewind();

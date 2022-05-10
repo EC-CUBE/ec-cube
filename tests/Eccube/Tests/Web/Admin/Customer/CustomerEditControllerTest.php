@@ -91,7 +91,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = '会員一覧';
         $this->actual = $crawler->filter('#customer_form > div.c-conversionArea > div > div > div:nth-child(1) > div')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -194,7 +194,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $orderListing = $crawler->filter('#orderHistory')->text();
-        $this->assertContains('この会員の購入履歴がありません', $orderListing);
+        $this->assertStringContainsString('この会員の購入履歴がありません', $orderListing);
     }
 
     /**

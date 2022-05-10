@@ -109,7 +109,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
         $this->expected = $expected;
         $this->verify();
         if ($message) {
-            $this->assertContains($message, $crawler->filter('.card-body')->html());
+            $this->assertStringContainsString($message, $crawler->filter('.card-body')->html());
         }
     }
 

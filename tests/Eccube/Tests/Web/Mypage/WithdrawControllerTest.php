@@ -123,12 +123,12 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+        $this->assertStringContainsString('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
 
         $MultiPart = $Message->getChildren();
         foreach ($MultiPart as $Part) {
             if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
+                $this->assertStringContainsString('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
             }
         }
     }

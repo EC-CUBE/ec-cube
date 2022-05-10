@@ -64,8 +64,8 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $crawler = $this->client->followRedirect();
         $info = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-primary')->text();
         $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
-        $this->assertContains('保存しました', $success);
-        $this->assertContains('出荷に関わる情報が変更されました。送料の変更が必要な場合は、受注管理より手動で変更してください。', $info);
+        $this->assertStringContainsString('保存しました', $success);
+        $this->assertStringContainsString('出荷に関わる情報が変更されました。送料の変更が必要な場合は、受注管理より手動で変更してください。', $info);
     }
 
     public function testEditAddTrackingNumber()
@@ -92,7 +92,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $crawler = $this->client->followRedirect();
 
         $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
-        $this->assertContains('保存しました', $success);
+        $this->assertStringContainsString('保存しました', $success);
 
         $expectedShipping = $this->entityManager->find(Shipping::class, $shippingId);
         $this->assertEquals($trackingNumber, $expectedShipping->getTrackingNumber());
@@ -128,9 +128,9 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         // 出荷登録フォームが２個に増えていることを確認
         $card1 = $crawler->filter('#form1 > div.c-contentsArea__cols > div > div > div:nth-child(1) > div.card-header > div > div.col-8 > div > span')->text();
-        $this->assertContains('出荷情報(1)', $card1);
+        $this->assertStringContainsString('出荷情報(1)', $card1);
         $card2 = $crawler->filter('#form1 > div.c-contentsArea__cols > div > div > div:nth-child(2) > div.card-header > div > div.col-8 > div > span')->text();
-        $this->assertContains('出荷情報(2)', $card2);
+        $this->assertStringContainsString('出荷情報(2)', $card2);
 
         // ２個の出荷登録フォームを作成
         $shippingFormData = $this->createShippingFormDataForEdit($Shipping);
@@ -239,12 +239,12 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         self::assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
         self::assertEquals([$Order->getEmail() => null], $Message->getTo());
 
-        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+        $this->assertStringContainsString('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
 
         $MultiPart = $Message->getChildren();
         foreach ($MultiPart as $Part) {
             if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
+                $this->assertStringContainsString('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
             }
         }
     }

@@ -326,7 +326,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         /* @var $customer \Eccube\Entity\Customer */
         $customer = $this->customerRepository->findOneBy(['email' => 'user-1@example.com']);
 
-        $this->assertContains($customer->getName01(), $crawler->filter('table#search_result')->html());
+        $this->assertStringContainsString($customer->getName01(), $crawler->filter('table#search_result')->html());
     }
 
     /**

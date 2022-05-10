@@ -427,7 +427,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $expected = '規格1';
         $actual = $crawler->filter('#standardConfig > div > table')->text();
-        $this->assertContains($expected, $actual);
+        $this->assertStringContainsString($expected, $actual);
 
         $this->expected = $productClassNum;
         $this->actual = $crawler->filter('#standardConfig > div > table > tbody > tr')->count();
