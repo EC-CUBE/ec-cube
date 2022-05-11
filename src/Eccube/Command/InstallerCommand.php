@@ -238,7 +238,7 @@ class InstallerCommand extends Command
         // コンテナを再ロードするため別プロセスで実行する.
         foreach ($commands as $command) {
             try {
-                $this->io->text(sprintf('<info>Run %s</info>...', implode($command, ' ')));
+                $this->io->text(sprintf('<info>Run %s</info>...', implode(' ', $command)));
                 $process = new Process(array_merge(['bin/console'], $command));
                 $process->mustRun();
                 $this->io->text($process->getOutput());
