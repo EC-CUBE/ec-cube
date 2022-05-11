@@ -336,7 +336,7 @@ class PluginService
                     $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
                     if (file_exists($entityDir)) {
                         $ormConfig = $this->entityManager->getConfiguration();
-                        $chain = $ormConfig->getMetadataDriverImpl();
+                        $chain = $ormConfig->getMetadataDriverImpl()->getDriver();
                         $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
                         $namespace = 'Plugin\\'.$config['code'].'\\Entity';
                         $chain->addDriver($driver, $namespace);
