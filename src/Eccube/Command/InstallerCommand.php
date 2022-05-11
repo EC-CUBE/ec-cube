@@ -291,7 +291,7 @@ class InstallerCommand extends Command
                 $sql = 'SHOW server_version';
         }
         $stmt = $conn->executeQuery($sql);
-        $version = $stmt->fetchColumn();
+        $version = $stmt->fetchOne();
 
         if ($platform === 'postgresql') {
             preg_match('/\A([\d+\.]+)/', $version, $matches);

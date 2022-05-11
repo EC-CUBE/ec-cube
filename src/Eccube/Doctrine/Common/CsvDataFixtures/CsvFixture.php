@@ -114,14 +114,14 @@ class CsvFixture implements FixtureInterface
 
             // シーケンスの存在チェック
             $sql = 'SELECT COUNT(*) FROM information_schema.sequences WHERE sequence_name = ?';
-            $count = $Connection->fetchColumn($sql, [$sequence_name]);
+            $count = $Connection->fetchOne($sql, [$sequence_name]);
             if ($count < 1) {
                 return;
             }
 
             // シーケンスを更新
             $sql = sprintf('SELECT MAX(%s) FROM %s', $pk_name, $table_name);
-            $max = $Connection->fetchColumn($sql);
+            $max = $Connection->fetchOne($sql);
             if (is_null($max)) {
                 // レコードが無い場合は1を初期値に設定
                 $sql = sprintf("SELECT SETVAL('%s', 1, false)", $sequence_name);
