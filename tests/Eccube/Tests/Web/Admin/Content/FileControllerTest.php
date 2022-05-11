@@ -249,7 +249,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
     protected function getUserDataDir()
     {
-        return self::$container->getParameter('kernel.project_dir').'/html/user_data';
+        return __DIR__.'/../../../../../../html/user_data';
     }
 
     private function getJailDir($path)
@@ -262,6 +262,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
     protected function tearDown(): void
     {
+        parent::tearDown();
         if (file_exists($this->getUserDataDir().'/aaa.html')) {
             unlink($this->getUserDataDir().'/aaa.html');
         }
