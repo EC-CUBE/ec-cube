@@ -224,11 +224,15 @@ class InstallerCommand extends Command
         // 更新後の値が取得できないため, getenv()を使用する.
         $databaseUrl = getenv('DATABASE_URL');
         $databaseName = $this->getDatabaseName($databaseUrl);
-        $ifNotExists = $databaseName === 'sqlite' ? '' : ' --if-not-exists';
+
+        $databaseCreate = ['doctrine:database:create'];
+        if ($databaseName !== 'sqlite') {
+            $databaseCreate[] = '--if-not-exists';
+        }
 
         // データベース作成, スキーマ作成, 初期データの投入を行う.
         $commands = [
-            ['doctrine:database:create'.$ifNotExists],
+            $databaseCreate,
             ['doctrine:schema:drop', '--force'],
             ['doctrine:schema:create'],
             ['eccube:fixtures:load'],
