@@ -188,7 +188,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     protected function isConnected(Connection $conn)
     {
         try {
-            if (!$conn->isConnected()) {
+            if (!$conn->executeQuery('select 1')) {
                 return false;
             }
         } catch (\Exception $e) {
