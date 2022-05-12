@@ -52,7 +52,7 @@ class EntryControllerTest extends AbstractWebTestCase
                 'first' => $email,
                 'second' => $email,
             ],
-            'password' => [
+            'plain_password' => [
                 'first' => $password,
                 'second' => $password,
             ],

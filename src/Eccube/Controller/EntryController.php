@@ -170,7 +170,7 @@ class EntryController extends AbstractController
 
                     $encoder = $this->encoderFactory->getEncoder($Customer);
                     $salt = $encoder->createSalt();
-                    $password = $encoder->encodePassword($Customer->getPassword(), $salt);
+                    $password = $encoder->encodePassword($Customer->getPlainPassword(), $salt);
                     $secretKey = $this->customerRepository->getUniqueSecretKey();
 
                     $Customer

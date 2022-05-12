@@ -76,7 +76,7 @@ class EntryType extends AbstractType
                 'required' => true,
             ])
             ->add('email', RepeatedEmailType::class)
-            ->add('password', RepeatedPasswordType::class)
+            ->add('plain_password', RepeatedPasswordType::class)
             ->add('birth', BirthdayType::class, [
                 'required' => false,
                 'input' => 'datetime',
@@ -118,8 +118,8 @@ class EntryType extends AbstractType
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
-            if ($Customer->getPassword() != '' && $Customer->getPassword() == $Customer->getEmail()) {
-                $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            if ($Customer->getPlainPassword() != '' && $Customer->getPlainPassword() == $Customer->getEmail()) {
+                $form['plain_password']['first']->addError(new FormError(trans('common.password_eq_email')));
             }
         });
     }

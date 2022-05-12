@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Mypage;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\EntryType;
@@ -60,12 +61,9 @@ class ChangeController extends AbstractController
      */
     public function index(Request $request)
     {
+        /** @var Customer $Customer */
         $Customer = $this->getUser();
-        $LoginCustomer = clone $Customer;
-        $this->entityManager->detach($LoginCustomer);
-
-        $previous_password = $Customer->getPassword();
-        $Customer->setPassword($this->eccubeConfig['eccube_default_password']);
+        $Customer->setPlainPassword($this->eccubeConfig['eccube_default_password']);
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
@@ -86,15 +84,13 @@ class ChangeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             log_info('会員編集開始');
 
-            if ($Customer->getPassword() === $this->eccubeConfig['eccube_default_password']) {
-                $Customer->setPassword($previous_password);
-            } else {
+            if ($Customer->getPlainPassword() !== $this->eccubeConfig['eccube_default_password']) {
                 $encoder = $this->encoderFactory->getEncoder($Customer);
                 if ($Customer->getSalt() === null) {
                     $Customer->setSalt($encoder->createSalt());
                 }
                 $Customer->setPassword(
-                    $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt())
+                    $encoder->encodePassword($Customer->getPlainPassword(), $Customer->getSalt())
                 );
             }
             $this->entityManager->flush();
@@ -112,8 +108,6 @@ class ChangeController extends AbstractController
 
             return $this->redirect($this->generateUrl('mypage_change_complete'));
         }
-
-        $this->tokenStorage->getToken()->setUser($LoginCustomer);
 
         return [
             'form' => $form->createView(),

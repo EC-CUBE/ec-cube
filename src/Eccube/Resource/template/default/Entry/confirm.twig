@@ -91,12 +91,12 @@ file that was distributed with this source code.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.password, 'common.password', { 'label_attr': { 'class': 'ec-label' }}) }}
+                                {{ form_label(form.plain_password, 'common.password', { 'label_attr': { 'class': 'ec-label' }}) }}
                             </dt>
                             <dd>
                                 ********
-                                {{ form_widget(form.password.first, { type : 'hidden' }) }}
-                                {{ form_widget(form.password.second, { type : 'hidden' }) }}
+                                {{ form_widget(form.plain_password.first, { type : 'hidden' }) }}
+                                {{ form_widget(form.plain_password.second, { type : 'hidden' }) }}
                             </dd>
                         </dl>
                         <dl>
