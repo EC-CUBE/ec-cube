@@ -106,10 +106,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testNonmemberWithCartUnlock()
     {
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $crawler = $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     public function testNonmemberWithCustomerLogin()

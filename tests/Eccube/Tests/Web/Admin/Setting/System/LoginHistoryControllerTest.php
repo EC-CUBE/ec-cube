@@ -38,13 +38,6 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-    }
-
     public function testIndex()
     {
         $crawler = $this->client->request('GET', $this->generateUrl('admin_setting_system_login_history'));
