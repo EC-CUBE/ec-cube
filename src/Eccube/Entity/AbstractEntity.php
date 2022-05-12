@@ -199,7 +199,7 @@ abstract class AbstractEntity implements \ArrayAccess
     public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
     {
         $ReflectionClass = new \ReflectionClass($this);
-        $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder($ReflectionClass->getShortName())]);
+        $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder([XmlEncoder::ROOT_NODE_NAME => $ReflectionClass->getShortName()])]);
 
         $xml = $serializer->serialize($this->toNormalizedArray($excludeAttribute), 'xml');
         if ('\\' === DIRECTORY_SEPARATOR) {
