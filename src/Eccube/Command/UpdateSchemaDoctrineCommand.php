@@ -69,7 +69,6 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
         $this
             ->setName('eccube:schema:update')
             ->setAliases(['doctrine:schema:update'])
-            ->addOption('em', null, InputOption::VALUE_OPTIONAL, 'The entity manager to use for this command')
             ->addOption('no-proxy', null, InputOption::VALUE_NONE, 'Does not use the proxy class and behaves the same as the original doctrine:schema:update command');
     }
 
