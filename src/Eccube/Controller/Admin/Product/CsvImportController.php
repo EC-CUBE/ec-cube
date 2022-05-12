@@ -1688,7 +1688,6 @@ class CsvImportController extends AbstractCsvImportController
             $path,
             'import.csv',
             'text/csv',
-            filesize($path),
             null,
             true
         )]);

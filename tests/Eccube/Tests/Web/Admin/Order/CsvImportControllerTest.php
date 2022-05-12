@@ -165,7 +165,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             $Shipping3->getId().',9012,2018-03-22',
         ]));
 
-        $file = new UploadedFile($tempFile, 'shipping.csv', 'text/csv', null, null, true);
+        $file = new UploadedFile($tempFile, 'shipping.csv', 'text/csv', null, true);
 
         $crawler = $this->client->request(
             'POST',

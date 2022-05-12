@@ -160,7 +160,6 @@ class FileControllerTest extends AbstractAdminWebTestCase
             realpath($filepath1),          // file path
             'aaa.html',         // original name
             'text/html',        // mimeType
-            null,               // file size
             null,               // error
             true                // test mode
         );
@@ -168,7 +167,6 @@ class FileControllerTest extends AbstractAdminWebTestCase
             realpath($filepath2),          // file path
             'bbb.html',         // original name
             'text/html',        // mimeType
-            null,               // file size
             null,               // error
             true                // test mode
         );
@@ -204,7 +202,6 @@ class FileControllerTest extends AbstractAdminWebTestCase
             realpath($php),          // file path
             'test.php',         // original name
             'x-php',        // mimeType
-            null,               // file size
             null,               // error
             true                // test mode
         );
@@ -213,7 +210,6 @@ class FileControllerTest extends AbstractAdminWebTestCase
             realpath($dot),          // file path
             '.dotfile',         // original name
             'text/plain',        // mimeType
-            null,               // file size
             null,               // error
             true                // test mode
         );

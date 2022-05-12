@@ -814,7 +814,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             $this->filepath,    // file path
             $original_name,     // original name
             'text/csv',         // mimeType
-            null,               // file size
             null,               // error
             true                // test mode
         );
