@@ -75,7 +75,7 @@ EOF
 
         $conn = $em->getConnection();
         $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-            ? $conn->fetchColumn("select nextval('dtb_member_id_seq')")
+            ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
             : null;
 
         $conn->insert('dtb_member', [
@@ -101,7 +101,7 @@ EOF
         $admin_mail = env('ECCUBE_ADMIN_MAIL', 'admin@example.com');
 
         $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-            ? $conn->fetchColumn("select nextval('dtb_base_info_id_seq')")
+            ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
             : null;
 
         $conn->insert('dtb_base_info', [
