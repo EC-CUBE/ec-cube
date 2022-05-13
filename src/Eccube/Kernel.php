@@ -123,9 +123,9 @@ class Kernel extends BaseKernel
         // RFC違反のメールを送信できるよう独自のValidationを設定
         if (!$container->getParameter('eccube_rfc_email_check')) {
             // RFC違反のメールを許容する
-            \Swift_DependencyContainer::getInstance()
-                ->register('email.validator')
-                ->asSharedInstanceOf(NoRFCEmailValidator::class);
+            // \Swift_DependencyContainer::getInstance()
+            //     ->register('email.validator')
+            //     ->asSharedInstanceOf(NoRFCEmailValidator::class);
         }
 
         $Logger = $container->get('eccube.logger');

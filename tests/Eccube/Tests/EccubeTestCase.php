@@ -378,23 +378,6 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
-     * Get the MailCollector
-     *
-     * @param boolean $sendRequest True to send requests internally.
-     *
-     * @return MessageDataCollector
-     */
-    protected function getMailCollector($sendRequest = true)
-    {
-        if ($sendRequest) {
-            $this->client->enableProfiler();
-            $this->client->request('POST', '/');
-        }
-
-        return $this->client->getProfile()->getCollector('swiftmailer');
-    }
-
-    /**
      * Generates a URL from the given parameters.
      *
      * @param string $route         The name of the route

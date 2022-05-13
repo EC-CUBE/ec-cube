@@ -26,13 +26,16 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MailTemplateRepository;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MailService
 {
     /**
-     * @var \Swift_Mailer
+     * @var MailerInterface
      */
     protected $mailer;
 
@@ -69,7 +72,7 @@ class MailService
     /**
      * MailService constructor.
      *
-     * @param \Swift_Mailer $mailer
+     * @param MailerInterface $mailer
      * @param MailTemplateRepository $mailTemplateRepository
      * @param MailHistoryRepository $mailHistoryRepository
      * @param BaseInfoRepository $baseInfoRepository
@@ -78,7 +81,7 @@ class MailService
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
-        \Swift_Mailer $mailer,
+        MailerInterface $mailer,
         MailTemplateRepository $mailTemplateRepository,
         MailHistoryRepository $mailHistoryRepository,
         BaseInfoRepository $baseInfoRepository,
@@ -113,13 +116,13 @@ class MailService
             'activateUrl' => $activateUrl,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Customer->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($Customer->getEmail())
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -131,11 +134,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -149,7 +151,7 @@ class MailService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CUSTOMER_CONFIRM, $event);
 
-        $count = $this->mailer->send($message, $failures);
+        $count = $this->mailer->send($message);
 
         log_info('仮会員登録メール送信完了', ['count' => $count]);
 
@@ -172,13 +174,13 @@ class MailService
             'BaseInfo' => $this->BaseInfo,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Customer->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($Customer->getEmail())
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -189,11 +191,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -230,13 +231,13 @@ class MailService
             'BaseInfo' => $this->BaseInfo,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$email])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($email)
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -247,11 +248,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -289,13 +289,13 @@ class MailService
         ]);
 
         // 問い合わせ者にメール送信
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail02() => $this->BaseInfo->getShopName()])
-            ->setTo([$formData['email']])
-            ->setBcc($this->BaseInfo->getEmail02())
-            ->setReplyTo($this->BaseInfo->getEmail02())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail02(), $this->BaseInfo->getShopName()))
+            ->to($formData['email'])
+            ->bcc($this->BaseInfo->getEmail02())
+            ->replyTo($this->BaseInfo->getEmail02())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -306,11 +306,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -335,7 +334,7 @@ class MailService
      *
      * @param \Eccube\Entity\Order $Order 受注情報
      *
-     * @return \Swift_Message
+     * @return Email
      */
     public function sendOrderMail(Order $Order)
     {
@@ -347,13 +346,13 @@ class MailService
             'Order' => $Order,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Order->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($Order->getEmail())
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -363,11 +362,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -385,14 +383,14 @@ class MailService
 
         $MailHistory = new MailHistory();
         $MailHistory->setMailSubject($message->getSubject())
-            ->setMailBody($message->getBody())
+            ->setMailBody($message->getTextBody())
             ->setOrder($Order)
             ->setSendDate(new \DateTime());
 
         // HTML用メールの設定
-        $multipart = $message->getChildren();
-        if (count($multipart) > 0) {
-            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+        $htmlBody = $message->getHtmlBody();
+        if (!empty($multipart)) {
+            $MailHistory->setMailHtmlBody($htmlBody);
         }
 
         $this->mailHistoryRepository->save($MailHistory);
@@ -421,13 +419,13 @@ class MailService
             'activateUrl' => $activateUrl,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail03() => $this->BaseInfo->getShopName()])
-            ->setTo([$Customer->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail03(), $this->BaseInfo->getShopName()))
+            ->to($Customer->getEmail())
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -439,11 +437,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -470,7 +467,7 @@ class MailService
      * @param Order $Order 受注情報
      * @param $formData 入力内容
      *
-     * @return \Swift_Message
+     * @return Email
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
@@ -480,14 +477,14 @@ class MailService
     {
         log_info('受注管理通知メール送信開始');
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$formData['mail_subject'])
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Order->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($formData['tpl_data']);
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$formData['mail_subject'])
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($Order->getEmail())
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04())
+            ->text($formData['tpl_data']);
 
         $event = new EventArgs(
             [
@@ -525,12 +522,12 @@ class MailService
             'reset_url' => $reset_url,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Customer->getEmail()])
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($Customer->getEmail())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -543,11 +540,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -586,13 +582,13 @@ class MailService
             'password' => $password,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Customer->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($Customer->getEmail())
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -604,11 +600,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -647,13 +642,13 @@ class MailService
         $Order = $Shipping->getOrder();
         $body = $this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate->getFileName());
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo($Order->getEmail())
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($Order->getEmail())
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -661,25 +656,24 @@ class MailService
             $htmlBody = $this->getShippingNotifyMailBody($Shipping, $Order, $htmlFileName, true);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $this->mailer->send($message);
 
         $MailHistory = new MailHistory();
         $MailHistory->setMailSubject($message->getSubject())
-                ->setMailBody($message->getBody())
+                ->setMailBody($message->getTextBody())
                 ->setOrder($Order)
                 ->setSendDate(new \DateTime());
 
         // HTML用メールの設定
-        $multipart = $message->getChildren();
-        if (count($multipart) > 0) {
-            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+        $htmlBody = $message->getHtmlBody();
+        if (!empty($htmlBody)) {
+            $MailHistory->setMailHtmlBody($htmlBody);
         }
 
         $this->mailHistoryRepository->save($MailHistory);
