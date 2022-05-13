@@ -20,9 +20,14 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\ShippingRepository;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 class ShippingControllerTest extends AbstractEditControllerTestCase
 {
+
+    use MailerAssertionsTrait;
+
     /**
      * @var ShippingRepository
      */
@@ -180,8 +185,6 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
      */
     public function testSendNotifyMail()
     {
-        $this->client->enableProfiler();
-
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
@@ -198,19 +201,18 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $Messages = $this->getMailCollector(false)->getMessages();
-        self::assertEquals(1, count($Messages));
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
-        /** @var \Swift_Message $Message */
-        $Message = $Messages[0];
+        $this->assertEmailTextBodyContains($Message, 'お客さまがご注文された以下の商品を発送いたしました');
+        $this->assertEmailHtmlBodyContains($Message, 'お客さまがご注文された以下の商品を発送いたしました');
 
-        self::assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
-        self::assertEquals([$Order->getEmail() => null], $Message->getTo());
+        self::assertEquals($Order->getEmail(), $Message->getTo()[0]->getAddress());
     }
 
     public function testSendNotifyMailWithSanitize()
     {
-        $this->client->enableProfiler();
         $Customer = $this->createCustomer();
         $Customer->setName01('<Sanitize&>');
 
@@ -230,29 +232,21 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $Messages = $this->getMailCollector(false)->getMessages();
-        self::assertEquals(1, count($Messages));
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
-        /** @var \Swift_Message $Message */
-        $Message = $Messages[0];
+        $this->assertEmailTextBodyContains($Message, 'お客さまがご注文された以下の商品を発送いたしました');
+        $this->assertEmailHtmlBodyContains($Message, 'お客さまがご注文された以下の商品を発送いたしました');
 
-        self::assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
-        self::assertEquals([$Order->getEmail() => null], $Message->getTo());
+        self::assertEquals($Order->getEmail(), $Message->getTo()[0]->getAddress());
 
-        $this->assertStringContainsString('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
-
-        $MultiPart = $Message->getChildren();
-        foreach ($MultiPart as $Part) {
-            if ($Part->getContentType() == 'text/html') {
-                $this->assertStringContainsString('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
-            }
-        }
+        $this->assertEmailTextBodyContains($Message, '＜Sanitize&＞', 'テキストメールがサニタイズされている');
+        $this->assertEmailHtmlBodyContains($Message, '&lt;Sanitize&amp;&gt;', 'HTMLメールがサニタイズされている');
     }
 
     public function testNotSendNotifyMail()
     {
-        $this->client->enableProfiler();
-
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
@@ -264,8 +258,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $Messages = $this->getMailCollector(false)->getMessages();
-        self::assertEquals(1, count($Messages));
+        $this->assertEmailCount(1);
     }
 
     /**
