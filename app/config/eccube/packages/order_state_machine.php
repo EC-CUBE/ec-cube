@@ -19,13 +19,12 @@ $container->loadFromExtension('framework', [
         'order' => [
             'type' => 'state_machine',
             'marking_store' => [
-                // 'type' => 'single_state',
-                // 'arguments' => 'status',
+                'type' => 'single_state'
             ],
             'supports' => [
                 OrderStateMachineContext::class,
             ],
-            // 'initial_place' => (string) Status::NEW,
+            'initial_marking' => (string) Status::NEW,
             'places' => [
                 (string) Status::NEW,
                 (string) Status::CANCEL,
