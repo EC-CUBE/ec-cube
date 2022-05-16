@@ -86,7 +86,7 @@ class PaginationTest extends EccubeTestCase
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
         $driver = $config->newDefaultAnnotationDriver(__DIR__, false);
-        $chain = $config->getMetadataDriverImpl();
+        $chain = $config->getMetadataDriverImpl()->getDriver();
         $chain->addDriver($driver, __NAMESPACE__);
 
         // 初期データより大きい値を指定
