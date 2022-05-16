@@ -19,9 +19,13 @@ use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 class MailControllerTest extends AbstractAdminWebTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var Customer
      */
@@ -98,7 +102,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     public function testComplete()
     {
-        $this->client->enableProfiler();
         $form = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
@@ -110,12 +113,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $this->Order->getId()])));
 
-        $mailCollector = $this->getMailCollector(false);
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];

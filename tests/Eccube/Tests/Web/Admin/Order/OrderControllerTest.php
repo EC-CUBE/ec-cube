@@ -25,9 +25,13 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 class OrderControllerTest extends AbstractAdminWebTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var OrderStatusRepository
      */
@@ -472,11 +476,9 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
                 $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-                $Messages = $this->getMailCollector(false)->getMessages();
-                $this->assertEquals(1, count($Messages));
-
-                /** @var \Swift_Message $Message */
-                $Message = $Messages[0];
+                $this->assertEmailCount(1);
+                /** @var Email $Message */
+                $Message = $this->getMailerMessage(0);
 
                 $this->assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
                 $this->assertEquals([$Order->getEmail() => null], $Message->getTo());

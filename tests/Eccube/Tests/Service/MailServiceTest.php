@@ -54,11 +54,6 @@ class MailServiceTest extends AbstractServiceTestCase
     protected $orderRepository;
 
     /**
-     * @var \Swift_Message
-     */
-    protected $Message;
-
-    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
