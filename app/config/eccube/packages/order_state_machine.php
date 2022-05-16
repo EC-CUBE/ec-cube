@@ -19,7 +19,7 @@ $container->loadFromExtension('framework', [
         'order' => [
             'type' => 'state_machine',
             'marking_store' => [
-                'type' => 'single_state'
+                'type' => 'method'
             ],
             'supports' => [
                 OrderStateMachineContext::class,
