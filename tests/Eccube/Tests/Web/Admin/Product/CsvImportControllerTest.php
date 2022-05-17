@@ -200,8 +200,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $pdo = $this->entityManager->getConnection()->getWrappedConnection();
         $sql = "SELECT * FROM dtb_product_class WHERE product_code = 'class1-only' ORDER BY visible ASC";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
+        $resultSet = $stmt->execute();
+        $result = $resultSet->fetchAllAssociative();
 
         $this->expected = 2;
         $this->actual = count($result);
@@ -306,8 +306,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $pdo = $this->entityManager->getConnection()->getWrappedConnection();
         $sql = 'SELECT * FROM dtb_product_class WHERE product_id = 2 ORDER BY visible ASC';
         $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
+        $resultSet = $stmt->execute();
+        $result = $resultSet->fetchAllAssociative();
 
         $this->expected = 2;
         $this->actual = count($result);
