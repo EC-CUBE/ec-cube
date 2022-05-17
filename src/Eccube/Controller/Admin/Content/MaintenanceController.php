@@ -89,9 +89,9 @@ class MaintenanceController extends AbstractController
         }
 
         if ($mode === 'manual') {
-            $path = $this->container->getParameter('eccube_content_maintenance_file_path');
+            $path = $this->getParameter('eccube_content_maintenance_file_path');
             if (file_exists($path)) {
-                unlink($this->container->getParameter('eccube_content_maintenance_file_path'));
+                unlink($this->getParameter('eccube_content_maintenance_file_path'));
             }
         } else {
             $maintenanceMode = [
