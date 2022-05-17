@@ -683,7 +683,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
         $crawler = $this->client->followRedirect();
         $html = $crawler->filter('body')->html();
-        $this->assertNotContains($COD1->getMethod(), $html);
+        $this->assertStringNotContainsString($COD1->getMethod(), $html);
         $this->assertStringContainsString($COD2->getMethod(), $html);
 
         // use point with payment: COD1
@@ -706,7 +706,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         $html = $crawler->filter('body')->html();
         $this->assertStringContainsString($COD1->getMethod(), $html);
-        $this->assertNotContains($COD2->getMethod(), $html);
+        $this->assertStringNotContainsString($COD2->getMethod(), $html);
     }
 
     /**
