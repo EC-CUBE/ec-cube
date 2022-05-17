@@ -33,7 +33,7 @@ class IntlExtensionTest extends TestCase
 
         $this->twig = new Environment($loader);
         $this->twig->getExtension(\Twig\Extension\CoreExtension::class)->setTimezone('Asia/Tokyo');
-        $this->twig->addExtension(new IntlExtension(new \Twig\Extra\Intl\IntlExtension()));
+        $this->twig->addExtension(new IntlExtension());
     }
 
     public function testDateDay()
