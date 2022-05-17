@@ -182,7 +182,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
                 'mode' => 'upload',
                 'now_dir' => '/',
             ],
-            ['file' => [$file1, $file2]]
+            ['form' => ['file' => [$file1, $file2]]]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -226,7 +226,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
                 'mode' => 'upload',
                 'now_dir' => '/',
             ],
-            ['file' => [$phpfile, $dotfile]]
+            ['form' => ['file' => [$phpfile, $dotfile]]]
         );
 
         $messages = $crawler->filter('p.errormsg')->each(function (Crawler $node) {
@@ -234,8 +234,9 @@ class FileControllerTest extends AbstractAdminWebTestCase
         });
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertStringContainsString('phpファイルはアップロードできません。', $messages);
-        $this->assertStringContainsString('.で始まるファイルはアップロードできません。', $messages);
+
+        $this->assertContains('phpファイルはアップロードできません。', $messages);
+        $this->assertContains('.で始まるファイルはアップロードできません。', $messages);
         $this->assertFalse(file_exists($this->getUserDataDir().'/test.php'));
         $this->assertFalse(file_exists($this->getUserDataDir().'/.dotfile'));
 
