@@ -827,7 +827,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
                     'import_file' => $file,
                 ],
             ],
-            ['import_file' => $file],
+            ['admin_csv_import' => ['import_file' => $file]],
             $isXmlHttpRequest ? ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'] : []
         );
 

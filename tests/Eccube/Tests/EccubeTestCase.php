@@ -20,7 +20,7 @@ use Eccube\Entity\ProductClass;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client as HttpClient;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -39,7 +39,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected $expected;
 
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $client;
 

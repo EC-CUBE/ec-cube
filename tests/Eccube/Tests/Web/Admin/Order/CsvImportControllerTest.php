@@ -176,7 +176,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
                     'import_file' => $file,
                 ],
             ],
-            ['import_file' => $file]
+            ['admin_csv_import' => ['import_file' => $file]]
         );
 
         $this->assertRegexp(
