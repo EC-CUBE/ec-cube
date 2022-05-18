@@ -92,7 +92,7 @@ class Extract extends FunctionNode
 
     public function getSql(SqlWalker $sqlWalker)
     {
-        $driver = $sqlWalker->getConnection()->getDriver()->getDatabasePlatform();
+        $driver = $sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName();
         // UTCとの時差(秒数)
         $diff = intval(date('Z'));
         $second = abs($diff);
