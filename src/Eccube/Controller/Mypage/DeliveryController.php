@@ -118,7 +118,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -139,7 +139,7 @@ class DeliveryController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE);
 
             return $this->redirect($this->generateUrl('mypage_delivery'));
         }
@@ -176,7 +176,7 @@ class DeliveryController extends AbstractController
                 'CustomerAddress' => $CustomerAddress,
             ], $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE);
 
         log_info('お届け先削除完了', [$CustomerAddress->getId()]);
 

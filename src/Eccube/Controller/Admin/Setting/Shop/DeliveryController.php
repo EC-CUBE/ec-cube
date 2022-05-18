@@ -105,7 +105,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_INDEX_COMPLETE);
 
         return [
             'Deliveries' => $Deliveries,
@@ -192,7 +192,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -260,7 +260,7 @@ class DeliveryController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -325,7 +325,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE);
 
         $this->addSuccess('admin.common.delete_complete', 'admin');
 
@@ -357,7 +357,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_VISIBILITY_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_VISIBILITY_COMPLETE);
 
         $this->addSuccess($message, 'admin');
 

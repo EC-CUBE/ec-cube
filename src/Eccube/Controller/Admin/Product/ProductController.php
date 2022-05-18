@@ -162,7 +162,7 @@ class ProductController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE);
 
         $searchForm = $builder->getForm();
 
@@ -253,7 +253,7 @@ class ProductController extends AbstractController
             $request
         );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH);
 
         $sortKey = $searchData['sortkey'];
 
@@ -353,7 +353,7 @@ class ProductController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE);
         $files = $event->getArgument('files');
 
         return $this->json(['files' => $files], 200);
@@ -423,7 +423,7 @@ class ProductController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -616,7 +616,7 @@ class ProductController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -656,7 +656,7 @@ class ProductController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_EDIT_SEARCH);
 
         $searchForm = $builder->getForm();
 
@@ -732,7 +732,7 @@ class ProductController extends AbstractController
                         ],
                         $request
                     );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE);
                     $deleteImages = $event->getArgument('deleteImages');
 
                     // 画像ファイルの削除(commit後に削除させる)
@@ -867,7 +867,7 @@ class ProductController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE);
 
                 $this->addSuccess('admin.product.copy_complete', 'admin');
 
@@ -971,7 +971,7 @@ class ProductController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CSV_EXPORT, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CSV_EXPORT);
 
                         $ExportCsvRow->pushData();
                     }

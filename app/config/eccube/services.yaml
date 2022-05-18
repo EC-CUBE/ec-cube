@@ -29,10 +29,6 @@ services:
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
           $_orderStateMachine: '@state_machine.order'
 
-    event_dispatcher:
-        class: Eccube\Event\EventDispatcherWrapper
-        public: true
-
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     Eccube\:

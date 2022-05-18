@@ -456,7 +456,7 @@ class ShoppingController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_COMPLETE_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_COMPLETE_INITIALIZE);
 
         if ($event->getResponse() !== null) {
             return $event->getResponse();
@@ -535,7 +535,7 @@ class ShoppingController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_COMPLETE);
 
             log_info('お届先情報更新完了', [$Shipping->getId()]);
 
@@ -596,7 +596,7 @@ class ShoppingController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -626,7 +626,7 @@ class ShoppingController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE);
 
             log_info('お届け先追加処理完了', ['order_id' => $Order->getId(), 'shipping_id' => $Shipping->getId()]);
 
@@ -667,7 +667,7 @@ class ShoppingController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_LOGIN_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_LOGIN_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -697,7 +697,7 @@ class ShoppingController extends AbstractShoppingController
             [],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_ERROR_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_ERROR_COMPLETE);
 
         if ($event->getResponse() !== null) {
             return $event->getResponse();

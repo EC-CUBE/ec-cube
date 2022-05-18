@@ -204,7 +204,7 @@ class OrderController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE);
 
         $searchForm = $builder->getForm();
 
@@ -299,7 +299,7 @@ class OrderController extends AbstractController
             $request
         );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_SEARCH);
         $sortKey = $searchData['sortkey'];
 
         if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
@@ -448,7 +448,7 @@ class OrderController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER);
 
                         $ExportCsvRow->pushData();
                     }
