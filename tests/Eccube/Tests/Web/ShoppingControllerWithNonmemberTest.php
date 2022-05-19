@@ -16,12 +16,16 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Service\OrderHelper;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 /**
  * Class ShoppingControllerWithNonmemberTest
  */
 class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var BaseInfo
      */
@@ -95,9 +99,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->scenarioCheckout();
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();

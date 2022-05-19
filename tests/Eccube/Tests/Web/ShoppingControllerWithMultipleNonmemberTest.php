@@ -16,6 +16,8 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 /**
  * 非会員複数配送指定のテストケース.
@@ -24,6 +26,8 @@ use Eccube\Repository\OrderRepository;
  */
 class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingControllerTestCase
 {
+    use MailerAssertionsTrait;
+
     /** @var BaseInfoRepository */
     private $baseInfoRepository;
 
@@ -124,8 +128,9 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $Messages = $this->getMailCollector(false)->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
@@ -1438,8 +1443,9 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $Messages = $this->getMailCollector(false)->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();

@@ -22,11 +22,15 @@ use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Fixture\Generator;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var BaseInfoRepository
      */
@@ -96,9 +100,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
@@ -540,9 +544,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
@@ -616,9 +620,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();

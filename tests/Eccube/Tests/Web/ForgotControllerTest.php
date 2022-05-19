@@ -71,8 +71,6 @@ class ForgotControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('forgot_complete')));
 
-        $mailCollector = $this->getMailCollector(false);
-
         // メール受信確認
         $this->assertEmailCount(1);
         /** @var Email $Message */
