@@ -32,6 +32,7 @@ use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,16 +62,23 @@ class ShoppingController extends AbstractShoppingController
      */
     protected $orderRepository;
 
+    /**
+     * @var ContainerInterface
+     */
+    protected $serviceContainer;
+
     public function __construct(
         CartService $cartService,
         MailService $mailService,
         OrderRepository $orderRepository,
-        OrderHelper $orderHelper
+        OrderHelper $orderHelper,
+        ContainerInterface $serviceContainer
     ) {
         $this->cartService = $cartService;
         $this->mailService = $mailService;
         $this->orderRepository = $orderRepository;
         $this->orderHelper = $orderHelper;
+        $this->serviceContainer = $serviceContainer;
     }
 
     /**
@@ -716,7 +724,7 @@ class ShoppingController extends AbstractShoppingController
      */
     private function createPaymentMethod(Order $Order, FormInterface $form)
     {
-        $PaymentMethod = $this->container->get($Order->getPayment()->getMethodClass());
+        $PaymentMethod = $this->serviceContainer->get($Order->getPayment()->getMethodClass());
         $PaymentMethod->setOrder($Order);
         $PaymentMethod->setFormType($form);
 
