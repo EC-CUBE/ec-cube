@@ -142,12 +142,10 @@ class PluginServiceTest extends AbstractServiceTestCase
 
     /**
      * 必須ファイルがないプラグインがインストール出来ないこと
-     *
-     * @expectedException \Eccube\Exception\PluginException
-     * @exceptedExceptionMessage config.yml not found or syntax error
      */
     public function testInstallPluginEmptyError()
     {
+        $this->expectException(\Eccube\Exception\PluginException::class);
         // インストールするプラグインを作成する
         $tmpname = 'dummy'.sha1(mt_rand());
         $tmpdir = $this->createTempDir();
@@ -246,12 +244,10 @@ class PluginServiceTest extends AbstractServiceTestCase
 
     /**
      * config.ymlに異常な項目がある場合
-     *
-     * @expectedException \Eccube\Exception\PluginException
-     * @exceptedExceptionMessage config.yml name empty
      */
     public function testnstallPluginMalformedConfigError()
     {
+        $this->expectException(\Eccube\Exception\PluginException::class);
         $tmpdir = $this->createTempDir();
         $tmpfile = $tmpdir.'/plugin.tar';
         $tar = new \PharData($tmpfile);
