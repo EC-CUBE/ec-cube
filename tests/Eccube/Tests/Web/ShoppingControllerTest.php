@@ -628,14 +628,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertStringContainsString('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
-
-        $MultiPart = $Message->getChildren();
-        foreach ($MultiPart as $Part) {
-            if ($Part->getContentType() == 'text/html') {
-                $this->assertStringContainsString('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
-            }
-        }
+        $this->assertEmailTextBodyContains($Message, '＜Sanitize&＞', 'テキストメールがサニタイズされている');
+        $this->assertEmailHtmlBodyContains($Message, '&lt;Sanitize&amp;&gt;', 'HTMLメールがサニタイズされている');
     }
 
     /**

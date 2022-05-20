@@ -137,7 +137,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->verify();
 
         $body = $Message->getBody();
-        $this->assertRegexp('/◎お届け先2/u', $body, '複数配送のため, お届け先2が存在する');
+        $this->assertEmailTextBodyContains($Message, '◎お届け先2', '複数配送のため, お届け先2が存在する');
     }
 
     public function createNonmemberFormData()
@@ -1452,7 +1452,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->verify();
 
         $body = $Message->getBody();
-        $this->assertRegexp('/◎お届け先/u', $body, '複数配送のため, お届け先1が存在する');
+        $this->assertEmailTextBodyContains($Message, '◎お届け先', '複数配送のため, お届け先1が存在する');
     }
 
     /**
