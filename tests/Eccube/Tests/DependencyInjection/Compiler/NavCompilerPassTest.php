@@ -335,6 +335,7 @@ class UpdateNav implements EccubeNav
     {
         return [
             'default' => [
+                'name' => 'update',
                 'icon' => 'fa-cube',
                 'child' => [
                     'default_1' => [
@@ -355,7 +356,6 @@ class UpdateNav implements EccubeNav
                         ],
                     ],
                 ],
-                'name' => 'update',
             ],
         ];
     }

@@ -160,7 +160,7 @@ class MailController extends AbstractController
                         $MailHistory = new MailHistory();
                         $MailHistory
                             ->setMailSubject($message->getSubject())
-                            ->setMailBody($message->getBody())
+                            ->setMailBody($message->getTextBody())
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
 

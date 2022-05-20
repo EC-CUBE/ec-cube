@@ -457,13 +457,11 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $orderIds[] = $Order->getId();
             $Shippings = $Order->getShippings();
             foreach ($Shippings as $Shipping) {
-                $this->client->enableProfiler();
-
-                $this->client->request(
+                $crawler = $this->client->request(
                     'PUT',
                     $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
                     [
-                        'order_status' => $OrderStatusDelivered,
+                        'order_status' => $OrderStatusDelivered->getId(),
                         'notificationMail' => 'on',
                         Constant::TOKEN_NAME => 'dummy',
                     ],
@@ -480,8 +478,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 /** @var Email $Message */
                 $Message = $this->getMailerMessage(0);
 
-                $this->assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
-                $this->assertEquals([$Order->getEmail() => null], $Message->getTo());
+                $this->assertStringContainsString('商品出荷のお知らせ', $Message->getSubject());
+                $this->assertEquals($Order->getEmail(), $Message->getTo()[0]->getAddress());
             }
         }
 
