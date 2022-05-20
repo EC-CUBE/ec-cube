@@ -394,7 +394,7 @@ EOD;
         // インストールできるか、インストーラが呼ばれるか
         ob_start();
         $this->assertTrue($this->service->install($tmpfile));
-        $this->assertRegexp('/Installed/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Installed/', ob_get_contents());
         ob_end_clean();
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
 
@@ -402,18 +402,18 @@ EOD;
 
         ob_start();
         $this->service->enable($plugin);
-        $this->assertRegexp('/Enabled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Enabled/', ob_get_contents());
         ob_end_clean();
         ob_start();
         $this->service->disable($plugin);
-        $this->assertRegexp('/Disabled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Disabled/', ob_get_contents());
         ob_end_clean();
 
         // アンインストールできるか、アンインストーラが呼ばれるか
         ob_start();
         $this->service->disable($plugin);
         $this->assertTrue($this->service->uninstall($plugin));
-        $this->assertRegexp('/DisabledUninstalled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/DisabledUninstalled/', ob_get_contents());
         ob_end_clean();
     }
 
@@ -655,7 +655,7 @@ EOD;
         ob_start();
         $this->assertTrue($this->service->install($tmpfile));
 
-        $this->assertRegexp('/Installed/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Installed/', ob_get_contents());
         ob_end_clean();
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/Entity/Block.php");
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/Entity/BlockTrait.php");
@@ -664,7 +664,7 @@ EOD;
 
         ob_start();
         $this->service->enable($plugin);
-        $this->assertRegexp('/Enabled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Enabled/', ob_get_contents());
         ob_end_clean();
 
         // check to Entity and Trait
@@ -677,14 +677,14 @@ EOD;
 
         ob_start();
         $this->service->disable($plugin);
-        $this->assertRegexp('/Disabled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Disabled/', ob_get_contents());
         ob_end_clean();
 
         // アンインストールできるか、アンインストーラが呼ばれるか
         ob_start();
         $this->service->disable($plugin);
         $this->assertTrue($this->service->uninstall($plugin));
-        $this->assertRegexp('/DisabledUninstalled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/DisabledUninstalled/', ob_get_contents());
         ob_end_clean();
     }
 
@@ -698,7 +698,7 @@ EOD;
 
         $this->service->removeAssets($code);
 
-        $this->assertFileNotExists($dir);
+        $this->assertFileDoesNotExist($dir);
     }
 
     public function testReadConfigNormalizeSourceToZero()

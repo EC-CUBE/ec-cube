@@ -169,7 +169,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $orderListing = $crawler->filter('#orderHistory > div')->text();
-        $this->assertRegexp('/'.$Order->getOrderNo().'/', $orderListing);
+        $this->assertMatchesRegularExpression('/'.$Order->getOrderNo().'/', $orderListing);
     }
 
     public function testNotShowProcessingOrder()
@@ -212,7 +212,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         $EditedCustomer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->find($this->Customer->getId());
 
-        $this->assertRegExp('/@dummy.dummy/', $EditedCustomer->getEmail());
+        $this->assertMatchesRegularExpression('/@dummy.dummy/', $EditedCustomer->getEmail());
     }
 
     /**

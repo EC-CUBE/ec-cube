@@ -408,7 +408,7 @@ class InstallControllerTest extends AbstractWebTestCase
     public function testDatabaseVersion()
     {
         $version = $this->controller->getDatabaseVersion($this->entityManager);
-        $this->assertRegExp('/\A([\d+\.]+)/', $version);
+        $this->assertMatchesRegularExpression('/\A([\d+\.]+)/', $version);
     }
 
     public function testCreateAppData()
@@ -424,7 +424,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->assertEquals(Constant::VERSION, $appData['cube_ver']);
         $this->assertEquals(phpversion(), $appData['php_ver']);
         $this->assertEquals(php_uname(), $appData['os_type']);
-        $this->assertRegExp('/(sqlite|mysql|postgresql).[0-9.]+/', $appData['db_ver']);
+        $this->assertMatchesRegularExpression('/(sqlite|mysql|postgresql).[0-9.]+/', $appData['db_ver']);
     }
 
     public function testConvertAdminAllowHosts()

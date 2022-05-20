@@ -179,7 +179,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             ['admin_csv_import' => ['import_file' => $file]]
         );
 
-        $this->assertRegexp(
+        $this->assertMatchesRegularExpression(
             '/CSVファイルをアップロードしました/u',
             $crawler->filter('div.alert-primary')->text()
         );

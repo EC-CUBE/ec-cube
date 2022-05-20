@@ -87,7 +87,7 @@ EOD;
         }
 
         // インストーラで例外発生時にテーブルやファイスシステム上にゴミが残らないか
-        $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname");
+        $this->assertFileDoesNotExist(__DIR__."/../../../../app/Plugin/$tmpname");
         // XXX PHPUnit によってロールバックが遅延してしまうので, 検証できないが, 消えているはず
         $this->assertFalse((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));
     }

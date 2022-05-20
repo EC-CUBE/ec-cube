@@ -82,7 +82,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
             ]
         );
 
-        $this->assertRegExp('/@dummy.dummy/', $this->Customer->getEmail());
+        $this->assertMatchesRegularExpression('/@dummy.dummy/', $this->Customer->getEmail());
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_withdraw_complete')));
 
@@ -113,7 +113,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
             ]
         );
 
-        $this->assertRegExp('/@dummy.dummy/', $this->Customer->getEmail());
+        $this->assertMatchesRegularExpression('/@dummy.dummy/', $this->Customer->getEmail());
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_withdraw_complete')));
 

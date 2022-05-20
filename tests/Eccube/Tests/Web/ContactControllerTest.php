@@ -72,7 +72,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->expected = 'お問い合わせ(確認ページ)';
         $this->actual = $crawler->filter('title')->text();
 
-        $this->assertRegexp('/'.preg_quote($this->expected).'$/', $this->actual);
+        $this->assertMatchesRegularExpression('/'.preg_quote($this->expected).'$/', $this->actual);
     }
 
     public function testComplete()
