@@ -73,8 +73,7 @@ class OrderPdfType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'data' => new \DateTime(),
                 'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\DateTime(),
+                    new Assert\NotBlank()
                 ],
                 'attr' => [
                     'data-target' => '#'.$this->getBlockPrefix().'_issue_date',
