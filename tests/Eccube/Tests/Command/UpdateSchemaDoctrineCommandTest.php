@@ -484,7 +484,7 @@ EOT
         \DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::commit();
         \DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::beginTransaction();
         try {
-            $process = new Process($command);
+            $process = new Process(explode(' ', $command));
             $process->mustRun();
 
             return $process->getOutput();
