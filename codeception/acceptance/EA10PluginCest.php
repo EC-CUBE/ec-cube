@@ -557,7 +557,7 @@ abstract class Abstract_Plugin
     public function traitExists()
     {
         foreach ($this->traits as $trait => $target) {
-            $this->I->assertContains($trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php'), 'Traitがあるはず '.$trait);
+            $this->I->assertStringContainsString($trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php'), 'Traitがあるはず '.$trait);
         }
     }
 
@@ -566,7 +566,7 @@ abstract class Abstract_Plugin
         foreach ($this->traits as $trait => $target) {
             $file = $this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php';
             if (file_exists($file)) {
-                $this->I->assertNotContains($trait, file_get_contents($file), 'Traitがないはず '.$trait);
+                $this->I->assertStringNotContainsString($trait, file_get_contents($file), 'Traitがないはず '.$trait);
             } else {
                 $this->I->assertTrue(true, 'Traitがないはず');
             }

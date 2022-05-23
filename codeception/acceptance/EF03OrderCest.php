@@ -71,9 +71,9 @@ class EF03OrderCest
             ->カートへ進む();
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertContains('彩のジェラートCUBE', $CartPage->商品名(1));
-        $I->assertContains('チョコ', $CartPage->商品名(1));
-        $I->assertContains('16mm × 16mm', $CartPage->商品名(1));
+        $I->assertStringContainsString('彩のジェラートCUBE', $CartPage->商品名(1));
+        $I->assertStringContainsString('チョコ', $CartPage->商品名(1));
+        $I->assertStringContainsString('16mm × 16mm', $CartPage->商品名(1));
         $I->assertEquals(1, $CartPage->商品数量(1));
     }
 
@@ -1017,7 +1017,7 @@ class EF03OrderCest
             ->カートへ進む();
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertContains('チェリーアイスサンド', $CartPage->商品名(1));
+        $I->assertStringContainsString('チェリーアイスサンド', $CartPage->商品名(1));
 
         /*
          * ブラウザ2で未ログインのまま別の商品を入れる
@@ -1028,7 +1028,7 @@ class EF03OrderCest
             ->カートへ進む();
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertContains('彩のジェラートCUBE', $CartPage->商品名(1));
+        $I->assertStringContainsString('彩のジェラートCUBE', $CartPage->商品名(1));
 
         /*
          * ブラウザ2でログインするとブラウザ1のカートとマージされている
@@ -1038,8 +1038,8 @@ class EF03OrderCest
         $CartPage = CartPage::go($I);
         $I->assertEquals(2, $CartPage->明細数());
         $itemNames = $I->grabMultiple(['css' => '.ec-cartRow__name a']);
-        $I->assertContains('彩のジェラートCUBE', $itemNames);
-        $I->assertContains('チェリーアイスサンド', $itemNames);
+        $I->assertStringContainsString('彩のジェラートCUBE', $itemNames);
+        $I->assertStringContainsString('チェリーアイスサンド', $itemNames);
 
         /*
          * ブラウザ1のカートもマージされている
@@ -1049,7 +1049,7 @@ class EF03OrderCest
         $CartPage = CartPage::go($I);
         $I->assertEquals(2, $CartPage->明細数());
         $itemNames = $I->grabMultiple(['css' => '.ec-cartRow__name a']);
-        $I->assertContains('彩のジェラートCUBE', $itemNames);
-        $I->assertContains('チェリーアイスサンド', $itemNames);
+        $I->assertStringContainsString('彩のジェラートCUBE', $itemNames);
+        $I->assertStringContainsString('チェリーアイスサンド', $itemNames);
     }
 }

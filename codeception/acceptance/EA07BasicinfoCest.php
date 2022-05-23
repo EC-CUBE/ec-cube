@@ -790,8 +790,8 @@ class EA07BasicinfoCest
         $I->wait(10);
         $csv = $I->getLastDownloadFile('/^order_\d{14}\.csv$/');
         $csvHeader = mb_convert_encoding(file($csv)[0], 'UTF-8', 'SJIS-win');
-        $I->assertContains('注文ID', $csvHeader);
-        $I->assertNotContains('誕生日', $csvHeader);
+        $I->assertStringContainsString('注文ID', $csvHeader);
+        $I->assertStringNotContainsString('誕生日', $csvHeader);
     }
 
     /**
