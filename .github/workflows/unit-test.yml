@@ -90,8 +90,19 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.11025'
+        run: bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine
+      ## XXX MySQL で Syntax error or access violation: 1305 SAVEPOINT DOCTRINE2_SAVEPOINT_3 does not exist が
+      ## 発生するため \DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener を削除する
+      ## see https://github.com/dmaicher/doctrine-test-bundle/issues/58#issuecomment-391081408
+      - run: sed -e '/DoctrineTestBundle/d' phpunit.xml.dist > phpunit.xml
+        if: ${{ matrix.db == 'mysql' }}
+      - name: PHPUnit
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_URL: 'smtp://127.0.0.11025'
         run: |
-          bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine
           bin/phpunit --group cache-clear
           bin/phpunit --group cache-clear-install
           bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
