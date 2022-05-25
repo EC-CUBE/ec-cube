@@ -48,9 +48,9 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     {
         $forceSSL = $container->resolveEnvPlaceholders('%env(ECCUBE_FORCE_SSL)%', true);
         // envから取得した内容が文字列のため, booleanに変換
-        if ('true' === $forceSSL) {
+        if ('1' === $forceSSL) {
             $forceSSL = true;
-        } elseif ('false' === $forceSSL) {
+        } elseif ('0' === $forceSSL) {
             $forceSSL = false;
         }
 

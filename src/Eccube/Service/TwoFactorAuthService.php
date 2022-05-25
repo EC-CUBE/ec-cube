@@ -195,7 +195,7 @@ class TwoFactorAuthService
     public function isEnabled()
     {
         $enabled = $this->eccubeConfig->get('eccube_2fa_enabled');
-        if (is_string($enabled) && $enabled === 'false' || $enabled === false) {
+        if (is_string($enabled) && $enabled === '0' || $enabled === false) {
             return false;
         }
 

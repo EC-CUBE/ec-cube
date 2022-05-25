@@ -467,9 +467,9 @@ class InstallController extends AbstractController
         $mailerUrl = $this->createMailerUrl($sessionData);
         $forceSSL = isset($sessionData['admin_force_ssl']) ? (bool) $sessionData['admin_force_ssl'] : false;
         if ($forceSSL === false) {
-            $forceSSL = 'false';
+            $forceSSL = '0';
         } elseif ($forceSSL === true) {
-            $forceSSL = 'true';
+            $forceSSL = '1';
         }
         $env = file_get_contents(__DIR__.'/../../../../.env.dist');
         $replacement = [
