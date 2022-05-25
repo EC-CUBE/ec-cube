@@ -24,7 +24,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class PluginServiceTest
  *
- * @group cache-clear
+ * @group plugin-service
  */
 class PluginServiceTest extends AbstractServiceTestCase
 {
