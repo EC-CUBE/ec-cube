@@ -62,7 +62,7 @@ class CategoryController extends AbstractController
      * @Route("/%eccube_admin_route%/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit", methods={"GET", "POST"})
      * @Template("@admin/Product/category.twig")
      */
-    public function index(Request $request, $parent_id = null, $id = null, CacheUtil $cacheUtil)
+    public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null)
     {
         if ($parent_id) {
             /** @var Category $Parent */

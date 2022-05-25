@@ -117,7 +117,7 @@ class DeliveryController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit", methods={"GET", "POST"})
      * @Template("@admin/Setting/Shop/delivery_edit.twig")
      */
-    public function edit(Request $request, $id = null, EccubeExtension $extension)
+    public function edit(Request $request, EccubeExtension $extension, $id = null)
     {
         if (is_null($id)) {
             $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'ASC']);

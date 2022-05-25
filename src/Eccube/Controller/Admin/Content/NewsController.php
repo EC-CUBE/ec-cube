@@ -56,7 +56,7 @@ class NewsController extends AbstractController
      *
      * @return array
      */
-    public function index(Request $request, $page_no = 1, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, $page_no = 1)
     {
         $qb = $this->newsRepository->getQueryBuilderAll();
 
@@ -91,7 +91,7 @@ class NewsController extends AbstractController
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function edit(Request $request, $id = null, CacheUtil $cacheUtil)
+    public function edit(Request $request, CacheUtil $cacheUtil, $id = null)
     {
         if ($id) {
             $News = $this->newsRepository->find($id);

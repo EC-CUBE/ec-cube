@@ -85,6 +85,7 @@ class MockSessionHandler extends \SessionHandler
         return $this->data;
     }
 
+    #[\ReturnTypeWillChange]
     public function open($path, $name)
     {
         return parent::open($path, $name);
@@ -101,6 +102,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         $this->data = $handler->getData();
     }
 
+    #[\ReturnTypeWillChange]
     public function open($path, $name)
     {
         echo __FUNCTION__, "\n";
