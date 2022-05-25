@@ -5,6 +5,9 @@ namespace Eccube\Tests\Plugin;
 use Eccube\Plugin\AbstractPluginManager;
 use Eccube\Tests\EccubeTestCase;
 
+/**
+ * @group plugin-service
+ */
 class PluginManagerTest  extends EccubeTestCase
 {
     public function testMigration()

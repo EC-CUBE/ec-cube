@@ -121,5 +121,6 @@ jobs:
           MAILER_URL: 'smtp://127.0.0.11025'
         run: |
           rm -r app/Plugin/*
+          git checkout app/Plugin
           rm -r var/cache
           bin/phpunit --group plugin-service
