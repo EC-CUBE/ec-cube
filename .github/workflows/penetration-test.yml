@@ -17,6 +17,7 @@ jobs:
           - 'test/front_guest/contact.test.ts'
           - 'test/admin/content_layout.test.ts'
           - 'test/admin/content_layout_delete.test.ts'
+          - 'test/admin/customer_new.test.ts'
           - 'test/admin/customer.test.ts'
           - 'test/admin/content_cache.test.ts'
           - 'test/admin/customer_edit.test.ts'
@@ -61,6 +62,10 @@ jobs:
         if: matrix.group == 'test/admin/content_layout_delete.test.ts'
         working-directory: zap/selenium/ci/TypeScript
         run: git am patches/0001-DeleteLayout.patch
+      - name: Apply patch to new_customer
+        if: matrix.group == 'test/admin/customer_new.test.ts'
+        working-directory: zap/selenium/ci/TypeScript
+        run: git am patches/0002-NewCustomer.patch
       - name: Penetration testing
         working-directory: zap/selenium/ci/TypeScript
         env:
