@@ -7,7 +7,8 @@ volumes:
 services:
   ec-cube:
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     environment:
       DATABASE_URL: "mysql://dbuser:secret@mysql/eccubedb"
       DATABASE_SERVER_VERSION: 5.7
@@ -25,3 +26,8 @@ services:
       - 13306:3306
     networks:
       - backend
+    healthcheck:
+      test: mysqladmin ping
+      interval: 3s
+      timeout: 3s
+      retries: 3

@@ -1,6 +1,23 @@
 #!/bin/sh
 set -e
 
+if [ ! -d /var/www/html/vendor/bin ]; then
+    composer install \
+        --no-scripts \
+        --no-autoloader \
+        --no-plugins \
+        -d ${APACHE_DOCUMENT_ROOT}
+    composer dumpautoload -o --apcu
+fi
+
+bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 || (
+    if [ -z ${DATABASE_URL} ]; then
+        cp .env.dist .env
+    fi
+    composer run-script installer-scripts
+    composer run-script auto-scripts
+)
+
 echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS" > /etc/apache2/conf-enabled/eccube_env.conf
 
 # first arg is `-f` or `--some-option`

@@ -156,7 +156,7 @@
             "assets:install --symlink --relative html": "symfony-cmd"
         },
         "installer-scripts": {
-            "doctrine:database:create": "bin/console doctrine:database:create",
+            "doctrine:database:create": "bin/console doctrine:database:create --if-not-exists",
             "doctrine:schema:create": "bin/console doctrine:schema:create",
             "eccube:fixtures:load": "bin/console eccube:fixtures:load"
         },
