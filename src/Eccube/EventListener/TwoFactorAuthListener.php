@@ -73,7 +73,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
      */
     public function onKernelController(ControllerArgumentsEvent $event)
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

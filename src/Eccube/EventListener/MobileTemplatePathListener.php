@@ -52,7 +52,7 @@ class MobileTemplatePathListener implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
         // 管理画面の場合は実行しない.

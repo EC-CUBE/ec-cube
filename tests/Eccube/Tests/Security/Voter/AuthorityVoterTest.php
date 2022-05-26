@@ -51,7 +51,7 @@ class AuthorityVoterTest extends EccubeTestCase
         $request->method('getPathInfo')->willReturn($accessUrl);
 
         $requestStack = $this->createMock(RequestStack::class);
-        $requestStack->method('getMasterRequest')->willReturn($request);
+        $requestStack->method('getMainRequest')->willReturn($request);
 
         $voter = new AuthorityVoter($this->authorityRoleRepository, $requestStack, $this->eccubeConfig);
 

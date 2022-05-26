@@ -32,7 +32,7 @@ class ForwardOnlyListener implements EventSubscriberInterface
      */
     public function onController(ControllerEvent $event)
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

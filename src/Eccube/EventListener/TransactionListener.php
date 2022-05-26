@@ -71,7 +71,7 @@ class TransactionListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -99,7 +99,7 @@ class TransactionListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
