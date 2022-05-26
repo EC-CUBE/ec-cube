@@ -58,7 +58,7 @@ class InstallerCommand extends Command
             public $appDebug;
             public $databaseUrl;
             public $serverVersion;
-            public $mailerUrl;
+            public $mailerDsn;
             public $authMagic;
             public $adminRoute;
             public $templateCode;
@@ -74,7 +74,7 @@ class InstallerCommand extends Command
                             'APP_DEBUG' => $this->appDebug,
                             'DATABASE_URL' => $this->databaseUrl,
                             'DATABASE_SERVER_VERSION' => $this->serverVersion,
-                            'MAILER_URL' => $this->mailerUrl,
+                            'MAILER_DSN' => $this->mailerDsn,
                             'ECCUBE_AUTH_MAGIC' => $this->authMagic,
                             'ECCUBE_ADMIN_ROUTE' => $this->adminRoute,
                             'ECCUBE_TEMPLATE_CODE' => $this->templateCode,
@@ -119,7 +119,7 @@ class InstallerCommand extends Command
             ' $ export APP_DEBUG=0',
             ' $ export DATABASE_URL=database_url',
             ' $ export DATABASE_SERVER_VERSION=server_version',
-            ' $ export MAILER_URL=mailer_url',
+            ' $ export MAILER_DSN=mailer_dsn',
             ' $ export ECCUBE_AUTH_MAGIC=auth_magic',
             ' ... and more',
             ' $ php bin/console eccube:install --no-interaction',
@@ -141,12 +141,12 @@ class InstallerCommand extends Command
         // DATABASE_SERVER_VERSION
         $this->envFileUpdater->serverVersion = $this->getDatabaseServerVersion($databaseUrl);
 
-        // MAILER_URL
-        $mailerUrl = $this->container->getParameter('eccube_mailer_url');
-        if (empty($mailerUrl)) {
-            $mailerUrl = 'null://localhost';
+        // MAILER_DSN
+        $mailerDsn = $this->container->getParameter('eccube_mailer_dsn');
+        if (empty($mailerDsn)) {
+            $mailerDsn = 'null://null';
         }
-        $this->envFileUpdater->mailerUrl = $this->io->ask('Mailer Url', $mailerUrl);
+        $this->envFileUpdater->mailerDsn = $this->io->ask('Mailer Dsn', $mailerDsn);
 
         // ECCUBE_AUTH_MAGIC
         $authMagic = $this->container->getParameter('eccube_auth_magic');

@@ -286,7 +286,7 @@ class InstallController extends AbstractController
             $sessionData['admin_force_ssl'] = $this->getParameter('eccube_force_ssl');
 
             // メール
-            $mailerUrl = $this->getParameter('eccube_mailer_url');
+            $mailerUrl = $this->getParameter('eccube_mailer_dsn');
             $sessionData = array_merge($sessionData, $this->extractMailerUrl($mailerUrl));
         } else {
             // 初期値設定
@@ -476,7 +476,7 @@ class InstallController extends AbstractController
             'APP_ENV' => 'prod',
             'APP_DEBUG' => '0',
             'DATABASE_URL' => $databaseUrl,
-            'MAILER_URL' => $mailerUrl,
+            'MAILER_DSN' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $sessionData['authmagic'],
             'DATABASE_SERVER_VERSION' => isset($sessionData['database_version']) ? $sessionData['database_version'] : '3',
             'ECCUBE_ADMIN_ALLOW_HOSTS' => $this->convertAdminAllowHosts($sessionData['admin_allow_hosts']),
