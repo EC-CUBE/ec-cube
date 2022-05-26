@@ -95,7 +95,6 @@ class AbstractCsvImportController extends AbstractController
 
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
 
         return $response;
     }

@@ -987,7 +987,6 @@ class ProductController extends AbstractController
         $filename = 'product_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
 
         log_info('商品CSV出力ファイル名', [$filename]);
 

@@ -351,7 +351,6 @@ class CategoryController extends AbstractController
         $filename = 'category_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
 
         log_info('カテゴリCSV出力ファイル名', [$filename]);
 

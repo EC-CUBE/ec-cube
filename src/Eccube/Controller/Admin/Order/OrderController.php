@@ -462,7 +462,6 @@ class OrderController extends AbstractController
 
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$fileName);
-        $response->send();
 
         return $response;
     }

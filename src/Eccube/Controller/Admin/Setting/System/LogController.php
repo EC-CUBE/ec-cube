@@ -81,7 +81,6 @@ class LogController extends AbstractController
                     }
                 }
             });
-            $response->send();
 
             return $response;
         } else {
