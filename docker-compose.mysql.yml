@@ -17,11 +17,11 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: eccubedb
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: secret
     volumes:
       - mysql-database:/var/lib/mysql
+      - ./dockerbuild/grant_to_dbuser.sql:/docker-entrypoint-initdb.d/grant_to_dbuser.sql
     ports:
       - 13306:3306
     networks:

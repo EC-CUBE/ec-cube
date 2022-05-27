@@ -16,7 +16,6 @@ services:
   postgres:
     image: postgres:14
     environment:
-      POSTGRES_DB: eccubedb
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: secret
     ports:

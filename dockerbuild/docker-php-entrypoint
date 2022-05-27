@@ -13,9 +13,14 @@ fi
 
 bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 || (
     if [ -z ${DATABASE_URL} ]; then
-        su www-data -s /bin/sh -c 'cp .env.dist .env'
+        cp .env.dist .env
     fi
-    su www-data -s /bin/sh -c 'composer run-script installer-scripts && composer run-script auto-scripts'
+    composer run-script installer-scripts
+    composer run-script auto-scripts
+    find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or -print0 \
+        | xargs -0 chown www-data:www-data
+    find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or \( -type d -print0 \) \
+      | xargs -0 chmod g+s
 )
 
 echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS" > /etc/apache2/conf-enabled/eccube_env.conf
