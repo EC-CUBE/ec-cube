@@ -61,7 +61,6 @@ class EccubeExtension extends AbstractExtension
             new TwigFunction('active_menus', [$this, 'getActiveMenus']),
             new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
             new TwigFunction('product', [$this, 'getProduct']),
-            new TwigFunction('php_*', [$this, 'getPhpFunctions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new TwigFunction('currency_symbol', [$this, 'getCurrencySymbol']),
         ];
     }
@@ -211,27 +210,6 @@ class EccubeExtension extends AbstractExtension
         } catch (\Exception $e) {
             return null;
         }
-
-        return null;
-    }
-
-    /**
-     * Twigでphp関数を使用できるようにする。
-     *
-     * @return mixed|null
-     * @deprecated since EC-CUBE 4.1
-     */
-    public function getPhpFunctions()
-    {
-        @trigger_error(sprintf('The "%s()" method is deprecated since EC-CUBE 4.1.', __METHOD__), \E_USER_DEPRECATED);
-        $arg_list = func_get_args();
-        $function = array_shift($arg_list);
-
-        if (is_callable($function)) {
-            return call_user_func_array($function, $arg_list);
-        }
-
-        trigger_error('Called to an undefined function : php_'.$function, E_USER_WARNING);
 
         return null;
     }
