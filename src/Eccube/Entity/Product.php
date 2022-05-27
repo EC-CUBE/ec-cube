@@ -417,7 +417,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $ProductImages = $this->getProductImage();
 
-            return empty($ProductImages) ? null : $ProductImages[0];
+            return $ProductImages->isEmpty() ? null : $ProductImages[0];
         }
 
         public function getMainFileName()

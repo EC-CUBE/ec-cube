@@ -134,7 +134,7 @@ class EntityProxyService
             return $originalPath;
         }
 
-        $rc = new ClassReflection($entityClassName);
+        $rc = new \ReflectionClass($entityClassName);
 
         return str_replace('\\', '/', $rc->getFileName());
     }

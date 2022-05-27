@@ -310,7 +310,7 @@ class OrderItemType extends AbstractType
      */
     protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors)
     {
-        if (empty($errors)) {
+        if (count($errors) < 1) {
             return;
         }
 

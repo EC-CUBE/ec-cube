@@ -389,7 +389,7 @@ class MailService
 
         // HTML用メールの設定
         $htmlBody = $message->getHtmlBody();
-        if (!empty($multipart)) {
+        if (!empty($htmlBody)) {
             $MailHistory->setMailHtmlBody($htmlBody);
         }
 
