@@ -1038,8 +1038,8 @@ class EF03OrderCest
         $CartPage = CartPage::go($I);
         $I->assertEquals(2, $CartPage->明細数());
         $itemNames = $I->grabMultiple(['css' => '.ec-cartRow__name a']);
-        $I->assertStringContainsString('彩のジェラートCUBE', $itemNames);
-        $I->assertStringContainsString('チェリーアイスサンド', $itemNames);
+        $I->assertContains('彩のジェラートCUBE', $itemNames);
+        $I->assertContains('チェリーアイスサンド', $itemNames);
 
         /*
          * ブラウザ1のカートもマージされている

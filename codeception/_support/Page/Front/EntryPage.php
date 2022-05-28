@@ -50,7 +50,7 @@ class EntryPage extends AbstractFrontPage
             'entry[user_policy_check]' => '1',
         ];
         $this->tester->submitForm(['css' => '.ec-layoutRole__main form'], $form, ['css' => 'button.ec-blockBtn--action']);
-        $this->tester->see($form['entry[email][first]']);
+        $this->tester->seeInField(['id' => 'entry_email_first'], $form['entry[email][first]']);
         $this->tester->click('.ec-registerRole form button.ec-blockBtn--action');
 
         return $this;
