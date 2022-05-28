@@ -22,7 +22,7 @@ file that was distributed with this source code.
                     {%- endfor -%}
                     {{ not loop.last ? ',&nbsp;' }}
                 {%- endfor -%}
-            {%- elseif php_is_a(child.vars.data, '\DateTime') -%}
+            {%- elseif child.vars.data.timestamp is defined -%}
                 {# DateTimeType の時は分まで表示 #}
                 {% if 'datetime' in child.vars.id %}
                     {{ child.vars.data|date_sec }}
