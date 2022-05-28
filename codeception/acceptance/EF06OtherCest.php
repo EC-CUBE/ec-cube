@@ -255,7 +255,7 @@ class EF06OtherCest
             'contact[name][name01]' => '姓',
             'contact[name][name02]' => '名',
             'contact[postal_code]' => '5300001',
-            'contact[address][pref]' => 27,
+            'contact[address][pref]' => '27',
             'contact[address][addr01]' => '大阪市北区梅田',
             'contact[phone_number]' => '111111111',
             'contact[contents]' => 'お問い合わせ内容の送信',
