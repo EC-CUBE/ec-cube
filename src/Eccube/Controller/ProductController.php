@@ -194,66 +194,12 @@ class ProductController extends AbstractController
             $forms[$Product->getId()] = $addCartForm->createView();
         }
 
-        // 表示件数
-        $builder = $this->formFactory->createNamedBuilder(
-            'disp_number',
-            ProductListMaxType::class,
-            null,
-            [
-                'required' => false,
-                'allow_extra_fields' => true,
-            ]
-        );
-        if ($request->getMethod() === 'GET') {
-            $builder->setMethod('GET');
-        }
-
-        $event = new EventArgs(
-            [
-                'builder' => $builder,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_INDEX_DISP);
-
-        $dispNumberForm = $builder->getForm();
-
-        $dispNumberForm->handleRequest($request);
-
-        // ソート順
-        $builder = $this->formFactory->createNamedBuilder(
-            'orderby',
-            ProductListOrderByType::class,
-            null,
-            [
-                'required' => false,
-                'allow_extra_fields' => true,
-            ]
-        );
-        if ($request->getMethod() === 'GET') {
-            $builder->setMethod('GET');
-        }
-
-        $event = new EventArgs(
-            [
-                'builder' => $builder,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_INDEX_ORDER);
-
-        $orderByForm = $builder->getForm();
-
-        $orderByForm->handleRequest($request);
-
         $Category = $searchForm->get('category_id')->getData();
 
         return [
             'subtitle' => $this->getPageTitle($searchData),
             'pagination' => $pagination,
             'search_form' => $searchForm->createView(),
-            'disp_number_form' => $dispNumberForm->createView(),
-            'order_by_form' => $orderByForm->createView(),
             'forms' => $forms,
             'Category' => $Category,
         ];

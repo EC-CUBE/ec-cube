@@ -140,8 +140,8 @@ file that was distributed with this source code.
                 {% if pagination.totalItemCount > 0 %}
                     <div class="ec-searchnavRole__actions">
                         <div class="ec-select">
-                            {{ form_widget(disp_number_form, {'id': '', 'attr': {'class': 'disp-number'}}) }}
-                            {{ form_widget(order_by_form, {'id': '', 'attr': {'class': 'order-by'}}) }}
+                            {{ form_widget(search_form.disp_number, {'id': '', 'attr': {'class': 'disp-number'}}) }}
+                            {{ form_widget(search_form.orderby, {'id': '', 'attr': {'class': 'order-by'}}) }}
                         </div>
                     </div>
                 {% endif %}
