@@ -13,7 +13,6 @@
 
 namespace Eccube\Form\Type\Master;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
@@ -24,32 +23,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductListOrderByType extends AbstractType
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $options = $event->getForm()->getConfig()->getOptions();
-            if (!$event->getData()) {
-                $data = current($options['choice_loader']->loadChoiceList()->getChoices());
-                $event->setData($data);
-            }
-        });
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $options = $event->getForm()->getConfig()->getOptions();
-            $values = $options['choice_loader']->loadChoiceList()->getValues();
-            if (!in_array($event->getData(), $values)) {
-                $data = current($values);
-                $event->setData($data);
+            if ($event->getData() === null) {
+                $event->setData((string)$options['choices'][0]->getId());
             }
         });
     }
