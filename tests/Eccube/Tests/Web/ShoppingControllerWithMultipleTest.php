@@ -69,7 +69,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
      */
     protected function tearDown(): void
     {
-        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 

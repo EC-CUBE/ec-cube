@@ -43,7 +43,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
     protected function tearDown(): void
     {
-        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
