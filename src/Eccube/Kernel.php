@@ -58,6 +58,13 @@ class Kernel extends BaseKernel
 
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
+    public function __construct(string $environment, bool $debug)
+    {
+        parent::__construct($environment, $debug);
+
+        $this->loadEntityProxies();
+    }
+
     public function getCacheDir()
     {
         return $this->getProjectDir().'/var/cache/'.$this->environment;
@@ -108,7 +115,7 @@ class Kernel extends BaseKernel
     public function boot()
     {
         // Symfonyがsrc/Eccube/Entity以下を読み込む前にapp/proxy/entity以下をロードする
-        $this->loadEntityProxies();
+        //$this->loadEntityProxies();
 
         parent::boot();
 
