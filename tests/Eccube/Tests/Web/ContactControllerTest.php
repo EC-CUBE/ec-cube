@@ -194,7 +194,6 @@ class ContactControllerTest extends AbstractWebTestCase
 
     public function testMailNoRFC()
     {
-        $this->markTestIncomplete('eccube_rfc_email_check オプションは未実装');
         $formData = $this->createFormData();
         // RFCに準拠していないメールアドレスを設定
         $formData['email'] = 'aa..@example.com';

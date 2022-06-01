@@ -26,6 +26,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MailTemplateRepository;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -69,6 +70,9 @@ class MailService
      */
     protected $twig;
 
+    /** @var ContainerInterface */
+    protected $container;
+
     /**
      * MailService constructor.
      *
@@ -79,6 +83,7 @@ class MailService
      * @param EventDispatcherInterface $eventDispatcher
      * @param \Twig\Environment $twig
      * @param EccubeConfig $eccubeConfig
+     * @param ContainerInterface $container
      */
     public function __construct(
         MailerInterface $mailer,
@@ -87,7 +92,8 @@ class MailService
         BaseInfoRepository $baseInfoRepository,
         EventDispatcherInterface $eventDispatcher,
         \Twig\Environment $twig,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
+        ContainerInterface $container
     ) {
         $this->mailer = $mailer;
         $this->mailTemplateRepository = $mailTemplateRepository;
@@ -96,6 +102,7 @@ class MailService
         $this->eventDispatcher = $eventDispatcher;
         $this->eccubeConfig = $eccubeConfig;
         $this->twig = $twig;
+        $this->container = $container;
     }
 
     /**
@@ -119,7 +126,7 @@ class MailService
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
-            ->to($Customer->getEmail())
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
             ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
@@ -177,7 +184,7 @@ class MailService
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
-            ->to($Customer->getEmail())
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
             ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
@@ -234,7 +241,7 @@ class MailService
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
-            ->to($email)
+            ->to($this->convertRFCViolatingEmail($email))
             ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
@@ -292,7 +299,7 @@ class MailService
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail02(), $this->BaseInfo->getShopName()))
-            ->to($formData['email'])
+            ->to($this->convertRFCViolatingEmail($formData['email']))
             ->bcc($this->BaseInfo->getEmail02())
             ->replyTo($this->BaseInfo->getEmail02())
             ->returnPath($this->BaseInfo->getEmail04());
@@ -349,7 +356,7 @@ class MailService
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
-            ->to($Order->getEmail())
+            ->to($this->convertRFCViolatingEmail($Order->getEmail()))
             ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
@@ -422,7 +429,7 @@ class MailService
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail03(), $this->BaseInfo->getShopName()))
-            ->to($Customer->getEmail())
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
             ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
@@ -480,7 +487,7 @@ class MailService
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$formData['mail_subject'])
             ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
-            ->to($Order->getEmail())
+            ->to($this->convertRFCViolatingEmail($Order->getEmail()))
             ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04())
@@ -525,7 +532,7 @@ class MailService
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
-            ->to($Customer->getEmail())
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
 
@@ -585,7 +592,7 @@ class MailService
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
-            ->to($Customer->getEmail())
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
             ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
@@ -645,7 +652,7 @@ class MailService
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
-            ->to($Order->getEmail())
+            ->to($this->convertRFCViolatingEmail($Order->getEmail()))
             ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
@@ -737,5 +744,44 @@ class MailService
         } else {
             return null;
         }
+    }
+
+    /**
+     * RFC違反のメールの local part を "" で囲む.
+     *
+     * パラメータ eccube_rfc_email_check == true の場合は変換しない
+     *
+     * @param string $email
+     * @return Address
+     */
+    public function convertRFCViolatingEmail(string $email): Address
+    {
+        if ($this->container->getParameter('eccube_rfc_email_check')) {
+            return new Address($email);
+        }
+
+        // see https://blog.everqueue.com/chiba/2009/03/22/163/
+        $wsp           = '[\x20\x09]';
+        $vchar         = '[\x21-\x7e]';
+        $quoted_pair   = "\\\\(?:$vchar|$wsp)";
+        $qtext         = '[\x21\x23-\x5b\x5d-\x7e]';
+        $qcontent      = "(?:$qtext|$quoted_pair)";
+        $quoted_string = "\"$qcontent*\"";
+        $atext         = '[a-zA-Z0-9!#$%&\'*+\-\/\=?^_`{|}~]';
+        $dot_atom      = "$atext+(?:[.]$atext+)*";
+        $local_part    = "(?:$dot_atom|$quoted_string)";
+        $domain        = $dot_atom;
+        $addr_spec     = "{$local_part}[@]$domain";
+
+        $dot_atom_loose   = "$atext+(?:[.]|$atext)*";
+        $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
+        $addr_spec_loose  = "{$local_part_loose}[@]$domain";
+
+        $regexp = "/\A{$addr_spec}\z/";
+        if (!preg_match($regexp, $email)) {
+            $email = preg_replace('/^(.*)@(.*)$/', '"$1"@$2', $email);
+        }
+
+        return new Address($email);
     }
 }

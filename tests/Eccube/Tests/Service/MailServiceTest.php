@@ -19,6 +19,7 @@ use Eccube\Entity\Shipping;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -346,5 +347,20 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $this->assertEmailTextBodyContains($Message, 'パスワードを変更いたしました。');
         $this->assertEmailHtmlBodyNotContains($Message, 'パスワードを変更いたしました。', 'HTML part は存在しない');
+    }
+
+    public function testConvertRFCViolatingEmail()
+    {
+        $this->expected = new Address('".aa"@example.com');
+        $this->actual = $this->mailService->convertRFCViolatingEmail('.aa@example.com');
+        $this->verify();
+
+        $this->expected = new Address('"aa."@example.com');
+        $this->actual = $this->mailService->convertRFCViolatingEmail('aa.@example.com');
+        $this->verify();
+
+        $this->expected = new Address('"a..a"@example.com');
+        $this->actual = $this->mailService->convertRFCViolatingEmail('a..a@example.com');
+        $this->verify();
     }
 }
