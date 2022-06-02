@@ -153,8 +153,8 @@ class EF05MypageCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
-            'entry[password][first]' => 'password',
-            'entry[password][second]' => 'password',
+            'entry[plain_password][first]' => 'password',
+            'entry[plain_password][second]' => 'password',
         ];
 
         $findPluginByCode = Fixtures::get('findPluginByCode');

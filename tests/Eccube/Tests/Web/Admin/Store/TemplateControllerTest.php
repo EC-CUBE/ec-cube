@@ -58,7 +58,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     protected $env;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -86,7 +86,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove($this->dir);
@@ -135,7 +135,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         // .envが更新されている
-        self::assertRegexp('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
+        self::assertMatchesRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
     }
 
     /**

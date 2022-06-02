@@ -31,7 +31,7 @@ while (!@file_exists($parent.'/vendor/autoload.php')) {
 
 require $parent.'/vendor/autoload.php';
 if (file_exists($parent.'/.env')) {
-    (new Dotenv($parent))->overload();
+    (Dotenv::createUnsafeMutable($parent, '.env'))->load();
 }
 
 Request::setTrustedProxies(['127.0.0.1', '::1', 'REMOTE_ADDR'], Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
@@ -85,6 +85,7 @@ class MockSessionHandler extends \SessionHandler
         return $this->data;
     }
 
+    #[\ReturnTypeWillChange]
     public function open($path, $name)
     {
         return parent::open($path, $name);
@@ -101,6 +102,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         $this->data = $handler->getData();
     }
 
+    #[\ReturnTypeWillChange]
     public function open($path, $name)
     {
         echo __FUNCTION__, "\n";

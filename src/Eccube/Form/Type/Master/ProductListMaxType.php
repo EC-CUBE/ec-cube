@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Master;
 
 use Eccube\Form\Type\MasterType;
+use Eccube\Entity\Master\ProductListMax;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -27,19 +28,10 @@ class ProductListMaxType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $options = $event->getForm()->getConfig()->getOptions();
-            if (!$event->getData()) {
-                $data = current(array_keys($options['choice_loader']->loadChoiceList()->getValues()));
-                $event->setData($data);
-            }
-        });
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $options = $event->getForm()->getConfig()->getOptions();
-            $values = $options['choice_loader']->loadChoiceList()->getValues();
-            if (!in_array($event->getData(), $values)) {
-                $data = current($values);
-                $event->setData($data);
+            if ($event->getData() === null) {
+                $event->setData((string)$options['choices'][0]->getId());
             }
         });
     }
@@ -50,7 +42,7 @@ class ProductListMaxType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\ProductListMax',
+            'class' => ProductListMax::class,
         ]);
     }
 

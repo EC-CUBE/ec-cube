@@ -13,7 +13,7 @@
 
 namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
-use Doctrine\Common\Persistence\Mapping\MappingException;
+use Doctrine\Persistence\Mapping\MappingException;
 
 class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
 {

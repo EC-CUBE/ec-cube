@@ -43,7 +43,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      *
      * @throws \ReflectionException
      */
-    public function setUp()
+    protected function setUp(): void
     {
         // Fixme: because the proxy entity still not working, it's can not help to run this test case
         $this->markTestIncomplete('Fatal error: Cannot declare class Eccube\Entity\BaseInfo, because the name is already in use in app\proxy\entity\BaseInfo.php on line 28');
@@ -60,7 +60,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $finder = new Finder();
         $iterator = $finder
@@ -258,7 +258,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
         $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
 
-        self::assertContains($trait, $useStatement, $message);
+        self::assertStringContainsString($trait, $useStatement, $message);
     }
 
     private static function assertNotContainsTrait($file, $trait, $message = 'Traitが有効になっているはず')

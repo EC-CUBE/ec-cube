@@ -38,7 +38,7 @@ class OrderTest extends EccubeTestCase
     protected $Order;
     protected $rate;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
@@ -192,7 +192,7 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableTotalByTaxRate()
     {
         $Order = $this->createTestOrder();
-        self::assertArraySubset([10 => 220, 8 => 216], $Order->getTaxableTotalByTaxRate());
+        self::assertSame([10 => 220, 8 => 216], $Order->getTaxableTotalByTaxRate());
     }
 
     public function testGetTaxableDiscountItems()

@@ -160,7 +160,6 @@ class FileControllerTest extends AbstractAdminWebTestCase
             realpath($filepath1),          // file path
             'aaa.html',         // original name
             'text/html',        // mimeType
-            null,               // file size
             null,               // error
             true                // test mode
         );
@@ -168,7 +167,6 @@ class FileControllerTest extends AbstractAdminWebTestCase
             realpath($filepath2),          // file path
             'bbb.html',         // original name
             'text/html',        // mimeType
-            null,               // file size
             null,               // error
             true                // test mode
         );
@@ -184,7 +182,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
                 'mode' => 'upload',
                 'now_dir' => '/',
             ],
-            ['file' => [$file1, $file2]]
+            ['form' => ['file' => [$file1, $file2]]]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -204,7 +202,6 @@ class FileControllerTest extends AbstractAdminWebTestCase
             realpath($php),          // file path
             'test.php',         // original name
             'x-php',        // mimeType
-            null,               // file size
             null,               // error
             true                // test mode
         );
@@ -213,7 +210,6 @@ class FileControllerTest extends AbstractAdminWebTestCase
             realpath($dot),          // file path
             '.dotfile',         // original name
             'text/plain',        // mimeType
-            null,               // file size
             null,               // error
             true                // test mode
         );
@@ -230,7 +226,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
                 'mode' => 'upload',
                 'now_dir' => '/',
             ],
-            ['file' => [$phpfile, $dotfile]]
+            ['form' => ['file' => [$phpfile, $dotfile]]]
         );
 
         $messages = $crawler->filter('p.errormsg')->each(function (Crawler $node) {
@@ -238,6 +234,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         });
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+
         $this->assertContains('phpファイルはアップロードできません。', $messages);
         $this->assertContains('.で始まるファイルはアップロードできません。', $messages);
         $this->assertFalse(file_exists($this->getUserDataDir().'/test.php'));
@@ -249,7 +246,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
     protected function getUserDataDir()
     {
-        return self::$container->getParameter('kernel.project_dir').'/html/user_data';
+        return __DIR__.'/../../../../../../html/user_data';
     }
 
     private function getJailDir($path)
@@ -260,8 +257,9 @@ class FileControllerTest extends AbstractAdminWebTestCase
         return $jailPath ? $jailPath : '/';
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
+        parent::tearDown();
         if (file_exists($this->getUserDataDir().'/aaa.html')) {
             unlink($this->getUserDataDir().'/aaa.html');
         }

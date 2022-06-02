@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -56,6 +57,7 @@ class CustomerEditController extends AbstractController
         $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         // 編集
         if ($id) {
+            /** @var Customer $Customer */
             $Customer = $this->customerRepository
                 ->find($id);
 
@@ -64,15 +66,12 @@ class CustomerEditController extends AbstractController
             }
 
             $oldStatusId = $Customer->getStatus()->getId();
-            // 編集用にデフォルトパスワードをセット
-            $previous_password = $Customer->getPassword();
-            $Customer->setPassword($this->eccubeConfig['eccube_default_password']);
+            $Customer->setPlainPassword($this->eccubeConfig['eccube_default_password']);
         // 新規登録
         } else {
             $Customer = $this->customerRepository->newCustomer();
 
             $oldStatusId = null;
-            $previous_password = null;
         }
 
         // 会員登録フォーム
@@ -86,7 +85,7 @@ class CustomerEditController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -97,14 +96,12 @@ class CustomerEditController extends AbstractController
 
             $encoder = $this->encoderFactory->getEncoder($Customer);
 
-            if ($Customer->getPassword() === $this->eccubeConfig['eccube_default_password']) {
-                $Customer->setPassword($previous_password);
-            } else {
+            if ($Customer->getPlainPassword() !== $this->eccubeConfig['eccube_default_password']) {
                 if ($Customer->getSalt() === null) {
                     $Customer->setSalt($encoder->createSalt());
                     $Customer->setSecretKey($this->customerRepository->getUniqueSecretKey());
                 }
-                $Customer->setPassword($encoder->encodePassword($Customer->getPassword(), $Customer->getSalt()));
+                $Customer->setPassword($encoder->encodePassword($Customer->getPlainPassword(), $Customer->getSalt()));
             }
 
             // 退会ステータスに更新の場合、ダミーのアドレスに更新
@@ -125,7 +122,7 @@ class CustomerEditController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 

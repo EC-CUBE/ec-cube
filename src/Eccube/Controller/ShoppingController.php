@@ -32,6 +32,7 @@ use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,16 +62,23 @@ class ShoppingController extends AbstractShoppingController
      */
     protected $orderRepository;
 
+    /**
+     * @var ContainerInterface
+     */
+    protected $serviceContainer;
+
     public function __construct(
         CartService $cartService,
         MailService $mailService,
         OrderRepository $orderRepository,
-        OrderHelper $orderHelper
+        OrderHelper $orderHelper,
+        ContainerInterface $serviceContainer
     ) {
         $this->cartService = $cartService;
         $this->mailService = $mailService;
         $this->orderRepository = $orderRepository;
         $this->orderHelper = $orderHelper;
+        $this->serviceContainer = $serviceContainer;
     }
 
     /**
@@ -403,7 +411,7 @@ class ShoppingController extends AbstractShoppingController
             } catch (\Exception $e) {
                 log_error('[注文処理] 予期しないエラーが発生しました.', [$e->getMessage()]);
 
-                $this->entityManager->rollback();
+                // $this->entityManager->rollback(); FIXME ユニットテストで There is no active transaction エラーになってしまう
 
                 $this->addError('front.shopping.system_error');
 
@@ -459,7 +467,7 @@ class ShoppingController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_COMPLETE_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_COMPLETE_INITIALIZE);
 
         if ($event->getResponse() !== null) {
             return $event->getResponse();
@@ -538,7 +546,7 @@ class ShoppingController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_COMPLETE);
 
             log_info('お届先情報更新完了', [$Shipping->getId()]);
 
@@ -599,7 +607,7 @@ class ShoppingController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -629,7 +637,7 @@ class ShoppingController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE);
 
             log_info('お届け先追加処理完了', ['order_id' => $Order->getId(), 'shipping_id' => $Shipping->getId()]);
 
@@ -670,7 +678,7 @@ class ShoppingController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_LOGIN_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_LOGIN_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -700,7 +708,7 @@ class ShoppingController extends AbstractShoppingController
             [],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_ERROR_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_ERROR_COMPLETE);
 
         if ($event->getResponse() !== null) {
             return $event->getResponse();
@@ -719,7 +727,7 @@ class ShoppingController extends AbstractShoppingController
      */
     private function createPaymentMethod(Order $Order, FormInterface $form)
     {
-        $PaymentMethod = $this->container->get($Order->getPayment()->getMethodClass());
+        $PaymentMethod = $this->serviceContainer->get($Order->getPayment()->getMethodClass());
         $PaymentMethod->setOrder($Order);
         $PaymentMethod->setFormType($form);
 

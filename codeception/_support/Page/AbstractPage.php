@@ -35,7 +35,7 @@ abstract class AbstractPage
      */
     protected function goPage($url, $pageTitle = '')
     {
-        $this->tester->amOnPage('/'.$url);
+        $this->tester->amOnPage($url);
 
         return $this;
     }

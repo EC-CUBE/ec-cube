@@ -88,7 +88,7 @@ class MailController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_MAIL_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -125,7 +125,7 @@ class MailController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE);
                         $form->get('template')->setData($MailTemplate);
                         if ($MailTemplate) {
                             $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
@@ -160,7 +160,7 @@ class MailController extends AbstractController
                         $MailHistory = new MailHistory();
                         $MailHistory
                             ->setMailSubject($message->getSubject())
-                            ->setMailBody($message->getBody())
+                            ->setMailBody($message->getTextBody())
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
 
@@ -176,7 +176,7 @@ class MailController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE);
 
                         $this->addSuccess('admin.order.mail_send_complete', 'admin');
 

@@ -14,8 +14,8 @@
 namespace Eccube\Doctrine\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Member;
 use Eccube\Request\Context;

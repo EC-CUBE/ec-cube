@@ -53,7 +53,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     /** @var PaymentRepository */
     protected $paymentRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->createProduct();

@@ -13,6 +13,7 @@
 
 namespace Eccube\EventListener;
 
+use Detection\MobileDetect;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
@@ -30,9 +31,8 @@ use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
 use Eccube\Service\SystemService;
-use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
@@ -90,7 +90,7 @@ class TwigInitializeListener implements EventSubscriberInterface
     private $eccubeConfig;
 
     /**
-     * @var MobileDetector
+     * @var MobileDetect
      */
     private $mobileDetector;
 
@@ -122,7 +122,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         AuthorityRoleRepository $authorityRoleRepository,
         EccubeConfig $eccubeConfig,
         Context $context,
-        MobileDetector $mobileDetector,
+        MobileDetect $mobileDetector,
         UrlGeneratorInterface $router,
         LayoutRepository $layoutRepository,
         SystemService $systemService
@@ -146,7 +146,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if ($this->initialized) {
             return;
@@ -166,7 +166,7 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function setFrontVariables(GetResponseEvent $event)
+    public function setFrontVariables(RequestEvent $event)
     {
         $request = $event->getRequest();
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
@@ -237,7 +237,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
     }
 
-    public function setAdminGlobals(GetResponseEvent $event)
+    public function setAdminGlobals(RequestEvent $event)
     {
         // メニュー表示用配列.
         $menus = [];

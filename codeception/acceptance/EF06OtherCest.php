@@ -97,7 +97,9 @@ class EF06OtherCest
         $I->seeEmailCount(1);
         $I->seeInLastEmailSubjectTo($customer->getEmail(), 'パスワード変更のご確認');
 
-        $url = $I->grabFromLastEmailTo($customer->getEmail(), '@/forgot/reset/(.*)@');
+        $messageBody = $I->lastMessage()->getSourceQuotedPrintableDecoded();
+        preg_match('@/forgot/reset(.*)@', $messageBody, $matches);
+        $url = $matches[0];
 
         $I->resetEmails();
         $I->amOnPage($url);
@@ -210,7 +212,7 @@ class EF06OtherCest
 
         // メールチェック
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'お問い合わせを受け付けました');
@@ -255,7 +257,7 @@ class EF06OtherCest
             'contact[name][name01]' => '姓',
             'contact[name][name02]' => '名',
             'contact[postal_code]' => '5300001',
-            'contact[address][pref]' => 27,
+            'contact[address][pref]' => '27',
             'contact[address][addr01]' => '大阪市北区梅田',
             'contact[phone_number]' => '111111111',
             'contact[contents]' => 'お問い合わせ内容の送信',
@@ -271,7 +273,7 @@ class EF06OtherCest
 
         // メールチェック
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'お問い合わせを受け付けました');

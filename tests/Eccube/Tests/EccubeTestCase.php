@@ -20,9 +20,8 @@ use Eccube\Entity\ProductClass;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client as HttpClient;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -40,7 +39,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected $expected;
 
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $client;
 
@@ -57,10 +56,9 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Client を生成しトランザクションを開始する.
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        self::bootKernel();
         $this->client = static::createClient();
         $this->entityManager = self::$container->get('doctrine')->getManager();
         $this->eccubeConfig = self::$container->get(EccubeConfig::class);
@@ -69,7 +67,7 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * トランザクションをロールバックする.
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -274,125 +272,6 @@ abstract class EccubeTestCase extends WebTestCase
                 $prop->setValue($this, null);
             }
         }
-    }
-
-    /**
-     * MailCatcher を初期化する.
-     *
-     * このメソッドは主に setUp() メソッドでコールされる.
-     * MailCatcher が起動してない場合は, テストをスキップする.
-     * MailCatcher については \Eccube\Tests\Service\MailServiceTest のコメントを参照してください
-     *
-     * @see \Eccube\Tests\Service\MailServiceTest
-     * @see http://mailcatcher.me/
-     * @deprecated
-     */
-    protected function initializeMailCatcher()
-    {
-        $this->checkMailCatcherStatus();
-    }
-
-    /**
-     * MailCatcher の起動状態をチェックする.
-     *
-     * MailCatcher が起動していない場合は, テストをスキップする.
-     *
-     * @deprecated
-     */
-    protected function checkMailCatcherStatus()
-    {
-        trigger_error('MailCatcher is deprecated. Please implementation to the EccubeTestCase::getMailCollector().', E_USER_ERROR);
-        try {
-            $httpClient = new HttpClient();
-            $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
-            if ($response->getStatusCode() !== 200) {
-                throw new HttpException($response->getStatusCode());
-            }
-        } catch (HttpException $e) {
-            $this->markTestSkipped($e->getMailCatcherMessage().'['.$e->getStatusCode().']');
-        } catch (\Exception $e) {
-            $message = 'MailCatcher is not available';
-            $this->markTestSkipped($message);
-            log_error($message);
-        }
-    }
-
-    /**
-     * MailCatcher のメッセージをすべて削除する.
-     *
-     * @deprecated
-     */
-    protected function cleanUpMailCatcherMessages()
-    {
-        try {
-            $httpClient = new HttpClient();
-            $response = $httpClient->delete(self::MAILCATCHER_URL.'messages');
-        } catch (\Exception $e) {
-            log_error('['.get_class().'] '.$e->getMessage());
-        }
-    }
-
-    /**
-     * MailCatcher のメッセージをすべて取得する.
-     *
-     * @return array MailCatcher のメッセージの配列
-     *
-     * @deprecated
-     */
-    protected function getMailCatcherMessages()
-    {
-        $httpClient = new HttpClient();
-        $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
-
-        return json_decode($response->getBody(true));
-    }
-
-    /**
-     * MailCatcher のメッセージを ID を指定して取得する.
-     *
-     * @param integer $id メッセージの ID
-     *
-     * @return object MailCatcher のメッセージ
-     *
-     * @deprecated
-     */
-    protected function getMailCatcherMessage($id)
-    {
-        $httpClient = new HttpClient();
-        $response = $httpClient->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
-
-        return json_decode($response->getBody(true));
-    }
-
-    /**
-     * MailCatcher のメッセージソースをデコードする.
-     *
-     * @param object $Message MailCatcher のメッセージ
-     *
-     * @return string デコードされた eml 形式のソース
-     *
-     * @deprecated
-     */
-    protected function parseMailCatcherSource($Message)
-    {
-        return quoted_printable_decode($Message->source);
-    }
-
-    /**
-     * Get the MailCollector
-     *
-     * @param boolean $sendRequest True to send requests internally.
-     *
-     * @return MessageDataCollector
-     */
-    protected function getMailCollector($sendRequest = true)
-    {
-        if ($sendRequest) {
-            $this->client->enableProfiler();
-            $this->client->request('POST', '/');
-        }
-
-        return $this->client->getProfile()->getCollector('swiftmailer');
     }
 
     /**

@@ -69,7 +69,6 @@ class CalendarType extends AbstractType
                 'required' => true,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'attr' => [
                     'class' => 'datetimepicker-input',

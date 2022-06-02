@@ -356,7 +356,7 @@ class EA07BasicinfoCest
         CustomerManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_編集(1);
-        $I->seeInField(CustomerManagePage::$ポイント, $customerPoint);
+        $I->seeInField(CustomerManagePage::$ポイント, (string)$customerPoint);
 
         $I->expect('マイベージにて、ポイントが付与されていること');
         MyPage::go($I);
@@ -394,13 +394,13 @@ class EA07BasicinfoCest
             ->検索($customer->getEmail())
             ->一覧_編集(1);
         $I->see($expected_discount, OrderEditPage::$ポイント値引き額);
-        $I->seeInField(OrderEditPage::$利用ポイント, $expected_point);
+        $I->seeInField(OrderEditPage::$利用ポイント, (string)$expected_point);
 
         $I->expect('管理画面・会員管理にて、ポイントが減少していること');
         CustomerManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_編集(1);
-        $I->seeInField(CustomerManagePage::$ポイント, $customerPoint);
+        $I->seeInField(CustomerManagePage::$ポイント, (string)$customerPoint);
 
         $I->amGoingTo('マイベージ 注文詳細にて、利用ポイントが計算されていること');
         MyPage::go($I)->注文履歴詳細(0);
@@ -790,8 +790,8 @@ class EA07BasicinfoCest
         $I->wait(10);
         $csv = $I->getLastDownloadFile('/^order_\d{14}\.csv$/');
         $csvHeader = mb_convert_encoding(file($csv)[0], 'UTF-8', 'SJIS-win');
-        $I->assertContains('注文ID', $csvHeader);
-        $I->assertNotContains('誕生日', $csvHeader);
+        $I->assertStringContainsString('注文ID', $csvHeader);
+        $I->assertStringNotContainsString('誕生日', $csvHeader);
     }
 
     /**

@@ -58,6 +58,13 @@ class Kernel extends BaseKernel
 
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
+    public function __construct(string $environment, bool $debug)
+    {
+        parent::__construct($environment, $debug);
+
+        $this->loadEntityProxies();
+    }
+
     public function getCacheDir()
     {
         return $this->getProjectDir().'/var/cache/'.$this->environment;
@@ -108,7 +115,7 @@ class Kernel extends BaseKernel
     public function boot()
     {
         // Symfonyがsrc/Eccube/Entity以下を読み込む前にapp/proxy/entity以下をロードする
-        $this->loadEntityProxies();
+        //$this->loadEntityProxies();
 
         parent::boot();
 
@@ -118,22 +125,15 @@ class Kernel extends BaseKernel
         $timezone = $container->getParameter('timezone');
         UTCDateTimeType::setTimeZone($timezone);
         UTCDateTimeTzType::setTimeZone($timezone);
-        date_default_timezone_set($timezone);
 
-        // RFC違反のメールを送信できるよう独自のValidationを設定
-        if (!$container->getParameter('eccube_rfc_email_check')) {
-            // RFC違反のメールを許容する
-            \Swift_DependencyContainer::getInstance()
-                ->register('email.validator')
-                ->asSharedInstanceOf(NoRFCEmailValidator::class);
-        }
+        date_default_timezone_set($timezone);
 
         $Logger = $container->get('eccube.logger');
         if ($Logger !== null && $Logger instanceof \Eccube\Log\Logger) {
             LoggerFacade::init($container, $Logger);
         }
         $Translator = $container->get('translator');
-        if ($Translator !== null && $Translator instanceof \Symfony\Component\Translation\TranslatorInterface) {
+        if ($Translator !== null && $Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
             TranslatorFacade::init($Translator);
         }
 

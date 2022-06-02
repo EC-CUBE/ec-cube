@@ -38,7 +38,7 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
      */
     private $customerOrderStatusRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
@@ -92,7 +92,7 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertFalse($this->client->getResponse()->isRedirection());
-        $this->assertContains('入力されていません。', $crawler->text());
+        $this->assertStringContainsString('入力されていません。', $crawler->text());
     }
 
     private function createFormData()

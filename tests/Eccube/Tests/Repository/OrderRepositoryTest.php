@@ -34,7 +34,7 @@ class OrderRepositoryTest extends EccubeTestCase
     /** @var OrderRepository */
     protected $orderRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);

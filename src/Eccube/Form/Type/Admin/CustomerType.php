@@ -88,7 +88,7 @@ class CustomerType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
                 'attr' => [
                     'placeholder' => 'common.mail_address_sample',
@@ -105,7 +105,6 @@ class CustomerType extends AbstractType
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\LessThanOrEqual([
@@ -114,7 +113,7 @@ class CustomerType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('password', RepeatedPasswordType::class, [
+            ->add('plain_password', RepeatedPasswordType::class, [
                 // 'type' => 'password',
                 'first_options' => [
                     'label' => 'member.label.pass',
@@ -155,8 +154,8 @@ class CustomerType extends AbstractType
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
-            if ($Customer->getPassword() != '' && $Customer->getPassword() == $Customer->getEmail()) {
-                $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            if ($Customer->getPlainPassword() != '' && $Customer->getPlainPassword() == $Customer->getEmail()) {
+                $form['plain_password']['first']->addError(new FormError(trans('common.password_eq_email')));
             }
         });
 

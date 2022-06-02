@@ -14,7 +14,8 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\NoopWordInflector;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Proxy\Proxy;
@@ -29,7 +30,8 @@ abstract class AbstractEntity implements \ArrayAccess
 {
     public function offsetExists($offset)
     {
-        $method = Inflector::classify($offset);
+        $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
+        $method = $inflector->classify($offset);
 
         return method_exists($this, $method)
             || method_exists($this, "get$method")
@@ -43,7 +45,8 @@ abstract class AbstractEntity implements \ArrayAccess
 
     public function offsetGet($offset)
     {
-        $method = Inflector::classify($offset);
+        $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
+        $method = $inflector->classify($offset);
 
         if (method_exists($this, $method)) {
             return $this->$method();
@@ -196,7 +199,7 @@ abstract class AbstractEntity implements \ArrayAccess
     public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
     {
         $ReflectionClass = new \ReflectionClass($this);
-        $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder($ReflectionClass->getShortName())]);
+        $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder([XmlEncoder::ROOT_NODE_NAME => $ReflectionClass->getShortName()])]);
 
         $xml = $serializer->serialize($this->toNormalizedArray($excludeAttribute), 'xml');
         if ('\\' === DIRECTORY_SEPARATOR) {

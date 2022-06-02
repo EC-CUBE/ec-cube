@@ -29,10 +29,6 @@ services:
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
           $_orderStateMachine: '@state_machine.order'
 
-    event_dispatcher:
-        class: Eccube\Event\EventDispatcherWrapper
-        public: true
-
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     Eccube\:
@@ -100,7 +96,7 @@ services:
         tags: ['controller.service_arguments']
 
     twig.extension.stringloader:
-        class: Twig_Extension_StringLoader
+        class: Twig\Extension\StringLoaderExtension
         tags: ['twig.extension']
 
     eccube.collector.core:
@@ -169,7 +165,7 @@ services:
 
     Monolog\Processor\IntrospectionProcessor:
         arguments:
-            - '!php/const:Monolog\Logger::DEBUG'
+            - 100               # Logger::DEBUG = 100
             - ['Eccube\\Log', 'Psr\\Log']
         tags:
             - { name: monolog.processor }
@@ -206,7 +202,7 @@ services:
     Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
         public: true
 
-    SunCat\MobileDetectBundle\DeviceDetector\MobileDetector:
+    Detection\MobileDetect:
         tags:
           - { name: mobile_detect.mobile_detector.default }
           - { name: mobile_detect.mobile_detector }

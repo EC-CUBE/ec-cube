@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 if (!class_exists('\Eccube\Entity\Customer')) {
@@ -115,6 +116,12 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          * @ORM\Column(name="birth", type="datetimetz", nullable=true)
          */
         private $birth;
+
+        /**
+         * @Assert\NotBlank()
+         * @Assert\Length(max=4096)
+         */
+        private $plain_password;
 
         /**
          * @var string|null
@@ -607,6 +614,25 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         public function getBirth()
         {
             return $this->birth;
+        }
+
+        /**
+         * @param string|null $password
+         * @return $this
+         */
+        public function setPlainPassword(?string $password): self
+        {
+            $this->plain_password = $password;
+
+            return $this;
+        }
+
+        /**
+         * @return string|null
+         */
+        public function getPlainPassword(): ?string
+        {
+            return $this->plain_password;
         }
 
         /**

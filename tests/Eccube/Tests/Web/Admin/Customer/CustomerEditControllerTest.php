@@ -28,7 +28,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     /**
      * setUp
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
@@ -54,7 +54,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             'address' => ['pref' => '5', 'addr01' => $faker->city, 'addr02' => $faker->streetAddress],
             'phone_number' => $faker->phoneNumber,
             'email' => $email,
-            'password' => ['first' => $password, 'second' => $password],
+            'plain_password' => ['first' => $password, 'second' => $password],
             'birth' => $birth->format('Y').'-'.$birth->format('n').'-'.$birth->format('j'),
             'sex' => 1,
             'job' => 1,
@@ -91,7 +91,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = '会員一覧';
         $this->actual = $crawler->filter('#customer_form > div.c-conversionArea > div > div > div:nth-child(1) > div')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -169,7 +169,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $orderListing = $crawler->filter('#orderHistory > div')->text();
-        $this->assertRegexp('/'.$Order->getOrderNo().'/', $orderListing);
+        $this->assertMatchesRegularExpression('/'.$Order->getOrderNo().'/', $orderListing);
     }
 
     public function testNotShowProcessingOrder()
@@ -194,7 +194,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $orderListing = $crawler->filter('#orderHistory')->text();
-        $this->assertContains('この会員の購入履歴がありません', $orderListing);
+        $this->assertStringContainsString('この会員の購入履歴がありません', $orderListing);
     }
 
     /**
@@ -212,7 +212,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         $EditedCustomer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->find($this->Customer->getId());
 
-        $this->assertRegExp('/@dummy.dummy/', $EditedCustomer->getEmail());
+        $this->assertMatchesRegularExpression('/@dummy.dummy/', $EditedCustomer->getEmail());
     }
 
     /**

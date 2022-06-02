@@ -24,7 +24,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
 
     protected $env;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -34,7 +34,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         if ($this->env) {
             file_put_contents($this->envFile, $this->env);
@@ -77,7 +77,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $this->expected = 'admin.setting.system.security.admin_url_changed';
         $this->verify();
 
-        self::assertRegexp('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', file_get_contents($this->envFile));
+        self::assertMatchesRegularExpression('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', file_get_contents($this->envFile));
     }
 
     /**

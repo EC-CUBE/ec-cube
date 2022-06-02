@@ -22,7 +22,7 @@ use function file_put_contents;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use function unlink;
 
@@ -169,7 +169,7 @@ class SystemService implements EventSubscriberInterface
     /**
      * KernelEvents::TERMINATE で設定されるEvent
      */
-    public function disableMaintenanceEvent(PostResponseEvent $event)
+    public function disableMaintenanceEvent(TerminateEvent $event)
     {
         if ($this->disableMaintenanceAfterResponse) {
             $this->switchMaintenance(false, $this->maintenanceMode);

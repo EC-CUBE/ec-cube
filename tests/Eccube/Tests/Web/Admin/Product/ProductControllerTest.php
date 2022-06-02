@@ -69,7 +69,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -92,7 +92,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove($this->imageDir);
@@ -128,16 +128,16 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'product_image' => [],
             'description_detail' => $faker->realText,
             'description_list' => $faker->paragraph,
-            'Category' => null,
+            'Category' => [],
             'Tag' => [1],
             'search_word' => $faker->word,
             'free_area' => $faker->realText,
             'Status' => 1,
             'note' => $faker->realText,
-            'tags' => null,
-            'images' => null,
-            'add_images' => null,
-            'delete_images' => null,
+            'tags' => [],
+            'images' => [],
+            'add_images' => [],
+            'delete_images' => [],
             Constant::TOKEN_NAME => 'dummy',
         ];
 
@@ -427,7 +427,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $expected = '規格1';
         $actual = $crawler->filter('#standardConfig > div > table')->text();
-        $this->assertContains($expected, $actual);
+        $this->assertStringContainsString($expected, $actual);
 
         $this->expected = $productClassNum;
         $this->actual = $crawler->filter('#standardConfig > div > table > tbody > tr')->count();
@@ -909,7 +909,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->imageDir.'/sand-1.png',
             'sand-1.png',
             'image/png',
-            null, null, true
+            null, true
         );
         $this->client->request('POST',
             $this->generateUrl('admin_product_image_add'),
@@ -937,7 +937,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->imageDir.'/sand-1.PNG',
             'sand-1.PNG',
             'image/png',
-            null, null, true
+            null, true
         );
 
         $this->client->request('POST',
@@ -980,7 +980,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->imageDir.'/categories.png',
             'categories.png',
             'image/png',
-            null, null, true
+            null, true
         );
 
         $crawler = $this->client->request('POST',

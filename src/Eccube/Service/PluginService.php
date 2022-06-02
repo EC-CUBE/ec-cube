@@ -250,9 +250,7 @@ class PluginService
     public function postInstall($config, $source)
     {
         // dbにプラグイン登録
-
         $this->entityManager->getConnection()->beginTransaction();
-
         try {
             $Plugin = $this->pluginRepository->findByCode($config['code']);
 
@@ -276,10 +274,16 @@ class PluginService
             $this->entityManager->persist($Plugin);
             $this->entityManager->flush();
 
-            $this->entityManager->flush();
-            $this->entityManager->getConnection()->commit();
+            if ($this->entityManager->getConnection()->getNativeConnection()->inTransaction()) {
+                $this->entityManager->getConnection()->commit();
+            }
         } catch (\Exception $e) {
-            $this->entityManager->getConnection()->rollback();
+            if ($this->entityManager->getConnection()->getNativeConnection()->inTransaction()) {
+                if ($this->entityManager->getConnection()->isRollbackOnly()) {
+                    $this->entityManager->getConnection()->rollback();
+                }
+            }
+
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -336,7 +340,7 @@ class PluginService
                     $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
                     if (file_exists($entityDir)) {
                         $ormConfig = $this->entityManager->getConfiguration();
-                        $chain = $ormConfig->getMetadataDriverImpl();
+                        $chain = $ormConfig->getMetadataDriverImpl()->getDriver();
                         $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
                         $namespace = 'Plugin\\'.$config['code'].'\\Entity';
                         $chain->addDriver($driver, $namespace);

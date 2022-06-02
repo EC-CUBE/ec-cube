@@ -24,7 +24,7 @@ class EccubeExtensionTest extends EccubeTestCase
      */
     protected $Extension;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $EccubeConfig = self::$container->get(EccubeConfig::class);

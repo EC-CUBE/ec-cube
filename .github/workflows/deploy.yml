@@ -72,7 +72,7 @@ jobs:
           bin/console eccube:composer:require "ec-cube/gmc"
 
       - name: revert to config platform.php
-        run: composer config platform.php 7.3.0
+        run: composer config platform.php 7.4.0
 
       - name: Pre Install Plugins
         env:

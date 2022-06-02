@@ -18,7 +18,9 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Mime\Email;
 
 /**
  * 複数配送指定のテストケース.
@@ -43,6 +45,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestCase
 {
+    use MailerAssertionsTrait;
+
     /** @var BaseInfoRepository */
     private $baseInfoRepository;
 
@@ -52,7 +56,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     /** @var OrderStatusRepository */
     private $orderStatusRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
@@ -63,9 +67,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     /**
      * tearDown: rollback and clear mail
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
-        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
@@ -123,15 +126,16 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        /** @var \Swift_Message[] $Messages */
-        $Messages = $this->getMailCollector(false)->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertRegexp('/◎お届け先2/u', $Message->getBody(), '複数配送のため, お届け先2が存在する');
+        $this->assertEmailTextBodyContains($Message, '◎お届け先2', '複数配送のため, お届け先2が存在する');
+        $this->assertEmailHtmlBodyContains($Message, '◎お届け先2', '複数配送のため, お届け先2が存在する');
 
         // 生成された受注のチェック
         $Order = $this->orderRepository->findOneBy(
@@ -1230,7 +1234,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         // item number on the screen
         $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__item > ul')->text();
-        $this->assertContains('× 3', $shipping);
+        $this->assertStringContainsString('× 3', $shipping);
 
         $deliver = $crawler->filter('#shopping_order_Shippings_0_Delivery > option')->each(
             function ($node, $i) {
@@ -1257,16 +1261,16 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCheckout($Customer);
 
         $BaseInfo = $this->baseInfoRepository->get();
-        /** @var \Swift_Message[] $Messages */
-        $Messages = $this->getMailCollector(false)->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $body = $Message->getBody();
-        $this->assertRegexp('/◎お届け先/u', $body, '複数配送のため, お届け先1が存在する');
+        $this->assertEmailTextBodyContains($Message, '◎お届け先', '複数配送のため, お届け先が存在する');
+        $this->assertEmailHtmlBodyContains($Message, '◎お届け先', '複数配送のため, お届け先が存在する');
 
         // 生成された受注のチェック
         /** @var Order $Order */

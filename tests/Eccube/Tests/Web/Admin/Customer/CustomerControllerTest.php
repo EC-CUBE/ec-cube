@@ -17,16 +17,20 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 /**
  * Class CustomerControllerTest
  */
 class CustomerControllerTest extends AbstractAdminWebTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * Setup
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         for ($i = 0; $i < 10; $i++) {
@@ -47,7 +51,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * tearDown
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }
@@ -109,7 +113,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         );
         $this->expected = '検索';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -198,7 +202,6 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testResend()
     {
-        $this->client->enableProfiler();
         $Customer = $this->createCustomer();
         $this->client->request(
             'GET',
@@ -206,9 +209,9 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
 
-        $Messages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
@@ -216,7 +219,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         //test mail resend to 仮会員.
-        $this->assertContains($BaseInfo->getEmail02(), $Message->toString());
+        $this->assertStringContainsString($BaseInfo->getEmail02(), $Message->toString());
     }
 
     /**

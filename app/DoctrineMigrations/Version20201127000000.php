@@ -25,12 +25,12 @@ final class Version20201127000000 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $count = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_page WHERE url = 'entry_confirm'");
+        $count = $this->connection->fetchOne("SELECT COUNT(*) FROM dtb_page WHERE url = 'entry_confirm'");
         if ($count > 0) {
             return;
         }
-        $pageId = $this->connection->fetchColumn('SELECT MAX(id) FROM dtb_page');
-        $sortNo = $this->connection->fetchColumn('SELECT MAX(sort_no) FROM dtb_page_layout');
+        $pageId = $this->connection->fetchOne('SELECT MAX(id) FROM dtb_page');
+        $sortNo = $this->connection->fetchOne('SELECT MAX(sort_no) FROM dtb_page_layout');
 
         $pageId++;
         $this->addSql("INSERT INTO dtb_page (

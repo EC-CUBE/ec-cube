@@ -22,7 +22,7 @@ class TwigLintValidatorTest extends AbstractTypeTestCase
     /** @var ValidatorInterface */
     protected $validator;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->validator = self::$container->get('validator');
@@ -67,13 +67,13 @@ class TwigLintValidatorTest extends AbstractTypeTestCase
         $errors = $validator->validate($value, $constraint);
         self::assertCount(1, $errors);
         $message = $errors[0]->getMessage();
-        self::assertContains('Unexpected "}" at line 1.', $message);
+        self::assertStringContainsString('Unexpected "}" at line 1.', $message);
 
         $value = '{% for product in products %}{% endfo %}';
         $errors = $validator->validate($value, $constraint);
         self::assertCount(1, $errors);
         $message = $errors[0]->getMessage();
-        self::assertContains(
+        self::assertStringContainsString(
             'Unexpected "endfo" tag (expecting closing tag for the "for" tag defined near line 1) at line 1.',
             $message
         );

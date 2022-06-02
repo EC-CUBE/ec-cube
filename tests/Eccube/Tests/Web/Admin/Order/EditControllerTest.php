@@ -61,7 +61,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
      */
     protected $customerRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();

@@ -21,7 +21,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -36,13 +36,6 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
             $Member = $this->createMember($userName);
             $this->createLoginHistory($userName, $clientIp, $LoginHistoryStatus, $Member);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function tearDown()
-    {
     }
 
     public function testIndex()

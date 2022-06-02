@@ -46,7 +46,6 @@ class NewsType extends AbstractType
             ->add('publish_date', DateTimeType::class, [
                 'date_widget' => 'choice',
                 'input' => 'datetime',
-                'format' => 'yyyy-MM-dd hh:mm',
                 'years' => range($this->eccubeConfig['eccube_news_start_year'], date('Y') + 3),
                 'constraints' => [
                     new Assert\NotBlank(),

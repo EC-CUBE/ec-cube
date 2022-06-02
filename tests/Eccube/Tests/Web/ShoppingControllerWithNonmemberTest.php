@@ -16,18 +16,22 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Service\OrderHelper;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 /**
  * Class ShoppingControllerWithNonmemberTest
  */
 class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var BaseInfo
      */
     protected $BaseInfo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
@@ -95,9 +99,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->scenarioCheckout();
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
@@ -106,10 +110,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testNonmemberWithCartUnlock()
     {
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $crawler = $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     public function testNonmemberWithCustomerLogin()
@@ -203,7 +206,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $this->expected = 'お届け先の変更';
         $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -260,7 +263,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $this->expected = 'お届け先の変更';
         $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
 
         // お届け先設定画面で、入力値を変更しPOST送信
         $formData = $this->createNonmemberFormData();
@@ -281,7 +284,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
-//        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
+//        $this->assertMatchesRegularExpression('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
     }
 
     public function createNonmemberFormData()

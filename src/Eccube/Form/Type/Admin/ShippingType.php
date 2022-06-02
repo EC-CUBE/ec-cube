@@ -177,7 +177,6 @@ class ShippingType extends AbstractType
             ])
             ->add('shipping_delivery_date', DateType::class, [
                 'placeholder' => '',
-                'format' => 'yyyy-MM-dd',
                 'required' => false,
             ])
             ->add('tracking_number', TextType::class, [

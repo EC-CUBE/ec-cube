@@ -50,7 +50,3 @@ node_modules
 .php_cs
 .php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
-
-###> symfony/web-server-bundle ###
-.web-server-pid
-###< symfony/web-server-bundle ###

@@ -272,4 +272,23 @@ class OrderStateMachineContext
     {
         return $this->Order;
     }
+
+    // order_state_machine.php の marking_store => property は、デフォルト値である marking を使用するよう強く推奨されている.
+    // EC-CUBE4.1 までは status を指定していたが、 Symfony5 よりエラーになるためエイリアスを作成して対応する.
+
+    /**
+     * Alias of getStatus()
+     */
+    public function getMarking(): string
+    {
+        return $this->getStatus();
+    }
+
+    /**
+     * Alias of setStatus()
+     */
+    public function setMarking(string $status): void
+    {
+        $this->setStatus($status);
+    }
 }

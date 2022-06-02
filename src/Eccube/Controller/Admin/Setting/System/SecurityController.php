@@ -75,7 +75,7 @@ class SecurityController extends AbstractController
             $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
                 'ECCUBE_ADMIN_DENY_HOSTS' => "'{$adminDenyHosts}'",
-                'ECCUBE_FORCE_SSL' => $data['force_ssl'] ? 'true' : 'false',
+                'ECCUBE_FORCE_SSL' => $data['force_ssl']  ? '1' : '0',
                 'TRUSTED_HOSTS' => $data['trusted_hosts'],
             ]);
 

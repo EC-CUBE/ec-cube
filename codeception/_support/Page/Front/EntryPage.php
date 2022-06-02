@@ -45,12 +45,12 @@ class EntryPage extends AbstractFrontPage
             'entry[phone_number]' => '1234567890',
             'entry[email][first]' => $email,
             'entry[email][second]' => $email,
-            'entry[password][first]' => 'password',
-            'entry[password][second]' => 'password',
+            'entry[plain_password][first]' => 'password',
+            'entry[plain_password][second]' => 'password',
             'entry[user_policy_check]' => '1',
         ];
         $this->tester->submitForm(['css' => '.ec-layoutRole__main form'], $form, ['css' => 'button.ec-blockBtn--action']);
-        $this->tester->see($form['entry[email][first]']);
+        $this->tester->seeInField(['id' => 'entry_email_first'], $form['entry[email][first]']);
         $this->tester->click('.ec-registerRole form button.ec-blockBtn--action');
 
         return $this;

@@ -26,13 +26,17 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MailTemplateRepository;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MailService
 {
     /**
-     * @var \Swift_Mailer
+     * @var MailerInterface
      */
     protected $mailer;
 
@@ -62,29 +66,34 @@ class MailService
     protected $eccubeConfig;
 
     /**
-     * @var \Twig_Environment
+     * @var \Twig\Environment
      */
     protected $twig;
+
+    /** @var ContainerInterface */
+    protected $container;
 
     /**
      * MailService constructor.
      *
-     * @param \Swift_Mailer $mailer
+     * @param MailerInterface $mailer
      * @param MailTemplateRepository $mailTemplateRepository
      * @param MailHistoryRepository $mailHistoryRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param EventDispatcherInterface $eventDispatcher
-     * @param \Twig_Environment $twig
+     * @param \Twig\Environment $twig
      * @param EccubeConfig $eccubeConfig
+     * @param ContainerInterface $container
      */
     public function __construct(
-        \Swift_Mailer $mailer,
+        MailerInterface $mailer,
         MailTemplateRepository $mailTemplateRepository,
         MailHistoryRepository $mailHistoryRepository,
         BaseInfoRepository $baseInfoRepository,
         EventDispatcherInterface $eventDispatcher,
-        \Twig_Environment $twig,
-        EccubeConfig $eccubeConfig
+        \Twig\Environment $twig,
+        EccubeConfig $eccubeConfig,
+        ContainerInterface $container
     ) {
         $this->mailer = $mailer;
         $this->mailTemplateRepository = $mailTemplateRepository;
@@ -93,6 +102,7 @@ class MailService
         $this->eventDispatcher = $eventDispatcher;
         $this->eccubeConfig = $eccubeConfig;
         $this->twig = $twig;
+        $this->container = $container;
     }
 
     /**
@@ -113,13 +123,13 @@ class MailService
             'activateUrl' => $activateUrl,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Customer->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -131,11 +141,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -147,9 +156,9 @@ class MailService
             ],
             null
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CUSTOMER_CONFIRM, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_CONFIRM);
 
-        $count = $this->mailer->send($message, $failures);
+        $count = $this->mailer->send($message);
 
         log_info('仮会員登録メール送信完了', ['count' => $count]);
 
@@ -172,13 +181,13 @@ class MailService
             'BaseInfo' => $this->BaseInfo,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Customer->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -189,11 +198,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -204,7 +212,7 @@ class MailService
             ],
             null
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CUSTOMER_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_COMPLETE);
 
         $count = $this->mailer->send($message);
 
@@ -230,13 +238,13 @@ class MailService
             'BaseInfo' => $this->BaseInfo,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$email])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($email))
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -247,11 +255,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -263,7 +270,7 @@ class MailService
             ],
             null
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CUSTOMER_WITHDRAW, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_WITHDRAW);
 
         $count = $this->mailer->send($message);
 
@@ -289,13 +296,13 @@ class MailService
         ]);
 
         // 問い合わせ者にメール送信
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail02() => $this->BaseInfo->getShopName()])
-            ->setTo([$formData['email']])
-            ->setBcc($this->BaseInfo->getEmail02())
-            ->setReplyTo($this->BaseInfo->getEmail02())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail02(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($formData['email']))
+            ->bcc($this->BaseInfo->getEmail02())
+            ->replyTo($this->BaseInfo->getEmail02())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -306,11 +313,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -321,7 +327,7 @@ class MailService
             ],
             null
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CONTACT, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CONTACT);
 
         $count = $this->mailer->send($message);
 
@@ -335,7 +341,7 @@ class MailService
      *
      * @param \Eccube\Entity\Order $Order 受注情報
      *
-     * @return \Swift_Message
+     * @return Email
      */
     public function sendOrderMail(Order $Order)
     {
@@ -347,13 +353,13 @@ class MailService
             'Order' => $Order,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Order->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Order->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -363,11 +369,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -379,20 +384,20 @@ class MailService
             ],
             null
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_ORDER, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ORDER);
 
         $count = $this->mailer->send($message);
 
         $MailHistory = new MailHistory();
         $MailHistory->setMailSubject($message->getSubject())
-            ->setMailBody($message->getBody())
+            ->setMailBody($message->getTextBody())
             ->setOrder($Order)
             ->setSendDate(new \DateTime());
 
         // HTML用メールの設定
-        $multipart = $message->getChildren();
-        if (count($multipart) > 0) {
-            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+        $htmlBody = $message->getHtmlBody();
+        if (!empty($htmlBody)) {
+            $MailHistory->setMailHtmlBody($htmlBody);
         }
 
         $this->mailHistoryRepository->save($MailHistory);
@@ -421,13 +426,13 @@ class MailService
             'activateUrl' => $activateUrl,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail03() => $this->BaseInfo->getShopName()])
-            ->setTo([$Customer->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail03(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -439,11 +444,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -455,7 +459,7 @@ class MailService
             ],
             null
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM);
 
         $count = $this->mailer->send($message);
 
@@ -470,7 +474,7 @@ class MailService
      * @param Order $Order 受注情報
      * @param $formData 入力内容
      *
-     * @return \Swift_Message
+     * @return Email
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
@@ -480,14 +484,14 @@ class MailService
     {
         log_info('受注管理通知メール送信開始');
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$formData['mail_subject'])
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Order->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($formData['tpl_data']);
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$formData['mail_subject'])
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Order->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04())
+            ->text($formData['tpl_data']);
 
         $event = new EventArgs(
             [
@@ -498,7 +502,7 @@ class MailService
             ],
             null
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_ADMIN_ORDER, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ADMIN_ORDER);
 
         $count = $this->mailer->send($message);
 
@@ -525,12 +529,12 @@ class MailService
             'reset_url' => $reset_url,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Customer->getEmail()])
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -543,11 +547,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -559,7 +562,7 @@ class MailService
             ],
             null
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_PASSWORD_RESET, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_PASSWORD_RESET);
 
         $count = $this->mailer->send($message);
 
@@ -586,13 +589,13 @@ class MailService
             'password' => $password,
         ]);
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo([$Customer->getEmail()])
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -604,11 +607,10 @@ class MailService
             ]);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $event = new EventArgs(
@@ -620,7 +622,7 @@ class MailService
             ],
             null
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE);
 
         $count = $this->mailer->send($message);
 
@@ -647,13 +649,13 @@ class MailService
         $Order = $Shipping->getOrder();
         $body = $this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate->getFileName());
 
-        $message = (new \Swift_Message())
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-            ->setTo($Order->getEmail())
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04());
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Order->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
 
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
@@ -661,25 +663,24 @@ class MailService
             $htmlBody = $this->getShippingNotifyMailBody($Shipping, $Order, $htmlFileName, true);
 
             $message
-                ->setContentType('text/plain; charset=UTF-8')
-                ->setBody($body, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
+                ->text($body)
+                ->html($htmlBody);
         } else {
-            $message->setBody($body);
+            $message->text($body);
         }
 
         $this->mailer->send($message);
 
         $MailHistory = new MailHistory();
         $MailHistory->setMailSubject($message->getSubject())
-                ->setMailBody($message->getBody())
+                ->setMailBody($message->getTextBody())
                 ->setOrder($Order)
                 ->setSendDate(new \DateTime());
 
         // HTML用メールの設定
-        $multipart = $message->getChildren();
-        if (count($multipart) > 0) {
-            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+        $htmlBody = $message->getHtmlBody();
+        if (!empty($htmlBody)) {
+            $MailHistory->setMailHtmlBody($htmlBody);
         }
 
         $this->mailHistoryRepository->save($MailHistory);
@@ -743,5 +744,44 @@ class MailService
         } else {
             return null;
         }
+    }
+
+    /**
+     * RFC違反のメールの local part を "" で囲む.
+     *
+     * パラメータ eccube_rfc_email_check == true の場合は変換しない
+     *
+     * @param string $email
+     * @return Address
+     */
+    public function convertRFCViolatingEmail(string $email): Address
+    {
+        if ($this->container->getParameter('eccube_rfc_email_check')) {
+            return new Address($email);
+        }
+
+        // see https://blog.everqueue.com/chiba/2009/03/22/163/
+        $wsp           = '[\x20\x09]';
+        $vchar         = '[\x21-\x7e]';
+        $quoted_pair   = "\\\\(?:$vchar|$wsp)";
+        $qtext         = '[\x21\x23-\x5b\x5d-\x7e]';
+        $qcontent      = "(?:$qtext|$quoted_pair)";
+        $quoted_string = "\"$qcontent*\"";
+        $atext         = '[a-zA-Z0-9!#$%&\'*+\-\/\=?^_`{|}~]';
+        $dot_atom      = "$atext+(?:[.]$atext+)*";
+        $local_part    = "(?:$dot_atom|$quoted_string)";
+        $domain        = $dot_atom;
+        $addr_spec     = "{$local_part}[@]$domain";
+
+        $dot_atom_loose   = "$atext+(?:[.]|$atext)*";
+        $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
+        $addr_spec_loose  = "{$local_part_loose}[@]$domain";
+
+        $regexp = "/\A{$addr_spec}\z/";
+        if (!preg_match($regexp, $email)) {
+            $email = preg_replace('/^(.*)@(.*)$/', '"$1"@$2', $email);
+        }
+
+        return new Address($email);
     }
 }

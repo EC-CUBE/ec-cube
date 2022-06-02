@@ -69,7 +69,7 @@ class BlockController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_BLOCK_INDEX_COMPLETE);
 
         return [
             'Blocks' => $Blocks,
@@ -81,7 +81,7 @@ class BlockController extends AbstractController
      * @Route("/%eccube_admin_route%/content/block/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_block_edit", methods={"GET", "POST"})
      * @Template("@admin/Content/block_edit.twig")
      */
-    public function edit(Request $request, $id = null, Environment $twig, FileSystem $fs, CacheUtil $cacheUtil)
+    public function edit(Request $request, Environment $twig, FileSystem $fs, CacheUtil $cacheUtil, $id = null)
     {
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -123,7 +123,7 @@ class BlockController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_INITIALIZE);
         $html = $event->getArgument('html');
 
         $form = $builder->getForm();
@@ -165,7 +165,7 @@ class BlockController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -207,7 +207,7 @@ class BlockController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
 

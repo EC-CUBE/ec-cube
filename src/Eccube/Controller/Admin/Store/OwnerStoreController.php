@@ -118,7 +118,7 @@ class OwnerStoreController extends AbstractController
      *
      * @return array
      */
-    public function search(Request $request, $page_no = null, PaginatorInterface $paginator)
+    public function search(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         if (empty($this->BaseInfo->getAuthenticationKey())) {
             $this->addWarning('admin.store.plugin.search.not_auth', 'admin');

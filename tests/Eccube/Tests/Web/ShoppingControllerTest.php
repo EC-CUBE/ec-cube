@@ -22,11 +22,15 @@ use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Fixture\Generator;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var BaseInfoRepository
      */
@@ -37,7 +41,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     private $paymentRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
@@ -96,9 +100,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
@@ -458,7 +462,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         // https://github.com/EC-CUBE/ec-cube/issues/1305
-        $this->assertRegexp('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
+        $this->assertMatchesRegularExpression('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
     }
 
     /**
@@ -487,7 +491,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $client->request('GET', $url);
 
         // Title
-        $this->assertContains('お届け先の追加', $crawler->html());
+        $this->assertStringContainsString('お届け先の追加', $crawler->html());
     }
 
     /**
@@ -540,9 +544,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
@@ -616,22 +620,16 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
-
-        $MultiPart = $Message->getChildren();
-        foreach ($MultiPart as $Part) {
-            if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
-            }
-        }
+        $this->assertEmailTextBodyContains($Message, '＜Sanitize&＞', 'テキストメールがサニタイズされている');
+        $this->assertEmailHtmlBodyContains($Message, '&lt;Sanitize&amp;&gt;', 'HTMLメールがサニタイズされている');
     }
 
     /**
@@ -683,8 +681,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
         $crawler = $this->client->followRedirect();
         $html = $crawler->filter('body')->html();
-        $this->assertNotContains($COD1->getMethod(), $html);
-        $this->assertContains($COD2->getMethod(), $html);
+        $this->assertStringNotContainsString($COD1->getMethod(), $html);
+        $this->assertStringContainsString($COD2->getMethod(), $html);
 
         // use point with payment: COD1
         $this->scenarioRedirectTo($Customer, [
@@ -705,8 +703,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $this->client->followRedirect();
 
         $html = $crawler->filter('body')->html();
-        $this->assertContains($COD1->getMethod(), $html);
-        $this->assertNotContains($COD2->getMethod(), $html);
+        $this->assertStringContainsString($COD1->getMethod(), $html);
+        $this->assertStringNotContainsString($COD2->getMethod(), $html);
     }
 
     /**

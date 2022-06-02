@@ -34,7 +34,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -47,7 +47,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove($this->imageDir);
@@ -169,7 +169,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $this->imageDir.'/sand-1.png',
             'sand-1.png',
             'image/png',
-            null, null, true
+            null, true
         );
         $this->client->request('POST',
             $this->generateUrl('admin_payment_image_add'),
@@ -197,7 +197,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $this->imageDir.'/sand-1.PNG',
             'sand-1.PNG',
             'image/png',
-            null, null, true
+            null, true
         );
 
         $this->client->request('POST',
@@ -240,7 +240,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $this->imageDir.'/categories.png',
             'categories.png',
             'image/png',
-            null, null, true
+            null, true
         );
 
         $crawler = $this->client->request('POST',

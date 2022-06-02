@@ -96,7 +96,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_NONMEMBER_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -117,7 +117,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_NONMEMBER_COMPLETE);
 
             if ($event->getResponse() !== null) {
                 return $event->getResponse();
@@ -206,7 +206,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE);
             log_info('非会員お客様情報変更処理完了', [$Order->getId()]);
             $message = ['status' => 'OK', 'kana01' => $data['customer_kana01'], 'kana02' => $data['customer_kana02']];
 
@@ -321,7 +321,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_email'],
             [
                 new Assert\NotBlank(),
-                new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
             ]
         );
 
