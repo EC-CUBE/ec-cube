@@ -42,42 +42,42 @@ jobs:
       - name: Translate to templates
         run: php bin/template_jp.php
 
-      - name: Setup to EC-CUBE
-        env:
-          APP_ENV: 'prod'
-          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
-        run: |
-          rm -rf $GITHUB_WORKSPACE/app/Plugin/*
-          echo "APP_ENV=${APP_ENV}" > .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+#      - name: Setup to EC-CUBE
+#        env:
+#          APP_ENV: 'prod'
+#          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+#          DATABASE_SERVER_VERSION: 14
+#        run: |
+#          rm -rf $GITHUB_WORKSPACE/app/Plugin/*
+#          echo "APP_ENV=${APP_ENV}" > .env
+#          bin/console doctrine:database:create --env=dev
+#          bin/console doctrine:schema:create --env=dev
+#          bin/console eccube:fixtures:load --env=dev
 
-      - name: Install Plugins
-        env:
-          APP_ENV: 'prod'
-          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
-        run: |
-          bin/console eccube:composer:require "ec-cube/recommend4"
-          bin/console eccube:composer:require "ec-cube/coupon4"
-          bin/console eccube:composer:require "ec-cube/mailmagazine4"
-          bin/console eccube:composer:require "ec-cube/salesreport4"
-          bin/console eccube:composer:require "ec-cube/relatedproduct4"
-          bin/console eccube:composer:require "ec-cube/securitychecker4"
-          bin/console eccube:composer:require "ec-cube/productreview4"
-          bin/console eccube:composer:require "ec-cube/api"
-          bin/console eccube:composer:require "ec-cube/sitekit"
-          bin/console eccube:composer:require "ec-cube/gmc"
+#      - name: Install Plugins
+#        env:
+#          APP_ENV: 'prod'
+#          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+#          DATABASE_SERVER_VERSION: 14
+#        run: |
+#          bin/console eccube:composer:require "ec-cube/recommend4"
+#          bin/console eccube:composer:require "ec-cube/coupon4"
+#          bin/console eccube:composer:require "ec-cube/mailmagazine4"
+#          bin/console eccube:composer:require "ec-cube/salesreport4"
+#          bin/console eccube:composer:require "ec-cube/relatedproduct4"
+#          bin/console eccube:composer:require "ec-cube/securitychecker4"
+#          bin/console eccube:composer:require "ec-cube/productreview4"
+#          bin/console eccube:composer:require "ec-cube/api"
+#          bin/console eccube:composer:require "ec-cube/sitekit"
+#          bin/console eccube:composer:require "ec-cube/gmc"
 
-      - name: revert to config platform.php
-        run: composer config platform.php 7.4.0
+#      - name: revert to config platform.php
+#        run: composer config platform.php 7.4.0
 
-      - name: Pre Install Plugins
-        env:
-          PGPASSWORD: 'password'
-        run: psql eccube_db -h 127.0.0.1 -U postgres -c "select id,name,code,0 as enabled,version,source,0 as initialized,'2021-08-13 00:00:00' as create_date,'2021-08-13 00:00:00' as update_date,discriminator_type from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
+#      - name: Pre Install Plugins
+#        env:
+#          PGPASSWORD: 'password'
+#        run: psql eccube_db -h 127.0.0.1 -U postgres -c "select id,name,code,0 as enabled,version,source,0 as initialized,'2021-08-13 00:00:00' as create_date,'2021-08-13 00:00:00' as update_date,discriminator_type from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
 
       - name: Packaging
         working-directory: ../
