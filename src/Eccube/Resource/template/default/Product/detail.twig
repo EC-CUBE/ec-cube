@@ -339,12 +339,12 @@ file that was distributed with this source code.
                             <div class="ec-productRole__actions">
                                 {% if form.classcategory_id1 is defined %}
                                     <div class="ec-select">
-                                        {{ form_widget(form.classcategory_id1) }}
+                                        {{ form_row(form.classcategory_id1) }}
                                         {{ form_errors(form.classcategory_id1) }}
                                     </div>
                                     {% if form.classcategory_id2 is defined %}
                                         <div class="ec-select">
-                                            {{ form_widget(form.classcategory_id2) }}
+                                            {{ form_row(form.classcategory_id2) }}
                                             {{ form_errors(form.classcategory_id2) }}
                                         </div>
                                     {% endif %}
