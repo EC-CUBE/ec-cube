@@ -565,7 +565,8 @@ class InstallController extends AbstractController
         if (strpos($params['url'], 'mysql') !== false) {
             $params['charset'] = 'utf8mb4';
             $params['defaultTableOptions'] = [
-                'collate' => 'utf8mb4_general_ci',
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_bin',
             ];
         }
 
