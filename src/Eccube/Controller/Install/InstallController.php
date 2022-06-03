@@ -828,7 +828,7 @@ class InstallController extends AbstractController
             $password = $this->encoder->encodePassword($data['login_pass'], $salt);
 
             $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-                ? $conn->fetchColumn("select nextval('dtb_base_info_id_seq')")
+                ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
                 : null;
 
             $conn->insert('dtb_base_info', [
@@ -845,7 +845,7 @@ class InstallController extends AbstractController
             ]);
 
             $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-                ? $conn->fetchColumn("select nextval('dtb_member_id_seq')")
+                ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
                 : null;
 
             $conn->insert('dtb_member', [
