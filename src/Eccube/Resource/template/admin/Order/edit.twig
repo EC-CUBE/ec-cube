@@ -902,13 +902,6 @@ file that was distributed with this source code.
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.total'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.taxable_total|price }}</span></div>
                                 </div>
-                                {% for rate, total in Order.taxable_total_by_tax_rate %}
-                                    <div class="row justify-content-end mb-3">
-                                        <div class="col-auto"><span class="align-middle">{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</span></div>
-                                        <div class="col-2 text-right"><span class="align-middle font-weight-normal">{{ total|price }}</span></div>
-                                    </div>
-                                {% endfor %}
-                                <hr>
                                 {% for item in Order.tax_free_discount_items %}
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ item.product_name }}</span></div>
@@ -920,6 +913,14 @@ file that was distributed with this source code.
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.payment_total'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.payment_total|price }}</span></div>
                                 </div>
+                                <hr>
+                                <!-- 消費税額 -->
+                                {% for rate, total in Order.total_by_tax_rate %}
+                                    <div class="row justify-content-end mb-3">
+                                        <div class="col-auto"><span class="align-middle">{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</span></div>
+                                        <div class="col-2 text-right"><span class="align-middle font-weight-normal">{{ total|price }}</span>({{ 'common.tax_amount'|trans }} {{ Order.tax_by_tax_rate[rate]|price }})</div>
+                                    </div>
+                                {% endfor %}
                                 <hr>
                                 <!-- 加算ポイント -->
                                 <div class="row justify-content-end mb-3">
