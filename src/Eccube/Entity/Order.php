@@ -100,6 +100,42 @@ if (!class_exists('\Eccube\Entity\Order')) {
         }
 
         /**
+         * 明細の合計額を税率ごとに集計する.
+         *
+         * 不課税, 非課税の値引明細は税率ごとに按分する.
+         *
+         * @return int[]
+         */
+        public function getTotalByTaxRate()
+        {
+            $total = [];
+            foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
+                $total[$rate] = $totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal();
+            }
+
+            ksort($total);
+            return $total;
+        }
+
+        /**
+         * 税額を税率ごとに集計する.
+         *
+         * 不課税, 非課税の値引明細は税率ごとに按分する.
+         *
+         * @return int[]
+         */
+        public function getTaxByTaxRate()
+        {
+            $tax = [];
+            foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
+                $tax[$rate] = ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate));
+            }
+
+            ksort($tax);
+            return $tax;
+        }
+
+        /**
          * 課税対象の値引き明細を返す.
          *
          * @return array
@@ -133,6 +169,18 @@ if (!class_exists('\Eccube\Entity\Order')) {
             return array_filter($this->OrderItems->toArray(), function (OrderItem $Item) {
                 return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION);
             });
+        }
+
+        /**
+         * 非課税・不課税の値引き額を返す.
+         *
+         * @return int|float
+         */
+        public function getTaxFreeDiscount()
+        {
+            return array_reduce($this->getTaxFreeDiscountItems(), function ($sum, OrderItem $Item) {
+                return $sum += $Item->getTotalPrice();
+            }, 0);
         }
 
         /**
