@@ -64,6 +64,7 @@ common.payment_total: 'Payment Total'
 common.reduced_tax_rate_symbol: '*'
 common.reduced_tax_rate_messeage: '* is subject to reduced tax rate.'
 common.tax_rate_target: '%rate% %'
+common.tax_amount: Tax amount
 common.delivery_fee: Shipping Charge
 common.charge: Charges
 common.discount: Discount
