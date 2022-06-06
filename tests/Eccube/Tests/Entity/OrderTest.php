@@ -16,12 +16,15 @@ namespace Eccube\Tests\Entity;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
+use Eccube\Entity\TaxRule;
+use Eccube\Service\TaxRuleService;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
 
@@ -36,15 +39,21 @@ class OrderTest extends EccubeTestCase
     protected $Customer;
     /** @var Order */
     protected $Order;
+    /** @var TaxRule */
+    protected $TaxRule;
+    /** @var int */
     protected $rate;
+    /** @var TaxRuleService */
+    protected $taxRuleService;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
-        $TaxRule = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class)->getByRule();
-        $this->rate = $TaxRule->getTaxRate();
+        $this->TaxRule = $this->entityManager->getRepository(TaxRule::class)->getByRule();
+        $this->rate = $this->TaxRule->getTaxRate();
+        $this->taxRuleService = self::$container->get(TaxRuleService::class);
     }
 
     public function testConstructor()
@@ -176,7 +185,7 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableItems()
     {
         $Order = $this->createTestOrder();
-        self::assertCount(6, $Order->getTaxableItems());
+        self::assertCount(7, $Order->getTaxableItems());
         /** @var OrderItem $Item */
         foreach ($Order->getTaxableItems() as $Item) {
             self::assertSame(TaxType::TAXATION, $Item->getTaxType()->getId());
@@ -186,13 +195,13 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableTotal()
     {
         $Order = $this->createTestOrder();
-        self::assertSame(436, $Order->getTaxableTotal());
+        self::assertEquals(790187, $Order->getTaxableTotal());
     }
 
     public function testGetTaxableTotalByTaxRate()
     {
         $Order = $this->createTestOrder();
-        self::assertSame([10 => 220, 8 => 216], $Order->getTaxableTotalByTaxRate());
+        self::assertEquals([10 => 724431, 8 => 65756], $Order->getTaxableTotalByTaxRate());
     }
 
     public function testGetTaxableDiscountItems()
@@ -204,7 +213,7 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableDiscount()
     {
         $Order = $this->createTestOrder();
-        self::assertSame(-218, $Order->getTaxableDiscount());
+        self::assertEquals(-94694, $Order->getTaxableDiscount());
     }
 
     public function testGetTaxFreeDiscountItems()
@@ -217,6 +226,29 @@ class OrderTest extends EccubeTestCase
         }
     }
 
+    public function testGetTaxFreeDiscount()
+    {
+        $Order = $this->createTestOrder();
+
+        self::assertSame(-7159, $Order->getTaxFreeDiscount());
+    }
+
+    public function testGetTotalByTaxRate()
+    {
+        $Order = $this->createTestOrder();
+
+        self::assertSame(65160.0, $this->taxRuleService->roundByRoundingType($Order->getTotalByTaxRate()[8], $this->TaxRule->getRoundingType()->getId()), '8%対象値引き後合計');
+        self::assertSame(717868.0, $this->taxRuleService->roundByRoundingType($Order->getTotalByTaxRate()[10], $this->TaxRule->getRoundingType()->getId()), '10%対象値引き後合計');
+    }
+
+    public function testGetTaxByTaxRate()
+    {
+        $Order = $this->createTestOrder();
+
+        self::assertSame(4827.0, $this->taxRuleService->roundByRoundingType($Order->getTaxByTaxRate()[8], $this->TaxRule->getRoundingType()->getId()), '8%対象値引き後消費税額');
+        self::assertSame(65261.0, $this->taxRuleService->roundByRoundingType($Order->getTaxByTaxRate()[10], $this->TaxRule->getRoundingType()->getId()), '10%対象値引き後消費税額');
+    }
+
     protected function createTestOrder()
     {
         $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
@@ -224,18 +256,25 @@ class OrderTest extends EccubeTestCase
         $TaxExempt = $this->entityManager->find(TaxType::class, TaxType::TAX_EXEMPT);
 
         $ProductItem = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
+        $DeliveryFee = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
+        $Charge = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
         $DiscountItem = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
 
-        // 非課税・不課税を覗いて、税率ごとに金額を集計する
+        $TaxIncluded = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+        $TaxExcluded = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+
+
+        // 税率ごとに金額を集計する
         $data = [
-            [$Taxation, 10, 100, 10, 1, $ProductItem],    // 商品明細
-            [$Taxation, 10, 200, 20, 1, $ProductItem],    // 商品明細
-            [$Taxation, 8, 100, 8, 1, $ProductItem],      // 商品明細
-            [$Taxation, 8, 200, 16, 1, $ProductItem],     // 商品明細
-            [$Taxation, 10, -100, -10, 1, $DiscountItem],  // 課税値引き
-            [$Taxation, 8, -100, -8, 1, $DiscountItem],    // 課税値引き
-            [$NonTaxable, 0, -10, 0, 1, $DiscountItem],    // 不課税明細、 集計対象外
-            [$TaxExempt, 0, -10, 0, 1, $DiscountItem],     // 非課税明細、集計対象外
+            [$Taxation, 10, 71141, round(71141 * (10/100)), 5, $ProductItem, $TaxExcluded],    // 商品明細
+            [$Taxation, 10, 92778, round(92778 * (10/100)), 4, $ProductItem, $TaxExcluded],    // 商品明細
+            [$Taxation, 8, 15221, round(15221 * (8/100)), 5, $ProductItem, $TaxExcluded],      // 商品明細
+            [$Taxation, 10, -71141, round(-71141 * (10/100)), 1, $DiscountItem, $TaxExcluded],  // 課税値引き
+            [$Taxation, 8, -15221, round(-15221 * (8/100)), 1, $DiscountItem, $TaxExcluded],    // 課税値引き
+            [$Taxation, 10, 1000, round(1000 * (10/100)), 1, $DeliveryFee, $TaxIncluded],    // 送料
+            [$Taxation, 10, 2187, round(1000 * (10/100)), 1, $Charge, $TaxIncluded],    // 手数料
+            [$NonTaxable, 0, -7000, 0, 1, $DiscountItem, $TaxIncluded],    // 不課税明細
+            [$TaxExempt, 0, -159, 0, 1, $DiscountItem, $TaxIncluded],     // 非課税明細
         ];
 
         $Order = new Order();
@@ -247,6 +286,7 @@ class OrderTest extends EccubeTestCase
             $OrderItem->setTax($row[3]);
             $OrderItem->setQuantity($row[4]);
             $OrderItem->setOrderItemType($row[5]);
+            $OrderItem->setTaxDisplayType($row[6]);
             $Order->addOrderItem($OrderItem);
         }
 
