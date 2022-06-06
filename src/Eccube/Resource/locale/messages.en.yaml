@@ -1134,6 +1134,7 @@ admin.setting.shop.shop.option_remember_me: Auto Sign-in
 admin.setting.shop.shop.option_product: Product Settings
 admin.setting.shop.shop.nostock_hidden: Hide out-of-stock products
 admin.setting.shop.shop.option_tax: Taxes
+admin.setting.shop.shop.option_invoice_registration_number: Invoice registration number
 admin.setting.shop.shop.option_product_tax: Taxes by Product
 admin.setting.shop.shop.option_point: Point Settings
 admin.setting.shop.shop.option_point_enabled: Points
