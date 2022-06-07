@@ -91,7 +91,7 @@ jobs:
         run: ${{ github.event.repository.name }}/package.sh
 
       - name: Build Container
-        run: docker build -t ec-cube --build-arg SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD=true .
+        run: docker build -t ec-cube .
 
       - name: Container Run
         run: |
