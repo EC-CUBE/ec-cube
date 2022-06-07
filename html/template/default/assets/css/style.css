@@ -4230,7 +4230,11 @@ include /assets/tmpl/elements/11.4.categoryNavi.pug
 Styleguide 11.2
 */
 .ec-layoutRole {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   transition: transform 0.3s;
   background: #fff; }
 .ec-layoutRole .ec-layoutRole__contentTop {
@@ -4241,7 +4245,8 @@ Styleguide 11.2
     width: 100%;
     max-width: 1150px;
     display: flex;
-    flex-wrap: nowrap; }
+    flex-wrap: nowrap;
+    flex-grow: 1; }
 .ec-layoutRole .ec-layoutRole__main {
     width: 100%; }
 .ec-layoutRole .ec-layoutRole__mainWithColumn {
