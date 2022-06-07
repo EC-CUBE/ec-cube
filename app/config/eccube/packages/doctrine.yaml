@@ -5,11 +5,13 @@ parameters:
     # You should not need to change this value.
     env(DATABASE_URL): ''
     env(DATABASE_SERVER_VERSION): ~
+    env(DATABASE_CHARSET): 'utf8'
+
 doctrine:
     dbal:
         driver: 'pdo_sqlite'
         server_version: "%env(DATABASE_SERVER_VERSION)%"
-        charset: 'utf8'
+        charset: '%env(DATABASE_CHARSET)%'
 
         # for mysql only
         default_table_options:
