@@ -6443,6 +6443,8 @@ Styleguide 15.2
     width: 100%; }
 .ec-orderRole .ec-inlineBtn {
     font-weight: normal; }
+.mypage .ec-orderRole .ec-inlineBtn {
+      font-weight: bold; }
 .ec-orderRole .ec-orderRole__detail {
     padding: 0;
     width: 100%; }
