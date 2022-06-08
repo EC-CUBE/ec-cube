@@ -32,9 +32,26 @@
       "pre-commit": "lint-staged 2>&1 | echo || node -e ''"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "ace-builds": "^1.5.1",
+    "chart.js": "^3.8.0",
+    "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
+    "jquery": "3",
+    "jquery-ui": "^1.13.1",
+    "jquery.qrcode": "^1.0.3",
+    "ladda": "^2.0.3",
+    "slick-carousel": "^1.8.1",
+    "spin.js": "^4.1.1",
+    "style-loader": "^3.3.1",
+    "url-loader": "^4.1.1"
+  },
   "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
     "autoprefixer": "^9.6.4",
+    "babel-loader": "^8.2.5",
     "bootstrap": "^4.3.1",
     "bootstrap-sass": "^3.4.1",
     "browser-sync": "^2.26.14",
@@ -53,6 +70,9 @@
     "postcss-import": "^12.0.1",
     "process": "^0.11.10",
     "sass": "^1.42.1",
-    "sort-css-media-queries": "^1.4.3"
+    "sort-css-media-queries": "^1.4.3",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-stream": "^7.0.0"
   }
 }
