@@ -210,7 +210,7 @@ class EF06OtherCest
 
         // メールチェック
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'お問い合わせを受け付けました');
@@ -271,7 +271,7 @@ class EF06OtherCest
 
         // メールチェック
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'お問い合わせを受け付けました');
