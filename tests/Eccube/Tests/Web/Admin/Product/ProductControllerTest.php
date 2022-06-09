@@ -1133,4 +1133,23 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
         $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
     }
+
+    public function test絵文字()
+    {
+        $name = '🍣🍺';
+        $crawler = $this->client->request('GET', $this->generateUrl('product_list', ['name' => $name]));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $message = $crawler->filter('.ec-searchnavRole__counter > span')->text();
+        $this->assertSame('お探しの商品は見つかりませんでした', $message);
+
+        // 絵文字の商品を登録
+        $this->createProduct($name);
+
+        $crawler = $this->client->request('GET', $this->generateUrl('product_list', ['name' => $name]));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $message = $crawler->filter('.ec-searchnavRole__counter > span')->text();
+        $this->assertSame('1件', $message);
+    }
 }

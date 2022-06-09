@@ -481,6 +481,7 @@ class InstallController extends AbstractController
             'ECCUBE_TEMPLATE_CODE' => 'default',
             'ECCUBE_LOCALE' => 'ja',
             'TRUSTED_HOSTS' => '^'.str_replace('.', '\\.', $request->getHost()).'$',
+            'DATABASE_CHARSET' => \str_starts_with($databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);
@@ -563,9 +564,10 @@ class InstallController extends AbstractController
     protected function createConnection(array $params)
     {
         if (strpos($params['url'], 'mysql') !== false) {
-            $params['charset'] = 'utf8';
+            $params['charset'] = 'utf8mb4';
             $params['defaultTableOptions'] = [
-                'collate' => 'utf8_general_ci',
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_bin',
             ];
         }
 
