@@ -37,7 +37,7 @@ file that was distributed with this source code.
                                 <div class="col-8"><span class="card-title">{{ 'admin.customer.customer_info'|trans }}</span>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#ordererInfo"
+                                    <a data-bs-toggle="collapse" href="#ordererInfo"
                                        aria-expanded="false" aria-controls="ordererInfo">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
@@ -267,7 +267,7 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <div class="col-4 text-right">
-                                        <a data-toggle="collapse" href="#delivery" aria-expanded="false"
+                                        <a data-bs-toggle="collapse" href="#delivery" aria-expanded="false"
                                            aria-controls="delivery">
                                             <i class="fa fa-angle-up fa-lg"></i>
                                         </a>
@@ -300,7 +300,7 @@ file that was distributed with this source code.
                                                     </td>
                                                     <td>
                                                         <div class="text-center" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal"
+                                                            <a class="btn btn-ec-actionIcon" data-bs-toggle="modal"
                                                                data-target="#discontinuance-{{ CustomerAddress.id }}">
                                                                 <i class="fa fa-close text-secondary"
                                                                    aria-hidden="true"></i>
@@ -312,8 +312,8 @@ file that was distributed with this source code.
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title font-weight-bold">
                                                                             {{ 'admin.common.delete_modal__title'|trans }}</h5>
-                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">×</span>
+                                                                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                                            
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body text-left">
@@ -321,7 +321,7 @@ file that was distributed with this source code.
                                                                             {{ 'admin.common.delete_modal__message'|trans({ '%name%' : 'admin.common.postal_symbol'|trans ~ CustomerAddress.postal_code ~ CustomerAddress.Pref ~ ' ' ~ CustomerAddress.name01 ~ CustomerAddress.name02 }) }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                                        <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">
                                                                             {{ 'admin.common.cancel'|trans }}
                                                                         </button>
                                                                         <a href="{{ url('admin_customer_delivery_delete', {'id' : Customer.id, 'did':  CustomerAddress.id}) }}" class="btn btn-ec-delete"{{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
@@ -380,7 +380,7 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <div class="col-4 text-right">
-                                        <a data-toggle="collapse" href="#orderHistory" aria-expanded="false"
+                                        <a data-bs-toggle="collapse" href="#orderHistory" aria-expanded="false"
                                            aria-controls="orderHistory">
                                             <i class="fa fa-angle-up fa-lg"></i>
                                         </a>
@@ -439,7 +439,7 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#shopMemo" aria-expanded="false"
+                                    <a data-bs-toggle="collapse" href="#shopMemo" aria-expanded="false"
                                        aria-controls="shopMemo">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>

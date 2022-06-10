@@ -205,7 +205,7 @@ file that was distributed with this source code.
                                                     <i class="fa fa-toggle-{{ ClassCategory.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
                                                 <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
+                                                    <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#DeleteModal"
                                                        data-url="{{ url('admin_product_class_category_delete', {'class_name_id' : ClassName.id, 'id': ClassCategory.id}) }}"
                                                        data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : ClassCategory.name }) }}">
                                                         <i class="fa fa-close fa-lg text-secondary"></i>
@@ -244,15 +244,15 @@ file that was distributed with this source code.
                                             <h5 class="modal-title font-weight-bold">
                                                 {{ 'admin.common.delete_modal__title'|trans }}
                                             </h5>
-                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
+                                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                
                                             </button>
                                         </div>
                                         <div class="modal-body text-left">
                                             <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                            <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">
                                                 {{ 'admin.common.cancel'|trans }}
                                             </button>
                                             <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}

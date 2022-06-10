@@ -40,7 +40,7 @@ file that was distributed with this source code.
                     {% if Plugin.code is defined %}
                         <td class="align-middle"><p>{{ Plugin.code }}</p>
                             {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
-                                <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">{{ 'admin.store.plugin_table.897'|trans }}</a>
+                                <a href="#" class="view_readme" data-bs-toggle="modal" data-bs-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">{{ 'admin.store.plugin_table.897'|trans }}</a>
                             {% endif %}
                         </td>
                     {% else %}

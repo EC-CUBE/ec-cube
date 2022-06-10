@@ -106,33 +106,23 @@ Markup:
 Styleguide 12.2
 */
 .btn-ec-conversion{
-  @include button-variant(#437EC4, transparent, #2963AB, transparent, #2963AB, transparent );
+  @include button-variant(#437EC4, transparent, #FFF, #2963AB, transparent, #FFF, #2963AB, transparent );
   cursor:pointer;
 }
 
 .btn-ec-delete{
-  @include button-variant(#C04949, transparent, #A62E2E, transparent, #A62E2E, transparent );
+  @include button-variant(#C04949, transparent, #FFF, #A62E2E, transparent, #FFF, #A62E2E, transparent );
   cursor:pointer;
 }
 
 .btn-ec-regular{
-  @include button-variant(#FFFFFF, #595959, #F2F2F2, #262626, #F2F2F2, #262626 );
-  color: #595959;
+  @include button-variant(#FFFFFF, #595959, #595959, #F2F2F2, #262626, #262626, #F2F2F2, #262626 );
   cursor:pointer;
-}
-
-.btn-ec-regular:hover {
-  color: #262626;
 }
 
 .btn-ec-sub{
-  @include button-variant(#F5F6F8, transparent, #D6D9E0, transparent, #D6D9E0, transparent );
-  color: #262626;
+  @include button-variant(#F5F6F8, transparent, #262626, #D6D9E0, transparent, #262626, #D6D9E0, transparent );
   cursor:pointer;
-}
-
-.btn-ec-sub:hover {
-  color: #262626;
 }
 
 .btn-ec-actionIcon {
