@@ -1,11 +1,7 @@
 @import "../mixins/variables";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/buttons";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/opacity";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/vendor-prefixes";
-
+@import "../../../../../../node_modules/bootstrap/scss/bootstrap";
 $padding-base-vertical:     6px !default;
-
+$padding-base-horizontal:   12px !default;
 
 $btn-primary-bg: #5CB1B1;
 $btn-primary-color: #fff;
@@ -15,9 +11,10 @@ $btn-cancel-bg: #525263;
 $btn-cancel-color: #fff;
 $btn-default-bg: #F5F7F8;
 $btn-default-color: #525263;
+$btn-default-border: #ccc !default;
 
 $btn-border-radius-base: 0px;
-
+$cursor-disabled: not-allowed !default;
 
 @mixin _btn($color, $background, $border){
   display: inline-block;
@@ -30,7 +27,7 @@ $btn-border-radius-base: 0px;
   background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
   border: 1px solid transparent;
   white-space: nowrap;
-  @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base, $btn-border-radius-base);
+  @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base);
   @include user-select(none);
   padding: 10px 16px;
   text-decoration: none;
