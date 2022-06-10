@@ -18,13 +18,11 @@ file that was distributed with this source code.
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('img/common/favicon.ico', 'install') }}">
     <title>{{ 'install.title'|trans }}</title>
-    <link href="{{ asset('dist/css/bootstrap.min.css', 'install') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/dashboard.css', 'install') }}" rel="stylesheet">
     <!-- Bootstrap core JavaScript
         ================================================== -->
     <!-- Ajaxを利用したいので先に読み込む -->
     <script src="{{ asset('install.bundle.js', 'bundle') }}"></script>
-    <script src="{{ asset('dist/js/bootstrap.min.js', 'install') }}"></script>
+    <link href="{{ asset('assets/css/dashboard.css', 'install') }}" rel="stylesheet">
     <script src="{{ asset('assets/js/function.js', 'install') }}"></script>
 </head>
 
@@ -58,11 +56,6 @@ file that was distributed with this source code.
     </div>
 
 </div>
-
-<!-- Bootstrap core JavaScript
-    ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="{{ asset('dist/js/bootstrap.min.js', 'install') }}"></script>
 <script src="{{ asset('assets/js/function.js', 'install') }}"></script>
 {% block script %}{% endblock %}
 </body>
