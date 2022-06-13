@@ -22,6 +22,9 @@
 
 //** bootstrap-sass(https://github.com/twbs/bootstrap-sass) からの移植
 
+$font-size-base: 14;
+$line-height-base: 1.428571420 !default; // 20/14
+$padding-base-vertical: 6px !default;
 $line-height-computed: floor(($font-size-base * $line-height-base)) px !default;
 $input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) px !default;
 $input-border: #ccc !default;
