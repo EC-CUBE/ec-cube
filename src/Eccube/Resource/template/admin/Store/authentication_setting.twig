@@ -31,7 +31,21 @@ file that was distributed with this source code.
 <script>
 
     function refreshCaptchaImage() {
-        $('#captcha_image').attr('src', "{{ eccube_config.eccube_package_api_url }}/captcha" + '?' + new Date().getTime())
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var captcha = document.getElementById("captcha_image");
+                var url = window.URL || window.webkitURL;
+                captcha.src = url.createObjectURL(this.response);
+
+                var captcha_id = document.getElementById("captcha_id");
+                captcha_id.value = this.getResponseHeader('x-eccube-captcha-id');
+            }
+        }
+
+        xhr.open('GET', '{{ eccube_config.eccube_package_api_url }}/captcha' + '?' + new Date().getTime());
+        xhr.responseType = 'blob';
+        xhr.send();
     }
 
     $('#captcha').on('show.bs.modal', function() {
@@ -45,13 +59,11 @@ file that was distributed with this source code.
             dataType: 'json',
             cache: false,
             data: {
+                "captcha_id": $('#captcha_id').val(),
                 "captcha": $('#captcha_text').val(),
                 "eccube_url": '{{ eccubeUrl }}',
                 "eccube_version": "{{ constant('Eccube\\Common\\Constant::VERSION') }}",
                 "eccube_shop_name": "{{ eccubeShopName }}"
-            },
-            xhrFields: {
-                withCredentials: true
             }
         }).done(function(data) {
             $('#captcha').modal('hide');
@@ -164,6 +176,7 @@ file that was distributed with this source code.
                         <img id="captcha_image" class="mb-2" src="#">
                         <button id="captcha-refresh" type="button" class="btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                         <input type="text" id="captcha_text" value="" class="form-control" placeholder="{{ 'admin.store.setting.captcha_message'|trans }}"/>
+                        <input type="hidden" id="captcha_id" value=""/>
                         <span id="captcha_error" class="invalid-feedback" style="display: none">
                             <span class="mb-0 d-block">
                                 <span class="initialism form-error-icon badge badge-danger">{{ 'admin.store.setting.captcha_error'|trans }}</span> <span class="form-error-message">{{ 'admin.store.setting.invalid_captcha'|trans }}</span>
