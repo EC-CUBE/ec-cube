@@ -52,7 +52,25 @@
  */
 
 /*!
+ * jQuery UI :data 1.13.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+/*!
  * jQuery UI Disable Selection 1.13.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+/*!
+ * jQuery UI Keycode 1.13.1
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -70,7 +88,54 @@
  */
 
 /*!
+ * jQuery UI Position 1.13.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/position/
+ */
+
+/*!
  * jQuery UI Resizable 1.13.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+/*!
+ * jQuery UI Scroll Parent 1.13.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+/*!
+ * jQuery UI Sortable 1.13.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+/*!
+ * jQuery UI Tooltip 1.13.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+/*!
+ * jQuery UI Unique ID 1.13.1
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
