@@ -13,7 +13,6 @@
 {% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <style>
         .ui-resizable-se {
             right: -3px;
@@ -23,7 +22,6 @@
 {% endblock %}
 
 {% block javascript %}
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         ace.require('ace/ext/language_tools');
         var editor = ace.edit('editor');
