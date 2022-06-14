@@ -67,7 +67,7 @@
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^1.4.0",
-    "gulp-sass": "^4.0.2",
+    "gulp-sass": "^5.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "normalize.css": "^5.0.0",
