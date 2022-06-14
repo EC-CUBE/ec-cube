@@ -168,39 +168,47 @@ class EntryController extends AbstractController
                 case 'complete':
                     log_info('会員登録開始');
 
-                    $encoder = $this->encoderFactory->getEncoder($Customer);
-                    $salt = $encoder->createSalt();
-                    $password = $encoder->encodePassword($Customer->getPlainPassword(), $salt);
-                    $secretKey = $this->customerRepository->getUniqueSecretKey();
+                    // 入力メールアドレスで既に会員登録されている場合true
+                    $existFlg = $this->customerRepository->getNonWithdrawingCustomers(['email' => $Customer->getEmail()]) ? true : false;
 
-                    $Customer
-                        ->setSalt($salt)
-                        ->setPassword($password)
-                        ->setSecretKey($secretKey)
-                        ->setPoint(0);
-
-                    $this->entityManager->persist($Customer);
-                    $this->entityManager->flush();
-
-                    log_info('会員登録完了');
-
-                    $event = new EventArgs(
-                        [
-                            'form' => $form,
-                            'Customer' => $Customer,
-                        ],
-                        $request
-                    );
+                    if (!$existFlg) {
+                        $encoder = $this->encoderFactory->getEncoder($Customer);
+                        $salt = $encoder->createSalt();
+                        $password = $encoder->encodePassword($Customer->getPlainPassword(), $salt);
+                        $secretKey = $this->customerRepository->getUniqueSecretKey();
+    
+                        $Customer
+                            ->setSalt($salt)
+                            ->setPassword($password)
+                            ->setSecretKey($secretKey)
+                            ->setPoint(0);
+    
+                        $this->entityManager->persist($Customer);
+                        $this->entityManager->flush();
+    
+                        log_info('会員登録完了');
+    
+                        $event = new EventArgs(
+                            [
+                                'form' => $form,
+                                'Customer' => $Customer,
+                            ],
+                            $request
+                        );
+                    }
                     $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE);
 
                     $activateFlg = $this->BaseInfo->isOptionCustomerActivate();
-
                     // 仮会員設定が有効な場合は、確認メールを送信し完了画面表示.
                     if ($activateFlg) {
-                        $activateUrl = $this->generateUrl('entry_activate', ['secret_key' => $Customer->getSecretKey()], UrlGeneratorInterface::ABSOLUTE_URL);
+                        $activateUrl = null;
+                        
+                        if (!$existFlg) {
+                            $this->generateUrl('entry_activate', ['secret_key' => $Customer->getSecretKey()], UrlGeneratorInterface::ABSOLUTE_URL);
+                        }
 
                         // メール送信
-                        $this->mailService->sendCustomerConfirmMail($Customer, $activateUrl);
+                        $this->mailService->sendCustomerConfirmMail($Customer, $activateUrl, $existFlg);
 
                         if ($event->hasResponse()) {
                             return $event->getResponse();

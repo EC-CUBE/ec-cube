@@ -111,7 +111,7 @@ class MailService
      * @param $Customer 会員情報
      * @param string $activateUrl アクティベート用url
      */
-    public function sendCustomerConfirmMail(Customer $Customer, $activateUrl)
+    public function sendCustomerConfirmMail(Customer $Customer, $activateUrl, $existFlg)
     {
         log_info('仮会員登録メール送信開始');
 
@@ -121,6 +121,7 @@ class MailService
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
             'activateUrl' => $activateUrl,
+            'existFlg' => $existFlg,
         ]);
 
         $message = (new Email())
@@ -138,6 +139,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'activateUrl' => $activateUrl,
+                'existFlg' => $existFlg,
             ]);
 
             $message

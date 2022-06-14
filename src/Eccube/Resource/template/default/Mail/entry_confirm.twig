@@ -27,6 +27,11 @@ file that was distributed with this source code.
 
 この度は会員登録依頼をいただきまして、有り難うございます。
 
+{% if existFlg %}
+入力頂きましたメールアドレスで既に登録されていますので、
+マイページよりログイン頂けます。
+
+{% else %}
 現在は仮登録の状態です。
 　　　~~~~~~
 本会員登録を完了するには下記URLにアクセスしてください。
@@ -35,4 +40,5 @@ file that was distributed with this source code.
 
 上記URLにて本会員登録が完了いたしましたら改めてご登録内容ご確認
 メールをお送り致します。
+{% endif %}
 {% endautoescape %}

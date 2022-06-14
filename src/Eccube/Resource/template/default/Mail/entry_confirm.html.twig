@@ -31,6 +31,10 @@ file that was distributed with this source code.
                             {{ Customer.name01 }} {{ Customer.name02 }} 様<br>
                             <br>
                             {{ BaseInfo.shop_name }}でございます。<br/>
+                            {% if existFlg %}
+                            入力頂きましたメールアドレスで既に登録されていますので、<br/>
+                            マイページよりログイン頂けます。<br/><br/>
+                            {% else %}
                             現在は仮登録の状態です。<br/><br/>
                             本会員登録を完了するには下記URLにアクセスしてください。<br><br/>
                             <a href="{{ activateUrl }}">{{ activateUrl }}</a>
@@ -39,6 +43,7 @@ file that was distributed with this source code.
                             上記URLにて本会員登録が完了いたしましたら改めてご登録内容ご確認メールをお送り致します。
                             <br/>
                             <br/>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>
