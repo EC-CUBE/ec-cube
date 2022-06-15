@@ -45,7 +45,7 @@
                 <hr>
                 <div class="row mt-4">
                     <div class="col-12">
-                        {{ item.long_description|raw }}
+                        {{ item.long_description|raw|purify }}
                     </div>
                 </div>
             </div>
