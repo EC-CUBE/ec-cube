@@ -315,6 +315,9 @@ final class EccubeEvents
     // delete
     const ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE = 'admin.setting.shop.payment.delete.complete';
 
+    const ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_COMPLETE = 'admin.setting.shop.trade.law.index.complete';
+    const ADMIN_SETTING_SHOP_TRADE_LAW_POST_COMPLETE = 'admin.setting.shop.trade.law.post.complete';
+
     /**
      * Admin/Setting/Shop/ShopController
      */

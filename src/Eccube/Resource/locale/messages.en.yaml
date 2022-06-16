@@ -1140,6 +1140,14 @@ admin.setting.shop.shop.option_point_rate: Point Return Rate
 admin.setting.shop.shop.option_point_conversion_rate: Point Conversion Rate
 
 #------------------------------------------------------------------------------------
+# Settings：Store Settings：Trade Law Settings
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.trade_law.header.name: 名称
+admin.setting.shop.trade_law.header.description: 説明
+admin.setting.shop.trade_law.header.confirm_page_show: 注文確認画面に表示
+
+#------------------------------------------------------------------------------------
 # Settings : Store Settings : Payment Methods
 #------------------------------------------------------------------------------------
 
