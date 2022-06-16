@@ -23,8 +23,11 @@ Styleguide 15.2
     margin-top: 20px;
     flex-direction: row;
   }
-  .ec-inlineBtn {
+  .ec-inlineBtn  {
     font-weight: normal;
+    .mypage & {
+      font-weight: bold;
+    }
   }
   & &__detail{
     padding: 0;

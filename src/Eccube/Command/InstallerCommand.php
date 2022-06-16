@@ -58,6 +58,7 @@ class InstallerCommand extends Command
             public $appDebug;
             public $databaseUrl;
             public $serverVersion;
+            public $databaseCharset;
             public $mailerDsn;
             public $authMagic;
             public $adminRoute;
@@ -74,6 +75,7 @@ class InstallerCommand extends Command
                             'APP_DEBUG' => $this->appDebug,
                             'DATABASE_URL' => $this->databaseUrl,
                             'DATABASE_SERVER_VERSION' => $this->serverVersion,
+                            'DATABASE_CHARSET' => $this->databaseCharset,
                             'MAILER_DSN' => $this->mailerDsn,
                             'ECCUBE_AUTH_MAGIC' => $this->authMagic,
                             'ECCUBE_ADMIN_ROUTE' => $this->adminRoute,
@@ -140,6 +142,9 @@ class InstallerCommand extends Command
 
         // DATABASE_SERVER_VERSION
         $this->envFileUpdater->serverVersion = $this->getDatabaseServerVersion($databaseUrl);
+
+        // DATABASE_CHARSET
+        $this->envFileUpdater->databaseCharset = \str_starts_with($databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8';
 
         // MAILER_DSN
         $mailerDsn = $this->container->getParameter('eccube_mailer_dsn');
