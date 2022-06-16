@@ -33,6 +33,16 @@ class TopControllerTest extends AbstractWebTestCase
         $this->assertEquals('/html/user_data/assets/img/common/favicon.ico', $node->attr('href'));
     }
 
+    /**
+     * 危険なXSS htmlインジェクションが削除されたことを確認するテスト
+
+     * 下記のものをチェックします。
+     *     ・ ID属性の追加
+     *     ・ <script> スクリプトインジェクション
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5372
+     * @return void
+     */
     public function testFeaturedNewsXSSAttackPrevention()
     {
         // Create a new news item for the homepage with a XSS attack (via <script> AND id attribute injection)

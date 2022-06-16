@@ -314,7 +314,8 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testMetaTagsInDetailPage()
     {
-        $product = $this->productRepository->find(2);   /** @var Product $product */
+        $product = $this->productRepository->find(2);
+        /** @var Product $product */
         $description_detail = 'またそのなかでいっしょになったたくさんのひとたち、ファゼーロとロザーロ、羊飼のミーロや、顔の赤いこどもたち、地主のテーモ、山猫博士のボーガント・デストゥパーゴなど、いまこの暗い巨きな石の建物のなかで考えていると、みんなむかし風のなつかしい青い幻燈のように思われます。';
         $description_list = 'では、わたくしはいつかの小さなみだしをつけながら、しずかにあの年のイーハトーヴォの五月から十月までを書きつけましょう。';
 
@@ -326,7 +327,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $expected_desc = mb_substr($description_list, 0, 120, 'utf-8');
 
         $url = $this->generateUrl('product_detail', ['id' => 2], UrlGeneratorInterface::ABSOLUTE_URL);
-        $imgPath = $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL).'html/upload/save_image/'.$product->getMainListImage()->getFileName();
+        $imgPath = $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL) . 'html/upload/save_image/' . $product->getMainListImage()->getFileName();
 
         $crawler = $this->client->request('GET', $url);
 
@@ -371,4 +372,99 @@ class ProductControllerTest extends AbstractWebTestCase
 
         $this->assertEquals('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
     }
+
+    /**
+     * 商品一覧画面で
+     * 危険なXSS htmlインジェクションが削除されたことを確認するテスト
+     * 下記のものをチェックします。
+     *     ・ ID属性の追加
+     *     ・ <script> スクリプトインジェクション
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5372
+     * @return void
+     */
+    public function testFeaturedNewsXSSAttackPreventionListPage()
+    {
+        $Product = $this->createProduct('Product out of stock', 1);
+        $Product->setDescriptionList(
+            "<div id='dangerous-id' class='safe_to_use_class'>
+                    <p>商品説明分テスト＃１</p>
+                    <script>alert('XSS Attack')</script>
+                    <a href='https://www.google.com'>safe html</a>
+                </div>");
+        $this->entityManager->flush();
+
+        // 1つの新着情報を保存した後にホームページにアクセスする。
+        // Request Homepage after saving a single news item
+        $crawler = $this->client->request('GET', $this->generateUrl('product_list', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        // <div>タグから危険なid属性が削除されていることを確認する。
+        // Find that dangerous id attributes are removed from <div> tags.
+        $testNewsArea_notFoundTest = $crawler->filter('#dangerous-id');
+        $this->assertEquals(0, $testNewsArea_notFoundTest->count());
+
+        // 安全なclass属性が出力されているかどうかを確認する。
+        // Find if classes (which are safe) have been outputted
+        $testNewsArea = $crawler->filter('.safe_to_use_class');
+        $this->assertEquals(1, $testNewsArea->count());
+
+        // 安全なHTMLが存在するかどうかを確認する
+        // Find if the safe HTML exists
+        $this->assertStringContainsString('<p>商品説明分テスト＃１</p>', $testNewsArea->outerHtml());
+        $this->assertStringContainsString('<a href="https://www.google.com">safe html</a>', $testNewsArea->outerHtml());
+
+        // 安全でないスクリプトが存在しないかどうかを確認する
+        // Find if the unsafe script does not exist
+        $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $testNewsArea->outerHtml());
+    }
+
+
+
+    /**
+     * 商品詳細画面で
+     * 危険なXSS htmlインジェクションが削除されたことを確認するテスト
+     * 下記のものをチェックします。
+     *     ・ ID属性の追加
+     *     ・ <script> スクリプトインジェクション
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5372
+     * @return void
+     */
+    public function testFeaturedNewsXSSAttackPreventionDetailPage()
+    {
+        $Product = $this->createProduct('Product out of stock', 1);
+        $Product->setDescriptionDetail(
+            "<div id='dangerous-id' class='safe_to_use_class'>
+                    <p>商品説明分テスト＃１</p>
+                    <script>alert('XSS Attack')</script>
+                    <a href='https://www.google.com'>safe html</a>
+                </div>");
+        $this->entityManager->flush();
+
+        // 1つの新着情報を保存した後にホームページにアクセスする。
+        // Request Homepage after saving a single news item
+        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        // <div>タグから危険なid属性が削除されていることを確認する。
+        // Find that dangerous id attributes are removed from <div> tags.
+        $testNewsArea_notFoundTest = $crawler->filter('#dangerous-id');
+        $this->assertEquals(0, $testNewsArea_notFoundTest->count());
+
+        // 安全なclass属性が出力されているかどうかを確認する。
+        // Find if classes (which are safe) have been outputted
+        $testNewsArea = $crawler->filter('.safe_to_use_class');
+        $this->assertEquals(1, $testNewsArea->count());
+
+        // 安全なHTMLが存在するかどうかを確認する
+        // Find if the safe HTML exists
+        $this->assertStringContainsString('<p>商品説明分テスト＃１</p>', $testNewsArea->outerHtml());
+        $this->assertStringContainsString('<a href="https://www.google.com">safe html</a>', $testNewsArea->outerHtml());
+
+        // 安全でないスクリプトが存在しないかどうかを確認する
+        // Find if the unsafe script does not exist
+        $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $testNewsArea->outerHtml());
+    }
+
 }
