@@ -67,6 +67,57 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertNull(self::$container->get('session')->get('eccube.front.shopping.order.id'));
     }
 
+
+    /**
+     * 危険なXSS htmlインジェクションが削除されたことを確認するテスト
+
+     * 下記のものをチェックします。
+     *     ・ ID属性の追加
+     *     ・ <script> スクリプトインジェクション
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5372
+     * @return void
+     */
+    public function testCompleteWithXssInjectionAttack()
+    {
+        // Create a new news item for the homepage with a XSS attack (via <script> AND id attribute injection)
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $Order->setCompleteMessage("
+                <div id='dangerous-id' class='safe_to_use_class'>
+                    <p>注文完了テストメッセージ＃１</p>
+                    <script>alert('XSS Attack')</script>
+                    <a href='https://www.google.com'>safe html</a>
+                </div>
+        ");
+
+        $this->entityManager->flush($Order);
+
+        // 1つの新着情報を保存した後にホームページにアクセスする。
+        // Request Homepage after saving a single news item
+        self::$container->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
+        $crawler = $this->client->request('GET', $this->generateUrl('shopping_complete'));
+
+        // <div>タグから危険なid属性が削除されていることを確認する。
+        // Find that dangerous id attributes are removed from <div> tags.
+        $testNewsArea_notFoundTest = $crawler->filter('#test-news-id');
+        $this->assertEquals(0, $testNewsArea_notFoundTest->count());
+
+        // 安全なclass属性が出力されているかどうかを確認する。
+        // Find if classes (which are safe) have been outputted
+        $testNewsArea = $crawler->filter('.safe_to_use_class');
+        $this->assertEquals(1, $testNewsArea->count());
+
+        // 安全なHTMLが存在するかどうかを確認する
+        // Find if the safe HTML exists
+        $this->assertStringContainsString('<p>注文完了テストメッセージ＃１</p>', $testNewsArea->outerHtml());
+        $this->assertStringContainsString('<a href="https://www.google.com">safe html</a>', $testNewsArea->outerHtml());
+
+        // 安全でないスクリプトが存在しないかどうかを確認する
+        // Find if the unsafe script does not exist
+        $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $testNewsArea->outerHtml());
+    }
+
     public function testShoppingError()
     {
         $this->client->request('GET', $this->generateUrl('shopping_error'));
