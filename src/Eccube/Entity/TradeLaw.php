@@ -112,9 +112,9 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
          * @param string $description
          * @return TradeLaw
          */
-        public function setDescription(string $description): TradeLaw
+        public function setDescription(?string $description): TradeLaw
         {
-            $this->description = $description;
+            $this->description = $description ?: "";
             return $this;
         }
 
@@ -123,7 +123,7 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
          */
         public function getDescription(): string
         {
-            return $this->description;
+            return $this->description ?: "";
         }
 
         /**
