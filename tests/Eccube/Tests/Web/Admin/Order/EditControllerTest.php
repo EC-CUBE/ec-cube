@@ -187,9 +187,15 @@ class EditControllerTest extends AbstractEditControllerTestCase
                     <script>alert('XSS Attack')</script>
                     <a href='https://www.google.com'>safe html</a>
                 </div>"
-    )->setOrder($Order)->setMailSubject("テスト")->setMailBody("テスト内容");
+        )
+            ->setOrder($Order)
+            ->setMailSubject("テスト")
+            ->setMailBody("テスト内容")
+            ->setSendDate(new \DateTime())
+            ->setCreator($this->createMember());
         $this->entityManager->persist($MailHistory);
         $this->entityManager->flush($MailHistory);
+        $this->entityManager->refresh($Order);
 
         // 1つの新着情報を保存した後にホームページにアクセスする。
         // Request Homepage after saving a single news item
