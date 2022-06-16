@@ -30,9 +30,8 @@ class TradeLawType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'constraints' => [
-                    new Assert\NotBlank(),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
