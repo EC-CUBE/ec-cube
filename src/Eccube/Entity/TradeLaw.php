@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,19 +23,10 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
      * @ORM\InheritanceType("SINGLE_TABLE")
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
      * @ORM\HasLifecycleCallbacks()
-     * @ORM\Entity(repositoryClass="Eccube\Repository\TaxRuleRepository")
+     * @ORM\Entity(repositoryClass="Eccube\Repository\TradeLawRepository")
      */
-    class TradeLaw
+    class TradeLaw extends AbstractEntity
     {
-
-        /**
-         * @return string
-         */
-        public function __toString()
-        {
-            return (string) $this->getName();
-        }
-
         /**
          * @var int
          *
@@ -61,6 +63,14 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
          * @ORM\Column(name="display_order_screen", type="boolean")
          */
         private bool $displayOrderScreen = false;
+
+        /**
+         * @return string
+         */
+        public function __toString()
+        {
+            return $this->getName();
+        }
 
         /**
          * @param int $id
