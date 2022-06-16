@@ -37,18 +37,18 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
         private int $id;
 
         /**
-         * @var string
+         * @var ?string
          *
          * @ORM\Column(name="name", type="string", length=255, nullable=true)
          */
-        private string $name;
+        private ?string $name;
 
         /**
-         * @var string
+         * @var ?string
          *
          * @ORM\Column(name="description", type="string", length=4000, nullable=true)
          */
-        private string $description;
+        private ?string $description;
 
         /**
          * @var int
@@ -103,7 +103,7 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
         /**
          * @return string
          */
-        public function getName(): string
+        public function getName(): ?string
         {
             return $this->name;
         }
@@ -121,9 +121,9 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
         /**
          * @return string
          */
-        public function getDescription(): string
+        public function getDescription(): ?string
         {
-            return $this->description ?: "";
+            return $this->description;
         }
 
         /**
