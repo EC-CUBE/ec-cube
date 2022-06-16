@@ -36,7 +36,7 @@ class TradeLawController extends AbstractController
      */
     public function index(Request $request)
     {
-        $tradeLawDetails = $this->tradeLawRepository->findBy([], ['sortNo' => 'DESC']);
+        $tradeLawDetails = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $builder = $this->formFactory->createBuilder();
         $builder
             ->add(

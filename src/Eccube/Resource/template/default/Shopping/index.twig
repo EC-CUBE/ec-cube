@@ -382,6 +382,16 @@ file that was distributed with this source code.
                         {{ form_errors(form.message) }}
                     </div>
                 </div>
+                {% for activeTradeLaw in activeTradeLaws %}
+                <div class="ec-orderConfirm">
+                    <div class="ec-rectHeading">
+                        <h2>{{ activeTradeLaw.name }}</h2>
+                    </div>
+                    <div class="ec-input">
+                        {{ activeTradeLaw.description }}
+                    </div>
+                </div>
+                {% endfor %}
             </div>
             <div class="ec-orderRole__summary">
                 <div class="ec-totalBox">
