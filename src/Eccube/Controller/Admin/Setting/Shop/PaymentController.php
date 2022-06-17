@@ -26,6 +26,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -159,7 +160,101 @@ class PaymentController extends AbstractController
     }
 
     /**
+     * 画像アップロード時にリクエストされるメソッド.
+     *
+     * @see https://pqina.nl/filepond/docs/api/server/#process
+     * @Route("/%eccube_admin_route%/setting/shop/payment/image/process", name="admin_payment_image_process", methods={"POST"})
+     */
+    public function imageProcess(Request $request)
+    {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+            throw new BadRequestHttpException();
+        }
+
+        $images = $request->files->get('payment_register');
+
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
+
+        $filename = null;
+        if (isset($images['payment_image_file'])) {
+            $image = $images['payment_image_file'];
+
+            //ファイルフォーマット検証
+            $mimeType = $image->getMimeType();
+            if (0 !== strpos($mimeType, 'image')) {
+                throw new UnsupportedMediaTypeHttpException();
+            }
+
+            // 拡張子
+            $extension = $image->getClientOriginalExtension();
+            if (!in_array(strtolower($extension), $allowExtensions)) {
+                throw new UnsupportedMediaTypeHttpException();
+            }
+
+            $filename = date('mdHis').uniqid('_').'.'.$extension;
+            $image->move($this->getParameter('eccube_temp_image_dir'), $filename);
+        }
+        $event = new EventArgs(
+            [
+                'images' => $images,
+                'filename' => $filename,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_IMAGE_ADD_COMPLETE);
+        $filename = $event->getArgument('filename');
+
+        return new Response($filename);
+    }
+
+    /**
+     * アップロード画像を取得する際にコールされるメソッド.
+     *
+     * @see https://pqina.nl/filepond/docs/api/server/#load
+     * @Route("/%eccube_admin_route%/setting/shop/payment/image/load", name="admin_payment_image_load", methods={"GET"})
+     */
+    public function imageLoad(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $image = $this->getParameter('kernel.project_dir').$request->query->get('source');
+        if (file_exists($image) && stripos($image, $this->getParameter('kernel.project_dir')) === 0) {
+            $file = new \SplFileObject($image);
+
+            return $this->file($file, $file->getBasename());
+        }
+
+        throw new NotFoundHttpException();
+    }
+
+    /**
+     * アップロード画像をすぐ削除する際にコールされるメソッド.
+     *
+     * @see https://pqina.nl/filepond/docs/api/server/#revert
+     * @Route("/%eccube_admin_route%/setting/shop/payment/image/revert", name="admin_payment_image_revert", methods={"DELETE"})
+     */
+    public function imageRevert(Request $request)
+    {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+            throw new BadRequestHttpException();
+        }
+
+        $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
+        if (file_exists($tempFile) && stripos($tempFile, $this->getParameter('kernel.project_dir')) === 0) {
+            $fs = new Filesystem();
+            $fs->remove($tempFile);
+
+            return new Response(null, Response::HTTP_NO_CONTENT);
+        }
+
+        throw new NotFoundHttpException();
+    }
+
+    /**
      * @Route("/%eccube_admin_route%/setting/shop/payment/image/add", name="admin_payment_image_add", methods={"POST"})
+     * @deprecated jQuery-File-Upload で利用していたメソッドのため非推奨
      */
     public function imageAdd(Request $request)
     {
