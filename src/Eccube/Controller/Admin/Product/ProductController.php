@@ -377,7 +377,7 @@ class ProductController extends AbstractController
         }
 
         $image = $this->getParameter('kernel.project_dir').$request->query->get('source');
-        if (file_exists($image) && stripos($image, $this->getParameter('kernel.project_dir')) === 0) {
+        if (file_exists($image) && stripos(realpath($image), $this->getParameter('kernel.project_dir')) === 0) {
             $file = new \SplFileObject($image);
 
             return $this->file($file, $file->getBasename());
@@ -399,7 +399,7 @@ class ProductController extends AbstractController
         }
 
         $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
-        if (file_exists($tempFile) && stripos($tempFile, $this->getParameter('kernel.project_dir')) === 0) {
+        if (file_exists($tempFile) && stripos(realpath($tempFile), $this->getParameter('kernel.project_dir')) === 0) {
             $fs = new Filesystem();
             $fs->remove($tempFile);
 
@@ -670,18 +670,15 @@ class ProductController extends AbstractController
 
                 $this->entityManager->flush();
 
-                $sortNos = $request->get('sort_no_images');
-                if ($sortNos) {
-                    foreach ($sortNos as $sortNo) {
-                        list($filename, $sortNo_val) = explode('//', $sortNo);
-                        $ProductImage = $this->productImageRepository
-                            ->findOneBy([
-                                'file_name' => $filename,
-                                'Product' => $Product,
-                            ]);
-                        $ProductImage->setSortNo($sortNo_val);
-                        $this->entityManager->persist($ProductImage);
-                    }
+                $product_image = $request->request->get('admin_product')['product_image'];
+                foreach ($product_image as $sortNo => $filename) {
+                    $ProductImage = $this->productImageRepository
+                        ->findOneBy([
+                            'file_name' => pathinfo($filename, PATHINFO_BASENAME),
+                            'Product' => $Product,
+                        ]);
+                    $ProductImage->setSortNo($sortNo);
+                    $this->entityManager->persist($ProductImage);
                 }
                 $this->entityManager->flush();
 

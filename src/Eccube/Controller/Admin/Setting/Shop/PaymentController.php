@@ -220,7 +220,7 @@ class PaymentController extends AbstractController
         }
 
         $image = $this->getParameter('kernel.project_dir').$request->query->get('source');
-        if (file_exists($image) && stripos($image, $this->getParameter('kernel.project_dir')) === 0) {
+        if (file_exists($image) && stripos(realpath($image), $this->getParameter('kernel.project_dir')) === 0) {
             $file = new \SplFileObject($image);
 
             return $this->file($file, $file->getBasename());
@@ -242,7 +242,7 @@ class PaymentController extends AbstractController
         }
 
         $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
-        if (file_exists($tempFile) && stripos($tempFile, $this->getParameter('kernel.project_dir')) === 0) {
+        if (file_exists($tempFile) && stripos(realpath($tempFile), $this->getParameter('kernel.project_dir')) === 0) {
             $fs = new Filesystem();
             $fs->remove($tempFile);
 

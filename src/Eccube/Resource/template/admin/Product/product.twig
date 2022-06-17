@@ -118,8 +118,8 @@ file that was distributed with this source code.
                 if (error) {
                     console.log(error);
                 } else {
-                    // file.serverId にはアップロードしたファイル名がDB.
-                    // 格納されるに登録されると URL path が入るためファイル名のみ抜き出す.
+                    // file.serverId にはアップロードしたファイル名が格納される.
+                    // DBに登録されると URL path が入るためファイル名のみ抜き出す.
                     if (file.serverId) {
                         $('#upload-zone').append(
                             $(proto_del.replace(/__name__/g, file.id))
@@ -128,7 +128,8 @@ file that was distributed with this source code.
                         );
                     }
                     // 追加してすぐ削除した画像があれば削除する
-                    $('#upload-zone').find('.add_images[value="' + file.filename + '"]').remove();
+                    $('#upload-zone').find('#admin_product_add_images_' + file.id).remove(); // 追加してすぐ削除した画像
+                    $('#upload-zone').find('.add_images[value="' + file.filename + '"]').remove(); // 追加後, バリデーションエラーが発生した後に削除した画像
                 }
             });
             // バリデーションエラーが出た場合に画像を保持するための hidden を追加しておく
