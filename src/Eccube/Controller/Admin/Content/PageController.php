@@ -93,6 +93,8 @@ class PageController extends AbstractController
      */
     public function edit(Request $request, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil, $id = null)
     {
+        $this->addInfo('admin.common.restrict_file_upload_info', 'admin');
+
         if (null === $id) {
             $Page = $this->pageRepository->newPage();
         } else {

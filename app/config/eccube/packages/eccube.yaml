@@ -17,6 +17,7 @@ parameters:
     env(ECCUBE_2FA_ENABLED): '1'
     env(ECCUBE_2FA_COOKIE_NAME): 'eccube_2fa'
     env(ECCUBE_2FA_EXPIRE): '14'
+    env(ECCUBE_RESTRICT_FILE_UPLOAD): '0'
 
     # EC-CUBE parameter
     eccube_database_url: '%env(DATABASE_URL)%'
@@ -136,3 +137,14 @@ parameters:
     eccube_2fa_enabled: '%env(ECCUBE_2FA_ENABLED)%'
     eccube_2fa_cookie_name: '%env(ECCUBE_2FA_COOKIE_NAME)%'
     eccube_2fa_expire: '%env(ECCUBE_2FA_EXPIRE)%'
+    eccube_restrict_file_upload: '%env(ECCUBE_RESTRICT_FILE_UPLOAD)%' # ファイルアップロード可能な機能を制限する
+    eccube_restrict_file_upload_urls: # ファイルアップロードを制限するURL
+      - admin_content_file
+      - admin_store_plugin_install
+      - admin_content_page_new
+      - admin_content_page_edit
+      - admin_content_block_new
+      - admin_content_block_edit
+      - admin_content_css
+      - admin_content_js
+      - admin_store_template_install

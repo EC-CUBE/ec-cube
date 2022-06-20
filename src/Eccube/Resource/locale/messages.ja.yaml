@@ -497,6 +497,7 @@ admin.common.move_to_confirm_message: '%name%に移動します。編集内容�
 admin.common.move_to_confirm_move_only: 保存せずに移動
 admin.common.move_to_confirm_save_and_move: 保存して移動
 admin.common.admin_url_warning: '管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。'
+admin.common.restrict_file_upload_info: 'この機能の利用頻度が低い場合、使用しない間は無効化することでセキュリティを更に向上させることができます。環境変数 ECCUBE_RESTRICT_FILE_UPLOAD を 1 に設定することで機能を無効化することが可能です。'
 
 
 # エンティティに関連するラベル
@@ -1772,6 +1773,7 @@ exception.error_title_can_not_access: アクセスできません。
 exception.error_message_can_not_access: お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。
 exception.error_title_not_found: ページがみつかりません。
 exception.error_message_not_found: URLに間違いがないかご確認ください。
+exception.error_message_restrict_url: この機能は管理者によって制限されています。
 
 #------------------------------------------------------------------------------------
 # PurchaseFlow

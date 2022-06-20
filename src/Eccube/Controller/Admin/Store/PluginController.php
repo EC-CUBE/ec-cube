@@ -485,6 +485,8 @@ class PluginController extends AbstractController
      */
     public function install(Request $request, CacheUtil $cacheUtil)
     {
+        $this->addInfo('admin.common.restrict_file_upload_info', 'admin');
+
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
             ->getForm();
