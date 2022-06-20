@@ -18,18 +18,7 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/tempusdominus-bootstrap-4.min.css', 'admin') }}">
     <style type="text/css">
-        .datepicker-days th.dow:first-child,
-        .datepicker-days td:first-child {
-            color: #f00;
-        }
-
-        .datepicker-days th.dow:last-child,
-        .datepicker-days td:last-child {
-            color: #00f;
-        }
-
         .c-container {
             min-width: inherit;
             margin-top: 0;
@@ -48,22 +37,8 @@ file that was distributed with this source code.
 {% endblock stylesheet %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}"></script>
-
     <script type="text/javascript">
         $(function() {
-            $('input[id$=_issue_date]').datetimepicker({
-                locale: '{{ eccube_config.locale }}',
-                format: 'YYYY-MM-DD',
-                useCurrent: true,
-                buttons: {
-                    showToday: true,
-                    showClose: true
-                }
-            });
-
             var close = $('#windowclose');
 
             $('.btn-ec-regular').on('click', function() {
@@ -73,7 +48,6 @@ file that was distributed with this source code.
         });
 
         Ladda.bind('button[type="submit"]', {timeout: 3000});
-
     </script>
 {% endblock %}
 
@@ -91,7 +65,7 @@ file that was distributed with this source code.
                         <div class="card-body">
                             <div class="mb-3">
                                 <label>{{ 'admin.order.delivery_note_create_date'|trans }}</label>
-                                {{ form_widget(form.issue_date, { type: 'text' }) }}
+                                {{ form_widget(form.issue_date) }}
                                 {{ form_errors(form.issue_date) }}
                             </div>
 
